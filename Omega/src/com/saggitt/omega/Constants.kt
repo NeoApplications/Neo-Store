@@ -270,5 +270,13 @@ val iconIds = mapOf(
     Location::class.java.name to R.drawable.ic_location,
     Bluetooth::class.java.name to R.drawable.ic_bluetooth,
     AutoRotation::class.java.name to R.drawable.ic_auto_rotation,
-    Sync::class.java.name to R.drawable.ic_sync
+    Sync::class.java.name to R.drawable.ic_sync,
+    // Smartspace Providers
+    NotificationUnreadProvider::class.java.name to R.drawable.ic_notification,
+    NowPlayingProvider::class.java.name to R.drawable.ic_music_next,
+    BatteryStatusProvider::class.java.name to R.drawable.ic_battery,
+    PersonalityProvider::class.java.name to R.drawable.ic_greetings,
+    CalendarEventProvider::class.java.name to R.drawable.ic_calendar,
+    SmartSpaceDataWidget::class.java.name to R.drawable.ic_weather,
+    AlarmEventProvider::class.java.name to R.drawable.ic_alarm,
 )

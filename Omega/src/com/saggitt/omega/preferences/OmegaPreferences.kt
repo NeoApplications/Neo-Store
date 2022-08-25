@@ -1002,6 +1002,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
                 PersonalityProvider::class.java.name
             ),
             entries = smartspaceProviderOptions,
+            withIcons = true,
             onChange = ::updateSmartspaceProvider
         )
     val notificationCount = BooleanPref(
