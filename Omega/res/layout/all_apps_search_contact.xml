@@ -23,18 +23,29 @@
     android:layout_marginTop="8dp"
     android:orientation="horizontal">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@android:id/icon"
+    <androidx.cardview.widget.CardView
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_person"
-        android:contentDescription="@string/label_search" />
+        app:cardCornerRadius="24dp"
+        android:innerRadius="0dp"
+        android:shape="ring"
+        android:thicknessRatio="1.9">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@android:id/icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_person"
+            android:contentDescription="@string/label_search" />
+    </androidx.cardview.widget.CardView>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="0dp"
