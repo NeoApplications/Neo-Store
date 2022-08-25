@@ -27,13 +27,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.saggitt.omega.compose.navigation.DefaultComposeView
+import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.theme.OmegaAppTheme
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.omegaPrefs
-import com.saggitt.omega.util.recreateAnimated
 
 /*
     Blank activity to handle Compose calls
@@ -45,6 +46,7 @@ class ComposeActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
     private lateinit var themeOverride: ThemeOverride
     private val themeSet: ThemeOverride.ThemeSet get() = ThemeOverride.Settings()
     private var paused = false
+    lateinit var navController: NavHostController
 
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +67,7 @@ class ComposeActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
         }
         setContent {
             OmegaAppTheme {
-                val navController = rememberAnimatedNavController()
+                navController = rememberAnimatedNavController()
                 DefaultComposeView(navController)
             }
         }
@@ -76,7 +78,9 @@ class ComposeActivity : AppCompatActivity(), ThemeManager.ThemeableActivity {
         if (paused) {
             recreate()
         } else {
-            recreateAnimated()
+            val currentRoute = navController.currentDestination?.route ?: "${Routes.PREFS_MAIN}/"
+            navController.popBackStack()
+            navController.navigate(currentRoute)
         }
     }
 
