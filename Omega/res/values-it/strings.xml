@@ -471,4 +471,5 @@
     <string name="title_search_contacts">Cerca contatti</string>
     <string name="section_contacts">Contatti</string>
     <string name="cat_dock_search">Cassetto e barra app</string>
+    <string name="title_desktop_widget_corner_radius">Raggio dell\'angolo del widget</string>
 </resources>
