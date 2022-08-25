@@ -27,7 +27,6 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 
 import java.util.ArrayList;
@@ -75,7 +74,7 @@ public class RoundedCornerEnforcement {
      * Check if the app widget is in the deny list.
      */
     public static boolean isRoundedCornerEnabled() {
-        return Utilities.ATLEAST_S || sRoundedCornerEnabled;
+        return sRoundedCornerEnabled;
     }
 
     /**
