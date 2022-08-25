@@ -253,4 +253,22 @@ val iconIds = mapOf(
     // Drawer Popup
     PREFS_DRAWER_POPUP_UNINSTALL to R.drawable.ic_uninstall_no_shadow,
     PREFS_DRAWER_POPUP_EDIT to R.drawable.ic_edit_no_shadow,
+    // Dash Providers
+    EditDash::class.java.name to R.drawable.ic_edit_dash,
+    ChangeWallpaper::class.java.name to R.drawable.ic_wallpaper,
+    OmegaSettings::class.java.name to R.drawable.ic_omega_settings,
+    ManageVolume::class.java.name to R.drawable.ic_volume,
+    DeviceSettings::class.java.name to R.drawable.ic_setting,
+    ManageApps::class.java.name to R.drawable.ic_build,
+    AllAppsShortcut::class.java.name to R.drawable.ic_apps,
+    SleepDevice::class.java.name to R.drawable.ic_sleep,
+    LaunchAssistant::class.java.name to R.drawable.ic_assistant,
+    Torch::class.java.name to R.drawable.ic_torch,
+    AudioPlayer::class.java.name to R.drawable.ic_music_play,
+    Wifi::class.java.name to R.drawable.ic_wifi,
+    MobileData::class.java.name to R.drawable.ic_mobile_network,
+    Location::class.java.name to R.drawable.ic_location,
+    Bluetooth::class.java.name to R.drawable.ic_bluetooth,
+    AutoRotation::class.java.name to R.drawable.ic_auto_rotation,
+    Sync::class.java.name to R.drawable.ic_sync
 )

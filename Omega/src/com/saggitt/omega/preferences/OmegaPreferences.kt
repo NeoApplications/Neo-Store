@@ -288,6 +288,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
             EditDash::class.java.name,
         ),
         entries = dashProviderOptions,
+        withIcons = true,
         onChange = doNothing
     )
     val desktopLock = BooleanPref(
