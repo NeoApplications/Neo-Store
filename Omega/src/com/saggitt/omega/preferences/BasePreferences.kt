@@ -472,6 +472,7 @@ abstract class BasePreferences(context: Context) :
         @StringRes summaryId: Int = -1,
         defaultValue: List<String>,
         val entries: Map<String, Int>,
+        val withIcons: Boolean = false,
         onChange: () -> Unit = doNothing
     ) : MutableListPref<String>(key, titleId, summaryId, onChange, defaultValue) {
         override fun unflattenValue(value: String) = value
