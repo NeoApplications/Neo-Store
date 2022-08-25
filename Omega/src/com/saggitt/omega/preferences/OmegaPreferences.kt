@@ -405,6 +405,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         titleId = R.string.title_desktop_icon_popup_menu,
         defaultValue = listOf(PREFS_DESKTOP_POPUP_EDIT),
         entries = desktopPopupOptions,
+        withIcons = true,
         onChange = doNothing
     )
     val desktopPopupEdit: Boolean
@@ -627,6 +628,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         titleId = R.string.title__drawer_icon_popup_menu,
         defaultValue = listOf(PREFS_DRAWER_POPUP_EDIT),
         entries = drawerPopupOptions,
+        withIcons = true,
         onChange = doNothing
     )
     val drawerPopupUninstall: Boolean
