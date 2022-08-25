@@ -245,3 +245,12 @@ val drawerPopupOptions = mutableMapOf(
     PREFS_DRAWER_POPUP_UNINSTALL to R.string.uninstall_drop_target_label,
     PREFS_DRAWER_POPUP_EDIT to R.string.action_preferences,
 )
+
+val iconIds = mapOf(
+    // Desktop Popup
+    PREFS_DESKTOP_POPUP_REMOVE to R.drawable.ic_remove_no_shadow,
+    PREFS_DESKTOP_POPUP_EDIT to R.drawable.ic_edit_no_shadow,
+    // Drawer Popup
+    PREFS_DRAWER_POPUP_UNINSTALL to R.drawable.ic_uninstall_no_shadow,
+    PREFS_DRAWER_POPUP_EDIT to R.drawable.ic_edit_no_shadow,
+)
