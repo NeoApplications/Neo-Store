@@ -284,7 +284,7 @@ fun StringMultiSelectionPrefDialogUI(
                         )
                     }
 
-                    Row( // TODO abstract to SingleSelectionListItem
+                    Row( // TODO abstract to MultiSelectionListItem
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {

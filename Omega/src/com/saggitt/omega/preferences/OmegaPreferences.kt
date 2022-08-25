@@ -252,7 +252,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = reloadGrid
     )
-    val desktopUsePopupMenuView = BooleanPref(
+    val desktopUsePopupMenuView = BooleanPref( // TODO do we really need it?
         key = PREFS_DESKTOP_POPUP_MENU,
         titleId = R.string.title_desktop_icon_popup_menu,
         defaultValue = true,
@@ -665,7 +665,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         entries = context.languageOptions(),
         onChange = recreate
     )
-    var themePref = StringIntPref( // TODO replace usages with the new one
+    var themePref = StringIntPref(
         PREFS_THEME,
         ThemeManager.getDefaultTheme()
     ) { ThemeManager.getInstance(context).updateTheme() }

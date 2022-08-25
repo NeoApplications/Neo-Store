@@ -17,10 +17,18 @@
  */
 package com.saggitt.omega
 
-import android.content.*
+import android.content.ComponentName
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.LauncherApps
 import android.graphics.Rect
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.PersistableBundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -28,7 +36,9 @@ import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts.*
+import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Lifecycle
@@ -39,7 +49,11 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
-import com.android.launcher3.*
+import com.android.launcher3.AppFilter
+import com.android.launcher3.LauncherAppState
+import com.android.launcher3.LauncherRootView
+import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.pm.UserCache
 import com.android.launcher3.popup.SystemShortcut
@@ -61,7 +75,11 @@ import com.saggitt.omega.search.PeopleItems
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import java.util.stream.Stream
 
 class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwner,
