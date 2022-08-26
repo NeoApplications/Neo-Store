@@ -69,7 +69,7 @@ fun DrawerPrefsPage() {
     )
     val otherPrefs = listOf(
         prefs.drawerEnableProtectedApps,
-        // TODO missing trust apps pref page
+        prefs.drawerHiddenAppSet,
         prefs.drawerBackground,
         prefs.drawerBackgroundColor,
     )
