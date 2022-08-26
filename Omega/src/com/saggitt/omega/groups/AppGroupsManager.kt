@@ -20,6 +20,11 @@ package com.saggitt.omega.groups
 
 import androidx.annotation.StringRes
 import com.android.launcher3.R
+import com.saggitt.omega.PREFS_DRAWER_CATEGORIZATION
+import com.saggitt.omega.PREFS_DRAWER_CATEGORIZATION_FLOWERPOT
+import com.saggitt.omega.PREFS_DRAWER_CATEGORIZATION_FOLDERS
+import com.saggitt.omega.PREFS_DRAWER_CATEGORIZATION_NONE
+import com.saggitt.omega.PREFS_DRAWER_CATEGORIZATION_TABS
 import com.saggitt.omega.preferences.OmegaPreferences
 
 class AppGroupsManager(val prefs: OmegaPreferences) {
@@ -59,24 +64,29 @@ class AppGroupsManager(val prefs: OmegaPreferences) {
     }
 
     fun getEnabledType(): CategorizationType? {
-        return CategorizationType.values().firstOrNull { getModel(it).isEnabled }
+        return CategorizationType.values().firstOrNull { getModel(it)?.isEnabled ?: false }
     }
 
     fun getEnabledModel(): AppGroups<*>? {
-        return CategorizationType.values().map { getModel(it) }.firstOrNull { it.isEnabled }
+        return CategorizationType.values().mapNotNull { getModel(it) }.firstOrNull { it.isEnabled }
     }
 
-    private fun getModel(type: CategorizationType): AppGroups<*> {
+    private fun getModel(type: CategorizationType): AppGroups<*>? {
         return when (type) {
             CategorizationType.Flowerpot -> flowerpotTabs
             CategorizationType.Tabs -> drawerTabs
             CategorizationType.Folders -> drawerFolders
+            CategorizationType.NONE -> null
         }
     }
 
     enum class CategorizationType(val prefsKey: String, @StringRes val nameId: Int) {
-        Tabs("pref_drawer_tabs", R.string.app_categorization_tabs),
-        Folders("pref_drawer_folders", R.string.app_categorization_tabs),
-        Flowerpot("pref_drawer_flowerpot", R.string.pref_appcategorization_flowerpot_title)
+        NONE(PREFS_DRAWER_CATEGORIZATION_NONE, R.string.none),
+        Tabs(PREFS_DRAWER_CATEGORIZATION_TABS, R.string.app_categorization_tabs),
+        Folders(PREFS_DRAWER_CATEGORIZATION_FOLDERS, R.string.app_categorization_folders),
+        Flowerpot(
+            PREFS_DRAWER_CATEGORIZATION_FLOWERPOT,
+            R.string.pref_appcategorization_flowerpot_title
+        )
     }
 }
