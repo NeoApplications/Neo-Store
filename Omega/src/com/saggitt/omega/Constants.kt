@@ -92,6 +92,11 @@ const val PREFS_DRAWER_LAYOUT_X = "pref_drawer_layout_x"
 const val PREFS_DRAWER_OPACITY = "pref_drawer_opacity"
 const val PREFS_DRAWER_CUSTOM_BACKGROUND = "pref_drawer_background"
 const val PREFS_DRAWER_BACKGROUND_COLOR = "pref_drawer_background_color"
+const val PREFS_DRAWER_CATEGORIZATION = "pref_apps_categorization"
+const val PREFS_DRAWER_CATEGORIZATION_NONE = "pref_drawer_no_categorization"
+const val PREFS_DRAWER_CATEGORIZATION_FOLDERS = "pref_drawer_folders"
+const val PREFS_DRAWER_CATEGORIZATION_TABS = "pref_drawer_tabs"
+const val PREFS_DRAWER_CATEGORIZATION_FLOWERPOT = "pref_drawer_flowerpot"
 
 // THEME PREFS
 const val PREFS_THEME = "pref_launcherTheme"
