@@ -207,4 +207,6 @@
     <string name="favorite_add">Lägg till i favoriter</string>
     <string name="open">Öppna</string>
     <string name="loading_list">Laddar lista…</string>
+    <string name="auto_sync_interval">Automatisk-Synk intervall (i minuter)</string>
+    <string name="favorite_applications">Favoriter</string>
 </resources>
