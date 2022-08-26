@@ -163,6 +163,31 @@ fun StringPreference(
 }
 
 @Composable
+fun StringSetPreference(
+    modifier: Modifier = Modifier,
+    pref: BasePreferences.StringSetPref,
+    index: Int = 1,
+    groupSize: Int = 1,
+    isEnabled: Boolean = true,
+) {
+    val navController = LocalNavController.current
+    val route = pref.navRoute
+    BasePreference(
+        modifier = modifier,
+        titleId = pref.titleId,
+        summaryId = pref.summaryId,
+        index = index,
+        groupSize = groupSize,
+        isEnabled = isEnabled,
+        onClick = {
+            if (pref.navRoute != "") {
+                navController.navigate(route)
+            }
+        }
+    )
+}
+
+@Composable
 fun SwitchPreference(
     modifier: Modifier = Modifier,
     pref: BasePreferences.BooleanPref,

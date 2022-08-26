@@ -28,6 +28,8 @@ val PreferenceBuilder =
                 SwitchPreference(pref = pref, index = index, groupSize = size)
             is BasePreferences.StringPref ->
                 StringPreference(pref = pref, index = index, groupSize = size)
+            is BasePreferences.StringSetPref ->
+                StringSetPreference(pref = pref, index = index, groupSize = size)
             is BasePreferences.FloatPref ->
                 SeekBarPreference(pref = pref, index = index, groupSize = size)
             is BasePreferences.ColorIntPref ->

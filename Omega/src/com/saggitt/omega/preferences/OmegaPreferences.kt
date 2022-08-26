@@ -150,6 +150,7 @@ import com.saggitt.omega.PREF_PILL_QSB
 import com.saggitt.omega.RED
 import com.saggitt.omega.THEME_SYSTEM
 import com.saggitt.omega.THEME_WALLPAPER
+import com.saggitt.omega.compose.navigation.subRoute
 import com.saggitt.omega.dash.actionprovider.DeviceSettings
 import com.saggitt.omega.dash.actionprovider.EditDash
 import com.saggitt.omega.dash.actionprovider.LaunchAssistant
@@ -509,20 +510,18 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     )
     var drawerHiddenAppSet = StringSetPref(
         key = PREFS_HIDDEN_SET,
-        titleId = R.string.title_search_hidden_apps,
+        titleId = R.string.title__drawer_hide_apps,
+        summaryId = R.string.summary__drawer_hide_apps,
         defaultValue = setOf(),
+        navRoute = "hidden_apps",
         onChange = reloadApps
     )
     var drawerHiddenApps by drawerHiddenAppSet
-    var drawerHiddenPredictionAppSet = StringSetPref(
-        key = PREFS_HIDDEN_PREDICTION_SET,
-        titleId = -1,
-        defaultValue = setOf(),
-        onChange = doNothing
-    )
+
     var drawerProtectedAppsSet = StringSetPref(
         key = PREFS_PROTECTED_SET,
-        titleId = -1,
+        titleId = R.string.title__drawer_hide_apps,
+        summaryId = R.string.summary__drawer_hide_apps,
         defaultValue = setOf(),
         onChange = reloadApps
     )
