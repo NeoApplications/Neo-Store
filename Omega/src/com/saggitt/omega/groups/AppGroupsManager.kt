@@ -42,10 +42,10 @@ class AppGroupsManager(val prefs: OmegaPreferences) {
         defaultValue = CategorizationType.Tabs,
         onChange = ::onPrefsChanged
     )
-    var categorizationTypeNew by prefs.EnumSelectionPref(
-        key = "pref_apps_categorization_type",
-        titleId = R.string.pref_appcategorization_style_text,
-        defaultValue = CategorizationType.Tabs,
+    var drawerCategorizationType = prefs.IntSelectionPref(
+        key = PREFS_DRAWER_CATEGORIZATION,
+        titleId = R.string.title__drawer_categorization,
+        defaultValue = CategorizationType.NONE.ordinal,
         entries = CategorizationType.values()
             .associateBy(CategorizationType::ordinal, CategorizationType::nameId),
         onChange = ::onPrefsChanged

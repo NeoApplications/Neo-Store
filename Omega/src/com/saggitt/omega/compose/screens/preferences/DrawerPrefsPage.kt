@@ -61,7 +61,8 @@ fun DrawerPrefsPage() {
     val gridPrefs = listOf(
         prefs.drawerColumns,
         prefs.drawerSortModeNew,
-        // TODO missing categorization pref page
+        prefs.drawerAppGroupsManager.drawerCategorizationType,
+        // TODO add categorization manager page
         prefs.drawerSeparateWorkApps,
         prefs.drawerCellHeightMultiplier,
         prefs.drawerSaveScrollPosition,
