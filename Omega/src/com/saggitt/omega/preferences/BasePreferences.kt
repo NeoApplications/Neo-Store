@@ -564,6 +564,7 @@ abstract class BasePreferences(context: Context) :
         @StringRes titleId: Int,
         @StringRes summaryId: Int = -1,
         defaultValue: Set<String>,
+        val navRoute: String = "",
         onChange: () -> Unit = doNothing
     ) :
         PrefDelegate<Set<String>>(key, titleId, summaryId, defaultValue, onChange) {

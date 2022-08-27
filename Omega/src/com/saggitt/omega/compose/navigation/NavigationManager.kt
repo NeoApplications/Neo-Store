@@ -40,6 +40,7 @@ object Routes {
     const val EDIT_ICON = "edit_icon"
     const val ICON_PICKER = "icon_picker"
     const val GESTURE_SELECTOR = "gesture_selector"
+    const val HIDDEN_APPS = "hidden_apps"
 }
 
 val LocalNavController = staticCompositionLocalOf<NavController> {
