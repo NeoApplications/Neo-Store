@@ -337,14 +337,9 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         titleId = R.string.title_desktop_widget_corner_radius,
         defaultValue = 16f,
         maxValue = 24f,
-        minValue = 0f,
-        steps = 24,
-        specialOutputs = {
-            when {
-                it < 0f -> context.getString(R.string.automatic_short)
-                else -> "${it.roundToInt()}dp"
-            }
-        },
+        minValue = 1f,
+        steps = 22,
+        specialOutputs = { "${it.roundToInt()}dp" },
         onChange = recreate
     )
     val desktopMultilineLabel = BooleanPref(

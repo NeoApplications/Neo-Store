@@ -105,10 +105,10 @@ public class RoundedCornerEnforcement {
     public static float computeEnforcedRadius(@NonNull Context context) {
         Resources res = context.getResources();
         if (!Utilities.ATLEAST_S) {
-            return Utilities.getOmegaPrefs(context).getDesktopWidgetRadius().onGetValue();
+            return Utilities.getOmegaPrefs(context).getDesktopWidgetRadius().getValueInPixels();
         }
         float systemRadius = res.getDimension(android.R.dimen.system_app_widget_background_radius);
-        float configuredRadius = Utilities.getOmegaPrefs(context).getDesktopWidgetRadius().onGetValue();
+        float configuredRadius = Utilities.getOmegaPrefs(context).getDesktopWidgetRadius().getValueInPixels();
         return Math.min(configuredRadius, systemRadius);
     }
 
