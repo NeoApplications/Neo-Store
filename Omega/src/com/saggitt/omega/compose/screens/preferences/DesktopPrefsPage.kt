@@ -59,7 +59,7 @@ fun DesktopPrefsPage() {
         prefs.desktopPopup,
     )
     val gridPrefs = listOf(
-        prefs.desktopGridSize, // TODO
+        prefs.desktopGridSize,
         prefs.desktopAddIconsToHome,
         prefs.desktopAllowRotation,
         prefs.desktopAllowFullWidthWidgets,

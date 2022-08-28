@@ -59,7 +59,7 @@ fun DrawerPrefsPage() {
         prefs.drawerPopup,
     )
     val gridPrefs = listOf(
-        prefs.drawerColumns,
+        prefs.drawerGridSize,
         prefs.drawerSortModeNew,
         prefs.drawerAppGroupsManager.drawerCategorizationType,
         // TODO add categorization manager page

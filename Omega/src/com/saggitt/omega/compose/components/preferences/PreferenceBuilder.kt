@@ -20,10 +20,22 @@ package com.saggitt.omega.compose.components.preferences
 import androidx.compose.runtime.Composable
 import com.saggitt.omega.compose.objects.PageItem
 import com.saggitt.omega.preferences.BasePreferences
+import com.saggitt.omega.preferences.custom.GridSize
+import com.saggitt.omega.preferences.custom.GridSize2D
 
 val PreferenceBuilder =
     @Composable { pref: Any, onDialogPref: (Any) -> Unit, index: Int, size: Int ->
         when (pref) {
+            is GridSize2D -> GridSize2DPreference(
+                pref = pref,
+                index = index,
+                groupSize = size
+            ) { onDialogPref(pref) }
+            is GridSize -> GridSizePreference(
+                pref = pref,
+                index = index,
+                groupSize = size
+            ) { onDialogPref(pref) }
             is BasePreferences.BooleanPref ->
                 SwitchPreference(pref = pref, index = index, groupSize = size)
             is BasePreferences.StringPref ->
