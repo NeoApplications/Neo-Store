@@ -28,18 +28,18 @@ abstract class SingleGridSizePreference(
     attrs: AttributeSet?,
     private val gridSize: GridSize
 ) : DialogPreference(context, attrs) {
-    val defaultSize by lazy { gridSize.numRowsOriginal }
+    val defaultSize by lazy { gridSize.numColumnsOriginal }
 
     init {
         updateSummary()
     }
 
     fun getSize(): Int {
-        return gridSize.fromPref(gridSize.numRows, defaultSize)
+        return gridSize.fromPref(gridSize.numColumns, defaultSize)
     }
 
     fun setSize(rows: Int) {
-        gridSize.numRowsPref = if (rows > 0) rows else defaultSize
+        gridSize.numColumnsPref.onSetValue((if (rows > 0) rows else defaultSize))
         updateSummary()
     }
 

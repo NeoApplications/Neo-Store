@@ -206,8 +206,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     // DESKTOP
     var desktopGridSizeDelegate = ResettableLazy {
         GridSize2D(
-            this, PREFS_DESKTOP_ROWS_RAW, PREFS_DESKTOP_COLUMNS_RAW,
-            LauncherAppState.getIDP(context), reloadIcons
+            titleId = R.string.title__desktop_grid_size,
+            numColumnsPref = desktopColumns,
+            numRowsPref = desktopRows,
+            columnsKey = PREFS_DESKTOP_ROWS_RAW,
+            rowsKey = PREFS_DESKTOP_COLUMNS_RAW,
+            targetObject = LauncherAppState.getIDP(context),
+            onChangeListener = reloadIcons
         )
     }
     val desktopGridSize by desktopGridSizeDelegate
@@ -470,8 +475,9 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     )
     val dockGridSizeDelegate = ResettableLazy {
         GridSize(
-            prefs = this,
-            rowsKey = PREFS_DOCK_COLUMNS_RAW,
+            titleId = R.string.title__dock_hotseat_icons,
+            numColumnsPref = dockNumIcons,
+            columnsKey = PREFS_DOCK_COLUMNS_RAW,
             targetObject = LauncherAppState.getIDP(context),
             onChangeListener = reloadIcons
         )
@@ -606,8 +612,9 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     )
     private val drawerGridSizeDelegate = ResettableLazy {
         GridSize(
-            prefs = this,
-            rowsKey = PREFS_DRAWER_COLUMNS_RAW,
+            titleId = R.string.title__drawer_columns,
+            numColumnsPref = drawerColumns,
+            columnsKey = PREFS_DRAWER_COLUMNS_RAW,
             targetObject = LauncherAppState.getIDP(context),
             onChangeListener = reloadIcons
         )
