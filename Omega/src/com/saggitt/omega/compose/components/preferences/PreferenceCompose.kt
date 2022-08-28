@@ -57,6 +57,8 @@ import androidx.compose.ui.unit.sp
 import com.saggitt.omega.compose.navigation.LocalNavController
 import com.saggitt.omega.compose.navigation.subRoute
 import com.saggitt.omega.preferences.BasePreferences
+import com.saggitt.omega.preferences.custom.GridSize
+import com.saggitt.omega.preferences.custom.GridSize2D
 import com.saggitt.omega.util.addIf
 
 @Composable
@@ -340,6 +342,46 @@ fun StringSelectionPreference(
         titleId = pref.titleId,
         summaryId = pref.summaryId,
         summary = pref.entries[pref.onGetValue()],
+        index = index,
+        groupSize = groupSize,
+        isEnabled = isEnabled,
+        onClick = onClick
+    )
+}
+
+@Composable
+fun GridSizePreference(
+    modifier: Modifier = Modifier,
+    pref: GridSize,
+    index: Int = 1,
+    groupSize: Int = 1,
+    isEnabled: Boolean = true,
+    onClick: (() -> Unit) = {},
+) {
+    BasePreference(
+        modifier = modifier,
+        titleId = pref.titleId,
+        summary = pref.numColumnsPref.onGetValue().toString(),
+        index = index,
+        groupSize = groupSize,
+        isEnabled = isEnabled,
+        onClick = onClick
+    )
+}
+
+@Composable
+fun GridSize2DPreference(
+    modifier: Modifier = Modifier,
+    pref: GridSize2D,
+    index: Int = 1,
+    groupSize: Int = 1,
+    isEnabled: Boolean = true,
+    onClick: (() -> Unit) = {},
+) {
+    BasePreference(
+        modifier = modifier,
+        titleId = pref.titleId,
+        summary = "${pref.numColumns}x${pref.numRows}",
         index = index,
         groupSize = groupSize,
         isEnabled = isEnabled,
