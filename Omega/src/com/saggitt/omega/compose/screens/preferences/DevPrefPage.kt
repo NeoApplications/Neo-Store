@@ -67,7 +67,6 @@ fun DevPrefPage() {
                 ),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                val size = developerPrefs.size
                 item {
                     PreferenceGroup(
                         heading = null,
