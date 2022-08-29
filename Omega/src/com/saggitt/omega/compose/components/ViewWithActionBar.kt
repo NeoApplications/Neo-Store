@@ -42,6 +42,7 @@ fun ViewWithActionBar(
     title: String,
     showBackButton: Boolean = true,
     actions: @Composable RowScope.() -> Unit = {},
+    onBackAction: () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
@@ -56,7 +57,10 @@ fun ViewWithActionBar(
                         val backDispatcher =
                             LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
                         IconButton(
-                            onClick = { backDispatcher?.onBackPressed() }
+                            onClick = {
+                                onBackAction.invoke()
+                                backDispatcher?.onBackPressed()
+                            }
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.ArrowBack,

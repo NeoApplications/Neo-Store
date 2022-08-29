@@ -158,7 +158,7 @@
     <plurals name="hidden_apps_count">
         <item quantity="other">%1$d Hidden</item>
     </plurals>
-    <string name="hide_app_selected"> hidden</string>
+    <string name="hide_app_selected">Hidden Apps (%1$d)</string>
     <string name="hide_app_reset">Reset hidden apps</string>
     <string name="protected_app_reset">Reset protected apps</string>
     <string name="action_preferences" translatable="false">@string/customize</string>
