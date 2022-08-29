@@ -139,6 +139,7 @@ fun NavGraphBuilder.mainPrefsGraph(route: String) {
         preferenceGraph(route = subRoute(Routes.PREFS_DEV), { DevPrefPage() })
         gesturePageGraph(route = subRoute(Routes.PREFS_GESTURES))
         preferenceGraph(route = Routes.HIDDEN_APPS, { HiddenAppsPage() })
+        preferenceGraph(route = Routes.PROTECTED_APPS, { ProtectedAppsPage() })
         aboutGraph(route = subRoute(Routes.ABOUT))
     }
 }

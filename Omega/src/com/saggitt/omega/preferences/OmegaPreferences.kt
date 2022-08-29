@@ -99,7 +99,6 @@ import com.saggitt.omega.PREFS_GESTURE_LONG_PRESS
 import com.saggitt.omega.PREFS_GESTURE_SWIPE_DOWN
 import com.saggitt.omega.PREFS_GESTURE_SWIPE_UP
 import com.saggitt.omega.PREFS_GESTURE_SWIPE_UP_DOCK
-import com.saggitt.omega.PREFS_HIDDEN_PREDICTION_SET
 import com.saggitt.omega.PREFS_HIDDEN_SET
 import com.saggitt.omega.PREFS_ICON_PACK
 import com.saggitt.omega.PREFS_ICON_SHAPE
@@ -150,7 +149,6 @@ import com.saggitt.omega.PREF_PILL_QSB
 import com.saggitt.omega.RED
 import com.saggitt.omega.THEME_SYSTEM
 import com.saggitt.omega.THEME_WALLPAPER
-import com.saggitt.omega.compose.navigation.subRoute
 import com.saggitt.omega.dash.actionprovider.DeviceSettings
 import com.saggitt.omega.dash.actionprovider.EditDash
 import com.saggitt.omega.dash.actionprovider.LaunchAssistant
@@ -524,6 +522,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         titleId = R.string.title__drawer_hide_apps,
         summaryId = R.string.summary__drawer_hide_apps,
         defaultValue = setOf(),
+        navRoute = "protected_apps",
         onChange = reloadApps
     )
     var drawerProtectedApps by drawerProtectedAppsSet

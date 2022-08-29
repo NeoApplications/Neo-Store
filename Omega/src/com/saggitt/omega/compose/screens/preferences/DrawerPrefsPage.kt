@@ -71,8 +71,9 @@ fun DrawerPrefsPage() {
         prefs.drawerLayoutNew
     )
     val otherPrefs = listOf(
-        prefs.drawerEnableProtectedApps,
         prefs.drawerHiddenAppSet,
+        prefs.drawerEnableProtectedApps,
+        prefs.drawerProtectedAppsSet,
         prefs.drawerBackground,
         prefs.drawerBackgroundColor,
     )
