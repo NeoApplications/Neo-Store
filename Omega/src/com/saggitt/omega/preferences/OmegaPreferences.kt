@@ -519,8 +519,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
     var drawerProtectedAppsSet = StringSetPref(
         key = PREFS_PROTECTED_SET,
-        titleId = R.string.title__drawer_hide_apps,
-        summaryId = R.string.summary__drawer_hide_apps,
+        titleId = R.string.protected_apps,
         defaultValue = setOf(),
         navRoute = "protected_apps",
         onChange = reloadApps
