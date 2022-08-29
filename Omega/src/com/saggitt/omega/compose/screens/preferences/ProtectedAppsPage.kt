@@ -55,6 +55,8 @@ fun ProtectedAppsPage() {
     val context = LocalContext.current
     val protectedApps = Utilities.getOmegaPrefs(context).drawerProtectedApps
     val allApps by appsList(comparator = hiddenAppsComparator(protectedApps))
+
+    //TODO: Display lock screen when protected apps is enabled
     ProtectedAppsView(
         allApps = allApps,
         hiddenApps = protectedApps

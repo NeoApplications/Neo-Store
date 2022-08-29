@@ -525,6 +525,8 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = reloadApps
     )
     var drawerProtectedApps by drawerProtectedAppsSet
+
+    //TODO: Show lock screen when the app is enabled and is clicked
     var drawerEnableProtectedApps = BooleanPref(
         key = PREFS_PROTECTED_APPS,
         titleId = R.string.enable_protected_apps,
