@@ -68,7 +68,7 @@ fun DrawerPrefsPage() {
         prefs.drawerSeparateWorkApps,
         prefs.drawerCellHeightMultiplier,
         prefs.drawerSaveScrollPosition,
-        prefs.drawerLayoutNew
+        //prefs.drawerLayoutNew TODO: Enable this when the horizontal layout is rewritten
     )
     val otherPrefs = listOf(
         prefs.drawerHiddenAppSet,
