@@ -63,6 +63,7 @@ fun appsList(
 class App(context: Context, private val info: LauncherActivityInfo) {
 
     val label get() = info.label.toString()
+    val packageName get() = info.componentName.packageName
     val icon: Bitmap
     val key = ComponentKey(info.componentName, info.user)
 

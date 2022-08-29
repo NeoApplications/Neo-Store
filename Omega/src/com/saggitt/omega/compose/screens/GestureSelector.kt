@@ -48,6 +48,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -59,7 +61,6 @@ import androidx.navigation.navArgument
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.shortcuts.ShortcutKey
-import com.android.launcher3.util.ComponentKey
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -80,6 +81,7 @@ import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.gestures.handlers.StartAppGestureHandler
 import com.saggitt.omega.preferences.OmegaPreferences
 import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.appsList
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
@@ -234,7 +236,8 @@ fun AppsScreen(prefs: OmegaPreferences, selectedHandler: MutableState<String?>, 
             .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
     ) {
         val context = LocalContext.current
-        val apps = Config(context).getAppsList(filter = null).sortedBy { it.label.toString() }
+        val apps =
+            appsList().value //Config(context).getAppsList(filter = null).sortedBy { it.label.toString() }
         val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
         val colors = RadioButtonDefaults.colors(
             selectedColor = MaterialTheme.colorScheme.onPrimary,
@@ -249,18 +252,18 @@ fun AppsScreen(prefs: OmegaPreferences, selectedHandler: MutableState<String?>, 
                 itemsIndexed(apps) { _, item ->
                     val config = JSONObject("{}")
                     config.apply {
-                        put("appName", item.label.toString())
-                        put("packageName", item.componentName.packageName)
-                        put("target", ComponentKey(item.componentName, item.user))
+                        put("appName", item.label)
+                        put("packageName", item.packageName)
+                        put("target", item.key)
                         put("type", "app")
                     }
 
                     val appGestureHandler = StartAppGestureHandler(context, config)
                     appGestureHandler.apply {
-                        appName = item.label.toString()
+                        appName = item.label
                     }
                     ListItemWithIcon(
-                        title = item.label.toString(),
+                        title = item.label,
                         modifier = Modifier
                             .background(
                                 color = if (appGestureHandler.toString() == selectedOption.value)
@@ -278,9 +281,7 @@ fun AppsScreen(prefs: OmegaPreferences, selectedHandler: MutableState<String?>, 
                         summary = "",
                         startIcon = {
                             Image(
-                                painter = rememberDrawablePainter(
-                                    drawable = item.getIcon(LocalContext.current.resources.displayMetrics.densityDpi)
-                                ),
+                                painter = BitmapPainter(item.icon.asImageBitmap()),
                                 contentDescription = null,
                                 modifier = Modifier.size(36.dp)
                             )
