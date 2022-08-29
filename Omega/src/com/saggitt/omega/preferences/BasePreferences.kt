@@ -318,10 +318,12 @@ abstract class BasePreferences(context: Context) :
         onChange
     ) {
 
-        override fun onGetValue(): Float = dpToPx(sharedPrefs.getFloat(getKey(), defaultValue))
+        override fun onGetValue() = pxToDp(sharedPrefs.getFloat(getKey(), dpToPx(defaultValue)))
+
+        fun getValueInPixels() = sharedPrefs.getFloat(getKey(), dpToPx(defaultValue))
 
         override fun onSetValue(value: Float) {
-            edit { putFloat(getKey(), pxToDp(value)) }
+            edit { putFloat(getKey(), dpToPx(value)) }
         }
     }
 
