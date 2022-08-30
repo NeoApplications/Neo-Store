@@ -119,6 +119,7 @@ import com.saggitt.omega.PREFS_SEARCH_FUZZY
 import com.saggitt.omega.PREFS_SEARCH_GLOBAL
 import com.saggitt.omega.PREFS_SEARCH_HIDDEN_APPS
 import com.saggitt.omega.PREFS_SEARCH_PROVIDER
+import com.saggitt.omega.PREFS_SEARCH_SHOW_ASSISTANT
 import com.saggitt.omega.PREFS_SMARTSPACE_DATE
 import com.saggitt.omega.PREFS_SMARTSPACE_ENABLE
 import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDER
@@ -786,6 +787,17 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = "",
         entries = SearchProviderController.getSearchProvidersMap(context),
         onChange = { SearchProviderController.getInstance(context).onSearchProviderChanged() }
+    )
+    val showMic = BooleanPref(
+        key = PREFS_SEARCH_SHOW_ASSISTANT,
+        titleId = R.string.title__search_show_assistant,
+        defaultValue = false
+    )
+    val openAssistant = BooleanPref(
+        key = PREFS_SEARCH_SHOW_ASSISTANT,
+        titleId = R.string.title__search_action_assistant,
+        summaryId = R.string.summary__search_show_as_assistant_summary,
+        defaultValue = false
     )
     val searchHiddenApps = BooleanPref(
         key = PREFS_SEARCH_HIDDEN_APPS,

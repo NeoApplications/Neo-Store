@@ -55,8 +55,8 @@ fun SearchPrefsPage() {
     }
     val searchPrefs = listOf(
         prefs.searchProvider,
-        // TODO missing show assistant
-        // TODO missing launch assistant instead
+        prefs.showMic,
+        prefs.openAssistant,
         prefs.searchGlobal,
         prefs.searchHiddenApps,
         prefs.searchContacts,
