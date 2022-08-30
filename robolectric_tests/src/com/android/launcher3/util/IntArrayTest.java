@@ -17,7 +17,7 @@ package com.android.launcher3.util;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 

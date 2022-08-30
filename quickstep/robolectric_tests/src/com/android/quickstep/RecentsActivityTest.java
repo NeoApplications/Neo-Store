@@ -24,7 +24,7 @@ import android.graphics.Bitmap.Config;
 import com.android.quickstep.fallback.FallbackRecentsView;
 import com.android.systemui.shared.recents.model.ThumbnailData;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;

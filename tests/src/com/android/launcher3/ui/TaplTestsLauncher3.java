@@ -40,9 +40,9 @@ import com.android.launcher3.views.OptionsPopupView;
 import com.android.launcher3.widget.picker.WidgetsFullSheet;
 import com.android.launcher3.widget.picker.WidgetsRecyclerView;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 
 @LargeTest
@@ -50,7 +50,7 @@ import org.junit.runner.RunWith;
 public class TaplTestsLauncher3 extends AbstractLauncherUiTest {
     private static final String APP_NAME = "LauncherTestApp";
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         initialize(this);
@@ -103,7 +103,7 @@ public class TaplTestsLauncher3 extends AbstractLauncherUiTest {
         mLauncher.pressHome();
     }
 
-    @Ignore
+    @Disabled
     public void testOpenHomeSettingsFromWorkspace() {
         mDevice.pressMenu();
         mDevice.waitForIdle();

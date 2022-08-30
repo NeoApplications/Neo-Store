@@ -39,9 +39,9 @@ import com.android.launcher3.util.Wait.Condition;
 import com.android.launcher3.util.rule.ShellCommandRule;
 import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
 
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 
 /**
@@ -60,7 +60,7 @@ public class AddConfigWidgetTest extends AbstractLauncherUiTest {
     private int mWidgetId;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         mWidgetInfo = TestViewHelpers.findWidgetProvider(this, true /* hasConfigureScreen */);

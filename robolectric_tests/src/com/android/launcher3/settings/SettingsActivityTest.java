@@ -52,10 +52,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.launcher3.R;
 import com.android.systemui.shared.plugins.PluginPrefs;
 
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)

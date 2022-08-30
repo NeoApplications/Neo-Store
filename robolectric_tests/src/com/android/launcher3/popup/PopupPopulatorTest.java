@@ -27,7 +27,7 @@ import static org.mockito.Mockito.spy;
 
 import android.content.pm.ShortcutInfo;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;

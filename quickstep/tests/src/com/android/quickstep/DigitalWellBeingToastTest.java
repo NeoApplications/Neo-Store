@@ -20,7 +20,7 @@ import com.android.quickstep.views.DigitalWellBeingToast;
 import com.android.quickstep.views.RecentsView;
 import com.android.quickstep.views.TaskView;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Duration;

@@ -30,7 +30,7 @@ import com.android.launcher3.util.rule.ShellCommandRule;
 import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
 
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -43,7 +43,7 @@ public class AddWidgetTest extends AbstractLauncherUiTest {
     @Rule
     public ShellCommandRule mGrantWidgetRule = ShellCommandRule.grantWidgetBind();
 
-    @Test
+    @org.junit.jupiter.api.Test
     @PortraitLandscape
     public void testDragIcon() throws Throwable {
         clearHomescreen();

@@ -37,8 +37,8 @@ import com.android.launcher3.model.WidgetItem;
 import com.android.launcher3.testing.TestActivity;
 import com.android.launcher3.widget.WidgetPreviewLoader.WidgetPreviewLoadedCallback;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
