@@ -207,4 +207,8 @@
     <string name="favorite_add">添加到收藏夹</string>
     <string name="open">打开</string>
     <string name="loading_list">正在加载列表…</string>
+    <string name="images_cache_retention">图片缓存保留</string>
+    <string name="releases_cache_retention">下载的APK缓存保留</string>
+    <string name="auto_sync_interval">自动同步间隔（分钟）</string>
+    <string name="favorite_applications">收藏</string>
 </resources>
