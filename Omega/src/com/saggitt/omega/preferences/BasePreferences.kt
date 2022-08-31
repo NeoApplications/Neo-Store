@@ -531,7 +531,7 @@ abstract class BasePreferences(context: Context) :
         private val dispose: (T) -> Unit
     ) :
         PrefDelegate<T>(key, titleId, summaryId, defaultValue, onChange) {
-        override fun onGetValue(): T = sharedPrefs.getString(getKey(), null)?.run(fromString)
+        override fun onGetValue(): T = sharedPrefs.getString(getKey(), "")?.run(fromString)
             ?: defaultValue
 
         override fun onSetValue(value: T) {

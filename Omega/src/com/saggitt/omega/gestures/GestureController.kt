@@ -19,7 +19,6 @@ package com.saggitt.omega.gestures
 
 import android.content.Context
 import android.graphics.PointF
-import android.text.TextUtils
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -136,7 +135,7 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
             jsonString: String?,
             fallback: GestureHandler
         ): GestureHandler {
-            if (!TextUtils.isEmpty(jsonString)) {
+            if (!jsonString.isNullOrEmpty()) {
                 val config: JSONObject? = try {
                     JSONObject(jsonString ?: "{ }")
                 } catch (e: JSONException) {

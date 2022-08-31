@@ -44,7 +44,7 @@ class Temperature(val value: Int, val unit: Unit) {
 
         fun unitFromString(unit: String): Unit {
             return when (unit) {
-                "metric" -> Unit.Celsius
+                "", "metric" -> Unit.Celsius
                 "imperial" -> Unit.Fahrenheit
                 "kelvin" -> Unit.Kelvin
                 "rakine" -> Unit.Rakine

@@ -314,7 +314,11 @@ open class IconShape( // TODO migrate to Compose?
 
         fun fromString(value: String): IconShape? {
             return when (value) {
-                "system" -> IconShapeManager.INSTANCE.noCreate.systemIconShape
+                "", "system" -> try {
+                    IconShapeManager.INSTANCE.noCreate.systemIconShape
+                } catch (e: Exception) {
+                    null
+                }
                 "circle" -> Circle
                 "square" -> Square
                 "rounded" -> RoundedSquare
@@ -323,7 +327,6 @@ open class IconShape( // TODO migrate to Compose?
                 "teardrop" -> Teardrop
                 "cylinder" -> Cylinder
                 "cupertino" -> Cupertino
-                "" -> null
                 else -> try {
                     parseCustomShape(value)
                 } catch (ex: Exception) {
