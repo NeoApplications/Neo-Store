@@ -43,8 +43,8 @@ import android.view.Surface;
 import com.android.launcher3.ResourceUtils;
 import com.android.launcher3.util.DisplayController;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;

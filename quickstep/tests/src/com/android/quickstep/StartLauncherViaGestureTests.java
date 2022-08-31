@@ -30,9 +30,9 @@ import com.android.quickstep.NavigationModeSwitchRule.Mode;
 import com.android.quickstep.NavigationModeSwitchRule.NavigationModeSwitch;
 import com.android.quickstep.inputconsumers.OtherActivityInputConsumer;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 @LargeTest

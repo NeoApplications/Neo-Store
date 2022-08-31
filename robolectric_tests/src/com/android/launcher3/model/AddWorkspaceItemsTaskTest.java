@@ -26,8 +26,8 @@ import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.IntSparseArrayMap;
 import com.android.launcher3.util.LauncherModelHelper;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricTestRunner;

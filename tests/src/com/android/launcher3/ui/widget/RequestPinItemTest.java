@@ -44,9 +44,9 @@ import com.android.launcher3.util.Wait.Condition;
 import com.android.launcher3.util.rule.ScreenRecordRule.ScreenRecord;
 import com.android.launcher3.util.rule.ShellCommandRule;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.util.UUID;
@@ -66,7 +66,7 @@ public class RequestPinItemTest extends AbstractLauncherUiTest {
     private int mAppWidgetId;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         mCallbackAction = UUID.randomUUID().toString();

@@ -24,7 +24,7 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.android.launcher3.search.StringMatcherUtility.StringMatcher;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 /**

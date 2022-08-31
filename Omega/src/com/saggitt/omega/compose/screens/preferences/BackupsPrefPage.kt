@@ -19,8 +19,12 @@ package com.saggitt.omega.compose.screens.preferences
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,75 +36,63 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.saggitt.omega.compose.components.BaseDialog
+import com.saggitt.omega.backup.BackupFile
+import com.saggitt.omega.compose.components.BackupCard
+import com.saggitt.omega.compose.components.ElevatedActionButton
 import com.saggitt.omega.compose.components.ViewWithActionBar
-import com.saggitt.omega.compose.components.preferences.GridSizePrefDialogUI
-import com.saggitt.omega.compose.components.preferences.IntSelectionPrefDialogUI
-import com.saggitt.omega.compose.components.preferences.PreferenceGroup
-import com.saggitt.omega.compose.components.preferences.StringMultiSelectionPrefDialogUI
-import com.saggitt.omega.compose.components.preferences.StringSelectionPrefDialogUI
-import com.saggitt.omega.preferences.BasePreferences
-import com.saggitt.omega.preferences.custom.GridSize
+import com.saggitt.omega.compose.components.preferences.PreferenceGroupHeading
 import com.saggitt.omega.theme.OmegaAppTheme
 
 @Composable
-fun DockPrefsPage() {
+fun BackupsPrefPage() {
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
+    val localBackups = BackupFile.listLocalBackups(context)
     val openDialog = remember { mutableStateOf(false) }
     var dialogPref by remember { mutableStateOf<Any?>(null) }
     val onPrefDialog = { pref: Any ->
         dialogPref = pref
         openDialog.value = true
     }
-    val dockPrefs = listOf(
-        prefs.dockHide,
-        prefs.dockBackground,
-        prefs.dockBackgroundColor,
-        prefs.dockScale,
-        prefs.dockGridSize
-    )
 
     OmegaAppTheme {
         ViewWithActionBar(
-            title = stringResource(R.string.title__general_dock)
+            title = stringResource(R.string.backups)
         ) { paddingValues ->
-            LazyColumn(
+            LazyVerticalGrid(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 8.dp),
+                columns = GridCells.Fixed(2),
                 contentPadding = paddingValues,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 item {
-                    PreferenceGroup(
-                        heading = null,
-                        prefs = dockPrefs,
-                        onPrefDialog = onPrefDialog
+                    ElevatedActionButton(
+                        textId = R.string.title_create,
+                        iconId = R.drawable.ic_backup,
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {} // TODO open backup create dialog
                     )
                 }
-            }
-        }
-
-        if (openDialog.value) {
-            BaseDialog(openDialogCustom = openDialog) {
-                when (dialogPref) {
-                    is BasePreferences.IntSelectionPref -> IntSelectionPrefDialogUI(
-                        pref = dialogPref as BasePreferences.IntSelectionPref,
-                        openDialogCustom = openDialog
+                item {
+                    ElevatedActionButton(
+                        textId = R.string.restore_backup,
+                        iconId = R.drawable.ic_restore,
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {} // TODO open file selector
                     )
-                    is BasePreferences.StringSelectionPref -> StringSelectionPrefDialogUI(
-                        pref = dialogPref as BasePreferences.StringSelectionPref,
-                        openDialogCustom = openDialog
-                    )
-                    is BasePreferences.StringMultiSelectionPref -> StringMultiSelectionPrefDialogUI(
-                        pref = dialogPref as BasePreferences.StringMultiSelectionPref,
-                        openDialogCustom = openDialog
-                    )
-                    is GridSize -> GridSizePrefDialogUI(
-                        pref = dialogPref as GridSize,
-                        openDialogCustom = openDialog
-                    )
+                }
+                if (localBackups.isNotEmpty()) {
+                    item(span = { GridItemSpan(2) }) {
+                        PreferenceGroupHeading(stringResource(id = R.string.local_backups))
+                    }
+                    items(items = localBackups, span = { GridItemSpan(1) }) {
+                        BackupCard(backup = it) {
+                            // TODO show restore dialog
+                        }
+                    }
                 }
             }
         }

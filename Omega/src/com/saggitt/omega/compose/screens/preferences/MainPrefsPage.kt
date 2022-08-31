@@ -18,8 +18,8 @@
 package com.saggitt.omega.compose.screens.preferences
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
@@ -91,15 +91,12 @@ fun MainPrefsPage() {
                     )
                 }
             }
-        ) {
+        ) { paddingValues ->
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(
-                    start = 8.dp,
-                    end = 8.dp,
-                    top = 48.dp,
-                    bottom = 8.dp
-                ),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 8.dp),
+                contentPadding = paddingValues,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item {
@@ -134,7 +131,7 @@ fun NavGraphBuilder.mainPrefsGraph(route: String) {
         preferenceGraph(route = subRoute(Routes.PREFS_DRAWER), { DrawerPrefsPage() })
         preferenceGraph(route = subRoute(Routes.PREFS_WIDGETS), { WidgetsPrefsPage() })
         preferenceGraph(route = subRoute(Routes.PREFS_SEARCH), { SearchPrefsPage() })
-        preferenceGraph(route = subRoute(Routes.PREFS_BACKUPS), { BlankScreen() }) // TODO
+        preferenceGraph(route = subRoute(Routes.PREFS_BACKUPS), { BackupsPrefPage() })
         preferenceGraph(route = subRoute(Routes.PREFS_DM), { BlankScreen() }) // TODO
         preferenceGraph(route = subRoute(Routes.PREFS_DEV), { DevPrefPage() })
         gesturePageGraph(route = subRoute(Routes.PREFS_GESTURES))

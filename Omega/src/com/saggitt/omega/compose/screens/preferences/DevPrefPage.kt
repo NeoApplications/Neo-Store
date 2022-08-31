@@ -18,8 +18,8 @@
 package com.saggitt.omega.compose.screens.preferences
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -56,15 +56,12 @@ fun DevPrefPage() {
     OmegaAppTheme {
         ViewWithActionBar(
             title = stringResource(R.string.developer_options_title)
-        ) {
+        ) { paddingValues ->
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(
-                    start = 8.dp,
-                    end = 8.dp,
-                    top = 48.dp,
-                    bottom = 8.dp
-                ),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 8.dp),
+                contentPadding = paddingValues,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item {

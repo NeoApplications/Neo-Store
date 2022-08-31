@@ -67,9 +67,9 @@ import com.android.launcher3.util.rule.ScreenRecordRule;
 import com.android.launcher3.util.rule.ShellCommandRule;
 import com.android.launcher3.util.rule.TestStabilityRule;
 
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
@@ -256,7 +256,7 @@ public abstract class AbstractLauncherUiTest {
         return mDevice.hasObject(By.res(SYSTEMUI_PACKAGE, resId));
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         mLauncher.onTestStart();
         Log.d(TAG, "Before disabling battery defender");
@@ -306,7 +306,7 @@ public abstract class AbstractLauncherUiTest {
         }
     }
 
-    @After
+    @AfterEach
     public void verifyLauncherState() {
         try {
             // Limits UI tests affecting tests running after them.
