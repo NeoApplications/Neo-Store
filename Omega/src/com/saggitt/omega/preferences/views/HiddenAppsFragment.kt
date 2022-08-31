@@ -18,6 +18,7 @@
 
 package com.saggitt.omega.preferences.views
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -65,9 +66,10 @@ class HiddenAppsFragment : Fragment(), ProtectedAppsAdapter.Callback {
         recyclerView.adapter = adapter
     }
 
+    @SuppressLint("StringFormatInvalid")
     override fun onSelectionsChanged(newSize: Int) {
         requireActivity().title = if (newSize > 0) {
-            "$newSize${getString(R.string.hide_app_selected)}"
+            getString(R.string.hide_app_selected, newSize)
         } else {
             getString(R.string.title__drawer_hide_apps)
         }
