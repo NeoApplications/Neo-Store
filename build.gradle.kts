@@ -123,6 +123,8 @@ android {
         jniLibs {
             pickFirsts += listOf("**/libeasyBypass.so")
         }
+        exclude("META-INF/LICENSE.md")
+        exclude("META-INF/LICENSE-notice.md")
     }
 
     // The flavor dimensions = aospWithoutQuickstep)
@@ -293,6 +295,7 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
     implementation("junit:junit:4.13.2")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
 
     androidTestImplementation("androidx.test:runner:1.4.0")
     androidTestImplementation("androidx.test:rules:1.4.0")
