@@ -74,6 +74,7 @@ import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.compose.navigation.preferenceGraph
+import com.saggitt.omega.compose.screens.preferences.EditDashPage
 import com.saggitt.omega.compose.screens.preferences.GesturesPrefsPage
 import com.saggitt.omega.data.AppItemWithShortcuts
 import com.saggitt.omega.gestures.BlankGestureHandler
@@ -88,6 +89,7 @@ import org.json.JSONObject
 fun NavGraphBuilder.gesturePageGraph(route: String) {
     preferenceGraph(route, { GesturesPrefsPage() }) { subRoute ->
         gesturePrefGraph(route = subRoute(Routes.GESTURE_SELECTOR))
+        preferenceGraph(route = subRoute(Routes.EDIT_DASH), { EditDashPage() })
     }
 }
 

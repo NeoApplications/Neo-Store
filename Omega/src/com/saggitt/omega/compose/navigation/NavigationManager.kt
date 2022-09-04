@@ -42,6 +42,7 @@ object Routes {
     const val GESTURE_SELECTOR = "gesture_selector"
     const val HIDDEN_APPS = "hidden_apps"
     const val PROTECTED_APPS = "protected_apps"
+    const val EDIT_DASH = "edit_dash"
 }
 
 val LocalNavController = staticCompositionLocalOf<NavController> {

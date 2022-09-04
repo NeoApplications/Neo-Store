@@ -278,7 +278,14 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         default = listOf("17", "15", "4", "6", "8", "5"),
         onChange = doNothing
     )
-    var dashProvidersNew = StringMultiSelectionPref( // TODO make it draggable dialog
+    var dashProvidersNew = StringPref(
+        key = PREFS_DASH_PROVIDERS_X,
+        titleId = R.string.edit_dash,
+        summaryId = R.string.edit_dash_summary,
+        navRoute = "edit_dash",
+        onChange = doNothing
+    )
+    var dashProvidersItems = StringMultiSelectionPref(
         key = PREFS_DASH_PROVIDERS_X,
         titleId = R.string.edit_dash,
         summaryId = R.string.edit_dash_summary,
