@@ -34,6 +34,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -50,25 +51,29 @@ import com.saggitt.omega.iconIds
 
 @Composable
 fun EditDashPage() {
+    val context = LocalContext.current
+    val prefs = Utilities.getOmegaPrefs(context)
+    val iconList = iconIds
+
+    val allItems = dashProviderOptions
+
+    val enabled = allItems.filter {
+        it.key in prefs.dashProvidersItems.onGetValue()
+    }.map { DashItem(it.key, it.value) }
+
+    val disabled = allItems.filter {
+        it.key !in prefs.dashProvidersItems.onGetValue()
+    }.map { DashItem(it.key, it.value) }
+
+    val enabledItems = remember { mutableStateOf(enabled) }
+    val disabledItems = remember { mutableStateOf(disabled) }
     ViewWithActionBar(
-        title = stringResource(id = R.string.edit_dash)
+        title = stringResource(id = R.string.edit_dash),
+        onBackAction = {
+            val enabledKeys = enabledItems.value.map { it.key }
+            prefs.dashProvidersItems.onSetValue(enabledKeys)
+        }
     ) { paddingValues ->
-        val context = LocalContext.current
-        val prefs = Utilities.getOmegaPrefs(context)
-        val iconList = iconIds
-
-        val allItems = dashProviderOptions
-
-        val enabled = allItems.filter {
-            it.key in prefs.dashProvidersItems.onGetValue()
-        }.map { DashItem(it.key, it.value) }
-
-        val disabled = allItems.filter {
-            it.key !in prefs.dashProvidersItems.onGetValue()
-        }.map { DashItem(it.key, it.value) }
-
-        val enabledItems = remember { mutableStateOf(enabled) }
-        val disabledItems = remember { mutableStateOf(disabled) }
 
         val scrollState = rememberScrollState()
         Column(
@@ -181,6 +186,13 @@ fun EditDashPage() {
                     verticalPadding = 6.dp
                 )
             }
+        }
+    }
+
+    DisposableEffect(key1 = null) {
+        onDispose {
+            val enabledKeys = enabledItems.value.map { it.key }
+            prefs.dashProvidersItems.onSetValue(enabledKeys)
         }
     }
 }

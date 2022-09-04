@@ -279,7 +279,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = doNothing
     )
     var dashProvidersNew = StringPref(
-        key = PREFS_DASH_PROVIDERS_X,
+        key = "pref_dash",
         titleId = R.string.edit_dash,
         summaryId = R.string.edit_dash_summary,
         navRoute = "edit_dash",
