@@ -31,6 +31,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -132,6 +133,11 @@ fun HiddenAppsView(
                     verticalPadding = 2.dp
                 )
             }
+        }
+    }
+    DisposableEffect(key1 = null) {
+        onDispose {
+            Utilities.getOmegaPrefs(context).drawerHiddenApps = selected
         }
     }
 }
