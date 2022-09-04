@@ -29,7 +29,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
-import coil.annotation.ExperimentalCoilApi
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.OverflowMenu
@@ -95,7 +94,7 @@ fun MainPrefsPage() {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 8.dp),
+                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
                 contentPadding = paddingValues,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -122,7 +121,6 @@ fun MainPrefsPage() {
     }
 }
 
-@OptIn(ExperimentalCoilApi::class)
 fun NavGraphBuilder.mainPrefsGraph(route: String) {
     preferenceGraph(route, { MainPrefsPage() }) { subRoute ->
         preferenceGraph(route = subRoute(Routes.PREFS_PROFILE), { ProfilePrefsPage() })
@@ -137,6 +135,7 @@ fun NavGraphBuilder.mainPrefsGraph(route: String) {
         gesturePageGraph(route = subRoute(Routes.PREFS_GESTURES))
         preferenceGraph(route = Routes.HIDDEN_APPS, { HiddenAppsPage() })
         preferenceGraph(route = Routes.PROTECTED_APPS, { ProtectedAppsPage() })
+        preferenceGraph(route = subRoute(Routes.EDIT_DASH), { EditDashPage() })
         aboutGraph(route = subRoute(Routes.ABOUT))
     }
 }

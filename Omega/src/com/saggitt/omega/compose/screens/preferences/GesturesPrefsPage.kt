@@ -88,7 +88,7 @@ fun GesturesPrefsPage() {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 8.dp),
+                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
                 contentPadding = paddingValues,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
