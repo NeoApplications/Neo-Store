@@ -124,7 +124,7 @@ public class IconCache extends BaseIconCache {
             long userSerial = mUserManager.getSerialNumberForUser(user);
             for (LauncherActivityInfo app : mLauncherApps.getActivityList(packageName, user)) {
                 addIconToDBAndMemCache(app, mLauncherActivityInfoCachingLogic, info, userSerial,
-                        false /*replace existing*/);
+                        true /*replace existing*/);
             }
         } catch (NameNotFoundException e) {
             Log.d(TAG, "Package not found", e);
