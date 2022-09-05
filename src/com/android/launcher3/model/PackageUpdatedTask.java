@@ -128,7 +128,7 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                         app.getWidgetCache().removePackage(packages[i], mUser);
 
                         //Reload SystemIconPack map
-                        if (Utilities.getOmegaPrefs(context).getThemeIconPackGlobal().equals("")) {
+                        if (Utilities.getOmegaPrefs(context).getThemeIconPackGlobal().onGetValue().equals("")) {
                             Utilities.getOmegaPrefs(context).reloadApps();
                         }
 
@@ -149,7 +149,7 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                     FileLog.d(TAG, "Removing app icon" + packages[i]);
                     iconCache.removeIconsForPkg(packages[i], mUser);
                     OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
-                    if (packages[i].equals(prefs.getThemeIconPackGlobal())) {
+                    if (packages[i].equals(prefs.getThemeIconPackGlobal().onGetValue())) {
                         prefs.getThemeIconPackGlobal().onSetValue("");
                     }
                 }
