@@ -459,9 +459,9 @@
     <string name="restore_failed">Restore failed</string>
     <string name="restore_read_meta_fail">Invalid backup file</string>
     <string name="backup_share_title">Share backup</string>
-    <string name="backup_share_text">Omega backup file</string>
+    <string name="backup_share_text">Neo Launcher backup file</string>
     <string name="backup_location">Location</string>
-    <string name="backup_location_device_storage">Omega Folder</string>
+    <string name="backup_location_device_storage">Internal folder</string>
     <string name="read_external_storage_required">Grant storage access to create a backup.</string>
     <string name="local_backups">In Storage</string>
     <string name="permission_denied">Read permission denied!</string>
