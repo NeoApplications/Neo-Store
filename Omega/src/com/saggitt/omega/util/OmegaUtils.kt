@@ -67,6 +67,7 @@ import com.saggitt.omega.data.AppTrackerRepository
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.reflect.Field
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
@@ -449,4 +450,9 @@ fun MutableList<AppInfo>.sortApps(context: Context, sortType: Int) {
         Config.SORT_AZ -> sortBy { it.title.toString().lowercase() }
         else -> sortWith(AppInfoComparator(context))
     }
+}
+
+fun getTimestampForFile(): String {
+    val simpleDateFormat = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.US)
+    return simpleDateFormat.format(Date())
 }
