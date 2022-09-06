@@ -23,10 +23,10 @@
     android:viewportHeight="32">
 
     <path
-        android:fillAlpha="0.20"
+        android:fillAlpha="0.10"
         android:fillColor="?colorAccent"
         android:pathData="M16,16m-16,0a16,16 0,1 1,32 0a16,16 0,1 1,-32 0"
-        android:strokeAlpha="0.20" />
+        android:strokeAlpha="0.10" />
 
     <group
         android:scaleX="0.09"
