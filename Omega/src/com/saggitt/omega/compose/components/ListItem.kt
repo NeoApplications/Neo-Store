@@ -46,16 +46,18 @@ fun SingleSelectionListItem(
     modifier: Modifier = Modifier,
     text: String,
     isSelected: Boolean,
+    isEnabled: Boolean = true,
     onClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick, enabled = isEnabled),
         verticalAlignment = Alignment.CenterVertically
     ) {
         RadioButton(
             selected = isSelected,
+            enabled = isEnabled,
             onClick = onClick,
             modifier = Modifier.padding(start = 8.dp, end = 8.dp),
             colors = RadioButtonDefaults.colors(
@@ -76,6 +78,7 @@ fun MultiSelectionListItem(
     modifier: Modifier = Modifier,
     text: String,
     isChecked: Boolean,
+    isEnabled: Boolean = true,
     withIcon: Boolean = false,
     iconId: String? = null,
     onClick: (Boolean) -> Unit = {}
@@ -83,6 +86,7 @@ fun MultiSelectionListItem(
     val checkbox = @Composable {
         Checkbox(
             checked = isChecked,
+            enabled = isEnabled,
             onCheckedChange = onClick,
             modifier = Modifier.padding(start = 8.dp, end = 8.dp),
             colors = CheckboxDefaults.colors(
@@ -95,7 +99,7 @@ fun MultiSelectionListItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(onClick = { onClick(!isChecked) }),
+            .clickable(onClick = { onClick(!isChecked) }, enabled = isEnabled),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (withIcon) iconIds[iconId]?.let {
