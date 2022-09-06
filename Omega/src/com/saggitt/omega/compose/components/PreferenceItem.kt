@@ -18,7 +18,12 @@
 
 package com.saggitt.omega.compose.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,7 +44,6 @@ fun PreferenceItem(
     endWidget: (@Composable () -> Unit)? = null,
     enabled: Boolean = true,
     showDivider: Boolean = false,
-    dividerIndent: Dp = 0.dp,
     applyPaddings: Boolean = true,
     horizontalPadding: Dp = 16.dp,
     verticalPadding: Dp = 16.dp,
@@ -47,10 +51,7 @@ fun PreferenceItem(
 ) {
     Column {
         if (showDivider) {
-            Divider(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                startIndent = dividerIndent,
-            )
+            Divider(modifier = Modifier.padding(horizontal = 16.dp))
         }
         Row(
             verticalAlignment = verticalAlignment,
