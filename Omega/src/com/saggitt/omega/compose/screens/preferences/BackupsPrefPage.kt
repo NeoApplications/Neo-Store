@@ -122,7 +122,15 @@ fun BackupsPrefPage() {
                         PreferenceGroupHeading(stringResource(id = R.string.local_backups))
                     }
                     items(items = localBackups, span = { GridItemSpan(1) }) {
-                        BackupCard(backup = it) {
+                        BackupCard(
+                            backup = it,
+                            onShare = {
+                                it.share(context)
+                            },
+                            onDelete = {
+                                if (it.delete()) prefs.recentBackups.remove(it.uri)
+                            }
+                        ) {
                             onDialog(it)
                         }
                     }
