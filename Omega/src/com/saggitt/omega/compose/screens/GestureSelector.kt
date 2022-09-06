@@ -77,7 +77,6 @@ import com.saggitt.omega.compose.navigation.preferenceGraph
 import com.saggitt.omega.compose.screens.preferences.EditDashPage
 import com.saggitt.omega.compose.screens.preferences.GesturesPrefsPage
 import com.saggitt.omega.data.AppItemWithShortcuts
-import com.saggitt.omega.gestures.BlankGestureHandler
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.gestures.handlers.StartAppGestureHandler
 import com.saggitt.omega.preferences.OmegaPreferences
@@ -97,41 +96,39 @@ fun NavGraphBuilder.gesturePageGraph(route: String) {
 fun NavGraphBuilder.gesturePrefGraph(route: String) {
     preferenceGraph(route, { }) { subRoute ->
         composable(
-            route = subRoute("{titleId}/{key}"),
+            route = subRoute("{titleId}/{key}/{default}"),
             arguments = listOf(
                 navArgument("titleId") { type = NavType.IntType },
-                navArgument("key") { type = NavType.StringType }
+                navArgument("key") { type = NavType.StringType },
+                navArgument("default") { type = NavType.StringType }
             )
         ) { backStackEntry ->
             val args = backStackEntry.arguments!!
             val title = args.getInt("titleId")
             val key = args.getString("key") ?: ""
-            GestureSelector(titleId = title, key = key)
+            val default = args.getString("default") ?: ""
+            GestureSelector(titleId = title, key = key, default = default)
         }
     }
 }
 
 @Composable
-fun GestureSelector(titleId: Int, key: String) {
+fun GestureSelector(titleId: Int, key: String, default: String) {
     ViewWithActionBar(
         title = stringResource(titleId),
     ) {
-        MainGesturesScreen(key)
+        MainGesturesScreen(key, default)
     }
 }
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun MainGesturesScreen(key: String) {
+fun MainGesturesScreen(key: String, default: String) {
     val pagerState = rememberPagerState()
     val prefs = Utilities.getOmegaPrefs(LocalContext.current)
-    val blankGestureHandler = BlankGestureHandler(LocalContext.current, null)
     val selectedOption = remember {
         mutableStateOf(
-            prefs.sharedPrefs.getString(
-                key,
-                blankGestureHandler.toString()
-            )
+            prefs.sharedPrefs.getString(key, default)
         )
     }
 
