@@ -196,10 +196,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         LauncherAppState.getInstance(context).reloadIcons()
     }*/
 
-    // TODO add the rest of keys to @Constants
-    // TODO sort and filter the prefs we need
-    // TODO add iconId to the respective prefs
-    // TODO bring string names in line with pref names
     // DESKTOP
     var desktopGridSizeDelegate = ResettableLazy {
         GridSize2D(
