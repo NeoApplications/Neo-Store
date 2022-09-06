@@ -1,6 +1,7 @@
 package com.saggitt.omega
 
 import com.android.launcher3.R
+import com.saggitt.omega.backup.BackupFile
 import com.saggitt.omega.dash.actionprovider.AllAppsShortcut
 import com.saggitt.omega.dash.actionprovider.AudioPlayer
 import com.saggitt.omega.dash.actionprovider.ChangeWallpaper
@@ -249,6 +250,22 @@ val desktopPopupOptions = mutableMapOf(
 val drawerPopupOptions = mutableMapOf(
     PREFS_DRAWER_POPUP_UNINSTALL to R.string.uninstall_drop_target_label,
     PREFS_DRAWER_POPUP_EDIT to R.string.action_preferences,
+)
+
+const val BACKUP_CONTENT_DEFAULT = BackupFile.INCLUDE_HOME_SCREEN or BackupFile.INCLUDE_SETTINGS
+
+val backupContentItems = mutableMapOf(
+    BackupFile.INCLUDE_HOME_SCREEN to R.string.backup_homescreen,
+    BackupFile.INCLUDE_SETTINGS to R.string.backup_settings,
+    BackupFile.INCLUDE_WALLPAPER to R.string.backup_wallpaper,
+)
+
+const val BACKUP_LOCATION_INTERNAL = 0
+const val BACKUP_LOCATION_CUSTOM = 1
+
+val backupLocationItems = mutableMapOf(
+    BACKUP_LOCATION_INTERNAL to R.string.backup_location_device_storage,
+    BACKUP_LOCATION_CUSTOM to R.string.custom,
 )
 
 val iconIds = mapOf(

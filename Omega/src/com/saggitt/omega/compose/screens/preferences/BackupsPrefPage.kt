@@ -17,6 +17,10 @@
  */
 package com.saggitt.omega.compose.screens.preferences
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,22 +42,46 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.backup.BackupFile
 import com.saggitt.omega.compose.components.BackupCard
+import com.saggitt.omega.compose.components.BaseDialog
 import com.saggitt.omega.compose.components.ElevatedActionButton
 import com.saggitt.omega.compose.components.ViewWithActionBar
+import com.saggitt.omega.compose.components.preferences.CreateBackupDialogUI
 import com.saggitt.omega.compose.components.preferences.PreferenceGroupHeading
+import com.saggitt.omega.compose.components.preferences.RestoreBackupDialogUI
 import com.saggitt.omega.theme.OmegaAppTheme
 
+@SuppressLint("WrongConstant")
 @Composable
 fun BackupsPrefPage() {
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
-    val localBackups = BackupFile.listLocalBackups(context)
     val openDialog = remember { mutableStateOf(false) }
+    val localBackups by remember(openDialog.value) {
+        mutableStateOf(
+            BackupFile.listLocalBackups(context)
+                .plus(prefs.recentBackups.onGetValue().map { BackupFile(context, it) })
+                .sortedBy { it.meta?.timestamp }
+        )
+    }
     var dialogPref by remember { mutableStateOf<Any?>(null) }
-    val onPrefDialog = { pref: Any ->
+    val onDialog = { pref: Any ->
         dialogPref = pref
         openDialog.value = true
     }
+    val openRestoreResult =
+        rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { resultUri ->
+            if (resultUri != null) {
+                context.contentResolver.takePersistableUriPermission(
+                    resultUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+                if (!localBackups.map(BackupFile::uri).contains(resultUri)) {
+                    prefs.recentBackups.add(resultUri)
+                }
+
+                onDialog(BackupFile(context, resultUri))
+            }
+        }
 
     OmegaAppTheme {
         ViewWithActionBar(
@@ -73,7 +101,9 @@ fun BackupsPrefPage() {
                         textId = R.string.title_create,
                         iconId = R.drawable.ic_backup,
                         modifier = Modifier.fillMaxWidth(),
-                        onClick = {} // TODO open backup create dialog
+                        onClick = {
+                            onDialog("backup")
+                        }
                     )
                 }
                 item {
@@ -81,7 +111,9 @@ fun BackupsPrefPage() {
                         textId = R.string.restore_backup,
                         iconId = R.drawable.ic_restore,
                         modifier = Modifier.fillMaxWidth(),
-                        onClick = {} // TODO open file selector
+                        onClick = {
+                            openRestoreResult.launch(BackupFile.EXTRA_MIME_TYPES)
+                        }
                     )
                 }
                 if (localBackups.isNotEmpty()) {
@@ -90,8 +122,22 @@ fun BackupsPrefPage() {
                     }
                     items(items = localBackups, span = { GridItemSpan(1) }) {
                         BackupCard(backup = it) {
-                            // TODO show restore dialog
+                            onDialog(it)
                         }
+                    }
+                }
+            }
+
+            if (openDialog.value) {
+                BaseDialog(openDialogCustom = openDialog) {
+                    when (dialogPref) {
+                        "backup" -> CreateBackupDialogUI(
+                            openDialogCustom = openDialog
+                        )
+                        is BackupFile -> RestoreBackupDialogUI(
+                            backupFile = dialogPref as BackupFile,
+                            openDialogCustom = openDialog
+                        )
                     }
                 }
             }
