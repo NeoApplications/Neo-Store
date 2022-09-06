@@ -464,4 +464,5 @@
     <string name="title_search_contacts">البحث في جهات الاتصال</string>
     <string name="section_contacts">جهات الاتصال</string>
     <string name="cat_dock_search">درج التطبيقات وشريط الارساء</string>
+    <string name="title_desktop_widget_corner_radius">زاوية القطعة الذكية</string>
 </resources>

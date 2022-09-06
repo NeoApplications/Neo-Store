@@ -32,7 +32,7 @@
     <string name="pref_category__inputs">Gesti e ricerca</string>
     <string name="summary__general_about">Maggiori informazioni su Neo Launcher</string>
     <string name="summary__general_advanced">Lingua, backup, impostazione ricerca</string>
-    <string name="summary__general_notifications">Conteggio dei badge, colore dei badge, gesti</string>
+    <string name="summary__general_notifications">Conteggio badge, colore badge, gesti</string>
     <string name="summary__general_smartspace">Data, ora, widget Home</string>
     <string name="summary__general_search">Provider di ricerca, stile, icone</string>
     <string name="summary__general_theme">Cambia colori, pacchetto icone, forma icone</string>
@@ -56,7 +56,7 @@
     <string name="action_open_recents">Aperti di recente</string>
     <string name="smartspace_provider_calendar">Calendario eventi</string>
     <string name="allow">Consenti</string>
-    <string name="title_smartspace_widget_provider">Fonte meteo</string>
+    <string name="title_smartspace_widget_provider">Sorgente meteo</string>
     <string name="import_icon">Importa icona</string>
     <string name="icon_shape_bottom_right">In basso a destra</string>
     <string name="icon_shape_bottom_left">In basso a sinistra</string>
@@ -91,7 +91,7 @@
     <string name="debug_component_name">Nome componente</string>
     <string name="dismiss_drop_target_label">Non mostrare</string>
     <string name="drag_to_enable_packs">Trascina verso l\'alto per disattivare</string>
-    <string name="dash_device_settings_summary">Apri Impostazioni dispositivo</string>
+    <string name="dash_device_settings_summary">Apri impostazioni dispositivo</string>
     <string name="dash_volume_summary">Visualizza il selettore audio del dispositivo</string>
     <string name="dash_launcher_settings_summary">Visualizza impostazioni launcher</string>
     <string name="wallpaper_pick_summary">Apri il selettore di sfondi</string>
@@ -122,7 +122,7 @@
     <string name="title__restart_launcher">Riavvia</string>
     <string name="title_feed_provider">Fornitore Notizie</string>
     <string name="title__dev_show_debug_info">Mostra info debug</string>
-    <string name="title__dev_show_Dev">Mostra in Impostazioni</string>
+    <string name="title__dev_show_Dev">Mostra nelle impostazioni</string>
     <string name="developer_options_title">Opzioni sviluppatore</string>
     <string name="failed">Qualcosa è andato storto.</string>
     <string name="search_menu">Trova impostazioni</string>
@@ -172,7 +172,7 @@
     <string name="title_search_provider">Motore di ricerca</string>
     <string name="title__search_show_assistant">Mostra pulsante di ricerca vocale</string>
     <string name="title__search_action_assistant">Apri assistente</string>
-    <string name="title__search_bubble_searchbar">Mostra due bolle</string>
+    <string name="title__search_bubble_searchbar">Mostra due Bubble</string>
     <string name="dt2s_admin_warning">Tocca due volte per sospendere verrà disattivato.</string>
     <string name="dt2s_admin_hint">Per utilizzare il doppio tocco per sospendere, concedi i permessi di root.</string>
     <string name="omega_actions">Azioni</string>
@@ -194,8 +194,8 @@
     <string name="action_open_app_with_target">Apri “%s”</string>
     <string name="action_open_app">Apri app</string>
     <string name="action_open_dash">Apri pannello</string>
-    <string name="action_open_overview">Mostra bolla desktop</string>
-    <string name="action_open_settings">Apri Impostazioni Launcher</string>
+    <string name="action_open_overview">Mostra Bubble sul Desktop</string>
+    <string name="action_open_settings">Apri impostazioni launcher</string>
     <string name="action_open_drawer_or_recents">Apri recenti o cassetto app</string>
     <string name="action_open_drawer">Apri cassetto delle app</string>
     <string name="action_none">Non fare nulla</string>
@@ -252,9 +252,9 @@
     <string name="title_smartspace_time_above">Mostra orologio grande</string>
     <string name="title_smartspace_time_24_h">Usa formato 24 ore</string>
     <string name="title_smartspace_date">Mostra data</string>
-    <string name="title_smartspace_time">Mostra ora</string>
+    <string name="title_smartspace_time">Mostra orario</string>
     <string name="title_smartspace">Mostra Smartspace</string>
-    <string name="title_use_pill_qsb">Mostra scorciatoia ricerca pillole</string>
+    <string name="title_use_pill_qsb">Mostra scorciatoia ricerca in pillola</string>
     <string name="title_smartspace_feed_theme">Tema per feed</string>
     <string name="title_show_google_app">Mostra app Google</string>
     <string name="title_white_only_treatment">Sostituisci sfondi bianchi</string>
@@ -357,7 +357,7 @@
     <string name="title__sort_alphabetical_az">A→Z</string>
     <string name="title_drawer_enable_background">Usa colore sfondo personalizzato</string>
     <string name="title__drawer_columns">Numero di colonne</string>
-    <string name="title__drawer_icon_popup_menu">Bolla scorciatoie</string>
+    <string name="title__drawer_icon_popup_menu">Scorciatoie Bubble</string>
     <string name="title__drawer_categorization">Categorie</string>
     <string name="title__drawer_icon_size">Dimensioni icona tutte le app</string>
     <string name="title__drawer_hide_icon_labels">Nascondi nomi app</string>
@@ -441,7 +441,7 @@
     <string name="theme_auto_night_mode_black">Sistema (nero)</string>
     <string name="theme_dark_theme_mode_follow_daylight_black">Segui luce del giorno (nero)</string>
     <string name="summary_white_only_treatment">Colora tutti gli sfondi delle icone adattive.</string>
-    <string name="modify_system_settings">Modifica impostazioni di sistema</string>
+    <string name="modify_system_settings">Modifica impostazioni sistema</string>
     <string name="backup_name">Nome backup</string>
     <string name="dash_wifi">Wi-Fi</string>
     <string name="about_channel">Canale</string>
