@@ -155,10 +155,12 @@ import com.saggitt.omega.desktopPopupOptions
 import com.saggitt.omega.drawerLayoutOptions
 import com.saggitt.omega.drawerPopupOptions
 import com.saggitt.omega.drawerSortOptions
+import com.saggitt.omega.gestures.BlankGestureHandler
 import com.saggitt.omega.gestures.handlers.NotificationsOpenGestureHandler
 import com.saggitt.omega.gestures.handlers.OpenDashGestureHandler
 import com.saggitt.omega.gestures.handlers.OpenDrawerGestureHandler
 import com.saggitt.omega.gestures.handlers.OpenOverviewGestureHandler
+import com.saggitt.omega.gestures.handlers.PressBackGestureHandler
 import com.saggitt.omega.gestures.handlers.StartGlobalSearchGestureHandler
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
@@ -839,13 +841,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     var gestureHomePress = GesturePref(
         key = PREFS_GESTURE_HOME,
         titleId = R.string.gesture_press_home,
-        defaultValue = "",
+        defaultValue = BlankGestureHandler(context, null).toString(),
         onChange = restart
     )
     var gestureBackPress = GesturePref(
         key = PREFS_GESTURE_BACK,
         titleId = R.string.gesture_press_back,
-        defaultValue = "",
+        defaultValue = PressBackGestureHandler(context, null).toString(),
         onChange = restart
     )
     var gestureSwipeDown = GesturePref(
