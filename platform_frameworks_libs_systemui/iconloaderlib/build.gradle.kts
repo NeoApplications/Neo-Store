@@ -46,7 +46,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.9.0-beta01")
+    implementation("androidx.core:core-ktx:1.9.0-rc01")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation(kotlin("stdlib", "1.7.0"))
     implementation("androidx.annotation:annotation:1.4.0")

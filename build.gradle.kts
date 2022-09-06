@@ -4,13 +4,14 @@ import com.google.protobuf.gradle.protobuf
 import com.google.protobuf.gradle.protoc
 import org.jetbrains.kotlin.gradle.internal.KaptWithoutKotlincTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 import java.text.SimpleDateFormat
 import java.util.*
 
-val vCompose = "1.2.0"
+val vCompose = "1.2.1"
 val vComposeCompiler = "1.2.0"
 val vAccompanist = "0.25.0"
-val vRoom = "2.5.0-alpha02"
+val vRoom = "2.5.0-alpha03"
 
 plugins {
     id("com.android.application").version("7.2.2")
@@ -216,13 +217,13 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03")
-    implementation("androidx.activity:activity-ktx:1.6.0-beta01")
+    implementation("androidx.activity:activity-ktx:1.6.0-rc01")
     implementation("androidx.fragment:fragment-ktx:1.5.2")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.savedstate:savedstate-ktx:1.2.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("com.google.android.material:material:1.7.0-beta01")
+    implementation("com.google.android.material:material:1.8.0-alpha01")
     implementation("com.jaredrummler:colorpicker:1.1.0")
 
     // Libs
@@ -245,12 +246,12 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:$vCompose")
     implementation("androidx.compose.ui:ui-tooling-preview:$vCompose")
     implementation("androidx.compose.foundation:foundation:$vCompose")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha16")
+    implementation("androidx.compose.material3:material3:1.0.0-beta01")
     implementation("androidx.navigation:navigation-compose:2.5.1")
     implementation("androidx.activity:activity-compose:1.5.1")
     implementation("io.coil-kt:coil-compose:2.2.0")
     implementation("io.github.fornewid:material-motion-compose-core:0.8.4")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.16")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.17")
 
     //Accompanist
     implementation("com.google.accompanist:accompanist-flowlayout:$vAccompanist")
@@ -295,7 +296,7 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
     implementation("junit:junit:4.13.2")
-    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.9.0")
 
     androidTestImplementation("androidx.test:runner:1.4.0")
     androidTestImplementation("androidx.test:rules:1.4.0")
