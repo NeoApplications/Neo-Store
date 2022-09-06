@@ -263,14 +263,7 @@ class BackupListFragment : Fragment(), BackupListAdapter.Callbacks {
     }
 
     private fun shareBackup(position: Int) {
-        val shareTitle = getString(R.string.backup_share_title)
-        val shareText = getString(R.string.backup_share_text)
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = BackupFile.MIME_TYPE
-        shareIntent.putExtra(Intent.EXTRA_STREAM, adapter[position].uri)
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareTitle)
-        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText)
-        startActivity(Intent.createChooser(shareIntent, shareTitle))
+        adapter[position].share(this@BackupListFragment.requireContext())
     }
 
     private fun saveChanges() {

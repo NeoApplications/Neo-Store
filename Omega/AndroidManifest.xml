@@ -177,6 +177,7 @@
         <!-- Icon picker -->
         <activity
             android:name="com.saggitt.omega.compose.ComposeActivity"
+            android:exported="true"
             android:theme="@style/SettingsTheme.Light" />
 
         <!-- Actions -->

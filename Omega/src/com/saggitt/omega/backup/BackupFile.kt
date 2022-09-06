@@ -37,7 +37,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
-import java.io.*
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
 import java.util.*
@@ -127,7 +131,7 @@ class BackupFile(context: Context, val uri: Uri) {
             val dbFile2 = contextWrapper.getDatabasePath(LauncherFiles.LAUNCHER_DB2)
             val dir = contextWrapper.cacheDir.parent
             val settingsFile =
-                    File(dir, "shared_prefs/" + LauncherFiles.SHARED_PREFERENCES_KEY + ".xml")
+                File(dir, "shared_prefs/" + LauncherFiles.SHARED_PREFERENCES_KEY + ".xml")
 
             val pfd = mContext.contentResolver.openFileDescriptor(uri, "r")
             val inStream = FileInputStream(pfd?.fileDescriptor)
@@ -349,8 +353,8 @@ class BackupFile(context: Context, val uri: Uri) {
             val files: MutableList<File> = ArrayList()
             if (contents or INCLUDE_HOME_SCREEN != 0) {
                 contextWrapper.databaseList()
-                        .filter { it.matches(Regex(LauncherFiles.LAUNCHER_DB_CUSTOM)) }
-                        .forEach { files.add(contextWrapper.getDatabasePath(it)) }
+                    .filter { it.matches(Regex(LauncherFiles.LAUNCHER_DB_CUSTOM)) }
+                    .forEach { files.add(contextWrapper.getDatabasePath(it)) }
                 files.add(contextWrapper.getDatabasePath(LauncherFiles.LAUNCHER_DB2))
                 files.add(contextWrapper.getDatabasePath("NeoLauncher.db-shm"))
                 files.add(contextWrapper.getDatabasePath("NeoLauncher.db-wal"))
