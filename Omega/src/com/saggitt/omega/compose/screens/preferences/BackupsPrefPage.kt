@@ -59,7 +59,8 @@ fun BackupsPrefPage() {
     val localBackups by remember(openDialog.value) {
         mutableStateOf(
             BackupFile.listLocalBackups(context)
-                .plus(prefs.recentBackups.onGetValue().map { BackupFile(context, it) })
+                .plus(prefs.recentBackups.onGetValue().map { BackupFile(context, it) }
+                    .filter { it.meta != null })
                 .sortedBy { it.meta?.timestamp }
         )
     }
