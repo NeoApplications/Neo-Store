@@ -119,7 +119,7 @@ public class AlphabeticalAppsList implements AllAppsStore.OnUpdateListener {
         }
 
         // Sort the list of apps
-        OmegaUtilsKt.sortApps(mApps, mLauncher, prefs.getDrawerSortMode().onGetValue());
+        OmegaUtilsKt.sortApps(mApps, mLauncher, prefs.getDrawerSortModeNew().onGetValue());
 
         // As a special case for some languages (currently only Simplified Chinese), we may need to
         // coalesce sections

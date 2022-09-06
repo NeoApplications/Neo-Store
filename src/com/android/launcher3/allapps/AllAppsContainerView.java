@@ -200,7 +200,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     }
 
     private boolean isPagedView() {
-        return prefs.getDrawerLayout().onGetValue() == Config.DRAWER_PAGED;
+        return prefs.getDrawerLayoutNew().onGetValue() == Config.DRAWER_PAGED;
     }
 
     @Override

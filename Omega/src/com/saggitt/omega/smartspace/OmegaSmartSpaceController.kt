@@ -89,7 +89,7 @@ class OmegaSmartSpaceController(val context: Context) {
     private var cardData: CardData? = null
     private val listeners = ArrayList<Listener>()
     private val weatherProviderPref = Utilities.getOmegaPrefs(context).smartspaceWeatherProvider
-    private val eventProvidersPref = context.omegaPrefs.smartspaceEventProviders
+    private val eventProvidersPref = context.omegaPrefs.smartspaceEventProvidersNew
     private var weatherDataProvider = BlankDataProvider(this) as DataProvider
     private val eventDataProviders = mutableListOf<DataProvider>()
     private val eventDataMap = mutableMapOf<DataProvider, CardData?>()

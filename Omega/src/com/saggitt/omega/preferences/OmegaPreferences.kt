@@ -495,7 +495,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = true,
         onChange = recreate
     )
-    var drawerSortMode = StringIntPref( // TODO replace usages with the new one
+    var drawerSortMode = StringIntPref(
         key = PREFS_SORT,
         titleId = R.string.title__sort_mode,
         defaultValue = 0,
@@ -593,7 +593,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = doNothing
     )
-    val drawerLayout = StringIntPref( // TODO replace usages with the new one
+    val drawerLayout = StringIntPref(
         key = PREFS_DRAWER_LAYOUT,
         titleId = R.string.title_drawer_layout,
         defaultValue = 0,
@@ -975,7 +975,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = SmartSpaceDataWidget::class.java.name,
         onChange = ::updateSmartspaceProvider
     )
-    var smartspaceEventProviders = StringListPref(  // TODO replace usages with the new one
+    var smartspaceEventProviders = StringListPref(
         prefKey = PREFS_SMARTSPACE_EVENT_PROVIDERS,
         titleId = R.string.title_smartspace_event_providers,
         default = listOf(

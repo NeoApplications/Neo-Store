@@ -96,7 +96,7 @@ public class ItemClickHandler {
                 onClickFolderIcon(v);
             }
         } else if (tag instanceof AppInfo) {
-            if (Utilities.getOmegaPrefs(launcher).getDrawerSortMode().onGetValue() == Config.SORT_MOST_USED) {
+            if (Utilities.getOmegaPrefs(launcher).getDrawerSortModeNew().onGetValue() == Config.SORT_MOST_USED) {
                 Utilities.getOmegaPrefs(launcher).reloadApps();
             }
             startAppShortcutOrInfoActivity(v, (AppInfo) tag, launcher);
