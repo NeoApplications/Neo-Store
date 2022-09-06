@@ -76,6 +76,28 @@ fun DefaultComposeView(navController: NavHostController) {
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun PrefsComposeView(navController: NavHostController) {
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+    val motionSpec = materialSharedAxisX()
+    val density = LocalDensity.current
+    CompositionLocalProvider(
+        LocalNavController provides navController
+    ) {
+        AnimatedNavHost(
+            navController = navController,
+            startDestination = "/",
+            enterTransition = { motionSpec.enter.transition(!isRtl, density) },
+            exitTransition = { motionSpec.exit.transition(!isRtl, density) },
+            popEnterTransition = { motionSpec.enter.transition(isRtl, density) },
+            popExitTransition = { motionSpec.exit.transition(isRtl, density) },
+        ) {
+            mainPrefsGraph(route = "/")
+        }
+    }
+}
+
 @Composable
 fun BlankScreen() {
     Column(
