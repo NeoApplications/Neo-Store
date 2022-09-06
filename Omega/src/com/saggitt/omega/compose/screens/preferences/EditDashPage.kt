@@ -152,10 +152,7 @@ fun EditDashPage() {
                     title = stringResource(id = item.titleResId),
                     modifier = Modifier.clickable {
                         disabledItems.value = disabledItems.value - item
-
-                        val tempList = enabledItems.value.toMutableList()
-                        tempList.add(0, item)
-                        enabledItems.value = tempList
+                        enabledItems.value = enabledItems.value.plus(item)
                     },
                     startIcon = {
                         Image(
