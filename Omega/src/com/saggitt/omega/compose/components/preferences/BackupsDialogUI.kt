@@ -273,3 +273,154 @@ private fun BackupTaskViewModel.startBackup(
         onPostExecute = onPostExecute
     )
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RestoreBackupDialogUI(
+    backupFile: BackupFile,
+    openDialogCustom: MutableState<Boolean>
+) {
+    val context = LocalContext.current
+    val prefs = Utilities.getOmegaPrefs(context)
+    var selectedContent by remember { mutableStateOf(backupFile.meta?.contents) }
+
+    var radius = 16.dp
+    if (prefs.themeCornerRadiusOverride.onGetValue()) {
+        radius = prefs.themeCornerRadius.onGetValue().dp
+    }
+    val cornerRadius by remember { mutableStateOf(radius) }
+
+    Card(
+        shape = RoundedCornerShape(cornerRadius),
+        modifier = Modifier.padding(8.dp),
+        elevation = CardDefaults.elevatedCardElevation(8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.restore_backup),
+                style = MaterialTheme.typography.titleLarge
+            )
+            LazyColumn(
+                modifier = Modifier
+                    .padding(top = 16.dp, bottom = 8.dp)
+                    .weight(1f, false),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item {
+                    Text(
+                        text = stringResource(id = R.string.name),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleSmall,
+                        maxLines = 1
+                    )
+                }
+                item {
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = backupFile.meta?.name ?: "",
+                        onValueChange = {},
+                        shape = RoundedCornerShape(radius),
+                        colors = TextFieldDefaults.textFieldColors(
+                            disabledIndicatorColor = Color.Transparent,
+                        ),
+                        singleLine = true,
+                        enabled = false,
+                    )
+                }
+                item {
+                    Text(
+                        text = stringResource(id = R.string.backup_timestamp),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleSmall,
+                        maxLines = 1
+                    )
+                }
+                item {
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = backupFile.meta?.localizedTimestamp ?: "",
+                        onValueChange = {},
+                        shape = RoundedCornerShape(radius),
+                        colors = TextFieldDefaults.textFieldColors(
+                            disabledIndicatorColor = Color.Transparent,
+                        ),
+                        singleLine = true,
+                        enabled = false,
+                    )
+                }
+                item {
+                    Text(
+                        text = stringResource(id = R.string.restore_contents),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleSmall,
+                        maxLines = 1
+                    )
+                }
+                items(items = backupContentItems.toList()) { item ->
+                    val isSelected by rememberSaveable(selectedContent) {
+                        mutableStateOf((selectedContent?.and(item.first) ?: 0) == item.first)
+                    }
+                    val isEnabled by rememberSaveable {
+                        mutableStateOf((selectedContent?.and(item.first) ?: 0) == item.first)
+                    }
+                    MultiSelectionListItem(
+                        text = stringResource(id = item.second),
+                        isChecked = isSelected && isEnabled,
+                        isEnabled = isEnabled,
+                    ) {
+                        selectedContent = if (it) selectedContent?.or(item.first)
+                        else selectedContent?.xor(item.first)
+                    }
+                }
+            }
+
+            Row(
+                Modifier.fillMaxWidth()
+            ) {
+                DialogNegativeButton(
+                    cornerRadius = cornerRadius,
+                    onClick = { openDialogCustom.value = false }
+                )
+                Spacer(Modifier.weight(1f))
+                DialogPositiveButton(
+                    modifier = Modifier.padding(start = 16.dp),
+                    cornerRadius = cornerRadius,
+                    onClick = {
+                        // TODO restore backup (using contents and location) and add it to recentBackups if still not
+                        BackupTaskViewModel().startRestore(backupFile, selectedContent ?: 0) {
+                            if (it > -1) {
+                                if (it and BackupFile.INCLUDE_SETTINGS == 0) {
+                                    prefs.blockingEdit {
+                                        restoreSuccess = true
+                                    }
+                                }
+                                Utilities.killLauncher()
+                            } else {  // TODO show a response that restore failed
+                            }
+                            openDialogCustom.value = false
+                        }
+                    }
+                )
+            }
+        }
+    }
+}
+
+private fun BackupTaskViewModel.startRestore(
+    backupFile: BackupFile,
+    contents: Int,
+    onPostExecute: (Int) -> Unit
+) {
+    execute(
+        onPreExecute = { },
+        doInBackground = {
+            if (backupFile.restore(contents)) contents else -1
+        },
+        onPostExecute = onPostExecute
+    )
+}
