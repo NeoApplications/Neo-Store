@@ -22,6 +22,7 @@ import android.annotation.SuppressLint
 import android.app.WallpaperManager
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -29,6 +30,7 @@ import android.util.Log
 import androidx.core.content.FileProvider
 import com.android.launcher3.BuildConfig
 import com.android.launcher3.LauncherFiles
+import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -191,6 +193,17 @@ class BackupFile(context: Context, val uri: Uri) {
 
     fun delete(): Boolean {
         return mContext.contentResolver.delete(uri, null, null) != 0
+    }
+
+    fun share(context: Context) {
+        val shareTitle = context.getString(R.string.backup_share_title)
+        val shareText = context.getString(R.string.backup_share_text)
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = MIME_TYPE
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareTitle)
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText)
+        context.startActivity(Intent.createChooser(shareIntent, shareTitle))
     }
 
     class MetaLoader(private val backupFile: BackupFile) {
