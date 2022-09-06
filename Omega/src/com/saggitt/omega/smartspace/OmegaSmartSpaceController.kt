@@ -58,30 +58,7 @@ import com.saggitt.omega.util.isAppEnabled
 import com.saggitt.omega.util.omegaPrefs
 import com.saggitt.omega.util.openURLinBrowser
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
-import kotlin.collections.List
-import kotlin.collections.all
-import kotlin.collections.any
-import kotlin.collections.asSequence
-import kotlin.collections.associateByTo
-import kotlin.collections.emptyList
-import kotlin.collections.filter
-import kotlin.collections.filterTo
-import kotlin.collections.first
-import kotlin.collections.firstOrNull
-import kotlin.collections.forEach
-import kotlin.collections.getOrPut
-import kotlin.collections.listOf
-import kotlin.collections.map
-import kotlin.collections.mapOf
-import kotlin.collections.minus
-import kotlin.collections.mutableListOf
-import kotlin.collections.mutableMapOf
-import kotlin.collections.plus
 import kotlin.collections.set
-import kotlin.collections.setOf
-import kotlin.collections.toSet
-import kotlin.collections.toTypedArray
 
 class OmegaSmartSpaceController(val context: Context) {
 

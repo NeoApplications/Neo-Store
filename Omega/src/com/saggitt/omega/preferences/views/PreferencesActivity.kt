@@ -280,7 +280,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         const val EXTRA_FRAGMENT = "fragment"
         const val EXTRA_FRAGMENT_ARGS = "fragmentArgs"
 
-        fun startFragment(
+        fun startFragment( // TODO replace with PrefsActivityX calls
             context: Context,
             fragment: String?,
             title: String?
@@ -293,7 +293,7 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
         const val KEY_CALLBACK = "callback"
         const val KEY_FILTER_IS_WORK = "filterIsWork"
 
-        fun startFragment(
+        fun startFragment( // TODO replace with PrefsActivityX calls
             context: Context,
             fragment: String?,
             title: String?,

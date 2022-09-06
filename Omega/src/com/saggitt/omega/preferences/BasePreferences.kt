@@ -515,10 +515,10 @@ abstract class BasePreferences(context: Context) :
         onChange: () -> Unit = doNothing,
         val navRoute: String = ""
     ) : PrefDelegate<String>(key, titleId, summaryId, defaultValue, onChange) {
-        override fun onGetValue(): String = sharedPrefs.getString(getKey(), defaultValue)!!
+        override fun onGetValue(): String = sharedPrefs.getString(key, defaultValue)!!
 
         override fun onSetValue(value: String) {
-            edit { putString(getKey(), value) }
+            edit { putString(key, value) }
         }
     }
 

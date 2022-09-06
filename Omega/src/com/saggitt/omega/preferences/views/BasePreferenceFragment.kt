@@ -23,10 +23,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.saggitt.omega.preferences.custom.CustomDialogPreference
-import com.saggitt.omega.preferences.custom.EventProvidersPreference
 import com.saggitt.omega.preferences.custom.GridSizePreference
 import com.saggitt.omega.preferences.custom.SingleGridSizePreference
-import com.saggitt.omega.smartspace.EventProvidersFragment
 
 abstract class BasePreferenceFragment(val layoutId: Int, val titleId: Int = -1) :
     PreferenceFragmentCompat() {
@@ -40,7 +38,6 @@ abstract class BasePreferenceFragment(val layoutId: Int, val titleId: Int = -1) 
             f = when (preference) {
                 is GridSizePreference -> GridSizeDialogFragment.newInstance(preference.key)
                 is CustomDialogPreference -> PreferenceDialogFragment.newInstance(preference)
-                is EventProvidersPreference -> EventProvidersFragment.newInstance(preference.key)
                 is SingleGridSizePreference -> SingleGridSizeDialogFragment.newInstance(preference.key)
                 else -> {
                     super.onDisplayPreferenceDialog(preference)

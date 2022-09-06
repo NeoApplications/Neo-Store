@@ -22,17 +22,6 @@ class PrefsThemeFragment :
     BasePreferenceFragment(R.xml.preferences_theme, R.string.title__general_theme) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        findPreference<ListPreference>(PREFS_THEME)?.apply {
-            onPreferenceChangeListener =
-                Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                    var newTheme = (newValue as String).toInt()
-                    this.value = newTheme.toString()
-                    requireActivity().omegaPrefs.themePref.onSetValue(
-                        newValue.toString().toInt()
-                    )
-                    true
-                }
-        }
         findPreference<ColorPreferenceCompat>(PREFS_ACCENT)?.apply {
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, _: Any ->

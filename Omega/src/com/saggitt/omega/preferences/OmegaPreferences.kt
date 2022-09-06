@@ -74,7 +74,6 @@ import com.saggitt.omega.PREFS_DRAWER_HIDE_LABEL
 import com.saggitt.omega.PREFS_DRAWER_ICON_LABEL_TWOLINES
 import com.saggitt.omega.PREFS_DRAWER_ICON_SCALE
 import com.saggitt.omega.PREFS_DRAWER_ICON_TEXT_SCALE
-import com.saggitt.omega.PREFS_DRAWER_LAYOUT
 import com.saggitt.omega.PREFS_DRAWER_LAYOUT_X
 import com.saggitt.omega.PREFS_DRAWER_POPUP
 import com.saggitt.omega.PREFS_DRAWER_POPUP_EDIT
@@ -123,7 +122,6 @@ import com.saggitt.omega.PREFS_SEARCH_SHOW_ASSISTANT
 import com.saggitt.omega.PREFS_SMARTSPACE_DATE
 import com.saggitt.omega.PREFS_SMARTSPACE_ENABLE
 import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDER
-import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDERS
 import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDERS_X
 import com.saggitt.omega.PREFS_SMARTSPACE_TIME
 import com.saggitt.omega.PREFS_SMARTSPACE_TIME_ABOVE
@@ -131,10 +129,8 @@ import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_ICONS
 import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_PROVIDER
 import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_UNITS
 import com.saggitt.omega.PREFS_SMARTSPACE_WIDGET_ID
-import com.saggitt.omega.PREFS_SORT
 import com.saggitt.omega.PREFS_SORT_X
 import com.saggitt.omega.PREFS_STATUSBAR_HIDE
-import com.saggitt.omega.PREFS_THEME
 import com.saggitt.omega.PREFS_THEME_X
 import com.saggitt.omega.PREFS_TIME_24H
 import com.saggitt.omega.PREFS_TORCH
@@ -495,12 +491,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = true,
         onChange = recreate
     )
-    var drawerSortMode = StringIntPref(
-        key = PREFS_SORT,
-        titleId = R.string.title__sort_mode,
-        defaultValue = 0,
-        onChange = recreate
-    )
     var drawerSortModeNew = IntSelectionPref(
         key = PREFS_SORT_X,
         titleId = R.string.title__sort_mode,
@@ -593,12 +583,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = doNothing
     )
-    val drawerLayout = StringIntPref(
-        key = PREFS_DRAWER_LAYOUT,
-        titleId = R.string.title_drawer_layout,
-        defaultValue = 0,
-        onChange = recreate
-    )
     val drawerLayoutNew = IntSelectionPref(
         key = PREFS_DRAWER_LAYOUT_X,
         titleId = R.string.title_drawer_layout,
@@ -660,10 +644,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         entries = context.languageOptions(),
         onChange = recreate
     )
-    var themePref = StringIntPref(
-        PREFS_THEME,
-        ThemeManager.getDefaultTheme()
-    ) { ThemeManager.getInstance(context).updateTheme() }
     var themePrefNew = IntSelectionPref(
         key = PREFS_THEME_X,
         titleId = R.string.title__general_theme,
@@ -973,18 +953,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_SMARTSPACE_EVENT_PROVIDER,
         titleId = -1,
         defaultValue = SmartSpaceDataWidget::class.java.name,
-        onChange = ::updateSmartspaceProvider
-    )
-    var smartspaceEventProviders = StringListPref(
-        prefKey = PREFS_SMARTSPACE_EVENT_PROVIDERS,
-        titleId = R.string.title_smartspace_event_providers,
-        default = listOf(
-            smartspaceEventProvider.onGetValue(),
-            NotificationUnreadProvider::class.java.name,
-            NowPlayingProvider::class.java.name,
-            BatteryStatusProvider::class.java.name,
-            PersonalityProvider::class.java.name
-        ),
         onChange = ::updateSmartspaceProvider
     )
     var smartspaceEventProvidersNew =

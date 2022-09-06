@@ -148,7 +148,7 @@ fun AppTabDialogUI(
                     textId = R.string.tabs_manage,
                     onClick = {
                         openDialogCustom.value = false
-                        PreferencesActivity.startFragment(
+                        PreferencesActivity.startFragment( // TODO replace when the manager is completed
                             context, AppCategorizationFragment::class.java.name,
                             context.resources.getString(R.string.title__drawer_categorization)
                         )

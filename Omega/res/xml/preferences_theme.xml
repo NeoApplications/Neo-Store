@@ -19,13 +19,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.saggitt.omega.preferences.custom.ThemePreference
-        android:defaultValue="8"
-        android:key="pref_launcherTheme"
-        android:title="@string/title__general_theme"
-        app:iconSpaceReserved="false"
-        app:useSimpleSummaryProvider="true" />
-
     <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
         android:defaultValue="@color/colorAccent"
         android:key="pref_accent_color"
