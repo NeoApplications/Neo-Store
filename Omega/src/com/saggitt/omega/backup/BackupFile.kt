@@ -301,7 +301,7 @@ class BackupFile(context: Context, val uri: Uri) {
         val EXTRA_MIME_TYPES = arrayOf(MIME_TYPE, "application/x-zip", "application/octet-stream")
 
         const val WALLPAPER_FILE_NAME = "wallpaper.png"
-        val timestampFormat = SimpleDateFormat("dd-MM-yyyy hh:mm:ss", Locale.US)
+        val timestampFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.US)
 
         fun getFolder(context: Context): File {
             val folder = File(
@@ -428,7 +428,7 @@ class BackupFile(context: Context, val uri: Uri) {
         )
 
         private fun getTimestamp(): String {
-            val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy hh:mm:ss", Locale.US)
+            val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.US)
             return simpleDateFormat.format(Date())
         }
     }

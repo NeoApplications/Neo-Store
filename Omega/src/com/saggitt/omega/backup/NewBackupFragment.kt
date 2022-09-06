@@ -259,7 +259,7 @@ class NewBackupFragment : Fragment() {
     }
 
     private fun getTimestamp(): String {
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd_hh.mm.ss", Locale.US)
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd_HH.mm.ss", Locale.US)
         return simpleDateFormat.format(Date())
     }
 }
