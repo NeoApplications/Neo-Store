@@ -31,7 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
-import com.saggitt.omega.compose.ComposeActivity
+import com.saggitt.omega.compose.PrefsActivityX
 import com.saggitt.omega.preferences.BasePreferences
 
 @Composable
@@ -72,7 +72,7 @@ fun ColorIntPreference(
 
                 override fun onDialogDismissed(dialogId: Int) {}
             })
-            dialog.show(ComposeActivity.getFragmentManager(context), "color-picker-dialog")
+            dialog.show(PrefsActivityX.getFragmentManager(context), "color-picker-dialog")
         },
         endWidget = {
             Canvas(

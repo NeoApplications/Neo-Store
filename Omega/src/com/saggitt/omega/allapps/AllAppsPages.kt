@@ -58,7 +58,10 @@ class AllAppsPages(
             pageCount++
         }
 
-        appList.sortApps(context, OmegaPreferences.getInstance(context).drawerSortMode.onGetValue())
+        appList.sortApps(
+            context,
+            OmegaPreferences.getInstance(context).drawerSortModeNew.onGetValue()
+        )
         var initialApp = 0
         var endApp = appsPerPage
         for (page in 0 until pageCount) {

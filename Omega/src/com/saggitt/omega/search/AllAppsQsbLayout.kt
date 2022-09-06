@@ -31,7 +31,12 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.android.launcher3.*
+import com.android.launcher3.BaseRecyclerView
+import com.android.launcher3.DeviceProfile
+import com.android.launcher3.Insettable
+import com.android.launcher3.LauncherAppState
+import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.android.launcher3.allapps.AllAppsContainerView
 import com.android.launcher3.allapps.SearchUiManager
 import com.android.launcher3.icons.IconNormalizer
@@ -183,7 +188,7 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
                 }
                 val currentScrollY = (recyclerView as BaseRecyclerView).currentScrollY
                 val elevationScale = Utilities.boundToRange(currentScrollY / 255f, 0f, 1f)
-                if (prefs.drawerLayout.onGetValue() != Config.DRAWER_PAGED)
+                if (prefs.drawerLayoutNew.onGetValue() != Config.DRAWER_PAGED)
                     mFallback?.elevation = initialElevation + elevationScale * initialElevation
             }
         })
