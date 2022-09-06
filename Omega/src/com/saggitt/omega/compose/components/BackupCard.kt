@@ -1,16 +1,20 @@
 package com.saggitt.omega.compose.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,20 +28,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
 import com.saggitt.omega.backup.BackupFile
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BackupCard(
     modifier: Modifier = Modifier,
     backup: BackupFile,
     cornerRadius: Dp = 16.dp,
+    onShare: () -> Unit = {},
+    onDelete: () -> Unit = {},
     onClick: () -> Unit = {}
 ) {
+    var extended by remember { mutableStateOf(false) }
     var previewLoaded by remember { mutableStateOf(false) }
     val metaLoader by remember { mutableStateOf(BackupFile.MetaLoader(backup)) }
     metaLoader.callback = object : BackupFile.MetaLoader.Callback {
@@ -49,9 +57,11 @@ fun BackupCard(
     SideEffect { metaLoader.loadMeta(true) }
 
     Card(
-        modifier = Modifier.heightIn(min = 64.dp),
+        modifier = Modifier
+            .heightIn(min = 64.dp)
+            .clip(RoundedCornerShape(cornerRadius))
+            .combinedClickable(onClick = onClick, onLongClick = { extended = !extended }),
         shape = RoundedCornerShape(cornerRadius),
-        onClick = onClick
     ) {
         AnimatedVisibility(previewLoaded) {
             metaLoader.meta?.preview?.second?.let {
@@ -88,6 +98,25 @@ fun BackupCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodySmall,
                 )
+            }
+        }
+        AnimatedVisibility(visible = extended) {
+            Row(
+                modifier = Modifier.padding(8.dp)
+            ) {
+                ElevatedButton(onClick = onShare) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_share),
+                        contentDescription = stringResource(id = R.string.backup_share)
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                ElevatedButton(onClick = onDelete) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_delete),
+                        contentDescription = stringResource(id = R.string.delete)
+                    )
+                }
             }
         }
     }
