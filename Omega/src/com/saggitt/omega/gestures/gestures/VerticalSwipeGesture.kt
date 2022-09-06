@@ -21,7 +21,6 @@ import com.android.launcher3.LauncherState.ALL_APPS
 import com.saggitt.omega.gestures.Gesture
 import com.saggitt.omega.gestures.GestureController
 import com.saggitt.omega.gestures.handlers.NotificationsOpenGestureHandler
-import com.saggitt.omega.gestures.handlers.OpenDrawerGestureHandler
 import com.saggitt.omega.gestures.handlers.StartGlobalSearchGestureHandler
 import com.saggitt.omega.gestures.handlers.StateChangeGestureHandler
 import com.saggitt.omega.gestures.handlers.VerticalSwipeGestureHandler
@@ -30,36 +29,27 @@ class VerticalSwipeGesture(controller: GestureController) : Gesture(controller) 
 
     override val isEnabled = true
 
-    private val swipeUpHandler by controller.createHandlerPref(
-        "pref_gesture_swipe_up",
-        OpenDrawerGestureHandler(controller.launcher, null)
-    )
-    private val dockSwipeUpHandler by controller.createHandlerPref(
-        "pref_gesture_dock_swipe_up",
-        OpenDrawerGestureHandler(controller.launcher, null)
-    )
-    private val swipeDownHandler by controller.createHandlerPref(
-        "pref_gesture_swipe_down",
-        NotificationsOpenGestureHandler(controller.launcher, null)
-    )
+    private val swipeUpHandler by controller.launcher.prefs.gestureSwipeUp
+    private val dockSwipeUpHandler by controller.launcher.prefs.gestureDockSwipeUp
+    private val swipeDownHandler by controller.launcher.prefs.gestureSwipeDown
 
-    val customSwipeUp get() = swipeUpHandler !is VerticalSwipeGestureHandler
-    val customDockSwipeUp get() = dockSwipeUpHandler !is VerticalSwipeGestureHandler
-    val customSwipeDown get() = swipeDownHandler !is NotificationsOpenGestureHandler
+    val customSwipeUp get() = controller.createGestureHandler(swipeUpHandler) !is VerticalSwipeGestureHandler
+    val customDockSwipeUp get() = controller.createGestureHandler(dockSwipeUpHandler) !is VerticalSwipeGestureHandler
+    val customSwipeDown get() = controller.createGestureHandler(swipeDownHandler) !is NotificationsOpenGestureHandler
 
-    val swipeUpAppsSearch get() = swipeUpHandler is StartGlobalSearchGestureHandler
-    val dockSwipeUpAppsSearch get() = dockSwipeUpHandler is StartGlobalSearchGestureHandler
+    val swipeUpAppsSearch get() = controller.createGestureHandler(swipeUpHandler) is StartGlobalSearchGestureHandler
+    val dockSwipeUpAppsSearch get() = controller.createGestureHandler(dockSwipeUpHandler) is StartGlobalSearchGestureHandler
 
     fun onSwipeUp() {
-        swipeUpHandler.onGestureTrigger(controller)
+        controller.createGestureHandler(swipeUpHandler).onGestureTrigger(controller)
     }
 
     fun onDockSwipeUp() {
-        dockSwipeUpHandler.onGestureTrigger(controller)
+        controller.createGestureHandler(dockSwipeUpHandler).onGestureTrigger(controller)
     }
 
     fun onSwipeDown() {
-        swipeDownHandler.onGestureTrigger(controller)
+        controller.createGestureHandler(swipeDownHandler).onGestureTrigger(controller)
     }
 
     fun onSwipeUpAllAppsComplete(fromDock: Boolean) {

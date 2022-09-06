@@ -25,7 +25,7 @@ import com.saggitt.omega.gestures.GestureController
 
 class DoubleTapGesture(controller: GestureController) : Gesture(controller) {
 
-    private val handler by controller.createHandlerPref("pref_gesture_double_tap")
+    private val handler by controller.launcher.prefs.gestureDoubleTap
     override val isEnabled = true
 
     private val squaredTouchSlop = Utilities.squaredTouchSlop(controller.launcher)
@@ -55,7 +55,7 @@ class DoubleTapGesture(controller: GestureController) : Gesture(controller) {
                 }
                 MotionEvent.ACTION_UP -> {
                     if (squaredHypot(e.x - downX, e.y - downY) < squaredTouchSlop) {
-                        handler.onGestureTrigger(controller)
+                        controller.createGestureHandler(handler).onGestureTrigger(controller)
                         return true
                     }
                 }

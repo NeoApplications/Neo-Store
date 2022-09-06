@@ -21,11 +21,11 @@ import com.saggitt.omega.gestures.GestureController
 
 class PressHomeGesture(controller: GestureController) : Gesture(controller) {
 
-    private val handler by controller.createHandlerPref("pref_gesture_press_home")
+    private val handler by controller.launcher.prefs.gestureHomePress
     override val isEnabled = true
 
     override fun onEvent(): Boolean {
-        handler.onGestureTrigger(controller)
+        controller.createGestureHandler(handler).onGestureTrigger(controller)
         return true
     }
 }

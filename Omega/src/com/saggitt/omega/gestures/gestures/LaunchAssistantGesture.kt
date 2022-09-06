@@ -18,14 +18,10 @@ package com.saggitt.omega.gestures.gestures
 
 import com.saggitt.omega.gestures.Gesture
 import com.saggitt.omega.gestures.GestureController
-import com.saggitt.omega.gestures.handlers.OpenDashGestureHandler
 
 class LaunchAssistantGesture(controller: GestureController) : Gesture(controller) {
 
-    private val handler by controller.createHandlerPref(
-        "pref_gesture_launch_assistant",
-        OpenDashGestureHandler(controller.launcher, null)
-    )
+    private val handler by controller.launcher.prefs.gestureLaunchAssistant
     override val isEnabled = true
 
     /*get() {
@@ -39,7 +35,7 @@ class LaunchAssistantGesture(controller: GestureController) : Gesture(controller
     }*/
 
     override fun onEvent(): Boolean {
-        handler.onGestureTrigger(controller)
+        controller.createGestureHandler(handler).onGestureTrigger(controller)
         return true
     }
 }

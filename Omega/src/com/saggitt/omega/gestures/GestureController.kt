@@ -55,7 +55,7 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
     private val assistantGesture by lazy { LaunchAssistantGesture(this) }
 
     val hasBackGesture
-        get() = pressBackGesture.handler !is BlankGestureHandler
+        get() = createGestureHandler(pressBackGesture.handler) !is BlankGestureHandler
     val verticalSwipeGesture by lazy { VerticalSwipeGesture(this) }
     val navSwipeUpGesture by lazy { NavSwipeUpGesture(this) }
 
@@ -119,7 +119,7 @@ class GestureController(val launcher: OmegaLauncher) : TouchController {
             dispose = GestureHandler::onDestroy
         )
 
-    private fun createGestureHandler(jsonString: String) =
+    fun createGestureHandler(jsonString: String) =
         createGestureHandler(launcher, jsonString, blankGestureHandler)
 
     companion object {

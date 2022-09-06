@@ -21,11 +21,11 @@ import com.saggitt.omega.gestures.GestureController
 
 class PressBackGesture(controller: GestureController) : Gesture(controller) {
 
-    val handler by controller.createHandlerPref("pref_gesture_press_back")
+    val handler by controller.launcher.prefs.gestureBackPress
     override val isEnabled = true
 
     override fun onEvent(): Boolean {
-        handler.onGestureTrigger(controller)
+        controller.createGestureHandler(handler).onGestureTrigger(controller)
         return true
     }
 }
