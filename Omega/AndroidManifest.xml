@@ -152,7 +152,7 @@
             tools:node="remove" />
 
         <activity
-            android:name="com.saggitt.omega.preferences.views.PreferencesActivity"
+            android:name="com.saggitt.omega.compose.PrefsActivityX"
             android:autoRemoveFromRecents="true"
             android:exported="true"
             android:label="@string/settings_button_text"
@@ -162,6 +162,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+
+        <activity
+            android:name="com.saggitt.omega.preferences.views.PreferencesActivity"
+            android:autoRemoveFromRecents="true"
+            android:exported="true"
+            android:label="@string/settings_button_text"
+            android:theme="@style/SettingsTheme.Dark" />
 
         <activity
             android:name="com.saggitt.omega.gestures.ui.SelectAppActivity"
