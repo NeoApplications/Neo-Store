@@ -6,7 +6,8 @@ import android.view.View.OnLongClickListener
 import com.android.launcher3.R
 import com.android.launcher3.logging.StatsLogManager.EventEnum
 import com.android.launcher3.views.OptionsPopupView.OptionItem
-import com.saggitt.omega.preferences.views.PreferencesActivity
+import com.saggitt.omega.compose.PrefsActivityX
+import com.saggitt.omega.compose.navigation.Routes
 
 class SmartSpacePreferencesShortcut(context: Context, eventId: EventEnum?) : OptionItem(
     context.getString(R.string.customize),
@@ -16,11 +17,11 @@ class SmartSpacePreferencesShortcut(context: Context, eventId: EventEnum?) : Opt
 
     companion object {
         private fun startSmartspacePreferences(context: Context): Boolean {
-            val fragment = "com.saggitt.omega.preferences.views.PrefsWidgetFragment"
-            PreferencesActivity.startFragment(
-                context,
-                fragment,
-                context.resources.getString(R.string.home_widget)
+            context.startActivity(
+                PrefsActivityX.createIntent(
+                    context,
+                    "${Routes.PREFS_WIDGETS}/"
+                )
             )
 
             return true

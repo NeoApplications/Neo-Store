@@ -37,7 +37,8 @@ import com.android.launcher3.allapps.SearchUiManager
 import com.android.launcher3.icons.IconNormalizer
 import com.saggitt.omega.OmegaLauncher.Companion.getLauncher
 import com.saggitt.omega.PREFS_SEARCH_GLOBAL
-import com.saggitt.omega.preferences.views.PreferencesActivity
+import com.saggitt.omega.compose.PrefsActivityX
+import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.search.providers.AppsSearchProvider
 import com.saggitt.omega.util.Config
 import kotlin.math.roundToInt
@@ -62,11 +63,11 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
 
         findViewById<ImageButton?>(R.id.settings_button).apply {
             setOnClickListener {
-                val fragment = "com.saggitt.omega.preferences.views.PrefsSearchFragment"
-                PreferencesActivity.startFragment(
-                    context,
-                    fragment,
-                    context.resources.getString(R.string.title__general_search)
+                context.startActivity(
+                    PrefsActivityX.createIntent(
+                        context,
+                        "${Routes.PREFS_SEARCH}/"
+                    )
                 )
             }
         }

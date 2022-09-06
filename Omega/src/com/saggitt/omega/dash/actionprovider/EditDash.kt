@@ -21,8 +21,9 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
+import com.saggitt.omega.compose.PrefsActivityX
+import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.dash.DashActionProvider
-import com.saggitt.omega.preferences.views.PreferencesActivity
 
 class EditDash(context: Context) : DashActionProvider(context) {
     override val itemId = 5
@@ -35,11 +36,11 @@ class EditDash(context: Context) : DashActionProvider(context) {
         }
 
     override fun runAction(context: Context) {
-        val fragment = "com.saggitt.omega.dash.DashFragment"
-        PreferencesActivity.startFragment(
-            context,
-            fragment,
-            context.resources.getString(R.string.edit_dash)
+        context.startActivity(
+            PrefsActivityX.createIntent(
+                context,
+                "${Routes.PREFS_GESTURES}/${Routes.EDIT_DASH}/"
+            )
         )
     }
 }
