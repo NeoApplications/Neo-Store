@@ -88,7 +88,7 @@ fun BasePreference(
                     bottomEnd = if (rank == 1f) 16.dp else 6.dp
                 )
             )
-            .background(MaterialTheme.colorScheme.surfaceColorAtElevation((rank * 16).dp))
+            .background(MaterialTheme.colorScheme.surfaceColorAtElevation((rank * 24).dp))
             .heightIn(min = 64.dp)
             .addIf(onClick != null) {
                 clickable(enabled = isEnabled, onClick = onClick!!)
