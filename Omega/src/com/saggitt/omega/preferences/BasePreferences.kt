@@ -25,6 +25,7 @@ import androidx.annotation.StringRes
 import com.android.launcher3.InvariantDeviceProfile
 import com.android.launcher3.LauncherFiles
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
+import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.util.dpToPx
 import com.saggitt.omega.util.pxToDp
 import org.json.JSONArray
@@ -520,6 +521,23 @@ abstract class BasePreferences(context: Context) :
             edit { putString(getKey(), value) }
         }
     }
+
+    open inner class GesturePref(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        defaultValue: String = "",
+        onClick: (() -> Unit)? = null,
+        onChange: () -> Unit = doNothing,
+    ) : StringPref(
+        key,
+        titleId,
+        summaryId,
+        defaultValue,
+        onClick,
+        onChange,
+        navRoute = "${Routes.GESTURE_SELECTOR}/$titleId/$key/$defaultValue"
+    )
 
     inner class StringBasedPref<T : Any>( // TODO migrate to @StringSelectionPref
         key: String, defaultValue: T,

@@ -159,6 +159,11 @@ import com.saggitt.omega.desktopPopupOptions
 import com.saggitt.omega.drawerLayoutOptions
 import com.saggitt.omega.drawerPopupOptions
 import com.saggitt.omega.drawerSortOptions
+import com.saggitt.omega.gestures.handlers.NotificationsOpenGestureHandler
+import com.saggitt.omega.gestures.handlers.OpenDashGestureHandler
+import com.saggitt.omega.gestures.handlers.OpenDrawerGestureHandler
+import com.saggitt.omega.gestures.handlers.OpenOverviewGestureHandler
+import com.saggitt.omega.gestures.handlers.StartGlobalSearchGestureHandler
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.iconpack.IconPackInfo
@@ -839,60 +844,52 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
 
     // NOTIFICATION & GESTURES
-    var gestureDoubleTap = StringPref(
+    var gestureDoubleTap = GesturePref(
         key = PREFS_GESTURE_DOUBLE_TAP,
         titleId = R.string.gesture_double_tap,
-        defaultValue = "",
-        navRoute = "gesture_selector/${R.string.gesture_double_tap}/$PREFS_GESTURE_DOUBLE_TAP",
+        defaultValue = OpenDashGestureHandler(context, null).toString(),
         onChange = restart
     )
-    var gestureLongPress = StringPref(
+    var gestureLongPress = GesturePref(
         key = PREFS_GESTURE_LONG_PRESS,
         titleId = R.string.gesture_long_press,
-        defaultValue = "",
-        navRoute = "gesture_selector/${R.string.gesture_long_press}/$PREFS_GESTURE_LONG_PRESS",
+        defaultValue = OpenOverviewGestureHandler(context, null).toString(),
         onChange = restart
     )
-    var gestureHomePress = StringPref(
+    var gestureHomePress = GesturePref(
         key = PREFS_GESTURE_HOME,
         titleId = R.string.gesture_press_home,
         defaultValue = "",
-        navRoute = "gesture_selector/${R.string.gesture_press_home}/$PREFS_GESTURE_HOME",
         onChange = restart
     )
-    var gestureBackPress = StringPref(
+    var gestureBackPress = GesturePref(
         key = PREFS_GESTURE_BACK,
         titleId = R.string.gesture_press_back,
         defaultValue = "",
-        navRoute = "gesture_selector/${R.string.gesture_press_back}/$PREFS_GESTURE_BACK",
         onChange = restart
     )
-    var gestureSwipeDown = StringPref(
+    var gestureSwipeDown = GesturePref(
         key = PREFS_GESTURE_SWIPE_DOWN,
         titleId = R.string.title__gesture_swipe_down,
-        defaultValue = "",
-        navRoute = "gesture_selector/${R.string.title__gesture_swipe_down}/$PREFS_GESTURE_SWIPE_DOWN",
+        defaultValue = NotificationsOpenGestureHandler(context, null).toString(),
         onChange = restart
     )
-    var gestureSwipeUp = StringPref(
+    var gestureSwipeUp = GesturePref(
         key = PREFS_GESTURE_SWIPE_UP,
         titleId = R.string.gesture_swipe_up,
-        defaultValue = "",
-        navRoute = "gesture_selector/${R.string.gesture_swipe_up}/$PREFS_GESTURE_SWIPE_UP",
+        defaultValue = OpenDrawerGestureHandler(context, null).toString(),
         onChange = restart
     )
-    var gestureDockSwipeUp = StringPref(
+    var gestureDockSwipeUp = GesturePref(
         key = PREFS_GESTURE_SWIPE_UP_DOCK,
         titleId = R.string.gesture_dock_swipe_up,
-        defaultValue = "",
-        navRoute = "gesture_selector/${R.string.gesture_dock_swipe_up}/$PREFS_GESTURE_SWIPE_UP_DOCK",
+        defaultValue = StartGlobalSearchGestureHandler(context, null).toString(),
         onChange = restart
     )
-    var gestureLaunchAssistant = StringPref(
+    var gestureLaunchAssistant = GesturePref(
         key = PREFS_GESTURE_ASSISTANT,
         titleId = R.string.gesture_launch_assistant,
-        defaultValue = "",
-        navRoute = "gesture_selector/${R.string.gesture_launch_assistant}/$PREFS_GESTURE_ASSISTANT",
+        defaultValue = OpenDashGestureHandler(context, null).toString(),
         onChange = restart
     )
 
