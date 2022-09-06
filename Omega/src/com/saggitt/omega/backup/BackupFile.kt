@@ -153,7 +153,7 @@ class BackupFile(context: Context, val uri: Uri) {
                     } else if (entry.name == "NeoLauncher.db-wal") {
                         if (contents and INCLUDE_HOME_SCREEN == 0) continue
                         contextWrapper.getDatabasePath("NeoLauncher.db-wal")
-                    } else if (entry.name == settingsFile.name) {
+                    } else if (entry.name.endsWith("_preferences.xml")) {
                         if (contents and INCLUDE_SETTINGS == 0) continue
                         settingsFile
                     } else if (entry.name == WALLPAPER_FILE_NAME) {
