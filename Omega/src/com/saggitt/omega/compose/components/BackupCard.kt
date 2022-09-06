@@ -67,7 +67,7 @@ fun BackupCard(
             metaLoader.meta?.preview?.second?.let {
                 Image(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(cornerRadius))
+                        .clip(RoundedCornerShape(topStart = cornerRadius, topEnd = cornerRadius))
                         .aspectRatio(1f)
                         .fillMaxWidth(),
                     bitmap = it.asImageBitmap(),
