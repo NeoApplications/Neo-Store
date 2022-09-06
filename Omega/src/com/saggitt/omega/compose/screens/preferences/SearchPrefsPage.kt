@@ -18,7 +18,9 @@
 package com.saggitt.omega.compose.screens.preferences
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -78,7 +80,7 @@ fun SearchPrefsPage() {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+                    .padding(horizontal = 8.dp),
                 contentPadding = paddingValues,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -102,6 +104,7 @@ fun SearchPrefsPage() {
                         prefs = feedPrefs,
                         onPrefDialog = onPrefDialog
                     )
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
 
