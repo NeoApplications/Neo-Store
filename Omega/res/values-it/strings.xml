@@ -18,9 +18,9 @@
     <string name="tab_bottom_sheet_save">Salva</string>
     <string name="app_categorization_folders">Cartelle</string>
     <string name="default_folder_name">Nuova cartella</string>
-    <string name="title__general_notifications">Gesti e notifiche</string>
+    <string name="title__general_notifications">Gesti e Notifiche</string>
     <string name="title__general_advanced">Impostazioni avanzate</string>
-    <string name="title__general_search">Ricerca e cartelle</string>
+    <string name="title__general_search">Ricerca e Cartelle</string>
     <string name="title__general_theme">Tema</string>
     <string name="title__general_about">Informazioni</string>
     <string name="title__desktop_grid_size">Dimensione griglia</string>
@@ -462,7 +462,7 @@
     <string name="section_apps">app</string>
     <string name="title__general_profile">Profilo</string>
     <string name="title__general_search_feed">Cerca &amp; Feed</string>
-    <string name="title__general_widgets_notifications">Widgets &amp; Notifiche</string>
+    <string name="title__general_widgets_notifications">Widget &amp; Notifiche</string>
     <string name="pref_category__features">Caratteristiche</string>
     <string name="title__general_gestures_dash">Gesti &amp; Pannello</string>
     <string name="pref_category__dash">Pannello</string>
