@@ -16,7 +16,6 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.saggitt.omega.compose.screens.editIconGraph
 import com.saggitt.omega.compose.screens.iconPickerGraph
-import com.saggitt.omega.compose.screens.preferences.aboutGraph
 import com.saggitt.omega.compose.screens.preferences.mainPrefsGraph
 import soup.compose.material.motion.materialSharedAxisX
 
@@ -43,6 +42,7 @@ object Routes {
     const val HIDDEN_APPS = "hidden_apps"
     const val PROTECTED_APPS = "protected_apps"
     const val EDIT_DASH = "edit_dash"
+    const val ICON_SHAPE = "icon_shape"
 }
 
 val LocalNavController = staticCompositionLocalOf<NavController> {
@@ -67,8 +67,6 @@ fun DefaultComposeView(navController: NavHostController) {
             popExitTransition = { motionSpec.exit.transition(isRtl, density) },
         ) {
             preferenceGraph(route = "/", { BlankScreen() }) { subRoute ->
-                aboutGraph(route = subRoute(Routes.ABOUT))
-                mainPrefsGraph(route = subRoute(Routes.PREFS_MAIN))
                 editIconGraph(route = subRoute(Routes.EDIT_ICON))
                 iconPickerGraph(route = subRoute(Routes.ICON_PICKER))
             }
