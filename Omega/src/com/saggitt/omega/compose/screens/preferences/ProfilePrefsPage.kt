@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraphBuilder
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.BaseDialog
@@ -39,6 +40,8 @@ import com.saggitt.omega.compose.components.preferences.IntSelectionPrefDialogUI
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.components.preferences.StringMultiSelectionPrefDialogUI
 import com.saggitt.omega.compose.components.preferences.StringSelectionPrefDialogUI
+import com.saggitt.omega.compose.navigation.Routes
+import com.saggitt.omega.compose.navigation.preferenceGraph
 import com.saggitt.omega.preferences.BasePreferences
 import com.saggitt.omega.preferences.custom.GridSize
 import com.saggitt.omega.theme.OmegaAppTheme
@@ -57,8 +60,8 @@ fun ProfilePrefsPage() {
         prefs.language,
         prefs.themePrefNew,
         prefs.themeAccentColor,
-        prefs.themeIconPackGlobal // TODO make more sophisticated
-        // TODO Missing icon shape pref page
+        prefs.themeIconPackGlobal, // TODO make more sophisticated
+        prefs.themeIconShapeX // TODO make more sophisticated
     )
     val others = listOf(
         prefs.themeBlurEnable,
@@ -117,5 +120,11 @@ fun ProfilePrefsPage() {
                 }
             }
         }
+    }
+}
+
+fun NavGraphBuilder.profilePrefsGraph(route: String) {
+    preferenceGraph(route, { ProfilePrefsPage() }) { subRoute ->
+        preferenceGraph(route = subRoute(Routes.ICON_SHAPE), { IconShapePage() })
     }
 }
