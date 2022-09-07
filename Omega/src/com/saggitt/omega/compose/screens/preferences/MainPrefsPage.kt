@@ -42,7 +42,6 @@ import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.compose.navigation.preferenceGraph
 import com.saggitt.omega.compose.navigation.subRoute
 import com.saggitt.omega.compose.objects.PageItem
-import com.saggitt.omega.compose.screens.gesturePageGraph
 import com.saggitt.omega.theme.OmegaAppTheme
 
 @Composable
@@ -135,10 +134,10 @@ fun NavGraphBuilder.mainPrefsGraph(route: String) {
         preferenceGraph(route = subRoute(Routes.PREFS_BACKUPS), { BackupsPrefPage() })
         preferenceGraph(route = subRoute(Routes.PREFS_DM), { BlankScreen() }) // TODO
         preferenceGraph(route = subRoute(Routes.PREFS_DEV), { DevPrefPage() })
-        gesturePageGraph(route = subRoute(Routes.PREFS_GESTURES))
+        gesturesPrefPageGraph(route = subRoute(Routes.PREFS_GESTURES))
         preferenceGraph(route = Routes.HIDDEN_APPS, { HiddenAppsPage() })
         preferenceGraph(route = Routes.PROTECTED_APPS, { ProtectedAppsPage() })
-        preferenceGraph(route = subRoute(Routes.EDIT_DASH), { EditDashPage() })
+        preferenceGraph(route = subRoute(Routes.ICON_SHAPE), { IconShapePage() })
         aboutGraph(route = subRoute(Routes.ABOUT))
     }
 }
