@@ -571,7 +571,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_WORK_PROFILE_SEPARATED,
         titleId = R.string.title_separate_work_apps,
         defaultValue = false,
-        onChange = recreate
+        onChange = restart
     )
     val drawerAppGroupsManager by lazy { AppGroupsManager(this) }
     val drawerTabs get() = drawerAppGroupsManager.drawerTabs
