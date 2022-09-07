@@ -141,7 +141,7 @@ fun GesturesPrefsPage() {
     }
 }
 
-fun NavGraphBuilder.gesturesPrefPageGraph(route: String) {
+fun NavGraphBuilder.gesturesPrefGraph(route: String) {
     preferenceGraph(route, { GesturesPrefsPage() }) { subRoute ->
         gesturesPageGraph(route = subRoute(Routes.GESTURE_SELECTOR))
         preferenceGraph(route = subRoute(Routes.EDIT_DASH), { EditDashPage() })
