@@ -173,7 +173,7 @@ fun StringSetPreference(
     isEnabled: Boolean = true,
 ) {
     val navController = LocalNavController.current
-    val route = pref.navRoute
+    val route = subRoute(pref.navRoute)
     BasePreference(
         modifier = modifier,
         titleId = pref.titleId,
