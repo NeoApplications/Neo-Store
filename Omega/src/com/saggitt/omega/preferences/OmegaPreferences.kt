@@ -99,6 +99,7 @@ import com.saggitt.omega.PREFS_GESTURE_SWIPE_UP_DOCK
 import com.saggitt.omega.PREFS_HIDDEN_SET
 import com.saggitt.omega.PREFS_ICON_PACK
 import com.saggitt.omega.PREFS_ICON_SHAPE
+import com.saggitt.omega.PREFS_ICON_SHAPE_X
 import com.saggitt.omega.PREFS_KEEP_SCROLL_STATE
 import com.saggitt.omega.PREFS_KILL
 import com.saggitt.omega.PREFS_LANGUAGE
@@ -707,7 +708,15 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
             .associateBy(IconPackInfo::packageName, IconPackInfo::name),
         onChange = reloadIcons
     )
-    var themeIconShape = StringBasedPref( // TODO convert to StringSelectionPref?
+
+    var themeIconShapeX = StringPref(
+        key = PREFS_ICON_SHAPE_X,
+        titleId = R.string.title__theme_icon_shape,
+        navRoute = "icon_shape",
+        onChange = doNothing
+    )
+
+    var themeIconShape = StringBasedPref(
         key = PREFS_ICON_SHAPE,
         titleId = R.string.title__theme_icon_shape,
         defaultValue = IconShape.Circle,
@@ -718,6 +727,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         toString = IconShape::toString,
         dispose = { /* no dispose */ }
     )
+
     var themeIconColoredBackground = BooleanPref(
         key = PREFS_COLORED_BACKGROUND,
         titleId = R.string.title_colored_backgrounds,

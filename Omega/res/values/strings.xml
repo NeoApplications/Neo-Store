@@ -176,7 +176,7 @@
     <string name="title__theme_accent_color">Accent Color</string>
     <string name="title__theme_blur">Blur</string>
     <string name="title__theme_blur_radius">Blur Intensity</string>
-    <string name="title__theme_icon_shape">Change icon shape</string>
+    <string name="title__theme_icon_shape">Icon shape</string>
     <string name="title_theme_icon_packs">Icon Packs</string>
     <string name="title_theme_customize_icons">Customize Icons</string>
     <string name="summary__theme_blur">Blur page backgrounds</string>

@@ -125,19 +125,16 @@ fun MainPrefsPage() {
 
 fun NavGraphBuilder.mainPrefsGraph(route: String) {
     preferenceGraph(route, { MainPrefsPage() }) { subRoute ->
-        preferenceGraph(route = subRoute(Routes.PREFS_PROFILE), { ProfilePrefsPage() })
+        profilePrefsGraph(route = subRoute(Routes.PREFS_PROFILE))
         preferenceGraph(route = subRoute(Routes.PREFS_DESKTOP), { DesktopPrefsPage() })
         preferenceGraph(route = subRoute(Routes.PREFS_DOCK), { DockPrefsPage() })
-        preferenceGraph(route = subRoute(Routes.PREFS_DRAWER), { DrawerPrefsPage() })
+        drawerPrefsGraph(route = subRoute(Routes.PREFS_DRAWER))
         preferenceGraph(route = subRoute(Routes.PREFS_WIDGETS), { WidgetsPrefsPage() })
         preferenceGraph(route = subRoute(Routes.PREFS_SEARCH), { SearchPrefsPage() })
         preferenceGraph(route = subRoute(Routes.PREFS_BACKUPS), { BackupsPrefPage() })
         preferenceGraph(route = subRoute(Routes.PREFS_DM), { BlankScreen() }) // TODO
         preferenceGraph(route = subRoute(Routes.PREFS_DEV), { DevPrefPage() })
-        gesturesPrefPageGraph(route = subRoute(Routes.PREFS_GESTURES))
-        preferenceGraph(route = Routes.HIDDEN_APPS, { HiddenAppsPage() })
-        preferenceGraph(route = Routes.PROTECTED_APPS, { ProtectedAppsPage() })
-        preferenceGraph(route = subRoute(Routes.ICON_SHAPE), { IconShapePage() })
-        aboutGraph(route = subRoute(Routes.ABOUT))
+        gesturesPrefGraph(route = subRoute(Routes.PREFS_GESTURES))
+        aboutPrefsGraph(route = subRoute(Routes.ABOUT))
     }
 }
