@@ -75,7 +75,7 @@ import com.saggitt.omega.util.Config
 import java.io.InputStream
 
 @OptIn(ExperimentalCoilApi::class)
-fun NavGraphBuilder.aboutGraph(route: String) {
+fun NavGraphBuilder.aboutPrefsGraph(route: String) {
     preferenceGraph(route, { AboutPage() }) { subRoute ->
         licenseGraph(route = subRoute(Routes.LICENSE))
         translatorsGraph(route = subRoute(Routes.TRANSLATORS))
