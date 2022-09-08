@@ -74,7 +74,7 @@ import com.saggitt.omega.PREFS_DRAWER_HIDE_LABEL
 import com.saggitt.omega.PREFS_DRAWER_ICON_LABEL_TWOLINES
 import com.saggitt.omega.PREFS_DRAWER_ICON_SCALE
 import com.saggitt.omega.PREFS_DRAWER_ICON_TEXT_SCALE
-import com.saggitt.omega.PREFS_DRAWER_LAYOUT
+import com.saggitt.omega.PREFS_DRAWER_LAYOUT_X
 import com.saggitt.omega.PREFS_DRAWER_POPUP
 import com.saggitt.omega.PREFS_DRAWER_POPUP_EDIT
 import com.saggitt.omega.PREFS_DRAWER_POPUP_UNINSTALL
@@ -122,7 +122,7 @@ import com.saggitt.omega.PREFS_SEARCH_PROVIDER
 import com.saggitt.omega.PREFS_SEARCH_SHOW_ASSISTANT
 import com.saggitt.omega.PREFS_SMARTSPACE_DATE
 import com.saggitt.omega.PREFS_SMARTSPACE_ENABLE
-import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDERS
+import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDERS_X
 import com.saggitt.omega.PREFS_SMARTSPACE_TIME
 import com.saggitt.omega.PREFS_SMARTSPACE_TIME_ABOVE
 import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_PROVIDER
@@ -585,7 +585,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = doNothing
     )
     val drawerLayoutNew = IntSelectionPref(
-        key = PREFS_DRAWER_LAYOUT,
+        key = PREFS_DRAWER_LAYOUT_X,
         titleId = R.string.title_drawer_layout,
         defaultValue = Config.DRAWER_VERTICAL,
         entries = drawerLayoutOptions,
@@ -954,7 +954,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
     var smartspaceEventProvidersNew =
         StringMultiSelectionPref( // TODO does order have a function? if so, customize dialog to respect it
-            key = PREFS_SMARTSPACE_EVENT_PROVIDERS,
+            key = PREFS_SMARTSPACE_EVENT_PROVIDERS_X,
             titleId = R.string.title_smartspace_event_providers,
             defaultValue = listOf(
                 SmartSpaceDataWidget::class.java.name,
