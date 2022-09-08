@@ -206,4 +206,10 @@
     <string name="show_screenshots_description">Mostra capturas na páxina da aplicación.</string>
     <string name="favorite_add">Engadir a favoritos</string>
     <string name="releases">Versións</string>
+    <string name="images_cache_retention">Retención da caché de imaxes</string>
+    <string name="releases_cache_retention">Retención da caché de APK descarregados</string>
+    <string name="share">Cuota</string>
+    <string name="auto_sync_interval">Intervalo de actualizacións (en minutos)</string>
+    <string name="favorite_applications">Favoritos</string>
+    <string name="dynamic">Sistema dinámico</string>
 </resources>
