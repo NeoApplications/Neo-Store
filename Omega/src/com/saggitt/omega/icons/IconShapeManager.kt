@@ -22,6 +22,7 @@ import android.content.Context
 import android.graphics.Path
 import android.graphics.Region
 import android.graphics.drawable.AdaptiveIconDrawable
+import com.android.launcher3.Utilities
 import com.android.launcher3.icons.GraphicsUtils
 import com.android.launcher3.icons.IconProvider
 import com.android.launcher3.util.MainThreadInitializedObject
@@ -30,6 +31,7 @@ class IconShapeManager(private val context: Context) {
     val systemIconShape = getSystemShape()
 
     private fun getSystemShape(): IconShape {
+        if (!Utilities.ATLEAST_OREO) throw RuntimeException("not supported on < oreo")
         val iconMask = AdaptiveIconDrawable(null, null).iconMask
         val systemShape = findNearestShape(iconMask)
         return object : IconShape(systemShape) {
