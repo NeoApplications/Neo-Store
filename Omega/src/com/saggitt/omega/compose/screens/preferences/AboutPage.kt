@@ -217,6 +217,7 @@ fun AboutPage() {
                 heading = stringResource(id = R.string.category__about_licenses),
                 prefs = listOf(PageItem.AboutLicense, PageItem.AboutChangelog)
             )
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
