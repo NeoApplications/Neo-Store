@@ -2,7 +2,6 @@ package com.saggitt.omega.preferences.views
 
 import android.os.Bundle
 import android.view.View
-import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
@@ -11,7 +10,6 @@ import com.jaredrummler.android.colorpicker.ColorPreferenceCompat
 import com.saggitt.omega.PREFS_ACCENT
 import com.saggitt.omega.PREFS_BLUR
 import com.saggitt.omega.PREFS_BLUR_RADIUS
-import com.saggitt.omega.PREFS_THEME
 import com.saggitt.omega.PREFS_WINDOWCORNER
 import com.saggitt.omega.PREFS_WINDOWCORNER_RADIUS
 import com.saggitt.omega.preferences.custom.SeekbarPreference

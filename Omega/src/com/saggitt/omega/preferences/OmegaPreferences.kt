@@ -74,7 +74,7 @@ import com.saggitt.omega.PREFS_DRAWER_HIDE_LABEL
 import com.saggitt.omega.PREFS_DRAWER_ICON_LABEL_TWOLINES
 import com.saggitt.omega.PREFS_DRAWER_ICON_SCALE
 import com.saggitt.omega.PREFS_DRAWER_ICON_TEXT_SCALE
-import com.saggitt.omega.PREFS_DRAWER_LAYOUT_X
+import com.saggitt.omega.PREFS_DRAWER_LAYOUT
 import com.saggitt.omega.PREFS_DRAWER_POPUP
 import com.saggitt.omega.PREFS_DRAWER_POPUP_EDIT
 import com.saggitt.omega.PREFS_DRAWER_POPUP_UNINSTALL
@@ -122,11 +122,9 @@ import com.saggitt.omega.PREFS_SEARCH_PROVIDER
 import com.saggitt.omega.PREFS_SEARCH_SHOW_ASSISTANT
 import com.saggitt.omega.PREFS_SMARTSPACE_DATE
 import com.saggitt.omega.PREFS_SMARTSPACE_ENABLE
-import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDER
-import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDERS_X
+import com.saggitt.omega.PREFS_SMARTSPACE_EVENT_PROVIDERS
 import com.saggitt.omega.PREFS_SMARTSPACE_TIME
 import com.saggitt.omega.PREFS_SMARTSPACE_TIME_ABOVE
-import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_ICONS
 import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_PROVIDER
 import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_UNITS
 import com.saggitt.omega.PREFS_SMARTSPACE_WIDGET_ID
@@ -587,7 +585,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = doNothing
     )
     val drawerLayoutNew = IntSelectionPref(
-        key = PREFS_DRAWER_LAYOUT_X,
+        key = PREFS_DRAWER_LAYOUT,
         titleId = R.string.title_drawer_layout,
         defaultValue = Config.DRAWER_VERTICAL,
         entries = drawerLayoutOptions,
@@ -938,14 +936,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = -1,
         onChange = doNothing
     )
-    var smartspaceWeatherIconPack = StringPref( // TODO convert to StringSelectionPref
-        key = PREFS_SMARTSPACE_WEATHER_ICONS,
-        titleId = -1,
-        defaultValue = "",
-        //entries = WeatherIconManager(context).getIconPacks()
-        //    .associateBy({ it::class.java.name }, WeatherIconManager.WeatherIconPack::name),
-        onChange = doNothing
-    )
+
     var smartspaceWeatherProvider = StringSelectionPref(
         key = PREFS_SMARTSPACE_WEATHER_PROVIDER,
         titleId = R.string.title_smartspace_widget_provider,
@@ -953,26 +944,20 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         entries = listOfNotNull(
             BlankDataProvider::class.java.name,
             SmartSpaceDataWidget::class.java.name,
-            if (PEWeatherDataProvider.isAvailable(context)) PEWeatherDataProvider::class.java.name else null,
-            //    if (this.showDebugInfo) FakeDataProvider::class.java.name else null
+            if (PEWeatherDataProvider.isAvailable(context)) PEWeatherDataProvider::class.java.name else null
         ).associateBy(
             keySelector = { it },
             valueTransform = { OmegaSmartSpaceController.getDisplayName(context, it) }
         ),
         onChange = ::updateSmartspaceProvider
     )
-    var smartspaceEventProvider = StringPref(
-        key = PREFS_SMARTSPACE_EVENT_PROVIDER,
-        titleId = -1,
-        defaultValue = SmartSpaceDataWidget::class.java.name,
-        onChange = ::updateSmartspaceProvider
-    )
+
     var smartspaceEventProvidersNew =
         StringMultiSelectionPref( // TODO does order have a function? if so, customize dialog to respect it
-            key = PREFS_SMARTSPACE_EVENT_PROVIDERS_X,
+            key = PREFS_SMARTSPACE_EVENT_PROVIDERS,
             titleId = R.string.title_smartspace_event_providers,
             defaultValue = listOf(
-                smartspaceEventProvider.onGetValue(),
+                SmartSpaceDataWidget::class.java.name,
                 NotificationUnreadProvider::class.java.name,
                 NowPlayingProvider::class.java.name,
                 BatteryStatusProvider::class.java.name,
@@ -994,7 +979,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = recreate
     )
-    val notificationBackground = ColorIntPref( // TODO workout alpha/shades/custom
+    val notificationBackground = ColorIntPref(
         key = PREFS_NOTIFICATION_BACKGROUND,
         titleId = R.string.title__notification_background,
         defaultValue = PINK.getValue(KEY_A400).toInt(),
