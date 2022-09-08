@@ -20,6 +20,7 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.saggitt.omega.compose.components.ActionDashItem
 import com.saggitt.omega.compose.components.ControlDashItem
 import com.saggitt.omega.compose.components.MusicBar
+import com.saggitt.omega.dash.actionprovider.AudioPlayer
 import kotlin.math.roundToInt
 
 // TODO add better support for horizontal
@@ -27,12 +28,18 @@ import kotlin.math.roundToInt
 fun DashPage() {
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
-    val allActionItems = DashEditAdapter.getDashActionProviders(context)
-    val allControlItems = DashEditAdapter.getDashControlProviders(context)
-    val activeDashProviders = prefs.dashProviders.getAll()
+    val activeDashProviders = prefs.dashProvidersItems.getAll()
+
+    val actionItems = DashEditAdapter.getDashActionProviders(context).filter {
+        it.javaClass.name in activeDashProviders && it.name != AudioPlayer::class.java.name
+    }
+    val controlItems = DashEditAdapter.getDashControlProviders(context).filter {
+        it.javaClass.name in activeDashProviders
+    }
     val musicManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     val lineSize = prefs.dashLineSize.onGetValue().roundToInt()
 
+    val displayItems = actionItems + controlItems
     LazyVerticalGrid(
         modifier = Modifier.fillMaxWidth(),
         columns = GridCells.Fixed(lineSize),
@@ -40,24 +47,25 @@ fun DashPage() {
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         contentPadding = PaddingValues(4.dp)
     ) {
-        if (activeDashProviders.contains("2")) item(span = { GridItemSpan(lineSize) }) { // TODO abstract DashProviders to Constants
+        if (activeDashProviders.contains(AudioPlayer::class.java.name)) item(
+            span = { GridItemSpan(lineSize) }) { // TODO abstract DashProviders to Constants
             MusicBar(
                 ratio = lineSize.toFloat(),
                 audioManager = musicManager,
             )
         }
-        itemsIndexed(items = activeDashProviders.mapNotNull { itemId ->
-            allControlItems.find { it.itemId.toString() == itemId }
-                ?: allActionItems.find { it.itemId.toString() == itemId && it.itemId != 2 }
-        }, span = { _, item ->
-            when (item) {
-                is DashControlProvider -> GridItemSpan(2)
-                else -> GridItemSpan(1)
-            }
-        }, key = { _: Int, item: DashProvider -> item.itemId }) { _, item ->
+        itemsIndexed(
+            items = displayItems,
+            span = { _, item ->
+                when (item) {
+                    is DashControlProvider -> GridItemSpan(2)
+                    else -> GridItemSpan(1)
+                }
+            },
+            key = { _: Int, item: DashProvider -> item.javaClass.name }) { _, item ->
             when (item) {
                 is DashControlProvider -> {
-                    val (enabled, enable) = remember {
+                    val enabled = remember {
                         mutableStateOf(item.state)
                     }
                     ControlDashItem(
@@ -66,10 +74,10 @@ fun DashPage() {
                         description = item.name,
                         ratio = 2.15f,
                         isExtendable = item.extendable,
-                        enabled = enabled,
+                        enabled = enabled.value,
                         onClick = {
-                            item.state = !enabled
-                            enable(!enabled)
+                            item.state = !enabled.value
+                            enabled.value = !enabled.value
                         }
                     )
                 }
