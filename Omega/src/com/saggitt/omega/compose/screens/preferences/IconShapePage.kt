@@ -83,7 +83,8 @@ fun IconShapePage() {
                     item = item,
                     checked = (currentShape.value.toString() == item.shapeName),
                     onClick = {
-                        currentShape.value = IconShape.fromString(item.shapeName)
+                        currentShape.value =
+                            IconShape.fromString(item.shapeName) ?: IconShape.Circle
                     }
                 )
             }

@@ -192,12 +192,6 @@ import kotlin.math.roundToInt
 
 class OmegaPreferences(val context: Context) : BasePreferences(context) {
 
-    /*private val onIconShapeChanged = {
-        initializeIconShape()
-        com.android.launcher3.graphics.IconShape.init(context)
-        LauncherAppState.getInstance(context).reloadIcons()
-    }*/
-
     // DESKTOP
     var desktopGridSizeDelegate = ResettableLazy {
         GridSize2D(
@@ -1114,8 +1108,23 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     private val scope = MainScope()
 
     init {
+        initializeIconShape(themeIconShape.onGetValue())
+        val systemShape = IconShapeManager.getSystemIconShape(context)
+        val iconShapes = arrayOf(
+            systemShape,
+            IconShape.Circle,
+            IconShape.Square,
+            IconShape.RoundedSquare,
+            IconShape.Squircle,
+            IconShape.Sammy,
+            IconShape.Teardrop,
+            IconShape.Cylinder,
+            IconShape.Cupertino
+        )
         scope.launch {
-            initializeIconShape(themeIconShape.onGetValue())
+            iconShapes.forEach {
+                initializeIconShape(it)
+            }
             com.android.launcher3.graphics.IconShape.init(context)
             LauncherAppState.getInstance(context).reloadIcons()
         }
