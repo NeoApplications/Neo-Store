@@ -50,7 +50,7 @@
     <string name="pref_category__incubating">Incubazione</string>
     <string name="title__about_donate">Donazioni</string>
     <string name="summary__dev_restart">Può essere utile se alcune impostazioni non sono state applicate correttamente</string>
-    <string name="backup_share_text">File di backup Omega</string>
+    <string name="backup_share_text">File di backup di Neo Launcher</string>
     <string name="restore_read_meta_fail">File di backup non valido</string>
     <string name="title__search_bar_radius">Raggio dell\'angolo</string>
     <string name="action_open_recents">Aperti di recente</string>
@@ -76,8 +76,9 @@
     <string name="icu_abbrev_wday_month_day_no_year">dMMMEEEE</string>
     <string name="full_wday_month_day_no_year">EEEE d MMMM</string>
     <plurals name="tab_apps_count">
-        <item quantity="one">App %1$d</item>
-        <item quantity="other">App %1$d</item>
+        <item quantity="one">%1$d App</item>
+        <item quantity="many">%1$d App</item>
+        <item quantity="other">%1$d App</item>
     </plurals>
     <string name="units_reaumur">Réaumur</string>
     <string name="units_delisle">Delisle</string>
@@ -90,7 +91,7 @@
     <string name="debug_component_name_copied">Copiato negli appunti.</string>
     <string name="debug_component_name">Nome componente</string>
     <string name="dismiss_drop_target_label">Non mostrare</string>
-    <string name="drag_to_enable_packs">Trascina verso l\'alto per disattivare</string>
+    <string name="drag_to_enable_packs">Trascina verso l\'alto per attivare</string>
     <string name="dash_device_settings_summary">Apri impostazioni dispositivo</string>
     <string name="dash_volume_summary">Visualizza il selettore audio del dispositivo</string>
     <string name="dash_launcher_settings_summary">Visualizza impostazioni launcher</string>
@@ -129,7 +130,7 @@
     <string name="developer_options_enabled">Opzioni sviluppatore abilitate</string>
     <string name="local_backups">In archivio</string>
     <string name="read_external_storage_required">Concedi l\'accesso allo spazio di archiviazione per creare un backup.</string>
-    <string name="backup_location_device_storage">Cartella Omega</string>
+    <string name="backup_location_device_storage">Cartella interna</string>
     <string name="backup_location">Posizione</string>
     <string name="backup_share_title">Condividi backup</string>
     <string name="restore_failed">Ripristino non riuscito</string>
@@ -305,7 +306,7 @@
     <string name="theme_auto">Segui lo sfondo</string>
     <string name="summary__theme_blur">Sfoca gli sfondi delle pagine</string>
     <string name="title_theme_icon_packs">Pacchetti icone</string>
-    <string name="title__theme_icon_shape">Cambia forma icona</string>
+    <string name="title__theme_icon_shape">Forma icona</string>
     <string name="title__theme_blur_radius">Intensità sfocatura</string>
     <string name="title__theme_blur">Sfocatura</string>
     <string name="title__theme_accent_color">Colore d\'accento</string>
@@ -317,7 +318,7 @@
     <string name="needs_usage_access">Accesso ai dati di utilizzo necessario</string>
     <string name="protected_app_reset">Ripristina app protette</string>
     <string name="hide_app_reset">Ripristina app nascoste</string>
-    <string name="hide_app_selected"> nascosto</string>
+    <string name="hide_app_selected">App nascoste (%1$d)</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d nascosto</item>
         <item quantity="other">%1$d nascosti</item>
@@ -397,7 +398,7 @@
     <string name="label_voice_search">Ricerca vocale</string>
     <string name="automatic_short">Auto</string>
     <string name="reset_to_default">Ripristina predefinito</string>
-    <string name="drag_to_disable_packs">Trascina verso il basso per attivare</string>
+    <string name="drag_to_disable_packs">Trascina verso il basso per disattivare</string>
     <string name="title_fuzzy_search">Ricerca approssimativa</string>
     <string name="summary_app_suggestions">Per tutte le app e la schermata Home</string>
     <string name="title_theme_customize_icons">Personalizza icone</string>
@@ -472,4 +473,7 @@
     <string name="section_contacts">Contatti</string>
     <string name="cat_dock_search">Cassetto e barra app</string>
     <string name="title_desktop_widget_corner_radius">Raggio dell\'angolo del widget</string>
+    <string name="title__drawer_rows">Numero di righe</string>
+    <string name="protected_apps">App protette</string>
+    <string name="protected_app_selected">App protette (%1$d)</string>
 </resources>
