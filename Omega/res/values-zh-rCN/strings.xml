@@ -87,9 +87,9 @@
     <string name="event_provider_unread_notifications">通知</string>
     <string name="local_backups">已存储的</string>
     <string name="read_external_storage_required">要创建备份，请授予存储权限。</string>
-    <string name="backup_location_device_storage">Omega 文件夹</string>
+    <string name="backup_location_device_storage">内部文件夹</string>
     <string name="backup_location">位置</string>
-    <string name="backup_share_text">Omega 备份文件</string>
+    <string name="backup_share_text">Neo Launcher 备份文件</string>
     <string name="backup_share_title">分享备份</string>
     <string name="restore_read_meta_fail">无效备份文件</string>
     <string name="backup_failed">备份失败</string>
@@ -222,14 +222,14 @@
     <string name="theme_auto">基于壁纸</string>
     <string name="summary__theme_blur">模糊页面背景</string>
     <string name="title_theme_icon_packs">图标集</string>
-    <string name="title__theme_icon_shape">改变图标形状</string>
+    <string name="title__theme_icon_shape">图标形状</string>
     <string name="title__theme_blur_radius">模糊程度</string>
     <string name="title__theme_blur">模糊</string>
     <string name="title__theme_accent_color">强调色</string>
     <string name="msg_missing_usage_access">要显示应用建议，打开 <xliff:g example="My App" id="name">%1$s</xliff:g> 的使用情况权限</string>
     <string name="needs_usage_access">需用使用权限</string>
     <string name="hide_app_reset">重置隐藏应用</string>
-    <string name="hide_app_selected"> 隐藏</string>
+    <string name="hide_app_selected">隐藏的应用 (%1$d)</string>
     <plurals name="hidden_apps_count">
         <item quantity="other">已隐藏 %1$d 个</item>
     </plurals>
@@ -316,8 +316,8 @@
     <string name="tab_bottom_sheet_save">保存</string>
     <string name="automatic_short">自动</string>
     <string name="reset_to_default">重置为默认</string>
-    <string name="drag_to_enable_packs">向上拖动以关闭</string>
-    <string name="drag_to_disable_packs">向下拖动以开启</string>
+    <string name="drag_to_enable_packs">向上拖动以开启</string>
+    <string name="drag_to_disable_packs">向下拖动以关闭</string>
     <string name="dash_device_settings_summary">打开设备设置</string>
     <string name="dash_volume_summary">显示设置音频选择器</string>
     <string name="dash_launcher_settings_summary">显示启动器设置</string>
