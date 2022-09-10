@@ -1,0 +1,7 @@
+Adicionar: Deslize o gesto para cima para as pastas
+ Adicionar: configuração do provedor do Feed
+ Correção: preferência de idioma
+ Atualização: Aumente o intervalo de grade/coluna para 2-16
+ Remover: Google App e Google GO como provedores de pesquisa
+ Remover: Gestos StartAppSearch, StartApp e TimeoutSleep
+ Muitas correções de falhas

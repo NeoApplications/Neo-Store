@@ -1,0 +1,7 @@
+Adicionar: Classifique os aplicativos por opção de cor
+ Adicionar: Siga o tema do papel de parede (preto)
+ Correção: falha ao abrir backup/restauração
+ Correção: barra superior do Tinting Drawer ao sair de um aplicativo
+ Correção: Ícones não sendo atualizados ao usar a forma de ícone personalizada
+ Remover: seguir o tema Daylight
+ Remover: provedor de dados meteorológicos OnePlus
