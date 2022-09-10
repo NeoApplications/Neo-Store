@@ -18,9 +18,9 @@
     <string name="tab_bottom_sheet_save">Salva</string>
     <string name="app_categorization_folders">Cartelle</string>
     <string name="default_folder_name">Nuova cartella</string>
-    <string name="title__general_notifications">Gesti e notifiche</string>
+    <string name="title__general_notifications">Gesti e Notifiche</string>
     <string name="title__general_advanced">Impostazioni avanzate</string>
-    <string name="title__general_search">Ricerca e cartelle</string>
+    <string name="title__general_search">Ricerca e Cartelle</string>
     <string name="title__general_theme">Tema</string>
     <string name="title__general_about">Informazioni</string>
     <string name="title__desktop_grid_size">Dimensione griglia</string>
@@ -54,7 +54,7 @@
     <string name="restore_read_meta_fail">File di backup non valido</string>
     <string name="title__search_bar_radius">Raggio dell\'angolo</string>
     <string name="action_open_recents">Aperti di recente</string>
-    <string name="smartspace_provider_calendar">Calendario eventi</string>
+    <string name="smartspace_provider_calendar">Eventi del calendario</string>
     <string name="allow">Consenti</string>
     <string name="title_smartspace_widget_provider">Sorgente meteo</string>
     <string name="import_icon">Importa icona</string>
@@ -304,7 +304,7 @@
     <string name="theme_auto_night_mode">Sistema</string>
     <string name="theme_auto">Segui lo sfondo</string>
     <string name="summary__theme_blur">Sfoca gli sfondi delle pagine</string>
-    <string name="title_theme_icon_packs">Pacchetti Icone</string>
+    <string name="title_theme_icon_packs">Pacchetti icone</string>
     <string name="title__theme_icon_shape">Cambia forma icona</string>
     <string name="title__theme_blur_radius">Intensità sfocatura</string>
     <string name="title__theme_blur">Sfocatura</string>
@@ -462,7 +462,7 @@
     <string name="section_apps">app</string>
     <string name="title__general_profile">Profilo</string>
     <string name="title__general_search_feed">Cerca &amp; Feed</string>
-    <string name="title__general_widgets_notifications">Widgets &amp; Notifiche</string>
+    <string name="title__general_widgets_notifications">Widget &amp; Notifiche</string>
     <string name="pref_category__features">Caratteristiche</string>
     <string name="title__general_gestures_dash">Gesti &amp; Pannello</string>
     <string name="pref_category__dash">Pannello</string>

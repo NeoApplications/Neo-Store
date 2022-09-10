@@ -430,4 +430,20 @@
     <string name="backup_create_new">创建新备份</string>
     <string name="backup_delete_failed">出错了</string>
     <string name="summary_app_suggestions">为所有应用和主屏幕</string>
+    <string name="folder_name">文件夹名称</string>
+    <string name="section_apps">应用</string>
+    <string name="section_web">网络</string>
+    <string name="icon_picker_load_failed">无法加载更多图标。</string>
+    <string name="title_search_contacts">搜索联系人</string>
+    <string name="section_contacts">联系人</string>
+    <string name="icon_picker_default_category">图标</string>
+    <string name="title_desktop_widget_corner_radius">微件圆角半径</string>
+    <string name="title_fuzzy_search">模糊搜索</string>
+    <string name="debug_options_title">调试信息</string>
+    <string name="accessibility_undo">撤销</string>
+    <string name="pref_category__features">功能</string>
+    <string name="theme_auto_black">跟随壁纸（黑色）</string>
+    <string name="app_name">应用名称</string>
+    <string name="tab_launcher">启动器</string>
+    <string name="tab_shortcuts">快捷方式</string>
 </resources>
