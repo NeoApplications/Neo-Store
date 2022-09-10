@@ -106,17 +106,15 @@ class AllAppsQsbLayout(context: Context, attrs: AttributeSet? = null) :
         val idp = LauncherAppState.getIDP(mContext)!!
         val dp: DeviceProfile = idp.getDeviceProfile(mContext)
         val myRequestedWidth = MeasureSpec.getSize(widthMeasureSpec)
-        val rowWidth = (myRequestedWidth - mAppsView.activeRecyclerView.paddingLeft
-                - mAppsView.activeRecyclerView.paddingRight)
 
         val cellWidth = DeviceProfile.calculateCellWidth(
-            rowWidth, dp.cellLayoutBorderSpacingPx,
+            myRequestedWidth, dp.cellLayoutBorderSpacingPx,
             dp.numShownHotseatIcons
         )
         val iconVisibleSize = (IconNormalizer.ICON_VISIBLE_AREA_FACTOR * dp.iconSizePx).roundToInt()
         val iconPadding = cellWidth - iconVisibleSize
 
-        val myWidth = rowWidth - iconPadding + paddingLeft + paddingRight
+        val myWidth = myRequestedWidth - iconPadding + paddingLeft + paddingRight
         super.onMeasure(
             MeasureSpec.makeMeasureSpec(myWidth, MeasureSpec.EXACTLY),
             heightMeasureSpec

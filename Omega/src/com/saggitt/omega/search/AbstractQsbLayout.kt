@@ -25,7 +25,11 @@ import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.*
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.InsetDrawable
+import android.graphics.drawable.RippleDrawable
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -34,7 +38,10 @@ import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
-import com.android.launcher3.*
+import com.android.launcher3.LauncherAppState
+import com.android.launcher3.R
+import com.android.launcher3.ResourceUtils
+import com.android.launcher3.Utilities
 import com.android.launcher3.graphics.IconShape
 import com.android.launcher3.graphics.NinePatchDrawHelper
 import com.android.launcher3.icons.ShadowGenerator.Builder
@@ -61,7 +68,6 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
 
     var micIconView: ImageView? = null
     var searchLogoView: ImageView? = null
-    private var lensIconView: ImageView? = null
 
     private var mAllAppsShadowBitmap: Bitmap? = null
     private var mClearBitmap: Bitmap? = null
@@ -107,41 +113,6 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
                 visibility = View.GONE
             }
         }
-
-        /*lensIconView = findViewById<ImageView?>(R.id.lens_icon).apply {
-
-            visibility =
-                if (searchProvider.packageName == Config.GOOGLE_QSB
-                    && searchProvider !is WebSearchProvider
-                    && prefs.showLensIcon
-                ) {
-                    setImageResource(R.drawable.ic_lens_color)
-
-                    setOnClickListener {
-                        val lensIntent = Intent()
-                        val bundle = Bundle()
-                        bundle.putString("caller_package", Config.GOOGLE_QSB)
-                        bundle.putLong(
-                            "start_activity_time_nanos",
-                            SystemClock.elapsedRealtimeNanos()
-                        )
-                        lensIntent.setComponent(
-                            ComponentName(
-                                Config.GOOGLE_QSB,
-                                Config.LENS_ACTIVITY
-                            )
-                        )
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            .setPackage(Config.GOOGLE_QSB)
-                            .setData(Uri.parse(Config.LENS_URI))
-                            .putExtra("lens_activity_params", bundle)
-                        mContext.startActivity(lensIntent)
-                    }
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-        }*/
 
         setOnClickListener {
             val provider = controller.searchProvider
@@ -207,8 +178,8 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
     /* Draw search bar background */
     private fun drawPill(helper: NinePatchDrawHelper, bitmap: Bitmap?, canvas: Canvas?) {
         val shadowDimens: Int = getShadowDimens(bitmap!!)
-        val left = paddingLeft - shadowDimens
         val top = paddingTop - (bitmap.height - getHeightWithoutPadding()) / 2
+        val left = paddingLeft - shadowDimens
         val right = width - paddingRight + shadowDimens
         helper.draw(bitmap, canvas, left.toFloat(), top.toFloat(), right.toFloat())
     }
@@ -280,23 +251,6 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
             background = micIconRipple
             setPadding(12, 12, 12, 12)
         }
-        lensIconView?.apply {
-            val lensIconRipple: RippleDrawable =
-                oldRipple.constantState!!.newDrawable().mutate() as RippleDrawable
-            lensIconRipple.setLayerInset(0, 0, 2, 0, 2)
-            background = lensIconRipple
-            setPadding(12, 12, 12, 12)
-        }
-        lensIconView?.requestLayout()
-    }
-
-    /*
-     * Get the searchbar width
-     */
-    open fun getMeasuredWidth(width: Int, dp: DeviceProfile): Int {
-        val leftRightPadding = (dp.desiredWorkspaceLeftRightMarginPx
-                + dp.cellLayoutPaddingLeftRightPx)
-        return width - leftRightPadding * 2
     }
 
     protected open fun getHeightWithoutPadding(): Int {
@@ -314,7 +268,7 @@ abstract class AbstractQsbLayout(context: Context, attrs: AttributeSet? = null) 
         return InsetDrawable(ripple, resources.getDimensionPixelSize(R.dimen.qsb_shadow_margin))
     }
 
-    protected fun getDevicePreferences(): SharedPreferences {
+    private fun getDevicePreferences(): SharedPreferences {
         val devicePrefs = Utilities.getPrefs(mContext)
         reloadPreferences(devicePrefs)
         return devicePrefs
