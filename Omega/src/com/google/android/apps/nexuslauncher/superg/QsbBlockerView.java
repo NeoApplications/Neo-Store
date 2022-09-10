@@ -22,11 +22,13 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.logging.StatsLogManager;
 import com.android.launcher3.model.data.ItemInfo;
 import com.saggitt.omega.OmegaAppKt;
+import com.saggitt.omega.preferences.OmegaPreferences;
 import com.saggitt.omega.smartspace.OmegaSmartSpaceController;
 import com.saggitt.omega.smartspace.OmegaSmartSpaceController.WeatherData;
 import com.saggitt.omega.smartspace.SmartSpacePreferencesShortcut;
 import com.saggitt.omega.util.ContextExtensionsKt;
 import com.saggitt.omega.util.OmegaUtilsKt;
+import com.saggitt.omega.util.Temperature;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -154,8 +156,9 @@ public class QsbBlockerView extends FrameLayout implements OmegaSmartSpaceContro
         ImageView weatherIcon = view.findViewById(R.id.weather_widget_icon);
         weatherIcon.setImageBitmap(weather.getIcon());
         TextView weatherTemperature = view.findViewById(R.id.weather_widget_temperature);
-        weatherTemperature.setText(weather.getTitle(
-                Utilities.getOmegaPrefs(getContext()).getSmartspaceWeatherUnit().onGetValue()));
+        OmegaPreferences prefs = Utilities.getOmegaPrefs(getContext());
+        String currentUnit = prefs.getSmartspaceWeatherUnit().onGetValue();
+        weatherTemperature.setText(weather.getTitle(Temperature.Companion.unitFromString(currentUnit)));
     }
 
     @Override

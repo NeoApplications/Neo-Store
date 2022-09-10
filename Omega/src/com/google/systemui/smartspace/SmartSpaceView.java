@@ -53,6 +53,7 @@ import com.saggitt.omega.smartspace.OmegaSmartSpaceController.CardData;
 import com.saggitt.omega.smartspace.OmegaSmartSpaceController.WeatherData;
 import com.saggitt.omega.smartspace.SmartSpacePreferencesShortcut;
 import com.saggitt.omega.util.OmegaUtilsKt;
+import com.saggitt.omega.util.Temperature;
 import com.saggitt.omega.views.SmartSpacePreview;
 
 import org.jetbrains.annotations.NotNull;
@@ -321,8 +322,9 @@ public class SmartSpaceView extends FrameLayout implements SmartSpaceUpdateListe
             container.setVisibility(View.VISIBLE);
             container.setOnClickListener(mWeatherClickListener);
             container.setOnLongClickListener(co());
-            title.setText(weather.getTitle(
-                    Utilities.getOmegaPrefs(getContext()).getSmartspaceWeatherUnit().onGetValue()));
+            OmegaPreferences prefs = Utilities.getOmegaPrefs(getContext());
+            String currentUnit = prefs.getSmartspaceWeatherUnit().onGetValue();
+            title.setText(weather.getTitle(Temperature.Companion.unitFromString(currentUnit)));
             icon.setImageBitmap(addShadowToBitmap(weather.getIcon()));
         } else {
             container.setVisibility(View.GONE);

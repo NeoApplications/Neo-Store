@@ -63,7 +63,7 @@ fun WidgetsPrefsPage() {
         prefs.smartspaceTime24H,
         prefs.smartspaceUsePillQsb,
         prefs.smartspaceWeatherProvider, // TODO
-        prefs.smartspaceWeatherUnit, // TODO
+        prefs.smartspaceWeatherUnit,
         prefs.smartspaceEventProvidersNew
     )
     val notificationsPrefs = listOf(

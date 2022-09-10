@@ -915,14 +915,21 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = recreate
     )
-    val smartspaceWeatherUnit = StringBasedPref(
+    val smartspaceWeatherUnit = StringSelectionPref(
         key = PREFS_SMARTSPACE_WEATHER_UNITS,
         titleId = R.string.title_smartspace_weather_units,
-        defaultValue = Temperature.Unit.Celsius,
-        onChange = ::updateSmartspaceProvider,
-        fromString = Temperature.Companion::unitFromString,
-        toString = Temperature.Companion::unitToString,
-        dispose = { }
+        defaultValue = Temperature.unitToString(Temperature.Unit.Celsius),
+        entries = listOfNotNull(
+            Temperature.unitToString(Temperature.Unit.Celsius),
+            Temperature.unitToString(Temperature.Unit.Fahrenheit),
+            Temperature.unitToString(Temperature.Unit.Kelvin)
+        ).associateBy(
+            keySelector = { it },
+            valueTransform = {
+                Temperature.unitFromString(it).name + " (${Temperature.unitFromString(it).suffix})"
+            }
+        ),
+        onChange = ::updateSmartspaceProvider
     )
     var smartspaceWidgetId = IntPref( // TODO abstract into it's own
         key = PREFS_SMARTSPACE_WIDGET_ID,
