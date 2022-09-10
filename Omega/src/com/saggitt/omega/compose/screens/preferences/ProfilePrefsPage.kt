@@ -61,7 +61,7 @@ fun ProfilePrefsPage() {
         prefs.themePrefNew,
         prefs.themeAccentColor,
         prefs.themeIconPackGlobal, // TODO make more sophisticated
-        prefs.themeIconShapeX // TODO make more sophisticated
+        prefs.themeIconShapeX
     )
     val others = listOf(
         prefs.themeBlurEnable,
