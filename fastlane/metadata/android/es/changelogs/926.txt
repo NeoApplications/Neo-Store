@@ -1,0 +1,7 @@
+Añadir: Ordenar aplicaciones por opción de color
+Añadir: Seguir fondo de pantalla (Negro) tema
+Fijar: Accidente en la apertura de copia de seguridad/ restauración
+Solución: la barra superior del cajón de tintado al salir de una aplicación
+Fijar: Los iconos no se actualiza cuando se utiliza la forma de icono personalizado
+Quitar: Seguir el tema Daylight
+Eliminar: proveedor de datos meteorológicos OnePlus

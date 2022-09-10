@@ -1,0 +1,12 @@
+Neo Launcher es una bifurcación del lanzador de AOSP para usuarios avanzados. Es altamente configurable y le ofrece mucha funcionalidad. Algunos son:
+
+ - El _Dash_.
+- Soporte de temas ricos.
+- Motores de búsqueda personalizados.
+- Gestos de apoyo.
+- Un único widget personalizado.
+- Categorías o carpetas en el cajón de aplicaciones.
+- Soporte para formas y paquetes de iconos.
+- Ocultar aplicaciones.
+
+Siempre hay novedades, así que estad atentos…
