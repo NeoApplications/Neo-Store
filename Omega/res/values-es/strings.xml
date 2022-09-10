@@ -81,13 +81,14 @@
     <string name="theme_with_dark_text">texto oscuro</string>
     <string name="theme_light">Claro</string>
     <string name="hide_app_reset">Reiniciar aplicaciones ocultas</string>
-    <string name="hide_app_selected"> oculto</string>
+    <string name="hide_app_selected">Aplicaciones Ocultas (%1$d)</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d Ocultas</item>
         <item quantity="other"/>
     </plurals>
     <plurals name="tab_apps_count">
         <item quantity="one">%1$d Aplicación</item>
+        <item quantity="many">%1$d Aplicaciones</item>
         <item quantity="other">%1$d Aplicaciones</item>
     </plurals>
     <string name="trust_apps_no_lock_error">Por favor, configura una pantalla de bloqueo segura para restringir el acceso a la aplicación</string>
@@ -99,7 +100,7 @@
     <string name="msg_disable_suggestions_prompt">Los datos de uso serán borrados.</string>
     <string name="title_disable_suggestions_prompt">Apagar sugerencias app</string>
     <string name="summary_all_apps_google_search">Buscar resultados web y aplicaciones</string>
-    <string name="title_all_apps_google_search">Búsqueda global</string>
+    <string name="title_all_apps_google_search">Resultados Webs</string>
     <string name="title__drawer_all_apps">Mostrar la etiqueta All Apps</string>
     <string name="title_disabled">Apagado</string>
     <string name="title__dock_hotseat_icons">Cantidad de Iconos</string>
@@ -189,8 +190,8 @@
     <string name="icon_shape_top_right">Superior derecha</string>
     <string name="icon_shape_squircle">Ardilla</string>
     <string name="icon_shape_override_label">Cambiar la forma de los iconos</string>
-    <string name="title__theme_icon_shape">Cambiar la silueta de los iconos</string>
-    <string name="title_search_hidden_apps">Encuentra accesos directos ocultos</string>
+    <string name="title__theme_icon_shape">Forma de Icono</string>
+    <string name="title_search_hidden_apps">Encuentra aplicaciones ocultas</string>
     <string name="title__drawer_hide_apps">Atajos de Aplicaciones ocultas</string>
     <string name="num_hotseat_icons_pref_title">Cantidad de Iconos</string>
     <string name="title_dock_two_row">Mostrar segunda fila</string>
@@ -326,7 +327,7 @@
     <string name="about_build_information">Informe de compilación</string>
     <string name="dash_launcher_settings_summary">Representa los parámetros del lanzador</string>
     <string name="dash_volume_summary">Represente el selector del dispositivo de sonido</string>
-    <string name="drag_to_disable_packs">Arrastrar debajo para encender</string>
+    <string name="drag_to_disable_packs">Arrastrar debajo para desactivar</string>
     <string name="launch_assistant">Asistencia de Lanzamiento</string>
     <string name="modify_system_settings">Modificar parámetros del sistema</string>
     <string name="pref_desktop_mode_settings">Parámetros del modo de escritorio</string>
@@ -401,7 +402,7 @@
     <string name="dash_sync">Sincronizar</string>
     <string name="dash_sync_summary">Encender o apagar sincronización.</string>
     <string name="dash_all_apps_summary">Muestra todos los botones de app</string>
-    <string name="drag_to_enable_packs">Arrastrar arriba para apagar</string>
+    <string name="drag_to_enable_packs">Arrastrar arriba para activar</string>
     <string name="dash_wifi">Wi-Fi</string>
     <string name="dash_wifi_summary">Estado Wi-Fi y conexión</string>
     <string name="dash_location_summary">Cambiar parámetros de posición</string>
@@ -417,8 +418,8 @@
     <string name="hide_app">Ocultar enlace</string>
     <string name="folder_cover_mode_desc">Lengüeta para abrir la primera app. Deslice arriba para verlo todo.</string>
     <string name="title_theme_customize_icons">Personalizar Iconos</string>
-    <string name="backup_share_text">Respaldo de Omega</string>
-    <string name="backup_location_device_storage">Carpeta de Omega</string>
+    <string name="backup_share_text">Archivo de respaldo de Neo Launcher</string>
+    <string name="backup_location_device_storage">Carpeta Interna</string>
     <string name="read_external_storage_required">Acceso al almacenaje concedido para crear un respaldo.</string>
     <string name="local_backups">En Almacenaje</string>
     <string name="about_channel">Canal</string>
@@ -427,7 +428,7 @@
     <string name="cat_desktop_grid">Rejilla y Disposición</string>
     <string name="title_app_categorization_enable">Habilitar categorías de apps</string>
     <string name="summary_app_categorization_enable">Crear lengüetas o carpetas</string>
-    <string name="permission_denied">Permiso denegado para lectura</string>
+    <string name="permission_denied">Permiso de lectura denegado</string>
     <string name="backup_name">Nombre del respaldo</string>
     <string name="backup_create_new">Crea un respaldo nuevo</string>
     <string name="backup_delete_failed">Algo fue mal</string>
@@ -441,4 +442,23 @@
     <string name="pref_category__features">Caracteristicas</string>
     <string name="title__general_gestures_dash">Gestos &amp; Dash</string>
     <string name="title__general_search_feed">Busqueda &amp; Feed</string>
+    <string name="accessibility_undo">Deshacer</string>
+    <string name="theme_auto_black">Seguir fondo de pantalla (Negro)</string>
+    <string name="tab_shortcuts">Accesos directos</string>
+    <string name="title_desktop_widget_corner_radius">Radio de Widget</string>
+    <string name="section_contacts">Contactos</string>
+    <string name="debug_options_title">Informacion de debug</string>
+    <string name="app_name">Nombre de la aplicacion</string>
+    <string name="tab_launcher">Lanzador</string>
+    <string name="pref_category__dash">Dash</string>
+    <string name="title__feed">Feed</string>
+    <string name="icon_picker_load_failed">No se pudieron cargar mas iconos.</string>
+    <string name="section_apps">Aplicaciones</string>
+    <string name="cat_dock_search">Aplicaciones y Dock</string>
+    <string name="title__drawer_rows">Numero de Filas</string>
+    <string name="protected_apps">Aplicaciones Protegidas</string>
+    <string name="protected_app_selected">Aplicaciones Protegidas (%1$d)</string>
+    <string name="icon_picker_default_category">Iconos</string>
+    <string name="section_web">Web</string>
+    <string name="title_search_contacts">Buscar contactos</string>
 </resources>
