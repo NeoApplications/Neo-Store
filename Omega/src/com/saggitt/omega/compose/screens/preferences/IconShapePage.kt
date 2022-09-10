@@ -19,17 +19,24 @@
 package com.saggitt.omega.compose.screens.preferences
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -37,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.components.ViewWithActionBar
+import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.icons.IconShape
 import com.saggitt.omega.icons.IconShapeItem
 import com.saggitt.omega.icons.IconShapeManager
@@ -61,7 +69,8 @@ fun IconShapePage() {
             IconShape.Cupertino
         )
         val listItems = iconShapes.map { ShapeModel(it.toString(), false) }
-        LazyVerticalGrid(
+
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
@@ -70,23 +79,60 @@ fun IconShapePage() {
                     end = 8.dp,
                     bottom = paddingValues.calculateBottomPadding() + 8.dp
                 ),
-            columns = GridCells.Fixed(4),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            contentPadding = PaddingValues(8.dp)
         ) {
-            itemsIndexed(
-                items = listItems,
-                span = { _, _ -> GridItemSpan(1) },
-                key = { _: Int, item: ShapeModel -> item.shapeName }) { _, item ->
-                IconShapeItem(
-                    item = item,
-                    checked = (currentShape.value.toString() == item.shapeName),
-                    onClick = {
-                        currentShape.value =
-                            IconShape.fromString(item.shapeName) ?: IconShape.Circle
-                    }
-                )
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(4),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                contentPadding = PaddingValues(8.dp)
+            ) {
+                itemsIndexed(
+                    items = listItems,
+                    span = { _, _ -> GridItemSpan(1) },
+                    key = { _: Int, item: ShapeModel -> item.shapeName }) { _, item ->
+                    IconShapeItem(
+                        item = item,
+                        checked = (currentShape.value.toString() == item.shapeName),
+                        onClick = {
+                            currentShape.value =
+                                IconShape.fromString(item.shapeName) ?: IconShape.Circle
+                        }
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Divider(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp)
+                    .height(1.dp)
+            )
+
+            val openDialog = remember { mutableStateOf(false) }
+            var dialogPref by remember { mutableStateOf<Any?>(null) }
+            val onPrefDialog = { pref: Any ->
+                dialogPref = pref
+                openDialog.value = true
+            }
+
+            val iconPrefs = listOf(
+                prefs.themeIconAdaptify,
+                prefs.themeIconColoredBackground
+            )
+
+            LazyColumn(
+                modifier = Modifier
+                    .padding(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item {
+                    PreferenceGroup(
+                        heading = null,
+                        prefs = iconPrefs,
+                        onPrefDialog = onPrefDialog
+                    )
+                }
             }
         }
     }
