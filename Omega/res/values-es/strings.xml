@@ -428,7 +428,7 @@
     <string name="cat_desktop_grid">Rejilla y Disposición</string>
     <string name="title_app_categorization_enable">Habilitar categorías de apps</string>
     <string name="summary_app_categorization_enable">Crear lengüetas o carpetas</string>
-    <string name="permission_denied">Permiso de lectura denegado</string>
+    <string name="permission_denied">¡Permiso de lectura denegado!</string>
     <string name="backup_name">Nombre del respaldo</string>
     <string name="backup_create_new">Crea un respaldo nuevo</string>
     <string name="backup_delete_failed">Algo fue mal</string>
