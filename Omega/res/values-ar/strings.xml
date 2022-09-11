@@ -33,7 +33,7 @@
     <string name="msg_missing_usage_access">تشغيل الوصول إلى الاستخدام ل <xliff:g example="My App" id="name">%1$s</xliff:g> لعرض اقتراحات التطبيق</string>
     <string name="needs_usage_access">يحتاج ألوصول للأستخدام</string>
     <string name="hide_app_reset">إعادة تعيين التطبيقات المخفية</string>
-    <string name="hide_app_selected"> مخفي</string>
+    <string name="hide_app_selected">التطبيقات المخفية (%1$d)</string>
     <plurals name="hidden_apps_count">
         <item quantity="zero">%1$d مخفي</item>
         <item quantity="one"/>
@@ -255,8 +255,8 @@
     <string name="label_voice_search">البحث الصوتي</string>
     <string name="automatic_short">تلقائي</string>
     <string name="reset_to_default">إعادة التعيين إلى الوضع الافتراضي</string>
-    <string name="drag_to_enable_packs">اسحب لأعلى للإيقاف</string>
-    <string name="drag_to_disable_packs">اسحب لأسفل للتشغيل</string>
+    <string name="drag_to_enable_packs">اسحب لأعلى للتشغيل</string>
+    <string name="drag_to_disable_packs">اسحب لأسفل لإيقاف التشغيل</string>
     <string name="dash_device_settings_summary">افتح إعدادات الجهاز</string>
     <string name="dash_volume_summary">اعرض محدد الصوت للجهاز</string>
     <string name="dash_launcher_settings_summary">عرض اعدادات الانشر</string>
@@ -294,9 +294,9 @@
     <string name="developer_options_enabled">خيارات المطور مفعلة</string>
     <string name="local_backups">في التخزين</string>
     <string name="read_external_storage_required">منح صلاحية الوصول إلى التخزين لإنشاء نسخة احتياطية.</string>
-    <string name="backup_location_device_storage">مجلد أوميغا</string>
+    <string name="backup_location_device_storage">الملف الداخلي</string>
     <string name="backup_location">موقع</string>
-    <string name="backup_share_text">ملف النسخ الاحتياطي لأوميغا</string>
+    <string name="backup_share_text">ملف النسخ الاحتياطي Neo Launcher</string>
     <string name="backup_share_title">شارك النسخ الاحتياطية</string>
     <string name="restore_read_meta_fail">ملف النسخ الاحتياطي غير صالح</string>
     <string name="restore_failed">الاستعادة فشلت</string>
@@ -465,4 +465,7 @@
     <string name="section_contacts">جهات الاتصال</string>
     <string name="cat_dock_search">درج التطبيقات وشريط الارساء</string>
     <string name="title_desktop_widget_corner_radius">زاوية القطعة الذكية</string>
+    <string name="title__drawer_rows">عدد الصفوف</string>
+    <string name="protected_apps">التطبيقات المحمية</string>
+    <string name="protected_app_selected">التطبيقات المحمية (%1$d)</string>
 </resources>
