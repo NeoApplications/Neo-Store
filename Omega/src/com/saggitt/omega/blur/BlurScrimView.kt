@@ -35,7 +35,7 @@ import kotlin.math.roundToInt
 class BlurScrimView(context: Context, attrs: AttributeSet?) : ScrimView(context, attrs),
     OmegaPreferences.OnPreferenceChangeListener, BlurWallpaperProvider.Listener {
     private val prefs = OmegaPreferences.getInstance(context)
-    private var drawerOpacity = prefs.drawerBackgroundColor.onGetValue().alpha / 255f
+    private var drawerOpacity = prefs.drawerOpacity.onGetValue()
 
     private val prefsToWatch = arrayOf(PREFS_DRAWER_OPACITY)
     private val blurDrawableCallback by lazy {

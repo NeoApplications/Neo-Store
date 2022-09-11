@@ -63,6 +63,7 @@ import com.saggitt.omega.PREFS_DOCK_COLUMNS
 import com.saggitt.omega.PREFS_DOCK_COLUMNS_RAW
 import com.saggitt.omega.PREFS_DOCK_HIDE
 import com.saggitt.omega.PREFS_DOCK_ICON_SCALE
+import com.saggitt.omega.PREFS_DOCK_OPACITY
 import com.saggitt.omega.PREFS_DOCK_SCALE
 import com.saggitt.omega.PREFS_DOCK_SEARCH
 import com.saggitt.omega.PREFS_DRAWER_BACKGROUND_COLOR
@@ -75,6 +76,7 @@ import com.saggitt.omega.PREFS_DRAWER_ICON_LABEL_TWOLINES
 import com.saggitt.omega.PREFS_DRAWER_ICON_SCALE
 import com.saggitt.omega.PREFS_DRAWER_ICON_TEXT_SCALE
 import com.saggitt.omega.PREFS_DRAWER_LAYOUT_X
+import com.saggitt.omega.PREFS_DRAWER_OPACITY
 import com.saggitt.omega.PREFS_DRAWER_POPUP
 import com.saggitt.omega.PREFS_DRAWER_POPUP_EDIT
 import com.saggitt.omega.PREFS_DRAWER_POPUP_UNINSTALL
@@ -459,7 +461,14 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_DOCK_BACKGROUND_COLOR,
         titleId = R.string.title_dock_background_color,
         defaultValue = (0xff101010).toInt(),
-        withAlpha = true,
+        withAlpha = false,
+        onChange = recreate
+    )
+
+    var dockOpacity = AlphaPref(
+        key = PREFS_DOCK_OPACITY,
+        titleId = R.string.title_opacity,
+        defaultValue = 0f,
         onChange = recreate
     )
 
@@ -637,10 +646,15 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_DRAWER_BACKGROUND_COLOR,
         titleId = R.string.title_dock_background_color,
         defaultValue = (0xff101010).toInt(),
-        withAlpha = true,
+        withAlpha = false,
         onChange = recreate
     )
-
+    val drawerOpacity = AlphaPref(
+        key = PREFS_DRAWER_OPACITY,
+        titleId = R.string.title_opacity,
+        defaultValue = 1f,
+        onChange = recreate
+    )
 
     // PROFILE: LANGUAGE & THEME
     var language = StringSelectionPref(

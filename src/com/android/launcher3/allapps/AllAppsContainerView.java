@@ -159,7 +159,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         mLauncher = BaseDraggingActivity.fromContext(context);
         prefs = Utilities.getOmegaPrefs(context);
 
-        float drawerOpacity = ((float) Color.alpha(prefs.getDrawerBackgroundColor().onGetValue())) / 255;
+        float drawerOpacity = prefs.getDrawerOpacity().onGetValue();
         mScrimIsTranslucent = drawerOpacity < 1f;
 
         if (prefs.getDrawerBackground().onGetValue()) {

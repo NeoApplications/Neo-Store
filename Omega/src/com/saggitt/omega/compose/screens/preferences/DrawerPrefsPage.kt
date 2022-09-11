@@ -81,6 +81,7 @@ fun DrawerPrefsPage() {
         prefs.drawerProtectedAppsSet,
         prefs.drawerBackground,
         prefs.drawerBackgroundColor,
+        prefs.drawerOpacity
     )
 
     OmegaAppTheme {

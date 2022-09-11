@@ -47,7 +47,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.alpha
 import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
@@ -389,7 +388,7 @@ fun <T> JSONArray.toArrayList(): ArrayList<T> {
 
 fun overrideAllAppsTextColor(textView: TextView) {
     val context = textView.context
-    val opacity = context.omegaPrefs.drawerBackgroundColor.onGetValue().alpha / 255f
+    val opacity = context.omegaPrefs.drawerOpacity.onGetValue()
     if (opacity <= 0.3f) {
         textView.setTextColor(Themes.getAttrColor(context, R.attr.allAppsAlternateTextColor))
     }
