@@ -1,0 +1,32 @@
+Un rápido cliente de F-Droid con deseño material
+
+Características:
+
+* Deseño Material para F-Droid
+* Sen cartóns ou animacións inapropiadas
+* Rápida sincronización de repositorios
+* Compoñentes estándar do Android e dependencias mínimas
+
+Dispoñíbel en:
+
+- Portugués do Brasil
+- Inglés
+- Finés
+- Francés
+- Alemán
+- Grego
+- Húngaro
+- Italiano
+- Noruegués Bokmål
+- Árabe peninsular
+- Polaco
+- Ruso
+- Chinés simplificado
+- Castelán
+- Turco
+- Ucraíno
+
+Unha adaptación/modificación directa do Foxy-Droid
+
+Software libre "Copyleft", baixo licenza GPLv3+. \
+Use, estude, cambie, e compartille con todos.
