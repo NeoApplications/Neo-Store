@@ -28,7 +28,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import androidx.core.content.FileProvider
-import com.android.launcher3.BuildConfig
+import androidx.documentfile.provider.DocumentFile
 import com.android.launcher3.LauncherFiles
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
@@ -196,7 +196,11 @@ class BackupFile(context: Context, val uri: Uri) {
     }
 
     fun delete(): Boolean {
-        return mContext.contentResolver.delete(uri, null, null) != 0
+        return try {
+            mContext.contentResolver.delete(uri, null, null) != 0
+        } catch (e: UnsupportedOperationException) {
+            DocumentFile.fromSingleUri(mContext, uri)?.delete() ?: false
+        }
     }
 
     fun share(context: Context) {
