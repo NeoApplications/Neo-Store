@@ -304,5 +304,11 @@
         <meta-data
             android:name="com.samsung.android.non_immersive"
             android:value="true" />
+
+        <provider
+            android:name="com.saggitt.omega.FilesProvider"
+            android:authorities="com.saggitt.omega.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" />
     </application>
 </manifest>
