@@ -73,7 +73,6 @@ import com.saggitt.omega.compose.components.DialogPositiveButton
 import com.saggitt.omega.compose.components.MultiSelectionListItem
 import com.saggitt.omega.compose.components.SingleSelectionListItem
 import com.saggitt.omega.util.getTimestampForFile
-import com.saggitt.omega.util.omegaPrefs
 import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -116,7 +115,11 @@ fun CreateBackupDialogUI(
                     resultUri,
                     selectedContent
                 ) { success ->
-                    if (success) context.omegaPrefs.recentBackups.add(resultUri)
+                    if (success
+                        && !BackupFile.listLocalBackups(context)
+                            .map { it.meta?.name }
+                            .contains(name)
+                    ) prefs.recentBackups.add(resultUri)
                     else { // TODO show a response that backup failed
                     }
                     openDialogCustom.value = false
@@ -237,7 +240,11 @@ fun CreateBackupDialogUI(
                                     uri,
                                     selectedContent
                                 ) { success ->
-                                    if (success) context.omegaPrefs.recentBackups.add(uri)
+                                    if (success
+                                        && !BackupFile.listLocalBackups(context)
+                                            .map { it.meta?.name }
+                                            .contains(name)
+                                    ) prefs.recentBackups.add(uri)
                                     else { // TODO show a response that backup failed
                                     }
                                     openDialogCustom.value = false

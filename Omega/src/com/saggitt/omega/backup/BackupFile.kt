@@ -324,12 +324,13 @@ class BackupFile(context: Context, val uri: Uri) {
         }
 
         fun listLocalBackups(context: Context): List<BackupFile> {
-            return getFolder(context).listFiles { file -> file.extension == EXTENSION }
+            return getFolder(context)
+                .listFiles()
                 ?.sortedByDescending { it.lastModified() }
                 ?.map {
                     FileProvider.getUriForFile(
                         context,
-                        "${BuildConfig.APPLICATION_ID}.overview.fileprovider",
+                        "com.saggitt.omega.fileprovider",
                         it
                     )
                 }

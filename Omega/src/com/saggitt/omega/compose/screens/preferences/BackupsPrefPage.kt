@@ -56,7 +56,8 @@ fun BackupsPrefPage() {
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
     val openDialog = remember { mutableStateOf(false) }
-    val localBackups by remember(openDialog.value) {
+    val refresh = remember { mutableStateOf(false) }
+    val localBackups by remember(openDialog.value, refresh.value) {
         mutableStateOf(
             BackupFile.listLocalBackups(context)
                 .plus(prefs.recentBackups.onGetValue().map { BackupFile(context, it) }
@@ -76,9 +77,9 @@ fun BackupsPrefPage() {
                     resultUri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
-                if (!localBackups.map(BackupFile::uri).contains(resultUri)) {
-                    prefs.recentBackups.add(resultUri)
-                }
+                if (!localBackups.map(BackupFile::uri).contains(resultUri)
+                    && !BackupFile.listLocalBackups(context).map { it.uri }.contains(resultUri)
+                ) prefs.recentBackups.add(resultUri)
 
                 onDialog(BackupFile(context, resultUri))
             }
@@ -128,7 +129,10 @@ fun BackupsPrefPage() {
                                 it.share(context)
                             },
                             onDelete = {
-                                if (it.delete()) prefs.recentBackups.remove(it.uri)
+                                if (it.delete()) {
+                                    prefs.recentBackups.remove(it.uri)
+                                    refresh.value = !refresh.value
+                                }
                             }
                         ) {
                             onDialog(it)
