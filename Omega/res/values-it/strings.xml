@@ -309,7 +309,7 @@
     <string name="title__theme_icon_shape">Forma icona</string>
     <string name="title__theme_blur_radius">Intensità sfocatura</string>
     <string name="title__theme_blur">Sfocatura</string>
-    <string name="title__theme_accent_color">Colore d\'accento</string>
+    <string name="title__theme_accent_color">Colore dettagli</string>
     <string name="disable_protected_apps_message">Disattiva le app protette che richiedono l\'autenticazione</string>
     <string name="disable_protected_apps">Disattiva app protette</string>
     <string name="enable_protected_apps">Abilita app protette</string>
