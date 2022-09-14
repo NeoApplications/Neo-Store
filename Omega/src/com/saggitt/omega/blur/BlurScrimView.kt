@@ -107,9 +107,7 @@ class BlurScrimView(context: Context, attrs: AttributeSet?) : ScrimView(context,
     override fun onValueChanged(key: String, prefs: OmegaPreferences, force: Boolean) {
         when (key) {
             PREFS_DRAWER_OPACITY -> {
-                mEndAlpha = (prefs.drawerBackgroundColor.onGetValue().alpha / 255f)
-                    .roundToInt()
-                    .takeIf { it > 0 }
+                mEndAlpha = prefs.drawerOpacity.onGetValue().roundToInt().takeIf { it > 0 }
                     ?: defaultEndAlpha
                 updateSysUiColors()
             }

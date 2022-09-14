@@ -47,6 +47,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import androidx.dynamicanimation.animation.FloatPropertyCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
@@ -63,6 +64,7 @@ import com.android.launcher3.views.OptionsPopupView
 import com.saggitt.omega.allapps.AppColorComparator
 import com.saggitt.omega.allapps.AppUsageComparator
 import com.saggitt.omega.data.AppTrackerRepository
+import com.saggitt.omega.preferences.OmegaPreferences
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.reflect.Field
@@ -71,6 +73,7 @@ import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
 import kotlin.math.ceil
+import kotlin.math.roundToInt
 import kotlin.random.Random
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
@@ -395,12 +398,14 @@ fun overrideAllAppsTextColor(textView: TextView) {
 }
 
 fun getAllAppsScrimColor(context: Context): Int {
+    val opacity = OmegaPreferences.getInstance(context).drawerOpacity.onGetValue()
     val scrimColor = if (context.omegaPrefs.drawerBackground.onGetValue()) {
         context.omegaPrefs.drawerBackgroundColor.onGetValue()
     } else {
         Themes.getAttrColor(context, R.attr.allAppsScrimColor)
     }
-    return scrimColor
+    val alpha = (opacity * 255).roundToInt()
+    return ColorUtils.setAlphaComponent(scrimColor, alpha)
 }
 
 fun openURLinBrowser(context: Context, url: String?) {
