@@ -18,17 +18,24 @@
 
 package com.saggitt.omega.preferences
 
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Bundle
+import android.provider.Settings
 import com.android.launcher3.LauncherAppState
 import com.android.launcher3.R
 import com.android.launcher3.SessionCommitReceiver.ADD_ICON_PREFERENCE_KEY
 import com.android.launcher3.Utilities
 import com.android.launcher3.Utilities.makeComponentKey
+import com.android.launcher3.notification.NotificationListener
+import com.android.launcher3.settings.SettingsActivity
 import com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.MainThreadInitializedObject
+import com.android.launcher3.util.SettingsCache
 import com.android.launcher3.util.Themes
 import com.saggitt.omega.ALL_MATERIAL_COLORS
 import com.saggitt.omega.KEY_A400
@@ -172,6 +179,7 @@ import com.saggitt.omega.icons.IconShape
 import com.saggitt.omega.icons.IconShapeManager
 import com.saggitt.omega.preferences.custom.GridSize
 import com.saggitt.omega.preferences.custom.GridSize2D
+import com.saggitt.omega.preferences.views.PrefsGesturesFragment.Companion.NOTIFICATION_ENABLED_LISTENERS
 import com.saggitt.omega.search.SearchProviderController
 import com.saggitt.omega.smartspace.BlankDataProvider
 import com.saggitt.omega.smartspace.OmegaSmartSpaceController
@@ -852,7 +860,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     )
 
 
-    // NOTIFICATION & GESTURES
+    // GESTURES
     var gestureDoubleTap = GesturePref(
         key = PREFS_GESTURE_DOUBLE_TAP,
         titleId = R.string.gesture_double_tap,
@@ -993,6 +1001,63 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
             withIcons = true,
             onChange = ::updateSmartspaceProvider
         )
+    val notificationDots = IntentLauncherPref(
+        key = PREFS_NOTIFICATION_COUNT,
+        titleId = R.string.notification_dots_title,
+        summaryId = run {
+            val enabledListeners = Settings.Secure.getString(
+                context.contentResolver,
+                NOTIFICATION_ENABLED_LISTENERS
+            )
+            val myListener = ComponentName(context, NotificationListener::class.java)
+            val serviceEnabled = enabledListeners != null &&
+                    (enabledListeners.contains(myListener.flattenToString()) ||
+                            enabledListeners.contains(myListener.flattenToShortString()))
+            if (serviceEnabled) R.string.notification_dots_disabled
+            else R.string.notification_dots_missing_notification_access
+        },
+        positiveAnswerId = R.string.title_change_settings,
+        defaultValue = false,
+        getter = {
+            val enabledListeners = Settings.Secure.getString(
+                context.contentResolver,
+                NOTIFICATION_ENABLED_LISTENERS
+            )
+            val myListener = ComponentName(context, NotificationListener::class.java)
+            val serviceEnabled = enabledListeners != null &&
+                    (enabledListeners.contains(myListener.flattenToString()) ||
+                            enabledListeners.contains(myListener.flattenToShortString()))
+            serviceEnabled && SettingsCache.INSTANCE[context]
+                .getValue(SettingsCache.NOTIFICATION_BADGING_URI)
+        },
+        intent = {
+            val enabledListeners = Settings.Secure.getString(
+                context.contentResolver,
+                NOTIFICATION_ENABLED_LISTENERS
+            )
+            val myListener = ComponentName(context, NotificationListener::class.java)
+            val serviceEnabled = enabledListeners != null &&
+                    (enabledListeners.contains(myListener.flattenToString()) ||
+                            enabledListeners.contains(myListener.flattenToShortString()))
+            if (serviceEnabled) {
+                val extras = Bundle()
+                extras.putString(SettingsActivity.EXTRA_FRAGMENT_ARG_KEY, "notification_badging")
+                Intent("android.settings.NOTIFICATION_SETTINGS")
+                    .putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGS, extras)
+            } else {
+                val cn = ComponentName(context, NotificationListener::class.java)
+                val showFragmentArgs = Bundle()
+                showFragmentArgs.putString(
+                    SettingsActivity.EXTRA_FRAGMENT_ARG_KEY,
+                    cn.flattenToString()
+                )
+                Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra(SettingsActivity.EXTRA_FRAGMENT_ARG_KEY, cn.flattenToString())
+                    .putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGS, showFragmentArgs)
+            }
+        }
+    )
     val notificationCount = BooleanPref(
         key = PREFS_NOTIFICATION_COUNT,
         titleId = R.string.title__notification_count,

@@ -20,6 +20,7 @@ package com.saggitt.omega.preferences
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.annotation.StringRes
 import com.android.launcher3.InvariantDeviceProfile
@@ -265,6 +266,21 @@ abstract class BasePreferences(context: Context) :
         override fun onSetValue(value: Boolean) {
             edit { putBoolean(getKey(), value) }
         }
+    }
+
+    open inner class IntentLauncherPref(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        @StringRes val positiveAnswerId: Int = -1,
+        defaultValue: Boolean = false,
+        val intent: () -> Intent,
+        val getter: () -> Boolean,
+        onChange: () -> Unit = doNothing
+    ) : PrefDelegate<Boolean>(key, titleId, summaryId, defaultValue, onChange) {
+        override fun onGetValue(): Boolean = getter()
+
+        override fun onSetValue(value: Boolean) {}
     }
 
     open inner class FloatPref(

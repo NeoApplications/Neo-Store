@@ -375,6 +375,8 @@
     <string name="omega_actions">Actions</string>
     <string name="dt2s_admin_hint">To use double tap to sleep and grant admin permission.</string>
     <string name="dt2s_admin_warning">Double tap to sleep will be turned off.</string>
+    <string name="notification_dots_missing_notification_access">To show Notification Dots, turn on app notifications access</string>
+    <string name="notification_dots_disabled">To show Notification Dots, enable showing notification dots in settings</string>
     <!-- SEARCH -->
     <string name="title__search_bubble_searchbar">Show Two Bubbles</string>
     <string name="title__search_action_assistant">Open Assistant</string>
