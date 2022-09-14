@@ -26,6 +26,11 @@ import com.saggitt.omega.preferences.custom.GridSize2D
 val PreferenceBuilder =
     @Composable { pref: Any, onDialogPref: (Any) -> Unit, index: Int, size: Int ->
         when (pref) {
+            is BasePreferences.IntentLauncherPref -> IntentLauncherPreference(
+                pref = pref,
+                index = index,
+                groupSize = size
+            ) { onDialogPref(pref) }
             is GridSize2D -> GridSize2DPreference(
                 pref = pref,
                 index = index,
