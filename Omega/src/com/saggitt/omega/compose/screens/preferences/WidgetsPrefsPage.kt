@@ -38,6 +38,7 @@ import com.saggitt.omega.compose.components.BaseDialog
 import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.compose.components.preferences.GridSizePrefDialogUI
 import com.saggitt.omega.compose.components.preferences.IntSelectionPrefDialogUI
+import com.saggitt.omega.compose.components.preferences.IntentLauncherDialogUI
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.components.preferences.StringMultiSelectionPrefDialogUI
 import com.saggitt.omega.compose.components.preferences.StringSelectionPrefDialogUI
@@ -67,7 +68,7 @@ fun WidgetsPrefsPage() {
         prefs.smartspaceEventProvidersNew
     )
     val notificationsPrefs = listOf(
-        // TODO Missing enable notification badge
+        prefs.notificationDots,
         prefs.notificationCount,
         prefs.notificationCustomColor,
         prefs.notificationBackground
@@ -105,6 +106,10 @@ fun WidgetsPrefsPage() {
             if (openDialog.value) {
                 BaseDialog(openDialogCustom = openDialog) {
                     when (dialogPref) {
+                        is BasePreferences.IntentLauncherPref -> IntentLauncherDialogUI(
+                            pref = dialogPref as BasePreferences.IntentLauncherPref,
+                            openDialogCustom = openDialog
+                        )
                         is BasePreferences.IntSelectionPref -> IntSelectionPrefDialogUI(
                             pref = dialogPref as BasePreferences.IntSelectionPref,
                             openDialogCustom = openDialog
