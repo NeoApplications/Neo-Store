@@ -374,7 +374,7 @@
     <string name="enabled_events">Habilitado</string>
     <string name="reset_to_default">Restablecer a predeterminado</string>
     <string name="debug_component_name">Nombre del componente</string>
-    <string name="automatic_short">Auto</string>
+    <string name="automatic_short">Automático</string>
     <string name="title_dock_search">Barra de búsqueda del dock</string>
     <string name="label_search">Búsqueda</string>
     <string name="summary_legacy_treatment">Crea Iconos Adaptables para todos los enlaces.</string>
