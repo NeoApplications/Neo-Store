@@ -499,10 +499,10 @@
     <string name="license_gpl" translatable="false">GPLv3+</string>
     <string name="app_donate_url" translatable="false">https://paypal.me/saulhenriquez</string>
     <string name="author" translatable="false">Saul Henriquez</string>
-    <string name="author_role" translatable="false">Developer</string>
+    <string name="author_role">Developer</string>
     <string name="contributor1" translatable="false">Antonios Hazim</string>
     <string name="contributor2" translatable="false">Rafael Venancio</string>
-    <string name="contributor_role" translatable="false">Contributor</string>
+    <string name="contributor_role">Contributor</string>
     <string name="title_storage_permission_required">Storage Access Needed</string>
     <string name="content_storage_permission_required">Grant access to storage to set a wallpaper.</string>
     <string name="accessibility_undo">Undo</string>
