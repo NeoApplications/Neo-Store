@@ -3,6 +3,7 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 val composeVersion = "1.2.1"
 val composeCompilerVersion = "1.3.1"
 val roomVersion = "2.4.3"
+val navigationVersion = "2.5.2"
 
 plugins {
     id("com.android.application") version ("7.2.2")
@@ -131,8 +132,8 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.6.0-rc02")
     implementation("androidx.activity:activity-compose:1.6.0-rc02")
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.2")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.2")
+    implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
+    implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
     implementation("androidx.work:work-runtime-ktx:2.8.0-alpha04")
 
     // Material3
@@ -180,6 +181,7 @@ dependencies {
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
     implementation("com.google.android.material:compose-theme-adapter-3:1.0.18")
+    implementation("androidx.navigation:navigation-compose:$navigationVersion")
 
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
