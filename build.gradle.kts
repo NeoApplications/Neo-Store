@@ -6,9 +6,9 @@ val roomVersion = "2.4.3"
 
 plugins {
     id("com.android.application") version ("7.2.2")
-    kotlin("android") version ("1.7.0")
-    kotlin("plugin.serialization") version ("1.7.0")
-    id("com.google.devtools.ksp") version ("1.7.0-1.0.6")
+    kotlin("android") version ("1.7.10")
+    kotlin("plugin.serialization") version ("1.7.10")
+    id("com.google.devtools.ksp") version ("1.7.10-1.0.6")
 }
 
 android {
@@ -123,8 +123,8 @@ android {
 dependencies {
 
     // Core
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0")
-    implementation("com.google.devtools.ksp:symbol-processing-api:1.7.0-1.0.6")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10")
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.7.10-1.0.6")
     implementation("androidx.core:core-ktx:1.9.0-beta01")
     implementation("androidx.appcompat:appcompat:1.6.0-beta01")
     implementation("androidx.fragment:fragment-ktx:1.6.0-alpha01")
