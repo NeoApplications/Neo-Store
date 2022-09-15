@@ -210,4 +210,6 @@
     <string name="dynamic">System-dynamisk</string>
     <string name="auto_sync_interval">Antall minutter mellom synkroniseringer</string>
     <string name="favorite_applications">Favoritter</string>
+    <string name="releases_cache_retention">Nedlastet lagringstid for APK-hurtiglager</string>
+    <string name="images_cache_retention">Lagringstid for bildehurtiglager</string>
 </resources>
