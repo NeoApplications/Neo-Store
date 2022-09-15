@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~  This file is part of Omega Launcher
   ~  Copyright (c) 2021   Saul Henriquez
   ~
@@ -14,15 +15,13 @@
   ~
   ~  You should have received a copy of the GNU General Public License
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  --><resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="derived_app_name" translatable="false">Neo Launcher</string>
     <string name="app_version" translatable="false">Version</string>
     <string name="app_build" translatable="false">Build</string>
     <string name="app_id" translatable="false">Package</string>
     <string name="default_folder_name">New Folder</string>
     <string name="folder_name">Folder Name</string>
-
     <!-- PREFERENCES GENERAL -->
     <string name="title__general_about">About</string>
     <string name="title__general_desktop">Desktop</string>
@@ -51,7 +50,6 @@
     <string name="pref_category__inputs">Gestures and Search</string>
     <string name="pref_category__others">Others</string>
     <string name="pref_category__incubating">Incubating</string>
-
     <!-- PREFERENCES DESKTOP -->
     <string name="allow_rotation_blocked_desc">Current Display setting doesn\'t permit rotation</string>
     <string name="title_desktop_full_width_widgets">Full width widgets</string>
@@ -69,7 +67,6 @@
     <string name="summary_full_width_widgets">Allow widgets to span over the whole width without padding</string>
     <string name="grid_size_height">Height</string>
     <string name="grid_size_width">Width</string>
-
     <!-- PREFERENCES DOCK -->
     <string name="title__dock_icon_size">Icon size</string>
     <string name="title__dock_scale">Dock scale</string>
@@ -92,7 +89,6 @@
     <string name="label_search">Search</string>
     <string name="cat_dock_search">Drawer and dock</string>
     <string name="label_lens" translatable="false">Google Lens</string>
-
     <!-- PREFERENCES DRAWER -->
     <string name="title__drawer_sort">Apps Sort</string>
     <string name="title__drawer_all_apps">Show "All Apps" label</string>
@@ -171,7 +167,6 @@
     <string name="enable_protected_apps">Turn on protected apps</string>
     <string name="disable_protected_apps">Turn off protected apps</string>
     <string name="disable_protected_apps_message">Turn off protected apps requiring authentication</string>
-
     <!-- PREFERENCES THEME -->
     <string name="title__theme_accent_color">Accent Color</string>
     <string name="title__theme_blur">Blur</string>
@@ -253,7 +248,6 @@
     <string name="preview_app_signal" translatable="false">Signal</string>
     <string name="icon_picker_default_category">Icons</string>
     <string name="icon_picker_load_failed">Couldn’t load more icons.</string>
-
     <!-- PREFERENCES SMARTSPACE -->
     <string name="title_show_google_app">Show Google app</string>
     <string name="title_smartspace_feed_theme">Feed Theme</string>
@@ -269,7 +263,6 @@
     <string name="category__behavior_weather">Weather</string>
     <string name="google_app" translatable="false">Google app</string>
     <string name="pref_shelf_summary">To the left of the main Home screen</string>
-
     <!-- SmartSpace -->
     <string name="smartspace_preferences">Preferences</string>
     <string name="smartspace_add_to_home">Add to Desktop</string>
@@ -465,7 +458,6 @@
     <string name="read_external_storage_required">Grant storage access to create a backup.</string>
     <string name="local_backups">In Storage</string>
     <string name="permission_denied">Read permission denied!</string>
-
     <!-- DEVELOPER -->
     <string name="developer_options_enabled">Developer options on</string>
     <string name="search_menu">Find settings</string>
@@ -517,7 +509,7 @@
     <string name="dash_all_apps_summary">Show all app button</string>
     <string name="dash_media_player">Audio Player</string>
     <string name="dash_media_player_description">Show or hide the audio player controls</string>
-    <string name="edit_dash_summary">Turn on or off shortcuts</string>
+    <string name="edit_dash_summary">Turn shortcuts on or off</string>
     <string name="wallpaper_pick_summary">Open the wallpaper chooser</string>
     <string name="dash_launcher_settings_summary">Display the launcher settings</string>
     <string name="dash_volume_summary">Display the device audio selector</string>
@@ -568,7 +560,6 @@
     <string name="uninstall_failed">Could not uninstall the app</string>
     <string name="tab_launcher">Launcher</string>
     <string name="tab_shortcuts">Shortcuts</string>
-
     <!-- WIDGET FEED -->
     <string name="button_organize_screens">Arrange Pages</string>
     <string name="modify_system_settings">Modify system settings</string>
