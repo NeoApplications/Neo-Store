@@ -23,8 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
@@ -32,7 +30,6 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NAV_MAIN
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.databinding.ActivityMainXBinding
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.SyncService
@@ -65,44 +62,21 @@ class MainActivityX : AppCompatActivity() {
         class Install(val packageName: String?, val cacheFileName: String?) : SpecialIntent()
     }
 
-    lateinit var binding: ActivityMainXBinding
-    private lateinit var navController: NavController
-    private val viewModel: MainActivityViewModelX by viewModels()
     private lateinit var powerManager: PowerManager
-    val menuSetup = MutableLiveData<Boolean>()
-
-    val syncConnection = Connection(SyncService::class.java, onBind = { _, _ ->
-        navController.currentDestination?.let {
-            val source = Source.values()[when (it.id) {
-                R.id.latestTab -> 1
-                R.id.installedTab -> 2
-                else -> 0 // R.id.exploreTab
-            }]
-            updateUpdateNotificationBlocker(source)
-        }
-    })
+    val syncConnection = Connection(SyncService::class.java)
 
     val db
         get() = (application as MainApplication).db
 
-    var currentTheme by Delegates.notNull<Int>()
-    var currentTab by Delegates.notNull<Int>()
+    private var currentTheme by Delegates.notNull<Int>()
+    private var currentTab by Delegates.notNull<Int>()
 
+    @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         currentTheme = Preferences[Preferences.Key.Theme].getResId(resources.configuration)
         currentTab = Preferences[Preferences.Key.DefaultTab].getResId(resources.configuration)
         setCustomTheme()
         super.onCreate(savedInstanceState)
-        binding = ActivityMainXBinding.inflate(layoutInflater)
-
-        binding.lifecycleOwner = this
-
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragment_content) as NavHostFragment
-        navController = navHostFragment.navController
-        binding.bottomNavigation.setupWithNavController(navController)
-
-        binding.bottomNavigation.selectedItemId = currentTab
 
         powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
@@ -157,10 +131,6 @@ class MainActivityX : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
-        supportFragmentManager.addFragmentOnAttachListener { _, _ ->
-            hideKeyboard()
-        }
         syncConnection.bind(this)
     }
 
@@ -170,21 +140,6 @@ class MainActivityX : AppCompatActivity() {
             recreate()
         if (!powerManager.isIgnoringBatteryOptimizations(this.packageName) && !Preferences[Preferences.Key.IgnoreIgnoreBatteryOptimization])
             showBatteryOptimizationDialog()
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        menuSetup.value = true
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    private fun hideKeyboard() {
-        (getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)
-            ?.hideSoftInputFromWindow((currentFocus ?: window.decorView).windowToken, 0)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -220,7 +175,7 @@ class MainActivityX : AppCompatActivity() {
         when (specialIntent) {
             is SpecialIntent.Updates -> {
                 // TODO directly update the apps??
-                binding.bottomNavigation.selectedItemId = R.id.installedTab
+                // binding.bottomNavigation.selectedItemId = R.id.installedTab TODO Fix
             }
             is SpecialIntent.Install -> {
                 val packageName = specialIntent.packageName
@@ -262,15 +217,5 @@ class MainActivityX : AppCompatActivity() {
     internal fun navigateProduct(packageName: String) {
         AppSheetX(packageName)
             .showNow(supportFragmentManager, "Product $packageName")
-    }
-
-    private fun updateUpdateNotificationBlocker(activeSource: Source) {
-        val blockerFragment = if (activeSource == Source.UPDATES) {
-            supportFragmentManager.fragments.asSequence().mapNotNull { it as? MainNavFragmentX }
-                .find { it.primarySource == activeSource }
-        } else {
-            null
-        }
-        syncConnection.binder?.setUpdateNotificationBlocker(blockerFragment)
     }
 }
