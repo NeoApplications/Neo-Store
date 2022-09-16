@@ -68,8 +68,7 @@ fun DrawerPrefsPage() {
     val gridPrefs = listOf(
         prefs.drawerGridSize,
         prefs.drawerSortModeNew,
-        prefs.drawerAppGroupsManager.drawerCategorizationType,
-        // TODO add categorization manager page
+        prefs.drawerAppGroups,
         prefs.drawerSeparateWorkApps,
         prefs.drawerCellHeightMultiplier,
         prefs.drawerSaveScrollPosition,
@@ -148,5 +147,6 @@ fun NavGraphBuilder.drawerPrefsGraph(route: String) {
     preferenceGraph(route, { DrawerPrefsPage() }) { subRoute ->
         preferenceGraph(route = subRoute(Routes.HIDDEN_APPS), { HiddenAppsPage() })
         preferenceGraph(route = subRoute(Routes.PROTECTED_APPS), { ProtectedAppsPage() })
+        preferenceGraph(route = subRoute(Routes.CATEGORIZE_APP), { AppCategoriesPage() })
     }
 }

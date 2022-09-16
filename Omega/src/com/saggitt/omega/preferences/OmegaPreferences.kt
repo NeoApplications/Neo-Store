@@ -664,6 +664,14 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = recreate
     )
 
+    var drawerAppGroups = StringPref(
+        key = "pref_categorize_apps",
+        titleId = R.string.title_app_categorize,
+        summaryId = R.string.summary_app_categorize,
+        navRoute = "categorize_apps",
+        onChange = doNothing
+    )
+
     // PROFILE: LANGUAGE & THEME
     var language = StringSelectionPref(
         key = PREFS_LANGUAGE,
