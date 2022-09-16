@@ -141,14 +141,14 @@
     <string name="tap_to_install_DESC">Klik voor installatie.</string>
     <string name="target">Doel</string>
     <string name="theme">Thema:</string>
-    <string name="themes">Thema's</string>
+    <string name="themes">Thema\'s</string>
     <string name="tracks_or_reports_your_activity">Volgt of rapporteerd uw activiteit.</string>
     <string name="uninstall">Verwijder</string>
     <string name="unknown">Onbekend</string>
     <string name="unknown_error_DESC">Onbekende fout</string>
     <string name="unknown_FORMAT">Onbekend: %s</string>
     <string name="unsigned">Niet gesigneerd.</string>
-    <string name="unstable_updates">Onstabiele versie's:</string>
+    <string name="unstable_updates">Onstabiele versie\'s:</string>
     <string name="unstable_updates_summary">Oppert installalatie van onstabiele versies.</string>
     <string name="unverified">Ongeverifiëerd</string>
     <string name="update">Werk bij.</string>
