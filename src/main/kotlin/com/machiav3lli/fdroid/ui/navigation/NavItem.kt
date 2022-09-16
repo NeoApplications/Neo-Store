@@ -29,6 +29,9 @@ sealed class NavItem(var title: Int, var icon: Int, var destination: String) {
     object Installed :
         NavItem(R.string.installed, R.drawable.ic_launch, "main_installed")
 
+    object Prefs :
+        NavItem(R.string.settings, R.drawable.ic_tune, "prefs")
+
     object PersonalPrefs :
         NavItem(R.string.prefs_personalization, R.drawable.ic_person, "prefs_personal")
 
