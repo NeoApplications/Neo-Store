@@ -15,8 +15,10 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.machiav3lli.fdroid.R
 
 @Composable
@@ -28,10 +30,13 @@ fun NetworkImage(
 ) {
     AsyncImage(
         modifier = modifier.clip(shape),
-        model = data,
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(data)
+            .crossfade(true)
+            .build(),
         contentDescription = null,
         contentScale = contentScale,
-        error = painterResource(id = R.drawable.ic_placeholder)
+        error = painterResource(id = R.drawable.ic_placeholder),
     )
 }
 
