@@ -17,8 +17,6 @@ import androidx.compose.material.icons.rounded.Sync
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -73,9 +71,9 @@ class ExploreFragment : MainNavFragmentX() {
         val searchQuery by viewModel.searchQuery.observeAsState("")
         val favorites by mainActivityX.db.extrasDao.favoritesLive.observeAsState(emptyArray())
 
-        val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
+        /*val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
             rememberTopAppBarState()
-        ) { true }
+        ) { true }*/
 
         AppTheme(
             darkTheme = when (Preferences[Preferences.Key.Theme]) {
