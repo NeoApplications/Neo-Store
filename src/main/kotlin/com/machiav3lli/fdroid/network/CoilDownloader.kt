@@ -1,8 +1,6 @@
 package com.machiav3lli.fdroid.network
 
-import android.content.Context
 import android.net.Uri
-import android.view.View
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.Screenshot
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
@@ -10,8 +8,6 @@ import okhttp3.Cache
 import okhttp3.Call
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import java.io.File
-import kotlin.math.min
-import kotlin.math.roundToInt
 
 object CoilDownloader {
     private const val HOST_ICON = "icon"
@@ -107,39 +103,6 @@ object CoilDownloader {
                 }
             )
             .appendQueryParameter(QUERY_SCREENSHOT, screenshot.path)
-            .build()
-    }
-
-    fun createIconUri(
-        view: View,
-        packageName: String,
-        icon: String,
-        metadataIcon: String,
-        repository: Repository,
-    ): Uri {
-        val size = (view.layoutParams.let { min(it.width, it.height) } /
-                view.resources.displayMetrics.density).roundToInt()
-        return createIconUri(view.context, packageName, icon, metadataIcon, size, repository)
-    }
-
-    private fun createIconUri(
-        context: Context, packageName: String, icon: String, metadataIcon: String,
-        targetSizeDp: Int, repository: Repository,
-    ): Uri {
-        return Uri.Builder().scheme("https").authority(HOST_ICON)
-            .appendQueryParameter(QUERY_ADDRESS, repository.address)
-            .appendQueryParameter(QUERY_AUTHENTICATION, repository.authentication)
-            .appendQueryParameter(QUERY_PACKAGE_NAME, packageName)
-            .appendQueryParameter(QUERY_ICON, icon)
-            .appendQueryParameter(QUERY_METADATA_ICON, metadataIcon)
-            .apply {
-                if (repository.version >= 11) {
-                    val displayDpi = context.resources.displayMetrics.densityDpi
-                    val requiredDpi = displayDpi * targetSizeDp / 48
-                    val iconDpi = supportedDpis.find { it >= requiredDpi } ?: supportedDpis.last()
-                    appendQueryParameter(QUERY_DPI, iconDpi.toString())
-                }
-            }
             .build()
     }
 

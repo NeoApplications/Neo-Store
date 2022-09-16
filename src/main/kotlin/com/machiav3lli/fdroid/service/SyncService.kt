@@ -136,7 +136,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             return removed || currentTask != null
         }
 
-        fun setUpdateNotificationBlocker(fragment: Fragment?) {
+        fun setUpdateNotificationBlocker(fragment: Fragment?) { // TODO should the notification be canceled on opening a specific page?
             updateNotificationBlockerFragment = fragment?.let(::WeakReference)
             if (fragment != null) {
                 notificationManager.cancel(NOTIFICATION_ID_UPDATES)
