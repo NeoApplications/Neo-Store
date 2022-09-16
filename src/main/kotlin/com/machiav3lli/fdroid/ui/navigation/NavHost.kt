@@ -21,7 +21,9 @@ import com.machiav3lli.fdroid.ui.fragments.Source
 import com.machiav3lli.fdroid.ui.pages.ExplorePage
 import com.machiav3lli.fdroid.ui.pages.InstalledPage
 import com.machiav3lli.fdroid.ui.pages.LatestPage
+import com.machiav3lli.fdroid.ui.pages.PrefsReposPage
 import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
+import com.machiav3lli.fdroid.ui.viewmodels.RepositoriesViewModelX
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -66,6 +68,27 @@ fun MainNavHost(
         }
         activity(NavItem.Prefs.destination) {
             this.activityClass = PrefsActivityX::class
+        }
+    }
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun PrefsNavHost(
+    modifier: Modifier = Modifier,
+    navController: NavHostController
+) =
+    AnimatedNavHost(
+        modifier = modifier,
+        navController = navController,
+        startDestination = NavItem.ReposPrefs.destination
+    ) {
+        slideDownComposable(NavItem.ReposPrefs.destination) {
+            val viewModel = viewModel<RepositoriesViewModelX>(
+                factory = RepositoriesViewModelX.Factory(
+                    DatabaseX.getInstance(navController.context).repositoryDao
+                )
+            )
+            PrefsReposPage(viewModel)
         }
     }
 
