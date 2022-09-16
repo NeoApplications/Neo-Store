@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.ui.compose.pages.home.components
+package com.machiav3lli.fdroid.ui.compose.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColor

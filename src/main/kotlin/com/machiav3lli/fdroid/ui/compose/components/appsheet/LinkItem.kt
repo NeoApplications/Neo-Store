@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.ui.compose.pages.app_detail.components
+package com.machiav3lli.fdroid.ui.compose.components.appsheet
 
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi

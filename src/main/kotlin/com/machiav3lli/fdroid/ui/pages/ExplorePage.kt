@@ -19,7 +19,7 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.compose.ProductsVerticalRecycler
-import com.machiav3lli.fdroid.ui.compose.pages.home.components.CategoryChipList
+import com.machiav3lli.fdroid.ui.compose.components.CategoryChipList
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
 import com.machiav3lli.fdroid.utility.isDarkTheme

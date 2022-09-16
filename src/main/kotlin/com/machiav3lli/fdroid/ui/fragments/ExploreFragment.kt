@@ -33,7 +33,7 @@ import com.machiav3lli.fdroid.ui.compose.ProductsVerticalRecycler
 import com.machiav3lli.fdroid.ui.compose.components.ExpandableSearchAction
 import com.machiav3lli.fdroid.ui.compose.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.components.TopBarAction
-import com.machiav3lli.fdroid.ui.compose.pages.home.components.CategoryChipList
+import com.machiav3lli.fdroid.ui.compose.components.CategoryChipList
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.onLaunchClick

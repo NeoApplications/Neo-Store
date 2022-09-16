@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.ui.compose.pages.app_detail.components
+package com.machiav3lli.fdroid.ui.compose.components.appsheet
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

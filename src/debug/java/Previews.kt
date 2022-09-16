@@ -5,10 +5,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.entity.LinkType
-import com.machiav3lli.fdroid.ui.compose.pages.app_detail.components.AntiFeaturesGrid
-import com.machiav3lli.fdroid.ui.compose.pages.app_detail.components.LinkItem
-import com.machiav3lli.fdroid.ui.compose.pages.app_detail.components.PermissionGrid
-import com.machiav3lli.fdroid.ui.compose.pages.app_detail.components.ReleaseItem
+import com.machiav3lli.fdroid.ui.compose.components.appsheet.AntiFeaturesGrid
+import com.machiav3lli.fdroid.ui.compose.components.appsheet.LinkItem
+import com.machiav3lli.fdroid.ui.compose.components.appsheet.PermissionGrid
+import com.machiav3lli.fdroid.ui.compose.components.appsheet.ReleaseItem
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.compose.utils.CustomChip
 import com.machiav3lli.fdroid.utility.SampleData
