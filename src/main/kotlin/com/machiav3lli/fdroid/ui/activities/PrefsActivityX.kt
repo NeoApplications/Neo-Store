@@ -35,7 +35,6 @@ import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.setCustomTheme
 import kotlinx.coroutines.launch
 
-// TODO clean up the bloat
 class PrefsActivityX : AppCompatActivity() {
     companion object {
         const val ACTION_UPDATES = "${BuildConfig.APPLICATION_ID}.intent.action.UPDATES"
@@ -49,32 +48,16 @@ class PrefsActivityX : AppCompatActivity() {
         class Install(val packageName: String?, val cacheFileName: String?) : SpecialIntent()
     }
 
-    lateinit var binding: ActivityPrefsXBinding
-    lateinit var toolbar: MaterialToolbar
-    lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
-
-    private val syncConnection = Connection(SyncService::class.java, onBind = { _, _ ->
-        navController.currentDestination?.let {
-            val source = Source.values()[when (it.id) {
-                R.id.updateTab -> 1
-                R.id.otherTab -> 2
-                else -> 0 // R.id.userTab
-            }]
-            updateUpdateNotificationBlocker(source)
-        }
-    })
+    val syncConnection = Connection(SyncService::class.java)
 
     val db
         get() = (application as MainApplication).db
 
+    @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         setCustomTheme()
         super.onCreate(savedInstanceState)
-
-        binding = ActivityPrefsXBinding.inflate(layoutInflater)
-        binding.lifecycleOwner = this
-        toolbar = binding.toolbar
 
         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
             handleIntent(intent)
@@ -106,32 +89,11 @@ class PrefsActivityX : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        setSupportActionBar(toolbar)
-        toolbar.isFocusableInTouchMode = true
-
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragment_content) as NavHostFragment
-        navController = navHostFragment.navController
-        binding.bottomNavigation.setupWithNavController(navController)
-
-        appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.userTab, R.id.updateTab, R.id.reposTab, R.id.otherTab)
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
-        supportFragmentManager.addFragmentOnAttachListener { _, _ ->
-            hideKeyboard()
-        }
         syncConnection.bind(this)
     }
 
     override fun onBackPressed() {
         finishAfterTransition()
-    }
-
-    private fun hideKeyboard() {
-        (getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)
-            ?.hideSoftInputFromWindow((currentFocus ?: window.decorView).windowToken, 0)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -195,15 +157,5 @@ class PrefsActivityX : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(ContextWrapperX.wrap(newBase))
-    }
-
-    private fun updateUpdateNotificationBlocker(activeSource: Source) {
-        val blockerFragment = if (activeSource == Source.UPDATES) {
-            supportFragmentManager.fragments.asSequence().mapNotNull { it as? MainNavFragmentX }
-                .find { it.primarySource == activeSource }
-        } else {
-            null
-        }
-        syncConnection.binder?.setUpdateNotificationBlocker(blockerFragment)
     }
 }
