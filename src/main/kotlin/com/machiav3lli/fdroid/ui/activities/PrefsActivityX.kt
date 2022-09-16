@@ -11,6 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -29,7 +33,9 @@ import com.machiav3lli.fdroid.service.SyncService
 import com.machiav3lli.fdroid.ui.compose.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
+import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.PrefsNavHost
+import com.machiav3lli.fdroid.utility.destinationToItem
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.setCustomTheme
@@ -71,12 +77,25 @@ class PrefsActivityX : AppCompatActivity() {
                 }
             ) {
                 val navController = rememberAnimatedNavController()
+                var pageTitle: Int? by remember {
+                    mutableStateOf(NavItem.Prefs.title)
+                }
+
+                navController.addOnDestinationChangedListener { _, destination, _ ->
+                    pageTitle = destination.destinationToItem()?.title
+                }
 
                 Scaffold(
                     containerColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
                     bottomBar = { BottomNavBar(page = NAV_PREFS, navController = navController) },
-                    topBar = { TopBar(title = stringResource(id = R.string.application_name)) }
+                    topBar = {
+                        TopBar(
+                            title = stringResource(
+                                id = pageTitle ?: NavItem.Prefs.title
+                            )
+                        )
+                    }
                 ) { paddingValues ->
                     PrefsNavHost(
                         modifier = Modifier.padding(paddingValues),

@@ -526,6 +526,17 @@ fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
     }
 }
 
+fun NavDestination.destinationToItem(): NavItem? = listOf(
+    NavItem.Explore,
+    NavItem.Latest,
+    NavItem.Installed,
+    NavItem.Prefs,
+    NavItem.PersonalPrefs,
+    NavItem.UpdatesPrefs,
+    NavItem.ReposPrefs,
+    NavItem.OtherPrefs
+).find { this.route == it.destination }
+
 fun Activity.setCustomTheme() {
     if (!isDynamicColorsTheme) setTheme(Preferences[Preferences.Key.Theme].getResId(resources.configuration))
     else {
