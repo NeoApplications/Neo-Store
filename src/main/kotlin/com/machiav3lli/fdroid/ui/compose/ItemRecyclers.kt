@@ -74,11 +74,16 @@ fun ProductsHorizontalRecycler(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RepositoriesRecycler(
+    modifier: Modifier = Modifier,
     repositoriesList: List<Repository>?,
     onClick: (Repository) -> Unit = {},
     onLongClick: (Repository) -> Unit = {}
 ) {
-    VerticalItemList(list = repositoriesList, itemKey = { it.id }) {
+    VerticalItemList(
+        modifier = modifier,
+        list = repositoriesList,
+        itemKey = { it.id }
+    ) {
         RepositoryItem(
             modifier = Modifier.animateItemPlacement(),
             repository = it,
