@@ -182,6 +182,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
     implementation("com.google.android.material:compose-theme-adapter-3:1.0.18")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.25.0")
 
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
