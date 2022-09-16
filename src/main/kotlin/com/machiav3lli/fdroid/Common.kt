@@ -63,6 +63,10 @@ const val PREFS_LANGUAGE_DEFAULT = "system"
 
 const val EXTRA_REPOSITORY_ID = "repositoryId"
 
+
+const val NAV_MAIN = 0
+const val NAV_PREFS = 1
+
 interface RepoManager {
     fun onDeleteConfirm()
 }
