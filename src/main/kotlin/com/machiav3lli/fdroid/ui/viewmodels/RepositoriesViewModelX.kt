@@ -1,14 +1,11 @@
 package com.machiav3lli.fdroid.ui.viewmodels
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.database.dao.RepositoryDao
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.newRepository
-import com.machiav3lli.fdroid.service.Connection
-import com.machiav3lli.fdroid.service.SyncService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +16,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
-
-    val syncConnection = Connection(SyncService::class.java)
 
     private val _showSheet = MutableSharedFlow<SheetNavigationData>()
     val showSheet: SharedFlow<SheetNavigationData> = _showSheet
@@ -36,10 +31,6 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
         }
     }
 
-    fun bindConnection(context: Context) {
-        viewModelScope.launch { syncConnection.bind(context) }
-    }
-
     fun showRepositorySheet(
         repositoryId: Long = 0L,
         editMode: Boolean = false,
@@ -53,12 +44,6 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
                     SheetNavigationData(repositoryId, editMode)
                 }
             )
-        }
-    }
-
-    fun toggleRepository(repository: Repository, isEnabled: Boolean) {
-        viewModelScope.launch {
-            syncConnection.binder?.setEnabled(repository, isEnabled)
         }
     }
 

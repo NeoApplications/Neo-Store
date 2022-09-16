@@ -14,9 +14,9 @@
         android:name="com.machiav3lli.fdroid.ui.fragments.PrefsUpdatesFragment"
         tools:layout="@layout/fragment_prefs" />
 
-    <fragment
+    <!--fragment
         android:id="@+id/reposTab"
-        android:name="com.machiav3lli.fdroid.ui.fragments.PrefsRepositoriesFragment" />
+        android:name="com.machiav3lli.fdroid.ui.fragments.PrefsRepositoriesFragment" /-->
 
     <fragment
         android:id="@+id/otherTab"
