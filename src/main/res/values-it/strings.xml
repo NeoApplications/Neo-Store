@@ -86,6 +86,7 @@
     <string name="new_updates_available">Nuove versioni disponibili</string>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one">%d app ha una nuova versione.</item>
+        <item quantity="many">%d app hanno una nuova versione.</item>
         <item quantity="other">%d app hanno una nuova versione.</item>
     </plurals>
     <string name="no_applications_available">Nessuna app disponibile</string>
