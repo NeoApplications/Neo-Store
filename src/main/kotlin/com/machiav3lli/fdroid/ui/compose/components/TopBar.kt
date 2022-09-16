@@ -47,7 +47,7 @@ import com.machiav3lli.fdroid.ui.compose.utils.HorizontalExpandingVisibility
 fun TopBar(
     title: String,
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    actions: @Composable (RowScope.() -> Unit)
+    actions: @Composable (RowScope.() -> Unit) = {}
 ) {
     SmallTopAppBar(
         modifier = Modifier.wrapContentHeight(),
