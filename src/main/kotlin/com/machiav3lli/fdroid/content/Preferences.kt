@@ -7,6 +7,7 @@ import com.machiav3lli.fdroid.PREFS_LANGUAGE
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.entity.Order
+import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -273,15 +274,15 @@ object Preferences {
 
         abstract fun getResId(configuration: Configuration): Int
 
-        object Explore : DefaultTab("explore") {
+        object Explore : DefaultTab(NavItem.Explore.destination) {
             override fun getResId(configuration: Configuration): Int = R.id.exploreTab
         }
 
-        object Latest : DefaultTab("latest") {
+        object Latest : DefaultTab(NavItem.Latest.destination) {
             override fun getResId(configuration: Configuration): Int = R.id.latestTab
         }
 
-        object Installed : DefaultTab("installed") {
+        object Installed : DefaultTab(NavItem.Installed.destination) {
             override fun getResId(configuration: Configuration): Int = R.id.installedTab
         }
     }

@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.activity
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.ui.fragments.Source
@@ -37,7 +38,7 @@ fun MainNavHost(
     AnimatedNavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = NavItem.Explore.destination
+        startDestination = Preferences[Preferences.Key.DefaultTab].valueString
     ) {
         slideDownComposable(NavItem.Explore.destination) {
             val viewModel = viewModel<MainNavFragmentViewModelX>(
