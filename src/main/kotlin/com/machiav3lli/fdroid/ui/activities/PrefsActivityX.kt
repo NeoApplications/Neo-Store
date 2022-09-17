@@ -62,6 +62,7 @@ class PrefsActivityX : AppCompatActivity() {
 
     @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as MainApplication).mActivity = this
         setCustomTheme()
         super.onCreate(savedInstanceState)
 

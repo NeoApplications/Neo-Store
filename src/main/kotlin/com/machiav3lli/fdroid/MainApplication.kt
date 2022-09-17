@@ -11,6 +11,7 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
+import androidx.appcompat.app.AppCompatActivity
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import com.google.android.material.color.DynamicColors
@@ -40,6 +41,7 @@ import kotlin.time.Duration.Companion.minutes
 class MainApplication : Application(), ImageLoaderFactory {
 
     lateinit var db: DatabaseX
+    lateinit var mActivity: AppCompatActivity
     //lateinit var wm: WorksManager
 
     companion object {

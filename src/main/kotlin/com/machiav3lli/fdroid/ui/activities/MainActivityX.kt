@@ -73,6 +73,7 @@ class MainActivityX : AppCompatActivity() {
 
     @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as MainApplication).mActivity = this
         currentTheme = Preferences[Preferences.Key.Theme].getResId(resources.configuration)
         currentTab = Preferences[Preferences.Key.DefaultTab].getResId(resources.configuration)
         setCustomTheme()
