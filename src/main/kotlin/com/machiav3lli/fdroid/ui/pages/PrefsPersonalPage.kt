@@ -19,6 +19,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.compose.components.prefs.PreferenceGroup
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
+import com.machiav3lli.fdroid.ui.dialog.EnumSelectionPrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.LanguagePrefDialogUI
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,8 +73,12 @@ fun PrefsPersonalPage() {
 
         if (openDialog.value) {
             BaseDialog(openDialogCustom = openDialog) {
-                when (dialogPref) {
-                    Preferences.Key.Language -> LanguagePrefDialogUI(
+                when (dialogPref?.default?.value) {
+                    is String -> LanguagePrefDialogUI(
+                        openDialogCustom = openDialog
+                    )
+                    is Preferences.Enumeration<*> -> EnumSelectionPrefDialogUI(
+                        prefKey = dialogPref as Preferences.Key<Preferences.Enumeration<*>>,
                         openDialogCustom = openDialog
                     )
                     else -> {}
