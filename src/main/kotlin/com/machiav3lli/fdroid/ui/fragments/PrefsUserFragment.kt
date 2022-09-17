@@ -29,13 +29,13 @@ class PrefsUserFragment : PrefsNavFragmentX() {
             addEnumeration(Preferences.Key.Theme, getString(R.string.theme)) {
                 when (it) {
                     is Preferences.Theme.System -> getString(R.string.system)
-                    is Preferences.Theme.AmoledSystem -> getString(R.string.system) + " " + getString(
+                    is Preferences.Theme.SystemBlack -> getString(R.string.system) + " " + getString(
                         R.string.amoled
                     )
                     is Preferences.Theme.Dynamic -> getString(R.string.dynamic)
                     is Preferences.Theme.Light -> getString(R.string.light)
                     is Preferences.Theme.Dark -> getString(R.string.dark)
-                    is Preferences.Theme.Amoled -> getString(R.string.amoled)
+                    is Preferences.Theme.Black -> getString(R.string.amoled)
                 }
             }
             addEnumeration(Preferences.Key.DefaultTab, getString(R.string.default_tab)) {

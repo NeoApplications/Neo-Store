@@ -148,6 +148,7 @@
     <string name="syncing">Syncing</string>
     <string name="syncing_FORMAT">Syncing %s…</string>
     <string name="system">System</string>
+    <string name="system_black">System (Black)</string>
     <string name="tap_to_install_DESC">Tap to install.</string>
     <string name="target">Target</string>
     <string name="theme">Theme</string>

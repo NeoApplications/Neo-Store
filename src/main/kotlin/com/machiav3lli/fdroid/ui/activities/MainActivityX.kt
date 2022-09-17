@@ -87,7 +87,7 @@ class MainActivityX : AppCompatActivity() {
             AppTheme(
                 darkTheme = when (Preferences[Preferences.Key.Theme]) {
                     is Preferences.Theme.System -> isSystemInDarkTheme()
-                    is Preferences.Theme.AmoledSystem -> isSystemInDarkTheme()
+                    is Preferences.Theme.SystemBlack -> isSystemInDarkTheme()
                     else -> isDarkTheme
                 }
             ) {
