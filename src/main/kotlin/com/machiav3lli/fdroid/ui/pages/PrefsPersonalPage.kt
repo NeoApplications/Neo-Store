@@ -19,6 +19,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.compose.components.prefs.PreferenceGroup
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
+import com.machiav3lli.fdroid.ui.dialog.LanguagePrefDialogUI
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,7 +73,9 @@ fun PrefsPersonalPage() {
         if (openDialog.value) {
             BaseDialog(openDialogCustom = openDialog) {
                 when (dialogPref) {
-                    // TODO
+                    Preferences.Key.Language -> LanguagePrefDialogUI(
+                        openDialogCustom = openDialog
+                    )
                     else -> {}
                 }
             }
