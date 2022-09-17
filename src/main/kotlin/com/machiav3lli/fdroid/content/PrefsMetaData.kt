@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.content
 
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.utility.extension.android.Android
 
 val BooleanPrefsMeta = mapOf(
     Preferences.Key.ShowScreenshots to Pair(
@@ -46,6 +47,37 @@ val NonBooleanPrefsMeta = mapOf(
     Preferences.Key.ProxyType to R.string.proxy_type,
     Preferences.Key.ProxyHost to R.string.proxy_host,
     Preferences.Key.ProxyPort to R.string.proxy_port,
+)
+
+val PrefsEntries = mapOf(
+    Preferences.Key.Theme to mutableMapOf(
+        Preferences.Theme.Light to R.string.light,
+        Preferences.Theme.Dark to R.string.dark,
+        Preferences.Theme.Black to R.string.amoled
+    ).apply {
+        if (Android.sdk(29)) {
+            put(Preferences.Theme.System, R.string.system)
+            put(Preferences.Theme.SystemBlack, R.string.system_black)
+        }
+        if (Android.sdk(31))
+            put(Preferences.Theme.Dynamic, R.string.dynamic)
+    },
+    Preferences.Key.DefaultTab to mapOf(
+        Preferences.DefaultTab.Explore to R.string.explore,
+        Preferences.DefaultTab.Latest to R.string.latest,
+        Preferences.DefaultTab.Installed to R.string.installed,
+    ),
+    Preferences.Key.AutoSync to mapOf(
+        Preferences.AutoSync.Wifi to R.string.only_on_wifi,
+        Preferences.AutoSync.WifiBattery to R.string.only_on_wifi_and_battery,
+        Preferences.AutoSync.Always to R.string.always,
+        Preferences.AutoSync.Never to R.string.never,
+    ),
+    Preferences.Key.ProxyType to mapOf(
+        Preferences.ProxyType.Direct to R.string.no_proxy,
+        Preferences.ProxyType.Http to R.string.http_proxy,
+        Preferences.ProxyType.Socks to R.string.socks_proxy,
+    ),
 )
 
 val PrefsDependencies = mapOf(
