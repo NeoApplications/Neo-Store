@@ -25,5 +25,10 @@ fun PrefsBuilder(
             if (it) enabledSetState.addAll(dependents)
             else enabledSetState.removeAll(dependents)
         }
+        is String -> StringPreference(
+            prefKey = prefKey as Preferences.Key<String>,
+            index = index,
+            groupSize = size,
+        ) { onDialogPref(prefKey) }
     }
 }
