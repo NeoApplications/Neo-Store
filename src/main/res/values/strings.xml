@@ -212,4 +212,7 @@
     <string name="favorite_applications">Favorites</string>
     <string name="images_cache_retention">Images cache retention</string>
     <string name="releases_cache_retention">Downloaded APK cache retention</string>
+    <string name="prefs_personal">Personal</string>
+    <string name="prefs_cache">Cache</string>
+    <string name="prefs_sync">Synchronization</string>
 </resources>
