@@ -212,4 +212,8 @@
     <string name="favorite_applications">Favoritter</string>
     <string name="releases_cache_retention">Nedlastet lagringstid for APK-hurtiglager</string>
     <string name="images_cache_retention">Lagringstid for bildehurtiglager</string>
+    <string name="system_black">System (svart)</string>
+    <string name="prefs_personal">Personlig</string>
+    <string name="prefs_sync">Synkronisering</string>
+    <string name="prefs_cache">Hurtiglager</string>
 </resources>
