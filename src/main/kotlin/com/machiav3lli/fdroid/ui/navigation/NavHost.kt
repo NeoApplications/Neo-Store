@@ -21,7 +21,10 @@ import com.machiav3lli.fdroid.ui.fragments.Source
 import com.machiav3lli.fdroid.ui.pages.ExplorePage
 import com.machiav3lli.fdroid.ui.pages.InstalledPage
 import com.machiav3lli.fdroid.ui.pages.LatestPage
+import com.machiav3lli.fdroid.ui.pages.PrefsOtherPage
+import com.machiav3lli.fdroid.ui.pages.PrefsPersonalPage
 import com.machiav3lli.fdroid.ui.pages.PrefsReposPage
+import com.machiav3lli.fdroid.ui.pages.PrefsUpdatesPage
 import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
 import com.machiav3lli.fdroid.ui.viewmodels.RepositoriesViewModelX
 
@@ -80,8 +83,14 @@ fun PrefsNavHost(
     AnimatedNavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = NavItem.ReposPrefs.destination
+        startDestination = NavItem.PersonalPrefs.destination
     ) {
+        slideDownComposable(NavItem.PersonalPrefs.destination) {
+            PrefsPersonalPage()
+        }
+        slideDownComposable(NavItem.UpdatesPrefs.destination) {
+            PrefsUpdatesPage()
+        }
         slideDownComposable(NavItem.ReposPrefs.destination) {
             val viewModel = viewModel<RepositoriesViewModelX>(
                 factory = RepositoriesViewModelX.Factory(
@@ -89,6 +98,9 @@ fun PrefsNavHost(
                 )
             )
             PrefsReposPage(viewModel)
+        }
+        slideDownComposable(NavItem.OtherPrefs.destination) {
+            PrefsOtherPage()
         }
     }
 
