@@ -16,7 +16,12 @@ fun PrefsBuilder(
             index = index,
             groupSize = size,
         )
-        prefKey.default is Preferences.Value.StringValue -> LanguagePreference(
+        prefKey is Preferences.Key.Language -> LanguagePreference(
+            prefKey = prefKey as Preferences.Key<String>,
+            index = index,
+            groupSize = size,
+        ) { onDialogPref(prefKey) }
+        prefKey.default is Preferences.Value.StringValue -> StringPreference(
             prefKey = prefKey as Preferences.Key<String>,
             index = index,
             groupSize = size,
