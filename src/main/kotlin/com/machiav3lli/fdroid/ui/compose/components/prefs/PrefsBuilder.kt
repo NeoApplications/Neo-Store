@@ -8,7 +8,7 @@ import com.machiav3lli.fdroid.content.PrefsDependencies
 @Composable
 fun PrefsBuilder(
     prefKey: Preferences.Key<*>,
-    onDialogPref: (Any) -> Unit,
+    onDialogPref: (Preferences.Key<*>) -> Unit,
     enabledSetState: SnapshotStateList<Preferences.Key<*>>,
     index: Int,
     size: Int

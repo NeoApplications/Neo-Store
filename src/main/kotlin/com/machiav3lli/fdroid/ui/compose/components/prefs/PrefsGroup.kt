@@ -46,7 +46,7 @@ fun PreferenceGroup(
     modifier: Modifier = Modifier,
     heading: String? = null,
     keys: List<Preferences.Key<*>>,
-    onPrefDialog: (Any) -> Unit,
+    onPrefDialog: (Preferences.Key<*>) -> Unit,
 ) {
     val size = keys.size
     val enabledList = remember() {

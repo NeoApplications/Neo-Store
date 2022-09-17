@@ -25,8 +25,8 @@ import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 fun PrefsPersonalPage() {
     val context = LocalContext.current
     val openDialog = remember { mutableStateOf(false) }
-    var dialogPref by remember { mutableStateOf<Any?>(null) }
-    val onPrefDialog = { pref: Any ->
+    var dialogPref by remember { mutableStateOf<Preferences.Key<*>?>(null) }
+    val onPrefDialog = { pref: Preferences.Key<*> ->
         dialogPref = pref
         openDialog.value = true
     }
@@ -73,6 +73,7 @@ fun PrefsPersonalPage() {
             BaseDialog(openDialogCustom = openDialog) {
                 when (dialogPref) {
                     // TODO
+                    else -> {}
                 }
             }
         }
