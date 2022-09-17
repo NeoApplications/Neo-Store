@@ -18,8 +18,11 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -31,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import com.machiav3lli.fdroid.content.BooleanPrefsMeta
 import com.machiav3lli.fdroid.content.NonBooleanPrefsMeta
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.content.PrefsEntries
 import com.machiav3lli.fdroid.ui.compose.utils.addIf
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.Utils.getLocaleOfCode
@@ -169,6 +173,40 @@ fun StringPreference(
         modifier = modifier,
         titleId = NonBooleanPrefsMeta[prefKey] ?: -1,
         summary = Utils.translateLocale(context.getLocaleOfCode(Preferences[prefKey])),
+        index = index,
+        groupSize = groupSize,
+        isEnabled = isEnabled,
+        onClick = onClick
+    )
+}
+
+@Composable
+fun EnumPreference(
+    modifier: Modifier = Modifier,
+    prefKey: Preferences.Key<Preferences.Enumeration<*>>,
+    index: Int = 1,
+    groupSize: Int = 1,
+    isEnabled: Boolean = true,
+    onClick: (() -> Unit) = {},
+) {
+    var prefValue by remember {
+        mutableStateOf(Preferences[prefKey])
+    }
+    SideEffect {
+        CoroutineScope(Dispatchers.Default).launch {
+            Preferences.subject.collect {
+                when (it) {
+                    prefKey -> prefValue = Preferences[prefKey]
+                    else -> {}
+                }
+            }
+        }
+    }
+
+    BasePreference(
+        modifier = modifier,
+        titleId = NonBooleanPrefsMeta[prefKey] ?: -1,
+        summary = stringResource(id = PrefsEntries[prefKey]?.get(prefValue) ?: -1),
         index = index,
         groupSize = groupSize,
         isEnabled = isEnabled,
