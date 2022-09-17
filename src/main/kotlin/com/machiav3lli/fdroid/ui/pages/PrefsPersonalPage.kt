@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.compose.components.prefs.PreferenceGroup
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 
@@ -29,7 +30,18 @@ fun PrefsPersonalPage() {
         dialogPref = pref
         openDialog.value = true
     }
-    //val personalPrefs = listOf()
+    val personalPrefs = listOf(
+        Preferences.Key.Language,
+        Preferences.Key.Theme,
+        Preferences.Key.DefaultTab,
+        Preferences.Key.ShowScreenshots,
+        Preferences.Key.UpdatedApps,
+        Preferences.Key.NewApps,
+    )
+    val cachePrefs = listOf(
+        Preferences.Key.ReleasesCacheRetention,
+        Preferences.Key.ImagesCacheRetention,
+    )
 
     Scaffold(
         modifier = Modifier.fillMaxSize()

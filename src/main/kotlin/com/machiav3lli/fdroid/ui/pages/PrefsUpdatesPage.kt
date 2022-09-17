@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.compose.components.prefs.PreferenceGroup
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 
@@ -29,9 +30,20 @@ fun PrefsUpdatesPage() {
         dialogPref = pref
         openDialog.value = true
     }
-    //val syncPrefs = listOf()
-    //val downloadPrefs = listOf()
-    //val installationPrefs = listOf()
+    val syncPrefs = listOf(
+        Preferences.Key.AutoSync,
+        Preferences.Key.AutoSyncInterval,
+    )
+    val updatesPrefs = listOf(
+        Preferences.Key.InstallAfterSync,
+        Preferences.Key.UpdateNotify,
+        Preferences.Key.UpdateUnstable,
+        Preferences.Key.IncompatibleVersions,
+    )
+    val installPrefs = listOf(
+        Preferences.Key.RootPermission,
+        Preferences.Key.RootSessionInstaller,
+    )
 
     Scaffold(
         modifier = Modifier.fillMaxSize()

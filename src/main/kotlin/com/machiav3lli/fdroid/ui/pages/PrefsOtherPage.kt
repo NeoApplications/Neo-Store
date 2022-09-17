@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.compose.components.prefs.PreferenceGroup
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 
@@ -29,8 +30,12 @@ fun PrefsOtherPage() {
         dialogPref = pref
         openDialog.value = true
     }
-    //val proxyPrefs = listOf()
-    //val infoPrefs = listOf()
+    val proxyPrefs = listOf(
+        Preferences.Key.ProxyType,
+        Preferences.Key.ProxyHost,
+        Preferences.Key.ProxyPort,
+    )
+    val infoPrefs = emptyList<Preferences.Key<*>>()
 
     Scaffold(
         modifier = Modifier.fillMaxSize()
