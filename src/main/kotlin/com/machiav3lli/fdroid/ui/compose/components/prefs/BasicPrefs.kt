@@ -32,6 +32,11 @@ import com.machiav3lli.fdroid.content.BooleanPrefsMeta
 import com.machiav3lli.fdroid.content.NonBooleanPrefsMeta
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.compose.utils.addIf
+import com.machiav3lli.fdroid.utility.Utils
+import com.machiav3lli.fdroid.utility.Utils.getLocaleOfCode
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun BasePreference(
@@ -158,10 +163,12 @@ fun StringPreference(
     isEnabled: Boolean = true,
     onClick: (() -> Unit) = {},
 ) {
+    val context = LocalContext.current
+
     BasePreference(
         modifier = modifier,
         titleId = NonBooleanPrefsMeta[prefKey] ?: -1,
-        summary = Preferences[prefKey],
+        summary = Utils.translateLocale(context.getLocaleOfCode(Preferences[prefKey])),
         index = index,
         groupSize = groupSize,
         isEnabled = isEnabled,
