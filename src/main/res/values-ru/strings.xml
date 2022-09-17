@@ -215,4 +215,7 @@
     <string name="favorite_applications">Избранное</string>
     <string name="images_cache_retention">Хранение изображений в кэше</string>
     <string name="releases_cache_retention">Хранение скачанных APK в кэше</string>
+    <string name="prefs_sync">Синхронизация</string>
+    <string name="prefs_personal">Личные</string>
+    <string name="prefs_cache">Кэш</string>
 </resources>
