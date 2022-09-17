@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.content.NonBooleanPrefsMeta
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.content.PrefsEntries
 import com.machiav3lli.fdroid.ui.compose.components.DialogNegativeButton
 import com.machiav3lli.fdroid.ui.compose.components.DialogPositiveButton
 import com.machiav3lli.fdroid.ui.compose.components.SingleSelectionListItem
@@ -71,6 +72,68 @@ fun LanguagePrefDialogUI(
                         isSelected = isSelected.value
                     ) {
                         selected = it.first
+                    }
+                }
+            }
+
+            Row(
+                Modifier.fillMaxWidth()
+            ) {
+                DialogNegativeButton(
+                    onClick = { openDialogCustom.value = false }
+                )
+                Spacer(Modifier.weight(1f))
+                DialogPositiveButton(
+                    modifier = Modifier.padding(start = 16.dp),
+                    onClick = {
+                        Preferences[prefKey] = selected
+                        openDialogCustom.value = false
+                    }
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+fun EnumSelectionPrefDialogUI(
+    prefKey: Preferences.Key<Preferences.Enumeration<*>>,
+    openDialogCustom: MutableState<Boolean>
+) {
+    val context = LocalContext.current
+    var selected by remember { mutableStateOf(Preferences[prefKey]) }
+    val entryPairs = PrefsEntries[prefKey]?.entries?.toList() ?: emptyList()
+
+    Card(
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.padding(8.dp),
+        elevation = CardDefaults.elevatedCardElevation(8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = stringResource(NonBooleanPrefsMeta[prefKey] ?: -1),
+                style = MaterialTheme.typography.titleLarge
+            )
+            LazyColumn(
+                modifier = Modifier
+                    .padding(top = 16.dp, bottom = 8.dp)
+                    .weight(1f, false)
+            ) {
+                items(items = entryPairs) {
+                    val isSelected = rememberSaveable(selected) {
+                        mutableStateOf(selected == it.key)
+                    }
+                    SingleSelectionListItem(
+                        text = stringResource(id = it.value),
+                        isSelected = isSelected.value
+                    ) {
+                        selected = it.key
                     }
                 }
             }
