@@ -33,6 +33,21 @@ val BooleanPrefsMeta = mapOf(
     ),
 )
 
+val NonBooleanPrefsMeta = mapOf(
+    Preferences.Key.Language to R.string.prefs_language_title,
+    Preferences.Key.Theme to R.string.theme,
+    Preferences.Key.DefaultTab to R.string.default_tab,
+    Preferences.Key.UpdatedApps to R.string.prefs_updated_apps,
+    Preferences.Key.NewApps to R.string.prefs_new_apps,
+    Preferences.Key.AutoSync to R.string.sync_repositories_automatically,
+    Preferences.Key.AutoSyncInterval to R.string.auto_sync_interval,
+    Preferences.Key.ReleasesCacheRetention to R.string.releases_cache_retention,
+    Preferences.Key.ImagesCacheRetention to R.string.images_cache_retention,
+    Preferences.Key.ProxyType to R.string.proxy_type,
+    Preferences.Key.ProxyHost to R.string.proxy_host,
+    Preferences.Key.ProxyPort to R.string.proxy_port,
+)
+
 val PrefsDependencies = mapOf(
     Preferences.Key.RootSessionInstaller to Preferences.Key.RootPermission,
 )
