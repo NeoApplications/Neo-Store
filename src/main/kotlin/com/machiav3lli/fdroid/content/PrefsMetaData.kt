@@ -80,6 +80,15 @@ val PrefsEntries = mapOf(
     ),
 )
 
+val IntPrefsRanges = mapOf(
+    Preferences.Key.UpdatedApps to 1..200,
+    Preferences.Key.NewApps to 1..50,
+    Preferences.Key.AutoSyncInterval to 1..1440, // TODO unlimited
+    Preferences.Key.ReleasesCacheRetention to 0..365,
+    Preferences.Key.ImagesCacheRetention to 0..365,
+    Preferences.Key.ProxyPort to 1..65535,
+)
+
 val PrefsDependencies = mapOf(
     Preferences.Key.RootSessionInstaller to Preferences.Key.RootPermission,
 )
