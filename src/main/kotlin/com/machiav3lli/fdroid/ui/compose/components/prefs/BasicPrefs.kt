@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.machiav3lli.fdroid.content.BooleanPrefsMeta
+import com.machiav3lli.fdroid.content.NonBooleanPrefsMeta
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.compose.utils.addIf
 
@@ -145,5 +146,25 @@ fun SwitchPreference(
                 enabled = enabled,
             )
         }
+    )
+}
+
+@Composable
+fun StringPreference(
+    modifier: Modifier = Modifier,
+    prefKey: Preferences.Key<String>,
+    index: Int = 1,
+    groupSize: Int = 1,
+    isEnabled: Boolean = true,
+    onClick: (() -> Unit) = {},
+) {
+    BasePreference(
+        modifier = modifier,
+        titleId = NonBooleanPrefsMeta[prefKey] ?: -1,
+        summary = Preferences[prefKey],
+        index = index,
+        groupSize = groupSize,
+        isEnabled = isEnabled,
+        onClick = onClick
     )
 }
