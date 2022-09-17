@@ -49,17 +49,17 @@ fun PrefsOtherPage() {
         ) {
             item {
                 PreferenceGroup(
-                    heading = stringResource(id = R.string.proxy)
-                ) {
-                    // TODO
-                }
+                    heading = stringResource(id = R.string.proxy),
+                    keys = proxyPrefs,
+                    onPrefDialog = onPrefDialog
+                )
             }
             item {
                 PreferenceGroup(
-                    heading = stringResource(id = R.string.credits)
-                ) {
-                    // TODO
-                }
+                    heading = stringResource(id = R.string.credits),
+                    keys = infoPrefs,
+                    onPrefDialog = onPrefDialog
+                )
             }
         }
 

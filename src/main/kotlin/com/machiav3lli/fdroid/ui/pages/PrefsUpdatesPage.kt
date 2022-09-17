@@ -57,17 +57,24 @@ fun PrefsUpdatesPage() {
         ) {
             item {
                 PreferenceGroup(
-                    heading = stringResource(id = R.string.updates)
-                ) {
-                    // TODO
-                }
+                    heading = stringResource(id = R.string.prefs_sync),
+                    keys = syncPrefs,
+                    onPrefDialog = onPrefDialog
+                )
             }
             item {
                 PreferenceGroup(
-                    heading = stringResource(id = R.string.install_types)
-                ) {
-                    // TODO
-                }
+                    heading = stringResource(id = R.string.updates),
+                    keys = updatesPrefs,
+                    onPrefDialog = onPrefDialog
+                )
+            }
+            item {
+                PreferenceGroup(
+                    heading = stringResource(id = R.string.install_types),
+                    keys = installPrefs,
+                    onPrefDialog = onPrefDialog
+                )
             }
         }
 

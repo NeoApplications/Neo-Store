@@ -55,10 +55,17 @@ fun PrefsPersonalPage() {
         ) {
             item {
                 PreferenceGroup(
-                    heading = stringResource(id = R.string.prefs_personalization)
-                ) {
-                    // TODO
-                }
+                    heading = stringResource(id = R.string.prefs_personalization),
+                    keys = personalPrefs,
+                    onPrefDialog = onPrefDialog
+                )
+            }
+            item {
+                PreferenceGroup(
+                    heading = stringResource(id = R.string.prefs_cache),
+                    keys = cachePrefs,
+                    onPrefDialog = onPrefDialog
+                )
             }
         }
 
