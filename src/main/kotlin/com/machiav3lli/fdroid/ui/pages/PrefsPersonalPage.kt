@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.compose.components.prefs.PreferenceGroup
@@ -22,6 +23,7 @@ import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.EnumSelectionPrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.IntInputPrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.LanguagePrefDialogUI
+import com.machiav3lli.fdroid.ui.dialog.StringInputPrefDialogUI
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,7 +77,11 @@ fun PrefsPersonalPage() {
         if (openDialog.value) {
             BaseDialog(openDialogCustom = openDialog) {
                 when (dialogPref?.default?.value) {
-                    is String -> LanguagePrefDialogUI(
+                    PREFS_LANGUAGE_DEFAULT -> LanguagePrefDialogUI(
+                        openDialogCustom = openDialog
+                    )
+                    is String -> StringInputPrefDialogUI(
+                        prefKey = dialogPref as Preferences.Key<String>,
                         openDialogCustom = openDialog
                     )
                     is Int -> IntInputPrefDialogUI(

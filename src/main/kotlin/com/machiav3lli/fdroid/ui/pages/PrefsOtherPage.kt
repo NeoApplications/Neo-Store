@@ -21,6 +21,7 @@ import com.machiav3lli.fdroid.ui.compose.components.prefs.PreferenceGroup
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.EnumSelectionPrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.IntInputPrefDialogUI
+import com.machiav3lli.fdroid.ui.dialog.StringInputPrefDialogUI
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,7 +69,10 @@ fun PrefsOtherPage() {
         if (openDialog.value) {
             BaseDialog(openDialogCustom = openDialog) {
                 when (dialogPref?.default?.value) {
-                    is String -> {} //TODO
+                    is String -> StringInputPrefDialogUI(
+                        prefKey = dialogPref as Preferences.Key<String>,
+                        openDialogCustom = openDialog
+                    )
                     is Int -> IntInputPrefDialogUI(
                         prefKey = dialogPref as Preferences.Key<Int>,
                         openDialogCustom = openDialog
