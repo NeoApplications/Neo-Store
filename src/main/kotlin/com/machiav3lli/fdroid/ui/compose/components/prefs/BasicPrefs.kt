@@ -285,3 +285,41 @@ fun IntPreference(
         onClick = onClick
     )
 }
+
+@Composable
+fun StringPreference(
+    modifier: Modifier = Modifier,
+    prefKey: Preferences.Key<String>,
+    index: Int = 1,
+    groupSize: Int = 1,
+    onClick: (() -> Unit) = {},
+) {
+    val dependency = PrefsDependencies[prefKey]
+    var isEnabled by remember {
+        mutableStateOf(dependency?.let { Preferences[dependency] != it.default.value } ?: true)
+    }
+    var prefValue by remember {
+        mutableStateOf(Preferences[prefKey])
+    }
+    SideEffect {
+        CoroutineScope(Dispatchers.Default).launch {
+            Preferences.subject.collect {
+                when (it) {
+                    prefKey -> prefValue = Preferences[prefKey]
+                    dependency -> isEnabled = Preferences[it] != it.default.value
+                    else -> {}
+                }
+            }
+        }
+    }
+
+    BasePreference(
+        modifier = modifier,
+        titleId = NonBooleanPrefsMeta[prefKey] ?: -1,
+        summary = prefValue,
+        index = index,
+        groupSize = groupSize,
+        isEnabled = isEnabled,
+        onClick = onClick
+    )
+}
