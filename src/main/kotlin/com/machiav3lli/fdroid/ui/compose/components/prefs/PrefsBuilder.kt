@@ -30,6 +30,11 @@ fun PrefsBuilder(
             index = index,
             groupSize = size,
         ) { onDialogPref(prefKey) }
+        prefKey.default is Preferences.Value.IntValue -> IntPreference(
+            prefKey = prefKey as Preferences.Key<Int>,
+            index = index,
+            groupSize = size,
+        ) { onDialogPref(prefKey) }
         prefKey.default.value is Preferences.Enumeration<*> -> EnumPreference(
             prefKey = prefKey as Preferences.Key<Preferences.Enumeration<*>>,
             index = index,
