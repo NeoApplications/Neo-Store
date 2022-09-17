@@ -91,4 +91,6 @@ val IntPrefsRanges = mapOf(
 
 val PrefsDependencies = mapOf(
     Preferences.Key.RootSessionInstaller to Preferences.Key.RootPermission,
+    Preferences.Key.ProxyHost to Preferences.Key.ProxyType,
+    Preferences.Key.ProxyPort to Preferences.Key.ProxyType,
 )
