@@ -213,3 +213,38 @@ fun EnumPreference(
         onClick = onClick
     )
 }
+
+
+@Composable
+fun IntPreference(
+    modifier: Modifier = Modifier,
+    prefKey: Preferences.Key<Int>,
+    index: Int = 1,
+    groupSize: Int = 1,
+    isEnabled: Boolean = true,
+    onClick: (() -> Unit) = {},
+) {
+    var prefValue by remember {
+        mutableStateOf(Preferences[prefKey])
+    }
+    SideEffect {
+        CoroutineScope(Dispatchers.Default).launch {
+            Preferences.subject.collect {
+                when (it) {
+                    prefKey -> prefValue = Preferences[prefKey]
+                    else -> {}
+                }
+            }
+        }
+    }
+
+    BasePreference(
+        modifier = modifier,
+        titleId = NonBooleanPrefsMeta[prefKey] ?: -1,
+        summary = prefValue.toString(),
+        index = index,
+        groupSize = groupSize,
+        isEnabled = isEnabled,
+        onClick = onClick
+    )
+}
