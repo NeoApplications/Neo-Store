@@ -13,8 +13,8 @@ fun PrefsBuilder(
     index: Int,
     size: Int
 ) {
-    when (prefKey.default.value) {
-        is Boolean -> SwitchPreference(
+    when {
+        prefKey.default is Preferences.Value.BooleanValue -> SwitchPreference(
             prefKey = prefKey as Preferences.Key<Boolean>,
             index = index,
             groupSize = size,
@@ -25,10 +25,16 @@ fun PrefsBuilder(
             if (it) enabledSetState.addAll(dependents)
             else enabledSetState.removeAll(dependents)
         }
-        is String -> StringPreference(
+        prefKey.default is Preferences.Value.StringValue -> StringPreference(
             prefKey = prefKey as Preferences.Key<String>,
             index = index,
             groupSize = size,
         ) { onDialogPref(prefKey) }
+        prefKey.default.value is Preferences.Enumeration<*> -> EnumPreference(
+            prefKey = prefKey as Preferences.Key<Preferences.Enumeration<*>>,
+            index = index,
+            groupSize = size,
+        ) { onDialogPref(prefKey) }
+        else -> {}
     }
 }
