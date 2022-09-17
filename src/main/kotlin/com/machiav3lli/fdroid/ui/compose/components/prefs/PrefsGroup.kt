@@ -13,15 +13,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.content.PrefsDependencies
 
 @Composable
 fun PreferenceGroup(
@@ -49,11 +46,6 @@ fun PreferenceGroup(
     onPrefDialog: (Preferences.Key<*>) -> Unit,
 ) {
     val size = keys.size
-    val enabledList = remember() {
-        mutableStateListOf(
-            *keys.filter { PrefsDependencies[it]?.let { Preferences[it] } ?: true }.toTypedArray()
-        )
-    }
 
     PreferenceGroup(
         modifier = modifier,
@@ -63,7 +55,6 @@ fun PreferenceGroup(
             PrefsBuilder(
                 item,
                 onPrefDialog,
-                enabledList,
                 index,
                 size
             )

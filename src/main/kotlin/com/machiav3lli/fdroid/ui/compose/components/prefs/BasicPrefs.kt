@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import com.machiav3lli.fdroid.content.BooleanPrefsMeta
 import com.machiav3lli.fdroid.content.NonBooleanPrefsMeta
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.content.PrefsDependencies
 import com.machiav3lli.fdroid.content.PrefsEntries
 import com.machiav3lli.fdroid.ui.compose.utils.addIf
 import com.machiav3lli.fdroid.utility.Utils
@@ -124,11 +125,25 @@ fun SwitchPreference(
     prefKey: Preferences.Key<Boolean>,
     index: Int = 0,
     groupSize: Int = 1,
-    enabled: Boolean = true,
     onCheckedChange: ((Boolean) -> Unit) = {},
 ) {
     val context = LocalContext.current
     val (checked, check) = remember(Preferences[prefKey]) { mutableStateOf(Preferences[prefKey]) }
+    val dependency = PrefsDependencies[prefKey]
+    var isEnabled by remember {
+        mutableStateOf(dependency?.let { Preferences[dependency] != it.default.value } ?: true)
+    }
+
+    SideEffect {
+        CoroutineScope(Dispatchers.Default).launch {
+            Preferences.subject.collect {
+                when (it) {
+                    dependency -> isEnabled = Preferences[it] != it.default.value
+                    else -> {}
+                }
+            }
+        }
+    }
 
     BasePreference(
         modifier = modifier,
@@ -136,7 +151,7 @@ fun SwitchPreference(
         summaryId = BooleanPrefsMeta[prefKey]?.second ?: -1,
         index = index,
         groupSize = groupSize,
-        isEnabled = enabled,
+        isEnabled = isEnabled,
         onClick = {
             onCheckedChange(!checked)
             Preferences[prefKey] = !checked
@@ -152,22 +167,36 @@ fun SwitchPreference(
                     Preferences[prefKey] = it
                     check(it)
                 },
-                enabled = enabled,
+                enabled = isEnabled,
             )
         }
     )
 }
 
 @Composable
-fun StringPreference(
+fun LanguagePreference(
     modifier: Modifier = Modifier,
     prefKey: Preferences.Key<String>,
     index: Int = 1,
     groupSize: Int = 1,
-    isEnabled: Boolean = true,
     onClick: (() -> Unit) = {},
 ) {
     val context = LocalContext.current
+    val dependency = PrefsDependencies[prefKey]
+    var isEnabled by remember {
+        mutableStateOf(dependency?.let { Preferences[dependency] != it.default.value } ?: true)
+    }
+
+    SideEffect {
+        CoroutineScope(Dispatchers.Default).launch {
+            Preferences.subject.collect {
+                when (it) {
+                    dependency -> isEnabled = Preferences[it] != it.default.value
+                    else -> {}
+                }
+            }
+        }
+    }
 
     BasePreference(
         modifier = modifier,
@@ -186,9 +215,12 @@ fun EnumPreference(
     prefKey: Preferences.Key<Preferences.Enumeration<*>>,
     index: Int = 1,
     groupSize: Int = 1,
-    isEnabled: Boolean = true,
     onClick: (() -> Unit) = {},
 ) {
+    val dependency = PrefsDependencies[prefKey]
+    var isEnabled by remember {
+        mutableStateOf(dependency?.let { Preferences[dependency] != it.default.value } ?: true)
+    }
     var prefValue by remember {
         mutableStateOf(Preferences[prefKey])
     }
@@ -197,6 +229,7 @@ fun EnumPreference(
             Preferences.subject.collect {
                 when (it) {
                     prefKey -> prefValue = Preferences[prefKey]
+                    dependency -> isEnabled = Preferences[it] != it.default.value
                     else -> {}
                 }
             }
@@ -221,9 +254,12 @@ fun IntPreference(
     prefKey: Preferences.Key<Int>,
     index: Int = 1,
     groupSize: Int = 1,
-    isEnabled: Boolean = true,
     onClick: (() -> Unit) = {},
 ) {
+    val dependency = PrefsDependencies[prefKey]
+    var isEnabled by remember {
+        mutableStateOf(dependency?.let { Preferences[dependency] != it.default.value } ?: true)
+    }
     var prefValue by remember {
         mutableStateOf(Preferences[prefKey])
     }
@@ -232,6 +268,7 @@ fun IntPreference(
             Preferences.subject.collect {
                 when (it) {
                     prefKey -> prefValue = Preferences[prefKey]
+                    dependency -> isEnabled = Preferences[it] != it.default.value
                     else -> {}
                 }
             }

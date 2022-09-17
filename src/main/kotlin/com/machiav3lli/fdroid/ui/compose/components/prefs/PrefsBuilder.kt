@@ -1,15 +1,12 @@
 package com.machiav3lli.fdroid.ui.compose.components.prefs
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.content.PrefsDependencies
 
 @Composable
 fun PrefsBuilder(
     prefKey: Preferences.Key<*>,
     onDialogPref: (Preferences.Key<*>) -> Unit,
-    enabledSetState: SnapshotStateList<Preferences.Key<*>>,
     index: Int,
     size: Int
 ) {
@@ -18,14 +15,8 @@ fun PrefsBuilder(
             prefKey = prefKey as Preferences.Key<Boolean>,
             index = index,
             groupSize = size,
-            enabled = enabledSetState.contains(prefKey)
-        ) {
-            val dependents =
-                PrefsDependencies.entries.filter { it.value == prefKey }.map { it.key }.toSet()
-            if (it) enabledSetState.addAll(dependents)
-            else enabledSetState.removeAll(dependents)
-        }
-        prefKey.default is Preferences.Value.StringValue -> StringPreference(
+        )
+        prefKey.default is Preferences.Value.StringValue -> LanguagePreference(
             prefKey = prefKey as Preferences.Key<String>,
             index = index,
             groupSize = size,
