@@ -117,6 +117,7 @@ class MainApplication : Application(), ImageLoaderFactory {
         var lastAutoSync = Preferences[Preferences.Key.AutoSync]
         var lastUpdateUnstable = Preferences[Preferences.Key.UpdateUnstable]
         var lastLanguage = Preferences[Preferences.Key.Language]
+        var lastTheme = Preferences[Preferences.Key.Theme]
         CoroutineScope(Dispatchers.Default).launch {
             Preferences.subject.collect {
                 when (it) {
@@ -135,6 +136,13 @@ class MainApplication : Application(), ImageLoaderFactory {
                         if (lastUpdateUnstable != updateUnstable) {
                             lastUpdateUnstable = updateUnstable
                             forceSyncAll()
+                        }
+                    }
+                    Preferences.Key.Theme -> {
+                        val theme = Preferences[Preferences.Key.Theme]
+                        if (theme != lastTheme) {
+                            lastTheme = theme
+                            CoroutineScope(Dispatchers.Main).launch { mActivity.recreate() }
                         }
                     }
                     Preferences.Key.Language -> {
