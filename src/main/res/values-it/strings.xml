@@ -100,7 +100,7 @@
     <string name="ok">OK</string>
     <string name="only_compatible_with_FORMAT">Compatibile solo con %s</string>
     <string name="only_on_wifi">Solo con Wi-Fi</string>
-    <string name="open_DESC_FORMAT">Aprire %s?</string>
+    <string name="open_DESC_FORMAT">Apro %s\?</string>
     <string name="other">Altro</string>
     <string name="parsing_index_error_DESC">Impossibile analizzare indice file.</string>
     <string name="password">Password</string>
@@ -186,8 +186,8 @@
     <string name="only_on_wifi_and_battery">Solo su Wi-Fi e in carica</string>
     <string name="install_after_sync">Aggiornamento automatico</string>
     <string name="install_after_sync_summary">Installa tutte le nuove versioni dopo aver esaminato i repository per le nuove app.</string>
-    <string name="prefs_updated_apps">Numero app in «Aggiornate di recente»</string>
-    <string name="prefs_new_apps">Numero app in «Nuove app»</string>
+    <string name="prefs_updated_apps">Numero app in \"Aggiornate di recente\"</string>
+    <string name="prefs_new_apps">Numero app in \"Nuove app\"</string>
     <string name="new_repository">Nuovo repository</string>
     <string name="default_tab">Scheda predefinita</string>
     <string name="pending">In attesa</string>
@@ -215,4 +215,7 @@
     <string name="favorite_applications">Preferiti</string>
     <string name="images_cache_retention">Conservazione cache immagini</string>
     <string name="releases_cache_retention">Conservazione cache APK scaricato</string>
+    <string name="prefs_cache">Cache</string>
+    <string name="prefs_sync">Sincronizzazione</string>
+    <string name="prefs_personal">Personale</string>
 </resources>
