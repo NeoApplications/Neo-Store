@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -24,6 +25,9 @@ import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.onLaunchClick
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun ExplorePage(viewModel: MainNavFragmentViewModelX) {
@@ -37,6 +41,15 @@ fun ExplorePage(viewModel: MainNavFragmentViewModelX) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
     val favorites by mainActivityX.db.extrasDao.favoritesLive.observeAsState(emptyArray())
+
+    SideEffect {
+        CoroutineScope(Dispatchers.IO).launch {
+            mainActivityX.searchQuery.collect { newQuery ->
+                if (newQuery != viewModel.searchQuery.value)
+                    viewModel.searchQuery.postValue(newQuery)
+            }
+        }
+    }
 
     AppTheme(
         darkTheme = when (Preferences[Preferences.Key.Theme]) {

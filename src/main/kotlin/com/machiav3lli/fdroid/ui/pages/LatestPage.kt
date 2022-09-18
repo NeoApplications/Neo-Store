@@ -29,6 +29,9 @@ import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.onLaunchClick
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun LatestPage(viewModel: MainNavFragmentViewModelX) {
@@ -45,6 +48,12 @@ fun LatestPage(viewModel: MainNavFragmentViewModelX) {
 
     SideEffect {
         mainActivityX.syncConnection.bind(context)
+        CoroutineScope(Dispatchers.IO).launch {
+            mainActivityX.searchQuery.collect { newQuery ->
+                if (newQuery != viewModel.searchQuery.value)
+                    viewModel.searchQuery.postValue(newQuery)
+            }
+        }
     }
 
     AppTheme(
