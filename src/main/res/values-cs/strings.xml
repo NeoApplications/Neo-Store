@@ -213,4 +213,8 @@
     <string name="favorite_applications">Oblíbené</string>
     <string name="images_cache_retention">Uchovávání obrázků v mezipaměti</string>
     <string name="releases_cache_retention">Uchovávání staženého APK v mezipaměti</string>
+    <string name="system_black">Systém (černý)</string>
+    <string name="prefs_personal">Osobní</string>
+    <string name="prefs_cache">Mezipaměť</string>
+    <string name="prefs_sync">Synchronizace</string>
 </resources>
