@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,7 +39,7 @@ fun RepositoryItem(
         mutableStateOf(repository.enabled)
     }
     val backgroundColor by animateColorAsState(
-        targetValue = if (isEnabled) MaterialTheme.colorScheme.primaryContainer
+        targetValue = if (isEnabled) MaterialTheme.colorScheme.surfaceColorAtElevation(32.dp)
         else MaterialTheme.colorScheme.background
     )
 
@@ -55,7 +56,7 @@ fun RepositoryItem(
                 onLongClick = { onLongClick(repository) }
             ),
         color = backgroundColor,
-        shape = MaterialTheme.shapes.extraLarge
+        shape = MaterialTheme.shapes.large
     ) {
         Row(
             modifier = Modifier.padding(
@@ -65,44 +66,36 @@ fun RepositoryItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            RepositoryItemText(
-                repositoryName = repository.name,
-                repositoryDescription = repository.description
-            )
+
+            Column(
+                modifier = modifier.fillMaxWidth(0.9f),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = repository.name.trim(),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = if (isEnabled) MaterialTheme.colorScheme.onPrimaryContainer
+                    else MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1
+                )
+                repository.description.trim().let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodyMedium,
+                        overflow = TextOverflow.Ellipsis,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1
+                    )
+                }
+            }
             AnimatedVisibility(visible = isEnabled) {
                 Icon(
                     imageVector = Icons.Default.Done,
+                    tint = MaterialTheme.colorScheme.primary,
                     contentDescription = "Repository Enabled"
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun RepositoryItemText(
-    modifier: Modifier = Modifier,
-    repositoryName: String,
-    repositoryDescription: String?
-) {
-    Column(
-        modifier = modifier.fillMaxWidth(0.9f),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text(
-            text = repositoryName.trim(),
-            style = MaterialTheme.typography.titleMedium,
-            maxLines = 1
-        )
-        repositoryDescription?.trim()?.let {
-            Text(
-                text = it,
-                style = MaterialTheme.typography.bodyMedium,
-                overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1
-            )
         }
     }
 }
