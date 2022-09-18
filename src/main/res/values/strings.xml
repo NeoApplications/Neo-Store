@@ -218,4 +218,5 @@
     <string name="prefs_sync">Synchronization</string>
     <string name="group_telegram">Our Telegram group</string>
     <string name="group_matrix">Our Matrix group</string>
+    <string name="min_sdk">minSDK</string>
 </resources>
