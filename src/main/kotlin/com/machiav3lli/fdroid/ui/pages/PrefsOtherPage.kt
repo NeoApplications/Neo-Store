@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.entity.LinkRef
 import com.machiav3lli.fdroid.ui.compose.components.prefs.PreferenceGroup
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.EnumSelectionPrefDialogUI
@@ -59,9 +60,8 @@ fun PrefsOtherPage() {
             }
             item {
                 PreferenceGroup(
-                    heading = stringResource(id = R.string.credits),
-                    keys = infoPrefs,
-                    onPrefDialog = onPrefDialog
+                    heading = stringResource(id = R.string.application_name),
+                    links = LinkRef.values().toList(),
                 )
             }
         }
