@@ -15,10 +15,9 @@ import androidx.compose.material.icons.rounded.Sync
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -45,6 +44,10 @@ import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.setCustomTheme
 import com.machiav3lli.fdroid.utility.showBatteryOptimizationDialog
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
@@ -63,7 +66,11 @@ class MainActivityX : AppCompatActivity() {
     }
 
     private lateinit var powerManager: PowerManager
+    private val cScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
     val syncConnection = Connection(SyncService::class.java)
+
+    private val _searchQuery = MutableSharedFlow<String>()
+    val searchQuery = _searchQuery.asSharedFlow()
 
     val db
         get() = (application as MainApplication).db
@@ -92,8 +99,12 @@ class MainActivityX : AppCompatActivity() {
                     else -> isDarkTheme
                 }
             ) {
-                var searchQuery by remember() { mutableStateOf("") } // TODO link query to the current Page/VM
+                val query by searchQuery.collectAsState(initial = "")
                 val navController = rememberAnimatedNavController()
+
+                SideEffect {
+                    cScope.launch { _searchQuery.emit("") }
+                }
 
                 Scaffold(
                     containerColor = Color.Transparent,
@@ -104,12 +115,14 @@ class MainActivityX : AppCompatActivity() {
                             title = stringResource(id = R.string.application_name),
                         ) {
                             ExpandableSearchAction(
-                                query = searchQuery,
+                                query = query,
                                 onClose = {
-                                    searchQuery = ""
+                                    cScope.launch { _searchQuery.emit("") }
                                 },
-                                onQueryChanged = { query ->
-                                    if (query != searchQuery) searchQuery = query
+                                onQueryChanged = { newQuery ->
+                                    if (newQuery != query) {
+                                        cScope.launch { _searchQuery.emit(newQuery) }
+                                    }
                                 }
                             )
                             TopBarAction(icon = Icons.Rounded.Sync) {
