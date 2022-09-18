@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.entity.LinkRef
 
 @Composable
 fun PreferenceGroup(
@@ -57,6 +58,29 @@ fun PreferenceGroup(
                 onPrefDialog,
                 index,
                 size
+            )
+            if (index < size - 1) Spacer(modifier = Modifier.height(4.dp))
+        }
+    }
+}
+
+@Composable
+fun PreferenceGroup(
+    modifier: Modifier = Modifier,
+    heading: String? = null,
+    links: List<LinkRef>
+) {
+    val size = links.size
+
+    PreferenceGroup(
+        modifier = modifier,
+        heading = heading
+    ) {
+        links.forEachIndexed { index, item ->
+            LinkPreference(
+                link = item,
+                index = index,
+                groupSize = size,
             )
             if (index < size - 1) Spacer(modifier = Modifier.height(4.dp))
         }
