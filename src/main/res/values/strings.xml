@@ -216,4 +216,6 @@
     <string name="prefs_personal">Personal</string>
     <string name="prefs_cache">Cache</string>
     <string name="prefs_sync">Synchronization</string>
+    <string name="group_telegram">Our Telegram group</string>
+    <string name="group_matrix">Our Matrix group</string>
 </resources>

@@ -18,6 +18,11 @@ import androidx.compose.material.icons.rounded.Launch
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.machiav3lli.fdroid.HELP_CHANGELOG
+import com.machiav3lli.fdroid.HELP_LICENSE
+import com.machiav3lli.fdroid.HELP_MATRIX
+import com.machiav3lli.fdroid.HELP_SOURCECODE
+import com.machiav3lli.fdroid.HELP_TELEGRAM
 import com.machiav3lli.fdroid.R
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -91,6 +96,32 @@ enum class AntiFeature(val key: String, @StringRes val titleResId: Int) {
     TRACKING("Tracking", R.string.tracks_or_reports_your_activity),
     NON_FREE_UPSTREAM("UpstreamNonFree", R.string.upstream_source_code_is_not_free),
     NSFW("NSFW", R.string.not_safe_for_work)
+}
+
+enum class LinkRef(
+    @StringRes val titleId: Int,
+    val url: String? = null
+) {
+    Sourcecode(
+        titleId = R.string.source_code,
+        url = HELP_SOURCECODE
+    ),
+    Changelog(
+        titleId = R.string.changelog,
+        url = HELP_CHANGELOG
+    ),
+    Telegram(
+        titleId = R.string.group_telegram,
+        url = HELP_TELEGRAM
+    ),
+    Matrix(
+        titleId = R.string.group_matrix,
+        url = HELP_MATRIX
+    ),
+    License(
+        titleId = R.string.license,
+        url = HELP_LICENSE
+    ),
 }
 
 sealed interface ComponentState {

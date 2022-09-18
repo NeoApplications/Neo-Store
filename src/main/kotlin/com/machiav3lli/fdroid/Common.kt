@@ -63,6 +63,11 @@ const val PREFS_LANGUAGE_DEFAULT = "system"
 
 const val EXTRA_REPOSITORY_ID = "repositoryId"
 
+const val HELP_SOURCECODE = "https://github.com/NeoApplications/Neo-Store"
+const val HELP_CHANGELOG = "https://github.com/NeoApplications/Neo-Store/blob/master/CHANGELOG.md"
+const val HELP_TELEGRAM = "https://t.me/neo_android_store"
+const val HELP_MATRIX = "https://matrix.to/#/#neo-store:matrix.org"
+const val HELP_LICENSE = "https://github.com/NeoApplications/Neo-Store/blob/master/COPYING"
 
 const val NAV_MAIN = 0
 const val NAV_PREFS = 1
