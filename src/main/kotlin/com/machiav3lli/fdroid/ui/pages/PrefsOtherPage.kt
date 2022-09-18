@@ -1,7 +1,9 @@
 package com.machiav3lli.fdroid.ui.pages
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -63,6 +65,9 @@ fun PrefsOtherPage() {
                     heading = stringResource(id = R.string.application_name),
                     links = LinkRef.values().toList(),
                 )
+            }
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
 
