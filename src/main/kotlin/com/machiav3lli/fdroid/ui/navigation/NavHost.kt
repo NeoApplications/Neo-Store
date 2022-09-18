@@ -17,8 +17,8 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
+import com.machiav3lli.fdroid.entity.Source
 import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
-import com.machiav3lli.fdroid.ui.fragments.Source
 import com.machiav3lli.fdroid.ui.pages.ExplorePage
 import com.machiav3lli.fdroid.ui.pages.InstalledPage
 import com.machiav3lli.fdroid.ui.pages.LatestPage
