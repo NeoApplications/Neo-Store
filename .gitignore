@@ -2,6 +2,7 @@
 !/.gitignore
 !/build.gradle.kts
 !/settings.gradle.kts
+!/CHANGELOG.md
 !/COPYING
 !/DEVDOC.md
 !/extra
