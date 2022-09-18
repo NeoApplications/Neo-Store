@@ -107,7 +107,7 @@ class RepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManager {
                     binding.appsBlock.visibility = View.GONE
                 }
             } else {
-                binding.description.text = getString(R.string.repository_not_used_DESC)
+                binding.description.text = repository.description.replace('\n', ' ')
                 binding.nameBlock.visibility = View.GONE
                 binding.updatedBlock.visibility = View.GONE
                 binding.appsBlock.visibility = View.GONE
