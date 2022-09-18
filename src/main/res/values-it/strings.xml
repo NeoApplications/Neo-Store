@@ -219,4 +219,6 @@
     <string name="prefs_sync">Sincronizzazione</string>
     <string name="prefs_personal">Personale</string>
     <string name="system_black">Sistema (nero)</string>
+    <string name="group_telegram">Gruppo Telegram</string>
+    <string name="group_matrix">Gruppo Matrix</string>
 </resources>
