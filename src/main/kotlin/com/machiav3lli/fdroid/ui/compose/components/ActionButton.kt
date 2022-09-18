@@ -1,8 +1,25 @@
 package com.machiav3lli.fdroid.ui.compose.components
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.with
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +45,7 @@ fun MainActionButton(
             containerColor = when (actionState) {
                 is ActionState.Cancel -> MaterialTheme.colorScheme.secondaryContainer
                 is ActionState.NoAction -> MaterialTheme.colorScheme.inverseSurface
-                else -> MaterialTheme.colorScheme.surface
+                else -> MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
             },
             contentColor = when (actionState) {
                 is ActionState.Cancel -> MaterialTheme.colorScheme.secondary
@@ -75,6 +92,10 @@ fun SecondaryActionButton(
     packageState?.let {
         ElevatedButton(
             modifier = modifier,
+            colors = ButtonDefaults.elevatedButtonColors(
+                containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp),
+                contentColor = MaterialTheme.colorScheme.primary
+            ),
             onClick = { onClick() }
         ) {
             Row(
