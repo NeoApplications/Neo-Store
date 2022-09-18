@@ -216,4 +216,8 @@
     <string name="loading_list">جاري تحميل القائمة…</string>
     <string name="images_cache_retention">الاحتفاظ بذاكرة التخزين المؤقت للصور</string>
     <string name="releases_cache_retention">الاحتفاظ بذاكرة التخزين المؤقت لملف APK الذي تم تنزيله</string>
+    <string name="system_black">النظام (أسود)</string>
+    <string name="prefs_personal">شخصي</string>
+    <string name="prefs_sync">التزامن</string>
+    <string name="prefs_cache">تخزين مؤقت</string>
 </resources>
