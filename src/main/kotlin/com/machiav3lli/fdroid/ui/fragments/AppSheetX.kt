@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -66,6 +67,7 @@ import com.machiav3lli.fdroid.ui.compose.components.ExpandableBlock
 import com.machiav3lli.fdroid.ui.compose.components.ScreenshotItem
 import com.machiav3lli.fdroid.ui.compose.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.compose.components.SwitchPreference
+import com.machiav3lli.fdroid.ui.compose.components.appsheet.AppInfoChips
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.AppInfoHeader
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.HtmlTextBlock
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.LinkItem
@@ -78,7 +80,6 @@ import com.machiav3lli.fdroid.ui.viewmodels.AppViewModelX
 import com.machiav3lli.fdroid.utility.Utils.rootInstallerEnabled
 import com.machiav3lli.fdroid.utility.Utils.startUpdate
 import com.machiav3lli.fdroid.utility.extension.android.Android
-import com.machiav3lli.fdroid.utility.extension.text.formatSize
 import com.machiav3lli.fdroid.utility.findSuggestedProduct
 import com.machiav3lli.fdroid.utility.generateLinks
 import com.machiav3lli.fdroid.utility.generatePermissionGroups
@@ -410,12 +411,18 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
             Scaffold(
                 // TODO add the topBar to the activity instead of the fragments
                 topBar = {
-                    TopBarHeader(
-                        appName = product.label,
-                        packageName = product.packageName,
-                        icon = imageData,
-                        state = downloadState
-                    )
+                    Column() {
+                        TopBarHeader(
+                            appName = product.label,
+                            packageName = product.packageName,
+                            icon = imageData,
+                            state = downloadState
+                        )
+                        AppInfoChips(
+                            product = product,
+                            latestRelease = product.displayRelease
+                        )
+                    }
                 },
                 snackbarHost = { SnackbarHost(snackbarHostState) },
             ) { paddingValues ->
@@ -428,8 +435,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                 ) {
                     item {
                         AppInfoHeader(
-                            versionCode = product.versionCode.toString(),
-                            appSize = product.displayRelease?.size?.formatSize().orEmpty(),
                             repoHost = "@${
                                 (URI(product.source)?.host ?: stringResource(id = R.string.unknown))
                                     .removePrefix("www.")
