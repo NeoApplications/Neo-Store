@@ -210,4 +210,8 @@
     <string name="auto_sync_interval">Tiempo entre actualizaciones automáticas (en minutos)</string>
     <string name="favorite_applications">Favoritos</string>
     <string name="show_screenshots_description">Mostrar capturas de pantalla en la página de la aplicación.</string>
+    <string name="prefs_sync">Sincronización</string>
+    <string name="group_telegram">Nuestro grupo de Telegram</string>
+    <string name="group_matrix">Nuestro grupo en Matrix</string>
+    <string name="system_black">Sistema (Negro)</string>
 </resources>
