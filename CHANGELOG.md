@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+0.9.5 (19.09.2022) +120 Commits
+------------------
+- Add: Useful links in Prefs
+- Update: Revamp AppSheet's Head & Header
+- Update: Repo item's text colors
+- Update: Migrate navigation fully to Compose
+- Update: Migrate preferences to Compose
+- Update: Allow setting higher number for updated/new apps' recycler and sync interval
+- Fix: ActionButtons visibility
+- Fix: Show Repo description pre-first-sync
+- Remove: Legacy fragment-related classes
+
 0.9.4 (18.08.2022)
 ------------------
 - Fix: Showing updates notification even when disabled
