@@ -216,4 +216,6 @@
     <string name="prefs_personal">Personlig</string>
     <string name="prefs_sync">Synkronisering</string>
     <string name="prefs_cache">Hurtiglager</string>
+    <string name="group_telegram">Vår Telegram-gruppe</string>
+    <string name="group_matrix">Vår Matrix-gruppe</string>
 </resources>
