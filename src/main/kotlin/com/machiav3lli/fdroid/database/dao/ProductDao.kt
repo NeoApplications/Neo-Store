@@ -51,9 +51,9 @@ import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.ProductTemp
 import com.machiav3lli.fdroid.database.entity.asProductTemp
 import com.machiav3lli.fdroid.entity.Order
+import com.machiav3lli.fdroid.entity.Request
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.UpdateCategory
-import com.machiav3lli.fdroid.ui.fragments.Request
 
 @Dao
 interface ProductDao : BaseDao<Product> {

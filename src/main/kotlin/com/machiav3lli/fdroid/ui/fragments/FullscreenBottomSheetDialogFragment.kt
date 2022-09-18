@@ -8,7 +8,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-abstract class FullscreenBottomSheetDialogFragment() : BottomSheetDialogFragment() {
+abstract class FullscreenBottomSheetDialogFragment : BottomSheetDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val sheet = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
         sheet.setOnShowListener {

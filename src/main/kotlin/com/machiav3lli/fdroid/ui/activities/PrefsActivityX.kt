@@ -25,7 +25,6 @@ import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NAV_PREFS
-import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.service.Connection
@@ -147,7 +146,7 @@ class PrefsActivityX : AppCompatActivity() {
 
     private fun handleSpecialIntent(specialIntent: SpecialIntent) {
         when (specialIntent) {
-            is SpecialIntent.Updates -> navController.navigate(R.id.installedTab)
+            is SpecialIntent.Updates -> navController.navigate(NavItem.Installed.destination)
             is SpecialIntent.Install -> {
                 val packageName = specialIntent.packageName
                 if (!packageName.isNullOrEmpty()) {

@@ -16,7 +16,6 @@ import android.content.pm.PermissionInfo
 import android.content.pm.Signature
 import android.content.res.Configuration
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.Settings
 import android.text.SpannableStringBuilder
@@ -61,7 +60,6 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.android.singleSignature
 import com.machiav3lli.fdroid.utility.extension.android.versionCodeCompat
-import com.machiav3lli.fdroid.utility.extension.resources.getDrawableCompat
 import com.machiav3lli.fdroid.utility.extension.text.hex
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.topjohnwu.superuser.Shell
@@ -83,13 +81,6 @@ object Utils {
             applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == ApplicationInfo.FLAG_SYSTEM,
             launcherActivities
         )
-    }
-
-    fun getDefaultApplicationIcon(context: Context): Drawable =
-        context.getDrawableCompat(R.drawable.ic_placeholder)
-
-    fun getToolbarIcon(context: Context, resId: Int): Drawable {
-        return context.getDrawableCompat(resId).mutate()
     }
 
     fun calculateHash(signature: Signature): String {
@@ -234,14 +225,14 @@ val isDarkTheme: Boolean
     get() = when (Preferences[Preferences.Key.Theme]) {
         is Preferences.Theme.Light -> false
         is Preferences.Theme.Dark -> true
-        is Preferences.Theme.Amoled -> true
+        is Preferences.Theme.Black -> true
         else -> false
     }
 
 val isBlackTheme: Boolean
     get() = when (Preferences[Preferences.Key.Theme]) {
-        is Preferences.Theme.Amoled -> true
-        is Preferences.Theme.AmoledSystem -> true
+        is Preferences.Theme.Black -> true
+        is Preferences.Theme.SystemBlack -> true
         else -> false
     }
 

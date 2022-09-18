@@ -59,16 +59,4 @@ object Android {
             get() = (if (sdk(28)) android.content.pm.PackageManager.GET_SIGNING_CERTIFICATES else 0) or
                     @Suppress("DEPRECATION") android.content.pm.PackageManager.GET_SIGNATURES
     }
-
-    object Device {
-        val isHuaweiEmui: Boolean
-            get() {
-                return try {
-                    Class.forName("com.huawei.android.os.BuildEx")
-                    true
-                } catch (e: Exception) {
-                    false
-                }
-            }
-    }
 }

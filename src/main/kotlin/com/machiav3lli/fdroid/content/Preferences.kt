@@ -272,19 +272,9 @@ object Preferences {
         override val values: List<DefaultTab>
             get() = listOf(Explore, Latest, Installed)
 
-        abstract fun getResId(configuration: Configuration): Int
-
-        object Explore : DefaultTab(NavItem.Explore.destination) {
-            override fun getResId(configuration: Configuration): Int = R.id.exploreTab
-        }
-
-        object Latest : DefaultTab(NavItem.Latest.destination) {
-            override fun getResId(configuration: Configuration): Int = R.id.latestTab
-        }
-
-        object Installed : DefaultTab(NavItem.Installed.destination) {
-            override fun getResId(configuration: Configuration): Int = R.id.installedTab
-        }
+        object Explore : DefaultTab(NavItem.Explore.destination)
+        object Latest : DefaultTab(NavItem.Latest.destination)
+        object Installed : DefaultTab(NavItem.Installed.destination)
     }
 
     operator fun <T> get(key: Key<T>): T {

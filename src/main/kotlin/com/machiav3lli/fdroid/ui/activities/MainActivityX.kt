@@ -76,13 +76,11 @@ class MainActivityX : AppCompatActivity() {
         get() = (application as MainApplication).db
 
     private var currentTheme by Delegates.notNull<Int>()
-    private var currentTab by Delegates.notNull<Int>()
 
     @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
         currentTheme = Preferences[Preferences.Key.Theme].getResId(resources.configuration)
-        currentTab = Preferences[Preferences.Key.DefaultTab].getResId(resources.configuration)
         setCustomTheme()
         super.onCreate(savedInstanceState)
 

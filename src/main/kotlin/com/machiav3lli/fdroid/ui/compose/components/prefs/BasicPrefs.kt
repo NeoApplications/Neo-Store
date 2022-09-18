@@ -247,7 +247,6 @@ fun EnumPreference(
     )
 }
 
-
 @Composable
 fun IntPreference(
     modifier: Modifier = Modifier,
