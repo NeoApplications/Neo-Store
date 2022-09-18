@@ -219,4 +219,6 @@
     <string name="prefs_personal">Личные</string>
     <string name="prefs_cache">Кэш</string>
     <string name="system_black">Системная (чёрная)</string>
+    <string name="group_telegram">Наша группа в Telegram</string>
+    <string name="group_matrix">Наша группа в Matrix</string>
 </resources>
