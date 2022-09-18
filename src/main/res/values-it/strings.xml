@@ -218,4 +218,5 @@
     <string name="prefs_cache">Cache</string>
     <string name="prefs_sync">Sincronizzazione</string>
     <string name="prefs_personal">Personale</string>
+    <string name="system_black">Sistema (nero)</string>
 </resources>
