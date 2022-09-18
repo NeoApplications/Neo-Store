@@ -2,31 +2,30 @@ package com.machiav3lli.fdroid.ui.compose.components.appsheet
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
@@ -40,8 +39,6 @@ import com.machiav3lli.fdroid.utility.extension.text.formatSize
 @Composable
 fun AppInfoHeader(
     modifier: Modifier = Modifier,
-    versionCode: String,
-    appSize: String,
     repoHost: String,
     mainAction: ActionState?,
     possibleActions: Set<ActionState>,
@@ -49,8 +46,6 @@ fun AppInfoHeader(
     onSourceLong: () -> Unit = { },
     onAction: (ActionState?) -> Unit = { }
 ) {
-    var isExpanded by remember { mutableStateOf(false) }
-
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
@@ -61,28 +56,10 @@ fun AppInfoHeader(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            HeaderExtra(
-                versionCode = versionCode,
-                appSize = appSize,
-                repoHost = repoHost,
-                onSource = onSource,
-                onSourceLong = onSourceLong
-            )
-
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                if (possibleActions.size == 1) {
-                    SecondaryActionButton(packageState = possibleActions.first(), onClick = {
-                        onAction(possibleActions.first())
-                    })
-                } else if (possibleActions.size > 1) {
-                    SecondaryActionButton(
-                        packageState = if (isExpanded) ActionState.Retract else ActionState.Expand,
-                        onClick = {
-                            isExpanded = !isExpanded
-                        })
-                }
                 MainActionButton(
                     modifier = Modifier.weight(1f),
                     actionState = mainAction ?: ActionState.Install,
@@ -90,8 +67,15 @@ fun AppInfoHeader(
                         onAction(mainAction)
                     }
                 )
+                SourceCodeCard(
+                    modifier = Modifier.padding(vertical = 4.dp),
+                    title = stringResource(id = R.string.source_code),
+                    text = repoHost,
+                    onClick = onSource,
+                    onLongClick = onSourceLong
+                )
             }
-            AnimatedVisibility(visible = isExpanded) {
+            AnimatedVisibility(visible = possibleActions.isNotEmpty()) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     possibleActions.forEach {
                         SecondaryActionButton(packageState = it) {
@@ -153,46 +137,10 @@ fun TopBarHeader(
     }
 }
 
-@Composable
-fun HeaderExtra(
-    modifier: Modifier = Modifier,
-    versionCode: String,
-    appSize: String,
-    repoHost: String,
-    onSource: () -> Unit,
-    onSourceLong: () -> Unit
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        HeaderExtrasCard(
-            modifier = Modifier.weight(1f),
-            title = stringResource(id = R.string.version),
-            text = versionCode
-        )
-        HeaderExtrasCard(
-            modifier = Modifier.weight(1f),
-            title = stringResource(id = R.string.size),
-            text = appSize
-        )
-        HeaderExtrasCard(
-            modifier = Modifier.weight(1f),
-            title = stringResource(id = R.string.source_code),
-            text = repoHost,
-            onClick = onSource,
-            onLongClick = onSourceLong
-        )
-    }
-}
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HeaderExtrasCard(
+fun SourceCodeCard(
     modifier: Modifier = Modifier,
-    extra: @Composable () -> Unit = {},
     title: String,
     text: String,
     onClick: () -> Unit = {},
@@ -202,15 +150,27 @@ fun HeaderExtrasCard(
         modifier = modifier
             .clip(MaterialTheme.shapes.medium)
             .combinedClickable(onClick = onClick, onLongClick = onLongClick)
-            .padding(12.dp)
+            .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
+            .padding(vertical = 8.dp, horizontal = 12.dp)
+            .fillMaxHeight(),
+        color = Color.Transparent
     ) {
         Column(
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            extra()
-            Text(text = title, style = MaterialTheme.typography.labelLarge, maxLines = 1)
-            Text(text = text, style = MaterialTheme.typography.bodyMedium, maxLines = 1)
+            Text(
+                text = title,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1
+            )
+            Text(
+                text = text,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary,
+                maxLines = 1
+            )
         }
     }
 }
