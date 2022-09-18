@@ -220,4 +220,7 @@
     <string name="prefs_personal">شخصي</string>
     <string name="prefs_sync">التزامن</string>
     <string name="prefs_cache">تخزين مؤقت</string>
+    <string name="group_telegram">مجموعتنا على تلغرام</string>
+    <string name="group_matrix">مجموعة ماتريكس الخاصة بنا</string>
+    <string name="min_sdk">minSDK</string>
 </resources>
