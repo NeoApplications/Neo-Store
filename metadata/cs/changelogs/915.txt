@@ -1,0 +1,7 @@
+Aktualizace: Přepracováno uživatelské rozhraní AppSheet
+Aktualizace: Úplná migrace navigace do aplikace Compose
+Aktualizace: Migrace předvoleb do aplikace Compose
+Aktualizace: Povolení nastavení vyššího čísla pro recyklátor aktualizovaných/nových aplikací a interval synchronizace
+Přidáno: Užitečné odkazy v Prefs
+Oprava: Viditelnost ActionButtons
+Oprava: Zobrazení popisu úložiště před první synchronizací
