@@ -1,0 +1,4 @@
+* Diversas alterações na interface do usuário
+ * Base de código inteira formatada
+ * Dependências Atualizadas
+ * Preferências renomeadas para configurações
