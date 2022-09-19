@@ -217,4 +217,7 @@
     <string name="prefs_personal">Osobní</string>
     <string name="prefs_cache">Mezipaměť</string>
     <string name="prefs_sync">Synchronizace</string>
+    <string name="group_telegram">Naše skupina na Telegramu</string>
+    <string name="group_matrix">Naše skupina na Matrixu</string>
+    <string name="min_sdk">minSDK</string>
 </resources>
