@@ -36,7 +36,7 @@ fun CategorizationOption(
     ) {
         Row(
             horizontalArrangement = Arrangement.End,
-            modifier = Modifier.padding(start = 18.dp, top = 8.dp, bottom = 8.dp, end = 8.dp)
+            modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp, end = 8.dp)
         ) {
             Column(
                 modifier = Modifier.weight(1f)
