@@ -99,7 +99,7 @@
     <string name="only_compatible_with_FORMAT">Somente compatível com %s</string>
     <string name="only_on_wifi">Somente no Wi-Fi</string>
     <string name="open_DESC_FORMAT">Abrir %s?</string>
-    <string name="other">Outro</string>
+    <string name="other">Outros</string>
     <string name="parsing_index_error_DESC">Não foi possível analisar o arquivo de índice.</string>
     <string name="password">Senha</string>
     <string name="password_missing">Falta a senha</string>
@@ -208,4 +208,16 @@
     <string name="releases">Lançamentos</string>
     <string name="no_updates_available">Nenhuma versão disponível</string>
     <string name="loading_list">Carregando lista…</string>
+    <string name="images_cache_retention">Retenção do cache de imagens</string>
+    <string name="releases_cache_retention">Retenção de cache do APK baixado</string>
+    <string name="auto_sync_interval">Intervalo de Sincronização Automática (Em minutos)</string>
+    <string name="prefs_personal">Pessoal</string>
+    <string name="prefs_cache">Cache</string>
+    <string name="group_telegram">Nosso grupo no Telegram</string>
+    <string name="group_matrix">Nosso grupo no Matrix</string>
+    <string name="min_sdk">SDK Mínimo</string>
+    <string name="system_black">Sistema (Preto)</string>
+    <string name="dynamic">Sistema Dinâmico</string>
+    <string name="favorite_applications">Favoritos</string>
+    <string name="prefs_sync">Sincronização</string>
 </resources>
