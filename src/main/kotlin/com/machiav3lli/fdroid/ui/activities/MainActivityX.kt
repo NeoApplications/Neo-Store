@@ -123,10 +123,16 @@ class MainActivityX : AppCompatActivity() {
                                     }
                                 }
                             )
-                            TopBarAction(icon = Icons.Rounded.Sync) {
+                            TopBarAction(
+                                icon = Icons.Rounded.Sync,
+                                description = stringResource(id = R.string.sync_repositories)
+                            ) {
                                 syncConnection.binder?.sync(SyncService.SyncRequest.MANUAL)
                             }
-                            TopBarAction(icon = Icons.Rounded.Settings) {
+                            TopBarAction(
+                                icon = Icons.Rounded.Settings,
+                                description = stringResource(id = R.string.settings)
+                            ) {
                                 navController.navigate(NavItem.Prefs.destination)
                             }
                         }
