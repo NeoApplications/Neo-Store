@@ -6,7 +6,7 @@ val roomVersion = "2.4.3"
 val navigationVersion = "2.5.2"
 
 plugins {
-    id("com.android.application") version ("7.2.2")
+    id("com.android.application") version ("7.3.0")
     kotlin("android") version ("1.7.10")
     kotlin("plugin.serialization") version ("1.7.10")
     id("com.google.devtools.ksp") version ("1.7.10-1.0.6")
