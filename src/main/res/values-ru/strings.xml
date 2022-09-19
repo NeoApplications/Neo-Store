@@ -221,4 +221,5 @@
     <string name="system_black">Системная (чёрная)</string>
     <string name="group_telegram">Наша группа в Telegram</string>
     <string name="group_matrix">Наша группа в Matrix</string>
+    <string name="min_sdk">Мин. SDK</string>
 </resources>
