@@ -439,21 +439,6 @@ abstract class BasePreferences(context: Context) :
         }, { it.ordinal }, { })
     }
 
-    open inner class EnumSelectionPref<T : Enum<T>>(
-        key: String,
-        @StringRes titleId: Int,
-        @StringRes summaryId: Int = -1,
-        defaultValue: T,
-        entries: Map<Int, Int>,
-        onChange: () -> Unit = doNothing
-    ) : IntSelectionPref(key, titleId, summaryId, defaultValue.ordinal, entries, onChange) {
-        override fun onGetValue(): Int = sharedPrefs.getInt(getKey(), defaultValue)
-
-        override fun onSetValue(value: Int) {
-            edit { putInt(getKey(), value) }
-        }
-    }
-
     open inner class IntSelectionPref(
         key: String,
         @StringRes titleId: Int,
@@ -530,6 +515,21 @@ abstract class BasePreferences(context: Context) :
         val onClick: (() -> Unit)? = null,
         onChange: () -> Unit = doNothing,
         val navRoute: String = ""
+    ) : PrefDelegate<String>(key, titleId, summaryId, defaultValue, onChange) {
+        override fun onGetValue(): String = sharedPrefs.getString(key, defaultValue)!!
+
+        override fun onSetValue(value: String) {
+            edit { putString(key, value) }
+        }
+    }
+
+    open inner class StringTextPref(
+        key: String,
+        @StringRes titleId: Int,
+        @StringRes summaryId: Int = -1,
+        defaultValue: String = "",
+        val onClick: (() -> Unit)? = null,
+        onChange: () -> Unit = doNothing,
     ) : PrefDelegate<String>(key, titleId, summaryId, defaultValue, onChange) {
         override fun onGetValue(): String = sharedPrefs.getString(key, defaultValue)!!
 

@@ -65,6 +65,12 @@ val PreferenceBuilder =
                     index = index,
                     groupSize = size
                 ) { onDialogPref(pref) }
+            is BasePreferences.StringTextPref ->
+                StringTextPreference(
+                    pref = pref,
+                    index = index,
+                    groupSize = size
+                ) { onDialogPref(pref) }
             is BasePreferences.StringMultiSelectionPref -> StringMultiSelectionPreference(
                 pref = pref,
                 index = index,

@@ -31,4 +31,5 @@
     <string name="action_open_drawer_class" translatable="false">com.saggitt.omega.gestures.handlers.OpenDrawerGestureHandler</string>
     <string name="action_open_overview_class" translatable="false">com.saggitt.omega.gestures.handlers.OpenOverviewGestureHandler</string>
     <string name="action_open_dash_class" translatable="false">com.saggitt.omega.gestures.handlers.OpenDashGestureHandler</string>
+    <string name="default_owm_key" translatable="false">22415ba03480f0f2d271d4d5b9109652</string>
 </resources>

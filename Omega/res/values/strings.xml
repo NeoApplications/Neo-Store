@@ -295,6 +295,7 @@
     <string name="onbording_settings_summary">Touch and hold on the Desktop.</string>
     <string name="onboarding_swipe_up">Swipe up to open the drawer.</string>
     <string name="weather_provider_testing">Debug</string>
+    <string name="weather_provider_owm" translatable="true">OpenWeatherMap</string>
     <string name="weather_provider_pe">Pixel Experience</string>
     <string name="weather_provider_oneplus_weather">OnePlus Weather</string>
     <string name="event_provider_now_playing">Now Playing</string>
@@ -314,6 +315,10 @@
     <string name="units_delisle">Delisle</string>
     <string name="units_reaumur">Réaumur</string>
     <string name="units_romer">Rømer</string>
+    <string name="owm_get_your_own_key">Get an API key at api.openweathermap.org.</string>
+    <string name="default_city">San Salvador, SV</string>
+    <string name="weather_api_key">OWM API Key</string>
+    <string name="weather_city">City</string>
     <!-- Folder name format -->
     <string name="folder_name_format">Folder: <xliff:g example="Games" id="name">%1$s</xliff:g></string>
     <string-array name="greetings_morning">

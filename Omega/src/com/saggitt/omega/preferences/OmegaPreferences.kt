@@ -188,6 +188,7 @@ import com.saggitt.omega.smartspace.eventprovider.BatteryStatusProvider
 import com.saggitt.omega.smartspace.eventprovider.NotificationUnreadProvider
 import com.saggitt.omega.smartspace.eventprovider.NowPlayingProvider
 import com.saggitt.omega.smartspace.eventprovider.PersonalityProvider
+import com.saggitt.omega.smartspace.weather.OWMWeatherDataProvider
 import com.saggitt.omega.smartspace.weather.PEWeatherDataProvider
 import com.saggitt.omega.smartspaceProviderOptions
 import com.saggitt.omega.theme.ThemeManager
@@ -956,6 +957,20 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = recreate
     )
+    var smartspaceWeatherApiKey = StringTextPref(
+        key = "pref_weather_api_Key",
+        titleId = R.string.weather_api_key,
+        defaultValue = context.getString(R.string.default_owm_key),
+        onChange = ::updateSmartspaceProvider
+    )
+
+    var smartspaceweatherCity = StringTextPref(
+        key = "pref_weather_city",
+        titleId = R.string.weather_city,
+        defaultValue = context.getString(R.string.default_city),
+        onChange = ::updateSmartspaceProvider
+    )
+
     val smartspaceWeatherUnit = StringSelectionPref(
         key = PREFS_SMARTSPACE_WEATHER_UNITS,
         titleId = R.string.title_smartspace_weather_units,
@@ -986,6 +1001,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         entries = listOfNotNull(
             BlankDataProvider::class.java.name,
             SmartSpaceDataWidget::class.java.name,
+            OWMWeatherDataProvider::class.java.name,
             if (PEWeatherDataProvider.isAvailable(context)) PEWeatherDataProvider::class.java.name else null
         ).associateBy(
             keySelector = { it },

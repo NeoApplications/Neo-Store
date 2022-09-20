@@ -42,8 +42,10 @@ import com.saggitt.omega.compose.components.preferences.IntentLauncherDialogUI
 import com.saggitt.omega.compose.components.preferences.PreferenceGroup
 import com.saggitt.omega.compose.components.preferences.StringMultiSelectionPrefDialogUI
 import com.saggitt.omega.compose.components.preferences.StringSelectionPrefDialogUI
+import com.saggitt.omega.compose.components.preferences.StringTextPrefDialogUI
 import com.saggitt.omega.preferences.BasePreferences
 import com.saggitt.omega.preferences.custom.GridSize
+import com.saggitt.omega.smartspace.weather.OWMWeatherDataProvider
 import com.saggitt.omega.theme.OmegaAppTheme
 
 @Composable
@@ -63,10 +65,18 @@ fun WidgetsPrefsPage() {
         prefs.smartspaceTimeAbove,
         prefs.smartspaceTime24H,
         prefs.smartspaceUsePillQsb,
-        prefs.smartspaceWeatherProvider, // TODO
+        prefs.smartspaceWeatherProvider,
+        if (prefs.smartspaceWeatherProvider.onGetValue() == OWMWeatherDataProvider::class.java.name) {
+            prefs.smartspaceWeatherApiKey
+        } else null,
+        if (prefs.smartspaceWeatherProvider.onGetValue() == OWMWeatherDataProvider::class.java.name) {
+            prefs.smartspaceweatherCity
+
+        } else null,
         prefs.smartspaceWeatherUnit,
         prefs.smartspaceEventProvidersNew
-    )
+    ).filterNotNull()
+
     val notificationsPrefs = listOf(
         prefs.notificationDots,
         prefs.notificationCount,
@@ -89,7 +99,7 @@ fun WidgetsPrefsPage() {
                 item {
                     PreferenceGroup(
                         stringResource(id = R.string.title__general_smartspace),
-                        prefs = smartspacePrefs,
+                        prefs = smartspacePrefs, //TODO show api key and city only if OWM is selected
                         onPrefDialog = onPrefDialog
                     )
                 }
@@ -120,6 +130,10 @@ fun WidgetsPrefsPage() {
                         )
                         is BasePreferences.StringMultiSelectionPref -> StringMultiSelectionPrefDialogUI(
                             pref = dialogPref as BasePreferences.StringMultiSelectionPref,
+                            openDialogCustom = openDialog
+                        )
+                        is BasePreferences.StringTextPref -> StringTextPrefDialogUI(
+                            pref = dialogPref as BasePreferences.StringTextPref,
                             openDialogCustom = openDialog
                         )
                         is GridSize -> GridSizePrefDialogUI(

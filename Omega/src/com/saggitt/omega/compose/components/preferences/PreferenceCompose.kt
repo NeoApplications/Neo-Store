@@ -351,6 +351,27 @@ fun StringSelectionPreference(
 }
 
 @Composable
+fun StringTextPreference(
+    modifier: Modifier = Modifier,
+    pref: BasePreferences.StringTextPref,
+    index: Int = 1,
+    groupSize: Int = 1,
+    isEnabled: Boolean = true,
+    onClick: (() -> Unit) = {},
+) {
+    BasePreference(
+        modifier = modifier,
+        titleId = pref.titleId,
+        summaryId = pref.summaryId,
+        summary = pref.onGetValue(),
+        index = index,
+        groupSize = groupSize,
+        isEnabled = isEnabled,
+        onClick = onClick
+    )
+}
+
+@Composable
 fun GridSizePreference(
     modifier: Modifier = Modifier,
     pref: GridSize,

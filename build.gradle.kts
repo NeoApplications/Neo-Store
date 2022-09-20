@@ -4,7 +4,6 @@ import com.google.protobuf.gradle.protobuf
 import com.google.protobuf.gradle.protoc
 import org.jetbrains.kotlin.gradle.internal.KaptWithoutKotlincTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -124,8 +123,8 @@ android {
         jniLibs {
             pickFirsts += listOf("**/libeasyBypass.so")
         }
-        exclude("META-INF/LICENSE.md")
-        exclude("META-INF/LICENSE-notice.md")
+        resources.excludes.add("META-INF/LICENSE.md")
+        resources.excludes.add("META-INF/LICENSE-notice.md")
     }
 
     // The flavor dimensions = aospWithoutQuickstep)
@@ -238,6 +237,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation(kotlin("stdlib", "1.7.0"))
     implementation("me.xdrop:fuzzywuzzy:1.4.0")
+    implementation("com.github.KwabenBerko:OpenWeatherMap-Android-Library:2.0.1") {
+        exclude("com.android.support", "support-compat")
+        exclude("com.android.support", "appcompat-v7")
+    }
 
     //Compose
     implementation("androidx.compose.compiler:compiler:$vComposeCompiler")

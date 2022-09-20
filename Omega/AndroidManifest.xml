@@ -93,6 +93,7 @@
 
     <application
         android:name="com.saggitt.omega.OmegaApp"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:backupAgent="com.android.launcher3.LauncherBackupAgent"
         android:fullBackupContent="@xml/backupscheme"
         android:fullBackupOnly="true"

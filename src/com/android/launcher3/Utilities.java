@@ -20,6 +20,7 @@ import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_ICON_BADGED
 import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_READ_CONTACTS;
 import static com.saggitt.omega.util.Config.REQUEST_PERMISSION_STORAGE_ACCESS;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -104,6 +105,7 @@ import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.views.BaseDragLayer;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.saggitt.omega.preferences.OmegaPreferences;
+import com.saggitt.omega.util.Config;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -943,6 +945,10 @@ public final class Utilities {
     public static void requestStoragePermission(Activity activity) {
         ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
                 REQUEST_PERMISSION_STORAGE_ACCESS);
+    }
+
+    public static void requestLocationPermission(Activity activity) {
+        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, Config.REQUEST_PERMISSION_LOCATION_ACCESS);
     }
 
     public static void requestPeoplePermission(Activity activity) {
