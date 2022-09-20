@@ -128,7 +128,7 @@ fun CreateBackupDialogUI(
         }
 
     var radius = 16.dp
-    if (prefs.themeCornerRadius.onGetValue() > -1f) {
+    if (prefs.themeCornerRadius.onGetValue() > -1) {
         radius = prefs.themeCornerRadius.onGetValue().dp
     }
     val cornerRadius by remember { mutableStateOf(radius) }
@@ -292,7 +292,7 @@ fun RestoreBackupDialogUI(
     var selectedContent by remember { mutableStateOf(backupFile.meta?.contents) }
 
     var radius = 16.dp
-    if (prefs.themeCornerRadius.onGetValue() > -1f) {
+    if (prefs.themeCornerRadius.onGetValue() > -1) {
         radius = prefs.themeCornerRadius.onGetValue().dp
     }
     val cornerRadius by remember { mutableStateOf(radius) }

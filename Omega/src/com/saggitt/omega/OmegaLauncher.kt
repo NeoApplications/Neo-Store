@@ -224,7 +224,7 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
 
         mOverlayManager = defaultOverlay
         showFolderNotificationCount = prefs.notificationCountFolder.onGetValue()
-        if (prefs.themeCornerRadius.onGetValue() > -1f) {
+        if (prefs.themeCornerRadius.onGetValue() > -1) {
             RoundedCornerEnforcement.sRoundedCornerEnabled = true
             QuickStepContract.sCustomCornerRadius = prefs.themeCornerRadius.onGetValue()
         }
