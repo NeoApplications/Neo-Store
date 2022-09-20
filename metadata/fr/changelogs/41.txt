@@ -1,0 +1,1 @@
+- Correction d'un plantage d'installeur de base
