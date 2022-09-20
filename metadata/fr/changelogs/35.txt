@@ -1,0 +1,3 @@
+- Anciennes icônes remplacées par des icônes material design 
+- Principaux problèmes de la barre d'applications résolus 
+- Ajout de d'icône pour les boutons Installer et Annuler afin d'améliorer l'accessibilité
