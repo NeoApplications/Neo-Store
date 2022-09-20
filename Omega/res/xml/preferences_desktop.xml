@@ -163,7 +163,7 @@
         <com.saggitt.omega.preferences.custom.SeekbarPreference
             android:defaultValue="6"
             android:key="pref_dash_linesize"
-            android:title="@string/dash_linesize"
+            android:title="@string/dash_line_size"
             app:maxValue="6"
             app:minValue="4"
             app:steps="2"

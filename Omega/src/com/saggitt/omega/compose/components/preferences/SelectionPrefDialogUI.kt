@@ -60,7 +60,7 @@ fun IntSelectionPrefDialogUI(
     val entryPairs = pref.entries.toList()
 
     var radius = 16.dp
-    if (prefs.themeCornerRadiusOverride.onGetValue()) {
+    if (prefs.themeCornerRadius.onGetValue() > -1f) {
         radius = prefs.themeCornerRadius.onGetValue().dp
     }
     val cornerRadius by remember { mutableStateOf(radius) }
@@ -127,7 +127,7 @@ fun StringSelectionPrefDialogUI(
     val entryPairs = pref.entries.toList()
 
     var radius = 16.dp
-    if (prefs.themeCornerRadiusOverride.onGetValue()) {
+    if (prefs.themeCornerRadius.onGetValue() > -1f) {
         radius = prefs.themeCornerRadius.onGetValue().dp
     }
     val cornerRadius by remember { mutableStateOf(radius) }
@@ -194,7 +194,7 @@ fun StringMultiSelectionPrefDialogUI(
     val entryPairs = pref.entries.toList()
 
     var radius = 16.dp
-    if (prefs.themeCornerRadiusOverride.onGetValue()) {
+    if (prefs.themeCornerRadius.onGetValue() > -1f) {
         radius = prefs.themeCornerRadius.onGetValue().dp
     }
     val cornerRadius by remember { mutableStateOf(radius) }

@@ -79,7 +79,7 @@ val Int.isDark get() = luminance < 0.5f
 
 fun getWindowCornerRadius(context: Context): Float {
     val prefs = Utilities.getOmegaPrefs(context)
-    if (prefs.themeCornerRadiusOverride.onGetValue()) {
+    if (prefs.themeCornerRadius.onGetValue() > -1f) {
         return prefs.themeCornerRadius.onGetValue()
     }
     return QuickStepContract.getWindowCornerRadius(context.resources)
@@ -87,7 +87,7 @@ fun getWindowCornerRadius(context: Context): Float {
 
 fun supportsRoundedCornersOnWindows(context: Context): Boolean {
     val pref = Utilities.getOmegaPrefs(context)
-    if (!Utilities.ATLEAST_R || pref.themeCornerRadiusOverride.onGetValue()) {
+    if (!Utilities.ATLEAST_R || pref.themeCornerRadius.onGetValue() > -1f) {
         return true
     }
     return QuickStepContract.supportsRoundedCornersOnWindows(context.resources)

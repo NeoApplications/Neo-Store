@@ -10,7 +10,6 @@ import com.jaredrummler.android.colorpicker.ColorPreferenceCompat
 import com.saggitt.omega.PREFS_ACCENT
 import com.saggitt.omega.PREFS_BLUR
 import com.saggitt.omega.PREFS_BLUR_RADIUS
-import com.saggitt.omega.PREFS_WINDOWCORNER
 import com.saggitt.omega.PREFS_WINDOWCORNER_RADIUS
 import com.saggitt.omega.preferences.custom.SeekbarPreference
 import com.saggitt.omega.util.omegaPrefs
@@ -38,13 +37,6 @@ class PrefsThemeFragment :
             onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                     requireActivity().omegaPrefs.themeBlurRadius.onSetValue(newValue as Float)
-                    true
-                }
-        }
-        findPreference<SwitchPreference>(PREFS_WINDOWCORNER)?.apply {
-            onPreferenceChangeListener =
-                Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                    requireActivity().omegaPrefs.themeCornerRadiusOverride.onSetValue(newValue as Boolean)
                     true
                 }
         }

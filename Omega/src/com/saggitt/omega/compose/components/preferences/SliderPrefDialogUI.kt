@@ -66,7 +66,7 @@ fun GridSizePrefDialogUI(
     var numRows by remember { mutableStateOf(if (pref is GridSize2D) pref.numRowsPref.onGetValue() else 0) }
 
     var radius = 16.dp
-    if (prefs.themeCornerRadiusOverride.onGetValue()) {
+    if (prefs.themeCornerRadius.onGetValue() > -1f) {
         radius = prefs.themeCornerRadius.onGetValue().dp
     }
     val cornerRadius by remember { mutableStateOf(radius) }

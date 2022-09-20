@@ -145,7 +145,6 @@ import com.saggitt.omega.PREFS_TORCH
 import com.saggitt.omega.PREFS_WHITE_TREATMENT
 import com.saggitt.omega.PREFS_WIDGETS_FULL_WIDTH
 import com.saggitt.omega.PREFS_WIDGET_RADIUS
-import com.saggitt.omega.PREFS_WINDOWCORNER
 import com.saggitt.omega.PREFS_WINDOWCORNER_RADIUS
 import com.saggitt.omega.PREFS_WORK_PROFILE_SEPARATED
 import com.saggitt.omega.PREF_PILL_QSB
@@ -277,7 +276,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     )
     var dashLineSize = FloatPref(
         key = PREFS_DASH_LINESIZE,
-        titleId = R.string.dash_linesize,
+        titleId = R.string.dash_line_size,
         defaultValue = 6f,
         maxValue = 6f,
         minValue = 4f,
@@ -711,12 +710,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         steps = 27,
         specialOutputs = { "${(it * 100).roundToInt()}%" },
         onChange = updateBlur
-    )
-    var themeCornerRadiusOverride = BooleanPref(
-        key = PREFS_WINDOWCORNER,
-        titleId = R.string.title_override_corner_radius,
-        defaultValue = false,
-        onChange = doNothing
     )
     var themeCornerRadius = FloatPref(
         key = PREFS_WINDOWCORNER_RADIUS,

@@ -66,7 +66,6 @@ fun ProfilePrefsPage() {
     val others = listOf(
         prefs.themeBlurEnable,
         prefs.themeBlurRadius,
-        prefs.themeCornerRadiusOverride,
         prefs.themeCornerRadius,
     )
 

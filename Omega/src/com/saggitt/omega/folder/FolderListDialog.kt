@@ -58,7 +58,7 @@ fun FolderListDialogUI(
     val prefs = Utilities.getOmegaPrefs(context)
 
     var radius = 16.dp
-    if (prefs.themeCornerRadiusOverride.onGetValue()) {
+    if (prefs.themeCornerRadius.onGetValue() > -1f) {
         radius = prefs.themeCornerRadius.onGetValue().dp
     }
     val cornerRadius by remember { mutableStateOf(radius) }
