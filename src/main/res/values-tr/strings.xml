@@ -11,8 +11,8 @@
     <string name="anti_features">Karşıt özellikler</string>
     <string name="application">Uygulama</string>
     <string name="application_not_found">Bu uygulama bulunamadı</string>
-    <string name="author_email">Yazarın e-posta adresi</string>
-    <string name="author_website">Yazarın web sitesi</string>
+    <string name="author_email">Geliştiricinin e-posta adresi</string>
+    <string name="author_website">Geliştiricinin web sitesi</string>
     <string name="available">Mevcut</string>
     <string name="bug_tracker">Hata izleme</string>
     <string name="cancel">İptal et</string>
@@ -61,7 +61,7 @@
     <string name="incompatible_with_FORMAT">%s ile uyumsuz</string>
     <string name="install">Kur</string>
     <string name="install_types">Yükleme Türleri</string>
-    <string name="installed">Yüklü</string>
+    <string name="installed">Yüklendi</string>
     <string name="integrity_check_error_DESC">Bütünlük kontrol edilemedi.</string>
     <string name="invalid_address">Geçersiz adres</string>
     <string name="invalid_fingerprint_format">Geçersiz parmak izi biçimi</string>
@@ -212,4 +212,10 @@
     <string name="releases_cache_retention">İndirilen APK\'ların önbellekte tutulması</string>
     <string name="auto_sync_interval">Otomatik senkronizasyon aralığı (dakika olarak)</string>
     <string name="favorite_applications">Favoriler</string>
+    <string name="prefs_sync">Eşzamanlama</string>
+    <string name="prefs_personal">Kişisel</string>
+    <string name="prefs_cache">Önbellek</string>
+    <string name="group_telegram">Telegram grubumuz</string>
+    <string name="group_matrix">Matrix grubumuz</string>
+    <string name="system_black">Sistem (Siyah)</string>
 </resources>
