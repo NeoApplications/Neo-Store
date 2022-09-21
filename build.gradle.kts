@@ -14,9 +14,9 @@ val vRoom = "2.5.0-alpha03"
 
 plugins {
     id("com.android.application").version("7.3.0")
-    kotlin("android").version("1.7.0")
-    kotlin("kapt").version("1.7.0")
-    kotlin("plugin.parcelize").version("1.7.0")
+    kotlin("android").version("1.7.10")
+    kotlin("kapt").version("1.7.10")
+    kotlin("plugin.parcelize").version("1.7.10")
     id("com.google.protobuf").version("0.8.18")
 }
 

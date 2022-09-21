@@ -1,6 +1,6 @@
 plugins {
     id("com.android.library")
-    kotlin("android").version("1.7.0")
+    kotlin("android").version("1.7.10")
 }
 
 android {
