@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.9.0-rc01")
+    implementation("androidx.core:core-ktx:1.9.0")
 }
 
 fun Project.addFrameworkJar(path: String) {
