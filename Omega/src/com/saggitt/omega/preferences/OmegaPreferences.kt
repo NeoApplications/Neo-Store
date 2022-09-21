@@ -45,6 +45,7 @@ import com.saggitt.omega.PREFS_ACCENT
 import com.saggitt.omega.PREFS_BLUR
 import com.saggitt.omega.PREFS_BLUR_RADIUS_X
 import com.saggitt.omega.PREFS_COLORED_BACKGROUND
+import com.saggitt.omega.PREFS_DASH
 import com.saggitt.omega.PREFS_DASH_LINESIZE
 import com.saggitt.omega.PREFS_DASH_PROVIDERS
 import com.saggitt.omega.PREFS_DASH_PROVIDERS_X
@@ -293,7 +294,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         onChange = doNothing
     )
     var dashProvidersNew = StringPref(
-        key = "pref_dash",
+        key = PREFS_DASH,
         titleId = R.string.edit_dash,
         summaryId = R.string.edit_dash_summary,
         navRoute = Routes.EDIT_DASH,
