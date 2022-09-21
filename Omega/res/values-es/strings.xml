@@ -335,7 +335,7 @@
     <string name="onbording">Incorporación</string>
     <string name="wallpaper_pick">Tomar papel de pared</string>
     <string name="dash_media_player_description">Muestra u oculta los controles del reproductor de sonido</string>
-    <string name="edit_dash_summary">Encender o apagar enlaces</string>
+    <string name="edit_dash_summary">Activar o desactivar los accesos directos</string>
     <string name="icu_abbrev_wday_month_day_no_year">d-MMM-EEEE</string>
     <string name="button_organize_screens">Organizar Páginas</string>
     <string name="developer_options_enabled">Opciones del desarrollador en</string>
@@ -403,7 +403,7 @@
     <string name="dash_sync_summary">Encender o apagar sincronización.</string>
     <string name="dash_all_apps_summary">Muestra todos los botones de app</string>
     <string name="drag_to_enable_packs">Arrastrar arriba para activar</string>
-    <string name="dash_wifi">Wi-Fi</string>
+    <string name="dash_wifi">WiFi</string>
     <string name="dash_wifi_summary">Estado Wi-Fi y conexión</string>
     <string name="dash_location_summary">Cambiar parámetros de posición</string>
     <string name="dash_torch">Antorcha</string>
