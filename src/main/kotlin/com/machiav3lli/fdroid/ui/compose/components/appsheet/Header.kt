@@ -26,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.flowlayout.FlowRow
+import com.google.accompanist.flowlayout.MainAxisAlignment
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.DownloadState
 import com.machiav3lli.fdroid.ui.compose.components.MainActionButton
@@ -63,7 +65,13 @@ fun AppInfoHeader(
                 )
             }
             AnimatedVisibility(visible = possibleActions.isNotEmpty()) {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                FlowRow(
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    mainAxisAlignment = MainAxisAlignment.Center,
+                    mainAxisSpacing = 8.dp,
+                    crossAxisSpacing = 8.dp
+                ) {
                     possibleActions.forEach {
                         SecondaryActionButton(packageState = it) {
                             onAction(it)
