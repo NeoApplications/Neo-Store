@@ -1,0 +1,3 @@
+- Iconos antiguos sustituidos con Material Icons
+- Se han solucionado los problemas de la barra de aplicaciones superior
+- Se han añadido iconos al botón de instalación y cancelación para mejorar la accesibilidad

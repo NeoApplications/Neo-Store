@@ -1,0 +1,7 @@
+Añadir: Categoría de favoritos
+Añadir: Opción para establecer el intervalo de sincronización
+Añadir: Apoyo a la auto-importación de fdroidrepos: direcciones repo desde el portapapeles
+Arreglado: Desplazamiento anidado de AppSheet
+Corrección: Recuento de aplicaciones del repositorio
+Arreglado: Permitir la retención de apk hasta "consumido"
+Actualización: Hacer seleccionable el texto de la descripción de la app/changelog

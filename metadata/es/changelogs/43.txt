@@ -1,0 +1,4 @@
+- Arreglo: Icono del marcador de pantalla
+- Arreglo: Fallo suave al iniciar AppDetails
+- Corrección: Ejecutar sólo una instancia del instalador raíz
+- Corrección: Instalador raíz

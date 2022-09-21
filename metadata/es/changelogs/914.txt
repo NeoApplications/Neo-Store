@@ -1,0 +1,5 @@
+Corrección: Mostrar la notificación de actualizaciones incluso cuando está desactivada
+Añadir: Threema, Stable Calyx OS y Session a los preset-repositorios
+Arreglar (probar): Instalador en segundo plano
+Añadir: Liberar apks y opciones de retención de caché de imágenes
+Actualizar la traducción
