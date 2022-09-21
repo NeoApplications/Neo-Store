@@ -4,6 +4,7 @@ val composeVersion = "1.2.1"
 val composeCompilerVersion = "1.3.1"
 val roomVersion = "2.4.3"
 val navigationVersion = "2.5.2"
+val accompanistVersion = "0.26.3-beta"
 
 plugins {
     id("com.android.application") version ("7.3.0")
@@ -182,7 +183,8 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
     implementation("com.google.android.material:compose-theme-adapter-3:1.0.18")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.25.0")
+    implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
 
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
