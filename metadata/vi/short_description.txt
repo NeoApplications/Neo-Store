@@ -1,0 +1,1 @@
+Ứng dụng thay thế F-Droid với giao diện Material Design.
