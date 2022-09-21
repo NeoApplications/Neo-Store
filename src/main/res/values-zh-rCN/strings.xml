@@ -212,4 +212,10 @@
     <string name="auto_sync_interval">自动同步间隔（分钟）</string>
     <string name="favorite_applications">收藏</string>
     <string name="prefs_personal">个人</string>
+    <string name="prefs_cache">缓存</string>
+    <string name="prefs_sync">同步</string>
+    <string name="group_telegram">我们的 Telegram 群组</string>
+    <string name="group_matrix">我们的 Matrix 群组</string>
+    <string name="min_sdk">最低SDK版本</string>
+    <string name="system_black">系统(黑色)</string>
 </resources>
