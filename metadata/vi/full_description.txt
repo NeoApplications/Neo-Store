@@ -1,0 +1,33 @@
+Một ứng dụng duyệt F-Droid nhanh và bắt mắt
+
+Các tính năng:
+
+* Phong cách thiết kế Meterial
+* Bỏ giao diện thẻ và hiệu ứng không phù hợp
+* Đồng bộ repository nhanh
+* Đầy đủ các thành phần tiêu chuẩn của Android với sự phụ thuộc tối thiểu
+
+Các ngôn ngữ khả dụng:
+
+- Brazillian Portugese
+- English
+- Finnish
+- French
+- German
+- Greek
+- Hungarian
+- Italian
+- Norwegian Bokmål
+- Peninsular Arabic
+- Polish
+- Russian
+- Simplified Chinese
+- Spanish
+- Turkish
+- Ukrainian
+- Vietnamese
+
+Một phiên bản chuyển đổi trực tiếp từ Foxy-Droid
+
+Phần mềm Copylefted libre, được cấp phép GPLv3 +. \
+Sử dụng, nghiên cứu, thay đổi và chia sẻ; với tất cả mọi người.
