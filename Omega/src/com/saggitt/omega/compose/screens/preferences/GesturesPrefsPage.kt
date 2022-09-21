@@ -84,7 +84,7 @@ fun GesturesPrefsPage() {
 
     val dashPrefs = listOf(
         prefs.dashLineSize,
-        prefs.dashProvidersNew
+        prefs.dashEdit
     )
 
     OmegaAppTheme {

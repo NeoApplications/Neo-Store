@@ -293,7 +293,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         default = listOf("17", "15", "4", "6", "8", "5"),
         onChange = doNothing
     )
-    var dashProvidersNew = StringPref(
+    var dashEdit = StringPref(
         key = PREFS_DASH,
         titleId = R.string.edit_dash,
         summaryId = R.string.edit_dash_summary,
