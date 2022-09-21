@@ -1,0 +1,6 @@
+Arreglado: La configuración de ignorar actualizaciones no oculta de las actualizaciones
+Arreglado: Ordenación alfabética de los instalados
+Arreglado: Desplazamiento anidado de AppSheet
+Arreglado: mostrar la acción de instalar mientras se está descargando
+Arreglado: visibilidad de los iconos de la barra de estado en el tema de los colores dinámicos
+Actualización: Traducciones

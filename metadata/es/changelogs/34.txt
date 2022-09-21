@@ -1,0 +1,6 @@
+- Actualización: Barra de herramientas colapsada
+- Actualización: Mejora de los instaladores (Root y no Root)
+- Actualización: Nuevo icono de la aplicación (de nuevo)
+- Actualización: Diseño de los bloques de información de la versión
+- Actualización: Manejar los nombres e iconos faltantes de los autores
+- Otras correcciones, ajustes y limpiezas

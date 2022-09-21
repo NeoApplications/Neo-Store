@@ -1,0 +1,7 @@
+- Se ha añadido un icono para abrir los detalles
+- Las diferencias de la barra de aplicaciones superior se han hecho más prominentes
+- Sólo se pedirá permiso a la raíz cuando se utilice
+- Corrección de la visibilidad del interruptor
+- Se ha añadido la traducción al árabe
+- Pulsación larga en el icono de la fuente para copiar el enlace
+- Reemplazar Toast con Snackbar

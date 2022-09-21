@@ -1,0 +1,5 @@
+- Añadido: preferencia de idioma
+- Actualización: capturas de pantalla con desplazamiento horizontal
+- Corrección: Instalador de raíz en segundo plano
+- Añadir: Pedir sólo el root cuando se selecciona
+- Toneladas de ajustes UI/UX

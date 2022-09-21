@@ -1,0 +1,6 @@
+- Actualización: Nuevo icono de la aplicación
+- Actualización: La interfaz de usuario en la página de la aplicación
+- Actualización: Hacer que la animación de la lista sea opcional
+- Fix: Mostrar el tamaño real del apk
+- Corregir: Enlace del proyecto en las preferencias
+- Corrección: Pantalla de inicio dependiendo del tema del sistema

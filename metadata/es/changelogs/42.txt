@@ -1,0 +1,6 @@
+- Más sobre Material Design 3
+- Arreglar: Root e instalador por defecto
+- Arreglar: Eliminación de archivos en caché después de la desinstalación
+- Corrección: Bloqueo al pulsar la descarga cuando se está desconectado
+- Actualización de las traducciones de más de 17 idiomas
+- Muchas pequeñas correcciones y ajustes…
