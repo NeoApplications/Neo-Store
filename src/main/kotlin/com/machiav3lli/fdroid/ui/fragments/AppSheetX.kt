@@ -73,6 +73,7 @@ import com.machiav3lli.fdroid.ui.compose.components.appsheet.HtmlTextBlock
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.LinkItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.PermissionsItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.ReleaseItem
+import com.machiav3lli.fdroid.ui.compose.components.appsheet.SourceCodeCard
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.TopBarHeader
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.compose.utils.Callbacks
@@ -416,7 +417,42 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                             appName = product.label,
                             packageName = product.packageName,
                             icon = imageData,
-                            state = downloadState
+                            state = downloadState,
+                            actions = {
+                                SourceCodeCard(
+                                    modifier = Modifier.padding(vertical = 4.dp),
+                                    title = stringResource(id = R.string.source_code),
+                                    text = "@${
+                                        (URI(product.source).host ?: stringResource(id = R.string.unknown))
+                                            .removePrefix("www.")
+                                            .replaceFirstChar {
+                                                if (it.isLowerCase()) it.titlecase(
+                                                    Locale.getDefault()
+                                                ) else it.toString()
+                                            }
+                                    }",
+                                    onClick = {
+                                        product.source.let { link ->
+                                            if (link.isNotEmpty()) {
+                                                requireContext().startActivity(
+                                                    Intent(Intent.ACTION_VIEW, link.toUri())
+                                                )
+                                            }
+                                        }
+                                    },
+                                    onLongClick = {
+                                        product.source.let { link ->
+                                            if (link.isNotEmpty()) {
+                                                copyLinkToClipboard(
+                                                    coroutineScope,
+                                                    snackbarHostState,
+                                                    link
+                                                )
+                                            }
+                                        }
+                                    }
+                                )
+                            },
                         )
                         AppInfoChips(
                             product = product,
@@ -435,34 +471,9 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                 ) {
                     item {
                         AppInfoHeader(
-                            repoHost = "@${
-                                (URI(product.source)?.host ?: stringResource(id = R.string.unknown))
-                                    .removePrefix("www.")
-                                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-                            }",
                             mainAction = mainAction,
                             possibleActions = actions?.filter { it != mainAction }?.toSet()
                                 ?: emptySet(),
-                            onSource = {
-                                product.source.let { link ->
-                                    if (link.isNotEmpty()) {
-                                        requireContext().startActivity(
-                                            Intent(Intent.ACTION_VIEW, link.toUri())
-                                        )
-                                    }
-                                }
-                            },
-                            onSourceLong = {
-                                product.source.let { link ->
-                                    if (link.isNotEmpty()) {
-                                        copyLinkToClipboard(
-                                            coroutineScope,
-                                            snackbarHostState,
-                                            link
-                                        )
-                                    }
-                                }
-                            },
                             onAction = { onActionClick(it) }
                         )
                     }
