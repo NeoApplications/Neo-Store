@@ -58,7 +58,7 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
                 product != null && installed == null && compatible && downloadState.value == null
             val canUpdate =
                 product != null && compatible && product.canUpdate(installed) &&
-                        !shouldIgnore(product.versionCode)
+                        !shouldIgnore(product.versionCode) && downloadState.value == null
             val canUninstall = product != null && installed != null && !installed.isSystem
             val canLaunch =
                 product != null && installed != null && installed.launcherActivities.isNotEmpty()
