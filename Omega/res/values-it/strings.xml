@@ -264,7 +264,7 @@
     <string name="title_force_shapeless">Forza icone senza forma</string>
     <string name="title_adaptify_pack">Crea icone adattive per il pacchetto icone</string>
     <string name="color_presets">Preimpostazioni</string>
-    <string name="reset_custom_icons_confirmation">Ripristino icone predefinite dal pacchetto icone\? Non puoi annullare.</string>
+    <string name="reset_custom_icons_confirmation">Ripristinare le icone predefinite da questo pacchetto icone\? Questo non può essere annullato.</string>
     <string name="reset_custom_icons">Rimuovi icone personalizzate</string>
     <string name="import_as_adaptive">Come icona adattiva</string>
     <string name="open_image_picker">Apri selettore immagini</string>
@@ -337,7 +337,7 @@
     <string name="pref_appcategorization_flowerpot_title">Categoria app</string>
     <string name="cat_drawer_icons">Icone</string>
     <string name="cat_drawer_grid">Griglia</string>
-    <string name="dialog_message_change_sort">Passo all\'ordinamento alfabetico delle app\?</string>
+    <string name="dialog_message_change_sort">Passare all\'ordinamento alfabetico delle app\?</string>
     <string name="title_drawer_paged">Impaginato</string>
     <string name="title_drawer_vertical_list">Elenco verticale</string>
     <string name="title_drawer_vertical">Verticale</string>
