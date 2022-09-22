@@ -163,6 +163,10 @@ abstract class AppGroups<T : AppGroups.Group>(
         }
     }
 
+    fun removeGroup(group: T) {
+        this.groups.remove(group)
+    }
+
     fun saveToJson() {
         val arr = JSONArray()
         groups.forEach { group ->
