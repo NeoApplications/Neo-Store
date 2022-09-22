@@ -35,6 +35,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -53,6 +54,9 @@ import com.saggitt.omega.compose.components.ComposeSwitchView
 import com.saggitt.omega.compose.components.GroupItem
 import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.groups.AppGroupsManager
+import com.saggitt.omega.groups.DrawerFolders
+import com.saggitt.omega.groups.DrawerTabs
+import com.saggitt.omega.groups.FlowerpotTabs
 
 @Composable
 fun AppCategoriesPage() {
@@ -62,9 +66,37 @@ fun AppCategoriesPage() {
 
     val enableCategories by remember { mutableStateOf(manager.categorizationEnabled) }
     var categoryTitle by remember { mutableStateOf("") }
+    val groups = remember(manager.categorizationType) {
+        mutableStateListOf(
+            *when (manager.categorizationType) {
+                AppGroupsManager.CategorizationType.Tabs -> {
+                    manager.drawerTabs.getGroups()
+                }
+                AppGroupsManager.CategorizationType.Folders -> {
+                    manager.drawerFolders.getGroups()
+                }
+                AppGroupsManager.CategorizationType.Flowerpot -> {
+                    manager.flowerpotTabs.getGroups()
+                }
+                else -> {
+                    emptyList()
+                }
+            }.toTypedArray()
+        )
+    }
 
     val (selectedOption, onOptionSelected) = remember {
         mutableStateOf(manager.categorizationType)
+    }
+
+    when (manager.categorizationType) {
+        AppGroupsManager.CategorizationType.Tabs, AppGroupsManager.CategorizationType.Flowerpot -> {
+            categoryTitle = stringResource(id = R.string.app_categorization_tabs)
+        }
+        AppGroupsManager.CategorizationType.Folders -> {
+            categoryTitle = stringResource(id = R.string.app_categorization_folders)
+        }
+        else -> {}
     }
 
     ViewWithActionBar(
@@ -134,23 +166,6 @@ fun AppCategoriesPage() {
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            val groups = when (manager.categorizationType) {
-                AppGroupsManager.CategorizationType.Tabs -> {
-                    categoryTitle = stringResource(id = R.string.app_categorization_tabs)
-                    manager.drawerTabs.getGroups()
-                }
-                AppGroupsManager.CategorizationType.Folders -> {
-                    categoryTitle = stringResource(id = R.string.app_categorization_folders)
-                    manager.drawerFolders.getGroups()
-                }
-                AppGroupsManager.CategorizationType.Flowerpot -> {
-                    categoryTitle = stringResource(id = R.string.app_categorization_tabs)
-                    manager.flowerpotTabs.getGroups()
-                }
-                else -> {
-                    emptyList()
-                }
-            }
 
             groups.forEach {
                 GroupItem(
