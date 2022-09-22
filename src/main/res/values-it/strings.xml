@@ -100,7 +100,7 @@
     <string name="ok">OK</string>
     <string name="only_compatible_with_FORMAT">Compatibile solo con %s</string>
     <string name="only_on_wifi">Solo con Wi-Fi</string>
-    <string name="open_DESC_FORMAT">Apro %s\?</string>
+    <string name="open_DESC_FORMAT">Aprire %s\?</string>
     <string name="other">Altro</string>
     <string name="parsing_index_error_DESC">Impossibile analizzare indice file.</string>
     <string name="password">Password</string>
