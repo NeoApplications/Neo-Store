@@ -39,13 +39,18 @@ import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
 
 @Composable
-fun GroupItem(title:String, summary:String?){
+fun GroupItem(
+    title: String,
+    summary: String?,
+    removable: Boolean,
+    onRemoveClick: () -> Unit = {},
+) {
     val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentSize()
-            .padding(horizontal =  16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(text = title)
@@ -56,11 +61,9 @@ fun GroupItem(title:String, summary:String?){
         )
         Spacer(modifier = Modifier.weight(1f))
         Spacer(modifier = Modifier.width(8.dp))
-        IconButton(
+        if (removable) IconButton(
             modifier = Modifier.size(36.dp),
-            onClick = {
-                //TODO remove group action
-            }
+            onClick = onRemoveClick
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_uninstall_no_shadow),
@@ -86,6 +89,10 @@ fun GroupItem(title:String, summary:String?){
 
 @Preview
 @Composable
-fun GroupItemPreview(){
-    GroupItem("Tab 1", "--5 APPS")
+fun GroupItemPreview() {
+    GroupItem(
+        "Tab 1",
+        "--5 APPS",
+        true,
+    )
 }
