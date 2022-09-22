@@ -212,4 +212,11 @@
     <string name="dialog_approve">Istuda</string>
     <string name="images_cache_retention">Cunservatzione de sa memòria temporànea de sas immàgines</string>
     <string name="releases_cache_retention">Cunservatzione de sa memòria temporànea de sos APK iscarrigados</string>
+    <string name="prefs_personal">Personale</string>
+    <string name="system_black">Sistema (nieddu)</string>
+    <string name="prefs_cache">Memòria temporànea</string>
+    <string name="prefs_sync">Sincronizatzione</string>
+    <string name="group_telegram">Su grupu de Telegram nostru</string>
+    <string name="group_matrix">Su grupu de Matrix nostru</string>
+    <string name="min_sdk">minSDK</string>
 </resources>
