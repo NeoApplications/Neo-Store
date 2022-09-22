@@ -153,7 +153,32 @@ fun AppCategoriesPage() {
             }
 
             groups.forEach {
-                GroupItem(title = it.title, summary = it.summary)
+                GroupItem(
+                    title = it.title,
+                    summary = it.summary,
+                    removable = it.type in arrayOf(
+                        DrawerTabs.TYPE_CUSTOM,
+                        FlowerpotTabs.TYPE_FLOWERPOT
+                    ),
+                    onRemoveClick = {
+                        groups.remove(it)
+                        when (manager.categorizationType) {
+                            AppGroupsManager.CategorizationType.Tabs -> {
+                                manager.drawerTabs.removeGroup(it as DrawerTabs.Tab)
+                                manager.drawerTabs.saveToJson()
+                            }
+                            AppGroupsManager.CategorizationType.Folders -> {
+                                manager.drawerFolders.removeGroup(it as DrawerFolders.Folder)
+                                manager.drawerFolders.saveToJson()
+                            }
+                            AppGroupsManager.CategorizationType.Flowerpot -> {
+                                manager.flowerpotTabs.removeGroup(it as DrawerTabs.Tab)
+                                manager.flowerpotTabs.saveToJson()
+                            }
+                            else -> {}
+                        }
+                    }
+                )
             }
             Row(
                 modifier = Modifier
