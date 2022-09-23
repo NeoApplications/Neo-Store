@@ -1,6 +1,6 @@
 plugins {
     id("com.android.library")
-    kotlin("android").version("1.7.0")
+    kotlin("android").version("1.7.10")
 }
 
 android {
@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.9.0-rc01")
+    implementation("androidx.core:core-ktx:1.9.0")
 }
 
 fun Project.addFrameworkJar(path: String) {

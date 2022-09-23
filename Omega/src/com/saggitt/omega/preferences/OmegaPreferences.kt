@@ -45,6 +45,7 @@ import com.saggitt.omega.PREFS_ACCENT
 import com.saggitt.omega.PREFS_BLUR
 import com.saggitt.omega.PREFS_BLUR_RADIUS_X
 import com.saggitt.omega.PREFS_COLORED_BACKGROUND
+import com.saggitt.omega.PREFS_DASH
 import com.saggitt.omega.PREFS_DASH_LINESIZE
 import com.saggitt.omega.PREFS_DASH_PROVIDERS
 import com.saggitt.omega.PREFS_DASH_PROVIDERS_X
@@ -151,6 +152,7 @@ import com.saggitt.omega.PREF_PILL_QSB
 import com.saggitt.omega.RED
 import com.saggitt.omega.THEME_SYSTEM
 import com.saggitt.omega.THEME_WALLPAPER
+import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.dash.actionprovider.DeviceSettings
 import com.saggitt.omega.dash.actionprovider.EditDash
 import com.saggitt.omega.dash.actionprovider.LaunchAssistant
@@ -291,11 +293,11 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         default = listOf("17", "15", "4", "6", "8", "5"),
         onChange = doNothing
     )
-    var dashProvidersNew = StringPref(
-        key = "pref_dash",
+    var dashEdit = StringPref(
+        key = PREFS_DASH,
         titleId = R.string.edit_dash,
         summaryId = R.string.edit_dash_summary,
-        navRoute = "edit_dash",
+        navRoute = Routes.EDIT_DASH,
         onChange = doNothing
     )
     var dashProvidersItems = StringMultiSelectionPref(
@@ -526,7 +528,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         titleId = R.string.title__drawer_hide_apps,
         summaryId = R.string.summary__drawer_hide_apps,
         defaultValue = setOf(),
-        navRoute = "hidden_apps",
+        navRoute = Routes.HIDDEN_APPS,
         onChange = reloadApps
     )
     var drawerHiddenApps by drawerHiddenAppSet
@@ -535,7 +537,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = PREFS_PROTECTED_SET,
         titleId = R.string.protected_apps,
         defaultValue = setOf(),
-        navRoute = "protected_apps",
+        navRoute = Routes.PROTECTED_APPS,
         onChange = reloadApps
     )
     var drawerProtectedApps by drawerProtectedAppsSet
@@ -668,7 +670,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = "pref_categorize_apps",
         titleId = R.string.title_app_categorize,
         summaryId = R.string.summary_app_categorize,
-        navRoute = "categorize_apps",
+        navRoute = Routes.CATEGORIZE_APP,
         onChange = doNothing
     )
 
@@ -739,7 +741,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     var themeIconShapeX = StringPref(
         key = PREFS_ICON_SHAPE_X,
         titleId = R.string.title__theme_icon_shape,
-        navRoute = "icon_shape",
+        navRoute = Routes.ICON_SHAPE,
         onChange = doNothing
     )
 

@@ -20,23 +20,31 @@ package com.saggitt.omega.compose.screens.preferences
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.launcher3.R
@@ -46,6 +54,9 @@ import com.saggitt.omega.compose.components.ComposeSwitchView
 import com.saggitt.omega.compose.components.GroupItem
 import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.groups.AppGroupsManager
+import com.saggitt.omega.groups.DrawerFolders
+import com.saggitt.omega.groups.DrawerTabs
+import com.saggitt.omega.groups.FlowerpotTabs
 
 @Composable
 fun AppCategoriesPage() {
@@ -55,9 +66,37 @@ fun AppCategoriesPage() {
 
     val enableCategories by remember { mutableStateOf(manager.categorizationEnabled) }
     var categoryTitle by remember { mutableStateOf("") }
+    val groups = remember(manager.categorizationType) {
+        mutableStateListOf(
+            *when (manager.categorizationType) {
+                AppGroupsManager.CategorizationType.Tabs -> {
+                    manager.drawerTabs.getGroups()
+                }
+                AppGroupsManager.CategorizationType.Folders -> {
+                    manager.drawerFolders.getGroups()
+                }
+                AppGroupsManager.CategorizationType.Flowerpot -> {
+                    manager.flowerpotTabs.getGroups()
+                }
+                else -> {
+                    emptyList()
+                }
+            }.toTypedArray()
+        )
+    }
 
     val (selectedOption, onOptionSelected) = remember {
         mutableStateOf(manager.categorizationType)
+    }
+
+    when (manager.categorizationType) {
+        AppGroupsManager.CategorizationType.Tabs, AppGroupsManager.CategorizationType.Flowerpot -> {
+            categoryTitle = stringResource(id = R.string.app_categorization_tabs)
+        }
+        AppGroupsManager.CategorizationType.Folders -> {
+            categoryTitle = stringResource(id = R.string.app_categorization_folders)
+        }
+        else -> {}
     }
 
     ViewWithActionBar(
@@ -127,26 +166,114 @@ fun AppCategoriesPage() {
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            val groups = when (manager.categorizationType) {
-                AppGroupsManager.CategorizationType.Tabs -> {
-                    categoryTitle = stringResource(id = R.string.app_categorization_tabs)
-                    manager.drawerTabs.getGroups()
-                }
-                AppGroupsManager.CategorizationType.Folders -> {
-                    categoryTitle = stringResource(id = R.string.app_categorization_folders)
-                    manager.drawerFolders.getGroups()
-                }
-                AppGroupsManager.CategorizationType.Flowerpot -> {
-                    categoryTitle = stringResource(id = R.string.app_categorization_tabs)
-                    manager.flowerpotTabs.getGroups()
-                }
-                else -> {
-                    emptyList()
-                }
-            }
 
             groups.forEach {
-                GroupItem(title = it.title, summary = it.summary)
+                GroupItem(
+                    title = it.title,
+                    summary = it.summary,
+                    removable = it.type in arrayOf(
+                        DrawerTabs.TYPE_CUSTOM,
+                        FlowerpotTabs.TYPE_FLOWERPOT
+                    ),
+                    onRemoveClick = {
+                        groups.remove(it)
+                        when (manager.categorizationType) {
+                            AppGroupsManager.CategorizationType.Tabs -> {
+                                manager.drawerTabs.removeGroup(it as DrawerTabs.Tab)
+                                manager.drawerTabs.saveToJson()
+                            }
+                            AppGroupsManager.CategorizationType.Folders -> {
+                                manager.drawerFolders.removeGroup(it as DrawerFolders.Folder)
+                                manager.drawerFolders.saveToJson()
+                            }
+                            AppGroupsManager.CategorizationType.Flowerpot -> {
+                                manager.flowerpotTabs.removeGroup(it as DrawerTabs.Tab)
+                                manager.flowerpotTabs.saveToJson()
+                            }
+                            else -> {}
+                        }
+                    }
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxSize()
+            ) {
+                ElevatedButton(
+                    modifier = Modifier.weight(1f),
+                    onClick = {
+                        /* TODO create Compose Dialog/BottomSheet as replacement to this code
+                        when (manager.categorizationType) {
+                            AppGroupsManager.CategorizationType.Tabs, AppGroupsManager.CategorizationType.Flowerpot -> {
+                                DrawerTabTypeSelectionBottomSheet.show(
+                                    context, mapOf(
+                                        FlowerpotTabs.TYPE_FLOWERPOT to arrayOf(
+                                            R.string.tab_type_smart,
+                                            R.string.pref_appcategorization_flowerpot_summary,
+                                            R.drawable.ic_category
+                                        ),
+                                        DrawerTabs.TYPE_CUSTOM to arrayOf(
+                                            R.string.custom,
+                                            R.string.tab_type_custom_desc,
+                                            R.drawable.ic_squares_four
+                                        )
+                                    )
+                                ) {
+                                    when (it) {
+                                        DrawerTabs.TYPE_CUSTOM -> {
+                                            val newGroup = DrawerTabs.CustomTab(context)
+                                            DrawerGroupBottomSheet.newGroup(
+                                                context,
+                                                newGroup,
+                                                false
+                                            ) {
+                                                newGroup.customizations.applyFrom(it)
+                                                manager.drawerTabs.setGroups(groups.plus(newGroup) as List<DrawerTabs.Tab>)
+                                                manager.drawerTabs.saveToJson()
+                                            }
+                                        }
+                                        FlowerpotTabs.TYPE_FLOWERPOT -> {
+                                            val newGroup = FlowerpotTabs.FlowerpotTab(context)
+                                            DrawerGroupBottomSheet.newGroup(
+                                                context,
+                                                newGroup,
+                                                false
+                                            ) {
+                                                newGroup.customizations.applyFrom(it)
+                                                manager.flowerpotTabs.setGroups(groups.plus(newGroup) as List<DrawerTabs.Tab>)
+                                                manager.flowerpotTabs.saveToJson()
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            AppGroupsManager.CategorizationType.Folders -> {
+                                val newGroup = DrawerFolders.CustomFolder(context)
+                                DrawerGroupBottomSheet.newGroup(context, newGroup, false) {
+                                    newGroup.customizations.applyFrom(it)
+                                    manager.drawerFolders.setGroups(groups.plus(newGroup) as List<DrawerFolders.Folder>)
+                                    manager.drawerFolders.saveToJson()
+                                }
+                            }
+                            else -> {}
+                        }*/
+                        //groups.add(newGroup)
+                    }) {
+                    Icon(
+                        modifier = Modifier
+                            .padding(vertical = 4.dp)
+                            .size(24.dp),
+                        painter = painterResource(id = R.drawable.ic_add),
+                        contentDescription = stringResource(id = R.string.title_create)
+                    )
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = stringResource(id = R.string.title_create),
+                        textAlign = TextAlign.Center
+                    )
+
+                }
             }
         }
     }

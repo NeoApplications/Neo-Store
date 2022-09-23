@@ -7,16 +7,16 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.text.SimpleDateFormat
 import java.util.*
 
-val vCompose = "1.2.1"
-val vComposeCompiler = "1.2.0"
-val vAccompanist = "0.25.0"
+val vCompose = "1.3.0-beta02"
+val vComposeCompiler = "1.3.1"
+val vAccompanist = "0.26.3-beta"
 val vRoom = "2.5.0-alpha03"
 
 plugins {
-    id("com.android.application").version("7.2.2")
-    kotlin("android").version("1.7.0")
-    kotlin("kapt").version("1.7.0")
-    kotlin("plugin.parcelize").version("1.7.0")
+    id("com.android.application").version("7.3.0")
+    kotlin("android").version("1.7.10")
+    kotlin("kapt").version("1.7.10")
+    kotlin("plugin.parcelize").version("1.7.10")
     id("com.google.protobuf").version("0.8.18")
 }
 
@@ -212,11 +212,11 @@ dependencies {
     implementation(project(":searchuilib"))
 
     //UI
-    implementation("androidx.appcompat:appcompat:1.6.0-beta01")
+    implementation("androidx.appcompat:appcompat:1.6.0-rc01")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03")
-    implementation("androidx.activity:activity-ktx:1.6.0-rc01")
+    implementation("androidx.activity:activity-ktx:1.6.0-rc02")
     implementation("androidx.fragment:fragment-ktx:1.5.2")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.savedstate:savedstate-ktx:1.2.0")
@@ -249,12 +249,12 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:$vCompose")
     implementation("androidx.compose.ui:ui-tooling-preview:$vCompose")
     implementation("androidx.compose.foundation:foundation:$vCompose")
-    implementation("androidx.compose.material3:material3:1.0.0-beta01")
-    implementation("androidx.navigation:navigation-compose:2.5.1")
+    implementation("androidx.compose.material3:material3:1.0.0-beta02")
+    implementation("androidx.navigation:navigation-compose:2.5.2")
     implementation("androidx.activity:activity-compose:1.5.1")
-    implementation("io.coil-kt:coil-compose:2.2.0")
+    implementation("io.coil-kt:coil-compose:2.2.1")
     implementation("io.github.fornewid:material-motion-compose-core:0.8.4")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.17")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.18")
 
     //Accompanist
     implementation("com.google.accompanist:accompanist-flowlayout:$vAccompanist")
