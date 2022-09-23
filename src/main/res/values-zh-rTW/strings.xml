@@ -66,7 +66,7 @@
     <string name="no_matching_applications_found">找不到符合條件的程式</string>
     <string name="no_proxy">無代理</string>
     <string name="notify_about_updates">程式更新通知</string>
-    <string name="notify_about_updates_summary">有新版本可用時顯示通知</string>
+    <string name="notify_about_updates_summary">有新版本可用時顯示通知。</string>
     <string name="number_of_applications">程式數量</string>
     <string name="ok">好的</string>
     <string name="only_on_wifi">僅在 Wi-Fi 連線時</string>
@@ -108,7 +108,7 @@
     <string name="unknown_FORMAT">未知： %s</string>
     <string name="unsigned">未簽署</string>
     <string name="unstable_updates">不穩定的更新</string>
-    <string name="unstable_updates_summary">建議安裝不穩定的版本</string>
+    <string name="unstable_updates_summary">建議安裝不穩定的版本。</string>
     <string name="unverified">未驗證</string>
     <string name="update">更新</string>
     <string name="updates">更新</string>
@@ -133,7 +133,7 @@
     <string name="pending">待定</string>
     <string name="installing">安裝中</string>
     <string name="ignore_battery_optimization_title">電池優化</string>
-    <string name="install_after_sync_summary">檢查所有資料庫後，自動安裝所有程式的新版本</string>
+    <string name="install_after_sync_summary">檢查所有資料庫後，自動安裝所有程式的新版本。</string>
     <string name="prefs_updated_apps">在「最近更新」下顯示的程式數量</string>
     <string name="prefs_new_apps">在「新程式」下顯示的程式數量</string>
     <string name="new_repository">新資料庫</string>
@@ -156,7 +156,7 @@
     <string name="incompatible_api_min_DESC_FORMAT">最低 API 版本為 %d。</string>
     <string name="ignore_all_updates">忽略所有新版本</string>
     <string name="ignore_this_update">忽略此版本</string>
-    <string name="incompatible_versions_summary">顯示與設備不兼容的版本</string>
+    <string name="incompatible_versions_summary">顯示與設備不兼容的版本。</string>
     <string name="incompatible_api_DESC_FORMAT">你的 %1$s（API 版本 %2$d）不受支持。 %3$s</string>
     <string name="incompatible_versions">版本不兼容</string>
     <string name="incompatible_older_DESC">此版本比你裝置上的已安裝版本舊。請先移除已安裝版本。</string>
@@ -188,11 +188,33 @@
     <string name="target">目標</string>
     <string name="incompatible_signature_DESC">此版本和已安裝版本使用不同的證書簽署。
 \n請先移除已安裝版本。</string>
-    <string name="ignore_battery_optimization_message">本程式在關閉電池優化時表現更好，並防止在 Android 12+ 上停止回應</string>
+    <string name="ignore_battery_optimization_message">本程式在關閉電池優化時表現更好，並防止在 Android 12+ 上停止回應。</string>
     <string name="syncing_FORMAT">正在同步 %s…</string>
     <string name="system">系統</string>
     <string name="new_applications">新程式</string>
     <string name="tracks_or_reports_your_activity">追蹤或報告你的活動</string>
     <string name="unknown">未知</string>
     <string name="root_session_installer_description">Root 程序安裝效能較傳統方法稍差，但防止 Android 13+ 上與已安裝程式發生問題。</string>
+    <string name="prefs_cache">緩存</string>
+    <string name="prefs_sync">同步</string>
+    <string name="system_black">系統(黑色)</string>
+    <string name="not_safe_for_work">可屏蔽 (可能含有令人不安的內容)</string>
+    <string name="no_updates_available">沒有可用的版本</string>
+    <string name="releases">發行版本</string>
+    <string name="loading_list">正在加載列表…</string>
+    <string name="prefs_personal">個人</string>
+    <string name="auto_sync_interval">自動同步間隔 (分鐘)</string>
+    <string name="images_cache_retention">保留圖像緩存</string>
+    <string name="releases_cache_retention">保留已下載APK緩存</string>
+    <string name="favorite_applications">收藏夾</string>
+    <string name="group_telegram">我們的Telegram群組</string>
+    <string name="group_matrix">我們的Matrix群組</string>
+    <string name="min_sdk">最低SDK</string>
+    <string name="no_permissions_identified">無法識別您所要求的權限</string>
+    <string name="show_screenshots_description">於頁面顯示截圖。</string>
+    <string name="favorite_remove">從收藏夾中移除</string>
+    <string name="favorite_add">新增至收藏夾</string>
+    <string name="show_screenshots">顯示截圖</string>
+    <string name="open">開啟</string>
+    <string name="no_action_possible">沒有可用的操作</string>
 </resources>
