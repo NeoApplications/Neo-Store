@@ -219,4 +219,7 @@
     <string name="group_telegram">Su grupu de Telegram nostru</string>
     <string name="group_matrix">Su grupu de Matrix nostru</string>
     <string name="min_sdk">minSDK</string>
+    <string name="categories">Categorias</string>
+    <string name="sort_ascending">In artziada</string>
+    <string name="sort_descending">In achirrada</string>
 </resources>
