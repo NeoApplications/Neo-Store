@@ -125,6 +125,7 @@ interface ProductDao : BaseDao<Product> {
         searchQuery: String,
         section: Section,
         order: Order,
+        ascending: Boolean = false,
         numberOfItems: Int = 0,
         updateCategory: UpdateCategory = UpdateCategory.ALL
     ): SupportSQLiteQuery {
@@ -220,10 +221,10 @@ interface ProductDao : BaseDao<Product> {
         if (searchQuery.isNotEmpty()) builder += """$ROW_MATCH_RANK DESC,"""
         when (order) {
             Order.NAME -> Unit
-            Order.DATE_ADDED -> builder += "$TABLE_PRODUCT.$ROW_ADDED DESC,"
-            Order.LAST_UPDATE -> builder += "$TABLE_PRODUCT.$ROW_UPDATED DESC,"
+            Order.DATE_ADDED -> builder += "$TABLE_PRODUCT.$ROW_ADDED ${if (ascending) "ASC" else "DESC"},"
+            Order.LAST_UPDATE -> builder += "$TABLE_PRODUCT.$ROW_UPDATED ${if (ascending) "ASC" else "DESC"},"
         }::class
-        builder += "$TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ASC${if (numberOfItems > 0) " LIMIT $numberOfItems" else ""}"
+        builder += "$TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ${if (!ascending && order == Order.NAME) "DESC" else "ASC"}${if (numberOfItems > 0) " LIMIT $numberOfItems" else ""}"
 
         return SimpleSQLiteQuery(builder.build(), builder.arguments.toTypedArray())
     }
