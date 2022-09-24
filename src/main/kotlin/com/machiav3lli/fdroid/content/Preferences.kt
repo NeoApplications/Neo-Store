@@ -100,6 +100,20 @@ object Preferences {
             }
         }
 
+        class StringSetValue(override val value: Set<String>) : Value<Set<String>>() {
+            override fun get(
+                preferences: SharedPreferences,
+                key: String,
+                defaultValue: Value<Set<String>>,
+            ): Set<String> {
+                return preferences.getStringSet(key, defaultValue.value) ?: emptySet()
+            }
+
+            override fun set(preferences: SharedPreferences, key: String, value: Set<String>) {
+                preferences.edit().putStringSet(key, value).apply()
+            }
+        }
+
         class StringValue(override val value: String) : Value<String>() {
             override fun get(
                 preferences: SharedPreferences,
