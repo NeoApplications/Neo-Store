@@ -37,6 +37,7 @@ import com.machiav3lli.fdroid.ui.compose.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.components.TopBarAction
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.fragments.AppSheetX
+import com.machiav3lli.fdroid.ui.fragments.SortFilterSheet
 import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.MainNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavItem
@@ -235,5 +236,10 @@ class MainActivityX : AppCompatActivity() {
     internal fun navigateProduct(packageName: String) {
         AppSheetX(packageName)
             .showNow(supportFragmentManager, "Product $packageName")
+    }
+
+    internal fun navigateSortFilter(navPage: NavItem) {
+        SortFilterSheet(navPage)
+            .showNow(supportFragmentManager, "Latest Page")
     }
 }
