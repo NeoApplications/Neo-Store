@@ -211,4 +211,5 @@
     <string name="releases_cache_retention">下载的APK缓存保留</string>
     <string name="auto_sync_interval">自动同步间隔（分钟）</string>
     <string name="favorite_applications">收藏</string>
+    <string name="prefs_personal">个人</string>
 </resources>
