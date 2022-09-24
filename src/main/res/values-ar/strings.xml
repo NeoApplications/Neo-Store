@@ -222,5 +222,8 @@
     <string name="prefs_cache">تخزين مؤقت</string>
     <string name="group_telegram">مجموعتنا على تلغرام</string>
     <string name="group_matrix">مجموعة ماتريكس الخاصة بنا</string>
-    <string name="min_sdk">minSDK</string>
+    <string name="min_sdk">اقل اصدار لمكتبة البرمجيات</string>
+    <string name="sort_ascending">تصاعدي</string>
+    <string name="categories">الفئات</string>
+    <string name="sort_descending">تنازلي</string>
 </resources>
