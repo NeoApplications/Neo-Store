@@ -218,4 +218,7 @@
     <string name="group_matrix">我们的 Matrix 群组</string>
     <string name="min_sdk">最低SDK版本</string>
     <string name="system_black">系统(黑色)</string>
+    <string name="categories">类别</string>
+    <string name="sort_descending">下降</string>
+    <string name="sort_ascending">上升</string>
 </resources>
