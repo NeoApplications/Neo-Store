@@ -17,17 +17,22 @@
  */
 package com.machiav3lli.fdroid.ui.navigation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -70,7 +75,14 @@ fun BottomNavBar(page: Int = NAV_MAIN, navController: NavController) {
                     Icon(
                         painter = painterResource(id = item.icon),
                         contentDescription = stringResource(id = item.title),
-                        modifier = Modifier.size(if (selected) 46.dp else 32.dp),
+                        modifier = Modifier
+                            .background(
+                                if (selected) MaterialTheme.colorScheme.surfaceColorAtElevation(48.dp)
+                                else Color.Transparent,
+                                CircleShape
+                            )
+                            .padding(8.dp)
+                            .size(if (selected) 36.dp else 26.dp),
                     )
                 },
                 label = {
