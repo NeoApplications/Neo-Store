@@ -220,4 +220,7 @@
     <string name="group_telegram">Naše skupina na Telegramu</string>
     <string name="group_matrix">Naše skupina na Matrixu</string>
     <string name="min_sdk">minSDK</string>
+    <string name="sort_descending">Sestupně</string>
+    <string name="sort_ascending">Vzestupně</string>
+    <string name="categories">Kategorie</string>
 </resources>
