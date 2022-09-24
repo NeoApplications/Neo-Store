@@ -40,6 +40,7 @@ import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.ProductsVerticalRecycler
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
+import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.onLaunchClick
@@ -152,13 +153,15 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
                     text = stringResource(id = R.string.installed_applications),
                     modifier = Modifier.weight(1f),
                 )
-                /*SuggestionChip(
+                SuggestionChip(
                     shape = MaterialTheme.shapes.medium,
                     colors = SuggestionChipDefaults.suggestionChipColors(
                         containerColor = MaterialTheme.colorScheme.surface,
                         labelColor = MaterialTheme.colorScheme.onSurface,
                     ),
-                    onClick = { }, // TODO add sort & filter
+                    onClick = {
+                        mainActivityX.navigateSortFilter(NavItem.Installed)
+                    },
                     icon = {
                         Icon(
                             modifier = Modifier.size(18.dp),
@@ -169,7 +172,7 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
                     label = {
                         Text(text = stringResource(id = R.string.sort_filter))
                     }
-                )*/
+                )
             }
             ProductsVerticalRecycler(
                 productsList = primaryList?.sortedBy { it.label.lowercase() },

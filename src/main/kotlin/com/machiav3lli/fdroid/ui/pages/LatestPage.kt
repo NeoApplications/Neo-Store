@@ -1,13 +1,18 @@
-package com.machiav3lli.fdroid.ui.pages
+    package com.machiav3lli.fdroid.ui.pages
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
@@ -18,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
@@ -26,6 +32,7 @@ import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
+import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.onLaunchClick
@@ -33,6 +40,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LatestPage(viewModel: MainNavFragmentViewModelX) {
     val context = LocalContext.current
@@ -86,13 +94,15 @@ fun LatestPage(viewModel: MainNavFragmentViewModelX) {
                         text = stringResource(id = R.string.recently_updated),
                         modifier = Modifier.weight(1f),
                     )
-                    /*SuggestionChip(
+                    SuggestionChip(
                         shape = MaterialTheme.shapes.medium,
                         colors = SuggestionChipDefaults.suggestionChipColors(
                             containerColor = MaterialTheme.colorScheme.surface,
                             labelColor = MaterialTheme.colorScheme.onSurface,
                         ),
-                        onClick = { }, // TODO add sort & filter
+                        onClick = {
+                                  mainActivityX.navigateSortFilter(NavItem.Latest)
+                        },
                         icon = {
                             Icon(
                                 modifier = Modifier.size(18.dp),
@@ -103,7 +113,7 @@ fun LatestPage(viewModel: MainNavFragmentViewModelX) {
                         label = {
                             Text(text = stringResource(id = R.string.sort_filter))
                         }
-                    )*/
+                    )
                 }
             }
             items(
