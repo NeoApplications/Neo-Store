@@ -38,7 +38,18 @@ object Preferences {
         Key.ProxyType,
         Key.RootPermission,
         Key.RootSessionInstaller,
-        Key.SortOrder,
+        Key.SortOrderExplore,
+        Key.SortOrderLatest,
+        Key.SortOrderInstalled,
+        Key.SortOrderAscendingExplore,
+        Key.SortOrderAscendingLatest,
+        Key.SortOrderAscendingInstalled,
+        Key.ReposFilterExplore,
+        Key.ReposFilterLatest,
+        Key.ReposFilterInstalled,
+        Key.CategoriesFilterExplore,
+        Key.CategoriesFilterLatest,
+        Key.CategoriesFilterInstalled,
         Key.Theme,
         Key.DefaultTab,
         Key.UpdateNotify,
@@ -186,9 +197,58 @@ object Preferences {
         object RootSessionInstaller :
             Key<Boolean>("root_session_installer", Value.BooleanValue(false))
 
-        object SortOrder : Key<Preferences.SortOrder>(
-            "sort_order",
-            Value.EnumerationValue(Preferences.SortOrder.Update)
+        object SortOrderExplore : Key<SortOrder>(
+            "sort_order_explore",
+            Value.EnumerationValue(SortOrder.Update)
+        )
+
+        object SortOrderLatest : Key<SortOrder>(
+            "sort_order_latest",
+            Value.EnumerationValue(SortOrder.Update)
+        )
+
+        object SortOrderInstalled : Key<SortOrder>(
+            "sort_order_installed",
+            Value.EnumerationValue(SortOrder.Name)
+        )
+
+        object SortOrderAscendingExplore :
+            Key<Boolean>("sort_order_ascending_explore", Value.BooleanValue(true))
+
+        object SortOrderAscendingLatest :
+            Key<Boolean>("sort_order_ascending_latest", Value.BooleanValue(true))
+
+        object SortOrderAscendingInstalled :
+            Key<Boolean>("sort_order_ascending_installed", Value.BooleanValue(true))
+
+        object ReposFilterExplore : Key<Set<String>>(
+            "repos_filter_explore",
+            Value.StringSetValue(emptySet())
+        )
+
+        object ReposFilterLatest : Key<Set<String>>(
+            "repos_filter_latest",
+            Value.StringSetValue(emptySet())
+        )
+
+        object ReposFilterInstalled : Key<Set<String>>(
+            "repos_filter_installed",
+            Value.StringSetValue(emptySet())
+        )
+
+        object CategoriesFilterExplore : Key<Set<String>>(
+            "categories_filter_explore",
+            Value.StringSetValue(emptySet())
+        )
+
+        object CategoriesFilterLatest : Key<Set<String>>(
+            "categories_filter_latest",
+            Value.StringSetValue(emptySet())
+        )
+
+        object CategoriesFilterInstalled : Key<Set<String>>(
+            "categories_filter_installed",
+            Value.StringSetValue(emptySet())
         )
 
         object Theme : Key<Preferences.Theme>(
