@@ -219,4 +219,7 @@
     <string name="group_telegram">Our Telegram group</string>
     <string name="group_matrix">Our Matrix group</string>
     <string name="min_sdk">minSDK</string>
+    <string name="categories">Categories</string>
+    <string name="sort_ascending">Ascending</string>
+    <string name="sort_descending">Descending</string>
 </resources>
