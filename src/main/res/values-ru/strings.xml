@@ -222,4 +222,7 @@
     <string name="group_telegram">Наша группа в Telegram</string>
     <string name="group_matrix">Наша группа в Matrix</string>
     <string name="min_sdk">Мин. SDK</string>
+    <string name="sort_ascending">По возрастанию</string>
+    <string name="categories">Категории</string>
+    <string name="sort_descending">По убыванию</string>
 </resources>
