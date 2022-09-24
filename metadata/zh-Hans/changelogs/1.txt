@@ -1,0 +1,2 @@
+* 将原色更改为 Google Green
+* 为 kitsunyan 添加了贡献
