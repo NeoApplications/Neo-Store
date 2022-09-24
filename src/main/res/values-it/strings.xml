@@ -222,4 +222,7 @@
     <string name="group_telegram">Gruppo Telegram</string>
     <string name="group_matrix">Gruppo Matrix</string>
     <string name="min_sdk">minSDK</string>
+    <string name="categories">Categorie</string>
+    <string name="sort_descending">Discendente</string>
+    <string name="sort_ascending">Ascendente</string>
 </resources>
