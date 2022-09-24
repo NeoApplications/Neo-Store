@@ -217,4 +217,5 @@
     <string name="show_screenshots">顯示截圖</string>
     <string name="open">開啟</string>
     <string name="no_action_possible">沒有可用的操作</string>
+    <string name="dynamic">系統動態</string>
 </resources>
