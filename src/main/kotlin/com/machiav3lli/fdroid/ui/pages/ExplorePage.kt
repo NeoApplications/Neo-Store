@@ -3,24 +3,32 @@ package com.machiav3lli.fdroid.ui.pages
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.compose.ProductsVerticalRecycler
-import com.machiav3lli.fdroid.ui.compose.components.CategoryChipList
+import com.machiav3lli.fdroid.ui.compose.components.CategoryChip
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
 import com.machiav3lli.fdroid.utility.isDarkTheme
@@ -63,18 +71,23 @@ fun ExplorePage(viewModel: MainNavFragmentViewModelX) {
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize()
         ) {
-            CategoryChipList(
-                list = listOf(
-                    stringResource(id = R.string.all_applications),
-                    stringResource(id = R.string.favorite_applications),
-                    *categories.sorted().toTypedArray()
-                )
+            Row(
+                modifier = Modifier.padding(horizontal = 6.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                viewModel.sections.postValue(
-                    when (it) {
-                        context.getString(R.string.all_applications) -> Section.All
-                        context.getString(R.string.favorite_applications) -> Section.FAVORITE
-                        else -> Section.Category(it)
+                var favoriteFilter by remember {
+                    mutableStateOf(false)
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                CategoryChip(
+                    category = stringResource(id = R.string.favorite_applications),
+                    isSelected = favoriteFilter,
+                    onSelected = {
+                        favoriteFilter = !favoriteFilter
+                        viewModel.sections.postValue(
+                            if (it) Section.FAVORITE
+                            else Section.All
+                        )
                     }
                 )
             }
