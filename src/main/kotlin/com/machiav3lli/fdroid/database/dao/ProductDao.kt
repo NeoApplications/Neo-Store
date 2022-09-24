@@ -77,13 +77,13 @@ interface ProductDao : BaseDao<Product> {
 
     fun queryObject(request: Request): List<Product> = queryObject(
         buildProductQuery(
-            request.installed,
-            request.updates,
-            request.searchQuery,
-            request.section,
-            request.order,
-            request.numberOfItems,
-            request.updateCategory
+            installed = request.installed,
+            updates = request.updates,
+            searchQuery = request.searchQuery,
+            section = request.section,
+            order = request.order,
+            numberOfItems = request.numberOfItems,
+            updateCategory = request.updateCategory
         )
     )
 
@@ -94,13 +94,13 @@ interface ProductDao : BaseDao<Product> {
         updateCategory: UpdateCategory = UpdateCategory.ALL
     ): List<Product> = queryObject(
         buildProductQuery(
-            installed,
-            updates,
-            searchQuery,
-            section,
-            order,
-            numberOfItems,
-            updateCategory
+            installed = installed,
+            updates = updates,
+            searchQuery = searchQuery,
+            section = section,
+            order = order,
+            numberOfItems = numberOfItems,
+            updateCategory = updateCategory
         )
     )
 
@@ -109,13 +109,13 @@ interface ProductDao : BaseDao<Product> {
 
     fun queryLiveList(request: Request): LiveData<List<Product>> = queryLiveList(
         buildProductQuery(
-            request.installed,
-            request.updates,
-            request.searchQuery,
-            request.section,
-            request.order,
-            request.numberOfItems,
-            request.updateCategory
+            installed = request.installed,
+            updates = request.updates,
+            searchQuery = request.searchQuery,
+            section = request.section,
+            order = request.order,
+            numberOfItems = request.numberOfItems,
+            updateCategory = request.updateCategory
         )
     )
 
