@@ -1,0 +1,7 @@
+添加：向上滑动手势到文件夹
+添加：Feed-Provider 设置
+修复：语言偏好
+更新：将网格/列范围增加到 2-16
+移除：Google App 和 Google GO 作为搜索提供者
+移除：StartAppSearch、StartApp 和 TimeoutSleep 手势
+许多崩溃修复
