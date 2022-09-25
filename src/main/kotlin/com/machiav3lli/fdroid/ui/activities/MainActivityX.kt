@@ -238,8 +238,8 @@ class MainActivityX : AppCompatActivity() {
             .showNow(supportFragmentManager, "Product $packageName")
     }
 
-    internal fun navigateSortFilter(navPage: NavItem) {
+    internal fun navigateSortFilter(navPage: String) {
         SortFilterSheet(navPage)
-            .showNow(supportFragmentManager, "Latest Page")
+            .showNow(supportFragmentManager, "Sort/Filter Page of: $navPage")
     }
 }

@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
+import com.machiav3lli.fdroid.EXTRA_PAGE_ROUTE
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
@@ -42,7 +43,16 @@ import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.isDarkTheme
 
-class SortFilterSheet(val navPage: NavItem) : FullscreenBottomSheetDialogFragment() {
+class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
+
+    constructor(pageRoute: String = NavItem.Explore.destination) : this() {
+        arguments = Bundle().apply {
+            putString(EXTRA_PAGE_ROUTE, pageRoute)
+        }
+    }
+
+    private val pageRoute: String
+        get() = requireArguments().getString(EXTRA_PAGE_ROUTE, NavItem.Explore.destination)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,7 +69,7 @@ class SortFilterSheet(val navPage: NavItem) : FullscreenBottomSheetDialogFragmen
                         else -> isDarkTheme
                     }
                 ) {
-                    SortFilterPage(navPage)
+                    SortFilterPage(pageRoute)
                 }
             }
         }
@@ -73,7 +83,7 @@ class SortFilterSheet(val navPage: NavItem) : FullscreenBottomSheetDialogFragmen
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
-    fun SortFilterPage(navPage: NavItem) {
+    fun SortFilterPage(navPage: String) {
         val nestedScrollConnection = rememberNestedScrollInteropConnection()
         val dbHandler = ((context as AppCompatActivity).application as MainApplication).db
         val repos by dbHandler.repositoryDao.allLive.observeAsState(emptyList())
@@ -81,23 +91,23 @@ class SortFilterSheet(val navPage: NavItem) : FullscreenBottomSheetDialogFragmen
         val activeRepos by remember(repos) { mutableStateOf(repos.filter { it.enabled }) }
 
         val sortKey = when (navPage) {
-            NavItem.Latest -> Preferences.Key.SortOrderLatest
-            NavItem.Installed -> Preferences.Key.SortOrderInstalled
+            NavItem.Latest.destination -> Preferences.Key.SortOrderLatest
+            NavItem.Installed.destination -> Preferences.Key.SortOrderInstalled
             else -> Preferences.Key.SortOrderExplore // NavItem.Explore
         }
         val sortAscendingKey = when (navPage) {
-            NavItem.Latest -> Preferences.Key.SortOrderAscendingLatest
-            NavItem.Installed -> Preferences.Key.SortOrderAscendingInstalled
+            NavItem.Latest.destination -> Preferences.Key.SortOrderAscendingLatest
+            NavItem.Installed.destination -> Preferences.Key.SortOrderAscendingInstalled
             else -> Preferences.Key.SortOrderAscendingExplore // NavItem.Explore
         }
         val reposFilterKey = when (navPage) {
-            NavItem.Latest -> Preferences.Key.ReposFilterLatest
-            NavItem.Installed -> Preferences.Key.ReposFilterInstalled
+            NavItem.Latest.destination -> Preferences.Key.ReposFilterLatest
+            NavItem.Installed.destination -> Preferences.Key.ReposFilterInstalled
             else -> Preferences.Key.ReposFilterExplore // NavItem.Explore
         }
         val categoriesFilterKey = when (navPage) {
-            NavItem.Latest -> Preferences.Key.CategoriesFilterLatest
-            NavItem.Installed -> Preferences.Key.CategoriesFilterInstalled
+            NavItem.Latest.destination -> Preferences.Key.CategoriesFilterLatest
+            NavItem.Installed.destination -> Preferences.Key.CategoriesFilterInstalled
             else -> Preferences.Key.CategoriesFilterExplore // NavItem.Explore
         }
 

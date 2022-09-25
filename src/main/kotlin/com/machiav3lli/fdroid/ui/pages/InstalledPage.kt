@@ -160,7 +160,7 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
                         labelColor = MaterialTheme.colorScheme.onSurface,
                     ),
                     onClick = {
-                        mainActivityX.navigateSortFilter(NavItem.Installed)
+                        mainActivityX.navigateSortFilter(NavItem.Installed.destination)
                     },
                     icon = {
                         Icon(

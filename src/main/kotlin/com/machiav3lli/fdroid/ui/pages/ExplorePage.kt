@@ -93,7 +93,7 @@ fun ExplorePage(viewModel: MainNavFragmentViewModelX) {
                         labelColor = MaterialTheme.colorScheme.onSurface,
                     ),
                     onClick = {
-                        mainActivityX.navigateSortFilter(NavItem.Explore)
+                        mainActivityX.navigateSortFilter(NavItem.Explore.destination)
                     },
                     icon = {
                         Icon(

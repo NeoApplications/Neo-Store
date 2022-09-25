@@ -101,7 +101,7 @@ fun LatestPage(viewModel: MainNavFragmentViewModelX) {
                             labelColor = MaterialTheme.colorScheme.onSurface,
                         ),
                         onClick = {
-                                  mainActivityX.navigateSortFilter(NavItem.Latest)
+                                  mainActivityX.navigateSortFilter(NavItem.Latest.destination)
                         },
                         icon = {
                             Icon(
