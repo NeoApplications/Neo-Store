@@ -5,11 +5,12 @@ import com.google.protobuf.gradle.protoc
 import org.jetbrains.kotlin.gradle.internal.KaptWithoutKotlincTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.TimeZone
 
 val vCompose = "1.3.0-beta02"
 val vComposeCompiler = "1.3.1"
-val vAccompanist = "0.26.3-beta"
+val vAccompanist = "0.26.1-alpha"
 val vRoom = "2.5.0-alpha03"
 
 plugins {
@@ -34,8 +35,9 @@ android {
     namespace = "com.android.launcher3"
     compileSdk = 33
 
-    val name = "0.9.3-alpha1"
-    val code = 927
+    val name = "0.9.3-alpha2"
+    val code = 929
+
 
     defaultConfig {
         minSdk = 26
@@ -159,10 +161,6 @@ android {
             java.srcDirs(listOf("src", "src_plugins"))
             assets.srcDirs(listOf("assets"))
             manifest.srcFile("AndroidManifest-common.xml")
-            /*val sds = project.objects.sourceDirectorySet(name, "$name Proto source")
-            sds.srcDirs(listOf("protos/", "quickstep/protos_overrides/"))
-            sds.include("**\/\*.proto")
-            extensions.add("proto", sds)*/
         }
 
         named("androidTest") {
