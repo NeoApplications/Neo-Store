@@ -10,7 +10,8 @@ import java.util.TimeZone
 
 val vCompose = "1.3.0-beta02"
 val vComposeCompiler = "1.3.1"
-val vAccompanist = "0.26.1-alpha"
+val vAccompanist =
+    "0.26.1-alpha" //Do not update until rememberDrawablePainter is fixed (try the IconShapeItem to confirm)
 val vRoom = "2.5.0-alpha03"
 
 plugins {

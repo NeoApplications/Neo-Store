@@ -72,10 +72,12 @@ class CustomizeIconsPreview @JvmOverloads constructor(
 
     private fun getShapeDrawable(): Drawable {
         val drawable =
-            if (prefs.themeIconShape.onGetValue() == IconShapeManager.getSystemIconShape(context)) {
+            if (prefs.themeIconShapeX.onGetValue() == IconShapeManager.getSystemIconShape(context)
+                    .toString()
+            ) {
                 IconShapeDrawable(IconShapeManager.getSystemIconShape(context))
             } else {
-                IconShapeDrawable(fromString(prefs.themeIconShape.onGetValue().toString())!!)
+                IconShapeDrawable(fromString(prefs.themeIconShapeX.onGetValue())!!)
             }
 
         return drawable

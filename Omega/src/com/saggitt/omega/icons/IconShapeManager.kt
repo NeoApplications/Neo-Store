@@ -22,6 +22,7 @@ import android.content.Context
 import android.graphics.Path
 import android.graphics.Region
 import android.graphics.drawable.AdaptiveIconDrawable
+import android.text.TextUtils
 import com.android.launcher3.Utilities
 import com.android.launcher3.icons.GraphicsUtils
 import com.android.launcher3.icons.IconProvider
@@ -29,6 +30,30 @@ import com.android.launcher3.util.MainThreadInitializedObject
 
 class IconShapeManager(private val context: Context) {
     val systemIconShape = getSystemShape()
+
+    init {
+        migratePref()
+    }
+
+    private fun migratePref() {
+        val override = getLegacyValue()
+        if (!TextUtils.isEmpty(override)) {
+            try {
+                Utilities.getPrefs(context).edit().remove(KEY_LEGACY_PREFERENCE).apply()
+            } catch (_: RuntimeException) {
+            }
+        }
+    }
+
+    private fun getLegacyValue(): String {
+        val devValue = Utilities.getDevicePrefs(context).getString(KEY_LEGACY_PREFERENCE, "")
+        if (!TextUtils.isEmpty(devValue)) {
+            Utilities.getPrefs(context).edit().putString(KEY_LEGACY_PREFERENCE, devValue).apply()
+            Utilities.getDevicePrefs(context).edit().remove(KEY_LEGACY_PREFERENCE).apply()
+        }
+
+        return Utilities.getPrefs(context).getString(KEY_LEGACY_PREFERENCE, "")!!
+    }
 
     private fun getSystemShape(): IconShape {
         if (!Utilities.ATLEAST_OREO) throw RuntimeException("not supported on < oreo")
@@ -80,6 +105,9 @@ class IconShapeManager(private val context: Context) {
     }
 
     companion object {
+
+        private const val KEY_LEGACY_PREFERENCE = "pref_override_icon_shape"
+
         @JvmField
         val INSTANCE = MainThreadInitializedObject(::IconShapeManager)
 

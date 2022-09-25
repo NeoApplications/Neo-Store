@@ -54,7 +54,7 @@ import com.saggitt.omega.icons.ShapeModel
 fun IconShapePage() {
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
-    val currentShape = remember { mutableStateOf(prefs.themeIconShape.onGetValue()) }
+    val currentShape = remember { mutableStateOf(prefs.themeIconShapeX.onGetValue()) }
     ViewWithActionBar(title = stringResource(id = R.string.title_theme_customize_icons)) { paddingValues ->
         val systemShape = IconShapeManager.getSystemIconShape(context)
         val iconShapes = arrayListOf(
@@ -92,10 +92,9 @@ fun IconShapePage() {
                     key = { _: Int, item: ShapeModel -> item.shapeName }) { _, item ->
                     IconShapeItem(
                         item = item,
-                        checked = (currentShape.value.toString() == item.shapeName),
+                        checked = (currentShape.value == item.shapeName),
                         onClick = {
-                            currentShape.value =
-                                IconShape.fromString(item.shapeName) ?: IconShape.Circle
+                            currentShape.value = item.shapeName
                         }
                     )
                 }
@@ -139,7 +138,7 @@ fun IconShapePage() {
 
     DisposableEffect(key1 = null) {
         onDispose {
-            prefs.themeIconShape.onSetValue(currentShape.value)
+            prefs.themeIconShapeX.onSetValue(currentShape.value)
         }
     }
 }

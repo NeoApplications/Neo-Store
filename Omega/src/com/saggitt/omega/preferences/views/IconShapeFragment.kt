@@ -100,7 +100,7 @@ class IconShapeFragment : Fragment() {
                     items = iconShapes.map {
                         ShapeModel(
                             it.toString(),
-                            Utilities.getOmegaPrefs(context).themeIconShape.onGetValue() == it
+                            Utilities.getOmegaPrefs(context).themeIconShapeX.onGetValue() == it.toString()
                         )
                     },
                     span = { _, _ -> GridItemSpan(1) },
@@ -109,7 +109,7 @@ class IconShapeFragment : Fragment() {
                         item = item,
                         checked = item.isSelected,
                         onClick = {
-                            prefs.themeIconShape.onSetValue(IconShape.fromString(item.shapeName)!!)
+                            prefs.themeIconShapeX.onSetValue(item.shapeName)
                             this@IconShapeFragment.recreate()
                         }
                     )

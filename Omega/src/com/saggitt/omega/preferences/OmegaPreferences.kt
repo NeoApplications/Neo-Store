@@ -109,7 +109,6 @@ import com.saggitt.omega.PREFS_GESTURE_SWIPE_UP_DOCK
 import com.saggitt.omega.PREFS_HIDDEN_SET
 import com.saggitt.omega.PREFS_ICON_PACK
 import com.saggitt.omega.PREFS_ICON_SHAPE
-import com.saggitt.omega.PREFS_ICON_SHAPE_X
 import com.saggitt.omega.PREFS_KEEP_SCROLL_STATE
 import com.saggitt.omega.PREFS_KILL
 import com.saggitt.omega.PREFS_LANGUAGE
@@ -198,22 +197,11 @@ import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.Temperature
 import com.saggitt.omega.util.feedProviders
 import com.saggitt.omega.util.languageOptions
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 class OmegaPreferences(val context: Context) : BasePreferences(context) {
-
-    private val onIconShapeChanged = {
-        initializeIconShape()
-        com.android.launcher3.graphics.IconShape.init(context)
-        LauncherAppState.getInstance(context).reloadIcons()
-    }
-
-    fun initializeIconShape() {
-        val shape = themeIconShape.onGetValue()
-        CustomAdaptiveIconDrawable.sInitialized = true
-        CustomAdaptiveIconDrawable.sMaskId = shape.getHashString()
-        CustomAdaptiveIconDrawable.sMask = shape.getMaskPath()
-    }
 
     // DESKTOP
     var desktopGridSizeDelegate = ResettableLazy {
@@ -728,24 +716,19 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         },
         onChange = updateBlur
     )
-    var themeIconPackGlobal = StringSelectionPref(
-        key = PREFS_ICON_PACK,
-        titleId = R.string.title_theme_icon_packs,
-        defaultValue = "",
-        entries = IconPackProvider.INSTANCE.get(context)
-            .getIconPackList()
-            .associateBy(IconPackInfo::packageName, IconPackInfo::name),
-        onChange = reloadIcons
-    )
-
     var themeIconShapeX = StringPref(
-        key = PREFS_ICON_SHAPE_X,
+        key = PREFS_ICON_SHAPE,
         titleId = R.string.title__theme_icon_shape,
+        defaultValue = IconShape.Circle.toString(),
         navRoute = Routes.ICON_SHAPE,
-        onChange = doNothing
+        onChange = {
+            initializeIconShape()
+            com.android.launcher3.graphics.IconShape.init(context)
+            LauncherAppState.getInstance(context).reloadIcons()
+        }
     )
 
-    var themeIconShape = StringBasedPref(
+    /*var themeIconShape = StringBasedPref(
         key = PREFS_ICON_SHAPE,
         titleId = R.string.title__theme_icon_shape,
         defaultValue = IconShape.Circle,
@@ -755,7 +738,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         },
         toString = IconShape::toString,
         dispose = { /* no dispose */ }
-    )
+    )*/
 
     var themeIconColoredBackground = BooleanPref(
         key = PREFS_COLORED_BACKGROUND,
@@ -1220,6 +1203,54 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         body(this)
         endBlockingEdit()
     }
+
+    private val systemShape = IconShapeManager.getSystemIconShape(context)
+    private val iconShapes = arrayOf(
+        systemShape,
+        IconShape.Circle,
+        IconShape.Square,
+        IconShape.RoundedSquare,
+        IconShape.Squircle,
+        IconShape.Sammy,
+        IconShape.Teardrop,
+        IconShape.Cylinder,
+        IconShape.Cupertino
+    )
+    private val scope = MainScope()
+
+    init {
+        initializeIconShape(IconShape.fromString(themeIconShapeX.onGetValue()))
+        scope.launch {
+            iconShapes.onEach {
+                initializeIconShape(it)
+                com.android.launcher3.graphics.IconShape.init(context)
+                LauncherAppState.getInstance(context).reloadIcons()
+            }
+        }
+    }
+
+    private fun initializeIconShape(shape: IconShape?) {
+        CustomAdaptiveIconDrawable.sInitialized = true
+        CustomAdaptiveIconDrawable.sMaskId = shape?.getHashString()
+        CustomAdaptiveIconDrawable.sMask = shape?.getMaskPath()
+    }
+
+    private fun initializeIconShape() {
+        val shape = IconShape.fromString(themeIconShapeX.onGetValue())
+        CustomAdaptiveIconDrawable.sInitialized = true
+        CustomAdaptiveIconDrawable.sMaskId = shape?.getHashString()
+        CustomAdaptiveIconDrawable.sMask = shape?.getMaskPath()
+    }
+
+    var themeIconPackGlobal = StringSelectionPref(
+        key = PREFS_ICON_PACK,
+        titleId = R.string.title_theme_icon_packs,
+        defaultValue = "",
+        entries = IconPackProvider.INSTANCE.get(context)
+            .getIconPackList()
+            .associateBy(IconPackInfo::packageName, IconPackInfo::name),
+        onChange = reloadIcons
+    )
 
     companion object {
         private val INSTANCE = MainThreadInitializedObject(::OmegaPreferences)
