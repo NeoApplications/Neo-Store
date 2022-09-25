@@ -213,10 +213,10 @@ object Preferences {
         )
 
         object SortOrderAscendingExplore :
-            Key<Boolean>("sort_order_ascending_explore", Value.BooleanValue(true))
+            Key<Boolean>("sort_order_ascending_explore", Value.BooleanValue(false))
 
         object SortOrderAscendingLatest :
-            Key<Boolean>("sort_order_ascending_latest", Value.BooleanValue(true))
+            Key<Boolean>("sort_order_ascending_latest", Value.BooleanValue(false))
 
         object SortOrderAscendingInstalled :
             Key<Boolean>("sort_order_ascending_installed", Value.BooleanValue(true))
