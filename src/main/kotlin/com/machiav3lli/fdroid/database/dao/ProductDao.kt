@@ -81,7 +81,10 @@ interface ProductDao : BaseDao<Product> {
             updates = request.updates,
             searchQuery = request.searchQuery,
             section = request.section,
+            filteredOutRepos = request.filteredOutRepos,
+            filteredOutCategories = request.filteredOutCategories,
             order = request.order,
+            ascending = request.ascending,
             numberOfItems = request.numberOfItems,
             updateCategory = request.updateCategory
         )
@@ -90,7 +93,9 @@ interface ProductDao : BaseDao<Product> {
     @Transaction
     fun queryObject(
         installed: Boolean, updates: Boolean, searchQuery: String,
-        section: Section, order: Order, numberOfItems: Int = 0,
+        section: Section, filteredOutRepos: Set<String> = emptySet(),
+        filteredOutCategories: Set<String> = emptySet(), order: Order,
+        ascending: Boolean, numberOfItems: Int = 0,
         updateCategory: UpdateCategory = UpdateCategory.ALL
     ): List<Product> = queryObject(
         buildProductQuery(
@@ -98,7 +103,10 @@ interface ProductDao : BaseDao<Product> {
             updates = updates,
             searchQuery = searchQuery,
             section = section,
+            filteredOutRepos = filteredOutRepos,
+            filteredOutCategories = filteredOutCategories,
             order = order,
+            ascending = ascending,
             numberOfItems = numberOfItems,
             updateCategory = updateCategory
         )
@@ -113,7 +121,10 @@ interface ProductDao : BaseDao<Product> {
             updates = request.updates,
             searchQuery = request.searchQuery,
             section = request.section,
+            filteredOutRepos = request.filteredOutRepos,
+            filteredOutCategories = request.filteredOutCategories,
             order = request.order,
+            ascending = request.ascending,
             numberOfItems = request.numberOfItems,
             updateCategory = request.updateCategory
         )

@@ -19,6 +19,7 @@ import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.content.Preferences
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -168,14 +169,17 @@ sealed class Request {
     internal abstract val installed: Boolean
     internal abstract val updates: Boolean
     internal abstract val searchQuery: String
+    internal abstract val filteredOutRepos: Set<String>
+    internal abstract val filteredOutCategories: Set<String>
     internal abstract val section: Section
     internal abstract val order: Order
+    internal abstract val ascending: Boolean
     internal abstract val updateCategory: UpdateCategory
     internal open val numberOfItems: Int = 0
 
     data class ProductsAll(
-        override val searchQuery: String, override val section: Section,
-        override val order: Order,
+        override val searchQuery: String,
+        override val section: Section,
     ) : Request() {
         override val id: Int
             get() = 1
@@ -185,11 +189,19 @@ sealed class Request {
             get() = false
         override val updateCategory: UpdateCategory
             get() = UpdateCategory.ALL
+        override val order: Order
+            get() = Preferences[Preferences.Key.SortOrderExplore].order
+        override val filteredOutRepos: Set<String>
+            get() = Preferences[Preferences.Key.ReposFilterExplore]
+        override val filteredOutCategories: Set<String>
+            get() = Preferences[Preferences.Key.CategoriesFilterExplore]
+        override val ascending: Boolean
+            get() = Preferences[Preferences.Key.SortOrderAscendingExplore]
     }
 
     data class ProductsInstalled(
-        override val searchQuery: String, override val section: Section,
-        override val order: Order,
+        override val searchQuery: String,
+        override val section: Section,
     ) : Request() {
         override val id: Int
             get() = 2
@@ -199,11 +211,19 @@ sealed class Request {
             get() = false
         override val updateCategory: UpdateCategory
             get() = UpdateCategory.ALL
+        override val order: Order
+            get() = Preferences[Preferences.Key.SortOrderInstalled].order
+        override val filteredOutRepos: Set<String>
+            get() = Preferences[Preferences.Key.ReposFilterInstalled]
+        override val filteredOutCategories: Set<String>
+            get() = Preferences[Preferences.Key.CategoriesFilterInstalled]
+        override val ascending: Boolean
+            get() = Preferences[Preferences.Key.SortOrderAscendingInstalled]
     }
 
     data class ProductsUpdates(
-        override val searchQuery: String, override val section: Section,
-        override val order: Order,
+        override val searchQuery: String,
+        override val section: Section,
     ) : Request() {
         override val id: Int
             get() = 3
@@ -213,11 +233,18 @@ sealed class Request {
             get() = true
         override val updateCategory: UpdateCategory
             get() = UpdateCategory.ALL
+        override val filteredOutRepos: Set<String>
+            get() = emptySet()
+        override val filteredOutCategories: Set<String>
+            get() = emptySet()
+        override val order: Order
+            get() = Order.NAME
+        override val ascending: Boolean
+            get() = true
     }
 
     data class ProductsUpdated(
         override val searchQuery: String, override val section: Section,
-        override val order: Order, override val numberOfItems: Int,
     ) : Request() {
         override val id: Int
             get() = 4
@@ -227,11 +254,21 @@ sealed class Request {
             get() = false
         override val updateCategory: UpdateCategory
             get() = UpdateCategory.UPDATED
+        override val filteredOutRepos: Set<String>
+            get() = Preferences[Preferences.Key.ReposFilterLatest]
+        override val filteredOutCategories: Set<String>
+            get() = Preferences[Preferences.Key.CategoriesFilterLatest]
+        override val order: Order
+            get() = Preferences[Preferences.Key.SortOrderLatest].order
+        override val ascending: Boolean
+            get() = Preferences[Preferences.Key.SortOrderAscendingLatest]
+        override val numberOfItems: Int
+            get() = Preferences[Preferences.Key.UpdatedApps]
     }
 
     data class ProductsNew(
-        override val searchQuery: String, override val section: Section,
-        override val order: Order, override val numberOfItems: Int,
+        override val searchQuery: String,
+        override val section: Section,
     ) : Request() {
         override val id: Int
             get() = 5
@@ -241,6 +278,16 @@ sealed class Request {
             get() = false
         override val updateCategory: UpdateCategory
             get() = UpdateCategory.NEW
+        override val filteredOutRepos: Set<String>
+            get() = emptySet()
+        override val filteredOutCategories: Set<String>
+            get() = emptySet()
+        override val order: Order
+            get() = Order.DATE_ADDED
+        override val ascending: Boolean
+            get() = false
+        override val numberOfItems: Int
+            get() = Preferences[Preferences.Key.NewApps]
     }
 }
 

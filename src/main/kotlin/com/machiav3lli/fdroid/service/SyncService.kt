@@ -384,7 +384,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                     updates = true,
                                     searchQuery = "",
                                     section = Section.All,
-                                    order = Order.NAME
+                                    order = Order.NAME,
+                                    ascending = true,
                                 ).map { it.toItem() }
                         }
                         .subscribeOn(Schedulers.io())

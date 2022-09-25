@@ -48,7 +48,8 @@ class PackageChangedReceiver : BroadcastReceiver() {
                                     updates = true,
                                     searchQuery = "",
                                     section = Section.All,
-                                    order = Order.NAME
+                                    order = Order.NAME,
+                                    ascending = true,
                                 ).map { it.toItem() }
                         )
                     }
