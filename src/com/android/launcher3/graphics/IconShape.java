@@ -507,7 +507,8 @@ public abstract class IconShape {
         private final com.saggitt.omega.icons.IconShape mIconShape;
 
         public AdaptiveIconShape(Context context) {
-            mIconShape = com.saggitt.omega.icons.IconShape.Companion.fromString(Utilities.getOmegaPrefs(context).getThemeIconShapeX().onGetValue());
+            mIconShape = com.saggitt.omega.icons.IconShape.Companion
+                    .fromString(Utilities.getOmegaPrefs(context).getThemeIconShapeX().onGetValue());
             mAttrs = new SparseArray<>();
             int qsbEdgeRadius = mIconShape.getQsbEdgeRadius();
             if (qsbEdgeRadius != 0) {

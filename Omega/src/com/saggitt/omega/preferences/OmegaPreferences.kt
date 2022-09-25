@@ -176,7 +176,6 @@ import com.saggitt.omega.iconpack.IconPackInfo
 import com.saggitt.omega.iconpack.IconPackProvider
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
 import com.saggitt.omega.icons.IconShape
-import com.saggitt.omega.icons.IconShapeManager
 import com.saggitt.omega.preferences.custom.GridSize
 import com.saggitt.omega.preferences.custom.GridSize2D
 import com.saggitt.omega.preferences.views.PrefsGesturesFragment.Companion.NOTIFICATION_ENABLED_LISTENERS
@@ -197,8 +196,6 @@ import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.Temperature
 import com.saggitt.omega.util.feedProviders
 import com.saggitt.omega.util.languageOptions
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 class OmegaPreferences(val context: Context) : BasePreferences(context) {
@@ -1204,35 +1201,8 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         endBlockingEdit()
     }
 
-    private val systemShape = IconShapeManager.getSystemIconShape(context)
-    private val iconShapes = arrayOf(
-        systemShape,
-        IconShape.Circle,
-        IconShape.Square,
-        IconShape.RoundedSquare,
-        IconShape.Squircle,
-        IconShape.Sammy,
-        IconShape.Teardrop,
-        IconShape.Cylinder,
-        IconShape.Cupertino
-    )
-    private val scope = MainScope()
-
     init {
-        initializeIconShape(IconShape.fromString(themeIconShapeX.onGetValue()))
-        scope.launch {
-            iconShapes.onEach {
-                initializeIconShape(it)
-                com.android.launcher3.graphics.IconShape.init(context)
-                LauncherAppState.getInstance(context).reloadIcons()
-            }
-        }
-    }
-
-    private fun initializeIconShape(shape: IconShape?) {
-        CustomAdaptiveIconDrawable.sInitialized = true
-        CustomAdaptiveIconDrawable.sMaskId = shape?.getHashString()
-        CustomAdaptiveIconDrawable.sMask = shape?.getMaskPath()
+        initializeIconShape()
     }
 
     private fun initializeIconShape() {
