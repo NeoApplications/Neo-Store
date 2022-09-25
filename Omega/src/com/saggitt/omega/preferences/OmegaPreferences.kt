@@ -463,7 +463,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     var dockOpacity = AlphaPref(
         key = PREFS_DOCK_OPACITY,
         titleId = R.string.title_opacity,
-        defaultValue = 0f,
+        defaultValue = 0.9f,
         onChange = recreate
     )
 
