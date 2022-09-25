@@ -124,6 +124,8 @@ interface ProductDao : BaseDao<Product> {
         updates: Boolean,
         searchQuery: String,
         section: Section,
+        filteredOutRepos: Set<String> = emptySet(),
+        filteredOutCategories: Set<String> = emptySet(),
         order: Order,
         ascending: Boolean = false,
         numberOfItems: Int = 0,
@@ -178,13 +180,21 @@ interface ProductDao : BaseDao<Product> {
         ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_INSTALLED.$ROW_PACKAGE_NAME"""
 
         // Merge the matching category
-        if (section is Section.Category) {
-            builder += """JOIN $TABLE_CATEGORY_NAME AS $TABLE_CATEGORY
-          ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_CATEGORY.$ROW_PACKAGE_NAME"""
-        }
+        builder += """JOIN $TABLE_CATEGORY_NAME AS $TABLE_CATEGORY
+        ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_CATEGORY.$ROW_PACKAGE_NAME"""
 
         // Filter only active repositories
         builder += """WHERE $TABLE_REPOSITORY.$ROW_ENABLED != 0"""
+
+        // Filter out repositories
+        if (filteredOutRepos.isNotEmpty()) {
+            builder += "AND $TABLE_PRODUCT.$ROW_REPOSITORY_ID NOT IN(${filteredOutRepos.joinToString { "'$it'" }})"
+        }
+
+        // Filter out categories
+        if (filteredOutCategories.isNotEmpty()) {
+            builder += "AND $TABLE_CATEGORY.$ROW_LABEL NOT IN(${filteredOutCategories.joinToString { "'$it'" }})"
+        }
 
         // Filter only the selected repository/category
         if (section is Section.Category) {
