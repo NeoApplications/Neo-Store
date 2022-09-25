@@ -446,4 +446,16 @@
     <string name="app_name">应用名称</string>
     <string name="tab_launcher">启动器</string>
     <string name="tab_shortcuts">快捷方式</string>
+    <string name="summary_fuzzy_search">应用搜索的近似匹配。</string>
+    <string name="title__feed">订阅</string>
+    <string name="title_dock_search">快捷启动搜索栏</string>
+    <string name="protected_apps">受保护的应用程序</string>
+    <string name="protected_app_selected">受保护的应用程序 (%1$d)</string>
+    <string name="cat_dock_search">快捷启动栏和船坞</string>
+    <string name="title__general_gestures_dash">手势和短跑</string>
+    <string name="title__general_search_feed">搜索和订阅源</string>
+    <string name="title__general_widgets_notifications">小部件和通知</string>
+    <string name="title__general_profile">用户文件</string>
+    <string name="pref_category__dash">快速启动栏</string>
+    <string name="title__drawer_rows">行数</string>
 </resources>
