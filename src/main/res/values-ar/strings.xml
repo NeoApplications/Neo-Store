@@ -226,4 +226,8 @@
     <string name="sort_ascending">تصاعدي</string>
     <string name="categories">الفئات</string>
     <string name="sort_descending">تنازلي</string>
+    <string name="action_apply">تطبيق</string>
+    <string name="action_reset">اعاده تعيين</string>
+    <string name="date_added">تاريخ الإضافة</string>
+    <string name="date_updated">تاريخ التحديث</string>
 </resources>
