@@ -23,10 +23,47 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.ComponentState
+
+@Composable
+fun ActionButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    positive: Boolean = true,
+    icon: Painter? = null,
+    enabled: Boolean = true,
+    onClick: () -> Unit
+) {
+    ElevatedButton(
+        modifier = modifier,
+        colors = ButtonDefaults.elevatedButtonColors(
+            contentColor = when {
+                positive -> MaterialTheme.colorScheme.onPrimaryContainer
+                else -> MaterialTheme.colorScheme.onTertiaryContainer
+            },
+            containerColor = when {
+                positive -> MaterialTheme.colorScheme.primaryContainer
+                else -> MaterialTheme.colorScheme.tertiaryContainer
+            }
+        ),
+        enabled = enabled,
+        onClick = onClick
+    ) {
+        Row(
+            Modifier.padding(ButtonDefaults.ContentPadding),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if (icon != null) Icon(painter = icon, contentDescription = null)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = text)
+        }
+    }
+}
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -43,12 +80,12 @@ fun MainActionButton(
         },
         colors = ButtonDefaults.elevatedButtonColors(
             containerColor = when (actionState) {
-                is ActionState.Cancel -> MaterialTheme.colorScheme.secondaryContainer
+                is ActionState.Cancel -> MaterialTheme.colorScheme.tertiaryContainer
                 is ActionState.NoAction -> MaterialTheme.colorScheme.inverseSurface
                 else -> MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
             },
             contentColor = when (actionState) {
-                is ActionState.Cancel -> MaterialTheme.colorScheme.secondary
+                is ActionState.Cancel -> MaterialTheme.colorScheme.onTertiaryContainer
                 is ActionState.NoAction -> MaterialTheme.colorScheme.inverseOnSurface
                 else -> MaterialTheme.colorScheme.primary
             },
