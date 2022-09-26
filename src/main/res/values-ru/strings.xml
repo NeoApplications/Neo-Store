@@ -185,7 +185,7 @@
     <string name="sort_filter">Сортировка и фильтрация</string>
     <string name="only_on_wifi_and_battery">Только при Wi-Fi и подключении к сети</string>
     <string name="install_after_sync">Автообновление</string>
-    <string name="install_after_sync_summary">Устанавливайте все новые версии после проверки репозиториев на наличие новых приложений.</string>
+    <string name="install_after_sync_summary">Устанавливать все новые версии после проверки репозиториев на наличие новых приложений.</string>
     <string name="prefs_updated_apps">Количество приложений для отображения в \"Недавно обновлённые\"</string>
     <string name="prefs_new_apps">Количество приложений для отображения в \"Новые приложения\"</string>
     <string name="new_repository">Новый репозиторий</string>
@@ -225,4 +225,8 @@
     <string name="sort_ascending">По возрастанию</string>
     <string name="categories">Категории</string>
     <string name="sort_descending">По убыванию</string>
+    <string name="action_apply">Применить</string>
+    <string name="date_updated">Дата обновления</string>
+    <string name="action_reset">Сброс</string>
+    <string name="date_added">Дата добавления</string>
 </resources>
