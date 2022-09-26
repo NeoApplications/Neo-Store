@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -37,6 +41,7 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.index.RepositoryUpdater.db
+import com.machiav3lli.fdroid.ui.compose.components.ActionButton
 import com.machiav3lli.fdroid.ui.compose.components.ChipsSwitch
 import com.machiav3lli.fdroid.ui.compose.components.SelectChip
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
@@ -111,7 +116,53 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
             else -> Preferences.Key.CategoriesFilterExplore // NavItem.Explore
         }
 
-        Scaffold() { paddingValues ->
+        var sortOption by remember(Preferences[sortKey]) {
+            mutableStateOf(Preferences[sortKey])
+        }
+        var sortAscending by remember(Preferences[sortAscendingKey]) {
+            mutableStateOf(Preferences[sortAscendingKey])
+        }
+        val filteredOutRepos by remember(Preferences[reposFilterKey]) {
+            mutableStateOf(Preferences[reposFilterKey].toMutableSet())
+        }
+        val filteredOutCategories by remember(Preferences[categoriesFilterKey]) {
+            mutableStateOf(Preferences[categoriesFilterKey].toMutableSet())
+        }
+
+        Scaffold(
+            bottomBar = {
+                Row(
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.surface)
+                        .fillMaxWidth()
+                        .padding(12.dp)
+                        .wrapContentHeight(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    ActionButton(
+                        modifier = Modifier.weight(1f),
+                        text = stringResource(id = R.string.action_reset),
+                        icon = painterResource(id = R.drawable.ic_delete),
+                        positive = false,
+                        onClick = ::dismissAllowingStateLoss
+                    )
+                    ActionButton(
+                        text = stringResource(id = R.string.action_apply),
+                        icon = painterResource(id = R.drawable.ic_check),
+                        modifier = Modifier.weight(1f),
+                        positive = true,
+                        onClick = {
+                            // TODO save prefs
+                            Preferences[sortKey] = sortOption
+                            Preferences[sortAscendingKey] = sortAscending
+                            Preferences[reposFilterKey] = filteredOutRepos
+                            Preferences[categoriesFilterKey] = filteredOutCategories
+                            dismissAllowingStateLoss()
+                        }
+                    )
+                }
+            }
+        ) { paddingValues ->
             LazyColumn(
                 modifier = Modifier
                     .padding(paddingValues)
@@ -133,24 +184,15 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                         crossAxisSpacing = 4.dp,
                         mainAxisAlignment = MainAxisAlignment.Center,
                     ) {
-                        var selected by remember {
-                            mutableStateOf(
-                                Preferences[sortKey]
-                            )
-                        }
 
                         sortKey.default.value.values.forEach {
                             SelectChip(
                                 text = stringResource(id = it.order.titleResId),
-                                checked = it == selected
+                                checked = it == sortOption
                             ) {
-                                Preferences[sortKey] = it
-                                selected = it
+                                sortOption = it
                             }
                         }
-                    }
-                    var ascending by remember {
-                        mutableStateOf(Preferences[sortAscendingKey])
                     }
 
                     ChipsSwitch(
@@ -158,10 +200,9 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                         firstIconId = R.drawable.ic_arrow_up,
                         secondTextId = R.string.sort_descending,
                         secondIconId = R.drawable.ic_arrow_down,
-                        firstSelected = ascending,
+                        firstSelected = sortAscending,
                         onCheckedChange = { checked ->
-                            ascending = checked
-                            Preferences[sortAscendingKey] = checked
+                            sortAscending = checked
                         }
                     )
                 }
@@ -181,8 +222,7 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                         activeRepos.forEach {
                             var checked by remember {
                                 mutableStateOf(
-                                    !Preferences[reposFilterKey]
-                                        .contains(it.id.toString())
+                                    !filteredOutRepos.contains(it.id.toString())
                                 )
                             }
 
@@ -192,13 +232,9 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                             ) {
                                 checked = !checked
                                 if (checked)
-                                    Preferences[reposFilterKey] =
-                                        Preferences[reposFilterKey]
-                                            .minus(it.id.toString())
+                                    filteredOutRepos.remove(it.id.toString())
                                 else
-                                    Preferences[reposFilterKey] =
-                                        Preferences[reposFilterKey]
-                                            .plus(it.id.toString())
+                                    filteredOutRepos.add(it.id.toString())
                             }
                         }
                     }
@@ -219,7 +255,7 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                         categories.sorted().forEach {
                             var checked by remember {
                                 mutableStateOf(
-                                    !Preferences[categoriesFilterKey].contains(it)
+                                    !filteredOutCategories.contains(it)
                                 )
                             }
 
@@ -229,13 +265,9 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                             ) {
                                 checked = !checked
                                 if (checked)
-                                    Preferences[categoriesFilterKey] =
-                                        Preferences[categoriesFilterKey]
-                                            .minus(it)
+                                    filteredOutCategories.remove(it)
                                 else
-                                    Preferences[categoriesFilterKey] =
-                                        Preferences[categoriesFilterKey]
-                                            .plus(it)
+                                    filteredOutCategories.add(it)
                             }
                         }
                     }

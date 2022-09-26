@@ -222,4 +222,6 @@
     <string name="categories">Categories</string>
     <string name="sort_ascending">Ascending</string>
     <string name="sort_descending">Descending</string>
+    <string name="action_apply">Apply</string>
+    <string name="action_reset">Reset</string>
 </resources>
