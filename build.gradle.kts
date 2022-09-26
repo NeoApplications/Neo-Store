@@ -1,10 +1,10 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val composeVersion = "1.2.1"
+val composeVersion = "1.3.0-beta03"
 val composeCompilerVersion = "1.3.1"
 val roomVersion = "2.4.3"
 val navigationVersion = "2.5.2"
-val accompanistVersion = "0.26.3-beta"
+val accompanistVersion = "0.26.4-beta"
 
 plugins {
     id("com.android.application") version ("7.2.2")
@@ -126,7 +126,7 @@ dependencies {
 
     // Core
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10")
-    implementation("com.google.devtools.ksp:symbol-processing-api:1.7.10-1.0.6")
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.7.20-RC-1.0.6")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.0-rc01")
     implementation("androidx.fragment:fragment-ktx:1.6.0-alpha02")
@@ -160,7 +160,7 @@ dependencies {
 
     // Markdown
     implementation("org.jetbrains:markdown:0.3.1")
-    implementation("de.charlex.compose:html-text:1.3.0")
+    implementation("de.charlex.compose:html-text:1.3.1")
 
     // Coroutines / Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
