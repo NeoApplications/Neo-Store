@@ -5,13 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Repository
-import com.machiav3lli.fdroid.entity.Order
 import com.machiav3lli.fdroid.entity.Request
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.Source
@@ -27,7 +25,7 @@ class MainNavFragmentViewModelX(
 ) : ViewModel() {
     // TODO add better sort/filter fields
 
-    var order: MutableLiveData<Order> = MutableLiveData(Order.LAST_UPDATE)
+    var updatedFilter: MutableLiveData<Boolean> = MutableLiveData(false)
         private set
     var sections: MutableLiveData<Section> = MutableLiveData(Section.All)
         private set
@@ -37,37 +35,28 @@ class MainNavFragmentViewModelX(
     fun request(source: Source): Request {
         var mSearchQuery = ""
         var mSections: Section = Section.All
-        var mOrder: Order = Order.NAME
         sections.value?.let { if (source.sections) mSections = it }
-        order.value?.let { if (source.order) mOrder = it }
         searchQuery.value?.let { mSearchQuery = it }
         return when (source) {
             Source.AVAILABLE -> Request.ProductsAll(
                 mSearchQuery,
-                mSections,
-                mOrder
+                mSections
             )
             Source.INSTALLED -> Request.ProductsInstalled(
                 mSearchQuery,
-                mSections,
-                mOrder
+                mSections
             )
             Source.UPDATES -> Request.ProductsUpdates(
                 mSearchQuery,
                 mSections,
-                mOrder
             )
             Source.UPDATED -> Request.ProductsUpdated(
                 mSearchQuery,
                 mSections,
-                Order.LAST_UPDATE,
-                Preferences[Preferences.Key.UpdatedApps]
             )
             Source.NEW -> Request.ProductsNew(
                 mSearchQuery,
                 mSections,
-                Order.DATE_ADDED,
-                Preferences[Preferences.Key.NewApps]
             )
         }
     }
@@ -93,11 +82,18 @@ class MainNavFragmentViewModelX(
         )
         repositories.addSource(db.repositoryDao.allLive, repositories::setValue)
         categories.addSource(db.categoryDao.allNamesLive, categories::setValue)
-        listOf(sections, order, searchQuery).forEach {
+        listOf(sections, searchQuery).forEach {
             primaryRequest.addSource(it) {
                 val newRequest = request(primarySource)
                 if (primaryRequest.value != newRequest)
                     primaryRequest.value = newRequest
+            }
+        }
+        primaryRequest.addSource(updatedFilter) {
+            if (it) {
+                val newRequest = request(primarySource)
+                primaryRequest.value = newRequest
+                updatedFilter.postValue(false)
             }
         }
         primaryProducts.addSource(primaryRequest) { request ->
