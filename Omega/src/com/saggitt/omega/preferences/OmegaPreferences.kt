@@ -1201,6 +1201,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         endBlockingEdit()
     }
 
+    var firstRun = BooleanPref(
+        key = "pref_first_run",
+        titleId = R.string.app_name,
+        defaultValue = true,
+        onChange = doNothing
+    )
+
     init {
         initializeIconShape()
     }

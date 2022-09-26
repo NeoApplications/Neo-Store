@@ -222,6 +222,16 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
         prefs.registerCallback(prefCallback)
         prefs.addOnPreferenceChangeListener(PREFS_STATUSBAR_HIDE, this)
 
+        //Set Initial value for idp columns and rows
+        if (prefs.firstRun.onGetValue()) {
+            val idp = LauncherAppState.getIDP(this)
+            prefs.drawerColumns.onSetValue(idp.numAllAppsColumns)
+            prefs.desktopColumns.onSetValue(idp.numColumns)
+            prefs.desktopRows.onSetValue(idp.numRows)
+            prefs.dockNumIcons.onSetValue(idp.numHotseatIcons)
+            prefs.firstRun.onSetValue(false)
+        }
+
         mOverlayManager = defaultOverlay
         showFolderNotificationCount = prefs.notificationCountFolder.onGetValue()
         if (prefs.themeCornerRadius.onGetValue() > -1) {
