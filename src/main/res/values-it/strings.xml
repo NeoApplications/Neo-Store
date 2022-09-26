@@ -225,4 +225,8 @@
     <string name="categories">Categorie</string>
     <string name="sort_descending">Discendente</string>
     <string name="sort_ascending">Ascendente</string>
+    <string name="date_updated">Data aggiornata</string>
+    <string name="action_apply">Applica</string>
+    <string name="action_reset">Reset</string>
+    <string name="date_added">Data aggiunta</string>
 </resources>
