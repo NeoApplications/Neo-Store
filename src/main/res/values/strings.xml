@@ -224,4 +224,6 @@
     <string name="sort_descending">Descending</string>
     <string name="action_apply">Apply</string>
     <string name="action_reset">Reset</string>
+    <string name="date_added">Date added</string>
+    <string name="date_updated">Date updated</string>
 </resources>
