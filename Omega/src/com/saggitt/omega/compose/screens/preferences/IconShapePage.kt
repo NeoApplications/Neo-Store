@@ -66,7 +66,8 @@ fun IconShapePage() {
             IconShape.Sammy,
             IconShape.Teardrop,
             IconShape.Cylinder,
-            IconShape.Cupertino
+            IconShape.Cupertino,
+            IconShape.Octagon
         )
         val listItems = iconShapes.map { ShapeModel(it.toString(), false) }
 

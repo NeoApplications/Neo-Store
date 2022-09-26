@@ -310,6 +310,19 @@ open class IconShape( // TODO migrate to Compose?
         }
     }
 
+    object Octagon : IconShape(
+        IconCornerShape.cut,
+        IconCornerShape.cut,
+        IconCornerShape.cut,
+        IconCornerShape.cut,
+        .5f, .5f, .5f, .5f
+    ) {
+
+        override fun toString(): String {
+            return "octagon"
+        }
+    }
+
     companion object {
 
         fun fromString(value: String): IconShape? {
@@ -327,6 +340,7 @@ open class IconShape( // TODO migrate to Compose?
                 "teardrop" -> Teardrop
                 "cylinder" -> Cylinder
                 "cupertino" -> Cupertino
+                "octagon" -> Octagon
                 else -> try {
                     parseCustomShape(value)
                 } catch (ex: Exception) {

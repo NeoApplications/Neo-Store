@@ -34,6 +34,7 @@ class ShapeModel(val shapeName: String, var isSelected: Boolean) {
             "teardrop" -> AppCompatResources.getDrawable(context, R.drawable.shape_teardrop)
             "cylinder" -> AppCompatResources.getDrawable(context, R.drawable.shape_cylinder)
             "cupertino" -> AppCompatResources.getDrawable(context, R.drawable.shape_cupertino)
+            "octagon" -> AppCompatResources.getDrawable(context, R.drawable.shape_octagon)
             else -> AppCompatResources.getDrawable(context, R.drawable.ic_style)
         }
     }
