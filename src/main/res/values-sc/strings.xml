@@ -222,4 +222,8 @@
     <string name="categories">Categorias</string>
     <string name="sort_ascending">In artziada</string>
     <string name="sort_descending">In achirrada</string>
+    <string name="action_apply">Àplica</string>
+    <string name="action_reset">Reseta</string>
+    <string name="date_updated">Data de atualizatzione</string>
+    <string name="date_added">Data de annanta</string>
 </resources>
