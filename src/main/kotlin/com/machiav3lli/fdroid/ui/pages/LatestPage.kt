@@ -1,4 +1,4 @@
-    package com.machiav3lli.fdroid.ui.pages
+package com.machiav3lli.fdroid.ui.pages
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -62,6 +62,18 @@ fun LatestPage(viewModel: MainNavFragmentViewModelX) {
                     viewModel.searchQuery.postValue(newQuery)
             }
         }
+        CoroutineScope(Dispatchers.Default).launch {
+            Preferences.subject.collect {
+                when (it) {
+                    Preferences.Key.ReposFilterLatest,
+                    Preferences.Key.CategoriesFilterLatest,
+                    Preferences.Key.SortOrderLatest,
+                    Preferences.Key.SortOrderAscendingLatest ->
+                        viewModel.updatedFilter.postValue(true)
+                    else -> {}
+                }
+            }
+        }
     }
 
     AppTheme(
@@ -101,7 +113,7 @@ fun LatestPage(viewModel: MainNavFragmentViewModelX) {
                             labelColor = MaterialTheme.colorScheme.onSurface,
                         ),
                         onClick = {
-                                  mainActivityX.navigateSortFilter(NavItem.Latest.destination)
+                            mainActivityX.navigateSortFilter(NavItem.Latest.destination)
                         },
                         icon = {
                             Icon(

@@ -69,6 +69,18 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
                     viewModel.searchQuery.postValue(newQuery)
             }
         }
+        CoroutineScope(Dispatchers.Default).launch {
+            Preferences.subject.collect {
+                when (it) {
+                    Preferences.Key.ReposFilterInstalled,
+                    Preferences.Key.CategoriesFilterInstalled,
+                    Preferences.Key.SortOrderInstalled,
+                    Preferences.Key.SortOrderAscendingInstalled ->
+                        viewModel.updatedFilter.postValue(true)
+                    else -> {}
+                }
+            }
+        }
     }
 
     AppTheme(

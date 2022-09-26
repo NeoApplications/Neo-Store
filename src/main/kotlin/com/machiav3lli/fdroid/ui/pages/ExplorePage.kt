@@ -49,7 +49,6 @@ fun ExplorePage(viewModel: MainNavFragmentViewModelX) {
     val context = LocalContext.current
     val mainActivityX = context as MainActivityX
     val products by viewModel.primaryProducts.observeAsState(null)
-    val categories by viewModel.categories.observeAsState(emptyList())
     val installedList by viewModel.installed.observeAsState(null)
     val repositories by viewModel.repositories.observeAsState(null)
     val repositoriesMap by remember(repositories) {
@@ -62,6 +61,18 @@ fun ExplorePage(viewModel: MainNavFragmentViewModelX) {
             mainActivityX.searchQuery.collect { newQuery ->
                 if (newQuery != viewModel.searchQuery.value)
                     viewModel.searchQuery.postValue(newQuery)
+            }
+        }
+        CoroutineScope(Dispatchers.Default).launch {
+            Preferences.subject.collect {
+                when (it) {
+                    Preferences.Key.ReposFilterExplore,
+                    Preferences.Key.CategoriesFilterExplore,
+                    Preferences.Key.SortOrderExplore,
+                    Preferences.Key.SortOrderAscendingExplore ->
+                        viewModel.updatedFilter.postValue(true)
+                    else -> {}
+                }
             }
         }
     }
