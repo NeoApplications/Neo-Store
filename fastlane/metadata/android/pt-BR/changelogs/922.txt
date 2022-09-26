@@ -1,0 +1,7 @@
+Nota 1: incompatível com backups de versões mais antigas
+ - Rebaseado no lançador do Android 12/L
+ - Adicionar: Smartspace
+ - Adicionar: Edição direta de abas/categorias
+ - Adicionar: opção de pesquisa difusa
+ - Atualização: reformulação do Painel, ícones e interface do usuário
+ Nota 2: recursos perdidos de versões mais antigas podem ser adicionados em versões posteriores

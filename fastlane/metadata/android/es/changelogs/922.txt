@@ -1,0 +1,7 @@
+Nota 1: incompatible con las copias de seguridad de versiones anteriores 
+- Rebase en el lanzador de Android 12/L 
+- Añadir: Smartspace 
+- Añadir: Edición directa de pestañas/categorías 
+- Añadir: Fuzzy opción de búsqueda 
+- Actualizar: Actualizar Dash, iconos & UI 
+Nota 2: las funciones perdidas de versiones anteriores pueden añadirse en versiones posteriores

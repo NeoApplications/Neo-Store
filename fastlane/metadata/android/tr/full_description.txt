@@ -1,0 +1,10 @@
+Neo Launcher, güç kullanıcıları için Aosp'nin başlatıcısının bir çatalıdır. Son derece yapılandırılabilir ve size çok fazla işlevsellik sunar. Bazıları şunlardır:
+- _Çizgi_.
+- Zengin temalar desteği.
+- Özel arama motorları.
+- Jest desteği.
+- Benzersiz bir özel widget.
+- Uygulama çekmecesindeki kategoriler veya klasörler.
+- Simge şekilleri ve paketleri desteği.
+- Uygulamaları gizle.
+Boru hattında her zaman yeni özellikler vardır, bu yüzden bizi izlemeye devam edin…

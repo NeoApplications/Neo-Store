@@ -1,0 +1,7 @@
+Añadir: Deslizar hacia arriba gesto a las carpetas
+Añadir: Configuración de proveedor de alimentación
+Solución: Preferencia de idioma
+Actualización: Aumente el rango de cuadrícula/ columna a 2-16
+Quitar: Google App y Google GO como proveedores de búsqueda
+Quitar: StartAppSearch, StartApp y TimeoutSleep gestos
+Muchas soluciones de emergencia
