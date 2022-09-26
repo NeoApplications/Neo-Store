@@ -218,4 +218,12 @@
     <string name="prefs_cache">Hurtiglager</string>
     <string name="group_telegram">Vår Telegram-gruppe</string>
     <string name="group_matrix">Vår Matrix-gruppe</string>
+    <string name="min_sdk">minSDK</string>
+    <string name="categories">Kategorier</string>
+    <string name="action_apply">Bruk</string>
+    <string name="sort_ascending">Stigende</string>
+    <string name="sort_descending">Syngende</string>
+    <string name="action_reset">Tilbakestill</string>
+    <string name="date_added">Dato tillagt</string>
+    <string name="date_updated">Dato oppdatert</string>
 </resources>
