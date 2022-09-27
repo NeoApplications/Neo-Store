@@ -223,4 +223,8 @@
     <string name="sort_descending">Sestupně</string>
     <string name="sort_ascending">Vzestupně</string>
     <string name="categories">Kategorie</string>
+    <string name="date_added">Datum přidání</string>
+    <string name="action_apply">Použít</string>
+    <string name="action_reset">Obnovit</string>
+    <string name="date_updated">Datum aktualizace</string>
 </resources>
