@@ -28,5 +28,5 @@ Mevcut:
 
 Foxy-Droid'in doğrudan bir uyarlaması/modifikasyonu
 
-Copylefted libre yazılım, lisanslı GPLv3+. \
+Telif müsaadeli özgür yazılım, GPLv3+ lisanslı. \
 Kullanın, inceleyin, değiştirin ve paylaşın; herkesle.
