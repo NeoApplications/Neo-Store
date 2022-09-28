@@ -83,8 +83,9 @@
     <string name="hide_app_reset">Reiniciar aplicaciones ocultas</string>
     <string name="hide_app_selected">Aplicaciones Ocultas (%1$d)</string>
     <plurals name="hidden_apps_count">
-        <item quantity="one">%1$d Ocultas</item>
-        <item quantity="other"/>
+        <item quantity="one">%1$d Oculto</item>
+        <item quantity="many">%1$d Ocultos</item>
+        <item quantity="other">%1$d Ocultos</item>
     </plurals>
     <plurals name="tab_apps_count">
         <item quantity="one">%1$d Aplicación</item>
@@ -100,7 +101,7 @@
     <string name="msg_disable_suggestions_prompt">Los datos de uso serán borrados.</string>
     <string name="title_disable_suggestions_prompt">Apagar sugerencias app</string>
     <string name="summary_all_apps_google_search">Buscar resultados web y aplicaciones</string>
-    <string name="title_all_apps_google_search">Resultados Webs</string>
+    <string name="title_all_apps_google_search">Resultados de la web</string>
     <string name="title__drawer_all_apps">Mostrar la etiqueta All Apps</string>
     <string name="title_disabled">Apagado</string>
     <string name="title__dock_hotseat_icons">Cantidad de Iconos</string>
@@ -222,7 +223,7 @@
     <string name="zen_mode_enabled">No molestar está habilitado.</string>
     <string name="name_provider_alarm_events">Próximas alarmas</string>
     <string name="smartspace_in_time">en %1$s</string>
-    <string name="title_legacy_treatment">Crear iconos adaptativos</string>
+    <string name="title_legacy_treatment">Crear iconos adaptables</string>
     <string name="title_colored_backgrounds">Fondo coloreado</string>
     <string name="title_adaptify_pack">Crear iconos adaptativos para el paquete de iconos</string>
     <string name="reset_custom_icons_confirmation">¿Revertir a iconos predeterminados de este paquete\? Esto no puede ser deshecho.</string>
@@ -261,9 +262,9 @@
     <string name="title_create">Crear</string>
     <string name="backup_pref_summary">Guardar escritorio, Restaurar respaldos</string>
     <string name="backup_share_title">Compartir respaldo</string>
-    <string name="restore_read_meta_fail">Archivo de respaldo no válido</string>
+    <string name="restore_read_meta_fail">Archivo de la copia de seguridad no válido</string>
     <string name="restore_failed">La restauración falló</string>
-    <string name="backup_failed">El respaldo falló</string>
+    <string name="backup_failed">Error en la copia de seguridad</string>
     <string name="restore_success">Restauración correcta</string>
     <string name="backup_restarting">Reiniciando</string>
     <string name="backup_restoring">Restaurando respaldo</string>
@@ -271,7 +272,7 @@
     <string name="backup_remove_from_recents">Remover de la lista</string>
     <string name="backup_invalid">No disponible</string>
     <string name="no_recent_backups">No hay respaldos recientes</string>
-    <string name="dialog_message_change_sort">¿Cambiar orden a alfabético\?</string>
+    <string name="dialog_message_change_sort">¿Cambiar a la clasificación alfabética de aplicaciones\?</string>
     <string name="icu_abbrev_time">HH:mm</string>
     <string name="icu_abbrev_time_12h">hh:mm aa</string>
     <string name="icu_abbrev_date">dd MMMM</string>
@@ -292,7 +293,7 @@
     <string name="icon_shape_corner_squircle">Ardilla</string>
     <string name="gesture_swipe_up">Pegar hacia arriba</string>
     <string name="title__advanced_setting_search">Mostrar búsqueda de configuraciones</string>
-    <string name="wallpaper_pick_summary">Abra el selector de fondos de pantalla</string>
+    <string name="wallpaper_pick_summary">Abrir el selector de fondos de pantalla</string>
     <string name="dash_device_settings_summary">Abrir las configuraciones del dispositivo</string>
     <string name="action_open_dash">Abrir el Dash</string>
     <string name="action_app_search">Abrir el buscador de aplicaciones</string>
@@ -304,7 +305,7 @@
     <string name="title_force_shapeless">Forzar iconos desformes</string>
     <string name="title_drawer_layout">Modo de diseño</string>
     <string name="about_translators_group">Contribuidores y Traductores</string>
-    <string name="backup_contents">Contenido de respaldo</string>
+    <string name="backup_contents">Contenido de la copia de seguridad</string>
     <string name="title_use_pill_qsb">Mostrar enlace a pila de búsqueda</string>
     <string name="disable_protected_apps">Desactivar aplicaciones protegidas</string>
     <string name="protected_app_reset">Restablece apps protegidas</string>
@@ -322,14 +323,14 @@
     <string name="action_open_overview">Mostrar Burbuja de Escritorio</string>
     <string name="title__search_bar_radius">Radio de Esquina</string>
     <string name="folder_background">Color del fondo de carpeta</string>
-    <string name="summary__dev_restart">Puede ser ayuda si algunas opciones no están aplicadas apropiadamente</string>
+    <string name="summary__dev_restart">Puede ser útil si algunas configuraciones no se aplican correctamente</string>
     <string name="feed_widget">Widgets</string>
     <string name="about_build_information">Informe de compilación</string>
     <string name="dash_launcher_settings_summary">Representa los parámetros del lanzador</string>
     <string name="dash_volume_summary">Represente el selector del dispositivo de sonido</string>
     <string name="drag_to_disable_packs">Arrastrar debajo para desactivar</string>
     <string name="launch_assistant">Asistencia de Lanzamiento</string>
-    <string name="modify_system_settings">Modificar parámetros del sistema</string>
+    <string name="modify_system_settings">Modificar la configuración del sistema</string>
     <string name="pref_desktop_mode_settings">Parámetros del modo de escritorio</string>
     <string name="edit_dash">Editar Guión</string>
     <string name="onbording">Incorporación</string>
@@ -337,7 +338,7 @@
     <string name="dash_media_player_description">Muestra u oculta los controles del reproductor de sonido</string>
     <string name="edit_dash_summary">Activar o desactivar los accesos directos</string>
     <string name="icu_abbrev_wday_month_day_no_year">d-MMM-EEEE</string>
-    <string name="button_organize_screens">Organizar Páginas</string>
+    <string name="button_organize_screens">Organizar páginas</string>
     <string name="developer_options_enabled">Opciones del desarrollador en</string>
     <string name="about_copyright">© 2020–2021</string>
     <string name="about_open_source">Bibliotecas de Fuente Abierta</string>
@@ -403,7 +404,7 @@
     <string name="dash_sync_summary">Encender o apagar sincronización.</string>
     <string name="dash_all_apps_summary">Muestra todos los botones de app</string>
     <string name="drag_to_enable_packs">Arrastrar arriba para activar</string>
-    <string name="dash_wifi">WiFi</string>
+    <string name="dash_wifi">Wifi</string>
     <string name="dash_wifi_summary">Estado Wi-Fi y conexión</string>
     <string name="dash_location_summary">Cambiar parámetros de posición</string>
     <string name="dash_torch">Antorcha</string>
@@ -433,8 +434,8 @@
     <string name="backup_create_new">Crea un respaldo nuevo</string>
     <string name="backup_delete_failed">Algo fue mal</string>
     <string name="summary_app_suggestions">Para todas las apps y pantallas Inicio</string>
-    <string name="home_widget">At a Glance</string>
-    <string name="folder_name">Nombre de Carpeta</string>
+    <string name="home_widget">De un vistazo</string>
+    <string name="folder_name">Nombre de la carpeta</string>
     <string name="title_fuzzy_search">Busqueda Aproximada</string>
     <string name="summary_fuzzy_search">Coincidencia aproximada para la búsqueda de aplicaciones.</string>
     <string name="title__general_profile">Perfil</string>
@@ -447,7 +448,7 @@
     <string name="tab_shortcuts">Accesos directos</string>
     <string name="title_desktop_widget_corner_radius">Radio de Widget</string>
     <string name="section_contacts">Contactos</string>
-    <string name="debug_options_title">Informacion de debug</string>
+    <string name="debug_options_title">Información de depuración</string>
     <string name="app_name">Nombre de la aplicacion</string>
     <string name="tab_launcher">Lanzador</string>
     <string name="pref_category__dash">Dash</string>
