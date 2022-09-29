@@ -194,7 +194,7 @@
     <string name="installing">Installing</string>
     <string name="ignore_battery_optimization_title">Battery Optimization</string>
     <string name="ignore_battery_optimization_message">The app behaves better without battery optimization, and prevents crashing on Android 12+.</string>
-    <string name="ignore_battery_optimization_not_supported">Your Android installation does not support turning off battery optimization.</string>
+    <string name="ignore_battery_optimization_not_supported">Your Android version does not support turning off battery optimization.</string>
     <string name="dialog_refuse">Keep</string>
     <string name="dialog_approve">Turn off</string>
     <string name="root_session_installer">Use root session installer</string>
