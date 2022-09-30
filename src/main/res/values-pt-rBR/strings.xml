@@ -220,4 +220,5 @@
     <string name="dynamic">Sistema Dinâmico</string>
     <string name="favorite_applications">Favoritos</string>
     <string name="prefs_sync">Sincronização</string>
+    <string name="categories">Categorias</string>
 </resources>
