@@ -221,4 +221,10 @@
     <string name="favorite_applications">Favoritos</string>
     <string name="prefs_sync">Sincronização</string>
     <string name="categories">Categorias</string>
+    <string name="sort_ascending">Ascendente</string>
+    <string name="sort_descending">Descendente</string>
+    <string name="action_reset">Resetar</string>
+    <string name="date_updated">Data atualizada</string>
+    <string name="action_apply">Aplicar</string>
+    <string name="date_added">Data adicionada</string>
 </resources>
