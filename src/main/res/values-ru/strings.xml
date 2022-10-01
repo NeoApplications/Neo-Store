@@ -37,7 +37,7 @@
     <string name="downloaded_FORMAT">Скачано %s</string>
     <string name="downloading">Скачивание</string>
     <string name="downloading_FORMAT">Скачивание %s…</string>
-    <string name="edit_repository">Редактировать репозиторий</string>
+    <string name="edit_repository">Редактировать</string>
     <string name="file_format_error_DESC">Недопустимый формат файла.</string>
     <string name="fingerprint">Отпечаток</string>
     <string name="has_advertising">Имеет рекламу</string>
@@ -54,8 +54,8 @@
     <string name="incompatible_older_DESC">Эта версия старше той, которая установлена на вашем устройстве. Сначала удалите её.</string>
     <string name="incompatible_platforms_DESC_FORMAT">Ваша платформа %1$s не поддерживается.
 Поддерживаемые платформы: %2$s.</string>
-    <string name="incompatible_signature_DESC">Эта версия подписана сертификатом, отличным от того, который установлен на вашем устройстве.
-\nСначала удалите его.</string>
+    <string name="incompatible_signature_DESC">Эта версия приложения подписана сертификатом, отличным от того, которым подписана установленная на вашем устройстве версия.
+\nСначала удалите её.</string>
     <string name="incompatible_version">Несовместимая версия</string>
     <string name="incompatible_versions">Несовместимые версии</string>
     <string name="incompatible_versions_summary">Показывать версии, несовместимые с устройством.</string>
@@ -183,7 +183,7 @@
     <string name="installed_applications">Установленные</string>
     <string name="latest">Новое</string>
     <string name="sort_filter">Сортировка и фильтрация</string>
-    <string name="only_on_wifi_and_battery">Только при Wi-Fi и подключении к сети</string>
+    <string name="only_on_wifi_and_battery">Только по Wi-Fi и при зарядке</string>
     <string name="install_after_sync">Автообновление</string>
     <string name="install_after_sync_summary">Устанавливать все новые версии после проверки репозиториев на наличие новых приложений.</string>
     <string name="prefs_updated_apps">Количество приложений для отображения в \"Недавно обновлённые\"</string>
