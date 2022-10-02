@@ -221,4 +221,8 @@
     <string name="categories">类别</string>
     <string name="sort_descending">下降</string>
     <string name="sort_ascending">上升</string>
+    <string name="action_apply">应用</string>
+    <string name="action_reset">重置</string>
+    <string name="date_added">添加日期</string>
+    <string name="date_updated">更新日期</string>
 </resources>
