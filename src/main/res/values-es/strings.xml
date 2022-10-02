@@ -168,8 +168,9 @@
     <string name="whats_new">Novedades</string>
     <string name="website">Sitio web</string>
     <plurals name="new_updates_DESC_FORMAT">
-        <item quantity="one">%d aplicación tiene una versión nueva.</item>
-        <item quantity="other">%d aplicaciones tienen versiones nuevas.</item>
+        <item quantity="one">La aplicación %d tiene una nueva versión.</item>
+        <item quantity="many">Las aplicaciones %d tienen nuevas versiones.</item>
+        <item quantity="other">Las aplicaciones %d tienen nuevas versiones.</item>
     </plurals>
     <string name="prefs_language_title">Idioma</string>
     <string name="prefs_personalization">Personalización</string>
@@ -214,4 +215,16 @@
     <string name="group_telegram">Nuestro grupo de Telegram</string>
     <string name="group_matrix">Nuestro grupo en Matrix</string>
     <string name="system_black">Sistema (Negro)</string>
+    <string name="releases_cache_retention">Guardar en la cache el APK descargado</string>
+    <string name="images_cache_retention">Guardar la caché de las imágenes</string>
+    <string name="date_added">Fecha agregada</string>
+    <string name="action_reset">Restablecer</string>
+    <string name="date_updated">Fecha actualizada</string>
+    <string name="prefs_personal">Privado</string>
+    <string name="prefs_cache">Caché</string>
+    <string name="min_sdk">Versión mínima</string>
+    <string name="categories">Categorías</string>
+    <string name="sort_ascending">Ascendente</string>
+    <string name="sort_descending">Descendente</string>
+    <string name="action_apply">Aplicar</string>
 </resources>
