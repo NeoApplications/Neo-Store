@@ -223,7 +223,7 @@
     <string name="zen_mode_enabled">No molestar está habilitado.</string>
     <string name="name_provider_alarm_events">Próximas alarmas</string>
     <string name="smartspace_in_time">en %1$s</string>
-    <string name="title_legacy_treatment">Crear iconos adaptables</string>
+    <string name="title_legacy_treatment">Crear iconos adaptativos</string>
     <string name="title_colored_backgrounds">Fondo coloreado</string>
     <string name="title_adaptify_pack">Crear iconos adaptativos para el paquete de iconos</string>
     <string name="reset_custom_icons_confirmation">¿Revertir a iconos predeterminados de este paquete\? Esto no puede ser deshecho.</string>
@@ -262,9 +262,9 @@
     <string name="title_create">Crear</string>
     <string name="backup_pref_summary">Guardar escritorio, Restaurar respaldos</string>
     <string name="backup_share_title">Compartir respaldo</string>
-    <string name="restore_read_meta_fail">Archivo de la copia de seguridad no válido</string>
+    <string name="restore_read_meta_fail">El archivo de su copia de seguridad es inválido</string>
     <string name="restore_failed">La restauración falló</string>
-    <string name="backup_failed">Error en la copia de seguridad</string>
+    <string name="backup_failed">Copia de seguridad fallida</string>
     <string name="restore_success">Restauración correcta</string>
     <string name="backup_restarting">Reiniciando</string>
     <string name="backup_restoring">Restaurando respaldo</string>
@@ -272,7 +272,7 @@
     <string name="backup_remove_from_recents">Remover de la lista</string>
     <string name="backup_invalid">No disponible</string>
     <string name="no_recent_backups">No hay respaldos recientes</string>
-    <string name="dialog_message_change_sort">¿Cambiar a la clasificación alfabética de aplicaciones\?</string>
+    <string name="dialog_message_change_sort">¿Cambiar la clasificación de las aplicaciones por orden alfabético\?</string>
     <string name="icu_abbrev_time">HH:mm</string>
     <string name="icu_abbrev_time_12h">hh:mm aa</string>
     <string name="icu_abbrev_date">dd MMMM</string>
@@ -305,7 +305,7 @@
     <string name="title_force_shapeless">Forzar iconos desformes</string>
     <string name="title_drawer_layout">Modo de diseño</string>
     <string name="about_translators_group">Contribuidores y Traductores</string>
-    <string name="backup_contents">Contenido de la copia de seguridad</string>
+    <string name="backup_contents">Copia de seguridad de los contenidos</string>
     <string name="title_use_pill_qsb">Mostrar enlace a pila de búsqueda</string>
     <string name="disable_protected_apps">Desactivar aplicaciones protegidas</string>
     <string name="protected_app_reset">Restablece apps protegidas</string>
@@ -391,7 +391,7 @@
     <string name="folder_columns">Columnas de Carpeta</string>
     <string name="fonts_global_font">Tipografía</string>
     <string name="fonts_change_global_font">Modificar</string>
-    <string name="summary__advanced_setting_search">Representar parámetros de búsqueda dentro de la barra acción</string>
+    <string name="summary__advanced_setting_search">Mostrar la búsqueda de la configuración en la barra de acciones</string>
     <string name="backup_error_blank_contents">El contenido no puede estar vacío</string>
     <string name="title_feed_provider">Proveedor de relleno</string>
     <string name="dash_mobile_network_summary">Muestra los parámetros de las redes del móvil</string>
@@ -451,8 +451,8 @@
     <string name="debug_options_title">Información de depuración</string>
     <string name="app_name">Nombre de la aplicacion</string>
     <string name="tab_launcher">Lanzador</string>
-    <string name="pref_category__dash">Dash</string>
-    <string name="title__feed">Feed</string>
+    <string name="pref_category__dash">Tablero</string>
+    <string name="title__feed">Exportar a otros médios</string>
     <string name="icon_picker_load_failed">No se pudieron cargar mas iconos.</string>
     <string name="section_apps">Aplicaciones</string>
     <string name="cat_dock_search">Aplicaciones y Dock</string>
