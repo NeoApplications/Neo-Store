@@ -152,6 +152,7 @@
         <item quantity="other">%1$d Apps</item>
     </plurals>
     <plurals name="hidden_apps_count">
+        <item quantity="one"></item>
         <item quantity="other">%1$d Hidden</item>
     </plurals>
     <string name="protected_apps">Protected Apps</string>

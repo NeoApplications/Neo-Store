@@ -321,6 +321,7 @@
     <string name="hide_app_selected">App nascoste (%1$d)</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d nascosto</item>
+        <item quantity="many">%1$d nascosti</item>
         <item quantity="other">%1$d nascosti</item>
     </plurals>
     <string name="selected_count">%1$d selezionato</string>

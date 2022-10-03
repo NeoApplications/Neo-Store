@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="icon_shape_cylinder">Цилиндр</string>
-    <string name="hide_app_reset">Сброс</string>
+    <string name="hide_app_reset">Сброс скрытых приложений</string>
     <string name="tab_type_smart">Автоматически</string>
     <string name="default_folder_name">Новая папка</string>
     <string name="app_categorization_tabs">Вкладки</string>
@@ -10,7 +10,7 @@
     <string name="title_app_categorize">Категоризация приложений</string>
     <string name="pref_appcategorization_flowerpot_title">Категория приложений</string>
     <string name="label_turn_off_suggestions">Отключить</string>
-    <string name="title_all_apps_google_search">Глобальный поиск</string>
+    <string name="title_all_apps_google_search">Веб-результаты</string>
     <string name="title__sort_by_color">По цвету</string>
     <string name="title__sort_mode">Сортировка приложений</string>
     <string name="title__drawer_categorization">Категории</string>
@@ -195,12 +195,12 @@
     <string name="icon_shape_circle">Круг</string>
     <string name="icon_shape_squircle">Скругленный квадрат</string>
     <string name="icon_shape_square">Квадрат</string>
-    <string name="icon_shape_system_default">Как в системе</string>
+    <string name="icon_shape_system_default">Система</string>
     <string name="icon_shape_override_label_location">на домашнем экране</string>
     <string name="icon_shape_override_label">Изменить форму иконки</string>
     <string name="icon_shape_override_progress">Применение изменений формы иконки</string>
     <string name="menu_icon_shape">Индивидуальная форма иконки</string>
-    <string name="get_more_icon_packs">Получить больше</string>
+    <string name="get_more_icon_packs">Скачать новый пакет иконок</string>
     <string name="icon_pack">Пакеты иконок</string>
     <string name="title_default">По умолчанию</string>
     <string name="theme_use_dark_text">Использование темного текста</string>
@@ -215,7 +215,7 @@
     <string name="theme_with_dark_text">темный текст</string>
     <string name="theme_light">Светлый</string>
     <string name="theme_based">Установить по теме</string>
-    <string name="theme_auto_night_mode">В соответствии с системой</string>
+    <string name="theme_auto_night_mode">Система</string>
     <string name="theme_auto">В соответствии с обоями</string>
     <string name="summary__theme_blur">Размытие фона страницы</string>
     <string name="title_theme_icon_packs">Пакеты иконок</string>
@@ -225,7 +225,7 @@
     <string name="title__theme_accent_color">Цвет акцента</string>
     <string name="msg_missing_usage_access">Чтобы показать предложения приложений, включите доступ к использованию для <xliff:g id="name" example="My App"> %1$s </xliff:g></string>
     <string name="needs_usage_access">Требуется доступ к использованию</string>
-    <string name="hide_app_selected">  скрыты</string>
+    <string name="hide_app_selected">Скрытые приложения (%1$d)</string>
     <plurals name="hidden_apps_count">
         <item quantity="one">%1$d скрыто</item>
         <item quantity="few"/>
@@ -255,8 +255,8 @@
     <string name="title_all_apps_search">Панель поиска выдвижной панели</string>
     <string name="title__sort_most_used">Наиболее часто используемые</string>
     <string name="title__sort_last_installed">Последняя установка</string>
-    <string name="title__sort_alphabetical_za">По алфавиту ZA</string>
-    <string name="title__sort_alphabetical_az">По алфавиту AZ</string>
+    <string name="title__sort_alphabetical_za">Z→A</string>
+    <string name="title__sort_alphabetical_az">A→Z</string>
     <string name="title_drawer_row_height">Высота строки</string>
     <string name="title_drawer_enable_background">Использовать собственный цвет фона</string>
     <string name="title__drawer_columns">Количество колонок</string>
@@ -355,7 +355,7 @@
     <string name="gesture_press_back">Нажатие кнопки Назад</string>
     <string name="gesture_press_home">Нажатие кнопки Домой</string>
     <string name="dialog_message_change_sort">Установить сортировку приложений по алфавиту\?</string>
-    <string name="home_widget">At a Glance</string>
+    <string name="home_widget">Краткий обзор</string>
     <string name="about_translators">Переводчики</string>
     <string name="notification_custom_color">Применить свой цвет</string>
     <string name="folder_custom_background">Применить свой цвет фона для папок</string>
@@ -404,4 +404,27 @@
     <string name="title__general_search_feed">Поиск и лента</string>
     <string name="pref_category__features">Особенности</string>
     <string name="title__general_widgets_notifications">Виджеты и уведомления</string>
+    <string name="theme_dark_theme_mode_follow_daylight_black">Следите за дневным светом (черный)</string>
+    <string name="units_reaumur">Реомюр</string>
+    <string name="units_rakine">Ранкин</string>
+    <string name="units_newton">Ньютон</string>
+    <string name="units_delisle">Delisle</string>
+    <string name="icon_picker_default_category">Иконки</string>
+    <string name="cat_dock_search">Ящик и док</string>
+    <string name="theme_auto_black">Следуйте за обоями (черный)</string>
+    <string name="title_desktop_widget_corner_radius">Радиус угла виджета</string>
+    <string name="title__drawer_rows">Количество строк</string>
+    <string name="summary_fuzzy_search">Приблизительное соответствие для поиска приложений.</string>
+    <string name="protected_apps">Защищенные приложения</string>
+    <string name="title_smartspace">Показать Смартспейс</string>
+    <string name="icon_picker_load_failed">Не удалось загрузить больше иконок.</string>
+    <string name="title_use_pill_qsb">Показать ярлык поиска таблеток</string>
+    <string name="onbording">Адаптация</string>
+    <string name="title__general_gestures_dash">Жесты и панель</string>
+    <string name="units_romer">Рёмер</string>
+    <string name="title_fuzzy_search">Fuzzy Поиск</string>
+    <string name="protected_app_selected">Защищенные приложения (%1$d)</string>
+    <string name="summary_white_only_treatment">Раскрасьте фон всех адаптивных иконок.</string>
+    <string name="smartspace_pill_text_format">%1$s %2$s</string>
+    <string name="title__folder_badge_count">Показать значок папки Счетчик</string>
 </resources>
