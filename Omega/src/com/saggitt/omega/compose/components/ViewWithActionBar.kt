@@ -40,6 +40,7 @@ import com.android.launcher3.R
 @Composable
 fun ViewWithActionBar(
     title: String,
+    floatingActionButton: @Composable () -> Unit = {},
     showBackButton: Boolean = true,
     actions: @Composable RowScope.() -> Unit = {},
     onBackAction: () -> Unit = {},
@@ -74,6 +75,7 @@ fun ViewWithActionBar(
                 elevation = 0.dp
             )
         },
+        floatingActionButton = floatingActionButton,
         content = content
     )
 }
