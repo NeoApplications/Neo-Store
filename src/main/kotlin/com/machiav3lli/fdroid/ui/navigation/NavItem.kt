@@ -17,30 +17,40 @@
  */
 package com.machiav3lli.fdroid.ui.navigation
 
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Compass
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.DotsThreeOutline
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Graph
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.House
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserGear
 
-sealed class NavItem(var title: Int, var icon: Int, var destination: String) {
+sealed class NavItem(var title: Int, var icon: ImageVector, var destination: String) {
     object Explore :
-        NavItem(R.string.explore, R.drawable.ic_public, "main_explore")
+        NavItem(R.string.explore, Phosphor.Compass, "main_explore")
 
     object Latest :
-        NavItem(R.string.latest, R.drawable.ic_new_releases, "main_latest")
+        NavItem(R.string.latest, Phosphor.CircleWavyWarning, "main_latest")
 
     object Installed :
-        NavItem(R.string.installed, R.drawable.ic_launch, "main_installed")
+        NavItem(R.string.installed, Phosphor.House, "main_installed")
 
     object Prefs :
-        NavItem(R.string.settings, R.drawable.ic_tune, "prefs")
+        NavItem(R.string.settings, Phosphor.GearSix, "prefs")
 
     object PersonalPrefs :
-        NavItem(R.string.prefs_personalization, R.drawable.ic_person, "prefs_personal")
+        NavItem(R.string.prefs_personalization, Phosphor.UserGear, "prefs_personal")
 
     object UpdatesPrefs :
-        NavItem(R.string.updates, R.drawable.ic_download, "prefs_updates")
+        NavItem(R.string.updates, Phosphor.Download, "prefs_updates")
 
     object ReposPrefs :
-        NavItem(R.string.repositories, R.drawable.ic_repos, "prefs_repos")
+        NavItem(R.string.repositories, Phosphor.Graph, "prefs_repos")
 
     object OtherPrefs :
-        NavItem(R.string.other, R.drawable.ic_tune, "prefs_other")
+        NavItem(R.string.other, Phosphor.DotsThreeOutline, "prefs_other")
 }
