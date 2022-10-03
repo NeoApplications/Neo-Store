@@ -1,18 +1,22 @@
 package com.machiav3lli.fdroid.entity
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.machiav3lli.fdroid.HELP_CHANGELOG
 import com.machiav3lli.fdroid.HELP_LICENSE
 import com.machiav3lli.fdroid.HELP_MATRIX
 import com.machiav3lli.fdroid.HELP_SOURCECODE
 import com.machiav3lli.fdroid.HELP_TELEGRAM
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CalendarPlus
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CalendarX
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TagSimple
 
-enum class Order(@StringRes val titleResId: Int, @DrawableRes val iconResId: Int) {
-    NAME(R.string.name, R.drawable.ic_placeholder),
-    DATE_ADDED(R.string.date_added, R.drawable.ic_placeholder),
-    LAST_UPDATE(R.string.date_updated, R.drawable.ic_placeholder)
+enum class Order(@StringRes val titleResId: Int, val icon: ImageVector) {
+    NAME(R.string.name, Phosphor.TagSimple),
+    DATE_ADDED(R.string.date_added, Phosphor.CalendarX),
+    LAST_UPDATE(R.string.date_updated, Phosphor.CalendarPlus)
 }
 
 enum class UpdateCategory(val id: Int) {
