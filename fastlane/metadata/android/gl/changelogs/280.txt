@@ -1,0 +1,12 @@
+<ul>
+  <li>Engadido: Buscador web Brave</li>
+  <li>Engadido: a preferencia do xesto de volta cara atrás</li>
+  <li>Engadido: a preferencia de xesto de Inicio</li>
+  <li>Engadido: Modo escritorio</li>
+  <li>Corrección: cor do texto no selector de widgets para o tema claro</li>
+  <li>Solución: busca das aplicacións ocultas</li>
+  <li>Solución: icona de cartafol no modo de portada</li>
+  <li>Restaurar widget de smartspace</li>
+  <li>Restaurar a icona do reloxo adaptativo (Google)</li>
+  <li>Restaurala icona do calendario adaptativo (Google)</li>
+</ul>
