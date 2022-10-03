@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
@@ -25,13 +26,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
+import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.DownloadState
 import com.machiav3lli.fdroid.ui.compose.components.MainActionButton
 import com.machiav3lli.fdroid.ui.compose.components.SecondaryActionButton
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Code
 import com.machiav3lli.fdroid.ui.compose.utils.NetworkImage
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
 
@@ -137,8 +142,6 @@ fun TopBarHeader(
 @Composable
 fun SourceCodeCard(
     modifier: Modifier = Modifier,
-    title: String,
-    text: String,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {}
 ) {
@@ -150,23 +153,12 @@ fun SourceCodeCard(
             .padding(vertical = 18.dp, horizontal = 12.dp),
         color = Color.Transparent
     ) {
-        Column(
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1
-            )
-            Text(
-                text = text,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary,
-                maxLines = 1
-            )
-        }
+        Icon(
+            modifier = Modifier.size(32.dp),
+            imageVector = Phosphor.Code,
+            contentDescription = stringResource(id = R.string.source_code),
+            tint = MaterialTheme.colorScheme.primary
+        )
     }
 }
 

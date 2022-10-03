@@ -94,8 +94,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.net.URI
-import java.util.*
 
 // TODO clean up and replace dropped functions from AppDetailFragment
 class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
@@ -410,7 +408,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
 
         suggestedProductRepo?.let { (product, repo) ->
             Scaffold(
-                // TODO add the topBar to the activity instead of the fragments
                 topBar = {
                     Column() {
                         TopBarHeader(
@@ -421,16 +418,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                             actions = {
                                 SourceCodeCard(
                                     modifier = Modifier.padding(vertical = 4.dp),
-                                    title = stringResource(id = R.string.source_code),
-                                    text = "@${
-                                        (URI(product.source).host ?: stringResource(id = R.string.unknown))
-                                            .removePrefix("www.")
-                                            .replaceFirstChar {
-                                                if (it.isLowerCase()) it.titlecase(
-                                                    Locale.getDefault()
-                                                ) else it.toString()
-                                            }
-                                    }",
                                     onClick = {
                                         product.source.let { link ->
                                             if (link.isNotEmpty()) {
