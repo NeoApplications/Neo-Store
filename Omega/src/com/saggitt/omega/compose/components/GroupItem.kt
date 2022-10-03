@@ -70,7 +70,8 @@ fun GroupItem(
             Image(
                 painter = painterResource(id = R.drawable.ic_uninstall_no_shadow),
                 contentDescription = null,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp),
+                colorFilter = ColorFilter.tint(Color(0xFFDA0831))
             )
         }
         Spacer(modifier = Modifier.width(8.dp))
@@ -83,8 +84,7 @@ fun GroupItem(
             Image(
                 painter = painterResource(id = R.drawable.ic_drag_handle),
                 contentDescription = null,
-                modifier = Modifier.size(24.dp),
-                colorFilter = ColorFilter.tint(Color(0xFFDA0831))
+                modifier = Modifier.size(24.dp)
             )
         }
     }
