@@ -35,6 +35,8 @@ fun AppInfoChips(
         DateFormat.getDateInstance().format(Date(product.updated)),
         if (latestRelease?.minSdkVersion != 0) "${stringResource(id = R.string.min_sdk)} ${latestRelease?.minSdkVersion}"
         else null,
+        if (latestRelease?.targetSdkVersion != 0) "${stringResource(id = R.string.target_sdk)} ${latestRelease?.targetSdkVersion}"
+        else null,
         if (product.antiFeatures.isNotEmpty()) stringResource(id = R.string.anti_features)
         else null,
         *product.licenses.toTypedArray(),
