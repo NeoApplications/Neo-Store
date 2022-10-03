@@ -210,4 +210,20 @@
     <string name="no_updates_available">Aucune version disponible</string>
     <string name="favorite_applications">Favoris</string>
     <string name="auto_sync_interval">Intervalle de synchronisation automatique (en minutes)</string>
+    <string name="images_cache_retention">Rétention du cache d\'images</string>
+    <string name="releases_cache_retention">Rétention du cache d\'APK téléchargé</string>
+    <string name="system_black">Système (Noir)</string>
+    <string name="prefs_personal">Personnel</string>
+    <string name="prefs_cache">Cache</string>
+    <string name="prefs_sync">Synchronisation</string>
+    <string name="min_sdk">SDK minimal</string>
+    <string name="group_telegram">Notre groupe Telegram</string>
+    <string name="group_matrix">Notre groupe Matrix</string>
+    <string name="categories">Catégories</string>
+    <string name="sort_ascending">Ascendant</string>
+    <string name="sort_descending">Descendant</string>
+    <string name="action_apply">Appliquer</string>
+    <string name="action_reset">Réinitialiser</string>
+    <string name="date_added">Date d\'ajout</string>
+    <string name="date_updated">Date de mise à jour</string>
 </resources>
