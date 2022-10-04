@@ -226,4 +226,5 @@
     <string name="action_reset">Reseta</string>
     <string name="date_updated">Data de atualizatzione</string>
     <string name="date_added">Data de annanta</string>
+    <string name="target_sdk">targetSDK</string>
 </resources>
