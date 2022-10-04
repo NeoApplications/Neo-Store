@@ -226,4 +226,5 @@
     <string name="action_reset">Tilbakestill</string>
     <string name="date_added">Dato tillagt</string>
     <string name="date_updated">Dato oppdatert</string>
+    <string name="target_sdk">målSDK</string>
 </resources>
