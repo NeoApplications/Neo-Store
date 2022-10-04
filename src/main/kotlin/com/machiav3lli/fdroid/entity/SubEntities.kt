@@ -6,18 +6,18 @@ import android.content.pm.PermissionInfo
 import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.Download
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.FavoriteBorder
-import androidx.compose.material.icons.rounded.Launch
-import androidx.compose.material.icons.rounded.Share
-import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShareNetwork
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SlidersHorizontal
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TrashSimple
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -99,7 +99,7 @@ sealed interface ComponentState {
 
 sealed class DownloadState(
     @StringRes override val textId: Int,
-    override val icon: ImageVector = Icons.Rounded.Close
+    override val icon: ImageVector = Phosphor.X
 ) : ComponentState {
 
     object Pending : DownloadState(R.string.pending)
@@ -112,19 +112,19 @@ sealed class DownloadState(
 
 sealed class ActionState(
     @StringRes override val textId: Int,
-    override val icon: ImageVector = Icons.Rounded.Download
+    override val icon: ImageVector = Phosphor.Download
 ) : ComponentState {
 
-    object Install : ActionState(R.string.install, Icons.Rounded.Download)
-    object Update : ActionState(R.string.update, Icons.Rounded.Download)
-    object Uninstall : ActionState(R.string.uninstall, Icons.Rounded.Delete)
-    object Launch : ActionState(R.string.launch, Icons.Rounded.Launch)
-    object Details : ActionState(R.string.details, Icons.Rounded.Tune)
-    object Share : ActionState(R.string.share, Icons.Rounded.Share)
-    class Cancel(@StringRes stateId: Int) : ActionState(stateId, Icons.Rounded.Close)
-    object NoAction : ActionState(R.string.no_action_possible, Icons.Rounded.Close)
-    object Bookmark : ActionState(R.string.favorite_add, Icons.Rounded.FavoriteBorder)
-    object Bookmarked : ActionState(R.string.favorite_remove, Icons.Rounded.Favorite)
+    object Install : ActionState(R.string.install, Phosphor.Download)
+    object Update : ActionState(R.string.update, Phosphor.Download)
+    object Uninstall : ActionState(R.string.uninstall, Phosphor.TrashSimple)
+    object Launch : ActionState(R.string.launch, Phosphor.ArrowSquareOut)
+    object Details : ActionState(R.string.details, Phosphor.SlidersHorizontal)
+    object Share : ActionState(R.string.share, Phosphor.ShareNetwork)
+    class Cancel(@StringRes stateId: Int) : ActionState(stateId, Phosphor.X)
+    object NoAction : ActionState(R.string.no_action_possible, Phosphor.X)
+    object Bookmark : ActionState(R.string.favorite_add, Phosphor.HeartStraight)
+    object Bookmarked : ActionState(R.string.favorite_remove, Phosphor.HeartStraightFill)
 }
 
 open class LinkType(
