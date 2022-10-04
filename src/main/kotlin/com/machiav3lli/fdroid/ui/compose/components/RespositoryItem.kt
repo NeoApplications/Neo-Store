@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -26,6 +24,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -91,7 +91,7 @@ fun RepositoryItem(
             }
             AnimatedVisibility(visible = isEnabled) {
                 Icon(
-                    imageVector = Icons.Default.Done,
+                    imageVector = Phosphor.Check,
                     tint = MaterialTheme.colorScheme.primary,
                     contentDescription = "Repository Enabled"
                 )
