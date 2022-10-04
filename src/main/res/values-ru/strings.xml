@@ -229,4 +229,5 @@
     <string name="date_updated">Дата обновления</string>
     <string name="action_reset">Сброс</string>
     <string name="date_added">Дата добавления</string>
+    <string name="target_sdk">Цел. SDK</string>
 </resources>
