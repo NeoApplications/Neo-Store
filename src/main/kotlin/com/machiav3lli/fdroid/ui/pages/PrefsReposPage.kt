@@ -1,9 +1,9 @@
 package com.machiav3lli.fdroid.ui.pages
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -17,9 +17,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.ui.compose.RepositoriesRecycler
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.PlusCircle
 import com.machiav3lli.fdroid.ui.fragments.EditRepositorySheetX
 import com.machiav3lli.fdroid.ui.fragments.RepositorySheetX
 import com.machiav3lli.fdroid.ui.viewmodels.RepositoriesViewModelX
@@ -61,9 +64,10 @@ fun PrefsReposPage(viewModel: RepositoriesViewModelX) {
                 )
             }) {
                 Icon(
-                    imageVector = Icons.Rounded.Add,
+                    imageVector = Phosphor.PlusCircle,
                     contentDescription = stringResource(id = R.string.add_repository)
                 )
+                Spacer(modifier = Modifier.width(6.dp))
                 Text(text = stringResource(id = R.string.add_repository))
             }
         }
