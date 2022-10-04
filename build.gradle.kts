@@ -130,8 +130,8 @@ dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.0-rc01")
     implementation("androidx.fragment:fragment-ktx:1.6.0-alpha02")
-    implementation("androidx.activity:activity-ktx:1.6.0-rc02")
-    implementation("androidx.activity:activity-compose:1.6.0-rc02")
+    implementation("androidx.activity:activity-ktx:1.6.0")
+    implementation("androidx.activity:activity-compose:1.6.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
@@ -141,8 +141,8 @@ dependencies {
     implementation("com.google.android.material:material:1.8.0-alpha01")
 
     // Coil
-    implementation("io.coil-kt:coil:2.2.1")
-    implementation("io.coil-kt:coil-compose:2.2.1")
+    implementation("io.coil-kt:coil:2.2.2")
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
     // OkHttps
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.9")
@@ -178,9 +178,9 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.0.0-beta02")
+    implementation("androidx.compose.material3:material3:1.0.0-beta03")
     implementation("androidx.compose.animation:animation:$composeVersion")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.18")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.19")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
@@ -188,7 +188,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     debugImplementation("androidx.customview:customview-poolingcontainer:1.0.0")
-    debugImplementation("androidx.customview:customview:1.2.0-alpha01")
+    debugImplementation("androidx.customview:customview:1.2.0-alpha02")
 }
 
 // using a task as a preBuild dependency instead of a function that takes some time insures that it runs
