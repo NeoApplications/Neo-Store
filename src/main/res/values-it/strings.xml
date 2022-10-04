@@ -229,4 +229,5 @@
     <string name="action_apply">Applica</string>
     <string name="action_reset">Reset</string>
     <string name="date_added">Data aggiunta</string>
+    <string name="target_sdk">targetSDK</string>
 </resources>
