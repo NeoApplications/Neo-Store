@@ -2,7 +2,13 @@ package com.saggitt.omega.compose.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -29,9 +35,12 @@ fun CategorizationOption(
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+        border = if (selected)
+            BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.95f))
+        else
+            BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         tonalElevation = 2.dp,
-        color = if (selected) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background,
+        color = if (selected) MaterialTheme.colorScheme.primary.copy(0.15f) else MaterialTheme.colorScheme.background,
         onClick = onClick
     ) {
         Row(
