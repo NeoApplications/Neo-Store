@@ -1,6 +1,5 @@
 package com.saggitt.omega.compose.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,8 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -26,12 +22,13 @@ import com.saggitt.omega.compose.navigation.LocalNavController
 import com.saggitt.omega.util.addIf
 
 @Composable
-fun NavigationActionPreference(
+fun NavigationPreference(
     title: String,
-    destination: String,
+    route: String,
     modifier: Modifier = Modifier,
     summary: String = "",
-    icon: Int = 0,
+    startIcon: Int = 0,
+    endIcon: Int = 0,
     enabled: Boolean = true,
     showDivider: Boolean = false,
     horizontalPadding: Dp = 16.dp,
@@ -41,7 +38,7 @@ fun NavigationActionPreference(
     val navController = LocalNavController.current
     Column(
         modifier = Modifier.clickable {
-            navController.navigate(destination)
+            navController.navigate(route)
         }
     ) {
         if (showDivider) {
@@ -53,18 +50,16 @@ fun NavigationActionPreference(
                 .fillMaxWidth()
                 .padding(horizontal = horizontalPadding, vertical = verticalPadding)
         ) {
-            Icon(
-                painter = painterResource(id = icon),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .size(32.dp)
-                    .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12F))
-            )
+            if (startIcon != 0) {
+                Icon(
+                    painter = painterResource(id = startIcon),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                )
 
-            Spacer(modifier = Modifier.requiredWidth(16.dp))
+                Spacer(modifier = Modifier.requiredWidth(16.dp))
 
+            }
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -83,6 +78,16 @@ fun NavigationActionPreference(
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6F)
                     )
                 }
+            }
+
+            if (endIcon != 0) {
+
+                Spacer(modifier = Modifier.requiredWidth(16.dp))
+                Icon(
+                    painter = painterResource(id = endIcon),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                )
             }
         }
     }
