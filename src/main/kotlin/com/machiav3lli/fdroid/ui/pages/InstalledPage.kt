@@ -29,7 +29,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -39,6 +38,11 @@ import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.ProductsVerticalRecycler
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUp
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
@@ -118,7 +122,7 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Icon(
                                 modifier = Modifier.size(18.dp),
-                                painter = painterResource(id = if (updatesVisible) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down),
+                                imageVector = if (updatesVisible) Phosphor.CaretUp else Phosphor.CaretDown,
                                 contentDescription = stringResource(id = R.string.updates)
                             )
                         }
@@ -141,7 +145,7 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
                             icon = {
                                 Icon(
                                     modifier = Modifier.size(18.dp),
-                                    painter = painterResource(id = R.drawable.ic_download),
+                                    imageVector = Phosphor.Download,
                                     contentDescription = stringResource(id = R.string.update_all)
                                 )
                             },
@@ -177,7 +181,7 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
                     icon = {
                         Icon(
                             modifier = Modifier.size(18.dp),
-                            painter = painterResource(id = R.drawable.ic_sort),
+                            imageVector = Phosphor.FunnelSimple,
                             contentDescription = stringResource(id = R.string.sort_filter)
                         )
                     },

@@ -23,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
@@ -31,6 +30,8 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.components.ProductsListItem
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
@@ -118,7 +119,7 @@ fun LatestPage(viewModel: MainNavFragmentViewModelX) {
                         icon = {
                             Icon(
                                 modifier = Modifier.size(18.dp),
-                                painter = painterResource(id = R.drawable.ic_sort),
+                                imageVector = Phosphor.FunnelSimple,
                                 contentDescription = stringResource(id = R.string.sort_filter)
                             )
                         },
