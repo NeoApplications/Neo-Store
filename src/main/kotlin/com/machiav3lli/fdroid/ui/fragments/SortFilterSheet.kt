@@ -30,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -44,6 +43,11 @@ import com.machiav3lli.fdroid.index.RepositoryUpdater.db
 import com.machiav3lli.fdroid.ui.compose.components.ActionButton
 import com.machiav3lli.fdroid.ui.compose.components.ChipsSwitch
 import com.machiav3lli.fdroid.ui.compose.components.SelectChip
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowUUpLeft
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SortAscending
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SortDescending
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.isDarkTheme
@@ -142,13 +146,13 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                     ActionButton(
                         modifier = Modifier.weight(1f),
                         text = stringResource(id = R.string.action_reset),
-                        icon = painterResource(id = R.drawable.ic_delete),
+                        icon = Phosphor.ArrowUUpLeft,
                         positive = false,
                         onClick = ::dismissAllowingStateLoss
                     )
                     ActionButton(
                         text = stringResource(id = R.string.action_apply),
-                        icon = painterResource(id = R.drawable.ic_check),
+                        icon = Phosphor.Check,
                         modifier = Modifier.weight(1f),
                         positive = true,
                         onClick = {
@@ -197,9 +201,9 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
 
                     ChipsSwitch(
                         firstTextId = R.string.sort_ascending,
-                        firstIconId = R.drawable.ic_arrow_up,
+                        firstIcon = Phosphor.SortAscending,
                         secondTextId = R.string.sort_descending,
-                        secondIconId = R.drawable.ic_arrow_down,
+                        secondIcon = Phosphor.SortDescending,
                         firstSelected = sortAscending,
                         onCheckedChange = { checked ->
                             sortAscending = checked

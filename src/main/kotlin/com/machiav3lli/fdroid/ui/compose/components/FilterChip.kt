@@ -15,7 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,9 +40,9 @@ fun SelectChip(
 @Composable
 fun ChipsSwitch(
     firstTextId: Int,
-    firstIconId: Int,
+    firstIcon: ImageVector,
     secondTextId: Int,
-    secondIconId: Int,
+    secondIcon: ImageVector,
     firstSelected: Boolean = true,
     onCheckedChange: (Boolean) -> Unit
 ) {
@@ -70,7 +70,7 @@ fun ChipsSwitch(
             },
             leadingIcon = {
                 Icon(
-                    painter = painterResource(id = firstIconId),
+                    imageVector = firstIcon,
                     contentDescription = stringResource(id = firstTextId)
                 )
             },
@@ -114,7 +114,7 @@ fun ChipsSwitch(
             },
             trailingIcon = {
                 Icon(
-                    painter = painterResource(id = secondIconId),
+                    imageVector = secondIcon,
                     contentDescription = stringResource(id = secondTextId)
                 )
             }

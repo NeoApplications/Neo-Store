@@ -23,7 +23,7 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.entity.ActionState
@@ -34,7 +34,7 @@ fun ActionButton(
     modifier: Modifier = Modifier,
     text: String,
     positive: Boolean = true,
-    icon: Painter? = null,
+    icon: ImageVector? = null,
     enabled: Boolean = true,
     onClick: () -> Unit
 ) {
@@ -58,7 +58,7 @@ fun ActionButton(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (icon != null) Icon(painter = icon, contentDescription = null)
+            if (icon != null) Icon(imageVector = icon, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = text)
         }
