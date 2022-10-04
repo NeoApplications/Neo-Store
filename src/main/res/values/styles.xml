@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <style name="MainTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:colorPrimaryDark">?android:attr/colorBackground</item>
@@ -32,18 +32,7 @@
         <item name="android:statusBarColor">@color/md_theme_light_surface</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="categoryChipStyle">@style/Theme.Chip.Category</item>
-
         <item name="bottomSheetDialogTheme">@style/Theme.Design.BottomSheetDialog</item>
-        <item name="tabStyle">@style/Theme.Tab</item>
-        <item name="switchStyle">@style/Theme.Switch</item>
-        <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
-        <item name="textInputStyle">@style/Theme.EditText</item>
-        <item name="materialAlertDialogTheme">@style/Theme.Alert</item>
-        <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
-        <item name="materialCardViewStyle">@style/Theme.Card</item>
-        <item name="materialCardViewElevatedStyle">@style/Theme.Card.Elevated</item>
-        <item name="bottomNavigationStyle">@style/Theme.BottomNavigation</item>
     </style>
 
     <style name="Theme.Main.Dark" parent="Theme.Material3.Dark.NoActionBar">
@@ -72,18 +61,7 @@
         <item name="colorPrimaryInverse">@color/md_theme_dark_primaryInverse</item>
         <item name="android:statusBarColor">@color/grey_dark</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="categoryChipStyle">@style/Theme.Chip.Category</item>
-
         <item name="bottomSheetDialogTheme">@style/Theme.Design.BottomSheetDialog</item>
-        <item name="tabStyle">@style/Theme.Tab</item>
-        <item name="switchStyle">@style/Theme.Switch</item>
-        <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
-        <item name="textInputStyle">@style/Theme.EditText</item>
-        <item name="materialAlertDialogTheme">@style/Theme.Alert</item>
-        <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
-        <item name="materialCardViewStyle">@style/Theme.Card</item>
-        <item name="materialCardViewElevatedStyle">@style/Theme.Card.Elevated</item>
-        <item name="bottomNavigationStyle">@style/Theme.BottomNavigation</item>
     </style>
 
     <style name="Theme.Main.Amoled" parent="Theme.Material3.Dark.NoActionBar">
@@ -112,90 +90,7 @@
         <item name="colorOnBackground">@color/md_theme_dark_onBackground</item>
         <item name="android:statusBarColor">@color/md_theme_dark_surface</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="categoryChipStyle">@style/Theme.Chip.Category</item>
-
         <item name="bottomSheetDialogTheme">@style/Theme.Design.BottomSheetDialog</item>
-        <item name="tabStyle">@style/Theme.Tab</item>
-        <item name="switchStyle">@style/Theme.Switch</item>
-        <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
-        <item name="textInputStyle">@style/Theme.EditText</item>
-        <item name="materialAlertDialogTheme">@style/Theme.Alert</item>
-        <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
-        <item name="materialCardViewStyle">@style/Theme.Card</item>
-        <item name="materialCardViewElevatedStyle">@style/Theme.Card.Elevated</item>
-        <item name="bottomNavigationStyle">@style/Theme.BottomNavigation</item>
-    </style>
-
-    <style name="Theme.Chip.Category" parent="Widget.Material3.Chip.Suggestion.Elevated">
-        <item name="android:backgroundTint">@color/selector_chip_background</item>
-        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
-        <item name="android:textColor">@color/selector_item_icon</item>
-    </style>
-
-    <style name="Theme.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
-        <item name="elevation">0dp</item>
-        <item name="itemActiveIndicatorStyle">@style/Bar.Bottom.ActiveIndicator</item>
-        <item name="itemIconTint">@color/selector_item_icon</item>
-    </style>
-
-    <style name="Bar.Bottom.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">?colorPrimary</item>
-        <item name="itemIconTint">?colorSurface</item>
-    </style>
-
-    <style name="Theme.Tab" parent="Widget.Material3.TabLayout">
-        <item name="tabTextAppearance">?attr/textAppearanceBody1</item>
-    </style>
-
-    <style name="Theme.Alert" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
-        <item name="colorPrimary">?attr/colorOnSurface</item>
-        <item name="android:dialogCornerRadius" tools:targetApi="p">@dimen/shape_large_corner</item>
-        <item name="android:backgroundTint">?attr/colorSurface</item>
-        <item name="colorOnSurfaceVariant">?attr/colorOnSurface</item>
-    </style>
-
-    <style name="Theme.EditText" parent="Widget.Material3.TextInputLayout.FilledBox">
-        <item name="boxBackgroundColor">?attr/colorSurface</item>
-        <item name="boxStrokeColor">?attr/colorPrimary</item>
-        <item name="boxStrokeWidth">2dp</item>
-        <item name="hintTextColor">?attr/colorPrimary</item>
-        <item name="android:textColorHint">?attr/colorPrimary</item>
-    </style>
-
-    <style name="Theme.Progress" parent="Widget.Material3.LinearProgressIndicator">
-        <item name="trackColor">?attr/colorSurface</item>
-        <item name="trackThickness">8dp</item>
-        <item name="trackCornerRadius">4dp</item>
-    </style>
-
-    <style name="Theme.Switch" parent="Widget.Material3.CompoundButton.Switch">
-        <item name="trackTint">@color/switch_track_tint</item>
-        <item name="thumbTint">@color/switch_thumb_tint</item>
-    </style>
-
-    <style name="Theme.Card" parent="Widget.Material3.CardView.Filled">
-        <item name="cardBackgroundColor">@android:color/transparent</item>
-        <item name="cardCornerRadius">@dimen/shape_large_corner</item>
-    </style>
-
-    <style name="Theme.Card.Elevated" parent="Widget.Material3.CardView.Elevated">
-        <item name="cardCornerRadius">@dimen/shape_large_corner</item>
-    </style>
-
-    <style name="Theme.Button.Circular" parent="Widget.Material3.Button.Icon">
-        <item name="iconSize">24dp</item>
-        <item name="android:padding">12dp</item>
-        <item name="cardCornerRadius">50dp</item>
-        <item name="android:insetLeft">4dp</item>
-        <item name="android:insetRight">4dp</item>
-    </style>
-
-    <style name="Theme.Button.Elevated.Circular" parent="Widget.Material3.Button.ElevatedButton.Icon">
-        <item name="iconSize">24dp</item>
-        <item name="android:padding">12dp</item>
-        <item name="cardCornerRadius">50dp</item>
-        <item name="android:insetLeft">4dp</item>
-        <item name="android:insetRight">4dp</item>
     </style>
 
     <style name="Theme.Design.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
@@ -207,27 +102,4 @@
         <item name="enableEdgeToEdge">true</item>
         <item name="behavior_fitToContents">true</item>
     </style>
-
-    <style name="Shape.Small" parent="ShapeAppearance.Material3.SmallComponent">
-        <item name="cornerSize">@dimen/shape_small_corner</item>
-    </style>
-
-    <style name="Shape.Medium" parent="ShapeAppearance.Material3.MediumComponent">
-        <item name="cornerSize">@dimen/shape_medium_corner</item>
-    </style>
-
-    <style name="Shape.Large" parent="ShapeAppearance.Material3.LargeComponent">
-        <item name="cornerSize">@dimen/shape_large_corner</item>
-    </style>
-
-    <style name="Shape.BottomSheet" parent="ShapeAppearance.Material3.LargeComponent">
-        <item name="cornerSizeTopRight">@dimen/shape_large_corner</item>
-        <item name="cornerSizeTopLeft">@dimen/shape_large_corner</item>
-    </style>
-
-    <style name="PillShapeAppearance">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-    </style>
-
 </resources>
