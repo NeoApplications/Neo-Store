@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
@@ -54,7 +53,6 @@ fun ActionButton(
         onClick = onClick
     ) {
         Row(
-            Modifier.padding(ButtonDefaults.ContentPadding),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -106,9 +104,7 @@ fun MainActionButton(
             }
         ) {
             Row(
-                Modifier
-                    .defaultMinSize(minHeight = ButtonDefaults.MinHeight)
-                    .padding(ButtonDefaults.ContentPadding),
+                Modifier.defaultMinSize(minHeight = ButtonDefaults.MinHeight),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -136,12 +132,7 @@ fun SecondaryActionButton(
             onClick = { onClick() }
         ) {
             Row(
-                Modifier
-                    .defaultMinSize(minHeight = ButtonDefaults.MinHeight)
-                    .padding(
-                        vertical = ButtonDefaults.ContentPadding.calculateTopPadding(),
-                        horizontal = 0.dp
-                    ),
+                Modifier.defaultMinSize(minHeight = ButtonDefaults.MinHeight),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
