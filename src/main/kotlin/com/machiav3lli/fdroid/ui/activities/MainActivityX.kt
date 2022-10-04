@@ -9,9 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.rounded.Sync
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -35,6 +32,9 @@ import com.machiav3lli.fdroid.service.SyncService
 import com.machiav3lli.fdroid.ui.compose.components.ExpandableSearchAction
 import com.machiav3lli.fdroid.ui.compose.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.components.TopBarAction
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.fragments.AppSheetX
 import com.machiav3lli.fdroid.ui.fragments.SortFilterSheet
@@ -125,13 +125,13 @@ class MainActivityX : AppCompatActivity() {
                                 }
                             )
                             TopBarAction(
-                                icon = Icons.Rounded.Sync,
+                                icon = Phosphor.ArrowsClockwise,
                                 description = stringResource(id = R.string.sync_repositories)
                             ) {
                                 syncConnection.binder?.sync(SyncService.SyncRequest.MANUAL)
                             }
                             TopBarAction(
-                                icon = Icons.Rounded.Settings,
+                                icon = Phosphor.GearSix,
                                 description = stringResource(id = R.string.settings)
                             ) {
                                 navController.navigate(NavItem.Prefs.destination)

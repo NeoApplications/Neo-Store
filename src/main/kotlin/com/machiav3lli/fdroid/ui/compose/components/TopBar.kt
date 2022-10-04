@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,6 +37,9 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MagnifyingGlass
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import com.machiav3lli.fdroid.ui.compose.utils.HorizontalExpandingVisibility
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -97,7 +97,7 @@ fun CollapsedSearchView(
     onExpanded: (Boolean) -> Unit
 ) {
     TopBarAction(
-        icon = Icons.Rounded.Search,
+        icon = Phosphor.MagnifyingGlass,
         description = stringResource(id = R.string.search),
         onClick = { onExpanded(true) }
     )
@@ -152,7 +152,7 @@ fun ExpandedSearchView(
             keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         )
         TopBarAction(
-            icon = Icons.Rounded.Close,
+            icon = Phosphor.X,
             description = stringResource(id = R.string.cancel),
             onClick = {
                 textFieldValue = TextFieldValue(text = "")
