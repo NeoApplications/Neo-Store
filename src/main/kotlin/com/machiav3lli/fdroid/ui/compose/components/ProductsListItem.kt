@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -35,6 +32,9 @@ import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.network.CoilDownloader
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
 import com.machiav3lli.fdroid.ui.compose.utils.ExpandableCard
 import com.machiav3lli.fdroid.ui.compose.utils.NetworkImage
 
@@ -142,7 +142,7 @@ fun ExpandedItemContent(
         ) {
             IconButton(onClick = { onFavourite(item) }) {
                 Icon(
-                    imageVector = if (favourite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    imageVector = if (favourite) Phosphor.HeartStraightFill else Phosphor.HeartStraight,
                     contentDescription = stringResource(id = if (favourite) R.string.favorite_remove else R.string.favorite_add),
                     tint = if (favourite) Color.Red else MaterialTheme.colorScheme.outline
                 )
