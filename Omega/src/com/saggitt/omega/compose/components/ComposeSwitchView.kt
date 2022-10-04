@@ -18,7 +18,6 @@
 
 package com.saggitt.omega.compose.components
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -53,7 +52,7 @@ fun ComposeSwitchView(
     title: String,
     modifier: Modifier = Modifier,
     summary: String = "",
-    @DrawableRes iconId: Int? = null,
+    iconId: Int = 0,
     onCheckedChange: ((Boolean) -> Unit),
     isChecked: Boolean = false,
     isEnabled: Boolean = true,
@@ -81,7 +80,7 @@ fun ComposeSwitchView(
                 },
             verticalAlignment = verticalAlignment,
         ) {
-            if (iconId != null) {
+            if (iconId != 0) {
 
                 Image(
                     painter = painterResource(id = iconId),
