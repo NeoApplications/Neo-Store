@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.entity.PermissionsType
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
 import com.machiav3lli.fdroid.utility.getLabels
 
 @Composable
@@ -30,6 +33,11 @@ fun PermissionsItem(
 ) {
     val context = LocalContext.current
     val pm = context.packageManager
+    val painter = if (permissionsType.group != null && permissionsType.group.icon != 0) {
+        rememberAsyncImagePainter(permissionsType.group.loadUnbadgedIcon(pm))
+    } else {
+        null
+    }
 
     Row(
         modifier = modifier
@@ -44,14 +52,16 @@ fun PermissionsItem(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.Top
     ) {
-        Icon(
-            painter = rememberAsyncImagePainter(
-                model = if (permissionsType.group != null && permissionsType.group.icon != 0) {
-                    permissionsType.group.loadUnbadgedIcon(pm)
-                } else {
-                    null
-                } ?: (R.drawable.ic_perm_device_information)
-            ),
+        if (painter != null)
+            Icon(
+                painter = painter,
+                contentDescription = stringResource(
+                    id = permissionsType.group?.descriptionRes ?: R.string.unknown
+                )
+            )
+        else Icon(
+            modifier = Modifier.size(24.dp),
+            imageVector = Phosphor.ShieldStar,
             contentDescription = stringResource(
                 id = permissionsType.group?.descriptionRes ?: R.string.unknown
             )
