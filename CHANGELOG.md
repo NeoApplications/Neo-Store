@@ -1,6 +1,20 @@
 CHANGELOG
 =========
 
+0.9.6 (05.10.2022) +90 Commits
+------------------
+- Add: Sort/Filter sheet
+- Add: Explicit favorites shortcut
+- Add: TargetSDK to info chips
+- Update: Replace Material icons with Phosphor
+- Update: Replace drawables with composables
+- Update: BottomNavBar, AppSheet's and EditRepoSheet's layouts
+- Fix: Sheets' animated background
+- Fix: Showing update secondary action while downloading
+- Fix: Secondary actions being squeezed on low dpi
+- Fix: Immersive bottom gesture bar (except with sheets)
+- Remove: Legacy/now-unused resources
+
 0.9.5 (19.09.2022) +120 Commits
 ------------------
 - Add: Useful links in Prefs

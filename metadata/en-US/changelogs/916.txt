@@ -1,0 +1,7 @@
+Add: Sort/Filter function
+Add: Explicit favorites shortcut
+Add: TargetSDK to info chips
+Update: Replace Material icons with Phosphor
+Update: BottomNavBar, AppSheet's and EditRepoSheet's layouts
+Fix: Showing update secondary action while downloading
+For more details check the full changelog…
