@@ -61,7 +61,7 @@
     <string name="incompatible_with_FORMAT">%s ile uyumsuz</string>
     <string name="install">Kur</string>
     <string name="install_types">Yükleme Türleri</string>
-    <string name="installed">Yüklendi</string>
+    <string name="installed">Yüklü</string>
     <string name="integrity_check_error_DESC">Bütünlük kontrol edilemedi.</string>
     <string name="invalid_address">Geçersiz adres</string>
     <string name="invalid_fingerprint_format">Geçersiz parmak izi biçimi</string>
@@ -175,7 +175,7 @@
     <string name="prefs_personalization">Kişiselleştirme</string>
     <string name="show_less">Daha az göster</string>
     <string name="sort_filter">Sırala ve filtrele</string>
-    <string name="installed_applications">Yüklü</string>
+    <string name="installed_applications">Yüklendi</string>
     <string name="new_applications">Yeni uygulamalar</string>
     <string name="latest">En yeni</string>
     <string name="update_all">Tümünü yükle</string>
@@ -218,4 +218,7 @@
     <string name="group_telegram">Telegram grubumuz</string>
     <string name="group_matrix">Matrix grubumuz</string>
     <string name="system_black">Sistem (Siyah)</string>
+    <string name="action_apply">Uygula</string>
+    <string name="categories">Kategoriler</string>
+    <string name="sort_descending">Azalan</string>
 </resources>
