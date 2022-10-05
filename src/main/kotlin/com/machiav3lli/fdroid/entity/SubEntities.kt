@@ -4,13 +4,19 @@ import android.content.Context
 import android.content.pm.PermissionGroupInfo
 import android.content.pm.PermissionInfo
 import android.net.Uri
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.ui.compose.icons.Icon
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.icon.IcDonateFlattr
+import com.machiav3lli.fdroid.ui.compose.icons.icon.IcDonateLiberapay
+import com.machiav3lli.fdroid.ui.compose.icons.icon.IcDonateLitecoin
+import com.machiav3lli.fdroid.ui.compose.icons.icon.IcDonateOpencollective
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CurrencyBTC
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CurrencyDollarSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
@@ -128,19 +134,19 @@ sealed class ActionState(
 }
 
 open class LinkType(
-    @DrawableRes val iconResId: Int,
+    val icon: ImageVector,
     val title: String,
     val link: Uri? = null
 )
 
 class DonateType(donate: Donate, context: Context) : LinkType(
-    iconResId = when (donate) {
-        is Donate.Regular -> R.drawable.ic_donate_regular
-        is Donate.Bitcoin -> R.drawable.ic_donate_bitcoin
-        is Donate.Litecoin -> R.drawable.ic_donate_litecoin
-        is Donate.Flattr -> R.drawable.ic_donate_flattr
-        is Donate.Liberapay -> R.drawable.ic_donate_liberapay
-        is Donate.OpenCollective -> R.drawable.ic_donate_opencollective
+    icon = when (donate) {
+        is Donate.Regular -> Phosphor.CurrencyDollarSimple
+        is Donate.Bitcoin -> Phosphor.CurrencyBTC
+        is Donate.Litecoin -> Icon.IcDonateLitecoin
+        is Donate.Flattr -> Icon.IcDonateFlattr
+        is Donate.Liberapay -> Icon.IcDonateLiberapay
+        is Donate.OpenCollective -> Icon.IcDonateOpencollective
     },
     title = when (donate) {
         is Donate.Regular -> context.getString(R.string.website)

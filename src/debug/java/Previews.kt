@@ -9,6 +9,8 @@ import com.machiav3lli.fdroid.ui.compose.components.appsheet.AntiFeaturesGrid
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.LinkItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.PermissionGrid
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.ReleaseItem
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CurrencyDollarSimple
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.compose.utils.CustomChip
 import com.machiav3lli.fdroid.utility.SampleData
@@ -38,7 +40,7 @@ fun LinkItemPreview() {
     AppTheme(blackTheme = false) {
         LinkItem(
             linkType = LinkType(
-                R.drawable.ic_email,
+                Phosphor.CurrencyDollarSimple,
                 stringResource(id = R.string.author_email),
                 Uri.parse("neostore@neoapps.com")
             )

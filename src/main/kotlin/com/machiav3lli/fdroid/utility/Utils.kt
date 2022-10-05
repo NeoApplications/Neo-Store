@@ -54,6 +54,13 @@ import com.machiav3lli.fdroid.entity.LinkType
 import com.machiav3lli.fdroid.entity.PermissionsType
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.DownloadService
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.At
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Bug
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyleft
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GlobeSimple
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.User
 import com.machiav3lli.fdroid.ui.compose.utils.Callbacks
 import com.machiav3lli.fdroid.ui.dialog.LaunchDialog
 import com.machiav3lli.fdroid.ui.navigation.NavItem
@@ -314,7 +321,7 @@ fun Product.generateLinks(context: Context): List<LinkType> {
     if (author.name.isNotEmpty() || author.web.isNotEmpty()) {
         links.add(
             LinkType(
-                iconResId = R.drawable.ic_person,
+                icon = Phosphor.User,
                 title = author.name,
                 link = author.web.nullIfEmpty()?.let(Uri::parse)
             )
@@ -323,7 +330,7 @@ fun Product.generateLinks(context: Context): List<LinkType> {
     author.email.nullIfEmpty()?.let {
         links.add(
             LinkType(
-                R.drawable.ic_email,
+                Phosphor.At,
                 context.getString(R.string.author_email),
                 Uri.parse("mailto:$it")
             )
@@ -331,7 +338,7 @@ fun Product.generateLinks(context: Context): List<LinkType> {
     }
     links.addAll(licenses.map {
         LinkType(
-            R.drawable.ic_copyright,
+            Phosphor.Copyleft,
             it,
             Uri.parse("https://spdx.org/licenses/$it.html")
         )
@@ -340,7 +347,7 @@ fun Product.generateLinks(context: Context): List<LinkType> {
         ?.let {
             links.add(
                 LinkType(
-                    R.drawable.ic_bug_report,
+                    Phosphor.Bug,
                     context.getString(R.string.bug_tracker),
                     Uri.parse(it)
                 )
@@ -349,7 +356,7 @@ fun Product.generateLinks(context: Context): List<LinkType> {
     changelog.nullIfEmpty()?.let {
         links.add(
             LinkType(
-                R.drawable.ic_history,
+                Phosphor.ArrowsClockwise,
                 context.getString(R.string.changelog),
                 Uri.parse(it)
             )
@@ -359,7 +366,7 @@ fun Product.generateLinks(context: Context): List<LinkType> {
         ?.let {
             links.add(
                 LinkType(
-                    R.drawable.ic_public,
+                    Phosphor.GlobeSimple,
                     context.getString(R.string.project_website),
                     Uri.parse(it)
                 )
