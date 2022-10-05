@@ -68,6 +68,7 @@ import com.saggitt.omega.preferences.OmegaPreferences
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.reflect.Field
+import java.text.Collator
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Callable
@@ -443,7 +444,9 @@ fun UserCache.getUserForProfileId(profileId: Int) =
 
 fun MutableList<AppInfo>.sortApps(context: Context, sortType: Int) {
     when (sortType) {
-        Config.SORT_ZA -> sortByDescending { it.title.toString().lowercase() }
+        Config.SORT_ZA -> sortWith(compareBy(Collator.getInstance().reversed()) {
+            it.title.toString().lowercase()
+        })
         Config.SORT_MOST_USED -> {
             val repository = AppTrackerRepository.INSTANCE[context]
             val appsCounter = repository.getAppsCount()
@@ -451,7 +454,9 @@ fun MutableList<AppInfo>.sortApps(context: Context, sortType: Int) {
             sortWith(mostUsedComparator)
         }
         Config.SORT_BY_COLOR -> sortWith(AppColorComparator(context))
-        Config.SORT_AZ -> sortBy { it.title.toString().lowercase() }
+        Config.SORT_AZ -> sortWith(compareBy(Collator.getInstance()) {
+            it.title.toString().lowercase()
+        })
         else -> sortWith(AppInfoComparator(context))
     }
 }
