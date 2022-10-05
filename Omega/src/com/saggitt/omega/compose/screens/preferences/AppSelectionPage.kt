@@ -50,7 +50,7 @@ import com.saggitt.omega.compose.components.ViewWithActionBar
 import com.saggitt.omega.util.appsList
 
 @Composable
-fun AppSelectorPage(
+fun AppSelectionPage(
     pageTitle: String,
     selectedApps: Set<String>,
     pluralTitleId: Int,
