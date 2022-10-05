@@ -449,6 +449,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                     }
                 },
                 containerColor = Color.Transparent,
+                contentColor = MaterialTheme.colorScheme.onBackground,
                 snackbarHost = { SnackbarHost(snackbarHostState) },
             ) { paddingValues ->
                 LazyColumn(

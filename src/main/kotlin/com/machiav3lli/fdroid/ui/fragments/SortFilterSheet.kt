@@ -168,6 +168,7 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                 }
             },
             containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onBackground,
         ) { paddingValues ->
             LazyColumn(
                 modifier = Modifier
