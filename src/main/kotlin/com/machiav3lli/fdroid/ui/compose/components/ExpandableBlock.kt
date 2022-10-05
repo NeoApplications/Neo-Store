@@ -9,9 +9,9 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,7 +69,8 @@ fun ExpandableBlockHeader(
                     style = MaterialTheme.typography.titleSmall,
                 )
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_arrow_down),
+                    modifier = Modifier.size(24.dp),
+                    imageVector = Phosphor.CaretDown,
                     contentDescription = heading
                 )
             }
