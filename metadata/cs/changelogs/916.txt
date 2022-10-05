@@ -1,0 +1,7 @@
+Přidat: Funkce Třídit/Filtr
+Přidat: Explicitní zástupce oblíbených položek
+Přidat: TargetSDK do informačních čipů
+Aktualizace: Nahrazení ikon materiálu ikonou Fosfor
+Aktualizace: Rozložení BottomNavBar, AppSheet a EditRepoSheet
+Oprava: Zobrazení sekundární akce aktualizace při stahování
+Další podrobnosti naleznete v úplném seznamu změn…
