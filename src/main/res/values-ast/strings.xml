@@ -75,7 +75,7 @@
     <string name="incompatible_versions_summary">Amuesa les versiones incompatibles col preséu.</string>
     <string name="incompatible_with_FORMAT">Ye incompatible con «%s»</string>
     <string name="install_types">Tipos d\'instalación</string>
-    <string name="installed">Instalóse</string>
+    <string name="installed">Lo instalao</string>
     <string name="integrity_check_error_DESC">Nun se pudo revisar la integridá.</string>
     <string name="invalid_address">La direición nun ye válida</string>
     <string name="invalid_fingerprint_format">El formatu de la buelga nun ye válidu</string>
@@ -210,4 +210,21 @@
     <string name="dynamic">Configuración dinámica</string>
     <string name="auto_sync_interval">Intervalu de la sincronización automática (en minutos)</string>
     <string name="favorite_applications">Favoritos</string>
+    <string name="images_cache_retention">Retención de la caché d\'imáxenes</string>
+    <string name="releases_cache_retention">Retención de la caché d\'aplicaciones baxaes</string>
+    <string name="prefs_personal">Personal</string>
+    <string name="system_black">Configuración del sistema (prietu)</string>
+    <string name="group_telegram">Grupu de Telegram</string>
+    <string name="group_matrix">Grupu de Matrix</string>
+    <string name="min_sdk">minSDK</string>
+    <string name="target_sdk">targetSDK</string>
+    <string name="action_apply">Aplicar</string>
+    <string name="prefs_cache">Caché</string>
+    <string name="prefs_sync">Sincronización</string>
+    <string name="categories">Categoríes</string>
+    <string name="sort_ascending">Ascendente</string>
+    <string name="sort_descending">Descendente</string>
+    <string name="action_reset">Reafitar</string>
+    <string name="date_added">Data d\'amiestu</string>
+    <string name="date_updated">Data d\'anovamientu</string>
 </resources>
