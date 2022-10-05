@@ -159,7 +159,6 @@
     <string name="protected_app_selected">Protected Apps (%1$d)</string>
     <string name="hide_app_selected">Hidden Apps (%1$d)</string>
     <string name="hide_app_reset">Reset hidden apps</string>
-    <string name="app_reset">Reset Selection</string>
     <string name="protected_app_reset">Reset protected apps</string>
     <string name="action_preferences" translatable="false">@string/customize</string>
     <string name="needs_usage_access">Usage access needed</string>
