@@ -1,0 +1,7 @@
+Aggiunta: funzione Ordina/Filtra
+Aggiunto: collegamento ai preferiti espliciti
+Aggiunto: TargetSDK ai chip informativi
+Aggiornato: sostituisci le icone dei materiali con il fosforo
+Aggiornato: layout BottomNavBar, AppSheet e EditRepoSheet
+Corretto: mostra l'azione secondaria dell'aggiornamento durante il download
+Per maggiori dettagli controlla il changelog completo…
