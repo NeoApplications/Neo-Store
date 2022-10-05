@@ -20,7 +20,6 @@ package com.saggitt.omega.groups
 
 import androidx.annotation.StringRes
 import com.android.launcher3.R
-import com.saggitt.omega.PREFS_DRAWER_CATEGORIZATION
 import com.saggitt.omega.PREFS_DRAWER_CATEGORIZATION_FLOWERPOT
 import com.saggitt.omega.PREFS_DRAWER_CATEGORIZATION_FOLDERS
 import com.saggitt.omega.PREFS_DRAWER_CATEGORIZATION_NONE
@@ -40,14 +39,6 @@ class AppGroupsManager(val prefs: OmegaPreferences) {
         key = "pref_apps_categorization_type",
         titleId = R.string.pref_appcategorization_style_text,
         defaultValue = CategorizationType.Tabs,
-        onChange = ::onPrefsChanged
-    )
-    var drawerCategorizationType = prefs.IntSelectionPref(
-        key = PREFS_DRAWER_CATEGORIZATION,
-        titleId = R.string.title__drawer_categorization,
-        defaultValue = CategorizationType.NONE.ordinal,
-        entries = CategorizationType.values()
-            .associateBy(CategorizationType::ordinal, CategorizationType::nameId),
         onChange = ::onPrefsChanged
     )
 
