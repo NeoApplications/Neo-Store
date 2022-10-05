@@ -1,0 +1,30 @@
+Rask materiell F-Droid-klient
+
+* Materiell F-Droid-stil
+* Ingen oppsprett eller upassende animasjoner
+* Rask synkronisering av pakkebrønner
+* Vanlige Android-bibiotek og lite avhengigheter
+
+Tilgjengelig på:
+
+- Brasiliansk portugisisk
+- Engelsk
+- Finsk
+- Fransk
+- Tysk
+- Gresk
+- Ungarsk
+- Italiensk
+- Norsk bokmål
+- Halvøy-Arabisk
+- Polsk
+- Russisk
+- Forenklet kinesisk
+- Spansk
+- Tyrkisk
+- Ukrainsk
+
+Direkte tilpasning/endring av Foxy Droid
+
+Gemenfrihetslig fri programvare, lisensiert GPLv3+. \
+Bruk, studer, endre, og del; med alle.
