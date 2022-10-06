@@ -108,4 +108,46 @@
     <string name="title_drawer_paged">Paginat</string>
     <string name="dialog_message_change_sort">Treceți la sortarea alfabetică a aplicațiilor\?</string>
     <string name="cat_desktop_grid">Grilă și aspect</string>
+    <string name="hide_app_reset">Resetare aplicații ascunse</string>
+    <string name="title_app_categorization_enable">Activare categorii de aplicații</string>
+    <string name="cat_drawer_icons">Pictograme</string>
+    <string name="pref_appcategorization_flowerpot_title">Categorie de aplicații</string>
+    <string name="pref_app_groups_edit_tip">Atingeți pentru a edita, trageți pentru a reordona.</string>
+    <string name="tab_type_custom_desc">Alegeți manual scurtăturile.</string>
+    <string name="tab_type_smart">Automat</string>
+    <string name="protected_app_reset">Resetare aplicații protejate</string>
+    <string name="disable_protected_apps_message">Dezactivarea aplicațiilor protejate necesită autentificare</string>
+    <string name="enable_protected_apps">Activare aplicații protejate</string>
+    <string name="title__theme_icon_shape">Forma pictogramei</string>
+    <string name="pref_appcategorization_folders_summary">Atingeți pentru a deschide fereastra pop-up.</string>
+    <string name="app_categorization_tabs">File</string>
+    <string name="pref_appcategorization_tabs_summary">Treceți de la un grup la altul.</string>
+    <string name="title_theme_customize_icons">Personalizare pictograme</string>
+    <string name="cat_drawer_grid">Grilă</string>
+    <string name="pref_appcategorization_style_text">Stil</string>
+    <string name="pref_appcategorization_flowerpot_summary">Alegeți automat scurtăturile.</string>
+    <string name="selected_count">%1$d selectate</string>
+    <string name="app_categorization_folders">Dosare</string>
+    <string name="add_new_tab">Adaugă</string>
+    <plurals name="tab_apps_count">
+        <item quantity="one">%1$d Aplicație</item>
+        <item quantity="few">%1$d Aplicații</item>
+        <item quantity="other">%1$d de Aplicații</item>
+    </plurals>
+    <string name="hide_app_selected">Aplicații ascunse (%1$d)</string>
+    <string name="trust_apps_manager_name">Aplicații ascunse și protejate</string>
+    <string name="disable_protected_apps">Dezactivare aplicații protejate</string>
+    <plurals name="hidden_apps_count">
+        <item quantity="one">%1$d Ascuns</item>
+        <item quantity="few">%1$d Ascunse</item>
+        <item quantity="other">%1$d Ascunse</item>
+    </plurals>
+    <string name="protected_apps">Aplicații protejate</string>
+    <string name="protected_app_selected">Aplicații protejate (%1$d)</string>
+    <string name="needs_usage_access">Accesul de utilizare este necesar</string>
+    <string name="msg_missing_usage_access">Activați accesul la utilizare pentru <xliff:g example="My App" id="name">%1$s</xliff:g> pentru a afișa sugestii de aplicații</string>
+    <string name="trust_apps_no_lock_error">Vă rugăm să configurați un ecran de blocare securizat pentru a restricționa accesul la aplicații</string>
+    <string name="title__theme_accent_color">Culoare de accent</string>
+    <string name="title__theme_blur_radius">Intensitatea blurului</string>
+    <string name="title_theme_icon_packs">Pachete de pictograme</string>
 </resources>
