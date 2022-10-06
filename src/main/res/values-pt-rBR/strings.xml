@@ -215,7 +215,7 @@
     <string name="prefs_cache">Cache</string>
     <string name="group_telegram">Nosso grupo no Telegram</string>
     <string name="group_matrix">Nosso grupo no Matrix</string>
-    <string name="min_sdk">SDK Mínimo</string>
+    <string name="min_sdk">SDK mínimo</string>
     <string name="system_black">Sistema (Preto)</string>
     <string name="dynamic">Sistema Dinâmico</string>
     <string name="favorite_applications">Favoritos</string>
@@ -227,4 +227,5 @@
     <string name="date_updated">Data atualizada</string>
     <string name="action_apply">Aplicar</string>
     <string name="date_added">Data adicionada</string>
+    <string name="target_sdk">SDK alvo</string>
 </resources>
