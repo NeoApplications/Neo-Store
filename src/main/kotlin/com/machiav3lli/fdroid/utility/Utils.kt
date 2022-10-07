@@ -538,6 +538,6 @@ fun NavDestination.destinationToItem(): NavItem? = listOf(
 ).find { this.route == it.destination }
 
 fun Activity.setCustomTheme() {
-    AppCompatDelegate.setDefaultNightMode(Preferences[Preferences.Key.Theme].getNightMode())
-    if (!isDynamicColorsTheme) setTheme(Preferences[Preferences.Key.Theme].getResId(resources.configuration))
+    AppCompatDelegate.setDefaultNightMode(Preferences[Preferences.Key.Theme].nightMode)
+    if (!isDynamicColorsTheme) setTheme(Preferences[Preferences.Key.Theme].resId)
 }

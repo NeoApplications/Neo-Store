@@ -2,7 +2,7 @@ package com.machiav3lli.fdroid.content
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Configuration
+import androidx.appcompat.app.AppCompatDelegate
 import com.machiav3lli.fdroid.PREFS_LANGUAGE
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
@@ -310,38 +310,49 @@ object Preferences {
             else if (Android.sdk(29)) listOf(System, SystemBlack, Light, Dark, Black)
             else listOf(Light, Dark, Black)
 
-        abstract fun getResId(configuration: Configuration): Int
+        abstract val resId: Int
+        abstract val nightMode: Int
 
         object System : Theme("system") {
-            override fun getResId(configuration: Configuration): Int {
-                return if ((configuration.uiMode and Configuration.UI_MODE_NIGHT_YES) != 0)
-                    R.style.Theme_Main_Dark else R.style.Theme_Main_Light
-            }
+            override val resId: Int
+                get() = R.style.Theme_Main
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
 
         object SystemBlack : Theme("system-amoled") {
-            override fun getResId(configuration: Configuration): Int {
-                return if ((configuration.uiMode and Configuration.UI_MODE_NIGHT_YES) != 0)
-                    R.style.Theme_Main_Amoled else R.style.Theme_Main_Light
-            }
+            override val resId: Int
+                get() = R.style.Theme_Main_Amoled
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
 
         object Dynamic : Theme("dynamic-system") {
-            override fun getResId(configuration: Configuration): Int {
-                return -1
-            }
+            override val resId: Int
+                get() = -1
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
 
         object Light : Theme("light") {
-            override fun getResId(configuration: Configuration): Int = R.style.Theme_Main_Light
+            override val resId: Int
+                get() = R.style.Theme_Main
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_NO
         }
 
         object Dark : Theme("dark") {
-            override fun getResId(configuration: Configuration): Int = R.style.Theme_Main_Dark
+            override val resId: Int
+                get() = R.style.Theme_Main
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_YES
         }
 
         object Black : Theme("amoled") {
-            override fun getResId(configuration: Configuration): Int = R.style.Theme_Main_Amoled
+            override val resId: Int
+                get() = R.style.Theme_Main_Amoled
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_YES
         }
     }
 

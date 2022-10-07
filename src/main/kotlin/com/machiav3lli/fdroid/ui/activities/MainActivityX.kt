@@ -81,7 +81,7 @@ class MainActivityX : AppCompatActivity() {
     @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
-        currentTheme = Preferences[Preferences.Key.Theme].getResId(resources.configuration)
+        currentTheme = Preferences[Preferences.Key.Theme].resId
         setCustomTheme()
         super.onCreate(savedInstanceState)
 
@@ -155,7 +155,7 @@ class MainActivityX : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (currentTheme != Preferences[Preferences.Key.Theme].getResId(resources.configuration))
+        if (currentTheme != Preferences[Preferences.Key.Theme].resId)
             recreate()
         if (!powerManager.isIgnoringBatteryOptimizations(this.packageName) && !Preferences[Preferences.Key.IgnoreIgnoreBatteryOptimization])
             showBatteryOptimizationDialog()
