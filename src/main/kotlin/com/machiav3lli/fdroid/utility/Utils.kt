@@ -30,6 +30,7 @@ import android.text.util.Linkify
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -39,7 +40,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.core.text.HtmlCompat
 import androidx.core.text.util.LinkifyCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavDestination
 import com.machiav3lli.fdroid.BuildConfig
@@ -538,10 +538,6 @@ fun NavDestination.destinationToItem(): NavItem? = listOf(
 ).find { this.route == it.destination }
 
 fun Activity.setCustomTheme() {
+    AppCompatDelegate.setDefaultNightMode(Preferences[Preferences.Key.Theme].getNightMode())
     if (!isDynamicColorsTheme) setTheme(Preferences[Preferences.Key.Theme].getResId(resources.configuration))
-    else {
-        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        WindowInsetsControllerCompat(window, window.decorView)
-            .isAppearanceLightStatusBars = currentNightMode == Configuration.UI_MODE_NIGHT_NO
-    }
 }
