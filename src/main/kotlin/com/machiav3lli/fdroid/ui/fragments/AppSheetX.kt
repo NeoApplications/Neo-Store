@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -135,6 +136,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         setupAdapters()
         return ComposeView(requireContext()).apply {
             setContent {
+                setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
                 AppTheme(
                     darkTheme = when (Preferences[Preferences.Key.Theme]) {
                         is Preferences.Theme.System -> isSystemInDarkTheme()
