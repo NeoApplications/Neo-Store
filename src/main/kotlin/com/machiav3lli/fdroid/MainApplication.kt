@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import com.google.android.material.color.DynamicColors
+import com.google.android.material.color.DynamicColorsOptions
 import com.machiav3lli.fdroid.content.Cache
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
@@ -54,7 +55,12 @@ class MainApplication : Application(), ImageLoaderFactory {
 
     override fun onCreate() {
         super.onCreate()
-        DynamicColors.applyToActivitiesIfAvailable(this)
+        DynamicColors.applyToActivitiesIfAvailable(
+            this,
+            DynamicColorsOptions.Builder()
+                .setPrecondition { _, _ -> Preferences[Preferences.Key.Theme] == Preferences.Theme.Dynamic }
+                .build()
+        )
         appRef = WeakReference(this)
 
         db = DatabaseX.getInstance(applicationContext)
