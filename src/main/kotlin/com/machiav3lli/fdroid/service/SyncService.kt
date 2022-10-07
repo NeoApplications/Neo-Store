@@ -238,7 +238,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             .Builder(this, NOTIFICATION_CHANNEL_SYNCING)
             .setSmallIcon(R.drawable.ic_sync)
             .setColor(
-                ContextThemeWrapper(this, R.style.Theme_Main_Light)
+                ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
                     .getColorFromAttr(android.R.attr.colorPrimary).defaultColor
             )
             .addAction(

@@ -63,7 +63,7 @@ class ScreenshotsFragment() : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val packageName = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
         val repositoryId = requireArguments().getLong(EXTRA_REPOSITORY_ID)
-        val dialog = Dialog(requireContext(), R.style.Theme_Main_Dark)
+        val dialog = Dialog(requireContext(), R.style.Theme_Main_Amoled)
 
         val window = dialog.window
         val decorView = window?.decorView

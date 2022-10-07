@@ -19,8 +19,8 @@
         android:label="@string/application_name"
         android:roundIcon="${appIconRound}"
         android:supportsRtl="true"
-        android:theme="@style/MainTheme"
         tools:ignore="GoogleAppIndexingWarning">
+            android:theme="@style/Theme.Main.Amoled"
 
         <receiver
             android:name=".MainApplication$BootReceiver"

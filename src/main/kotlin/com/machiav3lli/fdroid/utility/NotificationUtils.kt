@@ -56,7 +56,7 @@ fun Context.displayUpdatesNotification(
                     else null
                 )
                 .setColor(
-                    ContextThemeWrapper(this, R.style.Theme_Main_Light)
+                    ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
                         .getColorFromAttr(android.R.attr.colorPrimary).defaultColor
                 )
                 .setContentIntent(
@@ -106,7 +106,7 @@ fun Context.showNotificationError(repository: Repository, exception: Exception) 
             .Builder(this, NOTIFICATION_CHANNEL_SYNCING)
             .setSmallIcon(android.R.drawable.stat_sys_warning)
             .setColor(
-                ContextThemeWrapper(this, R.style.Theme_Main_Light)
+                ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
                     .getColorFromAttr(android.R.attr.colorPrimary).defaultColor
             )
             .setContentTitle(getString(R.string.could_not_sync_FORMAT, repository.name))
@@ -138,7 +138,7 @@ fun Context.showNotificationError(
             .setAutoCancel(true)
             .setSmallIcon(android.R.drawable.stat_sys_warning)
             .setColor(
-                ContextThemeWrapper(this, R.style.Theme_Main_Light)
+                ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
                     .getColorFromAttr(R.attr.colorPrimary).defaultColor
             )
             .setContentIntent(
@@ -239,7 +239,7 @@ fun InstallerService.notifyStatus(intent: Intent?) {
         .Builder(this, NOTIFICATION_CHANNEL_INSTALLER)
         .setAutoCancel(true)
         .setColor(
-            ContextThemeWrapper(this, R.style.Theme_Main_Light)
+            ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
                 .getColorFromAttr(R.attr.colorPrimary).defaultColor
         )
 

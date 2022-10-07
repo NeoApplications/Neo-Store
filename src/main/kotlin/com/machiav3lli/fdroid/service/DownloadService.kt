@@ -256,7 +256,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
             .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
             .setSmallIcon(android.R.drawable.stat_sys_download)
             .setColor(
-                ContextThemeWrapper(this, R.style.Theme_Main_Light)
+                ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
                     .getColorFromAttr(android.R.attr.colorPrimary).defaultColor
             )
             .addAction(
