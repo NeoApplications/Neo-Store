@@ -2,7 +2,6 @@ package com.machiav3lli.fdroid.ui.pages
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -43,10 +42,8 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUp
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
-import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
-import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -87,133 +84,125 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
         }
     }
 
-    AppTheme(
-        darkTheme = when (Preferences[Preferences.Key.Theme]) {
-            is Preferences.Theme.System -> isSystemInDarkTheme()
-            is Preferences.Theme.SystemBlack -> isSystemInDarkTheme()
-            else -> isDarkTheme
-        }
-    ) {
-        var updatesVisible by remember(secondaryList) { mutableStateOf(true) }
+    var updatesVisible by remember(secondaryList) { mutableStateOf(true) }
 
-        Column(
-            Modifier
-                .background(MaterialTheme.colorScheme.background)
-                .fillMaxSize()
-        ) {
-            AnimatedVisibility(visible = secondaryList.orEmpty().isNotEmpty()) {
-                Column {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
+    Column(
+        Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .fillMaxSize()
+    ) {
+        AnimatedVisibility(visible = secondaryList.orEmpty().isNotEmpty()) {
+            Column {
+                Row(
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    ElevatedButton(
+                        colors = ButtonDefaults.elevatedButtonColors(
+                            contentColor = MaterialTheme.colorScheme.primary
+                        ),
+                        onClick = { updatesVisible = !updatesVisible }
                     ) {
-                        ElevatedButton(
-                            colors = ButtonDefaults.elevatedButtonColors(
-                                contentColor = MaterialTheme.colorScheme.primary
-                            ),
-                            onClick = { updatesVisible = !updatesVisible }
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(start = 4.dp),
-                                text = stringResource(id = R.string.updates),
-                                textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.titleSmall
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Icon(
-                                modifier = Modifier.size(18.dp),
-                                imageVector = if (updatesVisible) Phosphor.CaretUp else Phosphor.CaretDown,
-                                contentDescription = stringResource(id = R.string.updates)
-                            )
-                        }
-                        Spacer(modifier = Modifier.weight(1f))
-                        SuggestionChip(
-                            shape = MaterialTheme.shapes.medium,
-                            colors = SuggestionChipDefaults.suggestionChipColors(
-                                containerColor = MaterialTheme.colorScheme.surface,
-                                labelColor = MaterialTheme.colorScheme.onSurface,
-                            ),
-                            onClick = {
-                                secondaryList?.let {
-                                    mainActivityX.syncConnection.binder?.updateApps(
-                                        it.map(
-                                            Product::toItem
-                                        )
-                                    )
-                                }
-                            },
-                            icon = {
-                                Icon(
-                                    modifier = Modifier.size(18.dp),
-                                    imageVector = Phosphor.Download,
-                                    contentDescription = stringResource(id = R.string.update_all)
-                                )
-                            },
-                            label = {
-                                Text(text = stringResource(id = R.string.update_all))
-                            }
+                        Text(
+                            modifier = Modifier.padding(start = 4.dp),
+                            text = stringResource(id = R.string.updates),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Icon(
+                            modifier = Modifier.size(18.dp),
+                            imageVector = if (updatesVisible) Phosphor.CaretUp else Phosphor.CaretDown,
+                            contentDescription = stringResource(id = R.string.updates)
                         )
                     }
-                    AnimatedVisibility(visible = updatesVisible) {
-                        ProductsHorizontalRecycler(secondaryList, repositoriesMap) { item ->
-                            mainActivityX.navigateProduct(item.packageName)
+                    Spacer(modifier = Modifier.weight(1f))
+                    SuggestionChip(
+                        shape = MaterialTheme.shapes.medium,
+                        colors = SuggestionChipDefaults.suggestionChipColors(
+                            containerColor = MaterialTheme.colorScheme.surface,
+                            labelColor = MaterialTheme.colorScheme.onSurface,
+                        ),
+                        onClick = {
+                            secondaryList?.let {
+                                mainActivityX.syncConnection.binder?.updateApps(
+                                    it.map(
+                                        Product::toItem
+                                    )
+                                )
+                            }
+                        },
+                        icon = {
+                            Icon(
+                                modifier = Modifier.size(18.dp),
+                                imageVector = Phosphor.Download,
+                                contentDescription = stringResource(id = R.string.update_all)
+                            )
+                        },
+                        label = {
+                            Text(text = stringResource(id = R.string.update_all))
                         }
+                    )
+                }
+                AnimatedVisibility(visible = updatesVisible) {
+                    ProductsHorizontalRecycler(secondaryList, repositoriesMap) { item ->
+                        mainActivityX.navigateProduct(item.packageName)
                     }
                 }
             }
-            Row(
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(id = R.string.installed_applications),
-                    modifier = Modifier.weight(1f),
-                )
-                SuggestionChip(
-                    shape = MaterialTheme.shapes.medium,
-                    colors = SuggestionChipDefaults.suggestionChipColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        labelColor = MaterialTheme.colorScheme.onSurface,
-                    ),
-                    onClick = {
-                        mainActivityX.navigateSortFilter(NavItem.Installed.destination)
-                    },
-                    icon = {
-                        Icon(
-                            modifier = Modifier.size(18.dp),
-                            imageVector = Phosphor.FunnelSimple,
-                            contentDescription = stringResource(id = R.string.sort_filter)
-                        )
-                    },
-                    label = {
-                        Text(text = stringResource(id = R.string.sort_filter))
-                    }
-                )
-            }
-            ProductsVerticalRecycler(
-                productsList = primaryList?.sortedBy { it.label.lowercase() },
-                repositories = repositoriesMap,
-                favorites = favorites,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                onUserClick = { item ->
-                    mainActivityX.navigateProduct(item.packageName)
+        }
+        Row(
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = R.string.installed_applications),
+                modifier = Modifier.weight(1f),
+            )
+            SuggestionChip(
+                shape = MaterialTheme.shapes.medium,
+                colors = SuggestionChipDefaults.suggestionChipColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    labelColor = MaterialTheme.colorScheme.onSurface,
+                ),
+                onClick = {
+                    mainActivityX.navigateSortFilter(NavItem.Installed.destination)
                 },
-                onFavouriteClick = { item ->
-                    viewModel.setFavorite(
-                        item.packageName,
-                        !favorites.contains(item.packageName)
+                icon = {
+                    Icon(
+                        modifier = Modifier.size(18.dp),
+                        imageVector = Phosphor.FunnelSimple,
+                        contentDescription = stringResource(id = R.string.sort_filter)
                     )
                 },
-                getInstalled = { installedList?.get(it.packageName) }
-            ) { item ->
-                val installed = installedList?.get(item.packageName)
-                if (installed != null && installed.launcherActivities.isNotEmpty())
-                    context.onLaunchClick(installed, mainActivityX.supportFragmentManager)
-                else
-                    mainActivityX.syncConnection.binder?.installApps(listOf(item))
-            }
+                label = {
+                    Text(text = stringResource(id = R.string.sort_filter))
+                }
+            )
+        }
+        ProductsVerticalRecycler(
+            productsList = primaryList?.sortedBy { it.label.lowercase() },
+            repositories = repositoriesMap,
+            favorites = favorites,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            onUserClick = { item ->
+                mainActivityX.navigateProduct(item.packageName)
+            },
+            onFavouriteClick = { item ->
+                viewModel.setFavorite(
+                    item.packageName,
+                    !favorites.contains(item.packageName)
+                )
+            },
+            getInstalled = { installedList?.get(it.packageName) }
+        ) { item ->
+            val installed = installedList?.get(item.packageName)
+            if (installed != null && installed.launcherActivities.isNotEmpty())
+                context.onLaunchClick(installed, mainActivityX.supportFragmentManager)
+            else
+                mainActivityX.syncConnection.binder?.installApps(listOf(item))
         }
     }
 }

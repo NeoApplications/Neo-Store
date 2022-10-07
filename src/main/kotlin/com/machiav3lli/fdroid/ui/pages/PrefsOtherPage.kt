@@ -41,7 +41,6 @@ fun PrefsOtherPage() {
         Preferences.Key.ProxyHost,
         Preferences.Key.ProxyPort,
     )
-    val infoPrefs = emptyList<Preferences.Key<*>>()
 
     Scaffold(
         modifier = Modifier.fillMaxSize()
