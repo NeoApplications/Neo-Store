@@ -253,8 +253,11 @@ object Preferences {
 
         object Theme : Key<Preferences.Theme>(
             "theme", Value.EnumerationValue(
-                if (Android.sdk(29))
-                    Preferences.Theme.System else Preferences.Theme.Light
+                when {
+                    Android.sdk(31) -> Preferences.Theme.Dynamic
+                    Android.sdk(29) -> Preferences.Theme.SystemBlack
+                    else -> Preferences.Theme.Light
+                }
             )
         )
 
