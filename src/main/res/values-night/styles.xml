@@ -25,7 +25,7 @@
         <item name="colorOnSurfaceInverse">@color/md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_dark_primaryInverse</item>
-        <item name="android:statusBarColor">?colorSurface</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="bottomSheetDialogTheme">@style/Theme.Design.BottomSheetDialog</item>
     </style>
@@ -54,7 +54,7 @@
         <item name="android:colorBackground">@color/pitch_black</item>
         <item name="backgroundColor">@color/pitch_black</item>
         <item name="colorOnBackground">@color/md_theme_dark_onBackground</item>
-        <item name="android:statusBarColor">?colorSurface</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="bottomSheetDialogTheme">@style/Theme.Design.BottomSheetDialog</item>
     </style>
