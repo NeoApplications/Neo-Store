@@ -137,14 +137,14 @@
     <string name="recently_updated">Diperbarui akhir-akhir ini</string>
     <string name="repositories">Repositori</string>
     <string name="root_permission_description">Perbolehkan perizinan root untuk instalasi senyap</string>
-    <string name="repository_unsigned_DESC">Tidak dapat memverifikasi daftar aplikasi yang tidak ditandatangani. 
+    <string name="repository_unsigned_DESC">Tidak dapat memverifikasi daftar aplikasi yang tidak ditandatangani.
 \nHati-hati mengunduh aplikasi dari repositori yang tidak ditandatangani.</string>
     <string name="saving_details">Menyimpan detail…</string>
     <string name="select_mirror">Pilih mirror</string>
     <string name="sorting_order">Pengurutan</string>
     <string name="source_code">Kode sumber</string>
     <string name="username">Nama pengguna</string>
-    <string name="repository_not_used_DESC">Repositori ini belum dipakai. 
+    <string name="repository_not_used_DESC">Repositori ini belum dipakai.
 \nAktifkan untuk melihat aplikasi di dalamnya.</string>
     <string name="requires_FORMAT">Membutuhkan %s</string>
     <string name="save">Simpan</string>
