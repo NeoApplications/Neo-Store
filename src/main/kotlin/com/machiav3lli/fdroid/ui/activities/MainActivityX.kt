@@ -12,11 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -100,18 +102,21 @@ class MainActivityX : AppCompatActivity() {
             ) {
                 val query by searchQuery.collectAsState(initial = "")
                 val navController = rememberAnimatedNavController()
+                val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
                 SideEffect {
                     cScope.launch { _searchQuery.emit("") }
                 }
 
                 Scaffold(
+                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                     containerColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
                     bottomBar = { BottomNavBar(page = NAV_MAIN, navController = navController) },
                     topBar = {
                         TopBar(
                             title = stringResource(id = R.string.application_name),
+                            scrollBehavior = scrollBehavior,
                         ) {
                             ExpandableSearchAction(
                                 query = query,
