@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
-import com.machiav3lli.fdroid.ui.compose.utils.compositeOverBackground
 
 private enum class SelectionState { Unselected, Selected }
 
@@ -64,10 +63,7 @@ private fun categoryChipTransition(selected: Boolean): CategoryChipTransition {
     val contentColor = transition.animateColor(label = "chip_content_alpha") { state ->
         when (state) {
             SelectionState.Unselected -> MaterialTheme.colorScheme.surface
-            SelectionState.Selected -> MaterialTheme.colorScheme.primaryContainer.compositeOverBackground(
-                alpha = 0.8f,
-                background = MaterialTheme.colorScheme.onBackground
-            )
+            SelectionState.Selected -> MaterialTheme.colorScheme.primaryContainer
         }
     }
     val checkScale = transition.animateFloat(
@@ -104,7 +100,7 @@ fun CategoryChip(
                 clip = true
             },
         color = categoryChipTransitionState.contentColor,
-        tonalElevation = 8.dp
+        tonalElevation = 48.dp
     ) {
         Row(
             modifier = Modifier
@@ -116,7 +112,7 @@ fun CategoryChip(
                 Icon(
                     imageVector = Phosphor.Check,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurface,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier
                         .wrapContentSize()
                         .graphicsLayer {
