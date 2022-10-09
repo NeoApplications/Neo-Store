@@ -147,6 +147,6 @@ fun NavGraphBuilder.drawerPrefsGraph(route: String) {
     preferenceGraph(route, { DrawerPrefsPage() }) { subRoute ->
         preferenceGraph(route = subRoute(Routes.HIDDEN_APPS), { HiddenAppsPage() })
         preferenceGraph(route = subRoute(Routes.PROTECTED_APPS), { ProtectedAppsPage() })
-        preferenceGraph(route = subRoute(Routes.CATEGORIZE_APP), { AppCategoriesPage() })
+        preferenceGraph(route = subRoute(Routes.CATEGORIZE_APPS), { AppCategoriesPage() })
     }
 }

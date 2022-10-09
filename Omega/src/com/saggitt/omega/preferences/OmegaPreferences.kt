@@ -655,7 +655,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         key = "pref_categorize_apps",
         titleId = R.string.title_app_categorize,
         summaryId = R.string.summary_app_categorize,
-        navRoute = Routes.CATEGORIZE_APP,
+        navRoute = Routes.CATEGORIZE_APPS,
         onChange = doNothing
     )
 
