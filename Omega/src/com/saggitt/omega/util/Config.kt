@@ -48,7 +48,7 @@ import com.saggitt.omega.PREFS_DOCK_COLUMNS
 import com.saggitt.omega.PREFS_DRAWER_COLUMNS
 import com.saggitt.omega.allapps.CustomAppFilter
 import com.saggitt.omega.theme.ThemeOverride
-import java.util.*
+import java.util.Locale
 
 class Config(val context: Context) {
 
@@ -124,6 +124,11 @@ class Config(val context: Context) {
         const val THEME_LIGHT = 0
         const val THEME_DARK = 1
         const val THEME_BLACK = 2
+
+        //CATEGORY BOTTOM SHEET
+        const val BS_SELECT_TAB_TYPE = 0
+        const val BS_CREATE_GROUP = 1
+        const val BS_EDIT_GROUP = 2
 
         val ICON_INTENTS = arrayOf(
             Intent("com.novalauncher.THEME"),
@@ -279,5 +284,9 @@ class Config(val context: Context) {
             return originalIdp
         }
 
+        fun hasWorkApps(context: Context): Boolean {
+            return context.omegaPrefs.drawerSeparateWorkApps.onGetValue() &&
+                    UserCache.INSTANCE.get(context).userProfiles.size > 1
+        }
     }
 }
