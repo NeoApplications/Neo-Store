@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.ui.compose.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
@@ -13,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -45,14 +43,13 @@ fun ProductCard(
     Surface(
         modifier = Modifier
             .padding(4.dp)
-            .requiredSize(80.dp, 116.dp),
-        tonalElevation = 8.dp,
+            .requiredSize(80.dp, 136.dp),
+        tonalElevation = 4.dp,
         shape = MaterialTheme.shapes.medium,
         onClick = { onUserClick(product) }
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            modifier = Modifier.padding(8.dp),
         ) {
             NetworkImage(
                 modifier = Modifier.size(64.dp),
@@ -64,7 +61,7 @@ fun ProductCard(
                 text = product.name,
                 style = MaterialTheme.typography.bodySmall,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
+                maxLines = 2,
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
