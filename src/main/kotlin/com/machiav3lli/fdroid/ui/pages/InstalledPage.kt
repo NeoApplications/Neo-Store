@@ -15,8 +15,6 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
@@ -37,6 +35,7 @@ import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.ProductsVerticalRecycler
+import com.machiav3lli.fdroid.ui.compose.components.ActionChip
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUp
@@ -117,32 +116,18 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
                         )
                     }
                     Spacer(modifier = Modifier.weight(1f))
-                    SuggestionChip(
-                        shape = MaterialTheme.shapes.medium,
-                        colors = SuggestionChipDefaults.suggestionChipColors(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                            labelColor = MaterialTheme.colorScheme.onSurface,
-                        ),
-                        onClick = {
-                            secondaryList?.let {
-                                mainActivityX.syncConnection.binder?.updateApps(
-                                    it.map(
-                                        Product::toItem
-                                    )
+                    ActionChip(
+                        textId = R.string.update_all,
+                        icon = Phosphor.Download,
+                    ) {
+                        secondaryList?.let {
+                            mainActivityX.syncConnection.binder?.updateApps(
+                                it.map(
+                                    Product::toItem
                                 )
-                            }
-                        },
-                        icon = {
-                            Icon(
-                                modifier = Modifier.size(18.dp),
-                                imageVector = Phosphor.Download,
-                                contentDescription = stringResource(id = R.string.update_all)
                             )
-                        },
-                        label = {
-                            Text(text = stringResource(id = R.string.update_all))
                         }
-                    )
+                    }
                 }
                 AnimatedVisibility(visible = updatesVisible) {
                     ProductsHorizontalRecycler(secondaryList, repositoriesMap) { item ->
@@ -159,26 +144,10 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
                 text = stringResource(id = R.string.installed_applications),
                 modifier = Modifier.weight(1f),
             )
-            SuggestionChip(
-                shape = MaterialTheme.shapes.medium,
-                colors = SuggestionChipDefaults.suggestionChipColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    labelColor = MaterialTheme.colorScheme.onSurface,
-                ),
-                onClick = {
-                    mainActivityX.navigateSortFilter(NavItem.Installed.destination)
-                },
-                icon = {
-                    Icon(
-                        modifier = Modifier.size(18.dp),
-                        imageVector = Phosphor.FunnelSimple,
-                        contentDescription = stringResource(id = R.string.sort_filter)
-                    )
-                },
-                label = {
-                    Text(text = stringResource(id = R.string.sort_filter))
-                }
-            )
+            ActionChip(
+                textId = R.string.sort_filter,
+                icon = Phosphor.FunnelSimple
+            ) { mainActivityX.navigateSortFilter(NavItem.Installed.destination) }
         }
         ProductsVerticalRecycler(
             productsList = primaryList?.sortedBy { it.label.lowercase() },

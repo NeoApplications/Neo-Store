@@ -4,14 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
@@ -28,6 +24,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
+import com.machiav3lli.fdroid.ui.compose.components.ActionChip
 import com.machiav3lli.fdroid.ui.compose.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
@@ -97,26 +94,10 @@ fun LatestPage(viewModel: MainNavFragmentViewModelX) {
                     text = stringResource(id = R.string.recently_updated),
                     modifier = Modifier.weight(1f),
                 )
-                SuggestionChip(
-                    shape = MaterialTheme.shapes.medium,
-                    colors = SuggestionChipDefaults.suggestionChipColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        labelColor = MaterialTheme.colorScheme.onSurface,
-                    ),
-                    onClick = {
-                        mainActivityX.navigateSortFilter(NavItem.Latest.destination)
-                    },
-                    icon = {
-                        Icon(
-                            modifier = Modifier.size(18.dp),
-                            imageVector = Phosphor.FunnelSimple,
-                            contentDescription = stringResource(id = R.string.sort_filter)
-                        )
-                    },
-                    label = {
-                        Text(text = stringResource(id = R.string.sort_filter))
-                    }
-                )
+                ActionChip(
+                    textId = R.string.sort_filter,
+                    icon = Phosphor.FunnelSimple
+                ) { mainActivityX.navigateSortFilter(NavItem.Latest.destination) }
             }
         }
         items(
