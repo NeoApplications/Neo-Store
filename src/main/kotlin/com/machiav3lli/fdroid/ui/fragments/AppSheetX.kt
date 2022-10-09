@@ -38,6 +38,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -71,7 +72,6 @@ import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.DownloadService
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.compose.components.ExpandableBlock
-import com.machiav3lli.fdroid.ui.compose.components.ScreenshotItem
 import com.machiav3lli.fdroid.ui.compose.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.compose.components.SwitchPreference
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.AppInfoChips
@@ -82,8 +82,11 @@ import com.machiav3lli.fdroid.ui.compose.components.appsheet.PermissionsItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.ReleaseItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.SourceCodeCard
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.TopBarHeader
+import com.machiav3lli.fdroid.ui.compose.components.toScreenshotItem
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.compose.utils.Callbacks
+import com.machiav3lli.fdroid.ui.dialog.BaseDialog
+import com.machiav3lli.fdroid.ui.pages.ScreenshotsPage
 import com.machiav3lli.fdroid.ui.viewmodels.AppViewModelX
 import com.machiav3lli.fdroid.utility.Utils.rootInstallerEnabled
 import com.machiav3lli.fdroid.utility.Utils.startUpdate
@@ -362,6 +365,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     @Composable
     fun AppSheet() {
         val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
+        val showScreenshots = remember { mutableStateOf(false) }
+        var screenshotPage by remember { mutableStateOf(0) }
         val installed by viewModel.installedItem.observeAsState()
         val products by viewModel.products.observeAsState()
         val repos by viewModel.repositories.observeAsState()
@@ -506,13 +511,13 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                     if (Preferences[Preferences.Key.ShowScreenshots]) {
                         item {
                             ScreenshotList(screenShots = suggestedProductRepo.first.screenshots.map {
-                                ScreenshotItem(
-                                    screenShot = it,
+                                it.toScreenshotItem(
                                     repository = repo,
                                     packageName = product.packageName
                                 )
-                            }) {
-                                onScreenshotClick(it)
+                            }) { index ->
+                                screenshotPage = index
+                                showScreenshots.value = true
                             }
                         }
                     }
@@ -657,6 +662,20 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                     }
                     item {
                         Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+
+                if (showScreenshots.value) {
+                    BaseDialog(openDialogCustom = showScreenshots) {
+                        ScreenshotsPage(
+                            screenshots = suggestedProductRepo.first.screenshots.map {
+                                it.toScreenshotItem(
+                                    repository = repo,
+                                    packageName = product.packageName
+                                )
+                            },
+                            page = screenshotPage
+                        )
                     }
                 }
             }

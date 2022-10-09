@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
@@ -35,14 +35,14 @@ fun Screenshot.toScreenshotItem(packageName: String, repository: Repository) =
 fun ScreenshotList(
     modifier: Modifier = Modifier,
     screenShots: List<ScreenshotItem>,
-    onScreenShotClick: (Screenshot) -> Unit = {}
+    onScreenShotClick: (Int) -> Unit
 ) {
     val screenShotList by remember { mutableStateOf(screenShots) }
     LazyRow(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(screenShotList) {
+        itemsIndexed(screenShotList) { index, it ->
 
             var image by remember { mutableStateOf<String?>(null) }
 
@@ -59,7 +59,7 @@ fun ScreenshotList(
                     .wrapContentWidth()
                     .requiredHeight(300.dp)
                     .clip(MaterialTheme.shapes.large)
-                    .clickable { onScreenShotClick(it.screenShot) },
+                    .clickable { onScreenShotClick(index) },
                 data = image
             )
         }
