@@ -48,8 +48,9 @@ fun ZoomableImage(
     var scale by remember { mutableStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     val state = rememberTransformableState { zoomChange, offsetChange, _ ->
-        scale *= zoomChange
-        offset += offsetChange * scale
+        scale = (scale * zoomChange).coerceAtLeast(1f)
+        offset = if (scale == 1f) Offset.Zero
+        else offset + offsetChange * scale
     }
     NetworkImage(
         modifier = modifier
@@ -61,6 +62,7 @@ fun ZoomableImage(
             )
             .transformable(state = state),
         data = data,
+        contentScale = ContentScale.Fit,
         shape = RectangleShape
     )
 }
