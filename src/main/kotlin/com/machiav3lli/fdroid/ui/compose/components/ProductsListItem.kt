@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.ButtonDefaults.buttonColors
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -148,23 +146,16 @@ fun ExpandedItemContent(
                 )
             }
             AnimatedVisibility(visible = installed == null || installed.launcherActivities.isNotEmpty()) {
-                FilledTonalButton(
-                    colors = buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                    ),
-                    onClick = { onActionClicked(item) }
-                ) {
-                    val action = when {
-                        installed != null -> ActionState.Launch
-                        else -> ActionState.Install
-                    }
-                    Icon(
-                        imageVector = action.icon,
-                        contentDescription = stringResource(id = action.textId)
-                    )
-                    Text(text = stringResource(id = action.textId))
+                val action = when {
+                    installed != null -> ActionState.Launch
+                    else -> ActionState.Install
                 }
+                ActionButton(
+                    text = stringResource(id = action.textId),
+                    icon = action.icon,
+                    positive = true,
+                    onClick = { onActionClicked(item) }
+                )
             }
         }
     }
