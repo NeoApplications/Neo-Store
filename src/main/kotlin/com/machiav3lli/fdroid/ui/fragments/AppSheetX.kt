@@ -63,11 +63,9 @@ import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.DonateType
 import com.machiav3lli.fdroid.entity.DownloadState
-import com.machiav3lli.fdroid.entity.Screenshot
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.network.CoilDownloader
 import com.machiav3lli.fdroid.screen.MessageDialog
-import com.machiav3lli.fdroid.screen.ScreenshotsFragment
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.DownloadService
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
@@ -271,25 +269,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         MessageDialog(MessageDialog.Message.Permissions(group, permissions)).show(
             childFragmentManager
         )
-    }
-
-    override fun onScreenshotClick(screenshot: Screenshot) {
-        val pair = viewModel.productRepos.asSequence()
-            .map { it ->
-                Pair(
-                    it.second,
-                    it.first.screenshots.find { it === screenshot }?.identifier
-                )
-            }
-            .filter { it.second != null }.firstOrNull()
-        if (pair != null) {
-            val (repository, identifier) = pair
-            if (identifier != null) {
-                ScreenshotsFragment(packageName, repository.id, identifier).show(
-                    childFragmentManager
-                )
-            }
-        }
     }
 
     override fun onReleaseClick(release: Release) {
