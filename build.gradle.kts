@@ -1,10 +1,10 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val composeVersion = "1.3.0-beta03"
-val composeCompilerVersion = "1.3.1"
-val roomVersion = "2.4.3"
+val composeVersion = "1.3.0-rc01"
+val composeCompilerVersion = "1.3.2"
+val roomVersion = "2.5.0-beta01"
 val navigationVersion = "2.5.2"
-val accompanistVersion = "0.26.4-beta"
+val accompanistVersion = "0.26.5-rc"
 
 plugins {
     id("com.android.application") version ("7.2.2")
@@ -129,13 +129,13 @@ dependencies {
     implementation("com.google.devtools.ksp:symbol-processing-api:1.7.20-RC-1.0.6")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.0-rc01")
-    implementation("androidx.fragment:fragment-ktx:1.6.0-alpha02")
+    implementation("androidx.fragment:fragment-ktx:1.6.0-alpha03")
     implementation("androidx.activity:activity-ktx:1.6.0")
     implementation("androidx.activity:activity-compose:1.6.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
-    implementation("androidx.work:work-runtime-ktx:2.8.0-alpha04")
+    implementation("androidx.work:work-runtime-ktx:2.8.0-beta01")
 
     // Material3
     implementation("com.google.android.material:material:1.8.0-alpha01")
@@ -178,12 +178,13 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.0.0-beta03")
+    implementation("androidx.compose.material3:material3:1.0.0-rc01")
     implementation("androidx.compose.animation:animation:$composeVersion")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.19")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.20")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-pager:$accompanistVersion")
 
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
