@@ -170,7 +170,6 @@ dependencies {
     // Room
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
-    implementation("androidx.room:room-rxjava3:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
 
     // Compose
