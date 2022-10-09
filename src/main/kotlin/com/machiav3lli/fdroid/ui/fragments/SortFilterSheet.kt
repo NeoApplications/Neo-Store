@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -140,7 +139,6 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
             bottomBar = {
                 Row(
                     modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.surface)
                         .fillMaxWidth()
                         .padding(12.dp)
                         .wrapContentHeight(),
