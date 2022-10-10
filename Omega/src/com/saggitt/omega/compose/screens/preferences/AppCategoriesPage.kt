@@ -19,6 +19,8 @@
 package com.saggitt.omega.compose.screens.preferences
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +28,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -47,7 +51,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.consumeAllChanges
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -59,6 +67,8 @@ import com.saggitt.omega.compose.components.CategorizationOption
 import com.saggitt.omega.compose.components.ComposeSwitchView
 import com.saggitt.omega.compose.components.GroupItem
 import com.saggitt.omega.compose.components.ViewWithActionBar
+import com.saggitt.omega.compose.components.move
+import com.saggitt.omega.compose.components.rememberDragDropListState
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerFolders
 import com.saggitt.omega.groups.DrawerTabs
@@ -67,6 +77,7 @@ import com.saggitt.omega.groups.ui.CreateGroupBottomSheet
 import com.saggitt.omega.groups.ui.EditGroupBottomSheet
 import com.saggitt.omega.groups.ui.SelectTabBottomSheet
 import com.saggitt.omega.util.Config
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -160,6 +171,13 @@ fun AppCategoriesPage() {
             }
         }
     }
+
+    var overscrollJob by remember { mutableStateOf<Job?>(null) }
+    val onMove: (Int, Int) -> Unit = { from, to ->
+        groups.move(from, to)
+    }
+    val dragDropListState = rememberDragDropListState(onMove = onMove)
+
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetShape = RoundedCornerShape(topStart = radius, topEnd = radius),
@@ -223,6 +241,9 @@ fun AppCategoriesPage() {
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
+            },
+            onBackAction = {
+                //todo save sorted group
             }
         ) { paddingValues ->
             Column(
@@ -293,43 +314,83 @@ fun AppCategoriesPage() {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                groups.forEach {
-                    GroupItem(
-                        title = it.title,
-                        summary = it.summary,
-                        removable = it.type in arrayOf(
-                            DrawerTabs.TYPE_CUSTOM,
-                            FlowerpotTabs.TYPE_FLOWERPOT
-                        ),
-                        onClick = {
-                            coroutineScope.launch {
-                                sheetChanger = Config.BS_EDIT_GROUP
-                                editGroup.value = it
-                                sheetState.show()
-                            }
+                LazyColumn(
+                    modifier = Modifier
+                        .pointerInput(Unit) {
+                            detectDragGesturesAfterLongPress(
+                                onDrag = { change, offset ->
+                                    change.consumeAllChanges()
+                                    dragDropListState.onDrag(offset)
+
+                                    if (overscrollJob?.isActive == true)
+                                        return@detectDragGesturesAfterLongPress
+
+                                    dragDropListState.checkForOverScroll()
+                                        .takeIf { it != 0f }
+                                        ?.let {
+                                            overscrollJob = coroutineScope.launch {
+                                                dragDropListState.lazyListState.scrollBy(it)
+                                            }
+                                        }
+                                        ?: run { overscrollJob?.cancel() }
+                                },
+                                onDragStart = { offset -> dragDropListState.onDragStart(offset) },
+                                onDragEnd = { dragDropListState.onDragInterrupted() },
+                                onDragCancel = { dragDropListState.onDragInterrupted() }
+                            )
                         },
-                        onRemoveClick = {
-                            groups.remove(it)
-                            when (manager.categorizationType) {
-                                AppGroupsManager.CategorizationType.Tabs -> {
-                                    manager.drawerTabs.removeGroup(it as DrawerTabs.Tab)
-                                    manager.drawerTabs.saveToJson()
-                                }
+                    state = dragDropListState.lazyListState
+                ) {
+                    itemsIndexed(groups) { index, item ->
+                        GroupItem(
+                            title = item.title,
+                            summary = item.summary,
+                            modifier = Modifier.composed {
+                                val offsetOrNull =
+                                    dragDropListState.elementDisplacement.takeIf {
+                                        index == dragDropListState.currentIndexOfDraggedItem
+                                    }
 
-                                AppGroupsManager.CategorizationType.Folders -> {
-                                    manager.drawerFolders.removeGroup(it as DrawerFolders.Folder)
-                                    manager.drawerFolders.saveToJson()
+                                Modifier
+                                    .graphicsLayer {
+                                        translationY = offsetOrNull ?: 0f
+                                    }
+                            },
+                            removable = item.type in arrayOf(
+                                DrawerTabs.TYPE_CUSTOM,
+                                FlowerpotTabs.TYPE_FLOWERPOT
+                            ),
+                            onClick = {
+                                coroutineScope.launch {
+                                    sheetChanger = Config.BS_EDIT_GROUP
+                                    editGroup.value = item
+                                    sheetState.show()
                                 }
+                            },
+                            onRemoveClick = {
+                                groups.remove(item)
+                                when (manager.categorizationType) {
+                                    AppGroupsManager.CategorizationType.Tabs -> {
+                                        manager.drawerTabs.removeGroup(item as DrawerTabs.Tab)
+                                        manager.drawerTabs.saveToJson()
+                                    }
 
-                                AppGroupsManager.CategorizationType.Flowerpot -> {
-                                    manager.flowerpotTabs.removeGroup(it as DrawerTabs.Tab)
-                                    manager.flowerpotTabs.saveToJson()
+                                    AppGroupsManager.CategorizationType.Folders -> {
+                                        manager.drawerFolders.removeGroup(item as DrawerFolders.Folder)
+                                        manager.drawerFolders.saveToJson()
+                                    }
+
+                                    AppGroupsManager.CategorizationType.Flowerpot -> {
+                                        manager.flowerpotTabs.removeGroup(item as DrawerTabs.Tab)
+                                        manager.flowerpotTabs.saveToJson()
+                                    }
+
+                                    else -> {}
                                 }
-
-                                else -> {}
                             }
-                        }
-                    )
+                        )
+
+                    }
                 }
             }
         }

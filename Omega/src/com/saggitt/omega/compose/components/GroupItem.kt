@@ -45,12 +45,13 @@ import com.android.launcher3.R
 fun GroupItem(
     title: String,
     summary: String?,
+    modifier: Modifier = Modifier,
     removable: Boolean,
     onClick: () -> Unit = {},
     onRemoveClick: () -> Unit = {},
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() }
             .wrapContentSize()
@@ -97,8 +98,8 @@ fun GroupItem(
 @Composable
 fun GroupItemPreview() {
     GroupItem(
-        "Tab 1",
-        "--5 APPS",
-        true,
+        title = "Tab 1",
+        summary = "--5 APPS",
+        removable = true
     )
 }
