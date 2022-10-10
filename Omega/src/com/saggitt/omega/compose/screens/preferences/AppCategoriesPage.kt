@@ -18,6 +18,7 @@
 
 package com.saggitt.omega.compose.screens.preferences
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,19 +27,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material.BottomSheetState
-import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -46,10 +47,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.launcher3.R
@@ -62,7 +63,10 @@ import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerFolders
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.groups.FlowerpotTabs
-import com.saggitt.omega.groups.ui.CategoryBottomSheet
+import com.saggitt.omega.groups.ui.CreateGroupBottomSheet
+import com.saggitt.omega.groups.ui.EditGroupBottomSheet
+import com.saggitt.omega.groups.ui.SelectTabBottomSheet
+import com.saggitt.omega.util.Config
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -70,15 +74,14 @@ import kotlinx.coroutines.launch
 fun AppCategoriesPage() {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-
     val prefs = Utilities.getOmegaPrefs(context)
     val manager by lazy { prefs.drawerAppGroupsManager }
-
     val enableCategories by remember { mutableStateOf(manager.categorizationEnabled) }
     var categoryTitle by remember { mutableStateOf("") }
 
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
+    val sheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded }
     )
 
     var radius = 16.dp
@@ -86,15 +89,22 @@ fun AppCategoriesPage() {
         radius = prefs.themeCornerRadius.onGetValue().dp
     }
 
-    val (selectedOption, onOptionSelected) = remember {
+    var (selectedOption, onOptionSelected) = remember {
         mutableStateOf(manager.categorizationType)
     }
+    val hasWorkApps = Config.hasWorkApps(LocalContext.current)
 
     val groups = remember(manager.categorizationType) {
         mutableStateListOf(
             *when (manager.categorizationType) {
                 AppGroupsManager.CategorizationType.Tabs -> {
-                    manager.drawerTabs.getGroups()
+                    if (hasWorkApps) {
+                        manager.drawerTabs.getGroups()
+                            .filter { it !is DrawerTabs.ProfileTab || !it.profile.matchesAll }
+                    } else {
+                        manager.drawerTabs.getGroups()
+                            .filter { it !is DrawerTabs.ProfileTab || it.profile.matchesAll }
+                    }
                 }
 
                 AppGroupsManager.CategorizationType.Folders -> {
@@ -102,7 +112,13 @@ fun AppCategoriesPage() {
                 }
 
                 AppGroupsManager.CategorizationType.Flowerpot -> {
-                    manager.flowerpotTabs.getGroups()
+                    if (hasWorkApps) {
+                        manager.flowerpotTabs.getGroups()
+                            .filter { it !is DrawerTabs.ProfileTab || !it.profile.matchesAll }
+                    } else {
+                        manager.flowerpotTabs.getGroups()
+                            .filter { it !is DrawerTabs.ProfileTab || it.profile.matchesAll }
+                    }
                 }
 
                 else -> {
@@ -111,9 +127,13 @@ fun AppCategoriesPage() {
             }.toTypedArray()
         )
     }
+    val editGroup = remember {
+        mutableStateOf(groups[0])
+    }
 
     when (manager.categorizationType) {
-        AppGroupsManager.CategorizationType.Tabs, AppGroupsManager.CategorizationType.Flowerpot -> {
+        AppGroupsManager.CategorizationType.Tabs,
+        AppGroupsManager.CategorizationType.Flowerpot -> {
             categoryTitle = stringResource(id = R.string.app_categorization_tabs)
         }
 
@@ -123,15 +143,60 @@ fun AppCategoriesPage() {
 
         else -> {}
     }
+    var sheetChanger by remember {
+        mutableStateOf(Config.BS_SELECT_TAB_TYPE)
+    }
 
-    BottomSheetScaffold(
-        scaffoldState = bottomSheetScaffoldState,
-        sheetPeekHeight = 0.dp,
+    BackHandler(sheetState.isVisible) {
+        coroutineScope.launch {
+            sheetState.hide()
+            sheetChanger = Config.BS_SELECT_TAB_TYPE
+        }
+    }
+    if (sheetState.currentValue != ModalBottomSheetValue.Hidden) {
+        DisposableEffect(Unit) {
+            onDispose {
+                sheetChanger = Config.BS_SELECT_TAB_TYPE
+            }
+        }
+    }
+    ModalBottomSheetLayout(
+        sheetState = sheetState,
         sheetShape = RoundedCornerShape(topStart = radius, topEnd = radius),
         sheetElevation = 8.dp,
-        sheetBackgroundColor = MaterialTheme.colorScheme.background,
+        sheetBackgroundColor = MaterialTheme.colorScheme.surfaceVariant,
         sheetContent = {
-            CategoryBottomSheet(category = selectedOption)
+            when (sheetChanger) {
+                Config.BS_SELECT_TAB_TYPE -> {
+                    if (selectedOption == AppGroupsManager.CategorizationType.Tabs || selectedOption == AppGroupsManager.CategorizationType.Flowerpot) {
+                        SelectTabBottomSheet {
+                            sheetChanger = it
+                        }
+                    } else {
+                        CreateGroupBottomSheet(selectedOption) {
+                            sheetChanger = it
+                            coroutineScope.launch {
+                                sheetState.hide()
+                            }
+                        }
+                    }
+                }
+
+                Config.BS_CREATE_GROUP -> {
+                    CreateGroupBottomSheet(selectedOption) {
+                        sheetChanger = it
+                    }
+                }
+
+                Config.BS_EDIT_GROUP -> {
+                    EditGroupBottomSheet(selectedOption, editGroup.value) {
+                        sheetChanger = it
+                        coroutineScope.launch {
+                            sheetState.hide()
+                        }
+                    }
+                }
+            }
         }
     )
     {
@@ -141,71 +206,16 @@ fun AppCategoriesPage() {
                 FloatingActionButton(
                     onClick = {
                         coroutineScope.launch {
-                            if (bottomSheetScaffoldState.bottomSheetState.isExpanded) {
-                                bottomSheetScaffoldState.bottomSheetState.collapse()
+                            if (sheetState.isVisible) {
+                                sheetState.hide()
                             } else {
-                                bottomSheetScaffoldState.bottomSheetState.expand()
+                                sheetState.show()
                             }
                         }
-                        /* TODO create Compose Dialog/BottomSheet as replacement to this code
-                      when (manager.categorizationType) {
-                          AppGroupsManager.CategorizationType.Tabs, AppGroupsManager.CategorizationType.Flowerpot -> {
-                              DrawerTabTypeSelectionBottomSheet.show(
-                                  context, mapOf(
-                                      FlowerpotTabs.TYPE_FLOWERPOT to arrayOf(
-                                          R.string.tab_type_smart,
-                                          R.string.pref_appcategorization_flowerpot_summary,
-                                          R.drawable.ic_category
-                                      ),
-                                      DrawerTabs.TYPE_CUSTOM to arrayOf(
-                                          R.string.custom,
-                                          R.string.tab_type_custom_desc,
-                                          R.drawable.ic_squares_four
-                                      )
-                                  )
-                              ) {
-                                  when (it) {
-                                      DrawerTabs.TYPE_CUSTOM -> {
-                                          val newGroup = DrawerTabs.CustomTab(context)
-                                          DrawerGroupBottomSheet.newGroup(
-                                              context,
-                                              newGroup,
-                                              false
-                                          ) {
-                                              newGroup.customizations.applyFrom(it)
-                                              manager.drawerTabs.setGroups(groups.plus(newGroup) as List<DrawerTabs.Tab>)
-                                              manager.drawerTabs.saveToJson()
-                                          }
-                                      }
-                                      FlowerpotTabs.TYPE_FLOWERPOT -> {
-                                          val newGroup = FlowerpotTabs.FlowerpotTab(context)
-                                          DrawerGroupBottomSheet.newGroup(
-                                              context,
-                                              newGroup,
-                                              false
-                                          ) {
-                                              newGroup.customizations.applyFrom(it)
-                                              manager.flowerpotTabs.setGroups(groups.plus(newGroup) as List<DrawerTabs.Tab>)
-                                              manager.flowerpotTabs.saveToJson()
-                                          }
-                                      }
-                                  }
-                              }
-                          }
-                          AppGroupsManager.CategorizationType.Folders -> {
-                              val newGroup = DrawerFolders.CustomFolder(context)
-                              DrawerGroupBottomSheet.newGroup(context, newGroup, false) {
-                                  newGroup.customizations.applyFrom(it)
-                                  manager.drawerFolders.setGroups(groups.plus(newGroup) as List<DrawerFolders.Folder>)
-                                  manager.drawerFolders.saveToJson()
-                              }
-                          }
-                          else -> {}
-                      }*/
-                        //groups.add(newGroup)
                     },
                     modifier = Modifier.padding(16.dp),
-                    containerColor = MaterialTheme.colorScheme.primary.copy(0.65f)
+                    containerColor = MaterialTheme.colorScheme.primary.copy(0.65f),
+                    contentColor = Color.White
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
@@ -256,6 +266,7 @@ fun AppCategoriesPage() {
                             selected = selectedOption == it
                         ) {
                             manager.categorizationType = it
+                            selectedOption = it
                             onOptionSelected(it)
                         }
                     }
@@ -290,6 +301,13 @@ fun AppCategoriesPage() {
                             DrawerTabs.TYPE_CUSTOM,
                             FlowerpotTabs.TYPE_FLOWERPOT
                         ),
+                        onClick = {
+                            coroutineScope.launch {
+                                sheetChanger = Config.BS_EDIT_GROUP
+                                editGroup.value = it
+                                sheetState.show()
+                            }
+                        },
                         onRemoveClick = {
                             groups.remove(it)
                             when (manager.categorizationType) {
@@ -316,10 +334,4 @@ fun AppCategoriesPage() {
             }
         }
     }
-}
-
-@Composable
-@Preview
-fun AppCategoriesPreview() {
-    AppCategoriesPage()
 }

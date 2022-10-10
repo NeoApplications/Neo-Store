@@ -37,7 +37,7 @@ android {
     compileSdk = 33
 
     val name = "0.9.3-alpha2"
-    val code = 929
+    val code = 931
 
 
     defaultConfig {

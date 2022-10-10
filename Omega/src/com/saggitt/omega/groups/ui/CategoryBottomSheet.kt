@@ -18,56 +18,44 @@
 
 package com.saggitt.omega.groups.ui
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
-import com.saggitt.omega.compose.components.ComposeSwitchView
-import com.saggitt.omega.compose.components.NavigationPreference
-import com.saggitt.omega.groups.AppGroups.Companion.KEY_HIDE_FROM_ALL_APPS
-import com.saggitt.omega.groups.AppGroups.Group.BooleanCustomization
-import com.saggitt.omega.groups.AppGroupsManager.CategorizationType
+import com.saggitt.omega.compose.screens.preferences.AppSelectionPage
+import com.saggitt.omega.util.Config
 
 @Composable
-fun CategoryBottomSheet(category: CategorizationType) {
+fun SelectTabBottomSheet(
+    onClose: (Int) -> Unit,
+) {
+    val context = LocalContext.current
+    val prefs = Utilities.getOmegaPrefs(context)
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+            .padding(16.dp)
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Divider(
             modifier = Modifier
                 .width(48.dp)
@@ -76,29 +64,13 @@ fun CategoryBottomSheet(category: CategorizationType) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (category == CategorizationType.Tabs || category == CategorizationType.Flowerpot) {
-            TabsBottomSheet()
-        } else if (category == CategorizationType.Folders) {
-            FoldersBottomSheet()
-        }
-    }
-}
-
-@Composable
-fun TabsBottomSheet() {
-    val context = LocalContext.current
-    val prefs = Utilities.getOmegaPrefs(context)
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
         Text(
             text = stringResource(id = R.string.default_tab_name),
             modifier = Modifier.fillMaxWidth(),
             color = Color(prefs.themeAccentColor.onGetValue()),
             style = MaterialTheme.typography.titleLarge
         )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         CategoryTabItem(
@@ -107,7 +79,7 @@ fun TabsBottomSheet() {
             modifier = Modifier.height(72.dp),
             iconId = R.drawable.ic_category,
             onClick = {
-
+                onClose(Config.BS_CREATE_GROUP)
             }
         )
 
@@ -118,111 +90,27 @@ fun TabsBottomSheet() {
             summaryId = R.string.tab_type_custom_desc,
             modifier = Modifier.height(72.dp),
             iconId = R.drawable.ic_squares_four,
-            onClick = {}
+            onClick = {
+                onClose(Config.BS_CREATE_GROUP)
+            }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun FoldersBottomSheet() {
-    val context = LocalContext.current
-    val prefs = Utilities.getOmegaPrefs(context)
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val hideApps = BooleanCustomization(KEY_HIDE_FROM_ALL_APPS, true)
-    var title by remember { mutableStateOf("") }
-    val isHidden = remember {
-        mutableStateOf(hideApps.value())
+fun GroupAppSelection() {
+    var selectedApps: Set<String> by remember {
+        mutableStateOf(setOf())
     }
-
-    val manager = prefs.drawerAppGroupsManager
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
+    val pageTitle = stringResource(id = R.string.selected_apps, selectedApps.size)
+    AppSelectionPage(
+        pageTitle = pageTitle,
+        selectedApps = selectedApps,
+        pluralTitleId = R.string.selected_apps
     ) {
-
-        OutlinedTextField(
-            value = title,
-            onValueChange = { title = it },
-            modifier = Modifier
-                .fillMaxWidth(),
-            singleLine = true,
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.12F),
-                textColor = MaterialTheme.colorScheme.onSurface
-            ),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(onDone = {
-                keyboardController?.hide()
-            }),
-            shape = MaterialTheme.shapes.large,
-            label = { Text(text = stringResource(id = R.string.folder_name)) },
-            isError = title.isEmpty()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        ComposeSwitchView(
-            title = stringResource(R.string.tab_hide_from_main),
-            iconId = R.drawable.tab_hide_from_main,
-            isChecked = isHidden.value,
-            onCheckedChange = { newValue ->
-                isHidden.value = newValue
-            },
-            horizontalPadding = 4.dp
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        NavigationPreference(
-            title = stringResource(id = R.string.tab_manage_apps),
-            route = "manage_apps",
-            startIcon = R.drawable.ic_apps,
-            endIcon = R.drawable.chevron_right,
-            horizontalPadding = 4.dp
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 16.dp),
-            horizontalArrangement = Arrangement.End
-        ) {
-            OutlinedButton(
-                onClick = { },
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-            ) {
-                Text(text = stringResource(id = android.R.string.cancel))
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-
-            OutlinedButton(
-                onClick = {
-                    manager.drawerFolders.saveToJson()
-                },
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.35F),
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.65F)),
-            ) {
-                Text(text = stringResource(id = R.string.tab_bottom_sheet_save))
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
+        selectedApps = it
     }
 }
+
