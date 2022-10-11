@@ -10,8 +10,10 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.machiav3lli.fdroid.ROW_ADDED
 import com.machiav3lli.fdroid.ROW_ANTIFEATURES
+import com.machiav3lli.fdroid.ROW_AUTHOR
 import com.machiav3lli.fdroid.ROW_CAN_UPDATE
 import com.machiav3lli.fdroid.ROW_CATEGORIES
+import com.machiav3lli.fdroid.ROW_CHANGELOG
 import com.machiav3lli.fdroid.ROW_COMPATIBLE
 import com.machiav3lli.fdroid.ROW_DESCRIPTION
 import com.machiav3lli.fdroid.ROW_DONATES
@@ -31,9 +33,14 @@ import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
 import com.machiav3lli.fdroid.ROW_SCREENSHOTS
 import com.machiav3lli.fdroid.ROW_SIGNATURE
 import com.machiav3lli.fdroid.ROW_SIGNATURES
+import com.machiav3lli.fdroid.ROW_SOURCE
+import com.machiav3lli.fdroid.ROW_SUGGESTED_VERSION_CODE
 import com.machiav3lli.fdroid.ROW_SUMMARY
+import com.machiav3lli.fdroid.ROW_TRACKER
 import com.machiav3lli.fdroid.ROW_UPDATED
 import com.machiav3lli.fdroid.ROW_VERSION_CODE
+import com.machiav3lli.fdroid.ROW_WEB
+import com.machiav3lli.fdroid.ROW_WHATS_NEW
 import com.machiav3lli.fdroid.TABLE_CATEGORY
 import com.machiav3lli.fdroid.TABLE_CATEGORY_NAME
 import com.machiav3lli.fdroid.TABLE_EXTRAS
@@ -159,7 +166,12 @@ interface ProductDao : BaseDao<Product> {
         $signatureMatches) AS $ROW_CAN_UPDATE, $TABLE_PRODUCT.$ROW_ICON,
         $TABLE_PRODUCT.$ROW_METADATA_ICON, $TABLE_PRODUCT.$ROW_RELEASES, $TABLE_PRODUCT.$ROW_CATEGORIES,
         $TABLE_PRODUCT.$ROW_ANTIFEATURES, $TABLE_PRODUCT.$ROW_LICENSES, $TABLE_PRODUCT.$ROW_DONATES,
-        $TABLE_PRODUCT.$ROW_SCREENSHOTS, $TABLE_PRODUCT.$ROW_VERSION_CODE,"""
+        $TABLE_PRODUCT.$ROW_SCREENSHOTS, $TABLE_PRODUCT.$ROW_VERSION_CODE,
+        $TABLE_PRODUCT.$ROW_SUGGESTED_VERSION_CODE, $TABLE_PRODUCT.$ROW_SIGNATURES,
+        $TABLE_PRODUCT.$ROW_COMPATIBLE, $TABLE_PRODUCT.$ROW_AUTHOR,
+        $TABLE_PRODUCT.$ROW_SOURCE, $TABLE_PRODUCT.$ROW_WEB,
+        $TABLE_PRODUCT.$ROW_TRACKER, $TABLE_PRODUCT.$ROW_CHANGELOG,
+        $TABLE_PRODUCT.$ROW_WHATS_NEW,"""
 
         // Calculate the matching score with the search query
         if (searchQuery.isNotEmpty()) {
