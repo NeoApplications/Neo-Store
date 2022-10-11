@@ -230,4 +230,5 @@
     <string name="action_reset">Сброс</string>
     <string name="date_added">Дата добавления</string>
     <string name="target_sdk">Цел. SDK</string>
+    <string name="other_apps_by">Другие приложения от %s</string>
 </resources>
