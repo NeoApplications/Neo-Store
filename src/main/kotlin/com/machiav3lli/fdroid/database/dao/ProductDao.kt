@@ -106,7 +106,8 @@ interface ProductDao : BaseDao<Product> {
         section: Section, filteredOutRepos: Set<String> = emptySet(),
         filteredOutCategories: Set<String> = emptySet(), order: Order,
         ascending: Boolean, numberOfItems: Int = 0,
-        updateCategory: UpdateCategory = UpdateCategory.ALL
+        updateCategory: UpdateCategory = UpdateCategory.ALL,
+        author: String = "",
     ): List<Product> = queryObject(
         buildProductQuery(
             installed = installed,
@@ -118,7 +119,8 @@ interface ProductDao : BaseDao<Product> {
             order = order,
             ascending = ascending,
             numberOfItems = numberOfItems,
-            updateCategory = updateCategory
+            updateCategory = updateCategory,
+            author = author,
         )
     )
 
@@ -136,7 +138,7 @@ interface ProductDao : BaseDao<Product> {
             order = request.order,
             ascending = request.ascending,
             numberOfItems = request.numberOfItems,
-            updateCategory = request.updateCategory
+            updateCategory = request.updateCategory,
         )
     )
 
@@ -150,7 +152,8 @@ interface ProductDao : BaseDao<Product> {
         order: Order,
         ascending: Boolean = false,
         numberOfItems: Int = 0,
-        updateCategory: UpdateCategory = UpdateCategory.ALL
+        updateCategory: UpdateCategory = UpdateCategory.ALL,
+        author: String = "",
     ): SupportSQLiteQuery {
         val builder = QueryBuilder()
 
@@ -212,6 +215,12 @@ interface ProductDao : BaseDao<Product> {
 
         // Filter only active repositories
         builder += """WHERE $TABLE_REPOSITORY.$ROW_ENABLED != 0"""
+
+        // Filter based on the developer
+        if (author.isNotEmpty()) {
+            builder += "AND $TABLE_PRODUCT.$ROW_AUTHOR = ?"
+            builder %= author
+        }
 
         // Filter out repositories
         if (filteredOutRepos.isNotEmpty()) {
