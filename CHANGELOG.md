@@ -1,6 +1,23 @@
 CHANGELOG
 =========
 
+0.9.7 (11.10.2022) +50 Commits
+------------------
+- Add: Other apps from the developer
+- Add: Scrolling TopBar
+- Add: Rest of the data from the table to query return
+- Fix: Some coloring issues of the dynamic theme
+- Update: Search also searches among author names
+- Update: New screenshots viewer (fixes previous issues and allows zooming)
+- Update: Allow two-lines labels in ProductCard
+- Update: Bigger app icons
+- Update: Some layouts e.g. TopBar, SortFilter
+- Update: Make StatusBar and gestures bar transparent
+- Update: Revamp theming backend (fixes some visuals)
+- Update: Set default theme based on Android version
+- Update: Improve Sheets' initialization
+- Update: Dispose of composable when sheet fragment is destroyed
+
 0.9.6 (05.10.2022) +90 Commits
 ------------------
 - Add: Sort/Filter sheet

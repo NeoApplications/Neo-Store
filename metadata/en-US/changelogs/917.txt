@@ -1,0 +1,7 @@
+Add: Other apps from the developer
+Add: Scrolling TopBar
+Fix: Some coloring issues of the dynamic theme
+Update: New screenshots viewer (fixes previous issues and allows zooming)
+Update: Many layouts
+Update: Revamp theming backend (fixes some visuals)
+For more details check the full changelog…
