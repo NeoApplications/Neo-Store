@@ -82,6 +82,9 @@ interface ProductDao : BaseDao<Product> {
     @RawQuery
     fun queryObject(query: SupportSQLiteQuery): List<Product>
 
+    @Query("SELECT * FROM product WHERE author LIKE '%' || :author || '%' ")
+    fun getAuthorPackages(author: String): LiveData<List<Product>>
+
     fun queryObject(request: Request): List<Product> = queryObject(
         buildProductQuery(
             installed = request.installed,
