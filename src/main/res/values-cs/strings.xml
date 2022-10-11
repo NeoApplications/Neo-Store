@@ -228,4 +228,5 @@
     <string name="action_reset">Obnovit</string>
     <string name="date_updated">Datum aktualizace</string>
     <string name="target_sdk">targetSDK</string>
+    <string name="other_apps_by">Další aplikace od %s</string>
 </resources>
