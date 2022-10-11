@@ -69,6 +69,7 @@ import com.machiav3lli.fdroid.screen.MessageDialog
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.DownloadService
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
+import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.components.ExpandableBlock
 import com.machiav3lli.fdroid.ui.compose.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.compose.components.SwitchPreference
@@ -352,6 +353,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         var screenshotPage by remember { mutableStateOf(0) }
         val installed by viewModel.installedItem.observeAsState()
         val products by viewModel.products.observeAsState()
+        val authorProducts by viewModel.authorProducts.observeAsState()
         val repos by viewModel.repositories.observeAsState()
         val downloadState by viewModel.downloadState.observeAsState(null)
         val mainAction by viewModel.mainAction.observeAsState(if (installed == null) ActionState.Install else ActionState.Launch)
@@ -584,6 +586,26 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                     }
                                 }
                             }
+                    }
+                    if (!authorProducts.isNullOrEmpty()) {
+                        item {
+                            ExpandableBlock(
+                                heading = stringResource(
+                                    id = R.string.other_apps_by,
+                                    product.author.name
+                                ),
+                                positive = true,
+                                preExpanded = false
+                            ) {
+                                ProductsHorizontalRecycler(
+                                    productsList = authorProducts,
+                                    repositories = repos?.associateBy { repo -> repo.id }
+                                        ?: emptyMap()
+                                ) { item ->
+                                    mainActivityX.navigateProduct(item.packageName, item.developer)
+                                }
+                            }
+                        }
                     }
                     if (product.antiFeatures.isNotEmpty()) {
                         item {

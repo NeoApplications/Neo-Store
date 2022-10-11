@@ -32,6 +32,7 @@ class AppViewModelX(val db: DatabaseX, val packageName: String, developer: Strin
     val mainAction: MutableLiveData<ActionState> = MutableLiveData()
     val actions: MediatorLiveData<Set<ActionState>> = MediatorLiveData()
     val extras: MediatorLiveData<Extras> = MediatorLiveData()
+    val authorProducts: MediatorLiveData<List<Product>> = MediatorLiveData()
 
     init {
         products.addSource(db.productDao.getLive(packageName)) { products.setValue(it.filterNotNull()) }
@@ -39,6 +40,12 @@ class AppViewModelX(val db: DatabaseX, val packageName: String, developer: Strin
         installedItem.addSource(db.installedDao.getLive(packageName), installedItem::setValue)
         extras.addSource(db.extrasDao.getLive(packageName), extras::setValue)
         actions.addSource(extras) { updateActions() }
+        authorProducts.addSource(db.productDao.getAuthorPackages(developer)) { prods ->
+            if (developer.isNotEmpty()) authorProducts.value = prods
+                .filter { it.packageName != packageName }
+                .groupBy { it.packageName }
+                .map { it.value.maxByOrNull(Product::added)!! }
+        }
     }
 
     fun updateActions() {

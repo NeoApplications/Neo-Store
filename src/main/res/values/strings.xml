@@ -227,4 +227,5 @@
     <string name="date_added">Date added</string>
     <string name="date_updated">Date updated</string>
     <string name="target_sdk">targetSDK</string>
+    <string name="other_apps_by">Other apps by %s</string>
 </resources>
