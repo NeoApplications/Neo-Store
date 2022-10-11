@@ -107,22 +107,26 @@ import kotlinx.coroutines.withContext
 class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     companion object {
         private const val EXTRA_PACKAGE_NAME = "packageName"
+        private const val EXTRA_DEVELOPER = "developer"
     }
 
-    constructor(packageName: String) : this() {
+    constructor(packageName: String, developer: String) : this() {
         arguments = Bundle().apply {
             putString(EXTRA_PACKAGE_NAME, packageName)
+            putString(EXTRA_DEVELOPER, developer)
         }
     }
 
     val viewModel: AppViewModelX by viewModels {
-        AppViewModelX.Factory(mainActivityX.db, packageName)
+        AppViewModelX.Factory(mainActivityX.db, packageName, developer)
     }
 
     val mainActivityX: MainActivityX
         get() = requireActivity() as MainActivityX
     val packageName: String
         get() = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
+    val developer: String
+        get() = requireArguments().getString(EXTRA_DEVELOPER)!!
 
     private val downloadConnection = Connection(DownloadService::class.java, onBind = { _, binder ->
         binder.stateSubject

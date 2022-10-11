@@ -82,7 +82,7 @@ fun LatestPage(viewModel: MainNavFragmentViewModelX) {
                 modifier = Modifier.padding(8.dp)
             )
             ProductsHorizontalRecycler(secondaryList, repositoriesMap) { item ->
-                mainActivityX.navigateProduct(item.packageName)
+                mainActivityX.navigateProduct(item.packageName, item.developer)
             }
         }
         item {
@@ -107,7 +107,7 @@ fun LatestPage(viewModel: MainNavFragmentViewModelX) {
                 item = item,
                 repo = repositoriesMap[item.repositoryId],
                 isFavorite = favorites.contains(item.packageName),
-                onUserClick = { mainActivityX.navigateProduct(it.packageName) },
+                onUserClick = { mainActivityX.navigateProduct(it.packageName, item.developer) },
                 onFavouriteClick = {
                     viewModel.setFavorite(
                         it.packageName,

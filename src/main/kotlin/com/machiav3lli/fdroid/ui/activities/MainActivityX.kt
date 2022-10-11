@@ -221,7 +221,7 @@ class MainActivityX : AppCompatActivity() {
             Intent.ACTION_VIEW -> {
                 val packageName = intent.packageName
                 if (!packageName.isNullOrEmpty()) {
-                    navigateProduct(packageName)
+                    navigateProduct(packageName, "")
                 }
             }
             ACTION_UPDATES -> handleSpecialIntent(SpecialIntent.Updates)
@@ -238,8 +238,8 @@ class MainActivityX : AppCompatActivity() {
         super.attachBaseContext(ContextWrapperX.wrap(newBase))
     }
 
-    internal fun navigateProduct(packageName: String) {
-        AppSheetX(packageName)
+    internal fun navigateProduct(packageName: String, developer: String) {
+        AppSheetX(packageName, developer)
             .showNow(supportFragmentManager, "Product $packageName")
     }
 

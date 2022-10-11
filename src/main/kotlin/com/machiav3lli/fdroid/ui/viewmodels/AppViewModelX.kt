@@ -17,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
+class AppViewModelX(val db: DatabaseX, val packageName: String, developer: String) : ViewModel() {
 
     val products: MediatorLiveData<List<Product>> = MediatorLiveData()
     val repositories: MediatorLiveData<List<Repository>> = MediatorLiveData()
@@ -151,11 +151,12 @@ class AppViewModelX(val db: DatabaseX, val packageName: String) : ViewModel() {
         }
     }
 
-    class Factory(val db: DatabaseX, val packageName: String) : ViewModelProvider.Factory {
+    class Factory(val db: DatabaseX, val packageName: String, val developer: String) :
+        ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(AppViewModelX::class.java)) {
-                return AppViewModelX(db, packageName) as T
+                return AppViewModelX(db, packageName, developer) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

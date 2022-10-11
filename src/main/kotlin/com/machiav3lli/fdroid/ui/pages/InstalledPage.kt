@@ -131,7 +131,7 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
                 }
                 AnimatedVisibility(visible = updatesVisible) {
                     ProductsHorizontalRecycler(secondaryList, repositoriesMap) { item ->
-                        mainActivityX.navigateProduct(item.packageName)
+                        mainActivityX.navigateProduct(item.packageName, item.developer)
                     }
                 }
             }
@@ -157,7 +157,7 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
                 .fillMaxWidth()
                 .weight(1f),
             onUserClick = { item ->
-                mainActivityX.navigateProduct(item.packageName)
+                mainActivityX.navigateProduct(item.packageName, item.developer)
             },
             onFavouriteClick = { item ->
                 viewModel.setFavorite(
