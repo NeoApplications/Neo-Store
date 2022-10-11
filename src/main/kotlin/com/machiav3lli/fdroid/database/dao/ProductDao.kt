@@ -180,9 +180,10 @@ interface ProductDao : BaseDao<Product> {
         if (searchQuery.isNotEmpty()) {
             builder += """((($TABLE_PRODUCT.$ROW_LABEL LIKE ? OR
           $TABLE_PRODUCT.$ROW_SUMMARY LIKE ?) * 7) |
-          (($TABLE_PRODUCT.$ROW_PACKAGE_NAME LIKE ?) * 3) |
+          (($TABLE_PRODUCT.$ROW_PACKAGE_NAME LIKE ? OR
+          $TABLE_PRODUCT.$ROW_AUTHOR LIKE ?) * 3) |
           ($TABLE_PRODUCT.$ROW_DESCRIPTION LIKE ?)) AS $ROW_MATCH_RANK,"""
-            builder %= List(4) { "%$searchQuery%" }
+            builder %= List(5) { "%$searchQuery%" }
         } else {
             builder += "0 AS $ROW_MATCH_RANK,"
         }
