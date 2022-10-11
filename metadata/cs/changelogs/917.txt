@@ -1,0 +1,7 @@
+Přidat: Další aplikace od vývojáře
+Přidat: Posouvací panel TopBar
+Oprava: Některé problémy s barvami dynamického motivu
+Aktualizace: Nový prohlížeč snímků obrazovky (opravuje předchozí problémy a umožňuje zvětšení)
+Aktualizace: Mnoho rozvržení
+Aktualizace: Přidáno více vzhledů: Přepracování backendu témat (opravuje některé vizuální prvky)
+Další podrobnosti najdete v úplném seznamu změn…
