@@ -230,4 +230,5 @@
     <string name="action_reset">Reset</string>
     <string name="date_added">Data aggiunta</string>
     <string name="target_sdk">targetSDK</string>
+    <string name="other_apps_by">Altre applicazioni di %s</string>
 </resources>
