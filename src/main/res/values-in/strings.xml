@@ -57,11 +57,11 @@
     <string name="syncing">Mensinkronisasi</string>
     <string name="system">Sistem</string>
     <string name="tap_to_install_DESC">Tap untuk menginstall.</string>
-    <string name="target">Target</string>
+    <string name="target">Sasaran</string>
     <string name="theme">Tema</string>
     <string name="themes">Tema</string>
     <string name="tracks_or_reports_your_activity">Merekam atau melaporkan aktivitas Anda</string>
-    <string name="uninstall">Uninstall</string>
+    <string name="uninstall">Uninstal</string>
     <string name="unknown_error_DESC">Galat.</string>
     <string name="unstable_updates_summary">Sarankan menginstall versi tidak stabil.</string>
     <string name="update">Pembaruan</string>
@@ -137,12 +137,13 @@
     <string name="recently_updated">Diperbarui akhir-akhir ini</string>
     <string name="repositories">Repositori</string>
     <string name="root_permission_description">Perbolehkan perizinan root untuk instalasi senyap</string>
-    <string name="repository_unsigned_DESC">Tidak ditandatangani. Tidak dapat memverifikasi daftar aplikasi. Hati-hati mengunduh aplikasi dari repositori yang tidak ditandatangani.</string>
+    <string name="repository_unsigned_DESC">Tidak dapat memverifikasi daftar aplikasi yang tidak ditandatangani. 
+\nHati-hati mengunduh aplikasi dari repositori yang tidak ditandatangani.</string>
     <string name="saving_details">Menyimpan detail…</string>
     <string name="select_mirror">Pilih mirror</string>
     <string name="sorting_order">Pengurutan</string>
     <string name="source_code">Kode sumber</string>
-    <string name="username">Username</string>
+    <string name="username">Nama pengguna</string>
     <string name="repository_not_used_DESC">Repositori ini belum dipakai. 
 \nAktifkan untuk melihat aplikasi di dalamnya.</string>
     <string name="requires_FORMAT">Membutuhkan %s</string>
@@ -225,4 +226,5 @@
     <string name="show_screenshots_description">Tampilkan tangkapan layar di halaman aplikasi.</string>
     <string name="loading_list">Memuat daftar…</string>
     <string name="dynamic">Dinamis sistem</string>
+    <string name="other_apps_by">Aplikasi lainnya oleh %s</string>
 </resources>
