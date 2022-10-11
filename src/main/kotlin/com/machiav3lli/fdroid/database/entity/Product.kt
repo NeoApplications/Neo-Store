@@ -106,17 +106,18 @@ open class Product(
 
     fun toItem(installed: Installed? = null): ProductItem =
         ProductItem(
-            repositoryId,
-            packageName,
-            label,
-            summary,
-            icon,
-            metadataIcon,
-            version,
-            "",
-            compatible,
-            canUpdate(installed),
-            0
+            repositoryId = repositoryId,
+            packageName = packageName,
+            name = label,
+            developer = author.name,
+            summary = summary,
+            icon = icon,
+            metadataIcon = metadataIcon,
+            version = version,
+            installedVersion = "",
+            compatible = compatible,
+            canUpdate = canUpdate(installed),
+            matchRank = 0
         )
 
     fun canUpdate(installed: Installed?): Boolean =

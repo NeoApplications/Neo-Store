@@ -4,6 +4,7 @@ data class ProductItem(
     var repositoryId: Long = 0,
     var packageName: String = "com.machaiv3lli.fdroid",
     var name: String = "Droid-ify",
+    val developer: String = "",
     var summary: String = "A great F-Droid client",
     val icon: String = "",
     val metadataIcon: String = "",
