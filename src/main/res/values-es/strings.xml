@@ -227,4 +227,6 @@
     <string name="sort_ascending">Ascendente</string>
     <string name="sort_descending">Descendente</string>
     <string name="action_apply">Aplicar</string>
+    <string name="target_sdk">Versión mínima de la Api</string>
+    <string name="other_apps_by">Otras aplicaciones de %s</string>
 </resources>
