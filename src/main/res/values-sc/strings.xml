@@ -227,4 +227,5 @@
     <string name="date_updated">Data de atualizatzione</string>
     <string name="date_added">Data de annanta</string>
     <string name="target_sdk">targetSDK</string>
+    <string name="other_apps_by">Àteras aplicatziones de %s</string>
 </resources>
