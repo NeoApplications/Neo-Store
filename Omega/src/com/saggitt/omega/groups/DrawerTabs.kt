@@ -122,7 +122,7 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
             R.drawable.tab_hide_from_main, R.string.tab_hide_from_main,
             KEY_HIDE_FROM_ALL_APPS, true
         )
-        val contents = AppsRow(KEY_ITEMS, mutableSetOf())
+        val contents = ComponentsCustomization(KEY_ITEMS, mutableSetOf())
 
         init {
             addCustomization(hideFromAllApps)
