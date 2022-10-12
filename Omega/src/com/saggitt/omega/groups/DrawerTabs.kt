@@ -106,7 +106,10 @@ abstract class DrawerTabs(manager: AppGroupsManager, type: AppGroupsManager.Cate
         Group(type, context, title) {
 
         val color =
-            ColorRow(KEY_COLOR, AppGroupsUtils.getInstance(context).defaultColor.onGetValue())
+            ColorCustomization(
+                KEY_COLOR,
+                AppGroupsUtils.getInstance(context).defaultColor.onGetValue()
+            )
 
         init {
             addCustomization(color)

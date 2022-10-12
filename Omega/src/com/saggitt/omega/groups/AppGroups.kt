@@ -33,8 +33,6 @@ import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
 import com.saggitt.omega.preferences.views.PreferencesActivity
-import com.saggitt.omega.theme.ThemeOverride
-import com.saggitt.omega.theme.ThemedContextProvider
 import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.SingletonHolder
 import com.saggitt.omega.util.applyColor
@@ -42,10 +40,7 @@ import com.saggitt.omega.util.asMap
 import com.saggitt.omega.util.asNonEmpty
 import com.saggitt.omega.util.ensureOnMainThread
 import com.saggitt.omega.util.omegaPrefs
-import com.saggitt.omega.util.tintDrawable
 import com.saggitt.omega.util.useApplicationContext
-import com.shlabs.colorpickerx.ColorPickerTab
-import com.shlabs.colorpickerx.OnChooseColorListener
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -411,56 +406,6 @@ abstract class AppGroups<T : AppGroups.Group>(
 
             override fun clone(): Customization<Int, String> {
                 return ColorCustomization(key, default).also { it.value = value }
-            }
-        }
-
-        class ColorRow(key: String, default: Int) : ColorCustomization(key, default) {
-            override fun createRow(context: Context, parent: ViewGroup): View? {
-                val view = LayoutInflater.from(context)
-                    .inflate(R.layout.drawer_tab_color_row, parent, false)
-
-                updateColor(view)
-
-                val themedContext =
-                    ThemedContextProvider(context, null, ThemeOverride.Settings()).get()
-                val colors: ArrayList<String> = arrayListOf()
-                if (value == null) {
-                    value = context.omegaPrefs.themeAccentColor.onGetValue()
-                }
-                val currentColor = java.lang.String.format("#%06X", 0xFFFFFF and value!!)
-                colors.add(currentColor)
-                colors.addAll(context.resources.getStringArray(R.array.tab_colors))
-                view.setOnClickListener {
-                    val colorPicker = ColorPickerTab(themedContext)
-                    colorPicker.setRoundColorButton(true)
-                    colorPicker.showAlpha(false)
-                    colorPicker.setColorButtonSize(48, 48)
-                    colorPicker.setColumns(4)
-                    colorPicker.setColors(colors)
-                    colorPicker.setDefaultColorButton(value!!)
-                    colorPicker.positiveButton.applyColor(context.omegaPrefs.themeAccentColor.onGetValue())
-                    colorPicker.show()
-                    colorPicker.setOnChooseColorListener(object : OnChooseColorListener {
-                        override fun onCancel() {
-                            colorPicker.dismissDialog()
-                        }
-
-                        override fun onChooseColor(position: Int, color: Int) {
-                            value = color
-                            updateColor(view)
-                        }
-                    })
-                }
-
-                return view
-            }
-
-            private fun updateColor(view: View) {
-                view.findViewById<AppCompatImageView>(R.id.color_ring_icon).tintDrawable(value())
-            }
-
-            override fun clone(): Customization<Int, String> {
-                return ColorRow(key, default).also { it.value = value }
             }
         }
 
