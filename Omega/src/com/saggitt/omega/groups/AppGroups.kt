@@ -163,6 +163,11 @@ abstract class AppGroups<T : AppGroups.Group>(
         }
     }
 
+    fun addGroup(group: T) {
+        val updatedList = this.groups.plus(group)
+        setGroups(updatedList)
+    }
+
     fun removeGroup(group: T) {
         this.groups.remove(group)
     }

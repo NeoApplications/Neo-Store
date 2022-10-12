@@ -66,6 +66,9 @@ import com.saggitt.omega.compose.components.ComposeSwitchView
 import com.saggitt.omega.compose.components.NavigationPreference
 import com.saggitt.omega.groups.AppGroups
 import com.saggitt.omega.groups.AppGroupsManager
+import com.saggitt.omega.groups.DrawerFolders
+import com.saggitt.omega.groups.DrawerTabs
+import com.saggitt.omega.groups.FlowerpotTabs
 import com.saggitt.omega.util.Config
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
@@ -76,15 +79,32 @@ fun CreateGroupBottomSheet(
 ) {
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val hideApps = AppGroups.Group.BooleanCustomization(AppGroups.KEY_HIDE_FROM_ALL_APPS, true)
-    var title by remember { mutableStateOf("") }
-    var color by remember { mutableStateOf<Color?>(null) }
-    val isHidden = remember {
-        mutableStateOf(hideApps.value())
-    }
-
     val manager = prefs.drawerAppGroupsManager
+    val group = when (type) {
+        AppGroupsManager.CategorizationType.Tabs -> {
+            DrawerTabs.CustomTab(context)
+        }
+        AppGroupsManager.CategorizationType.Flowerpot -> {
+            FlowerpotTabs.FlowerpotTab(context)
+        }
+        else -> {
+            DrawerFolders.CustomFolder(context)
+        }
+    }
+    val config = group.customizations
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    var title by remember { mutableStateOf("") }
+    var isHidden by remember {
+        mutableStateOf(
+            AppGroups.Group.BooleanCustomization(
+                AppGroups.KEY_HIDE_FROM_ALL_APPS,
+                true
+            ).value ?: true
+        )
+    }
+    var color by remember { mutableStateOf<Color?>(null) }
+
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -126,16 +146,14 @@ fun CreateGroupBottomSheet(
         ComposeSwitchView(
             title = stringResource(R.string.tab_hide_from_main),
             iconId = R.drawable.tab_hide_from_main,
-            isChecked = isHidden.value,
-            onCheckedChange = { newValue ->
-                isHidden.value = newValue
-            },
+            isChecked = isHidden,
+            onCheckedChange = { isHidden = it },
             horizontalPadding = 4.dp
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        NavigationPreference(
+        NavigationPreference( // TODO maybe replace with a dialog?
             title = stringResource(id = R.string.tab_manage_apps),
             route = "select_apps",
             startIcon = R.drawable.ic_apps,
@@ -225,7 +243,38 @@ fun CreateGroupBottomSheet(
 
             OutlinedButton(
                 onClick = {
-                    manager.drawerFolders.saveToJson()
+                    (config[AppGroups.KEY_TITLE] as? AppGroups.Group.StringCustomization)?.value =
+                        title
+                    (config[AppGroups.KEY_HIDE_FROM_ALL_APPS] as? AppGroups.Group.BooleanCustomization)?.value =
+                        isHidden
+                    if (type != AppGroupsManager.CategorizationType.Folders) {
+                        (config[AppGroups.KEY_COLOR] as? AppGroups.Group.ColorCustomization)?.value =
+                            color!!.toArgb()
+                    }
+                    group.customizations.applyFrom(config)
+                    group.title = title
+                    when (type) {
+                        AppGroupsManager.CategorizationType.Folders -> {
+                            manager.drawerFolders.apply {
+                                addGroup(group as DrawerFolders.Folder)
+                                saveToJson()
+                            }
+                        }
+                        AppGroupsManager.CategorizationType.Tabs -> {
+                            manager.drawerTabs.apply {
+                                addGroup(group as DrawerTabs.Tab)
+                                saveToJson()
+                            }
+                        }
+                        AppGroupsManager.CategorizationType.Flowerpot -> {
+                            manager.flowerpotTabs.apply {
+                                addGroup(group as DrawerTabs.Tab)
+                                saveToJson()
+                            }
+                        }
+                        else -> {}
+                    }
+                    onClose(Config.BS_SELECT_TAB_TYPE)
                 },
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.outlinedButtonColors(
