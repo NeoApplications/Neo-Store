@@ -49,6 +49,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -57,6 +59,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import com.jaredrummler.android.colorpicker.ColorPickerDialog
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
+import com.saggitt.omega.compose.PrefsActivityX
 import com.saggitt.omega.compose.components.ComposeSwitchView
 import com.saggitt.omega.compose.components.NavigationPreference
 import com.saggitt.omega.groups.AppGroups
@@ -74,6 +79,7 @@ fun CreateGroupBottomSheet(
     val keyboardController = LocalSoftwareKeyboardController.current
     val hideApps = AppGroups.Group.BooleanCustomization(AppGroups.KEY_HIDE_FROM_ALL_APPS, true)
     var title by remember { mutableStateOf("") }
+    var color by remember { mutableStateOf<Color?>(null) }
     val isHidden = remember {
         mutableStateOf(hideApps.value())
     }
@@ -85,6 +91,8 @@ fun CreateGroupBottomSheet(
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        color = color ?: MaterialTheme.colorScheme.primary
+
         Divider(
             modifier = Modifier
                 .width(48.dp)
@@ -143,7 +151,28 @@ fun CreateGroupBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
+                        val dialog = ColorPickerDialog
+                            .newBuilder()
+                            .setDialogType(ColorPickerDialog.TYPE_CUSTOM)
+                            .setAllowCustom(true)
+                            .setShowAlphaSlider(false)
+                            .setPresets(ColorPickerDialog.MATERIAL_COLORS)
+                            .setShowColorShades(false)
+                            .setColor(color!!.toArgb())
+                            .create()
 
+                        dialog.setColorPickerDialogListener(object :
+                            ColorPickerDialogListener {
+                            override fun onColorSelected(dialogId: Int, newColor: Int) {
+                                color = Color(newColor)
+                            }
+
+                            override fun onDialogDismissed(dialogId: Int) {}
+                        })
+                        dialog.show(
+                            PrefsActivityX.getFragmentManager(context),
+                            "color-picker-dialog"
+                        )
                     }
             )
             {
@@ -155,7 +184,7 @@ fun CreateGroupBottomSheet(
                         painter = painterResource(id = R.drawable.ic_color_donut),
                         contentDescription = "",
                         modifier = Modifier.size(30.dp),
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = color ?: MaterialTheme.colorScheme.primary
                     )
 
                     Text(
