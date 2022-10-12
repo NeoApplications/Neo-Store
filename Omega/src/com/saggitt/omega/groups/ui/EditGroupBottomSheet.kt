@@ -33,6 +33,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -43,6 +45,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -59,11 +62,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
+import com.android.launcher3.util.ComponentKey
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import com.saggitt.omega.compose.PrefsActivityX
+import com.saggitt.omega.compose.components.BaseDialog
 import com.saggitt.omega.compose.components.ComposeSwitchView
 import com.saggitt.omega.compose.components.NavigationPreference
+import com.saggitt.omega.compose.components.preferences.BasePreference
 import com.saggitt.omega.groups.AppGroups
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
@@ -81,12 +87,19 @@ fun EditGroupBottomSheet(
     val prefs = Utilities.getOmegaPrefs(context)
     val config = group.customizations
     val keyboardController = LocalSoftwareKeyboardController.current
+    val openDialog = remember { mutableStateOf(false) }
 
     var title by remember { mutableStateOf(group.title) }
     var isHidden by remember {
         mutableStateOf(
             (config[AppGroups.KEY_HIDE_FROM_ALL_APPS] as? AppGroups.Group.BooleanCustomization)?.value
                 ?: true
+        )
+    }
+    val selectedApps = remember {
+        mutableStateListOf(
+            *((config[AppGroups.KEY_ITEMS] as? AppGroups.Group.ComponentsCustomization)?.value?.toTypedArray()
+                ?: emptyArray())
         )
     }
     var color by remember {
@@ -161,14 +174,46 @@ fun EditGroupBottomSheet(
                     horizontalPadding = 4.dp
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                NavigationPreference( // TODO maybe replace with a dialog?
-                    title = stringResource(id = R.string.tab_manage_apps),
-                    route = "app_selection",
-                    startIcon = R.drawable.ic_apps,
-                    endIcon = R.drawable.chevron_right,
-                    horizontalPadding = 4.dp
-                )
+                BasePreference(
+                    titleId = R.string.tab_manage_apps,
+                    startWidget = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_apps),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    },
+                    endWidget = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.chevron_right),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    },
+                ) { openDialog.value = true }
                 Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
+
+        if (openDialog.value) {
+            BaseDialog(openDialogCustom = openDialog) {
+                Card(
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.padding(8.dp),
+                    elevation = CardDefaults.elevatedCardElevation(8.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+                ) {
+                    GroupAppSelection(
+                        selectedApps = selectedApps.map { it.toString() }.toSet(),
+                    ) {
+                        val componentsSet =
+                            it.mapNotNull { ck -> ComponentKey.fromString(ck) }.toMutableSet()
+                        selectedApps.clear()
+                        selectedApps.addAll(componentsSet)
+                        (config[AppGroups.KEY_ITEMS] as? AppGroups.Group.ComponentsCustomization)?.value =
+                            componentsSet
+                    }
+                }
             }
         }
 
@@ -256,6 +301,8 @@ fun EditGroupBottomSheet(
                         title
                     (config[AppGroups.KEY_HIDE_FROM_ALL_APPS] as? AppGroups.Group.BooleanCustomization)?.value =
                         isHidden
+                    (config[AppGroups.KEY_ITEMS] as? AppGroups.Group.ComponentsCustomization)?.value =
+                        selectedApps.toMutableSet()
                     if (type != AppGroupsManager.CategorizationType.Folders) {
                         (config[AppGroups.KEY_COLOR] as? AppGroups.Group.ColorCustomization)?.value =
                             color.toArgb()
