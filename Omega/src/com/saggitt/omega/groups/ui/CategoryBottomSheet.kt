@@ -100,17 +100,22 @@ fun SelectTabBottomSheet(
 }
 
 @Composable
-fun GroupAppSelection() {
-    var selectedApps: Set<String> by remember {
-        mutableStateOf(setOf())
+fun GroupAppSelection(
+    selectedApps: Set<String>,
+    onSave: (Set<String>) -> Unit
+) {
+    var selected: Set<String> by remember {
+        mutableStateOf(selectedApps)
     }
-    val pageTitle = stringResource(id = R.string.selected_apps, selectedApps.size)
+    val pageTitle = stringResource(id = R.string.selected_apps, selected.size)
     AppSelectionPage(
         pageTitle = pageTitle,
-        selectedApps = selectedApps,
-        pluralTitleId = R.string.selected_apps
-    ) {
-        selectedApps = it
-    }
+        selectedApps = selected,
+        pluralTitleId = R.string.selected_apps,
+        onSave = {
+            selected = it
+            onSave(it)
+        }
+    )
 }
 
