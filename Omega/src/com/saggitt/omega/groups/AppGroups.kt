@@ -579,8 +579,8 @@ abstract class AppGroups<T : AppGroups.Group>(
                 map[customization.key] = customization
             }
 
-            fun get(customization: Customization<*, *>): Customization<*, *>? {
-                return map[customization.key]
+            operator fun get(key: String): Customization<*, *>? {
+                return map[key]
             }
 
             fun setOrder(vararg keys: String) {
