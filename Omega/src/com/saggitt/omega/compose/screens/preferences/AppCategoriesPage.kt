@@ -139,7 +139,7 @@ fun AppCategoriesPage() {
         )
     }
     val editGroup = remember {
-        mutableStateOf(groups[0])
+        mutableStateOf(groups.firstOrNull())
     }
 
     when (manager.categorizationType) {
@@ -207,10 +207,12 @@ fun AppCategoriesPage() {
                 }
 
                 Config.BS_EDIT_GROUP -> {
-                    EditGroupBottomSheet(selectedOption, editGroup.value) {
-                        sheetChanger = it
-                        coroutineScope.launch {
-                            sheetState.hide()
+                    editGroup.value?.let { editGroup ->
+                        EditGroupBottomSheet(selectedOption, editGroup) {
+                            sheetChanger = it
+                            coroutineScope.launch {
+                                sheetState.hide()
+                            }
                         }
                     }
                 }
