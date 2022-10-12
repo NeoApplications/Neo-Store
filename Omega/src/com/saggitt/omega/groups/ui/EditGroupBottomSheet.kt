@@ -62,12 +62,13 @@ import com.android.launcher3.Utilities
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import com.saggitt.omega.compose.PrefsActivityX
+import com.saggitt.omega.compose.components.ComposeSwitchView
 import com.saggitt.omega.compose.components.NavigationPreference
 import com.saggitt.omega.groups.AppGroups
-import com.saggitt.omega.groups.AppGroups.Companion.KEY_COLOR
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.omegaPrefs
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -78,14 +79,23 @@ fun EditGroupBottomSheet(
 ) {
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
-    val config = AppGroups.Group.CustomizationMap(group.customizations)
+    val config = group.customizations
     val keyboardController = LocalSoftwareKeyboardController.current
+
     var title by remember { mutableStateOf(group.title) }
+    var isHidden by remember {
+        mutableStateOf(
+            (config[AppGroups.KEY_HIDE_FROM_ALL_APPS] as AppGroups.Group.BooleanCustomization).value
+                ?: true
+        )
+    }
     var color by remember {
         mutableStateOf(
-            if (type != AppGroupsManager.CategorizationType.Folders) Color(
-                (config[KEY_COLOR] as AppGroups.Group.ColorRow).value ?: 0
-            )
+            if (type != AppGroupsManager.CategorizationType.Folders)
+                Color(
+                    (config[AppGroups.KEY_COLOR] as AppGroups.Group.ColorCustomization).value
+                        ?: context.omegaPrefs.themeAccentColor.onGetValue()
+                )
             else Color.White
         )
     }
@@ -132,41 +142,36 @@ fun EditGroupBottomSheet(
         )
 
         Spacer(modifier = Modifier.height(8.dp))
-        if (
-            group.type != DrawerTabs.TYPE_ALL_APPS
-        ) {
-            NavigationPreference(
-                title = stringResource(id = R.string.tab_hide_from_main),
-                route = "app_selection",
-                startIcon = R.drawable.tab_hide_from_main,
-                endIcon = R.drawable.chevron_right,
-                horizontalPadding = 4.dp
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-        if (group.type != DrawerTabs.TYPE_ALL_APPS
-        ) {
-            NavigationPreference(
-                title = stringResource(id = R.string.tab_manage_apps),
-                route = "app_selection",
-                startIcon = R.drawable.ic_apps,
-                endIcon = R.drawable.chevron_right,
-                horizontalPadding = 4.dp
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-        }
 
-        if (
-            group.type == DrawerTabs.TYPE_ALL_APPS
-        ) {
-            NavigationPreference(
-                title = stringResource(id = R.string.title__drawer_hide_apps),
-                route = "app_selection",
-                startIcon = R.drawable.ic_apps,
-                endIcon = R.drawable.chevron_right,
-                horizontalPadding = 4.dp
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+        when {
+            group.type == DrawerTabs.TYPE_ALL_APPS -> {
+                NavigationPreference(
+                    title = stringResource(id = R.string.title__drawer_hide_apps),
+                    route = "app_selection",
+                    startIcon = R.drawable.ic_apps,
+                    endIcon = R.drawable.chevron_right,
+                    horizontalPadding = 4.dp
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            group.type != DrawerTabs.TYPE_ALL_APPS -> {
+                ComposeSwitchView(
+                    title = stringResource(R.string.tab_hide_from_main),
+                    iconId = R.drawable.tab_hide_from_main,
+                    isChecked = isHidden,
+                    onCheckedChange = { isHidden = it },
+                    horizontalPadding = 4.dp
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                NavigationPreference( // TODO maybe replace with a dialog?
+                    title = stringResource(id = R.string.tab_manage_apps),
+                    route = "app_selection",
+                    startIcon = R.drawable.ic_apps,
+                    endIcon = R.drawable.chevron_right,
+                    horizontalPadding = 4.dp
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
 
         if (type != AppGroupsManager.CategorizationType.Folders) {
@@ -188,6 +193,8 @@ fun EditGroupBottomSheet(
                             ColorPickerDialogListener {
                             override fun onColorSelected(dialogId: Int, newColor: Int) {
                                 color = Color(newColor)
+                                (config[AppGroups.KEY_COLOR] as? AppGroups.Group.ColorCustomization)?.value =
+                                    newColor
                             }
 
                             override fun onDialogDismissed(dialogId: Int) {}
@@ -247,11 +254,26 @@ fun EditGroupBottomSheet(
 
             OutlinedButton(
                 onClick = {
+                    (config[AppGroups.KEY_TITLE] as? AppGroups.Group.StringCustomization)?.value =
+                        title
+                    (config[AppGroups.KEY_HIDE_FROM_ALL_APPS] as? AppGroups.Group.BooleanCustomization)?.value =
+                        isHidden
+                    if (type != AppGroupsManager.CategorizationType.Folders) {
+                        (config[AppGroups.KEY_COLOR] as? AppGroups.Group.ColorCustomization)?.value =
+                            color.toArgb()
+                    }
                     group.customizations.applyFrom(config)
-                    if (type == AppGroupsManager.CategorizationType.Folders) {
-                        prefs.drawerAppGroupsManager.drawerFolders.saveToJson()
-                    } else {
-                        prefs.drawerAppGroupsManager.drawerTabs.saveToJson()
+                    when (type) {
+                        AppGroupsManager.CategorizationType.Folders -> {
+                            prefs.drawerAppGroupsManager.drawerFolders.saveToJson()
+                        }
+                        AppGroupsManager.CategorizationType.Tabs -> {
+                            prefs.drawerAppGroupsManager.drawerTabs.saveToJson()
+                        }
+                        AppGroupsManager.CategorizationType.Flowerpot -> {
+                            prefs.drawerAppGroupsManager.flowerpotTabs.saveToJson()
+                        }
+                        else -> {}
                     }
                     onClose(Config.BS_SELECT_TAB_TYPE)
                 },
