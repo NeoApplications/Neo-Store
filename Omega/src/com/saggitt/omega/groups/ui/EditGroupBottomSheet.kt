@@ -85,18 +85,16 @@ fun EditGroupBottomSheet(
     var title by remember { mutableStateOf(group.title) }
     var isHidden by remember {
         mutableStateOf(
-            (config[AppGroups.KEY_HIDE_FROM_ALL_APPS] as AppGroups.Group.BooleanCustomization).value
+            (config[AppGroups.KEY_HIDE_FROM_ALL_APPS] as? AppGroups.Group.BooleanCustomization)?.value
                 ?: true
         )
     }
     var color by remember {
         mutableStateOf(
-            if (type != AppGroupsManager.CategorizationType.Folders)
-                Color(
-                    (config[AppGroups.KEY_COLOR] as AppGroups.Group.ColorCustomization).value
-                        ?: context.omegaPrefs.themeAccentColor.onGetValue()
-                )
-            else Color.White
+            Color(
+                (config[AppGroups.KEY_COLOR] as? AppGroups.Group.ColorCustomization)?.value
+                    ?: context.omegaPrefs.themeAccentColor.onGetValue()
+            )
         )
     }
 
