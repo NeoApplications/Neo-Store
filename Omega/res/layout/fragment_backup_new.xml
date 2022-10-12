@@ -151,7 +151,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/title_create"
         android:src="@drawable/ic_check"
-        app:tint="@color/white" />
+        app:tint="@android:color/white" />
 
     <LinearLayout
         android:id="@+id/progress"
