@@ -1,0 +1,7 @@
+Añadir: Otras aplicaciones del desarrollador
+Añadir: Desplazamiento de la barra superior
+Corrección: Algunos problemas de coloración del tema dinámico
+Actualización: Nuevo visor de capturas de pantalla (corrige problemas anteriores y permite hacer zoom)
+Actualización: Muchos diseños
+Actualización: Renovación del back-end temático (corrige algunos aspectos visuales)
+Para más detalles, consulta el registro de cambios completo…

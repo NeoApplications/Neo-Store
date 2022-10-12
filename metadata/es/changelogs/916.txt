@@ -1,0 +1,7 @@
+Añadir: Función de ordenación/filtrado
+Añadir: Acceso directo explícito a los favoritos
+Añadir: TargetSDK a las fichas de información
+Actualizar: Reemplazar iconos de Material por Fósforo
+Actualización: BottomNavBar, diseños de AppSheet y EditRepoSheet
+Corrección: Mostrar la acción secundaria de actualización mientras se descarga
+Para más detalles consulte el registro de cambios completo…
