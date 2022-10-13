@@ -55,7 +55,7 @@ dependencies {
             )
         ).include("wm_shell-aidls.jar")
     )
-    implementation(kotlin("stdlib", "1.7.10"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.20")
     implementation(project(":CompatLib"))
     implementation(project(":CompatLibVR"))
     implementation(project(":CompatLibVS"))

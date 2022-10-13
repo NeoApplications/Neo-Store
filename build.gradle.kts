@@ -16,9 +16,9 @@ val vRoom = "2.5.0-alpha03"
 
 plugins {
     id("com.android.application").version("7.3.0")
-    kotlin("android").version("1.7.10")
-    kotlin("kapt").version("1.7.10")
-    kotlin("plugin.parcelize").version("1.7.10")
+    kotlin("android").version("1.7.20")
+    kotlin("kapt").version("1.7.20")
+    kotlin("plugin.parcelize").version("1.7.20")
     id("com.google.protobuf").version("0.8.18")
 }
 
@@ -233,7 +233,7 @@ dependencies {
     implementation("com.google.protobuf:protobuf-javalite:3.21.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation(kotlin("stdlib", "1.7.0"))
+    implementation(kotlin("stdlib", "1.7.20"))
     implementation("me.xdrop:fuzzywuzzy:1.4.0")
     implementation("com.github.KwabenBerko:OpenWeatherMap-Android-Library:2.0.1") {
         exclude("com.android.support", "support-compat")
