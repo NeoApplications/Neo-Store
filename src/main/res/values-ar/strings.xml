@@ -231,4 +231,5 @@
     <string name="date_added">تاريخ الإضافة</string>
     <string name="date_updated">تاريخ التحديث</string>
     <string name="target_sdk">SDK المستهدفة</string>
+    <string name="other_apps_by">تطبيقات أخرى بواسطة %s</string>
 </resources>
