@@ -468,4 +468,15 @@
     <string name="title__drawer_rows">عدد الصفوف</string>
     <string name="protected_apps">التطبيقات المحمية</string>
     <string name="protected_app_selected">التطبيقات المحمية (%1$d)</string>
+    <string name="contributor_role">المساهم</string>
+    <string name="notification_dots_disabled">لإظهار نقاط الإشعارات، قم بتمكين إظهار نقاط الإشعارات في الإعدادات</string>
+    <string name="author_role">المطور</string>
+    <string name="default_city">سان سلفادور, SV</string>
+    <string name="weather_city">المدينة</string>
+    <string name="selected_apps">التطبيقات المحددة (%1$d)</string>
+    <string name="app_reset">إعادة تعيين التحديد</string>
+    <string name="weather_provider_owm" translatable="true">فتح WeatherMap</string>
+    <string name="owm_get_your_own_key">احصل على مفتاح API في api.openweathermap.org.</string>
+    <string name="weather_api_key">مفتاح واجهة برمجة تطبيقات OWM</string>
+    <string name="notification_dots_missing_notification_access">لإظهار نقاط الإشعارات، قم بتشغيل الوصول إلى إشعارات التطبيق</string>
 </resources>
