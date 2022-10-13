@@ -32,8 +32,6 @@ import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.ComponentKey
 import com.saggitt.omega.preferences.OmegaPreferencesChangeCallback
-import com.saggitt.omega.preferences.views.PreferencesActivity
-import com.saggitt.omega.util.Config
 import com.saggitt.omega.util.SingletonHolder
 import com.saggitt.omega.util.applyColor
 import com.saggitt.omega.util.asMap
@@ -458,59 +456,6 @@ abstract class AppGroups<T : AppGroups.Group>(
 
             override fun clone(): Customization<MutableSet<ComponentKey>, JSONArray> {
                 return ComponentsCustomization(key, default).also { newInstance ->
-                    value?.let { newInstance.value = HashSet(it) }
-                }
-            }
-        }
-
-        class AppsRow(key: String, default: MutableSet<ComponentKey>) :
-            ComponentsCustomization(key, default) {
-
-            override fun createRow(context: Context, parent: ViewGroup): View? {
-                val view = LayoutInflater.from(context)
-                    .inflate(R.layout.drawer_tab_apps_row, parent, false)
-
-                updateCount(view)
-
-                view.setOnClickListener {
-                    if (Utilities.ATLEAST_R && Utilities.getOmegaPrefs(context).drawerEnableProtectedApps.onGetValue()) {
-                        Config.showLockScreen(
-                            context,
-                            context.getString(R.string.trust_apps_manager_name)
-                        ) {
-                            openFragment(context, view)
-                        }
-                    } else {
-                        openFragment(context, view)
-                    }
-                }
-
-                return view
-            }
-
-            private fun openFragment(context: Context, view: View) {
-                val fragment = "com.saggitt.omega.views.SelectableAppsFragment"
-                PreferencesActivity.startFragment(
-                    context,
-                    fragment,
-                    context.resources.getString(R.string.title__drawer_hide_apps),
-                    value(), { newSelections ->
-                        if (newSelections != null) {
-                            value = HashSet(newSelections)
-                            updateCount(view)
-                        }
-                    }, DrawerTabs.Profile()
-                )
-            }
-
-            private fun updateCount(view: View) {
-                val count = value().size
-                view.findViewById<AppCompatTextView>(R.id.apps_count).text =
-                    view.resources.getQuantityString(R.plurals.tab_apps_count, count, count)
-            }
-
-            override fun clone(): Customization<MutableSet<ComponentKey>, JSONArray> {
-                return AppsRow(key, default).also { newInstance ->
                     value?.let { newInstance.value = HashSet(it) }
                 }
             }
