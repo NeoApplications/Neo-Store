@@ -69,6 +69,8 @@ import com.saggitt.omega.compose.PrefsActivityX
 import com.saggitt.omega.compose.components.BaseDialog
 import com.saggitt.omega.compose.components.ComposeSwitchView
 import com.saggitt.omega.compose.components.preferences.BasePreference
+import com.saggitt.omega.compose.screens.preferences.CategorySelectionDialogUI
+import com.saggitt.omega.flowerpot.Flowerpot
 import com.saggitt.omega.groups.AppGroups
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerFolders
@@ -85,6 +87,7 @@ fun CreateGroupBottomSheet(
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
     val manager = prefs.drawerAppGroupsManager
+    val flowerpotManager = Flowerpot.Manager.getInstance(context)
     val group = when (type) {
         AppGroupsManager.CategorizationType.Tabs -> {
             DrawerTabs.CustomTab(context)
@@ -107,6 +110,14 @@ fun CreateGroupBottomSheet(
                 AppGroups.KEY_HIDE_FROM_ALL_APPS,
                 true
             ).value ?: true
+        )
+    }
+    var selectedCategory by remember {
+        mutableStateOf(
+            AppGroups.Group.StringCustomization(
+                AppGroups.KEY_FLOWERPOT,
+                AppGroups.KEY_FLOWERPOT_DEFAULT
+            ).value ?: AppGroups.KEY_FLOWERPOT_DEFAULT
         )
     }
     val selectedApps = remember {
@@ -155,52 +166,84 @@ fun CreateGroupBottomSheet(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        ComposeSwitchView(
-            title = stringResource(R.string.tab_hide_from_main),
-            iconId = R.drawable.tab_hide_from_main,
-            isChecked = isHidden,
-            onCheckedChange = { isHidden = it },
-            horizontalPadding = 4.dp
-        )
+        if (type != AppGroupsManager.CategorizationType.Flowerpot) {
+            BasePreference(
+                titleId = R.string.tab_manage_apps,
+                startWidget = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_apps),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                },
+                endWidget = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.chevron_right),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                },
+            ) { openDialog.value = true }
+            Spacer(modifier = Modifier.height(8.dp))
+            ComposeSwitchView(
+                title = stringResource(R.string.tab_hide_from_main),
+                iconId = R.drawable.tab_hide_from_main,
+                isChecked = isHidden,
+                onCheckedChange = { isHidden = it },
+                horizontalPadding = 4.dp
+            )
+            Spacer(modifier = Modifier.height(8.dp))
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        BasePreference(
-            titleId = R.string.tab_manage_apps,
-            startWidget = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_apps),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                )
-            },
-            endWidget = {
-                Icon(
-                    painter = painterResource(id = R.drawable.chevron_right),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                )
-            },
-        ) { openDialog.value = true }
-        Spacer(modifier = Modifier.height(8.dp))
-
-        if (openDialog.value) {
-            BaseDialog(openDialogCustom = openDialog) {
-                Card(
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.padding(8.dp),
-                    elevation = CardDefaults.elevatedCardElevation(8.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
-                ) {
-                    GroupAppSelection(
-                        selectedApps = selectedApps.map { it.toString() }.toSet(),
+            if (openDialog.value) {
+                BaseDialog(openDialogCustom = openDialog) {
+                    Card(
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier.padding(8.dp),
+                        elevation = CardDefaults.elevatedCardElevation(8.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
                     ) {
-                        val componentsSet =
-                            it.mapNotNull { ck -> ComponentKey.fromString(ck) }.toMutableSet()
-                        selectedApps.clear()
-                        selectedApps.addAll(componentsSet)
-                        (config[AppGroups.KEY_ITEMS] as? AppGroups.Group.ComponentsCustomization)?.value =
-                            componentsSet
+                        GroupAppSelection(
+                            selectedApps = selectedApps.map { it.toString() }.toSet(),
+                        ) {
+                            val componentsSet =
+                                it.mapNotNull { ck -> ComponentKey.fromString(ck) }.toMutableSet()
+                            selectedApps.clear()
+                            selectedApps.addAll(componentsSet)
+                            (config[AppGroups.KEY_ITEMS] as? AppGroups.Group.ComponentsCustomization)?.value =
+                                componentsSet
+                        }
+                    }
+                }
+            }
+        } else {
+            BasePreference(
+                titleId = R.string.pref_appcategorization_flowerpot_title,
+                summary = flowerpotManager.getAllPots()
+                    .find { it.name == selectedCategory }!!.displayName,
+                startWidget = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_category),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                },
+                endWidget = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.chevron_right),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                },
+            ) { openDialog.value = true }
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (openDialog.value) {
+                BaseDialog(openDialogCustom = openDialog) {
+                    CategorySelectionDialogUI(selectedCategory = selectedCategory) {
+                        selectedCategory = it
+                        (config[AppGroups.KEY_FLOWERPOT] as? FlowerpotTabs.FlowerpotCustomization)?.value =
+                            it
+                        openDialog.value = false
                     }
                 }
             }
@@ -287,10 +330,15 @@ fun CreateGroupBottomSheet(
                 onClick = {
                     (config[AppGroups.KEY_TITLE] as? AppGroups.Group.StringCustomization)?.value =
                         title
-                    (config[AppGroups.KEY_HIDE_FROM_ALL_APPS] as? AppGroups.Group.BooleanCustomization)?.value =
-                        isHidden
-                    (config[AppGroups.KEY_ITEMS] as? AppGroups.Group.ComponentsCustomization)?.value =
-                        selectedApps.toMutableSet()
+                    if (type != AppGroupsManager.CategorizationType.Flowerpot) {
+                        (config[AppGroups.KEY_HIDE_FROM_ALL_APPS] as? AppGroups.Group.BooleanCustomization)?.value =
+                            isHidden
+                        (config[AppGroups.KEY_ITEMS] as? AppGroups.Group.ComponentsCustomization)?.value =
+                            selectedApps.toMutableSet()
+                    } else {
+                        (config[AppGroups.KEY_FLOWERPOT] as? FlowerpotTabs.FlowerpotCustomization)?.value =
+                            selectedCategory
+                    }
                     if (type != AppGroupsManager.CategorizationType.Folders) {
                         (config[AppGroups.KEY_COLOR] as? AppGroups.Group.ColorCustomization)?.value =
                             color!!.toArgb()

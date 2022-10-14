@@ -190,6 +190,8 @@ abstract class AppGroups<T : AppGroups.Group>(
         const val KEY_TITLE = "title"
         const val KEY_HIDE_FROM_ALL_APPS = "hideFromAllApps"
         const val KEY_ITEMS = "items"
+        const val KEY_FLOWERPOT = "potName"
+        const val KEY_FLOWERPOT_DEFAULT = "PERSONALIZATION"
 
         const val TYPE_UNDEFINED = "-1"
     }
