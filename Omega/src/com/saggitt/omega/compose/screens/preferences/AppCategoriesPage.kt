@@ -369,6 +369,13 @@ fun AppCategoriesPage() {
                             onClick = {
                                 coroutineScope.launch {
                                     sheetChanger = Config.BS_EDIT_GROUP
+                                    onOptionSelected(
+                                        when (item.type) {
+                                            DrawerTabs.TYPE_CUSTOM -> AppGroupsManager.CategorizationType.Tabs
+                                            FlowerpotTabs.TYPE_FLOWERPOT -> AppGroupsManager.CategorizationType.Flowerpot
+                                            else -> AppGroupsManager.CategorizationType.Folders
+                                        }
+                                    )
                                     editGroup.value = item
                                     sheetState.show()
                                 }
