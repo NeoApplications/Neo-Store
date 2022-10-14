@@ -433,4 +433,19 @@
     <string name="summary_dock_search">Vis i bunn-dokk</string>
     <string name="label_search">Søk</string>
     <string name="title_dock_search">Søkefelt i dokk</string>
+    <string name="selected_apps">Valgte programmer (%1$d)</string>
+    <string name="app_name">Programnavn</string>
+    <string name="section_apps">programmer</string>
+    <string name="contributor_role">Bidragsyter</string>
+    <string name="folder_name">Mappenavn</string>
+    <string name="icon_picker_default_category">Ikoner</string>
+    <string name="tab_shortcuts">Snarveier</string>
+    <string name="accessibility_undo">Angre</string>
+    <string name="section_contacts">Kontakter</string>
+    <string name="tab_launcher">Oppstarter</string>
+    <string name="title__general_profile">Profil</string>
+    <string name="title__drawer_rows">Antall rader</string>
+    <string name="protected_apps">Beskyttede programmer</string>
+    <string name="author_role">Utvikler</string>
+    <string name="debug_options_title">Avlusingsinfo</string>
 </resources>
