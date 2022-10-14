@@ -41,11 +41,12 @@ import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.saggitt.omega.compose.screens.preferences.AppSelectionPage
+import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.util.Config
 
 @Composable
 fun SelectTabBottomSheet(
-    onClose: (Int) -> Unit,
+    onClose: (Int, AppGroupsManager.CategorizationType) -> Unit,
 ) {
     val context = LocalContext.current
     val prefs = Utilities.getOmegaPrefs(context)
@@ -79,7 +80,7 @@ fun SelectTabBottomSheet(
             modifier = Modifier.height(72.dp),
             iconId = R.drawable.ic_category,
             onClick = {
-                onClose(Config.BS_CREATE_GROUP)
+                onClose(Config.BS_CREATE_GROUP, AppGroupsManager.CategorizationType.Flowerpot)
             }
         )
 
@@ -91,7 +92,7 @@ fun SelectTabBottomSheet(
             modifier = Modifier.height(72.dp),
             iconId = R.drawable.ic_squares_four,
             onClick = {
-                onClose(Config.BS_CREATE_GROUP)
+                onClose(Config.BS_CREATE_GROUP, AppGroupsManager.CategorizationType.Tabs)
             }
         )
 
