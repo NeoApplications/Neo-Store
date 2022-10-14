@@ -5,21 +5,20 @@ import com.google.protobuf.gradle.protoc
 import org.jetbrains.kotlin.gradle.internal.KaptWithoutKotlincTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.TimeZone
+import java.util.*
 
-val vCompose = "1.3.0-beta02"
-val vComposeCompiler = "1.3.1"
+val vCompose = "1.3.0-rc01"
+val vComposeCompiler = "1.3.2"
 val vAccompanist =
-    "0.26.1-alpha" //Do not update until rememberDrawablePainter is fixed (try the IconShapeItem to confirm)
-val vRoom = "2.5.0-alpha03"
+    "0.26.5-rc" //Do not update until rememberDrawablePainter is fixed (try the IconShapeItem to confirm)
+val vRoom = "2.5.0-beta01"
 
 plugins {
     id("com.android.application").version("7.3.0")
     kotlin("android").version("1.7.20")
     kotlin("kapt").version("1.7.20")
     kotlin("plugin.parcelize").version("1.7.20")
-    id("com.google.protobuf").version("0.8.18")
+    id("com.google.protobuf").version("0.8.19") // TODO consider moving to 0.9.X https://github.com/google/protobuf-gradle-plugin/releases
 }
 
 allprojects {
@@ -210,13 +209,14 @@ dependencies {
     implementation(project(":iconloaderlib"))
     implementation(project(":searchuilib"))
 
+    // TODO clean up the libs
     //UI
-    implementation("androidx.appcompat:appcompat:1.6.0-rc01")
+    implementation("androidx.appcompat:appcompat:1.7.0-alpha01")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03")
-    implementation("androidx.activity:activity-ktx:1.6.0-rc02")
-    implementation("androidx.fragment:fragment-ktx:1.5.2")
+    implementation("androidx.activity:activity-ktx:1.7.0-alpha01")
+    implementation("androidx.fragment:fragment-ktx:1.5.3")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.savedstate:savedstate-ktx:1.2.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
@@ -230,7 +230,7 @@ dependencies {
     implementation("io.github.hokofly:hoko-blur:1.3.7")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10")
-    implementation("com.google.protobuf:protobuf-javalite:3.21.1")
+    implementation("com.google.protobuf:protobuf-javalite:3.21.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation(kotlin("stdlib", "1.7.20"))
@@ -247,12 +247,12 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:$vCompose")
     implementation("androidx.compose.ui:ui-tooling-preview:$vCompose")
     implementation("androidx.compose.foundation:foundation:$vCompose")
-    implementation("androidx.compose.material3:material3:1.0.0-beta02")
+    implementation("androidx.compose.material3:material3:1.0.0-rc01")
     implementation("androidx.navigation:navigation-compose:2.5.2")
-    implementation("androidx.activity:activity-compose:1.5.1")
-    implementation("io.coil-kt:coil-compose:2.2.1")
+    implementation("androidx.activity:activity-compose:1.6.0")
+    implementation("io.coil-kt:coil-compose:2.2.2")
     implementation("io.github.fornewid:material-motion-compose-core:0.8.4")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.18")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.20")
 
     //Accompanist
     implementation("com.google.accompanist:accompanist-flowlayout:$vAccompanist")
@@ -297,7 +297,7 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
     implementation("junit:junit:4.13.2")
-    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.9.0")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
 
     androidTestImplementation("androidx.test:runner:1.4.0")
     androidTestImplementation("androidx.test:rules:1.4.0")
@@ -306,7 +306,7 @@ dependencies {
     androidTestImplementation("org.mockito:mockito-core:3.12.4")
     androidTestImplementation("com.google.dexmaker:dexmaker:1.2")
     androidTestImplementation("com.google.dexmaker:dexmaker-mockito:1.2")
-    androidTestImplementation("androidx.annotation:annotation:1.4.0")
+    androidTestImplementation("androidx.annotation:annotation:1.5.0")
 }
 
 protobuf {
