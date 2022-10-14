@@ -208,4 +208,24 @@
     <string name="no_updates_available">কোন সংস্করণ উপলব্ধ নেই</string>
     <string name="dynamic">সিস্টেম গতিশীল</string>
     <string name="loading_list">তালিকা লোড হচ্ছে…</string>
+    <string name="categories">বিভাগসমূহ</string>
+    <string name="date_added">যোগ হওয়ার তারিখ</string>
+    <string name="date_updated">হালনাগাদ করার তারিখ</string>
+    <string name="images_cache_retention">ছবি ক্যাশ ধারণক্ষমতা</string>
+    <string name="releases_cache_retention">ডাউনলোডকৃত APK ক্যাশ ধারণক্ষমতা</string>
+    <string name="system_black">সিস্টেম (কালো</string>
+    <string name="prefs_personal">নিজস্ব</string>
+    <string name="auto_sync_interval">স্বয়ংক্রিয় সিংকিং এর অন্তরকাল(মিনিটে)</string>
+    <string name="favorite_applications">পছন্দসমূহ</string>
+    <string name="prefs_cache">ক্যাশিং</string>
+    <string name="prefs_sync">সিঙ্ক্রোনাইজেশন</string>
+    <string name="group_telegram">আমাদের টেলিগ্রাম গ্রুপ</string>
+    <string name="group_matrix">আমাদের ম্যাট্রিক্স গ্রুপ</string>
+    <string name="min_sdk">সর্বনিম্ন SDK</string>
+    <string name="target_sdk">লক্ষ্যকৃত SDK</string>
+    <string name="sort_ascending">ছোটো থেকে বড়</string>
+    <string name="sort_descending">বড়ো থেকে ছোট</string>
+    <string name="other_apps_by">%s এর অন্য অ্যাপসমূহ</string>
+    <string name="action_apply">প্রয়োগ করুন</string>
+    <string name="action_reset">পুনরায় শুরু</string>
 </resources>
