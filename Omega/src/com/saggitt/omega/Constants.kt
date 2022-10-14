@@ -175,6 +175,7 @@ const val PREFS_FEED_PROVIDER = "pref_feed_provider"
 const val PREFS_TORCH = "pref_torch"
 const val PREFS_FOLDER_COVER_MODE = "pref_cover_mode"
 const val PREFS_FOLDER_SWIPE_UP = "pref_swipe_up_gesture"
+const val LAWNICONS_PACKAGE_NAME = "app.lawnchair.lawnicons"
 
 const val THEME_LIGHT = 0
 const val THEME_DARK = ThemeManager.THEME_DARK
