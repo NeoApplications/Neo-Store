@@ -327,7 +327,21 @@ fun AppCategoriesPage() {
                                         ?: run { overscrollJob?.cancel() }
                                 },
                                 onDragStart = { offset -> dragDropListState.onDragStart(offset) },
-                                onDragEnd = { dragDropListState.onDragInterrupted() },
+                                onDragEnd = {
+                                    dragDropListState.onDragInterrupted()
+                                    when (manager.categorizationType) {
+                                        AppGroupsManager.CategorizationType.Tabs,
+                                        AppGroupsManager.CategorizationType.Flowerpot -> {
+                                            manager.drawerTabs.setGroups(groups as List<DrawerTabs.Tab>)
+                                            manager.drawerTabs.saveToJson()
+                                        }
+                                        AppGroupsManager.CategorizationType.Folders -> {
+                                            manager.drawerFolders.setGroups(groups as List<DrawerFolders.Folder>)
+                                            manager.drawerFolders.saveToJson()
+                                        }
+                                        else -> {}
+                                    }
+                                },
                                 onDragCancel = { dragDropListState.onDragInterrupted() }
                             )
                         },
