@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import com.android.launcher3.R
 import com.android.launcher3.icons.ClockDrawableWrapper
 import com.android.launcher3.util.MainThreadInitializedObject
+import com.saggitt.omega.LAWNICONS_PACKAGE_NAME
 import com.saggitt.omega.icons.ClockMetadata
 import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
 import com.saggitt.omega.util.Config
@@ -18,7 +19,7 @@ class IconPackProvider(private val context: Context) {
     private val iconPacks = mutableMapOf<String, IconPack?>()
     val systemIconPack = SystemIconPack(context)
     private val systemIcon = CustomAdaptiveIconDrawable.wrapNonNull(
-            ContextCompat.getDrawable(context, R.drawable.ic_launcher_foreground)!!
+        ContextCompat.getDrawable(context, R.drawable.ic_launcher_foreground)!!
     )
 
     fun getIconPackOrSystem(packageName: String): IconPack? {
@@ -51,7 +52,17 @@ class IconPackProvider(private val context: Context) {
             }
         val defaultIconPack =
             IconPackInfo(context.getString(R.string.icon_pack_default), "", systemIcon)
-        return listOf(defaultIconPack) + iconPacks.sortedBy { it.name }
+        val lawniconsInfo = try {
+            val info = pm.getPackageInfo(LAWNICONS_PACKAGE_NAME, 0)
+            IconPackInfo(
+                info.applicationInfo.loadLabel(pm).toString(),
+                LAWNICONS_PACKAGE_NAME,
+                CustomAdaptiveIconDrawable.wrapNonNull(info.applicationInfo.loadIcon(pm))
+            )
+        } catch (e: PackageManager.NameNotFoundException) {
+            null
+        }
+        return listOfNotNull(defaultIconPack, lawniconsInfo) + iconPacks.sortedBy { it.name }
     }
 
     fun getClockMetadata(iconEntry: IconEntry): ClockMetadata? {
