@@ -108,7 +108,8 @@ fun AppCategoriesPage() {
     val groups = remember(manager.categorizationType) {
         mutableStateListOf(
             *when (manager.categorizationType) {
-                AppGroupsManager.CategorizationType.Tabs -> {
+                AppGroupsManager.CategorizationType.Tabs,
+                AppGroupsManager.CategorizationType.Flowerpot -> {
                     if (hasWorkApps) {
                         manager.drawerTabs.getGroups()
                             .filter { it !is DrawerTabs.ProfileTab || !it.profile.matchesAll }
@@ -117,21 +118,9 @@ fun AppCategoriesPage() {
                             .filter { it !is DrawerTabs.ProfileTab || it.profile.matchesAll }
                     }
                 }
-
                 AppGroupsManager.CategorizationType.Folders -> {
                     manager.drawerFolders.getGroups()
                 }
-
-                AppGroupsManager.CategorizationType.Flowerpot -> {
-                    if (hasWorkApps) {
-                        manager.flowerpotTabs.getGroups()
-                            .filter { it !is DrawerTabs.ProfileTab || !it.profile.matchesAll }
-                    } else {
-                        manager.flowerpotTabs.getGroups()
-                            .filter { it !is DrawerTabs.ProfileTab || it.profile.matchesAll }
-                    }
-                }
-
                 else -> {
                     emptyList()
                 }
@@ -187,8 +176,9 @@ fun AppCategoriesPage() {
             when (sheetChanger) {
                 Config.BS_SELECT_TAB_TYPE -> {
                     if (selectedOption == AppGroupsManager.CategorizationType.Tabs || selectedOption == AppGroupsManager.CategorizationType.Flowerpot) {
-                        SelectTabBottomSheet {
-                            sheetChanger = it
+                        SelectTabBottomSheet { changer, categorizationType ->
+                            selectedOption = categorizationType
+                            sheetChanger = changer
                         }
                     } else {
                         CreateGroupBottomSheet(selectedOption) {
@@ -372,21 +362,15 @@ fun AppCategoriesPage() {
                             onRemoveClick = {
                                 groups.remove(item)
                                 when (manager.categorizationType) {
-                                    AppGroupsManager.CategorizationType.Tabs -> {
+                                    AppGroupsManager.CategorizationType.Tabs,
+                                    AppGroupsManager.CategorizationType.Flowerpot -> {
                                         manager.drawerTabs.removeGroup(item as DrawerTabs.Tab)
                                         manager.drawerTabs.saveToJson()
                                     }
-
                                     AppGroupsManager.CategorizationType.Folders -> {
                                         manager.drawerFolders.removeGroup(item as DrawerFolders.Folder)
                                         manager.drawerFolders.saveToJson()
                                     }
-
-                                    AppGroupsManager.CategorizationType.Flowerpot -> {
-                                        manager.flowerpotTabs.removeGroup(item as DrawerTabs.Tab)
-                                        manager.flowerpotTabs.saveToJson()
-                                    }
-
                                     else -> {}
                                 }
                             }

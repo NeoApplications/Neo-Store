@@ -352,14 +352,9 @@ fun CreateGroupBottomSheet(
                                 saveToJson()
                             }
                         }
-                        AppGroupsManager.CategorizationType.Tabs -> {
-                            manager.drawerTabs.apply {
-                                addGroup(group as DrawerTabs.Tab)
-                                saveToJson()
-                            }
-                        }
+                        AppGroupsManager.CategorizationType.Tabs,
                         AppGroupsManager.CategorizationType.Flowerpot -> {
-                            manager.flowerpotTabs.apply {
+                            manager.drawerTabs.apply {
                                 addGroup(group as DrawerTabs.Tab)
                                 saveToJson()
                             }
