@@ -160,7 +160,7 @@ fun CreateGroupBottomSheet(
                 keyboardController?.hide()
             }),
             shape = MaterialTheme.shapes.large,
-            label = { Text(text = stringResource(id = R.string.folder_name)) },
+            label = { Text(text = stringResource(id = R.string.name)) },
             isError = title.isEmpty()
         )
 
