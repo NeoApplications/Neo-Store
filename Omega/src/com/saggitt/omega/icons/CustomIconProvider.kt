@@ -44,6 +44,7 @@ import com.android.launcher3.icons.IconProvider
 import com.android.launcher3.icons.ThemedIconDrawable
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.SafeCloseable
+import com.saggitt.omega.LAWNICONS_PACKAGE_NAME
 import com.saggitt.omega.data.IconOverrideRepository
 import com.saggitt.omega.iconpack.IconEntry
 import com.saggitt.omega.iconpack.IconPack
@@ -306,10 +307,17 @@ class CustomIconProvider @JvmOverloads constructor(
             }
         }
 
-        updateMapFromResources(
-            resources = context.resources,
-            packageName = context.packageName
-        )
+        if (prefs.themeIconPackGlobal.onGetValue() == LAWNICONS_PACKAGE_NAME) {
+            updateMapFromResources(
+                resources = context.packageManager.getResourcesForApplication(LAWNICONS_PACKAGE_NAME),
+                packageName = LAWNICONS_PACKAGE_NAME
+            )
+        } else {
+            updateMapFromResources(
+                resources = context.resources,
+                packageName = context.packageName
+            )
+        }
 
         return map
     }
