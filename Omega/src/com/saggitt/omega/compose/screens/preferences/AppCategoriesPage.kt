@@ -54,7 +54,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.consumeAllChanges
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -177,7 +176,7 @@ fun AppCategoriesPage() {
                 Config.BS_SELECT_TAB_TYPE -> {
                     if (selectedOption == AppGroupsManager.CategorizationType.Tabs || selectedOption == AppGroupsManager.CategorizationType.Flowerpot) {
                         SelectTabBottomSheet { changer, categorizationType ->
-                            selectedOption = categorizationType
+                            onOptionSelected(categorizationType)
                             sheetChanger = changer
                         }
                     } else {
@@ -311,7 +310,7 @@ fun AppCategoriesPage() {
                         .pointerInput(Unit) {
                             detectDragGesturesAfterLongPress(
                                 onDrag = { change, offset ->
-                                    change.consumeAllChanges()
+                                    change.consume()
                                     dragDropListState.onDrag(offset)
 
                                     if (overscrollJob?.isActive == true)

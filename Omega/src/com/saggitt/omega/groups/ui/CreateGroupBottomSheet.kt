@@ -241,7 +241,7 @@ fun CreateGroupBottomSheet(
                 BaseDialog(openDialogCustom = openDialog) {
                     CategorySelectionDialogUI(selectedCategory = selectedCategory) {
                         selectedCategory = it
-                        (config[AppGroups.KEY_FLOWERPOT] as? FlowerpotTabs.FlowerpotCustomization)?.value =
+                        (config[AppGroups.KEY_FLOWERPOT] as? AppGroups.Group.StringCustomization)?.value =
                             it
                         openDialog.value = false
                     }
@@ -336,7 +336,7 @@ fun CreateGroupBottomSheet(
                         (config[AppGroups.KEY_ITEMS] as? AppGroups.Group.ComponentsCustomization)?.value =
                             selectedApps.toMutableSet()
                     } else {
-                        (config[AppGroups.KEY_FLOWERPOT] as? FlowerpotTabs.FlowerpotCustomization)?.value =
+                        (config[AppGroups.KEY_FLOWERPOT] as? AppGroups.Group.StringCustomization)?.value =
                             selectedCategory
                     }
                     if (type != AppGroupsManager.CategorizationType.Folders) {
