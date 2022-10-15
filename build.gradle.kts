@@ -9,8 +9,7 @@ import java.util.*
 
 val vCompose = "1.3.0-rc01"
 val vComposeCompiler = "1.3.2"
-val vAccompanist =
-    "0.26.5-rc" //Do not update until rememberDrawablePainter is fixed (try the IconShapeItem to confirm)
+val vAccompanist = "0.26.1-alpha" //Do not update until rememberDrawablePainter is fixed (try the IconShapeItem to confirm)
 val vRoom = "2.5.0-beta01"
 
 plugins {
