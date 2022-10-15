@@ -19,8 +19,6 @@ package com.saggitt.omega.dash.actionprovider
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashActionProvider
 
@@ -28,11 +26,7 @@ class LaunchAssistant(context: Context) : DashActionProvider(context) {
     override val itemId = 6
     override val name = context.getString(R.string.launch_assistant)
     override val description = context.getString(R.string.gesture_launch_assistant)
-
-    override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_assistant).apply {
-            this?.setTint(darkenColor(accentColor))
-        }
+    override val icon = R.drawable.ic_assistant
 
     override fun runAction(context: Context) {
         context.startActivity(Intent(Intent.ACTION_ASSIST).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))

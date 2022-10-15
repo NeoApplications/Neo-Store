@@ -20,9 +20,7 @@ package com.saggitt.omega.dash.actionprovider
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashActionProvider
 
@@ -30,11 +28,7 @@ class ChangeWallpaper(context: Context) : DashActionProvider(context) {
     override val itemId = 3
     override val name = context.getString(R.string.wallpaper_pick)
     override val description = context.getString(R.string.wallpaper_pick_summary)
-
-    override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_wallpaper).apply {
-            this?.setTint(darkenColor(accentColor))
-        }
+    override val icon = R.drawable.ic_wallpaper
 
     override fun runAction(context: Context) {
         try {

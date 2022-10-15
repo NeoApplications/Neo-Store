@@ -19,9 +19,7 @@ package com.saggitt.omega.dash.actionprovider
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.provider.Settings
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashActionProvider
 
@@ -29,11 +27,7 @@ class ManageApps(context: Context) : DashActionProvider(context) {
     override val itemId = 7
     override val name = context.getString(R.string.tab_manage_apps)
     override val description = context.getString(R.string.dash_manage_apps_summary)
-
-    override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_build).apply {
-            this?.setTint(darkenColor(accentColor))
-        }
+    override val icon = R.drawable.ic_build
 
     override fun runAction(context: Context) {
         context.startActivity(Intent(Settings.ACTION_MANAGE_ALL_APPLICATIONS_SETTINGS))
