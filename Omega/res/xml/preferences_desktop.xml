@@ -169,16 +169,9 @@
             app:steps="2"
             app:summaryFormat="%.0f" />
 
-        <Preference
-            android:fragment="com.saggitt.omega.dash.DashFragment"
-            android:key="pref_dash_providers"
-            android:summary="@string/edit_dash_summary"
-            android:title="@string/edit_dash"
-            app:iconSpaceReserved="false" />
-
         <com.saggitt.omega.preferences.custom.FeedPreference
             android:key="pref_feed_provider"
-            android:title="@string/title_feed_provider"
-            android:summary="@string/pref_shelf_summary" />
+            android:summary="@string/pref_shelf_summary"
+            android:title="@string/title_feed_provider" />
     </PreferenceCategory>
 </PreferenceScreen>
