@@ -21,6 +21,8 @@ import com.saggitt.omega.compose.components.ActionDashItem
 import com.saggitt.omega.compose.components.ControlDashItem
 import com.saggitt.omega.compose.components.MusicBar
 import com.saggitt.omega.dash.actionprovider.AudioPlayer
+import com.saggitt.omega.util.getDashActionProviders
+import com.saggitt.omega.util.getDashControlProviders
 import kotlin.math.roundToInt
 
 // TODO add better support for horizontal
@@ -30,16 +32,17 @@ fun DashPage() {
     val prefs = Utilities.getOmegaPrefs(context)
     val activeDashProviders = prefs.dashProvidersItems.getAll()
 
-    val actionItems = DashEditAdapter.getDashActionProviders(context).filter {
+    val actionItems = getDashActionProviders(context).filter {
         it.javaClass.name in activeDashProviders && it.name != AudioPlayer::class.java.name
-    }
-    val controlItems = DashEditAdapter.getDashControlProviders(context).filter {
-        it.javaClass.name in activeDashProviders
-    }
+    }.associateBy { it.javaClass.name }
+    val controlItems = getDashControlProviders(context).filter {
+        it.javaClass.name in activeDashProviders && it.name != AudioPlayer::class.java.name
+    }.associateBy { it.javaClass.name }
     val musicManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     val lineSize = prefs.dashLineSize.onGetValue().roundToInt()
 
     val displayItems = actionItems + controlItems
+    val displayItemsSorted = activeDashProviders.mapNotNull { displayItems[it] }
     LazyVerticalGrid(
         modifier = Modifier.fillMaxWidth(),
         columns = GridCells.Fixed(lineSize),
@@ -55,7 +58,7 @@ fun DashPage() {
             )
         }
         itemsIndexed(
-            items = displayItems,
+            items = displayItemsSorted,
             span = { _, item ->
                 when (item) {
                     is DashControlProvider -> GridItemSpan(2)
