@@ -981,9 +981,11 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         ).associateBy(
             keySelector = { it },
             valueTransform = { OmegaSmartSpaceController.getDisplayName(context, it) }
-        ),
-        onChange = ::updateSmartspaceProvider
-    )
+        )
+    ) {
+        updateSmartspaceProvider()
+        pokeChange()
+    }
 
     var smartspaceEventProvidersNew =
         StringMultiSelectionPref( // TODO does order have a function? if so, customize dialog to respect it
