@@ -19,8 +19,6 @@ package com.saggitt.omega.dash.actionprovider
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashActionProvider
 
@@ -28,11 +26,7 @@ class OmegaSettings(context: Context) : DashActionProvider(context) {
     override val itemId = 9
     override val name = context.getString(R.string.settings_button_text)
     override val description = context.getString(R.string.dash_launcher_settings_summary)
-
-    override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_omega_settings).apply {
-            this?.setTint(darkenColor(accentColor))
-        }
+    override val icon = R.drawable.ic_omega_settings
 
     override fun runAction(context: Context) {
         context.startActivity(

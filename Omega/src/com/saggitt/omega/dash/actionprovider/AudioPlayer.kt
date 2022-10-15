@@ -18,8 +18,6 @@
 package com.saggitt.omega.dash.actionprovider
 
 import android.content.Context
-import android.graphics.drawable.Drawable
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashActionProvider
 
@@ -27,10 +25,7 @@ class AudioPlayer(context: Context) : DashActionProvider(context) {
     override val itemId = 2
     override val name = context.getString(R.string.dash_media_player)
     override val description = context.getString(R.string.dash_media_player_description)
-    override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_music_play).apply {
-            this?.setTint(darkenColor(accentColor))
-        }
+    override val icon = R.drawable.ic_music_play
 
     override fun runAction(context: Context) {
     }

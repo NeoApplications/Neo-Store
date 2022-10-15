@@ -19,11 +19,9 @@ package com.saggitt.omega.dash.controlprovider
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.provider.Settings
 import android.telephony.TelephonyManager
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashControlProvider
 
@@ -32,12 +30,9 @@ class MobileData(context: Context) : DashControlProvider(context) {
     override val name = context.getString(R.string.dash_mobile_network_title)
     override val description = context.getString(R.string.dash_mobile_network_summary)
     override val extendable = true
-    var tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+    override val icon = R.drawable.ic_mobile_network
 
-    override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_mobile_network).apply {
-            this?.setTint(darkenColor(accentColor))
-        }
+    var tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
     override var state: Boolean
         get() {

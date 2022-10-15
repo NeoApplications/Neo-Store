@@ -18,8 +18,6 @@
 package com.saggitt.omega.dash.actionprovider
 
 import android.content.Context
-import android.graphics.drawable.Drawable
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.compose.PrefsActivityX
 import com.saggitt.omega.compose.navigation.Routes
@@ -29,11 +27,7 @@ class EditDash(context: Context) : DashActionProvider(context) {
     override val itemId = 5
     override val name = context.getString(R.string.edit_dash)
     override val description = context.getString(R.string.edit_dash_summary)
-
-    override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_edit_dash).apply {
-            this?.setTint(darkenColor(accentColor))
-        }
+    override val icon = R.drawable.ic_edit_dash
 
     override fun runAction(context: Context) {
         context.startActivity(

@@ -20,7 +20,6 @@ package com.saggitt.omega.dash
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
 import com.android.launcher3.Utilities
 
@@ -29,7 +28,7 @@ abstract class DashProvider(protected val context: Context) {
     abstract val itemId: Int
     abstract val name: String
     abstract val description: String
-    abstract val icon: Drawable?
+    abstract val icon: Int
 
     @ColorInt
     fun darkenColor(@ColorInt color: Int): Int {

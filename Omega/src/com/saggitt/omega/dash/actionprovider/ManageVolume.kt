@@ -20,10 +20,8 @@ package com.saggitt.omega.dash.actionprovider
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.media.AudioManager
 import android.provider.Settings
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashActionProvider
 import java.util.*
@@ -32,11 +30,7 @@ class ManageVolume(context: Context) : DashActionProvider(context) {
     override val itemId = 8
     override val name = context.getString(R.string.dash_volume_title)
     override val description = context.getString(R.string.dash_volume_summary)
-
-    override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_volume).apply {
-            this?.setTint(darkenColor(accentColor))
-        }
+    override val icon = R.drawable.ic_volume
 
     override fun runAction(context: Context) {
         try {

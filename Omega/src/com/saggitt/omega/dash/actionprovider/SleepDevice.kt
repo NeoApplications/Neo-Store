@@ -18,8 +18,6 @@
 package com.saggitt.omega.dash.actionprovider
 
 import android.content.Context
-import android.graphics.drawable.Drawable
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashActionProvider
 import com.saggitt.omega.gestures.handlers.SleepGestureHandler
@@ -30,6 +28,7 @@ class SleepDevice(context: Context) : DashActionProvider(context) {
     override val itemId = 10
     override val name = context.getString(R.string.action_sleep)
     override val description = context.getString(R.string.action_sleep)
+    override val icon = R.drawable.ic_sleep
 
     private val method: SleepGestureHandler.SleepMethod? by lazy {
         listOf(
@@ -37,11 +36,6 @@ class SleepDevice(context: Context) : DashActionProvider(context) {
             SleepMethodDeviceAdmin(context)
         ).firstOrNull { it.supported }
     }
-
-    override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_sleep).apply {
-            this?.setTint(darkenColor(accentColor))
-        }
 
     override fun runAction(context: Context) {
         method!!.sleep(null)

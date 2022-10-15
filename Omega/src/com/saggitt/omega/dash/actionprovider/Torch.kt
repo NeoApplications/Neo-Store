@@ -18,9 +18,7 @@
 package com.saggitt.omega.dash.actionprovider
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.hardware.camera2.CameraManager
-import androidx.appcompat.content.res.AppCompatResources
 import com.android.launcher3.R
 import com.saggitt.omega.dash.DashActionProvider
 import com.saggitt.omega.util.omegaPrefs
@@ -29,11 +27,7 @@ class Torch(context: Context) : DashActionProvider(context) {
     override val itemId = 11
     override val name = context.getString(R.string.dash_torch)
     override val description = context.getString(R.string.dash_torch_summary)
-
-    override val icon: Drawable?
-        get() = AppCompatResources.getDrawable(context, R.drawable.ic_torch).apply {
-            this?.setTint(darkenColor(accentColor))
-        }
+    override val icon = R.drawable.ic_torch
 
     override fun runAction(context: Context) {
         val camManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager?
