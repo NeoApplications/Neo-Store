@@ -24,7 +24,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -58,24 +60,27 @@ fun WidgetsPrefsPage() {
         dialogPref = pref
         openDialog.value = true
     }
-    val smartspacePrefs = listOf(
-        prefs.smartspaceEnable,
-        prefs.smartspaceDate,
-        prefs.smartspaceTime,
-        prefs.smartspaceTimeAbove,
-        prefs.smartspaceTime24H,
-        prefs.smartspaceUsePillQsb,
-        prefs.smartspaceWeatherProvider,
-        if (prefs.smartspaceWeatherProvider.onGetValue() == OWMWeatherDataProvider::class.java.name) {
-            prefs.smartspaceWeatherApiKey
-        } else null,
-        if (prefs.smartspaceWeatherProvider.onGetValue() == OWMWeatherDataProvider::class.java.name) {
-            prefs.smartspaceweatherCity
-
-        } else null,
-        prefs.smartspaceWeatherUnit,
-        prefs.smartspaceEventProvidersNew
-    ).filterNotNull()
+    val smartspacePrefs = remember(prefs.changePoker.collectAsState(initial = false).value) {
+        mutableStateListOf(
+            *listOfNotNull(
+                prefs.smartspaceEnable,
+                prefs.smartspaceDate,
+                prefs.smartspaceTime,
+                prefs.smartspaceTimeAbove,
+                prefs.smartspaceTime24H,
+                prefs.smartspaceUsePillQsb,
+                prefs.smartspaceWeatherProvider,
+                if (prefs.smartspaceWeatherProvider.onGetValue() == OWMWeatherDataProvider::class.java.name) {
+                    prefs.smartspaceWeatherApiKey
+                } else null,
+                if (prefs.smartspaceWeatherProvider.onGetValue() == OWMWeatherDataProvider::class.java.name) {
+                    prefs.smartspaceweatherCity
+                } else null,
+                prefs.smartspaceWeatherUnit,
+                prefs.smartspaceEventProvidersNew
+            ).toTypedArray()
+        )
+    }
 
     val notificationsPrefs = listOf(
         prefs.notificationDots,
@@ -99,7 +104,7 @@ fun WidgetsPrefsPage() {
                 item {
                     PreferenceGroup(
                         stringResource(id = R.string.title__general_smartspace),
-                        prefs = smartspacePrefs, //TODO show api key and city only if OWM is selected
+                        prefs = smartspacePrefs,
                         onPrefDialog = onPrefDialog
                     )
                 }
