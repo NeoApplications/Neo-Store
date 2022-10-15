@@ -29,10 +29,16 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.saggitt.omega.compose.navigation.Routes
 import com.saggitt.omega.util.dpToPx
 import com.saggitt.omega.util.pxToDp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import kotlin.math.roundToInt
+import kotlin.random.Random
 import kotlin.reflect.KProperty
 
 abstract class BasePreferences(context: Context) :
@@ -44,6 +50,9 @@ abstract class BasePreferences(context: Context) :
         HashMap()
     private var onChangeCallback: OmegaPreferencesChangeCallback? = null
 
+    private val _changePoker = MutableSharedFlow<Int>()
+    val changePoker = _changePoker.asSharedFlow()
+
     val doNothing = { }
 
     val restart = {
@@ -53,6 +62,7 @@ abstract class BasePreferences(context: Context) :
     val reloadAll = { reloadAll() }
     val updateBlur = { updateBlur() }
     val recreate = { recreate() }
+    val pokeChange = { pokeChange() }
 
     val idp: InvariantDeviceProfile get() = InvariantDeviceProfile.INSTANCE.get(mContext)
     val reloadIcons = { idp.onPreferencesChanged(context) }
@@ -96,6 +106,12 @@ abstract class BasePreferences(context: Context) :
 
     fun recreate() {
         onChangeCallback?.recreate()
+    }
+
+    fun pokeChange() {
+        CoroutineScope(Dispatchers.Default).launch {
+            _changePoker.emit(Random.nextInt())
+        }
     }
 
     fun reloadApps() {
