@@ -63,13 +63,15 @@ fun EditDashPage() {
 
     val enabled = allItems.filter {
         it.key in prefs.dashProvidersItems.onGetValue()
-    }.map { DashItem(it.key, it.value) }
+    }.map { DashItem(it.key, it.value) }.associateBy { it.key }
+
+    val enabledSorted = prefs.dashProvidersItems.onGetValue().mapNotNull { enabled[it] }
 
     val disabled = allItems.filter {
         it.key !in prefs.dashProvidersItems.onGetValue()
     }.map { DashItem(it.key, it.value) }
 
-    val enabledItems = remember { mutableStateListOf(*enabled.toTypedArray()) }
+    val enabledItems = remember { mutableStateListOf(*enabledSorted.toTypedArray()) }
     val disabledItems = remember { mutableStateOf(disabled) }
     ViewWithActionBar(
         title = stringResource(id = R.string.edit_dash),
