@@ -75,6 +75,7 @@ import com.saggitt.omega.search.PeopleItems
 import com.saggitt.omega.theme.ThemeManager
 import com.saggitt.omega.theme.ThemeOverride
 import com.saggitt.omega.util.Config
+import com.saggitt.omega.util.isPackageInstalled
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -241,6 +242,15 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
 
         //Load hidden apps to use with hidden apps preference
         MODEL_EXECUTOR.handler.postAtFrontOfQueue { loadHiddenApps(prefs.drawerHiddenAppSet.onGetValue()) }
+
+        if (prefs.themedIcons.onGetValue() &&
+            !packageManager.isPackageInstalled(packageName = LAWNICONS_PACKAGE_NAME)
+        ) {
+            prefs.themedIcons.onSetValue(false)
+        }
+
+        Utilities.getPrefs(this).edit()
+            .putBoolean("themed_icons", prefs.themedIcons.onGetValue()).apply()
     }
 
     private fun loadHiddenApps(hiddenAppsSet: Set<String>) {

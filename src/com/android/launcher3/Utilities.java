@@ -703,6 +703,15 @@ public final class Utilities {
         return icon;
     }
 
+    public static Drawable getFullDrawable(Launcher launcher, ItemInfo info, int width, int height,
+                                           Object[] outObj, boolean useTheme) {
+        Drawable icon = loadFullDrawableWithoutTheme(launcher, info, width, height, outObj);
+        if (useTheme && icon instanceof BitmapInfo.Extender) {
+            icon = ((BitmapInfo.Extender) icon).getThemedDrawable(launcher);
+        }
+        return icon;
+    }
+
     public static Drawable loadFullDrawableWithoutTheme(Launcher launcher, ItemInfo info,
                                                         int width, int height, Object[] outObj) {
         LauncherAppState appState = LauncherAppState.getInstance(launcher);

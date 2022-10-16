@@ -39,6 +39,7 @@ import android.os.Process;
 import android.os.UserHandle;
 import android.util.Log;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import androidx.arch.core.util.Function;
 
@@ -148,7 +149,7 @@ public class ThemedIconDrawable extends FastBitmapDrawable {
 
         @Override
         public FastBitmapDrawable newThemedIcon(Context context) {
-            int[] colors = getColors(context);
+            int[] colors = getThemedColors(context);
             FastBitmapDrawable drawable = new ThemedConstantState(this, colors[0], colors[1], false)
                     .newDrawable();
             drawable.mDisabledAlpha = GraphicsUtils.getFloat(context, R.attr.disabledIconAlpha, 1f);
@@ -165,8 +166,9 @@ public class ThemedIconDrawable extends FastBitmapDrawable {
                     getExpectedBitmapSize(icon) + 3 + resName.length());
             try {
                 DataOutputStream dos = new DataOutputStream(out);
-                dos.writeByte(TYPE_THEMED);
+                dos.writeByte(TYPE_THEMED_V2);
                 dos.writeFloat(mNormalizationScale);
+                dos.writeUTF(mThemeData.mPackageName);
                 dos.writeUTF(resName);
                 icon.compress(Bitmap.CompressFormat.PNG, 100, dos);
 
@@ -293,7 +295,7 @@ public class ThemedIconDrawable extends FastBitmapDrawable {
 
         @Override
         public Drawable getThemedDrawable(Context context) {
-            int[] colors = getColors(context);
+            int[] colors = getThemedColors(context);
             Drawable bg = new ColorDrawable(colors[0]);
             float inset = getExtraInsetFraction() / (1 + 2 * getExtraInsetFraction());
             Drawable fg = new InsetDrawable(mThemeData.loadMonochromeDrawable(colors[1]), inset);
@@ -325,7 +327,7 @@ public class ThemedIconDrawable extends FastBitmapDrawable {
 
         @Override
         public Drawable getThemedDrawable(Context context) {
-            int[] colors = getColors(context);
+            int[] colors = getThemedColors(context);
             Drawable bg = new ColorDrawable(colors[0]);
             float extraInsetFraction = CustomAdaptiveIconDrawable.getExtraInsetFraction();
             float inset = extraInsetFraction / (1 + 2 * extraInsetFraction);
@@ -334,9 +336,24 @@ public class ThemedIconDrawable extends FastBitmapDrawable {
         }
     }
 
+    @ColorInt
+    public static int[] getThemedColors(Context context) {
+        final int[] result = getColors(context);
+        /*if (!IconPreferencesKt.shouldTransparentBGIcons(context)) {
+            return result;
+        }
+        if ((context.getResources().getConfiguration().uiMode & UI_MODE_NIGHT_MASK) != UI_MODE_NIGHT_YES) {
+            //Get Composite color for light mode or non dark mode
+            result[1] = ColorUtils.compositeColors(context.getResources().getColor(android.R.color.black), result[1]);
+        }
+        result[0] = 0;*/
+        return result;
+    }
+
     /**
      * Get an int array representing background and foreground colors for themed icons
      */
+    @ColorInt
     public static int[] getColors(Context context) {
         if (COLORS_LOADER != null) {
             return COLORS_LOADER.apply(context);

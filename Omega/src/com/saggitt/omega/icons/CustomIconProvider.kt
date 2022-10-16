@@ -23,6 +23,9 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_DATE_CHANGED
+import android.content.Intent.ACTION_PACKAGE_ADDED
+import android.content.Intent.ACTION_PACKAGE_CHANGED
+import android.content.Intent.ACTION_PACKAGE_REMOVED
 import android.content.Intent.ACTION_TIMEZONE_CHANGED
 import android.content.Intent.ACTION_TIME_CHANGED
 import android.content.IntentFilter
@@ -51,6 +54,8 @@ import com.saggitt.omega.iconpack.IconPack
 import com.saggitt.omega.iconpack.IconPackProvider
 import com.saggitt.omega.iconpack.IconType
 import com.saggitt.omega.util.MultiSafeCloseable
+import com.saggitt.omega.util.getPackageVersionCode
+import com.saggitt.omega.util.isPackageInstalled
 import org.xmlpull.v1.XmlPullParser
 import java.util.function.Supplier
 
@@ -64,7 +69,7 @@ class CustomIconProvider @JvmOverloads constructor(
     private val mContext = context
     private val iconPackProvider = IconPackProvider.INSTANCE.get(context)
     private val overrideRepo = IconOverrideRepository.INSTANCE.get(context)
-    private val iconPack get() = iconPackProvider.getIconPackOrSystem(prefs.themeIconPackGlobal.onGetValue())
+    private val iconPack get() = iconPackProvider.getIconPackOrSystem(iconPackPref)
     private var lawniconsVersion = 0L
 
     private var _themeMap: Map<ComponentName, ThemedIconDrawable.ThemeData>? = null
@@ -82,6 +87,11 @@ class CustomIconProvider @JvmOverloads constructor(
     }
 
     override fun setIconThemeSupported(isSupported: Boolean) {
+        lawniconsVersion =
+            if (isSupported)
+                context.packageManager.getPackageVersionCode(LAWNICONS_PACKAGE_NAME)
+            else
+                0L
         _themeMap = if (isSupported) null else DISABLED_MAP
     }
 
@@ -193,6 +203,7 @@ class CustomIconProvider @JvmOverloads constructor(
         return MultiSafeCloseable().apply {
             add(super.registerIconChangeListener(callback, handler))
             add(IconPackChangeReceiver(mContext, handler, callback))
+            add(LawniconsChangeReceiver(context, handler, callback))
         }
     }
 
@@ -211,7 +222,7 @@ class CustomIconProvider @JvmOverloads constructor(
         private var iconState = systemIconState
         private val iconPackPref = prefs.themeIconPackGlobal
 
-        private val subscription = Runnable {
+        private val subscription = SafeCloseable {
             val newState = systemIconState
             if (iconState != newState) {
                 iconState = newState
@@ -237,6 +248,7 @@ class CustomIconProvider @JvmOverloads constructor(
 
         override fun close() {
             calendarAndClockChangeReceiver = null
+            subscription.close()
         }
     }
 
@@ -260,6 +272,7 @@ class CustomIconProvider @JvmOverloads constructor(
                         callback.onAppIconChanged(componentName.packageName, Process.myUserHandle())
                     }
                 }
+
                 ACTION_DATE_CHANGED, ACTION_TIME_CHANGED -> {
                     context.getSystemService<UserManager>()?.userProfiles?.forEach { user ->
                         iconPack.getCalendars().forEach { componentName ->
@@ -267,6 +280,32 @@ class CustomIconProvider @JvmOverloads constructor(
                         }
                     }
                 }
+            }
+        }
+
+        override fun close() {
+            context.unregisterReceiver(this)
+        }
+    }
+
+    private inner class LawniconsChangeReceiver(
+        private val context: Context, handler: Handler,
+        private val callback: IconChangeListener
+    ) : BroadcastReceiver(), SafeCloseable {
+
+        init {
+            val filter = IntentFilter(ACTION_PACKAGE_ADDED)
+            filter.addAction(ACTION_PACKAGE_CHANGED)
+            filter.addAction(ACTION_PACKAGE_REMOVED)
+            filter.addDataScheme("package")
+            filter.addDataSchemeSpecificPart(LAWNICONS_PACKAGE_NAME, 0)
+            context.registerReceiver(this, filter, null, handler)
+        }
+
+        override fun onReceive(context: Context, intent: Intent) {
+            if (isThemeEnabled) {
+                setIconThemeSupported(true)
+                callback.onSystemIconStateChanged(systemIconState)
             }
         }
 
@@ -306,16 +345,14 @@ class CustomIconProvider @JvmOverloads constructor(
                 Log.e("CustomIconProvider", "Unable to parse icon map.", e)
             }
         }
-
-        if (prefs.themeIconPackGlobal.onGetValue() == LAWNICONS_PACKAGE_NAME) {
+        updateMapFromResources(
+            resources = context.resources,
+            packageName = context.packageName
+        )
+        if (context.packageManager.isPackageInstalled(packageName = LAWNICONS_PACKAGE_NAME)) {
             updateMapFromResources(
                 resources = context.packageManager.getResourcesForApplication(LAWNICONS_PACKAGE_NAME),
                 packageName = LAWNICONS_PACKAGE_NAME
-            )
-        } else {
-            updateMapFromResources(
-                resources = context.resources,
-                packageName = context.packageName
             )
         }
 

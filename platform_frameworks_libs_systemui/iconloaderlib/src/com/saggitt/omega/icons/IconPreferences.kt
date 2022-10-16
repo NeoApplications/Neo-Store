@@ -18,7 +18,6 @@ val Context.prefs
 
 fun shouldWrapAdaptive(context: Context) = context.prefs.getBoolean("pref_adaptive_icon_pack", false)
 fun coloredBackground(context: Context) = context.prefs.getBoolean("pref_colored_background", false)
-fun replaceWhiteBackground(context: Context) = context.prefs.getBoolean("pref_white_only_treatment", false)
 
 fun getWrapperBackgroundColor(context: Context, icon: Drawable): Int {
     val lightness = context.prefs.getFloat("pref_coloredBackgroundLightness", 0.5f)

@@ -369,9 +369,16 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver,
         setTag(searchActionItemInfo);
     }
 
+    public boolean shouldUseTheme() {
+        //if (mDisplay == DISPLAY_ALL_APPS) {
+        return Utilities.getOmegaPrefs(getContext()).getThemedIcons().onGetValue();
+        //}
+        //return mDisplay == DISPLAY_WORKSPACE || mDisplay == DISPLAY_FOLDER || mDisplay == DISPLAY_TASKBAR;
+    }
+
     @UiThread
     protected void applyIconAndLabel(ItemInfoWithIcon info) {
-        boolean useTheme = mDisplay == DISPLAY_WORKSPACE || mDisplay == DISPLAY_FOLDER;
+        boolean useTheme = shouldUseTheme();
         FastBitmapDrawable iconDrawable = info.newIcon(getContext(), useTheme);
         mDotParams.color = IconPalette.getMutedColor(iconDrawable.getIconColor(), 0.54f);
 

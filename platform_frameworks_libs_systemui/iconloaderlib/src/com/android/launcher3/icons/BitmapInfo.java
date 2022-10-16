@@ -45,6 +45,7 @@ public class BitmapInfo {
 
     protected static final byte TYPE_DEFAULT = 1;
     protected static final byte TYPE_THEMED = 2;
+    protected static final byte TYPE_THEMED_V2 = 3;
 
     public final Bitmap icon;
     public final int color;
@@ -124,7 +125,7 @@ public class BitmapInfo {
             return BitmapInfo.of(
                     BitmapFactory.decodeByteArray(data, 1, data.length - 1, decodeOptions),
                     color);
-        } else if (data[0] == TYPE_THEMED) {
+        } else if (data[0] == TYPE_THEMED_V2) {
             return ThemedBitmapInfo.decode(data, color, decodeOptions, user, iconCache, context);
         } else {
             return null;

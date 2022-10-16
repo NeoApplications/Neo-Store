@@ -112,7 +112,6 @@ import com.saggitt.omega.PREFS_ICON_SHAPE
 import com.saggitt.omega.PREFS_KEEP_SCROLL_STATE
 import com.saggitt.omega.PREFS_KILL
 import com.saggitt.omega.PREFS_LANGUAGE
-import com.saggitt.omega.PREFS_LEGACY_TREATMENT
 import com.saggitt.omega.PREFS_LOW_PREFORMANCE
 import com.saggitt.omega.PREFS_NOTIFICATION_BACKGROUND
 import com.saggitt.omega.PREFS_NOTIFICATION_BACKGROUND_CUSTOM
@@ -139,10 +138,10 @@ import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_UNITS
 import com.saggitt.omega.PREFS_SMARTSPACE_WIDGET_ID
 import com.saggitt.omega.PREFS_SORT_X
 import com.saggitt.omega.PREFS_STATUSBAR_HIDE
+import com.saggitt.omega.PREFS_THEMED_ICONS
 import com.saggitt.omega.PREFS_THEME_X
 import com.saggitt.omega.PREFS_TIME_24H
 import com.saggitt.omega.PREFS_TORCH
-import com.saggitt.omega.PREFS_WHITE_TREATMENT
 import com.saggitt.omega.PREFS_WIDGETS_FULL_WIDTH
 import com.saggitt.omega.PREFS_WIDGET_RADIUS
 import com.saggitt.omega.PREFS_WINDOWCORNER_RADIUS
@@ -394,7 +393,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         steps = 2,
         specialOutputs = { it.roundToInt().toString() },
         onChange = reloadGrid
-    ) // TODO add
+    )
     val desktopFolderRows = FloatPref(
         key = PREFS_FOLDER_ROWS,
         titleId = R.string.folder_rows,
@@ -404,7 +403,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         steps = 2,
         specialOutputs = { it.roundToInt().toString() },
         onChange = reloadGrid
-    ) // TODO add
+    )
     var desktopPopup = StringMultiSelectionPref(
         key = PREFS_DESKTOP_POPUP,
         titleId = R.string.title_desktop_icon_popup_menu,
@@ -744,20 +743,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = doNothing
     )
-    var themeIconWhiteOnlyTreatment = BooleanPref(
-        key = PREFS_WHITE_TREATMENT,
-        titleId = R.string.title_white_only_treatment,
-        summaryId = R.string.summary_white_only_treatment,
-        defaultValue = false,
-        onChange = doNothing
-    )
-    var themeIconLegacyTreatment = BooleanPref(
-        key = PREFS_LEGACY_TREATMENT,
-        titleId = R.string.title_legacy_treatment,
-        summaryId = R.string.summary_legacy_treatment,
-        defaultValue = false,
-        onChange = doNothing
-    )
+
     var themeIconAdaptify = BooleanPref(
         key = PREFS_FORCE_ADAPTIVE,
         titleId = R.string.title_adaptify_pack,
@@ -770,6 +756,13 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         summaryId = R.string.summary_force_shapeless,
         defaultValue = false,
         onChange = doNothing
+    )
+
+    var themedIcons = BooleanPref(
+        key = PREFS_THEMED_ICONS,
+        titleId = R.string.title_themed_icons,
+        defaultValue = false,
+        onChange = restart
     )
 
 
