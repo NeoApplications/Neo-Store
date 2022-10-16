@@ -28,17 +28,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.android.launcher3.R
-import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
 @Composable
 fun IconShapeItem(
@@ -58,20 +57,14 @@ fun IconShapeItem(
         verticalArrangement = Arrangement.Center
     ) {
         Box {
-            Icon(
+            Surface(
                 modifier = Modifier
                     .fillMaxHeight(0.7f)
                     .fillMaxWidth(0.8f)
                     .aspectRatio(1f),
-                painter = rememberDrawablePainter(
-                    drawable = item.getIcon(
-                        LocalContext.current,
-                        item.shapeName
-                    )
-                ),
-                tint = if (checked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
-                contentDescription = item.shapeName
-            )
+                shape = item.getIcon(),
+                color = if (checked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
+            ) {}
             if (checked && item.shapeName != "system") {
                 Icon(
                     modifier = Modifier
