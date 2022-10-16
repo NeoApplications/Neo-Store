@@ -370,5 +370,14 @@ public class ThemedIconDrawable extends FastBitmapDrawable {
         return colors;
     }
 
+    public static Drawable wrapWithThemeData(Drawable original, Resources resources, ThemeData themeData) {
+        if (original instanceof AdaptiveIconDrawable) {
+            return new ThemedAdaptiveIcon((AdaptiveIconDrawable) original, themeData);
+        } else if (original instanceof BitmapDrawable) {
+            return new ThemedBitmapIcon(resources, (BitmapDrawable) original, themeData);
+        }
+        throw new IllegalArgumentException("original must be AdaptiveIconDrawable or BitmapDrawable");
+    }
+
     public static Function<Context, int[]> COLORS_LOADER;
 }

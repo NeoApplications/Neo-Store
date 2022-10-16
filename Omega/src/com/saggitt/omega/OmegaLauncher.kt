@@ -250,7 +250,11 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
             prefs.themeIconPackGlobal.onSetValue("")
         }
         Utilities.getPrefs(this).edit()
-            .putBoolean(KEY_THEMED_ICONS, prefs.themeIconPackGlobal.onGetValue() == LAWNICONS_PACKAGE_NAME).apply()
+            .putBoolean(
+                KEY_THEMED_ICONS,
+                prefs.themeIconPackGlobal.onGetValue() == LAWNICONS_PACKAGE_NAME ||
+                        prefs.themeIconPackGlobal.onGetValue() == THEME_ICON_THEMED
+            ).apply()
     }
 
     private fun loadHiddenApps(hiddenAppsSet: Set<String>) {
