@@ -17,25 +17,145 @@
  */
 package com.saggitt.omega.icons
 
-import android.content.Context
-import android.graphics.drawable.Drawable
-import androidx.appcompat.content.res.AppCompatResources
-import com.android.launcher3.R
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 
-class ShapeModel(val shapeName: String, var isSelected: Boolean) {
+class ShapeModel(val shapeName: String, var isSelected: Boolean) { // TODO add icon as field?
 
-    fun getIcon(context: Context, shapeName: String?): Drawable? {
+    fun getIcon(): Shape {
         return when (shapeName) {
-            "circle" -> AppCompatResources.getDrawable(context, R.drawable.shape_circle)
-            "square" -> AppCompatResources.getDrawable(context, R.drawable.shape_square)
-            "rounded" -> AppCompatResources.getDrawable(context, R.drawable.shape_rounded)
-            "squircle" -> AppCompatResources.getDrawable(context, R.drawable.shape_squircle)
-            "sammy" -> AppCompatResources.getDrawable(context, R.drawable.shape_squircle)
-            "teardrop" -> AppCompatResources.getDrawable(context, R.drawable.shape_teardrop)
-            "cylinder" -> AppCompatResources.getDrawable(context, R.drawable.shape_cylinder)
-            "cupertino" -> AppCompatResources.getDrawable(context, R.drawable.shape_cupertino)
-            "octagon" -> AppCompatResources.getDrawable(context, R.drawable.shape_octagon)
-            else -> AppCompatResources.getDrawable(context, R.drawable.ic_style)
+            "circle" -> CircleShape
+            "square" -> RoundedCornerShape(corner = CornerSize(4.dp))
+            "rounded" -> RoundedCornerShape(corner = CornerSize(16.dp))
+            "squircle" -> SquircleShape()
+            "sammy" -> SammyShape()
+            "teardrop" -> TearDropShape
+            "cylinder" -> CylinderShape()
+            "cupertino" -> RoundedCornerShape(corner = CornerSize(12.dp))
+            "octagon" -> CutCornerShape(25)
+            else -> CircleShape
         }
     }
 }
+
+class SquircleShape : Shape {
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
+        return Outline.Generic(Path().apply {
+            reset()
+            moveTo(0.0f, size.height * 3 / 5)
+            lineTo(0.0f, size.height * 2 / 5)
+            cubicTo(
+                0.0f, size.height / 6,
+                size.width / 6, 0.0f,
+                size.width * 2 / 5, 0.0f
+            )
+            lineTo(size.width * 3 / 5, 0.0f)
+            cubicTo(
+                size.width * 5 / 6, 0.0f,
+                size.width, size.height / 6,
+                size.width, size.height * 2 / 5
+            )
+            lineTo(size.width, size.height * 3 / 5)
+            cubicTo(
+                size.width, size.height * 5 / 6,
+                size.width * 5 / 6, size.height,
+                size.width * 3 / 5, size.height
+            )
+            lineTo(size.width * 2 / 5, size.height)
+            cubicTo(
+                size.width / 6, size.height,
+                0.0f, size.height * 5 / 6,
+                0.0f, size.height * 3 / 5
+            )
+            close()
+        }
+        )
+    }
+}
+
+class SammyShape : Shape {
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
+        return Outline.Generic(Path().apply {
+            reset()
+            moveTo(0.0f, size.height / 2)
+            cubicTo(
+                0.0f, size.height / 6,
+                size.width / 6, 0.0f,
+                size.width / 2, 0.0f
+            )
+            cubicTo(
+                size.width * 5 / 6, 0.0f,
+                size.width, size.height / 6,
+                size.width, size.height / 2
+            )
+            cubicTo(
+                size.width, size.height * 5 / 6,
+                size.width * 5 / 6, size.height,
+                size.width / 2, size.height
+            )
+            cubicTo(
+                size.width / 6, size.height,
+                0.0f, size.height * 5 / 6,
+                0.0f, size.height / 2
+            )
+            close()
+        }
+        )
+    }
+}
+
+class CylinderShape : Shape {
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
+        return Outline.Generic(Path().apply {
+            reset()
+            moveTo(0.0f, size.height * 2 / 7)
+            lineTo(0.0f, size.height * 5 / 7)
+            quadraticBezierTo(
+                size.width / 13, size.height,
+                size.width / 2, size.height
+            )
+            quadraticBezierTo(
+                size.width * 12 / 13, size.height,
+                size.width, size.height * 5 / 7
+            )
+            lineTo(size.width, size.height * 2 / 7)
+            quadraticBezierTo(
+                size.width * 12 / 13, 0.0f,
+                size.width / 2, 0.0f
+            )
+            quadraticBezierTo(
+                size.width / 13, 0.0f,
+                0.0f, size.height * 2 / 7
+            )
+            close()
+        })
+    }
+}
+
+val TearDropShape = RoundedCornerShape(
+    topStartPercent = 50,
+    topEndPercent = 50,
+    bottomStartPercent = 50,
+    bottomEndPercent = 15
+)
