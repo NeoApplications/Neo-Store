@@ -238,6 +238,7 @@
     <string name="color_presets">Presets</string>
     <string name="title_adaptify_pack">Create adaptive icons for icon pack</string>
     <string name="title_force_shapeless">Force shapeless icons</string>
+    <string name="title_themed_icons">Themed Icons</string>
     <string name="title_colored_backgrounds">Coloured backgrounds</string>
     <string name="summary_colored_backgrounds">For Adaptive Icons’ backgrounds.</string>
     <string name="summary_force_shapeless">Try to use legacy icons for all apps.</string>

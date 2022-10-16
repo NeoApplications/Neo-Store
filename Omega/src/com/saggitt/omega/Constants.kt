@@ -110,10 +110,10 @@ const val PREFS_ICON_PACK = "pref_icon_pack_package"
 const val PREFS_ICON_SHAPE = "pref_iconShape"
 const val PREFS_ICON_SHAPE_X = "pref_icon_shape_x"
 const val PREFS_COLORED_BACKGROUND = "pref_colored_background"
-const val PREFS_WHITE_TREATMENT = "pref_white_only_treatment"
 const val PREFS_LEGACY_TREATMENT = "pref_legacy_treatment"
 const val PREFS_FORCE_ADAPTIVE = "pref_adaptive_icon_pack"
 const val PREFS_FORCE_SHAPELESS = "pref_force_shape_less"
+const val PREFS_THEMED_ICONS = "pref_themed_icons"
 
 // SEARCH PREFS
 const val PREFS_SEARCH_PROVIDER = "pref_global_search_provider"

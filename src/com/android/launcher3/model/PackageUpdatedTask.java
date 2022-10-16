@@ -18,6 +18,7 @@ package com.android.launcher3.model;
 import static com.android.launcher3.model.BgDataModel.Callbacks.FLAG_QUIET_MODE_ENABLED;
 import static com.android.launcher3.model.data.WorkspaceItemInfo.FLAG_AUTOINSTALL_ICON;
 import static com.android.launcher3.model.data.WorkspaceItemInfo.FLAG_RESTORED_ICON;
+import static com.saggitt.omega.ConstantsKt.LAWNICONS_PACKAGE_NAME;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -151,6 +152,9 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                     OmegaPreferences prefs = Utilities.getOmegaPrefs(context);
                     if (packages[i].equals(prefs.getThemeIconPackGlobal().onGetValue())) {
                         prefs.getThemeIconPackGlobal().onSetValue("");
+                    }
+                    if (packages[i].equals(LAWNICONS_PACKAGE_NAME)) {
+                        prefs.getThemedIcons().onSetValue(false);
                     }
                 }
                 // Fall through

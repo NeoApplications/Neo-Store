@@ -54,6 +54,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.launcher3.Launcher
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import com.android.launcher3.allapps.AppInfoComparator
 import com.android.launcher3.model.data.AppInfo
 import com.android.launcher3.pm.UserCache
@@ -70,7 +71,9 @@ import org.json.JSONObject
 import java.lang.reflect.Field
 import java.text.Collator
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutionException
 import kotlin.math.ceil
@@ -439,6 +442,25 @@ fun PackageManager.isAppEnabled(packageName: String?, flags: Int): Boolean {
     }
 }
 
+fun PackageManager.isPackageInstalled(packageName: String) =
+    try {
+        getPackageInfo(packageName, 0)
+        true
+    } catch (e: NameNotFoundException) {
+        false
+    }
+
+fun PackageManager.getPackageVersionCode(packageName: String) =
+    try {
+        val info = getPackageInfo(packageName, 0)
+        when {
+            Utilities.ATLEAST_P -> info.longVersionCode
+            else -> info.versionCode.toLong()
+        }
+    } catch (e: NameNotFoundException) {
+        -1L
+    }
+
 fun UserCache.getUserForProfileId(profileId: Int) =
     userProfiles.find { it.toString() == "UserHandle{$profileId}" }
 
@@ -447,6 +469,7 @@ fun MutableList<AppInfo>.sortApps(context: Context, sortType: Int) {
         Config.SORT_ZA -> sortWith(compareBy(Collator.getInstance().reversed()) {
             it.title.toString().lowercase()
         })
+
         Config.SORT_MOST_USED -> {
             val repository = AppTrackerRepository.INSTANCE[context]
             val appsCounter = repository.getAppsCount()
