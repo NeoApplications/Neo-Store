@@ -138,7 +138,6 @@ import com.saggitt.omega.PREFS_SMARTSPACE_WEATHER_UNITS
 import com.saggitt.omega.PREFS_SMARTSPACE_WIDGET_ID
 import com.saggitt.omega.PREFS_SORT_X
 import com.saggitt.omega.PREFS_STATUSBAR_HIDE
-import com.saggitt.omega.PREFS_THEMED_ICONS
 import com.saggitt.omega.PREFS_THEME_X
 import com.saggitt.omega.PREFS_TIME_24H
 import com.saggitt.omega.PREFS_TORCH
@@ -757,14 +756,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         defaultValue = false,
         onChange = doNothing
     )
-
-    var themedIcons = BooleanPref(
-        key = PREFS_THEMED_ICONS,
-        titleId = R.string.title_themed_icons,
-        defaultValue = false,
-        onChange = restart
-    )
-
 
     // SEARCH & FEED
     var searchBarRadius = DimensionPref(

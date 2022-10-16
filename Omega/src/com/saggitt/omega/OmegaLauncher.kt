@@ -60,6 +60,7 @@ import com.android.launcher3.popup.SystemShortcut
 import com.android.launcher3.uioverrides.QuickstepLauncher
 import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.util.Executors.MODEL_EXECUTOR
+import com.android.launcher3.util.Themes.KEY_THEMED_ICONS
 import com.android.launcher3.views.OptionsPopupView
 import com.android.launcher3.widget.RoundedCornerEnforcement
 import com.android.systemui.plugins.shared.LauncherOverlayManager
@@ -243,14 +244,13 @@ class OmegaLauncher : QuickstepLauncher(), LifecycleOwner, SavedStateRegistryOwn
         //Load hidden apps to use with hidden apps preference
         MODEL_EXECUTOR.handler.postAtFrontOfQueue { loadHiddenApps(prefs.drawerHiddenAppSet.onGetValue()) }
 
-        if (prefs.themedIcons.onGetValue() &&
+        if (prefs.themeIconPackGlobal.onGetValue() == LAWNICONS_PACKAGE_NAME &&
             !packageManager.isPackageInstalled(packageName = LAWNICONS_PACKAGE_NAME)
         ) {
-            prefs.themedIcons.onSetValue(false)
+            prefs.themeIconPackGlobal.onSetValue("")
         }
-
         Utilities.getPrefs(this).edit()
-            .putBoolean("themed_icons", prefs.themedIcons.onGetValue()).apply()
+            .putBoolean(KEY_THEMED_ICONS, prefs.themeIconPackGlobal.onGetValue() == LAWNICONS_PACKAGE_NAME).apply()
     }
 
     private fun loadHiddenApps(hiddenAppsSet: Set<String>) {

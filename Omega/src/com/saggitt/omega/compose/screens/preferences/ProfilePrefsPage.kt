@@ -61,7 +61,6 @@ fun ProfilePrefsPage() {
         prefs.themePrefNew,
         prefs.themeAccentColor,
         prefs.themeIconPackGlobal, // TODO make more sophisticated
-        prefs.themedIcons,
         prefs.themeIconShapeX
     )
     val others = listOf(

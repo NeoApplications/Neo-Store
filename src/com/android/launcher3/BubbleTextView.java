@@ -18,6 +18,7 @@ package com.android.launcher3;
 
 import static com.android.launcher3.graphics.PreloadIconDrawable.newPendingIcon;
 import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
+import static com.saggitt.omega.ConstantsKt.LAWNICONS_PACKAGE_NAME;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -371,7 +372,8 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver,
 
     public boolean shouldUseTheme() {
         //if (mDisplay == DISPLAY_ALL_APPS) {
-        return Utilities.getOmegaPrefs(getContext()).getThemedIcons().onGetValue();
+        String iconPackPref = Utilities.getOmegaPrefs(getContext()).getThemeIconPackGlobal().onGetValue();
+        return iconPackPref.equals(LAWNICONS_PACKAGE_NAME);
         //}
         //return mDisplay == DISPLAY_WORKSPACE || mDisplay == DISPLAY_FOLDER || mDisplay == DISPLAY_TASKBAR;
     }
