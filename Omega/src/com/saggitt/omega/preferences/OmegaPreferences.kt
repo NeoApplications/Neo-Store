@@ -39,6 +39,7 @@ import com.android.launcher3.util.SettingsCache
 import com.android.launcher3.util.Themes
 import com.saggitt.omega.ALL_MATERIAL_COLORS
 import com.saggitt.omega.KEY_A400
+import com.saggitt.omega.NOTIFICATION_ENABLED_LISTENERS
 import com.saggitt.omega.OmegaApp
 import com.saggitt.omega.PINK
 import com.saggitt.omega.PREFS_ACCENT
@@ -176,7 +177,6 @@ import com.saggitt.omega.icons.CustomAdaptiveIconDrawable
 import com.saggitt.omega.icons.IconShape
 import com.saggitt.omega.preferences.custom.GridSize
 import com.saggitt.omega.preferences.custom.GridSize2D
-import com.saggitt.omega.preferences.views.PrefsGesturesFragment.Companion.NOTIFICATION_ENABLED_LISTENERS
 import com.saggitt.omega.search.SearchProviderController
 import com.saggitt.omega.smartspace.BlankDataProvider
 import com.saggitt.omega.smartspace.OmegaSmartSpaceController
@@ -711,6 +711,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
         },
         onChange = updateBlur
     )
+
     var themeIconShapeX = StringPref(
         key = PREFS_ICON_SHAPE,
         titleId = R.string.title__theme_icon_shape,
@@ -722,18 +723,6 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
             LauncherAppState.getInstance(context).reloadIcons()
         }
     )
-
-    /*var themeIconShape = StringBasedPref(
-        key = PREFS_ICON_SHAPE,
-        titleId = R.string.title__theme_icon_shape,
-        defaultValue = IconShape.Circle,
-        onChange = onIconShapeChanged,
-        fromString = {
-            IconShape.fromString(it) ?: IconShapeManager.getSystemIconShape(context)
-        },
-        toString = IconShape::toString,
-        dispose = { /* no dispose */ }
-    )*/
 
     var themeIconColoredBackground = BooleanPref(
         key = PREFS_COLORED_BACKGROUND,
