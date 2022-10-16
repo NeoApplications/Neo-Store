@@ -263,10 +263,6 @@ open class PreferencesActivity : AppCompatActivity(), ThemeManager.ThemeableActi
             when (item.itemId) {
                 R.id.action_change_default_home -> changeDefaultHome(requireContext())
                 R.id.action_restart_launcher -> Utilities.killLauncher()
-                R.id.action_dev_options -> {
-                    requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, PrefsDevFragment()).commit()
-                }
                 else -> return false
             }
             return true
