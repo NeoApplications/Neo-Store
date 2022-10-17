@@ -22,12 +22,7 @@ import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.ACTION_DATE_CHANGED
-import android.content.Intent.ACTION_PACKAGE_ADDED
-import android.content.Intent.ACTION_PACKAGE_CHANGED
-import android.content.Intent.ACTION_PACKAGE_REMOVED
-import android.content.Intent.ACTION_TIMEZONE_CHANGED
-import android.content.Intent.ACTION_TIME_CHANGED
+import android.content.Intent.*
 import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.content.pm.LauncherActivityInfo
@@ -65,11 +60,11 @@ class CustomIconProvider @JvmOverloads constructor(
 ) :
     IconProvider(context, supportsIconTheme) {
     private val prefs = Utilities.getOmegaPrefs(context)
-    private val iconPackPref = prefs.themeIconPackGlobal.onGetValue()
+    private val iconPackPref = prefs.themeIconPackGlobal
     private val mContext = context
     private val iconPackProvider = IconPackProvider.INSTANCE.get(context)
     private val overrideRepo = IconOverrideRepository.INSTANCE.get(context)
-    private val iconPack get() = iconPackProvider.getIconPackOrSystem(iconPackPref)
+    private val iconPack get() = iconPackProvider.getIconPackOrSystem(iconPackPref.onGetValue())
     private var lawniconsVersion = 0L
 
     private var _themeMap: Map<ComponentName, ThemedIconDrawable.ThemeData>? = null
@@ -193,7 +188,7 @@ class CustomIconProvider @JvmOverloads constructor(
     }
 
     override fun getSystemIconState(): String {
-        return super.getSystemIconState() + ",pack:${iconPackPref},lawnicons:${lawniconsVersion}"
+        return super.getSystemIconState() + ",pack:${iconPackPref.onGetValue()},lawnicons:${lawniconsVersion}"
     }
 
     override fun registerIconChangeListener(
