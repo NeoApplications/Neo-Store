@@ -50,17 +50,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.getSystemService
+import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.android.launcher3.pm.UserCache
 import com.android.launcher3.util.ComponentKey
-import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.accompanist.navigation.animation.composable
 import com.saggitt.omega.compose.components.ListItemWithIcon
 import com.saggitt.omega.compose.navigation.LocalNavController
@@ -71,6 +72,7 @@ import com.saggitt.omega.data.IconOverrideRepository
 import com.saggitt.omega.data.IconPickerItem
 import com.saggitt.omega.iconpack.IconPack
 import com.saggitt.omega.iconpack.IconPackProvider
+import com.saggitt.omega.icons.drawableToBitmap
 import com.saggitt.omega.util.getUserForProfileId
 import kotlinx.coroutines.launch
 
@@ -106,7 +108,7 @@ fun EditIconScreen(
     val launcherApps = context.getSystemService<LauncherApps>()!!
     val intent = Intent().setComponent(componentKey.componentName)
     val activity = launcherApps.resolveActivity(intent, componentKey.user)
-    val originalIcon: Drawable? = activity.getIcon(context.resources.displayMetrics.densityDpi)
+    val originalIcon: Drawable = activity.getIcon(context.resources.displayMetrics.densityDpi)
 
     val title = remember(componentKey) {
         activity.label.toString()
@@ -154,7 +156,7 @@ fun EditIconScreen(
         ) {
             //Original Icon
             Image(
-                painter = rememberDrawablePainter(drawable = originalIcon),
+                bitmap = originalIcon.toBitmap(128, 128).asImageBitmap(),
                 contentDescription = null,
                 modifier = Modifier.requiredSize(60.dp)
             )
@@ -187,7 +189,7 @@ fun EditIconScreen(
                             )
                             if (mIcon != null) {
                                 Image(
-                                    painter = rememberDrawablePainter(drawable = mIcon),
+                                    bitmap = drawableToBitmap(mIcon).asImageBitmap(),
                                     contentDescription = null,
                                     modifier = Modifier
                                         .requiredSize(64.dp)
@@ -237,7 +239,7 @@ fun EditIconScreen(
                             .padding(start = 16.dp),
                         startIcon = {
                             Image(
-                                painter = rememberDrawablePainter(drawable = iconPack.icon),
+                                bitmap = drawableToBitmap(iconPack.icon).asImageBitmap(),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .clip(CircleShape)

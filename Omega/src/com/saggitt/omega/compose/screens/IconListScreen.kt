@@ -39,6 +39,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -49,7 +50,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.android.launcher3.R
-import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.accompanist.insets.ui.LocalScaffoldPadding
 import com.google.accompanist.navigation.animation.composable
 import com.saggitt.omega.compose.components.*
@@ -61,6 +61,8 @@ import com.saggitt.omega.iconpack.CustomIconPack
 import com.saggitt.omega.iconpack.IconPack
 import com.saggitt.omega.iconpack.IconPackProvider
 import com.saggitt.omega.iconpack.filter
+import com.saggitt.omega.icons.drawableToBitmap
+import com.saggitt.omega.util.getIcon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -272,7 +274,7 @@ fun IconPreview(
             .padding(8.dp),
     ) {
         Image(
-            painter = rememberDrawablePainter(drawable),
+            bitmap = drawableToBitmap(drawable ?: LocalContext.current.getIcon()).asImageBitmap(),
             contentDescription = iconItem.drawableName,
             modifier = Modifier.aspectRatio(1f),
         )
