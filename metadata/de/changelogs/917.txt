@@ -1,0 +1,7 @@
+Hinzugefügt: Andere Anwendungen des Entwicklers
+Hinzugefügt: Scrollende TopBar
+Fix: Einige Probleme mit der Farbgebung des dynamischen Themas
+Update: Neuer Screenshot-Viewer (behebt frühere Probleme und ermöglicht das Zoomen)
+Update: Viele Layouts
+Aktualisieren: Überarbeitung des Themes im Backend (behebt einige visuelle Probleme)
+Weitere Details finden Sie im vollständigen Changelog…
