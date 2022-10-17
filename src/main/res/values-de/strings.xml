@@ -212,4 +212,20 @@
     <string name="releases_cache_retention">Aufbewahrungszeit heruntergeladener APK</string>
     <string name="auto_sync_interval">Auto-Sync Intervall (in Minuten)</string>
     <string name="favorite_applications">Favoriten</string>
+    <string name="system_black">System (Schwarz)</string>
+    <string name="prefs_personal">Persönlich</string>
+    <string name="prefs_cache">Zwischenspeicher</string>
+    <string name="prefs_sync">Synchronisation</string>
+    <string name="sort_descending">Absteigend</string>
+    <string name="sort_ascending">Aufsteigend</string>
+    <string name="group_telegram">Unsere Telegram Gruppe</string>
+    <string name="group_matrix">Unsere Matrix Gruppe</string>
+    <string name="min_sdk">min. SDK</string>
+    <string name="target_sdk">Ziel SDK</string>
+    <string name="categories">Kategorien</string>
+    <string name="other_apps_by">Andere Apps von %s</string>
+    <string name="action_apply">Anwenden</string>
+    <string name="action_reset">Zurücksetzen</string>
+    <string name="date_added">Datum des Hinzufügens</string>
+    <string name="date_updated">Datum des Updates</string>
 </resources>
