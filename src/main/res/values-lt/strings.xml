@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="http_error_DESC">Netinkamas serverio atsakymas.</string>
+    <string name="downloading">Atsisiunčiama</string>
+    <string name="downloading_FORMAT">Atsisiunčiama %s…</string>
+    <string name="file_format_error_DESC">Netinkamas failo formatas.</string>
+    <string name="ignore_all_updates">Ignoruoti visas naujas versijas</string>
+    <string name="has_security_vulnerabilities">Turi saugumo spragų</string>
+    <string name="already_exists">Jau egzistuoja</string>
+    <string name="always">Visada</string>
+    <string name="amoled">Juoda</string>
+    <string name="anti_features">Anti-ypatybės</string>
+    <string name="application">Programėlė</string>
+    <string name="bug_tracker">Klaidų sekiklis</string>
+    <string name="cancel">Atšaukti</string>
+    <string name="dark">Tamsi</string>
+    <string name="delete">Ištrinti</string>
+    <string name="description">Aprašymas</string>
+    <string name="details">Išsami informacija</string>
+    <string name="has_advertising">Turi reklamų</string>
+    <string name="all_applications_up_to_date">Visos programėlės yra atnaujintos</string>
+    <string name="all_applications">Visos programėlės</string>
+    <string name="author_website">Autoriaus svetainė</string>
+    <string name="confirmation">Patvirtinimas</string>
+    <string name="changelog">Pakeitimų žurnalas</string>
+    <string name="could_not_download_FORMAT">Nepavyko atsisiųsti %s</string>
+    <string name="changes">Pakeitimai</string>
+    <string name="connecting">Jungiamasi…</string>
+    <string name="donate">Paaukoti</string>
+    <string name="action_failed">Veiksmas nepavyko</string>
+    <string name="address">Adresas</string>
+    <string name="author_email">Autoriaus el. paštas</string>
+    <string name="could_not_sync_FORMAT">Nepavyko sinchronizuoti %s</string>
+    <string name="could_not_validate_FORMAT">Nepavyko patvirtinti %s</string>
+</resources>
