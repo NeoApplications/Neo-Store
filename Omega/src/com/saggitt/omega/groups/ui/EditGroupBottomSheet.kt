@@ -160,13 +160,17 @@ fun EditGroupBottomSheet(
             },
             isError = title.isEmpty()
         )
-
         Spacer(modifier = Modifier.height(8.dp))
-
+        val summary = context.resources.getQuantityString(
+            R.plurals.tab_apps_count,
+            selectedApps.size,
+            selectedApps.size
+        )
         when {
             group.type == DrawerTabs.TYPE_ALL_APPS -> {
                 NavigationPreference(
                     title = stringResource(id = R.string.title__drawer_hide_apps),
+                    summary = summary,
                     route = "app_selection",
                     startIcon = R.drawable.ic_apps,
                     endIcon = R.drawable.chevron_right,
@@ -178,6 +182,7 @@ fun EditGroupBottomSheet(
                 if (type != AppGroupsManager.CategorizationType.Flowerpot) {
                     BasePreference(
                         titleId = R.string.tab_manage_apps,
+                        summary = summary,
                         startWidget = {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_apps),
