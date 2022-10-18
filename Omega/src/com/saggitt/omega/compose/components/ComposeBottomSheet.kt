@@ -8,7 +8,15 @@ import android.view.Gravity
 import android.view.ViewGroup
 import android.view.animation.Interpolator
 import android.widget.LinearLayout
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -64,18 +72,6 @@ class ComposeBottomSheet(context: Context, attrs: AttributeSet? = null) :
     ) {
         container.setContent {
             OmegaAppTheme {
-                /*Box(
-                    modifier = Modifier
-                        .background(
-                            MaterialTheme.colorScheme.background,
-                            MaterialTheme.shapes.large
-                        )
-                        .padding(bottom = 50.dp)
-                        .wrapContentHeight()
-                        .fillMaxWidth()
-                ) {
-                    content(this@ComposeBottomSheet)
-                }*/
                 ContentWrapper(contentPaddings) {
                     content(this)
                 }

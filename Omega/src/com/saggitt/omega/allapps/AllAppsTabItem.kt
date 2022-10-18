@@ -25,12 +25,14 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.HorizontalScrollView
+import com.android.launcher3.AbstractFloatingView
 import com.android.launcher3.Launcher
 import com.android.launcher3.R
 import com.android.launcher3.Utilities
 import com.android.launcher3.util.Themes
 import com.android.launcher3.workprofile.PersonalWorkSlidingTabStrip
-import com.saggitt.omega.groups.DrawerGroupBottomSheet.Companion.editTab
+import com.saggitt.omega.compose.components.ComposeBottomSheet
+import com.saggitt.omega.groups.ui.EditGroupBottomSheet
 import com.saggitt.omega.views.ColoredButton
 import kotlin.math.floor
 
@@ -47,13 +49,16 @@ class AllAppsTabItem(context: Context, attrs: AttributeSet) : PersonalWorkSlidin
     private var mIsRtl = false
 
     private val mArgbEvaluator: ArgbEvaluator = ArgbEvaluator()
+    val prefs = Utilities.getOmegaPrefs(context)
+    val launcher = Launcher.getLauncher(context)
 
     init {
         mSelectedIndicatorPaint = Paint()
         mSelectedIndicatorPaint.color = Themes.getAttrColor(context, android.R.attr.colorAccent)
         mDividerPaint = Paint()
         mDividerPaint.color = Themes.getAttrColor(context, android.R.attr.colorControlHighlight)
-        mDividerPaint.strokeWidth = resources.getDimensionPixelSize(R.dimen.all_apps_divider_height).toFloat()
+        mDividerPaint.strokeWidth =
+            resources.getDimensionPixelSize(R.dimen.all_apps_divider_height).toFloat()
 
         mIsRtl = Utilities.isRtl(resources)
     }
@@ -202,8 +207,15 @@ class AllAppsTabItem(context: Context, attrs: AttributeSet) : PersonalWorkSlidin
             button.color = tab.drawerTab.color.value()
             button.refreshColor()
             button.text = tab.name
-            button.setOnLongClickListener { v: View? ->
-                editTab(Launcher.getLauncher(context), tab.drawerTab)
+            button.setOnLongClickListener { v: View ->
+                ComposeBottomSheet.show(v.context, true) {
+                    EditGroupBottomSheet(
+                        type = prefs.drawerAppGroupsManager.getEnabledType()!!,
+                        group = tab.drawerTab,
+                        onClose = { AbstractFloatingView.closeAllOpenViews(launcher) }
+                    )
+                }
+                //editTab(Launcher.getLauncher(context), tab.drawerTab)
                 true
             }
         }
