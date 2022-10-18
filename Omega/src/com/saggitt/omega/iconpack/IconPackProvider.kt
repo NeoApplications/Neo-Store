@@ -11,6 +11,7 @@ import com.android.launcher3.R
 import com.android.launcher3.icons.ClockDrawableWrapper
 import com.android.launcher3.icons.ThemedIconDrawable
 import com.android.launcher3.util.MainThreadInitializedObject
+import com.saggitt.omega.LAWNICONS_PACKAGE_NAME
 import com.saggitt.omega.OmegaApp.Companion.minSDK
 import com.saggitt.omega.THEME_ICON_THEMED
 import com.saggitt.omega.icons.ClockMetadata
@@ -54,7 +55,16 @@ class IconPackProvider(private val context: Context) {
             }
         val defaultIconPack =
             IconPackInfo(context.getString(R.string.icon_pack_default), "", systemIcon)
-
+        val lawniconsInfo = try {
+            val info = pm.getPackageInfo(LAWNICONS_PACKAGE_NAME, 0)
+            IconPackInfo(
+                info.applicationInfo.loadLabel(pm).toString(),
+                LAWNICONS_PACKAGE_NAME,
+                CustomAdaptiveIconDrawable.wrapNonNull(info.applicationInfo.loadIcon(pm))
+            )
+        } catch (e: PackageManager.NameNotFoundException) {
+            null
+        }
         val themedIconsInfo = if (minSDK(33)) IconPackInfo(
             context.getString(R.string.title_themed_icons),
             THEME_ICON_THEMED,
@@ -70,6 +80,7 @@ class IconPackProvider(private val context: Context) {
         ) else null
         return listOfNotNull(
             defaultIconPack,
+            lawniconsInfo,
             themedIconsInfo
         ) + iconPacks.sortedBy { it.name }
     }
