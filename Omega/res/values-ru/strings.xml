@@ -97,7 +97,7 @@
     <string name="title__advanced_language">Язык</string>
     <string name="title__advanced_setting_search">Показать настройки поиска</string>
     <string name="summary__advanced_language">Изменить язык этого приложения</string>
-    <string name="error_no_browser">Не найдено активити для обработки URL-адресов</string>
+    <string name="error_no_browser">Установите приложение, чтобы сначала открыть URL-адреса</string>
     <string name="search_provider_appsearch">Поиск приложений</string>
     <string name="search_no_results">Нет результатов</string>
     <string name="cat_search_bar">Панель поиска</string>
@@ -427,4 +427,16 @@
     <string name="summary_white_only_treatment">Раскрасьте фон всех адаптивных иконок.</string>
     <string name="smartspace_pill_text_format">%1$s %2$s</string>
     <string name="title__folder_badge_count">Показать значок папки Счетчик</string>
+    <string name="title__search_bubble_searchbar">Показать два пузырька</string>
+    <string name="pref_category__dash">Панель</string>
+    <string name="title_search_contacts">Поиск контактов</string>
+    <string name="title__feed">Новости</string>
+    <string name="selected_apps">Выбранные приложения (%1$d)</string>
+    <string name="app_reset">Сбросить выбор</string>
+    <string name="default_city">Сан-Сальвадор, СВ</string>
+    <string name="weather_city">Город</string>
+    <string name="notification_dots_missing_notification_access">Чтобы показать точки уведомлений, включите доступ к уведомлениям приложений</string>
+    <string name="notification_dots_disabled">Чтобы показать точки уведомлений, включите показ точек уведомлений в настройках</string>
+    <string name="folder_rows">Строки папок</string>
+    <string name="weather_api_key">Ключ API OWM</string>
 </resources>

@@ -477,4 +477,15 @@
     <string name="title__drawer_rows">Numero di righe</string>
     <string name="protected_apps">App protette</string>
     <string name="protected_app_selected">App protette (%1$d)</string>
+    <string name="owm_get_your_own_key">Ottieni una chiave API su api.openweathermap.org.</string>
+    <string name="contributor_role">Collaboratore</string>
+    <string name="app_reset">Ripristina selezione</string>
+    <string name="weather_provider_owm" translatable="true">OpenWeatherMap</string>
+    <string name="notification_dots_disabled">Per mostrare i punti di notifica, abilita la visualizzazione dei punti di notifica nelle impostazioni</string>
+    <string name="author_role">Sviluppatore</string>
+    <string name="selected_apps">App selezionate (%1$d)</string>
+    <string name="weather_api_key">Chiave API OWM</string>
+    <string name="notification_dots_missing_notification_access">Per mostrare i punti di notifica, attiva l\'accesso alle notifiche dell\'app</string>
+    <string name="default_city">San Salvador, SV</string>
+    <string name="weather_city">Città</string>
 </resources>

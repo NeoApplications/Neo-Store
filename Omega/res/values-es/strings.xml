@@ -462,4 +462,15 @@
     <string name="icon_picker_default_category">Iconos</string>
     <string name="section_web">Web</string>
     <string name="title_search_contacts">Buscar contactos</string>
+    <string name="app_reset">Restablecer selección</string>
+    <string name="weather_provider_owm" translatable="true">OpenWeatherMap (Openweathermap.org)</string>
+    <string name="owm_get_your_own_key">Obtenga una clave API en api.openweathermap.org.</string>
+    <string name="selected_apps">Aplicaciones seleccionadas (%1$d)</string>
+    <string name="contributor_role">Contribuidor</string>
+    <string name="default_city">San Salvador, SV</string>
+    <string name="weather_api_key">Clave propia para la aplicación</string>
+    <string name="weather_city">Ciudad</string>
+    <string name="notification_dots_disabled">Para mostrar puntos de notificación, habilite la visualización de puntos de notificación en la configuración</string>
+    <string name="notification_dots_missing_notification_access">Para mostrar puntos de notificación, activa el acceso a las notificaciones de la aplicación</string>
+    <string name="author_role">Desarrollador</string>
 </resources>
