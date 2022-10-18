@@ -168,7 +168,6 @@ import com.saggitt.omega.gestures.handlers.OpenDashGestureHandler
 import com.saggitt.omega.gestures.handlers.OpenDrawerGestureHandler
 import com.saggitt.omega.gestures.handlers.OpenOverviewGestureHandler
 import com.saggitt.omega.gestures.handlers.PressBackGestureHandler
-import com.saggitt.omega.gestures.handlers.StartGlobalSearchGestureHandler
 import com.saggitt.omega.groups.AppGroupsManager
 import com.saggitt.omega.groups.DrawerTabs
 import com.saggitt.omega.iconpack.IconPackInfo
@@ -857,7 +856,7 @@ class OmegaPreferences(val context: Context) : BasePreferences(context) {
     var gestureDockSwipeUp = GesturePref(
         key = PREFS_GESTURE_SWIPE_UP_DOCK,
         titleId = R.string.gesture_dock_swipe_up,
-        defaultValue = StartGlobalSearchGestureHandler(context, null).toString(),
+        defaultValue = OpenDrawerGestureHandler(context, null).toString(),
         onChange = restart
     )
     var gestureLaunchAssistant = GesturePref(
