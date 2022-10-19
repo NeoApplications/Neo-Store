@@ -33,10 +33,10 @@ fun DashPage() {
     val activeDashProviders = prefs.dashProvidersItems.getAll()
 
     val actionItems = getDashActionProviders(context).filter {
-        it.javaClass.name in activeDashProviders && it.name != AudioPlayer::class.java.name
+        it.javaClass.name in activeDashProviders && it.javaClass.name != AudioPlayer::class.java.name
     }.associateBy { it.javaClass.name }
     val controlItems = getDashControlProviders(context).filter {
-        it.javaClass.name in activeDashProviders && it.name != AudioPlayer::class.java.name
+        it.javaClass.name in activeDashProviders
     }.associateBy { it.javaClass.name }
     val musicManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     val lineSize = prefs.dashLineSize.onGetValue().roundToInt()
