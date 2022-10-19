@@ -330,7 +330,7 @@ open class IconShape( // TODO migrate to Compose?
                 "", "system" -> try {
                     IconShapeManager.INSTANCE.noCreate.systemIconShape
                 } catch (e: Exception) {
-                    null
+                    Circle
                 }
                 "circle" -> Circle
                 "square" -> Square
