@@ -65,14 +65,16 @@ fun IconShapeItem(
                 shape = item.getIcon(),
                 color = if (checked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
             ) {}
-            if (checked && item.shapeName != "system") {
+            if (checked) {
                 Icon(
                     modifier = Modifier
                         .fillMaxHeight(0.4f)
                         .fillMaxWidth(0.5f)
                         .aspectRatio(1f)
                         .align(Alignment.Center),
-                    painter = painterResource(id = R.drawable.ic_check),
+                    painter = painterResource(
+                        id = if (item.shapeName == "system") R.drawable.ic_style
+                        else R.drawable.ic_check),
                     tint = MaterialTheme.colorScheme.onBackground,
                     contentDescription = item.shapeName
                 )
