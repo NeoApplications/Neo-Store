@@ -308,7 +308,7 @@
 
         <provider
             android:name="com.saggitt.omega.FilesProvider"
-            android:authorities="com.saggitt.omega.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true" />
     </application>
