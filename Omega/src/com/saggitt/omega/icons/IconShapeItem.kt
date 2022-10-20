@@ -63,7 +63,7 @@ fun IconShapeItem(
                     .fillMaxWidth(0.8f)
                     .aspectRatio(1f),
                 shape = item.getIcon(),
-                color = if (checked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
+                color = if (checked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
             ) {}
             if (checked) {
                 Icon(
