@@ -55,9 +55,6 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener {
             return strings.getOrNull(index) ?: context.resources.getString(R.string.theme_auto)
         }
 
-    var themeIsDark = false
-    var themeIsBlack = false
-
     init {
         updateTheme()
         wallpaperColorInfo.addOnChangeListener(this)
@@ -94,15 +91,12 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener {
 
     fun updateTheme(accentUpdated: Boolean = false) {
         val theme = prefs.themePrefNew.onGetValue()
-        val isBlack = isBlack(theme)
         val isDark = when {
             theme.hasFlag(THEME_FOLLOW_NIGHT_MODE) -> usingNightMode
             theme.hasFlag(THEME_FOLLOW_WALLPAPER) -> wallpaperColorInfo.isDark
             else -> theme.hasFlag(THEME_DARK)
         }
-
-        themeIsBlack = isBlack
-        themeIsDark = isDark
+        val isBlack = isBlack(theme) && isDark
 
         var newFlags = 0
         if (isDark) newFlags = newFlags or THEME_DARK
@@ -149,8 +143,8 @@ class ThemeManager(val context: Context) : WallpaperColorInfo.OnChangeListener {
         const val THEME_AUTO_MASK = THEME_FOLLOW_WALLPAPER or THEME_FOLLOW_NIGHT_MODE
         const val THEME_DARK_MASK = THEME_DARK or THEME_AUTO_MASK
 
-        fun isDark(flags: Int) = (flags and THEME_DARK_MASK) != 0
-        fun isBlack(flags: Int) = (flags and THEME_USE_BLACK) != 0
+        fun isDark(flags: Int) = flags.hasFlag(THEME_DARK)
+        fun isBlack(flags: Int) = flags.hasFlag(THEME_USE_BLACK)
 
         fun getDefaultTheme(): Int {
             return if (Utilities.ATLEAST_Q) {
