@@ -35,8 +35,8 @@ android {
     namespace = "com.android.launcher3"
     compileSdk = 33
 
-    val name = "0.9.3-beta1"
-    val code = 932
+    val name = "0.9.3-beta2"
+    val code = 933
 
 
     defaultConfig {
@@ -251,7 +251,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.5.2")
     implementation("androidx.activity:activity-compose:1.6.0")
     implementation("io.coil-kt:coil-compose:2.2.2")
-    implementation("io.github.fornewid:material-motion-compose-core:0.8.4")
+    implementation("io.github.fornewid:material-motion-compose-core:0.9.0")
     implementation("com.google.android.material:compose-theme-adapter-3:1.0.20")
 
     //Accompanist
@@ -303,7 +303,7 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.4.0")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
 
-    androidTestImplementation("org.mockito:mockito-core:3.12.4")
+    androidTestImplementation("org.mockito:mockito-core:4.6.1")
     androidTestImplementation("com.google.dexmaker:dexmaker:1.2")
     androidTestImplementation("com.google.dexmaker:dexmaker-mockito:1.2")
     androidTestImplementation("androidx.annotation:annotation:1.5.0")
