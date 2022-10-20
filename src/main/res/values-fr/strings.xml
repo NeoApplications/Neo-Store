@@ -45,6 +45,7 @@
     <string name="ok">OK</string>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one">%d appli a une nouvelle version.</item>
+        <item quantity="many">%d applis ont une nouvelle version.</item>
         <item quantity="other">%d applis ont une nouvelle version.</item>
     </plurals>
     <string name="no_applications_available">Aucune appli disponible</string>
@@ -226,4 +227,5 @@
     <string name="action_reset">Réinitialiser</string>
     <string name="date_added">Date d\'ajout</string>
     <string name="date_updated">Date de mise à jour</string>
+    <string name="other_apps_by">Autres applis de %s</string>
 </resources>
