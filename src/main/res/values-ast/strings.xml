@@ -227,4 +227,5 @@
     <string name="action_reset">Reafitar</string>
     <string name="date_added">Data d\'amiestu</string>
     <string name="date_updated">Data d\'anovamientu</string>
+    <string name="other_apps_by">Otres aplicaciones de: %s</string>
 </resources>
