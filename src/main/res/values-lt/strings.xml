@@ -110,7 +110,7 @@
     <string name="application_not_found">Nepavyko rasti šios programėlės</string>
     <string name="credits">Bendraautoriai</string>
     <string name="downloaded_FORMAT">Atsisiųsta %s</string>
-    <string name="http_proxy">HTTP tarpinis serveris</string>
+    <string name="http_proxy">HTTP įgaliotasis serveris</string>
     <string name="integrity_check_error_DESC">Nepavyko patikrinti vientisumo.</string>
     <string name="no_applications_available">Nėra galimų programėlių</string>
     <string name="other">Kita</string>
@@ -187,4 +187,46 @@
     <string name="date_added">Pridėjimo data</string>
     <string name="date_updated">Atnaujinimo data</string>
     <string name="other_apps_by">Kitos %s programėlės</string>
+    <string name="proxy">Įgaliotasis serveris</string>
+    <string name="incompatible_features_DESC">Trūkstamos funkcijos.</string>
+    <string name="no_proxy">Nėra įgaliotojo serverio</string>
+    <string name="socks_proxy">SOCKS įgaliotasis serveris</string>
+    <string name="checking_repository">Tikrinama repozitorija…</string>
+    <string name="root_permission_description">Naudokite šakninę prieigą diegimui be papildomos sąveikos</string>
+    <string name="ignore_battery_optimization_not_supported">Jūsų „Android“ nepalaiko akumuliatoriaus optimizavimo išjungimo.</string>
+    <string name="available">Pasiekiama</string>
+    <string name="cant_edit_sync_DESC">Negalima redaguoti sinchronizuojamų repozitorijų…</string>
+    <string name="compiled_for_debugging">Parengta derinimui</string>
+    <string name="contains_non_free_media">Turi ne „libre“ medijos</string>
+    <string name="delete_repository_DESC">Ištrinti šią repozitoriją\?</string>
+    <string name="edit_repository">Redaguoti repozitoriją</string>
+    <string name="fingerprint">Pirštų atspaudai</string>
+    <string name="has_non_free_dependencies">Turi „libre“ priklausomybių</string>
+    <string name="only_on_wifi_and_battery">Tik naudojant Wi-Fi ir prijungus krauti</string>
+    <string name="promotes_non_free_network_services">Skatina ne „libre“ tinklo paslaugas</string>
+    <string name="promotes_non_free_software">Skatina ne „libre“ programinę įrangą</string>
+    <string name="provided_by_FORMAT">Pateikė %s</string>
+    <string name="proxy_host">Serveris</string>
+    <string name="repositories">Repozitorijos</string>
+    <string name="repository">Repozitorija</string>
+    <string name="repository_not_used_DESC">Ši repozitorija dar nebuvo naudojama. 
+\nPrisijunkite prie, kad peržiūrėtumėte joje esančias programėles.</string>
+    <string name="repository_unsigned_DESC">Nepavyko patikrinti nepasirašyto programėlių sąrašo.
+\nBūkite atsargūs atsisiunčiant programėles iš nepasirašytųrepozitorijų.</string>
+    <string name="requires_FORMAT">Reikalauja %s</string>
+    <string name="select_mirror">Pasirinkite alternatyvų šaltinį</string>
+    <string name="sync_repositories">Sinchronizuoti repozitorijas</string>
+    <string name="sync_repositories_automatically">Automatiškai sinchronizuoti repozitorijas</string>
+    <string name="target">Tikslas</string>
+    <string name="upstream_source_code_is_not_free">Pradinis pirminis kodas nėra visiškai „libre“</string>
+    <string name="explore">Naršyti</string>
+    <string name="install_after_sync_summary">Įdiegti visas naujas versijas, peržiūrėjus atnaujintas programėles repozitorijose.</string>
+    <string name="new_repository">Nauja repozitorija</string>
+    <string name="ignore_battery_optimization_title">Akumuliatoriaus optimizavimas</string>
+    <string name="ignore_battery_optimization_message">Programėlė geriau veikia be akumuliatoriaus optimizavimo, o „Android“ 12+ išvengiama gedimų.</string>
+    <string name="root_session_installer">Naudoti šakninės prieigos diegimo programą</string>
+    <string name="root_session_installer_description">Lėtesnis, bet išvengiama problemų, susijusių su įdiegtomis programomis 13 ir naujesnės versijos „Android“.</string>
+    <string name="show_screenshots_description">Rodyti ekrano nuotraukas programėlės puslapyje.</string>
+    <string name="releases">Išleistos versijos</string>
+    <string name="prefs_personal">Vartotojas</string>
 </resources>
