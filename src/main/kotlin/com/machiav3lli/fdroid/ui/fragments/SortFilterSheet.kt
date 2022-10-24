@@ -21,8 +21,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -100,8 +100,8 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
     fun SortFilterPage(navPage: String) {
         val nestedScrollConnection = rememberNestedScrollInteropConnection()
         val dbHandler = ((context as AppCompatActivity).application as MainApplication).db
-        val repos by dbHandler.repositoryDao.allLive.observeAsState(emptyList())
-        val categories by db.categoryDao.allNamesLive.observeAsState(emptyList())
+        val repos by dbHandler.repositoryDao.allFlow.collectAsState(emptyList())
+        val categories by db.categoryDao.allNamesFlow.collectAsState(emptyList())
         val activeRepos by remember(repos) { mutableStateOf(repos.filter { it.enabled }) }
 
         val sortKey = when (navPage) {
