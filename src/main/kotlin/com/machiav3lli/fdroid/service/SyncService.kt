@@ -382,7 +382,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                 .queryObject(
                                     installed = true,
                                     updates = true,
-                                    searchQuery = "",
                                     section = Section.All,
                                     order = Order.NAME,
                                     ascending = true,

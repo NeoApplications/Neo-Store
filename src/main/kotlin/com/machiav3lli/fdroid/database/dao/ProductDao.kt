@@ -25,7 +25,6 @@ import com.machiav3lli.fdroid.ROW_IGNORED_VERSION
 import com.machiav3lli.fdroid.ROW_IGNORE_UPDATES
 import com.machiav3lli.fdroid.ROW_LABEL
 import com.machiav3lli.fdroid.ROW_LICENSES
-import com.machiav3lli.fdroid.ROW_MATCH_RANK
 import com.machiav3lli.fdroid.ROW_METADATA_ICON
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_RELEASES
@@ -89,7 +88,6 @@ interface ProductDao : BaseDao<Product> {
         buildProductQuery(
             installed = request.installed,
             updates = request.updates,
-            searchQuery = request.searchQuery,
             section = request.section,
             filteredOutRepos = request.filteredOutRepos,
             filteredOutCategories = request.filteredOutCategories,
@@ -102,7 +100,7 @@ interface ProductDao : BaseDao<Product> {
 
     @Transaction
     fun queryObject(
-        installed: Boolean, updates: Boolean, searchQuery: String,
+        installed: Boolean, updates: Boolean,
         section: Section, filteredOutRepos: Set<String> = emptySet(),
         filteredOutCategories: Set<String> = emptySet(), order: Order,
         ascending: Boolean, numberOfItems: Int = 0,
@@ -112,7 +110,6 @@ interface ProductDao : BaseDao<Product> {
         buildProductQuery(
             installed = installed,
             updates = updates,
-            searchQuery = searchQuery,
             section = section,
             filteredOutRepos = filteredOutRepos,
             filteredOutCategories = filteredOutCategories,
@@ -131,7 +128,6 @@ interface ProductDao : BaseDao<Product> {
         buildProductQuery(
             installed = request.installed,
             updates = request.updates,
-            searchQuery = request.searchQuery,
             section = request.section,
             filteredOutRepos = request.filteredOutRepos,
             filteredOutCategories = request.filteredOutCategories,
@@ -145,7 +141,6 @@ interface ProductDao : BaseDao<Product> {
     fun buildProductQuery(
         installed: Boolean,
         updates: Boolean,
-        searchQuery: String,
         section: Section,
         filteredOutRepos: Set<String> = emptySet(),
         filteredOutCategories: Set<String> = emptySet(),
@@ -178,18 +173,6 @@ interface ProductDao : BaseDao<Product> {
         $TABLE_PRODUCT.$ROW_SOURCE, $TABLE_PRODUCT.$ROW_WEB,
         $TABLE_PRODUCT.$ROW_TRACKER, $TABLE_PRODUCT.$ROW_CHANGELOG,
         $TABLE_PRODUCT.$ROW_WHATS_NEW,"""
-
-        // Calculate the matching score with the search query
-        if (searchQuery.isNotEmpty()) {
-            builder += """((($TABLE_PRODUCT.$ROW_LABEL LIKE ? OR
-          $TABLE_PRODUCT.$ROW_SUMMARY LIKE ?) * 7) |
-          (($TABLE_PRODUCT.$ROW_PACKAGE_NAME LIKE ? OR
-          $TABLE_PRODUCT.$ROW_AUTHOR LIKE ?) * 3) |
-          ($TABLE_PRODUCT.$ROW_DESCRIPTION LIKE ?)) AS $ROW_MATCH_RANK,"""
-            builder %= List(5) { "%$searchQuery%" }
-        } else {
-            builder += "0 AS $ROW_MATCH_RANK,"
-        }
 
         // Take product as main table
         builder += """MAX(($TABLE_PRODUCT.$ROW_COMPATIBLE AND
@@ -243,11 +226,6 @@ interface ProductDao : BaseDao<Product> {
             builder += "AND COALESCE($TABLE_EXTRAS.$ROW_FAVORITE, 0) != 0"
         }
 
-        // Filter only apps that have some  matching score to the search query
-        if (searchQuery.isNotEmpty()) {
-            builder += """AND $ROW_MATCH_RANK > 0"""
-        }
-
         when (updateCategory) {
             UpdateCategory.ALL -> Unit
             UpdateCategory.NEW -> builder += """AND $TABLE_PRODUCT.$ROW_ADDED = $TABLE_PRODUCT.$ROW_UPDATED"""
@@ -264,7 +242,6 @@ interface ProductDao : BaseDao<Product> {
 
         // Set sorting order
         builder += "ORDER BY"
-        if (searchQuery.isNotEmpty()) builder += """$ROW_MATCH_RANK DESC,"""
         when (order) {
             Order.NAME -> Unit
             Order.DATE_ADDED -> builder += "$TABLE_PRODUCT.$ROW_ADDED ${if (ascending) "ASC" else "DESC"},"

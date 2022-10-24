@@ -82,7 +82,7 @@ class MainNavFragmentViewModelX(
         )
         repositories.addSource(db.repositoryDao.allLive, repositories::setValue)
         categories.addSource(db.categoryDao.allNamesLive, categories::setValue)
-        listOf(sections, searchQuery).forEach {
+        listOf(sections).forEach {
             primaryRequest.addSource(it) {
                 val newRequest = request(primarySource)
                 if (primaryRequest.value != newRequest)

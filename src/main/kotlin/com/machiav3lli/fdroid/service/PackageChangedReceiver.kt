@@ -46,7 +46,6 @@ class PackageChangedReceiver : BroadcastReceiver() {
                                 .queryObject(
                                     installed = true,
                                     updates = true,
-                                    searchQuery = "",
                                     section = Section.All,
                                     order = Order.NAME,
                                     ascending = true,
