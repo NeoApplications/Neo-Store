@@ -29,35 +29,16 @@ class MainNavFragmentViewModelX(
         private set
     var sections: MutableLiveData<Section> = MutableLiveData(Section.All)
         private set
-    var searchQuery: MutableLiveData<String> = MutableLiveData("")
-        private set
 
     fun request(source: Source): Request {
-        var mSearchQuery = ""
         var mSections: Section = Section.All
         sections.value?.let { if (source.sections) mSections = it }
-        searchQuery.value?.let { mSearchQuery = it }
         return when (source) {
-            Source.AVAILABLE -> Request.ProductsAll(
-                mSearchQuery,
-                mSections
-            )
-            Source.INSTALLED -> Request.ProductsInstalled(
-                mSearchQuery,
-                mSections
-            )
-            Source.UPDATES -> Request.ProductsUpdates(
-                mSearchQuery,
-                mSections,
-            )
-            Source.UPDATED -> Request.ProductsUpdated(
-                mSearchQuery,
-                mSections,
-            )
-            Source.NEW -> Request.ProductsNew(
-                mSearchQuery,
-                mSections,
-            )
+            Source.AVAILABLE -> Request.ProductsAll(mSections)
+            Source.INSTALLED -> Request.ProductsInstalled(mSections)
+            Source.UPDATES -> Request.ProductsUpdates(mSections)
+            Source.UPDATED -> Request.ProductsUpdated(mSections)
+            Source.NEW -> Request.ProductsNew(mSections)
         }
     }
 

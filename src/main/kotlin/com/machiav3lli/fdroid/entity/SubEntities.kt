@@ -170,7 +170,6 @@ sealed class Request {
     internal abstract val id: Int
     internal abstract val installed: Boolean
     internal abstract val updates: Boolean
-    internal abstract val searchQuery: String
     internal abstract val filteredOutRepos: Set<String>
     internal abstract val filteredOutCategories: Set<String>
     internal abstract val section: Section
@@ -179,10 +178,7 @@ sealed class Request {
     internal abstract val updateCategory: UpdateCategory
     internal open val numberOfItems: Int = 0
 
-    data class ProductsAll(
-        override val searchQuery: String,
-        override val section: Section,
-    ) : Request() {
+    data class ProductsAll(override val section: Section) : Request() {
         override val id: Int
             get() = 1
         override val installed: Boolean
@@ -201,10 +197,7 @@ sealed class Request {
             get() = Preferences[Preferences.Key.SortOrderAscendingExplore]
     }
 
-    data class ProductsInstalled(
-        override val searchQuery: String,
-        override val section: Section,
-    ) : Request() {
+    data class ProductsInstalled(override val section: Section) : Request() {
         override val id: Int
             get() = 2
         override val installed: Boolean
@@ -223,10 +216,7 @@ sealed class Request {
             get() = Preferences[Preferences.Key.SortOrderAscendingInstalled]
     }
 
-    data class ProductsUpdates(
-        override val searchQuery: String,
-        override val section: Section,
-    ) : Request() {
+    data class ProductsUpdates(override val section: Section) : Request() {
         override val id: Int
             get() = 3
         override val installed: Boolean
@@ -245,9 +235,7 @@ sealed class Request {
             get() = true
     }
 
-    data class ProductsUpdated(
-        override val searchQuery: String, override val section: Section,
-    ) : Request() {
+    data class ProductsUpdated(override val section: Section) : Request() {
         override val id: Int
             get() = 4
         override val installed: Boolean
@@ -268,10 +256,7 @@ sealed class Request {
             get() = Preferences[Preferences.Key.UpdatedApps]
     }
 
-    data class ProductsNew(
-        override val searchQuery: String,
-        override val section: Section,
-    ) : Request() {
+    data class ProductsNew(override val section: Section) : Request() {
         override val id: Int
             get() = 5
         override val installed: Boolean
