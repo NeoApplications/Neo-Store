@@ -11,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -42,19 +43,23 @@ import kotlinx.coroutines.launch
 fun ExplorePage(viewModel: MainNavFragmentViewModelX) {
     val context = LocalContext.current
     val mainActivityX = context as MainActivityX
-    val products by viewModel.primaryProducts.observeAsState(null)
-    val installedList by viewModel.installed.observeAsState(null)
-    val repositories by viewModel.repositories.observeAsState(null)
+    val products by viewModel.primaryProducts.collectAsState(null)
+    val installedList by viewModel.installed.collectAsState(null)
+    val repositories by viewModel.repositories.collectAsState(null)
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
     val favorites by mainActivityX.db.extrasDao.favoritesLive.observeAsState(emptyArray())
+    var searchQuery by remember { mutableStateOf("") }
+    val filteredProducts by remember(products, searchQuery) {
+        mutableStateOf(products?.matchSearchQuery(searchQuery))
+    }
 
     SideEffect {
         CoroutineScope(Dispatchers.IO).launch {
             mainActivityX.searchQuery.collect { newQuery ->
-                if (newQuery != viewModel.searchQuery.value)
-                    viewModel.searchQuery.postValue(newQuery)
+                if (newQuery != searchQuery)
+                    searchQuery = newQuery
             }
         }
         CoroutineScope(Dispatchers.Default).launch {
@@ -64,7 +69,7 @@ fun ExplorePage(viewModel: MainNavFragmentViewModelX) {
                     Preferences.Key.CategoriesFilterExplore,
                     Preferences.Key.SortOrderExplore,
                     Preferences.Key.SortOrderAscendingExplore ->
-                        viewModel.updatedFilter.postValue(true)
+                        viewModel.setUpdatedFilter(true)
                     else -> {}
                 }
             }
@@ -94,7 +99,7 @@ fun ExplorePage(viewModel: MainNavFragmentViewModelX) {
                 isSelected = favoriteFilter,
                 onSelected = {
                     favoriteFilter = !favoriteFilter
-                    viewModel.sections.postValue(
+                    viewModel.setSections(
                         if (it) Section.FAVORITE
                         else Section.All
                     )
@@ -102,7 +107,7 @@ fun ExplorePage(viewModel: MainNavFragmentViewModelX) {
             )
         }
         ProductsVerticalRecycler(
-            productsList = products,
+            productsList = filteredProducts,
             repositories = repositoriesMap,
             favorites = favorites,
             modifier = Modifier

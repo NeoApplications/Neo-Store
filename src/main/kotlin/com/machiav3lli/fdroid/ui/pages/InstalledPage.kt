@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +44,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
+import com.machiav3lli.fdroid.utility.matchSearchQuery
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,20 +55,24 @@ import kotlinx.coroutines.launch
 fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
     val context = LocalContext.current
     val mainActivityX = context as MainActivityX
-    val primaryList by viewModel.primaryProducts.observeAsState(null)
-    val secondaryList by viewModel.secondaryProducts.observeAsState(null)
-    val installedList by viewModel.installed.observeAsState(null)
-    val repositories by viewModel.repositories.observeAsState(null)
+    val primaryList by viewModel.primaryProducts.collectAsState(null)
+    val secondaryList by viewModel.secondaryProducts.collectAsState(null)
+    val installedList by viewModel.installed.collectAsState(null)
+    val repositories by viewModel.repositories.collectAsState(null)
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
     val favorites by mainActivityX.db.extrasDao.favoritesLive.observeAsState(emptyArray())
+    var searchQuery by remember { mutableStateOf("") }
+    val filteredPrimaryList by remember(primaryList, searchQuery) {
+        mutableStateOf(primaryList?.matchSearchQuery(searchQuery))
+    }
 
     SideEffect {
         CoroutineScope(Dispatchers.IO).launch {
             mainActivityX.searchQuery.collect { newQuery ->
-                if (newQuery != viewModel.searchQuery.value)
-                    viewModel.searchQuery.postValue(newQuery)
+                if (newQuery != searchQuery)
+                    searchQuery = newQuery
             }
         }
         CoroutineScope(Dispatchers.Default).launch {
@@ -76,7 +82,7 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
                     Preferences.Key.CategoriesFilterInstalled,
                     Preferences.Key.SortOrderInstalled,
                     Preferences.Key.SortOrderAscendingInstalled ->
-                        viewModel.updatedFilter.postValue(true)
+                        viewModel.setUpdatedFilter(true)
                     else -> {}
                 }
             }
@@ -150,7 +156,7 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
             ) { mainActivityX.navigateSortFilter(NavItem.Installed.destination) }
         }
         ProductsVerticalRecycler(
-            productsList = primaryList?.sortedBy { it.label.lowercase() },
+            productsList = filteredPrimaryList?.sortedBy { it.label.lowercase() },
             repositories = repositoriesMap,
             favorites = favorites,
             modifier = Modifier
