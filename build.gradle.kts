@@ -1,9 +1,9 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val composeVersion = "1.3.0-rc01"
+val composeVersion = "1.3.0"
 val composeCompilerVersion = "1.3.2"
 val roomVersion = "2.5.0-beta01"
-val navigationVersion = "2.5.2"
+val navigationVersion = "2.5.3"
 val accompanistVersion = "0.26.5-rc"
 
 plugins {
@@ -152,11 +152,11 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
 
     // LibSu
-    implementation("com.github.topjohnwu.libsu:core:3.2.1")
+    implementation("com.github.topjohnwu.libsu:core:5.0.3")
 
     // JSON
     implementation("com.fasterxml.jackson.core:jackson-core:2.13.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 
     // Markdown
     implementation("org.jetbrains:markdown:0.3.1")
@@ -177,7 +177,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.0.0-rc01")
+    implementation("androidx.compose.material3:material3:1.0.0")
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("com.google.android.material:compose-theme-adapter-3:1.0.20")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
