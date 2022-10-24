@@ -433,6 +433,20 @@ fun List<PermissionInfo>.getLabels(context: Context): List<String> {
     return labels.sortedBy { it.first }.map { it.second }
 }
 
+fun Collection<Product>.matchSearchQuery(searchQuery: String): List<Product> = filter {
+    listOf(it.label, it.packageName, it.author.name, it.summary, it.description).any { literal ->
+        literal.matches(Regex(".*$searchQuery.*", RegexOption.IGNORE_CASE))
+    }
+}.sortedByDescending {
+    (if (it.label.matches(Regex(".*$searchQuery.*", RegexOption.IGNORE_CASE)) ||
+        it.packageName.matches(Regex(".*$searchQuery.*", RegexOption.IGNORE_CASE))
+    ) 7 else 0) or
+            (if (it.author.name.matches(Regex(".*$searchQuery.*", RegexOption.IGNORE_CASE)) ||
+                it.summary.matches(Regex(".*$searchQuery.*", RegexOption.IGNORE_CASE))
+            ) 3 else 0) or
+            (if (it.description.matches(Regex(".*$searchQuery.*", RegexOption.IGNORE_CASE))) 1
+            else 0)
+}
 
 // TODO move to a new file
 
