@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import com.machiav3lli.fdroid.database.entity.Category
 import com.machiav3lli.fdroid.database.entity.CategoryTemp
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CategoryDao : BaseDao<Category> {
@@ -16,6 +17,15 @@ interface CategoryDao : BaseDao<Category> {
         WHERE repository.enabled != 0"""
     )
     val allNames: List<String>
+
+    @get:Query(
+        """SELECT DISTINCT category.label
+        FROM category AS category
+        JOIN repository AS repository
+        ON category.repositoryId = repository._id
+        WHERE repository.enabled != 0"""
+    )
+    val allNamesFlow: Flow<List<String>>
 
     @get:Query(
         """SELECT DISTINCT category.label

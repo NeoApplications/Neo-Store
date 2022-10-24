@@ -60,6 +60,7 @@ import com.machiav3lli.fdroid.entity.Order
 import com.machiav3lli.fdroid.entity.Request
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.UpdateCategory
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProductDao : BaseDao<Product> {
@@ -118,6 +119,23 @@ interface ProductDao : BaseDao<Product> {
             numberOfItems = numberOfItems,
             updateCategory = updateCategory,
             author = author,
+        )
+    )
+
+    @RawQuery(observedEntities = [Product::class])
+    fun queryFlowList(query: SupportSQLiteQuery): Flow<List<Product>>
+
+    fun queryFlowList(request: Request): Flow<List<Product>> = queryFlowList(
+        buildProductQuery(
+            installed = request.installed,
+            updates = request.updates,
+            section = request.section,
+            filteredOutRepos = request.filteredOutRepos,
+            filteredOutCategories = request.filteredOutCategories,
+            order = request.order,
+            ascending = request.ascending,
+            numberOfItems = request.numberOfItems,
+            updateCategory = request.updateCategory,
         )
     )
 
@@ -292,6 +310,9 @@ interface ExtrasDao : BaseDao<Extras> {
 
     @get:Query("SELECT * FROM extras")
     val all: List<Extras>
+
+    @get:Query("SELECT * FROM extras")
+    val allFlow: Flow<List<Extras>>
 
     @get:Query("SELECT * FROM extras")
     val allLive: LiveData<List<Extras>>
