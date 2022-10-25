@@ -311,6 +311,15 @@ data class Repository(
             "5734E753899B25775D90FE85362A49866E05AC4F83C05BEF5A92880D2910639E",
             ""
         )
+        private val REVOLT = defaultRepository(
+            "https://fdroid.revolt.chat/repo/",
+            "Official Revolt repository.",
+            "The official repository to get Revolt's builds for Android.",
+            21,
+            false,
+            "0A9D2F61C8659801711E22177862F84C8134966F427973037A8FDFACFF07C4F2",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, F_DROID_ARCHIVE,
@@ -321,7 +330,8 @@ data class Repository(
             NEWPIPE, LIBRETRO, BITWARDEN,
             CALYX_OS, CALYX_OS_TEST, DIVEST_OS, KDE, NANODROID,
             NETSYMS, FEDILAB, NETHUNTER,
-            THREEMA, SESSION, MOLLY, BRIAR, FLUFFY_CHAT, SIMPLEX_CHAT,
+            THREEMA, SESSION, MOLLY, BRIAR,
+            FLUFFY_CHAT, SIMPLEX_CHAT, REVOLT,
             I2P, COLLABORA,
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
             FROSTNERD, FROSTNERD_ARCHIVE,
@@ -336,6 +346,10 @@ data class Repository(
 
         val addedReposV10 = listOf(
             SESSION, THREEMA, CALYX_OS
+        )
+
+        val addedReposV11 = listOf(
+            REVOLT,
         )
     }
 }
