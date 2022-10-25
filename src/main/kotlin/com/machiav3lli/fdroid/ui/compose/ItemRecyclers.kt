@@ -35,18 +35,18 @@ fun ProductsVerticalRecycler(
     modifier: Modifier = Modifier.fillMaxSize(),
     onUserClick: (ProductItem) -> Unit = {},
     onFavouriteClick: (ProductItem) -> Unit = {},
-    getInstalled: (ProductItem) -> Installed? = { null },
+    getInstalled: (String) -> Installed? = { null },
     onActionClick: (ProductItem) -> Unit = {}
 ) {
     VerticalItemList(list = productsList, modifier = modifier) {
-        it.toItem().let { item ->
+        it.toItem(getInstalled(it.packageName)).let { item ->
             ProductsListItem(
                 item = item,
                 repo = repositories[item.repositoryId],
                 isFavorite = favorites.contains(item.packageName),
                 onUserClick = onUserClick,
                 onFavouriteClick = onFavouriteClick,
-                installed = getInstalled.invoke(item),
+                installed = getInstalled.invoke(item.packageName),
                 onActionClick = onActionClick
             )
         }

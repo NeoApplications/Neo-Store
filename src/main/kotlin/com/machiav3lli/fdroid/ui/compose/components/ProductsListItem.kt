@@ -102,7 +102,7 @@ fun ProductsListItem(
                     )
                     Text(
                         modifier = Modifier.align(Alignment.CenterVertically),
-                        text = product.version,
+                        text = product.installedVersion.ifEmpty { product.version },
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
                         style = MaterialTheme.typography.bodySmall,

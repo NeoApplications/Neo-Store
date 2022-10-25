@@ -120,7 +120,7 @@ fun ExplorePage(viewModel: MainNavFragmentViewModelX) {
                     !favorites.contains(item.packageName)
                 )
             },
-            getInstalled = { installedList?.get(it.packageName) }
+            getInstalled = { packageName -> installedList?.get(packageName) }
         ) { item ->
             val installed = installedList?.get(item.packageName)
             if (installed != null && installed.launcherActivities.isNotEmpty())

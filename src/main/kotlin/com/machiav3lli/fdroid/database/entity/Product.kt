@@ -114,7 +114,7 @@ open class Product(
             icon = icon,
             metadataIcon = metadataIcon,
             version = version,
-            installedVersion = "",
+            installedVersion = installed?.version ?: "",
             compatible = compatible,
             canUpdate = canUpdate(installed),
             matchRank = 0
