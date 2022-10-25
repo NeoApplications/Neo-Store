@@ -23,6 +23,9 @@ interface InstalledDao : BaseDao<Installed> {
     fun get(packageName: String): Installed?
 
     @Query("SELECT * FROM memory_installed WHERE packageName = :packageName")
+    fun getFlow(packageName: String): Flow<Installed?>
+
+    @Query("SELECT * FROM memory_installed WHERE packageName = :packageName")
     fun getLive(packageName: String): LiveData<Installed?>
 
     @Query("DELETE FROM memory_installed WHERE packageName = :packageName")

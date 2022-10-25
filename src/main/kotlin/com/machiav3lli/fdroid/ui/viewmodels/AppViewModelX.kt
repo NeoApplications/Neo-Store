@@ -1,51 +1,84 @@
 package com.machiav3lli.fdroid.ui.viewmodels
 
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.Extras
-import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.DownloadState
 import com.machiav3lli.fdroid.utility.findSuggestedProduct
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AppViewModelX(val db: DatabaseX, val packageName: String, developer: String) : ViewModel() {
 
-    val products: MediatorLiveData<List<Product>> = MediatorLiveData()
-    val repositories: MediatorLiveData<List<Repository>> = MediatorLiveData()
-    val installedItem: MediatorLiveData<Installed?> = MediatorLiveData()
-    val _productRepos: MutableLiveData<List<Pair<Product, Repository>>> = MutableLiveData()
-    var productRepos: List<Pair<Product, Repository>>
-        get() = _productRepos.value ?: emptyList()
-        set(value) {
-            _productRepos.value = value
-        }
-    val downloadState: MutableLiveData<DownloadState> = MutableLiveData()
-    val mainAction: MutableLiveData<ActionState> = MutableLiveData()
-    val actions: MediatorLiveData<Set<ActionState>> = MediatorLiveData()
-    val extras: MediatorLiveData<Extras> = MediatorLiveData()
-    val authorProducts: MediatorLiveData<List<Product>> = MediatorLiveData()
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val products = db.productDao.getFlow(packageName).mapLatest { it.filterNotNull() }
 
-    init {
-        products.addSource(db.productDao.getLive(packageName)) { products.setValue(it.filterNotNull()) }
-        repositories.addSource(db.repositoryDao.allLive, repositories::setValue)
-        installedItem.addSource(db.installedDao.getLive(packageName), installedItem::setValue)
-        extras.addSource(db.extrasDao.getLive(packageName), extras::setValue)
-        actions.addSource(extras) { updateActions() }
-        authorProducts.addSource(db.productDao.getAuthorPackages(developer)) { prods ->
-            if (developer.isNotEmpty()) authorProducts.value = prods
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val repositories = db.repositoryDao.allFlow.mapLatest { it }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val installedItem = db.installedDao.getFlow(packageName).transformLatest {
+        emit(it)
+        updateActions()
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        null
+    )
+
+    private val _productRepos = MutableStateFlow<List<Pair<Product, Repository>>>(emptyList())
+    val productRepos: StateFlow<List<Pair<Product, Repository>>> = _productRepos
+    fun updateProductRepos(repos: List<Pair<Product, Repository>>) {
+        viewModelScope.launch {
+            _productRepos.emit(repos)
+        }
+    }
+
+    private val _downloadState = MutableStateFlow<DownloadState?>(null)
+    val downloadState: StateFlow<DownloadState?> = _downloadState
+    fun updateDownloadState(ds: DownloadState?) {
+        viewModelScope.launch {
+            _downloadState.emit(ds)
+        }
+    }
+
+    private val _mainAction = MutableStateFlow<ActionState?>(null)
+    val mainAction: StateFlow<ActionState?> = _mainAction
+
+    private val _subActions = MutableStateFlow<Set<ActionState>>(emptySet())
+    val subActions: StateFlow<Set<ActionState>> = _subActions
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val extras = db.extrasDao.getFlow(packageName).transformLatest {
+        emit(it)
+        updateActions()
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        Extras(packageName)
+    )
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val authorProducts = db.productDao.getAuthorPackagesFlow(developer).transformLatest { prods ->
+        if (developer.isNotEmpty()) emit(
+            prods
                 .filter { it.packageName != packageName }
                 .groupBy { it.packageName }
                 .map { it.value.maxByOrNull(Product::added)!! }
-        }
+        )
     }
 
     fun updateActions() {
@@ -57,15 +90,15 @@ class AppViewModelX(val db: DatabaseX, val packageName: String, developer: Strin
     private suspend fun updateUI() {
         withContext(Dispatchers.IO) {
             val installed = installedItem.value
-            val productRepos = productRepos
+            val productRepos = productRepos.value
             val product = findSuggestedProduct(productRepos, installed) { it.first }?.first
             val compatible = product != null && product.selectedReleases.firstOrNull()
                 .let { it != null && it.incompatibilities.isEmpty() }
             val canInstall =
-                product != null && installed == null && compatible && downloadState.value == null
+                product != null && installed == null && compatible && _downloadState.value == null
             val canUpdate =
                 product != null && compatible && product.canUpdate(installed) &&
-                        !shouldIgnore(product.versionCode) && downloadState.value == null
+                        !shouldIgnore(product.versionCode) && _downloadState.value == null
             val canUninstall = product != null && installed != null && !installed.isSystem
             val canLaunch =
                 product != null && installed != null && installed.launcherActivities.isNotEmpty()
@@ -93,14 +126,14 @@ class AppViewModelX(val db: DatabaseX, val packageName: String, developer: Strin
             }
 
             withContext(Dispatchers.Main) {
-                synchronized(actions) { this@AppViewModelX.actions.value = actions }
+                synchronized(actions) { _subActions.value = actions }
 
-                if (downloadState.value != null && mainAction.value?.textId != downloadState.value?.textId)
-                    downloadState.value?.let {
-                        mainAction.value = ActionState.Cancel(it.textId)
+                if (_downloadState.value != null && _mainAction.value?.textId != _downloadState.value?.textId)
+                    _downloadState.value?.let {
+                        _mainAction.value = ActionState.Cancel(it.textId)
                     }
-                else if (downloadState.value == null)
-                    mainAction.value = primaryAction
+                else if (_downloadState.value == null)
+                    _mainAction.value = primaryAction
                 true
             }
         }

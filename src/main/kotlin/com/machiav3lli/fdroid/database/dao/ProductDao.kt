@@ -74,6 +74,9 @@ interface ProductDao : BaseDao<Product> {
     fun get(packageName: String): List<Product?>
 
     @Query("SELECT * FROM product WHERE packageName = :packageName")
+    fun getFlow(packageName: String): Flow<List<Product?>>
+
+    @Query("SELECT * FROM product WHERE packageName = :packageName")
     fun getLive(packageName: String): LiveData<List<Product?>>
 
     @Query("DELETE FROM product WHERE repositoryId = :id")
@@ -81,6 +84,9 @@ interface ProductDao : BaseDao<Product> {
 
     @RawQuery
     fun queryObject(query: SupportSQLiteQuery): List<Product>
+
+    @Query("SELECT * FROM product WHERE author LIKE '%' || :author || '%' ")
+    fun getAuthorPackagesFlow(author: String): Flow<List<Product>>
 
     @Query("SELECT * FROM product WHERE author LIKE '%' || :author || '%' ")
     fun getAuthorPackages(author: String): LiveData<List<Product>>

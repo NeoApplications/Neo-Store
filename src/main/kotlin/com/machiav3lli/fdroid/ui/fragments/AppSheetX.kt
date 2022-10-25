@@ -33,8 +33,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -57,7 +57,6 @@ import com.machiav3lli.fdroid.RELEASE_STATE_INSTALLED
 import com.machiav3lli.fdroid.RELEASE_STATE_NONE
 import com.machiav3lli.fdroid.RELEASE_STATE_SUGGESTED
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.AntiFeature
@@ -97,6 +96,7 @@ import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -166,8 +166,10 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     }
 
     override fun setupLayout() {
-        viewModel._productRepos.observe(this) {
-            viewModel.updateActions()
+        lifecycleScope.launchWhenStarted {
+            viewModel.productRepos.collectLatest {
+                viewModel.updateActions()
+            }
         }
     }
 
@@ -190,7 +192,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
             )
             else -> null
         }
-        viewModel.downloadState.value = state
+        viewModel.updateDownloadState(state)
         viewModel.updateActions()
         if (downloadState is DownloadService.State.Success && !rootInstallerEnabled) { // && isResumed TODO unite root and normal install calls
             withContext(Dispatchers.Default) {
@@ -200,7 +202,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     }
 
     override fun onActionClick(action: ActionState?) {
-        val productRepos = viewModel.productRepos
+        val productRepos = viewModel.productRepos.value
         when (action) {
             ActionState.Install,
             ActionState.Update,
@@ -297,7 +299,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
             }
             else -> {
                 val productRepository =
-                    viewModel.productRepos.asSequence()
+                    viewModel.productRepos.value.asSequence()
                         .filter { it -> it.first.releases.any { it === release } }
                         .firstOrNull()
                 if (productRepository != null) {
@@ -351,19 +353,19 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
         val showScreenshots = remember { mutableStateOf(false) }
         var screenshotPage by remember { mutableStateOf(0) }
-        val installed by viewModel.installedItem.observeAsState()
-        val products by viewModel.products.observeAsState()
-        val authorProducts by viewModel.authorProducts.observeAsState()
-        val repos by viewModel.repositories.observeAsState()
-        val downloadState by viewModel.downloadState.observeAsState(null)
-        val mainAction by viewModel.mainAction.observeAsState(if (installed == null) ActionState.Install else ActionState.Launch)
-        val actions by viewModel.actions.observeAsState()
-        val extras by viewModel.extras.observeAsState(Extras(packageName))
+        val installed by viewModel.installedItem.collectAsState(null)
+        val products by viewModel.products.collectAsState(null)
+        val authorProducts by viewModel.authorProducts.collectAsState(null)
+        val repos by viewModel.repositories.collectAsState(null)
+        val downloadState by viewModel.downloadState.collectAsState(null)
+        val mainAction by viewModel.mainAction.collectAsState(if (installed == null) ActionState.Install else ActionState.Launch)
+        val actions by viewModel.subActions.collectAsState()
+        val extras by viewModel.extras.collectAsState()
         val productRepos = products?.mapNotNull { product ->
             repos?.firstOrNull { it.id == product.repositoryId }
                 ?.let { Pair(product, it) }
         } ?: emptyList()
-        viewModel.productRepos = productRepos
+        viewModel.updateProductRepos(productRepos)
         val suggestedProductRepo = findSuggestedProduct(productRepos, installed) { it.first }
         val compatibleReleasePairs = productRepos.asSequence()
             .flatMap { (product, repository) ->
@@ -463,8 +465,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                     item {
                         AppInfoHeader(
                             mainAction = mainAction,
-                            possibleActions = actions?.filter { it != mainAction }?.toSet()
-                                ?: emptySet(),
+                            possibleActions = actions.filter { it != mainAction }.toSet(),
                             onAction = { onActionClick(it) }
                         )
                     }
