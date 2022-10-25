@@ -100,9 +100,10 @@ class AppViewModelX(val db: DatabaseX, val packageName: String, developer: Strin
                 product != null && compatible && product.canUpdate(installed) &&
                         !shouldIgnore(product.versionCode) && _downloadState.value == null
             val canUninstall = product != null && installed != null && !installed.isSystem
-            val canLaunch =
-                product != null && installed != null && installed.launcherActivities.isNotEmpty()
-            val canShare = product != null && productRepos[0].second.name == "F-Droid"
+            val canLaunch = product != null &&
+                    installed != null && installed.launcherActivities.isNotEmpty()
+            val canShare = product != null &&
+                    productRepos[0].second.name in setOf("F-Droid", "IzzyOnDroid F-Droid Repo")
             val bookmarked = extras.value?.favorite ?: false
 
             val actions = mutableSetOf<ActionState>()

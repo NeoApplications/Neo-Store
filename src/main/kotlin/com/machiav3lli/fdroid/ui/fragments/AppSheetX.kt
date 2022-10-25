@@ -247,7 +247,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                 } else Unit
             }
             ActionState.Share -> {
-                shareIntent(packageName, productRepos[0].first.label)
+                shareIntent(packageName, productRepos[0].first.label, productRepos[0].second.name)
             }
             ActionState.Bookmark,
             ActionState.Bookmarked -> {
@@ -257,11 +257,15 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         }::class
     }
 
-    private fun shareIntent(packageName: String, appName: String) {
+    private fun shareIntent(packageName: String, appName: String, repository: String) {
         val shareIntent = Intent(Intent.ACTION_SEND)
-        val extraText = if (Android.sdk(24)) {
-            "https://www.f-droid.org/${resources.configuration.locales[0].language}/packages/${packageName}/"
-        } else "https://www.f-droid.org/${resources.configuration.locale.language}/packages/${packageName}/"
+        val extraText = when {
+            repository.contains("IzzyOnDroid") -> "https://apt.izzysoft.de/fdroid/index/apk/$packageName"
+            else -> if (Android.sdk(24)) {
+                "https://www.f-droid.org/${resources.configuration.locales[0].language}/packages/${packageName}/"
+            } else "https://www.f-droid.org/${resources.configuration.locale.language}/packages/${packageName}/"
+        }
+
 
 
         shareIntent.type = "text/plain"
