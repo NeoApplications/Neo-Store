@@ -267,11 +267,6 @@ data class Repository(
             "A collection of patched applications to provide better compatibility, privacy etc..",
             21, false, "313D9E6E789FF4E8E2D687AAE31EEF576050003ED67963301821AC6D3763E3AC", ""
         )
-        private val ALEFVANOON = defaultRepository(
-            "https://repo.alefvanoon.xyz/fdroid/repo", "Alefvanoon",
-            "A collection of open-source apps that for one reason or another not on F-Droid.",
-            21, false, "04DF198F553069C7BE60F057AE12000E99F7700DA895CC1CE2EB11DC871581F1", ""
-        )
         private val ELEMENT_DEV_FDROID = defaultRepository(
             "https://fdroid.krombel.de/element-dev-fdroid/fdroid/repo/",
             "Unofficial Element-FDroid-dev",
@@ -330,7 +325,7 @@ data class Repository(
             I2P, COLLABORA,
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
             FROSTNERD, FROSTNERD_ARCHIVE,
-            UNOFFICIAL_FIREFOX, PATCHED, WIND, UMBRELLA, ALEFVANOON
+            UNOFFICIAL_FIREFOX, PATCHED, WIND, UMBRELLA
         )
 
         val addedReposV9 = listOf(
