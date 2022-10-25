@@ -320,6 +320,15 @@ data class Repository(
             "0A9D2F61C8659801711E22177862F84C8134966F427973037A8FDFACFF07C4F2",
             ""
         )
+        private val GITJOURNAL = defaultRepository(
+            "https://gitjournal.io/fdroid/repo",
+            "Official GitJournal repository.",
+            "The official repository to get GitJournal's builds for Android.",
+            21,
+            false,
+            "E2EE4AA4380F0D3B3CF81EB17F5E48F827C3AA77122D9AD330CC441650894574",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, F_DROID_ARCHIVE,
@@ -327,7 +336,7 @@ data class Repository(
             IZZY,
             MICRO_G,
             BROMITE, UNGOOGLED_CHROMIUM,
-            NEWPIPE, LIBRETRO, BITWARDEN,
+            NEWPIPE, LIBRETRO, BITWARDEN, GITJOURNAL,
             CALYX_OS, CALYX_OS_TEST, DIVEST_OS, KDE, NANODROID,
             NETSYMS, FEDILAB, NETHUNTER,
             THREEMA, SESSION, MOLLY, BRIAR,
@@ -349,7 +358,7 @@ data class Repository(
         )
 
         val addedReposV11 = listOf(
-            REVOLT,
+            REVOLT, GITJOURNAL,
         )
     }
 }
