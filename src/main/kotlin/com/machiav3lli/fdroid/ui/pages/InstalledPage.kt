@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,7 +48,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
     val context = LocalContext.current
@@ -62,7 +59,7 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
-    val favorites by mainActivityX.db.extrasDao.favoritesLive.observeAsState(emptyArray())
+    val favorites by mainActivityX.db.extrasDao.favoritesFlow.collectAsState(emptyArray())
     var searchQuery by remember { mutableStateOf("") }
     val filteredPrimaryList by remember(primaryList, searchQuery) {
         mutableStateOf(primaryList?.matchSearchQuery(searchQuery))

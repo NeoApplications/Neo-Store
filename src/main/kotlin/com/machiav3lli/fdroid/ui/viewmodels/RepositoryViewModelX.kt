@@ -10,6 +10,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+// TODO migrate sheets to Compose
+// TODO migrate fields to Flows
 class RepositoryViewModelX(val db: DatabaseX, val repositoryId: Long) : ViewModel() {
 
     val repo: MediatorLiveData<Repository> = MediatorLiveData()

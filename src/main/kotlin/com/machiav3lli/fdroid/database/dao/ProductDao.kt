@@ -76,9 +76,6 @@ interface ProductDao : BaseDao<Product> {
     @Query("SELECT * FROM product WHERE packageName = :packageName")
     fun getFlow(packageName: String): Flow<List<Product?>>
 
-    @Query("SELECT * FROM product WHERE packageName = :packageName")
-    fun getLive(packageName: String): LiveData<List<Product?>>
-
     @Query("DELETE FROM product WHERE repositoryId = :id")
     fun deleteById(id: Long): Int
 
@@ -87,9 +84,6 @@ interface ProductDao : BaseDao<Product> {
 
     @Query("SELECT * FROM product WHERE author LIKE '%' || :author || '%' ")
     fun getAuthorPackagesFlow(author: String): Flow<List<Product>>
-
-    @Query("SELECT * FROM product WHERE author LIKE '%' || :author || '%' ")
-    fun getAuthorPackages(author: String): LiveData<List<Product>>
 
     fun queryObject(request: Request): List<Product> = queryObject(
         buildProductQuery(
@@ -132,23 +126,6 @@ interface ProductDao : BaseDao<Product> {
     fun queryFlowList(query: SupportSQLiteQuery): Flow<List<Product>>
 
     fun queryFlowList(request: Request): Flow<List<Product>> = queryFlowList(
-        buildProductQuery(
-            installed = request.installed,
-            updates = request.updates,
-            section = request.section,
-            filteredOutRepos = request.filteredOutRepos,
-            filteredOutCategories = request.filteredOutCategories,
-            order = request.order,
-            ascending = request.ascending,
-            numberOfItems = request.numberOfItems,
-            updateCategory = request.updateCategory,
-        )
-    )
-
-    @RawQuery(observedEntities = [Product::class])
-    fun queryLiveList(query: SupportSQLiteQuery): LiveData<List<Product>>
-
-    fun queryLiveList(request: Request): LiveData<List<Product>> = queryLiveList(
         buildProductQuery(
             installed = request.installed,
             updates = request.updates,
@@ -240,14 +217,19 @@ interface ProductDao : BaseDao<Product> {
         }
 
         // Filter only the selected repository/category
-        if (section is Section.Category) {
-            builder += "AND $TABLE_CATEGORY.$ROW_LABEL = ?"
-            builder %= section.name
-        } else if (section is Section.Repository) {
-            builder += "AND $TABLE_PRODUCT.$ROW_REPOSITORY_ID = ?"
-            builder %= section.id.toString()
-        } else if (section is Section.FAVORITE) {
-            builder += "AND COALESCE($TABLE_EXTRAS.$ROW_FAVORITE, 0) != 0"
+        when (section) {
+            is Section.Category -> {
+                builder += "AND $TABLE_CATEGORY.$ROW_LABEL = ?"
+                builder %= section.name
+            }
+            is Section.Repository -> {
+                builder += "AND $TABLE_PRODUCT.$ROW_REPOSITORY_ID = ?"
+                builder %= section.id.toString()
+            }
+            is Section.FAVORITE -> {
+                builder += "AND COALESCE($TABLE_EXTRAS.$ROW_FAVORITE, 0) != 0"
+            }
+            else -> {}
         }
 
         when (updateCategory) {
@@ -312,7 +294,7 @@ interface ExtrasDao : BaseDao<Extras> {
     operator fun get(packageName: String): Extras?
 
     @Query("SELECT * FROM extras WHERE packageName = :packageName")
-    fun getLive(packageName: String): LiveData<Extras?>
+    fun getFlow(packageName: String): Flow<Extras?>
 
     @get:Query("SELECT * FROM extras")
     val all: List<Extras>
@@ -320,12 +302,9 @@ interface ExtrasDao : BaseDao<Extras> {
     @get:Query("SELECT * FROM extras")
     val allFlow: Flow<List<Extras>>
 
-    @get:Query("SELECT * FROM extras")
-    val allLive: LiveData<List<Extras>>
-
     @get:Query("SELECT packageName FROM extras WHERE favorite != 0")
     val favorites: Array<String>
 
     @get:Query("SELECT packageName FROM extras WHERE favorite != 0")
-    val favoritesLive: LiveData<Array<String>>
+    val favoritesFlow: Flow<Array<String>>
 }

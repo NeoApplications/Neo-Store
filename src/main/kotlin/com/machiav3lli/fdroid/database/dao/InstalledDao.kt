@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import com.machiav3lli.fdroid.database.entity.Installed
@@ -16,17 +15,11 @@ interface InstalledDao : BaseDao<Installed> {
     @get:Query("SELECT * FROM memory_installed")
     val allFlow: Flow<List<Installed>>
 
-    @get:Query("SELECT * FROM memory_installed")
-    val allLive: LiveData<List<Installed>>
-
     @Query("SELECT * FROM memory_installed WHERE packageName = :packageName")
     fun get(packageName: String): Installed?
 
     @Query("SELECT * FROM memory_installed WHERE packageName = :packageName")
     fun getFlow(packageName: String): Flow<Installed?>
-
-    @Query("SELECT * FROM memory_installed WHERE packageName = :packageName")
-    fun getLive(packageName: String): LiveData<Installed?>
 
     @Query("DELETE FROM memory_installed WHERE packageName = :packageName")
     fun delete(packageName: String)
