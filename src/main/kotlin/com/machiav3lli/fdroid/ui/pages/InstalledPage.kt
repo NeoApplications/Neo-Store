@@ -42,7 +42,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
-import com.machiav3lli.fdroid.utility.matchSearchQuery
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +51,7 @@ import kotlinx.coroutines.launch
 fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
     val context = LocalContext.current
     val mainActivityX = context as MainActivityX
-    val primaryList by viewModel.primaryProducts.collectAsState(null)
+    val filteredPrimaryList by viewModel.filteredProducts.collectAsState()
     val secondaryList by viewModel.secondaryProducts.collectAsState(null)
     val installedList by viewModel.installed.collectAsState(null)
     val repositories by viewModel.repositories.collectAsState(null)
@@ -60,16 +59,11 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
     val favorites by mainActivityX.db.extrasDao.favoritesFlow.collectAsState(emptyArray())
-    var searchQuery by remember { mutableStateOf("") }
-    val filteredPrimaryList by remember(primaryList, searchQuery) {
-        mutableStateOf(primaryList?.matchSearchQuery(searchQuery))
-    }
 
     SideEffect {
         CoroutineScope(Dispatchers.IO).launch {
             mainActivityX.searchQuery.collect { newQuery ->
-                if (newQuery != searchQuery)
-                    searchQuery = newQuery
+                viewModel.setSearchQuery(newQuery)
             }
         }
         CoroutineScope(Dispatchers.Default).launch {

@@ -14,7 +14,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,7 +29,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
-import com.machiav3lli.fdroid.utility.matchSearchQuery
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +38,7 @@ import kotlinx.coroutines.launch
 fun LatestPage(viewModel: MainNavFragmentViewModelX) {
     val context = LocalContext.current
     val mainActivityX = context as MainActivityX
-    val primaryList by viewModel.primaryProducts.collectAsState(null)
+    val filteredPrimaryList by viewModel.filteredProducts.collectAsState()
     val secondaryList by viewModel.secondaryProducts.collectAsState(null)
     val installedList by viewModel.installed.collectAsState(null)
     val repositories by viewModel.repositories.collectAsState(null)
@@ -48,17 +46,12 @@ fun LatestPage(viewModel: MainNavFragmentViewModelX) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
     val favorites by mainActivityX.db.extrasDao.favoritesFlow.collectAsState(emptyArray())
-    var searchQuery by remember { mutableStateOf("") }
-    val filteredPrimaryList by remember(primaryList, searchQuery) {
-        mutableStateOf(primaryList?.matchSearchQuery(searchQuery))
-    }
 
     SideEffect {
         mainActivityX.syncConnection.bind(context)
         CoroutineScope(Dispatchers.IO).launch {
             mainActivityX.searchQuery.collect { newQuery ->
-                if (newQuery != searchQuery)
-                    searchQuery = newQuery
+                viewModel.setSearchQuery(newQuery)
             }
         }
         CoroutineScope(Dispatchers.Default).launch {

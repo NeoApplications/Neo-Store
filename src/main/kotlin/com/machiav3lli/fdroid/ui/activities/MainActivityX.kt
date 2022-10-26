@@ -49,8 +49,8 @@ import com.machiav3lli.fdroid.utility.setCustomTheme
 import com.machiav3lli.fdroid.utility.showBatteryOptimizationDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
@@ -72,8 +72,8 @@ class MainActivityX : AppCompatActivity() {
     private val cScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
     val syncConnection = Connection(SyncService::class.java)
 
-    private val _searchQuery = MutableSharedFlow<String>()
-    val searchQuery = _searchQuery.asSharedFlow()
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery
 
     val db
         get() = (application as MainApplication).db

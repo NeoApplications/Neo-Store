@@ -10,6 +10,7 @@ import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.entity.Request
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.Source
+import com.machiav3lli.fdroid.utility.matchSearchQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,6 +34,12 @@ class MainNavFragmentViewModelX(
 
     fun setUpdatedFilter(value: Boolean) {
         viewModelScope.launch { updatedFilter.emit(value) }
+    }
+
+    private val query = MutableStateFlow("")
+
+    fun setSearchQuery(value: String) {
+        viewModelScope.launch { query.emit(value) }
     }
 
     private val sections = MutableStateFlow<Section>(Section.All)
@@ -84,6 +91,15 @@ class MainNavFragmentViewModelX(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = null
+    )
+    val filteredProducts: StateFlow<List<Product>?> = combine(primaryProducts, query) { a, b ->
+        withContext(Dispatchers.IO) {
+            a?.matchSearchQuery(query.value)
+        }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        null
     )
 
     private var secondaryRequest = MutableStateFlow(request(secondarySource))
