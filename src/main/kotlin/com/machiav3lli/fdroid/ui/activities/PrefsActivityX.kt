@@ -21,10 +21,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
+import com.machiav3lli.fdroid.EXTRA_NEW_REPO_HANDLED
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NAV_PREFS
 import com.machiav3lli.fdroid.content.Preferences
@@ -38,6 +39,7 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.PrefsNavHost
 import com.machiav3lli.fdroid.utility.destinationToItem
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
+import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.setCustomTheme
 import kotlinx.coroutines.launch
@@ -53,9 +55,10 @@ class PrefsActivityX : AppCompatActivity() {
     sealed class SpecialIntent {
         object Updates : SpecialIntent()
         class Install(val packageName: String?, val cacheFileName: String?) : SpecialIntent()
+        class AddRepo(val address: String?, val fingerprint: String?) : SpecialIntent()
     }
 
-    private lateinit var navController: NavController
+    private lateinit var navController: NavHostController
     val syncConnection = Connection(SyncService::class.java)
 
     val db
@@ -78,7 +81,7 @@ class PrefsActivityX : AppCompatActivity() {
                     else -> isDarkTheme
                 }
             ) {
-                val navController = rememberAnimatedNavController()
+                navController = rememberAnimatedNavController()
                 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
                 var pageTitle: Int? by remember {
                     mutableStateOf(NavItem.Prefs.title)
@@ -151,6 +154,11 @@ class PrefsActivityX : AppCompatActivity() {
 
     private fun handleSpecialIntent(specialIntent: SpecialIntent) {
         when (specialIntent) {
+            is SpecialIntent.AddRepo -> {
+                val address = specialIntent.address
+                val fingerprint = specialIntent.fingerprint
+                navController.navigate("${NavItem.ReposPrefs.destination}?address=$address?fingerprint=$fingerprint")
+            }
             is SpecialIntent.Updates -> navController.navigate(NavItem.Installed.destination)
             is SpecialIntent.Install -> {
                 val packageName = specialIntent.packageName
@@ -169,6 +177,33 @@ class PrefsActivityX : AppCompatActivity() {
 
     private fun handleIntent(intent: Intent?) {
         when (intent?.action) {
+            Intent.ACTION_VIEW -> {
+                val data = intent.data
+                if (
+                    data?.scheme?.lowercase()?.contains("fdroidrepo") == true &&
+                    !intent.hasExtra(EXTRA_NEW_REPO_HANDLED)
+                ) {
+                    intent.putExtra(EXTRA_NEW_REPO_HANDLED, true)
+                    val (addressText, fingerprintText) = try {
+                        val uri = data.buildUpon()
+                            .scheme("https")
+                            .path(data.path?.pathCropped)
+                            .query(null).fragment(null).build().toString()
+                        val fingerprintText =
+                            data.getQueryParameter("fingerprint")?.nullIfEmpty()
+                                ?: data.getQueryParameter("FINGERPRINT")?.nullIfEmpty()
+                        Pair(uri, fingerprintText)
+                    } catch (e: Exception) {
+                        Pair(null, null)
+                    }
+                    handleSpecialIntent(
+                        SpecialIntent.AddRepo(
+                            addressText,
+                            fingerprintText
+                        )
+                    )
+                }
+            }
             ACTION_UPDATES -> handleSpecialIntent(SpecialIntent.Updates)
             ACTION_INSTALL -> handleSpecialIntent(
                 SpecialIntent.Install(

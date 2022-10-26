@@ -90,10 +90,27 @@
         </activity>
 
         <activity
-                android:name=".ui.activities.PrefsActivityX"
-                android:exported="true"
-                android:launchMode="singleTask"
-                android:windowSoftInputMode="adjustResize" />
+            android:name=".ui.activities.PrefsActivityX"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="fdroidrepo" />
+                <data
+                    android:scheme="FDROIDREPO"
+                    tools:ignore="AppLinkUrlError" />
+                <data android:scheme="fdroidrepos" />
+                <data
+                    android:scheme="FDROIDREPOS"
+                    tools:ignore="AppLinkUrlError" />
+            </intent-filter>
+        </activity>
 
         <service android:name=".service.SyncService" />
 

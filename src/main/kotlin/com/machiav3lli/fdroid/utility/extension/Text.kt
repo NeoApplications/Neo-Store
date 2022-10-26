@@ -19,6 +19,12 @@ fun Long.formatSize(): String {
     return sizeFormats[index].format(Locale.US, size)
 }
 
+val String.pathCropped: String
+    get() {
+        val index = indexOfLast { it != '/' }
+        return if (index >= 0 && index < length - 1) substring(0, index + 1) else this
+    }
+
 fun String?.trimAfter(char: Char, repeated: Int): String? {
     var count = 0
     this?.let {

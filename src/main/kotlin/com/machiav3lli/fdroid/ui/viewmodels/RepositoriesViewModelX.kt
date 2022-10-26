@@ -7,9 +7,8 @@ import com.machiav3lli.fdroid.database.dao.RepositoryDao
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.newRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -17,8 +16,8 @@ import kotlinx.coroutines.withContext
 
 class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
 
-    private val _showSheet = MutableSharedFlow<SheetNavigationData>()
-    val showSheet: SharedFlow<SheetNavigationData> = _showSheet
+    private val _showSheet = MutableStateFlow<SheetNavigationData?>(null)
+    val showSheet: StateFlow<SheetNavigationData?> = _showSheet
 
     private val _repositories = MutableStateFlow<List<Repository>>(emptyList())
     val repositories = _repositories.asStateFlow()
@@ -34,23 +33,38 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
     fun showRepositorySheet(
         repositoryId: Long = 0L,
         editMode: Boolean = false,
+        address: String = "",
+        fingerprint: String = "",
         addNew: Boolean = false
     ) {
         viewModelScope.launch {
             _showSheet.emit(
-                if (addNew) {
-                    SheetNavigationData(addNewRepository(), editMode)
-                } else {
-                    SheetNavigationData(repositoryId, editMode)
+                when {
+                    addNew && repositories.value.none { it.address == address } -> {
+                        SheetNavigationData(addNewRepository(address, fingerprint), editMode)
+                    }
+                    !addNew -> {
+                        SheetNavigationData(repositoryId, editMode)
+                    }
+                    else -> {
+                        null
+                    }
                 }
             )
         }
     }
 
-    private suspend fun addNewRepository(): Long = withContext(Dispatchers.IO) {
-        repositoryDao.insert(newRepository(fallbackName = "new repository"))
-        repositoryDao.latestAddedId()
-    }
+    private suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long =
+        withContext(Dispatchers.IO) {
+            repositoryDao.insert(
+                newRepository(
+                    fallbackName = "new repository",
+                    address = address,
+                    fingerprint = fingerprint
+                )
+            )
+            repositoryDao.latestAddedId()
+        }
 
     class Factory(private val repoDao: RepositoryDao) : ViewModelProvider.Factory {
         @Suppress("unchecked_cast")

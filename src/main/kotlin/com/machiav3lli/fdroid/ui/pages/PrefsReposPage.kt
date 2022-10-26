@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -33,24 +34,35 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PrefsReposPage(viewModel: RepositoriesViewModelX) {
+fun PrefsReposPage(viewModel: RepositoriesViewModelX, address: String, fingerprint: String) {
     val context = LocalContext.current
     val prefsActivityX = context as PrefsActivityX
     val repos by viewModel.repositories.collectAsState()
 
     LaunchedEffect(key1 = viewModel.showSheet) {
         viewModel.showSheet.collectLatest {
-            if (it.editMode) {
+            if (it?.editMode == true) {
                 EditRepositorySheetX(it.repositoryId).showNow(
                     prefsActivityX.supportFragmentManager,
                     "Repository ${it.repositoryId}"
                 )
-            } else {
+            } else if (it != null) {
                 RepositorySheetX(it.repositoryId).showNow(
                     prefsActivityX.supportFragmentManager,
                     "Repository $it"
                 )
             }
+        }
+    }
+
+    SideEffect {
+        if (address.isNotEmpty() && fingerprint.isNotEmpty()) {
+            viewModel.showRepositorySheet(
+                editMode = true,
+                addNew = true,
+                address = address,
+                fingerprint = fingerprint
+            )
         }
     }
 
