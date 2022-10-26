@@ -12,6 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -70,9 +71,6 @@ class PrefsActivityX : AppCompatActivity() {
         setCustomTheme()
         super.onCreate(savedInstanceState)
 
-        if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
-            handleIntent(intent)
-        }
         setContent {
             AppTheme(
                 darkTheme = when (Preferences[Preferences.Key.Theme]) {
@@ -105,6 +103,12 @@ class PrefsActivityX : AppCompatActivity() {
                         )
                     }
                 ) { paddingValues ->
+                    SideEffect {
+                        if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
+                            handleIntent(intent)
+                        }
+                    }
+
                     PrefsNavHost(
                         modifier = Modifier.padding(paddingValues),
                         navController = navController

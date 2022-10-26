@@ -105,12 +105,6 @@ class MainActivityX : AppCompatActivity() {
                 navController = rememberAnimatedNavController()
                 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-                SideEffect {
-                    if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
-                        handleIntent(intent)
-                    }
-                }
-
                 Scaffold(
                     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                     containerColor = Color.Transparent,
@@ -147,6 +141,12 @@ class MainActivityX : AppCompatActivity() {
                         }
                     }
                 ) { paddingValues ->
+                    SideEffect {
+                        if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
+                            handleIntent(intent)
+                        }
+                    }
+
                     MainNavHost(
                         modifier = Modifier.padding(paddingValues),
                         navController = navController
