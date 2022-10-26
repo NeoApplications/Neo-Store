@@ -9,10 +9,13 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.activity
+import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.machiav3lli.fdroid.content.Preferences
@@ -92,13 +95,28 @@ fun PrefsNavHost(
         slideDownComposable(NavItem.UpdatesPrefs.destination) {
             PrefsUpdatesPage()
         }
-        slideDownComposable(NavItem.ReposPrefs.destination) {
+        slideDownComposable(
+            "${NavItem.ReposPrefs.destination}?address={address}?fingerprint={fingerprint}",
+            args = listOf(
+                navArgument("address") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                },
+                navArgument("fingerprint") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                },
+            )
+        ) {
             val viewModel = viewModel<RepositoriesViewModelX>(
                 factory = RepositoriesViewModelX.Factory(
                     DatabaseX.getInstance(navController.context).repositoryDao
                 )
             )
-            PrefsReposPage(viewModel)
+            val args = it.arguments!!
+            val address = args.getString("address") ?: ""
+            val fingerprint = args.getString("fingerprint") ?: ""
+            PrefsReposPage(viewModel, address, fingerprint)
         }
         slideDownComposable(NavItem.OtherPrefs.destination) {
             PrefsOtherPage()
@@ -108,10 +126,12 @@ fun PrefsNavHost(
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.slideDownComposable(
     route: String,
+    args: List<NamedNavArgument> = emptyList(),
     composable: @Composable (AnimatedVisibilityScope.(NavBackStackEntry) -> Unit)
 ) {
     composable(
         route,
+        args,
         enterTransition = { slideInVertically { height -> -height } + fadeIn() },
         exitTransition = { slideOutVertically { height -> height } + fadeOut() }
     ) {
