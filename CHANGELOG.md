@@ -1,6 +1,25 @@
 CHANGELOG
 =========
 
+0.9.8 (27.10.2022) +60 Commits
+------------------
+Neo Store 0.9.8
+Changelog:
+- Add: Support for fdroidrepo:// intents (simple addition of repositories)
+- Add: Support for market://search? intents (used by some launchers)
+- Add: Share option for IzzyOnDroid apps
+- Add: GitJournal & Revolt to the preset-repos
+- Update: Highlight apps with available updates*
+- Update: Show current version if app installed instead of latest
+- Update: Avoid killing the app on pressing back in Main
+- Update: SortFilterSheet's reset, resets prefs to default
+- Update: Improve detecion of sort/filter changes
+- Update: Revamp ReleaseItems
+- Update: Revamp search backend
+- Update: Replace LiveData with Flows in most instances
+- Fix: Opening Installed on launching updates intent
+- Remove: Alefvanoon preset-repo
+
 0.9.7 (11.10.2022) +50 Commits
 ------------------
 - Add: Other apps from the developer
