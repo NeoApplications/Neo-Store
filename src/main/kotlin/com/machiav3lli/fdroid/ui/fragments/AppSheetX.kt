@@ -661,7 +661,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                             onDownloadClick = { release ->
                                 onReleaseClick(release)
                             },
-                            onLongClick = {
+                            onShareClick = {
                                 copyLinkToClipboard(
                                     coroutineScope,
                                     snackbarHostState,

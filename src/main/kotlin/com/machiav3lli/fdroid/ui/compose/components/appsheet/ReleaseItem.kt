@@ -5,9 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +14,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.RELEASE_STATE_INSTALLED
@@ -41,8 +37,10 @@ import com.machiav3lli.fdroid.RELEASE_STATE_NONE
 import com.machiav3lli.fdroid.RELEASE_STATE_SUGGESTED
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.ui.compose.components.ActionButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShareNetwork
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
 import java.time.Instant
@@ -58,7 +56,7 @@ fun ReleaseItem(
     repository: Repository,
     releaseState: Int = RELEASE_STATE_NONE,
     onDownloadClick: (Release) -> Unit = {},
-    onLongClick: (Release) -> Unit = {},
+    onShareClick: (Release) -> Unit = {},
 ) {
     val currentRelease by remember { mutableStateOf(release) }
     val isInstalled = releaseState == RELEASE_STATE_INSTALLED
@@ -78,12 +76,11 @@ fun ReleaseItem(
             isSuggested = isSuggested,
             isInstalled = isInstalled,
             onDownloadClick = onDownloadClick,
-            onLongClick = onLongClick
+            onShareClick = onShareClick
         )
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ReleaseItemContent(
     modifier: Modifier = Modifier,
@@ -92,24 +89,19 @@ fun ReleaseItemContent(
     isSuggested: Boolean = false,
     isInstalled: Boolean = false,
     onDownloadClick: (Release) -> Unit = {},
-    onLongClick: (Release) -> Unit = {}
+    onShareClick: (Release) -> Unit = {}
 ) {
     Row(
-        modifier = Modifier
-            .combinedClickable(onClick = {}, onLongClick = { onLongClick(release) })
-            .padding(start = 16.dp, end = 8.dp),
+        modifier = Modifier.padding(start = 16.dp, end = 8.dp, top = 4.dp, bottom = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
         Column(
-            modifier = modifier
-                .height(76.dp)
-                .weight(1f),
+            modifier = modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
         ) {
             ReleaseTitleWithBadge(
-                modifier = Modifier.weight(1f, true),
                 version = release.version,
                 added = if (Android.sdk(Build.VERSION_CODES.O)) {
                     LocalDateTime.ofInstant(
@@ -145,17 +137,27 @@ fun ReleaseItemContent(
                 }
             }
             ReleaseItemBottomText(
-                modifier = Modifier.weight(1.2f, true),
                 repository = repository.name,
                 size = release.size.formatSize()
             )
-            Spacer(modifier = Modifier.width(Dp.Hairline))
-        }
-        IconButton(onClick = { onDownloadClick(release) }) {
-            Icon(
-                imageVector = Phosphor.Download,
-                contentDescription = stringResource(id = R.string.install)
-            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                IconButton(onClick = { onShareClick(release) }) {
+                    Icon(
+                        imageVector = Phosphor.ShareNetwork,
+                        contentDescription = stringResource(id = R.string.share),
+                    )
+                }
+                ActionButton(
+                    text = stringResource(id = R.string.install),
+                    icon = Phosphor.Download,
+                    positive = true,
+                    onClick = { onDownloadClick(release) }
+                )
+            }
         }
     }
 }
