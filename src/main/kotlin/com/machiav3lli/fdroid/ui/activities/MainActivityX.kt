@@ -16,11 +16,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
@@ -69,6 +71,7 @@ class MainActivityX : AppCompatActivity() {
     }
 
     private lateinit var powerManager: PowerManager
+    private lateinit var navController: NavHostController
     private val cScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
     val syncConnection = Connection(SyncService::class.java)
 
@@ -88,9 +91,6 @@ class MainActivityX : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-        if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
-            handleIntent(intent)
-        }
 
         setContent {
             AppTheme(
@@ -101,11 +101,14 @@ class MainActivityX : AppCompatActivity() {
                 }
             ) {
                 val query by searchQuery.collectAsState(initial = "")
-                val navController = rememberAnimatedNavController()
+                val mScope = rememberCoroutineScope()
+                navController = rememberAnimatedNavController()
                 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
                 SideEffect {
-                    cScope.launch { _searchQuery.emit("") }
+                    if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
+                        handleIntent(intent)
+                    }
                 }
 
                 Scaffold(
@@ -121,11 +124,11 @@ class MainActivityX : AppCompatActivity() {
                             ExpandableSearchAction(
                                 query = query,
                                 onClose = {
-                                    cScope.launch { _searchQuery.emit("") }
+                                    mScope.launch { _searchQuery.emit("") }
                                 },
                                 onQueryChanged = { newQuery ->
                                     if (newQuery != query) {
-                                        cScope.launch { _searchQuery.emit(newQuery) }
+                                        mScope.launch { _searchQuery.emit(newQuery) }
                                     }
                                 }
                             )
@@ -217,11 +220,19 @@ class MainActivityX : AppCompatActivity() {
     }
 
     private fun handleIntent(intent: Intent?) {
+        val data = intent?.data
+        val host = data?.host
+
         when (intent?.action) {
             Intent.ACTION_VIEW -> {
-                val packageName = intent.packageName
-                if (!packageName.isNullOrEmpty()) {
-                    navigateProduct(packageName, "")
+                if (host == "search") {
+                    val query = data.getQueryParameter("q")
+                    cScope.launch { _searchQuery.emit(query ?: "") }
+                } else {
+                    val packageName = intent.packageName
+                    if (!packageName.isNullOrEmpty()) {
+                        navigateProduct(packageName, "")
+                    }
                 }
             }
             ACTION_UPDATES -> handleSpecialIntent(SpecialIntent.Updates)
