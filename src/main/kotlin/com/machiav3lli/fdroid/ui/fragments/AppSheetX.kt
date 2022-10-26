@@ -276,6 +276,16 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         startActivity(Intent.createChooser(shareIntent, "Where to Send?"))
     }
 
+    private fun shareReleaseIntent(appName: String, address: String) {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TITLE, appName)
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, appName)
+        shareIntent.putExtra(Intent.EXTRA_TEXT, address)
+
+        startActivity(Intent.createChooser(shareIntent, "Where to share?"))
+    }
+
     override fun onPermissionsClick(group: String?, permissions: List<String>) {
         MessageDialog(MessageDialog.Message.Permissions(group, permissions)).show(
             childFragmentManager
@@ -662,9 +672,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 onReleaseClick(release)
                             },
                             onShareClick = {
-                                copyLinkToClipboard(
-                                    coroutineScope,
-                                    snackbarHostState,
+                                shareReleaseIntent(
+                                    "${product.label} ${item.first.version}",
                                     it.getDownloadUrl(item.second)
                                 )
                             }
