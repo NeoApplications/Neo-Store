@@ -67,7 +67,7 @@ fun BottomNavBar(page: Int = NAV_MAIN, navController: NavController) {
         val currentDestination = navBackStackEntry?.destination?.route
 
         items.forEach { item ->
-            val selected = currentDestination == item.destination
+            val selected = currentDestination?.contains(item.destination) ?: false
 
             NavigationBarItem(
                 icon = {
