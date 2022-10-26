@@ -46,7 +46,7 @@ fun PrefsReposPage(viewModel: RepositoriesViewModelX, address: String, fingerpri
                     prefsActivityX.supportFragmentManager,
                     "Repository ${it.repositoryId}"
                 )
-            } else if (it != null) {
+            } else if (it != null && !it.editMode) {
                 RepositorySheetX(it.repositoryId).showNow(
                     prefsActivityX.supportFragmentManager,
                     "Repository $it"

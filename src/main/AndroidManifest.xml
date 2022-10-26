@@ -35,6 +35,7 @@
 
         <activity
             android:name=".ui.activities.MainActivityX"
+            android:alwaysRetainTaskState="true"
             android:exported="true"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
