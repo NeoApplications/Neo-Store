@@ -73,7 +73,14 @@ fun InstalledPage(viewModel: MainNavFragmentViewModelX) {
                     Preferences.Key.CategoriesFilterInstalled,
                     Preferences.Key.SortOrderInstalled,
                     Preferences.Key.SortOrderAscendingInstalled ->
-                        viewModel.setUpdatedFilter(true)
+                        viewModel.setSortFilter(
+                            listOf(
+                                Preferences[Preferences.Key.ReposFilterInstalled],
+                                Preferences[Preferences.Key.CategoriesFilterInstalled],
+                                Preferences[Preferences.Key.SortOrderInstalled],
+                                Preferences[Preferences.Key.SortOrderAscendingInstalled],
+                            ).toString()
+                        )
                     else -> {}
                 }
             }

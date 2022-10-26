@@ -30,10 +30,10 @@ class MainNavFragmentViewModelX(
 ) : ViewModel() {
     // TODO add better sort/filter fields
 
-    private val updatedFilter = MutableStateFlow(false)
+    private val sortFilter = MutableStateFlow("")
 
-    fun setUpdatedFilter(value: Boolean) {
-        viewModelScope.launch { updatedFilter.emit(value) }
+    fun setSortFilter(value: String) {
+        viewModelScope.launch { sortFilter.emit(value) }
     }
 
     private val query = MutableStateFlow("")
@@ -66,12 +66,11 @@ class MainNavFragmentViewModelX(
     }
 
     private var primaryRequest: StateFlow<Request> = combineTransform(
-        updatedFilter,
+        sortFilter,
         sections,
         installed
     ) { a, _, _ ->
         val newRequest = request(primarySource)
-        if (a) updatedFilter.emit(false)
         emit(newRequest)
     }.stateIn(
         scope = viewModelScope,
@@ -82,7 +81,7 @@ class MainNavFragmentViewModelX(
     val primaryProducts: StateFlow<List<Product>?> = combine(
         primaryRequest,
         db.productDao.queryFlowList(primaryRequest.value),
-        updatedFilter
+        sortFilter
     ) { a, _, _ ->
         withContext(Dispatchers.IO) {
             db.productDao.queryObject(a)

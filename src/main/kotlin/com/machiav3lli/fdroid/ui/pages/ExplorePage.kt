@@ -61,7 +61,14 @@ fun ExplorePage(viewModel: MainNavFragmentViewModelX) {
                     Preferences.Key.CategoriesFilterExplore,
                     Preferences.Key.SortOrderExplore,
                     Preferences.Key.SortOrderAscendingExplore ->
-                        viewModel.setUpdatedFilter(true)
+                        viewModel.setSortFilter(
+                            listOf(
+                                Preferences[Preferences.Key.ReposFilterExplore],
+                                Preferences[Preferences.Key.CategoriesFilterExplore],
+                                Preferences[Preferences.Key.SortOrderExplore],
+                                Preferences[Preferences.Key.SortOrderAscendingExplore],
+                            ).toString()
+                        )
                     else -> {}
                 }
             }

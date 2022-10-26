@@ -61,7 +61,14 @@ fun LatestPage(viewModel: MainNavFragmentViewModelX) {
                     Preferences.Key.CategoriesFilterLatest,
                     Preferences.Key.SortOrderLatest,
                     Preferences.Key.SortOrderAscendingLatest ->
-                        viewModel.setUpdatedFilter(true)
+                        viewModel.setSortFilter(
+                            listOf(
+                                Preferences[Preferences.Key.ReposFilterLatest],
+                                Preferences[Preferences.Key.CategoriesFilterLatest],
+                                Preferences[Preferences.Key.SortOrderLatest],
+                                Preferences[Preferences.Key.SortOrderAscendingLatest],
+                            ).toString()
+                        )
                     else -> {}
                 }
             }
