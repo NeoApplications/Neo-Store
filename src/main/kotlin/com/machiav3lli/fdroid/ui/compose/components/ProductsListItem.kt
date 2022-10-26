@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.ui.compose.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
@@ -35,6 +38,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
 import com.machiav3lli.fdroid.ui.compose.utils.ExpandableCard
 import com.machiav3lli.fdroid.ui.compose.utils.NetworkImage
+import com.machiav3lli.fdroid.ui.compose.utils.addIf
 
 @Composable
 fun ProductsListItem(
@@ -101,11 +105,28 @@ fun ProductsListItem(
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
-                        modifier = Modifier.align(Alignment.CenterVertically),
-                        text = product.installedVersion.ifEmpty { product.version },
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .addIf(
+                                product.installedVersion.isNotEmpty() &&
+                                        product.installedVersion != product.version
+                            ) {
+                                background(
+                                    MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
+                                    MaterialTheme.shapes.large
+                                ).padding(vertical = 2.dp, horizontal = 4.dp)
+                            },
+                        text = if (product.installedVersion.isEmpty() ||
+                            product.installedVersion == product.version
+                        ) product.version
+                        else "${product.installedVersion} → ${product.version}",
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
                         style = MaterialTheme.typography.bodySmall,
+                        fontWeight = if (product.installedVersion.isNotEmpty() &&
+                            product.installedVersion != product.version
+                        ) FontWeight.ExtraBold
+                        else null
                     )
                 }
                 Text(
