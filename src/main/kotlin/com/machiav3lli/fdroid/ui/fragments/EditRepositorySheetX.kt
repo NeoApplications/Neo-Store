@@ -30,6 +30,7 @@ import com.machiav3lli.fdroid.ui.viewmodels.RepositoryViewModelX
 import com.machiav3lli.fdroid.utility.RxUtils
 import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
+import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
@@ -266,12 +267,6 @@ class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManage
                 .forEach { it.isEnabled = checkDisposable == null }
         }
     }
-
-    private val String.pathCropped: String
-        get() {
-            val index = indexOfLast { it != '/' }
-            return if (index >= 0 && index < length - 1) substring(0, index + 1) else this
-        }
 
     private val String.withoutKnownPath: String
         get() {
