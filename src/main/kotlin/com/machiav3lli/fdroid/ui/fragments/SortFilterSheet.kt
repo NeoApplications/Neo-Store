@@ -151,9 +151,14 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                         modifier = Modifier.weight(1f),
                         text = stringResource(id = R.string.action_reset),
                         icon = Phosphor.ArrowUUpLeft,
-                        positive = false,
-                        onClick = ::dismissAllowingStateLoss
-                    )
+                        positive = false
+                    ) {
+                        Preferences[sortKey] = sortKey.default.value
+                        Preferences[sortAscendingKey] = sortAscendingKey.default.value
+                        Preferences[reposFilterKey] = reposFilterKey.default.value
+                        Preferences[categoriesFilterKey] = categoriesFilterKey.default.value
+                        dismissAllowingStateLoss()
+                    }
                     ActionButton(
                         text = stringResource(id = R.string.action_apply),
                         icon = Phosphor.Check,
