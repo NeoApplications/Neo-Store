@@ -102,13 +102,7 @@ fun ReleaseItemContent(
             horizontalAlignment = Alignment.Start
         ) {
             ReleaseTitleWithBadge(
-                version = release.version,
-                added = if (Android.sdk(Build.VERSION_CODES.O)) {
-                    LocalDateTime.ofInstant(
-                        Instant.ofEpochMilli(release.added),
-                        TimeZone.getDefault().toZoneId()
-                    ).format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))
-                } else ""
+                version = release.version
             ) {
                 AnimatedVisibility(
                     visible = release.platforms.size == 1,
@@ -136,15 +130,24 @@ fun ReleaseItemContent(
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(4.dp))
             ReleaseItemBottomText(
                 repository = repository.name,
-                size = release.size.formatSize()
+                date = if (Android.sdk(Build.VERSION_CODES.O)) {
+                    LocalDateTime.ofInstant(
+                        Instant.ofEpochMilli(release.added),
+                        TimeZone.getDefault().toZoneId()
+                    ).format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))
+                } else ""
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                Text(text = release.size.formatSize(), style = MaterialTheme.typography.labelLarge)
+                Spacer(modifier = Modifier.weight(1f))
                 IconButton(onClick = { onShareClick(release) }) {
                     Icon(
                         imageVector = Phosphor.ShareNetwork,
@@ -166,7 +169,6 @@ fun ReleaseItemContent(
 fun ReleaseTitleWithBadge(
     modifier: Modifier = Modifier,
     version: String,
-    added: String,
     badges: @Composable RowScope.() -> Unit = {}
 ) {
     Row(
@@ -175,9 +177,8 @@ fun ReleaseTitleWithBadge(
         verticalAlignment = Alignment.Bottom
     ) {
         Text(text = version, style = MaterialTheme.typography.titleMedium)
-        badges()
         Spacer(Modifier.weight(1f))
-        Text(text = added, style = MaterialTheme.typography.bodySmall)
+        badges()
     }
 }
 
@@ -185,7 +186,7 @@ fun ReleaseTitleWithBadge(
 fun ReleaseItemBottomText(
     modifier: Modifier = Modifier,
     repository: String,
-    size: String
+    date: String
 ) {
     Row(
         modifier = modifier,
@@ -193,11 +194,12 @@ fun ReleaseItemBottomText(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
+            modifier = modifier.weight(1f),
             text = stringResource(id = R.string.provided_by_FORMAT, repository),
-            style = MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.labelMedium,
+            maxLines = 2
         )
-        Spacer(Modifier.weight(1f))
-        Text(text = size, style = MaterialTheme.typography.labelSmall)
+        Text(text = date, style = MaterialTheme.typography.labelSmall)
     }
 }
 
