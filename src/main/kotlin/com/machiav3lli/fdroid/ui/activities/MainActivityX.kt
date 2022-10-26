@@ -211,7 +211,7 @@ class MainActivityX : AppCompatActivity() {
         when (specialIntent) {
             is SpecialIntent.Updates -> {
                 // TODO directly update the apps??
-                // binding.bottomNavigation.selectedItemId = R.id.installedTab TODO Fix
+                navController.navigate(NavItem.Installed.destination)
             }
             is SpecialIntent.Install -> {
                 val packageName = specialIntent.packageName
