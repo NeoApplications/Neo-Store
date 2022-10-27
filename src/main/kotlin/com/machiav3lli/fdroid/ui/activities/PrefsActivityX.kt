@@ -26,7 +26,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
-import com.machiav3lli.fdroid.EXTRA_NEW_REPO_HANDLED
+import com.machiav3lli.fdroid.EXTRA_INTENT_HANDLED
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NAV_PREFS
 import com.machiav3lli.fdroid.content.Preferences
@@ -185,9 +185,9 @@ class PrefsActivityX : AppCompatActivity() {
                 val data = intent.data
                 if (
                     data?.scheme?.lowercase()?.contains("fdroidrepo") == true &&
-                    !intent.hasExtra(EXTRA_NEW_REPO_HANDLED)
+                    !intent.hasExtra(EXTRA_INTENT_HANDLED)
                 ) {
-                    intent.putExtra(EXTRA_NEW_REPO_HANDLED, true)
+                    intent.putExtra(EXTRA_INTENT_HANDLED, true)
                     val (addressText, fingerprintText) = try {
                         val uri = data.buildUpon()
                             .scheme("https")

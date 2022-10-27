@@ -27,6 +27,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
+import com.machiav3lli.fdroid.EXTRA_INTENT_HANDLED
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NAV_MAIN
 import com.machiav3lli.fdroid.R
@@ -244,7 +245,12 @@ class MainActivityX : AppCompatActivity() {
                     }
                 }
             }
-            ACTION_UPDATES -> handleSpecialIntent(SpecialIntent.Updates)
+            ACTION_UPDATES -> {
+                if (!intent.hasExtra(EXTRA_INTENT_HANDLED)) {
+                    intent.putExtra(EXTRA_INTENT_HANDLED, true)
+                    handleSpecialIntent(SpecialIntent.Updates)
+                }
+            }
             ACTION_INSTALL -> handleSpecialIntent(
                 SpecialIntent.Install(
                     intent.packageName,
