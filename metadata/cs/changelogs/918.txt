@@ -1,0 +1,7 @@
+Přidat: Podpora pro uri fdroidrepo(s)
+Přidat: Podpora pro záměry market://search?
+Přidat: Možnost sdílení pro aplikace IzzyOnDroid
+Přidat: GitJournal & Revolt do přednastavených repozitářů
+Aktualizace: Přidání nových funkcí pro Gitroid: Přepracování ReleaseItems
+Odstranění: Alefvanoon preset-repo
+Pro více informací se podívejte na úplný seznam změn…
