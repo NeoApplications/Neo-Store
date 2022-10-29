@@ -221,4 +221,8 @@
     <string name="action_apply">Uygula</string>
     <string name="categories">Kategoriler</string>
     <string name="sort_descending">Azalan</string>
+    <string name="sort_ascending">Artan</string>
+    <string name="action_reset">Sıfırla</string>
+    <string name="date_added">Eklendiği tarih</string>
+    <string name="date_updated">Güncellendiği tarih</string>
 </resources>
