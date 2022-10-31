@@ -34,11 +34,11 @@
     <string name="incompatible_api_max_DESC_FORMAT">Versi API maksimal %d.</string>
     <string name="incompatible_api_min_DESC_FORMAT">Versi API minimal %d.</string>
     <string name="incompatible_features_DESC">Fitur yang hilang.</string>
-    <string name="incompatible_older_DESC">Versi ini lebih tua dari yang ter-install di perangkat Anda. Uninstall terlebih dahulu.</string>
+    <string name="incompatible_older_DESC">Versi ini lebih tua dari yang terinstal di perangkat Anda. Uninstal terlebih dahulu.</string>
     <string name="incompatible_version">Versi yang tidak cocok</string>
     <string name="incompatible_versions">Versi yang tidak cocok</string>
     <string name="install_types">Tipe Instalasi</string>
-    <string name="installed">Ter-install</string>
+    <string name="installed">Terinstal</string>
     <string name="integrity_check_error_DESC">Tidak dapat mengecek integritas.</string>
     <string name="invalid_address">Alamat tidak valid</string>
     <string name="list_animation_description">Perlihatkan animasi list di halaman utama</string>
@@ -56,14 +56,14 @@
     <string name="sync_repositories_automatically">Sinkronisasi repositori otomatis</string>
     <string name="syncing">Mensinkronisasi</string>
     <string name="system">Sistem</string>
-    <string name="tap_to_install_DESC">Tap untuk menginstall.</string>
+    <string name="tap_to_install_DESC">Tap untuk menginstal.</string>
     <string name="target">Sasaran</string>
     <string name="theme">Tema</string>
     <string name="themes">Tema</string>
     <string name="tracks_or_reports_your_activity">Merekam atau melaporkan aktivitas Anda</string>
     <string name="uninstall">Uninstal</string>
     <string name="unknown_error_DESC">Galat.</string>
-    <string name="unstable_updates_summary">Sarankan menginstall versi tidak stabil.</string>
+    <string name="unstable_updates_summary">Sarankan menginstal versi tidak stabil.</string>
     <string name="update">Pembaruan</string>
     <string name="updates">Pembaruan</string>
     <string name="waiting_to_start_download">Menunggu mulai unduhan…</string>
@@ -85,10 +85,10 @@
     <string name="could_not_download_FORMAT">Tidak dapat mengunduh %s</string>
     <string name="delete_repository_DESC">Hapus repositori\?</string>
     <string name="has_non_free_dependencies">Ada dependensi non-bebas</string>
-    <string name="incompatible_signature_DESC">Versi ini ditandatangani dengan sertifikat yang berbeda dari yang telah diinstal di perangkat Anda. 
-\nHapus aplikasi itu terlebih dahulu.</string>
-    <string name="install">Install</string>
-    <string name="no_applications_installed">Tidak ada aplikasi yang ter-install</string>
+    <string name="incompatible_signature_DESC">Versi ini ditandatangani dengan sertifikat yang berbeda dari yang telah diinstal di perangkat Anda.
+\nUninstal aplikasi itu terlebih dahulu.</string>
+    <string name="install">Instal</string>
+    <string name="no_applications_installed">Tidak ada aplikasi yang terinstal</string>
     <string name="dark">Gelap</string>
     <string name="downloading">Mengunduh</string>
     <string name="http_proxy">Proksi HTTP</string>
@@ -178,7 +178,7 @@
     <string name="prefs_language_title">Bahasa</string>
     <string name="prefs_personalization">Personalisasi</string>
     <string name="whats_new">Apa yang Baru</string>
-    <string name="installed_applications">Aplikasi ter-install</string>
+    <string name="installed_applications">Aplikasi terinstal</string>
     <string name="new_applications">Aplikasi baru</string>
     <string name="install_after_sync">Instal pembaruan secara otomatis</string>
     <string name="install_after_sync_summary">Instal pembaruan aplikasi secara otomatis setelah menyinkron repositori untuk aplikasi baru.</string>
@@ -227,4 +227,5 @@
     <string name="loading_list">Memuat daftar…</string>
     <string name="dynamic">Dinamis sistem</string>
     <string name="other_apps_by">Aplikasi lainnya oleh %s</string>
+    <string name="scan_qr_code">Pindai sebuah kode QR</string>
 </resources>
