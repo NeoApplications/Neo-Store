@@ -229,4 +229,5 @@
     <string name="show_screenshots_description">Rodyti ekrano nuotraukas programėlės puslapyje.</string>
     <string name="releases">Išleistos versijos</string>
     <string name="prefs_personal">Vartotojas</string>
+    <string name="scan_qr_code">Skenuoti QR kodą</string>
 </resources>
