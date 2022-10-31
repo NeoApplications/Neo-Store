@@ -1,0 +1,3 @@
+Add: Scan repo QrCode using BinaryEye (if installed)
+Fix: Lock in Installed after launching from updates notification
+Fix: Improve handling intent

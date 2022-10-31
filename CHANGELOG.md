@@ -1,10 +1,14 @@
 CHANGELOG
 =========
 
+0.9.9 (31.10.2022) 7 Commits
+------------------
+- Add: Scan repo QrCode using BinaryEye (if installed)
+- Fix: Lock in Installed after launching from updates notification
+- Fix: Improve handling intent
+
 0.9.8 (27.10.2022) +60 Commits
 ------------------
-Neo Store 0.9.8
-Changelog:
 - Add: Support for fdroidrepo:// intents (simple addition of repositories)
 - Add: Support for market://search? intents (used by some launchers)
 - Add: Share option for IzzyOnDroid apps
