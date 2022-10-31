@@ -4,7 +4,7 @@ val composeVersion = "1.3.0"
 val composeCompilerVersion = "1.3.2"
 val roomVersion = "2.5.0-beta01"
 val navigationVersion = "2.5.3"
-val accompanistVersion = "0.26.5-rc"
+val accompanistVersion = "0.27.0"
 
 plugins {
     id("com.android.application") version ("7.2.2")
@@ -138,7 +138,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.8.0-beta01")
 
     // Material3
-    implementation("com.google.android.material:material:1.8.0-alpha01")
+    implementation("com.google.android.material:material:1.8.0-alpha02")
 
     // Coil
     implementation("io.coil-kt:coil:2.2.2")
@@ -179,7 +179,7 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
     implementation("androidx.compose.material3:material3:1.0.0")
     implementation("androidx.compose.animation:animation:$composeVersion")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.20")
+    implementation("com.google.android.material:compose-theme-adapter-3:1.0.21")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
