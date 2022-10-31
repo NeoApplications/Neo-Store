@@ -70,6 +70,7 @@ const val PREFS_LANGUAGE_DEFAULT = "system"
 const val EXTRA_REPOSITORY_ID = "repositoryId"
 const val EXTRA_PAGE_ROUTE = "pageRoute"
 const val EXTRA_INTENT_HANDLED = "intentHandled"
+const val INTENT_ACTION_BINARY_EYE = "com.google.zxing.client.android.SCAN"
 
 const val HELP_SOURCECODE = "https://github.com/NeoApplications/Neo-Store"
 const val HELP_CHANGELOG = "https://github.com/NeoApplications/Neo-Store/blob/master/CHANGELOG.md"

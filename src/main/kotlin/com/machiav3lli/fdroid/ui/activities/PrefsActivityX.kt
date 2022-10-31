@@ -1,9 +1,12 @@
 package com.machiav3lli.fdroid.ui.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -27,6 +30,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.EXTRA_INTENT_HANDLED
+import com.machiav3lli.fdroid.INTENT_ACTION_BINARY_EYE
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NAV_PREFS
 import com.machiav3lli.fdroid.content.Preferences
@@ -185,7 +189,7 @@ class PrefsActivityX : AppCompatActivity() {
                 val data = intent.data
                 if (
                     data?.scheme?.lowercase()?.contains("fdroidrepo") == true &&
-                    !intent.getBooleanExtra(EXTRA_INTENT_HANDLED,false)
+                    !intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)
                 ) {
                     intent.putExtra(EXTRA_INTENT_HANDLED, true)
                     val (addressText, fingerprintText) = try {
@@ -220,5 +224,22 @@ class PrefsActivityX : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(ContextWrapperX.wrap(newBase))
+    }
+
+
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val scan = result.data?.getStringExtra("SCAN_RESULT")
+                scan?.replace("fdroidrepo", "http")
+                intent.data = Uri.parse(scan)
+                intent.action = Intent.ACTION_VIEW
+                handleIntent(intent)
+            }
+        }
+
+    fun openScanner() {
+        intent.putExtra(EXTRA_INTENT_HANDLED, false)
+        resultLauncher.launch(Intent(INTENT_ACTION_BINARY_EYE))
     }
 }

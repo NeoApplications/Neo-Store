@@ -1,14 +1,17 @@
 package com.machiav3lli.fdroid.ui.pages
 
-import androidx.compose.foundation.layout.Spacer
+import android.content.Intent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -18,11 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.backup.ui.compose.icons.phosphor.Plus
+import com.machiav3lli.fdroid.INTENT_ACTION_BINARY_EYE
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.ui.compose.RepositoriesRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.PlusCircle
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.QrCode
 import com.machiav3lli.fdroid.ui.fragments.EditRepositorySheetX
 import com.machiav3lli.fdroid.ui.fragments.RepositorySheetX
 import com.machiav3lli.fdroid.ui.viewmodels.RepositoriesViewModelX
@@ -68,18 +73,61 @@ fun PrefsReposPage(viewModel: RepositoriesViewModelX, address: String, fingerpri
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
-            ExtendedFloatingActionButton(onClick = {
-                viewModel.showRepositorySheet(
-                    editMode = true,
-                    addNew = true
-                )
-            }) {
-                Icon(
-                    imageVector = Phosphor.PlusCircle,
-                    contentDescription = stringResource(id = R.string.add_repository)
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(text = stringResource(id = R.string.add_repository))
+            val fabColors = ButtonDefaults.filledTonalButtonColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.primary,
+            )
+            Surface(
+                tonalElevation = 8.dp,
+                shadowElevation = 6.dp,
+                shape = MaterialTheme.shapes.medium,
+            ) {
+                if (Intent(INTENT_ACTION_BINARY_EYE).resolveActivity(prefsActivityX.packageManager) != null) {
+                    Row(
+                        modifier = Modifier.padding(4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        FilledTonalButton(
+                            shape = MaterialTheme.shapes.medium,
+                            colors = fabColors,
+                            onClick = {
+                                viewModel.showRepositorySheet(
+                                    editMode = true,
+                                    addNew = true
+                                )
+                            }) {
+                            Icon(
+                                imageVector = Phosphor.Plus,
+                                contentDescription = stringResource(id = R.string.add_repository)
+                            )
+                        }
+                        FilledTonalButton(
+                            shape = MaterialTheme.shapes.medium,
+                            colors = fabColors,
+                            onClick = prefsActivityX::openScanner
+                        ) {
+                            Icon(
+                                imageVector = Phosphor.QrCode,
+                                contentDescription = stringResource(id = R.string.scan_qr_code)
+                            )
+                        }
+                    }
+                } else {
+                    FilledTonalButton(
+                        shape = MaterialTheme.shapes.medium,
+                        colors = fabColors,
+                        onClick = {
+                            viewModel.showRepositorySheet(
+                                editMode = true,
+                                addNew = true
+                            )
+                        }) {
+                        Icon(
+                            imageVector = Phosphor.Plus,
+                            contentDescription = stringResource(id = R.string.add_repository)
+                        )
+                    }
+                }
             }
         }
     ) { paddingValues ->
