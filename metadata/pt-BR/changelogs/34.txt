@@ -1,0 +1,6 @@
+- Atualização: Recolher barra de ferramentas
+- Atualização: Melhora nos instaladores (Root & não-root)
+- Atualização: Novo ícone do aplicativo (novamente)
+- Atualização: Lançado design de blocos de informação
+- Atualização: Lidar com nomes e ícones ausentes de autores
+- Outras correções, ajustes e limpezas
