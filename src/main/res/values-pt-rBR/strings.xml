@@ -228,4 +228,6 @@
     <string name="action_apply">Aplicar</string>
     <string name="date_added">Data adicionada</string>
     <string name="target_sdk">SDK alvo</string>
+    <string name="other_apps_by">Outros aplicativos por %s</string>
+    <string name="scan_qr_code">Escanear um código QR</string>
 </resources>
