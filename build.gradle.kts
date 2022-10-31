@@ -27,12 +27,6 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments(
-                    mapOf(
-                        "room.schemaLocation" to "$projectDir/schemas",
-                        "room.incremental" to "true"
-                    )
-                )
                 ksp {
                     arg("room.schemaLocation", "$projectDir/schemas")
                     arg("room.incremental", "true")
