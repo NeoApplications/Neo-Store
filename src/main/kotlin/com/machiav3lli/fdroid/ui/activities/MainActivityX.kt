@@ -14,7 +14,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -143,7 +143,7 @@ class MainActivityX : AppCompatActivity() {
                         }
                     }
                 ) { paddingValues ->
-                    SideEffect {
+                    LaunchedEffect(key1 = navController) {
                         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
                             handleIntent(intent)
                         }
@@ -246,7 +246,7 @@ class MainActivityX : AppCompatActivity() {
                 }
             }
             ACTION_UPDATES -> {
-                if (!intent.hasExtra(EXTRA_INTENT_HANDLED)) {
+                if (!intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)) {
                     intent.putExtra(EXTRA_INTENT_HANDLED, true)
                     handleSpecialIntent(SpecialIntent.Updates)
                 }

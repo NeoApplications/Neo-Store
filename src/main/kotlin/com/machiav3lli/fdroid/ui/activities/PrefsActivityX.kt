@@ -12,7 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -103,7 +103,7 @@ class PrefsActivityX : AppCompatActivity() {
                         )
                     }
                 ) { paddingValues ->
-                    SideEffect {
+                    LaunchedEffect(key1 = navController) {
                         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
                             handleIntent(intent)
                         }
@@ -185,7 +185,7 @@ class PrefsActivityX : AppCompatActivity() {
                 val data = intent.data
                 if (
                     data?.scheme?.lowercase()?.contains("fdroidrepo") == true &&
-                    !intent.hasExtra(EXTRA_INTENT_HANDLED)
+                    !intent.getBooleanExtra(EXTRA_INTENT_HANDLED,false)
                 ) {
                     intent.putExtra(EXTRA_INTENT_HANDLED, true)
                     val (addressText, fingerprintText) = try {

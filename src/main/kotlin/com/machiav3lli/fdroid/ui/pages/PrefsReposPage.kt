@@ -11,7 +11,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -55,8 +54,8 @@ fun PrefsReposPage(viewModel: RepositoriesViewModelX, address: String, fingerpri
         }
     }
 
-    SideEffect {
-        if (address.isNotEmpty() && fingerprint.isNotEmpty()) {
+    LaunchedEffect(key1 = address) {
+        if (address.isNotEmpty()) {
             viewModel.showRepositorySheet(
                 editMode = true,
                 addNew = true,
