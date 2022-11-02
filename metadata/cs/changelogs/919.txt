@@ -1,0 +1,3 @@
+Přidat: Skenování repozitáře QrCode pomocí BinaryEye (pokud je nainstalován)
+Oprava: Zamknout v Instalováno po spuštění z oznámení o aktualizacích
+Oprava: Zlepšení zpracování záměru
