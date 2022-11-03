@@ -1,0 +1,7 @@
+- Ajout d'une Icône pour ouvrir les Détails
+- Différences de la Barre d'Application Supérieure rendues plus visibles
+- La Permission Root ne sera demandée qu'en cas d'utilisation
+- Changer les correctifs de Visibilité
+- Ajout de la Traduction Arabe
+- Appui long sur l'Icône source pour copier le lien
+- Remplacer Toast par Snackbar

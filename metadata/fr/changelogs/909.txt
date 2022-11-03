@@ -1,0 +1,7 @@
+- Toute nouvelle UI/UX avec Material Design 3
+- Ajout : Bouton Tout Mettre à Jour
+- Ajout : Préférence linguistique
+- Ajout : Favoris (d'autres fonctionnalités viendront plus tard)
+- Correction : Mise à Jour Automatique des listes installées/mises à jour
+- Correction : Plantage sur A12+ (faut désactiver l'optimisation de la batterie)
+- Correction : Installeur Root
