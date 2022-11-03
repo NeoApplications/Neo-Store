@@ -1,4 +1,4 @@
-* Divers elements UI changés
+* Changements divers de l'UI
 * Reformatage de toute la base de code
-* Dependences mis a jour
-* Preferences renommées pour paramètres
+* Dépendences mises a jour
+* Préférences renommées en Paramètres

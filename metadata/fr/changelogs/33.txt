@@ -1,6 +1,6 @@
-- Mis à jour : Nouvel icone d'application
-- Mis à jour : L'UI de la page application
-- Mis à jour : Animation de la liste facultative
-- Correction : Affiche la taille réelle de l'APK
-- Correction : lien du projet dans les préférences
-- Correction : L'écran d'accueil dépend du thème du système
+- Mise à jour : Nouvelle icône d'application
+- Mise à jour : L'UI de la page application
+- Mise à jour : Animation de la liste facultative
+- Correction : Afficher la taille réelle de l'APK
+- Correction : Lien du projet dans les préférences
+- Correction : L'écran d'accueil dépend du thème système

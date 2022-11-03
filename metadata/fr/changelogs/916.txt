@@ -1,0 +1,7 @@
+Ajout : Fonction Trier/Filtrer
+Ajout : Raccourci des favoris explicite
+Ajout : TargetSDK aux puces d'information
+Mise à jour : Remplacer Material Icons par Phosphor
+Mise à jour : Mises en page de BottomNavBar, AppSheet et EditRepoSheet
+Correction : Affichage de l'action secondaire de mise à jour lors du téléchargement
+Pour plus de détails, consultez le changelog complet…

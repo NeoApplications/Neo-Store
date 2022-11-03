@@ -1,0 +1,7 @@
+Ajout : Autres applications du développeur
+Ajouter : TopBar défilante
+Correction : Quelques problèmes de coloration du thème dynamique
+Mise à jour : Nouvelle visionneuse de captures d'écran (corrige les problèmes précédents et permet de zoomer)
+Mise à jour : De nombreuses mises en page
+Mise à jour : Refonte du backend de thématisation (corrige certains visuels)
+Pour plus de détails, consultez le changelog complet…

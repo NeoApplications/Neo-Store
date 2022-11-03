@@ -1,6 +1,6 @@
-- Mise à jour: barre d'outils repliable  
-- Mise à jour: optimisation des installeurs (avec et sans privilèges administrateur)  
-- Mise à jour: Nouvelle icône d'application (à nouveau)  
-- Mise à jour: conception des blocs d'informations sur les versions. 
-- Mise à jour: gestion des noms et icônes d'auteurs manquants. 
-- Autres correctifs, ajustements et nettoyages.
+- Mise à jour : barre d'outils repliable
+- Mise à jour : Amélioration des installeurs (avec et sans Root)
+- Mise à jour : Nouvelle icône d'application (à nouveau)
+- Mise à jour : Design des blocs d'informations de version
+- Mise à jour : Gestion des noms et icônes d'auteurs manquants
+- Autres correctifs, ajustements et nettoyages
