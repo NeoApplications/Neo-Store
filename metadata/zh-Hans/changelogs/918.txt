@@ -1,0 +1,7 @@
+添加：对F-Droid存储库uri的支持 
+添加：对intent中market://search?协议的支持 
+添加：对lzzyOnDroid应用的分享选项 
+添加：GitJournal和Revolt预设存储库  
+更新：重构“新应用”栏 
+移除：Alefvanoon预设存储库 
+关于更多细节请查看完整日志…
