@@ -228,4 +228,6 @@
     <string name="date_added">Date d\'ajout</string>
     <string name="date_updated">Date de mise à jour</string>
     <string name="other_apps_by">Autres applis de %s</string>
+    <string name="target_sdk">targetSDK</string>
+    <string name="scan_qr_code">Scanner un QR-Code</string>
 </resources>
