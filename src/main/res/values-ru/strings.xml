@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_failed">Действие не удалось</string>
+    <string name="action_failed">Действие не выполнено</string>
     <string name="add_repository">Добавить репозиторий</string>
     <string name="address">URL-адрес</string>
     <string name="all_applications">Все приложения</string>
