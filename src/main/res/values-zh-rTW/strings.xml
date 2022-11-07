@@ -227,4 +227,5 @@
     <string name="action_reset">重設</string>
     <string name="date_added">添加日期</string>
     <string name="date_updated">更新日期</string>
+    <string name="scan_qr_code">掃描 QR-Code</string>
 </resources>
