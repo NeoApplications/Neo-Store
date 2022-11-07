@@ -168,9 +168,9 @@
     <string name="whats_new">Novedades</string>
     <string name="website">Sitio web</string>
     <plurals name="new_updates_DESC_FORMAT">
-        <item quantity="one">La aplicación %d tiene una nueva versión.</item>
-        <item quantity="many">Las aplicaciones %d tienen nuevas versiones.</item>
-        <item quantity="other">Las aplicaciones %d tienen nuevas versiones.</item>
+        <item quantity="one">%d aplicación tiene una nueva versión.</item>
+        <item quantity="many">%d aplicaciones tienen nuevas versiones.</item>
+        <item quantity="other">%d aplicaciones tienen nuevas versiones.</item>
     </plurals>
     <string name="prefs_language_title">Idioma</string>
     <string name="prefs_personalization">Personalización</string>
@@ -229,4 +229,5 @@
     <string name="action_apply">Aplicar</string>
     <string name="target_sdk">Versión mínima de la Api</string>
     <string name="other_apps_by">Otras aplicaciones de %s</string>
+    <string name="scan_qr_code">Escanear código QR</string>
 </resources>
