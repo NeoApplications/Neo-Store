@@ -1,0 +1,7 @@
+增加：排序/過濾功能
+添加：明確的收藏夾快捷方式
+添加：資訊晶片中的目標SDK
+更新：用Phosphor替換Material圖示
+更新：BottomNavBar、AppSheet的和EditRepoSheet的佈局
+修復：下載時顯示更新二級動作
+更多細節請查看完整的更新日誌…

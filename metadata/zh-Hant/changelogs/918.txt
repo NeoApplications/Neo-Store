@@ -1,0 +1,7 @@
+增加：支援 fdroidrepo(s) uri
+增加：支援market://search? intents
+增加：IzzyOnDroid應用程式的分享選項
+新增：在預設的repo中加入GitJournal和Revolt的內容
+更新：改造ReleaseItems
+刪除：Alefvanoon預置庫
+更多細節請檢視完整的更新日誌…
