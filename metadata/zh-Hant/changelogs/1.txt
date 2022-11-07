@@ -1,0 +1,2 @@
+* 將原色更改為 Google 綠色
+* 歸功於 kitsunyan
