@@ -142,7 +142,7 @@
     <string name="whats_new">Що нового</string>
     <string name="website">Вебсайт</string>
     <string name="prefs_language_title">Мова</string>
-    <string name="application_not_found">Не можу знайти цей додаток</string>
+    <string name="application_not_found">Не вдалося знайти цей додаток</string>
     <string name="confirmation">Підтвердження</string>
     <string name="could_not_sync_FORMAT">Не вдалося синхронізувати %s</string>
     <string name="credits">Співрозробники</string>
@@ -170,7 +170,7 @@
 \nБудьте обережні, завантажуючи програми з непідписаних репозиторіїв.</string>
     <string name="share">Поділитися</string>
     <string name="source_code_no_longer_available">Вихідний код більше не доступний</string>
-    <string name="system">Система</string>
+    <string name="system">Системна</string>
     <string name="tap_to_install_DESC">Натисніть, щоб встановити.</string>
     <string name="target">Цільовий</string>
     <string name="version">Версія</string>
@@ -205,9 +205,30 @@
     <string name="show_screenshots_description">Відображати знімки екрана на сторінці додатку.</string>
     <string name="releases">Випуски</string>
     <string name="no_updates_available">Нема доступних версій</string>
-    <string name="dynamic">Динамічна система</string>
+    <string name="dynamic">Динамічна системна</string>
     <string name="favorite_remove">Вилучити з вибраних</string>
     <string name="favorite_add">Додати до вибраних</string>
     <string name="open">Відкрити</string>
     <string name="loading_list">Завантажується список…</string>
+    <string name="images_cache_retention">Зберігання зображень у кеші</string>
+    <string name="auto_sync_interval">Інтервал синхронізації (у хвилинах)</string>
+    <string name="releases_cache_retention">Зберігання завантажених APK в кеші</string>
+    <string name="prefs_cache">Кеш</string>
+    <string name="prefs_sync">Синхронізація</string>
+    <string name="system_black">Системна (чорна)</string>
+    <string name="favorite_applications">Обрані</string>
+    <string name="prefs_personal">Особисті</string>
+    <string name="group_telegram">Наша група в Telegram</string>
+    <string name="group_matrix">Наша група в Matrix</string>
+    <string name="min_sdk">мін. SDK</string>
+    <string name="target_sdk">Ціл. SDK</string>
+    <string name="categories">Категорії</string>
+    <string name="sort_ascending">За зростанням</string>
+    <string name="sort_descending">По спаданню</string>
+    <string name="other_apps_by">Інші додатки від %s</string>
+    <string name="action_apply">Застосувати</string>
+    <string name="action_reset">Скинути</string>
+    <string name="date_added">Дата додавання</string>
+    <string name="date_updated">Дата оновлення</string>
+    <string name="scan_qr_code">Сканувати QR-код</string>
 </resources>
