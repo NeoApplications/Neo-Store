@@ -329,6 +329,15 @@ data class Repository(
             "E2EE4AA4380F0D3B3CF81EB17F5E48F827C3AA77122D9AD330CC441650894574",
             ""
         )
+        private val CRYPTOMATOR = defaultRepository(
+            "https://static.cryptomator.org/android/fdroid/repo",
+            "Cryptomator",
+            "The official repository for Cryptomator.",
+            21,
+            false,
+            "F7C3EC3B0D588D3CB52983E9EB1A7421C93D4339A286398E71D7B651E8D8ECDD",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, F_DROID_ARCHIVE,
@@ -344,7 +353,8 @@ data class Repository(
             I2P, COLLABORA,
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
             FROSTNERD, FROSTNERD_ARCHIVE,
-            UNOFFICIAL_FIREFOX, PATCHED, WIND, UMBRELLA
+            UNOFFICIAL_FIREFOX, PATCHED, WIND, UMBRELLA,
+            CRYPTOMATOR
         )
 
         val addedReposV9 = listOf(
@@ -359,6 +369,10 @@ data class Repository(
 
         val addedReposV11 = listOf(
             REVOLT, GITJOURNAL,
+        )
+
+        val addedReposV12 = listOf(
+            CRYPTOMATOR
         )
     }
 }

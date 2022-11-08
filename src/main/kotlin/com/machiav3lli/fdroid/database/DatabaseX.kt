@@ -26,6 +26,7 @@ import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV10
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV11
+import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV12
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV9
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.defaultRepositories
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +44,7 @@ import kotlinx.coroutines.launch
         Installed::class,
         Extras::class
     ],
-    version = 11,
+    version = 12,
     exportSchema = true,
     autoMigrations = [AutoMigration(
         from = 8,
@@ -57,6 +58,10 @@ import kotlinx.coroutines.launch
         from = 10,
         to = 11,
         spec = DatabaseX.Companion.MigrationSpec10to11::class
+    ), AutoMigration(
+        from = 11,
+        to = 12,
+        spec = DatabaseX.Companion.MigrationSpec11to12::class
     )]
 )
 @TypeConverters(Converters::class)
@@ -118,11 +123,19 @@ abstract class DatabaseX : RoomDatabase() {
             }
         }
 
+        class MigrationSpec11to12 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(11)
+            }
+        }
+
         fun onPostMigrate(from: Int) {
             val preRepos = mutableListOf<Repository>()
             if (from == 8) preRepos.addAll(addedReposV9)
             if (from == 9) preRepos.addAll(addedReposV10)
             if (from == 10) preRepos.addAll(addedReposV11)
+            if (from == 11) preRepos.addAll(addedReposV12)
             GlobalScope.launch(Dispatchers.IO) {
                 preRepos.forEach {
                     INSTANCE?.repositoryDao?.put(it)
