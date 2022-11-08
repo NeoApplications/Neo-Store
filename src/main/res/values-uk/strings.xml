@@ -70,7 +70,7 @@
     <string name="network_error_DESC">Помилка мережі.</string>
     <string name="new_updates_available">Доступні нові версії</string>
     <string name="no_applications_installed">Нема встановлених додатків</string>
-    <string name="no_description_available_DESC">Опис відсутній.</string>
+    <string name="no_description_available_DESC">Без опису.</string>
     <string name="no_proxy">Без проксі</string>
     <string name="notify_about_updates">Повідомляти про нові версії додатків</string>
     <string name="notify_about_updates_summary">Відображати повідомлення про доступність нових версій.</string>
