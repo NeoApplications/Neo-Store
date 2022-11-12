@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_failed">Fəaliyyət uğursuz oldu</string>
+    <string name="add_repository">Anbar əlavə et</string>
+    <string name="address">Ünvan</string>
+    <string name="all_applications">Bütün Tətbiqlər</string>
+    <string name="all_applications_up_to_date">Bütün tətbiqlər güncəldir</string>
+    <string name="already_exists">Artıq mövcuddur</string>
+    <string name="always">Həmişə</string>
+    <string name="amoled">Qara</string>
+    <string name="anti_features">Əks-xüsusiyyətlər</string>
+    <string name="application">Tətbiq</string>
+    <string name="application_not_found">Tətbiq tapılmadı</string>
+    <string name="author_email">Müəllifin e-poçtu</string>
+    <string name="author_website">Müəllifin veb saytı</string>
+    <string name="available">Mövcuddur</string>
+    <string name="bug_tracker">Səhv izləyici</string>
+    <string name="cancel">Ləğv et</string>
 </resources>
