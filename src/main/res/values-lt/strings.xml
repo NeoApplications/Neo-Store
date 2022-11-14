@@ -33,7 +33,7 @@
     <string name="could_not_sync_FORMAT">Nepavyko sinchronizuoti %s</string>
     <string name="could_not_validate_FORMAT">Nepavyko patvirtinti %s</string>
     <string name="license_FORMAT">%s licencija</string>
-    <string name="incompatible_signature_DESC">Ši versija pasirašyta kitu sertifikatu nei jūsų įrenginyje įdiegtas sertifikatas. 
+    <string name="incompatible_signature_DESC">Ši versija pasirašyta kitu sertifikatu nei jūsų įrenginyje įdiegtas sertifikatas.
 \nPirmiausia jį pašalinkite.</string>
     <string name="incompatible_versions">Nesuderinamos versijos</string>
     <string name="name">Pavadinimas</string>
@@ -209,7 +209,7 @@
     <string name="proxy_host">Serveris</string>
     <string name="repositories">Repozitorijos</string>
     <string name="repository">Repozitorija</string>
-    <string name="repository_not_used_DESC">Ši repozitorija dar nebuvo naudojama. 
+    <string name="repository_not_used_DESC">Ši repozitorija dar nebuvo naudojama.
 \nPrisijunkite prie jos, kad peržiūrėtumėte joje esančias programėles.</string>
     <string name="repository_unsigned_DESC">Nepavyko patikrinti nepasirašyto programėlių sąrašo.
 \nBūkite atsargūs atsisiunčiant programėles iš nepasirašytų repozitorijų.</string>
