@@ -33,7 +33,6 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NAV_MAIN
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.entity.Source
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.SyncService
@@ -49,7 +48,9 @@ import com.machiav3lli.fdroid.ui.fragments.SortFilterSheet
 import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.MainNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavItem
-import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
+import com.machiav3lli.fdroid.ui.viewmodels.ExploreViewModel
+import com.machiav3lli.fdroid.ui.viewmodels.InstalledViewModel
+import com.machiav3lli.fdroid.ui.viewmodels.LatestViewModel
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.setCustomTheme
@@ -88,26 +89,14 @@ class MainActivityX : AppCompatActivity() {
 
     private var currentTheme by Delegates.notNull<Int>()
 
-    val exploreViewModel: MainNavFragmentViewModelX by viewModels {
-        MainNavFragmentViewModelX.Factory(
-            db,
-            Source.AVAILABLE,
-            Source.AVAILABLE,
-        )
+    val exploreViewModel: ExploreViewModel by viewModels {
+        ExploreViewModel.Factory(db)
     }
-    val latestViewModel: MainNavFragmentViewModelX by viewModels {
-        MainNavFragmentViewModelX.Factory(
-            db,
-            Source.UPDATED,
-            Source.NEW,
-        )
+    val latestViewModel: LatestViewModel by viewModels {
+        LatestViewModel.Factory(db)
     }
-    val installedViewModel: MainNavFragmentViewModelX by viewModels {
-        MainNavFragmentViewModelX.Factory(
-            db,
-            Source.INSTALLED,
-            Source.UPDATES,
-        )
+    val installedViewModel: InstalledViewModel by viewModels {
+        InstalledViewModel.Factory(db)
     }
 
     @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)

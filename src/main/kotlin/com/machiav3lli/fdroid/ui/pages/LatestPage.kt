@@ -28,14 +28,14 @@ import com.machiav3lli.fdroid.ui.compose.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.navigation.NavItem
-import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
+import com.machiav3lli.fdroid.ui.viewmodels.LatestViewModel
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun LatestPage(viewModel: MainNavFragmentViewModelX) {
+fun LatestPage(viewModel: LatestViewModel) {
     val context = LocalContext.current
     val mainActivityX = context as MainActivityX
     val filteredPrimaryList by viewModel.filteredProducts.collectAsState()

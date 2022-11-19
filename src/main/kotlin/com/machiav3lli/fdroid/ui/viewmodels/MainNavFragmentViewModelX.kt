@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainNavFragmentViewModelX(
+open class MainNavFragmentViewModelX(
     val db: DatabaseX,
     primarySource: Source,
     secondarySource: Source
@@ -139,17 +139,43 @@ class MainNavFragmentViewModelX(
                 .insertReplace(Extras(packageName, favorite = setBoolean))
         }
     }
+}
 
-    class Factory(
-        val db: DatabaseX,
-        private val primarySource: Source,
-        private val secondarySource: Source
-    ) :
+class ExploreViewModel(db: DatabaseX) :
+    MainNavFragmentViewModelX(db, Source.AVAILABLE, Source.AVAILABLE) {
+    class Factory(val db: DatabaseX) :
         ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(MainNavFragmentViewModelX::class.java)) {
-                return MainNavFragmentViewModelX(db, primarySource, secondarySource) as T
+            if (modelClass.isAssignableFrom(ExploreViewModel::class.java)) {
+                return ExploreViewModel(db) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
+        }
+    }
+}
+
+class LatestViewModel(db: DatabaseX) : MainNavFragmentViewModelX(db, Source.UPDATED, Source.NEW) {
+    class Factory(val db: DatabaseX) :
+        ViewModelProvider.Factory {
+        @Suppress("unchecked_cast")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(LatestViewModel::class.java)) {
+                return LatestViewModel(db) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
+        }
+    }
+}
+
+class InstalledViewModel(db: DatabaseX) :
+    MainNavFragmentViewModelX(db, Source.INSTALLED, Source.UPDATES) {
+    class Factory(val db: DatabaseX) :
+        ViewModelProvider.Factory {
+        @Suppress("unchecked_cast")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(InstalledViewModel::class.java)) {
+                return InstalledViewModel(db) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
