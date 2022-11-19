@@ -233,4 +233,5 @@
     <string name="prefs_sync"></string>
     <string name="show_screenshots_description"></string>
     <string name="loading_list"></string>
+    <string name="scan_qr_code"></string>
 </resources>
