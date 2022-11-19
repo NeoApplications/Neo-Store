@@ -233,4 +233,5 @@
     <string name="auto_sync_interval"></string>
     <string name="open"></string>
     <string name="loading_list"></string>
+    <string name="scan_qr_code"></string>
 </resources>
