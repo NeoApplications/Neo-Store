@@ -229,4 +229,5 @@
     <string name="min_sdk"></string>
     <string name="date_updated"></string>
     <string name="prefs_installer"></string>
+    <string name="scan_qr_code"></string>
 </resources>
