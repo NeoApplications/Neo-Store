@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -42,6 +43,7 @@ import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.PrefsNavHost
+import com.machiav3lli.fdroid.ui.viewmodels.RepositoriesViewModelX
 import com.machiav3lli.fdroid.utility.destinationToItem
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
@@ -68,6 +70,10 @@ class PrefsActivityX : AppCompatActivity() {
 
     val db
         get() = (application as MainApplication).db
+
+    val reposViewModel: RepositoriesViewModelX by viewModels {
+        RepositoriesViewModelX.Factory(db.repositoryDao)
+    }
 
     @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {

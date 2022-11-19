@@ -8,7 +8,6 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
@@ -18,9 +17,8 @@ import androidx.navigation.activity
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.database.DatabaseX
-import com.machiav3lli.fdroid.entity.Source
 import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.ui.pages.ExplorePage
 import com.machiav3lli.fdroid.ui.pages.InstalledPage
@@ -29,8 +27,6 @@ import com.machiav3lli.fdroid.ui.pages.PrefsOtherPage
 import com.machiav3lli.fdroid.ui.pages.PrefsPersonalPage
 import com.machiav3lli.fdroid.ui.pages.PrefsReposPage
 import com.machiav3lli.fdroid.ui.pages.PrefsUpdatesPage
-import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
-import com.machiav3lli.fdroid.ui.viewmodels.RepositoriesViewModelX
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -44,33 +40,15 @@ fun MainNavHost(
         startDestination = Preferences[Preferences.Key.DefaultTab].valueString
     ) {
         slideDownComposable(NavItem.Explore.destination) {
-            val viewModel = viewModel<MainNavFragmentViewModelX>(
-                factory = MainNavFragmentViewModelX.Factory(
-                    DatabaseX.getInstance(navController.context),
-                    Source.AVAILABLE,
-                    Source.AVAILABLE,
-                )
-            )
+            val viewModel = MainApplication.mainActivity?.exploreViewModel!!
             ExplorePage(viewModel)
         }
         slideDownComposable(route = NavItem.Latest.destination) {
-            val viewModel = viewModel<MainNavFragmentViewModelX>(
-                factory = MainNavFragmentViewModelX.Factory(
-                    DatabaseX.getInstance(navController.context),
-                    Source.UPDATED,
-                    Source.NEW,
-                )
-            )
+            val viewModel = MainApplication.mainActivity?.latestViewModel!!
             LatestPage(viewModel)
         }
         slideDownComposable(NavItem.Installed.destination) {
-            val viewModel = viewModel<MainNavFragmentViewModelX>(
-                factory = MainNavFragmentViewModelX.Factory(
-                    DatabaseX.getInstance(navController.context),
-                    Source.INSTALLED,
-                    Source.UPDATES,
-                )
-            )
+            val viewModel = MainApplication.mainActivity?.installedViewModel!!
             InstalledPage(viewModel)
         }
         activity(NavItem.Prefs.destination) {
@@ -108,11 +86,7 @@ fun PrefsNavHost(
                 },
             )
         ) {
-            val viewModel = viewModel<RepositoriesViewModelX>(
-                factory = RepositoriesViewModelX.Factory(
-                    DatabaseX.getInstance(navController.context).repositoryDao
-                )
-            )
+            val viewModel = MainApplication.prefsActivity?.reposViewModel!!
             val args = it.arguments!!
             val address = args.getString("address") ?: ""
             val fingerprint = args.getString("fingerprint") ?: ""

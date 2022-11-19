@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.view.KeyEvent
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -32,6 +33,7 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NAV_MAIN
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.entity.Source
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.SyncService
@@ -47,6 +49,7 @@ import com.machiav3lli.fdroid.ui.fragments.SortFilterSheet
 import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.MainNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.ui.viewmodels.MainNavFragmentViewModelX
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.setCustomTheme
@@ -84,6 +87,28 @@ class MainActivityX : AppCompatActivity() {
         get() = (application as MainApplication).db
 
     private var currentTheme by Delegates.notNull<Int>()
+
+    val exploreViewModel: MainNavFragmentViewModelX by viewModels {
+        MainNavFragmentViewModelX.Factory(
+            db,
+            Source.AVAILABLE,
+            Source.AVAILABLE,
+        )
+    }
+    val latestViewModel: MainNavFragmentViewModelX by viewModels {
+        MainNavFragmentViewModelX.Factory(
+            db,
+            Source.UPDATED,
+            Source.NEW,
+        )
+    }
+    val installedViewModel: MainNavFragmentViewModelX by viewModels {
+        MainNavFragmentViewModelX.Factory(
+            db,
+            Source.INSTALLED,
+            Source.UPDATES,
+        )
+    }
 
     @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
