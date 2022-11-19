@@ -229,4 +229,5 @@
     <string name="provided_by_FORMAT"></string>
     <string name="name"></string>
     <string name="has_non_free_dependencies"></string>
+    <string name="scan_qr_code"></string>
 </resources>
