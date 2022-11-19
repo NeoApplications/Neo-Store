@@ -1,13 +1,13 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val composeVersion = "1.3.0"
-val composeCompilerVersion = "1.3.2"
-val roomVersion = "2.5.0-beta01"
+val composeVersion = "1.3.1"
+val composeCompilerVersion = "1.4.0-alpha02"
+val roomVersion = "2.5.0-beta02"
 val navigationVersion = "2.5.3"
-val accompanistVersion = "0.27.0"
+val accompanistVersion = "0.27.1"
 
 plugins {
-    id("com.android.application") version ("7.2.2")
+    id("com.android.application") version ("7.3.1")
     kotlin("android") version ("1.7.21")
     kotlin("plugin.serialization") version ("1.7.21")
     id("com.google.devtools.ksp") version ("1.7.21-1.0.8")
@@ -129,7 +129,7 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
-    implementation("androidx.work:work-runtime-ktx:2.8.0-beta01")
+    implementation("androidx.work:work-runtime-ktx:2.8.0-beta02")
 
     // Material3
     implementation("com.google.android.material:material:1.8.0-alpha02")
@@ -143,13 +143,13 @@ dependencies {
 
     // RxJava
     implementation("io.reactivex.rxjava3:rxjava:3.1.5")
-    implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
+    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
 
     // LibSu
     implementation("com.github.topjohnwu.libsu:core:5.0.3")
 
     // JSON
-    implementation("com.fasterxml.jackson.core:jackson-core:2.13.4")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.14.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 
     // Markdown
@@ -171,7 +171,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.0.0")
+    implementation("androidx.compose.material3:material3:1.0.1")
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("com.google.android.material:compose-theme-adapter-3:1.0.21")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
