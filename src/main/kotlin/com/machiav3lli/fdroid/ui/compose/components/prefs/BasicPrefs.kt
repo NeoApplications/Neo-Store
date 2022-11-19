@@ -131,14 +131,17 @@ fun SwitchPreference(
     val (checked, check) = remember(Preferences[prefKey]) { mutableStateOf(Preferences[prefKey]) }
     val dependency = PrefsDependencies[prefKey]
     var isEnabled by remember {
-        mutableStateOf(dependency?.let { Preferences[dependency] != it.default.value } ?: true)
+        mutableStateOf(
+            dependency?.let { Preferences[dependency.first] in dependency.second }
+                ?: true
+        )
     }
 
     SideEffect {
         CoroutineScope(Dispatchers.Default).launch {
             Preferences.subject.collect {
                 when (it) {
-                    dependency -> isEnabled = Preferences[it] != it.default.value
+                    dependency?.first -> isEnabled = Preferences[it] in dependency.second
                     else -> {}
                 }
             }
@@ -184,14 +187,16 @@ fun LanguagePreference(
     val context = LocalContext.current
     val dependency = PrefsDependencies[prefKey]
     var isEnabled by remember {
-        mutableStateOf(dependency?.let { Preferences[dependency] != it.default.value } ?: true)
+        mutableStateOf(
+            dependency?.let { Preferences[dependency.first] in dependency.second }
+                ?: true)
     }
 
     SideEffect {
         CoroutineScope(Dispatchers.Default).launch {
             Preferences.subject.collect {
                 when (it) {
-                    dependency -> isEnabled = Preferences[it] != it.default.value
+                    dependency?.first -> isEnabled = Preferences[it] in dependency.second
                     else -> {}
                 }
             }
@@ -219,7 +224,9 @@ fun EnumPreference(
 ) {
     val dependency = PrefsDependencies[prefKey]
     var isEnabled by remember {
-        mutableStateOf(dependency?.let { Preferences[dependency] != it.default.value } ?: true)
+        mutableStateOf(
+            dependency?.let { Preferences[dependency.first] in dependency.second }
+                ?: true)
     }
     var prefValue by remember {
         mutableStateOf(Preferences[prefKey])
@@ -229,7 +236,7 @@ fun EnumPreference(
             Preferences.subject.collect {
                 when (it) {
                     prefKey -> prefValue = Preferences[prefKey]
-                    dependency -> isEnabled = Preferences[it] != it.default.value
+                    dependency?.first -> isEnabled = Preferences[it] in dependency.second
                     else -> {}
                 }
             }
@@ -257,7 +264,9 @@ fun IntPreference(
 ) {
     val dependency = PrefsDependencies[prefKey]
     var isEnabled by remember {
-        mutableStateOf(dependency?.let { Preferences[dependency] != it.default.value } ?: true)
+        mutableStateOf(
+            dependency?.let { Preferences[dependency.first] in dependency.second }
+                ?: true)
     }
     var prefValue by remember {
         mutableStateOf(Preferences[prefKey])
@@ -267,7 +276,7 @@ fun IntPreference(
             Preferences.subject.collect {
                 when (it) {
                     prefKey -> prefValue = Preferences[prefKey]
-                    dependency -> isEnabled = Preferences[it] != it.default.value
+                    dependency?.first -> isEnabled = Preferences[it] in dependency.second
                     else -> {}
                 }
             }
@@ -295,7 +304,9 @@ fun StringPreference(
 ) {
     val dependency = PrefsDependencies[prefKey]
     var isEnabled by remember {
-        mutableStateOf(dependency?.let { Preferences[dependency] != it.default.value } ?: true)
+        mutableStateOf(
+            dependency?.let { Preferences[dependency.first] in dependency.second }
+                ?: true)
     }
     var prefValue by remember {
         mutableStateOf(Preferences[prefKey])
@@ -305,7 +316,7 @@ fun StringPreference(
             Preferences.subject.collect {
                 when (it) {
                     prefKey -> prefValue = Preferences[prefKey]
-                    dependency -> isEnabled = Preferences[it] != it.default.value
+                    dependency?.first -> isEnabled = Preferences[it] in dependency.second
                     else -> {}
                 }
             }
