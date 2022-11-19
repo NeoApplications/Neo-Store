@@ -232,4 +232,5 @@
     <string name="prefs_personal"></string>
     <string name="root_installer"></string>
     <string name="default_installer"></string>
+    <string name="scan_qr_code"></string>
 </resources>
