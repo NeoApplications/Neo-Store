@@ -229,4 +229,5 @@
     <string name="credits"></string>
     <string name="checking_repository"></string>
     <string name="no_action_possible"></string>
+    <string name="scan_qr_code"></string>
 </resources>
