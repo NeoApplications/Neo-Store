@@ -229,4 +229,5 @@
     <string name="source_code_no_longer_available"></string>
     <string name="signed_using_unsafe_algorithm"></string>
     <string name="auto_sync_interval"></string>
+    <string name="scan_qr_code"></string>
 </resources>
