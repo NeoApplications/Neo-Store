@@ -16,9 +16,9 @@
     <application
         android:name=".MainApplication"
         android:allowBackup="false"
-        android:icon="${appIcon}"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/application_name"
-        android:roundIcon="${appIconRound}"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Main.Amoled"
         tools:ignore="GoogleAppIndexingWarning">
