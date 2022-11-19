@@ -67,23 +67,17 @@ android {
             isShrinkResources = false
             applicationIdSuffix = ".debug"
             resValue("string", "application_name", "Neo Store-Debug")
-            manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_debug"
-            manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round_debug"
         }
         create("neo") {
             isMinifyEnabled = false
             isShrinkResources = false
             applicationIdSuffix = ".neo"
             resValue("string", "application_name", "Neo Store-beta")
-            manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_debug"
-            manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round_debug"
         }
         named("release") {
             isMinifyEnabled = true
             isShrinkResources = true
             resValue("string", "application_name", "Neo Store")
-            manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher"
-            manifestPlaceholders["appIconRound"] = "@mipmap/ic_launcher_round"
         }
         all {
             isCrunchPngs = false
