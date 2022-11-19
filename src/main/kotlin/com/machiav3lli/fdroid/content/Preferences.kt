@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.content
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.appcompat.app.AppCompatDelegate
 import com.machiav3lli.fdroid.PREFS_LANGUAGE
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import java.net.Proxy
 
-object Preferences {
+object Preferences : OnSharedPreferenceChangeListener {
     private lateinit var preferences: SharedPreferences
 
     private val mutableSubject = MutableSharedFlow<Key<*>>()
@@ -63,11 +64,13 @@ object Preferences {
                 "${context.packageName}_preferences",
                 Context.MODE_PRIVATE
             )
-        preferences.registerOnSharedPreferenceChangeListener { _, keyString ->
-            CoroutineScope(Dispatchers.Default).launch {
-                keys[keyString]?.let {
-                    mutableSubject.emit(it)
-                }
+        preferences.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        CoroutineScope(Dispatchers.Default).launch {
+            keys[key]?.let {
+                mutableSubject.emit(it)
             }
         }
     }
@@ -162,6 +165,8 @@ object Preferences {
     }
 
     sealed class Key<T>(val name: String, val default: Value<T>) {
+        object Null : Key<Int>("", Value.IntValue(0))
+
         object Language : Key<String>(PREFS_LANGUAGE, Value.StringValue(PREFS_LANGUAGE_DEFAULT))
         object AutoSync : Key<Preferences.AutoSync>(
             "auto_sync",
