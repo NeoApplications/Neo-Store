@@ -229,4 +229,5 @@
     <string name="update_all"></string>
     <string name="loading_list"></string>
     <string name="prefs_installer"></string>
+    <string name="scan_qr_code"></string>
 </resources>
