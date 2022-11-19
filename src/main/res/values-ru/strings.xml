@@ -232,4 +232,8 @@
     <string name="target_sdk">Цел. SDK</string>
     <string name="other_apps_by">Другие приложения от %s</string>
     <string name="scan_qr_code">Сканировать QR-код</string>
+    <string name="prefs_installer">Тип установщика</string>
+    <string name="default_installer">Установщик сеанса по умолчанию</string>
+    <string name="root_installer">Root-установщик</string>
+    <string name="legacy_installer">Устаревший установщик (совместим с MIUI)</string>
 </resources>
