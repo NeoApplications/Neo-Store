@@ -228,4 +228,5 @@
         <item quantity="other"></item>
     </plurals>
     <string name="only_on_wifi"></string>
+    <string name="scan_qr_code"></string>
 </resources>
