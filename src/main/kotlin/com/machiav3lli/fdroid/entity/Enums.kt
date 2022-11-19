@@ -13,6 +13,12 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CalendarPlus
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CalendarX
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TagSimple
 
+enum class InstallerType(@StringRes val titleResId: Int) {
+    DEFAULT(R.string.default_installer),
+    ROOT(R.string.root_installer),
+    LEGACY(R.string.legacy_installer),
+}
+
 enum class Order(@StringRes val titleResId: Int, val icon: ImageVector) {
     NAME(R.string.name, Phosphor.TagSimple),
     DATE_ADDED(R.string.date_added, Phosphor.CalendarX),

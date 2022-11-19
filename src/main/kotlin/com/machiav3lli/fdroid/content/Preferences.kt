@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.machiav3lli.fdroid.PREFS_LANGUAGE
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.entity.InstallerType
 import com.machiav3lli.fdroid.entity.Order
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
@@ -307,6 +308,16 @@ object Preferences : OnSharedPreferenceChangeListener {
         object Name : SortOrder("name", Order.NAME)
         object Added : SortOrder("added", Order.DATE_ADDED)
         object Update : SortOrder("update", Order.LAST_UPDATE)
+    }
+
+    sealed class Installer(override val valueString: String, val installer: InstallerType) :
+        Enumeration<Installer> {
+        override val values: List<Installer>
+            get() = listOf(Default, Root, Legacy)
+
+        object Default : Installer("session", InstallerType.DEFAULT)
+        object Root : Installer("root", InstallerType.ROOT)
+        object Legacy : Installer("legacy", InstallerType.LEGACY)
     }
 
     sealed class Theme(override val valueString: String) : Enumeration<Theme> {
