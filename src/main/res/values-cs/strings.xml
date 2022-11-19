@@ -230,4 +230,8 @@
     <string name="target_sdk">targetSDK</string>
     <string name="other_apps_by">Další aplikace od %s</string>
     <string name="scan_qr_code">Skenovat QR kód</string>
+    <string name="root_installer">Root instalátor</string>
+    <string name="prefs_installer">Typ instalátoru</string>
+    <string name="default_installer">Výchozí instalátor relace</string>
+    <string name="legacy_installer">Starší instalátor (kompatibilní s MIUI)</string>
 </resources>
