@@ -229,4 +229,8 @@
     <string name="target_sdk">targetSDK</string>
     <string name="other_apps_by">Àteras aplicatziones de %s</string>
     <string name="scan_qr_code">Iscansi unu còdighe QR</string>
+    <string name="prefs_installer">Casta de installadore</string>
+    <string name="default_installer">Installadore de sessione predefinidu</string>
+    <string name="root_installer">Installadore de raighina (root)</string>
+    <string name="legacy_installer">Installadore betzu (cumpatìbile cun MIUI)</string>
 </resources>
