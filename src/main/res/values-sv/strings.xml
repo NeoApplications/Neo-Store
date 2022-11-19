@@ -231,4 +231,5 @@
     <string name="group_matrix"></string>
     <string name="group_telegram"></string>
     <string name="action_reset"></string>
+    <string name="scan_qr_code"></string>
 </resources>
