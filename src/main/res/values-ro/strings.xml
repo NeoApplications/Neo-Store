@@ -233,4 +233,5 @@
     <string name="legacy_installer"></string>
     <string name="sort_descending"></string>
     <string name="group_matrix"></string>
+    <string name="scan_qr_code"></string>
 </resources>
