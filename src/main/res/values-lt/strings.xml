@@ -230,4 +230,8 @@
     <string name="releases">Išleistos versijos</string>
     <string name="prefs_personal">Vartotojas</string>
     <string name="scan_qr_code">Skenuoti QR kodą</string>
+    <string name="prefs_installer">Diegimo programos tipas</string>
+    <string name="root_installer">Šakninė diegimo programa</string>
+    <string name="legacy_installer">Senoji diegimo programa (suderinama su MIUI)</string>
+    <string name="default_installer">Numatytoji seanso diegimo programa</string>
 </resources>
