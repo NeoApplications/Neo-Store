@@ -90,6 +90,7 @@ class MainActivityX : AppCompatActivity() {
         (application as MainApplication).mActivity = this
         currentTheme = Preferences[Preferences.Key.Theme].resId
         setCustomTheme()
+        MainApplication.mainActivity = this
         super.onCreate(savedInstanceState)
 
         powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager

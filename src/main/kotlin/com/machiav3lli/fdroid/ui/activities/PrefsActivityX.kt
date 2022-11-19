@@ -73,6 +73,7 @@ class PrefsActivityX : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
         setCustomTheme()
+        MainApplication.prefsActivity = this
         super.onCreate(savedInstanceState)
 
         setContent {

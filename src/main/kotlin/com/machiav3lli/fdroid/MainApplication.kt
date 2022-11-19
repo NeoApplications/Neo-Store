@@ -26,6 +26,7 @@ import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.PackageChangedReceiver
 import com.machiav3lli.fdroid.service.SyncService
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
+import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.utility.Utils.setLanguage
 import com.machiav3lli.fdroid.utility.Utils.toInstalledItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
@@ -48,6 +49,19 @@ class MainApplication : Application(), ImageLoaderFactory {
     companion object {
         private var appRef: WeakReference<MainApplication> = WeakReference(null)
         private val neo_store: MainApplication get() = appRef.get()!!
+
+        private var mainActivityRef: WeakReference<MainActivityX> = WeakReference(null)
+        var mainActivity: MainActivityX?
+            get() = mainActivityRef.get()
+            set(mainActivity) {
+                mainActivityRef = WeakReference(mainActivity)
+            }
+        private var prefsActivityRef: WeakReference<PrefsActivityX> = WeakReference(null)
+        var prefsActivity: PrefsActivityX?
+            get() = prefsActivityRef.get()
+            set(mainActivity) {
+                prefsActivityRef = WeakReference(mainActivity)
+            }
 
         //val wm: WorksManager get() = neo_store.wm
         //val db: DatabaseX get() = neo_store.db
