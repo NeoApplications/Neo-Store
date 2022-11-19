@@ -1,0 +1,3 @@
+Ajout : Scanner le QrCode du dépôt à l'aide de BinaryEye (si installé)
+Correction : Verrouillé dans les Applications Installées après le lancement à partir de la notification des mises à jour
+Correction : Améliorer le traitement de l'intent

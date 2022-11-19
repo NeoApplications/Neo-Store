@@ -1,0 +1,5 @@
+- Ajout : Préférence linguistique
+- Mise à jour : Captures d'écran à défilement horizontal
+- Correction : Programme d'Installation root en arrière-plan
+- Ajout : Demande la permission root uniquement lorsqu'elle est sélectionnée
+- Des Tonnes d'ajustements UI/UX

@@ -1,0 +1,7 @@
+Mise à jour : réorganiser l'UI d'AppSheet
+Mise à jour : Migration complète de la navigation vers Compose
+Mise à jour : Migrer les préférences vers Compose
+Mise à jour : Autoriser la définition d'un nombre plus élevé pour le recycleur et l'intervalle de synchronisation des applications mises à jour/nouvelles
+Ajout : Liens utiles dans les Préférences
+Correction : Visibilité d'ActionButtons
+Correctif : Afficher la description du dépôt avant la première synchronisation

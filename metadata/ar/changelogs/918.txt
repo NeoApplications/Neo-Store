@@ -1,0 +1,7 @@
+إضافة: دعم fdroidrepo (s) uri
+إضافة: دعم market://search؟ المقاصد
+إضافة: خيار المشاركة لتطبيقات IzzyOnDroid
+إضافة: GitJournal & Revolt إلى إعادة الشراء المعدة مسبقا
+تحديث: تجديد ReleaseItems
+إزالة: Alefvanoon preset-repo
+لمزيد من التفاصيل ، تحقق من سجل التغيير الكامل …

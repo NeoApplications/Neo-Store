@@ -1,0 +1,3 @@
+Añadido: Escanear el código QR del repositorio usando BinaryEye (si está instalado)
+Corrección: Bloqueo en Instalado después de lanzar desde la notificación de actualizaciones
+Corrección: Mejora de la intención de manejo

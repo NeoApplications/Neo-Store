@@ -1,0 +1,4 @@
+- Correction : Icône de Substitution pour la Capture d'Écran
+- Correction : Soft crash lors du démarrage d'AppDetails
+- Correction : N'Exécuter qu'une seule instance du programme d'installation Root
+- Correction : Programme d'Installation Root

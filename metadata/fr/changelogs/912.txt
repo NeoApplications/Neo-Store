@@ -1,0 +1,6 @@
+Correction : Le Paramètre Ignorer les mises à jour ne se cache pas des mises à jour
+Correction : Tri par ordre alphabétique des Applications Installées
+Correction : Défilement imbriqué d'AppSheet
+Correction : Affichage de l'action d'installation pendant le téléchargement
+Correction : Visibilité des icônes StatusBar sur le thème des couleurs dynamiques
+Mise à jour : Traductions

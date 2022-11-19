@@ -12,7 +12,7 @@
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" width="38%" align="center">](https://f-droid.org/packages/com.machiav3lli.fdroid)
 [<img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Join Telegram Channel" width="13%" align="center">](https://t.me/neo_android_store)
 
-![Neo Applications Banner](neo_banner.png)
+[![Neo Applications Banner](neo_banner.png)](https://github.com/NeoApplications)
 
 ## :book: Features
 

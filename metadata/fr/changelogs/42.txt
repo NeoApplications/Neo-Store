@@ -1,0 +1,6 @@
+- Plus de Material Design 3
+- Correction : Installation Root et Installation par défaut
+- Correction : Supprimer le Fichier mis en Cache Après la Désinstallation
+- Correction : Plantage en appuyant sur le téléchargement tout en étant hors-ligne
+- Mettre à jour les traductions de plus de 17 langues
+- Beaucoup de petites corrections et ajustements…
