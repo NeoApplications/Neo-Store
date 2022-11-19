@@ -231,4 +231,5 @@
     <string name="group_telegram"></string>
     <string name="favorite_remove"></string>
     <string name="open"></string>
+    <string name="scan_qr_code"></string>
 </resources>
