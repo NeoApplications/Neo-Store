@@ -229,4 +229,5 @@
     <string name="unverified"></string>
     <string name="incompatible_api_min_DESC_FORMAT"></string>
     <string name="description"></string>
+    <string name="scan_qr_code"></string>
 </resources>
