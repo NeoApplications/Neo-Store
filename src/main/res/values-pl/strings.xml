@@ -234,4 +234,5 @@
     <string name="min_sdk"></string>
     <string name="prefs_installer"></string>
     <string name="default_installer"></string>
+    <string name="scan_qr_code"></string>
 </resources>
