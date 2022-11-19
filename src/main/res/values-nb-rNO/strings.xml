@@ -227,4 +227,10 @@
     <string name="date_added">Dato tillagt</string>
     <string name="date_updated">Dato oppdatert</string>
     <string name="target_sdk">målSDK</string>
+    <string name="other_apps_by">Andre programmer av %s</string>
+    <string name="scan_qr_code">Skann en QR-kode</string>
+    <string name="default_installer">Forvalgt økt-installerer</string>
+    <string name="prefs_installer">Installasjonstype</string>
+    <string name="root_installer">Rot-installerer</string>
+    <string name="legacy_installer">Gammeldags installerer (kompatibel med MIUI)</string>
 </resources>
