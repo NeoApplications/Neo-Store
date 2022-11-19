@@ -229,4 +229,5 @@
     <string name="default_installer"></string>
     <string name="other_apps_by"></string>
     <string name="open"></string>
+    <string name="scan_qr_code"></string>
 </resources>
