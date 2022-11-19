@@ -229,4 +229,5 @@
     <string name="categories"></string>
     <string name="other_apps_by"></string>
     <string name="launch"></string>
+    <string name="scan_qr_code"></string>
 </resources>
