@@ -229,4 +229,5 @@
     <string name="invalid_permissions_error_DESC"></string>
     <string name="sort_ascending"></string>
     <string name="root_session_installer"></string>
+    <string name="scan_qr_code"></string>
 </resources>
