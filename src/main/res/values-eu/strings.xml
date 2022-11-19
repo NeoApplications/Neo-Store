@@ -229,4 +229,5 @@
         <item quantity="one"></item>
         <item quantity="other"></item>
     </plurals>
+    <string name="scan_qr_code"></string>
 </resources>
