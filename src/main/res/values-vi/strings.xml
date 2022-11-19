@@ -228,4 +228,5 @@
     <string name="search"></string>
     <string name="syncing_FORMAT"></string>
     <string name="changes"></string>
+    <string name="scan_qr_code"></string>
 </resources>
