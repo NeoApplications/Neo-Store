@@ -229,5 +229,9 @@
     <string name="action_apply">Aplicar</string>
     <string name="target_sdk">Versión mínima de la Api</string>
     <string name="other_apps_by">Otras aplicaciones de %s</string>
-    <string name="scan_qr_code">Escanear código QR</string>
+    <string name="scan_qr_code">Escanear un código QR</string>
+    <string name="prefs_installer">Tipo de instalador</string>
+    <string name="legacy_installer">Instalador heredado (compatible con MIUI)</string>
+    <string name="default_installer">Instalador de la sesión por defecto</string>
+    <string name="root_installer">Instalador Root</string>
 </resources>
