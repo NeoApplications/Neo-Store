@@ -98,9 +98,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -130,12 +127,11 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         get() = requireArguments().getString(EXTRA_DEVELOPER)!!
 
     private val downloadConnection = Connection(DownloadService::class.java, onBind = { _, binder ->
-        binder.stateSubject
-            .filter { it.packageName == packageName }
-            .flowOn(Dispatchers.Default)
-            .onEach { updateDownloadState(it) }
-            .flowOn(Dispatchers.Main)
-            .launchIn(lifecycleScope)
+        CoroutineScope(Dispatchers.Default).launch {
+            binder.stateSubject
+                .filter { it.packageName == packageName }
+                .collectLatest { updateDownloadState(it) }
+        }
     })
 
     override fun onCreateView(
