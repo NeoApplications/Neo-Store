@@ -229,4 +229,8 @@
     <string name="target_sdk">targetSDK</string>
     <string name="other_apps_by">Other apps by %s</string>
     <string name="scan_qr_code">Scan a Qr-Code</string>
+    <string name="prefs_installer">Installer type</string>
+    <string name="default_installer">Default session installer</string>
+    <string name="root_installer">Root installer</string>
+    <string name="legacy_installer">Legacy installer (compatible with MIUI)</string>
 </resources>
