@@ -231,4 +231,5 @@
     <string name="group_telegram"></string>
     <string name="date_added"></string>
     <string name="no_updates_available"></string>
+    <string name="scan_qr_code"></string>
 </resources>
