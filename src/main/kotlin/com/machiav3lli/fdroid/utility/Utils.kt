@@ -123,7 +123,7 @@ object Utils {
     }
 
     val rootInstallerEnabled: Boolean
-        get() = Preferences[Preferences.Key.RootPermission] &&
+        get() = Preferences[Preferences.Key.Installer] == Preferences.Installer.Root &&
                 (Shell.getCachedShell()?.isRoot ?: Shell.getShell().isRoot)
 
     suspend fun startUpdate(

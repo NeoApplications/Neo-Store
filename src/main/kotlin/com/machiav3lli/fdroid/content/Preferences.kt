@@ -38,7 +38,7 @@ object Preferences : OnSharedPreferenceChangeListener {
         Key.ProxyHost,
         Key.ProxyPort,
         Key.ProxyType,
-        Key.RootPermission,
+        Key.Installer,
         Key.RootSessionInstaller,
         Key.SortOrderExplore,
         Key.SortOrderLatest,
@@ -199,7 +199,11 @@ object Preferences : OnSharedPreferenceChangeListener {
             Value.EnumerationValue(Preferences.ProxyType.Direct)
         )
 
-        object RootPermission : Key<Boolean>("root_permission", Value.BooleanValue(false))
+        object Installer : Key<Preferences.Installer>(
+            "installer_type",
+            Value.EnumerationValue(Preferences.Installer.Default)
+        )
+
         object RootSessionInstaller :
             Key<Boolean>("root_session_installer", Value.BooleanValue(false))
 

@@ -46,7 +46,7 @@ fun PrefsUpdatesPage() {
         Preferences.Key.IncompatibleVersions,
     )
     val installPrefs = listOf(
-        Preferences.Key.RootPermission,
+        Preferences.Key.Installer,
         Preferences.Key.RootSessionInstaller,
     )
 

@@ -24,10 +24,6 @@ val BooleanPrefsMeta = mapOf(
         R.string.incompatible_versions,
         R.string.incompatible_versions_summary
     ),
-    Preferences.Key.RootPermission to Pair(
-        R.string.root_permission,
-        R.string.root_permission_description
-    ),
     Preferences.Key.RootSessionInstaller to Pair(
         R.string.root_session_installer,
         R.string.root_session_installer_description
@@ -42,6 +38,7 @@ val NonBooleanPrefsMeta = mapOf(
     Preferences.Key.NewApps to R.string.prefs_new_apps,
     Preferences.Key.AutoSync to R.string.sync_repositories_automatically,
     Preferences.Key.AutoSyncInterval to R.string.auto_sync_interval,
+    Preferences.Key.Installer to R.string.prefs_installer,
     Preferences.Key.ReleasesCacheRetention to R.string.releases_cache_retention,
     Preferences.Key.ImagesCacheRetention to R.string.images_cache_retention,
     Preferences.Key.ProxyType to R.string.proxy_type,
@@ -66,6 +63,11 @@ val PrefsEntries = mapOf(
         Preferences.DefaultTab.Explore to R.string.explore,
         Preferences.DefaultTab.Latest to R.string.latest,
         Preferences.DefaultTab.Installed to R.string.installed,
+    ),
+    Preferences.Key.Installer to mapOf(
+        Preferences.Installer.Default to R.string.default_installer,
+        Preferences.Installer.Root to R.string.root_installer,
+        Preferences.Installer.Legacy to R.string.legacy_installer,
     ),
     Preferences.Key.AutoSync to mapOf(
         Preferences.AutoSync.Wifi to R.string.only_on_wifi,
