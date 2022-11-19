@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 // TODO: Use this for MIUI device instead of guiding new users
-class DefaultInstallerOld(context: Context) : BaseInstaller(context) {
+class LegacyInstaller(context: Context) : BaseInstaller(context) {
     override suspend fun install(cacheFileName: String) {
         val cacheFile = Cache.getReleaseFile(context, cacheFileName)
         mOldDefaultInstaller(cacheFile)
