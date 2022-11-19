@@ -173,7 +173,6 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
     implementation("androidx.compose.material3:material3:1.0.1")
     implementation("androidx.compose.animation:animation:$composeVersion")
-    implementation("com.google.android.material:compose-theme-adapter-3:1.0.21")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
