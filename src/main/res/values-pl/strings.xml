@@ -234,4 +234,5 @@
     <string name="prefs_sync"></string>
     <string name="prefs_personal"></string>
     <string name="group_telegram"></string>
+    <string name="scan_qr_code"></string>
 </resources>
