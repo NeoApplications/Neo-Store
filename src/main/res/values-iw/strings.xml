@@ -233,4 +233,5 @@
     <string name="min_sdk"></string>
     <string name="repository_unsigned_DESC"></string>
     <string name="bug_tracker"></string>
+    <string name="scan_qr_code"></string>
 </resources>
