@@ -8,9 +8,9 @@ val accompanistVersion = "0.27.0"
 
 plugins {
     id("com.android.application") version ("7.2.2")
-    kotlin("android") version ("1.7.20")
-    kotlin("plugin.serialization") version ("1.7.20")
-    id("com.google.devtools.ksp") version ("1.7.20-1.0.6")
+    kotlin("android") version ("1.7.21")
+    kotlin("plugin.serialization") version ("1.7.21")
+    id("com.google.devtools.ksp") version ("1.7.21-1.0.8")
 }
 
 android {
@@ -119,8 +119,8 @@ android {
 dependencies {
 
     // Core
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20")
-    implementation("com.google.devtools.ksp:symbol-processing-api:1.7.20-RC-1.0.6")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.21")
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.7.21-1.0.8")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.0-rc01")
     implementation("androidx.fragment:fragment-ktx:1.6.0-alpha03")
