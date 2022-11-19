@@ -229,4 +229,5 @@
     <string name="open"></string>
     <string name="installed"></string>
     <string name="changelog"></string>
+    <string name="scan_qr_code"></string>
 </resources>
