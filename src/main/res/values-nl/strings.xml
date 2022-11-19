@@ -231,4 +231,5 @@
     </plurals>
     <string name="root_installer"></string>
     <string name="legacy_installer"></string>
+    <string name="scan_qr_code"></string>
 </resources>
