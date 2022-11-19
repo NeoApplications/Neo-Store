@@ -232,5 +232,9 @@
     <string name="date_updated">تاريخ التحديث</string>
     <string name="target_sdk">SDK المستهدفة</string>
     <string name="other_apps_by">تطبيقات أخرى بواسطة %s</string>
-    <string name="scan_qr_code">امسح رمز الاستجابة السريعة</string>
+    <string name="scan_qr_code">فحص رمز الاستجابة السريعة</string>
+    <string name="root_installer">مثبت الجذر</string>
+    <string name="prefs_installer">نوع المثبت</string>
+    <string name="default_installer">مثبت الجلسة الافتراضي</string>
+    <string name="legacy_installer">المثبت القديم (متوافق مع MIUI)</string>
 </resources>
