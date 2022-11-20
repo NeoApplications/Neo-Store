@@ -197,7 +197,7 @@
     <string name="ignore_battery_optimization_title">Ottimizzazione della batteria</string>
     <string name="ignore_battery_optimization_message">L\'app si comporta meglio senza ottimizzazione della batteria e previene arresti anomali su Android 12+.</string>
     <string name="dialog_refuse">Mantenere</string>
-    <string name="root_session_installer">Usa installatore della sessione root</string>
+    <string name="root_session_installer">Usa installer della sessione root</string>
     <string name="root_session_installer_description">Più lento, ma evita i problemi con le app installate su Android 13+.</string>
     <string name="no_permissions_identified">Nessun permesso richiesto identificato</string>
     <string name="not_safe_for_work">Censurabile (potrebbe contenere contenuti sensibili)</string>
@@ -232,4 +232,8 @@
     <string name="target_sdk">targetSDK</string>
     <string name="other_apps_by">Altre applicazioni di %s</string>
     <string name="scan_qr_code">Scansiona un codice QR</string>
+    <string name="prefs_installer">Tipo di installer</string>
+    <string name="default_installer">Installer sessione predefinita</string>
+    <string name="legacy_installer">Installer legacy (compatibile con MIUI)</string>
+    <string name="root_installer">Installer root</string>
 </resources>
