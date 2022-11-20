@@ -228,4 +228,8 @@
     <string name="dynamic">Dinamis sistem</string>
     <string name="other_apps_by">Aplikasi lainnya oleh %s</string>
     <string name="scan_qr_code">Pindai sebuah kode QR</string>
+    <string name="default_installer">Sesi penginstal bawaan</string>
+    <string name="legacy_installer">Penginstal lawas (kompatibel dengan MIUI)</string>
+    <string name="prefs_installer">Tipe penginstal</string>
+    <string name="root_installer">Penginstal root</string>
 </resources>
