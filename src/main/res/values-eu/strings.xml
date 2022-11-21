@@ -34,17 +34,11 @@
     <string name="available">Eskuragarri</string>
     <string name="changes">Aldaketak</string>
     <string name="contains_non_free_media">Baliabide ez-libreak ditu</string>
-    <string name="website"/>
     <string name="releases"/>
-    <string name="integrity_check_error_DESC"/>
     <string name="suggested"/>
-    <string name="installed"/>
     <string name="unstable_updates_summary"/>
-    <string name="file_format_error_DESC"/>
     <string name="incompatible_with_FORMAT"/>
-    <string name="downloaded_FORMAT"/>
     <string name="sort_descending"/>
-    <string name="incompatible_version"/>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one"/>
         <item quantity="other"/>

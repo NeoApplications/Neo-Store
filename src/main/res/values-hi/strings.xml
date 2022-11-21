@@ -136,9 +136,6 @@
     <string name="system">व्यवस्था</string>
     <string name="target">लक्ष्य</string>
     <string name="unknown">अनजान</string>
-    <string name="username_missing"/>
     <string name="action_apply"/>
-    <string name="prefs_personalization"/>
     <string name="root_session_installer"/>
-    <string name="install_after_sync"/>
 </resources>

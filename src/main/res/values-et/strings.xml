@@ -33,19 +33,13 @@
     <string name="description">Kirjeldus</string>
     <string name="fingerprint">Sõrmejälg</string>
     <string name="has_advertising">Sisaldab reklaami</string>
-    <string name="version_FORMAT"/>
     <string name="no_updates_available"/>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="list_animation"/>
     <string name="source_code"/>
-    <string name="prefs_new_apps"/>
     <string name="dialog_approve"/>
-    <string name="processing_FORMAT"/>
     <string name="has_security_vulnerabilities"/>
-    <string name="themes"/>
     <string name="group_telegram"/>
-    <string name="no_applications_installed"/>
 </resources>
