@@ -166,7 +166,7 @@
     <string name="invalid_fingerprint_format">指紋格式無效</string>
     <string name="processing_FORMAT">正在處理 %1$s …</string>
     <string name="provided_by_FORMAT">由 %s 提供</string>
-    <string name="repository_unsigned_DESC">無法驗證未簽名的程式清單。 
+    <string name="repository_unsigned_DESC">無法驗證未簽名的程式清單。
 \n從未簽名的資料庫下載程式時請小心。</string>
     <string name="invalid_address">地址無效</string>
     <string name="only_compatible_with_FORMAT">僅與 %s 相容</string>
@@ -228,4 +228,8 @@
     <string name="date_added">添加日期</string>
     <string name="date_updated">更新日期</string>
     <string name="scan_qr_code">掃描 QR-Code</string>
+    <string name="root_installer"></string>
+    <string name="default_installer"></string>
+    <string name="legacy_installer"></string>
+    <string name="prefs_installer"></string>
 </resources>
