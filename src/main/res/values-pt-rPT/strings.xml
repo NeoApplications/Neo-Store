@@ -138,7 +138,7 @@
     <string name="invalid_signature_error_DESC">Assinatura inválida.</string>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one">%d aplicação tem uma nova versão.</item>
-        <item quantity="many"/>
+        <item quantity="many"></item>
         <item quantity="other">%d aplicações têm novas versões.</item>
     </plurals>
     <string name="incompatible_signature_DESC">Esta versão está assinada com um certificado diferente do que está instalado no seu dispositivo.
@@ -230,4 +230,8 @@
     <string name="action_reset">Resetar</string>
     <string name="date_added">Data adicionada</string>
     <string name="date_updated">Data atualizada</string>
+    <string name="prefs_installer"></string>
+    <string name="root_installer"></string>
+    <string name="default_installer"></string>
+    <string name="legacy_installer"></string>
 </resources>
