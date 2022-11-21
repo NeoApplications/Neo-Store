@@ -225,6 +225,7 @@
     <string name="action_reset">重置</string>
     <string name="date_added">添加日期</string>
     <string name="date_updated">更新日期</string>
-    <string name="target_sdk">目标SDK</string>
+    <string name="target_sdk">当前SDK版本</string>
     <string name="other_apps_by">%s 开发的其他应用</string>
+    <string name="scan_qr_code">扫描二维码</string>
 </resources>

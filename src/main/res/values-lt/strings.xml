@@ -162,7 +162,7 @@
     <string name="new_applications">Naujos programėlės</string>
     <string name="install_after_sync">Automatinis atnaujinimas</string>
     <string name="prefs_updated_apps">Programėlių, rodomų skiltyje „Neseniai atnaujinta“, skaičius</string>
-    <string name="prefs_new_apps">Programėlių, rodomų skiltyje \"Naujos programėlės\", skaičius</string>
+    <string name="prefs_new_apps">Programėlių, rodomų skiltyje „Naujos programėlės“, skaičius</string>
     <string name="default_tab">Numatytoji kortelė</string>
     <string name="pending">Laukiama</string>
     <string name="dialog_approve">Išjungti</string>
@@ -210,9 +210,9 @@
     <string name="repositories">Repozitorijos</string>
     <string name="repository">Repozitorija</string>
     <string name="repository_not_used_DESC">Ši repozitorija dar nebuvo naudojama. 
-\nPrisijunkite prie, kad peržiūrėtumėte joje esančias programėles.</string>
+\nPrisijunkite prie jos, kad peržiūrėtumėte joje esančias programėles.</string>
     <string name="repository_unsigned_DESC">Nepavyko patikrinti nepasirašyto programėlių sąrašo.
-\nBūkite atsargūs atsisiunčiant programėles iš nepasirašytųrepozitorijų.</string>
+\nBūkite atsargūs atsisiunčiant programėles iš nepasirašytų repozitorijų.</string>
     <string name="requires_FORMAT">Reikalauja %s</string>
     <string name="select_mirror">Pasirinkite alternatyvų šaltinį</string>
     <string name="sync_repositories">Sinchronizuoti repozitorijas</string>
@@ -229,4 +229,5 @@
     <string name="show_screenshots_description">Rodyti ekrano nuotraukas programėlės puslapyje.</string>
     <string name="releases">Išleistos versijos</string>
     <string name="prefs_personal">Vartotojas</string>
+    <string name="scan_qr_code">Skenuoti QR kodą</string>
 </resources>

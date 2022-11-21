@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_failed">Действие не удалось</string>
+    <string name="action_failed">Действие не выполнено</string>
     <string name="add_repository">Добавить репозиторий</string>
     <string name="address">URL-адрес</string>
     <string name="all_applications">Все приложения</string>
@@ -231,4 +231,5 @@
     <string name="date_added">Дата добавления</string>
     <string name="target_sdk">Цел. SDK</string>
     <string name="other_apps_by">Другие приложения от %s</string>
+    <string name="scan_qr_code">Сканировать QR-код</string>
 </resources>

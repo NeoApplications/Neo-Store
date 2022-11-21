@@ -63,7 +63,7 @@
     <string name="incompatible_with_FORMAT">Non compatibile con %s</string>
     <string name="install">Installa</string>
     <string name="install_types">Tipi di installazione</string>
-    <string name="installed">Installate</string>
+    <string name="installed">Installata</string>
     <string name="integrity_check_error_DESC">Impossibile verificare l\'integrità.</string>
     <string name="invalid_address">Indirizzo non valido</string>
     <string name="invalid_fingerprint_format">Fingerprint in un formato non valido</string>
@@ -231,4 +231,5 @@
     <string name="date_added">Data aggiunta</string>
     <string name="target_sdk">targetSDK</string>
     <string name="other_apps_by">Altre applicazioni di %s</string>
+    <string name="scan_qr_code">Scansiona un codice QR</string>
 </resources>

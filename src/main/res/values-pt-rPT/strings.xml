@@ -206,4 +206,27 @@
     <string name="favorite_add">Adicionar aos favoritos</string>
     <string name="open">Abrir</string>
     <string name="loading_list">A carregar lista…</string>
+    <string name="images_cache_retention">Retenção do cache de imagens</string>
+    <string name="releases_cache_retention">Retenção de cache do APK descarregado</string>
+    <string name="system_black">Sistema (Preto)</string>
+    <string name="no_updates_available">Nenhuma versão disponível</string>
+    <string name="prefs_personal">Pessoal</string>
+    <string name="group_telegram">Nosso grupo no Telegram</string>
+    <string name="group_matrix">Nosso grupo no Matrix</string>
+    <string name="min_sdk">SDK mínimo</string>
+    <string name="target_sdk">SDK alvo</string>
+    <string name="categories">Categorias</string>
+    <string name="sort_descending">Descendente</string>
+    <string name="sort_ascending">Ascendente</string>
+    <string name="other_apps_by">Outras aplicações por %s</string>
+    <string name="scan_qr_code">Escanear um código QR</string>
+    <string name="dynamic">Sistema Dinâmico</string>
+    <string name="auto_sync_interval">Intervalo de Sincronização Automática (Em minutos)</string>
+    <string name="favorite_applications">Favoritos</string>
+    <string name="prefs_cache">Cache</string>
+    <string name="prefs_sync">Sincronização</string>
+    <string name="action_apply">Aplicar</string>
+    <string name="action_reset">Resetar</string>
+    <string name="date_added">Data adicionada</string>
+    <string name="date_updated">Data atualizada</string>
 </resources>

@@ -32,12 +32,12 @@
     <string name="downloading">下載中</string>
     <string name="downloading_FORMAT">正在下載 %s…</string>
     <string name="edit_repository">編輯資料庫</string>
-    <string name="file_format_error_DESC">文件格式無效。</string>
+    <string name="file_format_error_DESC">檔案格式無效。</string>
     <string name="fingerprint">指紋</string>
     <string name="has_non_free_dependencies">含非自由部件</string>
     <string name="incompatible_features_DESC">欠缺功能。</string>
-    <string name="incompatible_platforms_DESC_FORMAT">你的 %1$s 平台不受支持。 支持的平台：%2$s。</string>
-    <string name="incompatible_with_FORMAT">與 %s 不兼容</string>
+    <string name="incompatible_platforms_DESC_FORMAT">你的 %1$s 平台不受支援。 支援的平台：%2$s。</string>
+    <string name="incompatible_with_FORMAT">與 %s 不相容</string>
     <string name="install">安裝</string>
     <string name="installed">已安裝</string>
     <string name="license">版權</string>
@@ -53,7 +53,7 @@
     <string name="name">名稱</string>
     <string name="network_error_DESC">網路錯誤。</string>
     <string name="never">從不</string>
-    <string name="invalid_username_format">用戶名格式無效</string>
+    <string name="invalid_username_format">無效的使用者名稱</string>
     <string name="link_copied_to_clipboard">連結已複製到剪貼簿</string>
     <string name="links">連結</string>
     <string name="new_updates_available">有新版本可用</string>
@@ -113,8 +113,8 @@
     <string name="update">更新</string>
     <string name="updates">更新</string>
     <string name="upstream_source_code_is_not_free">上游原始碼不再自由</string>
-    <string name="username">用戶名稱</string>
-    <string name="username_missing">缺少用戶名稱</string>
+    <string name="username">使用者名稱</string>
+    <string name="username_missing">缺少使用者名稱</string>
     <string name="validation_index_error_DESC">無法驗證索引。</string>
     <string name="version">版本</string>
     <string name="version_FORMAT">版本 %s</string>
@@ -148,7 +148,7 @@
     <string name="could_not_sync_FORMAT">無法同步 %s</string>
     <string name="downloaded_FORMAT">已下載 %s</string>
     <string name="incompatible_api_max_DESC_FORMAT">最高 API 版本為 %d。</string>
-    <string name="incompatible_version">版本不兼容</string>
+    <string name="incompatible_version">版本不相容</string>
     <string name="has_security_vulnerabilities">含安全漏洞</string>
     <string name="has_advertising">含廣告</string>
     <string name="http_error_DESC">伺服器回應錯誤。</string>
@@ -156,9 +156,9 @@
     <string name="incompatible_api_min_DESC_FORMAT">最低 API 版本為 %d。</string>
     <string name="ignore_all_updates">忽略所有新版本</string>
     <string name="ignore_this_update">忽略此版本</string>
-    <string name="incompatible_versions_summary">顯示與設備不兼容的版本。</string>
-    <string name="incompatible_api_DESC_FORMAT">你的 %1$s（API 版本 %2$d）不受支持。 %3$s</string>
-    <string name="incompatible_versions">版本不兼容</string>
+    <string name="incompatible_versions_summary">顯示與設備不相容的版本。</string>
+    <string name="incompatible_api_DESC_FORMAT">你的 %1$s（API 版本 %2$d）不受支援。 %3$s</string>
+    <string name="incompatible_versions">版本不相容</string>
     <string name="incompatible_older_DESC">此版本比你裝置上的已安裝版本舊。請先移除已安裝版本。</string>
     <string name="install_types">安裝類型</string>
     <string name="other">其他</string>
@@ -169,7 +169,7 @@
     <string name="repository_unsigned_DESC">無法驗證未簽名的程式清單。 
 \n從未簽名的資料庫下載程式時請小心。</string>
     <string name="invalid_address">地址無效</string>
-    <string name="only_compatible_with_FORMAT">僅與 %s 兼容</string>
+    <string name="only_compatible_with_FORMAT">僅與 %s 相容</string>
     <string name="open_DESC_FORMAT">打開 %s ？</string>
     <string name="themes">主題</string>
     <string name="sort_filter">排序與過濾</string>
@@ -201,7 +201,7 @@
     <string name="not_safe_for_work">可屏蔽 (可能含有令人不安的內容)</string>
     <string name="no_updates_available">沒有可用的版本</string>
     <string name="releases">發行版本</string>
-    <string name="loading_list">正在加載列表…</string>
+    <string name="loading_list">正在載入列表…</string>
     <string name="prefs_personal">個人</string>
     <string name="auto_sync_interval">自動同步間隔 (分鐘)</string>
     <string name="images_cache_retention">保留圖像緩存</string>
@@ -218,4 +218,14 @@
     <string name="open">開啟</string>
     <string name="no_action_possible">沒有可用的操作</string>
     <string name="dynamic">系統動態</string>
+    <string name="target_sdk">目標SDK</string>
+    <string name="categories">類別</string>
+    <string name="sort_ascending">升序</string>
+    <string name="sort_descending">降序</string>
+    <string name="other_apps_by">%s 開發的其他應用程式</string>
+    <string name="action_apply">套用</string>
+    <string name="action_reset">重設</string>
+    <string name="date_added">添加日期</string>
+    <string name="date_updated">更新日期</string>
+    <string name="scan_qr_code">掃描 QR-Code</string>
 </resources>

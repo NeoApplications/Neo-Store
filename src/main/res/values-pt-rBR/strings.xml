@@ -85,6 +85,7 @@
     <string name="new_updates_available">Novas versões disponíveis</string>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one">%d aplicativo tem uma nova versão.</item>
+        <item quantity="many">%d aplicativos com novas versões.</item>
         <item quantity="other">%d aplicativos com novas versões.</item>
     </plurals>
     <string name="no_applications_available">Nenhum aplicativo disponível</string>
@@ -228,4 +229,6 @@
     <string name="action_apply">Aplicar</string>
     <string name="date_added">Data adicionada</string>
     <string name="target_sdk">SDK alvo</string>
+    <string name="other_apps_by">Outros aplicativos por %s</string>
+    <string name="scan_qr_code">Escanear um código QR</string>
 </resources>

@@ -232,4 +232,5 @@
     <string name="date_updated">تاريخ التحديث</string>
     <string name="target_sdk">SDK المستهدفة</string>
     <string name="other_apps_by">تطبيقات أخرى بواسطة %s</string>
+    <string name="scan_qr_code">امسح رمز الاستجابة السريعة</string>
 </resources>

@@ -210,7 +210,7 @@
     <string name="loading_list">Liste yükleniyor…</string>
     <string name="images_cache_retention">Görüntülerin önbellekte tutulması</string>
     <string name="releases_cache_retention">İndirilen APK\'ların önbellekte tutulması</string>
-    <string name="auto_sync_interval">Otomatik senkronizasyon aralığı (dakika olarak)</string>
+    <string name="auto_sync_interval">Otomatik eşzamanlama aralığı (dakika olarak)</string>
     <string name="favorite_applications">Favoriler</string>
     <string name="prefs_sync">Eşzamanlama</string>
     <string name="prefs_personal">Kişisel</string>
@@ -221,4 +221,8 @@
     <string name="action_apply">Uygula</string>
     <string name="categories">Kategoriler</string>
     <string name="sort_descending">Azalan</string>
+    <string name="sort_ascending">Artan</string>
+    <string name="action_reset">Sıfırla</string>
+    <string name="date_added">Eklendiği tarih</string>
+    <string name="date_updated">Güncellendiği tarih</string>
 </resources>
