@@ -193,6 +193,5 @@
     <string name="root_session_installer_description">‏این جلسه ی نصب کننده (session installer) کمی کند تر از legacy installer است، ولی از مشکلات با برنامه های نصب شده در اندروید ۱۳ و بالاتر جلوگیری می کند.</string>
     <string name="ignore_battery_optimization_title">نادیده گرفتن بهینه سازی باتری</string>
     <string name="ignore_battery_optimization_message">از اندروید ۱۲ و بعد، برای سرویس های پیش زمینه محدودیت هایی وجود دارد که باعث مشکلات با دانلود های این برنامه پبش آید. برای جلوگیری از این مشکل، شما باید بهینه سازی باتری را خاموش کنید</string>
-    <string name="date_updated"/>
     <string name="root_installer"/>
 </resources>

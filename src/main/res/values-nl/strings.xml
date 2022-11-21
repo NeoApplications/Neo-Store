@@ -204,5 +204,4 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="categories"/>
 </resources>

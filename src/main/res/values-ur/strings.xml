@@ -4,18 +4,11 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="author_website"/>
     <string name="whats_new"/>
-    <string name="integrity_check_error_DESC"/>
     <string name="downloading"/>
-    <string name="unstable_updates_summary"/>
     <string name="new_updates_available"/>
-    <string name="unsigned"/>
     <string name="application"/>
-    <string name="permissions"/>
     <string name="waiting_to_start_download"/>
-    <string name="sort_ascending"/>
     <string name="plus_more_FORMAT"/>
-    <string name="install_after_sync"/>
     <string name="checking_repository"/>
 </resources>

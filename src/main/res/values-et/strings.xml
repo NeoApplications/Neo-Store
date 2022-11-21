@@ -37,16 +37,10 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="incompatible_features_DESC"/>
     <string name="unknown"/>
-    <string name="suggested"/>
     <string name="releases"/>
-    <string name="show_more"/>
     <string name="show_screenshots_description"/>
-    <string name="syncing"/>
     <string name="number_of_applications"/>
-    <string name="prefs_language_title"/>
     <string name="skip"/>
-    <string name="incompatible_api_max_DESC_FORMAT"/>
     <string name="legacy_installer"/>
 </resources>

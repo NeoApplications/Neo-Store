@@ -38,16 +38,10 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="unknown"/>
     <string name="sort_ascending"/>
-    <string name="show_older_versions"/>
     <string name="prefs_installer"/>
-    <string name="processing_FORMAT"/>
     <string name="date_updated"/>
-    <string name="install"/>
     <string name="uninstall"/>
-    <string name="promotes_non_free_software"/>
     <string name="http_proxy"/>
-    <string name="waiting_to_start_download"/>
     <string name="scan_qr_code"/>
 </resources>

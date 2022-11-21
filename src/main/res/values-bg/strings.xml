@@ -208,5 +208,4 @@
     <string name="releases">Издания</string>
     <string name="no_updates_available">Няма налични версии</string>
     <string name="dynamic">Динамична система</string>
-    <string name="root_installer"/>
 </resources>

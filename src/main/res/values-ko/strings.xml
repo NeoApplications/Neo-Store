@@ -168,7 +168,5 @@
     <string name="unsigned">서명되지않음</string>
     <string name="unstable_updates_summary">불안정한 버전을 설치하도록 제안</string>
     <string name="default_tab">기본 탭</string>
-    <string name="only_compatible_with_FORMAT"/>
     <string name="other_apps_by"/>
-    <string name="prefs_new_apps"/>
 </resources>

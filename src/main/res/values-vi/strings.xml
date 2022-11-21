@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="could_not_sync_FORMAT"/>
     <string name="ignore_all_updates"/>
-    <string name="contains_non_free_media"/>
     <string name="size"/>
-    <string name="author_email"/>
     <string name="never"/>
-    <string name="links"/>
     <string name="cant_edit_sync_DESC"/>
-    <string name="update_all"/>
     <string name="checking_repository"/>
-    <string name="incompatible_features_DESC"/>
     <string name="unknown_FORMAT"/>
-    <string name="light"/>
     <string name="amoled"/>
 </resources>

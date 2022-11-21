@@ -20,17 +20,10 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="launch"/>
     <string name="notify_about_updates"/>
-    <string name="tap_to_install_DESC"/>
     <string name="explore"/>
-    <string name="open"/>
     <string name="whats_new"/>
-    <string name="only_on_wifi"/>
     <string name="select_mirror"/>
-    <string name="date_added"/>
     <string name="sort_ascending"/>
-    <string name="saving_details"/>
     <string name="favorite_remove"/>
-    <string name="integrity_check_error_DESC"/>
 </resources>

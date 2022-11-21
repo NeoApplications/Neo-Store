@@ -136,9 +136,6 @@
     <string name="system">व्यवस्था</string>
     <string name="target">लक्ष्य</string>
     <string name="unknown">अनजान</string>
-    <string name="themes"/>
     <string name="validation_index_error_DESC"/>
-    <string name="unknown_error_DESC"/>
     <string name="target_sdk"/>
-    <string name="root_installer"/>
 </resources>

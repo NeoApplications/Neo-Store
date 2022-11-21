@@ -4,18 +4,11 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="plus_more_FORMAT"/>
     <string name="delete"/>
-    <string name="installed"/>
     <string name="incompatible_api_max_DESC_FORMAT"/>
-    <string name="favorite_applications"/>
     <string name="source_code_no_longer_available"/>
-    <string name="ignore_this_update"/>
     <string name="unsigned"/>
-    <string name="prefs_updated_apps"/>
     <string name="new_applications"/>
-    <string name="show_less"/>
     <string name="cant_edit_sync_DESC"/>
-    <string name="no_applications_available"/>
     <string name="incompatible_api_min_DESC_FORMAT"/>
 </resources>
