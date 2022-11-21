@@ -209,4 +209,26 @@
     <string name="loading_list">Laddar lista…</string>
     <string name="auto_sync_interval">Automatisk-Synk intervall (i minuter)</string>
     <string name="favorite_applications">Favoriter</string>
+    <string name="images_cache_retention"></string>
+    <string name="releases_cache_retention"></string>
+    <string name="prefs_cache"></string>
+    <string name="prefs_installer"></string>
+    <string name="min_sdk"></string>
+    <string name="prefs_personal"></string>
+    <string name="sort_descending"></string>
+    <string name="target_sdk"></string>
+    <string name="default_installer"></string>
+    <string name="categories"></string>
+    <string name="prefs_sync"></string>
+    <string name="action_apply"></string>
+    <string name="legacy_installer"></string>
+    <string name="other_apps_by"></string>
+    <string name="date_added"></string>
+    <string name="system_black"></string>
+    <string name="root_installer"></string>
+    <string name="sort_ascending"></string>
+    <string name="date_updated"></string>
+    <string name="group_matrix"></string>
+    <string name="group_telegram"></string>
+    <string name="action_reset"></string>
 </resources>
