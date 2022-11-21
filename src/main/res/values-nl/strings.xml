@@ -23,14 +23,14 @@
     <string name="compiled_for_debugging">Gecompileerd voor foutopsporing.</string>
     <string name="confirmation">Bevestig</string>
     <string name="connecting">Verbinden…</string>
-    <string name="contains_non_free_media">Bevat "niet-vrije" media.</string>
+    <string name="contains_non_free_media">Bevat niet-vrije media.</string>
     <string name="could_not_download_FORMAT">Kan %s niet downloaden.</string>
     <string name="could_not_sync_FORMAT">Kan %s niet synchroniseren.</string>
     <string name="could_not_validate_FORMAT">Kan %s niet valideren.</string>
     <string name="credits">Bijdragers</string>
     <string name="dark">Donker</string>
     <string name="delete">Verwijder</string>
-    <string name="delete_repository_DESC">Verwijder archief?</string>
+    <string name="delete_repository_DESC">Verwijder archief\?</string>
     <string name="description">Omschrijving</string>
     <string name="details">Details</string>
     <string name="donate">Doneer</string>
@@ -41,7 +41,7 @@
     <string name="file_format_error_DESC">Bestands format klopt niet.</string>
     <string name="fingerprint">Vingerafdruk:</string>
     <string name="has_advertising">Adverteert</string>
-    <string name="has_non_free_dependencies">Heeft "non-libre dependencies".</string>
+    <string name="has_non_free_dependencies">Heeft non-libre dependencies.</string>
     <string name="has_security_vulnerabilities">Heeft veiligheids zwakheden.</string>
     <string name="http_error_DESC">Foute server reactie.</string>
     <string name="http_proxy">HTTP proxy</string>
@@ -90,7 +90,7 @@
     <string name="only_compatible_with_FORMAT">Alleen compatibel met %s.</string>
     <string name="only_on_wifi">Alleen met Wi-Fi</string>
     <string name="only_on_wifi_and_battery">Alleen met Wi-Fi en opladen</string>
-    <string name="open_DESC_FORMAT">Open %s?</string>
+    <string name="open_DESC_FORMAT">Open %s\?</string>
     <string name="other">Andere</string>
     <string name="parsing_index_error_DESC">Kan index bestand niet lezen. (Vereist voor inhoud van archief.)</string>
     <string name="password">Wachtwoord</string>
@@ -101,8 +101,8 @@
     <string name="settings">Instellingen</string>
     <string name="processing_FORMAT">%1$s verwerken…</string>
     <string name="project_website">Project Website</string>
-    <string name="promotes_non_free_network_services">Promoot "non-libre" netwerk diensten.</string>
-    <string name="promotes_non_free_software">Promoot "non-libre" software.</string>
+    <string name="promotes_non_free_network_services">Promoot non-libre netwerk diensten.</string>
+    <string name="promotes_non_free_software">Promoot non-libre software.</string>
     <string name="provided_by_FORMAT">Verstrekt door %s.</string>
     <string name="proxy">Proxy</string>
     <string name="proxy_host">Host:</string>
@@ -111,8 +111,10 @@
     <string name="recently_updated">Recentelijk bijgewerkt:</string>
     <string name="repositories">Archieven</string>
     <string name="repository">Archief</string>
-    <string name="repository_not_used_DESC">Dit archief is nog niet gebruikt. \n Verbind om de inhoud te kunnen zien.</string>
-    <string name="repository_unsigned_DESC">Kan ongesigneerde app lijst niet verifiëren.\n Wees voorzichtig met apps van ongesigneerde archieven te downloaden.</string>
+    <string name="repository_not_used_DESC">Dit archief is nog niet gebruikt.
+\n Verbind om de inhoud te kunnen zien.</string>
+    <string name="repository_unsigned_DESC">Kan ongesigneerde app lijst niet verifiëren.
+\n Wees voorzichtig met apps van ongesigneerde archieven te downloaden.</string>
     <string name="requires_FORMAT">Vereist %s.</string>
     <string name="root_permission">Stille installatie:</string>
     <string name="root_permission_description">Gebruik root for installaties zonder interactie.</string>
@@ -120,7 +122,7 @@
     <string name="saving_details">Details opslaan…</string>
     <string name="screenshots">Schermafdrukken</string>
     <string name="search">Zoek</string>
-    <string name="select_mirror">Kies een "mirror".</string>
+    <string name="select_mirror">Kies een mirror.</string>
     <string name="share">Deel</string>
     <string name="show_more">Toon meer.</string>
     <string name="show_older_versions">Toon oudere versies.</string>
@@ -153,7 +155,7 @@
     <string name="unverified">Ongeverifiëerd</string>
     <string name="update">Werk bij.</string>
     <string name="updates">Nieuwe versies</string>
-    <string name="upstream_source_code_is_not_free">De "upstream" bron code is "not libre".</string>
+    <string name="upstream_source_code_is_not_free">De upstream bron code is not libre.</string>
     <string name="not_safe_for_work">Censureerbaar (bevat mogelijk schokkende content.)</string>
     <string name="username">Gebruikersnaam</string>
     <string name="username_missing">Gebruikersnaam mist.</string>
@@ -175,8 +177,8 @@
     <string name="new_applications">Nieuwe apps</string>
     <string name="install_after_sync">Automatisch-bijwerken:</string>
     <string name="install_after_sync_summary">Installeer alle nieuwe versies na het laden van archieven.</string>
-    <string name="prefs_updated_apps">Toon aantal apps in \"Recently updated\:</string>
-    <string name="prefs_new_apps">Toon aantal apps in \"New apps\:</string>
+    <string name="prefs_updated_apps">Toon aantal apps in \"Recently updated</string>
+    <string name="prefs_new_apps">Toon aantal apps in \"New apps</string>
     <string name="new_repository">Nieuw archief</string>
     <string name="default_tab">Standaard tabblad:</string>
     <string name="pending">Aan de gang...</string>
@@ -198,4 +200,35 @@
     <string name="releases">Publicaties</string>
     <string name="no_updates_available">Geen versies beschikbaar.</string>
     <string name="dynamic">"System dynamic" (Gebruik achtergrond foto als kleurschema voor thema.)</string>
+    <string name="images_cache_retention"></string>
+    <string name="releases_cache_retention"></string>
+    <string name="incompatible_older_DESC"></string>
+    <string name="incompatible_platforms_DESC_FORMAT"></string>
+    <string name="incompatible_signature_DESC"></string>
+    <string name="prefs_cache"></string>
+    <string name="prefs_sync"></string>
+    <string name="system_black"></string>
+    <string name="auto_sync_interval"></string>
+    <string name="prefs_personal"></string>
+    <string name="target_sdk"></string>
+    <string name="categories"></string>
+    <string name="sort_ascending"></string>
+    <string name="sort_descending"></string>
+    <string name="action_apply"></string>
+    <string name="action_reset"></string>
+    <string name="date_added"></string>
+    <string name="date_updated"></string>
+    <string name="group_matrix"></string>
+    <string name="group_telegram"></string>
+    <string name="other_apps_by"></string>
+    <string name="prefs_installer"></string>
+    <string name="default_installer"></string>
+    <string name="min_sdk"></string>
+    <string name="favorite_applications"></string>
+    <plurals name="new_updates_DESC_FORMAT">
+        <item quantity="one"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="root_installer"></string>
+    <string name="legacy_installer"></string>
 </resources>
