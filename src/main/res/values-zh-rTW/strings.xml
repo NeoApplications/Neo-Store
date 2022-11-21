@@ -228,4 +228,8 @@
     <string name="date_added">添加日期</string>
     <string name="date_updated">更新日期</string>
     <string name="scan_qr_code">掃描 QR-Code</string>
+    <string name="prefs_installer"></string>
+    <string name="root_installer"></string>
+    <string name="default_installer"></string>
+    <string name="legacy_installer"></string>
 </resources>
