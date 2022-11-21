@@ -228,4 +228,8 @@
     <string name="date_added">Data d\'amiestu</string>
     <string name="date_updated">Data d\'anovamientu</string>
     <string name="other_apps_by">Otres aplicaciones de: %s</string>
+    <string name="legacy_installer"></string>
+    <string name="root_installer"></string>
+    <string name="default_installer"></string>
+    <string name="prefs_installer"></string>
 </resources>
