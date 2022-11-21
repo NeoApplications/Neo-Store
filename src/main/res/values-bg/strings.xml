@@ -208,16 +208,10 @@
     <string name="releases">Издания</string>
     <string name="no_updates_available">Няма налични версии</string>
     <string name="dynamic">Динамична система</string>
-    <string name="releases_cache_retention"/>
     <string name="prefs_sync"/>
-    <string name="target_sdk"/>
     <string name="sort_ascending"/>
-    <string name="other_apps_by"/>
     <string name="action_reset"/>
-    <string name="date_updated"/>
     <string name="legacy_installer"/>
-    <string name="group_telegram"/>
     <string name="favorite_applications"/>
-    <string name="prefs_personal"/>
     <string name="default_installer"/>
 </resources>

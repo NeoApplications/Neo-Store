@@ -198,21 +198,12 @@
     <string name="not_safe_for_work">NSFW (saattaa sisältää häiritsevää sisältöä)</string>
     <string name="no_permissions_identified">Pyydettyjä lupia ei ole tunnistettu</string>
     <string name="no_action_possible">Ei mahdollisia toimia</string>
-    <string name="releases_cache_retention"/>
     <string name="favorite_add"/>
-    <string name="loading_list"/>
     <string name="prefs_personal"/>
-    <string name="target_sdk"/>
     <string name="sort_ascending"/>
-    <string name="action_apply"/>
     <string name="group_matrix"/>
-    <string name="default_installer"/>
     <string name="favorite_applications"/>
-    <string name="prefs_installer"/>
     <string name="legacy_installer"/>
-    <string name="date_updated"/>
     <string name="show_screenshots"/>
-    <string name="auto_sync_interval"/>
     <string name="date_added"/>
-    <string name="scan_qr_code"/>
 </resources>

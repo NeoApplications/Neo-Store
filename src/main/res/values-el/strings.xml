@@ -208,16 +208,10 @@
     <string name="open">Άνοιγμα</string>
     <string name="loading_list">Φόρτωση λίστας…</string>
     <string name="dynamic">Δυναμική συστήματος</string>
-    <string name="releases_cache_retention"/>
     <string name="auto_sync_interval"/>
-    <string name="prefs_personal"/>
     <string name="sort_ascending"/>
-    <string name="action_apply"/>
     <string name="date_added"/>
-    <string name="min_sdk"/>
     <string name="default_installer"/>
-    <string name="categories"/>
     <string name="group_matrix"/>
-    <string name="date_updated"/>
     <string name="root_installer"/>
 </resources>

@@ -224,8 +224,6 @@
     <string name="action_reset">Sıfırla</string>
     <string name="date_added">Eklendiği tarih</string>
     <string name="date_updated">Güncellendiği tarih</string>
-    <string name="target_sdk"/>
     <string name="prefs_installer"/>
-    <string name="other_apps_by"/>
     <string name="scan_qr_code"/>
 </resources>

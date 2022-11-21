@@ -206,16 +206,10 @@
     <string name="favorite_add">Afegeix als favorits</string>
     <string name="open">Obre</string>
     <string name="loading_list">S\'està carregant la llista…</string>
-    <string name="prefs_cache"/>
     <string name="other_apps_by"/>
-    <string name="group_telegram"/>
     <string name="root_installer"/>
-    <string name="sort_descending"/>
     <string name="system_black"/>
-    <string name="action_apply"/>
     <string name="releases_cache_retention"/>
-    <string name="date_added"/>
     <string name="categories"/>
-    <string name="default_installer"/>
     <string name="scan_qr_code"/>
 </resources>
