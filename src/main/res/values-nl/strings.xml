@@ -201,7 +201,34 @@
     <string name="no_updates_available">Geen versies beschikbaar.</string>
     <string name="dynamic">System dynamic (Gebruik achtergrond foto als kleurschema voor thema.)</string>
     <plurals name="new_updates_DESC_FORMAT">
-        <item quantity="one"/>
-        <item quantity="other"/>
+        <item quantity="one"></item>
+        <item quantity="other"></item>
     </plurals>
+    <string name="incompatible_signature_DESC"></string>
+    <string name="prefs_personal"></string>
+    <string name="system_black"></string>
+    <string name="auto_sync_interval"></string>
+    <string name="other_apps_by"></string>
+    <string name="prefs_installer"></string>
+    <string name="prefs_sync"></string>
+    <string name="prefs_cache"></string>
+    <string name="incompatible_platforms_DESC_FORMAT"></string>
+    <string name="default_installer"></string>
+    <string name="min_sdk"></string>
+    <string name="date_updated"></string>
+    <string name="incompatible_older_DESC"></string>
+    <string name="favorite_applications"></string>
+    <string name="target_sdk"></string>
+    <string name="categories"></string>
+    <string name="sort_ascending"></string>
+    <string name="sort_descending"></string>
+    <string name="action_apply"></string>
+    <string name="action_reset"></string>
+    <string name="date_added"></string>
+    <string name="images_cache_retention"></string>
+    <string name="releases_cache_retention"></string>
+    <string name="group_matrix"></string>
+    <string name="group_telegram"></string>
+    <string name="root_installer"></string>
+    <string name="legacy_installer"></string>
 </resources>
