@@ -204,18 +204,11 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="prefs_personal"/>
     <string name="auto_sync_interval"/>
-    <string name="prefs_installer"/>
     <string name="prefs_cache"/>
-    <string name="default_installer"/>
     <string name="date_updated"/>
-    <string name="favorite_applications"/>
     <string name="categories"/>
-    <string name="sort_descending"/>
     <string name="action_reset"/>
-    <string name="images_cache_retention"/>
     <string name="group_matrix"/>
-    <string name="root_installer"/>
     <string name="scan_qr_code"/>
 </resources>

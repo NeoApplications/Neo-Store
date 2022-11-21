@@ -188,27 +188,15 @@
     <string name="install_after_sync_summary">تثبيت تحديثات التطبيقات آلياً بعد مزامنة المستودعات</string>
     <string name="new_repository">مستودع جديد</string>
     <string name="default_tab">التبويب الافتراضي</string>
-    <string name="releases_cache_retention"/>
     <string name="dynamic"/>
-    <string name="date_added"/>
     <string name="ignore_battery_optimization_not_supported"/>
-    <string name="favorite_remove"/>
     <string name="root_installer"/>
-    <string name="prefs_cache"/>
     <string name="releases"/>
-    <string name="prefs_installer"/>
     <string name="action_apply"/>
-    <string name="root_session_installer"/>
     <string name="legacy_installer"/>
-    <string name="show_screenshots_description"/>
     <string name="categories"/>
-    <string name="sort_descending"/>
     <string name="not_safe_for_work"/>
-    <string name="dialog_approve"/>
     <string name="group_matrix"/>
-    <string name="favorite_add"/>
     <string name="prefs_sync"/>
-    <string name="root_session_installer_description"/>
     <string name="open"/>
-    <string name="scan_qr_code"/>
 </resources>

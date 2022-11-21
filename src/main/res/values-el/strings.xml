@@ -208,16 +208,10 @@
     <string name="open">Άνοιγμα</string>
     <string name="loading_list">Φόρτωση λίστας…</string>
     <string name="dynamic">Δυναμική συστήματος</string>
-    <string name="releases_cache_retention"/>
     <string name="favorite_applications"/>
-    <string name="group_telegram"/>
     <string name="sort_ascending"/>
-    <string name="prefs_installer"/>
     <string name="legacy_installer"/>
-    <string name="date_updated"/>
     <string name="root_installer"/>
-    <string name="target_sdk"/>
     <string name="prefs_sync"/>
-    <string name="system_black"/>
     <string name="action_reset"/>
 </resources>

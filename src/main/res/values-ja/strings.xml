@@ -195,22 +195,13 @@
     <string name="dialog_refuse">オフにしない</string>
     <string name="dialog_approve">オフにする</string>
     <string name="ignore_battery_optimization_not_supported">お使いの Android では、バッテリー最適化をオフにできません。</string>
-    <string name="show_screenshots_description"/>
     <string name="min_sdk"/>
-    <string name="group_telegram"/>
     <string name="action_reset"/>
-    <string name="favorite_add"/>
     <string name="prefs_personal"/>
-    <string name="date_updated"/>
     <string name="action_apply"/>
-    <string name="open"/>
     <string name="date_added"/>
-    <string name="no_action_possible"/>
     <string name="system_black"/>
-    <string name="releases_cache_retention"/>
     <string name="categories"/>
-    <string name="not_safe_for_work"/>
     <string name="default_installer"/>
-    <string name="releases"/>
     <string name="prefs_sync"/>
 </resources>

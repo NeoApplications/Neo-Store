@@ -230,6 +230,5 @@
     <string name="other_apps_by">Autres applis de %s</string>
     <string name="target_sdk">targetSDK</string>
     <string name="scan_qr_code">Scanner un QR-Code</string>
-    <string name="legacy_installer"/>
     <string name="root_installer"/>
 </resources>

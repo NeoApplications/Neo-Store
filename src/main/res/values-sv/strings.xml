@@ -209,15 +209,9 @@
     <string name="loading_list">Laddar lista…</string>
     <string name="auto_sync_interval">Automatisk-Synk intervall (i minuter)</string>
     <string name="favorite_applications">Favoriter</string>
-    <string name="releases_cache_retention"/>
     <string name="prefs_installer"/>
-    <string name="prefs_personal"/>
     <string name="target_sdk"/>
-    <string name="categories"/>
     <string name="action_apply"/>
-    <string name="other_apps_by"/>
     <string name="system_black"/>
-    <string name="sort_ascending"/>
     <string name="group_matrix"/>
-    <string name="action_reset"/>
 </resources>

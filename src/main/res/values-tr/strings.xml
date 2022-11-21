@@ -224,8 +224,6 @@
     <string name="action_reset">Sıfırla</string>
     <string name="date_added">Eklendiği tarih</string>
     <string name="date_updated">Güncellendiği tarih</string>
-    <string name="legacy_installer"/>
     <string name="default_installer"/>
-    <string name="root_installer"/>
     <string name="scan_qr_code"/>
 </resources>

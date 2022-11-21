@@ -230,6 +230,5 @@
     <string name="action_reset">Resetar</string>
     <string name="date_added">Data adicionada</string>
     <string name="date_updated">Data atualizada</string>
-    <string name="root_installer"/>
     <string name="legacy_installer"/>
 </resources>

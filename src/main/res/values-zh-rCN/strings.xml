@@ -228,6 +228,5 @@
     <string name="target_sdk">当前SDK版本</string>
     <string name="other_apps_by">%s 开发的其他应用</string>
     <string name="scan_qr_code">扫描二维码</string>
-    <string name="default_installer"/>
     <string name="root_installer"/>
 </resources>
