@@ -136,6 +136,5 @@
     <string name="system">व्यवस्था</string>
     <string name="target">लक्ष्य</string>
     <string name="unknown">अनजान</string>
-    <string name="action_apply"/>
     <string name="root_session_installer"/>
 </resources>

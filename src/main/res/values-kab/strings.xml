@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="delete_repository_DESC"/>
     <string name="update_all"/>
-    <string name="repositories"/>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="list_animation_description"/>
     <string name="unverified"/>
-    <string name="syncing"/>
 </resources>

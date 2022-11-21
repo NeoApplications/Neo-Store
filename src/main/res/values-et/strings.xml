@@ -33,13 +33,10 @@
     <string name="description">Kirjeldus</string>
     <string name="fingerprint">Sõrmejälg</string>
     <string name="has_advertising">Sisaldab reklaami</string>
-    <string name="no_updates_available"/>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="source_code"/>
     <string name="dialog_approve"/>
-    <string name="has_security_vulnerabilities"/>
     <string name="group_telegram"/>
 </resources>
