@@ -16,8 +16,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -83,6 +86,7 @@ class MainActivityX : AppCompatActivity() {
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
+    lateinit var expanded: MutableState<Boolean>
 
     val db
         get() = (application as MainApplication).db
@@ -118,6 +122,9 @@ class MainActivityX : AppCompatActivity() {
                 }
             ) {
                 val query by searchQuery.collectAsState(initial = "")
+                expanded = remember {
+                    mutableStateOf(false)
+                }
                 val mScope = rememberCoroutineScope()
                 navController = rememberAnimatedNavController()
                 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -134,6 +141,7 @@ class MainActivityX : AppCompatActivity() {
                         ) {
                             ExpandableSearchAction(
                                 query = query,
+                                expanded = expanded,
                                 onClose = {
                                     mScope.launch { _searchQuery.emit("") }
                                 },
@@ -187,11 +195,15 @@ class MainActivityX : AppCompatActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true)
-            return true
+        return when {
+            keyCode == KeyEvent.KEYCODE_BACK && expanded.value -> {
+                cScope.launch { _searchQuery.emit("") }
+                expanded.value = false
+                true
+            }
+            keyCode == KeyEvent.KEYCODE_BACK -> moveTaskToBack(true)
+            else -> super.onKeyDown(keyCode, event)
         }
-        return super.onKeyDown(keyCode, event)
     }
 
     override fun onNewIntent(intent: Intent?) {

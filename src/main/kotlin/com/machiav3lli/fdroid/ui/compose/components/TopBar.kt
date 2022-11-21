@@ -20,6 +20,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -69,11 +70,11 @@ fun TopBar(
 fun ExpandableSearchAction(
     query: String,
     modifier: Modifier = Modifier,
-    expanded: Boolean = false,
+    expanded: MutableState<Boolean> = mutableStateOf(false),
     onClose: () -> Unit,
     onQueryChanged: (String) -> Unit
 ) {
-    val (isExpanded, onExpanded) = remember { mutableStateOf(expanded) }
+    val (isExpanded, onExpanded) = remember { expanded }
 
     HorizontalExpandingVisibility(
         expanded = isExpanded,
