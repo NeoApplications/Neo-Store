@@ -37,7 +37,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.machiav3lli.fdroid.NAV_MAIN
 import com.machiav3lli.fdroid.NAV_PREFS
@@ -105,9 +104,11 @@ fun BottomNavBar(page: Int = NAV_MAIN, navController: NavController) {
                 selected = selected,
                 onClick = {
                     navController.navigate(item.destination) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            inclusive = true
-                            saveState = true
+                        navBackStackEntry?.destination?.let {
+                            popUpTo(it.route.orEmpty()) {
+                                inclusive = true
+                                saveState = true
+                            }
                         }
                         launchSingleTop = true
                         restoreState = page == NAV_MAIN
