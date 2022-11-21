@@ -52,8 +52,7 @@
     <string name="incompatible_api_min_DESC_FORMAT">A versão mínima da API é %d.</string>
     <string name="incompatible_features_DESC">Funcionalidades que estão faltando.</string>
     <string name="incompatible_older_DESC">Esta versão é mais antiga que a instalada no seu dispositivo. Desinstale-a primeiro.</string>
-    <string name="incompatible_platforms_DESC_FORMAT">Sua %1$s plataforma não é suportada.
-    Plataformas suportadas: %2$s.</string>
+    <string name="incompatible_platforms_DESC_FORMAT">Sua %1$s plataforma não é suportada. Plataformas suportadas: %2$s.</string>
     <string name="incompatible_signature_DESC">Esta versão é assinada com um certificado diferente daquele instalado no seu dispositivo.
 \nDesinstale-a primeiro.</string>
     <string name="incompatible_version">Versão incompatível</string>
@@ -99,7 +98,7 @@
     <string name="ok">OK</string>
     <string name="only_compatible_with_FORMAT">Somente compatível com %s</string>
     <string name="only_on_wifi">Somente no Wi-Fi</string>
-    <string name="open_DESC_FORMAT">Abrir %s?</string>
+    <string name="open_DESC_FORMAT">Abrir %s\?</string>
     <string name="other">Outros</string>
     <string name="parsing_index_error_DESC">Não foi possível analisar o arquivo de índice.</string>
     <string name="password">Senha</string>
@@ -231,4 +230,8 @@
     <string name="target_sdk">SDK alvo</string>
     <string name="other_apps_by">Outros aplicativos por %s</string>
     <string name="scan_qr_code">Escanear um código QR</string>
+    <string name="legacy_installer"></string>
+    <string name="default_installer"></string>
+    <string name="prefs_installer"></string>
+    <string name="root_installer"></string>
 </resources>
