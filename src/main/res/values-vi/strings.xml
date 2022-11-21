@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="no_permissions_identified"/>
     <string name="dynamic"/>
-    <string name="prefs_new_apps"/>
 </resources>

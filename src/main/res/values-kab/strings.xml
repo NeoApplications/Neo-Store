@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="update_all"/>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="unverified"/>
 </resources>

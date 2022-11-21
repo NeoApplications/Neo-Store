@@ -13,7 +13,5 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="install_after_sync_summary"/>
     <string name="incompatible_versions_summary"/>
-    <string name="other_apps_by"/>
 </resources>
