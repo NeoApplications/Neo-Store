@@ -20,7 +20,5 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="explore"/>
     <string name="select_mirror"/>
-    <string name="favorite_remove"/>
 </resources>

@@ -13,7 +13,5 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="uninstall"/>
     <string name="incompatible_version"/>
-    <string name="action_reset"/>
 </resources>

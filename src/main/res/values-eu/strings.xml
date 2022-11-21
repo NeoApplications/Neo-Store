@@ -38,7 +38,5 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="prefs_installer"/>
     <string name="uninstall"/>
-    <string name="scan_qr_code"/>
 </resources>

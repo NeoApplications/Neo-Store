@@ -11,7 +11,5 @@
         <item quantity="many"/>
         <item quantity="other"/>
     </plurals>
-    <string name="open"/>
     <string name="version_FORMAT"/>
-    <string name="version"/>
 </resources>

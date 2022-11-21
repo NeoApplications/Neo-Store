@@ -37,7 +37,5 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="releases"/>
     <string name="number_of_applications"/>
-    <string name="legacy_installer"/>
 </resources>

@@ -4,7 +4,5 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="downloading"/>
     <string name="application"/>
-    <string name="plus_more_FORMAT"/>
 </resources>

@@ -37,7 +37,5 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="dynamic"/>
     <string name="sort_descending"/>
-    <string name="launch"/>
 </resources>

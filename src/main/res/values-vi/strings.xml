@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="size"/>
     <string name="cant_edit_sync_DESC"/>
-    <string name="unknown_FORMAT"/>
 </resources>
