@@ -51,12 +51,9 @@
     <string name="incompatible_api_max_DESC_FORMAT">الحد الأقصى لإصدار API هو %d.</string>
     <string name="incompatible_api_min_DESC_FORMAT">الحد الأدنى لإصدار API هو %d.</string>
     <string name="incompatible_features_DESC">مميزات مفقودة.</string>
-    <string name="incompatible_older_DESC">هذا الإصدار اقدم من ذلك
-     المثبت على جهازك. قم بإلغاء تثبيته أولاً.</string>
-    <string name="incompatible_platforms_DESC_FORMAT">النظام الأساسي%1$s الخاص بك غير مدعوم.
-     الأنظمة الأساسية المدعومة: %2$s.</string>
-    <string name="incompatible_signature_DESC">هذا الإصدار موقّع بشهادة مختلفة عن تلك
-     المثبتة على جهازك. قم بإلغاء تثبيت تلك أولاً.</string>
+    <string name="incompatible_older_DESC">هذا الإصدار اقدم من ذلك المثبت على جهازك. قم بإلغاء تثبيته أولاً.</string>
+    <string name="incompatible_platforms_DESC_FORMAT">النظام الأساسي%1$s الخاص بك غير مدعوم. الأنظمة الأساسية المدعومة: %2$s.</string>
+    <string name="incompatible_signature_DESC">هذا الإصدار موقّع بشهادة مختلفة عن تلك المثبتة على جهازك. قم بإلغاء تثبيت تلك أولاً.</string>
     <string name="incompatible_version">إصدار غير متوفق</string>
     <string name="incompatible_versions">إصدارات غير متوافقه</string>
     <string name="incompatible_versions_summary">إظهار إصدارات غير متوافقة مع الجهاز</string>
@@ -191,4 +188,49 @@
     <string name="install_after_sync_summary">تثبيت تحديثات التطبيقات آلياً بعد مزامنة المستودعات</string>
     <string name="new_repository">مستودع جديد</string>
     <string name="default_tab">التبويب الافتراضي</string>
+    <string name="images_cache_retention"></string>
+    <string name="releases_cache_retention"></string>
+    <string name="no_updates_available"></string>
+    <string name="dynamic"></string>
+    <string name="prefs_personal"></string>
+    <string name="system_black"></string>
+    <string name="releases"></string>
+    <string name="favorite_applications"></string>
+    <string name="prefs_cache"></string>
+    <string name="target_sdk"></string>
+    <string name="categories"></string>
+    <string name="sort_ascending"></string>
+    <string name="sort_descending"></string>
+    <string name="other_apps_by"></string>
+    <string name="action_apply"></string>
+    <string name="action_reset"></string>
+    <string name="date_added"></string>
+    <string name="date_updated"></string>
+    <string name="not_safe_for_work"></string>
+    <string name="pending"></string>
+    <string name="ignore_battery_optimization_not_supported"></string>
+    <string name="dialog_refuse"></string>
+    <string name="favorite_remove"></string>
+    <string name="group_telegram"></string>
+    <string name="installing"></string>
+    <string name="root_installer"></string>
+    <string name="dialog_approve"></string>
+    <string name="no_permissions_identified"></string>
+    <string name="no_action_possible"></string>
+    <string name="root_session_installer_description"></string>
+    <string name="group_matrix"></string>
+    <string name="auto_sync_interval"></string>
+    <string name="prefs_installer"></string>
+    <string name="show_screenshots"></string>
+    <string name="ignore_battery_optimization_title"></string>
+    <string name="root_session_installer"></string>
+    <string name="favorite_add"></string>
+    <string name="ignore_battery_optimization_message"></string>
+    <string name="legacy_installer"></string>
+    <string name="open"></string>
+    <string name="default_installer"></string>
+    <string name="min_sdk"></string>
+    <string name="prefs_sync"></string>
+    <string name="show_screenshots_description"></string>
+    <string name="loading_list"></string>
 </resources>
