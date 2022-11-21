@@ -20,10 +20,7 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="notify_about_updates"/>
     <string name="explore"/>
-    <string name="whats_new"/>
     <string name="select_mirror"/>
-    <string name="sort_ascending"/>
     <string name="favorite_remove"/>
 </resources>

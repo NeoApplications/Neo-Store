@@ -4,11 +4,7 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="whats_new"/>
     <string name="downloading"/>
-    <string name="new_updates_available"/>
     <string name="application"/>
-    <string name="waiting_to_start_download"/>
     <string name="plus_more_FORMAT"/>
-    <string name="checking_repository"/>
 </resources>

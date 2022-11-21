@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ignore_all_updates"/>
     <string name="size"/>
-    <string name="never"/>
     <string name="cant_edit_sync_DESC"/>
-    <string name="checking_repository"/>
     <string name="unknown_FORMAT"/>
-    <string name="amoled"/>
 </resources>

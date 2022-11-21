@@ -13,10 +13,7 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="sort_ascending"/>
     <string name="uninstall"/>
-    <string name="ok"/>
     <string name="incompatible_version"/>
-    <string name="incompatible_older_DESC"/>
     <string name="action_reset"/>
 </resources>

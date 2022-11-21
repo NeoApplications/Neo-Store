@@ -37,10 +37,7 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="proxy_type"/>
     <string name="dynamic"/>
-    <string name="install_after_sync_summary"/>
     <string name="sort_descending"/>
-    <string name="sort_ascending"/>
     <string name="launch"/>
 </resources>

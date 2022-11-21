@@ -11,10 +11,7 @@
         <item quantity="many"/>
         <item quantity="other"/>
     </plurals>
-    <string name="password_missing"/>
     <string name="open"/>
-    <string name="no_matching_applications_found"/>
     <string name="version_FORMAT"/>
-    <string name="new_updates_available"/>
     <string name="version"/>
 </resources>

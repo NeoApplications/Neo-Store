@@ -38,10 +38,7 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="sort_ascending"/>
     <string name="prefs_installer"/>
-    <string name="date_updated"/>
     <string name="uninstall"/>
-    <string name="http_proxy"/>
     <string name="scan_qr_code"/>
 </resources>

@@ -4,11 +4,7 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="delete"/>
     <string name="incompatible_api_max_DESC_FORMAT"/>
-    <string name="source_code_no_longer_available"/>
     <string name="unsigned"/>
-    <string name="new_applications"/>
     <string name="cant_edit_sync_DESC"/>
-    <string name="incompatible_api_min_DESC_FORMAT"/>
 </resources>
