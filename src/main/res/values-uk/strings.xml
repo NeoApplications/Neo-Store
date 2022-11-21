@@ -231,4 +231,8 @@
     <string name="date_added">Дата додавання</string>
     <string name="date_updated">Дата оновлення</string>
     <string name="scan_qr_code">Сканувати QR-код</string>
+    <string name="root_installer"></string>
+    <string name="prefs_installer"></string>
+    <string name="legacy_installer"></string>
+    <string name="default_installer"></string>
 </resources>
