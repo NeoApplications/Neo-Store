@@ -13,5 +13,4 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="incompatible_version"/>
 </resources>

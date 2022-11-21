@@ -37,5 +37,4 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="number_of_applications"/>
 </resources>

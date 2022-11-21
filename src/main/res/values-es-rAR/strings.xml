@@ -11,5 +11,4 @@
         <item quantity="many"/>
         <item quantity="other"/>
     </plurals>
-    <string name="version_FORMAT"/>
 </resources>

@@ -37,5 +37,4 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="sort_descending"/>
 </resources>
