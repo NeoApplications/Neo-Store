@@ -33,7 +33,6 @@
     <string name="author_website">Website ng may-akda</string>
     <string name="could_not_download_FORMAT">Hindi madownload %s</string>
     <string name="dark">Dilim</string>
-    <string name="show_screenshots"/>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one"/>
         <item quantity="other"/>

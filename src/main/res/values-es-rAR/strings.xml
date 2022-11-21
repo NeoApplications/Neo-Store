@@ -6,7 +6,6 @@
     <string name="all_applications">Todas las Aplicaciones</string>
     <string name="all_applications_up_to_date">Todas las aplicaciones are up to date</string>
     <string name="already_exists">Ya existe</string>
-    <string name="delete"/>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one"/>
         <item quantity="many"/>
