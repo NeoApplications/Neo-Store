@@ -188,9 +188,6 @@
     <string name="show_screenshots_description">הצג צילומי מסך בדף האפליקציה.</string>
     <string name="open">פתוח</string>
     <string name="favorite_add">הוספה למועדפים</string>
-    <string name="prefs_installer"/>
     <string name="prefs_cache"/>
-    <string name="socks_proxy"/>
     <string name="other_apps_by"/>
-    <string name="root_session_installer"/>
 </resources>

@@ -1,31 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="show_more"/>
     <string name="could_not_sync_FORMAT"/>
-    <string name="no_permissions_identified"/>
     <string name="ignore_all_updates"/>
-    <string name="changelog"/>
     <string name="contains_non_free_media"/>
-    <string name="http_proxy"/>
     <string name="size"/>
-    <string name="installed_applications"/>
     <string name="author_email"/>
-    <string name="show_less"/>
     <string name="never"/>
-    <string name="favorite_add"/>
     <string name="links"/>
-    <string name="invalid_permissions_error_DESC"/>
     <string name="cant_edit_sync_DESC"/>
-    <string name="unstable_updates_summary"/>
     <string name="update_all"/>
-    <string name="password"/>
     <string name="checking_repository"/>
-    <string name="syncing_FORMAT"/>
     <string name="incompatible_features_DESC"/>
-    <string name="install"/>
     <string name="unknown_FORMAT"/>
-    <string name="available"/>
     <string name="light"/>
-    <string name="not_safe_for_work"/>
     <string name="amoled"/>
 </resources>

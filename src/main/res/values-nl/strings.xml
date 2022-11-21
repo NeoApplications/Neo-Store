@@ -204,7 +204,5 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="prefs_cache"/>
     <string name="categories"/>
-    <string name="group_matrix"/>
 </resources>

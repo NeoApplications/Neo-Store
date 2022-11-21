@@ -38,28 +38,16 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="loading_list"/>
     <string name="unknown"/>
-    <string name="incompatible_api_DESC_FORMAT"/>
     <string name="sort_ascending"/>
-    <string name="incompatible_versions_summary"/>
     <string name="show_older_versions"/>
-    <string name="has_security_vulnerabilities"/>
     <string name="prefs_installer"/>
-    <string name="prefs_sync"/>
     <string name="processing_FORMAT"/>
-    <string name="downloaded_FORMAT"/>
     <string name="date_updated"/>
-    <string name="syncing_FORMAT"/>
     <string name="install"/>
-    <string name="dialog_approve"/>
     <string name="uninstall"/>
-    <string name="merging_FORMAT"/>
     <string name="promotes_non_free_software"/>
-    <string name="permissions"/>
     <string name="http_proxy"/>
-    <string name="license"/>
     <string name="waiting_to_start_download"/>
-    <string name="root_session_installer_description"/>
     <string name="scan_qr_code"/>
 </resources>

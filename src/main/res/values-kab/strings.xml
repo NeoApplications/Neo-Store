@@ -4,32 +4,18 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="no_proxy"/>
     <string name="plus_more_FORMAT"/>
-    <string name="other"/>
     <string name="delete"/>
-    <string name="no_matching_applications_found"/>
     <string name="installed"/>
-    <string name="loading_list"/>
     <string name="incompatible_api_max_DESC_FORMAT"/>
-    <string name="prefs_installer"/>
     <string name="favorite_applications"/>
-    <string name="username_missing"/>
     <string name="source_code_no_longer_available"/>
-    <string name="could_not_download_FORMAT"/>
     <string name="ignore_this_update"/>
-    <string name="favorite_remove"/>
     <string name="unsigned"/>
-    <string name="add_repository"/>
     <string name="prefs_updated_apps"/>
-    <string name="license_FORMAT"/>
     <string name="new_applications"/>
-    <string name="legacy_installer"/>
     <string name="show_less"/>
-    <string name="other_apps_by"/>
     <string name="cant_edit_sync_DESC"/>
-    <string name="skip"/>
     <string name="no_applications_available"/>
-    <string name="downloading"/>
     <string name="incompatible_api_min_DESC_FORMAT"/>
 </resources>

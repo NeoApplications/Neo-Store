@@ -136,15 +136,9 @@
     <string name="system">व्यवस्था</string>
     <string name="target">लक्ष्य</string>
     <string name="unknown">अनजान</string>
-    <string name="syncing_FORMAT"/>
     <string name="themes"/>
-    <string name="favorite_applications"/>
     <string name="validation_index_error_DESC"/>
-    <string name="group_telegram"/>
     <string name="unknown_error_DESC"/>
-    <string name="group_matrix"/>
     <string name="target_sdk"/>
-    <string name="not_safe_for_work"/>
     <string name="root_installer"/>
-    <string name="sync_repositories"/>
 </resources>

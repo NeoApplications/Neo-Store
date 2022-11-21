@@ -37,28 +37,16 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="select_mirror"/>
     <string name="incompatible_features_DESC"/>
-    <string name="source_code"/>
     <string name="unknown"/>
-    <string name="incompatible_versions"/>
     <string name="suggested"/>
-    <string name="uninstall"/>
     <string name="releases"/>
-    <string name="unknown_error_DESC"/>
     <string name="show_more"/>
-    <string name="anti_features"/>
     <string name="show_screenshots_description"/>
-    <string name="root_installer"/>
     <string name="syncing"/>
-    <string name="invalid_address"/>
     <string name="number_of_applications"/>
-    <string name="proxy_host"/>
     <string name="prefs_language_title"/>
-    <string name="http_proxy"/>
     <string name="skip"/>
-    <string name="sorting_order"/>
     <string name="incompatible_api_max_DESC_FORMAT"/>
-    <string name="size"/>
     <string name="legacy_installer"/>
 </resources>

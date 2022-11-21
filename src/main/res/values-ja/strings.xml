@@ -195,8 +195,6 @@
     <string name="dialog_refuse">オフにしない</string>
     <string name="dialog_approve">オフにする</string>
     <string name="ignore_battery_optimization_not_supported">お使いの Android では、バッテリー最適化をオフにできません。</string>
-    <string name="action_reset"/>
     <string name="action_apply"/>
-    <string name="system_black"/>
     <string name="default_installer"/>
 </resources>

@@ -13,31 +13,17 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="repository"/>
     <string name="downloaded_FORMAT"/>
-    <string name="processing_FORMAT"/>
     <string name="sort_ascending"/>
-    <string name="could_not_sync_FORMAT"/>
     <string name="could_not_download_FORMAT"/>
-    <string name="license_FORMAT"/>
     <string name="uninstall"/>
-    <string name="sync_repositories_automatically"/>
     <string name="application_not_found"/>
-    <string name="incompatible_versions_summary"/>
     <string name="ok"/>
-    <string name="source_code_no_longer_available"/>
     <string name="install_after_sync"/>
-    <string name="update_all"/>
     <string name="incompatible_version"/>
-    <string name="version_FORMAT"/>
     <string name="theme"/>
-    <string name="upstream_source_code_is_not_free"/>
     <string name="incompatible_older_DESC"/>
-    <string name="no_proxy"/>
     <string name="installing"/>
-    <string name="socks_proxy"/>
     <string name="action_reset"/>
-    <string name="incompatible_api_min_DESC_FORMAT"/>
     <string name="updates"/>
-    <string name="changelog"/>
 </resources>

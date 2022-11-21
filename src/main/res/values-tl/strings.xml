@@ -37,28 +37,16 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="http_error_DESC"/>
     <string name="incompatible_signature_DESC"/>
-    <string name="only_on_wifi_and_battery"/>
     <string name="proxy_type"/>
-    <string name="saving_details"/>
     <string name="updates"/>
-    <string name="ignore_battery_optimization_message"/>
     <string name="dynamic"/>
-    <string name="update"/>
     <string name="new_applications"/>
-    <string name="validation_index_error_DESC"/>
     <string name="install_after_sync_summary"/>
-    <string name="invalid_signature_error_DESC"/>
     <string name="theme"/>
-    <string name="share"/>
     <string name="sort_descending"/>
-    <string name="group_matrix"/>
     <string name="has_advertising"/>
-    <string name="source_code"/>
     <string name="sort_ascending"/>
-    <string name="never"/>
     <string name="default_tab"/>
-    <string name="plus_more_FORMAT"/>
     <string name="launch"/>
 </resources>

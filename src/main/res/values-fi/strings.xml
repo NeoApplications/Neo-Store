@@ -198,8 +198,6 @@
     <string name="not_safe_for_work">NSFW (saattaa sisältää häiritsevää sisältöä)</string>
     <string name="no_permissions_identified">Pyydettyjä lupia ei ole tunnistettu</string>
     <string name="no_action_possible">Ei mahdollisia toimia</string>
-    <string name="dynamic"/>
     <string name="show_screenshots_description"/>
-    <string name="releases"/>
     <string name="favorite_remove"/>
 </resources>

@@ -213,6 +213,5 @@
     <string name="dynamic">Sistem dinamic</string>
     <string name="auto_sync_interval">Interval de sincronizare automată (în minute)</string>
     <string name="favorite_applications">Favorite</string>
-    <string name="categories"/>
     <string name="date_updated"/>
 </resources>

@@ -208,7 +208,5 @@
     <string name="open">Άνοιγμα</string>
     <string name="loading_list">Φόρτωση λίστας…</string>
     <string name="dynamic">Δυναμική συστήματος</string>
-    <string name="sort_ascending"/>
     <string name="root_installer"/>
-    <string name="action_reset"/>
 </resources>

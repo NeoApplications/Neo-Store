@@ -206,7 +206,5 @@
     <string name="favorite_add">Afegeix als favorits</string>
     <string name="open">Obre</string>
     <string name="loading_list">S\'està carregant la llista…</string>
-    <string name="prefs_sync"/>
     <string name="action_reset"/>
-    <string name="scan_qr_code"/>
 </resources>

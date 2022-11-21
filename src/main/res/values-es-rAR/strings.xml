@@ -11,31 +11,17 @@
         <item quantity="many"/>
         <item quantity="other"/>
     </plurals>
-    <string name="no_proxy"/>
     <string name="never"/>
-    <string name="installing"/>
     <string name="password_missing"/>
-    <string name="ignore_battery_optimization_not_supported"/>
     <string name="cancel"/>
-    <string name="edit_repository"/>
     <string name="open"/>
-    <string name="repository_not_used_DESC"/>
     <string name="incompatible_api_DESC_FORMAT"/>
-    <string name="donate"/>
     <string name="no_matching_applications_found"/>
-    <string name="other"/>
     <string name="ignore_this_update"/>
-    <string name="unknown"/>
     <string name="version_FORMAT"/>
-    <string name="unstable_updates_summary"/>
     <string name="prefs_cache"/>
-    <string name="proxy"/>
     <string name="new_updates_available"/>
-    <string name="only_on_wifi"/>
     <string name="installed_applications"/>
-    <string name="prefs_updated_apps"/>
     <string name="version"/>
-    <string name="latest"/>
     <string name="min_sdk"/>
-    <string name="show_less"/>
 </resources>
