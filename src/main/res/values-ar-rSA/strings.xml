@@ -188,15 +188,9 @@
     <string name="install_after_sync_summary">تثبيت تحديثات التطبيقات آلياً بعد مزامنة المستودعات</string>
     <string name="new_repository">مستودع جديد</string>
     <string name="default_tab">التبويب الافتراضي</string>
-    <string name="dynamic"/>
     <string name="ignore_battery_optimization_not_supported"/>
-    <string name="root_installer"/>
     <string name="releases"/>
-    <string name="action_apply"/>
     <string name="legacy_installer"/>
-    <string name="categories"/>
     <string name="not_safe_for_work"/>
-    <string name="group_matrix"/>
     <string name="prefs_sync"/>
-    <string name="open"/>
 </resources>

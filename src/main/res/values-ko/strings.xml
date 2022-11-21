@@ -168,19 +168,11 @@
     <string name="unsigned">서명되지않음</string>
     <string name="unstable_updates_summary">불안정한 버전을 설치하도록 제안</string>
     <string name="default_tab">기본 탭</string>
-    <string name="root_session_installer"/>
     <string name="action_failed"/>
-    <string name="system_black"/>
     <string name="only_compatible_with_FORMAT"/>
-    <string name="processing_FORMAT"/>
     <string name="integrity_check_error_DESC"/>
-    <string name="root_session_installer_description"/>
     <string name="other_apps_by"/>
-    <string name="auto_sync_interval"/>
     <string name="categories"/>
-    <string name="prefs_installer"/>
     <string name="prefs_new_apps"/>
-    <string name="favorite_applications"/>
     <string name="only_on_wifi_and_battery"/>
-    <string name="legacy_installer"/>
 </resources>

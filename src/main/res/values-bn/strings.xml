@@ -228,5 +228,4 @@
     <string name="other_apps_by">%s এর অন্য অ্যাপসমূহ</string>
     <string name="action_apply">প্রয়োগ করুন</string>
     <string name="action_reset">পুনরায় শুরু</string>
-    <string name="root_installer"/>
 </resources>

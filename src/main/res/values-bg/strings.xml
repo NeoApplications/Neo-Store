@@ -208,10 +208,7 @@
     <string name="releases">Издания</string>
     <string name="no_updates_available">Няма налични версии</string>
     <string name="dynamic">Динамична система</string>
-    <string name="action_reset"/>
     <string name="sort_ascending"/>
-    <string name="sort_descending"/>
     <string name="root_installer"/>
-    <string name="group_telegram"/>
     <string name="group_matrix"/>
 </resources>

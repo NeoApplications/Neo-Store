@@ -228,5 +228,4 @@
     <string name="action_reset">Zurücksetzen</string>
     <string name="date_added">Datum des Hinzufügens</string>
     <string name="date_updated">Datum des Updates</string>
-    <string name="root_installer"/>
 </resources>

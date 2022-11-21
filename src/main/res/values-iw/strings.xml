@@ -188,15 +188,9 @@
     <string name="show_screenshots_description">הצג צילומי מסך בדף האפליקציה.</string>
     <string name="open">פתוח</string>
     <string name="favorite_add">הוספה למועדפים</string>
-    <string name="date_added"/>
     <string name="prefs_installer"/>
-    <string name="root_permission_description"/>
     <string name="prefs_cache"/>
-    <string name="loading_list"/>
     <string name="socks_proxy"/>
-    <string name="group_telegram"/>
     <string name="other_apps_by"/>
-    <string name="target_sdk"/>
     <string name="root_session_installer"/>
-    <string name="repository_unsigned_DESC"/>
 </resources>

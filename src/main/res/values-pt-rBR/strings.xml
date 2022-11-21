@@ -230,5 +230,4 @@
     <string name="target_sdk">SDK alvo</string>
     <string name="other_apps_by">Outros aplicativos por %s</string>
     <string name="scan_qr_code">Escanear um código QR</string>
-    <string name="default_installer"/>
 </resources>

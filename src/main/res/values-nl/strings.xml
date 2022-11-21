@@ -204,11 +204,7 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
-    <string name="auto_sync_interval"/>
     <string name="prefs_cache"/>
-    <string name="date_updated"/>
     <string name="categories"/>
-    <string name="action_reset"/>
     <string name="group_matrix"/>
-    <string name="scan_qr_code"/>
 </resources>

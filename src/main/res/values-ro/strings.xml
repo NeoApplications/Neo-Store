@@ -213,9 +213,6 @@
     <string name="dynamic">Sistem dinamic</string>
     <string name="auto_sync_interval">Interval de sincronizare automată (în minute)</string>
     <string name="favorite_applications">Favorite</string>
-    <string name="prefs_sync"/>
     <string name="categories"/>
-    <string name="group_telegram"/>
     <string name="date_updated"/>
-    <string name="group_matrix"/>
 </resources>

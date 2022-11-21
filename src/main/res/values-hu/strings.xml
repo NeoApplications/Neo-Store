@@ -204,11 +204,7 @@
     <string name="root_session_installer">Rendszergazdaként futó telepítő használata</string>
     <string name="show_screenshots_description">Képernyőképek megjelenítése az alkalmazások oldalán.</string>
     <string name="favorite_remove">Eltávolítás a kedvencek közül</string>
-    <string name="min_sdk"/>
     <string name="releases"/>
-    <string name="loading_list"/>
     <string name="sort_ascending"/>
-    <string name="action_apply"/>
     <string name="favorite_applications"/>
-    <string name="group_telegram"/>
 </resources>
