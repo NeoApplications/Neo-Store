@@ -224,5 +224,4 @@
     <string name="action_reset">Sıfırla</string>
     <string name="date_added">Eklendiği tarih</string>
     <string name="date_updated">Güncellendiği tarih</string>
-    <string name="scan_qr_code"/>
 </resources>

@@ -211,7 +211,5 @@
     <string name="favorite_add">Dodaj do ulubionych</string>
     <string name="open">Otwórz</string>
     <string name="loading_list">Ładowanie listy…</string>
-    <string name="sort_descending"/>
     <string name="prefs_sync"/>
-    <string name="scan_qr_code"/>
 </resources>

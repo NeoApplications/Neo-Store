@@ -136,15 +136,9 @@
     <string name="system">व्यवस्था</string>
     <string name="target">लक्ष्य</string>
     <string name="unknown">अनजान</string>
-    <string name="prefs_sync"/>
     <string name="username_missing"/>
-    <string name="show_screenshots"/>
     <string name="action_apply"/>
-    <string name="tap_to_install_DESC"/>
     <string name="prefs_personalization"/>
-    <string name="root_installer"/>
     <string name="root_session_installer"/>
-    <string name="ignore_battery_optimization_message"/>
     <string name="install_after_sync"/>
-    <string name="open"/>
 </resources>
