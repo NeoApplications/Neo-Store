@@ -228,5 +228,9 @@
     <string name="action_reset">Restablecer</string>
     <string name="date_added">Data engadida</string>
     <string name="date_updated">Data de actualización</string>
-    <string name="scan_qr_code">Escanealo código Qr</string>
+    <string name="scan_qr_code">Escanealo QR</string>
+    <string name="root_installer">Instalador root</string>
+    <string name="prefs_installer">Tipo de instalador</string>
+    <string name="default_installer">Instalador de sesión predeterminado</string>
+    <string name="legacy_installer">Instalador herdado (compatible con MIUI)</string>
 </resources>
