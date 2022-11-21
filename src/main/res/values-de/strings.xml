@@ -228,9 +228,6 @@
     <string name="action_reset">Zurücksetzen</string>
     <string name="date_added">Datum des Hinzufügens</string>
     <string name="date_updated">Datum des Updates</string>
-    <string name="legacy_installer"></string>
-    <string name="default_installer"></string>
-    <string name="prefs_installer"></string>
-    <string name="root_installer"></string>
-    <string name="scan_qr_code"></string>
+    <string name="default_installer"/>
+    <string name="root_installer"/>
 </resources>
