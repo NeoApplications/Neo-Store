@@ -52,8 +52,7 @@
     <string name="incompatible_api_min_DESC_FORMAT">Минимальная версия API %d.</string>
     <string name="incompatible_features_DESC">Отсутствующие функции.</string>
     <string name="incompatible_older_DESC">Эта версия старше той, которая установлена на вашем устройстве. Сначала удалите её.</string>
-    <string name="incompatible_platforms_DESC_FORMAT">Ваша платформа %1$s не поддерживается.
-Поддерживаемые платформы: %2$s.</string>
+    <string name="incompatible_platforms_DESC_FORMAT">Ваша платформа %1$s не поддерживается. Поддерживаемые платформы: %2$s.</string>
     <string name="incompatible_signature_DESC">Эта версия приложения подписана сертификатом, отличным от того, которым подписана установленная на вашем устройстве версия.
 \nСначала удалите её.</string>
     <string name="incompatible_version">Несовместимая версия</string>
@@ -100,7 +99,7 @@
     <string name="ok">ОК</string>
     <string name="only_compatible_with_FORMAT">Совместимо только с %s</string>
     <string name="only_on_wifi">Только по Wi-Fi</string>
-    <string name="open_DESC_FORMAT">Открыть %s?</string>
+    <string name="open_DESC_FORMAT">Открыть %s\?</string>
     <string name="other">Прочее</string>
     <string name="parsing_index_error_DESC">Не удалось разобрать индексный файл.</string>
     <string name="password">Пароль</string>
