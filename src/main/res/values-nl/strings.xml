@@ -200,11 +200,8 @@
     <string name="releases">Publicaties</string>
     <string name="no_updates_available">Geen versies beschikbaar.</string>
     <string name="dynamic">System dynamic (Gebruik achtergrond foto als kleurschema voor thema.)</string>
-    <string name="incompatible_platforms_DESC_FORMAT"/>
     <string name="system_black"/>
-    <string name="categories"/>
     <string name="action_reset"/>
-    <string name="group_telegram"/>
     <string name="min_sdk"/>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one"/>

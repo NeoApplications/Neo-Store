@@ -136,27 +136,15 @@
     <string name="system">व्यवस्था</string>
     <string name="target">लक्ष्य</string>
     <string name="unknown">अनजान</string>
-    <string name="no_updates_available"/>
     <string name="prefs_sync"/>
-    <string name="unknown_FORMAT"/>
     <string name="username_missing"/>
-    <string name="sort_filter"/>
     <string name="show_screenshots"/>
-    <string name="favorite_applications"/>
     <string name="action_apply"/>
-    <string name="no_permissions_identified"/>
     <string name="tap_to_install_DESC"/>
-    <string name="versions"/>
     <string name="prefs_personalization"/>
-    <string name="dialog_refuse"/>
     <string name="root_installer"/>
-    <string name="socks_proxy"/>
     <string name="root_session_installer"/>
-    <string name="group_telegram"/>
     <string name="ignore_battery_optimization_message"/>
-    <string name="source_code_no_longer_available"/>
     <string name="install_after_sync"/>
-    <string name="unverified"/>
     <string name="open"/>
-    <string name="loading_list"/>
 </resources>

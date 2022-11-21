@@ -188,15 +188,9 @@
     <string name="install_after_sync_summary">تثبيت تحديثات التطبيقات آلياً بعد مزامنة المستودعات</string>
     <string name="new_repository">مستودع جديد</string>
     <string name="default_tab">التبويب الافتراضي</string>
-    <string name="dynamic"/>
     <string name="favorite_applications"/>
-    <string name="sort_ascending"/>
     <string name="action_reset"/>
-    <string name="pending"/>
     <string name="group_telegram"/>
-    <string name="no_permissions_identified"/>
     <string name="auto_sync_interval"/>
-    <string name="root_session_installer"/>
     <string name="open"/>
-    <string name="show_screenshots_description"/>
 </resources>
