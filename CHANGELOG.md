@@ -1,6 +1,19 @@
 CHANGELOG
 =========
 
+0.9.10 (22.11.2022) 230+ Commits
+------------------
+- Add: App icon based on system theme
+- Add: Installer type preference (including Legacy mode for dumb MIUI)
+- Add: Specific screenshot placeholder
+- Add: Cryptomator & TwinHelix Signal-FOSS preset repositories
+- Fix: Navigation after launching from updates notification
+- Fix: Download bar not reflecting true progress
+- Fix: Prefs' dependency handling
+- Update: Empty & hide SearchBar on pressing back before exit
+- Update: ViewModels as monotone instances in the Activities
+- Update: Simplify ListProduct layout
+
 0.9.9 (31.10.2022) 7 Commits
 ------------------
 - Add: Scan repo QrCode using BinaryEye (if installed)

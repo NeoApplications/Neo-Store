@@ -1,0 +1,5 @@
+Add: App icon based on system theme
+Add: Installer type preference (including Legacy mode for dumb MIUI)
+Fix: Navigation after launching from updates notification
+Fix: Download bar not reflecting true progress
+Couple more in the full changelog…
