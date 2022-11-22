@@ -1,13 +1,17 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="32dp"
-    android:height="128dp"
-    android:tint="?attr/colorOnPrimary"
-    android:viewportWidth="32"
-    android:viewportHeight="128">
+    android:width="128dp"
+    android:height="256dp"
+    android:viewportWidth="1080"
+    android:viewportHeight="2048">
     <path
-        android:fillColor="@android:color/white"
-        android:pathData="M12,12m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0" />
+        android:fillColor="?colorSurface"
+        android:pathData="M-0,0h1024v2048h-1024z"
+        android:strokeWidth="13" />
     <path
-        android:fillColor="@android:color/white"
-        android:pathData="M20,4h-3.17l-1.24,-1.35c-0.37,-0.41 -0.91,-0.65 -1.47,-0.65L9.88,2c-0.56,0 -1.1,0.24 -1.48,0.65L7.17,4L4,4c-1.1,0 -2,0.9 -2,2v12c0,1.1 0.9,2 2,2h16c1.1,0 2,-0.9 2,-2L22,6c0,-1.1 -0.9,-2 -2,-2zM12,17c-2.76,0 -5,-2.24 -5,-5s2.24,-5 5,-5 5,2.24 5,5 -2.24,5 -5,5z" />
+        android:fillColor="?colorOnSurface"
+        android:pathData="m620,924h-27.7l-13.6,-20.4a7.9,7.9 0,0 0,-6.7 -3.6h-64a7.9,7.9 0,0 0,-6.7 3.6l-13.6,20.4L460,924a24.1,24.1 0,0 0,-24 24v112a24.1,24.1 0,0 0,24 24h160a24.1,24.1 0,0 0,24 -24L644,948a24.1,24.1 0,0 0,-24 -24zM628,1060a8,8 0,0 1,-8 8L460,1068a8,8 0,0 1,-8 -8L452,948a8,8 0,0 1,8 -8h32a7.9,7.9 0,0 0,6.7 -3.6l13.6,-20.4h55.4l13.6,20.4a7.9,7.9 0,0 0,6.7 3.6h32a8,8 0,0 1,8 8zM540,956a44,44 0,1 0,44 44,44 44,0 0,0 -44,-44zM540,1028a28,28 0,1 1,28 -28,28.1 28.1,0 0,1 -28,28z" />
+    <path
+        android:fillColor="?colorOnSurface"
+        android:pathData="m552,704v96a12,12 0,0 1,-24 0v-96a12,12 0,0 1,24 0zM828,980h-96a12,12 0,0 0,0 24h96a12,12 0,0 0,0 -24zM684.3,1119.2a12.1,12.1 0,0 0,-17.1 17.1l68.1,67.8a11.4,11.4 0,0 0,8.4 3.6,11.7 11.7,0 0,0 8.4,-3.6 11.7,11.7 0,0 0,0 -16.8zM540,1172a12,12 0,0 0,-12 12v96a12,12 0,0 0,24 0v-96a12,12 0,0 0,-12 -12zM395.7,1119.2 L327.9,1187.3a11.7,11.7 0,0 0,0 16.8,11.7 11.7,0 0,0 8.4,3.6 11.4,11.4 0,0 0,8.4 -3.6l68.1,-67.8a12.1,12.1 0,0 0,-17.1 -17.1zM360,992a12,12 0,0 0,-12 -12h-96a12,12 0,0 0,0 24h96a12,12 0,0 0,12 -12zM344.7,779.9a12,12 0,1 0,-16.8 16.8l67.8,68.1a11.4,11.4 0,0 0,8.4 3.3,11.7 11.7,0 0,0 8.7,-3.3 12.6,12.6 0,0 0,0 -17.1z"
+        android:strokeWidth="3" />
 </vector>
