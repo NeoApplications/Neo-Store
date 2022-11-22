@@ -60,7 +60,8 @@ fun ScreenshotList(
                     .requiredHeight(300.dp)
                     .clip(MaterialTheme.shapes.large)
                     .clickable { onScreenShotClick(index) },
-                data = image
+                data = image,
+                isScreenshot = true,
             )
         }
     }

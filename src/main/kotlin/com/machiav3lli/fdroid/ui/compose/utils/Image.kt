@@ -26,6 +26,7 @@ fun NetworkImage(
     modifier: Modifier = Modifier,
     data: String?,
     contentScale: ContentScale = ContentScale.Crop,
+    isScreenshot: Boolean = false,
     shape: Shape = MaterialTheme.shapes.medium
 ) {
     AsyncImage(
@@ -36,7 +37,10 @@ fun NetworkImage(
             .build(),
         contentDescription = null,
         contentScale = contentScale,
-        error = painterResource(id = R.drawable.ic_placeholder),
+        error = painterResource(
+            id = if (isScreenshot) R.drawable.ic_screenshot_placeholder
+            else R.drawable.ic_placeholder
+        ),
     )
 }
 
