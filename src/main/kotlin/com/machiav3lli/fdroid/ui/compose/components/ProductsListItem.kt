@@ -6,11 +6,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -87,17 +86,17 @@ fun ProductsListItem(
             )
 
             Column(
-                modifier = Modifier.wrapContentHeight()
+                modifier = Modifier
+                    .weight(1f, true)
+                    .height(64.dp)
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.4f),
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = product.name,
                         modifier = Modifier
-                            .align(Alignment.CenterVertically)
                             .weight(1f),
                         softWrap = true,
                         overflow = TextOverflow.Ellipsis,
@@ -123,7 +122,7 @@ fun ProductsListItem(
                 }
                 Text(
                     modifier = Modifier
-                        .fillMaxHeight()
+                        .weight(1f)
                         .fillMaxWidth(),
                     text = product.summary,
                     style = MaterialTheme.typography.bodySmall,

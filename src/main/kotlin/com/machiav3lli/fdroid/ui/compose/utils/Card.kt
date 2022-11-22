@@ -3,7 +3,6 @@ package com.machiav3lli.fdroid.ui.compose.utils
 import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.material3.MaterialTheme
@@ -44,17 +43,15 @@ fun ExpandableCard(
             ),
         color = background
     ) {
-        Box(modifier = modifier, contentAlignment = Alignment.CenterStart) {
-            Column {
-                mainContent()
-                AnimatedVisibility(
-                    modifier = Modifier.align(Alignment.End),
-                    visible = expanded,
-                    enter = fadeIn() + expandIn(expandFrom = Alignment.TopEnd),
-                    exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.TopEnd)
-                ) {
-                    expandedContent()
-                }
+        Column(modifier = modifier, horizontalAlignment = Alignment.Start) {
+            mainContent()
+            AnimatedVisibility(
+                modifier = Modifier.align(Alignment.End),
+                visible = expanded,
+                enter = fadeIn() + expandIn(expandFrom = Alignment.TopEnd),
+                exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.TopEnd)
+            ) {
+                expandedContent()
             }
         }
     }
