@@ -338,6 +338,15 @@ data class Repository(
             "F7C3EC3B0D588D3CB52983E9EB1A7421C93D4339A286398E71D7B651E8D8ECDD",
             ""
         )
+        private val TWIN_HELIX = defaultRepository(
+            "https://fdroid.twinhelix.com/fdroid/repo",
+            "TwinHelix's Signal-FOSS",
+            "A fork of Signal for Android with proprietary Google binary blobs removed. Uses OpenStreetMap for maps and a websocket server connection, instead of Google Maps and Firebase Cloud Messaging.",
+            21,
+            false,
+            "7B03B0232209B21B10A30A63897D3C6BCA4F58FE29BC3477E8E3D8CF8E304028",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, F_DROID_ARCHIVE,
@@ -354,7 +363,7 @@ data class Repository(
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
             FROSTNERD, FROSTNERD_ARCHIVE,
             UNOFFICIAL_FIREFOX, PATCHED, WIND, UMBRELLA,
-            CRYPTOMATOR
+            CRYPTOMATOR, TWIN_HELIX
         )
 
         val addedReposV9 = listOf(
@@ -372,7 +381,7 @@ data class Repository(
         )
 
         val addedReposV12 = listOf(
-            CRYPTOMATOR
+            CRYPTOMATOR, TWIN_HELIX
         )
     }
 }
