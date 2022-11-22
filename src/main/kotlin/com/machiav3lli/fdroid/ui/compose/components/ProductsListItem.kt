@@ -106,26 +106,18 @@ fun ProductsListItem(
                     )
                     Text(
                         modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .addIf(
-                                product.installedVersion.isNotEmpty() &&
-                                        product.installedVersion != product.version
-                            ) {
+                            .addIf(product.canUpdate) {
                                 background(
                                     MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
                                     MaterialTheme.shapes.large
                                 ).padding(vertical = 2.dp, horizontal = 4.dp)
                             },
-                        text = if (product.installedVersion.isEmpty() ||
-                            product.installedVersion == product.version
-                        ) product.version
-                        else "${product.installedVersion} → ${product.version}",
+                        text = if (product.canUpdate) "${product.installedVersion} → ${product.version}"
+                        else installed?.version ?: product.version,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
                         style = MaterialTheme.typography.bodySmall,
-                        fontWeight = if (product.installedVersion.isNotEmpty() &&
-                            product.installedVersion != product.version
-                        ) FontWeight.ExtraBold
+                        fontWeight = if (product.canUpdate) FontWeight.ExtraBold
                         else null
                     )
                 }
