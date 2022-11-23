@@ -213,4 +213,25 @@
     <string name="dynamic">Sistem dinamic</string>
     <string name="auto_sync_interval">Interval de sincronizare automată (în minute)</string>
     <string name="favorite_applications">Favorite</string>
+    <string name="root_installer">Instalator root</string>
+    <string name="min_sdk">SDK minim</string>
+    <string name="prefs_sync">Sincronizare</string>
+    <string name="target_sdk">SDK țintă</string>
+    <string name="other_apps_by">Alte aplicații de la %s</string>
+    <string name="system_black">Sistem (Negru)</string>
+    <string name="prefs_cache">Cache</string>
+    <string name="categories">Categorii</string>
+    <string name="sort_ascending">Crescător</string>
+    <string name="default_installer">Instalator implicit sesiune</string>
+    <string name="prefs_personal">Personal</string>
+    <string name="group_telegram">Grupul nostru Telegram</string>
+    <string name="prefs_installer">Tip instalare</string>
+    <string name="sort_descending">Descrescător</string>
+    <string name="legacy_installer">Program de instalare tradițional (compatibil cu MIUI)</string>
+    <string name="scan_qr_code">Scanați un cod QR</string>
+    <string name="action_apply">Aplicare</string>
+    <string name="action_reset">Resetare</string>
+    <string name="date_added">Data adăugării</string>
+    <string name="date_updated">Data actualizării</string>
+    <string name="group_matrix">Grupul nostru Matrix</string>
 </resources>
