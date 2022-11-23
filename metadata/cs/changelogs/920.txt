@@ -1,0 +1,5 @@
+Přidat: Ikona aplikace podle systémového motivu
+Přidat: Předvolba typu instalátoru (včetně režimu Legacy pro hloupé MIUI)
+Oprava: Navigace po spuštění z oznámení o aktualizacích
+Oprava: Lišta stahování neodráží skutečný průběh
+Pár dalších informací v úplném seznamu změn…
