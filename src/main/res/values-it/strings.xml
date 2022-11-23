@@ -10,7 +10,7 @@
     <string name="amoled">Nero</string>
     <string name="anti_features">Anti-caratteristiche</string>
     <string name="application">App</string>
-    <string name="application_not_found">Impossibile trovare quell\'app</string>
+    <string name="application_not_found">Impossibile trovare l\'app</string>
     <string name="author_email">E-mail dell\'autore</string>
     <string name="author_website">Sito web dell\'autore</string>
     <string name="available">Disponibile</string>
@@ -40,7 +40,7 @@
     <string name="edit_repository">Modifica repository</string>
     <string name="file_format_error_DESC">Il file è in un formato non valido.</string>
     <string name="fingerprint">Fingerprint</string>
-    <string name="has_advertising">Contiene annunci</string>
+    <string name="has_advertising">Contiene pubblicità</string>
     <string name="has_non_free_dependencies">Contiene dipendenze non libere</string>
     <string name="has_security_vulnerabilities">Contiene vulnerabilità</string>
     <string name="http_error_DESC">Risposta del server non valida.</string>
@@ -57,7 +57,7 @@
 \nDisinstalla prima quella.</string>
     <string name="incompatible_version">Versione non compatibile</string>
     <string name="incompatible_versions">Versioni non compatibili</string>
-    <string name="incompatible_versions_summary">Mostra le versioni incompatibili con il dispositivo.</string>
+    <string name="incompatible_versions_summary">Mostra versioni incompatibili con il dispositivo.</string>
     <string name="incompatible_with_FORMAT">Non compatibile con %s</string>
     <string name="install">Installa</string>
     <string name="install_types">Tipi di installazione</string>
@@ -90,7 +90,7 @@
     <string name="no_applications_available">Nessuna app disponibile</string>
     <string name="no_applications_installed">Nessuna app installata</string>
     <string name="no_description_available_DESC">Nessuna descrizione.</string>
-    <string name="no_matching_applications_found">Impossibile trovare tali app</string>
+    <string name="no_matching_applications_found">Impossibile trovare app di questo tipo</string>
     <string name="no_proxy">Senza proxy</string>
     <string name="notify_about_updates">Notifica nuove versioni app</string>
     <string name="notify_about_updates_summary">Mostra una notifica quando ci sono nuove versioni disponibili.</string>
@@ -100,7 +100,7 @@
     <string name="only_on_wifi">Solo con Wi-Fi</string>
     <string name="open_DESC_FORMAT">Aprire %s\?</string>
     <string name="other">Altro</string>
-    <string name="parsing_index_error_DESC">Impossibile analizzare indice file.</string>
+    <string name="parsing_index_error_DESC">Impossibile analizzare il file di indice.</string>
     <string name="password">Password</string>
     <string name="password_missing">Password mancante</string>
     <string name="permissions">Permessi</string>
@@ -119,14 +119,14 @@
     <string name="repositories">Repository</string>
     <string name="repository">Repository</string>
     <string name="repository_not_used_DESC">Questo repository non è stato ancora utilizzato.
-\nCollegati ad esso per visualizzare le app al suo interno.</string>
-    <string name="repository_unsigned_DESC">Impossibile verificare la lista delle app.
-\nStai attento quando scarichi app da repository senza firma.</string>
+\nConnettiti ad esso per visualizzare le app in esso contenute.</string>
+    <string name="repository_unsigned_DESC">Impossibile verificare l\'elenco delle app non firmate.
+\nFai attenzione a scaricare app da repository non firmati.</string>
     <string name="requires_FORMAT">Richiede %s</string>
     <string name="root_permission">Installazione silenziosa</string>
     <string name="root_permission_description">Usa root per installazioni senza interazione</string>
     <string name="save">Salva</string>
-    <string name="saving_details">Salvataggio dei dettagli…</string>
+    <string name="saving_details">Salvataggio dettagli…</string>
     <string name="screenshots">Screenshot</string>
     <string name="search">Cerca</string>
     <string name="select_mirror">Seleziona alternativa</string>
@@ -141,8 +141,8 @@
     <string name="sorting_order">Ordinamento</string>
     <string name="source_code">Codice sorgente</string>
     <string name="source_code_no_longer_available">Codice sorgente non più disponibile</string>
-    <string name="suggested">Suggerito</string>
-    <string name="sync_repositories">Sincronizza repositories</string>
+    <string name="suggested">Suggerita</string>
+    <string name="sync_repositories">Sincronizza repository</string>
     <string name="sync_repositories_automatically">Sincronizza automaticamente i repository</string>
     <string name="syncing">Sincronizzando</string>
     <string name="syncing_FORMAT">Sincronizzando %s…</string>
@@ -151,7 +151,7 @@
     <string name="target">Obiettivo</string>
     <string name="theme">Tema</string>
     <string name="themes">Temi</string>
-    <string name="tracks_or_reports_your_activity">Traccia o riferisce le tue attività</string>
+    <string name="tracks_or_reports_your_activity">Tiene traccia o segnala la tua attività</string>
     <string name="uninstall">Disinstalla</string>
     <string name="unknown">Sconosciuto</string>
     <string name="unknown_error_DESC">Errore sconosciuto.</string>
@@ -178,10 +178,10 @@
     <string name="explore">Esplora</string>
     <string name="update_all">Installa tutto</string>
     <string name="installed_applications">Installate</string>
-    <string name="latest">Più recenti</string>
+    <string name="latest">Più recente</string>
     <string name="sort_filter">Ordina e filtra</string>
     <string name="new_applications">Nuove app</string>
-    <string name="only_on_wifi_and_battery">Solo su Wi-Fi e in carica</string>
+    <string name="only_on_wifi_and_battery">Solo con Wi-Fi e in carica</string>
     <string name="install_after_sync">Aggiornamento automatico</string>
     <string name="install_after_sync_summary">Installa tutte le nuove versioni dopo aver esaminato i repository per le nuove app.</string>
     <string name="prefs_updated_apps">Numero app in \"Aggiornate di recente\"</string>
@@ -191,10 +191,10 @@
     <string name="pending">In attesa</string>
     <string name="installing">Installando</string>
     <string name="ignore_battery_optimization_not_supported">La tua installazione di Android non supporta la disattivazione dell\'ottimizzazione della batteria.</string>
-    <string name="dialog_approve">Spegnere</string>
+    <string name="dialog_approve">Spegni</string>
     <string name="ignore_battery_optimization_title">Ottimizzazione della batteria</string>
     <string name="ignore_battery_optimization_message">L\'app si comporta meglio senza ottimizzazione della batteria e previene arresti anomali su Android 12+.</string>
-    <string name="dialog_refuse">Mantenere</string>
+    <string name="dialog_refuse">Mantieni</string>
     <string name="root_session_installer">Usa installer della sessione root</string>
     <string name="root_session_installer_description">Più lento, ma evita i problemi con le app installate su Android 13+.</string>
     <string name="no_permissions_identified">Nessun permesso richiesto identificato</string>
@@ -229,9 +229,9 @@
     <string name="date_added">Data aggiunta</string>
     <string name="target_sdk">targetSDK</string>
     <string name="other_apps_by">Altre applicazioni di %s</string>
-    <string name="scan_qr_code">Scansiona un codice QR</string>
+    <string name="scan_qr_code">Scansiona codice QR</string>
     <string name="prefs_installer">Tipo di installer</string>
-    <string name="default_installer">Installer sessione predefinita</string>
-    <string name="legacy_installer">Installer legacy (compatibile con MIUI)</string>
+    <string name="default_installer">Sessione predefinita installer</string>
+    <string name="legacy_installer">Installer obsoleto (compatibile con MIUI)</string>
     <string name="root_installer">Installer root</string>
 </resources>
