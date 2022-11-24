@@ -1,0 +1,5 @@
+Añadido: Icono de la aplicación basado en el tema del sistema
+Añadido: Preferencias del tipo de instalador (incluyendo el modo Legacy para MIUI)
+Solucionado: Navegación tras el lanzamiento de la aplicación desde la notificación de las actualizaciones
+Solucionado: La barra de descarga no refleja el progreso real
+Un par de cosas más en el registro de cambios completo…
