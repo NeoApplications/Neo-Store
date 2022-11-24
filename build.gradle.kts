@@ -7,6 +7,7 @@ val roomVersion = "2.5.0-beta02"
 val navigationVersion = "2.5.3"
 val accompanistVersion = "0.27.1"
 val hiltVersion = "2.44.2"
+val retrofitVersion = "2.9.0"
 
 plugins {
     id("com.android.application") version ("7.3.1")
@@ -142,6 +143,8 @@ dependencies {
 
     // OkHttps
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.9")
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
 
     // RxJava
     implementation("io.reactivex.rxjava3:rxjava:3.1.5")
