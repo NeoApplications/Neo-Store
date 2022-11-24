@@ -10,14 +10,17 @@ import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.machiav3lli.fdroid.database.dao.CategoryDao
 import com.machiav3lli.fdroid.database.dao.CategoryTempDao
+import com.machiav3lli.fdroid.database.dao.ExodusInfoDao
 import com.machiav3lli.fdroid.database.dao.ExtrasDao
 import com.machiav3lli.fdroid.database.dao.InstalledDao
 import com.machiav3lli.fdroid.database.dao.ProductDao
 import com.machiav3lli.fdroid.database.dao.ProductTempDao
 import com.machiav3lli.fdroid.database.dao.ReleaseDao
 import com.machiav3lli.fdroid.database.dao.RepositoryDao
+import com.machiav3lli.fdroid.database.dao.TrackerDao
 import com.machiav3lli.fdroid.database.entity.Category
 import com.machiav3lli.fdroid.database.entity.CategoryTemp
+import com.machiav3lli.fdroid.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
@@ -29,6 +32,7 @@ import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV11
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV12
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV9
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.defaultRepositories
+import com.machiav3lli.fdroid.database.entity.Tracker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -42,9 +46,11 @@ import kotlinx.coroutines.launch
         Category::class,
         CategoryTemp::class,
         Installed::class,
-        Extras::class
+        Extras::class,
+        ExodusInfo::class,
+        Tracker::class,
     ],
-    version = 12,
+    version = 13,
     exportSchema = true,
     autoMigrations = [AutoMigration(
         from = 8,
@@ -74,6 +80,8 @@ abstract class DatabaseX : RoomDatabase() {
     abstract val categoryTempDao: CategoryTempDao
     abstract val installedDao: InstalledDao
     abstract val extrasDao: ExtrasDao
+    abstract val exodusInfoDao: ExodusInfoDao
+    abstract val trackerDao: TrackerDao
 
     companion object {
         @Volatile
