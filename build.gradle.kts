@@ -1,16 +1,20 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 val composeVersion = "1.3.1"
 val composeCompilerVersion = "1.4.0-alpha02"
 val roomVersion = "2.5.0-beta02"
 val navigationVersion = "2.5.3"
 val accompanistVersion = "0.27.1"
+val hiltVersion = "2.44.2"
 
 plugins {
     id("com.android.application") version ("7.3.1")
     kotlin("android") version ("1.7.21")
+    kotlin("kapt") version ("1.7.21")
     kotlin("plugin.serialization") version ("1.7.21")
     id("com.google.devtools.ksp") version ("1.7.21-1.0.8")
+    id("com.google.dagger.hilt.android") version ("2.44.2")
 }
 
 android {
@@ -131,6 +135,10 @@ dependencies {
     // Coil
     implementation("io.coil-kt:coil:2.2.2")
     implementation("io.coil-kt:coil-compose:2.2.2")
+
+    // Dagger Hilt
+    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
 
     // OkHttps
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.9")
