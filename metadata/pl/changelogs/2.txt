@@ -1,0 +1,4 @@
+- Różne zmiany w UI
+- Przeformatowana cała baza danych
+- Zaktualizowane zależności
+- Zmieniono nazwę Preferencje na Ustawienia

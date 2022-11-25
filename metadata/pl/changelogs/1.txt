@@ -1,0 +1,2 @@
+- Zmieniono kolor podstawowy na zielony (Google Green)
+- Dodano podziękowania dla kitsunyan

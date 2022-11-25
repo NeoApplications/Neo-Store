@@ -1,0 +1,6 @@
+- Aktualizacja: Nowa ikona aplikacji
+- Aktualizacja: UI na stronie aplikacji
+- Aktualizacja: Spraw, aby animacja listy była opcjonalna
+- Poprawiono: Pokaż prawdziwy rozmiar aplikacji
+- Naprawiono: Link do projektu w ustawieniach
+- Naprawiono: Ekran splash zależy od motywu systemu

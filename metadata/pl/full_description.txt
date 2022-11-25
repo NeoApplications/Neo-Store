@@ -1,0 +1,17 @@
+Szybki klient F-Droid
+
+Cechy:
+
+* Wygląd w stylu „Material”
+* Obsługa czarnego motywu
+* Przetłumaczona na wiele języków
+* Automatyczne aktualizacje
+* Wstępnie skonfigurowane repozytoria
+* Szybka synchronizacja repozytoriów
+* Łatwe odkrywanie nowych aplikacji
+* Standardowe komponenty Androida i minimalne zależności
+
+Adaptacja/modyfikacja Foxy-Droid.
+
+Na licencji GPLv3+.
+Używaj, studiuj, zmieniaj i dziel się z wszystkimi.
