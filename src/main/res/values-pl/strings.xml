@@ -21,7 +21,7 @@
     <string name="theme">Motyw</string>
     <string name="add_repository">Dodaj repozytorium</string>
     <string name="always">Zawsze</string>
-    <string name="anti_features">Anty-funkcje</string>
+    <string name="anti_features">Nieporządane</string>
     <string name="upstream_source_code_is_not_free">Nadrzędny kod źródłowy jest niewolny</string>
     <string name="update">Aktualizacja</string>
     <string name="unknown_FORMAT">Nieznane: %s</string>
@@ -118,7 +118,7 @@
     <string name="new_updates_available">Dostępne są nowe wersje aplikacji</string>
     <string name="no_proxy">Brak serwera proxy</string>
     <string name="notify_about_updates_summary">Pokaż powiadomienie, gdy dostępne są nowe wersje.</string>
-    <string name="only_on_wifi">Tylko przez Wi-Fi</string>
+    <string name="only_on_wifi">Tylko na Wi-Fi</string>
     <string name="launch">Uruchom</string>
     <string name="license">Licencja</string>
     <string name="link_copied_to_clipboard">Link skopiowany do schowka</string>
@@ -179,7 +179,7 @@
     <string name="prefs_new_apps">Liczba aplikacji do wyświetlenia w sekcji „nowe aplikacje”</string>
     <string name="installed_applications">Zainstalowane</string>
     <string name="update_all">Zainstaluj wszystko</string>
-    <string name="only_on_wifi_and_battery">Tylko przez Wi-Fi i ładowanie</string>
+    <string name="only_on_wifi_and_battery">Tylko na Wi-Fi podczas ładowania</string>
     <string name="show_less">Pokaż mniej</string>
     <string name="latest">Najnowsze</string>
     <string name="explore">Odkrywaj</string>
@@ -188,7 +188,7 @@
     <string name="install_after_sync">Automatyczna aktualizacja</string>
     <string name="install_after_sync_summary">Zainstaluj wszystkie nowe wersje po przejrzeniu repozytoriów nowych aplikacji.</string>
     <string name="new_repository">Nowe repozytorium</string>
-    <string name="default_tab">Zakładka domyślna</string>
+    <string name="default_tab">Domyślna karta</string>
     <string name="pending">Oczekujące</string>
     <string name="installing">Instalacja</string>
     <string name="ignore_battery_optimization_not_supported">Twoja instalacja systemu Androida nie obsługuje wyłączenia optymalizacji baterii.</string>
@@ -211,4 +211,28 @@
     <string name="favorite_add">Dodaj do ulubionych</string>
     <string name="open">Otwórz</string>
     <string name="loading_list">Ładowanie listy…</string>
+    <string name="images_cache_retention">Ilość dni przechowywania obrazów</string>
+    <string name="prefs_personal">Osobiste</string>
+    <string name="releases_cache_retention">Ilość przechowywanych plików apk</string>
+    <string name="min_sdk">Minimum SDK:</string>
+    <string name="action_reset">Zresetuj</string>
+    <string name="scan_qr_code">Zeskanuj kod QR</string>
+    <string name="action_apply">Zastosuj</string>
+    <string name="prefs_cache">Pamięć podręczna</string>
+    <string name="other_apps_by">Inne aplikacje od %s</string>
+    <string name="prefs_installer">Typ instalatora</string>
+    <string name="default_installer">Instalator sesji (domyślny)</string>
+    <string name="root_installer">Instalator „root”</string>
+    <string name="system_black">System (Czarny)</string>
+    <string name="group_matrix">Matrix</string>
+    <string name="dynamic">System (dynamiczne)</string>
+    <string name="legacy_installer">Starszy instalator (kompatybilny z MIUI)</string>
+    <string name="prefs_sync">Synchronizacja</string>
+    <string name="group_telegram">Telegram</string>
+    <string name="target_sdk">Docelowe SDK:</string>
+    <string name="categories">Kategorie</string>
+    <string name="sort_ascending">Rosnąco</string>
+    <string name="sort_descending">Malejąco</string>
+    <string name="date_added">Data dodania</string>
+    <string name="date_updated">Data aktualizacji</string>
 </resources>
