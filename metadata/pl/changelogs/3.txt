@@ -1,0 +1,5 @@
+- Dodano czarny motyw
+- Dodano cichą instalację root
+- Dodano następujące języki:
+* portugalski
+* chiński
