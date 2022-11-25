@@ -228,4 +228,9 @@
     <string name="action_reset">Zurücksetzen</string>
     <string name="date_added">Datum des Hinzufügens</string>
     <string name="date_updated">Datum des Updates</string>
+    <string name="prefs_installer">Installationstyp</string>
+    <string name="default_installer">Standard-Sitzungsinstallateur</string>
+    <string name="legacy_installer">Legacy Installer (kompatibel mit MIUI)</string>
+    <string name="scan_qr_code">Scannen eines QR-Codes</string>
+    <string name="root_installer">Root Installateur</string>
 </resources>
