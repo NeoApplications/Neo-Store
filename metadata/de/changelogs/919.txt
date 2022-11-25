@@ -1,0 +1,3 @@
+Hinzugefügt: Scannen von Repo QrCode mit BinaryEye (falls installiert)
+Behoben: Installiert setzen nach dem Start aus der Update-Benachrichtigung
+Behoben: Verbesserte Behandlung von Intents

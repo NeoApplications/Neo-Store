@@ -1,0 +1,5 @@
+Hinzugefügt: App-Symbol basierend auf Systemthema
+Hinzugefügt: Einstellung des Installer-Typs (einschließlich Legacy-Modus für dummes MIUI)
+Behoben: Navigation nach Start aus Update-Benachrichtigung
+Behoben: Download-Leiste zeigt nicht den tatsächlichen Fortschritt an
+Ein paar mehr im vollständigen Changelog…
