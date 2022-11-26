@@ -94,7 +94,7 @@
     <string name="show_older_versions">Rodyti senesnes versijas</string>
     <string name="not_safe_for_work">Cenzūruojama (gali būti trikdančio turinio)</string>
     <string name="username_missing">Trūksta vartotojo vardo</string>
-    <string name="sorting_order">Rūšiavimo tvarka</string>
+    <string name="sorting_order">Rikiavimo tvarka</string>
     <string name="unstable_updates_summary">Siūlyti įdiegti nestabilias versijas.</string>
     <string name="unknown">Nežinoma</string>
     <string name="waiting_to_start_download">Atsiunčiama…</string>
@@ -167,7 +167,7 @@
     <string name="pending">Laukiama</string>
     <string name="dialog_approve">Išjungti</string>
     <string name="no_action_possible">Nėra galimų veiksmų</string>
-    <string name="show_screenshots">Rodyti ekrano kopijas</string>
+    <string name="show_screenshots">Rodyti ekrano nuotraukas</string>
     <string name="favorite_remove">Pašalinti iš mėgstamiausių</string>
     <string name="favorite_add">Pridėti prie mėgstamiausių</string>
     <string name="open">Atidaryti</string>
