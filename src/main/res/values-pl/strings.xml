@@ -215,7 +215,7 @@
     <string name="loading_list">Ładowanie listy…</string>
     <string name="images_cache_retention">Ilość dni przechowywania obrazów</string>
     <string name="prefs_personal">Osobiste</string>
-    <string name="releases_cache_retention">Ilość przechowywanych plików apk</string>
+    <string name="releases_cache_retention">Ilość dni przechowywania plików apk</string>
     <string name="min_sdk">Minimum SDK:</string>
     <string name="action_reset">Zresetuj</string>
     <string name="scan_qr_code">Zeskanuj kod QR</string>
