@@ -224,4 +224,9 @@
     <string name="action_reset">Sıfırla</string>
     <string name="date_added">Eklendiği tarih</string>
     <string name="date_updated">Güncellendiği tarih</string>
+    <string name="legacy_installer">Eski yükleyici (MIUI ile uyumlu)</string>
+    <string name="default_installer">Öntanımlı oturum yükleyicisi</string>
+    <string name="prefs_installer">Yükleyici türü</string>
+    <string name="root_installer">Root yükleyicisi</string>
+    <string name="other_apps_by">%s tarafından sunulan diğer uygulamalar</string>
 </resources>
