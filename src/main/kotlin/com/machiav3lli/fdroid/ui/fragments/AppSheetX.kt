@@ -57,7 +57,9 @@ import com.machiav3lli.fdroid.RELEASE_STATE_INSTALLED
 import com.machiav3lli.fdroid.RELEASE_STATE_NONE
 import com.machiav3lli.fdroid.RELEASE_STATE_SUGGESTED
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.database.entity.Release
+import com.machiav3lli.fdroid.database.entity.Tracker
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.DonateType
@@ -365,6 +367,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         var screenshotPage by remember { mutableStateOf(0) }
         val installed by viewModel.installedItem.collectAsState(null)
         val products by viewModel.products.collectAsState(null)
+        val exodusInfo by viewModel.exodusInfo.collectAsState(ExodusInfo())
+        val trackers by viewModel.trackers.collectAsState(emptyList())
         val authorProducts by viewModel.authorProducts.collectAsState(null)
         val repos by viewModel.repositories.collectAsState(null)
         val downloadState by viewModel.downloadState.collectAsState(null)
