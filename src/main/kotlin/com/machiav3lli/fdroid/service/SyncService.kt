@@ -126,9 +126,11 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         fun updateApps(products: List<ProductItem>) = batchUpdate(products)
         fun installApps(products: List<ProductItem>) = batchUpdate(products, true)
 
+        fun fetchExodusInfo(packageName: String) = fetchExodusData(packageName)
+
         fun sync(request: SyncRequest) {
             scope.launch {
-                val ids = db.repositoryDao.all.filter { it.enabled }.map { it.id }.toList()
+                val ids = db.repositoryDao.all.filter { it.enabled }.map { it.id }.toList() + EXODUS_TRACKERS_SYNC
                 sync(ids, request)
             }
         }
