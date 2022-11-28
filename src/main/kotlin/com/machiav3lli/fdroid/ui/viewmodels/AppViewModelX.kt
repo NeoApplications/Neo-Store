@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.database.DatabaseX
+import com.machiav3lli.fdroid.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Repository
@@ -15,6 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transformLatest
@@ -25,6 +27,14 @@ class AppViewModelX(val db: DatabaseX, val packageName: String, developer: Strin
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val products = db.productDao.getFlow(packageName).mapLatest { it.filterNotNull() }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val exodusInfo = db.exodusInfoDao.getFlow(packageName)
+        .mapLatest { it.maxByOrNull(ExodusInfo::version_code) ?: ExodusInfo() }
+
+    val trackers = exodusInfo.combine(db.trackerDao.allFlow) { a, b ->
+        b.filter { it.key in a.trackers }
+    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val repositories = db.repositoryDao.allFlow.mapLatest { it }
