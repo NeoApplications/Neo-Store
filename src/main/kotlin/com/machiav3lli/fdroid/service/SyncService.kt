@@ -11,6 +11,7 @@ import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import com.machiav3lli.fdroid.BuildConfig
+import com.machiav3lli.fdroid.EXODUS_TRACKERS_SYNC
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
@@ -342,7 +343,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                 if (tasks.isNotEmpty()) {
                     val task = tasks.removeAt(0)
                     val repository = db.repositoryDao.get(task.repositoryId)
-                    if (repository != null && repository.enabled) {
+                    if (repository != null && repository.enabled && task.repositoryId != EXODUS_TRACKERS_SYNC) {
                         val lastStarted = started
                         val newStarted =
                             if (task.manual || lastStarted == Started.MANUAL) Started.MANUAL else Started.AUTO
@@ -384,6 +385,9 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                 handleNextTask(result == true || hasUpdates)
                             }
                         currentTask = CurrentTask(task, disposable, hasUpdates, initialState)
+                    } else if (task.repositoryId == EXODUS_TRACKERS_SYNC) {
+                        fetchTrackers()
+                        handleNextTask(hasUpdates)
                     } else {
                         handleNextTask(hasUpdates)
                     }

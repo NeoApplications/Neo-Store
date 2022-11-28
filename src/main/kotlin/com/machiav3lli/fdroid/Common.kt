@@ -63,6 +63,7 @@ const val RELEASE_STATE_SUGGESTED = 1
 const val RELEASE_STATE_INSTALLED = 2
 
 const val JOB_ID_SYNC = 1
+const val EXODUS_TRACKERS_SYNC = -22L
 
 const val PREFS_LANGUAGE = "languages"
 const val PREFS_LANGUAGE_DEFAULT = "system"
