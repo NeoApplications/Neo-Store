@@ -161,6 +161,7 @@ fun InstalledPage(viewModel: InstalledViewModel) {
                 .fillMaxWidth()
                 .weight(1f),
             onUserClick = { item ->
+                mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
                 mainActivityX.navigateProduct(item.packageName, item.developer)
             },
             onFavouriteClick = { item ->
