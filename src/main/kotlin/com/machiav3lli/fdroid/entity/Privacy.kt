@@ -1,10 +1,12 @@
 package com.machiav3lli.fdroid.entity
 
+import android.content.pm.PermissionInfo
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.machiav3lli.backup.ui.compose.icons.phosphor.GitPullRequest
 import com.machiav3lli.fdroid.PERMISSION_GROUP_INTERNET
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.database.entity.Tracker
 import com.machiav3lli.fdroid.ui.compose.icons.Icon
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.icon.Opensource
@@ -26,6 +28,24 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Phone
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.User
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserFocus
+
+class PrivacyData(
+    val permissions: Map<PermissionGroup?, List<PermissionInfo>>,
+    val trackers: List<Tracker>,
+    val antiFeatures: List<AntiFeature>,
+)
+
+class PrivacyNote(
+    val permissionsNote: Int,
+    val trackersNote: Int,
+    val sourceType: SourceType,
+)
+
+class SourceType(
+    val open: Boolean,
+    val free: Boolean,
+    val independent: Boolean,
+)
 
 open class PermissionGroup(
     val name: String,
