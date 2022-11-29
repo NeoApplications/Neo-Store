@@ -85,6 +85,251 @@ const val PERMISSION_READ_CELL_BROADCASTS = "android.permission.READ_CELL_BROADC
 const val NAV_MAIN = 0
 const val NAV_PREFS = 1
 
+// Permissions based on Risk
+
+val LOW_RISK_PERMISSIONS = listOf(
+    android.Manifest.permission.ACCEPT_HANDOVER,
+    android.Manifest.permission.ACCOUNT_MANAGER,
+    android.Manifest.permission.ADD_VOICEMAIL,
+    android.Manifest.permission.ANSWER_PHONE_CALLS,
+    android.Manifest.permission.BATTERY_STATS,
+    android.Manifest.permission.BIND_CALL_REDIRECTION_SERVICE,
+    android.Manifest.permission.BIND_CARRIER_MESSAGING_CLIENT_SERVICE,
+    android.Manifest.permission.BIND_CARRIER_MESSAGING_SERVICE,
+    android.Manifest.permission.BIND_CARRIER_SERVICES,
+    android.Manifest.permission.BIND_DEVICE_ADMIN,
+    android.Manifest.permission.BIND_WALLPAPER,
+    android.Manifest.permission.BROADCAST_WAP_PUSH,
+    android.Manifest.permission.CHANGE_NETWORK_STATE,
+    android.Manifest.permission.CHANGE_WIFI_MULTICAST_STATE,
+    android.Manifest.permission.CHANGE_WIFI_STATE,
+    android.Manifest.permission.DELETE_CACHE_FILES,
+    android.Manifest.permission.DELETE_PACKAGES,
+    android.Manifest.permission.GET_ACCOUNTS,
+    android.Manifest.permission.GET_ACCOUNTS,
+    android.Manifest.permission.GET_ACCOUNTS_PRIVILEGED,
+    android.Manifest.permission.MANAGE_ONGOING_CALLS,
+    android.Manifest.permission.MEDIA_CONTENT_CONTROL,
+    android.Manifest.permission.MODIFY_AUDIO_SETTINGS,
+    android.Manifest.permission.MODIFY_PHONE_STATE,
+    android.Manifest.permission.MOUNT_FORMAT_FILESYSTEMS,
+    android.Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
+    android.Manifest.permission.PACKAGE_USAGE_STATS,
+    android.Manifest.permission.PROCESS_OUTGOING_CALLS,
+    android.Manifest.permission.NFC,
+    android.Manifest.permission.NFC_PREFERRED_PAYMENT_INFO,
+    android.Manifest.permission.NFC_TRANSACTION_EVENT,
+    android.Manifest.permission.QUERY_ALL_PACKAGES,
+    android.Manifest.permission.READ_CALENDAR,
+    android.Manifest.permission.READ_CALL_LOG,
+    android.Manifest.permission.READ_CONTACTS,
+    android.Manifest.permission.READ_LOGS,
+    android.Manifest.permission.READ_PHONE_NUMBERS,
+    android.Manifest.permission.READ_PHONE_STATE,
+    android.Manifest.permission.READ_PRECISE_PHONE_STATE,
+    android.Manifest.permission.READ_VOICEMAIL,
+    android.Manifest.permission.RECEIVE_WAP_PUSH,
+    android.Manifest.permission.REQUEST_COMPANION_PROFILE_COMPUTER,
+    android.Manifest.permission.REQUEST_COMPANION_PROFILE_WATCH,
+    android.Manifest.permission.REQUEST_COMPANION_RUN_IN_BACKGROUND,
+    android.Manifest.permission.REQUEST_COMPANION_SELF_MANAGED,
+    android.Manifest.permission.REQUEST_COMPANION_START_FOREGROUND_SERVICES_FROM_BACKGROUND,
+    android.Manifest.permission.REQUEST_COMPANION_USE_DATA_IN_BACKGROUND,
+    android.Manifest.permission.REQUEST_DELETE_PACKAGES,
+    android.Manifest.permission.REQUEST_INSTALL_PACKAGES,
+    android.Manifest.permission.SCHEDULE_EXACT_ALARM,
+    android.Manifest.permission.SET_ALARM,
+    android.Manifest.permission.START_FOREGROUND_SERVICES_FROM_BACKGROUND,
+    android.Manifest.permission.USE_SIP,
+    android.Manifest.permission.UWB_RANGING,
+    android.Manifest.permission.WRITE_CALENDAR,
+    android.Manifest.permission.WRITE_CALL_LOG,
+    android.Manifest.permission.WRITE_CONTACTS,
+    android.Manifest.permission.WRITE_VOICEMAIL,
+)
+
+val MEDIUM_RISK_PERMISSIONS = listOf(
+    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+    android.Manifest.permission.ACCESS_MEDIA_LOCATION,
+    android.Manifest.permission.ACCESS_NETWORK_STATE,
+    android.Manifest.permission.ACCESS_WIFI_STATE,
+    android.Manifest.permission.BIND_NFC_SERVICE,
+    android.Manifest.permission.BIND_VPN_SERVICE,
+    android.Manifest.permission.BLUETOOTH,
+    android.Manifest.permission.BLUETOOTH_ADMIN,
+    android.Manifest.permission.BROADCAST_SMS,
+    android.Manifest.permission.CAPTURE_AUDIO_OUTPUT,
+    android.Manifest.permission.INTERNET,
+    android.Manifest.permission.MANAGE_DOCUMENTS,
+    android.Manifest.permission.MANAGE_MEDIA,
+    android.Manifest.permission.MANAGE_WIFI_INTERFACES,
+    android.Manifest.permission.MANAGE_WIFI_NETWORK_SELECTION,
+    android.Manifest.permission.NEARBY_WIFI_DEVICES,
+    android.Manifest.permission.OVERRIDE_WIFI_CONFIG,
+    PERMISSION_READ_CELL_BROADCASTS,
+    android.Manifest.permission.READ_MEDIA_AUDIO,
+    android.Manifest.permission.READ_MEDIA_IMAGES,
+    android.Manifest.permission.READ_MEDIA_VIDEO,
+    android.Manifest.permission.READ_SMS,
+    android.Manifest.permission.REBOOT,
+    android.Manifest.permission.RECEIVE_MMS,
+    android.Manifest.permission.RECEIVE_SMS,
+    android.Manifest.permission.SEND_SMS,
+    android.Manifest.permission.SMS_FINANCIAL_TRANSACTIONS,
+)
+
+val HIGH_RISK_PERMISSIONS = listOf(
+    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+    android.Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+    android.Manifest.permission.ACCESS_FINE_LOCATION,
+    android.Manifest.permission.ACTIVITY_RECOGNITION,
+    android.Manifest.permission.BLUETOOTH_ADVERTISE,
+    android.Manifest.permission.BLUETOOTH_CONNECT,
+    android.Manifest.permission.BLUETOOTH_SCAN,
+    android.Manifest.permission.BLUETOOTH_PRIVILEGED,
+    android.Manifest.permission.BODY_SENSORS,
+    android.Manifest.permission.CAMERA,
+    android.Manifest.permission.MANAGE_EXTERNAL_STORAGE,
+    android.Manifest.permission.READ_EXTERNAL_STORAGE,
+    android.Manifest.permission.RECORD_AUDIO,
+    android.Manifest.permission.USE_FINGERPRINT,
+    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+)
+
+// Permissions based on Group
+
+val CONTACTS_PERMISSIONS = listOf(
+    android.Manifest.permission.READ_CALL_LOG,
+    android.Manifest.permission.READ_CONTACTS,
+    android.Manifest.permission.READ_PHONE_NUMBERS,
+    android.Manifest.permission.READ_VOICEMAIL,
+    android.Manifest.permission.WRITE_CALL_LOG,
+    android.Manifest.permission.WRITE_CONTACTS,
+    android.Manifest.permission.WRITE_VOICEMAIL,
+)
+
+val CALENDAR_PERMISSIONS = listOf(
+    android.Manifest.permission.READ_CALENDAR,
+    android.Manifest.permission.WRITE_CALENDAR,
+)
+
+val SMS_PERMISSIONS = listOf(
+    android.Manifest.permission.BROADCAST_SMS,
+    android.Manifest.permission.READ_SMS,
+    android.Manifest.permission.RECEIVE_SMS,
+    android.Manifest.permission.RECEIVE_MMS,
+    android.Manifest.permission.RECEIVE_WAP_PUSH,
+    android.Manifest.permission.SEND_SMS,
+    android.Manifest.permission.SMS_FINANCIAL_TRANSACTIONS,
+    PERMISSION_READ_CELL_BROADCASTS,
+)
+
+val STORAGE_PERMISSIONS = listOf(
+    android.Manifest.permission.DELETE_CACHE_FILES,
+    android.Manifest.permission.MANAGE_DOCUMENTS,
+    android.Manifest.permission.MANAGE_EXTERNAL_STORAGE,
+    android.Manifest.permission.MANAGE_MEDIA,
+    android.Manifest.permission.MOUNT_FORMAT_FILESYSTEMS,
+    android.Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
+    android.Manifest.permission.READ_EXTERNAL_STORAGE,
+    android.Manifest.permission.READ_MEDIA_AUDIO,
+    android.Manifest.permission.READ_MEDIA_IMAGES,
+    android.Manifest.permission.READ_MEDIA_VIDEO,
+    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+)
+
+val PHONE_PERMISSIONS = listOf(
+    android.Manifest.permission.ACCEPT_HANDOVER,
+    android.Manifest.permission.ACCOUNT_MANAGER,
+    android.Manifest.permission.ADD_VOICEMAIL,
+    android.Manifest.permission.ANSWER_PHONE_CALLS,
+    android.Manifest.permission.BATTERY_STATS,
+    android.Manifest.permission.BIND_CALL_REDIRECTION_SERVICE,
+    android.Manifest.permission.BIND_CARRIER_MESSAGING_CLIENT_SERVICE,
+    android.Manifest.permission.BIND_CARRIER_MESSAGING_SERVICE,
+    android.Manifest.permission.BIND_CARRIER_SERVICES,
+    android.Manifest.permission.BIND_DEVICE_ADMIN,
+    android.Manifest.permission.BIND_WALLPAPER,
+    android.Manifest.permission.CALL_COMPANION_APP,
+    android.Manifest.permission.CALL_PHONE,
+    android.Manifest.permission.CALL_PRIVILEGED,
+    android.Manifest.permission.DELETE_PACKAGES,
+    android.Manifest.permission.GET_ACCOUNTS,
+    android.Manifest.permission.GET_ACCOUNTS_PRIVILEGED,
+    android.Manifest.permission.MANAGE_ONGOING_CALLS,
+    android.Manifest.permission.MEDIA_CONTENT_CONTROL,
+    android.Manifest.permission.MODIFY_AUDIO_SETTINGS,
+    android.Manifest.permission.MODIFY_PHONE_STATE,
+    android.Manifest.permission.PACKAGE_USAGE_STATS,
+    android.Manifest.permission.PROCESS_OUTGOING_CALLS,
+    android.Manifest.permission.QUERY_ALL_PACKAGES,
+    android.Manifest.permission.READ_LOGS,
+    android.Manifest.permission.READ_PHONE_STATE,
+    android.Manifest.permission.READ_PRECISE_PHONE_STATE,
+    android.Manifest.permission.REBOOT,
+    android.Manifest.permission.REQUEST_COMPANION_PROFILE_COMPUTER,
+    android.Manifest.permission.REQUEST_COMPANION_PROFILE_WATCH,
+    android.Manifest.permission.REQUEST_COMPANION_RUN_IN_BACKGROUND,
+    android.Manifest.permission.REQUEST_COMPANION_SELF_MANAGED,
+    android.Manifest.permission.REQUEST_COMPANION_START_FOREGROUND_SERVICES_FROM_BACKGROUND,
+    android.Manifest.permission.REQUEST_COMPANION_USE_DATA_IN_BACKGROUND,
+    android.Manifest.permission.REQUEST_DELETE_PACKAGES,
+    android.Manifest.permission.REQUEST_INSTALL_PACKAGES,
+    android.Manifest.permission.SCHEDULE_EXACT_ALARM,
+    android.Manifest.permission.SET_ALARM,
+    android.Manifest.permission.START_FOREGROUND_SERVICES_FROM_BACKGROUND,
+    android.Manifest.permission.USE_SIP,
+)
+
+val LOCATION_PERMISSIONS = listOf(
+    android.Manifest.permission.ACCESS_MEDIA_LOCATION,
+    android.Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+    android.Manifest.permission.ACCESS_FINE_LOCATION,
+    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+)
+
+val MICROPHONE_PERMISSIONS = listOf(
+    android.Manifest.permission.RECORD_AUDIO,
+    android.Manifest.permission.CAPTURE_AUDIO_OUTPUT,
+)
+
+val CAMERA_PERMISSIONS = listOf(
+    android.Manifest.permission.CAMERA,
+)
+
+val NEARBY_DEVICES_PERMISSIONS = listOf(
+    android.Manifest.permission.ACTIVITY_RECOGNITION,
+    android.Manifest.permission.BIND_NFC_SERVICE,
+    android.Manifest.permission.BLUETOOTH,
+    android.Manifest.permission.BLUETOOTH_ADMIN,
+    android.Manifest.permission.BLUETOOTH_ADVERTISE,
+    android.Manifest.permission.BLUETOOTH_CONNECT,
+    android.Manifest.permission.BLUETOOTH_SCAN,
+    android.Manifest.permission.BLUETOOTH_PRIVILEGED,
+    android.Manifest.permission.BROADCAST_WAP_PUSH,
+    android.Manifest.permission.BODY_SENSORS,
+    android.Manifest.permission.CHANGE_WIFI_MULTICAST_STATE,
+    android.Manifest.permission.CHANGE_WIFI_STATE,
+    android.Manifest.permission.MANAGE_WIFI_INTERFACES,
+    android.Manifest.permission.MANAGE_WIFI_NETWORK_SELECTION,
+    android.Manifest.permission.NFC,
+    android.Manifest.permission.NFC_PREFERRED_PAYMENT_INFO,
+    android.Manifest.permission.NFC_TRANSACTION_EVENT,
+    android.Manifest.permission.NEARBY_WIFI_DEVICES,
+    android.Manifest.permission.OVERRIDE_WIFI_CONFIG,
+    android.Manifest.permission.USE_FINGERPRINT,
+    android.Manifest.permission.UWB_RANGING,
+)
+
+val INTERNET_PERMISSIONS = listOf(
+    android.Manifest.permission.ACCESS_NETWORK_STATE,
+    android.Manifest.permission.ACCESS_WIFI_STATE,
+    android.Manifest.permission.BIND_VPN_SERVICE,
+    android.Manifest.permission.CHANGE_NETWORK_STATE,
+    android.Manifest.permission.INTERNET,
+)
+
 interface RepoManager {
     fun onDeleteConfirm()
 }
