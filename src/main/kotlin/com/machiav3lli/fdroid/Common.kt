@@ -330,6 +330,58 @@ val INTERNET_PERMISSIONS = listOf(
     android.Manifest.permission.INTERNET,
 )
 
+// Trackers special groups
+
+val WIDESPREAD_TRACKERS = listOf(
+    49, // Google Firebase Analytics
+    312, // Google AdMob
+    27, // Google Crashlytics
+    67, // Facebook Login
+    70, // Facebook Share
+    66, // Facebook Analytics
+    48, // Google Analytics
+    65, // Facebook Ads
+    105, // Google Tag Manager
+    121, // Unity3D Ads
+    72, // AppLovin
+    328, // IAB Open Measurement
+    69, // Facebook Places
+    12, // AppsFlyer
+    106, // Inmobi
+    25, // Flurry (Yahoo)
+    146, // IronSource
+    90, // AdColony
+    169, // Vungle (Liftoff)
+    61, // Moat (Oracle)
+    193, // OneSignal
+    92, // Amazon Advertisement
+    52, // Adjust (AppLovin)
+    35, // Twitter MoPub
+    53, // ChartBoost
+    // MAGMA complements
+    240, // Google Analytics Plugin (Cordova)
+    387, // Anvato (Google)
+    5, // Google DoubleClick
+    95, // Amazon Insights
+    423, // Amplify (Amazon Mobile Analytics)
+    93, // Amazon Mobile Associates
+    238, // Microsoft Visual Studio App Center Crashes
+    243, // Microsoft Visual Studio App Center Analytics
+    392, // Facebook Flipper
+    68, // Facebook Notifications
+    47, // Facebook Audience
+)
+
+val NON_FREE_COUNTRIES_TRACKERS = listOf(
+    124, // Yandex Ad
+    333, // Huawei Mobile Services Core
+    363, // Pangle (TikTok)
+    200, // Mintegral
+    140, // Appmetrica (Yandex)
+    198, // myTarget (Mail.Ru)
+    336, // Mai.Ru
+)
+
 interface RepoManager {
     fun onDeleteConfirm()
 }
