@@ -5,6 +5,9 @@ import androidx.compose.ui.graphics.Color
 val PitchBlack = Color(0xFF000000)
 val GreyDark = Color(0xFF2C2C2C)
 
+val Orange = Color(0xFFFF9138)
+val LightGreen = Color(0xFFAEC300)
+
 // Light Theme
 val md_theme_light_primary = Color(0xFF006D3E)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
