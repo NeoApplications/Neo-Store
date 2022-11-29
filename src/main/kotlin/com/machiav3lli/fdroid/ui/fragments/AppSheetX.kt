@@ -61,9 +61,9 @@ import com.machiav3lli.fdroid.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Tracker
 import com.machiav3lli.fdroid.entity.ActionState
-import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.DonateType
 import com.machiav3lli.fdroid.entity.DownloadState
+import com.machiav3lli.fdroid.entity.toAntiFeature
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.network.CoilDownloader
 import com.machiav3lli.fdroid.screen.MessageDialog
@@ -632,8 +632,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 Text(
                                     modifier = Modifier.padding(8.dp),
                                     text = product.antiFeatures.map { af ->
-                                        val titleId =
-                                            AntiFeature.values().find { it.key == af }?.titleResId
+                                        val titleId = af.toAntiFeature()?.titleResId
                                         if (titleId != null) stringResource(id = titleId)
                                         else stringResource(id = R.string.unknown_FORMAT, af)
                                     }

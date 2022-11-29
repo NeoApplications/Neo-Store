@@ -98,6 +98,8 @@ enum class AntiFeature(val key: String, @StringRes val titleResId: Int) {
     NSFW("NSFW", R.string.not_safe_for_work)
 }
 
+fun String.toAntiFeature(): AntiFeature? = AntiFeature.values().find { it.key == this }
+
 sealed interface ComponentState {
     val icon: ImageVector
     val textId: Int
