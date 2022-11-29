@@ -585,7 +585,10 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 ) {
                                     if (list.isNotEmpty()) {
                                         list.forEach { p ->
-                                            PermissionsItem(permissionsType = p) { group, permissions ->
+                                            PermissionsItem(
+                                                permissionsGroup = p.key,
+                                                permissions = p.value
+                                            ) { group, permissions ->
                                                 onPermissionsClick(group, permissions)
                                             }
                                         }

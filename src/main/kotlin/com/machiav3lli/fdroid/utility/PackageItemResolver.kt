@@ -4,6 +4,18 @@ import android.content.Context
 import android.content.pm.PackageItemInfo
 import android.content.pm.PermissionInfo
 import android.content.res.Resources
+import com.machiav3lli.fdroid.CALENDAR_PERMISSIONS
+import com.machiav3lli.fdroid.CAMERA_PERMISSIONS
+import com.machiav3lli.fdroid.CONTACTS_PERMISSIONS
+import com.machiav3lli.fdroid.INTERNET_PERMISSIONS
+import com.machiav3lli.fdroid.LOCATION_PERMISSIONS
+import com.machiav3lli.fdroid.MICROPHONE_PERMISSIONS
+import com.machiav3lli.fdroid.NEARBY_DEVICES_PERMISSIONS
+import com.machiav3lli.fdroid.PHONE_PERMISSIONS
+import com.machiav3lli.fdroid.SMS_PERMISSIONS
+import com.machiav3lli.fdroid.STORAGE_PERMISSIONS
+import com.machiav3lli.fdroid.entity.PermissionGroup
+import com.machiav3lli.fdroid.entity.PermissionGroup.Companion.getPermissionGroup
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import java.util.*
 
@@ -82,63 +94,23 @@ object PackageItemResolver {
         )
     }
 
-    fun getPermissionGroup(permissionInfo: PermissionInfo): String? {
+    fun getPermissionGroup(permissionInfo: PermissionInfo): PermissionGroup? {
         return if (Android.sdk(29)) {
-            // Copied from package installer (Utils.java)
             when (permissionInfo.name) {
-                android.Manifest.permission.READ_CONTACTS,
-                android.Manifest.permission.WRITE_CONTACTS,
-                android.Manifest.permission.GET_ACCOUNTS,
-                ->
-                    android.Manifest.permission_group.CONTACTS
-                android.Manifest.permission.READ_CALENDAR,
-                android.Manifest.permission.WRITE_CALENDAR,
-                ->
-                    android.Manifest.permission_group.CALENDAR
-                android.Manifest.permission.SEND_SMS,
-                android.Manifest.permission.RECEIVE_SMS,
-                android.Manifest.permission.READ_SMS,
-                android.Manifest.permission.RECEIVE_MMS,
-                android.Manifest.permission.RECEIVE_WAP_PUSH,
-                "android.permission.READ_CELL_BROADCASTS",
-                ->
-                    android.Manifest.permission_group.SMS
-                android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                android.Manifest.permission.ACCESS_MEDIA_LOCATION,
-                ->
-                    android.Manifest.permission_group.STORAGE
-                android.Manifest.permission.ACCESS_FINE_LOCATION,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-                ->
-                    android.Manifest.permission_group.LOCATION
-                android.Manifest.permission.READ_CALL_LOG,
-                android.Manifest.permission.WRITE_CALL_LOG,
-                @Suppress("DEPRECATION") android.Manifest.permission.PROCESS_OUTGOING_CALLS,
-                ->
-                    android.Manifest.permission_group.CALL_LOG
-                android.Manifest.permission.READ_PHONE_STATE,
-                android.Manifest.permission.READ_PHONE_NUMBERS,
-                android.Manifest.permission.CALL_PHONE,
-                android.Manifest.permission.ADD_VOICEMAIL,
-                android.Manifest.permission.USE_SIP,
-                android.Manifest.permission.ANSWER_PHONE_CALLS,
-                android.Manifest.permission.ACCEPT_HANDOVER,
-                ->
-                    android.Manifest.permission_group.PHONE
-                android.Manifest.permission.RECORD_AUDIO ->
-                    android.Manifest.permission_group.MICROPHONE
-                android.Manifest.permission.ACTIVITY_RECOGNITION ->
-                    android.Manifest.permission_group.ACTIVITY_RECOGNITION
-                android.Manifest.permission.CAMERA ->
-                    android.Manifest.permission_group.CAMERA
-                android.Manifest.permission.BODY_SENSORS ->
-                    android.Manifest.permission_group.SENSORS
+                in CONTACTS_PERMISSIONS -> PermissionGroup.Contacts
+                in CALENDAR_PERMISSIONS -> PermissionGroup.Calendar
+                in SMS_PERMISSIONS -> PermissionGroup.SMS
+                in STORAGE_PERMISSIONS -> PermissionGroup.Storage
+                in PHONE_PERMISSIONS -> PermissionGroup.Phone
+                in LOCATION_PERMISSIONS -> PermissionGroup.Location
+                in MICROPHONE_PERMISSIONS -> PermissionGroup.Microphone
+                in CAMERA_PERMISSIONS -> PermissionGroup.Camera
+                in NEARBY_DEVICES_PERMISSIONS -> PermissionGroup.NearbyDevices
+                in INTERNET_PERMISSIONS -> PermissionGroup.Internet
                 else -> null
             }
         } else {
-            permissionInfo.group
+            permissionInfo.group?.getPermissionGroup()
         }
     }
 }

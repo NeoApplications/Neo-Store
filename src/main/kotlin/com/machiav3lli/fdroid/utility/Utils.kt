@@ -47,11 +47,11 @@ import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Installed
+import com.machiav3lli.fdroid.entity.PermissionGroup
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.LinkType
-import com.machiav3lli.fdroid.entity.PermissionsType
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.DownloadService
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -375,10 +375,9 @@ fun Product.generateLinks(context: Context): List<LinkType> {
     return links
 }
 
-fun Release.generatePermissionGroups(context: Context): List<PermissionsType> {
-    val permissionGroups = mutableListOf<PermissionsType>()
+fun Release.generatePermissionGroups(context: Context): Map<PermissionGroup?, List<PermissionInfo>> {
     val packageManager = context.packageManager
-    val permissions = permissions
+    return permissions
         .asSequence().mapNotNull {
             try {
                 packageManager.getPermissionInfo(it, 0)
@@ -387,22 +386,6 @@ fun Release.generatePermissionGroups(context: Context): List<PermissionsType> {
             }
         }
         .groupBy(PackageItemResolver::getPermissionGroup)
-        .asSequence().map { (group, permissionInfo) ->
-            val permissionGroupInfo = try {
-                group?.let { packageManager.getPermissionGroupInfo(it, 0) }
-            } catch (e: Exception) {
-                null
-            }
-            Pair(permissionGroupInfo, permissionInfo)
-        }
-        .groupBy({ it.first }, { it.second })
-    if (permissions.isNotEmpty()) {
-        permissionGroups.addAll(permissions.asSequence().filter { it.key != null }
-            .map { PermissionsType(it.key, it.value.flatten()) })
-        permissions.asSequence().find { it.key == null }
-            ?.let { permissionGroups.add(PermissionsType(null, it.value.flatten())) }
-    }
-    return permissionGroups
 }
 
 fun List<PermissionInfo>.getLabels(context: Context): List<String> {
