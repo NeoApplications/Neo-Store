@@ -79,6 +79,9 @@ const val HELP_TELEGRAM = "https://t.me/neo_android_store"
 const val HELP_MATRIX = "https://matrix.to/#/#neo-store:matrix.org"
 const val HELP_LICENSE = "https://github.com/NeoApplications/Neo-Store/blob/master/COPYING"
 
+const val PERMISSION_GROUP_INTERNET = "android.permission-group.INTERNET"
+const val PERMISSION_READ_CELL_BROADCASTS = "android.permission.READ_CELL_BROADCASTS"
+
 const val NAV_MAIN = 0
 const val NAV_PREFS = 1
 
