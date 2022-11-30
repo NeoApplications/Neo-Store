@@ -52,12 +52,12 @@ fun MeterIconsBar(
                 imageVector = Phosphor.CrosshairSimple,
                 contentDescription = stringResource(id = R.string.trackers)
             )
-            MeterIcon(modifier = Modifier.weight(1f), selected = selectedTrackers)
+            MeterIcon(modifier = Modifier.weight(1f), selected = selectedTrackers?.coerceIn(0,4))
             Icon(
                 imageVector = Phosphor.ShieldStar,
                 contentDescription = stringResource(id = R.string.permissions)
             )
-            MeterIcon(modifier = Modifier.weight(1f), selected = selectedPermissions)
+            MeterIcon(modifier = Modifier.weight(1f), selected = selectedPermissions?.coerceIn(0,4))
         }
         IconButton(onClick = onClick) {
             Icon(
