@@ -1,5 +1,7 @@
 package com.machiav3lli.fdroid
 
+import com.machiav3lli.fdroid.entity.PermissionGroup
+
 const val NOTIFICATION_CHANNEL_SYNCING = "syncing"
 const val NOTIFICATION_CHANNEL_UPDATES = "updates"
 const val NOTIFICATION_CHANNEL_DOWNLOADING = "downloading"
@@ -380,6 +382,24 @@ val NON_FREE_COUNTRIES_TRACKERS = listOf(
     140, // Appmetrica (Yandex)
     198, // myTarget (Mail.Ru)
     336, // Mai.Ru
+)
+
+// PermissionGroup groups
+
+val PHYSICAL_DATA_PERMISSIONS = listOf(
+    PermissionGroup.Location,
+    PermissionGroup.Camera,
+    PermissionGroup.Microphone,
+    PermissionGroup.NearbyDevices,
+)
+
+val IDENTIFICATION_DATA_PERMISSIONS = listOf(
+    PermissionGroup.Contacts,
+    PermissionGroup.Calendar,
+    PermissionGroup.Phone,
+    PermissionGroup.SMS,
+    PermissionGroup.Storage,
+    PermissionGroup.Internet,
 )
 
 interface RepoManager {
