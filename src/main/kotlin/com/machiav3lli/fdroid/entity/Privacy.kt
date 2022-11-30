@@ -32,15 +32,15 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.User
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserFocus
 
 class PrivacyData(
-    val permissions: Map<PermissionGroup?, List<PermissionInfo>>,
+    val permissions: Map<PermissionGroup, List<PermissionInfo>>,
     val trackers: List<Tracker>,
     val antiFeatures: List<AntiFeature>,
 ) {
-    val physicalDataPermissions: Map<PermissionGroup?, List<PermissionInfo>>
+    val physicalDataPermissions: Map<PermissionGroup, List<PermissionInfo>>
         get() = permissions.filter { it.key in PHYSICAL_DATA_PERMISSIONS }
-    val identificationDataPermissions: Map<PermissionGroup?, List<PermissionInfo>>
+    val identificationDataPermissions: Map<PermissionGroup, List<PermissionInfo>>
         get() = permissions.filter { it.key in IDENTIFICATION_DATA_PERMISSIONS }
-    val otherPermissions: Map<PermissionGroup?, List<PermissionInfo>>
+    val otherPermissions: Map<PermissionGroup, List<PermissionInfo>>
         get() = permissions.filterNot { it.key in (PHYSICAL_DATA_PERMISSIONS + IDENTIFICATION_DATA_PERMISSIONS) }
 
 }

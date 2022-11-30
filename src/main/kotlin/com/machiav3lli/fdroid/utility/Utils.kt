@@ -47,11 +47,11 @@ import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Installed
-import com.machiav3lli.fdroid.entity.PermissionGroup
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.LinkType
+import com.machiav3lli.fdroid.entity.PermissionGroup
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.DownloadService
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -375,7 +375,7 @@ fun Product.generateLinks(context: Context): List<LinkType> {
     return links
 }
 
-fun Release.generatePermissionGroups(context: Context): Map<PermissionGroup?, List<PermissionInfo>> {
+fun Release.generatePermissionGroups(context: Context): Map<PermissionGroup, List<PermissionInfo>> { // TODO other permissions as last group
     val packageManager = context.packageManager
     return permissions
         .asSequence().mapNotNull {

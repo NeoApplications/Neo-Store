@@ -65,10 +65,11 @@ class AppViewModelX(val db: DatabaseX, val packageName: String, developer: Strin
     val privacyData = combine(installedItem, trackers, productRepos) { ins, trs, prs ->
         val suggestedProduct = findSuggestedProduct(prs, ins) { it.first }
         PrivacyData(
-            suggestedProduct?.first?.displayRelease?.generatePermissionGroups(MainApplication.mainActivity!!)
-                ?: emptyMap(),
-            trs,
-            suggestedProduct?.first?.antiFeatures?.mapNotNull { it.toAntiFeature() } ?: emptyList()
+            permissions = suggestedProduct?.first?.displayRelease
+                ?.generatePermissionGroups(MainApplication.mainActivity!!) ?: emptyMap(),
+            trackers = trs,
+            antiFeatures = suggestedProduct?.first?.antiFeatures?.mapNotNull { it.toAntiFeature() }
+                ?: emptyList()
         )
     }.stateIn(
         viewModelScope,

@@ -94,7 +94,7 @@ object PackageItemResolver {
         )
     }
 
-    fun getPermissionGroup(permissionInfo: PermissionInfo): PermissionGroup? {
+    fun getPermissionGroup(permissionInfo: PermissionInfo): PermissionGroup {
         return if (Android.sdk(29)) {
             when (permissionInfo.name) {
                 in CONTACTS_PERMISSIONS -> PermissionGroup.Contacts
@@ -107,10 +107,10 @@ object PackageItemResolver {
                 in CAMERA_PERMISSIONS -> PermissionGroup.Camera
                 in NEARBY_DEVICES_PERMISSIONS -> PermissionGroup.NearbyDevices
                 in INTERNET_PERMISSIONS -> PermissionGroup.Internet
-                else -> null
+                else -> PermissionGroup.Other
             }
         } else {
-            permissionInfo.group?.getPermissionGroup()
+            permissionInfo.group?.getPermissionGroup() ?: PermissionGroup.Other
         }
     }
 }
