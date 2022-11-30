@@ -244,6 +244,8 @@
     <string name="permission_nearby_devices">Nearby devices</string>
     <string name="permission_internet">Internet</string>
     <string name="permission_other">Other permissions</string>
+    <string name="permission_physical_data">Permissions for physical data</string>
+    <string name="permission_identification_data">Permissions for identification data</string>
     <string name="trackers">Trackers</string>
     <string name="trackers_identification">Identification trackers</string>
     <string name="trackers_identification_description">TODO</string>
