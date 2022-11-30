@@ -267,4 +267,9 @@
     <string name="source_copyright_description">TODO</string>
     <string name="source_dependencies">Dependencies</string>
     <string name="source_dependencies_description">TODO</string>
+    <string name="action_change_permissions">Change permissions</string>
+    <string name="action_open_tc">Open TrackerControl</string>
+    <string name="action_install_tc">Install TrackerControl</string>
+    <string name="action_open_code">See code</string>
+    <string name="action_open_website">Open website</string>
 </resources>
