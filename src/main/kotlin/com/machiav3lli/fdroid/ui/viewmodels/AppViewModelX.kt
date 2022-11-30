@@ -30,7 +30,7 @@ class AppViewModelX(val db: DatabaseX, val packageName: String, developer: Strin
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val exodusInfo = db.exodusInfoDao.getFlow(packageName)
-        .mapLatest { it.maxByOrNull(ExodusInfo::version_code) ?: ExodusInfo() }
+        .mapLatest { it.maxByOrNull(ExodusInfo::version_code) }
 
     val trackers = exodusInfo.combine(db.trackerDao.allFlow) { a, b ->
         b.filter { it.key in a.trackers }

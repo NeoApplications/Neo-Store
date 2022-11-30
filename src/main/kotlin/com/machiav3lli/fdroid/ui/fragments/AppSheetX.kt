@@ -367,7 +367,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         var screenshotPage by remember { mutableStateOf(0) }
         val installed by viewModel.installedItem.collectAsState(null)
         val products by viewModel.products.collectAsState(null)
-        val exodusInfo by viewModel.exodusInfo.collectAsState(ExodusInfo())
+        val exodusInfo by viewModel.exodusInfo.collectAsState(null)
         val trackers by viewModel.trackers.collectAsState(emptyList())
         val authorProducts by viewModel.authorProducts.collectAsState(null)
         val repos by viewModel.repositories.collectAsState(null)
