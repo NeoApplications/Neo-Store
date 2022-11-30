@@ -46,15 +46,15 @@ class PrivacyData(
 }
 
 class PrivacyNote(
-    val permissionsNote: Int,
-    val trackersNote: Int,
-    val sourceType: SourceType,
+    val permissionsNote: Int = 100,
+    val trackersNote: Int = 100,
+    val sourceType: SourceType = SourceType(),
 )
 
 class SourceType(
-    val open: Boolean,
-    val free: Boolean,
-    val independent: Boolean,
+    val open: Boolean = true,
+    val free: Boolean = true,
+    val independent: Boolean = true,
 )
 
 open class PermissionGroup(
