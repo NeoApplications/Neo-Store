@@ -63,6 +63,7 @@ import com.machiav3lli.fdroid.database.entity.Tracker
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.DonateType
 import com.machiav3lli.fdroid.entity.DownloadState
+import com.machiav3lli.fdroid.entity.PrivacyNote
 import com.machiav3lli.fdroid.entity.toAntiFeature
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.network.CoilDownloader
@@ -369,6 +370,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         val products by viewModel.products.collectAsState(null)
         val exodusInfo by viewModel.exodusInfo.collectAsState(null)
         val trackers by viewModel.trackers.collectAsState(emptyList())
+        val privacyData by viewModel.privacyData.collectAsState()
+        val privacyNote by viewModel.privacyNote.collectAsState(PrivacyNote())
         val authorProducts by viewModel.authorProducts.collectAsState(null)
         val repos by viewModel.repositories.collectAsState(null)
         val downloadState by viewModel.downloadState.collectAsState(null)
