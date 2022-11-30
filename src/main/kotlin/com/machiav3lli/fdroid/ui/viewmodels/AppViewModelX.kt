@@ -33,7 +33,7 @@ class AppViewModelX(val db: DatabaseX, val packageName: String, developer: Strin
         .mapLatest { it.maxByOrNull(ExodusInfo::version_code) }
 
     val trackers = exodusInfo.combine(db.trackerDao.allFlow) { a, b ->
-        b.filter { it.key in a.trackers }
+        b.filter { it.key in (a?.trackers ?: emptyList()) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
