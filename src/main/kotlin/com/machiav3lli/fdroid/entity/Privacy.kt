@@ -4,7 +4,9 @@ import android.content.pm.PermissionInfo
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.machiav3lli.backup.ui.compose.icons.phosphor.GitPullRequest
+import com.machiav3lli.fdroid.IDENTIFICATION_DATA_PERMISSIONS
 import com.machiav3lli.fdroid.PERMISSION_GROUP_INTERNET
+import com.machiav3lli.fdroid.PHYSICAL_DATA_PERMISSIONS
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.Tracker
 import com.machiav3lli.fdroid.ui.compose.icons.Icon
@@ -33,7 +35,15 @@ class PrivacyData(
     val permissions: Map<PermissionGroup?, List<PermissionInfo>>,
     val trackers: List<Tracker>,
     val antiFeatures: List<AntiFeature>,
-)
+) {
+    val physicalDataPermissions: Map<PermissionGroup?, List<PermissionInfo>>
+        get() = permissions.filter { it.key in PHYSICAL_DATA_PERMISSIONS }
+    val identificationDataPermissions: Map<PermissionGroup?, List<PermissionInfo>>
+        get() = permissions.filter { it.key in IDENTIFICATION_DATA_PERMISSIONS }
+    val otherPermissions: Map<PermissionGroup?, List<PermissionInfo>>
+        get() = permissions.filterNot { it.key in (PHYSICAL_DATA_PERMISSIONS + IDENTIFICATION_DATA_PERMISSIONS) }
+
+}
 
 class PrivacyNote(
     val permissionsNote: Int,
