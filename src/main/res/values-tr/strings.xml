@@ -229,4 +229,5 @@
     <string name="prefs_installer">Yükleyici türü</string>
     <string name="root_installer">Root yükleyicisi</string>
     <string name="other_apps_by">%s tarafından sunulan diğer uygulamalar</string>
+    <string name="scan_qr_code">Karekod tara</string>
 </resources>
