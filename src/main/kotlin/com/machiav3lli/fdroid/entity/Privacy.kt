@@ -55,7 +55,14 @@ class SourceType(
     val open: Boolean = true,
     val free: Boolean = true,
     val independent: Boolean = true,
-)
+) {
+    val isFree: Boolean
+        get() = open && free && independent
+    val isOpenSource: Boolean
+        get() = open && independent
+    val isSourceAvailable: Boolean
+        get() = open
+}
 
 open class PermissionGroup(
     val name: String,
@@ -199,9 +206,9 @@ open class TrackersGroup(
 }
 
 open class SourceInfo(
-    @StringRes labelId: Int,
-    @StringRes descriptionId: Int,
-    icon: ImageVector,
+    @StringRes val labelId: Int,
+    @StringRes val descriptionId: Int,
+    val icon: ImageVector,
 ) {
     object Proprietary : SourceInfo(
         R.string.source_proprietary,
