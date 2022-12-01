@@ -146,9 +146,9 @@ open class PermissionGroup(
 }
 
 open class TrackersGroup(
-    @StringRes labelId: Int,
-    @StringRes descriptionId: Int,
-    icon: ImageVector,
+    @StringRes val labelId: Int,
+    @StringRes val descriptionId: Int,
+    val icon: ImageVector,
 ) {
     object Identification : TrackersGroup(
         R.string.trackers_identification,
