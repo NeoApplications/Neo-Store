@@ -928,9 +928,11 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                             ) {
                                                 Row(modifier = Modifier.padding(horizontal = 8.dp)) {
                                                     Text(
-                                                        text = groupTrackers
-                                                            .map(Tracker::name)
-                                                            .joinToString(separator = "\n") { "\u2022 $it" }
+                                                        text = "${stringResource(groupItem.descriptionId)}${
+                                                            groupTrackers
+                                                                .map(Tracker::name)
+                                                                .joinToString { "\n\u2022 $it" }
+                                                        }"
                                                     )
                                                 }
                                                 // TODO add singular tracker items
@@ -979,9 +981,11 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                     )
                                                 )
                                             Text(
-                                                text = dependencyItems
-                                                    .map { stringResource(it.titleResId) }
-                                                    .joinToString(separator = "\n") { "\u2022 $it}" }
+                                                text = "${stringResource(si.descriptionId)}${
+                                                    dependencyItems
+                                                        .map { stringResource(it.titleResId) }
+                                                        .joinToString { "\n\u2022 $it" }
+                                                }"
                                             )
                                         }
                                     }
@@ -1000,9 +1004,11 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                     )
                                                 )
                                             Text(
-                                                text = dependencyItems
-                                                    .map { stringResource(it.titleResId) }
-                                                    .joinToString(separator = "\n") { "\u2022 $it}" }
+                                                text = "${stringResource(si.descriptionId)}${
+                                                    dependencyItems
+                                                        .map { stringResource(it.titleResId) }
+                                                        .joinToString { "\n\u2022 $it" }
+                                                }"
                                             )
                                         }
                                     }
