@@ -168,6 +168,12 @@ open class TrackersGroup(
         Phosphor.CurrencyCircleDollar
     )
 
+    object Location : TrackersGroup(
+        R.string.trackers_location,
+        R.string.trackers_location_description,
+        Phosphor.CurrencyCircleDollar
+    )
+
     object Profiling : TrackersGroup(
         R.string.trackers_profiling,
         R.string.trackers_profiling_description,

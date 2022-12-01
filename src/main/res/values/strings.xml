@@ -255,6 +255,8 @@
     <string name="trackers_ads_description">TODO</string>
     <string name="trackers_profiling">Profiling trackers</string>
     <string name="trackers_profiling_description">TODO</string>
+    <string name="trackers_location">Location trackers</string>
+    <string name="trackers_location_description">TODO</string>
     <string name="trackers_bug">Bug reporting trackers</string>
     <string name="trackers_bug_description">TODO</string>
     <string name="source_proprietary">Proprietary</string>
