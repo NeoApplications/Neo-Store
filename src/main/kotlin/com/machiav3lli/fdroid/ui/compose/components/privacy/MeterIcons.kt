@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.ui.compose.components.privacy
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
@@ -13,12 +14,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.ui.compose.components.Tooltip
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyQuestion
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CrosshairSimple
@@ -52,12 +56,24 @@ fun MeterIconsBar(
                 imageVector = Phosphor.CrosshairSimple,
                 contentDescription = stringResource(id = R.string.trackers)
             )
-            MeterIcon(modifier = Modifier.weight(1f), selected = selectedTrackers?.coerceIn(0,4))
+            MeterIcon(
+                modifier = Modifier.weight(1f),
+                selected = selectedTrackers?.coerceIn(0, 4),
+                tooltips = (0..4).map {
+                    stringResource(
+                        getTrackersTooltip(it)
+                    )
+                }
+            )
             Icon(
                 imageVector = Phosphor.ShieldStar,
                 contentDescription = stringResource(id = R.string.permissions)
             )
-            MeterIcon(modifier = Modifier.weight(1f), selected = selectedPermissions?.coerceIn(0,4))
+            MeterIcon(
+                modifier = Modifier.weight(1f),
+                selected = selectedPermissions?.coerceIn(0, 4),
+                tooltips = (0..4).map { stringResource(getPermissionsTooltip(it)) }
+            )
         }
         IconButton(onClick = onClick) {
             Icon(
@@ -72,11 +88,15 @@ fun MeterIconsBar(
 fun MeterIcon(
     modifier: Modifier = Modifier,
     selected: Int? = 0,
+    tooltips: List<String> = listOf("", "", "", "", ""),
 ) {
     val colors = listOf(Color.Red, Orange, Color.Yellow, LightGreen, Color.Green)
+    val openPopup = remember { mutableStateOf(false) }
 
     Row(
-        modifier = modifier.clip(MaterialTheme.shapes.extraSmall),
+        modifier = modifier
+            .clip(MaterialTheme.shapes.extraSmall)
+            .clickable { openPopup.value = true },
     ) {
         colors.forEachIndexed { index, color ->
             val isSelected = selected == index
@@ -102,6 +122,26 @@ fun MeterIcon(
                     )
                 }
             )
+
+            if (isSelected && openPopup.value) {
+                Tooltip(tooltips[index], openPopup)
+            }
         }
     }
+}
+
+fun getTrackersTooltip(note: Int) = when (note) {
+    1 -> R.string.trackers_note_1
+    2 -> R.string.trackers_note_2
+    3 -> R.string.trackers_note_3
+    4 -> R.string.trackers_note_4
+    else -> R.string.trackers_note_0
+}
+
+fun getPermissionsTooltip(note: Int) = when (note) {
+    1 -> R.string.permissions_note_1
+    2 -> R.string.permissions_note_2
+    3 -> R.string.permissions_note_3
+    4 -> R.string.permissions_note_4
+    else -> R.string.permissions_note_0
 }
