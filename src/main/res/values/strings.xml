@@ -276,4 +276,14 @@
     <string name="action_open_website">Open website</string>
     <string name="trackers_none">No trackers to show</string>
     <string name="trackers_in">Trackers in  %s</string>
+    <string name="trackers_note_0">Is it an app or a spyware?</string>
+    <string name="trackers_note_1">Includes many trackers of your sensitive data</string>
+    <string name="trackers_note_2">Why does it need these trackers?</string>
+    <string name="trackers_note_3">Has couple of trackers</string>
+    <string name="trackers_note_4">Minimum to no trackers</string>
+    <string name="permissions_note_0">Requests many dangerous permissions</string>
+    <string name="permissions_note_1">Requires a good amount of permissions</string>
+    <string name="permissions_note_2">Doesn\'t require many permissions</string>
+    <string name="permissions_note_3">Minimal amount of permissions</string>
+    <string name="permissions_note_4">Requires almost no permissions</string>
 </resources>
