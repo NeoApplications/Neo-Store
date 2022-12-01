@@ -185,6 +185,17 @@ open class TrackersGroup(
         R.string.trackers_bug_description,
         Phosphor.Bug
     )
+
+    companion object {
+        fun String.getTrackersGroup() = when (this) {
+            "Analytics" -> Analytics
+            "Profiling" -> Profiling
+            "Identification" -> Identification
+            "Advertisement" -> Advertisement
+            "Location" -> Location
+            else -> CrashReporting // "Crash reporting"
+        }
+    }
 }
 
 open class SourceInfo(
