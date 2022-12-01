@@ -84,6 +84,10 @@ const val HELP_LICENSE = "https://github.com/NeoApplications/Neo-Store/blob/mast
 const val PERMISSION_GROUP_INTERNET = "android.permission-group.INTERNET"
 const val PERMISSION_READ_CELL_BROADCASTS = "android.permission.READ_CELL_BROADCASTS"
 
+const val TC_PACKAGENAME = "net.kollnig.missioncontrol"
+const val TC_PACKAGENAME_FDROID = "net.kollnig.missioncontrol.fdroid"
+const val TC_INTENT_EXTRA_SEARCH = "Search"
+
 const val NAV_MAIN = 0
 const val NAV_PREFS = 1
 
