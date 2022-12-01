@@ -77,13 +77,15 @@ import com.machiav3lli.fdroid.ui.compose.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.compose.components.SwitchPreference
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.AppInfoChips
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.AppInfoHeader
+import com.machiav3lli.fdroid.ui.compose.components.appsheet.CardButton
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.HtmlTextBlock
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.LinkItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.PermissionsItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.ReleaseItem
-import com.machiav3lli.fdroid.ui.compose.components.appsheet.SourceCodeCard
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.TopBarHeader
 import com.machiav3lli.fdroid.ui.compose.components.toScreenshotItem
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Code
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.compose.utils.Callbacks
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
@@ -433,8 +435,9 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                             icon = imageData,
                             state = downloadState,
                             actions = {
-                                SourceCodeCard(
-                                    modifier = Modifier.padding(vertical = 4.dp),
+                                CardButton(
+                                    icon = Phosphor.Code, // TODO use specific icon based on PrivacyNote
+                                    description = stringResource(id = R.string.source_code),
                                     onClick = {
                                         product.source.let { link ->
                                             if (link.isNotEmpty()) {
