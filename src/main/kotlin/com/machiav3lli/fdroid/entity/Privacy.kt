@@ -162,7 +162,7 @@ open class TrackersGroup(
         Phosphor.ChartLine
     )
 
-    object Ads : TrackersGroup(
+    object Advertisement : TrackersGroup(
         R.string.trackers_ads,
         R.string.trackers_ads_description,
         Phosphor.CurrencyCircleDollar
@@ -180,7 +180,7 @@ open class TrackersGroup(
         Phosphor.UserFocus
     )
 
-    object BugReporting : TrackersGroup(
+    object CrashReporting : TrackersGroup(
         R.string.trackers_bug,
         R.string.trackers_bug_description,
         Phosphor.Bug
