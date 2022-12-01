@@ -416,6 +416,34 @@ fun List<PermissionInfo>.getLabels(context: Context): List<String> {
     return labels.sortedBy { it.first }.map { it.second }
 }
 
+fun List<PermissionInfo>.getLabelsAndDescriptions(context: Context): List<String> {
+    val localCache = PackageItemResolver.LocalCache()
+
+    return map { permission ->
+        val labelFromPackage =
+            PackageItemResolver.loadLabel(context, localCache, permission)
+        val label = labelFromPackage ?: run {
+            val prefixes =
+                listOf("android.permission.", "com.android.browser.permission.")
+            prefixes.find { permission.name.startsWith(it) }?.let { it ->
+                val transform = permission.name.substring(it.length)
+                if (transform.matches("[A-Z_]+".toRegex())) {
+                    transform.split("_")
+                        .joinToString(separator = " ") { it.lowercase(Locale.US) }
+                } else {
+                    null
+                }
+            }
+        }
+        val description =
+            PackageItemResolver.loadDescription(context, localCache, permission)
+                ?.nullIfEmpty()?.let { if (it == permission.name) null else it }
+
+        if (description.isNullOrEmpty()) (label ?: permission.name).toString()
+        else "${label ?: permission.name}: $description"
+    }
+}
+
 fun Collection<Product>.matchSearchQuery(searchQuery: String): List<Product> = filter {
     listOf(it.label, it.packageName, it.author.name, it.summary, it.description).any { literal ->
         literal.matches(Regex(".*$searchQuery.*", RegexOption.IGNORE_CASE))

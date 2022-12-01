@@ -119,7 +119,7 @@ import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.findSuggestedProduct
 import com.machiav3lli.fdroid.utility.generateLinks
 import com.machiav3lli.fdroid.utility.generatePermissionGroups
-import com.machiav3lli.fdroid.utility.getLabels
+import com.machiav3lli.fdroid.utility.getLabelsAndDescriptions
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import kotlinx.coroutines.CoroutineScope
@@ -796,10 +796,10 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                 heading = stringResource(id = group.labelId),
                                                 icon = group.icon,
                                             ) {
-                                                val labels = ps.getLabels(context)
+                                                val descriptions = ps.getLabelsAndDescriptions(context)
                                                 Row(modifier = Modifier.padding(horizontal = 8.dp)) {
                                                     Text(
-                                                        text = labels.joinToString(separator = "\n") { "\u2023 $it" }
+                                                        text = descriptions.joinToString(separator = "\n") { "\u2023 $it" }
                                                     )
                                                 }
                                             }
@@ -833,10 +833,10 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                 heading = stringResource(id = group.labelId),
                                                 icon = group.icon,
                                             ) {
-                                                val labels = ps.getLabels(context)
+                                                val descriptions = ps.getLabelsAndDescriptions(context)
                                                 Row(modifier = Modifier.padding(horizontal = 8.dp)) {
                                                     Text(
-                                                        text = labels.joinToString(separator = "\n") { "\u2023 $it" }
+                                                        text = descriptions.joinToString(separator = "\n") { "\u2023 $it" }
                                                     )
                                                 }
                                             }
@@ -862,10 +862,10 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                         preExpanded = false,
                                     ) {
                                         list[PermissionGroup.Other]?.let { ps ->
-                                            val labels = ps.getLabels(context)
-                                            Row(modifier = Modifier.padding(horizontal = 8.dp)) {
+                                            val descriptions = ps.getLabelsAndDescriptions(context)
+                                            Row(modifier = Modifier.padding(horizontal = 16.dp)) {
                                                 Text(
-                                                    text = labels.joinToString(separator = "\n") { "\u2023 $it" }
+                                                    text = descriptions.joinToString(separator = "\n") { "\u2023 $it" }
                                                 )
                                             }
                                             Spacer(modifier = Modifier.height(8.dp))
