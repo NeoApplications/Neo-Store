@@ -713,7 +713,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                             if (titleId != null) stringResource(id = titleId)
                                             else stringResource(id = R.string.unknown_FORMAT, af)
                                         }
-                                            .joinToString(separator = "\n") { "\u2022 $it" }
+                                            .joinToString(separator = "\n") { "\u2023 $it" }
                                     )
                                 }
                             }
@@ -799,7 +799,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                 val labels = ps.getLabels(context)
                                                 Row(modifier = Modifier.padding(horizontal = 8.dp)) {
                                                     Text(
-                                                        text = labels.joinToString(separator = "\n") { "\u2022 $it" }
+                                                        text = labels.joinToString(separator = "\n") { "\u2023 $it" }
                                                     )
                                                 }
                                             }
@@ -836,7 +836,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                 val labels = ps.getLabels(context)
                                                 Row(modifier = Modifier.padding(horizontal = 8.dp)) {
                                                     Text(
-                                                        text = labels.joinToString(separator = "\n") { "\u2022 $it" }
+                                                        text = labels.joinToString(separator = "\n") { "\u2023 $it" }
                                                     )
                                                 }
                                             }
@@ -865,7 +865,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                             val labels = ps.getLabels(context)
                                             Row(modifier = Modifier.padding(horizontal = 8.dp)) {
                                                 Text(
-                                                    text = labels.joinToString(separator = "\n") { "\u2022 $it" }
+                                                    text = labels.joinToString(separator = "\n") { "\u2023 $it" }
                                                 )
                                             }
                                             Spacer(modifier = Modifier.height(8.dp))
@@ -931,7 +931,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                         text = "${stringResource(groupItem.descriptionId)}${
                                                             groupTrackers
                                                                 .map(Tracker::name)
-                                                                .joinToString { "\n\u2022 $it" }
+                                                                .joinToString { "\n\u2023 $it" }
                                                         }"
                                                     )
                                                 }
@@ -984,7 +984,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                 text = "${stringResource(si.descriptionId)}${
                                                     dependencyItems
                                                         .map { stringResource(it.titleResId) }
-                                                        .joinToString { "\n\u2022 $it" }
+                                                        .joinToString { "\n\u2023 $it" }
                                                 }"
                                             )
                                         }
@@ -1007,7 +1007,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                 text = "${stringResource(si.descriptionId)}${
                                                     dependencyItems
                                                         .map { stringResource(it.titleResId) }
-                                                        .joinToString { "\n\u2022 $it" }
+                                                        .joinToString { "\n\u2023 $it" }
                                                 }"
                                             )
                                         }
