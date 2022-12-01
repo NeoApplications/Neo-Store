@@ -84,8 +84,13 @@ import com.machiav3lli.fdroid.ui.compose.components.appsheet.PermissionsItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.ReleaseItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.TopBarHeader
 import com.machiav3lli.fdroid.ui.compose.components.toScreenshotItem
+import com.machiav3lli.fdroid.ui.compose.icons.Icon
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Code
+import com.machiav3lli.fdroid.ui.compose.icons.icon.Opensource
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyleft
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyright
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GlobeSimple
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.compose.utils.Callbacks
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
@@ -365,6 +370,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
     fun AppSheet() {
+        val context = LocalContext.current
         val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
         val showScreenshots = remember { mutableStateOf(false) }
         var screenshotPage by remember { mutableStateOf(0) }
@@ -436,13 +442,23 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                             state = downloadState,
                             actions = {
                                 CardButton(
-                                    icon = Phosphor.Code, // TODO use specific icon based on PrivacyNote
+                                    icon = if (privacyNote.sourceType.isFree) Phosphor.Copyleft
+                                    else if (privacyNote.sourceType.isOpenSource) Icon.Opensource
+                                    else if (privacyNote.sourceType.isSourceAvailable) Phosphor.Copyright
+                                    else Phosphor.GlobeSimple,
                                     description = stringResource(id = R.string.source_code),
                                     onClick = {
                                         product.source.let { link ->
                                             if (link.isNotEmpty()) {
-                                                requireContext().startActivity(
+                                                context.startActivity(
                                                     Intent(Intent.ACTION_VIEW, link.toUri())
+                                                )
+                                            } else if (product.web.isNotEmpty()) {
+                                                context.startActivity(
+                                                    Intent(
+                                                        Intent.ACTION_VIEW,
+                                                        product.web.toUri()
+                                                    )
                                                 )
                                             }
                                         }
