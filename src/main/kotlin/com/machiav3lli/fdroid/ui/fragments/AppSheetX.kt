@@ -890,10 +890,10 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                     exodusInfo?.version_name.orEmpty()
                                 ),
                                 preExpanded = true,
-                                actionText = stringResource(
+                                actionText = if (installed != null) stringResource(
                                     id = if (tcIntent == null) R.string.action_install_tc
                                     else R.string.action_open_tc
-                                ),
+                                ) else "",
                                 actionIcon = if (tcIntent == null) Phosphor.Download
                                 else Phosphor.ArrowSquareOut,
                                 onAction = {
