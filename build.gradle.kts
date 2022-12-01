@@ -1,5 +1,4 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 val composeVersion = "1.3.1"
 val composeCompilerVersion = "1.4.0-alpha02"
@@ -29,6 +28,7 @@ android {
         versionCode = 920
         versionName = "0.9.10"
         vectorDrawables.useSupportLibrary = true
+        buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
 
         javaCompileOptions {
             annotationProcessorOptions {

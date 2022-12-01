@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.network
 
 import android.util.Log
+import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.database.entity.ExodusData
 import com.machiav3lli.fdroid.database.entity.Trackers
 import dagger.Module
@@ -69,8 +70,8 @@ object ExodusModule {
             val builder = chain.request().newBuilder().apply {
                 header(
                     "Authorization",
-                    "Token 81f30e4903bde25023857719e71c94829a41e6a5"
-                ) // TODO hide it as a SECRET
+                    "Token ${BuildConfig.KEY_API_EXODUS}"
+                )
             }
             return@Interceptor chain.proceed(builder.build())
         }
