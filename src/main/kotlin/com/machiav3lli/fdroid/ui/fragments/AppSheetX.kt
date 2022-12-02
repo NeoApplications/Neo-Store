@@ -95,7 +95,6 @@ import com.machiav3lli.fdroid.ui.compose.components.appsheet.ReleaseItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.TopBarHeader
 import com.machiav3lli.fdroid.ui.compose.components.privacy.MeterIconsBar
 import com.machiav3lli.fdroid.ui.compose.components.privacy.PrivacyCard
-import com.machiav3lli.fdroid.ui.compose.components.privacy.PrivacyItem
 import com.machiav3lli.fdroid.ui.compose.components.privacy.PrivacyItemBlock
 import com.machiav3lli.fdroid.ui.compose.components.toScreenshotItem
 import com.machiav3lli.fdroid.ui.compose.icons.Icon
@@ -795,7 +794,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                 heading = stringResource(id = group.labelId),
                                                 icon = group.icon,
                                             ) {
-                                                val descriptions = ps.getLabelsAndDescriptions(context)
+                                                val descriptions =
+                                                    ps.getLabelsAndDescriptions(context)
                                                 Row(modifier = Modifier.padding(horizontal = 8.dp)) {
                                                     Text(
                                                         text = descriptions.joinToString(separator = "\n") { "\u2023 $it" }
@@ -832,7 +832,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                 heading = stringResource(id = group.labelId),
                                                 icon = group.icon,
                                             ) {
-                                                val descriptions = ps.getLabelsAndDescriptions(context)
+                                                val descriptions =
+                                                    ps.getLabelsAndDescriptions(context)
                                                 Row(modifier = Modifier.padding(horizontal = 8.dp)) {
                                                     Text(
                                                         text = descriptions.joinToString(separator = "\n") { "\u2023 $it" }
@@ -950,16 +951,28 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 preExpanded = true,
                             ) {
                                 (if (privacyNote.sourceType.open) SourceInfo.Open else SourceInfo.Proprietary).let {
-                                    PrivacyItem(
-                                        title = stringResource(id = it.labelId),
+                                    PrivacyItemBlock(
+                                        heading = stringResource(id = it.labelId),
                                         icon = it.icon,
-                                    )
+                                    ) {
+                                        Row(modifier = Modifier.padding(horizontal = 8.dp)) {
+                                            Text(
+                                                text = stringResource(it.descriptionId)
+                                            )
+                                        }
+                                    }
                                 }
                                 if (privacyNote.sourceType.free) SourceInfo.Copyleft.let {
-                                    PrivacyItem(
-                                        title = stringResource(id = it.labelId),
+                                    PrivacyItemBlock(
+                                        heading = stringResource(id = it.labelId),
                                         icon = it.icon,
-                                    )
+                                    ) {
+                                        Row(modifier = Modifier.padding(horizontal = 8.dp)) {
+                                            Text(
+                                                text = stringResource(it.descriptionId)
+                                            )
+                                        }
+                                    }
                                 }
                                 else SourceInfo.Copyright.let { si ->
                                     PrivacyItemBlock(
