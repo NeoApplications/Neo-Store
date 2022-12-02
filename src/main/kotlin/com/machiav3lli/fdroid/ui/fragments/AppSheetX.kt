@@ -5,7 +5,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -879,11 +878,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 .getLaunchIntentForPackage(TC_PACKAGENAME)
                                 ?: context.packageManager
                                     .getLaunchIntentForPackage(TC_PACKAGENAME_FDROID)
-                            val productUID = try {
-                                context.packageManager.getApplicationInfo(product.packageName, 0)
-                            } catch (e: PackageManager.NameNotFoundException) {
-                                null
-                            }?.uid
                             PrivacyCard(
                                 heading = stringResource(
                                     id = R.string.trackers_in,
