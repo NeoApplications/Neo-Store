@@ -103,6 +103,9 @@ class MainActivityX : AppCompatActivity() {
         InstalledViewModel.Factory(db)
     }
 
+    private lateinit var sheetSortFilter: SortFilterSheet
+    private lateinit var sheetApp: AppSheetX
+
     @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
@@ -292,12 +295,12 @@ class MainActivityX : AppCompatActivity() {
     }
 
     internal fun navigateProduct(packageName: String, developer: String) {
-        AppSheetX(packageName, developer)
-            .showNow(supportFragmentManager, "Product $packageName")
+        sheetApp = AppSheetX(packageName, developer)
+        sheetApp.showNow(supportFragmentManager, "Product $packageName")
     }
 
     internal fun navigateSortFilter(navPage: String) {
-        SortFilterSheet(navPage)
-            .showNow(supportFragmentManager, "Sort/Filter Page of: $navPage")
+        sheetSortFilter = SortFilterSheet(navPage)
+        sheetSortFilter.showNow(supportFragmentManager, "Sort/Filter Page of: $navPage")
     }
 }
