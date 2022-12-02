@@ -28,8 +28,6 @@ import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.ui.compose.RepositoriesRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.QrCode
-import com.machiav3lli.fdroid.ui.fragments.EditRepositorySheetX
-import com.machiav3lli.fdroid.ui.fragments.RepositorySheetX
 import com.machiav3lli.fdroid.ui.viewmodels.RepositoriesViewModelX
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,15 +44,9 @@ fun PrefsReposPage(viewModel: RepositoriesViewModelX, address: String, fingerpri
     LaunchedEffect(key1 = viewModel.showSheet) {
         viewModel.showSheet.collectLatest {
             if (it?.editMode == true) {
-                EditRepositorySheetX(it.repositoryId).showNow(
-                    prefsActivityX.supportFragmentManager,
-                    "Repository ${it.repositoryId}"
-                )
+                prefsActivityX.navigateEditRepo(it.repositoryId)
             } else if (it != null && !it.editMode) {
-                RepositorySheetX(it.repositoryId).showNow(
-                    prefsActivityX.supportFragmentManager,
-                    "Repository $it"
-                )
+                prefsActivityX.navigateRepo(it.repositoryId)
             }
         }
     }

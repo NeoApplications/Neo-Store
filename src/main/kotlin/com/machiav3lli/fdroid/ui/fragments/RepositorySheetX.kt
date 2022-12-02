@@ -59,10 +59,7 @@ class RepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManager {
             )
         }
         binding.editRepository.setOnClickListener {
-            EditRepositorySheetX(repositoryId).showNow(
-                parentFragmentManager,
-                "Edit repository ${it.id}"
-            )
+            (context as PrefsActivityX).navigateEditRepo(repositoryId)
         }
     }
 
