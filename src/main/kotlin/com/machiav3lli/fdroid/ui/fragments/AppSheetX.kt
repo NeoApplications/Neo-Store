@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -12,6 +13,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -44,6 +49,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
@@ -56,12 +62,21 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.RELEASE_STATE_INSTALLED
 import com.machiav3lli.fdroid.RELEASE_STATE_NONE
 import com.machiav3lli.fdroid.RELEASE_STATE_SUGGESTED
+import com.machiav3lli.fdroid.TC_INTENT_EXTRA_SEARCH
+import com.machiav3lli.fdroid.TC_PACKAGENAME
+import com.machiav3lli.fdroid.TC_PACKAGENAME_FDROID
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.DonateType
 import com.machiav3lli.fdroid.entity.DownloadState
+import com.machiav3lli.fdroid.entity.PermissionGroup
+import com.machiav3lli.fdroid.entity.PrivacyNote
+import com.machiav3lli.fdroid.entity.Section
+import com.machiav3lli.fdroid.entity.SourceInfo
+import com.machiav3lli.fdroid.entity.TrackersGroup.Companion.getTrackersGroup
+import com.machiav3lli.fdroid.entity.toAntiFeature
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.network.CoilDownloader
 import com.machiav3lli.fdroid.screen.MessageDialog
@@ -74,13 +89,24 @@ import com.machiav3lli.fdroid.ui.compose.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.compose.components.SwitchPreference
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.AppInfoChips
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.AppInfoHeader
+import com.machiav3lli.fdroid.ui.compose.components.appsheet.CardButton
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.HtmlTextBlock
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.LinkItem
-import com.machiav3lli.fdroid.ui.compose.components.appsheet.PermissionsItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.ReleaseItem
-import com.machiav3lli.fdroid.ui.compose.components.appsheet.SourceCodeCard
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.TopBarHeader
+import com.machiav3lli.fdroid.ui.compose.components.privacy.MeterIconsBar
+import com.machiav3lli.fdroid.ui.compose.components.privacy.PrivacyCard
+import com.machiav3lli.fdroid.ui.compose.components.privacy.PrivacyItemBlock
 import com.machiav3lli.fdroid.ui.compose.components.toScreenshotItem
+import com.machiav3lli.fdroid.ui.compose.icons.Icon
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.icon.Opensource
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowCircleLeft
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyleft
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyright
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GlobeSimple
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.compose.utils.Callbacks
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
@@ -89,9 +115,10 @@ import com.machiav3lli.fdroid.ui.viewmodels.AppViewModelX
 import com.machiav3lli.fdroid.utility.Utils.rootInstallerEnabled
 import com.machiav3lli.fdroid.utility.Utils.startUpdate
 import com.machiav3lli.fdroid.utility.extension.android.Android
+import com.machiav3lli.fdroid.utility.extension.grantedPermissions
 import com.machiav3lli.fdroid.utility.findSuggestedProduct
 import com.machiav3lli.fdroid.utility.generateLinks
-import com.machiav3lli.fdroid.utility.generatePermissionGroups
+import com.machiav3lli.fdroid.utility.getLabelsAndDescriptions
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import kotlinx.coroutines.CoroutineScope
@@ -100,6 +127,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.floor
 
 // TODO clean up and replace dropped functions from AppDetailFragment
 class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
@@ -118,6 +146,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     val viewModel: AppViewModelX by viewModels {
         AppViewModelX.Factory(mainActivityX.db, packageName, developer)
     }
+    var showPrivacyPage by mutableStateOf(false)
 
     val mainActivityX: MainActivityX
         get() = requireActivity() as MainActivityX
@@ -337,6 +366,13 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         }
     }
 
+    private fun openPermissionPage(packageName: String) {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(
+            Uri.fromParts("package", packageName, null)
+        )
+        startActivity(intent)
+    }
+
     private fun copyLinkToClipboard(
         coroutineScope: CoroutineScope,
         scaffoldState: SnackbarHostState,
@@ -357,14 +393,23 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+    @OptIn(
+        ExperimentalMaterial3Api::class,
+        ExperimentalComposeUiApi::class,
+        ExperimentalFoundationApi::class
+    )
     @Composable
     fun AppSheet() {
+        val context = LocalContext.current
         val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
         val showScreenshots = remember { mutableStateOf(false) }
         var screenshotPage by remember { mutableStateOf(0) }
         val installed by viewModel.installedItem.collectAsState(null)
         val products by viewModel.products.collectAsState(null)
+        val exodusInfo by viewModel.exodusInfo.collectAsState(null)
+        val trackers by viewModel.trackers.collectAsState(emptyList())
+        val privacyData by viewModel.privacyData.collectAsState()
+        val privacyNote by viewModel.privacyNote.collectAsState(PrivacyNote())
         val authorProducts by viewModel.authorProducts.collectAsState(null)
         val repos by viewModel.repositories.collectAsState(null)
         val downloadState by viewModel.downloadState.collectAsState(null)
@@ -419,34 +464,52 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         suggestedProductRepo?.let { (product, repo) ->
             Scaffold(
                 topBar = {
-                    Column() {
+                    Column {
                         TopBarHeader(
                             appName = product.label,
                             packageName = product.packageName,
                             icon = imageData,
                             state = downloadState,
                             actions = {
-                                SourceCodeCard(
-                                    modifier = Modifier.padding(vertical = 4.dp),
+                                if (!showPrivacyPage)
+                                    CardButton(
+                                        icon = if (privacyNote.sourceType.isFree) Phosphor.Copyleft
+                                        else if (privacyNote.sourceType.isOpenSource) Icon.Opensource
+                                        else if (privacyNote.sourceType.isSourceAvailable) Phosphor.Copyright
+                                        else Phosphor.GlobeSimple,
+                                        description = stringResource(id = R.string.source_code),
+                                        onClick = {
+                                            product.source.let { link ->
+                                                if (link.isNotEmpty()) {
+                                                    context.startActivity(
+                                                        Intent(Intent.ACTION_VIEW, link.toUri())
+                                                    )
+                                                } else if (product.web.isNotEmpty()) {
+                                                    context.startActivity(
+                                                        Intent(
+                                                            Intent.ACTION_VIEW,
+                                                            product.web.toUri()
+                                                        )
+                                                    )
+                                                }
+                                            }
+                                        },
+                                        onLongClick = {
+                                            product.source.let { link ->
+                                                if (link.isNotEmpty()) {
+                                                    copyLinkToClipboard(
+                                                        coroutineScope,
+                                                        snackbarHostState,
+                                                        link
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    ) else CardButton(
+                                    icon = Phosphor.ArrowCircleLeft,
+                                    description = stringResource(id = R.string.cancel),
                                     onClick = {
-                                        product.source.let { link ->
-                                            if (link.isNotEmpty()) {
-                                                requireContext().startActivity(
-                                                    Intent(Intent.ACTION_VIEW, link.toUri())
-                                                )
-                                            }
-                                        }
-                                    },
-                                    onLongClick = {
-                                        product.source.let { link ->
-                                            if (link.isNotEmpty()) {
-                                                copyLinkToClipboard(
-                                                    coroutineScope,
-                                                    snackbarHostState,
-                                                    link
-                                                )
-                                            }
-                                        }
+                                        showPrivacyPage = false
                                     }
                                 )
                             },
@@ -461,128 +524,257 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                 contentColor = MaterialTheme.colorScheme.onBackground,
                 snackbarHost = { SnackbarHost(snackbarHostState) },
             ) { paddingValues ->
-                LazyColumn(
-                    modifier = Modifier
-                        .padding(
-                            top = paddingValues.calculateTopPadding(),
-                            start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
-                            end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
-                        )
-                        .nestedScroll(nestedScrollConnection),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = PaddingValues(horizontal = 8.dp)
+                AnimatedVisibility(
+                    visible = !showPrivacyPage,
+                    enter = slideInHorizontally { x -> -x },
+                    exit = slideOutHorizontally { x -> -x },
                 ) {
-                    item {
-                        AppInfoHeader(
-                            mainAction = mainAction,
-                            possibleActions = actions.filter { it != mainAction }.toSet(),
-                            onAction = { onActionClick(it) }
-                        )
-                    }
-                    item {
-                        AnimatedVisibility(visible = product.canUpdate(installed)) {
-                            SwitchPreference(
-                                text = stringResource(id = R.string.ignore_this_update),
-                                initSelected = { extras?.ignoredVersion == product.versionCode },
-                                onCheckedChanged = {
-                                    viewModel.setIgnoredVersion(
-                                        product.packageName,
-                                        if (it) product.versionCode else 0
-                                    )
-                                }
+                    LazyColumn(
+                        modifier = Modifier
+                            .padding(
+                                top = paddingValues.calculateTopPadding(),
+                                start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
+                                end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
                             )
-                        }
-                    }
-                    item {
-                        AnimatedVisibility(visible = installed != null) {
-                            SwitchPreference(
-                                text = stringResource(id = R.string.ignore_all_updates),
-                                initSelected = { extras?.ignoreUpdates == true },
-                                onCheckedChanged = {
-                                    viewModel.setIgnoreUpdates(product.packageName, it)
-                                }
-                            )
-                        }
-                    }
-                    if (Preferences[Preferences.Key.ShowScreenshots]) {
+                            .nestedScroll(nestedScrollConnection),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        contentPadding = PaddingValues(horizontal = 8.dp)
+                    ) {
                         item {
-                            ScreenshotList(screenShots = suggestedProductRepo.first.screenshots.map {
-                                it.toScreenshotItem(
-                                    repository = repo,
-                                    packageName = product.packageName
+                            MeterIconsBar(
+                                modifier = Modifier.fillMaxWidth(),
+                                selectedTrackers = if (exodusInfo != null) floor(privacyNote.trackersNote / 20f).toInt()
+                                else null,
+                                selectedPermissions = floor(privacyNote.permissionsNote / 20f).toInt(),
+                            ) {
+                                this@AppSheetX.showPrivacyPage = true
+                            }
+                        }
+                        item {
+                            AppInfoHeader(
+                                mainAction = mainAction,
+                                possibleActions = actions.filter { it != mainAction }.toSet(),
+                                onAction = { onActionClick(it) }
+                            )
+                        }
+                        item {
+                            AnimatedVisibility(visible = product.canUpdate(installed)) {
+                                SwitchPreference(
+                                    text = stringResource(id = R.string.ignore_this_update),
+                                    initSelected = { extras?.ignoredVersion == product.versionCode },
+                                    onCheckedChanged = {
+                                        viewModel.setIgnoredVersion(
+                                            product.packageName,
+                                            if (it) product.versionCode else 0
+                                        )
+                                    }
                                 )
-                            }) { index ->
-                                screenshotPage = index
-                                showScreenshots.value = true
                             }
                         }
-                    }
-                    item {
-                        // TODO add markdown parsing
-                        if (product.description.isNotEmpty()) HtmlTextBlock(description = product.description)
-                    }
-                    val links = product.generateLinks(requireContext())
-                    if (links.isNotEmpty()) {
                         item {
-                            ExpandableBlock(
-                                heading = stringResource(id = R.string.links),
-                                positive = true,
-                                preExpanded = true
-                            ) {
-                                links.forEach { item ->
-                                    LinkItem(
-                                        linkType = item,
-                                        onClick = { link ->
-                                            link?.let { onUriClick(it, true) }
-                                        },
-                                        onLongClick = { link ->
-                                            copyLinkToClipboard(
-                                                coroutineScope,
-                                                snackbarHostState,
-                                                link.toString()
-                                            )
-                                        }
+                            AnimatedVisibility(visible = installed != null) {
+                                SwitchPreference(
+                                    text = stringResource(id = R.string.ignore_all_updates),
+                                    initSelected = { extras?.ignoreUpdates == true },
+                                    onCheckedChanged = {
+                                        viewModel.setIgnoreUpdates(product.packageName, it)
+                                    }
+                                )
+                            }
+                        }
+                        if (Preferences[Preferences.Key.ShowScreenshots]) {
+                            item {
+                                ScreenshotList(screenShots = suggestedProductRepo.first.screenshots.map {
+                                    it.toScreenshotItem(
+                                        repository = repo,
+                                        packageName = product.packageName
                                     )
+                                }) { index ->
+                                    screenshotPage = index
+                                    showScreenshots.value = true
                                 }
                             }
                         }
-                    }
-                    if (product.donates.isNotEmpty()) {
                         item {
-                            ExpandableBlock(
-                                heading = stringResource(id = R.string.donate),
-                                positive = true,
-                                preExpanded = false
-                            ) {
-                                product.donates.forEach { item ->
-                                    LinkItem(linkType = DonateType(item, requireContext()),
-                                        onClick = { link ->
-                                            link?.let { onUriClick(it, true) }
-                                        },
-                                        onLongClick = { link ->
-                                            copyLinkToClipboard(
-                                                coroutineScope,
-                                                snackbarHostState,
-                                                link.toString()
-                                            )
-                                        }
-                                    )
-                                }
-                            }
+                            // TODO add markdown parsing
+                            if (product.description.isNotEmpty()) HtmlTextBlock(description = product.description)
                         }
-                    }
-                    item {
-                        product.displayRelease?.generatePermissionGroups(requireContext())
-                            ?.let { list ->
+                        val links = product.generateLinks(requireContext())
+                        if (links.isNotEmpty()) {
+                            item {
                                 ExpandableBlock(
-                                    heading = stringResource(id = R.string.permissions),
+                                    heading = stringResource(id = R.string.links),
+                                    positive = true,
+                                    preExpanded = true
+                                ) {
+                                    links.forEach { item ->
+                                        LinkItem(
+                                            linkType = item,
+                                            onClick = { link ->
+                                                link?.let { onUriClick(it, true) }
+                                            },
+                                            onLongClick = { link ->
+                                                copyLinkToClipboard(
+                                                    coroutineScope,
+                                                    snackbarHostState,
+                                                    link.toString()
+                                                )
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        if (product.donates.isNotEmpty()) {
+                            item {
+                                ExpandableBlock(
+                                    heading = stringResource(id = R.string.donate),
                                     positive = true,
                                     preExpanded = false
                                 ) {
+                                    product.donates.forEach { item ->
+                                        LinkItem(linkType = DonateType(item, requireContext()),
+                                            onClick = { link ->
+                                                link?.let { onUriClick(it, true) }
+                                            },
+                                            onLongClick = { link ->
+                                                copyLinkToClipboard(
+                                                    coroutineScope,
+                                                    snackbarHostState,
+                                                    link.toString()
+                                                )
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        if (!authorProducts.isNullOrEmpty()) {
+                            item {
+                                ExpandableBlock(
+                                    heading = stringResource(
+                                        id = R.string.other_apps_by,
+                                        product.author.name
+                                    ),
+                                    positive = true,
+                                    preExpanded = false
+                                ) {
+                                    ProductsHorizontalRecycler(
+                                        productsList = authorProducts,
+                                        repositories = repos?.associateBy { repo -> repo.id }
+                                            ?: emptyMap()
+                                    ) { item ->
+                                        mainActivityX.navigateProduct(
+                                            item.packageName,
+                                            item.developer
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        if (product.whatsNew.isNotEmpty()) {
+                            item {
+                                ExpandableBlock(
+                                    heading = stringResource(id = R.string.changes),
+                                    positive = true,
+                                    preExpanded = true
+                                ) {
+                                    HtmlTextBlock(
+                                        description = product.whatsNew,
+                                        isExpandable = false
+                                    )
+                                }
+                            }
+                        }
+                        item {
+                            Text(
+                                text = stringResource(id = R.string.releases),
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.padding(start = 14.dp)
+                            )
+                        }
+                        items(items = releaseItems) { item ->
+                            ReleaseItem(
+                                release = item.first,
+                                repository = item.second,
+                                releaseState = item.third,
+                                onDownloadClick = { release ->
+                                    onReleaseClick(release)
+                                },
+                                onShareClick = {
+                                    shareReleaseIntent(
+                                        "${product.label} ${item.first.version}",
+                                        it.getDownloadUrl(item.second)
+                                    )
+                                }
+                            )
+                        }
+                        item {
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    }
+                }
+                AnimatedVisibility(
+                    visible = showPrivacyPage,
+                    enter = slideInHorizontally { x -> x },
+                    exit = slideOutHorizontally { x -> x },
+                ) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .padding(
+                                top = paddingValues.calculateTopPadding(),
+                                start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
+                                end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
+                            )
+                            .nestedScroll(nestedScrollConnection),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        contentPadding = PaddingValues(
+                            bottom = 12.dp,
+                            start = 8.dp,
+                            end = 8.dp,
+                        )
+                    ) {
+                        val requestedPermissions =
+                            if (installed != null) context.packageManager.getPackageInfo(
+                                packageName,
+                                PackageManager.GET_PERMISSIONS
+                            ).grantedPermissions else emptyMap()
+
+                        item {
+                            privacyData.physicalDataPermissions.let { list -> // TODO show what's granted and what's not
+                                PrivacyCard(
+                                    heading = stringResource(id = R.string.permission_physical_data),
+                                    preExpanded = true,
+                                    actionText = if (installed != null && list.isNotEmpty())
+                                        stringResource(id = R.string.action_change_permissions)
+                                    else "",
+                                    onAction = { openPermissionPage(product.packageName) }
+                                ) {
                                     if (list.isNotEmpty()) {
-                                        list.forEach { p ->
-                                            PermissionsItem(permissionsType = p) { group, permissions ->
-                                                onPermissionsClick(group, permissions)
+                                        list.forEach { (group, ps) ->
+                                            PrivacyItemBlock(
+                                                heading = stringResource(id = group.labelId),
+                                                icon = group.icon,
+                                            ) {
+                                                val descriptions =
+                                                    ps.getLabelsAndDescriptions(context)
+                                                Row(modifier = Modifier.padding(horizontal = 8.dp)) {
+                                                    Text(
+                                                        text = ps
+                                                            .mapIndexed { index, perm ->
+                                                                "\u2023 ${
+                                                                    if (installed != null) "(${
+                                                                        stringResource(
+                                                                            if (requestedPermissions[perm.name] == true) R.string.permission_granted
+                                                                            else if (perm.name !in requestedPermissions.keys) R.string.permission_not_present
+                                                                            else R.string.permission_not_granted
+                                                                        )
+                                                                    }) " else ""
+                                                                }${descriptions[index]}"
+                                                            }
+                                                            .joinToString(separator = "\n") { it }
+                                                    )
+                                                }
                                             }
                                         }
                                     } else {
@@ -597,86 +789,272 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                     }
                                 }
                             }
-                    }
-                    if (!authorProducts.isNullOrEmpty()) {
+                        }
                         item {
-                            ExpandableBlock(
-                                heading = stringResource(
-                                    id = R.string.other_apps_by,
-                                    product.author.name
-                                ),
-                                positive = true,
-                                preExpanded = false
-                            ) {
-                                ProductsHorizontalRecycler(
-                                    productsList = authorProducts,
-                                    repositories = repos?.associateBy { repo -> repo.id }
-                                        ?: emptyMap()
-                                ) { item ->
-                                    mainActivityX.navigateProduct(item.packageName, item.developer)
+                            privacyData.identificationDataPermissions.let { list ->
+                                PrivacyCard(
+                                    heading = stringResource(id = R.string.permission_identification_data),
+                                    preExpanded = true,
+                                    actionText = if (installed != null && list.isNotEmpty())
+                                        stringResource(id = R.string.action_change_permissions)
+                                    else "",
+                                    onAction = { openPermissionPage(product.packageName) }
+                                ) {
+                                    if (list.isNotEmpty()) {
+                                        list.forEach { (group, ps) ->
+                                            PrivacyItemBlock(
+                                                heading = stringResource(id = group.labelId),
+                                                icon = group.icon,
+                                            ) {
+                                                val descriptions =
+                                                    ps.getLabelsAndDescriptions(context)
+                                                Row(modifier = Modifier.padding(horizontal = 8.dp)) {
+                                                    Text(
+                                                        text = ps
+                                                            .mapIndexed { index, perm ->
+                                                                "\u2023 ${
+                                                                    if (installed != null) "(${
+                                                                        stringResource(
+                                                                            if (requestedPermissions[perm.name] == true) R.string.permission_granted
+                                                                            else if (perm.name !in requestedPermissions.keys) R.string.permission_not_present
+                                                                            else R.string.permission_not_granted
+                                                                        )
+                                                                    }) " else ""
+                                                                }${descriptions[index]}"
+                                                            }
+                                                            .joinToString(separator = "\n") { it }
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(8.dp),
+                                            horizontalArrangement = Arrangement.Center
+                                        ) {
+                                            Text(text = stringResource(id = R.string.no_permissions_identified))
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
-                    if (product.antiFeatures.isNotEmpty()) {
-                        item {
-                            ExpandableBlock(
-                                heading = stringResource(id = R.string.anti_features),
-                                positive = false,
-                                preExpanded = false
-                            ) {
-                                Text(
-                                    modifier = Modifier.padding(8.dp),
-                                    text = product.antiFeatures.map { af ->
-                                        val titleId =
-                                            AntiFeature.values().find { it.key == af }?.titleResId
-                                        if (titleId != null) stringResource(id = titleId)
-                                        else stringResource(id = R.string.unknown_FORMAT, af)
+                        if (privacyData.otherPermissions.isNotEmpty()) {
+                            item {
+                                privacyData.otherPermissions.let { list ->
+                                    PrivacyCard(
+                                        heading = stringResource(id = R.string.permission_other),
+                                        preExpanded = false,
+                                    ) {
+                                        list[PermissionGroup.Other]?.let { ps ->
+                                            val descriptions = ps.getLabelsAndDescriptions(context)
+                                            Row(modifier = Modifier.padding(horizontal = 16.dp)) {
+                                                Text(
+                                                    text = ps
+                                                        .mapIndexed { index, perm ->
+                                                            "\u2023 ${
+                                                                if (installed != null) "(${
+                                                                    stringResource(
+                                                                        if (requestedPermissions[perm.name] == true) R.string.permission_granted
+                                                                        else if (perm.name !in requestedPermissions.keys) R.string.permission_not_present
+                                                                        else R.string.permission_not_granted
+                                                                    )
+                                                                }) " else ""
+                                                            }${descriptions[index]}"
+                                                        }
+                                                        .joinToString(separator = "\n") { it }
+                                                )
+                                            }
+                                            Spacer(modifier = Modifier.height(8.dp))
+                                        }
                                     }
-                                        .joinToString(separator = "\n") { "\u2022 $it" }
-                                )
+                                }
                             }
                         }
-                    }
-                    if (product.whatsNew.isNotEmpty()) {
                         item {
-                            ExpandableBlock(
-                                heading = stringResource(id = R.string.changes),
-                                positive = true,
-                                preExpanded = true
+                            val tcIntent = context.packageManager
+                                .getLaunchIntentForPackage(TC_PACKAGENAME)
+                                ?: context.packageManager
+                                    .getLaunchIntentForPackage(TC_PACKAGENAME_FDROID)
+                            PrivacyCard(
+                                heading = stringResource(
+                                    id = R.string.trackers_in,
+                                    exodusInfo?.version_name.orEmpty()
+                                ),
+                                preExpanded = true,
+                                actionText = if (installed != null) stringResource(
+                                    id = if (tcIntent == null) R.string.action_install_tc
+                                    else R.string.action_open_tc
+                                ) else "",
+                                actionIcon = if (tcIntent == null) Phosphor.Download
+                                else Phosphor.ArrowSquareOut,
+                                onAction = {
+                                    if (tcIntent == null) {
+                                        startActivity(
+                                            Intent(
+                                                Intent.ACTION_VIEW,
+                                                Uri.parse("market://search?q=$TC_PACKAGENAME")
+                                            )
+                                        )
+                                        mainActivityX.latestViewModel.setSections(Section.All)
+                                        dismissNow()
+                                    } else startActivity(
+                                        tcIntent.putExtra(
+                                            TC_INTENT_EXTRA_SEARCH,
+                                            product.packageName
+                                        )
+                                    )
+                                }
                             ) {
-                                HtmlTextBlock(
-                                    description = product.whatsNew,
-                                    isExpandable = false
-                                )
+                                if (trackers.isNotEmpty()) {
+                                    trackers
+                                        .map { it.categories }
+                                        .flatten()
+                                        .distinct()
+                                        .associateWith { group -> trackers.filter { group in it.categories } }
+                                        .forEach { (group, groupTrackers) ->
+                                            val groupItem = group.getTrackersGroup()
+                                            PrivacyItemBlock(
+                                                heading = stringResource(groupItem.labelId),
+                                                icon = groupItem.icon,
+                                            ) {
+                                                Column(modifier = Modifier.padding(horizontal = 8.dp)) {
+                                                    Text(
+                                                        text = stringResource(groupItem.descriptionId)
+                                                    )
+                                                    groupTrackers.forEach {
+                                                        Text(
+                                                            modifier = Modifier
+                                                                .fillMaxWidth()
+                                                                .combinedClickable(
+                                                                    onClick = {
+                                                                        onUriClick(
+                                                                            Uri.parse(it.website),
+                                                                            true
+                                                                        )
+                                                                    },
+                                                                    onLongClick = {
+                                                                        copyLinkToClipboard(
+                                                                            coroutineScope,
+                                                                            snackbarHostState,
+                                                                            it.code_signature
+                                                                        )
+                                                                    }
+                                                                ),
+                                                            text = "\u2023 ${it.name}"
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                        }
+                                } else {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(8.dp),
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        Text(text = stringResource(id = R.string.trackers_none))
+                                    }
+                                }
                             }
                         }
-                    }
-                    item {
-                        Text(
-                            text = stringResource(id = R.string.releases),
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.padding(start = 14.dp)
-                        )
-                    }
-                    items(items = releaseItems) { item ->
-                        ReleaseItem(
-                            release = item.first,
-                            repository = item.second,
-                            releaseState = item.third,
-                            onDownloadClick = { release ->
-                                onReleaseClick(release)
-                            },
-                            onShareClick = {
-                                shareReleaseIntent(
-                                    "${product.label} ${item.first.version}",
-                                    it.getDownloadUrl(item.second)
-                                )
+                        item {
+                            PrivacyCard(
+                                heading = stringResource(id = R.string.source_code),
+                                preExpanded = true,
+                            ) {
+                                (if (privacyNote.sourceType.open) SourceInfo.Open else SourceInfo.Proprietary).let {
+                                    PrivacyItemBlock(
+                                        heading = stringResource(id = it.labelId),
+                                        icon = it.icon,
+                                    ) {
+                                        Row(modifier = Modifier.padding(horizontal = 8.dp)) {
+                                            Text(
+                                                text = stringResource(it.descriptionId)
+                                            )
+                                        }
+                                    }
+                                }
+                                if (privacyNote.sourceType.free) SourceInfo.Copyleft.let {
+                                    PrivacyItemBlock(
+                                        heading = stringResource(id = it.labelId),
+                                        icon = it.icon,
+                                    ) {
+                                        Row(modifier = Modifier.padding(horizontal = 8.dp)) {
+                                            Text(
+                                                text = stringResource(it.descriptionId)
+                                            )
+                                        }
+                                    }
+                                }
+                                else SourceInfo.Copyright.let { si ->
+                                    PrivacyItemBlock(
+                                        heading = stringResource(id = si.labelId),
+                                        icon = si.icon,
+                                    ) {
+                                        Row(modifier = Modifier.padding(horizontal = 8.dp)) {
+                                            val dependencyItems =
+                                                privacyData.antiFeatures.intersect(
+                                                    listOf(
+                                                        AntiFeature.NON_FREE_NET,
+                                                        AntiFeature.NON_FREE_UPSTREAM
+                                                    )
+                                                )
+                                            Text(
+                                                text = "${stringResource(si.descriptionId)}${
+                                                    dependencyItems
+                                                        .map { stringResource(it.titleResId) }
+                                                        .joinToString { "\n\u2023 $it" }
+                                                }"
+                                            )
+                                        }
+                                    }
+                                }
+                                if (!privacyNote.sourceType.independent) SourceInfo.Dependency.let { si ->
+                                    PrivacyItemBlock(
+                                        heading = stringResource(id = si.labelId),
+                                        icon = si.icon,
+                                    ) {
+                                        Row(modifier = Modifier.padding(horizontal = 8.dp)) {
+                                            val dependencyItems =
+                                                privacyData.antiFeatures.intersect(
+                                                    listOf(
+                                                        AntiFeature.NON_FREE_DEP,
+                                                        AntiFeature.NON_FREE_ASSETS
+                                                    )
+                                                )
+                                            Text(
+                                                text = "${stringResource(si.descriptionId)}${
+                                                    dependencyItems
+                                                        .map { stringResource(it.titleResId) }
+                                                        .joinToString { "\n\u2023 $it" }
+                                                }"
+                                            )
+                                        }
+                                    }
+                                }
                             }
-                        )
-                    }
-                    item {
-                        Spacer(modifier = Modifier.height(8.dp))
+                        }
+                        if (product.otherAntiFeatures.isNotEmpty()) {
+                            item {
+                                PrivacyCard(
+                                    heading = stringResource(id = R.string.anti_features),
+                                    preExpanded = false
+                                ) {
+                                    Text(
+                                        modifier = Modifier.padding(8.dp),
+                                        text = product.otherAntiFeatures.map { af ->
+                                            val titleId = af.toAntiFeature()?.titleResId
+                                            if (titleId != null) stringResource(id = titleId)
+                                            else stringResource(id = R.string.unknown_FORMAT, af)
+                                        }
+                                            .joinToString(separator = "\n") { "\u2023 $it" }
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
 

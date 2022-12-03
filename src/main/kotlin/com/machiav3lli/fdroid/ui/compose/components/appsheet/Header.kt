@@ -26,17 +26,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
-import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.DownloadState
 import com.machiav3lli.fdroid.ui.compose.components.MainActionButton
 import com.machiav3lli.fdroid.ui.compose.components.SecondaryActionButton
-import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Code
 import com.machiav3lli.fdroid.ui.compose.utils.NetworkImage
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
 
@@ -140,8 +137,10 @@ fun TopBarHeader(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SourceCodeCard(
+fun CardButton(
     modifier: Modifier = Modifier,
+    icon: ImageVector,
+    description: String = "",
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {}
 ) {
@@ -155,8 +154,8 @@ fun SourceCodeCard(
     ) {
         Icon(
             modifier = Modifier.size(32.dp),
-            imageVector = Phosphor.Code,
-            contentDescription = stringResource(id = R.string.source_code),
+            imageVector = icon,
+            contentDescription = description,
             tint = MaterialTheme.colorScheme.primary
         )
     }

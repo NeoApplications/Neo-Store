@@ -1,12 +1,12 @@
 package com.machiav3lli.fdroid.ui.compose.components.appsheet
 
+import android.content.pm.PermissionInfo
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -18,9 +18,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.entity.PermissionsType
+import com.machiav3lli.fdroid.entity.PermissionGroup
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
 import com.machiav3lli.fdroid.utility.getLabels
@@ -28,16 +27,11 @@ import com.machiav3lli.fdroid.utility.getLabels
 @Composable
 fun PermissionsItem(
     modifier: Modifier = Modifier,
-    permissionsType: PermissionsType,
+    permissionsGroup: PermissionGroup?,
+    permissions: List<PermissionInfo>,
     onClick: (String?, List<String>) -> Unit = { _, _ -> }
 ) {
     val context = LocalContext.current
-    val pm = context.packageManager
-    val painter = if (permissionsType.group != null && permissionsType.group.icon != 0) {
-        rememberAsyncImagePainter(permissionsType.group.loadUnbadgedIcon(pm))
-    } else {
-        null
-    }
 
     Row(
         modifier = modifier
@@ -45,25 +39,17 @@ fun PermissionsItem(
             .clip(MaterialTheme.shapes.large)
             .clickable {
                 onClick(
-                    permissionsType.group?.name,
-                    permissionsType.permissions.map { it.name })
+                    permissionsGroup?.name,
+                    permissions.map { it.name })
             }
             .padding(vertical = 12.dp, horizontal = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.Top
     ) {
-        if (painter != null)
-            Icon(
-                painter = painter,
-                contentDescription = stringResource(
-                    id = permissionsType.group?.descriptionRes ?: R.string.unknown
-                )
-            )
-        else Icon(
-            modifier = Modifier.size(24.dp),
-            imageVector = Phosphor.ShieldStar,
+        Icon(
+            imageVector = permissionsGroup?.icon ?: Phosphor.ShieldStar,
             contentDescription = stringResource(
-                id = permissionsType.group?.descriptionRes ?: R.string.unknown
+                id = permissionsGroup?.labelId ?: R.string.unknown
             )
         )
 
@@ -71,7 +57,7 @@ fun PermissionsItem(
             modifier = Modifier.wrapContentSize()
         ) {
             Text(
-                text = permissionsType.permissions.getLabels(context)
+                text = permissions.getLabels(context)
                     .joinToString(separator = "\n"),
                 softWrap = true,
                 style = MaterialTheme.typography.titleMedium

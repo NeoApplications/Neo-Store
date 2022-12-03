@@ -6,10 +6,12 @@ import android.app.PendingIntent
 import android.app.job.JobParameters
 import android.app.job.JobService
 import android.content.Intent
+import android.util.Log
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import com.machiav3lli.fdroid.BuildConfig
+import com.machiav3lli.fdroid.EXODUS_TRACKERS_SYNC
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
@@ -17,11 +19,14 @@ import com.machiav3lli.fdroid.NOTIFICATION_ID_UPDATES
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
+import com.machiav3lli.fdroid.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.database.entity.Tracker
 import com.machiav3lli.fdroid.entity.Order
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.index.RepositoryUpdater
+import com.machiav3lli.fdroid.network.RExodusAPI
 import com.machiav3lli.fdroid.utility.RxUtils
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.displayUpdatesNotification
@@ -30,6 +35,7 @@ import com.machiav3lli.fdroid.utility.extension.android.notificationManager
 import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
 import com.machiav3lli.fdroid.utility.showNotificationError
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -44,8 +50,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
+@AndroidEntryPoint
 class SyncService : ConnectionService<SyncService.Binder>() {
     companion object {
         private const val ACTION_CANCEL = "${BuildConfig.APPLICATION_ID}.intent.action.CANCEL"
@@ -87,6 +95,9 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     enum class SyncRequest { AUTO, MANUAL, FORCE }
 
+    @Inject
+    lateinit var repoExodusAPI: RExodusAPI
+
     inner class Binder : android.os.Binder() {
         val finish: SharedFlow<Unit>
             get() = finishState
@@ -116,9 +127,11 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         fun updateApps(products: List<ProductItem>) = batchUpdate(products)
         fun installApps(products: List<ProductItem>) = batchUpdate(products, true)
 
+        fun fetchExodusInfo(packageName: String) = fetchExodusData(packageName)
+
         fun sync(request: SyncRequest) {
             scope.launch {
-                val ids = db.repositoryDao.all.filter { it.enabled }.map { it.id }.toList()
+                val ids = db.repositoryDao.all.filter { it.enabled }.map { it.id }.toList() + EXODUS_TRACKERS_SYNC
                 sync(ids, request)
             }
         }
@@ -330,7 +343,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                 if (tasks.isNotEmpty()) {
                     val task = tasks.removeAt(0)
                     val repository = db.repositoryDao.get(task.repositoryId)
-                    if (repository != null && repository.enabled) {
+                    if (repository != null && repository.enabled && task.repositoryId != EXODUS_TRACKERS_SYNC) {
                         val lastStarted = started
                         val newStarted =
                             if (task.manual || lastStarted == Started.MANUAL) Started.MANUAL else Started.AUTO
@@ -372,6 +385,9 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                 handleNextTask(result == true || hasUpdates)
                             }
                         currentTask = CurrentTask(task, disposable, hasUpdates, initialState)
+                    } else if (task.repositoryId == EXODUS_TRACKERS_SYNC) {
+                        fetchTrackers()
+                        handleNextTask(hasUpdates)
                     } else {
                         handleNextTask(hasUpdates)
                     }
@@ -462,6 +478,50 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                         }
                     }
                 }
+        }
+    }
+
+    private fun fetchTrackers() {
+        scope.launch {
+            try {
+                val trackerList = repoExodusAPI.getTrackers()
+
+                // TODO **conditionally** update DB with the trackers
+                Log.v(this::javaClass.name, trackerList.trackers.map { it.value.name }.toString())
+                db.trackerDao.insertReplace(
+                    *trackerList.trackers
+                        .map { (key, value) ->
+                            Tracker(
+                                key.toInt(),
+                                value.name,
+                                value.network_signature,
+                                value.code_signature,
+                                value.creation_date,
+                                value.website,
+                                value.description,
+                                value.categories
+                            )
+                        }.toTypedArray()
+                )
+            } catch (e: Exception) {
+                Log.e(this::javaClass.name, "Failed fetching exodus trackers", e)
+            }
+        }
+    }
+
+    private fun fetchExodusData(packageName: String) {
+        scope.launch {
+            try {
+                val exodusDataList = repoExodusAPI.getExodusInfo(packageName)
+                val latestExodusApp = exodusDataList.maxByOrNull { it.version_code.toLong() }
+                    ?: ExodusInfo()
+
+                val exodusInfo = latestExodusApp.toExodusInfo(packageName)
+                Log.e(this::javaClass.name, exodusInfo.toString())
+                db.exodusInfoDao.insertReplace(exodusInfo)
+            } catch (e: Exception) {
+                Log.e(this::javaClass.name, "Failed fetching exodus info", e)
+            }
         }
     }
 

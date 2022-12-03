@@ -5,12 +5,16 @@ val composeCompilerVersion = "1.4.0-alpha02"
 val roomVersion = "2.5.0-beta02"
 val navigationVersion = "2.5.3"
 val accompanistVersion = "0.27.1"
+val hiltVersion = "2.44.2"
+val retrofitVersion = "2.9.0"
 
 plugins {
     id("com.android.application") version ("7.3.1")
     kotlin("android") version ("1.7.21")
+    kotlin("kapt") version ("1.7.21")
     kotlin("plugin.serialization") version ("1.7.21")
     id("com.google.devtools.ksp") version ("1.7.21-1.0.8")
+    id("com.google.dagger.hilt.android") version ("2.44.2")
 }
 
 android {
@@ -24,6 +28,7 @@ android {
         versionCode = 920
         versionName = "0.9.10"
         vectorDrawables.useSupportLibrary = true
+        buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -132,8 +137,14 @@ dependencies {
     implementation("io.coil-kt:coil:2.2.2")
     implementation("io.coil-kt:coil-compose:2.2.2")
 
+    // Dagger Hilt
+    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+
     // OkHttps
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.9")
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
 
     // RxJava
     implementation("io.reactivex.rxjava3:rxjava:3.1.5")

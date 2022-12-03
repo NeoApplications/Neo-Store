@@ -111,7 +111,10 @@ fun LatestPage(viewModel: LatestViewModel) {
                 item = item,
                 repo = repositoriesMap[item.repositoryId],
                 isFavorite = favorites.contains(item.packageName),
-                onUserClick = { mainActivityX.navigateProduct(it.packageName, item.developer) },
+                onUserClick = {
+                    mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
+                    mainActivityX.navigateProduct(it.packageName, item.developer)
+                },
                 onFavouriteClick = {
                     viewModel.setFavorite(
                         it.packageName,

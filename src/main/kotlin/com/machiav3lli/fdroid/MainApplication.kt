@@ -30,6 +30,7 @@ import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.utility.Utils.setLanguage
 import com.machiav3lli.fdroid.utility.Utils.toInstalledItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,6 +41,7 @@ import kotlin.time.Duration.Companion.minutes
 
 
 @Suppress("unused")
+@HiltAndroidApp
 class MainApplication : Application(), ImageLoaderFactory {
 
     lateinit var db: DatabaseX

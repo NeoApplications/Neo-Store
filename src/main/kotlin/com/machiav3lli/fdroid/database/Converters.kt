@@ -9,6 +9,22 @@ import com.machiav3lli.fdroid.entity.Screenshot
 object Converters {
     @TypeConverter
     @JvmStatic
+    fun toIntList(byteArray: ByteArray): List<Int> {
+        val string = String(byteArray)
+        return if (string == "") emptyList()
+        else string.removeSurrounding("[", "]")
+            .split(", ")
+            .filter(String::isNotEmpty)
+            .map { it.toInt() }
+    }
+
+    @JvmName("intListToByteArray")
+    @TypeConverter
+    @JvmStatic
+    fun toByteArray(list: List<Int>): ByteArray = list.toString().toByteArray()
+
+    @TypeConverter
+    @JvmStatic
     fun toStringList(byteArray: ByteArray): List<String> {
         val string = String(byteArray)
         return if (string == "") emptyList()

@@ -3,18 +3,25 @@ package com.machiav3lli.fdroid.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.database.DatabaseX
+import com.machiav3lli.fdroid.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.DownloadState
+import com.machiav3lli.fdroid.entity.PrivacyData
+import com.machiav3lli.fdroid.entity.toAntiFeature
 import com.machiav3lli.fdroid.utility.findSuggestedProduct
+import com.machiav3lli.fdroid.utility.generatePermissionGroups
+import com.machiav3lli.fdroid.utility.toPrivacyNote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transformLatest
@@ -25,6 +32,14 @@ class AppViewModelX(val db: DatabaseX, val packageName: String, developer: Strin
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val products = db.productDao.getFlow(packageName).mapLatest { it.filterNotNull() }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val exodusInfo = db.exodusInfoDao.getFlow(packageName)
+        .mapLatest { it.maxByOrNull(ExodusInfo::version_code) }
+
+    val trackers = exodusInfo.combine(db.trackerDao.allFlow) { a, b ->
+        b.filter { it.key in (a?.trackers ?: emptyList()) }
+    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val repositories = db.repositoryDao.allFlow.mapLatest { it }
@@ -45,6 +60,26 @@ class AppViewModelX(val db: DatabaseX, val packageName: String, developer: Strin
         viewModelScope.launch {
             _productRepos.emit(repos)
         }
+    }
+
+    val privacyData = combine(installedItem, trackers, productRepos) { ins, trs, prs ->
+        val suggestedProduct = findSuggestedProduct(prs, ins) { it.first }
+        PrivacyData(
+            permissions = suggestedProduct?.first?.displayRelease
+                ?.generatePermissionGroups(MainApplication.mainActivity!!) ?: emptyMap(),
+            trackers = trs,
+            antiFeatures = suggestedProduct?.first?.antiFeatures?.mapNotNull { it.toAntiFeature() }
+                ?: emptyList()
+        )
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        PrivacyData(emptyMap(), emptyList(), emptyList())
+    )
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val privacyNote = privacyData.mapLatest {
+        it.toPrivacyNote()
     }
 
     private val _downloadState = MutableStateFlow<DownloadState?>(null)

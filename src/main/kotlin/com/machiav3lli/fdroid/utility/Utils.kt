@@ -51,7 +51,7 @@ import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.LinkType
-import com.machiav3lli.fdroid.entity.PermissionsType
+import com.machiav3lli.fdroid.entity.PermissionGroup
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.DownloadService
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -375,10 +375,9 @@ fun Product.generateLinks(context: Context): List<LinkType> {
     return links
 }
 
-fun Release.generatePermissionGroups(context: Context): List<PermissionsType> {
-    val permissionGroups = mutableListOf<PermissionsType>()
+fun Release.generatePermissionGroups(context: Context): Map<PermissionGroup, List<PermissionInfo>> { // TODO other permissions as last group
     val packageManager = context.packageManager
-    val permissions = permissions
+    return permissions
         .asSequence().mapNotNull {
             try {
                 packageManager.getPermissionInfo(it, 0)
@@ -387,22 +386,6 @@ fun Release.generatePermissionGroups(context: Context): List<PermissionsType> {
             }
         }
         .groupBy(PackageItemResolver::getPermissionGroup)
-        .asSequence().map { (group, permissionInfo) ->
-            val permissionGroupInfo = try {
-                group?.let { packageManager.getPermissionGroupInfo(it, 0) }
-            } catch (e: Exception) {
-                null
-            }
-            Pair(permissionGroupInfo, permissionInfo)
-        }
-        .groupBy({ it.first }, { it.second })
-    if (permissions.isNotEmpty()) {
-        permissionGroups.addAll(permissions.asSequence().filter { it.key != null }
-            .map { PermissionsType(it.key, it.value.flatten()) })
-        permissions.asSequence().find { it.key == null }
-            ?.let { permissionGroups.add(PermissionsType(null, it.value.flatten())) }
-    }
-    return permissionGroups
 }
 
 fun List<PermissionInfo>.getLabels(context: Context): List<String> {
@@ -431,6 +414,34 @@ fun List<PermissionInfo>.getLabels(context: Context): List<String> {
         }
     }
     return labels.sortedBy { it.first }.map { it.second }
+}
+
+fun List<PermissionInfo>.getLabelsAndDescriptions(context: Context): List<String> {
+    val localCache = PackageItemResolver.LocalCache()
+
+    return map { permission ->
+        val labelFromPackage =
+            PackageItemResolver.loadLabel(context, localCache, permission)
+        val label = labelFromPackage ?: run {
+            val prefixes =
+                listOf("android.permission.", "com.android.browser.permission.")
+            prefixes.find { permission.name.startsWith(it) }?.let { it ->
+                val transform = permission.name.substring(it.length)
+                if (transform.matches("[A-Z_]+".toRegex())) {
+                    transform.split("_")
+                        .joinToString(separator = " ") { it.lowercase(Locale.US) }
+                } else {
+                    null
+                }
+            }
+        }
+        val description =
+            PackageItemResolver.loadDescription(context, localCache, permission)
+                ?.nullIfEmpty()?.let { if (it == permission.name) null else it }
+
+        if (description.isNullOrEmpty()) (label ?: permission.name).toString()
+        else "${label ?: permission.name}: $description"
+    }
 }
 
 fun Collection<Product>.matchSearchQuery(searchQuery: String): List<Product> = filter {
