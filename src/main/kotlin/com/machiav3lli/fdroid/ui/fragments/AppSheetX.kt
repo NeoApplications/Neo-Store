@@ -91,7 +91,6 @@ import com.machiav3lli.fdroid.ui.compose.components.appsheet.AppInfoHeader
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.CardButton
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.HtmlTextBlock
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.LinkItem
-import com.machiav3lli.fdroid.ui.compose.components.appsheet.PermissionsItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.ReleaseItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.TopBarHeader
 import com.machiav3lli.fdroid.ui.compose.components.privacy.MeterIconsBar
@@ -117,7 +116,6 @@ import com.machiav3lli.fdroid.utility.Utils.startUpdate
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.findSuggestedProduct
 import com.machiav3lli.fdroid.utility.generateLinks
-import com.machiav3lli.fdroid.utility.generatePermissionGroups
 import com.machiav3lli.fdroid.utility.getLabelsAndDescriptions
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.onLaunchClick
@@ -394,7 +392,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     }
 
     @OptIn(
-        ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class,
+        ExperimentalMaterial3Api::class,
+        ExperimentalComposeUiApi::class,
         ExperimentalFoundationApi::class
     )
     @Composable
@@ -463,7 +462,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         suggestedProductRepo?.let { (product, repo) ->
             Scaffold(
                 topBar = {
-                    Column() {
+                    Column {
                         TopBarHeader(
                             appName = product.label,
                             packageName = product.packageName,
@@ -648,36 +647,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 }
                             }
                         }
-                        item {
-                            product.displayRelease?.generatePermissionGroups(requireContext())
-                                ?.let { list ->
-                                    ExpandableBlock(
-                                        heading = stringResource(id = R.string.permissions),
-                                        positive = true,
-                                        preExpanded = false
-                                    ) {
-                                        if (list.isNotEmpty()) {
-                                            list.forEach { p ->
-                                                PermissionsItem(
-                                                    permissionsGroup = p.key,
-                                                    permissions = p.value
-                                                ) { group, permissions ->
-                                                    onPermissionsClick(group, permissions)
-                                                }
-                                            }
-                                        } else {
-                                            Row(
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .padding(8.dp),
-                                                horizontalArrangement = Arrangement.Center
-                                            ) {
-                                                Text(text = stringResource(id = R.string.no_permissions_identified))
-                                            }
-                                        }
-                                    }
-                                }
-                        }
                         if (!authorProducts.isNullOrEmpty()) {
                             item {
                                 ExpandableBlock(
@@ -698,25 +667,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                             item.developer
                                         )
                                     }
-                                }
-                            }
-                        }
-                        if (product.antiFeatures.isNotEmpty()) {
-                            item {
-                                ExpandableBlock(
-                                    heading = stringResource(id = R.string.anti_features),
-                                    positive = false,
-                                    preExpanded = false
-                                ) {
-                                    Text(
-                                        modifier = Modifier.padding(8.dp),
-                                        text = product.antiFeatures.map { af ->
-                                            val titleId = af.toAntiFeature()?.titleResId
-                                            if (titleId != null) stringResource(id = titleId)
-                                            else stringResource(id = R.string.unknown_FORMAT, af)
-                                        }
-                                            .joinToString(separator = "\n") { "\u2023 $it" }
-                                    )
                                 }
                             }
                         }
@@ -952,7 +902,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                         )
                                                     }
                                                 }
-                                                // TODO add singular tracker items
                                             }
                                         }
                                 } else {
