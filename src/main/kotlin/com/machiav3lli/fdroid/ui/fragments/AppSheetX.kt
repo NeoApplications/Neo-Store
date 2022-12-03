@@ -14,6 +14,8 @@ import android.view.ViewGroup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -64,7 +66,6 @@ import com.machiav3lli.fdroid.TC_PACKAGENAME
 import com.machiav3lli.fdroid.TC_PACKAGENAME_FDROID
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Release
-import com.machiav3lli.fdroid.database.entity.Tracker
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.DonateType
@@ -392,7 +393,10 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+    @OptIn(
+        ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class,
+        ExperimentalFoundationApi::class
+    )
     @Composable
     fun AppSheet() {
         val context = LocalContext.current
@@ -921,14 +925,32 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                 heading = stringResource(groupItem.labelId),
                                                 icon = groupItem.icon,
                                             ) {
-                                                Row(modifier = Modifier.padding(horizontal = 8.dp)) {
+                                                Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                                                     Text(
-                                                        text = "${stringResource(groupItem.descriptionId)}${
-                                                            groupTrackers
-                                                                .map(Tracker::name)
-                                                                .joinToString { "\n\u2023 $it" }
-                                                        }"
+                                                        text = stringResource(groupItem.descriptionId)
                                                     )
+                                                    groupTrackers.forEach {
+                                                        Text(
+                                                            modifier = Modifier
+                                                                .fillMaxWidth()
+                                                                .combinedClickable(
+                                                                    onClick = {
+                                                                        onUriClick(
+                                                                            Uri.parse(it.website),
+                                                                            true
+                                                                        )
+                                                                    },
+                                                                    onLongClick = {
+                                                                        copyLinkToClipboard(
+                                                                            coroutineScope,
+                                                                            snackbarHostState,
+                                                                            it.code_signature
+                                                                        )
+                                                                    }
+                                                                ),
+                                                            text = "\u2023 ${it.name}"
+                                                        )
+                                                    }
                                                 }
                                                 // TODO add singular tracker items
                                             }
