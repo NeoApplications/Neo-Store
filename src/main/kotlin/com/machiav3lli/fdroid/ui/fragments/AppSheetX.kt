@@ -1044,6 +1044,24 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 }
                             }
                         }
+                        if (product.otherAntiFeatures.isNotEmpty()) {
+                            item {
+                                PrivacyCard(
+                                    heading = stringResource(id = R.string.anti_features),
+                                    preExpanded = false
+                                ) {
+                                    Text(
+                                        modifier = Modifier.padding(8.dp),
+                                        text = product.otherAntiFeatures.map { af ->
+                                            val titleId = af.toAntiFeature()?.titleResId
+                                            if (titleId != null) stringResource(id = titleId)
+                                            else stringResource(id = R.string.unknown_FORMAT, af)
+                                        }
+                                            .joinToString(separator = "\n") { "\u2023 $it" }
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
 

@@ -5,6 +5,7 @@ import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
 import com.machiav3lli.fdroid.TABLE_PRODUCT_NAME
 import com.machiav3lli.fdroid.TABLE_PRODUCT_TEMP_NAME
+import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.Author
 import com.machiav3lli.fdroid.entity.Donate
 import com.machiav3lli.fdroid.entity.ProductItem
@@ -103,6 +104,19 @@ open class Product(
 
     val version: String
         get() = displayRelease?.version.orEmpty()
+
+    val otherAntiFeatures: List<String>
+        get() = antiFeatures
+            .filterNot {
+                it in listOf(
+                    AntiFeature.NO_SOURCE_SINCE,
+                    AntiFeature.NON_FREE_DEP,
+                    AntiFeature.NON_FREE_ASSETS,
+                    AntiFeature.NON_FREE_UPSTREAM,
+                    AntiFeature.NON_FREE_NET,
+                    AntiFeature.TRACKING
+                ).map(AntiFeature::key)
+            }
 
     fun toItem(installed: Installed? = null): ProductItem =
         ProductItem(
