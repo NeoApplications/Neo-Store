@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -114,6 +115,7 @@ import com.machiav3lli.fdroid.ui.viewmodels.AppViewModelX
 import com.machiav3lli.fdroid.utility.Utils.rootInstallerEnabled
 import com.machiav3lli.fdroid.utility.Utils.startUpdate
 import com.machiav3lli.fdroid.utility.extension.android.Android
+import com.machiav3lli.fdroid.utility.extension.grantedPermissions
 import com.machiav3lli.fdroid.utility.findSuggestedProduct
 import com.machiav3lli.fdroid.utility.generateLinks
 import com.machiav3lli.fdroid.utility.getLabelsAndDescriptions
@@ -732,6 +734,12 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                             end = 8.dp,
                         )
                     ) {
+                        val requestedPermissions =
+                            if (installed != null) context.packageManager.getPackageInfo(
+                                packageName,
+                                PackageManager.GET_PERMISSIONS
+                            ).grantedPermissions else emptyMap()
+
                         item {
                             privacyData.physicalDataPermissions.let { list -> // TODO show what's granted and what's not
                                 PrivacyCard(
@@ -752,7 +760,19 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                     ps.getLabelsAndDescriptions(context)
                                                 Row(modifier = Modifier.padding(horizontal = 8.dp)) {
                                                     Text(
-                                                        text = descriptions.joinToString(separator = "\n") { "\u2023 $it" }
+                                                        text = ps
+                                                            .mapIndexed { index, perm ->
+                                                                "\u2023 ${
+                                                                    if (installed != null) "(${
+                                                                        stringResource(
+                                                                            if (requestedPermissions[perm.name] == true) R.string.permission_granted
+                                                                            else if (perm.name !in requestedPermissions.keys) R.string.permission_not_present
+                                                                            else R.string.permission_not_granted
+                                                                        )
+                                                                    }) " else ""
+                                                                }${descriptions[index]}"
+                                                            }
+                                                            .joinToString(separator = "\n") { it }
                                                     )
                                                 }
                                             }
@@ -790,7 +810,19 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                                     ps.getLabelsAndDescriptions(context)
                                                 Row(modifier = Modifier.padding(horizontal = 8.dp)) {
                                                     Text(
-                                                        text = descriptions.joinToString(separator = "\n") { "\u2023 $it" }
+                                                        text = ps
+                                                            .mapIndexed { index, perm ->
+                                                                "\u2023 ${
+                                                                    if (installed != null) "(${
+                                                                        stringResource(
+                                                                            if (requestedPermissions[perm.name] == true) R.string.permission_granted
+                                                                            else if (perm.name !in requestedPermissions.keys) R.string.permission_not_present
+                                                                            else R.string.permission_not_granted
+                                                                        )
+                                                                    }) " else ""
+                                                                }${descriptions[index]}"
+                                                            }
+                                                            .joinToString(separator = "\n") { it }
                                                     )
                                                 }
                                             }
@@ -819,7 +851,19 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                             val descriptions = ps.getLabelsAndDescriptions(context)
                                             Row(modifier = Modifier.padding(horizontal = 16.dp)) {
                                                 Text(
-                                                    text = descriptions.joinToString(separator = "\n") { "\u2023 $it" }
+                                                    text = ps
+                                                        .mapIndexed { index, perm ->
+                                                            "\u2023 ${
+                                                                if (installed != null) "(${
+                                                                    stringResource(
+                                                                        if (requestedPermissions[perm.name] == true) R.string.permission_granted
+                                                                        else if (perm.name !in requestedPermissions.keys) R.string.permission_not_present
+                                                                        else R.string.permission_not_granted
+                                                                    )
+                                                                }) " else ""
+                                                            }${descriptions[index]}"
+                                                        }
+                                                        .joinToString(separator = "\n") { it }
                                                 )
                                             }
                                             Spacer(modifier = Modifier.height(8.dp))
