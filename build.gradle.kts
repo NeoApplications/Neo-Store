@@ -4,7 +4,7 @@ val composeVersion = "1.3.1"
 val composeCompilerVersion = "1.4.0-alpha02"
 val roomVersion = "2.5.0-beta02"
 val navigationVersion = "2.5.3"
-val accompanistVersion = "0.27.1"
+val accompanistVersion = "0.28.0"
 val hiltVersion = "2.44.2"
 val retrofitVersion = "2.9.0"
 
@@ -131,7 +131,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.8.0-beta02")
 
     // Material3
-    implementation("com.google.android.material:material:1.8.0-alpha02")
+    implementation("com.google.android.material:material:1.8.0-alpha03")
 
     // Coil
     implementation("io.coil-kt:coil:2.2.2")
@@ -154,7 +154,7 @@ dependencies {
     implementation("com.github.topjohnwu.libsu:core:5.0.3")
 
     // JSON
-    implementation("com.fasterxml.jackson.core:jackson-core:2.14.0")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.14.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 
     // Markdown
