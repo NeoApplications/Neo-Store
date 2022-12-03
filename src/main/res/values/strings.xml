@@ -286,4 +286,7 @@
     <string name="permissions_note_2">Doesn\'t require many permissions</string>
     <string name="permissions_note_3">Minimal amount of permissions</string>
     <string name="permissions_note_4">Requires almost no permissions</string>
+    <string name="permission_granted">Granted</string>
+    <string name="permission_not_granted">Not granted</string>
+    <string name="permission_not_present">Not present on your system</string>
 </resources>
