@@ -16,6 +16,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.AddressBook
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Broadcast
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Bug
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Calendar
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Camera
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ChartLine
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Chat
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyleft
@@ -107,8 +108,8 @@ open class PermissionGroup(
 
     object Camera : PermissionGroup(
         android.Manifest.permission_group.CAMERA,
-        R.string.permission_contacts,
-        Phosphor.AddressBook
+        R.string.permission_camera,
+        Phosphor.Camera
     )
 
     object Microphone : PermissionGroup(
