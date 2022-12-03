@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+0.9.11 (03.12.2022) 70+ Commits +15 Translations
+------------------
+### Function
+- Fix: Memory leak in Main & Prefs
+
+### UI
+- Add: The all new Privacy Visualization (Neo Meter Icons)
+- Add: The all new Privacy Panel
+
+### UX
+- Fix: Opening the same RepoSheet repeatedly
+
 0.9.10 (22.11.2022) 230+ Commits
 ------------------
 - Add: App icon based on system theme

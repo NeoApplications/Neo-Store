@@ -1,0 +1,5 @@
+Fix: Memory leak in Main & Prefs
+Add: The all new Privacy Visualization (Neo Meter Icons)
+Add: The all new Privacy Panel
+Fix: Opening the same RepoSheet repeatedly
++ more than 15 tranlation contributions
