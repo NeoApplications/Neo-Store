@@ -68,6 +68,9 @@ import kotlinx.coroutines.launch
         from = 11,
         to = 12,
         spec = DatabaseX.Companion.MigrationSpec11to12::class
+    ), AutoMigration(
+        from = 12,
+        to = 13,
     )]
 )
 @TypeConverters(Converters::class)
