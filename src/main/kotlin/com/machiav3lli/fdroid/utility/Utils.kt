@@ -444,20 +444,19 @@ fun List<PermissionInfo>.getLabelsAndDescriptions(context: Context): List<String
     }
 }
 
-fun Collection<Product>.matchSearchQuery(searchQuery: String): List<Product> = filter {
-    listOf(it.label, it.packageName, it.author.name, it.summary, it.description).any { literal ->
-        literal.matches(Regex(".*$searchQuery.*", RegexOption.IGNORE_CASE))
+fun Collection<Product>.matchSearchQuery(searchQuery: String): List<Product> {
+    if (searchQuery.isBlank()) return toList()
+    val searchRegex = Regex(searchQuery, RegexOption.IGNORE_CASE)
+    return filter {
+        listOf(it.label, it.packageName, it.author.name, it.summary, it.description)
+            .any { literal ->
+                literal.contains(searchRegex)
+            }
+    }.sortedByDescending {
+        (if ("${it.label} ${it.packageName}".contains(searchRegex)) 7 else 0) or
+                (if ("${it.summary} ${it.author.name}".contains(searchRegex)) 3 else 0) or
+                (if (it.description.contains(searchRegex)) 1 else 0)
     }
-}.sortedByDescending {
-    (if ("${it.label} ${it.packageName}"
-            .matches(Regex(".*$searchQuery.*", RegexOption.IGNORE_CASE))
-    ) 7 else 0) or
-            (if ("${it.summary} ${it.author.name}"
-                    .matches(Regex(".*$searchQuery.*", RegexOption.IGNORE_CASE))
-            ) 3 else 0) or
-            (if (it.description
-                    .matches(Regex(".*$searchQuery.*", RegexOption.IGNORE_CASE))
-            ) 1 else 0)
 }
 
 // TODO move to a new file
