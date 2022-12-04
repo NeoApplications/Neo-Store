@@ -1,0 +1,6 @@
+- Actualização: Barra de ferramentas em colapso
+- Actualização: Melhorar os instaladores (Raiz e não Raiz)
+- Actualização: Novo ícone de aplicação(novamente)
+- Actualização: Desenho de blocos de informação de lançamento
+- Actualização: Manusear nomes e ícones de autores em falta
+- Outros ajustes, afinações e limpezas

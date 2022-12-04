@@ -1,0 +1,5 @@
+- Acrescentado: Preferência linguística
+- Actualização: screenshots de rolagem horizontal
+- Correcção: Instalador de raiz de fundo
+- Acrescentar: Pedir raiz apenas quando seleccionado
+- Toneladas de retoques UI/UX

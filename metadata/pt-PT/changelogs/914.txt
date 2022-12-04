@@ -1,0 +1,5 @@
+Correção: Mostrar notificação de atualizações mesmo quando incapacitado
+Acrescentar: Threema, Stable Calyx OS e Sessão para pré-definir-repositórios
+Fix(try): Instalador de fundo
+Acrescentar: Opções de retenção de apks e imagens
+Atualizar tradução
