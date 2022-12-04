@@ -1,0 +1,5 @@
+Oprava: Únik paměti v Main & Prefs
+Přidat: Zcela nová vizualizace soukromí (ikony Neo Meter)
+Přidat: Zcela nový panel ochrany osobních údajů
+Oprava: Opakované otevírání stejného RepoSheetu
++ více než 15 příspěvků k překladu
