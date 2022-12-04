@@ -1,0 +1,7 @@
+Acrescentar: Outras aplicações do programador
+Acrescentar: Barra superior de rolagem
+Correcção: algumas questões de coloração do tema dinâmico
+Actualização: Novo visualizador de ecrãs (corrige edições anteriores e permite o zoom)
+Actualização: Muitos layouts
+Actualização: Reformulação do backend temático (arranja alguns visuais)
+Para mais detalhes, verifique o changelog completo…

@@ -1,0 +1,5 @@
+Acrescentar: Ícone de aplicação baseado no tema do sistema
+Adicionar: Preferência de tipo de instalador (incluindo modo Legacy para MIUI estúpido)
+Correcção: Navegação após lançamento a partir de notificação de actualizações
+Consertar: Barra de descarga que não reflecte o verdadeiro progresso
+Mais um par no changelog completo…

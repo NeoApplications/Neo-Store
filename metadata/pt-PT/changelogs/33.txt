@@ -1,0 +1,6 @@
+- Actualização: Novo ícone de aplicação
+- Actualização: A IU na página da aplicação
+- Actualização: tornar a animação da lista opcional
+- Correcção: Mostrar o tamanho real do apk
+- Consertar: Ligação do projecto em preferências
+- Correcção: Ecrã de projecção, dependendo do tema do sistema

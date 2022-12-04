@@ -1,0 +1,7 @@
+Acrescentar: Categoria favorita
+Acrescentar: Opção para definir o intervalo de sincronização
+Acrescentar: Apoio à auto-importação de fdroidrepos: repo endereços a partir da prancheta
+Correção: Rolagem aninhada de AppSheet
+Consertar: Contagem das aplicações de Repositório
+Fixar: permitir a retenção de apk até "consumir
+Atualização: tornar selecionável a descrição/alteração do texto do app

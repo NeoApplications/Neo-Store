@@ -1,0 +1,7 @@
+Acrescentar: Função Ordenar/Filtrar
+Acrescentar: Atalho explícito dos favoritos
+Acrescentar: TargetSDK para chips informativos
+Atualização: Substituir ícones de Material por Fósforo
+Atualização: BottomNavBar, AppSheet's e EditRepoSheet's layouts
+Correção: Mostrar acção secundária de atualização durante o descarregamento
+Para mais detalhes, verifique o changelog completo…

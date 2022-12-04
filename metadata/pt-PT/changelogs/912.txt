@@ -1,0 +1,6 @@
+Correção: Definir ignorar atualizações não se esconde das atualizações
+Correção: Separação alfabética de Instalados
+Correção: Rolagem aninhada de AppSheet
+Correção: Mostrar ação de instalação enquanto o download está a decorrer
+Correção: visibilidade de ícones da barra de estado sobre o tema "cores dinâmicas
+Atualização: Traduções

@@ -1,0 +1,3 @@
+Adicionar: Scan repo QrCode usando BinaryEye (se instalado)
+Consertar: Fixação Instalado após lançamento de notificação de actualizações
+Correcção: melhorar a intenção de manuseamento

@@ -1,0 +1,2 @@
+* Mudou a cor primária para Verde Google
+* Adicionados Créditos ao kitsunyan

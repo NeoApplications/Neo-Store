@@ -1,0 +1,5 @@
+* Adicionado Tema Movido
+* Adicionar Instalação Silent Root
+* Adicionados os seguintes idiomas :-
+    * Português
+    * Chinês
