@@ -1,0 +1,5 @@
+Arreglado: Fuga de memoria en Main & Prefs
+Agregado: la nueva visualización de privacidad (iconos de Neo Meter)
+Agregado: el nuevo panel de privacidad
+Solucionado: abrir la misma RepoSheet repetidamente
++ más de 15 contribuciones de traducción
