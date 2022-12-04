@@ -230,4 +230,27 @@
     <string name="root_installer">Root yükleyicisi</string>
     <string name="other_apps_by">%s tarafından sunulan diğer uygulamalar</string>
     <string name="scan_qr_code">Karekod tara</string>
+    <string name="permission_contacts">Kişiler</string>
+    <string name="permission_calendar">Takvim</string>
+    <string name="permission_sms">SMS/MMS</string>
+    <string name="permission_storage">Depolama ve medya</string>
+    <string name="permission_phone">Telefon</string>
+    <string name="permission_location">Konum</string>
+    <string name="permission_camera">Kamera</string>
+    <string name="permission_microphone">Mikrofon</string>
+    <string name="permission_nearby_devices">Yakındaki cihazlar</string>
+    <string name="permission_internet">İnternet</string>
+    <string name="permission_other">Diğer izinler</string>
+    <string name="permission_physical_data">Fiziksel veriler için izinler</string>
+    <string name="permission_identification_data">Kimlik verileri için izinler</string>
+    <string name="trackers">İzleyiciler</string>
+    <string name="trackers_identification_description">İzleyiciler, uygulamaların Facebook gibi belirli hizmetlerin oturum açma hizmetlerini kullanmasına olanak tanır.</string>
+    <string name="trackers_analytics">Analitik izleyiciler</string>
+    <string name="trackers_analytics_description">Uygulamaları kullanımınız hakkında istatistik toplamak için kullanılan izleyiciler, örneğin dokunmalar ve tıklamalar.</string>
+    <string name="trackers_ads">Reklam izleyiciler</string>
+    <string name="trackers_ads_description">Reklamları göstermek ve bunlarla etkileşiminizi takip etmek için kullanılan izleyiciler.</string>
+    <string name="trackers_profiling">Profilleme izleyicileri</string>
+    <string name="trackers_profiling_description">Topladıkları verilere dayanarak sizin bir profilinizi oluşturmaya çalışan izleyiciler.</string>
+    <string name="trackers_location">Konum izleyicileri</string>
+    <string name="trackers_location_description">Fiziksel konumunuzu takip etmeye odaklanan izleyiciler.</string>
 </resources>
