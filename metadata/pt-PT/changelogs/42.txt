@@ -1,0 +1,6 @@
+- Mais de Material Design 3
+- Consertar: Instalador de raiz e padrão
+- Consertar: Apagar ficheiro em cache após a desinstalação
+- Consertar: Crash ao pressionar o download quando offline
+- Atualização de traduções de mais de 17 línguas
+- Muitos pequenos ajustes e afinações…

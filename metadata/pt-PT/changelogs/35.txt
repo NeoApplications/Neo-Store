@@ -1,0 +1,3 @@
+- Ícones Antigos Substituídos por Ícones Materiais
+- Top App Bar questões fixas
+- Adicionar ícones para instalar e cancelar o botão para melhorar a acessibilidade

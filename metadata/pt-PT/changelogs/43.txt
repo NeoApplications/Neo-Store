@@ -1,0 +1,4 @@
+- Correcção: Ícone de local de colocação de imagem
+- Reparação: crash suave ao iniciar AppDetails
+- Consertar: Executar apenas uma instância de instalador raiz
+- Consertar: Instalador de raiz

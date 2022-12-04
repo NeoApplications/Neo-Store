@@ -1,0 +1,4 @@
+* Mudanças de IU diversas
+* Reformatou toda a base de códigos
+* Dependências atualizadas
+* Renomeado Prefernces para Settings

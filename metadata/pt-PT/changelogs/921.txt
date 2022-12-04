@@ -1,0 +1,5 @@
+Correcção: Fuga de memória em Main & Prefs
+Acrescentar: A nova Visualização de Privacidade (Neo Meter Icons)
+Acrescentar: O novo Painel de Privacidade
+Consertar: Abertura repetida da mesma RepoSheet
++ mais de 15 contribuições de translação

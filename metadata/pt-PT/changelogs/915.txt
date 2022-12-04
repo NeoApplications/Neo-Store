@@ -1,0 +1,7 @@
+Atualização: Reformular o UI da AppSheet
+Atualização: Migrar totalmente a navegação para Compor
+Atualização: Migrar preferências para Compor
+Atualização: permitir a definição de um número mais elevado para o reciclador de aplicações atualizadas/novas e intervalo de sincronização
+Acrescentar: Ligações úteis em Prefs
+Correção: ActionButtons visibilidade
+Correção: Mostrar descrição do Repo antes da primeira sincronização

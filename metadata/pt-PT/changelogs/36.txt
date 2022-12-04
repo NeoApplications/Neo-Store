@@ -1,0 +1,7 @@
+- Ícone adicionado para detalhes de abertura
+- Diferenças da Barra de Aplicativos mais proeminentes
+- Só será pedida permissão de raiz quando utilizada
+- Mudança de Visibilidade
+- Acrescentada a tradução árabe
+- Prima durante muito tempo no ícone da fonte para copiar o link
+- Substituir Torradas por Snackbar
