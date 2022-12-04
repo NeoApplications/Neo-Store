@@ -13,11 +13,13 @@ import com.machiav3lli.fdroid.entity.Source
 import com.machiav3lli.fdroid.utility.matchSearchQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.combineTransform
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -91,15 +93,17 @@ open class MainNavFragmentViewModelX(
         started = SharingStarted.Lazily,
         initialValue = null
     )
-    val filteredProducts: StateFlow<List<Product>?> = combine(primaryProducts, query) { a, b ->
-        withContext(Dispatchers.IO) {
-            a?.matchSearchQuery(query.value)
-        }
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.Lazily,
-        null
-    )
+    @OptIn(FlowPreview::class)
+    val filteredProducts: StateFlow<List<Product>?> =
+        combine(primaryProducts, query.debounce(400)) { products, query ->
+            withContext(Dispatchers.IO) {
+                products?.matchSearchQuery(query)
+            }
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            null
+        )
 
     private var secondaryRequest = MutableStateFlow(request(secondarySource))
 
