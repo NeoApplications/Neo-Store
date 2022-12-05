@@ -241,7 +241,7 @@
     <string name="source_copyright_description">يعتمد هذا التطبيق على المحتويات المحمية بحقوق الطبع والنشر أو يتصل بشبكات خاصية.</string>
     <string name="trackers_in">المتتبعات في %s</string>
     <string name="permission_calendar">التقويم</string>
-    <string name="permission_sms">مسجات قصيرة/مسجات الوسائط المتعددة</string>
+    <string name="permission_sms">الرسائل القصيرة / رسائل الوسائط المتعددة</string>
     <string name="permission_phone">الهاتف</string>
     <string name="permission_location">الموقع</string>
     <string name="permission_microphone">الميكروفون</string>
@@ -276,4 +276,21 @@
     <string name="permission_identification_data">أذونات للحصول على بيانات التعريف</string>
     <string name="trackers_identification_description">تسمح أذونات التتبع للتطبيقات باستخدام خدمات تسجيل الدخول لخدمات معينة ، على سبيل المثال فيسبوك.</string>
     <string name="trackers_analytics_description">أذونات التتبع المستخدمة لجمع الإحصائيات حول استخدامك للتطبيقات ، على سبيل المثال اللمسات والنقرات.</string>
+    <string name="trackers">المتعقبات</string>
+    <string name="trackers_identification">أجهزة تحديد الهوية</string>
+    <string name="trackers_analytics">متعقبو التحليل</string>
+    <string name="action_open_tc">افتح TrackerControl</string>
+    <string name="action_install_tc">تثبيت تعقب التحكم</string>
+    <string name="trackers_note_2">لماذا تحتاج هذه المتعقبات؟</string>
+    <string name="trackers_note_4">الحد الادنى لا لبرمجيات التعقب</string>
+    <string name="permissions_note_0">يطلب العديد من الأذونات الخطيرة</string>
+    <string name="permissions_note_3">الحد الأدنى من الأذونات</string>
+    <string name="permissions_note_4">لا يتطلب أي أذونات تقريبا</string>
+    <string name="permission_granted">مسموح</string>
+    <string name="permission_not_granted">لم تُمنح</string>
+    <string name="permission_not_present">غير موجود على نظامك</string>
+    <string name="permissions_note_2">لا يتطلب الكثير من الأذونات</string>
+    <string name="trackers_note_1">يتضمن العديد من متتبعات بياناتك الحساسة</string>
+    <string name="trackers_note_3">لديه البعض من برمجيات التتبع</string>
+    <string name="permissions_note_1">يتطلب قدرا لا بأس به من الأذونات</string>
 </resources>
