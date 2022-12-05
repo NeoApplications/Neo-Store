@@ -253,4 +253,24 @@
     <string name="trackers_profiling_description">Topladıkları verilere dayanarak sizin bir profilinizi oluşturmaya çalışan izleyiciler.</string>
     <string name="trackers_location">Konum izleyicileri</string>
     <string name="trackers_location_description">Fiziksel konumunuzu takip etmeye odaklanan izleyiciler.</string>
+    <string name="source_open">Açık Kaynak</string>
+    <string name="trackers_bug">Hata raporlama izleyicileri</string>
+    <string name="trackers_bug_description">İzleyiciler, uygulamanın karşılaşabileceği teknik sorunları bildirmek için kullanılır.</string>
+    <string name="source_proprietary">Tescilli</string>
+    <string name="source_proprietary_description">Uygulamanın kaynak koduna herkes tarafından erişilemez.</string>
+    <string name="source_open_description">Uygulamanın kaynak kodu açık bir şekilde erişilebilir durumdadır.</string>
+    <string name="source_copyleft">Telif müsaadeli</string>
+    <string name="source_copyleft_description">Uygulama yalnızca ücretsiz içeriklerden oluşmaktadır.</string>
+    <string name="source_copyright">Telif hakkı</string>
+    <string name="source_copyright_description">Uygulama telif hakkıyla korunan içeriklere bağlıdır veya tescilli ağlara bağlanır.</string>
+    <string name="source_dependencies">Bağımlılıklar</string>
+    <string name="source_dependencies_description">Uygulama, gizliliğe saygı göstermeyen bazı bağımlılıklara sahiptir.</string>
+    <string name="action_change_permissions">İzinleri değiştir</string>
+    <string name="action_open_tc">TrackerControl\'ü aç</string>
+    <string name="action_install_tc">TrackerControl\'ü yükle</string>
+    <string name="action_open_code">Kodu görüntüle</string>
+    <string name="action_open_website">Web sitesini aç</string>
+    <string name="trackers_none">Gösterilecek izleyici yok</string>
+    <string name="trackers_note_0">Bu bir uygulama mı yoksa casus yazılım mı\?</string>
+    <string name="trackers_note_2">Neden bu izleyicilere ihtiyaç duyuluyor\?</string>
 </resources>
