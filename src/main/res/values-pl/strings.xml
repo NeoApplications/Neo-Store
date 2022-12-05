@@ -237,4 +237,19 @@
     <string name="sort_descending">Malejąco</string>
     <string name="date_added">Data dodania</string>
     <string name="date_updated">Data aktualizacji</string>
+    <string name="permission_contacts">Kontakty</string>
+    <string name="permission_calendar">Kalendarz</string>
+    <string name="permission_sms">SMS/MMS</string>
+    <string name="permission_storage">Pamięć i media</string>
+    <string name="permission_phone">Telefon</string>
+    <string name="permission_location">Lokalizacja</string>
+    <string name="permission_camera">Aparat</string>
+    <string name="permission_microphone">Mikrofon</string>
+    <string name="permission_nearby_devices">Urządzenia w pobliżu</string>
+    <string name="permission_internet">Internet</string>
+    <string name="permission_other">Inne uprawnienia</string>
+    <string name="permission_physical_data">Uprawnienia do danych fizycznych</string>
+    <string name="permission_identification_data">Uprawnienia do danych identyfikacyjnych</string>
+    <string name="trackers">Elementy śledzące</string>
+    <string name="trackers_identification">Śledzenie tożsamości</string>
 </resources>
