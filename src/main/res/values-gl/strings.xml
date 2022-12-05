@@ -241,7 +241,7 @@
     <string name="trackers_analytics_description">Os rastrexadores poden ser usados para colectar estatísticas do seu uso de aplicacións, como por exemplo toques na pantalla.</string>
     <string name="trackers_ads">Rastrexadores de publicidade</string>
     <string name="trackers_ads_description">Os rastrexadores de publicidade poden ser usados para lle mostrar anuncios e analizar a súa interacción con estes.</string>
-    <string name="trackers_profiling">Rastrexadores de perfís</string>
+    <string name="trackers_profiling">Rastreadores dos perfiles</string>
     <string name="trackers_in">Rastrexadores en %s</string>
     <string name="trackers_location_description">Os rastrexadores orientados a detectar a súa localización.</string>
     <string name="trackers_bug">Rastrexadores de informes de erros</string>
