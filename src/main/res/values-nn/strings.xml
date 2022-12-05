@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="address">Adresse</string>
+    <string name="all_applications">Alle appar</string>
+    <string name="already_exists">Finst alt</string>
+    <string name="amoled">Svart</string>
+    <string name="available">Tilgjengeleg</string>
+    <string name="cancel">Avbryt</string>
+    <string name="changelog">Brigdehistorikk</string>
+    <string name="changes">Brigde</string>
+    <string name="confirmation">Stadfesting</string>
+    <string name="contains_non_free_media">Inneheld ufri media</string>
+    <string name="application_not_found">Fann ikkje den appen</string>
+</resources>
