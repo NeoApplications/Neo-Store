@@ -245,7 +245,7 @@
     <string name="trackers_in">Rastrexadores en %s</string>
     <string name="trackers_location_description">Os rastrexadores orientados a detectar a súa localización.</string>
     <string name="trackers_bug">Rastrexadores de informes de erros</string>
-    <string name="source_copyleft">Copyleft</string>
+    <string name="source_copyleft">Licenza Copyleft</string>
     <string name="permission_nearby_devices">Dispositivos próximos</string>
     <string name="trackers_identification_description">Os rastrexadores permiten ás aplicacións usar servizos de inicio de sesión para servizos específicos, como por exemplo Facebook.</string>
     <string name="permission_storage">Almacenamento e multimedia</string>
