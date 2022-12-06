@@ -273,4 +273,15 @@
     <string name="trackers_none">Gösterilecek izleyici yok</string>
     <string name="trackers_note_0">Bu bir uygulama mı yoksa casus yazılım mı\?</string>
     <string name="trackers_note_2">Neden bu izleyicilere ihtiyaç duyuluyor\?</string>
+    <string name="trackers_identification">Kimlik tanımlama izleyicileri</string>
+    <string name="permissions_note_2">Çok fazla izin gerektirmez</string>
+    <string name="trackers_note_3">Birkaç izleyiciye sahip</string>
+    <string name="trackers_note_4">Minimum veya hiç izleyici yok</string>
+    <string name="permissions_note_0">Birçok tehlikeli izin talep eder</string>
+    <string name="trackers_in">%s içindeki izleyiciler</string>
+    <string name="permissions_note_3">En az miktarda izin</string>
+    <string name="permissions_note_4">Neredeyse hiç izin gerektirmez</string>
+    <string name="permission_granted">İzin verildi</string>
+    <string name="permission_not_granted">İzin verilmedi</string>
+    <string name="permission_not_present">Sisteminizde mevcut değil</string>
 </resources>
