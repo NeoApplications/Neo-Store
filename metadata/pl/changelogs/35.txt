@@ -1,0 +1,3 @@
+- Stare ikony zastąpiono ikonami Material
+- Naprawiono problemy z górnym paskiem aplikacji
+- Dodano ikony do przycisku instalacji i anulowania, aby poprawić dostępność
