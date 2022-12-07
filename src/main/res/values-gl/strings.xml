@@ -232,7 +232,7 @@
     <string name="root_installer">Instalador root</string>
     <string name="prefs_installer">Tipo de instalador</string>
     <string name="default_installer">Instalador de sesión predeterminado</string>
-    <string name="legacy_installer">Instalador herdado (compatible con MIUI)</string>
+    <string name="legacy_installer">Instalador herdado (compatíbel con MIUI)</string>
     <string name="permission_contacts">Contactos</string>
     <string name="permission_calendar">Calendario</string>
     <string name="permission_other">Outros permisos</string>
