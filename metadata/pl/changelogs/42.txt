@@ -1,0 +1,6 @@
+- Więcej Material Design 3
+- Naprawiono: Root i domyślny instalator
+- Naprawiono: Usuń plik w pamięci podręcznej po odinstalowaniu
+- Naprawiono: Awaria przy naciskaniu zainstaluj, gdy jest tryb offline
+- Aktualizacja tłumaczeń ponad 17 języków
+- Wiele małych poprawek i ulepszeń…

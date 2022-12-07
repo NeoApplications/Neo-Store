@@ -1,0 +1,7 @@
+- Dodano ikonę do otwierania szczegółów
+- Różnice w górnym pasku aplikacji stały się bardziej widoczne
+- Pytanie o uprawnienia root będą tylko wtedy, gdy jest używany
+- Poprawki widoczności przełącznika
+- Dodano tłumaczenie arabskie
+- Długie naciśnięcie ikony źródła, aby skopiować link
+- Zamieniono Toast na Snackbar

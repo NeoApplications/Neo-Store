@@ -1,0 +1,5 @@
+- Dodano: Preferencje językowe
+- Aktualizacja: zrzuty ekranu z przewijaniem poziomym
+- Poprawka: Instalator root w tle
+- Dodano: Pytaj o roota tylko po wybraniu
+- Tony poprawek UI/UX
