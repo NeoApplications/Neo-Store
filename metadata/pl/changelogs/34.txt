@@ -1,0 +1,6 @@
+- Aktualizacja: Zwijający się pasek narzędzi
+- Aktualizacja: Ulepszon instalatory (root i inne)
+- Aktualizacja: Nowa ikona aplikacji (ponownie)
+- Aktualizacja: projekt bloków informacji o wydaniu
+- Aktualizacja: Obsługa brakujących nazw i ikon autorów
+- Inne poprawki, zmiany i czyszczenie
