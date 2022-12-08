@@ -66,7 +66,7 @@
     <string name="invalid_address">Indirizzo non valido</string>
     <string name="invalid_fingerprint_format">Formato dell\'impronta non valido</string>
     <string name="invalid_metadata_error_DESC">Metadata non validi.</string>
-    <string name="invalid_permissions_error_DESC">Permessi non validi.</string>
+    <string name="invalid_permissions_error_DESC">Autorizzazioni non valide.</string>
     <string name="invalid_signature_error_DESC">Firma non valida.</string>
     <string name="invalid_username_format">Formato nome utente non valido</string>
     <string name="launch">Avvia</string>
@@ -103,7 +103,7 @@
     <string name="parsing_index_error_DESC">Impossibile analizzare il file di indice.</string>
     <string name="password">Password</string>
     <string name="password_missing">Password mancante</string>
-    <string name="permissions">Permessi</string>
+    <string name="permissions">Autorizzazioni</string>
     <string name="plus_more_FORMAT">+%d altro</string>
     <string name="settings">Impostazioni</string>
     <string name="processing_FORMAT">Elaborazione %1$s…</string>
@@ -197,7 +197,7 @@
     <string name="dialog_refuse">Mantieni</string>
     <string name="root_session_installer">Usa installer della sessione root</string>
     <string name="root_session_installer_description">Più lento, ma evita i problemi con le app installate su Android 13+.</string>
-    <string name="no_permissions_identified">Nessun permesso richiesto identificato</string>
+    <string name="no_permissions_identified">Nessuna autorizzazione richiesta identificata</string>
     <string name="not_safe_for_work">Censurabile (potrebbe contenere contenuti sensibili)</string>
     <string name="no_action_possible">Nessuna azione possibile</string>
     <string name="show_screenshots">Mostra schermate</string>
