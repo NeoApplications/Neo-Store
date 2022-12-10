@@ -225,7 +225,7 @@
     <string name="sort_descending">Descendente</string>
     <string name="other_apps_by">Outras aplicacións de %s</string>
     <string name="action_apply">Aplicar</string>
-    <string name="action_reset">Restablecer</string>
+    <string name="action_reset">Restabelecer</string>
     <string name="date_added">Data engadida</string>
     <string name="date_updated">Data de actualización</string>
     <string name="scan_qr_code">Escanealo QR</string>
