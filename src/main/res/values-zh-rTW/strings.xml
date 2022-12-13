@@ -195,7 +195,7 @@
     <string name="tracks_or_reports_your_activity">追蹤或報告你的活動</string>
     <string name="unknown">未知</string>
     <string name="root_session_installer_description">Root 程序安裝效能較傳統方法稍差，但防止 Android 13+ 上與已安裝程式發生問題。</string>
-    <string name="prefs_cache">緩存</string>
+    <string name="prefs_cache">快取</string>
     <string name="prefs_sync">同步</string>
     <string name="system_black">系統(黑色)</string>
     <string name="not_safe_for_work">可屏蔽 (可能含有令人不安的內容)</string>
@@ -204,8 +204,8 @@
     <string name="loading_list">正在載入列表…</string>
     <string name="prefs_personal">個人</string>
     <string name="auto_sync_interval">自動同步間隔 (分鐘)</string>
-    <string name="images_cache_retention">保留圖像緩存</string>
-    <string name="releases_cache_retention">保留已下載APK緩存</string>
+    <string name="images_cache_retention">保留圖像快取</string>
+    <string name="releases_cache_retention">保留已下載APK快取</string>
     <string name="favorite_applications">收藏夾</string>
     <string name="group_telegram">我們的Telegram群組</string>
     <string name="group_matrix">我們的Matrix群組</string>
