@@ -149,7 +149,7 @@
     <string name="incompatible_versions">Niezgodne wersje</string>
     <string name="incompatible_versions_summary">Pokaż wersje aplikacji niekompatybilne z urządzeniem.</string>
     <string name="install_types">Typy instalacji</string>
-    <string name="installed">Zainstalowana</string>
+    <string name="installed">Zainstalowane</string>
     <string name="invalid_address">Nieprawidłowy adres</string>
     <string name="invalid_metadata_error_DESC">Nieprawidłowe metadane.</string>
     <plurals name="new_updates_DESC_FORMAT">
@@ -225,7 +225,7 @@
     <string name="prefs_installer">Typ instalatora</string>
     <string name="default_installer">Instalator sesji (domyślny)</string>
     <string name="root_installer">Instalator „root”</string>
-    <string name="system_black">System (Czarny)</string>
+    <string name="system_black">System (czarny)</string>
     <string name="group_matrix">Matrix</string>
     <string name="dynamic">System (dynamiczne)</string>
     <string name="legacy_installer">Starszy instalator (kompatybilny z MIUI)</string>
