@@ -143,6 +143,7 @@
     <string name="source_code">Source code</string>
     <string name="source_code_no_longer_available">Source code no longer available</string>
     <string name="suggested">Suggested</string>
+    <string name="app_installed">Installed</string>
     <string name="sync_repositories">Sync repositories</string>
     <string name="sync_repositories_automatically">Auto-sync repositories</string>
     <string name="syncing">Syncing</string>

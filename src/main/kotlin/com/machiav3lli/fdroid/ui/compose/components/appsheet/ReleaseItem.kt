@@ -122,7 +122,7 @@ fun ReleaseItemContent(
                     val badgeText = remember { mutableStateOf(R.string.suggested) }
                     LaunchedEffect(isInstalled, isSuggested) {
                         badgeText.value =
-                            if (isInstalled) R.string.installed else R.string.suggested
+                            if (isInstalled) R.string.app_installed else R.string.suggested
                     }
                     ReleaseBadge(
                         modifier = Modifier.padding(top = 8.dp),
