@@ -9,7 +9,7 @@
     <string name="no_applications_available">Нема доступних додатків</string>
     <string name="no_matching_applications_found">Не вдалося знайти жодного схожого додатку</string>
     <string name="incompatible_features_DESC">Відсутні функції.</string>
-    <string name="all_applications">Усі додатки</string>
+    <string name="all_applications">Усі Застосунки</string>
     <string name="cancel">Скасувати</string>
     <string name="changes">Зміни</string>
     <string name="checking_repository">Перевіряю розпозиторії…</string>
@@ -18,7 +18,7 @@
     <string name="action_failed">Невдала дія</string>
     <string name="add_repository">Додати репозиторій</string>
     <string name="address">Адреса</string>
-    <string name="all_applications_up_to_date">Усі додатки в актуальному стані</string>
+    <string name="all_applications_up_to_date">Усі застосунки в актуальному стані</string>
     <string name="already_exists">Уже існує</string>
     <string name="amoled">Чорна</string>
     <string name="anti_features">Анти-функції</string>
@@ -97,10 +97,10 @@
     <string name="requires_FORMAT">Потребує %s</string>
     <string name="root_permission">Тихе встановлення</string>
     <plurals name="new_updates_DESC_FORMAT">
-        <item quantity="one">%d додаток має нову версію.</item>
-        <item quantity="few">%d додатки мають нову версію.</item>
-        <item quantity="many">%d додатків мають нову версію.</item>
-        <item quantity="other">%d додатків мають нову версію.</item>
+        <item quantity="one">%d застосунок має нову версію.</item>
+        <item quantity="few">%d застосунки мають нову версію.</item>
+        <item quantity="many">%d застосунки мають нову версію.</item>
+        <item quantity="other">%d застосунки мають нову версію.</item>
     </plurals>
     <string name="prefs_personalization">Пристосування</string>
     <string name="root_permission_description">Використовувати root для встановлення без взаємодії</string>
@@ -179,7 +179,7 @@
     <string name="explore">Огляд</string>
     <string name="update_all">Встановити все</string>
     <string name="installed_applications">Встановлені</string>
-    <string name="new_applications">Нові додатки</string>
+    <string name="new_applications">Нові застосунки</string>
     <string name="latest">Останні</string>
     <string name="sort_filter">Сортувати та фільтрувати</string>
     <string name="only_on_wifi_and_battery">Лише під час Wi-Fi та підключенні до мережі</string>
@@ -210,9 +210,9 @@
     <string name="favorite_add">Додати до вибраних</string>
     <string name="open">Відкрити</string>
     <string name="loading_list">Завантажується список…</string>
-    <string name="images_cache_retention">Зберігання зображень у кеші</string>
+    <string name="images_cache_retention">Зберігання кешу зображень</string>
     <string name="auto_sync_interval">Інтервал авто-синхронізації (у хвилинах)</string>
-    <string name="releases_cache_retention">Зберігання завантажених APK в кеші</string>
+    <string name="releases_cache_retention">Зберігання кешу завантажених APK</string>
     <string name="prefs_cache">Кеш</string>
     <string name="prefs_sync">Синхронізація</string>
     <string name="system_black">Системна (чорна)</string>
@@ -225,7 +225,7 @@
     <string name="categories">Категорії</string>
     <string name="sort_ascending">За зростанням</string>
     <string name="sort_descending">По спаданню</string>
-    <string name="other_apps_by">Інші додатки від %s</string>
+    <string name="other_apps_by">Інші застосунки від %s</string>
     <string name="action_apply">Застосувати</string>
     <string name="action_reset">Скинути</string>
     <string name="date_added">Дата додавання</string>
@@ -289,4 +289,6 @@
     <string name="trackers_bug_description">Трекери, які використовуються для повідомлення о технічних проблемах, які можуть виникнути у додатку.</string>
     <string name="source_proprietary_description">Вихідний код програми не є загальнодоступним.</string>
     <string name="source_copyright_description">Програма залежить від компонентів, захищених авторським правом, або підключається до пропрієтарних мереж.</string>
+    <string name="source_copyleft">Авторське право</string>
+    <string name="source_copyleft_description">Застосунок складається лише з безкоштовного вмісту.</string>
 </resources>
