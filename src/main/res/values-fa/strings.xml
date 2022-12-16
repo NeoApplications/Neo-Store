@@ -194,7 +194,7 @@
     <string name="ignore_battery_optimization_title">نادیده گرفتن بهینه سازی باتری</string>
     <string name="ignore_battery_optimization_message">از اندروید ۱۲ و بعد، برای سرویس های پیش زمینه محدودیت هایی وجود دارد که باعث مشکلات با دانلود های این برنامه پبش آید. برای جلوگیری از این مشکل، شما باید بهینه سازی باتری را خاموش کنید</string>
     <string name="releases">انتشارها</string>
-    <string name="legacy_installer">نصب کننده قدیمی(سازگار با MIUI)</string>
+    <string name="legacy_installer">نصب‌کننده قدیمی (سازگار با MIUI)</string>
     <string name="no_updates_available">هیچ نسخه ای موجود نیست</string>
     <string name="dynamic">سامانه پویا</string>
     <string name="date_added">تاریخ افزوده شده</string>
