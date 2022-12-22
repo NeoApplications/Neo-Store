@@ -1,0 +1,7 @@
+Dodano: Kategoria "Ulubione"
+Dodano: Możliwość ustawienia interwału synchronizacji
+Dodano: Obsługa automatycznego importu repo fdroid: adresy repo ze schowka
+Naprawiono: zagnieżdżone przewijanie AppSheet
+Naprawiono: Liczenie aplikacji w repozytorium
+Naprawiono: Pozwól na zatrzymanie apk do momentu "skonsumowania"
+Zaktualizowano: Zrób wybieralny tekst opisu aplikacji/changelogu

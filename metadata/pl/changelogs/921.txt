@@ -1,0 +1,5 @@
+Naprawiono: Wyciek pamięci w Main & Prefs
+Dodano: Nowa wizualizacja prywatności (Neo Meter Icons)
+Dodano: Nowy panel prywatności
+Naprawiono: Wielokrotne otwieranie tego samego RepoSheet'a
++ więcej niż 15 wkładów do tłumaczeń

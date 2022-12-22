@@ -1,0 +1,7 @@
+Dodano: Wsparcie dla URI repozytoriów fdroid
+Dodano: Wsparcie dla market://search?
+Dodano: Opcja udostępniania dla aplikacji IzzyOnDroid
+Dodano: GitJournal i Revolt do domyślnych repozytoriów
+Zaktualizowano: Zmień ReleaseItems
+Usunięto: Alefvanoon z domyślnych repozytoriów
+Aby uzyskać więcej szczegółów sprawdź pełny changelog…

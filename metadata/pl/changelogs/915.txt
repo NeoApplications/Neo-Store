@@ -1,0 +1,7 @@
+Zaktualizowane: Przebudowa interfejsu użytkownika AppSheet
+Zaktualizowane: Migracja nawigacji w całości do Compose
+Zaktualizowano: Migracja preferencji do Compose
+Zaktualizowano: Umożliwić ustawienie wyższej liczby dla recyklera zaktualizowanych/nowych aplikacji i interwału synchronizacji
+Dodano: Przydatne linki w preferencjach
+Naprawiono: Widoczność przycisków akcji (ActionButtons)
+Naprawiono: Pokaż opis Repo przed pierwszą synchronizacją

@@ -1,0 +1,9 @@
+- Dodano: Systemowy dynamiczny motyw (aka. Material You)
+- Dodano: 7 nowych repozytoriów presetów
+- Dodano: Etykieta architektury na wydaniach dla konkretnej architektury
+- Usunięto: UnifiedPush repo (martwe)
+- Naprawiono: Irytujące powiadomienie o 0 aktualizacjach
+- Naprawiono: Ukryj link do strony autora, gdy jest niedostępny
+- Naprawiono: Parsowanie zawartości schowka dla URI repo
+- Naprawiono: Linki w ustawieniach
+- Naprawiono: Nie wyświetlanie akcji aktualizacji

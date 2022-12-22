@@ -1,0 +1,5 @@
+Dodano: Ikona aplikacji oparta na motywie systemowym
+Dodano: Preferencje typu instalatora (w tym tryb starszy dla niedziałającego MIUI)
+Naprawiono: Nawigacja po uruchomieniu z powiadomienia o aktualizacjach
+Naprawiono: Pasek pobierania nie odzwierciedlający prawdziwego postępu
+Trochę więcej w pełnym changelogu…

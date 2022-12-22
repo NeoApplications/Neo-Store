@@ -1,0 +1,6 @@
+Naprawiono: Ustawienie ignorowania aktualizacji nie ukrywa się przed aktualizacjami
+Naprawiono: Sortowanie alfabetyczne zainstalowanych
+Naprawiono: zagnieżdżone przewijanie AppSheet
+Naprawiono: Wyświetlanie akcji instalacji podczas pobierania
+Naprawiono: Ikony paska stanu widoczność na dynamiczne kolory motywu
+Zaktualizowano: Tłumaczenia
