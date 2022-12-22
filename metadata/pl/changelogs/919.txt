@@ -1,0 +1,3 @@
+Dodano: Skanuj Kod QR z repo używając BinaryEye (jeśli jest zainstalowany)
+Naprawiono: Blokada w zainstalowanych po uruchomieniu z powiadomienia o aktualizacjach
+Naprawiono: Poprawa obsługi intencji

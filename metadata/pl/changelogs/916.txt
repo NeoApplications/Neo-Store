@@ -1,0 +1,7 @@
+Dodano: Funkcja sortowania/filtrowania
+Dodano: Wyraźny skrót do ulubionych
+Dodano: Docelowy SDK do chipów informacyjnych
+Zaktualizowano: Zamień ikony Material na Phosphor
+Zaktualizowano: Dolny pasek nawigacji, układy AppSheet i EditRepoSheet
+Naprawiono: Wyświetlanie wtórnej akcji aktualizacji podczas pobierania
+Więcej szczegółów można znaleźć w pełnym changelogu…

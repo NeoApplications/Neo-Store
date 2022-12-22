@@ -1,0 +1,7 @@
+Dodano: Inne aplikacje od programisty
+Dodano: Przewijany pasek górny (Scrolling TopBar)
+Naprawiono: Niektóre problemy z kolorowaniem dynamicznego motywu
+Zaktualizowano: Nowa przeglądarka zrzutów ekranu (naprawia poprzednie problemy i umożliwia powiększanie)
+Zaktualizowano: Wiele układów graficznych
+Zaktualizowano: Revamp theming backend (naprawia niektóre wizualizacje)
+Aby uzyskać więcej szczegółów sprawdź pełny changelog…
