@@ -1,0 +1,5 @@
+Naprawiono: Wyświetlanie powiadomień o aktualizacjach nawet gdy są wyłączone
+Dodano: Threema, Stable Calyx OS i Session do domyślnych repozytoriów
+Naprawa (próba): Instalator w tle
+Dodano: Opcje czyszczenia pamięci podręcznej apek i obrazków
+Zaktualizowano: Tłumaczenia
