@@ -158,7 +158,7 @@
         <item quantity="many">%d aplikacji czeka na aktualizację.</item>
         <item quantity="other">%d aplikacji czeka na aktualizację.</item>
     </plurals>
-    <string name="root_permission_description">Używaj uprawnień administracyjnych podczas instalacji w tle</string>
+    <string name="root_permission_description">Używaj roota podczas instalacji w tle</string>
     <string name="repositories">Repozytoria</string>
     <string name="incompatible_with_FORMAT">Niekompatybilne z %s</string>
     <string name="install">Zainstaluj</string>
@@ -199,7 +199,7 @@
     <string name="dialog_refuse">Zachowaj</string>
     <string name="dialog_approve">Wyłącz</string>
     <string name="root_session_installer">Użyj instalatora sesji root</string>
-    <string name="root_session_installer_description">Instalator sesji jest nieco mniej wydajny niż starszy, ale pozwala uniknąć problemów z zainstalowanymi aplikacjami w systemie Android +13.</string>
+    <string name="root_session_installer_description">Wolniejszy, ale pozwala uniknąć problemów z zainstalowanymi aplikacjami na Androidzie 13+.</string>
     <string name="not_safe_for_work">NSFW (może zawierać niepokojące treści)</string>
     <string name="releases">Wydania</string>
     <string name="auto_sync_interval">Interwał automatycznej synchronizacji (w minutach)</string>
@@ -224,7 +224,7 @@
     <string name="other_apps_by">Inne aplikacje od %s</string>
     <string name="prefs_installer">Typ instalatora</string>
     <string name="default_installer">Instalator sesji (domyślny)</string>
-    <string name="root_installer">Instalator „root”</string>
+    <string name="root_installer">Instalator root</string>
     <string name="system_black">System (czarny)</string>
     <string name="group_matrix">Matrix</string>
     <string name="dynamic">System (dynamiczne)</string>
