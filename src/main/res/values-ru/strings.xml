@@ -291,4 +291,5 @@
     <string name="trackers_ads_description">Трекеры, используемые для показа рекламы и отслеживания вашего взаимодействия с ней.</string>
     <string name="trackers_location_description">Трекеры, ориентированные на отслеживание вашего физического местоположения.</string>
     <string name="source_proprietary_description">Исходный код приложения не является общедоступным.</string>
+    <string name="app_installed">Установлено</string>
 </resources>
