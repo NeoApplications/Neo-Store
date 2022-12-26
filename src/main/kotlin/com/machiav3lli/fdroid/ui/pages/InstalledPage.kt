@@ -154,7 +154,7 @@ fun InstalledPage(viewModel: InstalledViewModel) {
             ) { mainActivityX.navigateSortFilter(NavItem.Installed.destination) }
         }
         ProductsVerticalRecycler(
-            productsList = filteredPrimaryList?.sortedBy { it.label.lowercase() },
+            productsList = filteredPrimaryList,
             repositories = repositoriesMap,
             favorites = favorites,
             modifier = Modifier
