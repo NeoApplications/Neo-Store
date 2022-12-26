@@ -6,6 +6,7 @@ import android.content.pm.PermissionInfo
 import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.compose.icons.Icon
@@ -173,7 +174,7 @@ sealed class Request {
     internal abstract val installed: Boolean
     internal abstract val updates: Boolean
     internal abstract val filteredOutRepos: Set<String>
-    internal abstract val filteredOutCategories: Set<String>
+    internal abstract val category: String
     internal abstract val section: Section
     internal abstract val order: Order
     internal abstract val ascending: Boolean
@@ -193,7 +194,7 @@ sealed class Request {
             get() = Preferences[Preferences.Key.SortOrderExplore].order
         override val filteredOutRepos: Set<String>
             get() = Preferences[Preferences.Key.ReposFilterExplore]
-        override val filteredOutCategories: Set<String>
+        override val category: String
             get() = Preferences[Preferences.Key.CategoriesFilterExplore]
         override val ascending: Boolean
             get() = Preferences[Preferences.Key.SortOrderAscendingExplore]
@@ -212,7 +213,7 @@ sealed class Request {
             get() = Preferences[Preferences.Key.SortOrderInstalled].order
         override val filteredOutRepos: Set<String>
             get() = Preferences[Preferences.Key.ReposFilterInstalled]
-        override val filteredOutCategories: Set<String>
+        override val category: String
             get() = Preferences[Preferences.Key.CategoriesFilterInstalled]
         override val ascending: Boolean
             get() = Preferences[Preferences.Key.SortOrderAscendingInstalled]
@@ -229,8 +230,8 @@ sealed class Request {
             get() = UpdateCategory.ALL
         override val filteredOutRepos: Set<String>
             get() = emptySet()
-        override val filteredOutCategories: Set<String>
-            get() = emptySet()
+        override val category: String
+            get() = FILTER_CATEGORY_ALL
         override val order: Order
             get() = Order.NAME
         override val ascending: Boolean
@@ -248,7 +249,7 @@ sealed class Request {
             get() = UpdateCategory.UPDATED
         override val filteredOutRepos: Set<String>
             get() = Preferences[Preferences.Key.ReposFilterLatest]
-        override val filteredOutCategories: Set<String>
+        override val category: String
             get() = Preferences[Preferences.Key.CategoriesFilterLatest]
         override val order: Order
             get() = Preferences[Preferences.Key.SortOrderLatest].order
@@ -269,8 +270,8 @@ sealed class Request {
             get() = UpdateCategory.NEW
         override val filteredOutRepos: Set<String>
             get() = emptySet()
-        override val filteredOutCategories: Set<String>
-            get() = emptySet()
+        override val category: String
+            get() = FILTER_CATEGORY_ALL
         override val order: Order
             get() = Order.DATE_ADDED
         override val ascending: Boolean

@@ -8,6 +8,7 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.ROW_ADDED
 import com.machiav3lli.fdroid.ROW_ANTIFEATURES
 import com.machiav3lli.fdroid.ROW_AUTHOR
@@ -91,7 +92,7 @@ interface ProductDao : BaseDao<Product> {
             updates = request.updates,
             section = request.section,
             filteredOutRepos = request.filteredOutRepos,
-            filteredOutCategories = request.filteredOutCategories,
+            category = request.category,
             order = request.order,
             ascending = request.ascending,
             numberOfItems = request.numberOfItems,
@@ -103,7 +104,7 @@ interface ProductDao : BaseDao<Product> {
     fun queryObject(
         installed: Boolean, updates: Boolean,
         section: Section, filteredOutRepos: Set<String> = emptySet(),
-        filteredOutCategories: Set<String> = emptySet(), order: Order,
+        category: String = FILTER_CATEGORY_ALL, order: Order,
         ascending: Boolean, numberOfItems: Int = 0,
         updateCategory: UpdateCategory = UpdateCategory.ALL,
         author: String = "",
@@ -113,7 +114,7 @@ interface ProductDao : BaseDao<Product> {
             updates = updates,
             section = section,
             filteredOutRepos = filteredOutRepos,
-            filteredOutCategories = filteredOutCategories,
+            category = category,
             order = order,
             ascending = ascending,
             numberOfItems = numberOfItems,
@@ -131,7 +132,7 @@ interface ProductDao : BaseDao<Product> {
             updates = request.updates,
             section = request.section,
             filteredOutRepos = request.filteredOutRepos,
-            filteredOutCategories = request.filteredOutCategories,
+            category = request.category,
             order = request.order,
             ascending = request.ascending,
             numberOfItems = request.numberOfItems,
@@ -144,7 +145,7 @@ interface ProductDao : BaseDao<Product> {
         updates: Boolean,
         section: Section,
         filteredOutRepos: Set<String> = emptySet(),
-        filteredOutCategories: Set<String> = emptySet(),
+        category: String = FILTER_CATEGORY_ALL,
         order: Order,
         ascending: Boolean = false,
         numberOfItems: Int = 0,
@@ -212,8 +213,9 @@ interface ProductDao : BaseDao<Product> {
         }
 
         // Filter out categories
-        if (filteredOutCategories.isNotEmpty()) {
-            builder += "AND $TABLE_CATEGORY.$ROW_LABEL NOT IN(${filteredOutCategories.joinToString { "'$it'" }})"
+        if (category != FILTER_CATEGORY_ALL) {
+            builder += "AND $TABLE_CATEGORY.$ROW_LABEL = ?"
+            builder %= category
         }
 
         // Filter only the selected repository/category

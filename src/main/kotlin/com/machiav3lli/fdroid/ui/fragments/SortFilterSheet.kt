@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
 import com.machiav3lli.fdroid.EXTRA_PAGE_ROUTE
+import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
@@ -134,8 +135,8 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
         val filteredOutRepos by remember(Preferences[reposFilterKey]) {
             mutableStateOf(Preferences[reposFilterKey].toMutableSet())
         }
-        val filteredOutCategories by remember(Preferences[categoriesFilterKey]) {
-            mutableStateOf(Preferences[categoriesFilterKey].toMutableSet())
+        var filterCategory by remember(Preferences[categoriesFilterKey]) {
+            mutableStateOf(Preferences[categoriesFilterKey])
         }
 
         Scaffold(
@@ -169,7 +170,7 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                             Preferences[sortKey] = sortOption
                             Preferences[sortAscendingKey] = sortAscending
                             Preferences[reposFilterKey] = filteredOutRepos
-                            Preferences[categoriesFilterKey] = filteredOutCategories
+                            Preferences[categoriesFilterKey] = filterCategory
                             dismissAllowingStateLoss()
                         }
                     )
@@ -271,22 +272,12 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                         crossAxisSpacing = 4.dp,
                         mainAxisAlignment = MainAxisAlignment.Center,
                     ) {
-                        categories.sorted().forEach {
-                            var checked by remember {
-                                mutableStateOf(
-                                    !filteredOutCategories.contains(it)
-                                )
-                            }
-
+                        (listOf(FILTER_CATEGORY_ALL) + categories.sorted()).forEach {
                             SelectChip(
                                 text = it,
-                                checked = checked
+                                checked = it == filterCategory
                             ) {
-                                checked = !checked
-                                if (checked)
-                                    filteredOutCategories.remove(it)
-                                else
-                                    filteredOutCategories.add(it)
+                                filterCategory = it
                             }
                         }
                     }

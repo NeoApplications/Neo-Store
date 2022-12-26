@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.appcompat.app.AppCompatDelegate
+import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.PREFS_LANGUAGE
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
@@ -246,19 +247,19 @@ object Preferences : OnSharedPreferenceChangeListener {
             Value.StringSetValue(emptySet())
         )
 
-        object CategoriesFilterExplore : Key<Set<String>>(
-            "categories_filter_explore",
-            Value.StringSetValue(emptySet())
+        object CategoriesFilterExplore : Key<String>(
+            "category_filter_explore",
+            Value.StringValue(FILTER_CATEGORY_ALL)
         )
 
-        object CategoriesFilterLatest : Key<Set<String>>(
-            "categories_filter_latest",
-            Value.StringSetValue(emptySet())
+        object CategoriesFilterLatest : Key<String>(
+            "category_filter_latest",
+            Value.StringValue(FILTER_CATEGORY_ALL)
         )
 
-        object CategoriesFilterInstalled : Key<Set<String>>(
-            "categories_filter_installed",
-            Value.StringSetValue(emptySet())
+        object CategoriesFilterInstalled : Key<String>(
+            "category_filter_installed",
+            Value.StringValue(FILTER_CATEGORY_ALL)
         )
 
         object Theme : Key<Preferences.Theme>(

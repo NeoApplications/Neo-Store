@@ -70,6 +70,8 @@ const val EXODUS_TRACKERS_SYNC = -22L
 const val PREFS_LANGUAGE = "languages"
 const val PREFS_LANGUAGE_DEFAULT = "system"
 
+const val FILTER_CATEGORY_ALL = "All"
+
 const val EXTRA_REPOSITORY_ID = "repositoryId"
 const val EXTRA_PAGE_ROUTE = "pageRoute"
 const val EXTRA_INTENT_HANDLED = "intentHandled"
