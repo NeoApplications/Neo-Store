@@ -179,7 +179,7 @@ open class TrackersGroup(
     object Location : TrackersGroup(
         R.string.trackers_location,
         R.string.trackers_location_description,
-        Phosphor.CurrencyCircleDollar
+        Phosphor.MapPin
     )
 
     object Profiling : TrackersGroup(
