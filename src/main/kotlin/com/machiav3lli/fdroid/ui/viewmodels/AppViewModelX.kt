@@ -110,7 +110,7 @@ class AppViewModelX(val db: DatabaseX, val packageName: String, developer: Strin
     val authorProducts = db.productDao.getAuthorPackagesFlow(developer).transformLatest { prods ->
         if (developer.isNotEmpty()) emit(
             prods
-                .filter { it.packageName != packageName }
+                .filter { it.packageName != packageName && it.author.name == developer }
                 .groupBy { it.packageName }
                 .map { it.value.maxByOrNull(Product::added)!! }
         )
