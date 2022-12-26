@@ -1,8 +1,12 @@
 package com.machiav3lli.fdroid.ui.compose.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredWidthIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +23,9 @@ import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.network.CoilDownloader
 import com.machiav3lli.fdroid.ui.compose.utils.NetworkImage
+
+val PRODUCT_CARD_HEIGHT = 80.dp
+val PRODUCT_CARD_WIDTH = 220.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,12 +50,13 @@ fun ProductCard(
     Surface(
         modifier = Modifier
             .padding(4.dp)
-            .requiredSize(80.dp, 136.dp),
+            .requiredHeight(PRODUCT_CARD_HEIGHT)
+            .requiredWidthIn(max = PRODUCT_CARD_WIDTH),
         tonalElevation = 4.dp,
         shape = MaterialTheme.shapes.medium,
         onClick = { onUserClick(product) }
     ) {
-        Column(
+        Row(
             modifier = Modifier.padding(8.dp),
         ) {
             NetworkImage(
@@ -56,22 +64,24 @@ fun ProductCard(
                 data = imageData
             )
 
-            Text(
-                modifier = Modifier.padding(4.dp, 2.dp),
-                text = product.name,
-                style = MaterialTheme.typography.bodySmall,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 2,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                modifier = Modifier.padding(4.dp, 1.dp),
-                text = product.version,
-                style = MaterialTheme.typography.labelSmall,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Column(Modifier.height(IntrinsicSize.Min)) {
+                Text(
+                    modifier = Modifier.padding(4.dp, 2.dp),
+                    text = product.name,
+                    style = MaterialTheme.typography.bodySmall,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 2,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    modifier = Modifier.padding(4.dp, 1.dp),
+                    text = product.version,
+                    style = MaterialTheme.typography.labelSmall,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
     }
 
