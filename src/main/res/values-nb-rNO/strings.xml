@@ -233,4 +233,26 @@
     <string name="prefs_installer">Installasjonstype</string>
     <string name="root_installer">Rot-installerer</string>
     <string name="legacy_installer">Gammeldags installerer (kompatibel med MIUI)</string>
+    <string name="permission_sms">SMS/MMS</string>
+    <string name="permission_storage">Lagring og media</string>
+    <string name="permission_location">Posisjon</string>
+    <string name="permission_camera">Kamera</string>
+    <string name="permission_nearby_devices">Enheter i nærheten</string>
+    <string name="permission_internet">Internett</string>
+    <string name="permission_other">Andre tilganger</string>
+    <string name="permission_physical_data">Tilganger for fysisk data</string>
+    <string name="permission_identification_data">Tilganger for identifikasjonsdata</string>
+    <string name="trackers">Sporere</string>
+    <string name="trackers_identification">Identifikasjonssporere</string>
+    <string name="source_proprietary">Proprietært</string>
+    <string name="action_open_code">Vis kildekoden</string>
+    <string name="action_open_website">Åpne nettsiden</string>
+    <string name="trackers_none">Ingen sporere å vise</string>
+    <string name="trackers_in">Sporere i %s</string>
+    <string name="permission_not_granted">Ikke innvilget</string>
+    <string name="trackers_ads">Reklamesporere</string>
+    <string name="permission_contacts">Kontakter</string>
+    <string name="permission_microphone">Mikrofon</string>
+    <string name="permission_calendar">Kalender</string>
+    <string name="permission_phone">Telefon</string>
 </resources>
