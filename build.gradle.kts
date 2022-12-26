@@ -24,7 +24,7 @@ android {
     defaultConfig {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 23
-        targetSdk = 32
+        targetSdk = 33
         versionCode = 921
         versionName = "0.9.11"
         vectorDrawables.useSupportLibrary = true
