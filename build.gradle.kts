@@ -1,8 +1,8 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val composeVersion = "1.3.1"
+val composeVersion = "1.4.0-alpha03"
 val composeCompilerVersion = "1.4.0-alpha02"
-val roomVersion = "2.5.0-beta02"
+val roomVersion = "2.5.0-rc01"
 val navigationVersion = "2.5.3"
 val accompanistVersion = "0.28.0"
 val hiltVersion = "2.44.2"
@@ -121,17 +121,17 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.21")
     implementation("com.google.devtools.ksp:symbol-processing-api:1.7.21-1.0.8")
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.0-rc01")
-    implementation("androidx.fragment:fragment-ktx:1.6.0-alpha03")
+    implementation("androidx.appcompat:appcompat:1.7.0-alpha01")
+    implementation("androidx.fragment:fragment-ktx:1.6.0-alpha04")
     implementation("androidx.activity:activity-ktx:1.6.1")
     implementation("androidx.activity:activity-compose:1.6.1")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
-    implementation("androidx.work:work-runtime-ktx:2.8.0-beta02")
+    implementation("androidx.work:work-runtime-ktx:2.8.0-rc01")
 
     // Material3
-    implementation("com.google.android.material:material:1.8.0-alpha03")
+    implementation("com.google.android.material:material:1.8.0-beta01")
 
     // Coil
     implementation("io.coil-kt:coil:2.2.2")
@@ -158,7 +158,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 
     // Markdown
-    implementation("org.jetbrains:markdown:0.3.1")
+    implementation("org.jetbrains:markdown:0.3.5")
     implementation("de.charlex.compose:html-text:1.3.1")
 
     // Coroutines / Lifecycle
