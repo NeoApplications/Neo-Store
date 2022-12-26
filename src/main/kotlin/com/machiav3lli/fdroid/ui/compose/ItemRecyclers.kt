@@ -2,14 +2,18 @@ package com.machiav3lli.fdroid.ui.compose
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +27,7 @@ import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ProductItem
+import com.machiav3lli.fdroid.ui.compose.components.PRODUCT_CARD_HEIGHT
 import com.machiav3lli.fdroid.ui.compose.components.ProductCard
 import com.machiav3lli.fdroid.ui.compose.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.components.RepositoryItem
@@ -53,15 +58,20 @@ fun ProductsVerticalRecycler(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductsHorizontalRecycler(
+    modifier: Modifier = Modifier,
     productsList: List<Product>?,
     repositories: Map<Long, Repository>,
+    rowsNumber: Int = 2,
     onUserClick: (ProductItem) -> Unit = {}
 ) {
-    LazyRow(
+    LazyHorizontalStaggeredGrid(
+        modifier = modifier.height(PRODUCT_CARD_HEIGHT * rowsNumber + 8.dp),
+        rows = StaggeredGridCells.Fixed(rowsNumber),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 8.dp),
-        horizontalArrangement = spacedBy(2.dp)
     ) {
         items(productsList ?: emptyList()) { product ->
             product.toItem().let { item ->
