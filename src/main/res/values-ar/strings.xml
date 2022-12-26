@@ -293,4 +293,5 @@
     <string name="trackers_note_1">يتضمن العديد من متتبعات بياناتك الحساسة</string>
     <string name="trackers_note_3">لديه البعض من برمجيات التتبع</string>
     <string name="permissions_note_1">يتطلب قدرا لا بأس به من الأذونات</string>
+    <string name="app_installed">مثبته</string>
 </resources>
