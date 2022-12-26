@@ -293,4 +293,5 @@
     <string name="permission_granted">Przyznane</string>
     <string name="permission_not_granted">Nie przyznane</string>
     <string name="permission_not_present">Nie występuje w systemie</string>
+    <string name="app_installed">Zainstalowana</string>
 </resources>
