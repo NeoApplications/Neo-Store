@@ -134,7 +134,11 @@ fun InstalledPage(viewModel: InstalledViewModel) {
                     }
                 }
                 AnimatedVisibility(visible = updatesVisible) {
-                    ProductsHorizontalRecycler(secondaryList, repositoriesMap) { item ->
+                    ProductsHorizontalRecycler(
+                        modifier = Modifier.weight(1f),
+                        productsList = secondaryList,
+                        repositories = repositoriesMap
+                    ) { item ->
                         mainActivityX.navigateProduct(item.packageName, item.developer)
                     }
                 }

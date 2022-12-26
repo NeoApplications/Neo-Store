@@ -16,8 +16,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
@@ -27,6 +29,7 @@ import com.machiav3lli.fdroid.ui.compose.components.ActionChip
 import com.machiav3lli.fdroid.ui.compose.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
+import com.machiav3lli.fdroid.ui.compose.utils.vertical
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.LatestViewModel
 import com.machiav3lli.fdroid.utility.onLaunchClick
@@ -81,12 +84,25 @@ fun LatestPage(viewModel: LatestViewModel) {
             .fillMaxSize(),
     ) {
         item {
-            Text(
-                text = stringResource(id = R.string.new_applications),
-                modifier = Modifier.padding(8.dp)
-            )
-            ProductsHorizontalRecycler(secondaryList, repositoriesMap) { item ->
-                mainActivityX.navigateProduct(item.packageName, item.developer)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(id = R.string.new_applications),
+                    textAlign = TextAlign.Center,
+                    maxLines = 2,
+                    modifier = Modifier
+                        .vertical()
+                        .rotate(-90f)
+                        .padding(8.dp),
+                )
+                ProductsHorizontalRecycler(
+                    modifier = Modifier.weight(1f),
+                    productsList = secondaryList,
+                    repositories = repositoriesMap
+                ) { item ->
+                    mainActivityX.navigateProduct(item.packageName, item.developer)
+                }
             }
         }
         item {

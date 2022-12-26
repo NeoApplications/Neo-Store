@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -659,10 +660,12 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                     positive = true,
                                     preExpanded = false
                                 ) {
+                                    Log.i("author products",authorProducts?.map { it.author }?.joinToString().orEmpty())
                                     ProductsHorizontalRecycler(
                                         productsList = authorProducts,
                                         repositories = repos?.associateBy { repo -> repo.id }
-                                            ?: emptyMap()
+                                            ?: emptyMap(),
+                                        rowsNumber = 1,
                                     ) { item ->
                                         mainActivityX.navigateProduct(
                                             item.packageName,
