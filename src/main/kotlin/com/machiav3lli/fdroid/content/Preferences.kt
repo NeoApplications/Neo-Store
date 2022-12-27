@@ -191,7 +191,7 @@ object Preferences : OnSharedPreferenceChangeListener {
             Key<Boolean>("show_screenshots", Value.BooleanValue(true))
 
         object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(100))
-        object NewApps : Key<Int>("new_apps", Value.IntValue(20))
+        object NewApps : Key<Int>("new_apps", Value.IntValue(30))
 
         object ProxyHost : Key<String>("proxy_host", Value.StringValue("localhost"))
         object ProxyPort : Key<Int>("proxy_port", Value.IntValue(9050))
