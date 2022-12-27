@@ -20,9 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.Section
+import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.compose.ProductsVerticalRecycler
 import com.machiav3lli.fdroid.ui.compose.components.ActionChip
@@ -30,6 +32,7 @@ import com.machiav3lli.fdroid.ui.compose.components.CategoryChip
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.ui.navigation.SideNavBar
 import com.machiav3lli.fdroid.ui.viewmodels.ExploreViewModel
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import kotlinx.coroutines.CoroutineScope
@@ -47,6 +50,10 @@ fun ExplorePage(viewModel: ExploreViewModel) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
     val favorites by mainActivityX.db.extrasDao.favoritesFlow.collectAsState(emptyArray())
+    val categories by RepositoryUpdater.db.categoryDao.allNamesFlow.collectAsState(emptyList())
+    val selectedCategory = remember {
+        mutableStateOf(Preferences[Preferences.Key.CategoriesFilterExplore])
+    }
 
     SideEffect {
         CoroutineScope(Dispatchers.IO).launch {
@@ -105,30 +112,39 @@ fun ExplorePage(viewModel: ExploreViewModel) {
                 }
             )
         }
-        ProductsVerticalRecycler(
-            productsList = filteredProducts,
-            repositories = repositoriesMap,
-            favorites = favorites,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            onUserClick = { item ->
-                mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
-                mainActivityX.navigateProduct(item.packageName, item.developer)
-            },
-            onFavouriteClick = { item ->
-                viewModel.setFavorite(
-                    item.packageName,
-                    !favorites.contains(item.packageName)
-                )
-            },
-            getInstalled = { packageName -> installedList?.get(packageName) }
-        ) { item ->
-            val installed = installedList?.get(item.packageName)
-            if (installed != null && installed.launcherActivities.isNotEmpty())
-                context.onLaunchClick(installed, mainActivityX.supportFragmentManager)
-            else
-                mainActivityX.syncConnection.binder?.installApps(listOf(item))
+        Row {
+            SideNavBar(
+                keys = listOf(FILTER_CATEGORY_ALL) + (categories.sorted()),
+                selectedKey = selectedCategory,
+            ) {
+                Preferences[Preferences.Key.CategoriesFilterExplore] = it
+                selectedCategory.value = it
+            }
+            ProductsVerticalRecycler(
+                productsList = filteredProducts,
+                repositories = repositoriesMap,
+                favorites = favorites,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                onUserClick = { item ->
+                    mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
+                    mainActivityX.navigateProduct(item.packageName, item.developer)
+                },
+                onFavouriteClick = { item ->
+                    viewModel.setFavorite(
+                        item.packageName,
+                        !favorites.contains(item.packageName)
+                    )
+                },
+                getInstalled = { packageName -> installedList?.get(packageName) }
+            ) { item ->
+                val installed = installedList?.get(item.packageName)
+                if (installed != null && installed.launcherActivities.isNotEmpty())
+                    context.onLaunchClick(installed, mainActivityX.supportFragmentManager)
+                else
+                    mainActivityX.syncConnection.binder?.installApps(listOf(item))
+            }
         }
     }
 }
