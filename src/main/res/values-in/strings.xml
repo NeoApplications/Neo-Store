@@ -288,4 +288,5 @@
     <string name="permission_granted">Diberikan</string>
     <string name="permission_not_granted">Tidak diberikan</string>
     <string name="permission_not_present">Tidak ada di sistem Anda</string>
+    <string name="app_installed">Terinstal</string>
 </resources>
