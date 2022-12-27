@@ -290,4 +290,5 @@
     <string name="action_open_tc">Otevřít TrackerControl</string>
     <string name="permissions_note_3">Minimální množství oprávnění</string>
     <string name="permissions_note_2">Nevyžaduje mnoho oprávnění</string>
+    <string name="app_installed">Nainstalováno</string>
 </resources>
