@@ -15,8 +15,8 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
 
     companion object {
         private val getCurrentUserState: String =
-            if (Android.sdk(25)) Shell.su("am get-current-user").exec().out[0]
-            else Shell.su("dumpsys activity | grep -E \"mUserLru\"")
+            if (Android.sdk(25)) Shell.cmd("am get-current-user").exec().out[0]
+            else Shell.cmd("dumpsys activity | grep -E \"mUserLru\"")
                 .exec().out[0].trim()
                 .removePrefix("mUserLru: [").removeSuffix("]")
 
@@ -26,7 +26,7 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
         private val getUtilBoxPath: String
             get() {
                 listOf("toybox", "busybox").forEach {
-                    val shellResult = Shell.su("which $it").exec()
+                    val shellResult = Shell.cmd("which $it").exec()
                     if (shellResult.out.isNotEmpty()) {
                         val utilBoxPath = shellResult.out.joinToString("")
                         if (utilBoxPath.isNotEmpty()) return utilBoxPath.quote
@@ -98,7 +98,7 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
     private suspend fun mRootInstaller(cacheFile: File) {
         withContext(Dispatchers.Default) {
             if (Preferences[Preferences.Key.RootSessionInstaller]) {
-                Shell.su(cacheFile.session_install_create)
+                Shell.cmd(cacheFile.session_install_create)
                     .submit {
                         val sessionIdPattern = Pattern.compile("(\\d+)")
                         val sessionIdMatcher = sessionIdPattern.matcher(it.out[0])
@@ -106,19 +106,19 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
 
                         if (found) {
                             val sessionId = sessionIdMatcher?.group(1)?.toInt() ?: -1
-                            Shell.su(cacheFile.sessionInstallWrite(sessionId))
+                            Shell.cmd(cacheFile.sessionInstallWrite(sessionId))
                                 .submit {
-                                    Shell.su(sessionInstallCommit(sessionId)).exec()
-                                    if (it.isSuccess) Shell.su(cacheFile.deletePackage).submit()
+                                    Shell.cmd(sessionInstallCommit(sessionId)).exec()
+                                    if (it.isSuccess) Shell.cmd(cacheFile.deletePackage).submit()
                                 }
                         }
                     }
 
             } else {
-                Shell.su(cacheFile.install)
+                Shell.cmd(cacheFile.install)
                     .submit {
                         if (it.isSuccess && Preferences[Preferences.Key.ReleasesCacheRetention] == 0)
-                            Shell.su(cacheFile.deletePackage).submit()
+                            Shell.cmd(cacheFile.deletePackage).submit()
                     }
             }
         }
@@ -126,7 +126,7 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
 
     private suspend fun mRootUninstaller(packageName: String) {
         withContext(Dispatchers.Default) {
-            Shell.su(packageName.uninstall).submit()
+            Shell.cmd(packageName.uninstall).submit()
         }
     }
 }
