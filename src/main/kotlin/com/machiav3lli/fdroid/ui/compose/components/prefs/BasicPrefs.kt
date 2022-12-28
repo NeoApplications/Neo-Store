@@ -39,6 +39,7 @@ import com.machiav3lli.fdroid.content.PrefsEntries
 import com.machiav3lli.fdroid.ui.compose.utils.addIf
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.Utils.getLocaleOfCode
+import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -235,6 +236,12 @@ fun EnumPreference(
         CoroutineScope(Dispatchers.Default).launch {
             Preferences.subject.collect {
                 when (it) {
+                    Preferences.Key.Installer -> {
+                        prefValue = Preferences[prefKey]
+                        if (Preferences[prefKey] == Preferences.Installer.Root && Shell.isAppGrantedRoot() != true) {
+                            Shell.getShell().isRoot
+                        }
+                    }
                     prefKey -> prefValue = Preferences[prefKey]
                     dependency?.first -> isEnabled = Preferences[it] in dependency.second
                     else -> {}
