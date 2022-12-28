@@ -1,1 +1,1 @@
-- Risolto l'arresto anomalo dell'installazione
+- Corretto l'arresto anomalo dell'installazione

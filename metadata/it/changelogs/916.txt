@@ -1,4 +1,4 @@
-Aggiunta: funzione Ordina/Filtra
+Aggiunto: funzione Ordina/Filtra
 Aggiunto: collegamento ai preferiti espliciti
 Aggiunto: TargetSDK ai chip informativi
 Aggiornato: sostituisci le icone dei materiali con il fosforo

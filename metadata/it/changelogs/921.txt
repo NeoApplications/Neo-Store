@@ -1,5 +1,5 @@
-Risolto: memory leak in Main e Prefs
-Aggiunta: la nuova visualizzazione della privacy (icone Neo Meter)
+Corretto: memory leak in Main e Prefs
+Aggiunto: la nuova visualizzazione della privacy (icone Neo Meter)
 Aggiunto: il nuovissimo pannello Privacy
 Corretto: apertura ripetuta dello stesso RepoSheet
 + più di 15 contributi alle traduzioni
