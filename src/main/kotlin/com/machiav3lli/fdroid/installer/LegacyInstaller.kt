@@ -3,8 +3,9 @@ package com.machiav3lli.fdroid.installer
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.core.net.toUri
+import android.os.Build
 import com.machiav3lli.fdroid.content.Cache
+import com.machiav3lli.fdroid.content.Cache.getReleaseFileUri
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -28,9 +29,9 @@ class LegacyInstaller(context: Context) : BaseInstaller(context) {
     override suspend fun uninstall(packageName: String) = mOldDefaultUninstaller(packageName)
 
     private suspend fun mOldDefaultInstaller(cacheFile: File) {
-        val (uri, flags) = if (Android.sdk(24)) {
+        val (uri, flags) = if (Android.sdk(Build.VERSION_CODES.N)) {
             Pair(
-                Cache.getReleaseFile(context, cacheFile.name).toUri(),
+                Cache.getReleaseFile(context, cacheFile.name).getReleaseFileUri(context),
                 Intent.FLAG_GRANT_READ_URI_PERMISSION
             )
         } else {
