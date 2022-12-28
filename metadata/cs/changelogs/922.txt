@@ -1,0 +1,7 @@
+Přidat: Povolení k oznámení (pro A13)
+Přidat: Categories SideNavBar do průzkumníka
+Oprava: Legacy- & RootInstaller
+Oprava: Zlepšení výkonu vyhledávání (zásluhy @pedrox-hs)
+Aktualizace: Horizontální rozvržení aplikací
+Aktualizace: Dotazování se na oprávnění roota při nastavování instalačního programu roota
++ více než 60 příspěvků k překladu
