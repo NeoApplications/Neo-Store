@@ -51,7 +51,7 @@ fun ExplorePage(viewModel: ExploreViewModel) {
     }
     val favorites by mainActivityX.db.extrasDao.favoritesFlow.collectAsState(emptyArray())
     val categories by RepositoryUpdater.db.categoryDao.allNamesFlow.collectAsState(emptyList())
-    val selectedCategory = remember {
+    val selectedCategory = remember(Preferences[Preferences.Key.CategoriesFilterExplore]) {
         mutableStateOf(Preferences[Preferences.Key.CategoriesFilterExplore])
     }
 
