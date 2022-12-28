@@ -1,0 +1,7 @@
+Aggiunto: autorizzazione notifiche (per A13)
+Aggiunto: categorie SideNavBar a Explorer
+Corretto: Legacy- & RootInstaller
+Corretto: migliorate le prestazioni di ricerca (crediti @pedrox-hs)
+Aggiornato: layout orizzontale delle app
+Aggiornato: richiesta dell'autorizzazione di root durante l'impostazione del programma di installazione root
++ più di 60 contributi di traduzione

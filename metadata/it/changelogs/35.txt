@@ -1,3 +1,3 @@
 - Vecchie icone sostituite con icone materiali
-- Risolti i principali problemi della barra delle app
+- Corretto i principali problemi della barra delle app
 - Aggiunte icone da installare e pulsante Annulla per migliorare l'accessibilità
