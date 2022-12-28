@@ -1,0 +1,7 @@
+Agregado: permiso de notificación (para A13)
+Agregado: categorías de SideNavBar a Explorer
+Corregido: Legacy- & RootInstaller
+Corregido: rendimiento de búsqueda mejorado (créditos @pedrox-hs)
+Actualizado: diseño horizontal de aplicaciones
+Actualizado: Requerir permiso de root al configurar el instalador raíz
++ más de 60 contribuciones de traducción
