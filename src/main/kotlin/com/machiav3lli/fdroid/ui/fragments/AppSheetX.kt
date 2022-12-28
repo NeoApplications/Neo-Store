@@ -59,6 +59,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.RELEASE_STATE_INSTALLED
 import com.machiav3lli.fdroid.RELEASE_STATE_NONE
@@ -222,7 +223,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         viewModel.updateActions()
         if (downloadState is DownloadService.State.Success && !rootInstallerEnabled) { // && isResumed TODO unite root and normal install calls
             withContext(Dispatchers.Default) {
-                AppInstaller.getInstance(mainActivityX)?.defaultInstaller?.install(downloadState.release.cacheFileName)
+                AppInstaller.getInstance(MainApplication.mainActivity)?.defaultInstaller?.install(downloadState.release.cacheFileName)
             }
         }
     }
@@ -261,7 +262,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
             }
             ActionState.Uninstall -> {
                 lifecycleScope.launch {
-                    AppInstaller.getInstance(mainActivityX)?.defaultInstaller?.uninstall(packageName)
+                    AppInstaller.getInstance(MainApplication.mainActivity)?.defaultInstaller?.uninstall(packageName)
                 }
                 Unit
             }
