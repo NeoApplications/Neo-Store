@@ -222,7 +222,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         viewModel.updateActions()
         if (downloadState is DownloadService.State.Success && !rootInstallerEnabled) { // && isResumed TODO unite root and normal install calls
             withContext(Dispatchers.Default) {
-                AppInstaller.getInstance(context)?.defaultInstaller?.install(downloadState.release.cacheFileName)
+                AppInstaller.getInstance(mainActivityX)?.defaultInstaller?.install(downloadState.release.cacheFileName)
             }
         }
     }
@@ -261,7 +261,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
             }
             ActionState.Uninstall -> {
                 lifecycleScope.launch {
-                    AppInstaller.getInstance(context)?.defaultInstaller?.uninstall(packageName)
+                    AppInstaller.getInstance(mainActivityX)?.defaultInstaller?.uninstall(packageName)
                 }
                 Unit
             }
