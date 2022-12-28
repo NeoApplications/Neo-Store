@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.ui.activities
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.view.KeyEvent
@@ -29,6 +30,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.EXTRA_INTENT_HANDLED
@@ -54,6 +58,7 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.ExploreViewModel
 import com.machiav3lli.fdroid.ui.viewmodels.InstalledViewModel
 import com.machiav3lli.fdroid.ui.viewmodels.LatestViewModel
+import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.setCustomTheme
@@ -108,7 +113,10 @@ class MainActivityX : AppCompatActivity() {
     private lateinit var sheetSortFilter: SortFilterSheet
     private lateinit var sheetApp: AppSheetX
 
-    @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
+    @OptIn(
+        ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class,
+        ExperimentalPermissionsApi::class
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
         currentTheme = Preferences[Preferences.Key.Theme].resId
@@ -133,6 +141,10 @@ class MainActivityX : AppCompatActivity() {
                 val mScope = rememberCoroutineScope()
                 navController = rememberAnimatedNavController()
                 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+                val permissionStatePostNotifications =
+                    if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) {
+                        rememberPermissionState(android.Manifest.permission.POST_NOTIFICATIONS)
+                    } else null
 
                 Scaffold(
                     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -175,6 +187,8 @@ class MainActivityX : AppCompatActivity() {
                         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
                             handleIntent(intent)
                         }
+                        if (permissionStatePostNotifications?.status?.isGranted == false)
+                            permissionStatePostNotifications.launchPermissionRequest()
                     }
 
                     MainNavHost(
