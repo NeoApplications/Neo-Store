@@ -7,7 +7,7 @@ CHANGELOG
 ### Function
 - Add: Notifications permission (for A13)
 - Add: Ask for PostNotifications permission on start
-- Fix: Improve search performance (credits @Pedrox)
+- Fix: Improve search performance (credits @pedrox-hs)
 - Fix: Showing apps of all developers with protonmail as apps from the protonmail developer
 - Fix: Sorting installed apps
 - Fix: Replace deprecated functions in RootInstaller

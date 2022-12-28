@@ -1,7 +1,7 @@
 Add: Notifications permission (for A13)
 Add: Categories SideNavBar to explorer
 Fix: Legacy- & RootInstaller
-Fix: Improve search performance (credits @Pedrox)
+Fix: Improve search performance (credits @pedrox-hs)
 Update: Horizontal apps layout
 Update: Asking for root permission when setting root installer
 + more than 60 tranlation contributions
