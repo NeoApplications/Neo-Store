@@ -1,6 +1,31 @@
 CHANGELOG
 =========
 
+0.9.12 (28.12.2022) 30+ Commits +60 Translations
+------------------
+
+### Function
+- Add: Notifications permission (for A13)
+- Add: Ask for PostNotifications permission on start
+- Fix: Improve search performance (credits @Pedrox)
+- Fix: Showing apps of all developers with protonmail as apps from the protonmail developer
+- Fix: Sorting installed apps
+- Fix: Replace deprecated functions in RootInstaller
+- Fix: Installers getting false context
+- Fix: LegacyInstaller's false Uri
+- Update: TargetSDK 33
+
+### UI
+- Fix: Location permission group icon
+- Update: ProductCard layout
+- Update: Horizontal Product recycler layouts
+
+### UX
+- Add: Categories SideNavBar to explorer
+- Fix: Category SideBar not updating according to SortFilterSheet
+- Update: Change category filter to single selection
+- Update: Asking for root permission when setting root installer
+
 0.9.11 (03.12.2022) 70+ Commits +15 Translations
 ------------------
 ### Function
