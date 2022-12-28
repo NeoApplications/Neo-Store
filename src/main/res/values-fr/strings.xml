@@ -234,4 +234,24 @@
     <string name="prefs_installer">Type d\'installeur</string>
     <string name="default_installer">Installateur de session par défaut</string>
     <string name="legacy_installer">Installateur hérité (compatible avec MIUI)</string>
+    <string name="permission_physical_data">Permissions des données physiques</string>
+    <string name="permission_identification_data">Permissions des données d\'identification</string>
+    <string name="trackers">Traqueurs</string>
+    <string name="trackers_analytics_description">Les traqueurs sont utilisés pour collecter des statistiques sur l\'utilisation des applications ex. Taps et cliques.</string>
+    <string name="app_installed">Installé</string>
+    <string name="permission_contacts">Contacts</string>
+    <string name="permission_calendar">Calendrier</string>
+    <string name="permission_sms">SMS/MMS</string>
+    <string name="permission_storage">Stockage et média</string>
+    <string name="permission_phone">Téléphone</string>
+    <string name="permission_location">Localisation</string>
+    <string name="permission_camera">Camera</string>
+    <string name="permission_microphone">Microphone</string>
+    <string name="permission_nearby_devices">Périphériques proches</string>
+    <string name="permission_internet">Internet</string>
+    <string name="permission_other">Autres permissions</string>
+    <string name="trackers_identification">Identification des traqueurs</string>
+    <string name="trackers_identification_description">Les traqueurs autorisent les applications à utiliser les services de connexion spécifiques ex. Facebook.</string>
+    <string name="trackers_analytics">Traqueurs d\'analyses</string>
+    <string name="trackers_ads">Traqueurs de Publicités</string>
 </resources>
