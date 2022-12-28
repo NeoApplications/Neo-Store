@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.content
 
-import android.content.ContentProvider
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
@@ -9,6 +8,8 @@ import android.net.Uri
 import android.os.ParcelFileDescriptor
 import android.provider.OpenableColumns
 import android.system.Os
+import androidx.core.content.FileProvider
+import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import java.io.File
 import java.util.*
@@ -118,7 +119,7 @@ object Cache {
         }
     }
 
-    class Provider : ContentProvider() {
+    class Provider : FileProvider(R.xml.cache_provider) {
         companion object {
             private val defaultColumns = arrayOf(OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE)
         }
