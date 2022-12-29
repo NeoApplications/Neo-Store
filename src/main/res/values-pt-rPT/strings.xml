@@ -290,4 +290,5 @@
     <string name="permission_identification_data">Permissões para dados de identificação</string>
     <string name="trackers_identification">Rastreadores de identificação</string>
     <string name="trackers_ads_description">Rastreadores utilizados para mostrar anúncios e rastrear a sua interacção com estes.</string>
+    <string name="app_installed">Instalado</string>
 </resources>
