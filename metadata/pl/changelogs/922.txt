@@ -1,0 +1,7 @@
+Dodano: Uprawnienie do powiadomień (dla A13)
+Dodano: Pasek boczny kategorii do eksploratora
+Naprawiono: Instalator root i starszy
+Naprawiono: Poprawa wydajności wyszukiwania (dzięki @pedrox-hs)
+Zaktualizowano: Poziomy układ aplikacji
+Zaktualizowano: Pytanie o przyznanie uprawnień superusera podczas wyboru instalatora root
++ ponad 60 wkładów w tłumaczenie
