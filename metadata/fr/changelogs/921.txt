@@ -1,0 +1,5 @@
+- Correction : fuite de mémoire dans le programme principal et les préférences
+- Ajout : La nouvelle visualisation de la vie privée (icon en forme de vue-mètre)
+- Ajout : Le nouveau tableau de vie privée
+- Correction : Ouverture répétée du même RepoSheet
++ plus de 15 contributions à la traduction
