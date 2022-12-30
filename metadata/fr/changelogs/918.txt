@@ -1,5 +1,5 @@
 Ajout : Prise en charge des URI fdroidrepo(s)
-Ajout : Prise en charge des intents market://search?
+Ajout : Prise en charge des recherches market://search?
 Ajout : Option de partage pour les applications IzzyOnDroid
 Ajout : GitJournal & Revolt aux dépôts prédéfinis
 Mise à jour : Refonte de ReleaseItems
