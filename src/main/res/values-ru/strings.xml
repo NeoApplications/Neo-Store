@@ -279,9 +279,9 @@
     <string name="trackers_note_1">Включает множество трекеров ваших конфиденциальных данных</string>
     <string name="trackers_note_2">Зачем ему эти трекеры\?</string>
     <string name="trackers_note_3">Есть пара трекеров</string>
-    <string name="trackers_note_4">Минимум или отсутствие трекеров</string>
+    <string name="trackers_note_4">Отсутствуют или минимум трекеров</string>
     <string name="permissions_note_0">Запрашивает много опасных разрешений</string>
-    <string name="permissions_note_1">Требуется большое количество разрешений</string>
+    <string name="permissions_note_1">Требует большое количество разрешений</string>
     <string name="permissions_note_2">Не требует много разрешений</string>
     <string name="permissions_note_3">Минимальное количество разрешений</string>
     <string name="permissions_note_4">Почти не требует разрешений</string>
