@@ -288,4 +288,5 @@
     <string name="permission_granted">授予</string>
     <string name="permission_not_granted">未授予</string>
     <string name="permission_not_present">不存在于您的系统中</string>
+    <string name="app_installed">已安装</string>
 </resources>
