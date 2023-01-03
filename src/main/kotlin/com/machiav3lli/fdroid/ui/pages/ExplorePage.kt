@@ -9,12 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,9 +35,8 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.SideNavBar
 import com.machiav3lli.fdroid.ui.viewmodels.ExploreViewModel
 import com.machiav3lli.fdroid.utility.onLaunchClick
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun ExplorePage(viewModel: ExploreViewModel) {
@@ -55,13 +54,16 @@ fun ExplorePage(viewModel: ExploreViewModel) {
         mutableStateOf(Preferences[Preferences.Key.CategoriesFilterExplore])
     }
 
-    SideEffect {
-        CoroutineScope(Dispatchers.IO).launch {
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.IO) {
             mainActivityX.searchQuery.collect { newQuery ->
                 viewModel.setSearchQuery(newQuery)
             }
         }
-        CoroutineScope(Dispatchers.Default).launch {
+    }
+
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.Default) {
             Preferences.subject.collect {
                 when (it) {
                     Preferences.Key.ReposFilterExplore,
