@@ -16,7 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,9 +43,8 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.InstalledViewModel
 import com.machiav3lli.fdroid.utility.onLaunchClick
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun InstalledPage(viewModel: InstalledViewModel) {
@@ -60,13 +59,16 @@ fun InstalledPage(viewModel: InstalledViewModel) {
     }
     val favorites by mainActivityX.db.extrasDao.favoritesFlow.collectAsState(emptyArray())
 
-    SideEffect {
-        CoroutineScope(Dispatchers.IO).launch {
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.IO) {
             mainActivityX.searchQuery.collect { newQuery ->
                 viewModel.setSearchQuery(newQuery)
             }
         }
-        CoroutineScope(Dispatchers.Default).launch {
+    }
+
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.Default) {
             Preferences.subject.collect {
                 when (it) {
                     Preferences.Key.ReposFilterInstalled,
