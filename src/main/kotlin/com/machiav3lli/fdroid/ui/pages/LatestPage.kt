@@ -9,7 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,9 +33,8 @@ import com.machiav3lli.fdroid.ui.compose.utils.vertical
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.LatestViewModel
 import com.machiav3lli.fdroid.utility.onLaunchClick
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun LatestPage(viewModel: LatestViewModel) {
@@ -50,14 +49,17 @@ fun LatestPage(viewModel: LatestViewModel) {
     }
     val favorites by mainActivityX.db.extrasDao.favoritesFlow.collectAsState(emptyArray())
 
-    SideEffect {
+    LaunchedEffect(Unit) {
         mainActivityX.syncConnection.bind(context)
-        CoroutineScope(Dispatchers.IO).launch {
+        withContext(Dispatchers.IO) {
             mainActivityX.searchQuery.collect { newQuery ->
                 viewModel.setSearchQuery(newQuery)
             }
         }
-        CoroutineScope(Dispatchers.Default).launch {
+    }
+
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.Default) {
             Preferences.subject.collect {
                 when (it) {
                     Preferences.Key.ReposFilterLatest,
