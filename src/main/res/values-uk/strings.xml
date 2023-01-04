@@ -291,4 +291,5 @@
     <string name="source_copyright_description">Застосунок залежить від компонентів, захищених авторським правом, або підключається до пропрієтарних мереж.</string>
     <string name="source_copyleft">Авторське право</string>
     <string name="source_copyleft_description">Застосунок складається лише з безкоштовного вмісту.</string>
+    <string name="app_installed">Встановлено</string>
 </resources>
