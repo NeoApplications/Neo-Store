@@ -14,6 +14,7 @@ import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.EXODUS_TRACKERS_SYNC
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
+import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_UPDATES
 import com.machiav3lli.fdroid.R
@@ -207,6 +208,10 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                 getString(R.string.updates), NotificationManager.IMPORTANCE_LOW
             )
                 .let(notificationManager::createNotificationChannel)
+            NotificationChannel(
+                NOTIFICATION_CHANNEL_VULNS,
+                getString(R.string.vulnerabilities), NotificationManager.IMPORTANCE_HIGH
+            ).let(notificationManager::createNotificationChannel)
         }
 
         downloadConnection.bind(this)
