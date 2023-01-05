@@ -139,7 +139,8 @@ fun InstalledPage(viewModel: InstalledViewModel) {
                     ProductsHorizontalRecycler(
                         modifier = Modifier.weight(1f),
                         productsList = secondaryList,
-                        repositories = repositoriesMap
+                        repositories = repositoriesMap,
+                        rowsNumber = secondaryList?.size?.coerceIn(1, 2) ?: 1,
                     ) { item ->
                         mainActivityX.navigateProduct(item.packageName, item.developer)
                     }
