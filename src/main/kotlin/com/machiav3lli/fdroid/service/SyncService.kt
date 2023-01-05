@@ -21,8 +21,10 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.ExodusInfo
+import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.database.entity.Tracker
+import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.Order
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Section
@@ -31,6 +33,7 @@ import com.machiav3lli.fdroid.network.RExodusAPI
 import com.machiav3lli.fdroid.utility.RxUtils
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.displayUpdatesNotification
+import com.machiav3lli.fdroid.utility.displayVulnerabilitiesNotification
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.android.notificationManager
 import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
@@ -426,6 +429,26 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                             }
                             currentTask = null
                             handleNextTask(false)
+                        }
+                    RxUtils
+                        .querySingle { it ->
+                            db.productDao
+                                .queryObject(
+                                    installed = true,
+                                    updates = false,
+                                    section = Section.All,
+                                    order = Order.NAME,
+                                    ascending = true,
+                                ).filter { it.antiFeatures.contains(AntiFeature.KNOWN_VULN.key) }
+                        }
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe { installedWithVulns, throwable ->
+                            throwable?.printStackTrace()
+                            if (installedWithVulns.isNotEmpty())
+                                displayVulnerabilitiesNotification(
+                                    installedWithVulns.map(Product::toItem)
+                                )
                         }
                     if (hasUpdates) {
                         currentTask = CurrentTask(null, disposable, true, State.Finishing)
