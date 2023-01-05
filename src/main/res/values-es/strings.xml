@@ -257,7 +257,7 @@
     <string name="source_proprietary">Propietaria</string>
     <string name="source_open">Código abierto</string>
     <string name="source_open_description">El código fuente de la aplicación es de libre acceso.</string>
-    <string name="source_copyleft">Copyleft</string>
+    <string name="source_copyleft">Lincencia Copyleft</string>
     <string name="source_copyleft_description">La aplicación consta únicamente de contenidos gratuitos.</string>
     <string name="source_copyright">Derechos de autor</string>
     <string name="source_dependencies">Dependencias</string>
@@ -291,4 +291,7 @@
     <string name="trackers_note_0">¿Es una aplicación o un software espía\?</string>
     <string name="permissions_note_3">Permisos mínimos</string>
     <string name="app_installed">Instalado</string>
+    <string name="vulnerabilities">Vulnerabilidades.</string>
+    <string name="vulnerabilities_installed_apps">¡Estas aplicaciones instaladas tienen vulnerabilidades conocidas!</string>
+    <string name="no_vulnerabilities_installed_apps">Ninguna de las aplicaciones instaladas tiene vulnerabilidades conocidas.</string>
 </resources>
