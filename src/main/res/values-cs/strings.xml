@@ -291,4 +291,7 @@
     <string name="permissions_note_3">Minimální množství oprávnění</string>
     <string name="permissions_note_2">Nevyžaduje mnoho oprávnění</string>
     <string name="app_installed">Nainstalováno</string>
+    <string name="vulnerabilities">Zranitelnosti.</string>
+    <string name="no_vulnerabilities_installed_apps">Žádné nainstalované aplikace nemají známé zranitelnosti.</string>
+    <string name="vulnerabilities_installed_apps">Tyto nainstalované aplikace mají známé zranitelnosti!</string>
 </resources>
