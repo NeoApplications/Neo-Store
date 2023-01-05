@@ -34,6 +34,8 @@ import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.DownloadState
 import com.machiav3lli.fdroid.ui.compose.components.MainActionButton
 import com.machiav3lli.fdroid.ui.compose.components.SecondaryActionButton
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.utils.NetworkImage
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
 
@@ -188,6 +190,34 @@ fun DownloadProgress(
                     .fillMaxWidth()
                     .clip(ShapeDefaults.Large),
                 progress = downloaded?.toFloat()?.div(totalSize) ?: 1f
+            )
+        }
+    }
+}
+
+@Composable
+fun WarningCard(message: String) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        color = MaterialTheme.colorScheme.errorContainer,
+        tonalElevation = 8.dp
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                imageVector = Phosphor.CircleWavyWarning,
+                tint = MaterialTheme.colorScheme.onErrorContainer,
+                contentDescription = message,
+            )
+            Text(
+                text = message,
+                color = MaterialTheme.colorScheme.onErrorContainer,
             )
         }
     }
