@@ -169,7 +169,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         super.onCreate(savedInstanceState)
         setupAdapters()
@@ -178,9 +178,9 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                 setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
                 AppTheme(
                     darkTheme = when (Preferences[Preferences.Key.Theme]) {
-                        is Preferences.Theme.System -> isSystemInDarkTheme()
+                        is Preferences.Theme.System      -> isSystemInDarkTheme()
                         is Preferences.Theme.SystemBlack -> isSystemInDarkTheme()
-                        else -> isDarkTheme
+                        else                             -> isDarkTheme
                     }
                 ) {
                     AppSheet()
@@ -212,19 +212,20 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
 
     private suspend fun updateDownloadState(downloadState: DownloadService.State?) {
         val state = when (downloadState) {
-            is DownloadService.State.Pending -> DownloadState.Pending
-            is DownloadService.State.Connecting -> DownloadState.Connecting
+            is DownloadService.State.Pending     -> DownloadState.Pending
+            is DownloadService.State.Connecting  -> DownloadState.Connecting
             is DownloadService.State.Downloading -> DownloadState.Downloading(
                 downloadState.read,
                 downloadState.total
             )
-            else -> null
+            else                                 -> null
         }
         viewModel.updateDownloadState(state)
         viewModel.updateActions()
         if (downloadState is DownloadService.State.Success && !rootInstallerEnabled) { // && isResumed TODO unite root and normal install calls
             withContext(Dispatchers.Default) {
-                AppInstaller.getInstance(MainApplication.mainActivity)?.defaultInstaller?.install(downloadState.release.cacheFileName)
+                AppInstaller.getInstance(MainApplication.mainActivity)?.defaultInstaller?.install(
+                    downloadState.release.cacheFileName)
             }
         }
     }
@@ -234,7 +235,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         when (action) {
             ActionState.Install,
             ActionState.Update,
-            -> {
+                                  -> {
                 val installedItem = viewModel.installedItem.value
                 lifecycleScope.launch {
                     startUpdate(
@@ -246,7 +247,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                 }
                 Unit
             }
-            ActionState.Launch -> {
+            ActionState.Launch    -> {
                 viewModel.installedItem.value?.let {
                     requireContext().onLaunchClick(
                         it,
@@ -255,7 +256,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                 }
                 Unit
             }
-            ActionState.Details -> {
+            ActionState.Details   -> {
                 startActivity(
                     Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                         .setData(Uri.parse("package:$packageName"))
@@ -263,7 +264,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
             }
             ActionState.Uninstall -> {
                 lifecycleScope.launch {
-                    AppInstaller.getInstance(MainApplication.mainActivity)?.defaultInstaller?.uninstall(packageName)
+                    AppInstaller.getInstance(MainApplication.mainActivity)?.defaultInstaller?.uninstall(
+                        packageName)
                 }
                 Unit
             }
@@ -274,14 +276,15 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                     binder.cancel(packageName)
                 } else Unit
             }
-            ActionState.Share -> {
+            ActionState.Share     -> {
                 shareIntent(packageName, productRepos[0].first.label, productRepos[0].second.name)
             }
             ActionState.Bookmark,
-            ActionState.Bookmarked -> {
+            ActionState.Bookmarked,
+                                  -> {
                 viewModel.setFavorite(packageName, action is ActionState.Bookmark)
             }
-            else -> Unit
+            else                  -> Unit
         }::class
     }
 
@@ -289,7 +292,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         val shareIntent = Intent(Intent.ACTION_SEND)
         val extraText = when {
             repository.contains("IzzyOnDroid") -> "https://apt.izzysoft.de/fdroid/index/apk/$packageName"
-            else -> if (Android.sdk(24)) {
+            else                               -> if (Android.sdk(24)) {
                 "https://www.f-droid.org/${resources.configuration.locales[0].language}/packages/${packageName}/"
             } else "https://www.f-droid.org/${resources.configuration.locale.language}/packages/${packageName}/"
         }
@@ -323,7 +326,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     override fun onReleaseClick(release: Release) {
         val installedItem = viewModel.installedItem.value
         when {
-            release.incompatibilities.isNotEmpty() -> {
+            release.incompatibilities.isNotEmpty()                                   -> {
                 MessageDialog(
                     MessageDialog.Message.ReleaseIncompatible(
                         release.incompatibilities,
@@ -334,12 +337,12 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
             installedItem != null && installedItem.versionCode > release.versionCode -> {
                 MessageDialog(MessageDialog.Message.ReleaseOlder).show(childFragmentManager)
             }
-            installedItem != null && installedItem.signature != release.signature -> {
+            installedItem != null && installedItem.signature != release.signature    -> {
                 MessageDialog(MessageDialog.Message.ReleaseSignatureMismatch).show(
                     childFragmentManager
                 )
             }
-            else -> {
+            else                                                                     -> {
                 val productRepository =
                     viewModel.productRepos.value.asSequence()
                         .filter { it -> it.first.releases.any { it === release } }
@@ -379,7 +382,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     private fun copyLinkToClipboard(
         coroutineScope: CoroutineScope,
         scaffoldState: SnackbarHostState,
-        link: String
+        link: String,
     ) {
         val clipboardManager =
             requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -438,9 +441,9 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                     release,
                     repository,
                     when {
-                        installed?.versionCode == release.versionCode && installed?.signature == release.signature -> RELEASE_STATE_INSTALLED
+                        installed?.versionCode == release.versionCode && installed?.signature == release.signature                               -> RELEASE_STATE_INSTALLED
                         release.incompatibilities.firstOrNull() == null && release.selected && repository.id == suggestedProductRepo?.second?.id -> RELEASE_STATE_SUGGESTED
-                        else -> RELEASE_STATE_NONE
+                        else                                                                                                                     -> RELEASE_STATE_NONE
                     }
                 )
             }
@@ -667,7 +670,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                     positive = true,
                                     preExpanded = false
                                 ) {
-                                    Log.i("author products",authorProducts?.map { it.author }?.joinToString().orEmpty())
+                                    Log.i("author products",
+                                        authorProducts?.map { it.author }?.joinToString().orEmpty())
                                     ProductsHorizontalRecycler(
                                         productsList = authorProducts,
                                         repositories = repos?.associateBy { repo -> repo.id }

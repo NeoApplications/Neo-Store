@@ -41,7 +41,7 @@ fun ProductsVerticalRecycler(
     onUserClick: (ProductItem) -> Unit = {},
     onFavouriteClick: (ProductItem) -> Unit = {},
     getInstalled: (String) -> Installed? = { null },
-    onActionClick: (ProductItem) -> Unit = {}
+    onActionClick: (ProductItem) -> Unit = {},
 ) {
     VerticalItemList(list = productsList, modifier = modifier) {
         it.toItem(getInstalled(it.packageName)).let { item ->
@@ -65,7 +65,7 @@ fun ProductsHorizontalRecycler(
     productsList: List<Product>?,
     repositories: Map<Long, Repository>,
     rowsNumber: Int = 2,
-    onUserClick: (ProductItem) -> Unit = {}
+    onUserClick: (ProductItem) -> Unit = {},
 ) {
     LazyHorizontalStaggeredGrid(
         modifier = modifier.height(PRODUCT_CARD_HEIGHT * rowsNumber + 8.dp),
@@ -87,7 +87,7 @@ fun RepositoriesRecycler(
     modifier: Modifier = Modifier,
     repositoriesList: List<Repository>?,
     onClick: (Repository) -> Unit = {},
-    onLongClick: (Repository) -> Unit = {}
+    onLongClick: (Repository) -> Unit = {},
 ) {
     VerticalItemList(
         modifier = modifier,
@@ -109,7 +109,7 @@ fun <T> VerticalItemList(
     backgroundColor: Color = MaterialTheme.colorScheme.background,
     list: List<T>?,
     itemKey: ((T) -> Any)? = null,
-    itemContent: @Composable LazyItemScope.(T) -> Unit
+    itemContent: @Composable LazyItemScope.(T) -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -117,16 +117,16 @@ fun <T> VerticalItemList(
         contentAlignment = if (list.isNullOrEmpty()) Alignment.Center else Alignment.TopStart
     ) {
         when {
-            list == null -> Text(
+            list == null      -> Text(
                 text = stringResource(id = R.string.loading_list),
                 color = MaterialTheme.colorScheme.onBackground
             )
-            !list.isNullOrEmpty() -> {
+            list.isNotEmpty() -> {
                 LazyColumn(verticalArrangement = spacedBy(4.dp)) {
                     items(items = list, key = itemKey, itemContent = itemContent)
                 }
             }
-            else -> Text(
+            else              -> Text(
                 text = stringResource(id = R.string.no_applications_available),
                 color = MaterialTheme.colorScheme.onBackground
             )

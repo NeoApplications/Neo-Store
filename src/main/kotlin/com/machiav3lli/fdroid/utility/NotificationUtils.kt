@@ -37,7 +37,7 @@ import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
  */
 fun Context.displayUpdatesNotification(
     productItems: List<ProductItem>,
-    enforceNotify: Boolean = false
+    enforceNotify: Boolean = false,
 ) {
     val maxUpdates = 5
     fun <T> T.applyHack(callback: T.() -> Unit): T = apply(callback)
@@ -114,12 +114,12 @@ fun Context.showNotificationError(repository: Repository, exception: Exception) 
                 getString(
                     when (exception) {
                         is RepositoryUpdater.UpdateException -> when (exception.errorType) {
-                            RepositoryUpdater.ErrorType.NETWORK -> R.string.network_error_DESC
-                            RepositoryUpdater.ErrorType.HTTP -> R.string.http_error_DESC
+                            RepositoryUpdater.ErrorType.NETWORK    -> R.string.network_error_DESC
+                            RepositoryUpdater.ErrorType.HTTP       -> R.string.http_error_DESC
                             RepositoryUpdater.ErrorType.VALIDATION -> R.string.validation_index_error_DESC
-                            RepositoryUpdater.ErrorType.PARSING -> R.string.parsing_index_error_DESC
+                            RepositoryUpdater.ErrorType.PARSING    -> R.string.parsing_index_error_DESC
                         }
-                        else -> R.string.unknown_error_DESC
+                        else                                 -> R.string.unknown_error_DESC
                     }
                 )
             )
@@ -129,7 +129,7 @@ fun Context.showNotificationError(repository: Repository, exception: Exception) 
 
 fun Context.showNotificationError(
     task: DownloadService.Task,
-    errorType: DownloadService.ErrorType
+    errorType: DownloadService.ErrorType,
 ) {
     notificationManager.notify(task.notificationTag,
         NOTIFICATION_ID_DOWNLOADING,
@@ -157,7 +157,7 @@ fun Context.showNotificationError(
             )
             .apply {
                 when (errorType) {
-                    is DownloadService.ErrorType.Network -> {
+                    is DownloadService.ErrorType.Network    -> {
                         setContentTitle(
                             getString(
                                 R.string.could_not_download_FORMAT,
@@ -166,7 +166,7 @@ fun Context.showNotificationError(
                         )
                         setContentText(getString(R.string.network_error_DESC))
                     }
-                    is DownloadService.ErrorType.Http -> {
+                    is DownloadService.ErrorType.Http       -> {
                         setContentTitle(
                             getString(
                                 R.string.could_not_download_FORMAT,
@@ -185,10 +185,10 @@ fun Context.showNotificationError(
                         setContentText(
                             getString(
                                 when (errorType.validateError) {
-                                    DownloadService.ValidationError.INTEGRITY -> R.string.integrity_check_error_DESC
-                                    DownloadService.ValidationError.FORMAT -> R.string.file_format_error_DESC
-                                    DownloadService.ValidationError.METADATA -> R.string.invalid_metadata_error_DESC
-                                    DownloadService.ValidationError.SIGNATURE -> R.string.invalid_signature_error_DESC
+                                    DownloadService.ValidationError.INTEGRITY   -> R.string.integrity_check_error_DESC
+                                    DownloadService.ValidationError.FORMAT      -> R.string.file_format_error_DESC
+                                    DownloadService.ValidationError.METADATA    -> R.string.invalid_metadata_error_DESC
+                                    DownloadService.ValidationError.SIGNATURE   -> R.string.invalid_signature_error_DESC
                                     DownloadService.ValidationError.PERMISSIONS -> R.string.invalid_permissions_error_DESC
                                 }
                             )
@@ -255,7 +255,7 @@ fun InstallerService.notifyStatus(intent: Intent?) {
                     .build()
             )
         }
-        PackageInstaller.STATUS_SUCCESS -> {
+        PackageInstaller.STATUS_SUCCESS             -> {
             if (installerAction == InstallerService.ACTION_UNINSTALL)
             // remove any notification for this app
                 notificationManager.cancel(notificationTag, NOTIFICATION_ID_INSTALLER)
@@ -273,11 +273,12 @@ fun InstallerService.notifyStatus(intent: Intent?) {
                 )
             }
         }
-        PackageInstaller.STATUS_FAILURE_ABORTED -> {
+        PackageInstaller.STATUS_FAILURE_ABORTED     -> {
             // do nothing if user cancels
         }
-        else -> {
+        else                                        -> {
             // problem occurred when installing/uninstalling package
+            // STATUS_FAILURE, STATUS_FAILURE_STORAGE ,STATUS_FAILURE_BLOCKED, STATUS_FAILURE_INCOMPATIBLE, STATUS_FAILURE_CONFLICT, STATUS_FAILURE_INVALID
             val notification = builder
                 .setSmallIcon(android.R.drawable.stat_notify_error)
                 .setContentTitle(getString(R.string.unknown_error_DESC))

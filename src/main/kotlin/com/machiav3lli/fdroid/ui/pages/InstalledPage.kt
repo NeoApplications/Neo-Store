@@ -74,7 +74,8 @@ fun InstalledPage(viewModel: InstalledViewModel) {
                     Preferences.Key.ReposFilterInstalled,
                     Preferences.Key.CategoriesFilterInstalled,
                     Preferences.Key.SortOrderInstalled,
-                    Preferences.Key.SortOrderAscendingInstalled ->
+                    Preferences.Key.SortOrderAscendingInstalled,
+                         ->
                         viewModel.setSortFilter(
                             listOf(
                                 Preferences[Preferences.Key.ReposFilterInstalled],
