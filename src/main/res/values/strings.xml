@@ -290,4 +290,7 @@
     <string name="permission_granted">Granted</string>
     <string name="permission_not_granted">Not granted</string>
     <string name="permission_not_present">Not present on your system</string>
+    <string name="vulnerabilities_installed_apps">These installed apps have known vulnerabilities!</string>
+    <string name="no_vulnerabilities_installed_apps">No installed apps have known vulnerabilities.</string>
+    <string name="vulnerabilities">Vulnerabilities.</string>
 </resources>
