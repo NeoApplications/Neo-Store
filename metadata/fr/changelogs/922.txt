@@ -1,0 +1,7 @@
+Ajout : Permission de notification (pour A13)
+Ajout : Barre latérale de navigation pour explorer les catégories
+Correction : Legacy- & RootInstaller
+Correction : Amélioration de la performance des recherches (crédits @pedrox-hs)
+Mise à jour : Disposition horizontale des applications
+Mise à jour : Demande permission root quand installeur root activé
++ plus de 60 contributions à la traduction

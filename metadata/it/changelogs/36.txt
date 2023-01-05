@@ -1,7 +1,7 @@
-- Aggiunta l'icona per l'apertura dei dettagli
+- Aggiunto l'icona per l'apertura dei dettagli
 - Le principali differenze nella barra delle app sono state rese più evidenti
 - L'autorizzazione di root verrà richiesta solo quando viene utilizzata
 - Correzioni per la visibilità del cambio
-- Aggiunta la traduzione araba
+- Aggiunto la traduzione araba
 - Premere a lungo sull'icona sorgente per copiare il collegamento
 - Sostituito Toast con Snackbar

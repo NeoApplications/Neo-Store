@@ -3,4 +3,4 @@ Corretto: ordinamento alfabetico di Installato
 Corretto: scorrimento nidificato di AppSheet
 Corretto: mostra l'azione di installazione durante il download
 Corretto: visibilità delle icone StatusBar sul tema dei colori dinamici
-Aggiornamento: traduzioni
+Aggiornato: traduzioni

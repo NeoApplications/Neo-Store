@@ -1,6 +1,6 @@
-- Aggiornamento: barra degli strumenti che crolla
-- Aggiornamento: migliorati i programmi di installazione (root e non root)
-- Aggiornamento: nuova icona dell'app (di nuovo)
-- Aggiornamento: progettazione dei blocchi di informazioni sul rilascio
-- Aggiornamento: gestisci i nomi e le icone degli autori mancanti
+- Aggiornato: barra degli strumenti che crolla
+- Aggiornato: migliorati i programmi di installazione (root e non root)
+- Aggiornato: nuova icona dell'app (di nuovo)
+- Aggiornato: progettazione dei blocchi di informazioni sul rilascio
+- Aggiornato: gestisci i nomi e le icone degli autori mancanti
 - Altre correzioni, modifiche e pulizie

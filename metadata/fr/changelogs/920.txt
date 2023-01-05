@@ -1,0 +1,5 @@
+Ajout : icône d'application basé sur le thème système
+Ajout : Préférence du type d'installation (incluant l'ancien mode pour MIUI)
+Correction : Navigation après lancement des notifications de mise à jour
+Correction : La barre de téléchargement ne représentait pas l'avancée
+Plus de changements dans le changelog…

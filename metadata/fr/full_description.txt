@@ -29,4 +29,4 @@ Disponible en :
 Ceci est un adaptation/modification directe de Foxy-Droid
 
 Logiciel libre sous copyleft, sous licence GPLv3+. \
-Utiliser, étudier, modifier et partager ; avec tous.
+Utilisez, étudiez, modifiez et partagez avec tout le monde.
