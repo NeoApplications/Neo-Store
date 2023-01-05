@@ -4,6 +4,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInstaller.SessionParams
+import android.content.pm.PackageManager.PackageInfoFlags
+import android.os.Build
 import android.util.Log
 import com.machiav3lli.fdroid.content.Cache
 import com.machiav3lli.fdroid.content.Preferences
@@ -68,7 +70,11 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
         val session = sessionInstaller.openSession(id)
 
         // get package name
-        val packageInfo = packageManager.getPackageArchiveInfo(cacheFile.absolutePath, 0)
+        val packageInfo =
+            if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) packageManager.getPackageArchiveInfo(
+                cacheFile.absolutePath,
+                PackageInfoFlags.of(0)
+            ) else packageManager.getPackageArchiveInfo(cacheFile.absolutePath, 0)
         val packageName = packageInfo?.packageName ?: "unknown-package"
 
         // error flags
@@ -76,35 +82,34 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
 
         session.use { activeSession ->
             try {
-                activeSession.openWrite(packageName, 0, cacheFile.length()).use { packageStream ->
-                    try {
-                        cacheFile.inputStream().use { fileStream ->
-                            fileStream.copyTo(packageStream)
-                        }
-                    } catch (_: FileNotFoundException) {
-                        Log.w(
-                            "DefaultInstaller",
-                            "Cache file does not seem to exist."
-                        )
-                        hasErrors = true
-                    } catch (_: IOException) {
-                        Log.w(
-                            "DefaultInstaller",
-                            "Failed to perform cache to package copy due to a bad pipe."
-                        )
-                        hasErrors = true
-                    }
+                val sessionOutputStream = activeSession.openWrite(packageName, 0, -1)
+                val packageInputStream = cacheFile.inputStream()
+                val buffer = ByteArray(4096)
+
+                var n: Int?
+                while (packageInputStream.read(buffer).also { n = it } > 0) {
+                    sessionOutputStream.write(buffer, 0, n ?: 0)
                 }
-            } catch (_: SecurityException) {
+
+                packageInputStream.close()
+                sessionOutputStream.flush()
+                sessionOutputStream.close()
+            } catch (e: FileNotFoundException) {
                 Log.w(
                     "DefaultInstaller",
-                    "Attempted to use a destroyed or sealed session when installing."
+                    "Cache file does not seem to exist.\n${e.message}"
                 )
                 hasErrors = true
-            } catch (_: IOException) {
+            } catch (e: SecurityException) {
                 Log.w(
                     "DefaultInstaller",
-                    "Couldn't open up active session file for copying install data."
+                    "Attempted to use a destroyed or sealed session when installing.\n${e.message}"
+                )
+                hasErrors = true
+            } catch (e: IOException) {
+                Log.w(
+                    "DefaultInstaller",
+                    "Failed to perform cache to package copy due to a bad pipe.\n${e.message}"
                 )
                 hasErrors = true
             }
