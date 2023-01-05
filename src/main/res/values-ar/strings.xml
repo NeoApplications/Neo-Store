@@ -294,4 +294,7 @@
     <string name="trackers_note_3">لديه البعض من برمجيات التتبع</string>
     <string name="permissions_note_1">يتطلب قدرا لا بأس به من الأذونات</string>
     <string name="app_installed">مثبته</string>
+    <string name="vulnerabilities_installed_apps">هذه التطبيقات المثبتة لديها ثغرات معروفة !</string>
+    <string name="no_vulnerabilities_installed_apps">لا توجد تطبيقات مثبتة بها ثغرات أمنية معروفة.</string>
+    <string name="vulnerabilities">ثغرات .</string>
 </resources>
