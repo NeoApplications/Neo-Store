@@ -96,6 +96,7 @@ import com.machiav3lli.fdroid.ui.compose.components.appsheet.HtmlTextBlock
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.LinkItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.ReleaseItem
 import com.machiav3lli.fdroid.ui.compose.components.appsheet.TopBarHeader
+import com.machiav3lli.fdroid.ui.compose.components.appsheet.WarningCard
 import com.machiav3lli.fdroid.ui.compose.components.privacy.MeterIconsBar
 import com.machiav3lli.fdroid.ui.compose.components.privacy.PrivacyCard
 import com.machiav3lli.fdroid.ui.compose.components.privacy.PrivacyItemBlock
@@ -550,6 +551,11 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 selectedPermissions = floor(privacyNote.permissionsNote / 20f).toInt(),
                             ) {
                                 this@AppSheetX.showPrivacyPage = true
+                            }
+                        }
+                        if (product.antiFeatures.contains(AntiFeature.KNOWN_VULN.key)) {
+                            item {
+                                WarningCard(stringResource(id = R.string.has_security_vulnerabilities))
                             }
                         }
                         item {
