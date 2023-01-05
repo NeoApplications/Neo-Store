@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.installer
 import android.content.Context
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.InstallerType
+import com.topjohnwu.superuser.Shell
 
 abstract class AppInstaller {
     abstract val defaultInstaller: BaseInstaller?
@@ -17,10 +18,14 @@ abstract class AppInstaller {
                         INSTANCE = object : AppInstaller() {
                             override val defaultInstaller: BaseInstaller
                                 get() {
-                                    return when (Preferences[Preferences.Key.Installer].installer) {
-                                        InstallerType.ROOT -> RootInstaller(it)
-                                        InstallerType.LEGACY -> LegacyInstaller(it)
-                                        else -> DefaultInstaller(it)
+                                    val installer = Preferences[Preferences.Key.Installer].installer
+                                    return when {
+                                        installer == InstallerType.ROOT && Shell.isAppGrantedRoot() == true ->
+                                            RootInstaller(it)
+                                        installer == InstallerType.LEGACY                                   ->
+                                            LegacyInstaller(it)
+                                        else                                                                ->
+                                            DefaultInstaller(it)
                                     }
                                 }
                         }
