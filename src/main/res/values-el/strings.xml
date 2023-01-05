@@ -289,4 +289,8 @@
     <string name="permission_not_present">Δεν υπάρχει στο σύστημά σας</string>
     <string name="source_copyright">Πνευματική ιδιοκτησία</string>
     <string name="source_copyleft">Copyleft</string>
+    <string name="vulnerabilities">Ευπάθειες.</string>
+    <string name="app_installed">Εγκατεστημένο</string>
+    <string name="vulnerabilities_installed_apps">Αυτές οι εγκατεστημένες εφαρμογές έχουν γνωστές ευπάθειες!</string>
+    <string name="no_vulnerabilities_installed_apps">Καμία εγκατεστημένη εφαρμογή δεν έχει γνωστές ευπάθειες.</string>
 </resources>
