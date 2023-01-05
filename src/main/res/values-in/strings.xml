@@ -289,4 +289,7 @@
     <string name="permission_not_granted">Tidak diberikan</string>
     <string name="permission_not_present">Tidak ada di sistem Anda</string>
     <string name="app_installed">Terinstal</string>
+    <string name="vulnerabilities">Kerentanan.</string>
+    <string name="vulnerabilities_installed_apps">Aplikasi terinstal berikut memiliki kerentanan yang diketahui!</string>
+    <string name="no_vulnerabilities_installed_apps">Tidak ada aplikasi terinstal yang memiliki kerentanan yang diketahui.</string>
 </resources>
