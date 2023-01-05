@@ -291,4 +291,7 @@
     <string name="trackers_note_0">È un\'app o uno spyware\?</string>
     <string name="permission_not_present">Non presente nel tuo sistema</string>
     <string name="app_installed">Installate</string>
+    <string name="vulnerabilities_installed_apps">Queste app installate hanno vulnerabilità note!</string>
+    <string name="vulnerabilities">Vulnerabilità.</string>
+    <string name="no_vulnerabilities_installed_apps">Nessuna app installata presenta vulnerabilità note.</string>
 </resources>
