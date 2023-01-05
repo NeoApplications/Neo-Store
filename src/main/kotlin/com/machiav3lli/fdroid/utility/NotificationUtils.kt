@@ -15,10 +15,12 @@ import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_INSTALLER
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
+import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
 import com.machiav3lli.fdroid.NOTIFICATION_ID_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_INSTALLER
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_UPDATES
+import com.machiav3lli.fdroid.NOTIFICATION_ID_VULNS
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ProductItem
@@ -98,6 +100,53 @@ fun Context.displayUpdatesNotification(
                 .build()
         )
     else notificationManager.cancel(NOTIFICATION_ID_UPDATES)
+}
+
+fun Context.displayVulnerabilitiesNotification(
+    productItems: List<ProductItem>,
+) {
+    fun <T> T.applyHack(callback: T.() -> Unit): T = apply(callback)
+    if (productItems.isNotEmpty())
+        notificationManager.notify(
+            NOTIFICATION_ID_VULNS, NotificationCompat
+                .Builder(this, NOTIFICATION_CHANNEL_VULNS)
+                .setSmallIcon(R.drawable.ic_new_releases)
+                .setContentTitle(getString(if (productItems.isNotEmpty()) R.string.vulnerabilities_installed_apps
+                else R.string.no_vulnerabilities_installed_apps))
+                .setColor(
+                    ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
+                        .getColorFromAttr(android.R.attr.textColorTertiary).defaultColor
+                )
+                .setContentIntent(
+                    PendingIntent.getActivity(
+                        this,
+                        0,
+                        Intent(this, MainActivityX::class.java)
+                            .setAction(MainActivityX.ACTION_UPDATES)
+                            .putExtra(
+                                MainActivityX.EXTRA_UPDATES,
+                                productItems.map { it.packageName }.toTypedArray()
+                            ),
+                        if (Android.sdk(23))
+                            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                        else
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    )
+                )
+                .setStyle(NotificationCompat.InboxStyle().applyHack {
+                    productItems.forEach { productItem ->
+                        val builder = SpannableStringBuilder(productItem.name)
+                        builder.setSpan(
+                            ForegroundColorSpan(Color.BLACK), 0, builder.length,
+                            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        builder.append(' ').append(productItem.version)
+                        addLine(builder)
+                    }
+                })
+                .build()
+        )
+    else notificationManager.cancel(NOTIFICATION_ID_VULNS)
 }
 
 fun Context.showNotificationError(repository: Repository, exception: Exception) {

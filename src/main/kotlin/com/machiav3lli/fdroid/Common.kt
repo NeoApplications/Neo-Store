@@ -12,6 +12,7 @@ const val NOTIFICATION_ID_SYNCING = 1
 const val NOTIFICATION_ID_UPDATES = 2
 const val NOTIFICATION_ID_DOWNLOADING = 3
 const val NOTIFICATION_ID_INSTALLER = 4
+const val NOTIFICATION_ID_VULNS = 5
 
 const val TABLE_CATEGORY = "category"
 const val TABLE_CATEGORY_NAME = "category"
