@@ -292,4 +292,7 @@
     <string name="trackers_location_description">Трекеры, ориентированные на отслеживание вашего физического местоположения.</string>
     <string name="source_proprietary_description">Исходный код приложения не является общедоступным.</string>
     <string name="app_installed">Установлено</string>
+    <string name="vulnerabilities">Уязвимости</string>
+    <string name="vulnerabilities_installed_apps">Эти установленные приложения имеют известные уязвимости!</string>
+    <string name="no_vulnerabilities_installed_apps">Ни одно из установленных приложений не имеет известных уязвимостей.</string>
 </resources>
