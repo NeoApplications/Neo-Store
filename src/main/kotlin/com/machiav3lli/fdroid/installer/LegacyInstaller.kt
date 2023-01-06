@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.util.AndroidRuntimeException
 import com.machiav3lli.fdroid.content.Cache
 import com.machiav3lli.fdroid.content.Cache.getReleaseFileUri
 import com.machiav3lli.fdroid.utility.extension.android.Android
@@ -40,11 +41,19 @@ class LegacyInstaller(context: Context) : BaseInstaller(context) {
 
         @Suppress("DEPRECATION")
         withContext(Dispatchers.IO) {
-            context.startActivity(
-                Intent(Intent.ACTION_INSTALL_PACKAGE)
-                    .setDataAndType(uri, "application/vnd.android.package-archive")
-                    .setFlags(flags)
-            )
+            try {
+                context.startActivity(
+                    Intent(Intent.ACTION_INSTALL_PACKAGE)
+                        .setDataAndType(uri, "application/vnd.android.package-archive")
+                        .setFlags(flags)
+                )
+            } catch (e: AndroidRuntimeException) {
+                context.startActivity(
+                    Intent(Intent.ACTION_INSTALL_PACKAGE)
+                        .setDataAndType(uri, "application/vnd.android.package-archive")
+                        .setFlags(flags or Intent.FLAG_ACTIVITY_NEW_TASK)
+                )
+            }
         }
     }
 
