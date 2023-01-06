@@ -41,7 +41,7 @@ class RepositoriesVM(val repositoryDao: RepositoryDao) : ViewModel() {
         viewModelScope.launch {
             _showSheet.emit(
                 when {
-                    addNew && repositories.value.none { it.address == address } -> {
+                    addNew && (address.isEmpty() || repositories.value.none { it.address == address }) -> {
                         SheetNavigationData(addNewRepository(address, fingerprint), editMode)
                     }
                     !addNew                                                     -> {
