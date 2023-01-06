@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.ui.viewmodels
 
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -7,9 +8,11 @@ import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
+import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Request
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.Source
+import com.machiav3lli.fdroid.service.DownloadService
 import com.machiav3lli.fdroid.utility.matchSearchQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -128,6 +131,8 @@ open class MainNavFragmentViewModelX(
     @OptIn(ExperimentalCoroutinesApi::class)
     val categories = db.categoryDao.allNamesFlow.mapLatest { it }
 
+    val downloadsMap = mutableStateMapOf<String, Pair<ProductItem, DownloadService.State>>()
+
     fun setFavorite(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
             saveFavorite(packageName, setBoolean)
@@ -141,6 +146,30 @@ open class MainNavFragmentViewModelX(
                 .insertReplace(oldValue.copy(favorite = setBoolean))
             else db.extrasDao
                 .insertReplace(Extras(packageName, favorite = setBoolean))
+        }
+    }
+
+    fun updateDownloadState(state: DownloadService.State) {
+        when (state) {
+            is DownloadService.State.Downloading,
+            is DownloadService.State.Pending,
+            is DownloadService.State.Connecting,
+            -> {
+                val installed = db.installedDao.get(state.packageName)
+                val product: Product
+                db.productDao.get(state.packageName).also { products ->
+                    product = products.filter {
+                        it.compatible && (installed == null || it.signatures.contains(installed.signature))
+                    }.maxBy { it.suggestedVersionCode }
+                }
+                downloadsMap[state.packageName] = Pair(product.toItem(installed), state)
+            }
+            is DownloadService.State.Success,
+            is DownloadService.State.Error,
+            is DownloadService.State.Cancel,
+            -> {
+                downloadsMap.remove(state.packageName)
+            }
         }
     }
 }
