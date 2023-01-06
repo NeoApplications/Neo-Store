@@ -223,7 +223,10 @@ class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManage
     private var usernamePasswordError = false
 
     private fun invalidateAddress() {
-        invalidateAddress(binding.address.text.toString())
+        try {
+            invalidateAddress(binding.address.text.toString())
+        } catch (_: IllegalStateException) {
+        } // Ignore
     }
 
     private fun invalidateAddress(addressText: String) {
