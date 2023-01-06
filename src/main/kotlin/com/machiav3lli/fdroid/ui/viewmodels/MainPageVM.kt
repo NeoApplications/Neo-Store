@@ -166,6 +166,20 @@ open class MainPageVM(
                 downloadsMap[state.packageName] = Pair(product.toItem(installed), state)
             }
             is DownloadService.State.Success,
+            -> {
+                val installed = db.installedDao.get(state.packageName)
+                if (installed != null && installed.versionCode == state.release.versionCode)
+                    downloadsMap.remove(state.packageName)
+                else {
+                    val product: Product
+                    db.productDao.get(state.packageName).also { products ->
+                        product = products.filter {
+                            it.compatible && (installed == null || it.signatures.contains(installed.signature))
+                        }.maxBy { it.suggestedVersionCode }
+                    }
+                    downloadsMap[state.packageName] = Pair(product.toItem(installed), state)
+                }
+            }
             is DownloadService.State.Error,
             is DownloadService.State.Cancel,
             -> {
