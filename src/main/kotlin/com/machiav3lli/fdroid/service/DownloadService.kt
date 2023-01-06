@@ -34,6 +34,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -84,6 +85,14 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
 
     inner class Binder : android.os.Binder() {
         val stateSubject = mutableStateSubject.asSharedFlow()
+            .distinctUntilChanged { old, new ->
+                new.packageName == old.packageName &&
+                        old::class.java == new::class.java && (
+                        if (old is State.Downloading && new is State.Downloading && new.total != null)
+                            new.read - old.read <= new.total / 100
+                        else true
+                        )
+            }
 
         fun enqueue(packageName: String, name: String, repository: Repository, release: Release) {
             val task = Task(
