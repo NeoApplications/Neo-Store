@@ -289,4 +289,7 @@
     <string name="permission_not_granted">未授予</string>
     <string name="permission_not_present">不存在于您的系统中</string>
     <string name="app_installed">已安装</string>
+    <string name="vulnerabilities">漏洞。</string>
+    <string name="vulnerabilities_installed_apps">这些已安装的应用程序存在已知漏洞！</string>
+    <string name="no_vulnerabilities_installed_apps">没有已安装的应用程序存在已知漏洞。</string>
 </resources>
