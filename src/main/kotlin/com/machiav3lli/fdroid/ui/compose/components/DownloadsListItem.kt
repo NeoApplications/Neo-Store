@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.database.entity.Installed
@@ -49,9 +50,10 @@ fun DownloadsListItem(
 
     Row(
         modifier = Modifier
+            .clip(MaterialTheme.shapes.large)
+            .clickable { onUserClick(product) }
             .padding(8.dp)
-            .fillMaxWidth()
-            .clickable { onUserClick(product) },
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -63,11 +65,12 @@ fun DownloadsListItem(
         Column(
             modifier = Modifier
                 .weight(1f, true)
-                .height(64.dp)
+                .height(64.dp),
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
             ) {
                 Text(
                     text = product.name,
@@ -87,7 +90,7 @@ fun DownloadsListItem(
                 )
             }
             DownloadProgress(
-                modifier = Modifier.padding(horizontal = 12.dp),
+                modifier = Modifier.padding(horizontal = 4.dp),
                 totalSize = if (state is DownloadService.State.Downloading) state.total
                     ?: 1L else 1L,
                 isIndeterminate = state !is DownloadService.State.Downloading,
