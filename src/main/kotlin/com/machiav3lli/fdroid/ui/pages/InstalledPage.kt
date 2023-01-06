@@ -33,10 +33,13 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Product
+import com.machiav3lli.fdroid.service.Connection
+import com.machiav3lli.fdroid.service.DownloadService
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.ProductsVerticalRecycler
 import com.machiav3lli.fdroid.ui.compose.components.ActionChip
+import com.machiav3lli.fdroid.ui.compose.components.DownloadsListItem
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUp
@@ -120,6 +123,24 @@ fun InstalledPage(viewModel: InstalledViewModel) {
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
     ) {
+        AnimatedVisibility(visible = downloads.isNotEmpty()) {
+            Column {
+                Text(
+                    text = stringResource(id = R.string.downloading)
+                )
+                downloads.forEach { (packageName, value) ->
+                    val (item, state) = value
+                    DownloadsListItem(
+                        item = item,
+                        state = state,
+                        repo = repositoriesMap[value.first.repositoryId],
+                        installed = installedList?.get(packageName)
+                    ) {
+                        mainActivityX.navigateProduct(item.packageName, item.developer)
+                    }
+                }
+            }
+        }
         AnimatedVisibility(visible = secondaryList.orEmpty().isNotEmpty()) {
             Column {
                 Row(
