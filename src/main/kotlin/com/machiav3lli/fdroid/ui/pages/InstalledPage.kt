@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -43,7 +45,10 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.InstalledViewModel
 import com.machiav3lli.fdroid.utility.onLaunchClick
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
@@ -58,6 +63,8 @@ fun InstalledPage(viewModel: InstalledViewModel) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
     val favorites by mainActivityX.db.extrasDao.favoritesFlow.collectAsState(emptyArray())
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val downloads = viewModel.downloadsMap
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
@@ -87,6 +94,22 @@ fun InstalledPage(viewModel: InstalledViewModel) {
                     else -> {}
                 }
             }
+        }
+    }
+
+    DisposableEffect(key1 = lifecycleOwner) {
+        val downloadConnection = Connection(DownloadService::class.java, onBind = { _, binder ->
+            CoroutineScope(Dispatchers.Default).launch {
+                binder.stateSubject
+                    .collectLatest {
+                        viewModel.updateDownloadState(it)
+                    }
+            }
+        })
+
+        downloadConnection.bind(context)
+        onDispose {
+            downloadConnection.unbind(context)
         }
     }
 
