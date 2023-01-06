@@ -53,18 +53,30 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
 
     private val scope = CoroutineScope(Dispatchers.Default)
 
-    sealed class State(val packageName: String, val name: String) {
-        class Pending(packageName: String, name: String) : State(packageName, name)
-        class Connecting(packageName: String, name: String) : State(packageName, name)
-        class Downloading(packageName: String, name: String, val read: Long, val total: Long?) : // Add release
-            State(packageName, name)
+    sealed class State(val packageName: String, val name: String, val version: String) {
+        class Pending(packageName: String, name: String, version: String) :
+            State(packageName, name, version)
+
+        class Connecting(packageName: String, name: String, version: String) :
+            State(packageName, name, version)
+
+        class Downloading(
+            packageName: String,
+            name: String,
+            version: String,
+            val read: Long,
+            val total: Long?,
+        ) : State(packageName, name, version)
 
         class Success(
             packageName: String, name: String, val release: Release,
-        ) : State(packageName, name)
+        ) : State(packageName, name, release.version)
 
-        class Error(packageName: String, name: String) : State(packageName, name)
-        class Cancel(packageName: String, name: String) : State(packageName, name)
+        class Error(packageName: String, name: String, version: String) :
+            State(packageName, name, version)
+
+        class Cancel(packageName: String, name: String, version: String) :
+            State(packageName, name, version)
     }
 
     private val mutableStateSubject = MutableSharedFlow<State>()
@@ -112,7 +124,15 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                 if (currentTask == null) {
                     handleDownload()
                 } else {
-                    scope.launch { mutableStateSubject.emit(State.Pending(packageName, name)) }
+                    scope.launch {
+                        mutableStateSubject.emit(
+                            State.Pending(
+                                packageName,
+                                name,
+                                release.version
+                            )
+                        )
+                    }
                 }
             }
         }
@@ -164,7 +184,8 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                     mutableStateSubject.emit(
                         State.Cancel(
                             it.packageName,
-                            it.name
+                            it.name,
+                            "–"
                         )
                     )
                 }
@@ -181,7 +202,8 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                     mutableStateSubject.emit(
                         State.Cancel(
                             it.task.packageName,
-                            it.task.name
+                            it.task.name,
+                            "–"
                         )
                     )
                 }
@@ -318,7 +340,11 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                     started = true
                     startSelf()
                 }
-                val initialState = State.Connecting(task.packageName, task.name)
+                val initialState = State.Connecting(
+                    task.packageName,
+                    task.name,
+                    task.release.version
+                )
                 stateNotificationBuilder.setWhen(System.currentTimeMillis())
                 publishForegroundState(true, initialState)
                 val partialReleaseFile =
@@ -338,6 +364,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                                     State.Downloading(
                                         task.packageName,
                                         task.name,
+                                        task.release.version,
                                         read,
                                         total
                                     )
@@ -358,7 +385,8 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                                 mutableStateSubject.emit(
                                     State.Error(
                                         task.packageName,
-                                        task.name
+                                        task.name,
+                                        task.release.version,
                                     )
                                 )
                             }
@@ -376,7 +404,8 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                                     mutableStateSubject.emit(
                                         State.Error(
                                             task.packageName,
-                                            task.name
+                                            task.name,
+                                            task.release.version,
                                         )
                                     )
                                 }
