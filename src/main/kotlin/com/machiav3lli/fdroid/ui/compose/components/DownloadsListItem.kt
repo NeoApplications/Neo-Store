@@ -78,13 +78,13 @@ fun DownloadsListItem(
                     maxLines = 1,
                     style = MaterialTheme.typography.titleMedium
                 )
-                /*Text( TODO add version to download state and differentiate updates
-                    text = state.version,
+                Text(
+                    text = if (installed != null && installed.version != state.version) "${product.installedVersion} → ${state.version}"
+                    else state.version,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                     style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.ExtraBold
-                )*/
+                )
             }
             DownloadProgress(
                 modifier = Modifier.padding(horizontal = 12.dp),
