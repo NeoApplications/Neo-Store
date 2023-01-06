@@ -118,14 +118,18 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.SyncService" />
+        <service
+            android:name=".service.SyncService"
+            android:foregroundServiceType="dataSync" />
 
         <service
             android:name=".service.SyncService$Job"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <service android:name=".service.DownloadService" />
+        <service
+            android:name=".service.DownloadService"
+            android:foregroundServiceType="dataSync" />
 
         <service
             android:name=".installer.InstallerService"
