@@ -47,8 +47,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -95,8 +98,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     private var updateNotificationBlockerFragment: WeakReference<Fragment>? = null
 
-    private val downloadConnection = Connection(DownloadService::class.java)
-
     enum class SyncRequest { AUTO, MANUAL, FORCE }
 
     @Inject
@@ -105,6 +106,9 @@ class SyncService : ConnectionService<SyncService.Binder>() {
     inner class Binder : android.os.Binder() {
         val finish: SharedFlow<Unit>
             get() = finishState
+
+        private val _downloadState = MutableStateFlow<DownloadService.State?>(null)
+        val downloadState: StateFlow<DownloadService.State?> = _downloadState
 
         private fun sync(ids: List<Long>, request: SyncRequest) {
             val cancelledTask =
@@ -190,11 +194,23 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                 true
             }
         }
+
+        suspend fun updateDownloadState(state: DownloadService.State) {
+            _downloadState.emit(state)
+        }
     }
 
     private val binder = Binder()
     override fun onBind(intent: Intent): Binder = binder
     lateinit var db: DatabaseX
+
+    private val downloadConnection =
+        Connection(DownloadService::class.java, onBind = { _, dBinder ->
+            CoroutineScope(Dispatchers.Default).launch {
+                dBinder.stateSubject
+                    .collectLatest { binder.updateDownloadState(it) }
+            }
+        })
 
     override fun onCreate() {
         super.onCreate()
