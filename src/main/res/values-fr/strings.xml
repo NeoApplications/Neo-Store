@@ -291,4 +291,7 @@
     <string name="permission_granted">Accordé</string>
     <string name="permissions_note_0">Requiert de nombreuses permissions dangereuses</string>
     <string name="permission_not_granted">Refusé</string>
+    <string name="vulnerabilities_installed_apps">Ces applications installées présentent des vulnérabilités connues !</string>
+    <string name="no_vulnerabilities_installed_apps">Aucune application installée ne présente de vulnérabilité connue.</string>
+    <string name="vulnerabilities">Vulnérabilités.</string>
 </resources>
