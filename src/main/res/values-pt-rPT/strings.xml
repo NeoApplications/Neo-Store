@@ -291,4 +291,7 @@
     <string name="trackers_identification">Rastreadores de identificação</string>
     <string name="trackers_ads_description">Rastreadores utilizados para mostrar anúncios e rastrear a sua interacção com estes.</string>
     <string name="app_installed">Instalado</string>
+    <string name="vulnerabilities_installed_apps">Estas aplicações instaladas têm vulnerabilidades conhecidas!</string>
+    <string name="vulnerabilities">Vulnerabilidades.</string>
+    <string name="no_vulnerabilities_installed_apps">Nenhuma aplicação instalada tem vulnerabilidades conhecidas.</string>
 </resources>
