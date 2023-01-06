@@ -130,7 +130,8 @@ fun InstalledPage(viewModel: InstalledVM) {
                 )
                 downloads.forEach { (packageName, value) ->
                     val (item, state) = value
-                    DownloadsListItem(
+                    val installed = installedList?.get(packageName)
+                    if (state.version != installed?.version) DownloadsListItem(
                         item = item,
                         state = state,
                         repo = repositoriesMap[value.first.repositoryId],
@@ -138,6 +139,9 @@ fun InstalledPage(viewModel: InstalledVM) {
                     ) {
                         mainActivityX.navigateProduct(item.packageName, item.developer)
                     }
+                    else viewModel.updateDownloadState(
+                        DownloadService.State.Cancel(item.packageName, item.name, "–")
+                    )
                 }
             }
         }
