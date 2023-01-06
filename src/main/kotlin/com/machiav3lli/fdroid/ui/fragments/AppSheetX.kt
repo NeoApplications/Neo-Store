@@ -114,7 +114,7 @@ import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.compose.utils.Callbacks
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.pages.ScreenshotsPage
-import com.machiav3lli.fdroid.ui.viewmodels.AppViewModelX
+import com.machiav3lli.fdroid.ui.viewmodels.AppSheetVM
 import com.machiav3lli.fdroid.utility.Utils.rootInstallerEnabled
 import com.machiav3lli.fdroid.utility.Utils.startUpdate
 import com.machiav3lli.fdroid.utility.extension.android.Android
@@ -146,8 +146,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         }
     }
 
-    val viewModel: AppViewModelX by viewModels {
-        AppViewModelX.Factory(mainActivityX.db, packageName, developer)
+    val viewModel: AppSheetVM by viewModels {
+        AppSheetVM.Factory(mainActivityX.db, packageName, developer)
     }
     var showPrivacyPage by mutableStateOf(false)
 

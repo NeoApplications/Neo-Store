@@ -56,11 +56,11 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
     sealed class State(val packageName: String, val name: String) {
         class Pending(packageName: String, name: String) : State(packageName, name)
         class Connecting(packageName: String, name: String) : State(packageName, name)
-        class Downloading(packageName: String, name: String, val read: Long, val total: Long?) :
+        class Downloading(packageName: String, name: String, val read: Long, val total: Long?) : // Add release
             State(packageName, name)
 
         class Success(
-            packageName: String, name: String, val release: Release
+            packageName: String, name: String, val release: Release,
         ) : State(packageName, name)
 
         class Error(packageName: String, name: String) : State(packageName, name)
@@ -286,12 +286,12 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
             currentTask = currentTask?.copy(lastState = state)
             startForeground(NOTIFICATION_ID_SYNCING, stateNotificationBuilder.apply {
                 when (state) {
-                    is State.Connecting -> {
+                    is State.Connecting                                                 -> {
                         setContentTitle(getString(R.string.downloading_FORMAT, state.name))
                         setContentText(getString(R.string.connecting))
                         setProgress(1, 0, true)
                     }
-                    is State.Downloading -> {
+                    is State.Downloading                                                -> {
                         setContentTitle(getString(R.string.downloading_FORMAT, state.name))
                         if (state.total != null) {
                             setContentText("${state.read.formatSize()} / ${state.total.formatSize()}")

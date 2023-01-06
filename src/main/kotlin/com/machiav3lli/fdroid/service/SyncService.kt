@@ -135,7 +135,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
         fun sync(request: SyncRequest) {
             scope.launch {
-                val ids = db.repositoryDao.all.filter { it.enabled }.map { it.id }.toList() + EXODUS_TRACKERS_SYNC
+                val ids = db.repositoryDao.all.filter { it.enabled }.map { it.id }
+                    .toList() + EXODUS_TRACKERS_SYNC
                 sync(ids, request)
             }
         }
@@ -286,7 +287,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                             setContentText(getString(R.string.connecting))
                             setProgress(0, 0, true)
                         }
-                        is State.Syncing -> {
+                        is State.Syncing    -> {
                             setContentTitle(getString(R.string.syncing_FORMAT, state.name))
                             when (state.stage) {
                                 RepositoryUpdater.Stage.DOWNLOAD -> {
@@ -302,7 +303,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                         setProgress(0, 0, true)
                                     }
                                 }
-                                RepositoryUpdater.Stage.PROCESS -> {
+                                RepositoryUpdater.Stage.PROCESS  -> {
                                     val progress =
                                         state.total?.let { 100f * state.read / it }?.roundToInt()
                                     setContentText(
@@ -313,7 +314,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                     )
                                     setProgress(100, progress ?: 0, progress == null)
                                 }
-                                RepositoryUpdater.Stage.MERGE -> {
+                                RepositoryUpdater.Stage.MERGE    -> {
                                     val progress = (100f * state.read / (state.total
                                         ?: state.read)).roundToInt()
                                     setContentText(
@@ -324,13 +325,13 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                     )
                                     setProgress(100, progress, false)
                                 }
-                                RepositoryUpdater.Stage.COMMIT -> {
+                                RepositoryUpdater.Stage.COMMIT   -> {
                                     setContentText(getString(R.string.saving_details))
                                     setProgress(0, 0, true)
                                 }
                             }
                         }
-                        is State.Finishing -> {
+                        is State.Finishing  -> {
                             setContentTitle(getString(R.string.syncing))
                             setContentText(null)
                             setProgress(0, 0, true)

@@ -28,10 +28,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-open class MainNavFragmentViewModelX(
+open class MainPageVM(
     val db: DatabaseX,
     primarySource: Source,
-    secondarySource: Source
+    secondarySource: Source,
 ) : ViewModel() {
     // TODO add better sort/filter fields
 
@@ -59,9 +59,9 @@ open class MainNavFragmentViewModelX(
         return when (source) {
             Source.AVAILABLE -> Request.ProductsAll(mSections)
             Source.INSTALLED -> Request.ProductsInstalled(mSections)
-            Source.UPDATES -> Request.ProductsUpdates(mSections)
-            Source.UPDATED -> Request.ProductsUpdated(mSections)
-            Source.NEW -> Request.ProductsNew(mSections)
+            Source.UPDATES   -> Request.ProductsUpdates(mSections)
+            Source.UPDATED   -> Request.ProductsUpdated(mSections)
+            Source.NEW       -> Request.ProductsNew(mSections)
         }
     }
 
@@ -96,6 +96,7 @@ open class MainNavFragmentViewModelX(
         started = SharingStarted.Lazily,
         initialValue = null
     )
+
     @OptIn(FlowPreview::class)
     val filteredProducts: StateFlow<List<Product>?> =
         combine(primaryProducts, query.debounce(400)) { products, query ->
@@ -174,41 +175,39 @@ open class MainNavFragmentViewModelX(
     }
 }
 
-class ExploreViewModel(db: DatabaseX) :
-    MainNavFragmentViewModelX(db, Source.AVAILABLE, Source.AVAILABLE) {
+class ExploreVM(db: DatabaseX) : MainPageVM(db, Source.AVAILABLE, Source.AVAILABLE) {
     class Factory(val db: DatabaseX) :
         ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(ExploreViewModel::class.java)) {
-                return ExploreViewModel(db) as T
+            if (modelClass.isAssignableFrom(ExploreVM::class.java)) {
+                return ExploreVM(db) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
 }
 
-class LatestViewModel(db: DatabaseX) : MainNavFragmentViewModelX(db, Source.UPDATED, Source.NEW) {
+class LatestVM(db: DatabaseX) : MainPageVM(db, Source.UPDATED, Source.NEW) {
     class Factory(val db: DatabaseX) :
         ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(LatestViewModel::class.java)) {
-                return LatestViewModel(db) as T
+            if (modelClass.isAssignableFrom(LatestVM::class.java)) {
+                return LatestVM(db) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
 }
 
-class InstalledViewModel(db: DatabaseX) :
-    MainNavFragmentViewModelX(db, Source.INSTALLED, Source.UPDATES) {
+class InstalledVM(db: DatabaseX) : MainPageVM(db, Source.INSTALLED, Source.UPDATES) {
     class Factory(val db: DatabaseX) :
         ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(InstalledViewModel::class.java)) {
-                return InstalledViewModel(db) as T
+            if (modelClass.isAssignableFrom(InstalledVM::class.java)) {
+                return InstalledVM(db) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

@@ -55,9 +55,9 @@ import com.machiav3lli.fdroid.ui.fragments.SortFilterSheet
 import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.MainNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavItem
-import com.machiav3lli.fdroid.ui.viewmodels.ExploreViewModel
-import com.machiav3lli.fdroid.ui.viewmodels.InstalledViewModel
-import com.machiav3lli.fdroid.ui.viewmodels.LatestViewModel
+import com.machiav3lli.fdroid.ui.viewmodels.ExploreVM
+import com.machiav3lli.fdroid.ui.viewmodels.InstalledVM
+import com.machiav3lli.fdroid.ui.viewmodels.LatestVM
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.isDarkTheme
@@ -100,14 +100,14 @@ class MainActivityX : AppCompatActivity() {
 
     private var currentTheme by Delegates.notNull<Int>()
 
-    val exploreViewModel: ExploreViewModel by viewModels {
-        ExploreViewModel.Factory(db)
+    val exploreViewModel: ExploreVM by viewModels {
+        ExploreVM.Factory(db)
     }
-    val latestViewModel: LatestViewModel by viewModels {
-        LatestViewModel.Factory(db)
+    val latestViewModel: LatestVM by viewModels {
+        LatestVM.Factory(db)
     }
-    val installedViewModel: InstalledViewModel by viewModels {
-        InstalledViewModel.Factory(db)
+    val installedViewModel: InstalledVM by viewModels {
+        InstalledVM.Factory(db)
     }
 
     private lateinit var sheetSortFilter: SortFilterSheet

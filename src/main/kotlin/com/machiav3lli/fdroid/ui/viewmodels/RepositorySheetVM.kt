@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 
 // TODO migrate sheets to Compose
 // TODO migrate fields to Flows
-class RepositoryViewModelX(val db: DatabaseX, val repositoryId: Long) : ViewModel() {
+class RepositorySheetVM(val db: DatabaseX, val repositoryId: Long) : ViewModel() {
 
     val repo: MediatorLiveData<Repository> = MediatorLiveData()
     val appsCount: MediatorLiveData<Long> = MediatorLiveData()
@@ -39,8 +39,8 @@ class RepositoryViewModelX(val db: DatabaseX, val repositoryId: Long) : ViewMode
     class Factory(val db: DatabaseX, val repositoryId: Long) : ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(RepositoryViewModelX::class.java)) {
-                return RepositoryViewModelX(db, repositoryId) as T
+            if (modelClass.isAssignableFrom(RepositorySheetVM::class.java)) {
+                return RepositorySheetVM(db, repositoryId) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

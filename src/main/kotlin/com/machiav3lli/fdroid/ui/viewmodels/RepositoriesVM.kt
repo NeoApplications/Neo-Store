@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
+class RepositoriesVM(val repositoryDao: RepositoryDao) : ViewModel() {
 
     private val _showSheet = MutableSharedFlow<SheetNavigationData?>()
     val showSheet: SharedFlow<SheetNavigationData?> = _showSheet
@@ -36,7 +36,7 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
         editMode: Boolean = false,
         address: String = "",
         fingerprint: String = "",
-        addNew: Boolean = false
+        addNew: Boolean = false,
     ) {
         viewModelScope.launch {
             _showSheet.emit(
@@ -44,10 +44,10 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
                     addNew && repositories.value.none { it.address == address } -> {
                         SheetNavigationData(addNewRepository(address, fingerprint), editMode)
                     }
-                    !addNew -> {
+                    !addNew                                                     -> {
                         SheetNavigationData(repositoryId, editMode)
                     }
-                    else -> {
+                    else                                                        -> {
                         null
                     }
                 }
@@ -70,8 +70,8 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
     class Factory(private val repoDao: RepositoryDao) : ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(RepositoriesViewModelX::class.java)) {
-                return RepositoriesViewModelX(repoDao) as T
+            if (modelClass.isAssignableFrom(RepositoriesVM::class.java)) {
+                return RepositoriesVM(repoDao) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
@@ -80,5 +80,5 @@ class RepositoriesViewModelX(val repositoryDao: RepositoryDao) : ViewModel() {
 
 data class SheetNavigationData(
     val repositoryId: Long = 0L,
-    val editMode: Boolean = false
+    val editMode: Boolean = false,
 )

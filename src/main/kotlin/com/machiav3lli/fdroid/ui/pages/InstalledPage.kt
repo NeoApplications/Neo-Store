@@ -46,7 +46,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUp
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.navigation.NavItem
-import com.machiav3lli.fdroid.ui.viewmodels.InstalledViewModel
+import com.machiav3lli.fdroid.ui.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +55,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun InstalledPage(viewModel: InstalledViewModel) {
+fun InstalledPage(viewModel: InstalledVM) {
     val context = LocalContext.current
     val mainActivityX = context as MainActivityX
     val filteredPrimaryList by viewModel.filteredProducts.collectAsState()

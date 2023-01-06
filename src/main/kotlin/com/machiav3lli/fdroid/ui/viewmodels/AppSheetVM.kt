@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AppViewModelX(val db: DatabaseX, val packageName: String, developer: String) : ViewModel() {
+class AppSheetVM(val db: DatabaseX, val packageName: String, developer: String) : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val products = db.productDao.getFlow(packageName).mapLatest { it.filterNotNull() }
@@ -153,12 +153,12 @@ class AppViewModelX(val db: DatabaseX, val packageName: String, developer: Strin
                 else actions += ActionState.Bookmark
             }
             val primaryAction = when {
-                canUpdate -> ActionState.Update
-                canLaunch -> ActionState.Launch
+                canUpdate  -> ActionState.Update
+                canLaunch  -> ActionState.Launch
                 canInstall -> ActionState.Install
-                canShare -> ActionState.Share
+                canShare   -> ActionState.Share
                 bookmarked -> ActionState.Bookmarked
-                else -> ActionState.Bookmark
+                else       -> ActionState.Bookmark
             }
 
             withContext(Dispatchers.Main) {
@@ -231,8 +231,8 @@ class AppViewModelX(val db: DatabaseX, val packageName: String, developer: Strin
         ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(AppViewModelX::class.java)) {
-                return AppViewModelX(db, packageName, developer) as T
+            if (modelClass.isAssignableFrom(AppSheetVM::class.java)) {
+                return AppSheetVM(db, packageName, developer) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

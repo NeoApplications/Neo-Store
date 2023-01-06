@@ -26,7 +26,7 @@ import com.machiav3lli.fdroid.screen.MessageDialog
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.SyncService
 import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
-import com.machiav3lli.fdroid.ui.viewmodels.RepositoryViewModelX
+import com.machiav3lli.fdroid.ui.viewmodels.RepositorySheetVM
 import com.machiav3lli.fdroid.utility.RxUtils
 import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
@@ -48,8 +48,8 @@ import kotlin.math.min
 
 class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManager {
     private lateinit var binding: SheetEditRepositoryBinding
-    val viewModel: RepositoryViewModelX by viewModels {
-        RepositoryViewModelX.Factory((requireActivity() as PrefsActivityX).db, repositoryId)
+    val viewModel: RepositorySheetVM by viewModels {
+        RepositorySheetVM.Factory((requireActivity() as PrefsActivityX).db, repositoryId)
     }
 
     companion object {

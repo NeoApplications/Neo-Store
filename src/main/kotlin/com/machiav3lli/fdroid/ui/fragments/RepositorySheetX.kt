@@ -18,15 +18,15 @@ import com.machiav3lli.fdroid.screen.MessageDialog
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.SyncService
 import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
-import com.machiav3lli.fdroid.ui.viewmodels.RepositoryViewModelX
+import com.machiav3lli.fdroid.ui.viewmodels.RepositorySheetVM
 import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
 import kotlinx.coroutines.launch
 import java.util.*
 
 class RepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManager {
     private lateinit var binding: SheetRepositoryBinding
-    val viewModel: RepositoryViewModelX by viewModels {
-        RepositoryViewModelX.Factory((requireActivity() as PrefsActivityX).db, repositoryId)
+    val viewModel: RepositorySheetVM by viewModels {
+        RepositorySheetVM.Factory((requireActivity() as PrefsActivityX).db, repositoryId)
     }
 
     constructor(repositoryId: Long = 0) : this() {
