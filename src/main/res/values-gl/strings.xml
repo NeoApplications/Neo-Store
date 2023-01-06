@@ -290,4 +290,7 @@
     <string name="permission_not_granted">Non outorgado</string>
     <string name="permission_not_present">Permiso inexistente no seu sistema</string>
     <string name="app_installed">Instalado</string>
+    <string name="vulnerabilities">Vulnerabilidades.</string>
+    <string name="vulnerabilities_installed_apps">Estas aplicacións instaladas teñen vulnerabilidades coñecidas!</string>
+    <string name="no_vulnerabilities_installed_apps">Ningunha aplicación instalada ten vulnerabilidades coñecidas.</string>
 </resources>
