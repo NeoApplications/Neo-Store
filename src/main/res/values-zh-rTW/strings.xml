@@ -288,4 +288,8 @@
     <string name="permissions_note_4">幾乎不需要權限</string>
     <string name="permission_granted">以允許</string>
     <string name="permission_not_granted">未允許</string>
+    <string name="vulnerabilities_installed_apps">這些已安裝的應用程序存在已知漏洞！</string>
+    <string name="vulnerabilities">漏洞。</string>
+    <string name="app_installed">已安裝</string>
+    <string name="no_vulnerabilities_installed_apps">沒有已安裝的應用程序存在已知漏洞。</string>
 </resources>
