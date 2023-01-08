@@ -136,51 +136,36 @@ class MainApplication : Application(), ImageLoaderFactory {
 
     private fun listenPreferences() {
         updateProxy()
-        var lastAutoSync = Preferences[Preferences.Key.AutoSync]
-        var lastUpdateUnstable = Preferences[Preferences.Key.UpdateUnstable]
-        var lastLanguage = Preferences[Preferences.Key.Language]
-        var lastTheme = Preferences[Preferences.Key.Theme]
         CoroutineScope(Dispatchers.Default).launch {
             Preferences.subject.collect {
                 when (it) {
-                    Preferences.Key.ProxyType, Preferences.Key.ProxyHost, Preferences.Key.ProxyPort -> {
+                    Preferences.Key.ProxyType,
+                    Preferences.Key.ProxyHost,
+                    Preferences.Key.ProxyPort,
+                                                   -> {
                         updateProxy()
                     }
-                    Preferences.Key.AutoSync, Preferences.Key.AutoSyncInterval -> {
-                        val autoSync = Preferences[Preferences.Key.AutoSync]
-                        if (lastAutoSync != autoSync) {
-                            lastAutoSync = autoSync
-                            updateSyncJob(true)
-                        }
+                    Preferences.Key.AutoSync,
+                    Preferences.Key.AutoSyncInterval,
+                                                   -> {
+                        updateSyncJob(true)
                     }
                     Preferences.Key.UpdateUnstable -> {
-                        val updateUnstable = Preferences[Preferences.Key.UpdateUnstable]
-                        if (lastUpdateUnstable != updateUnstable) {
-                            lastUpdateUnstable = updateUnstable
-                            forceSyncAll()
-                        }
+                        forceSyncAll()
                     }
-                    Preferences.Key.Theme -> {
-                        val theme = Preferences[Preferences.Key.Theme]
-                        if (theme != lastTheme) {
-                            lastTheme = theme
-                            CoroutineScope(Dispatchers.Main).launch { mActivity.recreate() }
-                        }
+                    Preferences.Key.Theme          -> {
+                        CoroutineScope(Dispatchers.Main).launch { mActivity.recreate() }
                     }
-                    Preferences.Key.Language -> {
-                        val language = Preferences[Preferences.Key.Language]
-                        if (language != lastLanguage) {
-                            lastLanguage = language
-                            val refresh = Intent.makeRestartActivityTask(
-                                ComponentName(
-                                    baseContext,
-                                    MainActivityX::class.java
-                                )
+                    Preferences.Key.Language       -> {
+                        val refresh = Intent.makeRestartActivityTask(
+                            ComponentName(
+                                baseContext,
+                                MainActivityX::class.java
                             )
-                            applicationContext.startActivity(refresh)
-                        }
+                        )
+                        applicationContext.startActivity(refresh)
                     }
-                    else -> return@collect
+                    else                           -> return@collect
                 }
             }
         }
