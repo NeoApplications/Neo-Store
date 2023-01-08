@@ -1,15 +1,18 @@
 package com.machiav3lli.fdroid.database.entity
 
+import android.util.Base64
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.machiav3lli.fdroid.ROW_ID
 import com.machiav3lli.fdroid.TABLE_REPOSITORY_NAME
+import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.net.URL
+import java.nio.charset.Charset
 
 @Entity(tableName = TABLE_REPOSITORY_NAME)
 @Serializable
@@ -58,6 +61,39 @@ data class Repository(
         this.lastModified = ""
         this.entityTag = ""
     }
+
+    fun setAuthentication(username: String?, password: String?) {
+        this.authentication = username?.let { u ->
+            password
+                ?.let { p ->
+                    Base64.encodeToString(
+                        "$u:$p".toByteArray(Charset.defaultCharset()),
+                        Base64.NO_WRAP
+                    )
+                }
+        }
+            ?.let { "Basic $it" }.orEmpty()
+    }
+
+    val authenticationPair: Pair<String?, String?>
+        get() = authentication.nullIfEmpty()
+            ?.let { if (it.startsWith("Basic ")) it.substring(6) else null }
+            ?.let {
+                try {
+                    Base64.decode(it, Base64.NO_WRAP).toString(Charset.defaultCharset())
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    null
+                }
+            }
+            ?.let {
+                val index = it.indexOf(':')
+                if (index >= 0) Pair(
+                    it.substring(0, index),
+                    it.substring(index + 1)
+                ) else null
+            }
+            ?: Pair(null, null)
 
     fun toJSON() = Json.encodeToString(this)
 
