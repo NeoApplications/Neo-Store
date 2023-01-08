@@ -292,6 +292,7 @@ object Preferences : OnSharedPreferenceChangeListener {
         object Never : AutoSync("never")
         object Wifi : AutoSync("wifi")
         object WifiBattery : AutoSync("wifi-battery")
+        object Battery : AutoSync("battery")
         object Always : AutoSync("always")
     }
 

@@ -72,6 +72,7 @@ val PrefsEntries = mapOf(
     Preferences.Key.AutoSync to mapOf(
         Preferences.AutoSync.Wifi to R.string.only_on_wifi,
         Preferences.AutoSync.WifiBattery to R.string.only_on_wifi_and_battery,
+        Preferences.AutoSync.Battery to R.string.only_on_battery,
         Preferences.AutoSync.Always to R.string.always,
         Preferences.AutoSync.Never to R.string.never,
     ),
