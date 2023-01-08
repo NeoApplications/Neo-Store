@@ -159,7 +159,7 @@ dependencies {
 
     // Markdown
     implementation("org.jetbrains:markdown:0.3.5")
-    implementation("de.charlex.compose:html-text:1.3.1")
+    implementation("de.charlex.compose:html-text:1.4.1")
 
     // Coroutines / Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
