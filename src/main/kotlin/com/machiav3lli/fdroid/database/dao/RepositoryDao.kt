@@ -28,6 +28,9 @@ interface RepositoryDao : BaseDao<Repository> {
     @Query("SELECT * FROM repository WHERE _id = :id")
     fun getLive(id: Long): LiveData<Repository?>
 
+    @Query("SELECT * FROM repository WHERE _id = :id")
+    fun getFlow(id: Long): Flow<Repository?>
+
     @Query("SELECT * FROM repository ORDER BY _id ASC")
     fun getAllRepositories(): Flow<List<Repository>>
 
