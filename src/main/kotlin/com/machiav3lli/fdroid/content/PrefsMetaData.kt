@@ -1,7 +1,10 @@
 package com.machiav3lli.fdroid.content
 
+import android.app.job.JobInfo
+import android.os.Build.VERSION_CODES
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.utility.extension.android.Android
+import kotlin.time.Duration.Companion.milliseconds
 
 val BooleanPrefsMeta = mapOf(
     Preferences.Key.ShowScreenshots to Pair(
