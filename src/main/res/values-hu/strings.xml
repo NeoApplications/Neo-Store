@@ -289,4 +289,8 @@
     <string name="permission_granted">Megadva</string>
     <string name="permission_not_granted">Nem megadva</string>
     <string name="permission_not_present">Nincs jelen az ön eszközén</string>
+    <string name="vulnerabilities">Sérülékenységek.</string>
+    <string name="vulnerabilities_installed_apps">Ezek a telepített alkalmazások ismert sérülékenységekkel rendelkeznek.</string>
+    <string name="no_vulnerabilities_installed_apps">Egyetlen telepített alkalmazás sem rendelkezik ismert sérülékenységgel.</string>
+    <string name="app_installed">Telepítve</string>
 </resources>
