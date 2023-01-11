@@ -31,7 +31,6 @@ import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.network.RExodusAPI
-import com.machiav3lli.fdroid.utility.RxUtils
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.displayUpdatesNotification
 import com.machiav3lli.fdroid.utility.displayVulnerabilitiesNotification
@@ -43,7 +42,6 @@ import com.machiav3lli.fdroid.utility.showNotificationError
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -423,56 +421,48 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                         handleNextTask(hasUpdates)
                     }
                 } else if (started != Started.NO) {
-                    val disposable = RxUtils
-                        .querySingle { it ->
-                            db.productDao
-                                .queryObject(
-                                    installed = true,
-                                    updates = true,
-                                    section = Section.All,
-                                    order = Order.NAME,
-                                    ascending = true,
-                                ).map { it.toItem() }
-                        }
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe { result, throwable ->
-                            throwable?.printStackTrace()
-                            if (result.isNotEmpty()) {
-                                if (Preferences[Preferences.Key.InstallAfterSync])
-                                    batchUpdate(result)
-                                if (hasUpdates && Preferences[Preferences.Key.UpdateNotify] &&
-                                    updateNotificationBlockerFragment?.get()?.isAdded != true &&
-                                    result.isNotEmpty()
-                                )
-                                    displayUpdatesNotification(
+                    val disposable = scope.launch {
+                        db.productDao
+                            .queryObject(
+                                installed = true,
+                                updates = true,
+                                section = Section.All,
+                                order = Order.NAME,
+                                ascending = true,
+                            ).map { it.toItem() }.let { result ->
+                                if (result.isNotEmpty()) {
+                                    if (hasUpdates && Preferences[Preferences.Key.UpdateNotify] &&
+                                        updateNotificationBlockerFragment?.get()?.isAdded != true &&
+                                        result.isNotEmpty()
+                                    ) displayUpdatesNotification(
                                         result,
                                         currentTask?.task?.manual == true
                                     )
+                                    if (Preferences[Preferences.Key.InstallAfterSync]) {
+                                        downloadServiceMutex.lock()
+                                        batchUpdate(result)
+                                    }
+                                }
+                                currentTask = null
+                                //handleNextTask(false)
                             }
-                            currentTask = null
-                            handleNextTask(false)
-                        }
-                    RxUtils
-                        .querySingle { it ->
-                            db.productDao
-                                .queryObject(
-                                    installed = true,
-                                    updates = false,
-                                    section = Section.All,
-                                    order = Order.NAME,
-                                    ascending = true,
-                                ).filter { it.antiFeatures.contains(AntiFeature.KNOWN_VULN.key) }
-                        }
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe { installedWithVulns, throwable ->
-                            throwable?.printStackTrace()
-                            if (installedWithVulns.isNotEmpty())
-                                displayVulnerabilitiesNotification(
-                                    installedWithVulns.map(Product::toItem)
-                                )
-                        }
+                    }
+                    scope.launch {
+                        db.productDao
+                            .queryObject(
+                                installed = true,
+                                updates = false,
+                                section = Section.All,
+                                order = Order.NAME,
+                                ascending = true,
+                            ).filter { it.antiFeatures.contains(AntiFeature.KNOWN_VULN.key) }
+                            .let { installedWithVulns ->
+                                if (installedWithVulns.isNotEmpty())
+                                    displayVulnerabilitiesNotification(
+                                        installedWithVulns.map(Product::toItem)
+                                    )
+                            }
+                    }
                     if (hasUpdates) {
                         currentTask = CurrentTask(null, disposable, true, State.Finishing)
                     } else {
