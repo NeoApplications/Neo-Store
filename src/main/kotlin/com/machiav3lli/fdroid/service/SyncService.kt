@@ -243,7 +243,11 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        downloadConnection.unbind(this)
+        scope.launch {
+            downloadServiceMutex.withLock {
+                downloadConnection.unbind(this@SyncService)
+            }
+        }
         cancelTasks { true }
         cancelCurrentTask { true }
     }
@@ -466,7 +470,13 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                     if (hasUpdates) {
                         currentTask = CurrentTask(null, disposable, true, State.Finishing)
                     } else {
-                        scope.launch { mutableFinishState.emit(Unit) }
+                        scope.launch {
+                            disposable.join()
+                            downloadServiceMutex.withLock {
+                                Log.i(this::javaClass.name, "emitting finish: had no updates")
+                                mutableFinishState.emit(Unit)
+                            }
+                        }
                         val needStop = started == Started.MANUAL
                         started = Started.NO
                         if (needStop) {
@@ -496,28 +506,24 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                     db.repositoryDao.get(productItem.repositoryId)
                 )
             }
-                .filter { pair -> (install || pair.second != null) && pair.third != null }
-                .forEach { installedRepository ->
-                    run {
-                        // Redundant !! as linter doesn't recognise the above filter's effects
-                        val packageName = installedRepository.first
-                        val installedItem = installedRepository.second
-                        val repository = installedRepository.third!!
+                .filter { (_, installed, repo) -> (install || installed != null) && repo != null }
+                .map { (packageName, installed, repo) ->
+                    val productRepository = db.productDao.get(packageName)
+                        .filterNotNull()
+                        .filter { product -> product.repositoryId == repo!!.id }
+                        .map { product -> Pair(product, repo!!) }
 
-                        val productRepository = db.productDao.get(packageName)
-                            .filterNotNull()
-                            .filter { product -> product.repositoryId == repository.id }
-                            .map { product -> Pair(product, repository) }
-
-                        scope.launch {
-                            Utils.startUpdate(
-                                packageName,
-                                installedItem,
-                                productRepository,
-                                downloadConnection
-                            )
-                        }
+                    scope.launch {
+                        Utils.startUpdate(
+                            packageName,
+                            installed,
+                            productRepository,
+                            downloadConnection
+                        )
                     }
+                }.let {
+                    it.forEach { job -> job.join() }
+                    downloadServiceMutex.unlock()
                 }
         }
     }
