@@ -10,7 +10,11 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.BatteryManager
+import android.os.Build.VERSION_CODES
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import coil.ImageLoader
 import coil.ImageLoaderFactory
@@ -37,6 +41,7 @@ import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import java.net.InetSocketAddress
 import java.net.Proxy
+import java.util.*
 import kotlin.time.Duration.Companion.minutes
 
 
@@ -173,27 +178,29 @@ class MainApplication : Application(), ImageLoaderFactory {
 
     private fun updateSyncJob(force: Boolean) {
         val jobScheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
-        val reschedule = force || !jobScheduler.allPendingJobs.any { it.id == JOB_ID_SYNC }
+        val reschedule = force || jobScheduler.allPendingJobs.none { it.id == JOB_ID_SYNC }
         if (reschedule) {
-            val autoSync = Preferences[Preferences.Key.AutoSync]
-            when (autoSync) {
-                is Preferences.AutoSync.Never -> {
+            when (val autoSync = Preferences[Preferences.Key.AutoSync]) {
+                is Preferences.AutoSync.Never  -> {
                     jobScheduler.cancel(JOB_ID_SYNC)
+                    Log.i(this::javaClass.name, "Canceled next auto-sync run.")
                 }
-                is Preferences.AutoSync.Wifi -> {
+                is Preferences.AutoSync.Wifi,
+                is Preferences.AutoSync.WifiBattery,
+                                               -> {
                     autoSync(
                         jobScheduler = jobScheduler,
-                        connectionType = JobInfo.NETWORK_TYPE_UNMETERED
+                        connectionType = NETWORK_TYPE_WIFI,
+                        chargingBattery = autoSync is Preferences.AutoSync.WifiBattery,
                     )
                 }
-                is Preferences.AutoSync.WifiBattery -> {
-                    if (isCharging(this)) {
-                        autoSync(
-                            jobScheduler = jobScheduler,
-                            connectionType = JobInfo.NETWORK_TYPE_UNMETERED
-                        )
-                    }
-                    Unit
+                is Preferences.AutoSync.Battery,
+                                               -> {
+                    autoSync(
+                        jobScheduler = jobScheduler,
+                        connectionType = JobInfo.NETWORK_TYPE_ANY,
+                        chargingBattery = true,
+                    )
                 }
                 is Preferences.AutoSync.Always -> {
                     autoSync(
@@ -201,11 +208,15 @@ class MainApplication : Application(), ImageLoaderFactory {
                         connectionType = JobInfo.NETWORK_TYPE_ANY
                     )
                 }
-            }::class.java
+            }
         }
     }
 
-    private fun autoSync(jobScheduler: JobScheduler, connectionType: Int) {
+    private fun autoSync(
+        jobScheduler: JobScheduler,
+        connectionType: Int,
+        chargingBattery: Boolean = false,
+    ) {
         val period = Preferences[Preferences.Key.AutoSyncInterval].minutes.inWholeMilliseconds
         jobScheduler.schedule(
             JobInfo
@@ -213,15 +224,26 @@ class MainApplication : Application(), ImageLoaderFactory {
                     JOB_ID_SYNC,
                     ComponentName(this, SyncService.Job::class.java)
                 )
-                .setRequiredNetworkType(connectionType)
+                .setRequiresCharging(chargingBattery)
                 .apply {
-                    if (Android.sdk(26)) {
+                    if (connectionType == NETWORK_TYPE_WIFI) {
+                        if (Android.sdk(VERSION_CODES.P)) setRequiredNetwork(
+                            NetworkRequest.Builder()
+                                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI_AWARE)
+                                .build()
+                        )
+                        else setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+                    } else setRequiredNetworkType(connectionType)
+                    if (Android.sdk(VERSION_CODES.N))
+                        setPeriodic(period, JobInfo.getMinFlexMillis())
+                    else setPeriodic(period)
+                    if (Android.sdk(VERSION_CODES.O)) {
                         setRequiresBatteryNotLow(true)
                         setRequiresStorageNotLow(true)
                     }
-                    if (Android.sdk(24)) setPeriodic(period, JobInfo.getMinFlexMillis())
-                    else setPeriodic(period)
                 }
+                .setPersisted(true)
                 .build()
         )
     }
