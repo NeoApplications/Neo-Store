@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
+import androidx.work.Configuration
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.EXODUS_TRACKERS_SYNC
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
@@ -576,6 +577,10 @@ class SyncService : ConnectionService<SyncService.Binder>() {
     }
 
     class Job : JobService() {
+        init {
+            Configuration.Builder().setJobSchedulerJobIdRange(1000, 2000).build()
+        }
+
         private val jobScope = CoroutineScope(Dispatchers.Default)
         private var syncParams: JobParameters? = null
         private val syncConnection =
