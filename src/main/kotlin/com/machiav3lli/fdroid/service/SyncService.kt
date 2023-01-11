@@ -55,6 +55,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
 import javax.inject.Inject
@@ -97,6 +99,16 @@ class SyncService : ConnectionService<SyncService.Binder>() {
     private var currentTask: CurrentTask? = null
 
     private var updateNotificationBlockerFragment: WeakReference<Fragment>? = null
+
+    private val downloadConnection =
+        Connection(DownloadService::class.java, onBind = { _, dBinder ->
+            CoroutineScope(Dispatchers.Default).launch {
+                dBinder.stateSubject
+                    .collectLatest { binder.updateDownloadState(it) }
+            }
+        })
+
+    private val downloadServiceMutex = Mutex()
 
     enum class SyncRequest { AUTO, MANUAL, FORCE }
 
@@ -203,14 +215,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
     private val binder = Binder()
     override fun onBind(intent: Intent): Binder = binder
     lateinit var db: DatabaseX
-
-    private val downloadConnection =
-        Connection(DownloadService::class.java, onBind = { _, dBinder ->
-            CoroutineScope(Dispatchers.Default).launch {
-                dBinder.stateSubject
-                    .collectLatest { binder.updateDownloadState(it) }
-            }
-        })
 
     override fun onCreate() {
         super.onCreate()
