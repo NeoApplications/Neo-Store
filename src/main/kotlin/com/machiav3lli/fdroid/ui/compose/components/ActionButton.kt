@@ -108,7 +108,7 @@ fun MainActionButton(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(imageVector = it.icon, contentDescription = null)
+                Icon(imageVector = it.icon, contentDescription = stringResource(id = it.textId))
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(text = stringResource(id = it.textId))
             }
@@ -136,7 +136,7 @@ fun SecondaryActionButton(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(imageVector = it.icon, contentDescription = null)
+                Icon(imageVector = it.icon, contentDescription = stringResource(id = it.textId))
             }
         }
     }
