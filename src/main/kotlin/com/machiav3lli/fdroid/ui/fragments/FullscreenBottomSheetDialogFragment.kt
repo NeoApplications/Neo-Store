@@ -7,10 +7,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-abstract class FullscreenBottomSheetDialogFragment : BottomSheetDialogFragment() {
+abstract class FullscreenBottomSheetDialogFragment(private val expanded: Boolean = true) :
+    BottomSheetDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val sheet = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
-        sheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        if (expanded) sheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        else sheet.behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         return sheet
     }
 
