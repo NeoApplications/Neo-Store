@@ -84,7 +84,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     private class Task(val repositoryId: Long, val manual: Boolean)
     private data class CurrentTask(
-        val task: Task?, val disposable: Disposable,
+        val task: Task?, val disposable: Any,
         val hasUpdates: Boolean, val lastState: State,
     )
 
@@ -262,7 +262,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         return currentTask?.let {
             if (condition(it)) {
                 currentTask = null
-                it.disposable.dispose()
+                if (it.disposable is kotlinx.coroutines.Job) it.disposable.cancel()
+                else if (it.disposable is Disposable) it.disposable.dispose()
                 RepositoryUpdater.await()
                 it
             } else {
