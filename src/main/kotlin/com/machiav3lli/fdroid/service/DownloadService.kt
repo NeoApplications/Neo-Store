@@ -4,9 +4,12 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.util.Log
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.whenResumed
 import com.machiav3lli.fdroid.BuildConfig
+import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
@@ -15,6 +18,7 @@ import com.machiav3lli.fdroid.content.Cache
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.installer.AppInstaller
+import com.machiav3lli.fdroid.installer.LegacyInstaller
 import com.machiav3lli.fdroid.network.Downloader
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.extension.android.Android
@@ -30,7 +34,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -226,11 +229,20 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
             mutableStateSubject.emit(State.Success(task.packageName, task.name, task.release))
             consumed = true
         }
-        if (!consumed) { //TODO investigate if there's resulting issues
-            MainScope().launch {
-                AppInstaller.getInstance(this@DownloadService)
-                    ?.defaultInstaller?.install(task.name, task.release.cacheFileName)
+        val installer = suspend {
+            AppInstaller.getInstance(MainApplication.mainActivity)
+                ?.defaultInstaller?.install(task.name, task.release.cacheFileName)
+        }
+        if (!consumed && MainApplication.mainActivity != null &&
+            AppInstaller.getInstance(MainApplication.mainActivity)?.defaultInstaller is LegacyInstaller
+        ) { //TODO investigate if there's resulting issues
+            CoroutineScope(Dispatchers.Default).launch {
+                Log.i(this::javaClass.name, "Waiting activity to install: ${task.packageName}")
+                MainApplication.mainActivity?.whenResumed { installer() }
             }
+        } else if (!consumed) {
+            Log.i(this::javaClass.name, "Installing downloaded: ${task.url}")
+            CoroutineScope(Dispatchers.IO).launch { installer() }
         }
     }
 
