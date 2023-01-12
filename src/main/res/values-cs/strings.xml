@@ -294,4 +294,6 @@
     <string name="vulnerabilities">Zranitelnosti.</string>
     <string name="no_vulnerabilities_installed_apps">Žádné nainstalované aplikace nemají známé zranitelnosti.</string>
     <string name="vulnerabilities_installed_apps">Tyto nainstalované aplikace mají známé zranitelnosti!</string>
+    <string name="only_on_battery">Pouze při nabíjení</string>
+    <string name="edit">Upravit</string>
 </resources>
