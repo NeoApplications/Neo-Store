@@ -292,4 +292,6 @@
     <string name="vulnerabilities">Kerentanan.</string>
     <string name="vulnerabilities_installed_apps">Aplikasi terinstal berikut memiliki kerentanan yang diketahui!</string>
     <string name="no_vulnerabilities_installed_apps">Tidak ada aplikasi terinstal yang memiliki kerentanan yang diketahui.</string>
+    <string name="only_on_battery">Hanya saat mengisi daya</string>
+    <string name="edit">Sunting</string>
 </resources>
