@@ -105,6 +105,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                 dBinder.stateSubject
                     .collectLatest { binder.updateDownloadState(it) }
             }
+        }, onUnbind = { _, _ ->
+            downloadServiceMutex.unlock()
         })
 
     private val downloadServiceMutex = Mutex()
