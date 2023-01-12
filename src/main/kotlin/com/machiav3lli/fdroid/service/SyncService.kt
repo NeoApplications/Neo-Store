@@ -99,6 +99,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     private var updateNotificationBlockerFragment: WeakReference<Fragment>? = null
 
+    private val downloadServiceMutex = Mutex()
+
     private val downloadConnection =
         Connection(DownloadService::class.java, onBind = { _, dBinder ->
             CoroutineScope(Dispatchers.Default).launch {
@@ -106,10 +108,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                     .collectLatest { binder.updateDownloadState(it) }
             }
         }, onUnbind = { _, _ ->
-            downloadServiceMutex.unlock()
+            if (downloadServiceMutex.isLocked) downloadServiceMutex.unlock()
         })
-
-    private val downloadServiceMutex = Mutex()
 
     enum class SyncRequest { AUTO, MANUAL, FORCE }
 
@@ -525,7 +525,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                     }
                 }.let {
                     it.forEach { job -> job.join() }
-                    downloadServiceMutex.unlock()
+                    if (downloadServiceMutex.isLocked) downloadServiceMutex.unlock()
                 }
         }
     }
