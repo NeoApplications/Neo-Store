@@ -120,14 +120,7 @@ dependencies {
     // Core
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.21")
     implementation("com.google.devtools.ksp:symbol-processing-api:1.7.21-1.0.8")
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.7.0-alpha01")
-    implementation("androidx.fragment:fragment-ktx:1.6.0-alpha04")
-    implementation("androidx.activity:activity-ktx:1.6.1")
-    implementation("androidx.activity:activity-compose:1.6.1")
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
-    implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
     implementation("androidx.work:work-runtime-ktx:2.8.0-rc01")
 
     // Material3
