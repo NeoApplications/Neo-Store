@@ -40,8 +40,7 @@ import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.SyncService
 import com.machiav3lli.fdroid.ui.compose.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
-import com.machiav3lli.fdroid.ui.fragments.EditRepositorySheetX
-import com.machiav3lli.fdroid.ui.fragments.RepositorySheetX
+import com.machiav3lli.fdroid.ui.fragments.RepoSheet
 import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.PrefsNavHost
@@ -77,8 +76,7 @@ class PrefsActivityX : AppCompatActivity() {
         RepositoriesVM.Factory(db.repositoryDao)
     }
 
-    private lateinit var sheetRepo: RepositorySheetX
-    private lateinit var sheetEditRepo: EditRepositorySheetX
+    private lateinit var sheetRepo: RepoSheet
 
     @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -256,12 +254,12 @@ class PrefsActivityX : AppCompatActivity() {
     }
 
     internal fun navigateRepo(repoId: Long) {
-        sheetRepo = RepositorySheetX(repoId)
+        sheetRepo = RepoSheet(repoId)
         sheetRepo.showNow(supportFragmentManager, "Repository $repoId")
     }
 
     internal fun navigateEditRepo(repoId: Long) {
-        sheetEditRepo = EditRepositorySheetX(repoId)
-        sheetEditRepo.showNow(supportFragmentManager, "Edit Repository $repoId")
+        sheetRepo = RepoSheet(repoId, true)
+        sheetRepo.showNow(supportFragmentManager, "Edit Repository $repoId")
     }
 }
