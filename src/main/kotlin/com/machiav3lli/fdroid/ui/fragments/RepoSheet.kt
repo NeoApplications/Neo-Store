@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -71,7 +70,7 @@ import kotlinx.coroutines.launch
 import java.net.URI
 import java.util.*
 
-class RepoSheet() : FullscreenBottomSheetDialogFragment(false), RepoManager {
+class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
     val viewModel: RepositorySheetVM by viewModels {
         RepositorySheetVM.Factory((requireActivity() as PrefsActivityX).db, repositoryId)
     }
@@ -183,11 +182,10 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(false), RepoManager {
         }
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(16.dp)
         ) {
-
             if ((repo?.updated ?: -1) > 0L && !editMode) {
                 item {
                     TitleText(
