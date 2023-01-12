@@ -294,4 +294,6 @@
     <string name="vulnerabilities">Vulnerabilidades.</string>
     <string name="vulnerabilities_installed_apps">¡Estas aplicaciones instaladas tienen vulnerabilidades conocidas!</string>
     <string name="no_vulnerabilities_installed_apps">Ninguna de las aplicaciones instaladas tiene vulnerabilidades conocidas.</string>
+    <string name="only_on_battery">Sólo cuando se está cargando</string>
+    <string name="edit">Editar</string>
 </resources>
