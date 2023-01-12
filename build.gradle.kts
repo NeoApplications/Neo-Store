@@ -1,6 +1,6 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val composeVersion = "1.4.0-alpha03"
+val composeVersion = "1.3.1"
 val composeCompilerVersion = "1.4.0-alpha02"
 val roomVersion = "2.5.0-rc01"
 val navigationVersion = "2.5.3"
