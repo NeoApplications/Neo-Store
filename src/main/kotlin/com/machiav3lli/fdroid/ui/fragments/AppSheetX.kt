@@ -34,6 +34,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -375,7 +376,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         coroutineScope.launch {
             scaffoldState.showSnackbar(
                 message = getString(R.string.link_copied_to_clipboard),
-                actionLabel = getString(R.string.open)
+                actionLabel = getString(R.string.open),
+                duration = SnackbarDuration.Short,
             ).apply {
                 if (this == SnackbarResult.ActionPerformed) {
                     onUriClick(link.toUri(), false)
