@@ -297,4 +297,6 @@
     <string name="no_vulnerabilities_installed_apps">Żadna z zainstalowanych aplikacji nie ma znanych podatności.</string>
     <string name="vulnerabilities">Podatności.</string>
     <string name="vulnerabilities_installed_apps">Te zainstalowane aplikacje mają znane podatności!</string>
+    <string name="edit">Edytuj</string>
+    <string name="only_on_battery">Podczas ładowania</string>
 </resources>
