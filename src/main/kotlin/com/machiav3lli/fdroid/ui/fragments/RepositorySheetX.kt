@@ -54,7 +54,7 @@ class RepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManager {
         viewModel.repo.observe(viewLifecycleOwner) { updateSheet() }
         viewModel.appsCount.observe(viewLifecycleOwner) { updateSheet() }
         binding.delete.setOnClickListener {
-            MessageDialog(MessageDialog.Message.DeleteRepositoryConfirm).show(
+            MessageDialog(MessageDialog.Message.DeleteRepositoryConfirm(repositoryId)).show(
                 childFragmentManager
             )
         }
@@ -136,7 +136,7 @@ class RepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManager {
         }
     }
 
-    override fun onDeleteConfirm() {
+    override fun onDeleteConfirm(repositoryId: Long) {
         lifecycleScope.launch {
             if (syncConnection.binder?.deleteRepository(repositoryId) == true)
                 dismissAllowingStateLoss()

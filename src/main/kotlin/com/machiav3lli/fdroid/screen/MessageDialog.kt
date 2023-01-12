@@ -23,10 +23,19 @@ class MessageDialog() : DialogFragment() {
     }
 
     sealed class Message : KParcelable {
-        object DeleteRepositoryConfirm : Message() {
-            @Suppress("unused")
-            @JvmField
-            val CREATOR = KParcelable.creator { DeleteRepositoryConfirm }
+        class DeleteRepositoryConfirm(val repoId: Long) : Message() {
+            override fun writeToParcel(dest: Parcel, flags: Int) {
+                dest.writeLong(repoId)
+            }
+
+            companion object {
+                @Suppress("unused")
+                @JvmField
+                val CREATOR = KParcelable.creator {
+                    val repoId = it.readLong()
+                    DeleteRepositoryConfirm(repoId)
+                }
+            }
         }
 
         object CantEditSyncing : Message() {
@@ -146,7 +155,9 @@ class MessageDialog() : DialogFragment() {
             is Message.DeleteRepositoryConfirm -> {
                 dialog.setTitle(R.string.confirmation)
                 dialog.setMessage(R.string.delete_repository_DESC)
-                dialog.setPositiveButton(R.string.delete) { _, _ -> (parentFragment as RepoManager).onDeleteConfirm() }
+                dialog.setPositiveButton(R.string.delete) { _, _ ->
+                    (parentFragment as RepoManager).onDeleteConfirm(message.repoId)
+                }
                 dialog.setNegativeButton(R.string.cancel, null)
             }
             is Message.CantEditSyncing -> {

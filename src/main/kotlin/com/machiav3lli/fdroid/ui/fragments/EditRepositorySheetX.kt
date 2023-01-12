@@ -135,7 +135,7 @@ class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManage
         viewModel.repo.observe(viewLifecycleOwner) { updateSheet() }
         binding.save.setOnClickListener { onSaveRepositoryClick() }
         binding.delete.setOnClickListener {
-            MessageDialog(MessageDialog.Message.DeleteRepositoryConfirm)
+            MessageDialog(MessageDialog.Message.DeleteRepositoryConfirm(repositoryId))
                 .show(childFragmentManager)
         }
 
@@ -434,7 +434,7 @@ class EditRepositorySheetX() : FullscreenBottomSheetDialogFragment(), RepoManage
         }
     }
 
-    override fun onDeleteConfirm() {
+    override fun onDeleteConfirm(repositoryId: Long) {
         lifecycleScope.launch {
             if (syncConnection.binder?.deleteRepository(repositoryId) == true)
                 dismissAllowingStateLoss()

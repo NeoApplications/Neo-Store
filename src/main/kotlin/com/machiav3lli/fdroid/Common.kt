@@ -413,5 +413,5 @@ val IDENTIFICATION_DATA_PERMISSIONS = listOf(
 )
 
 interface RepoManager {
-    fun onDeleteConfirm()
+    fun onDeleteConfirm(repoId: Long)
 }
