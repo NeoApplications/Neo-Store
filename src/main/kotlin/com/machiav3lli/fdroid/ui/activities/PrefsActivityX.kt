@@ -88,9 +88,9 @@ class PrefsActivityX : AppCompatActivity() {
         setContent {
             AppTheme(
                 darkTheme = when (Preferences[Preferences.Key.Theme]) {
-                    is Preferences.Theme.System -> isSystemInDarkTheme()
+                    is Preferences.Theme.System      -> isSystemInDarkTheme()
                     is Preferences.Theme.SystemBlack -> isSystemInDarkTheme()
-                    else -> isDarkTheme
+                    else                             -> isDarkTheme
                 }
             ) {
                 navController = rememberAnimatedNavController()
@@ -153,10 +153,10 @@ class PrefsActivityX : AppCompatActivity() {
                 uri?.scheme == "package" || uri?.scheme == "fdroid.app" -> {
                     uri.schemeSpecificPart?.nullIfEmpty()
                 }
-                uri?.scheme == "market" && uri.host == "details" -> {
+                uri?.scheme == "market" && uri.host == "details"        -> {
                     uri.getQueryParameter("id")?.nullIfEmpty()
                 }
-                uri != null && uri.scheme in setOf("http", "https") -> {
+                uri != null && uri.scheme in setOf("http", "https")     -> {
                     val host = uri.host.orEmpty()
                     if (host == "f-droid.org" || host.endsWith(".f-droid.org")) {
                         uri.lastPathSegment?.nullIfEmpty()
@@ -164,7 +164,7 @@ class PrefsActivityX : AppCompatActivity() {
                         null
                     }
                 }
-                else -> {
+                else                                                    -> {
                     null
                 }
             }
@@ -222,8 +222,8 @@ class PrefsActivityX : AppCompatActivity() {
                     )
                 }
             }
-            ACTION_UPDATES -> handleSpecialIntent(SpecialIntent.Updates)
-            ACTION_INSTALL -> handleSpecialIntent(
+            ACTION_UPDATES     -> handleSpecialIntent(SpecialIntent.Updates)
+            ACTION_INSTALL     -> handleSpecialIntent(
                 SpecialIntent.Install(
                     intent.packageName,
                     intent.getStringExtra(EXTRA_CACHE_FILE_NAME)

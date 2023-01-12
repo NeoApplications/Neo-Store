@@ -12,7 +12,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import android.os.BatteryManager
 import android.os.Build.VERSION_CODES
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -248,20 +247,12 @@ class MainApplication : Application(), ImageLoaderFactory {
         )
     }
 
-    private fun isCharging(context: Context): Boolean {
-        val intent = context.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
-        val plugged = intent!!.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)
-        return plugged == BatteryManager.BATTERY_PLUGGED_AC
-                || plugged == BatteryManager.BATTERY_PLUGGED_USB
-                || plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS
-    }
-
     private fun updateProxy() {
         val type = Preferences[Preferences.Key.ProxyType].proxyType
         val host = Preferences[Preferences.Key.ProxyHost]
         val port = Preferences[Preferences.Key.ProxyPort]
         val socketAddress = when (type) {
-            Proxy.Type.DIRECT -> {
+            Proxy.Type.DIRECT                 -> {
                 null
             }
             Proxy.Type.HTTP, Proxy.Type.SOCKS -> {

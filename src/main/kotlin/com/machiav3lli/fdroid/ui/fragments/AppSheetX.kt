@@ -115,7 +115,6 @@ import com.machiav3lli.fdroid.ui.compose.utils.Callbacks
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.pages.ScreenshotsPage
 import com.machiav3lli.fdroid.ui.viewmodels.AppSheetVM
-import com.machiav3lli.fdroid.utility.Utils.rootInstallerEnabled
 import com.machiav3lli.fdroid.utility.Utils.startUpdate
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.grantedPermissions
@@ -129,10 +128,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.math.floor
 
-// TODO clean up and replace dropped functions from AppDetailFragment
 class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     companion object {
         private const val EXTRA_PACKAGE_NAME = "packageName"
@@ -171,11 +168,10 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        super.onCreate(savedInstanceState)
-        setupAdapters()
+        downloadConnection.bind(requireContext())
         return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
                 AppTheme(
                     darkTheme = when (Preferences[Preferences.Key.Theme]) {
                         is Preferences.Theme.System      -> isSystemInDarkTheme()
@@ -189,10 +185,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         }
     }
 
-    private fun setupAdapters() {
-        downloadConnection.bind(requireContext())
-    }
-
     override fun setupLayout() {
         lifecycleScope.launchWhenStarted {
             viewModel.productRepos.collectLatest {
@@ -201,8 +193,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         }
     }
 
-    override fun updateSheet() {
-    }
+    override fun updateSheet() {}
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -210,7 +201,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         downloadConnection.unbind(requireContext())
     }
 
-    private suspend fun updateDownloadState(downloadState: DownloadService.State?) {
+    private fun updateDownloadState(downloadState: DownloadService.State?) {
         val state = when (downloadState) {
             is DownloadService.State.Pending     -> DownloadState.Pending
             is DownloadService.State.Connecting  -> DownloadState.Connecting
@@ -222,12 +213,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         }
         viewModel.updateDownloadState(state)
         viewModel.updateActions()
-        if (downloadState is DownloadService.State.Success && !rootInstallerEnabled) { // && isResumed TODO unite root and normal install calls
-            withContext(Dispatchers.Default) {
-                AppInstaller.getInstance(MainApplication.mainActivity)?.defaultInstaller?.install(
-                    downloadState.release.cacheFileName)
-            }
-        }
     }
 
     override fun onActionClick(action: ActionState?) {
@@ -401,8 +386,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
 
     @OptIn(
         ExperimentalMaterial3Api::class,
-        ExperimentalComposeUiApi::class,
-        ExperimentalFoundationApi::class
+        ExperimentalFoundationApi::class,
+        ExperimentalComposeUiApi::class
     )
     @Composable
     fun AppSheet() {

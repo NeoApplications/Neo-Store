@@ -534,7 +534,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                 val trackerList = repoExodusAPI.getTrackers()
 
                 // TODO **conditionally** update DB with the trackers
-                Log.v(this::javaClass.name, trackerList.trackers.map { it.value.name }.toString())
                 db.trackerDao.insertReplace(
                     *trackerList.trackers
                         .map { (key, value) ->

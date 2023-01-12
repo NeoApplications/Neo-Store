@@ -85,6 +85,7 @@ abstract class DatabaseX : RoomDatabase() {
     abstract val extrasDao: ExtrasDao
     abstract val exodusInfoDao: ExodusInfoDao
     abstract val trackerDao: TrackerDao
+    // TODO downloaded releases class/dao
 
     companion object {
         @Volatile

@@ -129,9 +129,9 @@ class MainActivityX : AppCompatActivity() {
         setContent {
             AppTheme(
                 darkTheme = when (Preferences[Preferences.Key.Theme]) {
-                    is Preferences.Theme.System -> isSystemInDarkTheme()
+                    is Preferences.Theme.System      -> isSystemInDarkTheme()
                     is Preferences.Theme.SystemBlack -> isSystemInDarkTheme()
-                    else -> isDarkTheme
+                    else                             -> isDarkTheme
                 }
             ) {
                 val query by searchQuery.collectAsState(initial = "")
@@ -220,8 +220,9 @@ class MainActivityX : AppCompatActivity() {
                 expanded.value = false
                 true
             }
-            keyCode == KeyEvent.KEYCODE_BACK -> moveTaskToBack(true)
-            else -> super.onKeyDown(keyCode, event)
+            keyCode == KeyEvent.KEYCODE_BACK                   -> moveTaskToBack(true)
+            else                                               -> super.onKeyDown(keyCode,
+                event)
         }
     }
 
@@ -237,10 +238,10 @@ class MainActivityX : AppCompatActivity() {
                 uri?.scheme == "package" || uri?.scheme == "fdroid.app" -> {
                     uri.schemeSpecificPart?.nullIfEmpty()
                 }
-                uri?.scheme == "market" && uri.host == "details" -> {
+                uri?.scheme == "market" && uri.host == "details"        -> {
                     uri.getQueryParameter("id")?.nullIfEmpty()
                 }
-                uri != null && uri.scheme in setOf("http", "https") -> {
+                uri != null && uri.scheme in setOf("http", "https")     -> {
                     val host = uri.host.orEmpty()
                     if (host == "f-droid.org" || host.endsWith(".f-droid.org")) {
                         uri.lastPathSegment?.nullIfEmpty()
@@ -248,7 +249,7 @@ class MainActivityX : AppCompatActivity() {
                         null
                     }
                 }
-                else -> {
+                else                                                    -> {
                     null
                 }
             }
@@ -291,13 +292,13 @@ class MainActivityX : AppCompatActivity() {
                     }
                 }
             }
-            ACTION_UPDATES -> {
+            ACTION_UPDATES     -> { // TODO Handle EXTRA_UPDATES
                 if (!intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)) {
                     intent.putExtra(EXTRA_INTENT_HANDLED, true)
                     handleSpecialIntent(SpecialIntent.Updates)
                 }
             }
-            ACTION_INSTALL -> handleSpecialIntent(
+            ACTION_INSTALL     -> handleSpecialIntent(
                 SpecialIntent.Install(
                     intent.packageName,
                     intent.getStringExtra(EXTRA_CACHE_FILE_NAME)

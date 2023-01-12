@@ -134,6 +134,5 @@ fun PrefsReposPage(viewModel: RepositoriesVM, address: String, fingerprint: Stri
             },
             onLongClick = { viewModel.showRepositorySheet(it.id) }
         )
-
     }
 }

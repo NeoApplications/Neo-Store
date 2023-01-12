@@ -15,29 +15,17 @@ import android.content.pm.PackageManager
 import android.content.pm.PermissionInfo
 import android.content.pm.Signature
 import android.content.res.Configuration
-import android.graphics.Typeface
 import android.net.Uri
 import android.provider.Settings
 import android.text.SpannableStringBuilder
-import android.text.Spanned
 import android.text.style.BulletSpan
 import android.text.style.ClickableSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.text.style.URLSpan
-import android.text.style.UnderlineSpan
 import android.text.util.Linkify
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.core.text.HtmlCompat
 import androidx.core.text.util.LinkifyCompat
 import androidx.fragment.app.FragmentManager
@@ -69,7 +57,6 @@ import com.machiav3lli.fdroid.utility.extension.android.singleSignature
 import com.machiav3lli.fdroid.utility.extension.android.versionCodeCompat
 import com.machiav3lli.fdroid.utility.extension.text.hex
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
-import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.lang.ref.WeakReference
 import java.security.MessageDigest
@@ -121,10 +108,6 @@ object Utils {
             ""
         }
     }
-
-    val rootInstallerEnabled: Boolean
-        get() = Preferences[Preferences.Key.Installer] == Preferences.Installer.Root &&
-                (Shell.getCachedShell()?.isRoot ?: Shell.getShell().isRoot)
 
     suspend fun startUpdate(
         packageName: String,
@@ -189,7 +172,7 @@ object Utils {
     }
 
     fun Context.getLocaleOfCode(localeCode: String): Locale = when {
-        localeCode.isEmpty() -> if (Android.sdk(24)) {
+        localeCode.isEmpty()      -> if (Android.sdk(24)) {
             resources.configuration.locales[0]
         } else {
             resources.configuration.locale
@@ -198,11 +181,11 @@ object Utils {
             localeCode.substring(0, 2),
             localeCode.substring(4)
         )
-        localeCode.contains("_") -> Locale(
+        localeCode.contains("_")  -> Locale(
             localeCode.substring(0, 2),
             localeCode.substring(3)
         )
-        else -> Locale(localeCode)
+        else                      -> Locale(localeCode)
     }
 
     /**
@@ -231,22 +214,22 @@ fun <T> findSuggestedProduct(
 val isDarkTheme: Boolean
     get() = when (Preferences[Preferences.Key.Theme]) {
         is Preferences.Theme.Light -> false
-        is Preferences.Theme.Dark -> true
+        is Preferences.Theme.Dark  -> true
         is Preferences.Theme.Black -> true
-        else -> false
+        else                       -> false
     }
 
 val isBlackTheme: Boolean
     get() = when (Preferences[Preferences.Key.Theme]) {
-        is Preferences.Theme.Black -> true
+        is Preferences.Theme.Black       -> true
         is Preferences.Theme.SystemBlack -> true
-        else -> false
+        else                             -> false
     }
 
 val isDynamicColorsTheme: Boolean
     get() = when (Preferences[Preferences.Key.Theme]) {
         is Preferences.Theme.Dynamic -> true
-        else -> false
+        else                         -> false
     }
 
 fun Context.showBatteryOptimizationDialog() {
@@ -514,41 +497,6 @@ fun formatHtml(text: String, callbacks: Callbacks): SpannableStringBuilder {
         builder.insert(start, "\u2022 ")
     }
     return builder
-}
-
-/**
- * Converts a [Spanned] into an [AnnotatedString] trying to keep as much formatting as possible.
- * Source: https://stackoverflow.com/questions/66494838/android-compose-how-to-use-html-tags-in-a-text-view
- */
-fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
-    val spanned = this@toAnnotatedString
-    append(spanned.toString())
-    getSpans(0, spanned.length, Any::class.java).forEach { span ->
-        val start = getSpanStart(span)
-        val end = getSpanEnd(span)
-        when (span) {
-            is StyleSpan -> when (span.style) {
-                Typeface.BOLD -> addStyle(SpanStyle(fontWeight = FontWeight.Bold), start, end)
-                Typeface.ITALIC -> addStyle(SpanStyle(fontStyle = FontStyle.Italic), start, end)
-                Typeface.BOLD_ITALIC -> addStyle(
-                    SpanStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontStyle = FontStyle.Italic
-                    ), start, end
-                )
-            }
-            is UnderlineSpan -> addStyle(
-                SpanStyle(textDecoration = TextDecoration.Underline),
-                start,
-                end
-            )
-            is ForegroundColorSpan -> addStyle(
-                SpanStyle(color = Color(span.foregroundColor)),
-                start,
-                end
-            )
-        }
-    }
 }
 
 fun NavDestination.destinationToItem(): NavItem? = listOf(

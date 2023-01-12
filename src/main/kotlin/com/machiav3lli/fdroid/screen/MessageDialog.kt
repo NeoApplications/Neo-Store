@@ -84,16 +84,16 @@ class MessageDialog() : DialogFragment() {
                 dest.writeInt(incompatibilities.size)
                 for (incompatibility in incompatibilities) {
                     when (incompatibility) {
-                        is Release.Incompatibility.MinSdk -> {
+                        is Release.Incompatibility.MinSdk   -> {
                             dest.writeInt(0)
                         }
-                        is Release.Incompatibility.MaxSdk -> {
+                        is Release.Incompatibility.MaxSdk   -> {
                             dest.writeInt(1)
                         }
                         is Release.Incompatibility.Platform -> {
                             dest.writeInt(2)
                         }
-                        is Release.Incompatibility.Feature -> {
+                        is Release.Incompatibility.Feature  -> {
                             dest.writeInt(3)
                             dest.writeString(incompatibility.feature)
                         }
@@ -111,10 +111,10 @@ class MessageDialog() : DialogFragment() {
                     val count = it.readInt()
                     val incompatibilities = generateSequence {
                         when (it.readInt()) {
-                            0 -> Release.Incompatibility.MinSdk
-                            1 -> Release.Incompatibility.MaxSdk
-                            2 -> Release.Incompatibility.Platform
-                            3 -> Release.Incompatibility.Feature(it.readString()!!)
+                            0    -> Release.Incompatibility.MinSdk
+                            1    -> Release.Incompatibility.MaxSdk
+                            2    -> Release.Incompatibility.Platform
+                            3    -> Release.Incompatibility.Feature(it.readString()!!)
                             else -> throw RuntimeException()
                         }
                     }.take(count).toList()
@@ -152,7 +152,7 @@ class MessageDialog() : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val dialog = MaterialAlertDialogBuilder(requireContext())
         when (val message = requireArguments().getParcelable<Message>(EXTRA_MESSAGE)!!) {
-            is Message.DeleteRepositoryConfirm -> {
+            is Message.DeleteRepositoryConfirm  -> {
                 dialog.setTitle(R.string.confirmation)
                 dialog.setMessage(R.string.delete_repository_DESC)
                 dialog.setPositiveButton(R.string.delete) { _, _ ->
@@ -160,12 +160,12 @@ class MessageDialog() : DialogFragment() {
                 }
                 dialog.setNegativeButton(R.string.cancel, null)
             }
-            is Message.CantEditSyncing -> {
+            is Message.CantEditSyncing          -> {
                 dialog.setTitle(R.string.action_failed)
                 dialog.setMessage(R.string.cant_edit_sync_DESC)
                 dialog.setPositiveButton(R.string.ok, null)
             }
-            is Message.Link -> {
+            is Message.Link                     -> {
                 dialog.setTitle(R.string.confirmation)
                 dialog.setMessage(getString(R.string.open_DESC_FORMAT, message.uri.toString()))
                 dialog.setPositiveButton(R.string.ok) { _, _ ->
@@ -177,7 +177,7 @@ class MessageDialog() : DialogFragment() {
                 }
                 dialog.setNegativeButton(R.string.cancel, null)
             }
-            is Message.Permissions -> {
+            is Message.Permissions              -> {
                 val packageManager = requireContext().packageManager
                 val builder = StringBuilder()
                 val localCache = PackageItemResolver.LocalCache()
@@ -221,7 +221,7 @@ class MessageDialog() : DialogFragment() {
                 dialog.setMessage(builder)
                 dialog.setPositiveButton(R.string.ok, null)
             }
-            is Message.ReleaseIncompatible -> {
+            is Message.ReleaseIncompatible      -> {
                 val builder = StringBuilder()
                 val minSdkVersion = if (Release.Incompatibility.MinSdk in message.incompatibilities)
                     message.minSdkVersion else null
@@ -272,7 +272,7 @@ class MessageDialog() : DialogFragment() {
                 dialog.setMessage(builder)
                 dialog.setPositiveButton(R.string.ok, null)
             }
-            is Message.ReleaseOlder -> {
+            is Message.ReleaseOlder             -> {
                 dialog.setTitle(R.string.incompatible_version)
                 dialog.setMessage(R.string.incompatible_older_DESC)
                 dialog.setPositiveButton(R.string.ok, null)

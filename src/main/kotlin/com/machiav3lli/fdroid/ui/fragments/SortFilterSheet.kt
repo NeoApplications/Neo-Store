@@ -71,17 +71,16 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        super.onCreate(savedInstanceState)
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 AppTheme(
                     darkTheme = when (Preferences[Preferences.Key.Theme]) {
-                        is Preferences.Theme.System -> isSystemInDarkTheme()
+                        is Preferences.Theme.System      -> isSystemInDarkTheme()
                         is Preferences.Theme.SystemBlack -> isSystemInDarkTheme()
-                        else -> isDarkTheme
+                        else                             -> isDarkTheme
                     }
                 ) {
                     SortFilterPage(pageRoute)
@@ -106,24 +105,24 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
         val activeRepos by remember(repos) { mutableStateOf(repos.filter { it.enabled }) }
 
         val sortKey = when (navPage) {
-            NavItem.Latest.destination -> Preferences.Key.SortOrderLatest
+            NavItem.Latest.destination    -> Preferences.Key.SortOrderLatest
             NavItem.Installed.destination -> Preferences.Key.SortOrderInstalled
-            else -> Preferences.Key.SortOrderExplore // NavItem.Explore
+            else                          -> Preferences.Key.SortOrderExplore // NavItem.Explore
         }
         val sortAscendingKey = when (navPage) {
-            NavItem.Latest.destination -> Preferences.Key.SortOrderAscendingLatest
+            NavItem.Latest.destination    -> Preferences.Key.SortOrderAscendingLatest
             NavItem.Installed.destination -> Preferences.Key.SortOrderAscendingInstalled
-            else -> Preferences.Key.SortOrderAscendingExplore // NavItem.Explore
+            else                          -> Preferences.Key.SortOrderAscendingExplore // NavItem.Explore
         }
         val reposFilterKey = when (navPage) {
-            NavItem.Latest.destination -> Preferences.Key.ReposFilterLatest
+            NavItem.Latest.destination    -> Preferences.Key.ReposFilterLatest
             NavItem.Installed.destination -> Preferences.Key.ReposFilterInstalled
-            else -> Preferences.Key.ReposFilterExplore // NavItem.Explore
+            else                          -> Preferences.Key.ReposFilterExplore // NavItem.Explore
         }
         val categoriesFilterKey = when (navPage) {
-            NavItem.Latest.destination -> Preferences.Key.CategoriesFilterLatest
+            NavItem.Latest.destination    -> Preferences.Key.CategoriesFilterLatest
             NavItem.Installed.destination -> Preferences.Key.CategoriesFilterInstalled
-            else -> Preferences.Key.CategoriesFilterExplore // NavItem.Explore
+            else                          -> Preferences.Key.CategoriesFilterExplore // NavItem.Explore
         }
 
         var sortOption by remember(Preferences[sortKey]) {
