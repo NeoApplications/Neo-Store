@@ -292,4 +292,6 @@
     <string name="vulnerabilities">漏洞。</string>
     <string name="vulnerabilities_installed_apps">这些已安装的应用程序存在已知漏洞！</string>
     <string name="no_vulnerabilities_installed_apps">没有已安装的应用程序存在已知漏洞。</string>
+    <string name="only_on_battery">仅在充电时</string>
+    <string name="edit">编辑</string>
 </resources>
