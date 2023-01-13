@@ -289,4 +289,5 @@
     <string name="permissions_note_4">Apenas require permisos</string>
     <string name="permission_not_granted">Non outorgado</string>
     <string name="permission_not_present">Permiso inexistente no seu sistema</string>
+    <string name="app_installed">Instalado</string>
 </resources>

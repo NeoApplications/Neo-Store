@@ -289,4 +289,5 @@
     <string name="permission_granted">Frunidu</string>
     <string name="permission_not_granted">Non frunidu</string>
     <string name="permission_not_present">Non presente in su sistema tuo</string>
+    <string name="app_installed">Installadas</string>
 </resources>

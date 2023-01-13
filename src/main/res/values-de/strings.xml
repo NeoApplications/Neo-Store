@@ -233,4 +233,17 @@
     <string name="legacy_installer">Legacy Installer (kompatibel mit MIUI)</string>
     <string name="scan_qr_code">Scannen eines QR-Codes</string>
     <string name="root_installer">Root Installateur</string>
+    <string name="permission_contacts">Kontakte</string>
+    <string name="permission_calendar">Kalendar</string>
+    <string name="permission_sms">SMS/MMS</string>
+    <string name="app_installed">Installiert</string>
+    <string name="permission_storage">Speicher und Medien</string>
+    <string name="permission_location">Standort</string>
+    <string name="permission_microphone">Mikrofon</string>
+    <string name="permission_nearby_devices">Geräte in der Nähe</string>
+    <string name="permission_internet">Internet</string>
+    <string name="permission_other">Andere Genehmigungen</string>
+    <string name="permission_physical_data">Genehmigungen für physische Daten</string>
+    <string name="permission_phone">Telefon</string>
+    <string name="permission_camera">Kamera</string>
 </resources>
