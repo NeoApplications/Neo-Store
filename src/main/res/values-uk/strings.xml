@@ -295,4 +295,6 @@
     <string name="vulnerabilities_installed_apps">Ці встановлені додатки мають відомі вразливості!</string>
     <string name="no_vulnerabilities_installed_apps">Жоден із встановлених додатків не має відомих уразливостей.</string>
     <string name="vulnerabilities">Вразливості.</string>
+    <string name="edit">Редагувати</string>
+    <string name="only_on_battery">Тільки під час зарядки</string>
 </resources>
