@@ -183,7 +183,7 @@
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one">%d aplicação tem uma nova versão.</item>
         <item quantity="many">%d aplicações têm novas versões.</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="vulnerabilities_installed_apps">Estas aplicações instaladas têm vulnerabilidades conhecidas!</string>
     <string name="app_installed">Instalado</string>
@@ -294,4 +294,6 @@
     <string name="permission_granted">Concedido</string>
     <string name="permission_not_granted">Não concedido</string>
     <string name="permission_not_present">Não presente no seu sistema</string>
+    <string name="only_on_battery">Apenas ao carregar</string>
+    <string name="edit">Editar</string>
 </resources>
