@@ -475,6 +475,7 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                                         passwordFieldValue.text,
                                     )
                                 })
+                                editMode = false
                             }
                         }
                     )
