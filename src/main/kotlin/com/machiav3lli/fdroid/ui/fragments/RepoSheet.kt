@@ -1,5 +1,8 @@
 package com.machiav3lli.fdroid.ui.fragments
 
+import android.content.ClipboardManager
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.text.format.DateUtils
 import android.view.LayoutInflater
@@ -68,10 +71,12 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TrashSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.viewmodels.RepositorySheetVM
+import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import kotlinx.coroutines.launch
 import java.net.URI
+import java.net.URL
 import java.util.*
 
 class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
@@ -171,6 +176,30 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
             listOf(addressValidity, fingerprintValidity, usernameValidity, passwordValidity)
 
         SideEffect {
+            if (editMode && repo?.address.isNullOrEmpty()) {
+                val clipboardManager =
+                    requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val text = clipboardManager.primaryClip
+                    ?.let { if (it.itemCount > 0) it else null }
+                    ?.getItemAt(0)?.text?.toString().orEmpty()
+                val (addressText, fingerprintText) = try {
+                    val uri = Uri.parse(URL(text.replaceFirst("fdroidrepos:", "https:")).toString())
+                    val fingerprintText = uri.getQueryParameter("fingerprint")?.nullIfEmpty()
+                                          ?: uri.getQueryParameter("FINGERPRINT")?.nullIfEmpty()
+                    Pair(
+                        uri.buildUpon().path(uri.path?.pathCropped)
+                            .query(null).fragment(null).build().toString(), fingerprintText
+                    )
+                } catch (e: Exception) {
+                    Pair(null, null)
+                }
+                if (addressText != null)
+                    addressFieldValue = TextFieldValue(addressText, TextRange(addressText.length))
+                if (fingerprintText != null)
+                    fingerprintFieldValue =
+                        TextFieldValue(fingerprintText, TextRange(fingerprintText.length))
+            }
+
             invalidateAddress(addressValidity, addressFieldValue.text)
             invalidateFingerprint(fingerprintValidity, fingerprintFieldValue.text)
             invalidateAuthentication(
