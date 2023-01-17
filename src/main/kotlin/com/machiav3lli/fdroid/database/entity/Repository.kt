@@ -259,7 +259,7 @@ data class Repository(
             21, false, "BC54EA6FD1CD5175BCCCC47C561C5726E1C3ED7E686B6DB4B18BAC843A3EFE6C", ""
         )
         private val FLUFFY_CHAT = defaultRepository(
-            "https://fdroid.fluffychat.im/", "FluffyChat",
+            "https://fluffychat.im/repo/stable/repo/", "FluffyChat",
             "A repository to easily distribute the cute matrix messanger client.",
             21, false, "8E2637AEF6697CC6DD486AF044A6EE45B1A742AE3EF56566E748CDE8BC65C1FB", ""
         )
