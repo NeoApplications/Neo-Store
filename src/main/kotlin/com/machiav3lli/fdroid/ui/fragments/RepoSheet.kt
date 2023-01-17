@@ -32,8 +32,8 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -129,8 +129,8 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun RepoPage() {
-        val repo by viewModel.repo.observeAsState()
-        val appsCount by viewModel.appsCount.observeAsState()
+        val repo by viewModel.repo.collectAsState()
+        val appsCount by viewModel.appsCount.collectAsState()
         var editMode by remember { mutableStateOf(initEditMode) }
 
         val focusManager = LocalFocusManager.current

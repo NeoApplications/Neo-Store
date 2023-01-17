@@ -1,26 +1,28 @@
 package com.machiav3lli.fdroid.ui.viewmodels
 
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.Repository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-// TODO migrate sheets to Compose
-// TODO migrate fields to Flows
 class RepositorySheetVM(val db: DatabaseX, val repositoryId: Long) : ViewModel() {
 
-    val repo: MediatorLiveData<Repository> = MediatorLiveData()
-    val appsCount: MediatorLiveData<Long> = MediatorLiveData()
-
-    init {
-        repo.addSource(db.repositoryDao.getLive(repositoryId), repo::setValue)
-        appsCount.addSource(db.productDao.countForRepositoryLive(repositoryId), appsCount::setValue)
-    }
+    val repo = db.repositoryDao.getFlow(repositoryId).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = null
+    )
+    val appsCount = db.productDao.countForRepositoryFlow(repositoryId).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = 0
+    )
 
     fun updateRepo(newValue: Repository?) {
         newValue?.let {
