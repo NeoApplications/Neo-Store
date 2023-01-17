@@ -71,6 +71,9 @@ interface ProductDao : BaseDao<Product> {
     @Query("SELECT COUNT(*) FROM product WHERE repositoryId = :id")
     fun countForRepositoryLive(id: Long): LiveData<Long>
 
+    @Query("SELECT COUNT(*) FROM product WHERE repositoryId = :id")
+    fun countForRepositoryFlow(id: Long): Flow<Long>
+
     @Query("SELECT * FROM product WHERE packageName = :packageName")
     fun get(packageName: String): List<Product>
 
