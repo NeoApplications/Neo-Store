@@ -54,7 +54,7 @@ android {
 
     kotlinOptions {
         jvmTarget = compileOptions.sourceCompatibility.toString()
-        freeCompilerArgs = listOf("-Xjvm-default=compatibility", "-opt-in=kotlin.RequiresOptIn")
+        freeCompilerArgs = listOf("-Xjvm-default=compatibility")
     }
 
     buildFeatures {

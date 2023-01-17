@@ -98,7 +98,7 @@ fun ExplorePage(viewModel: ExploreVM) {
             }
 
             ActionChip(
-                textId = R.string.sort_filter,
+                text = stringResource(id = R.string.sort_filter),
                 icon = Phosphor.FunnelSimple
             ) { mainActivityX.navigateSortFilter(NavItem.Explore.destination) }
             Spacer(modifier = Modifier.weight(1f))

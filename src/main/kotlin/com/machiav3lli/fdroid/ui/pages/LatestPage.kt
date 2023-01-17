@@ -117,7 +117,7 @@ fun LatestPage(viewModel: LatestVM) {
                     modifier = Modifier.weight(1f),
                 )
                 ActionChip(
-                    textId = R.string.sort_filter,
+                    text = stringResource(id = R.string.sort_filter),
                     icon = Phosphor.FunnelSimple
                 ) { mainActivityX.navigateSortFilter(NavItem.Latest.destination) }
             }

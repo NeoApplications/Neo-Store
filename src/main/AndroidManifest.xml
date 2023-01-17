@@ -12,7 +12,7 @@
         tools:ignore="QueryAllPackagesPermission" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.UPDATE_PACKAGES_WITHOUT_USER_ACTION" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".MainApplication"
@@ -22,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Main.Amoled"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:targetApi="33">
 
         <receiver
             android:name=".MainApplication$BootReceiver"
@@ -99,6 +100,7 @@
             android:name=".ui.activities.PrefsActivityX"
             android:exported="true"
             android:launchMode="singleTask"
+            android:parentActivityName=".ui.activities.MainActivityX"
             android:windowSoftInputMode="adjustResize">
 
             <intent-filter>
@@ -125,6 +127,7 @@
         <service
             android:name=".service.SyncService$Job"
             android:exported="true"
+            android:foregroundServiceType="dataSync"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service
@@ -133,7 +136,8 @@
 
         <service
             android:name=".installer.InstallerService"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
 
         <provider
             android:name=".content.Cache$Provider"

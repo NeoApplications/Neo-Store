@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.ui.compose.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -20,14 +19,14 @@ import com.machiav3lli.fdroid.R
 @Composable
 fun ActionChip(
     modifier: Modifier = Modifier,
-    @StringRes textId: Int,
+    text: String,
     icon: ImageVector,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     AssistChip(
         modifier = modifier,
         label = {
-            Text(text = stringResource(id = textId))
+            Text(text = text)
         },
         leadingIcon = {
             Icon(

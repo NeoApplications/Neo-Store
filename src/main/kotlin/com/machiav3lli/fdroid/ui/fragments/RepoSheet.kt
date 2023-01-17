@@ -110,9 +110,9 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
             setContent {
                 AppTheme(
                     darkTheme = when (Preferences[Preferences.Key.Theme]) {
-                        is Preferences.Theme.System      -> isSystemInDarkTheme()
+                        is Preferences.Theme.System -> isSystemInDarkTheme()
                         is Preferences.Theme.SystemBlack -> isSystemInDarkTheme()
-                        else                             -> isDarkTheme
+                        else -> isDarkTheme
                     }
                 ) {
                     RepoPage()
@@ -128,7 +128,7 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun RepoPage() { // TODO add clipboard handler
+    fun RepoPage() {
         val repo by viewModel.repo.observeAsState()
         val appsCount by viewModel.appsCount.observeAsState()
         var editMode by remember { mutableStateOf(initEditMode) }
@@ -246,19 +246,20 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                         text = stringResource(id = R.string.recently_updated),
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    BlockText(text = if (repo != null && repo?.updated != null) {
-                        val date = Date(repo?.updated ?: 0)
-                        val format =
-                            if (DateUtils.isToday(date.time)) DateUtils.FORMAT_SHOW_TIME else
-                                DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE
-                        DateUtils.formatDateTime(context, date.time, format)
-                    } else stringResource(R.string.unknown)
+                    BlockText(
+                        text = if (repo != null && repo?.updated != null) {
+                            val date = Date(repo?.updated ?: 0)
+                            val format =
+                                if (DateUtils.isToday(date.time)) DateUtils.FORMAT_SHOW_TIME else
+                                    DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE
+                            DateUtils.formatDateTime(context, date.time, format)
+                        } else stringResource(R.string.unknown)
                     )
                 }
             }
             if (!editMode && repo?.enabled == true &&
                 (repo?.lastModified.orEmpty().isNotEmpty() ||
-                        repo?.entityTag.orEmpty().isNotEmpty())
+                 repo?.entityTag.orEmpty().isNotEmpty())
             ) {
                 item {
                     TitleText(
@@ -280,7 +281,7 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                 }
                 AnimatedVisibility(visible = editMode) {
                     Column {
-                        OutlinedTextField( // TODO add mirror option
+                        OutlinedTextField(
                             modifier = Modifier.fillMaxWidth(),
                             value = addressFieldValue,
                             colors = TextFieldDefaults.textFieldColors(
@@ -324,21 +325,21 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                 Spacer(modifier = Modifier.height(8.dp))
                 AnimatedVisibility(visible = !editMode) {
                     BlockText(
-                        text = if ((repo?.updated
-                                ?: -1) > 0L && repo?.fingerprint.isNullOrEmpty()
+                        text = if ((repo?.updated ?: -1) > 0L
+                                   && repo?.fingerprint.isNullOrEmpty()
                         ) stringResource(id = R.string.repository_unsigned_DESC)
                         else repo?.fingerprint
                             ?.windowed(2, 2, false)
                             ?.joinToString(separator = " ") { it.uppercase(Locale.US) + " " },
                         color = if ((repo?.updated ?: -1) > 0L
-                            && repo?.fingerprint?.isEmpty() == true
+                                    && repo?.fingerprint?.isEmpty() == true
                         ) MaterialTheme.colorScheme.error
                         else MaterialTheme.colorScheme.onSurfaceVariant,
                         monospace = true,
                     )
                 }
                 AnimatedVisibility(visible = editMode) {
-                    OutlinedTextField(
+                    OutlinedTextField( // TODO accept only hex literals
                         modifier = Modifier.fillMaxWidth(),
                         value = fingerprintFieldValue,
                         colors = TextFieldDefaults.textFieldColors(
@@ -426,14 +427,19 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                 ) {
                     ActionButton(
                         modifier = Modifier.weight(1f),
-                        text = stringResource(id = if (!editMode) R.string.delete
-                        else R.string.cancel),
+                        text = stringResource(
+                            id = if (!editMode) R.string.delete
+                            else R.string.cancel
+                        ),
                         icon = if (!editMode) Phosphor.TrashSimple
                         else Phosphor.X,
                         positive = false
                     ) {
-                        if (!editMode) MessageDialog(MessageDialog.Message.DeleteRepositoryConfirm(
-                            repositoryId))
+                        if (!editMode) MessageDialog(
+                            MessageDialog.Message.DeleteRepositoryConfirm(
+                                repositoryId
+                            )
+                        )
                             .show(childFragmentManager)
                         else {
                             editMode = false
@@ -456,8 +462,10 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                         }
                     }
                     ActionButton(
-                        text = stringResource(id = if (!editMode) R.string.edit
-                        else R.string.save),
+                        text = stringResource(
+                            id = if (!editMode) R.string.edit
+                            else R.string.save
+                        ),
                         icon = if (!editMode) Phosphor.GearSix
                         else Phosphor.Check,
                         modifier = Modifier.weight(1f),
@@ -466,7 +474,7 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                         onClick = {
                             if (!editMode) editMode = true
                             else {
-                                // TODO respect validity
+                                // TODO show readable error
                                 viewModel.updateRepo(repo?.apply {
                                     address = addressFieldValue.text
                                     fingerprint = fingerprintFieldValue.text
@@ -475,6 +483,7 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                                         passwordFieldValue.text,
                                     )
                                 })
+                                // TODO sync a new when is already active
                                 editMode = false
                             }
                         }
