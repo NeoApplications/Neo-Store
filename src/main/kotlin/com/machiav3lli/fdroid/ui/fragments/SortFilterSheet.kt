@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -14,8 +15,8 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -149,39 +150,45 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
 
         Scaffold(
             bottomBar = {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp)
-                        .wrapContentHeight(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                Column(
+                    modifier = Modifier.padding(horizontal = 8.dp)
                 ) {
-                    ActionButton(
-                        modifier = Modifier.weight(1f),
-                        text = stringResource(id = R.string.action_reset),
-                        icon = Phosphor.ArrowUUpLeft,
-                        positive = false
+                    Divider(thickness = 2.dp)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Preferences[sortKey] = sortKey.default.value
-                        Preferences[sortAscendingKey] = sortAscendingKey.default.value
-                        Preferences[reposFilterKey] = reposFilterKey.default.value
-                        Preferences[categoriesFilterKey] = categoriesFilterKey.default.value
-                        dismissAllowingStateLoss()
-                    }
-                    ActionButton(
-                        text = stringResource(id = R.string.action_apply),
-                        icon = Phosphor.Check,
-                        modifier = Modifier.weight(1f),
-                        positive = true,
-                        onClick = {
-                            // TODO save prefs
-                            Preferences[sortKey] = sortOption
-                            Preferences[sortAscendingKey] = sortAscending
-                            Preferences[reposFilterKey] = filteredOutRepos
-                            Preferences[categoriesFilterKey] = filterCategory
+                        ActionButton(
+                            modifier = Modifier.weight(1f),
+                            text = stringResource(id = R.string.action_reset),
+                            icon = Phosphor.ArrowUUpLeft,
+                            positive = false
+                        ) {
+                            Preferences[sortKey] = sortKey.default.value
+                            Preferences[sortAscendingKey] = sortAscendingKey.default.value
+                            Preferences[reposFilterKey] = reposFilterKey.default.value
+                            Preferences[categoriesFilterKey] = categoriesFilterKey.default.value
+                            Preferences[antifeaturesFilterKey] = antifeaturesFilterKey.default.value
                             dismissAllowingStateLoss()
                         }
-                    )
+                        ActionButton(
+                            text = stringResource(id = R.string.action_apply),
+                            icon = Phosphor.Check,
+                            modifier = Modifier.weight(1f),
+                            positive = true,
+                            onClick = {
+                                // TODO save prefs
+                                Preferences[sortKey] = sortOption
+                                Preferences[sortAscendingKey] = sortAscending
+                                Preferences[reposFilterKey] = filteredOutRepos
+                                Preferences[categoriesFilterKey] = filterCategory
+                                Preferences[antifeaturesFilterKey] = filteredAntifeatures
+                                dismissAllowingStateLoss()
+                            }
+                        )
+                    }
                 }
             },
             containerColor = Color.Transparent,
