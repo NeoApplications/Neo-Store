@@ -72,7 +72,7 @@ class PrefsActivityX : AppCompatActivity() {
     val db
         get() = (application as MainApplication).db
 
-    val reposViewModel: PrefsVM by viewModels {
+    val prefsViewModel: PrefsVM by viewModels {
         PrefsVM.Factory(db)
     }
 
