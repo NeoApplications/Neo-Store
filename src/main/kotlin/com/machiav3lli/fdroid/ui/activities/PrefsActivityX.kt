@@ -44,7 +44,7 @@ import com.machiav3lli.fdroid.ui.fragments.RepoSheet
 import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.PrefsNavHost
-import com.machiav3lli.fdroid.ui.viewmodels.RepositoriesVM
+import com.machiav3lli.fdroid.ui.viewmodels.PrefsVM
 import com.machiav3lli.fdroid.utility.destinationToItem
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
@@ -72,8 +72,8 @@ class PrefsActivityX : AppCompatActivity() {
     val db
         get() = (application as MainApplication).db
 
-    val reposViewModel: RepositoriesVM by viewModels {
-        RepositoriesVM.Factory(db.repositoryDao)
+    val reposViewModel: PrefsVM by viewModels {
+        PrefsVM.Factory(db)
     }
 
     private lateinit var sheetRepo: RepoSheet

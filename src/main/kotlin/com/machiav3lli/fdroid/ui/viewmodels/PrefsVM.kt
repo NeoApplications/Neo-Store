@@ -3,7 +3,7 @@ package com.machiav3lli.fdroid.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.machiav3lli.fdroid.database.dao.RepositoryDao
+import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.newRepository
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RepositoriesVM(val repositoryDao: RepositoryDao) : ViewModel() {
+class PrefsVM(val db: DatabaseX) : ViewModel() {
 
     private val _showSheet = MutableSharedFlow<SheetNavigationData?>()
     val showSheet: SharedFlow<SheetNavigationData?> = _showSheet
@@ -25,7 +25,7 @@ class RepositoriesVM(val repositoryDao: RepositoryDao) : ViewModel() {
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryDao.getAllRepositories().collectLatest {
+            db.repositoryDao.getAllRepositories().collectLatest {
                 _repositories.emit(it)
             }
         }
@@ -44,10 +44,10 @@ class RepositoriesVM(val repositoryDao: RepositoryDao) : ViewModel() {
                     addNew && (address.isEmpty() || repositories.value.none { it.address == address }) -> {
                         SheetNavigationData(addNewRepository(address, fingerprint), editMode)
                     }
-                    !addNew                                                     -> {
+                    !addNew                                                                            -> {
                         SheetNavigationData(repositoryId, editMode)
                     }
-                    else                                                        -> {
+                    else                                                                               -> {
                         null
                     }
                 }
@@ -57,21 +57,21 @@ class RepositoriesVM(val repositoryDao: RepositoryDao) : ViewModel() {
 
     private suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long =
         withContext(Dispatchers.IO) {
-            repositoryDao.insert(
+            db.repositoryDao.insert(
                 newRepository(
                     fallbackName = "new repository",
                     address = address,
                     fingerprint = fingerprint
                 )
             )
-            repositoryDao.latestAddedId()
+            db.repositoryDao.latestAddedId()
         }
 
-    class Factory(private val repoDao: RepositoryDao) : ViewModelProvider.Factory {
+    class Factory(private val db: DatabaseX) : ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(RepositoriesVM::class.java)) {
-                return RepositoriesVM(repoDao) as T
+            if (modelClass.isAssignableFrom(PrefsVM::class.java)) {
+                return PrefsVM(db) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

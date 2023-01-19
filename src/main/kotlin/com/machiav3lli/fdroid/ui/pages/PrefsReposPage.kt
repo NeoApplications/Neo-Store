@@ -28,7 +28,7 @@ import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.ui.compose.RepositoriesRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.QrCode
-import com.machiav3lli.fdroid.ui.viewmodels.RepositoriesVM
+import com.machiav3lli.fdroid.ui.viewmodels.PrefsVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PrefsReposPage(viewModel: RepositoriesVM, address: String, fingerprint: String) {
+fun PrefsReposPage(viewModel: PrefsVM, address: String, fingerprint: String) {
     val context = LocalContext.current
     val prefsActivityX = context as PrefsActivityX
     val repos by viewModel.repositories.collectAsState()
