@@ -53,6 +53,9 @@ object Preferences : OnSharedPreferenceChangeListener {
         Key.CategoriesFilterExplore,
         Key.CategoriesFilterLatest,
         Key.CategoriesFilterInstalled,
+        Key.AntifeaturesFilterExplore,
+        Key.AntifeaturesFilterLatest,
+        Key.AntifeaturesFilterInstalled,
         Key.Theme,
         Key.DefaultTab,
         Key.UpdateNotify,
@@ -260,6 +263,21 @@ object Preferences : OnSharedPreferenceChangeListener {
         object CategoriesFilterInstalled : Key<String>(
             "category_filter_installed",
             Value.StringValue(FILTER_CATEGORY_ALL)
+        )
+
+        object AntifeaturesFilterExplore : Key<Set<String>>(
+            "antifeatures_filter_explore",
+            Value.StringSetValue(emptySet())
+        )
+
+        object AntifeaturesFilterLatest : Key<Set<String>>(
+            "antifeatures_filter_latest",
+            Value.StringSetValue(emptySet())
+        )
+
+        object AntifeaturesFilterInstalled : Key<Set<String>>(
+            "antifeatures_filter_installed",
+            Value.StringSetValue(emptySet())
         )
 
         object Theme : Key<Preferences.Theme>(
