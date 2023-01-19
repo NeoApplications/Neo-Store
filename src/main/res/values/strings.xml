@@ -299,4 +299,5 @@
     <string name="extras_export">Export extras (Favorites, Ignore updates etc.)</string>
     <string name="extras_import">Import extras (Favorites, Ignore updates etc.)</string>
     <string name="file_share_text">File from Neo Store</string>
+    <string name="allowed_anti_features">Allowed Anti-features</string>
 </resources>
