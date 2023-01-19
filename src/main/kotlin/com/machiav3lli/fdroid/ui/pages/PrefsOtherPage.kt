@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.LinkRef
@@ -61,7 +62,7 @@ fun PrefsOtherPage() {
             }
             item {
                 PreferenceGroup(
-                    heading = stringResource(id = R.string.application_name),
+                    heading = "${stringResource(id = R.string.application_name)} ${BuildConfig.VERSION_NAME}",
                     links = LinkRef.values().toList(),
                 )
             }
