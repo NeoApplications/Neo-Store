@@ -44,6 +44,7 @@ import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.index.RepositoryUpdater.db
 import com.machiav3lli.fdroid.ui.compose.components.ActionButton
 import com.machiav3lli.fdroid.ui.compose.components.ChipsSwitch
@@ -124,6 +125,11 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
             NavItem.Installed.destination -> Preferences.Key.CategoriesFilterInstalled
             else                          -> Preferences.Key.CategoriesFilterExplore // NavItem.Explore
         }
+        val antifeaturesFilterKey = when (navPage) {
+            NavItem.Latest.destination    -> Preferences.Key.AntifeaturesFilterLatest
+            NavItem.Installed.destination -> Preferences.Key.AntifeaturesFilterInstalled
+            else                          -> Preferences.Key.AntifeaturesFilterExplore // NavItem.Explore
+        }
 
         var sortOption by remember(Preferences[sortKey]) {
             mutableStateOf(Preferences[sortKey])
@@ -136,6 +142,9 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
         }
         var filterCategory by remember(Preferences[categoriesFilterKey]) {
             mutableStateOf(Preferences[categoriesFilterKey])
+        }
+        val filteredAntifeatures by remember(Preferences[antifeaturesFilterKey]) {
+            mutableStateOf(Preferences[antifeaturesFilterKey].toMutableSet())
         }
 
         Scaffold(
@@ -277,6 +286,39 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                                 checked = it == filterCategory
                             ) {
                                 filterCategory = it
+                            }
+                        }
+                    }
+                }
+                item {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.allowed_anti_features),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        mainAxisSpacing = 8.dp,
+                        crossAxisSpacing = 4.dp,
+                        mainAxisAlignment = MainAxisAlignment.Center,
+                    ) {
+                        AntiFeature.values().forEach {
+                            var checked by remember {
+                                mutableStateOf(
+                                    !filteredAntifeatures.contains(it.key)
+                                )
+                            }
+
+                            SelectChip(
+                                text = stringResource(id = it.titleResId),
+                                checked = checked
+                            ) {
+                                checked = !checked
+                                if (checked)
+                                    filteredAntifeatures.remove(it.key)
+                                else
+                                    filteredAntifeatures.add(it.key)
                             }
                         }
                     }
