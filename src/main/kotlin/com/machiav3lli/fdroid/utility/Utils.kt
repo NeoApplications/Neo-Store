@@ -62,6 +62,7 @@ import java.lang.ref.WeakReference
 import java.security.MessageDigest
 import java.security.cert.Certificate
 import java.security.cert.CertificateEncodingException
+import java.text.SimpleDateFormat
 import java.util.*
 
 object Utils {
@@ -498,6 +499,12 @@ fun formatHtml(text: String, callbacks: Callbacks): SpannableStringBuilder {
     }
     return builder
 }
+
+val currentTimestamp: String
+    get() {
+        val simpleDateFormat = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.US)
+        return simpleDateFormat.format(Date())
+    }
 
 fun NavDestination.destinationToItem(): NavItem? = listOf(
     NavItem.Explore,
