@@ -74,7 +74,7 @@ open class MainPageVM(
         sortFilter,
         sections,
         installed
-    ) { a, _, _ ->
+    ) { _, _, _ ->
         val newRequest = request(primarySource)
         emit(newRequest)
     }.stateIn(

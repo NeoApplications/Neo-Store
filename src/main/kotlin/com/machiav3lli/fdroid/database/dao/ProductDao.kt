@@ -232,7 +232,7 @@ interface ProductDao : BaseDao<Product> {
 
         // Filter only the selected repository/category
         when (section) {
-            is Section.Category -> {
+            is Section.Category   -> {
                 builder += "AND $TABLE_CATEGORY.$ROW_LABEL = ?"
                 builder %= section.name
             }
@@ -240,15 +240,15 @@ interface ProductDao : BaseDao<Product> {
                 builder += "AND $TABLE_PRODUCT.$ROW_REPOSITORY_ID = ?"
                 builder %= section.id.toString()
             }
-            is Section.FAVORITE -> {
+            is Section.FAVORITE   -> {
                 builder += "AND COALESCE($TABLE_EXTRAS.$ROW_FAVORITE, 0) != 0"
             }
-            else -> {}
+            else                  -> {}
         }
 
         when (updateCategory) {
-            UpdateCategory.ALL -> Unit
-            UpdateCategory.NEW -> builder += """AND $TABLE_PRODUCT.$ROW_ADDED = $TABLE_PRODUCT.$ROW_UPDATED"""
+            UpdateCategory.ALL     -> Unit
+            UpdateCategory.NEW     -> builder += """AND $TABLE_PRODUCT.$ROW_ADDED = $TABLE_PRODUCT.$ROW_UPDATED"""
             UpdateCategory.UPDATED -> builder += """AND $TABLE_PRODUCT.$ROW_ADDED < $TABLE_PRODUCT.$ROW_UPDATED"""
         }
 
@@ -263,8 +263,8 @@ interface ProductDao : BaseDao<Product> {
         // Set sorting order
         builder += "ORDER BY"
         when (order) {
-            Order.NAME -> Unit
-            Order.DATE_ADDED -> builder += "$TABLE_PRODUCT.$ROW_ADDED ${if (ascending) "ASC" else "DESC"},"
+            Order.NAME        -> Unit
+            Order.DATE_ADDED  -> builder += "$TABLE_PRODUCT.$ROW_ADDED ${if (ascending) "ASC" else "DESC"},"
             Order.LAST_UPDATE -> builder += "$TABLE_PRODUCT.$ROW_UPDATED ${if (ascending) "ASC" else "DESC"},"
         }::class
         builder += "$TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ${if (!ascending && order == Order.NAME) "DESC" else "ASC"}${if (numberOfItems > 0) " LIMIT $numberOfItems" else ""}"

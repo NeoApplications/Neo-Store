@@ -32,7 +32,7 @@ import com.machiav3lli.fdroid.ui.pages.PrefsUpdatesPage
 @Composable
 fun MainNavHost(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
 ) =
     AnimatedNavHost(
         modifier = modifier,
@@ -60,7 +60,7 @@ fun MainNavHost(
 @Composable
 fun PrefsNavHost(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
 ) =
     AnimatedNavHost(
         modifier = modifier,
@@ -102,7 +102,7 @@ fun PrefsNavHost(
 fun NavGraphBuilder.slideDownComposable(
     route: String,
     args: List<NamedNavArgument> = emptyList(),
-    composable: @Composable (AnimatedVisibilityScope.(NavBackStackEntry) -> Unit)
+    composable: @Composable (AnimatedVisibilityScope.(NavBackStackEntry) -> Unit),
 ) {
     composable(
         route,

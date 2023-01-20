@@ -132,7 +132,7 @@ sealed interface ComponentState {
 
 sealed class DownloadState(
     @StringRes override val textId: Int,
-    override val icon: ImageVector = Phosphor.X
+    override val icon: ImageVector = Phosphor.X,
 ) : ComponentState {
 
     object Pending : DownloadState(R.string.pending)
@@ -145,7 +145,7 @@ sealed class DownloadState(
 
 sealed class ActionState(
     @StringRes override val textId: Int,
-    override val icon: ImageVector = Phosphor.Download
+    override val icon: ImageVector = Phosphor.Download,
 ) : ComponentState {
 
     object Install : ActionState(R.string.install, Phosphor.Download)
@@ -163,32 +163,32 @@ sealed class ActionState(
 open class LinkType(
     val icon: ImageVector,
     val title: String,
-    val link: Uri? = null
+    val link: Uri? = null,
 )
 
 class DonateType(donate: Donate, context: Context) : LinkType(
     icon = when (donate) {
-        is Donate.Regular -> Phosphor.CurrencyDollarSimple
-        is Donate.Bitcoin -> Phosphor.CurrencyBTC
-        is Donate.Litecoin -> Icon.IcDonateLitecoin
-        is Donate.Flattr -> Icon.IcDonateFlattr
-        is Donate.Liberapay -> Icon.IcDonateLiberapay
+        is Donate.Regular        -> Phosphor.CurrencyDollarSimple
+        is Donate.Bitcoin        -> Phosphor.CurrencyBTC
+        is Donate.Litecoin       -> Icon.IcDonateLitecoin
+        is Donate.Flattr         -> Icon.IcDonateFlattr
+        is Donate.Liberapay      -> Icon.IcDonateLiberapay
         is Donate.OpenCollective -> Icon.IcDonateOpencollective
     },
     title = when (donate) {
-        is Donate.Regular -> context.getString(R.string.website)
-        is Donate.Bitcoin -> "Bitcoin"
-        is Donate.Litecoin -> "Litecoin"
-        is Donate.Flattr -> "Flattr"
-        is Donate.Liberapay -> "Liberapay"
+        is Donate.Regular        -> context.getString(R.string.website)
+        is Donate.Bitcoin        -> "Bitcoin"
+        is Donate.Litecoin       -> "Litecoin"
+        is Donate.Flattr         -> "Flattr"
+        is Donate.Liberapay      -> "Liberapay"
         is Donate.OpenCollective -> "Open Collective"
     },
     link = when (donate) {
-        is Donate.Regular -> Uri.parse(donate.url)
-        is Donate.Bitcoin -> Uri.parse("bitcoin:${donate.address}")
-        is Donate.Litecoin -> Uri.parse("litecoin:${donate.address}")
-        is Donate.Flattr -> Uri.parse("https://flattr.com/thing/${donate.id}")
-        is Donate.Liberapay -> Uri.parse("https://liberapay.com/~${donate.id}")
+        is Donate.Regular        -> Uri.parse(donate.url)
+        is Donate.Bitcoin        -> Uri.parse("bitcoin:${donate.address}")
+        is Donate.Litecoin       -> Uri.parse("litecoin:${donate.address}")
+        is Donate.Flattr         -> Uri.parse("https://flattr.com/thing/${donate.id}")
+        is Donate.Liberapay      -> Uri.parse("https://liberapay.com/~${donate.id}")
         is Donate.OpenCollective -> Uri.parse("https://opencollective.com/${donate.id}")
     }
 )
@@ -324,28 +324,28 @@ class PermissionsType(
 val String.appCategoryIcon: ImageVector
     get() = when (this.lowercase()) {
         FILTER_CATEGORY_ALL.lowercase() -> Phosphor.CirclesFour
-        "automation" -> Phosphor.Robot
-        "connectivity" -> Phosphor.Graph
-        "development" -> Phosphor.Code
-        "food" -> Phosphor.Pizza
-        "games" -> Phosphor.GameController
-        "graphics" -> Phosphor.PaintBrush
-        "internet" -> Phosphor.Globe
-        "messaging" -> Phosphor.Chat
-        "money" -> Phosphor.CurrencyDollarSimple
-        "multimedia" -> Phosphor.PlayCircle
-        "navigation" -> Phosphor.Compass
-        "office" -> Phosphor.Books
-        "phone & sms" -> Phosphor.Phone
-        "reading" -> Phosphor.BookBookmark
-        "religion" -> Phosphor.Command
-        "science & education" -> Phosphor.Brain
-        "security" -> Phosphor.Key
-        "sports & health" -> Phosphor.Barbell
-        "system" -> Phosphor.Nut
-        "theming" -> Phosphor.Swatches
-        "time" -> Phosphor.Clock
-        "writing" -> Phosphor.PenNib
-        "xposed" -> Phosphor.ShieldStar
-        else -> Phosphor.Asterisk
+        "automation"                    -> Phosphor.Robot
+        "connectivity"                  -> Phosphor.Graph
+        "development"                   -> Phosphor.Code
+        "food"                          -> Phosphor.Pizza
+        "games"                         -> Phosphor.GameController
+        "graphics"                      -> Phosphor.PaintBrush
+        "internet"                      -> Phosphor.Globe
+        "messaging"                     -> Phosphor.Chat
+        "money"                         -> Phosphor.CurrencyDollarSimple
+        "multimedia"                    -> Phosphor.PlayCircle
+        "navigation"                    -> Phosphor.Compass
+        "office"                        -> Phosphor.Books
+        "phone & sms"                   -> Phosphor.Phone
+        "reading"                       -> Phosphor.BookBookmark
+        "religion"                      -> Phosphor.Command
+        "science & education"           -> Phosphor.Brain
+        "security"                      -> Phosphor.Key
+        "sports & health"               -> Phosphor.Barbell
+        "system"                        -> Phosphor.Nut
+        "theming"                       -> Phosphor.Swatches
+        "time"                          -> Phosphor.Clock
+        "writing"                       -> Phosphor.PenNib
+        "xposed"                        -> Phosphor.ShieldStar
+        else                            -> Phosphor.Asterisk
     }
