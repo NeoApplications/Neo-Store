@@ -96,6 +96,7 @@ interface ProductDao : BaseDao<Product> {
             section = request.section,
             filteredOutRepos = request.filteredOutRepos,
             category = request.category,
+            filteredAntiFeatures = request.filteredAntiFeatures,
             order = request.order,
             ascending = request.ascending,
             numberOfItems = request.numberOfItems,
@@ -107,8 +108,8 @@ interface ProductDao : BaseDao<Product> {
     fun queryObject(
         installed: Boolean, updates: Boolean,
         section: Section, filteredOutRepos: Set<String> = emptySet(),
-        category: String = FILTER_CATEGORY_ALL, order: Order,
-        ascending: Boolean, numberOfItems: Int = 0,
+        category: String = FILTER_CATEGORY_ALL, filteredAntiFeatures: Set<String> = emptySet(),
+        order: Order, ascending: Boolean, numberOfItems: Int = 0,
         updateCategory: UpdateCategory = UpdateCategory.ALL,
         author: String = "",
     ): List<Product> = queryObject(
@@ -118,6 +119,7 @@ interface ProductDao : BaseDao<Product> {
             section = section,
             filteredOutRepos = filteredOutRepos,
             category = category,
+            filteredAntiFeatures = filteredAntiFeatures,
             order = order,
             ascending = ascending,
             numberOfItems = numberOfItems,
@@ -136,6 +138,7 @@ interface ProductDao : BaseDao<Product> {
             section = request.section,
             filteredOutRepos = request.filteredOutRepos,
             category = request.category,
+            filteredAntiFeatures = request.filteredAntiFeatures,
             order = request.order,
             ascending = request.ascending,
             numberOfItems = request.numberOfItems,
@@ -149,6 +152,7 @@ interface ProductDao : BaseDao<Product> {
         section: Section,
         filteredOutRepos: Set<String> = emptySet(),
         category: String = FILTER_CATEGORY_ALL,
+        filteredAntiFeatures: Set<String> = emptySet(),
         order: Order,
         ascending: Boolean = false,
         numberOfItems: Int = 0,
@@ -219,6 +223,11 @@ interface ProductDao : BaseDao<Product> {
         if (category != FILTER_CATEGORY_ALL) {
             builder += "AND $TABLE_CATEGORY.$ROW_LABEL = ?"
             builder %= category
+        }
+
+        // Filter out anti-features
+        filteredAntiFeatures.forEach {
+            builder += "AND $TABLE_PRODUCT.$ROW_ANTIFEATURES NOT LIKE '%$it%'"
         }
 
         // Filter only the selected repository/category
