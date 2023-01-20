@@ -83,17 +83,18 @@ fun InstalledPage(viewModel: InstalledVM) {
                 when (it) {
                     Preferences.Key.ReposFilterInstalled,
                     Preferences.Key.CategoriesFilterInstalled,
+                    Preferences.Key.AntifeaturesFilterInstalled,
                     Preferences.Key.SortOrderInstalled,
                     Preferences.Key.SortOrderAscendingInstalled,
-                         ->
-                        viewModel.setSortFilter(
-                            listOf(
-                                Preferences[Preferences.Key.ReposFilterInstalled],
-                                Preferences[Preferences.Key.CategoriesFilterInstalled],
-                                Preferences[Preferences.Key.SortOrderInstalled],
-                                Preferences[Preferences.Key.SortOrderAscendingInstalled],
-                            ).toString()
-                        )
+                    -> viewModel.setSortFilter(
+                        listOf(
+                            Preferences[Preferences.Key.ReposFilterInstalled],
+                            Preferences[Preferences.Key.CategoriesFilterInstalled],
+                            Preferences[Preferences.Key.AntifeaturesFilterInstalled],
+                            Preferences[Preferences.Key.SortOrderInstalled],
+                            Preferences[Preferences.Key.SortOrderAscendingInstalled],
+                        ).toString()
+                    )
                     else -> {}
                 }
             }

@@ -68,16 +68,18 @@ fun ExplorePage(viewModel: ExploreVM) {
                 when (it) {
                     Preferences.Key.ReposFilterExplore,
                     Preferences.Key.CategoriesFilterExplore,
+                    Preferences.Key.AntifeaturesFilterExplore,
                     Preferences.Key.SortOrderExplore,
-                    Preferences.Key.SortOrderAscendingExplore ->
-                        viewModel.setSortFilter(
-                            listOf(
-                                Preferences[Preferences.Key.ReposFilterExplore],
-                                Preferences[Preferences.Key.CategoriesFilterExplore],
-                                Preferences[Preferences.Key.SortOrderExplore],
-                                Preferences[Preferences.Key.SortOrderAscendingExplore],
-                            ).toString()
-                        )
+                    Preferences.Key.SortOrderAscendingExplore,
+                    -> viewModel.setSortFilter(
+                        listOf(
+                            Preferences[Preferences.Key.ReposFilterExplore],
+                            Preferences[Preferences.Key.CategoriesFilterExplore],
+                            Preferences[Preferences.Key.AntifeaturesFilterExplore],
+                            Preferences[Preferences.Key.SortOrderExplore],
+                            Preferences[Preferences.Key.SortOrderAscendingExplore],
+                        ).toString()
+                    )
                     else -> {}
                 }
             }

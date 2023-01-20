@@ -64,16 +64,18 @@ fun LatestPage(viewModel: LatestVM) {
                 when (it) {
                     Preferences.Key.ReposFilterLatest,
                     Preferences.Key.CategoriesFilterLatest,
+                    Preferences.Key.AntifeaturesFilterLatest,
                     Preferences.Key.SortOrderLatest,
-                    Preferences.Key.SortOrderAscendingLatest ->
-                        viewModel.setSortFilter(
-                            listOf(
-                                Preferences[Preferences.Key.ReposFilterLatest],
-                                Preferences[Preferences.Key.CategoriesFilterLatest],
-                                Preferences[Preferences.Key.SortOrderLatest],
-                                Preferences[Preferences.Key.SortOrderAscendingLatest],
-                            ).toString()
-                        )
+                    Preferences.Key.SortOrderAscendingLatest,
+                    -> viewModel.setSortFilter(
+                        listOf(
+                            Preferences[Preferences.Key.ReposFilterLatest],
+                            Preferences[Preferences.Key.CategoriesFilterLatest],
+                            Preferences[Preferences.Key.AntifeaturesFilterLatest],
+                            Preferences[Preferences.Key.SortOrderLatest],
+                            Preferences[Preferences.Key.SortOrderAscendingLatest],
+                        ).toString()
+                    )
                     else -> {}
                 }
             }
