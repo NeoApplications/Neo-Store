@@ -1,0 +1,6 @@
+Agregado: Advertencias sobre aplicaciones con vulnerabilidades conocidas
+Corregido: mejora del rendimiento general causado por la búsqueda (créditos @SocratesDz)
+Solucionado: bloqueo del instalador
+Actualizado: Renovar la función de sincronización automática
+Actualizado: Renovar hojas de repositorio
++ más de 60 contribuciones de traducción
