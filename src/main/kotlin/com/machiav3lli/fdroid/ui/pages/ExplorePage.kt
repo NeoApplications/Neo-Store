@@ -99,11 +99,6 @@ fun ExplorePage(viewModel: ExploreVM) {
                 mutableStateOf(false)
             }
 
-            ActionChip(
-                text = stringResource(id = R.string.sort_filter),
-                icon = Phosphor.FunnelSimple
-            ) { mainActivityX.navigateSortFilter(NavItem.Explore.destination) }
-            Spacer(modifier = Modifier.weight(1f))
             CategoryChip(
                 category = stringResource(id = R.string.favorite_applications),
                 isSelected = favoriteFilter,
@@ -115,6 +110,11 @@ fun ExplorePage(viewModel: ExploreVM) {
                     )
                 }
             )
+            Spacer(modifier = Modifier.weight(1f))
+            ActionChip(
+                text = stringResource(id = R.string.sort_filter),
+                icon = Phosphor.FunnelSimple
+            ) { mainActivityX.navigateSortFilter(NavItem.Explore.destination) }
         }
         Row {
             SideNavBar(
