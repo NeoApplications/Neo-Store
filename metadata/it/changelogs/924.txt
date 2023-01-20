@@ -1,0 +1,6 @@
+Aggiunto: avvisi sulle app con vulnerabilità note
+Corretto: miglioramento del sovraccarico delle prestazioni causato dalla ricerca (crediti @SocratesDz)
+Corretto: crash del programma di installazione
+Aggiornato: rinnova la funzionalità di sincronizzazione automatica
+Aggiornato: rinnova i fogli repository
++ più di 60 contributi di traduzione
