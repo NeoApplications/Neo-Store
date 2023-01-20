@@ -1,0 +1,6 @@
+Přidáno: Upozornění na aplikace se známými zranitelnostmi
+Oprava: Zlepšení výkonnostního přetížení způsobeného vyhledáváním (od @SocratesDz)
+Oprava: Padající instalátor
+Aktualizace: Přepracování funkce automatické synchronizace
+Aktualizace: Přepracování listů repozitářů
++ více než 60 příspěvků k překladu
