@@ -1,6 +1,52 @@
 CHANGELOG
 =========
 
+0.9.13 (20.01.2023) 90+ Commits +60 Translations
+------------------
+
+### Function
+- Add: Repository's authentication pair setter/getter
+- Add: Job IdRange for Sync jobs
+- Add: DownloadState to SyncService
+- Add: Sync/Download foreground service types
+- Add: Option for sheets to be not pre-extended
+- Add: Export/import of extras
+- Add: SAF-File (with read, write, delete and share)
+- Fix: Improve performance overload caused by search (credits @SocratesDz)
+- Fix: Crashing LegacyInstaller (again)
+- Fix: Fall back to default installer if root not granted
+- Update: Use DownloadService's mutex to keep the service alive while needed
+- Update: Replace RxJAva usage with Coroutines in SyncService
+- Update: Allow using Coroutine Job as disposable
+- Update: Revamp scheduling auto-sync
+- Update: Improve installer handling based on existing in background and type
+- Update: Simplify Prefs listener
+- Update: auto-sync interval limits
+- Update: Migrate last LiveData to Flows
+- Update: FluffyChat's repo address
+- Remove: Unused Dependencies
+
+### UI
+- Add: Cleaner splash screen icon
+- Add: Filter Download state changes percentually
+- Add: Warning card to AppSheet on known vulnerability
+- Add: Repo mirror chips row
+- Fix: 2-rows updated apps block even on one item
+- Update: Migrate repo sheets into one composable
+- Update: Snackbar stays shorter
+
+### UX
+- Add: Auto-sync option on charging
+- Add: Active downloads list to Installed
+- Add: Description text to ActionButtons (for screen readers, needs testing)
+- Add: Show notification if an installed app has known vulnerabilities
+- Add: Make Preferences accessible from system's app info
+- Add: Allowed anti-features filter
+- Fix: Unable to add a repository after adding empty one
+- Fix: Running auto-sync only on WIFI, on plugged-in and combined
+- Fix: Crash on deleting newly added repo
+- Update: Open exodus tracker's page instead of tracker's website
+
 0.9.12 (28.12.2022) 30+ Commits +60 Translations
 ------------------
 

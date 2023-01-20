@@ -1,0 +1,6 @@
+Add: Warnings on apps with known vulnerabilities
+Fix: Improve performance overload caused by search (credits @SocratesDz)
+Fix: Crashing installer
+Update: Revamp auto-sync functionality
+Update: Revamp repo sheets
++ more than 60 tranlation contributions

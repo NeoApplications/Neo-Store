@@ -25,8 +25,8 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 23
         targetSdk = 33
-        versionCode = 923
-        versionName = "0.9.13-alpha01"
+        versionCode = 924
+        versionName = "0.9.13"
         vectorDrawables.useSupportLibrary = true
         buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
 
