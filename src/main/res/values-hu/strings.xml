@@ -293,4 +293,11 @@
     <string name="vulnerabilities_installed_apps">Ezek a telepített alkalmazások ismert sérülékenységekkel rendelkeznek.</string>
     <string name="no_vulnerabilities_installed_apps">Egyetlen telepített alkalmazás sem rendelkezik ismert sérülékenységgel.</string>
     <string name="app_installed">Telepítve</string>
+    <string name="allowed_anti_features">Engedélyezett előnytelen funkciók</string>
+    <string name="only_on_battery">Csak töltés közben</string>
+    <string name="edit">Szerkesztés</string>
+    <string name="tools">Eszközök</string>
+    <string name="extras_export">Extrák exportálása (kedvencek, frissítések mellőzése stb.)</string>
+    <string name="extras_import">Extrák importálása (kedvencek, frissítések mellőzése stb.)</string>
+    <string name="file_share_text">Fájl a Neo Store-ból</string>
 </resources>
