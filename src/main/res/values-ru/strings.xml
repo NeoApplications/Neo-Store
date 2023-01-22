@@ -297,4 +297,9 @@
     <string name="no_vulnerabilities_installed_apps">Ни одно из установленных приложений не имеет известных уязвимостей.</string>
     <string name="only_on_battery">Только при зарядке</string>
     <string name="edit">Изменить</string>
+    <string name="extras_import">Импорт предпочтений (избранное, игнорирование обновлений и т.д.)</string>
+    <string name="allowed_anti_features">Разрешённые анти-функции</string>
+    <string name="tools">Инструменты</string>
+    <string name="extras_export">Экспорт предпочтений (избранное, игнорирование обновлений и т.д.)</string>
+    <string name="file_share_text">Файл из Neo Store</string>
 </resources>
