@@ -296,4 +296,9 @@
     <string name="vulnerabilities_installed_apps">Tyto nainstalované aplikace mají známé zranitelnosti!</string>
     <string name="only_on_battery">Pouze při nabíjení</string>
     <string name="edit">Upravit</string>
+    <string name="extras_export">Export doplnění (oblíbené položky, ignorování aktualizací atd.)</string>
+    <string name="extras_import">Import doplnění (oblíbené položky, ignorování aktualizací atd.)</string>
+    <string name="tools">Nástroje</string>
+    <string name="allowed_anti_features">Povolené anti-funkce</string>
+    <string name="file_share_text">Soubor z Neo Store</string>
 </resources>
