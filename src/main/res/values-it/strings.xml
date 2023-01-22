@@ -296,4 +296,9 @@
     <string name="no_vulnerabilities_installed_apps">Nessuna app installata presenta vulnerabilità note.</string>
     <string name="only_on_battery">Solo durante la ricarica</string>
     <string name="edit">Modifica</string>
+    <string name="tools">Strumenti</string>
+    <string name="extras_import">Importa extra (Preferiti, Ignora aggiornamenti ecc.)</string>
+    <string name="allowed_anti_features">Anti-caratteristiche consentite</string>
+    <string name="extras_export">Esporta extra (Preferiti, Ignora aggiornamenti ecc.)</string>
+    <string name="file_share_text">File da Neo Store</string>
 </resources>
