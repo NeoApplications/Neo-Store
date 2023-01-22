@@ -299,4 +299,9 @@
     <string name="vulnerabilities">ثغرات .</string>
     <string name="only_on_battery">فقط عند الشحن</string>
     <string name="edit">تعديل</string>
+    <string name="extras_export">تصدير الإضافات (المفضلة ، تجاهل التحديثات ، إلخ.)</string>
+    <string name="tools">الأدوات</string>
+    <string name="extras_import">استيراد الإضافات (المفضلة ، تجاهل التحديثات ، إلخ.)</string>
+    <string name="file_share_text">ملف من متجر نيو</string>
+    <string name="allowed_anti_features">الميزات المضادة المسموح بها</string>
 </resources>
