@@ -294,4 +294,9 @@
     <string name="no_vulnerabilities_installed_apps">没有已安装的应用程序存在已知漏洞。</string>
     <string name="only_on_battery">仅在充电时</string>
     <string name="edit">编辑</string>
+    <string name="extras_import">导入额外内容（收藏夹、忽略更新等）</string>
+    <string name="extras_export">导出额外内容（收藏夹、忽略更新等）</string>
+    <string name="allowed_anti_features">允许的负特征</string>
+    <string name="tools">工具</string>
+    <string name="file_share_text">来自 Neo 商店的文件</string>
 </resources>
