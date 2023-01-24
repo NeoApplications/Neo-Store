@@ -411,7 +411,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                 }
                             }
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe { result, throwable ->
+                            .subscribe { result, throwable: Throwable? ->
                                 currentTask = null
                                 throwable?.printStackTrace()
                                 if (throwable != null && task.manual) {

@@ -385,7 +385,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                         }
                     }
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { result, throwable ->
+                    .subscribe { result, throwable: Throwable? ->
                         currentTask = null
                         throwable?.printStackTrace()
                         if (result == null || !result.success) {
