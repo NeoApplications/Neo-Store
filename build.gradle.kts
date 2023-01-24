@@ -1,8 +1,8 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
 val composeVersion = "1.3.1"
-val composeCompilerVersion = "1.4.0-alpha02"
-val roomVersion = "2.5.0-rc01"
+val composeCompilerVersion = "1.4.0"
+val roomVersion = "2.5.0"
 val navigationVersion = "2.5.3"
 val accompanistVersion = "0.28.0"
 val hiltVersion = "2.44.2"
@@ -124,7 +124,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.8.0-rc01")
 
     // Material3
-    implementation("com.google.android.material:material:1.8.0-beta01")
+    implementation("com.google.android.material:material:1.8.0-rc01")
 
     // Coil
     implementation("io.coil-kt:coil:2.2.2")
@@ -140,7 +140,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
 
     // RxJava
-    implementation("io.reactivex.rxjava3:rxjava:3.1.5")
+    implementation("io.reactivex.rxjava3:rxjava:3.1.6")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
 
     // LibSu
