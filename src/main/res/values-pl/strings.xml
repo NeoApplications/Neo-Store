@@ -175,10 +175,8 @@
     <string name="http_proxy">Serwer proxy HTTP</string>
     <string name="prefs_language_title">Język</string>
     <string name="prefs_personalization">Personalizacja</string>
-    <string name="prefs_updated_apps">Liczba aplikacji do wyświetlenia
-\nw sekcji „Ostatnio uaktualnione”</string>
-    <string name="prefs_new_apps">Liczba aplikacji do wyświetlenia
-\nw sekcji „Nowe aplikacje”</string>
+    <string name="prefs_updated_apps">Liczba aplikacji do wyświetlenia w sekcji „Ostatnio zaktualizowane”</string>
+    <string name="prefs_new_apps">Liczba aplikacji do wyświetlenia w sekcji „Nowe aplikacje”</string>
     <string name="installed_applications">Zainstalowane</string>
     <string name="update_all">Zainstaluj wszystko</string>
     <string name="only_on_wifi_and_battery">Tylko na Wi-Fi podczas ładowania</string>
@@ -216,7 +214,7 @@
     <string name="images_cache_retention">Ilość dni przechowywania obrazów</string>
     <string name="prefs_personal">Osobiste</string>
     <string name="releases_cache_retention">Ilość dni przechowywania plików apk</string>
-    <string name="min_sdk">Minimum SDK:</string>
+    <string name="min_sdk">Minimum SDK</string>
     <string name="action_reset">Zresetuj</string>
     <string name="scan_qr_code">Zeskanuj kod QR</string>
     <string name="action_apply">Zastosuj</string>
@@ -231,7 +229,7 @@
     <string name="legacy_installer">Starszy instalator (kompatybilny z MIUI)</string>
     <string name="prefs_sync">Synchronizacja</string>
     <string name="group_telegram">Telegram</string>
-    <string name="target_sdk">Docelowe SDK:</string>
+    <string name="target_sdk">Docelowe SDK</string>
     <string name="categories">Kategorie</string>
     <string name="sort_ascending">Rosnąco</string>
     <string name="sort_descending">Malejąco</string>
@@ -299,4 +297,9 @@
     <string name="vulnerabilities_installed_apps">Te zainstalowane aplikacje mają znane podatności!</string>
     <string name="edit">Edytuj</string>
     <string name="only_on_battery">Podczas ładowania</string>
+    <string name="extras_import">Importuj dodatki (Ulubione, ignorowane aktualizacje itp.)</string>
+    <string name="allowed_anti_features">Dozwolone nieporządane funkcje</string>
+    <string name="tools">Narzędzia</string>
+    <string name="extras_export">Eksportuj dodatki (Ulubione, ignorowane aktualizacje itp.)</string>
+    <string name="file_share_text">Plik z Neo Store</string>
 </resources>
