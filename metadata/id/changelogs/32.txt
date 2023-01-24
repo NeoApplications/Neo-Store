@@ -1,0 +1,6 @@
+- Pembaruan: Desain ke MD3
+- Pembaruan: Tangkapan layar UX yang lebih baik
+- Fix: Freezing saat instalasi aplikasi dengan metode root
+- Pembaruan: Profil tema yang dirubah
+- Tambahkan: Berbagi tautan (hanya F-Droid resmi untuk saat ini)
+- Perbaikan kecil UI/UX lainnya
