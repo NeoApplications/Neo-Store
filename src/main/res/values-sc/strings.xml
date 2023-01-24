@@ -293,4 +293,11 @@
     <string name="vulnerabilities">Vulnerabilidades.</string>
     <string name="no_vulnerabilities_installed_apps">Peruna aplicatzione installada tenet vulnerabilidades connotas.</string>
     <string name="vulnerabilities_installed_apps">Custas aplicatziones installadas tenent vulnerabilidades connotas!</string>
+    <string name="only_on_battery">Petzi durante sa càrriga</string>
+    <string name="edit">Modìfica</string>
+    <string name="allowed_anti_features">Anti-funtzionalidades permìtidas</string>
+    <string name="tools">Trastes</string>
+    <string name="extras_import">Importa extra (Preferidos, Ignora agiornamentos etc.)</string>
+    <string name="extras_export">Esporta extra (Preferidos, Ignora agiornamentos etc.)</string>
+    <string name="file_share_text">Documentu de Neo Store</string>
 </resources>
