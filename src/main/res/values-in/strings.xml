@@ -294,4 +294,9 @@
     <string name="no_vulnerabilities_installed_apps">Tidak ada aplikasi terinstal yang memiliki kerentanan yang diketahui.</string>
     <string name="only_on_battery">Hanya saat mengisi daya</string>
     <string name="edit">Sunting</string>
+    <string name="tools">Alat</string>
+    <string name="extras_export">Ekspor ekstra (Favorit, Abaikan pembaruan, dll.)</string>
+    <string name="extras_import">Impor ekstra (Favorit, Abaikan pembaruan, dll.)</string>
+    <string name="file_share_text">File dari Neo Store</string>
+    <string name="allowed_anti_features">Anti-fitur yang diizinkan</string>
 </resources>
