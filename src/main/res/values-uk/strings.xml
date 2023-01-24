@@ -15,7 +15,7 @@
     <string name="checking_repository">Перевіряю розпозиторії…</string>
     <string name="application">Застосунок</string>
     <string name="always">Завжди</string>
-    <string name="action_failed">Невдала дія</string>
+    <string name="action_failed">Дія не виконана</string>
     <string name="add_repository">Додати репозиторій</string>
     <string name="address">Адреса</string>
     <string name="all_applications_up_to_date">Усі застосунки в актуальному стані</string>
@@ -297,4 +297,9 @@
     <string name="vulnerabilities">Вразливості.</string>
     <string name="edit">Редагувати</string>
     <string name="only_on_battery">Тільки під час зарядки</string>
+    <string name="allowed_anti_features">Дозволені анти-функції</string>
+    <string name="tools">Інструмент</string>
+    <string name="extras_export">Експорт переваг (вибране, ігнорування оновлень і т. д.)</string>
+    <string name="extras_import">Імпорт переваг (вибране, ігнорування оновлень і т. д.)</string>
+    <string name="file_share_text">Файл з NeoStore</string>
 </resources>
