@@ -37,4 +37,9 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
+    <string name="anti_features">mga anti-feature</string>
+    <string name="compiled_for_debugging">Pinagsamasama para sa debugging</string>
+    <string name="application">aplikasyon</string>
+    <string name="bug_tracker">tagasubaybay ng bug</string>
+    <string name="changelog">Listahan ng mga pagbabago</string>
 </resources>
