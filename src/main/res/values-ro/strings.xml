@@ -289,4 +289,14 @@
     <string name="permission_granted">Acordat</string>
     <string name="permission_not_granted">Neacordat</string>
     <string name="permission_not_present">Nu este prezent pe sistemul dvs</string>
+    <string name="vulnerabilities_installed_apps">Aceste aplicații instalate au vulnerabilități cunoscute!</string>
+    <string name="no_vulnerabilities_installed_apps">Nicio aplicație instalată nu are vulnerabilități cunoscute.</string>
+    <string name="vulnerabilities">Vulnerabilități.</string>
+    <string name="tools">Instrumente</string>
+    <string name="extras_export">Export suplimente (Preferințe, actualizările ignorate, etc.)</string>
+    <string name="extras_import">Import suplimente (Preferințe, actualizările ignorate, etc.)</string>
+    <string name="file_share_text">Fișier din Neo Store</string>
+    <string name="only_on_battery">Doar la încărcare</string>
+    <string name="edit">Editați</string>
+    <string name="allowed_anti_features">Anti-funcții permise</string>
 </resources>
