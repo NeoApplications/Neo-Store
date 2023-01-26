@@ -1,0 +1,4 @@
+* Diverse modificări ale interfeței de utilizare
+* A fost reformatată întreaga bază de cod
+* Dependențe actualizate
+* Redenumit Preferințe în Setări
