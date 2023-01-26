@@ -89,7 +89,7 @@ fun PrefsNavHost(
             val viewModel = MainApplication.prefsActivity?.prefsViewModel!!
             val args = it.arguments!!
             val address = args.getString("address") ?: ""
-            val fingerprint = args.getString("fingerprint") ?: ""
+            val fingerprint = args.getString("fingerprint")?.uppercase() ?: ""
             PrefsReposPage(viewModel, address, fingerprint)
         }
         slideDownComposable(NavItem.OtherPrefs.destination) {

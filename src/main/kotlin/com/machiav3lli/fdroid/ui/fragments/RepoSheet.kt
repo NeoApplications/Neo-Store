@@ -47,6 +47,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
@@ -184,8 +185,9 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                     ?.getItemAt(0)?.text?.toString().orEmpty()
                 val (addressText, fingerprintText) = try {
                     val uri = Uri.parse(URL(text.replaceFirst("fdroidrepos:", "https:")).toString())
-                    val fingerprintText = uri.getQueryParameter("fingerprint")?.nullIfEmpty()
-                                          ?: uri.getQueryParameter("FINGERPRINT")?.nullIfEmpty()
+                    val fingerprintText =
+                        uri.getQueryParameter("fingerprint")?.uppercase()?.nullIfEmpty()
+                            ?: uri.getQueryParameter("FINGERPRINT")?.uppercase()?.nullIfEmpty()
                     Pair(
                         uri.buildUpon().path(uri.path?.pathCropped)
                             .query(null).fragment(null).build().toString(), fingerprintText
@@ -347,7 +349,10 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                             textColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         ),
                         textStyle = LocalTextStyle.current.copy(fontFamily = FontFamily.Monospace),
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Next,
+                            capitalization = KeyboardCapitalization.Characters,
+                        ),
                         keyboardActions = KeyboardActions(
                             onNext = { focusManager.moveFocus(FocusDirection.Down) }
                         ),
@@ -477,7 +482,7 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                                 // TODO show readable error
                                 viewModel.updateRepo(repo?.apply {
                                     address = addressFieldValue.text
-                                    fingerprint = fingerprintFieldValue.text
+                                    fingerprint = fingerprintFieldValue.text.uppercase()
                                     setAuthentication(
                                         usernameFieldValue.text,
                                         passwordFieldValue.text,

@@ -208,8 +208,8 @@ class PrefsActivityX : AppCompatActivity() {
                             .path(data.path?.pathCropped)
                             .query(null).fragment(null).build().toString()
                         val fingerprintText =
-                            data.getQueryParameter("fingerprint")?.nullIfEmpty()
-                                ?: data.getQueryParameter("FINGERPRINT")?.nullIfEmpty()
+                            data.getQueryParameter("fingerprint")?.uppercase()?.nullIfEmpty()
+                                ?: data.getQueryParameter("FINGERPRINT")?.uppercase()?.nullIfEmpty()
                         Pair(uri, fingerprintText)
                     } catch (e: Exception) {
                         Pair(null, null)
