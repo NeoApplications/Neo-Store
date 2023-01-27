@@ -30,6 +30,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -37,7 +39,6 @@ import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.EXTRA_INTENT_HANDLED
 import com.machiav3lli.fdroid.MainApplication
-import com.machiav3lli.fdroid.NAV_MAIN
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.installer.AppInstaller
@@ -52,9 +53,9 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.fragments.AppSheetX
 import com.machiav3lli.fdroid.ui.fragments.SortFilterSheet
-import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.MainNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
 import com.machiav3lli.fdroid.ui.viewmodels.ExploreVM
 import com.machiav3lli.fdroid.ui.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.ui.viewmodels.LatestVM
@@ -115,7 +116,7 @@ class MainActivityX : AppCompatActivity() {
 
     @OptIn(
         ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class,
-        ExperimentalPermissionsApi::class
+        ExperimentalPermissionsApi::class, ExperimentalPagerApi::class
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
@@ -139,7 +140,13 @@ class MainActivityX : AppCompatActivity() {
                     mutableStateOf(false)
                 }
                 val mScope = rememberCoroutineScope()
+                val pagerState = rememberPagerState()
                 navController = rememberAnimatedNavController()
+                val pages = listOf(
+                    NavItem.Explore,
+                    NavItem.Latest,
+                    NavItem.Installed,
+                )
                 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
                 val permissionStatePostNotifications =
                     if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) {
@@ -150,7 +157,7 @@ class MainActivityX : AppCompatActivity() {
                     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                     containerColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
-                    bottomBar = { BottomNavBar(page = NAV_MAIN, navController = navController) },
+                    bottomBar = { PagerNavBar(pageItems = pages, pagerState = pagerState) },
                     topBar = {
                         TopBar(
                             title = stringResource(id = R.string.application_name),
@@ -193,7 +200,9 @@ class MainActivityX : AppCompatActivity() {
 
                     MainNavHost(
                         modifier = Modifier.padding(paddingValues),
-                        navController = navController
+                        navController = navController,
+                        pagerState,
+                        pages,
                     )
                 }
             }

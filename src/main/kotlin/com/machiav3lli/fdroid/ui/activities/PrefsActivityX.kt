@@ -28,12 +28,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.EXTRA_INTENT_HANDLED
 import com.machiav3lli.fdroid.INTENT_ACTION_BINARY_EYE
 import com.machiav3lli.fdroid.MainApplication
-import com.machiav3lli.fdroid.NAV_PREFS
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.service.Connection
@@ -41,8 +42,8 @@ import com.machiav3lli.fdroid.service.SyncService
 import com.machiav3lli.fdroid.ui.compose.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.fragments.RepoSheet
-import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
 import com.machiav3lli.fdroid.ui.navigation.PrefsNavHost
 import com.machiav3lli.fdroid.ui.viewmodels.PrefsVM
 import com.machiav3lli.fdroid.utility.destinationToItem
@@ -78,7 +79,10 @@ class PrefsActivityX : AppCompatActivity() {
 
     private lateinit var sheetRepo: RepoSheet
 
-    @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
+    @OptIn(
+        ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class,
+        ExperimentalPagerApi::class
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
         setCustomTheme()
@@ -93,7 +97,15 @@ class PrefsActivityX : AppCompatActivity() {
                     else                             -> isDarkTheme
                 }
             ) {
+                val pagerState = rememberPagerState()
                 navController = rememberAnimatedNavController()
+                val pages = listOf(
+                    NavItem.PersonalPrefs,
+                    NavItem.UpdatesPrefs,
+                    NavItem.ReposPrefs,
+                    NavItem.OtherPrefs,
+                )
+                val currentPage by remember(pagerState.currentPage) { mutableStateOf(pages[pagerState.currentPage]) }
                 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
                 var pageTitle: Int? by remember {
                     mutableStateOf(NavItem.Prefs.title)
@@ -107,12 +119,10 @@ class PrefsActivityX : AppCompatActivity() {
                     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                     containerColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
-                    bottomBar = { BottomNavBar(page = NAV_PREFS, navController = navController) },
+                    bottomBar = { PagerNavBar(pageItems = pages, pagerState = pagerState) },
                     topBar = {
                         TopBar(
-                            title = stringResource(
-                                id = pageTitle ?: NavItem.Prefs.title
-                            ),
+                            title = stringResource(id = currentPage.title),
                             scrollBehavior = scrollBehavior
                         )
                     }
@@ -125,7 +135,9 @@ class PrefsActivityX : AppCompatActivity() {
 
                     PrefsNavHost(
                         modifier = Modifier.padding(paddingValues),
-                        navController = navController
+                        navController = navController,
+                        pagerState,
+                        pages
                     )
                 }
             }
