@@ -12,89 +12,55 @@ import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.activity
-import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.machiav3lli.fdroid.MainApplication
-import com.machiav3lli.fdroid.content.Preferences
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.PagerState
 import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
-import com.machiav3lli.fdroid.ui.pages.ExplorePage
-import com.machiav3lli.fdroid.ui.pages.InstalledPage
-import com.machiav3lli.fdroid.ui.pages.LatestPage
-import com.machiav3lli.fdroid.ui.pages.PrefsOtherPage
-import com.machiav3lli.fdroid.ui.pages.PrefsPersonalPage
-import com.machiav3lli.fdroid.ui.pages.PrefsReposPage
-import com.machiav3lli.fdroid.ui.pages.PrefsUpdatesPage
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
 @Composable
 fun MainNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    pagerState: PagerState,
+    pages: List<NavItem>,
 ) =
     AnimatedNavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Preferences[Preferences.Key.DefaultTab].valueString
+        startDestination = NavItem.Main.destination,
     ) {
-        slideDownComposable(NavItem.Explore.destination) {
-            val viewModel = MainApplication.mainActivity?.exploreViewModel!!
-            ExplorePage(viewModel)
-        }
-        slideDownComposable(route = NavItem.Latest.destination) {
-            val viewModel = MainApplication.mainActivity?.latestViewModel!!
-            LatestPage(viewModel)
-        }
-        slideDownComposable(NavItem.Installed.destination) {
-            val viewModel = MainApplication.mainActivity?.installedViewModel!!
-            InstalledPage(viewModel)
+        slideDownComposable(NavItem.Main.destination) {
+            SlidePager(
+                pageItems = pages,
+                pagerState = pagerState
+            )
         }
         activity(NavItem.Prefs.destination) {
             this.activityClass = PrefsActivityX::class
         }
     }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
 @Composable
 fun PrefsNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    pagerState: PagerState,
+    pages: List<NavItem>,
 ) =
     AnimatedNavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = NavItem.PersonalPrefs.destination
+        startDestination = NavItem.Prefs.destination,
     ) {
-        slideDownComposable(NavItem.PersonalPrefs.destination) {
-            PrefsPersonalPage()
-        }
-        slideDownComposable(NavItem.UpdatesPrefs.destination) {
-            PrefsUpdatesPage()
-        }
-        slideDownComposable(
-            "${NavItem.ReposPrefs.destination}?address={address}?fingerprint={fingerprint}",
-            args = listOf(
-                navArgument("address") {
-                    type = NavType.StringType
-                    defaultValue = ""
-                },
-                navArgument("fingerprint") {
-                    type = NavType.StringType
-                    defaultValue = ""
-                },
+        slideDownComposable(NavItem.Prefs.destination) {
+            SlidePager(
+                pageItems = pages,
+                pagerState = pagerState
             )
-        ) {
-            val viewModel = MainApplication.prefsActivity?.prefsViewModel!!
-            val args = it.arguments!!
-            val address = args.getString("address") ?: ""
-            val fingerprint = args.getString("fingerprint")?.uppercase() ?: ""
-            PrefsReposPage(viewModel, address, fingerprint)
-        }
-        slideDownComposable(NavItem.OtherPrefs.destination) {
-            val viewModel = MainApplication.prefsActivity?.prefsViewModel!!
-            PrefsOtherPage(viewModel)
         }
     }
 
