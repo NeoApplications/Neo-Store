@@ -39,6 +39,9 @@ import com.machiav3lli.fdroid.ui.pages.PrefsReposPage
 import com.machiav3lli.fdroid.ui.pages.PrefsUpdatesPage
 
 sealed class NavItem(var title: Int, var icon: ImageVector, var destination: String) {
+    object Main :
+        NavItem(R.string.main, Phosphor.House, "main")
+
     object Explore :
         NavItem(R.string.explore, Phosphor.Compass, "main_explore")
 
