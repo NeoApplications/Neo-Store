@@ -411,13 +411,13 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                 }
                             }
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe { result, throwable: Throwable? ->
+                            .subscribe { result: Boolean?, throwable: Throwable? ->
                                 currentTask = null
                                 throwable?.printStackTrace()
                                 if (throwable != null && task.manual) {
                                     showNotificationError(repository, throwable as Exception)
                                 }
-                                handleNextTask(result == true || hasUpdates)
+                                handleNextTask((result != null && result) || hasUpdates)
                             }
                         currentTask = CurrentTask(task, disposable, hasUpdates, initialState)
                     } else if (task.repositoryId == EXODUS_TRACKERS_SYNC) {
