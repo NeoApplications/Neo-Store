@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -37,9 +39,9 @@ import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.DownloadService
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
-import com.machiav3lli.fdroid.ui.compose.ProductsVerticalRecycler
 import com.machiav3lli.fdroid.ui.compose.components.ActionChip
 import com.machiav3lli.fdroid.ui.compose.components.DownloadsListItem
+import com.machiav3lli.fdroid.ui.compose.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUp
@@ -124,28 +126,6 @@ fun InstalledPage(viewModel: InstalledVM) {
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
     ) {
-        AnimatedVisibility(visible = downloads.isNotEmpty()) {
-            Column {
-                Text(
-                    text = stringResource(id = R.string.downloading)
-                )
-                downloads.forEach { (packageName, value) ->
-                    val (item, state) = value
-                    val installed = installedList?.get(packageName)
-                    if (state.version != installed?.version) DownloadsListItem(
-                        item = item,
-                        state = state,
-                        repo = repositoriesMap[value.first.repositoryId],
-                        installed = installedList?.get(packageName)
-                    ) {
-                        mainActivityX.navigateProduct(item.packageName, item.developer)
-                    }
-                    else viewModel.updateDownloadState(
-                        DownloadService.State.Cancel(item.packageName, item.name, "–")
-                    )
-                }
-            }
-        }
         AnimatedVisibility(visible = secondaryList.orEmpty().isNotEmpty()) {
             Column {
                 Row(
@@ -197,43 +177,73 @@ fun InstalledPage(viewModel: InstalledVM) {
                 }
             }
         }
-        Row(
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(id = R.string.installed_applications),
-                modifier = Modifier.weight(1f),
-            )
-            ActionChip(
-                text = stringResource(id = R.string.sort_filter),
-                icon = Phosphor.FunnelSimple
-            ) { mainActivityX.navigateSortFilter(NavItem.Installed.destination) }
-        }
-        ProductsVerticalRecycler(
-            productsList = filteredPrimaryList,
-            repositories = repositoriesMap,
-            favorites = favorites,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            onUserClick = { item ->
-                mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
-                mainActivityX.navigateProduct(item.packageName, item.developer)
-            },
-            onFavouriteClick = { item ->
-                viewModel.setFavorite(
-                    item.packageName,
-                    !favorites.contains(item.packageName)
+
+        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+            if (downloads.isNotEmpty()) item {
+                Text(
+                    text = stringResource(id = R.string.downloading)
                 )
-            },
-            getInstalled = { packageName -> installedList?.get(packageName) }
-        ) { item ->
-            val installed = installedList?.get(item.packageName)
-            if (installed != null && installed.launcherActivities.isNotEmpty())
-                context.onLaunchClick(installed, mainActivityX.supportFragmentManager)
-            else
-                mainActivityX.syncConnection.binder?.installApps(listOf(item))
+            }
+            if (downloads.isNotEmpty()) items(downloads.toList()) { (packageName, value) ->
+                val (item, state) = value
+                val installed = installedList?.get(packageName)
+                if (state.version != installed?.version) DownloadsListItem(
+                    item = item,
+                    state = state,
+                    repo = repositoriesMap[value.first.repositoryId],
+                    installed = installedList?.get(packageName)
+                ) {
+                    mainActivityX.navigateProduct(item.packageName, item.developer)
+                }
+                else viewModel.updateDownloadState(
+                    DownloadService.State.Cancel(item.packageName, item.name, "–")
+                )
+            }
+            item {
+                Row(
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.installed_applications),
+                        modifier = Modifier.weight(1f),
+                    )
+                    ActionChip(
+                        text = stringResource(id = R.string.sort_filter),
+                        icon = Phosphor.FunnelSimple
+                    ) { mainActivityX.navigateSortFilter(NavItem.Installed.destination) }
+                }
+            }
+            items(
+                filteredPrimaryList?.map { it.toItem() } ?: emptyList()
+            ) { item ->
+                ProductsListItem(
+                    item = item,
+                    repo = repositoriesMap[item.repositoryId],
+                    isFavorite = favorites.contains(item.packageName),
+                    onUserClick = {
+                        mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
+                        mainActivityX.navigateProduct(it.packageName, item.developer)
+                    },
+                    onFavouriteClick = { item ->
+                        viewModel.setFavorite(
+                            item.packageName,
+                            !favorites.contains(item.packageName)
+                        )
+                    },
+                    installed = installedList?.get(item.packageName),
+                    onActionClick = {
+                        val installed = installedList?.get(it.packageName)
+                        if (installed != null && installed.launcherActivities.isNotEmpty())
+                            context.onLaunchClick(
+                                installed,
+                                mainActivityX.supportFragmentManager
+                            )
+                        else
+                            mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                    }
+                )
+            }
         }
     }
 }
