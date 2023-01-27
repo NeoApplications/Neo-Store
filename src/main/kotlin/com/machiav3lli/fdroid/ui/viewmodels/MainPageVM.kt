@@ -85,9 +85,10 @@ open class MainPageVM(
 
     val primaryProducts: StateFlow<List<Product>?> = combine(
         primaryRequest,
+        installed,
         db.productDao.queryFlowList(primaryRequest.value),
         sortFilter
-    ) { a, _, _ ->
+    ) { a, _, _, _ ->
         withContext(Dispatchers.IO) {
             db.productDao.queryObject(a)
         }
