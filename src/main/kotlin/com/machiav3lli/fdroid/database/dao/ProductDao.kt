@@ -232,14 +232,6 @@ interface ProductDao : BaseDao<Product> {
 
         // Filter only the selected repository/category
         when (section) {
-            is Section.Category   -> {
-                builder += "AND $TABLE_CATEGORY.$ROW_LABEL = ?"
-                builder %= section.name
-            }
-            is Section.Repository -> {
-                builder += "AND $TABLE_PRODUCT.$ROW_REPOSITORY_ID = ?"
-                builder %= section.id.toString()
-            }
             is Section.FAVORITE   -> {
                 builder += "AND COALESCE($TABLE_EXTRAS.$ROW_FAVORITE, 0) != 0"
             }
