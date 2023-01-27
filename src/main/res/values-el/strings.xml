@@ -293,4 +293,11 @@
     <string name="app_installed">Εγκατεστημένο</string>
     <string name="vulnerabilities_installed_apps">Αυτές οι εγκατεστημένες εφαρμογές έχουν γνωστές ευπάθειες!</string>
     <string name="no_vulnerabilities_installed_apps">Καμία εγκατεστημένη εφαρμογή δεν έχει γνωστές ευπάθειες.</string>
+    <string name="tools">Εργαλεία</string>
+    <string name="file_share_text">Αρχείο από το Neo Store</string>
+    <string name="extras_export">Εξαγωγή προτιμήσεων (Αγαπημένα, Παράβλεψη ενημερώσεων κ.λπ.)</string>
+    <string name="extras_import">Εισαγωγή προτιμήσεων (Αγαπημένα, Παράβλεψη ενημερώσεων κ.λπ.)</string>
+    <string name="edit">Επεξεργασία</string>
+    <string name="only_on_battery">Μόνο κατά τη φόρτιση</string>
+    <string name="allowed_anti_features">Επιτρεπόμενα ανεπιθύμητα χαρακτηριστικά</string>
 </resources>
