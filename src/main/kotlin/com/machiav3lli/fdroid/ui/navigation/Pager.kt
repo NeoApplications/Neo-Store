@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun SlidePager(
+fun SlidePager( // TODO Add handling default tab
     modifier: Modifier = Modifier,
     pageItems: List<NavItem>,
     pagerState: PagerState,
