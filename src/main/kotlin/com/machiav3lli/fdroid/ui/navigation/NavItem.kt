@@ -17,7 +17,9 @@
  */
 package com.machiav3lli.fdroid.ui.navigation
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
@@ -28,6 +30,13 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Graph
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.House
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserGear
+import com.machiav3lli.fdroid.ui.pages.ExplorePage
+import com.machiav3lli.fdroid.ui.pages.InstalledPage
+import com.machiav3lli.fdroid.ui.pages.LatestPage
+import com.machiav3lli.fdroid.ui.pages.PrefsOtherPage
+import com.machiav3lli.fdroid.ui.pages.PrefsPersonalPage
+import com.machiav3lli.fdroid.ui.pages.PrefsReposPage
+import com.machiav3lli.fdroid.ui.pages.PrefsUpdatesPage
 
 sealed class NavItem(var title: Int, var icon: ImageVector, var destination: String) {
     object Explore :
@@ -53,4 +62,35 @@ sealed class NavItem(var title: Int, var icon: ImageVector, var destination: Str
 
     object OtherPrefs :
         NavItem(R.string.other, Phosphor.DotsThreeOutline, "prefs_other")
+
+    @Composable
+    fun ComposablePage() {
+        when (destination) {
+            Explore.destination       -> {
+                val viewModel = MainApplication.mainActivity?.exploreViewModel!!
+                ExplorePage(viewModel)
+            }
+            Latest.destination        -> {
+                val viewModel = MainApplication.mainActivity?.latestViewModel!!
+                LatestPage(viewModel)
+            }
+            Installed.destination     -> {
+                val viewModel = MainApplication.mainActivity?.installedViewModel!!
+                InstalledPage(viewModel)
+            }
+            PersonalPrefs.destination -> PrefsPersonalPage()
+            UpdatesPrefs.destination  -> PrefsUpdatesPage()
+            ReposPrefs.destination    -> {
+                val viewModel = MainApplication.prefsActivity?.prefsViewModel!!
+                //val args = it.arguments!!
+                //val address = args.getString("address") ?: ""
+                //val fingerprint = args.getString("fingerprint")?.uppercase() ?: ""
+                PrefsReposPage(viewModel, "", "")
+            }
+            OtherPrefs.destination    -> {
+                val viewModel = MainApplication.prefsActivity?.prefsViewModel!!
+                PrefsOtherPage(viewModel)
+            }
+        }
+    }
 }
