@@ -44,6 +44,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,6 +55,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -498,34 +500,33 @@ class SyncService : ConnectionService<SyncService.Binder>() {
      * @see SyncService.displayUpdatesNotification
      */
     private fun batchUpdate(productItems: List<ProductItem>, install: Boolean = false) {
+        // run startUpdate on every item
         scope.launch {
-            // run startUpdate on every item
-            productItems.map { productItem ->
-                Triple(
-                    productItem.packageName,
-                    db.installedDao.get(productItem.packageName),
-                    db.repositoryDao.get(productItem.repositoryId)
-                )
-            }
-                .filter { (_, installed, repo) -> (install || installed != null) && repo != null }
-                .map { (packageName, installed, repo) ->
-                    val productRepository = db.productDao.get(packageName)
-                        .filterNotNull()
-                        .filter { product -> product.repositoryId == repo!!.id }
-                        .map { product -> Pair(product, repo!!) }
-
-                    scope.launch {
-                        Utils.startUpdate(
-                            packageName,
-                            installed,
-                            productRepository,
-                            downloadConnection
-                        )
-                    }
-                }.let {
-                    it.forEach { job -> job.join() }
-                    if (downloadServiceMutex.isLocked) downloadServiceMutex.unlock()
+            runBlocking {
+                productItems.map { productItem ->
+                    Triple(
+                        productItem.packageName,
+                        db.installedDao.get(productItem.packageName),
+                        db.repositoryDao.get(productItem.repositoryId)
+                    )
                 }
+                    .filter { (_, installed, repo) -> (install || installed != null) && repo != null }
+                    .map { (packageName, installed, repo) ->
+                        val productRepository = db.productDao.get(packageName)
+                            .filter { product -> product.repositoryId == repo!!.id }
+                            .map { product -> Pair(product, repo!!) }
+                        async {
+                            Utils.startUpdate(
+                                packageName,
+                                installed,
+                                productRepository,
+                                downloadConnection
+                            )
+                        }
+                    }.forEach { it.await() }
+            }
+            downloadConnection.unbind(this@SyncService)
+            if (downloadServiceMutex.isLocked) downloadServiceMutex.unlock()
         }
     }
 
