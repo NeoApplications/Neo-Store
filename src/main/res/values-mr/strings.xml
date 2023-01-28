@@ -1,2 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="action_failed">कृती अयशस्वी</string>
+    <string name="all_applications_up_to_date">सर्व अ‍ॅप्स अद्ययावत आहेत</string>
+    <string name="add_repository">रिपोसिट्री जोडा</string>
+    <string name="address">पत्ता</string>
+    <string name="application">ॲप्लिकेशन</string>
+    <string name="always">नेहमी</string>
+    <string name="author_website">ऑथरचे संकेतस्थळ</string>
+    <string name="anti_features">विरोधी वैशिष्ट्ये</string>
+    <string name="available">उपलब्ध</string>
+    <string name="bug_tracker">बग ट्रॅकर</string>
+    <string name="cancel">रद्द करा</string>
+    <string name="cant_edit_sync_DESC">सिंकिंग रेपॉजिटरीज संपादित करू शकत नाही…</string>
+    <string name="changelog">बदलाव</string>
+    <string name="checking_repository">रिपोसिट्री तपासत आहे</string>
+    <string name="compiled_for_debugging">डीबगिंगसाठी कम्पाइल्ड</string>
+    <string name="confirmation">पुष्टीकरण</string>
+    <string name="connecting">"जोडला  जात आहे"</string>
+    <string name="could_not_download_FORMAT">%s डाउनलोड नाही करु शकत</string>
+    <string name="amoled">काळा</string>
+    <string name="author_email">ऑथरचा ई-मेल</string>
+    <string name="contains_non_free_media">नॉन-लिब्रे मीडिया आहे</string>
+    <string name="could_not_sync_FORMAT">स</string>
+    <string name="already_exists">आधिपासूनच अस्तित्वात आहे</string>
+    <string name="all_applications">सर्व अ‍ॅप्प्लिकेशन</string>
+    <string name="application_not_found">ते अ‍ॅप सापडले नाही</string>
+    <string name="changes">परिवर्तन</string>
+</resources>
