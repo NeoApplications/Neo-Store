@@ -224,23 +224,21 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
     }
 
     private fun publishSuccess(task: Task) {
-        var consumed = false
         scope.launch {
             mutableStateSubject.emit(State.Success(task.packageName, task.name, task.release))
-            consumed = true
         }
         val installer = suspend {
             AppInstaller.getInstance(MainApplication.mainActivity)
                 ?.defaultInstaller?.install(task.name, task.release.cacheFileName)
         }
-        if (!consumed && MainApplication.mainActivity != null &&
+        if (MainApplication.mainActivity != null &&
             AppInstaller.getInstance(MainApplication.mainActivity)?.defaultInstaller is LegacyInstaller
         ) { //TODO investigate if there's resulting issues
             CoroutineScope(Dispatchers.Default).launch {
                 Log.i(this::javaClass.name, "Waiting activity to install: ${task.packageName}")
                 MainApplication.mainActivity?.whenResumed { installer() }
             }
-        } else if (!consumed) {
+        } else {
             Log.i(this::javaClass.name, "Installing downloaded: ${task.url}")
             CoroutineScope(Dispatchers.IO).launch { installer() }
         }
