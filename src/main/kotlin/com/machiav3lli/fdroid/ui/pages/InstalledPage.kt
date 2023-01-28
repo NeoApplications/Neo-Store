@@ -181,6 +181,7 @@ fun InstalledPage(viewModel: InstalledVM) {
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             if (downloads.isNotEmpty()) item {
                 Text(
+                    modifier = Modifier.padding(horizontal = 8.dp),
                     text = stringResource(id = R.string.downloading)
                 )
             }
