@@ -479,12 +479,15 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                 Log.i(this::javaClass.name, "emitting finish: had no updates")
                                 mutableFinishState.emit(Unit)
                             }
-                        }
-                        val needStop = started == Started.MANUAL
-                        started = Started.NO
-                        if (needStop) {
-                            stopForeground(true)
-                            stopSelf()
+                            val needStop = started == Started.MANUAL
+                            started = Started.NO
+
+                            Log.i(this::javaClass.name, "need stop: $needStop")
+                            if (needStop) {
+                                stopForeground(true)
+                                Log.i(this::javaClass.name, "stopping self")
+                                stopSelf()
+                            }
                         }
                     }
                 }
