@@ -245,11 +245,10 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        scope.launch {
-            downloadServiceMutex.withLock {
-                downloadConnection.unbind(this@SyncService)
-            }
-        }
+        /*CoroutineScope(Dispatchers.IO).launch {
+            while (downloadServiceMutex.isLocked) delay(500)
+            if (downloadConnection.binder != null) downloadConnection.unbind(this@SyncService)
+        }*/
         cancelTasks { true }
         cancelCurrentTask { true }
     }
