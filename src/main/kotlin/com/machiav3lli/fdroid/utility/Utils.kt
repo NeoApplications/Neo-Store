@@ -57,6 +57,7 @@ import com.machiav3lli.fdroid.utility.extension.android.singleSignature
 import com.machiav3lli.fdroid.utility.extension.android.versionCodeCompat
 import com.machiav3lli.fdroid.utility.extension.text.hex
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
+import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.lang.ref.WeakReference
 import java.security.MessageDigest
@@ -505,6 +506,8 @@ val currentTimestamp: String
         val simpleDateFormat = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.US)
         return simpleDateFormat.format(Date())
     }
+
+val shellIsRoot: Boolean = Shell.getCachedShell()?.isRoot ?: Shell.getShell().isRoot
 
 fun NavDestination.destinationToItem(): NavItem? = listOf(
     NavItem.Explore,

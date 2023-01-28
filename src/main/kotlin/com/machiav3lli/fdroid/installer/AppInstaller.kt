@@ -3,7 +3,7 @@ package com.machiav3lli.fdroid.installer
 import android.content.Context
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.InstallerType
-import com.topjohnwu.superuser.Shell
+import com.machiav3lli.fdroid.utility.shellIsRoot
 
 abstract class AppInstaller {
     abstract val defaultInstaller: BaseInstaller?
@@ -20,11 +20,11 @@ abstract class AppInstaller {
                                 get() {
                                     val installer = Preferences[Preferences.Key.Installer].installer
                                     return when {
-                                        installer == InstallerType.ROOT && Shell.isAppGrantedRoot() == true ->
+                                        installer == InstallerType.ROOT && shellIsRoot ->
                                             RootInstaller(it)
-                                        installer == InstallerType.LEGACY                                   ->
+                                        installer == InstallerType.LEGACY              ->
                                             LegacyInstaller(it)
-                                        else                                                                ->
+                                        else                                           ->
                                             DefaultInstaller(it)
                                     }
                                 }
