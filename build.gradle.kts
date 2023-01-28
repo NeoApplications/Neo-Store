@@ -124,7 +124,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.8.0-rc01")
 
     // Material3
-    implementation("com.google.android.material:material:1.8.0-rc01")
+    implementation("com.google.android.material:material:1.8.0")
 
     // Coil
     implementation("io.coil-kt:coil:2.2.2")
@@ -144,7 +144,7 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
 
     // LibSu
-    implementation("com.github.topjohnwu.libsu:core:5.0.3")
+    implementation("com.github.topjohnwu.libsu:core:5.0.4")
 
     // JSON
     implementation("com.fasterxml.jackson.core:jackson-core:2.14.1")
