@@ -300,4 +300,5 @@
     <string name="extras_export">Exportar extras (Favoritos, Ignorar atualizações, etc.)</string>
     <string name="file_share_text">Ficheiro da Neo Store</string>
     <string name="extras_import">Importar extras (Favoritos, Ignorar atualizações, etc.)</string>
+    <string name="allowed_anti_features">Anti-funções permitidas</string>
 </resources>
