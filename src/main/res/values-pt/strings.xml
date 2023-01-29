@@ -296,4 +296,9 @@
     <string name="permission_not_present">Não presente no seu sistema</string>
     <string name="only_on_battery">Apenas ao carregar</string>
     <string name="edit">Editar</string>
+    <string name="tools">Ferramentas</string>
+    <string name="extras_export">Exportar extras (Favoritos, Ignorar atualizações, etc.)</string>
+    <string name="extras_import">Importar extras (Favoritos, Ignorar atualizações, etc.)</string>
+    <string name="file_share_text">Ficheiro da Neo Store</string>
+    <string name="allowed_anti_features">Anti-Características permitidas</string>
 </resources>
