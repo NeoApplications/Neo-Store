@@ -296,4 +296,8 @@
     <string name="no_vulnerabilities_installed_apps">Nenhuma aplicação instalada tem vulnerabilidades conhecidas.</string>
     <string name="only_on_battery">Apenas ao carregar</string>
     <string name="edit">Editar</string>
+    <string name="tools">Ferramentas</string>
+    <string name="extras_export">Exportar extras (Favoritos, Ignorar atualizações, etc.)</string>
+    <string name="file_share_text">Ficheiro da Neo Store</string>
+    <string name="extras_import">Importar extras (Favoritos, Ignorar atualizações, etc.)</string>
 </resources>
