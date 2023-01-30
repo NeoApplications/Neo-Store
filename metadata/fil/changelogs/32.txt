@@ -1,0 +1,6 @@
+- Update: Disenyo alinsunod sa MD3
+- Update: Mas mainam na screenshot UX
+- Inayos: Problema habang nag-i-install gamit ang root method
+- Update: Bagong profile ng tema
+- Bago: Pagbabahagi ng mga link (opisyal na F-Droid lang muna sa ngayon)
+- Iba pang mga pag-aayos ng UI at UX

@@ -1,0 +1,7 @@
+- Nagdagdag ng icon para sa pagbukas ng "Mga detalye"
+- Mas kapansin-pansin na ang mga pagkakaiba sa bar ng nangungunang app
+- Hihilingin lang ang pahintulot para sa root kung gagamitin
+- Mga pagsasaayos sa visibilidad ng mga switch
+- Bago: Arabong pagsasalin
+- Pindutin nang matagal ang icon ng source para kopyahin ang link
+- Pinalitan ang Toast nang Snackbar
