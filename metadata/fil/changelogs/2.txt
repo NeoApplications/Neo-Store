@@ -1,0 +1,4 @@
+* Ilang mga pagbabago sa UI
+* Binago ang format ng buong codebase
+* Updated Dependencies
+* Ginawang "Settings" ang "Preferences" (kung nakatakda ang wika mo sa Ingles)

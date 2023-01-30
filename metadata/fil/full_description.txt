@@ -1,0 +1,33 @@
+Modernong kliyente pang-F-Droid na may Material Design.
+
+Mga Feature:
+
+* Estilong Material Design na mala-F-Droid
+* Walang mga kard o 'di-angkop na animation
+* Mabilisang pagsi-sync ng mga respositoryo
+* Pangkaraniwang mga component ng Android at kaunting dependencies
+
+Available sa:
+
+- Aleman
+- Arabong Peninsular
+- Brasilyanong Portuges
+- Espanyol
+- Filipino
+- Finnish
+- Griyego
+- Hungarian
+- Ingles
+- Italyano
+- Norwegian Bokmål
+- Pinasimpleng Tsino
+- Polish
+- Pranses
+- Russian
+- Turkish
+- Ukrainian
+
+Isang direktang adaptasyon/pagbabago sa Foxy-Droid
+
+Copylefted na malayang software, nakalisensya sa ilalim ng GPLv3+. \
+Gamitin, aralin, baguhin, at ibahagi; kaninuman.

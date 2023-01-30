@@ -1,0 +1,3 @@
+- Pinalitan ang mga lumang icon nang Material Icons
+- Inayos ang mga problema sa bar ng nangungunang app
+- Nagdagdag ng mga icon sa mga butong "I-install" at "Kanselahin" para sa aksesibilidad

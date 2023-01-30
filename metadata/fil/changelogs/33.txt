@@ -1,0 +1,6 @@
+- Update: Bagong icon ng app
+- Update: Bagong UI sa pahina ng app
+- Update: Hindi na sapilitan ang animation sa mga listahan
+- Inayos: Ipinapakita na ang tunay na laki ng APK
+- Inayos: Link ng proyekto sa mga setting
+- Inayos: Sinusunod na ng splash screen ang tema ng sistema

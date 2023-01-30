@@ -1,0 +1,5 @@
+- Bago: Setting ng wika
+- Update: pahalang mag-scroll na mga screenshot
+- Inayos: Root installer sa background
+- Bago: Hihilingin lang ang pahintulot para sa root kung gagamitin
+- Iba pang mga pagbabago sa UI/UX

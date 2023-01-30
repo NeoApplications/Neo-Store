@@ -1,0 +1,6 @@
+- Update: Collapsing toolbar
+- Update: Pinahusay na mga installer (root at 'di-root)
+- Update: Bagong icon ng app (ulit)
+- Update: Blokeng disenyo para sa info ng release
+- Update: Pang-handle sa nawawalang pangalan at icon ng mga may-akda
+- Iba pang mga pagsasaayos, pagbabago, at paglilinis
