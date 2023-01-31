@@ -1,0 +1,5 @@
+Behoben: Speicherleck im Hauptprogramm und in den Einstellungen.
+Hinzugefügt: Die neue Visualisierung der Privatsphäre (Icon in Form eines Viewmeters).
+Hinzugefügt: Die neue Privatsphäre-Tabelle
+Behoben: Wiederholtes Öffnen desselben RepoSheets.
++ mehr als 15 Beiträge zur Übersetzung

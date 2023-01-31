@@ -1,0 +1,7 @@
+Hinzugefügt: Erlaubnis für Benachrichtigungen (für A13).
+Hinzugefügt: Seitennavigationsleiste zum Erkunden von Kategorien.
+Behoben: Legacy- & RootInstaller
+Behoben: Verbesserte Suchleistung (Credits @pedrox-hs).
+Aktualisiert: Horizontales Layout von Anwendungen.
+Aktualisiert: Fragt nach Root-Erlaubnis, wenn Root-Installer aktiviert ist.
++ über 60 Beiträge zur Übersetzung
