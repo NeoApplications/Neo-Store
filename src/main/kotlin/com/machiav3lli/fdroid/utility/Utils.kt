@@ -512,7 +512,8 @@ val currentTimestamp: String
         return simpleDateFormat.format(Date())
     }
 
-val shellIsRoot: Boolean = Shell.getCachedShell()?.isRoot ?: Shell.getShell().isRoot
+val shellIsRoot: Boolean
+    get() = Shell.getCachedShell()?.isRoot ?: Shell.getShell().isRoot
 
 fun NavDestination.destinationToItem(): NavItem? = listOf(
     NavItem.Explore,
