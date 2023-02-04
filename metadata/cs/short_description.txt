@@ -1,1 +1,1 @@
-Moderní F-Droid klient s Material Designem.
+Moderní klient pro F-Droid s mnoha funkcemi.
