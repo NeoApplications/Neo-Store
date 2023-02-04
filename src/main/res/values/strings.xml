@@ -262,7 +262,7 @@
     <string name="trackers_bug_description">Trackers used to report the technical issues that the app may face.</string>
     <string name="source_proprietary">Proprietary</string>
     <string name="source_proprietary_description">The app\'s source code is not publicly accessible.</string>
-    <string name="source_open">Open Source</string>
+    <string name="source_open">Libre software</string>
     <string name="source_open_description">The app\'s source code is openly accessible.</string>
     <string name="source_copyleft">Copyleft</string>
     <string name="source_copyleft_description">The app consists only of free contents.</string>
