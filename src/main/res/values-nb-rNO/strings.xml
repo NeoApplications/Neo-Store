@@ -255,4 +255,8 @@
     <string name="permission_microphone">Mikrofon</string>
     <string name="permission_calendar">Kalender</string>
     <string name="permission_phone">Telefon</string>
+    <string name="tools">Verktøy</string>
+    <string name="show_trackers">Vis sporere</string>
+    <string name="edit">Rediger</string>
+    <string name="app_installed">Installert</string>
 </resources>
