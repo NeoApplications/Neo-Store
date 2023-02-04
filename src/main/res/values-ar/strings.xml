@@ -258,10 +258,10 @@
     <string name="trackers_bug">متتبعات لرصد الأخطاء البرمجية</string>
     <string name="trackers_bug_description">متتبعات تستخدم للإبلاغ عن المشكلات التقنية التي قد يواجهها التطبيق.</string>
     <string name="source_proprietary">مَلَكِيَّة</string>
-    <string name="source_open">مصدر مفتوح</string>
-    <string name="source_open_description">الكود المصدري لهذا التطبيق متاح بشكل مفتوح.</string>
+    <string name="source_open">برمجية حرة</string>
+    <string name="source_open_description">يمكن تصفح الكود المصدري للتطبيق وتغييره ومشاركته.</string>
     <string name="source_copyleft">حقوق متروكة</string>
-    <string name="source_copyleft_description">يتكون هذا التطبيق من محتويات مجانية فقط.</string>
+    <string name="source_copyleft_description">تتطلب مشاركة البرنامج مشاركة التغييرات التي تم إجراؤها عليه.</string>
     <string name="source_copyright">حقوق الملكية</string>
     <string name="source_dependencies">أعتمادات</string>
     <string name="source_dependencies_description">هذا التطبيق يحتوي على بعض التبعيات التي قد لا تحترم الخصوصية.</string>
@@ -304,4 +304,6 @@
     <string name="extras_import">استيراد الإضافات (المفضلة ، تجاهل التحديثات ، إلخ.)</string>
     <string name="file_share_text">ملف من متجر نيو</string>
     <string name="allowed_anti_features">الميزات المضادة المسموح بها</string>
+    <string name="show_trackers">عرض المتتبعات</string>
+    <string name="show_trackers_description">احصل على متتبعات التطبيقات وأظهرها من خصوصية Exodus.</string>
 </resources>
