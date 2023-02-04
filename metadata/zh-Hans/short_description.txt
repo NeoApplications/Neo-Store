@@ -1,1 +1,1 @@
-具有 Material Design 的现代 F-Droid 客户端。
+一个现代的功能丰富的 F-Droid 客户端。
