@@ -1,6 +1,0 @@
--Update: Bagong app icon
--Update: Ang UI sa aplikasyon
--Update: Gawing optimal ang listahan
--Fix: Ipakita ng totoong laki ng apk
--Fix: Link ng proyekto sa preferences
-Fix: Splash screen ay naka depende sa tema ng  sistema
