@@ -302,4 +302,6 @@
     <string name="tools">Инструменты</string>
     <string name="extras_export">Экспорт предпочтений (избранное, игнорирование обновлений и т.д.)</string>
     <string name="file_share_text">Файл из Neo Store</string>
+    <string name="show_trackers">Показывать трекеры</string>
+    <string name="show_trackers_description">Показывать информацию о трекерах в приложении из базы Exodus Privacy.</string>
 </resources>
