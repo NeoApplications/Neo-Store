@@ -260,11 +260,11 @@
     <string name="trackers_bug">錯誤回報追蹤器</string>
     <string name="trackers_bug_description">用於回報應用程式可能面臨的技術問題。</string>
     <string name="source_proprietary_description">該應用程式的原始碼不可公開訪問。</string>
-    <string name="source_open">開放原始碼</string>
+    <string name="source_open">自由軟件</string>
     <string name="source_proprietary">專有</string>
-    <string name="source_open_description">該應用程式的原始碼可公開訪問。</string>
+    <string name="source_open_description">該應用程式的原始碼可以瀏覽，更改和共用。</string>
     <string name="source_copyleft">授權</string>
-    <string name="source_copyleft_description">該應用程式僅包含免費內容。</string>
+    <string name="source_copyleft_description">共用程式需要共用對其所做的更改。</string>
     <string name="source_copyright">版權</string>
     <string name="source_dependencies">依賴關係</string>
     <string name="source_dependencies_description">該應用程式具有一些可能不尊重隱私的依賴項。</string>
@@ -292,4 +292,13 @@
     <string name="vulnerabilities">漏洞。</string>
     <string name="app_installed">已安裝</string>
     <string name="no_vulnerabilities_installed_apps">沒有已安裝的應用程序存在已知漏洞。</string>
+    <string name="tools">工具</string>
+    <string name="extras_export">導出附加項（收藏夾、忽略更新等）</string>
+    <string name="extras_import">導入附加功能（收藏夾、忽略更新等）</string>
+    <string name="file_share_text">來自 Neo Store 的文件</string>
+    <string name="show_trackers">顯示跟踪器</string>
+    <string name="show_trackers_description">從 Exodus Privacy 獲取並顯示應用程式的跟蹤器。</string>
+    <string name="only_on_battery">僅在充電時</string>
+    <string name="edit">編輯</string>
+    <string name="allowed_anti_features">允許的反特徵</string>
 </resources>
