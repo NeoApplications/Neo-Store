@@ -263,4 +263,5 @@
     <string name="trackers_bug_description">Mga tracker na iniuulat ang mga teknikal na problemang kinakaharap ng app.</string>
     <string name="trackers_profiling_description">Mga tracker na gumagawa ng profile tungkol sa iyo, base sa datos na nakakalap nila.</string>
     <string name="source_open">Open Source</string>
+    <string name="source_open_description">Maaaring suriin, baguhin, at ibahagi ang source code ng app na ito.</string>
 </resources>
