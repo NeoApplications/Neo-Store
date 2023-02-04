@@ -255,10 +255,10 @@
     <string name="trackers_bug">Sledovače hlášení chyb</string>
     <string name="source_proprietary">Proprietární</string>
     <string name="source_proprietary_description">Zdrojový kód aplikace není veřejně přístupný.</string>
-    <string name="source_open">Open Source</string>
-    <string name="source_open_description">Zdrojový kód aplikace je volně přístupný.</string>
+    <string name="source_open">Svobodný software</string>
+    <string name="source_open_description">Zdrojový kód aplikace lze prohlížet, měnit a sdílet.</string>
     <string name="source_copyleft">Copyleft</string>
-    <string name="source_copyleft_description">Aplikace obsahuje pouze svobodný obsah.</string>
+    <string name="source_copyleft_description">Sdílení programu vyžaduje sdílení změn v něm provedených.</string>
     <string name="source_copyright">Copyright</string>
     <string name="action_change_permissions">Změnit oprávnění</string>
     <string name="action_install_tc">Nainstalovat TrackerControl</string>
@@ -301,4 +301,6 @@
     <string name="tools">Nástroje</string>
     <string name="allowed_anti_features">Povolené anti-funkce</string>
     <string name="file_share_text">Soubor z Neo Store</string>
+    <string name="show_trackers">Zobrazit sledovací prvky</string>
+    <string name="show_trackers_description">Získat a zobrazit sledovací prvky aplikací ze systému Exodus Privacy.</string>
 </resources>
