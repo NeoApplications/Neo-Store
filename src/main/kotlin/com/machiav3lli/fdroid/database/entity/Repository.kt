@@ -263,6 +263,11 @@ data class Repository(
             "A repository to easily distribute the cute matrix messanger client.",
             21, false, "5EDB5C4395B2F2D9BA682F6A1D275170CCE5365A6FA27D2220EA8D52A6D95F07", ""
         )
+        private val FLUFFY_CHAT_NIGHTLY = defaultRepository(
+            "https://fluffychat.im/repo/nightly/repo/", "FluffyChat Nightly",
+            "A repository to easily distribute the nightlies of the cute matrix messanger client.",
+            21, false, "21A469657300576478B623DF99D8EB889A80BCD939ACA60A4074741BEAEC397D", ""
+        )
         private val MOLLY = defaultRepository(
             "https://molly.im/fdroid/foss/fdroid/repo", "Molly",
             "Molly is a fork of Signal focused on security.",
@@ -394,7 +399,7 @@ data class Repository(
             CALYX_OS, CALYX_OS_TEST, DIVEST_OS, KDE, NANODROID,
             NETSYMS, FEDILAB, NETHUNTER,
             THREEMA, SESSION, MOLLY, BRIAR,
-            FLUFFY_CHAT, SIMPLEX_CHAT, REVOLT,
+            FLUFFY_CHAT, FLUFFY_CHAT_NIGHTLY, SIMPLEX_CHAT, REVOLT,
             I2P, COLLABORA,
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
             FROSTNERD, FROSTNERD_ARCHIVE,
