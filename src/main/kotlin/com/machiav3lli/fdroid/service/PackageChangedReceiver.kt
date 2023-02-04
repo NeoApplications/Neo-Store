@@ -24,7 +24,7 @@ class PackageChangedReceiver : BroadcastReceiver() {
             when (intent.action.orEmpty()) {
                 Intent.ACTION_PACKAGE_ADDED,
                 Intent.ACTION_PACKAGE_REMOVED,
-                Intent.ACTION_PACKAGE_REPLACED
+                Intent.ACTION_PACKAGE_REPLACED,
                 -> {
                     val packageInfo = try {
                         context.packageManager.getPackageInfo(
@@ -36,8 +36,9 @@ class PackageChangedReceiver : BroadcastReceiver() {
                     }
                     val launcherActivities = context.packageManager.getLaunchActivities(packageName)
                     GlobalScope.launch(Dispatchers.IO) {
-                        if (packageInfo != null) db.installedDao
-                            .insertReplace(packageInfo.toInstalledItem(launcherActivities))
+                        if (packageInfo != null) db.installedDao.insertReplace(
+                            packageInfo.toInstalledItem(launcherActivities)
+                        )
                         else db.installedDao.delete(packageName)
 
                         // Update updates notification

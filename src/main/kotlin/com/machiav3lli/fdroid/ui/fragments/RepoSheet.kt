@@ -261,7 +261,7 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
             }
             if (!editMode && repo?.enabled == true &&
                 (repo?.lastModified.orEmpty().isNotEmpty() ||
-                 repo?.entityTag.orEmpty().isNotEmpty())
+                        repo?.entityTag.orEmpty().isNotEmpty())
             ) {
                 item {
                     TitleText(
@@ -327,21 +327,24 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                 Spacer(modifier = Modifier.height(8.dp))
                 AnimatedVisibility(visible = !editMode) {
                     BlockText(
-                        text = if ((repo?.updated ?: -1) > 0L
-                                   && repo?.fingerprint.isNullOrEmpty()
+                        text = if (
+                            (repo?.updated ?: -1) > 0L
+                            && repo?.fingerprint.isNullOrEmpty()
                         ) stringResource(id = R.string.repository_unsigned_DESC)
                         else repo?.fingerprint
                             ?.windowed(2, 2, false)
                             ?.joinToString(separator = " ") { it.uppercase(Locale.US) + " " },
-                        color = if ((repo?.updated ?: -1) > 0L
-                                    && repo?.fingerprint?.isEmpty() == true
+                        color = if (
+                            (repo?.updated ?: -1) > 0L
+                            && repo?.fingerprint?.isEmpty() == true
                         ) MaterialTheme.colorScheme.error
                         else MaterialTheme.colorScheme.onSurfaceVariant,
                         monospace = true,
                     )
                 }
                 AnimatedVisibility(visible = editMode) {
-                    OutlinedTextField( // TODO accept only hex literals
+                    OutlinedTextField(
+                        // TODO accept only hex literals
                         modifier = Modifier.fillMaxWidth(),
                         value = fingerprintFieldValue,
                         colors = TextFieldDefaults.textFieldColors(

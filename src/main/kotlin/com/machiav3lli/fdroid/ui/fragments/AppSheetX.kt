@@ -252,7 +252,8 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
             ActionState.Uninstall -> {
                 lifecycleScope.launch {
                     AppInstaller.getInstance(MainApplication.mainActivity)?.defaultInstaller?.uninstall(
-                        packageName)
+                        packageName
+                    )
                 }
                 Unit
             }
@@ -658,8 +659,10 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                     positive = true,
                                     preExpanded = false
                                 ) {
-                                    Log.i("author products",
-                                        authorProducts?.map { it.author }?.joinToString().orEmpty())
+                                    Log.i(
+                                        "author products",
+                                        authorProducts?.map { it.author }?.joinToString().orEmpty()
+                                    )
                                     ProductsHorizontalRecycler(
                                         productsList = authorProducts,
                                         repositories = repos?.associateBy { repo -> repo.id }

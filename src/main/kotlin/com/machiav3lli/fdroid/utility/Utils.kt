@@ -126,8 +126,8 @@ object Utils {
                 compatibleReleases
                     .filter { it.platforms.contains(Android.primaryPlatform) }
                     .minByOrNull { it.platforms.size }
-                ?: compatibleReleases.minByOrNull { it.platforms.size }
-                ?: compatibleReleases.firstOrNull()
+                    ?: compatibleReleases.minByOrNull { it.platforms.size }
+                    ?: compatibleReleases.firstOrNull()
             )
         }
         val binder = downloadConnection.binder
@@ -207,10 +207,15 @@ fun <T> findSuggestedProduct(
     installed: Installed?,
     extract: (T) -> Product,
 ): T? {
-    return products.maxWithOrNull(compareBy({
-        extract(it).compatible &&
-        (installed == null || installed.signature in extract(it).signatures)
-    }, { extract(it).versionCode }))
+    return products.maxWithOrNull(
+        compareBy(
+            {
+                extract(it).compatible &&
+                        (installed == null || installed.signature in extract(it).signatures)
+            },
+            { extract(it).versionCode },
+        )
+    )
 }
 
 val isDarkTheme: Boolean

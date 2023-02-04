@@ -103,10 +103,16 @@ val IntPrefsRanges = mapOf(
 )
 
 val PrefsDependencies = mapOf(
-    Preferences.Key.RootSessionInstaller to Pair(Preferences.Key.Installer,
-        listOf(Preferences.Installer.Root)),
-    Preferences.Key.ProxyHost to Pair(Preferences.Key.ProxyType,
-        listOf(Preferences.ProxyType.Http, Preferences.ProxyType.Socks)),
-    Preferences.Key.ProxyPort to Pair(Preferences.Key.ProxyType,
-        listOf(Preferences.ProxyType.Http, Preferences.ProxyType.Socks)),
+    Preferences.Key.RootSessionInstaller to Pair(
+        Preferences.Key.Installer,
+        listOf(Preferences.Installer.Root)
+    ),
+    Preferences.Key.ProxyHost to Pair(
+        Preferences.Key.ProxyType,
+        listOf(Preferences.ProxyType.Http, Preferences.ProxyType.Socks)
+    ),
+    Preferences.Key.ProxyPort to Pair(
+        Preferences.Key.ProxyType,
+        listOf(Preferences.ProxyType.Http, Preferences.ProxyType.Socks)
+    ),
 )

@@ -288,7 +288,7 @@ object Preferences : OnSharedPreferenceChangeListener {
                 when {
                     Android.sdk(31) -> Preferences.Theme.Dynamic
                     Android.sdk(29) -> Preferences.Theme.SystemBlack
-                    else -> Preferences.Theme.Light
+                    else            -> Preferences.Theme.Light
                 }
             )
         )

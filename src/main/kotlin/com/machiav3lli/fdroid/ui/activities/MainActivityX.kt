@@ -129,9 +129,9 @@ class MainActivityX : AppCompatActivity() {
         setContent {
             AppTheme(
                 darkTheme = when (Preferences[Preferences.Key.Theme]) {
-                    is Preferences.Theme.System      -> isSystemInDarkTheme()
+                    is Preferences.Theme.System -> isSystemInDarkTheme()
                     is Preferences.Theme.SystemBlack -> isSystemInDarkTheme()
-                    else                             -> isDarkTheme
+                    else -> isDarkTheme
                 }
             ) {
                 val query by searchQuery.collectAsState(initial = "")
@@ -221,8 +221,7 @@ class MainActivityX : AppCompatActivity() {
                 true
             }
             keyCode == KeyEvent.KEYCODE_BACK                   -> moveTaskToBack(true)
-            else                                               -> super.onKeyDown(keyCode,
-                event)
+            else                                               -> super.onKeyDown(keyCode, event)
         }
     }
 
