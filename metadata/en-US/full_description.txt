@@ -1,30 +1,9 @@
-A quick material F-Droid client
+A feature-rich quick F-Droid client:
 
-Features:
-
-* Material F-Droid style
+* UX focused on empowering users
 * No cards or inappropriate animations
 * Fast repository syncing
 * Standard Android components and minimal dependencies
-
-Available in:
-
-- Brazillian Portugese
-- English
-- Finnish
-- French
-- German
-- Greek
-- Hungarian
-- Italian
-- Norwegian Bokmål
-- Peninsular Arabic
-- Polish
-- Russian
-- Simplified Chinese
-- Spanish
-- Turkish
-- Ukrainian
 
 A direct adaptation/modification of Foxy-Droid
 
