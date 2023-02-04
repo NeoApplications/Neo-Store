@@ -261,7 +261,7 @@ data class Repository(
         private val FLUFFY_CHAT = defaultRepository(
             "https://fluffychat.im/repo/stable/repo/", "FluffyChat",
             "A repository to easily distribute the cute matrix messanger client.",
-            21, false, "8E2637AEF6697CC6DD486AF044A6EE45B1A742AE3EF56566E748CDE8BC65C1FB", ""
+            21, false, "5EDB5C4395B2F2D9BA682F6A1D275170CCE5365A6FA27D2220EA8D52A6D95F07", ""
         )
         private val MOLLY = defaultRepository(
             "https://molly.im/fdroid/foss/fdroid/repo", "Molly",
