@@ -263,9 +263,9 @@
     <string name="source_proprietary">Proprietary</string>
     <string name="source_proprietary_description">The app\'s source code is not publicly accessible.</string>
     <string name="source_open">Libre software</string>
-    <string name="source_open_description">The app\'s source code is openly accessible.</string>
+    <string name="source_open_description">The app\'s source code can be browsed, changed and shared.</string>
     <string name="source_copyleft">Copyleft</string>
-    <string name="source_copyleft_description">The app consists only of free contents.</string>
+    <string name="source_copyleft_description">Sharing the program requires sharing changes made to it.</string>
     <string name="source_copyright">Copyright</string>
     <string name="source_copyright_description">The app depends on copyrighted contents or connects to proprietary networks.</string>
     <string name="source_dependencies">Dependencies</string>
