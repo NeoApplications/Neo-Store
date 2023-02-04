@@ -1,0 +1,6 @@
+- Higit pang Material Design 3
+- Inayos: Root at default na installer
+- Inayos: Delete Cached File After Uninstall
+- Inayos: Crash kapag pinindot ang download habang offline
+- Update sa pagsasalin sa 17 wika
+- Iba pang mga pagsasaayos at pagbabago…
