@@ -156,7 +156,7 @@ data class Repository(
                     "repository are official binaries built by the original application developers and signed by the same key as " +
                     "the APKs that are released in the Google Play Store.",
             21,
-            false,
+            true,
             "B7C2EEFD8DAC7806AF67DFCD92EB18126BC08312A7F2D6F3862E46013C7A6135",
             ""
         )
