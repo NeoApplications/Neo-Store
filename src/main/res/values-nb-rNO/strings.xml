@@ -259,4 +259,11 @@
     <string name="show_trackers">Vis sporere</string>
     <string name="edit">Rediger</string>
     <string name="app_installed">Installert</string>
+    <string name="permissions_note_2">Krever ikke mange tilganger</string>
+    <string name="permissions_note_4">Krever nesten ingen tilganger</string>
+    <string name="permissions_note_3">Minimalt antall tilganger</string>
+    <string name="permission_granted">Innvilget</string>
+    <string name="source_copyleft">Copyleft</string>
+    <string name="source_dependencies">Avhengigheter</string>
+    <string name="action_change_permissions">Endre tilganger</string>
 </resources>
