@@ -260,10 +260,10 @@
     <string name="trackers_bug_description">跟踪器用于报告应用程序可能面临的技术问题。</string>
     <string name="source_proprietary">所有权</string>
     <string name="source_proprietary_description">该应用程序的源代码不可公开访问。</string>
-    <string name="source_open">开源</string>
-    <string name="source_open_description">该应用程序的源代码可公开访问。</string>
+    <string name="source_open">自由软件</string>
+    <string name="source_open_description">该应用程序的源代码可以浏览，更改和共享。</string>
     <string name="source_copyleft">著佐权</string>
-    <string name="source_copyleft_description">该应用程序仅包含免费内容。</string>
+    <string name="source_copyleft_description">分享程序需要分享对其进行的修改。</string>
     <string name="source_copyright">版权</string>
     <string name="source_copyright_description">该应用程序依赖于受版权保护的内容或连接到专有网络。</string>
     <string name="source_dependencies">依赖</string>
@@ -299,4 +299,6 @@
     <string name="allowed_anti_features">允许的负特征</string>
     <string name="tools">工具</string>
     <string name="file_share_text">来自 Neo 商店的文件</string>
+    <string name="show_trackers">显示跟踪器</string>
+    <string name="show_trackers_description">从 Exodus Privacy 获取并显示应用程序的跟踪器。</string>
 </resources>
