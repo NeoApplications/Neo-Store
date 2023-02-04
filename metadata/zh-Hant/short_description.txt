@@ -1,1 +1,1 @@
-一個採用Material Design的現代F-Droid應用程式。
+功能豐富的現代 F-Droid 客戶端。
