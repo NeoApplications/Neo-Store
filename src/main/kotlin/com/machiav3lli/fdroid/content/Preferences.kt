@@ -34,6 +34,7 @@ object Preferences : OnSharedPreferenceChangeListener {
         Key.InstallAfterSync,
         Key.IncompatibleVersions,
         Key.ShowScreenshots,
+        Key.ShowTrackers,
         Key.UpdatedApps,
         Key.NewApps,
         Key.ProxyHost,
@@ -192,6 +193,8 @@ object Preferences : OnSharedPreferenceChangeListener {
 
         object ShowScreenshots :
             Key<Boolean>("show_screenshots", Value.BooleanValue(true))
+
+        object ShowTrackers : Key<Boolean>("show_trackers", Value.BooleanValue(true))
 
         object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(100))
         object NewApps : Key<Int>("new_apps", Value.IntValue(30))

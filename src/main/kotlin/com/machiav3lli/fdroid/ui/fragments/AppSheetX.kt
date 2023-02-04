@@ -874,90 +874,92 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 }
                             }
                         }
-                        item {
-                            val tcIntent = context.packageManager
-                                .getLaunchIntentForPackage(TC_PACKAGENAME)
-                                ?: context.packageManager
-                                    .getLaunchIntentForPackage(TC_PACKAGENAME_FDROID)
-                            PrivacyCard(
-                                heading = stringResource(
-                                    id = R.string.trackers_in,
-                                    exodusInfo?.version_name.orEmpty()
-                                ),
-                                preExpanded = true,
-                                actionText = if (installed != null) stringResource(
-                                    id = if (tcIntent == null) R.string.action_install_tc
-                                    else R.string.action_open_tc
-                                ) else "",
-                                actionIcon = if (tcIntent == null) Phosphor.Download
-                                else Phosphor.ArrowSquareOut,
-                                onAction = {
-                                    if (tcIntent == null) {
-                                        startActivity(
-                                            Intent(
-                                                Intent.ACTION_VIEW,
-                                                Uri.parse("market://search?q=$TC_PACKAGENAME")
+                        if (Preferences[Preferences.Key.ShowTrackers]) {
+                            item {
+                                val tcIntent = context.packageManager
+                                    .getLaunchIntentForPackage(TC_PACKAGENAME)
+                                    ?: context.packageManager
+                                        .getLaunchIntentForPackage(TC_PACKAGENAME_FDROID)
+                                PrivacyCard(
+                                    heading = stringResource(
+                                        id = R.string.trackers_in,
+                                        exodusInfo?.version_name.orEmpty()
+                                    ),
+                                    preExpanded = true,
+                                    actionText = if (installed != null) stringResource(
+                                        id = if (tcIntent == null) R.string.action_install_tc
+                                        else R.string.action_open_tc
+                                    ) else "",
+                                    actionIcon = if (tcIntent == null) Phosphor.Download
+                                    else Phosphor.ArrowSquareOut,
+                                    onAction = {
+                                        if (tcIntent == null) {
+                                            startActivity(
+                                                Intent(
+                                                    Intent.ACTION_VIEW,
+                                                    Uri.parse("market://search?q=$TC_PACKAGENAME")
+                                                )
+                                            )
+                                            mainActivityX.latestViewModel.setSections(Section.All)
+                                            dismissNow()
+                                        } else startActivity(
+                                            tcIntent.putExtra(
+                                                TC_INTENT_EXTRA_SEARCH,
+                                                product.packageName
                                             )
                                         )
-                                        mainActivityX.latestViewModel.setSections(Section.All)
-                                        dismissNow()
-                                    } else startActivity(
-                                        tcIntent.putExtra(
-                                            TC_INTENT_EXTRA_SEARCH,
-                                            product.packageName
-                                        )
-                                    )
-                                }
-                            ) {
-                                if (trackers.isNotEmpty()) {
-                                    trackers
-                                        .map { it.categories }
-                                        .flatten()
-                                        .distinct()
-                                        .associateWith { group -> trackers.filter { group in it.categories } }
-                                        .forEach { (group, groupTrackers) ->
-                                            val groupItem = group.getTrackersGroup()
-                                            PrivacyItemBlock(
-                                                heading = stringResource(groupItem.labelId),
-                                                icon = groupItem.icon,
-                                            ) {
-                                                Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-                                                    Text(
-                                                        text = stringResource(groupItem.descriptionId)
-                                                    )
-                                                    groupTrackers.forEach {
+                                    }
+                                ) {
+                                    if (trackers.isNotEmpty()) {
+                                        trackers
+                                            .map { it.categories }
+                                            .flatten()
+                                            .distinct()
+                                            .associateWith { group -> trackers.filter { group in it.categories } }
+                                            .forEach { (group, groupTrackers) ->
+                                                val groupItem = group.getTrackersGroup()
+                                                PrivacyItemBlock(
+                                                    heading = stringResource(groupItem.labelId),
+                                                    icon = groupItem.icon,
+                                                ) {
+                                                    Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                                                         Text(
-                                                            modifier = Modifier
-                                                                .fillMaxWidth()
-                                                                .combinedClickable(
-                                                                    onClick = {
-                                                                        onUriClick(
-                                                                            Uri.parse("$EXODUS_TRACKER_WEBSITE${it.key}"),
-                                                                            true
-                                                                        )
-                                                                    },
-                                                                    onLongClick = {
-                                                                        copyLinkToClipboard(
-                                                                            coroutineScope,
-                                                                            snackbarHostState,
-                                                                            it.code_signature
-                                                                        )
-                                                                    }
-                                                                ),
-                                                            text = "\u2023 ${it.name}"
+                                                            text = stringResource(groupItem.descriptionId)
                                                         )
+                                                        groupTrackers.forEach {
+                                                            Text(
+                                                                modifier = Modifier
+                                                                    .fillMaxWidth()
+                                                                    .combinedClickable(
+                                                                        onClick = {
+                                                                            onUriClick(
+                                                                                Uri.parse("$EXODUS_TRACKER_WEBSITE${it.key}"),
+                                                                                true
+                                                                            )
+                                                                        },
+                                                                        onLongClick = {
+                                                                            copyLinkToClipboard(
+                                                                                coroutineScope,
+                                                                                snackbarHostState,
+                                                                                it.code_signature
+                                                                            )
+                                                                        }
+                                                                    ),
+                                                                text = "\u2023 ${it.name}"
+                                                            )
+                                                        }
                                                     }
                                                 }
                                             }
+                                    } else {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(8.dp),
+                                            horizontalArrangement = Arrangement.Center
+                                        ) {
+                                            Text(text = stringResource(id = R.string.trackers_none))
                                         }
-                                } else {
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(8.dp),
-                                        horizontalArrangement = Arrangement.Center
-                                    ) {
-                                        Text(text = stringResource(id = R.string.trackers_none))
                                     }
                                 }
                             }

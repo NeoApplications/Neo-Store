@@ -534,44 +534,48 @@ class SyncService : ConnectionService<SyncService.Binder>() {
     }
 
     private fun fetchTrackers() {
-        scope.launch {
-            try {
-                val trackerList = repoExodusAPI.getTrackers()
+        if (Preferences[Preferences.Key.ShowTrackers]) {
+            scope.launch {
+                try {
+                    val trackerList = repoExodusAPI.getTrackers()
 
-                // TODO **conditionally** update DB with the trackers
-                db.trackerDao.insertReplace(
-                    *trackerList.trackers
-                        .map { (key, value) ->
-                            Tracker(
-                                key.toInt(),
-                                value.name,
-                                value.network_signature,
-                                value.code_signature,
-                                value.creation_date,
-                                value.website,
-                                value.description,
-                                value.categories
-                            )
-                        }.toTypedArray()
-                )
-            } catch (e: Exception) {
-                Log.e(this::javaClass.name, "Failed fetching exodus trackers", e)
+                    // TODO **conditionally** update DB with the trackers
+                    db.trackerDao.insertReplace(
+                        *trackerList.trackers
+                            .map { (key, value) ->
+                                Tracker(
+                                    key.toInt(),
+                                    value.name,
+                                    value.network_signature,
+                                    value.code_signature,
+                                    value.creation_date,
+                                    value.website,
+                                    value.description,
+                                    value.categories
+                                )
+                            }.toTypedArray()
+                    )
+                } catch (e: Exception) {
+                    Log.e(this::javaClass.name, "Failed fetching exodus trackers", e)
+                }
             }
         }
     }
 
     private fun fetchExodusData(packageName: String) {
-        scope.launch {
-            try {
-                val exodusDataList = repoExodusAPI.getExodusInfo(packageName)
-                val latestExodusApp = exodusDataList.maxByOrNull { it.version_code.toLong() }
-                    ?: ExodusInfo()
+        if (Preferences[Preferences.Key.ShowTrackers]) {
+            scope.launch {
+                try {
+                    val exodusDataList = repoExodusAPI.getExodusInfo(packageName)
+                    val latestExodusApp = exodusDataList.maxByOrNull { it.version_code.toLong() }
+                        ?: ExodusInfo()
 
-                val exodusInfo = latestExodusApp.toExodusInfo(packageName)
-                Log.e(this::javaClass.name, exodusInfo.toString())
-                db.exodusInfoDao.insertReplace(exodusInfo)
-            } catch (e: Exception) {
-                Log.e(this::javaClass.name, "Failed fetching exodus info", e)
+                    val exodusInfo = latestExodusApp.toExodusInfo(packageName)
+                    Log.e(this::javaClass.name, exodusInfo.toString())
+                    db.exodusInfoDao.insertReplace(exodusInfo)
+                } catch (e: Exception) {
+                    Log.e(this::javaClass.name, "Failed fetching exodus info", e)
+                }
             }
         }
     }

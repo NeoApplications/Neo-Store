@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.compose.components.Tooltip
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyQuestion
@@ -52,19 +53,21 @@ fun MeterIconsBar(
                 .padding(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Icon(
-                imageVector = Phosphor.CrosshairSimple,
-                contentDescription = stringResource(id = R.string.trackers)
-            )
-            MeterIcon(
-                modifier = Modifier.weight(1f),
-                selected = selectedTrackers?.coerceIn(0, 4),
-                tooltips = (0..4).map {
-                    stringResource(
-                        getTrackersTooltip(it)
-                    )
-                }
-            )
+            if (Preferences[Preferences.Key.ShowTrackers]) {
+                Icon(
+                    imageVector = Phosphor.CrosshairSimple,
+                    contentDescription = stringResource(id = R.string.trackers)
+                )
+                MeterIcon(
+                    modifier = Modifier.weight(1f),
+                    selected = selectedTrackers?.coerceIn(0, 4),
+                    tooltips = (0..4).map {
+                        stringResource(
+                            getTrackersTooltip(it)
+                        )
+                    }
+                )
+            }
             Icon(
                 imageVector = Phosphor.ShieldStar,
                 contentDescription = stringResource(id = R.string.permissions)

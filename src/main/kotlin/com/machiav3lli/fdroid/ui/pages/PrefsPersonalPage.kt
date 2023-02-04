@@ -42,6 +42,7 @@ fun PrefsPersonalPage() {
         Preferences.Key.Theme,
         Preferences.Key.DefaultTab,
         Preferences.Key.ShowScreenshots,
+        Preferences.Key.ShowTrackers,
         Preferences.Key.UpdatedApps,
         Preferences.Key.NewApps,
     )
