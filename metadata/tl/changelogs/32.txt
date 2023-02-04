@@ -1,6 +1,0 @@
-- Update: Bagong disenyo upang magmukhang MD3
-- Update: Mas magandang mga screenshot ng UX
-- Inayus ang paghinito ng aplikasyon dahil sa paggamit ng root method
-- Update: Binago ang mga profile ng tema
-- Idinagdag ang pagbabahagi ng mga link (opisyal lamang na F-Droid sa ngayon)
-- Iba pang maliliit na pag-aayos ng UI/UX

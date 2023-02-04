@@ -1,5 +1,0 @@
-* Idinagdag ang Amoled Theme
-*  Idinagdag ang Silent Root Installation
-* Idinagdag ang mga sumusunod na wika :-
-    * Portuguese
-    * Chinese
