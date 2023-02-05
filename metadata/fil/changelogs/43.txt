@@ -1,0 +1,4 @@
+- Inayos: Icon ng screenshot placeholder
+- Inayos: Crash kapag sinisimulan ang AppDetails
+- Inayos: Isang instansya lang dapat ng root installer ang patatakbuhin
+- Inayos: Root installer
