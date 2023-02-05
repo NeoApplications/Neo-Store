@@ -128,6 +128,8 @@ fun MeterIcon(
 
             if (isSelected && openPopup.value) {
                 Tooltip(tooltips[index], openPopup)
+            } else if (index == 2 && selected == null && openPopup.value) {
+                Tooltip(stringResource(id = R.string.no_trackers_data_available), openPopup)
             }
         }
     }
