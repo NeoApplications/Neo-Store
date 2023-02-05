@@ -262,10 +262,10 @@
     <string name="trackers_bug_description">Arrastadores impreados pro sinnalare sos problemas tècnicos chi s\'aplicatzione diat pòdere tènnere.</string>
     <string name="source_proprietary">Propietària</string>
     <string name="source_proprietary_description">Su còdighe de s\'aplicatzione no est de atzessu pùblicu.</string>
-    <string name="source_open">Còdighe abertu</string>
-    <string name="source_open_description">Su còdighe de s\'aplicatzione est de atzessu pùblicu.</string>
+    <string name="source_open">Programma lìberu</string>
+    <string name="source_open_description">Su còdighe de s\'aplicatzione si podet consultare, modificare e cumpartzire.</string>
     <string name="source_copyleft">Lissèntzia Copyleft</string>
-    <string name="source_copyleft_description">S\'aplicatzione tenet petzi cuntenutos lìberos.</string>
+    <string name="source_copyleft_description">Sa cumpartzidura de su programma bisòngiat de sa cumpartzidura de sas modìficas chi at tentu.</string>
     <string name="source_copyright">Deretos de autore</string>
     <string name="source_copyright_description">S\'aplicatzione dipendet dae cuntenutos amparados dae su deretu de autore o si connetet a retes propietàrias.</string>
     <string name="source_dependencies">Dipendèntzias</string>
@@ -300,4 +300,6 @@
     <string name="extras_import">Importa extra (Preferidos, Ignora agiornamentos etc.)</string>
     <string name="extras_export">Esporta extra (Preferidos, Ignora agiornamentos etc.)</string>
     <string name="file_share_text">Documentu de Neo Store</string>
+    <string name="show_trackers">Ammustra sos arrastadores</string>
+    <string name="show_trackers_description">Otene e cumpartzi sos arrastadores de sas aplicatziones dae Exodus Privacy.</string>
 </resources>
