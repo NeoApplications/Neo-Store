@@ -252,9 +252,9 @@
     <string name="trackers_bug">Tracciatori di segnalazione errori</string>
     <string name="trackers_bug_description">Tracciatori usati per segnalare i problemi tecnici che l\'app può riscontrare.</string>
     <string name="source_proprietary_description">Il codice sorgente dell\'app non è accessibile pubblicamente.</string>
-    <string name="source_open">Open Source</string>
+    <string name="source_open">Software libero</string>
     <string name="source_proprietary">Proprietaria</string>
-    <string name="source_copyleft_description">L\'app è composta solo da contenuti liberi.</string>
+    <string name="source_copyleft_description">La condivisione del programma richiede la condivisione delle modifiche apportate ad esso.</string>
     <string name="source_copyright">Copyright</string>
     <string name="source_copyright_description">L\'app dipende da contenuti protetti da copyright o si connette a reti proprietarie.</string>
     <string name="source_dependencies_description">L\'app ha alcune dipendenze che potrebbero non rispettare la privacy.</string>
@@ -286,7 +286,7 @@
     <string name="source_copyleft">Copyleft</string>
     <string name="trackers_analytics_description">Tracciatori usati per raccogliere statistiche sull\'uso che fai delle app, es. i tocchi e i clic.</string>
     <string name="permissions_note_3">Quantità minima di autorizzazioni</string>
-    <string name="source_open_description">Il codice sorgente dell\'app è accessibile a tutti.</string>
+    <string name="source_open_description">Il codice sorgente dell\'app può essere visionato, modificato e condiviso.</string>
     <string name="source_dependencies">Dipendenze</string>
     <string name="trackers_note_0">È un\'app o uno spyware\?</string>
     <string name="permission_not_present">Non presente nel tuo sistema</string>
@@ -301,4 +301,6 @@
     <string name="allowed_anti_features">Anti-caratteristiche consentite</string>
     <string name="extras_export">Esporta extra (Preferiti, Ignora aggiornamenti ecc.)</string>
     <string name="file_share_text">File da Neo Store</string>
+    <string name="show_trackers">Mostra tracker</string>
+    <string name="show_trackers_description">Ottieni e mostra i tracker delle app da Exodus Privacy.</string>
 </resources>
