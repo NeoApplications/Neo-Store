@@ -303,4 +303,5 @@
     <string name="file_share_text">File da Neo Store</string>
     <string name="show_trackers">Mostra tracker</string>
     <string name="show_trackers_description">Ottieni e mostra i tracker delle app da Exodus Privacy.</string>
+    <string name="no_trackers_data_available">Nessun dato sui tracker disponibile (per ora)!</string>
 </resources>
