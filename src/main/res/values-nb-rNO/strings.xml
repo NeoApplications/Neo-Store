@@ -266,4 +266,11 @@
     <string name="source_copyleft">Copyleft</string>
     <string name="source_dependencies">Avhengigheter</string>
     <string name="action_change_permissions">Endre tilganger</string>
+    <string name="vulnerabilities">Sårbarheter.</string>
+    <string name="file_share_text">Fil fra Neo Store</string>
+    <string name="only_on_battery">Kun ved lading</string>
+    <string name="allowed_anti_features">Tillatte anti-funksjoner</string>
+    <string name="action_open_tc">Åpne TrackerControl</string>
+    <string name="action_install_tc">Installer TrackerControl</string>
+    <string name="source_copyright">Opphavsrett</string>
 </resources>
