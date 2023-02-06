@@ -259,8 +259,8 @@
     <string name="trackers_location_description">Трекери, орієнтовані на відстеження вашого фізичного розташування.</string>
     <string name="trackers_bug">Трекери відстеження помилок</string>
     <string name="source_proprietary">Закритий вихідний код</string>
-    <string name="source_open">Відкритий вихідний код</string>
-    <string name="source_open_description">Вихідний код застосунку знаходиться у відкритому доступі.</string>
+    <string name="source_open">Вільне програмне забезпечення</string>
+    <string name="source_open_description">Вихідний код застосунку можна переглядати, змінювати та ділитися.</string>
     <string name="source_copyright">Авторське право</string>
     <string name="source_dependencies">Залежності</string>
     <string name="source_dependencies_description">Застосунок має залежності, які можуть не відповідати вимогам конфіденційності.</string>
@@ -290,7 +290,7 @@
     <string name="source_proprietary_description">Вихідний код застосунку не є загальнодоступним.</string>
     <string name="source_copyright_description">Застосунок залежить від компонентів, захищених авторським правом, або підключається до пропрієтарних мереж.</string>
     <string name="source_copyleft">Авторське право</string>
-    <string name="source_copyleft_description">Застосунок складається лише з безкоштовного вмісту.</string>
+    <string name="source_copyleft_description">Надання спільного доступу до програми вимагає внесення до неї змін.</string>
     <string name="app_installed">Встановлено</string>
     <string name="vulnerabilities_installed_apps">Ці встановлені додатки мають відомі вразливості!</string>
     <string name="no_vulnerabilities_installed_apps">Жоден із встановлених додатків не має відомих уразливостей.</string>
@@ -302,4 +302,7 @@
     <string name="extras_export">Експорт переваг (вибране, ігнорування оновлень і т. д.)</string>
     <string name="extras_import">Імпорт переваг (вибране, ігнорування оновлень і т. д.)</string>
     <string name="file_share_text">Файл з NeoStore</string>
+    <string name="show_trackers">Показати трекери</string>
+    <string name="show_trackers_description">Отримуйте та показуйте трекери застосунків від Exodus Privacy.</string>
+    <string name="no_trackers_data_available">Даних про стеження немає (поки що)!</string>
 </resources>
