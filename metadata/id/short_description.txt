@@ -1,1 +1,1 @@
-Sebuah klien F-Droid modern dengan Desain Material.
+Sebuah klien F-Droid modern dengan banyak fitur.
