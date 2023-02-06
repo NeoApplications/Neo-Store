@@ -303,4 +303,5 @@
     <string name="allowed_anti_features">Anticaracterísticas permitidas</string>
     <string name="show_trackers">Mostrar rastreadores</string>
     <string name="show_trackers_description">Obtén y muestra los rastreadores de las aplicaciones desde Exodus Privacy.</string>
+    <string name="no_trackers_data_available">¡No hay datos disponibles sobre los rastreadores (todavía)!</string>
 </resources>
