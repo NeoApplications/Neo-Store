@@ -1,33 +1,11 @@
-Sebuah klien material F-Droid yang cepat
+Klien F-Droid cepat yang kaya fitur:
 
-Fitur:
-
-* Gaya F-Droid Material
+* UX yang berfokus pada pemberdayaan pengguna
 * Tidak ada kartu atau animasi yang tidak pantas
 * Sinkronisasi repositori yang cepat
-* Komponen Android standar dan dependensi minimal
+* Komponen Android standar dan ketergantungan minimal
 
-Tersedia dalam bahasa:
+Adaptasi/modifikasi langsung dari Foxy-Droid
 
-- Portugis Brasil
-- Inggris
-- Finlandia
-- Prancis
-- Jerman
-- Yunani
-- Hongaria
-- Bahasa Indonesia
-- Italia
-- Norwegia Bokmål
-- Arab Semenanjung
-- Polandia
-- Rusia
-- Cina Sederhana
-- Spanyol
-- Turki
-- Ukraina
-
-Adaptasi / modifikasi langsung dari Foxy-Droid
-
-Perangkat lunak libre copylefted, berlisensi GPLv3+. \
-Gunakan, pelajari, ubah, dan bagikan; dengan semua.
+Perangkat lunak bebas copylefted, berlisensi GPLv3+. \
+Gunakan, pelajari, ubah, dan bagikan; dengan semua orang.

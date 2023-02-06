@@ -1,0 +1,6 @@
+- Pembaruan: Ikon aplikasi baru
+- Pembaruan: UI di halaman aplikasi
+- Pembaruan: Membuat animasi daftar menjadi opsional
+- Perbaikan: Tampilkan ukuran sebenarnya dari apk
+- Perbaikan: Tautan proyek di preferensi
+- Perbaikan: Layar pembuka tergantung pada tema sistem
