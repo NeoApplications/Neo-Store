@@ -259,11 +259,11 @@
     <string name="trackers_location">Трекеры местоположения</string>
     <string name="trackers_bug">Трекеры отслеживания ошибок</string>
     <string name="trackers_bug_description">Трекеры, используемые для сообщения о технических проблемах, которые могут возникнуть у приложения.</string>
-    <string name="source_open_description">Исходный код приложения находится в открытом доступе.</string>
-    <string name="source_open">Открытый исходный код</string>
+    <string name="source_open_description">Исходный код приложения можно просматривать, изменять и использовать.</string>
+    <string name="source_open">Свободное программное обеспечение</string>
     <string name="source_proprietary">Закрытый исходный код</string>
     <string name="source_copyleft">Авторское лево</string>
-    <string name="source_copyleft_description">Приложение состоит только из бесплатных компонентов.</string>
+    <string name="source_copyleft_description">Публикация приложения требует публикации внесённых в него изменений.</string>
     <string name="source_copyright">Авторское право</string>
     <string name="source_copyright_description">Приложение зависит от компонентов, защищённых авторским правом, или подключается к проприетарным сетям.</string>
     <string name="source_dependencies">Зависимости</string>
@@ -304,4 +304,5 @@
     <string name="file_share_text">Файл из Neo Store</string>
     <string name="show_trackers">Показывать трекеры</string>
     <string name="show_trackers_description">Показывать информацию о трекерах в приложении из базы Exodus Privacy.</string>
+    <string name="no_trackers_data_available">Данные о трекерах отсутствуют (пока)!</string>
 </resources>
