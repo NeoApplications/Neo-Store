@@ -301,4 +301,5 @@
     <string name="file_share_text">来自 Neo 商店的文件</string>
     <string name="show_trackers">显示跟踪器</string>
     <string name="show_trackers_description">从 Exodus Privacy 获取并显示应用程序的跟踪器。</string>
+    <string name="no_trackers_data_available">（尚且）没有关于跟踪器的数据！</string>
 </resources>
