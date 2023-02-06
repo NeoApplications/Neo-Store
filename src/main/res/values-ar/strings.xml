@@ -306,4 +306,5 @@
     <string name="allowed_anti_features">الميزات المضادة المسموح بها</string>
     <string name="show_trackers">عرض المتتبعات</string>
     <string name="show_trackers_description">احصل على متتبعات التطبيقات وأظهرها من خصوصية Exodus.</string>
+    <string name="no_trackers_data_available">لا توجد بيانات متاحة عن المتعقبات (حتى الآن)!</string>
 </resources>
