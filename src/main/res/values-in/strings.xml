@@ -260,10 +260,10 @@
     <string name="trackers_bug_description">Pelacak yang digunakan untuk melaporkan masalah teknis yang mungkin dialami oleh aplikasi.</string>
     <string name="source_proprietary">Sunber tertutup</string>
     <string name="source_proprietary_description">Kode sunber tidak tersedia secara publik.</string>
-    <string name="source_open">Sumber terbuka</string>
-    <string name="source_open_description">Kode sumber aplikasi tersedia secara terbuka.</string>
+    <string name="source_open">Perangkat lunak bebas</string>
+    <string name="source_open_description">Kode sumber aplikasi dapat dilihat, diubah, dan dibagikan.</string>
     <string name="source_copyleft">Copyleft</string>
-    <string name="source_copyleft_description">Aplikasi berisi hanya konten yang bebas.</string>
+    <string name="source_copyleft_description">Membagikan program mengharuskan membagikan perubahan yang dilakukan.</string>
     <string name="source_copyright">Hak cipta dilindungi</string>
     <string name="source_copyright_description">Aplikasi bergantung pada konten yang dilindungi undang-undang atau menghubungkan ke jaringan sumber tertutup.</string>
     <string name="source_dependencies">Ketergantungan</string>
@@ -299,4 +299,7 @@
     <string name="extras_import">Impor ekstra (Favorit, Abaikan pembaruan, dll.)</string>
     <string name="file_share_text">File dari Neo Store</string>
     <string name="allowed_anti_features">Anti-fitur yang diizinkan</string>
+    <string name="show_trackers">Tampilkan pelacak</string>
+    <string name="show_trackers_description">Dapatkan dan tampilkan pelacak aplikasi dari Exodus Privacy.</string>
+    <string name="no_trackers_data_available">Belum ada data yang tersedia pada pelacak!</string>
 </resources>
