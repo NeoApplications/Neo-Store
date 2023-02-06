@@ -303,4 +303,5 @@
     <string name="file_share_text">Soubor z Neo Store</string>
     <string name="show_trackers">Zobrazit sledovací prvky</string>
     <string name="show_trackers_description">Získat a zobrazit sledovací prvky aplikací ze systému Exodus Privacy.</string>
+    <string name="no_trackers_data_available">Žádné údaje o sledovacích prvcích nejsou (zatím) k dispozici!</string>
 </resources>
