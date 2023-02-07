@@ -1,6 +1,32 @@
 CHANGELOG
 =========
 
+0.9.14 (07.02.2023) 120+ Commits +80 Translations
+------------------
+
+### Function
+- Fix: Not detecting root permission
+- Fix: Unbinding DownloadService crash
+- Fix: Crash on rxjava's throwable nullability
+- Fix: Avoid calling https://icon on apps sans icon
+- Fix: Save capitalized Repo fingerprint
+- Update: Revamp batch update
+- Remove: Obsolete Sections
+- Remove: Unused Gradle options
+
+### UI
+- Update: Revamp InstalledPage
+- Update: Revamp BottomNavBar button
+
+### UX
+- Add: Option to disable getting/showing trackers
+- Add: FluffyChat nightly, Anonymous Messenger and BeoCode to default repos
+- Add: Tooltip when trackers data isn't available
+- Fix: FluffyChat repo address and fingerprint
+- Fix: Not updating installed apps list on (un)installing apps
+- Fix: Sticky sync/download notification
+- Update: Enable Guardian project's repo by default
+
 0.9.13 (20.01.2023) 90+ Commits +60 Translations
 ------------------
 

@@ -1,0 +1,7 @@
+Fix: Not detecting root permission
+Fix: Sync- & DownloadService related crashes
+Update: Revamp InstalledPage
+Add: Option to disable getting/showing trackers
+Add: FluffyChat nightly, Anonymous Messenger and BeoCode to default repos
+Fix: Not updating installed apps list on (un)installing apps
++ more than 80 tranlations and other contributions
