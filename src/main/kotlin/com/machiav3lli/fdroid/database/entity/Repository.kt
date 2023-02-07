@@ -283,6 +283,11 @@ data class Repository(
             "SimpleX Chat official F-Droid repository.",
             21, false, "9F358FF284D1F71656A2BFAF0E005DEAE6AA14143720E089F11FF2DDCFEB01BA", ""
         )
+        private val ANONYMOUS_MESSENGER = defaultRepository(
+            "https://anonymousmessenger.ly/fdroid/repo", "Anonymous Messenger",
+            "Official repository for Anonymous Messenger, a peer to peer private anonymous and secure messenger that works over TOR.",
+            21, false, "E065F74B35C920C7713012F45A0C8AD4758DD2776CFF6214F7D8064B285C044B", ""
+        )
         private val I2P = defaultRepository(
             "https://f-droid.i2p.io/repo/", "i2p",
             "A repository of I2P apps.",
@@ -398,7 +403,7 @@ data class Repository(
             NEWPIPE, LIBRETRO, BITWARDEN, GITJOURNAL,
             CALYX_OS, CALYX_OS_TEST, DIVEST_OS, KDE, NANODROID,
             NETSYMS, FEDILAB, NETHUNTER,
-            THREEMA, SESSION, MOLLY, BRIAR,
+            THREEMA, SESSION, MOLLY, BRIAR, ANONYMOUS_MESSENGER,
             FLUFFY_CHAT, FLUFFY_CHAT_NIGHTLY, SIMPLEX_CHAT, REVOLT,
             I2P, COLLABORA,
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
