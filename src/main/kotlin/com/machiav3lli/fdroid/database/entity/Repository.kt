@@ -434,5 +434,9 @@ data class Repository(
         val addedReposV12 = listOf(
             CRYPTOMATOR, TWIN_HELIX
         )
+
+        val addedReposV14 = listOf(
+            FLUFFY_CHAT, FLUFFY_CHAT_NIGHTLY, BEOCODE, ANONYMOUS_MESSENGER
+        )
     }
 }

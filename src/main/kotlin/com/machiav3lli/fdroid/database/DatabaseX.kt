@@ -30,6 +30,7 @@ import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV10
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV11
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV12
+import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV14
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV9
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.defaultRepositories
 import com.machiav3lli.fdroid.database.entity.Tracker
@@ -50,28 +51,39 @@ import kotlinx.coroutines.launch
         ExodusInfo::class,
         Tracker::class,
     ],
-    version = 13,
+    version = 14,
     exportSchema = true,
-    autoMigrations = [AutoMigration(
-        from = 8,
-        to = 9,
-        spec = DatabaseX.Companion.MigrationSpec8to9::class
-    ), AutoMigration(
-        from = 9,
-        to = 10,
-        spec = DatabaseX.Companion.MigrationSpec9to10::class
-    ), AutoMigration(
-        from = 10,
-        to = 11,
-        spec = DatabaseX.Companion.MigrationSpec10to11::class
-    ), AutoMigration(
-        from = 11,
-        to = 12,
-        spec = DatabaseX.Companion.MigrationSpec11to12::class
-    ), AutoMigration(
-        from = 12,
-        to = 13,
-    )]
+    autoMigrations = [
+        AutoMigration(
+            from = 8,
+            to = 9,
+            spec = DatabaseX.Companion.MigrationSpec8to9::class
+        ),
+        AutoMigration(
+            from = 9,
+            to = 10,
+            spec = DatabaseX.Companion.MigrationSpec9to10::class
+        ),
+        AutoMigration(
+            from = 10,
+            to = 11,
+            spec = DatabaseX.Companion.MigrationSpec10to11::class
+        ),
+        AutoMigration(
+            from = 11,
+            to = 12,
+            spec = DatabaseX.Companion.MigrationSpec11to12::class
+        ),
+        AutoMigration(
+            from = 12,
+            to = 13,
+        ),
+        AutoMigration(
+            from = 13,
+            to = 14,
+            spec = DatabaseX.Companion.MigrationSpec13to14::class
+        ),
+    ]
 )
 @TypeConverters(Converters::class)
 abstract class DatabaseX : RoomDatabase() {
@@ -142,12 +154,20 @@ abstract class DatabaseX : RoomDatabase() {
             }
         }
 
+        class MigrationSpec13to14 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(13)
+            }
+        }
+
         fun onPostMigrate(from: Int) {
             val preRepos = mutableListOf<Repository>()
             if (from == 8) preRepos.addAll(addedReposV9)
             if (from == 9) preRepos.addAll(addedReposV10)
             if (from == 10) preRepos.addAll(addedReposV11)
             if (from == 11) preRepos.addAll(addedReposV12)
+            if (from == 13) preRepos.addAll(addedReposV14)
             GlobalScope.launch(Dispatchers.IO) {
                 preRepos.forEach {
                     INSTANCE?.repositoryDao?.put(it)
