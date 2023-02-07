@@ -30,7 +30,7 @@ object CoilDownloader {
 
         override fun newCall(request: Request): Call {
             return when (request.url.host) {
-                HOST_ICON -> {
+                HOST_ICON       -> {
                     val address = request.url.queryParameter(QUERY_ADDRESS)?.nullIfEmpty()
                     val authentication = request.url.queryParameter(QUERY_AUTHENTICATION)
                     val path = run {
@@ -41,8 +41,10 @@ object CoilDownloader {
                             request.url.queryParameter(QUERY_METADATA_ICON)?.nullIfEmpty()
                         val dpi = request.url.queryParameter(QUERY_DPI)?.nullIfEmpty()
                         when {
-                            icon != null -> "${if (dpi != null) "icons-$dpi" else "icons"}/$icon"
-                            packageName != null && metadataIcon != null -> "$packageName/$metadataIcon"
+                            icon != null
+                                 -> "${if (dpi != null) "icons-$dpi" else "icons"}/$icon"
+                            packageName != null && metadataIcon != null
+                                 -> "$packageName/$metadataIcon"
                             else -> null
                         }
                     }
@@ -52,7 +54,9 @@ object CoilDownloader {
                         Downloader.createCall(
                             request.newBuilder().url(
                                 address.toHttpUrl()
-                                    .newBuilder().addPathSegments(path).build()
+                                    .newBuilder()
+                                    .addPathSegments(path)
+                                    .build()
                             ), authentication.orEmpty(), cache
                         )
                     }
@@ -70,16 +74,17 @@ object CoilDownloader {
                         Downloader.createCall(
                             request.newBuilder().url(
                                 address.toHttpUrl()
-                                    .newBuilder().addPathSegment(packageName.orEmpty())
+                                    .newBuilder()
+                                    .addPathSegment(packageName.orEmpty())
                                     .addPathSegment(locale.orEmpty())
                                     .addPathSegment(device.orEmpty())
-                                    .addPathSegment(screenshot.orEmpty()).build()
+                                    .addPathSegment(screenshot).build()
                             ),
                             authentication.orEmpty(), cache
                         )
                     }
                 }
-                else -> {
+                else            -> {
                     Downloader.createCall(request.newBuilder(), "", null)
                 }
             }
@@ -98,7 +103,7 @@ object CoilDownloader {
             .appendQueryParameter(QUERY_LOCALE, screenshot.locale)
             .appendQueryParameter(
                 QUERY_DEVICE, when (screenshot.type) {
-                    Screenshot.Type.PHONE -> "phoneScreenshots"
+                    Screenshot.Type.PHONE        -> "phoneScreenshots"
                     Screenshot.Type.SMALL_TABLET -> "sevenInchScreenshots"
                     Screenshot.Type.LARGE_TABLET -> "tenInchScreenshots"
                 }
@@ -109,7 +114,7 @@ object CoilDownloader {
 
     fun createIconUri(
         packageName: String, icon: String, metadataIcon: String,
-        address: String?, auth: String?
+        address: String?, auth: String?,
     ): Uri = Uri.Builder().scheme("https").authority(HOST_ICON)
         .appendQueryParameter(QUERY_ADDRESS, address)
         .appendQueryParameter(QUERY_AUTHENTICATION, auth)
