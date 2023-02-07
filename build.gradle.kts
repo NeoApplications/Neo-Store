@@ -145,11 +145,11 @@ dependencies {
     implementation("com.github.topjohnwu.libsu:core:5.0.4")
 
     // JSON
-    implementation("com.fasterxml.jackson.core:jackson-core:2.14.1")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.14.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 
     // Markdown
-    implementation("org.jetbrains:markdown:0.3.5")
+    implementation("org.jetbrains:markdown:0.3.6")
     implementation("de.charlex.compose:html-text:1.4.1")
 
     // Coroutines / Lifecycle
