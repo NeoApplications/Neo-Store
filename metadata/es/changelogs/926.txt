@@ -1,0 +1,7 @@
+Fix: No se detecta el permiso root
+Corrección: Fallos relacionados con Sync- & DownloadService
+Actualizar: Revamp InstalledPage
+Añadir: Opción para deshabilitar la obtención/visualización de rastreadores
+Añadir: FluffyChat nightly, Anonymous Messenger y BeoCode a los repos por defecto
+Corrección: No se actualizaba la lista de aplicaciones instaladas al (des)instalar aplicaciones
++ más de 80 traducciones y otras contribuciones
