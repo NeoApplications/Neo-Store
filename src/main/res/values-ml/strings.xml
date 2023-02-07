@@ -54,7 +54,7 @@
     <string name="number_of_applications">പ്രയോഗങ്ങളുടെ എണ്ണം</string>
     <string name="no_matching_applications_found">അത്തരം പ്രയോഗങ്ങളൊന്നും കണ്ടെത്താൻ കഴിഞ്ഞില്ല</string>
     <string name="no_proxy">പ്രോക്സി ഇല്ല</string>
-    <string name="invalid_metadata_error_DESC">മെറ്റാഡാറ്റ അസാധുവാണ്.</string>
+    <string name="invalid_metadata_error_DESC">മെറ്റാവിവരങ്ങൾ അസാധുവാണ്.</string>
     <string name="incompatible_versions_summary">ഉപകരണവുമായി പൊരുത്തപ്പെടാത്ത പതിപ്പുകൾ കാണിക്കുക.</string>
     <string name="incompatible_with_FORMAT">%s-മായി പൊരുത്തപ്പെടുന്നില്ല</string>
     <string name="install">സ്ഥാപിക്കുക</string>
@@ -198,7 +198,7 @@
         <item quantity="other">പുതിയ പതിപ്പുകളുള്ള %d പ്രയോഗങ്ങൾ.</item>
     </plurals>
     <string name="notify_about_updates_summary">പുതിയ പതിപ്പുകൾ ലഭ്യമാകുമ്പോൾ ഒരു അറിയിപ്പ് കാണിക്കുക.</string>
-    <string name="invalid_fingerprint_format">വിരലടയാള ഫോർമാറ്റ് അസാധുവാണ്</string>
+    <string name="invalid_fingerprint_format">വിരലടയാള കെട്ടുംമട്ടും അസാധുവാണ്</string>
     <string name="incompatible_platforms_DESC_FORMAT">നിങ്ങളുടെ %1$s പ്ലാറ്റ്‌ഫോം പിന്തുണയ്ക്കുന്നില്ല. പിന്തുണയ്ക്കുന്ന പ്ലാറ്റ്‌ഫോമുകൾ: %2$s.</string>
     <string name="cant_edit_sync_DESC">സമന്വയിപ്പിക്കുന്ന ശേഖരണങ്ങൾ തിരുത്താൻ കഴിയില്ല…</string>
     <string name="could_not_download_FORMAT">%s ഇറക്കിവെക്കുാനായില്ല</string>
@@ -224,4 +224,32 @@
     <string name="trackers_in">%s-ലെ ട്രാക്കറുകൾ</string>
     <string name="action_change_permissions">അനുമതികൾ മാറ്റുക</string>
     <string name="trackers_ads_description">പരസ്യങ്ങൾ കാണിക്കാനും ഇവയുമായുള്ള നിങ്ങളുടെ ഇടപെടൽ ട്രാക്ക് ചെയ്യാനും ട്രാക്കറുകൾ ഉപയോഗിച്ചിരുന്നു.</string>
+    <string name="has_non_free_dependencies">ലിബ്രെയല്ലാത്ത ആശ്രിതത്വങ്ങളുണ്ട്</string>
+    <string name="contains_non_free_media">ലിബ്രെയല്ലാത്ത മാധ്യമങ്ങൾ അടങ്ങിയിരിക്കുന്നു</string>
+    <string name="changelog">മാറ്റങ്ങളുടെ കുറിപ്പ്</string>
+    <string name="bug_tracker">പിശക് പിന്തുടരൽ</string>
+    <string name="select_mirror">ഒരു കണ്ണാടി തിരഞ്ഞെടുക്കുക</string>
+    <string name="sort_filter">വകതിരക്കുകയും &amp; അരിച്ചെടുക്കുകയും ചെയ്യുക</string>
+    <string name="signed_using_unsafe_algorithm">സുരക്ഷിതമല്ലാത്ത അൽഗോരിതം ഉപയോഗിച്ചാണ് ഒപ്പിട്ടത്</string>
+    <string name="action_reset">പുനസ്ഥാപിക്കുക</string>
+    <string name="action_apply">പ്രയോഗിക്കുക</string>
+    <string name="prefs_sync">സമന്വയം</string>
+    <string name="auto_sync_interval">യാന്ത്രിക സമന്വയ ഇടവേള (നിമിഷങ്ങളിൽ)</string>
+    <string name="releases">വിതരണങ്ങൾ</string>
+    <string name="root_session_installer_description">വേഗത കുറവാണ്, എന്നാൽ Android 13+-ൽ ഇൻസ്റ്റാൾ ചെയ്ത പ്രയോഗങ്ങളിലെ പ്രശ്നങ്ങൾ ഒഴിവാക്കുന്നു.</string>
+    <string name="ignore_battery_optimization_message">ബാറ്ററി ഒപ്റ്റിമൈസേഷൻ ഇല്ലാതെ പ്രയോഗം മികച്ച രീതിയിൽ പ്രവർത്തിക്കുന്നു, കൂടാതെ Android 12+-ൽ ക്രാഷുചെയ്യുന്നത് തടയുന്നു.</string>
+    <string name="default_tab">സ്ഥിരസ്ഥിതി ടാബ്</string>
+    <string name="prefs_new_apps">\"പുതിയ പ്രയോഗങ്ങളിൽ\" കാണിക്കേണ്ട പ്രയോഗങ്ങളുടെ എണ്ണം</string>
+    <string name="prefs_updated_apps">\"അടുത്തിടെ പുതുക്കിയത്\" എന്നതിൽ കാണിക്കേണ്ട പ്രയോഗങ്ങളുടെ എണ്ണം</string>
+    <string name="permission_identification_data">തിരിച്ചറിയൽ വിവരങ്ങള്‍ക്കുള്ള അനുമതികൾ</string>
+    <string name="permission_physical_data">ശാരീരികമായ വിവരങ്ങള്‍ക്കുള്ള അനുമതികൾ</string>
+    <string name="permission_internet">ഇന്റര്‍നെറ്റ്‌</string>
+    <string name="permission_nearby_devices">സമീപത്തുള്ള ഉപകരണങ്ങൾ</string>
+    <string name="permission_camera">ക്യാമറ</string>
+    <string name="permission_location">സ്ഥാനം</string>
+    <string name="permission_phone">ഫോൺ</string>
+    <string name="permission_sms">എസ്എംഎസ്/എംഎംഎസ്</string>
+    <string name="permission_contacts">ബന്ധങ്ങൾ</string>
+    <string name="other_apps_by">%s-ന്റെ മറ്റ് പ്രയോഗങ്ങൾ</string>
+    <string name="date_updated">പുതുക്കിയ തീയതി</string>
 </resources>
