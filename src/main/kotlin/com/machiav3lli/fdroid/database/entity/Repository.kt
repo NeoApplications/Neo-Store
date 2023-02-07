@@ -298,6 +298,11 @@ data class Repository(
             "An unofficial repository with some of the most well known FOSS apps not on F-Droid.",
             21, false, "8F992BBBA0340EFE6299C7A410B36D9C8889114CA6C58013C3587CDA411B4AED", ""
         )
+        private val BEOCODE = defaultRepository(
+            "https://fdroid.beocode.eu/fdroid/repo", "BeoCode Repo",
+            "An Fdroid repo for apps developed by BeoCode.",
+            21, false, "28360DDEBA00922B156A9B03B5C96FEA39D239F88F1FBFA5A8157291749AA05A", ""
+        )
         private val UMBRELLA = defaultRepository(
             "https://secfirst.org/fdroid/repo", "Umbrella",
             "Security advices, tutorials, tools etc..",
@@ -402,7 +407,7 @@ data class Repository(
             BROMITE, UNGOOGLED_CHROMIUM,
             NEWPIPE, LIBRETRO, BITWARDEN, GITJOURNAL,
             CALYX_OS, CALYX_OS_TEST, DIVEST_OS, KDE, NANODROID,
-            NETSYMS, FEDILAB, NETHUNTER,
+            NETSYMS, FEDILAB, NETHUNTER, BEOCODE,
             THREEMA, SESSION, MOLLY, BRIAR, ANONYMOUS_MESSENGER,
             FLUFFY_CHAT, FLUFFY_CHAT_NIGHTLY, SIMPLEX_CHAT, REVOLT,
             I2P, COLLABORA,
