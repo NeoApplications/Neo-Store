@@ -451,7 +451,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                     }
                                 }
                                 currentTask = null
-                                //handleNextTask(false)
+                                handleNextTask(false)
                             }
                     }
                     scope.launch {
