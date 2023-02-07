@@ -7,6 +7,7 @@ import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import okhttp3.Cache
 import okhttp3.Call
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import okhttp3.Request
 import java.io.File
 
 object CoilDownloader {
@@ -27,7 +28,7 @@ object CoilDownloader {
     class Factory(cacheDir: File) : Call.Factory {
         private val cache = Cache(cacheDir, 50_000_000L)
 
-        override fun newCall(request: okhttp3.Request): Call {
+        override fun newCall(request: Request): Call {
             return when (request.url.host) {
                 HOST_ICON -> {
                     val address = request.url.queryParameter(QUERY_ADDRESS)?.nullIfEmpty()
@@ -46,7 +47,7 @@ object CoilDownloader {
                         }
                     }
                     if (address == null || path == null) {
-                        Downloader.createCall(request.newBuilder(), "", null)
+                        Downloader.createCall(Request.Builder(), "", null)
                     } else {
                         Downloader.createCall(
                             request.newBuilder().url(
@@ -64,7 +65,7 @@ object CoilDownloader {
                     val device = request.url.queryParameter(QUERY_DEVICE)
                     val screenshot = request.url.queryParameter(QUERY_SCREENSHOT)
                     if (screenshot.isNullOrEmpty() || address.isNullOrEmpty()) {
-                        Downloader.createCall(request.newBuilder(), "", null)
+                        Downloader.createCall(Request.Builder(), "", null)
                     } else {
                         Downloader.createCall(
                             request.newBuilder().url(
