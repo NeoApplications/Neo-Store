@@ -1,0 +1,7 @@
+Oprava: Nedetekování oprávnění root
+Oprava: Pády související se službami synchronizace a stahování
+Aktualizace: Přepracování stránky nainstalovaných aplikací
+Přidáno: Možnost zakázat získávání/zobrazování sledovacích zařízení.
+Přidáno: Do výchozích repozitářů přidáno FluffyChat nightly, Anonymous Messenger a BeoCode
+Oprava: Neaktualizace seznamu nainstalovaných aplikací při (od)instalaci aplikací
++ více než 80 překladů a dalších přispění
