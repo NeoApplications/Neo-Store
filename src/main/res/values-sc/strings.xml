@@ -302,4 +302,5 @@
     <string name="file_share_text">Documentu de Neo Store</string>
     <string name="show_trackers">Ammustra sos arrastadores</string>
     <string name="show_trackers_description">Otene e cumpartzi sos arrastadores de sas aplicatziones dae Exodus Privacy.</string>
+    <string name="no_trackers_data_available">Perunu datu (galu) a disponimentu in sos arrastadores!</string>
 </resources>
