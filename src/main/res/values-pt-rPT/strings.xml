@@ -257,10 +257,10 @@
     <string name="trackers_bug">Rastreadores de informação de bugs</string>
     <string name="source_proprietary">Proprietário</string>
     <string name="source_proprietary_description">O código fonte do aplicativo não é acessível ao público.</string>
-    <string name="source_open">Código Aberto</string>
-    <string name="source_open_description">O código-fonte do aplicativo é de acesso aberto.</string>
+    <string name="source_open">Software livre</string>
+    <string name="source_open_description">O código fonte do aplicativo pode ser navegado, alterado e partilhado.</string>
     <string name="source_copyleft">Copia</string>
-    <string name="source_copyleft_description">A aplicação consiste apenas em conteúdos gratuitos.</string>
+    <string name="source_copyleft_description">Partilhar o programa requer a partilha das alterações feitas ao mesmo.</string>
     <string name="source_copyright">Copyright</string>
     <string name="source_copyright_description">A aplicação depende do conteúdo protegido por direitos de autor ou liga-se a redes proprietárias.</string>
     <string name="source_dependencies">Dependências</string>
@@ -301,4 +301,7 @@
     <string name="file_share_text">Ficheiro da Neo Store</string>
     <string name="extras_import">Importar extras (Favoritos, Ignorar atualizações, etc.)</string>
     <string name="allowed_anti_features">Anti-funções permitidas</string>
+    <string name="show_trackers">Mostrar rastreadores</string>
+    <string name="show_trackers_description">Obtenha e mostre os rastreadores de aplicativos da Exodus Privacy.</string>
+    <string name="no_trackers_data_available">Nenhum dado sobre rastreadores está disponível (ainda)!</string>
 </resources>
