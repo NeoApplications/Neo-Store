@@ -1,0 +1,7 @@
+Correção: Não detetar a permissão da raiz
+Correção: Sync- & DownloadService relacionados com crashes
+Atualização: Revamp InstalledPage
+Acrescentar: Opção para desativar os rastreadores de obtenção/exposição
+Acrescentar: FluffyChat nightly, Anonymous Messenger e BeoCode para repositório padrão
+Correção: Não atualização da lista de aplicações instaladas na (des)instalação de aplicações
++ mais de 80 traduções e outras contribuições
