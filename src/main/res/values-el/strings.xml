@@ -235,7 +235,7 @@
     <string name="trackers_ads_description">Ιχνηλάτες που χρησιμοποιούνται για την εμφάνιση διαφημίσεων και την παρακολούθηση της αλληλεπίδρασής σας με αυτές.</string>
     <string name="trackers_profiling_description">Ιχνηλάτες που προσπαθούν να δημιουργήσουν ένα προφίλ για εσάς, με βάση τα δεδομένα που συγκεντρώνουν.</string>
     <string name="trackers_bug_description">Ιχνηλάτες που χρησιμοποιούνται για την αναφορά των τεχνικών προβλημάτων που ενδέχεται να αντιμετωπίσει η εφαρμογή.</string>
-    <string name="source_open_description">Ο πηγαίος κώδικας της εφαρμογής είναι ελεύθερα προσβάσιμος.</string>
+    <string name="source_open_description">Ο πηγαίος κώδικας της εφαρμογής μπορεί να εξεταστεί, να τροποποιηθεί και να μοιραστεί.</string>
     <string name="source_copyright_description">Η εφαρμογή εξαρτάται από περιεχόμενο που προστατεύεται από πνευματικά δικαιώματα ή συνδέεται σε ιδιοταγή δίκτυα.</string>
     <string name="trackers_in">Ιχνηλάτες σε %s</string>
     <string name="trackers_note_1">Περιλαμβάνει πολλούς ιχνηλάτες των ευαίσθητων δεδομένων σας</string>
@@ -267,8 +267,8 @@
     <string name="trackers_bug">Ιχνηλάτες αναφοράς σφαλμάτων</string>
     <string name="source_proprietary">Ιδιοταγής</string>
     <string name="source_proprietary_description">Ο πηγαίος κώδικας της εφαρμογής δεν είναι ελεύθερα προσβάσιμος.</string>
-    <string name="source_open">Ανοιχτού Κώδικα</string>
-    <string name="source_copyleft_description">Η εφαρμογή αποτελείται μόνο από ελεύθερο περιεχόμενο.</string>
+    <string name="source_open">Ελεύθερο λογισμικό</string>
+    <string name="source_copyleft_description">Η κοινοποίηση του προγράμματος απαιτεί κοινοποίηση των αλλαγών που έγιναν σε αυτό.</string>
     <string name="source_dependencies">Εξαρτήσεις</string>
     <string name="source_dependencies_description">Η εφαρμογή έχει ορισμένες εξαρτήσεις που μπορεί να μην σέβονται το απόρρητο.</string>
     <string name="action_change_permissions">Αλλαγή δικαιωμάτων</string>
@@ -300,4 +300,7 @@
     <string name="edit">Επεξεργασία</string>
     <string name="only_on_battery">Μόνο κατά τη φόρτιση</string>
     <string name="allowed_anti_features">Επιτρεπόμενα ανεπιθύμητα χαρακτηριστικά</string>
+    <string name="show_trackers">Εμφάνιση ιχνηλατών</string>
+    <string name="show_trackers_description">Λήψη και εμφάνιση ιχνηλατών των εφαρμογών από το Exodus Privacy.</string>
+    <string name="no_trackers_data_available">Δεν υπάρχουν διαθέσιμα δεδομένα για ιχνηλάτες (ακόμα)!</string>
 </resources>
