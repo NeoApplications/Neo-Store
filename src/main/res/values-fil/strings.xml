@@ -302,4 +302,5 @@
     <string name="allowed_anti_features">Mga pinayagang \'Di-gustong feature</string>
     <string name="show_trackers">Ipakita ang mga tracker</string>
     <string name="show_trackers_description">Kunin at ipakita ang mga tracker sa app mula sa talaan ng Exodus Privacy.</string>
+    <string name="no_trackers_data_available">Wala (pang) datos tungkol sa mga tracker!</string>
 </resources>
