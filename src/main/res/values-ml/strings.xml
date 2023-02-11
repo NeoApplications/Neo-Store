@@ -282,4 +282,11 @@
     <string name="extras_export">അധികവസ്‌തു കയറ്റുമതി ചെയ്യുക (പ്രിയപ്പെട്ടവ, പുതുക്കൽ അവഗണിക്കുക തുടങ്ങിയവ.)</string>
     <string name="extras_import">അധികവസ്‌തു ഇറക്കുമതി ചെയ്യുക (പ്രിയപ്പെട്ടവ, പുതുക്കൽ അവഗണിക്കുക തുടങ്ങിയവ.)</string>
     <string name="promotes_non_free_software">ലിബ്രയല്ലാത്ത സോഫ്റ്റ്വെയർ പ്രോത്സാഹിപ്പിക്കുന്നു</string>
+    <string name="link_copied_to_clipboard">"ശൃംഗലാംഗം  പകർത്തി"</string>
+    <string name="list_animation_description">പ്രധാന ഏടിൽ പട്ടിക ജീവിപ്പിക്കുകക</string>
+    <string name="show_screenshots_description">പ്രയോഗത്തിന്റെ ഏടിൽ സ്ക്രീൻഷോട്ടുകൾ പ്രദർശിപ്പിക്കുക.</string>
+    <string name="loading_list">പട്ടിക ലഭ്യമാക്കുന്നു…</string>
+    <string name="images_cache_retention">ചിത്രത്തിന്റെ കല്ലറ നിലനിർത്തൽ</string>
+    <string name="legacy_installer">പാരമ്പര്യ സ്ഥാപകൻ (മിയുഐ-യുമായി പൊരുത്തപ്പെടുന്നു)</string>
+    <string name="source_dependencies_description">പ്രയോഗത്തിനു സ്വകാര്യതയെ മാനിക്കാത്ത ചില ആശ്രിതത്വങ്ങൾ ഉണ്ട്.</string>
 </resources>
