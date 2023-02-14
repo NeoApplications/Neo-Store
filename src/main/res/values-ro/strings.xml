@@ -269,9 +269,9 @@
     <string name="trackers_bug_description">Următori utilizați pentru a raporta problemele tehnice cu care se poate confrunta aplicația.</string>
     <string name="source_proprietary">Proprietar</string>
     <string name="source_proprietary_description">Codul sursă al aplicației nu este accesibil publicului.</string>
-    <string name="source_open">Sursă deschisă</string>
-    <string name="source_open_description">Codul sursă al aplicației este accesibil în mod deschis.</string>
-    <string name="source_copyleft_description">Aplicația constă doar în conținut gratuit.</string>
+    <string name="source_open">Software gratuit</string>
+    <string name="source_open_description">Codul sursă al aplicației poate fi vizualizat, modificat și partajat.</string>
+    <string name="source_copyleft_description">Partajarea aplicației necesită partajarea modificărilor aduse acestea.</string>
     <string name="source_copyright">Drepturi de autor</string>
     <string name="source_copyright_description">Aplicația depinde de conținuturi protejate prin drepturi de autor sau se conectează la rețele proprietare.</string>
     <string name="source_dependencies">Dependențe</string>
@@ -299,4 +299,9 @@
     <string name="only_on_battery">Doar la încărcare</string>
     <string name="edit">Editați</string>
     <string name="allowed_anti_features">Anti-funcții permise</string>
+    <string name="show_trackers">Afișare urmăritori</string>
+    <string name="show_trackers_description">Obține și afișează urmăritorii aplicațiilor din Exodus Privacy.</string>
+    <string name="no_trackers_data_available">Nu sunt disponibile (încă) date despre urmăritori!</string>
+    <string name="permission_sms">SMS/MMS</string>
+    <string name="source_copyleft">Copyleft</string>
 </resources>
