@@ -203,8 +203,13 @@ data class Repository(
             "The official canary repository for this great retro emulators hub.",
             21, false, "3F05B24D497515F31FEAB421297C79B19552C5C81186B3750B7C131EF41D733D", ""
         )
-        private val KDE = defaultRepository(
-            "https://cdn.kde.org/android/fdroid/repo", "KDE Android",
+        private val KDE_RELEASE = defaultRepository(
+            "https://cdn.kde.org/android/stable-releases/fdroid/repo", "KDE Android Release",
+            "The official release repository for KDE Android apps.",
+            21, false, "13784BA6C80FF4E2181E55C56F961EED5844CEA16870D3B38D58780B85E1158F", ""
+        )
+        private val KDE_NIGHTLY = defaultRepository(
+            "https://cdn.kde.org/android/fdroid/repo", "KDE Android Nightly",
             "The official nightly repository for KDE Android apps.",
             21, false, "B3EBE10AFA6C5C400379B34473E843D686C61AE6AD33F423C98AF903F056523F", ""
         )
@@ -406,8 +411,8 @@ data class Repository(
             MICRO_G,
             BROMITE, UNGOOGLED_CHROMIUM,
             NEWPIPE, LIBRETRO, BITWARDEN, GITJOURNAL,
-            CALYX_OS, CALYX_OS_TEST, DIVEST_OS, KDE, NANODROID,
-            NETSYMS, FEDILAB, NETHUNTER, BEOCODE,
+            CALYX_OS, CALYX_OS_TEST, DIVEST_OS, KDE_RELEASE, KDE_NIGHTLY,
+            NANODROID, NETSYMS, FEDILAB, NETHUNTER, BEOCODE,
             THREEMA, SESSION, MOLLY, BRIAR, ANONYMOUS_MESSENGER,
             FLUFFY_CHAT, FLUFFY_CHAT_NIGHTLY, SIMPLEX_CHAT, REVOLT,
             I2P, COLLABORA,
