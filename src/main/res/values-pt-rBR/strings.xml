@@ -290,4 +290,5 @@
     <string name="default_installer">Instalador de sessão padrão</string>
     <string name="permission_physical_data">Permissões para dados físicos</string>
     <string name="action_install_tc">Instalar TrackerControl</string>
+    <string name="app_installed">Instalado</string>
 </resources>
