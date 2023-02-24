@@ -188,4 +188,26 @@
     <string name="show_screenshots_description">הצג צילומי מסך בדף האפליקציה.</string>
     <string name="open">פתוח</string>
     <string name="favorite_add">הוספה למועדפים</string>
+    <string name="only_on_wifi_and_battery">רק על Wi-Fi ובחיבור</string>
+    <string name="loading_list">טוען רשימה…</string>
+    <string name="permission_internet">אינטרנט</string>
+    <string name="permission_camera">מצלמה</string>
+    <string name="scan_qr_code">סרוק קוד QR</string>
+    <string name="no_updates_available">אין גירסאות זמינות</string>
+    <string name="no_proxy">אין Proxy</string>
+    <string name="action_apply">החל</string>
+    <string name="http_proxy">HTTP proxy</string>
+    <string name="light">אור</string>
+    <string name="other_apps_by">אפליקציות אחרות על ידי %s</string>
+    <string name="dynamic">מערכת דינמית</string>
+    <string name="bug_tracker">מאתר באגים</string>
+    <string name="releases">שיחרורים</string>
+    <string name="permission_phone">טלפון</string>
+    <string name="permission_other">הרשאות אחרות</string>
+    <string name="permission_contacts">אנשי קשר</string>
+    <string name="permission_location">מיקום</string>
+    <string name="permission_microphone">מיקרופון</string>
+    <string name="permission_nearby_devices">מכשירים בקרבת מקום</string>
+    <string name="permission_physical_data">הרשאה לנתונים פיזיים</string>
+    <string name="permission_identification_data">הרשאה לנתוני זיהוי</string>
 </resources>
