@@ -1,0 +1,7 @@
+Naprawiono: Nie wykrywanie uprawnień roota
+Naprawiono: Awarie związane z usługą Sync- i DownloadService
+Zaktualizowano: Revamp InstalledPage
+Dodano: Opcja wyłączenia otrzymywania/pokazywania trackerów
+Dodano: FluffyChat nightly, Anonymous Messenger i BeoCode do domyślnych repozytoriów
+Naprawiono: Nie aktualizowanie listy zainstalowanych aplikacji podczas (nie)instalowania aplikacji
++ ponad 80 tłumaczeń i innych wkładów

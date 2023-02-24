@@ -1,17 +1,11 @@
-Szybki klient F-Droid
+Bogaty w funkcje szybki klient F-Droid:
 
-Cechy:
-
-* Wygląd w stylu „Material”
-* Obsługa czarnego motywu
-* Przetłumaczona na wiele języków
-* Automatyczne aktualizacje
-* Wstępnie skonfigurowane repozytoria
-* Szybka synchronizacja repozytoriów
-* Łatwe odkrywanie nowych aplikacji
+* UX skupiony na wzmacnianiu potencjału użytkowników
+* Brak kart i nieodpowiednich animacji
+* Szybka synchronizacja repozytorium
 * Standardowe komponenty Androida i minimalne zależności
 
-Adaptacja/modyfikacja Foxy-Droid.
+Bezpośrednia adaptacja/modyfikacja Foxy-Droid.
 
-Na licencji GPLv3+.
-Używaj, studiuj, zmieniaj i dziel się z wszystkimi.
+Wolne oprogramowanie Copyleft, na licencji GPLv3+. \
+Używaj, badaj, zmieniaj i dziel się ze wszystkimi.
