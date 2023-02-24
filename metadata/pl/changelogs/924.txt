@@ -1,0 +1,6 @@
+Dodano: Ostrzeżenia o aplikacjach ze znanymi podatnościami
+Naprawiono: Poprawa przeciążenia wydajności spowodowanego przez wyszukiwanie (zasługa @SocratesDz)
+Naprawiono: zawieszający się instalator
+Zaktualizowano: Odświeżono funkcjonalność auto-synchronizacji
+Zaktualizowano: Odświeżenie arkuszy repo
++ ponad 60 wkładów do tłumaczeń
