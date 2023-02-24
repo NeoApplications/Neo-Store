@@ -263,10 +263,10 @@
     <string name="trackers_bug_description">Pozwala zgłaszać problemy techniczne, na które napotka aplikacja.</string>
     <string name="source_proprietary">Zastrzeżone</string>
     <string name="source_proprietary_description">Kod źródłowy aplikacji nie jest publicznie dostępny.</string>
-    <string name="source_open">Otwarte źródło</string>
-    <string name="source_open_description">Kod źródłowy aplikacji jest publicznie dostępny.</string>
+    <string name="source_open">Wolne oprogramowanie</string>
+    <string name="source_open_description">Kod źródłowy aplikacji można przeglądać, zmieniać i udostępniać.</string>
     <string name="source_copyleft">Copyleft</string>
-    <string name="source_copyleft_description">Aplikacja składa się wyłącznie z wolnych treści.</string>
+    <string name="source_copyleft_description">Współdzielenie programu wymaga udostępnienia dokonanych w nim zmian.</string>
     <string name="source_copyright">Copyright</string>
     <string name="source_copyright_description">Aplikacja zależy od treści chronionych prawem autorskim lub łączy się z zastrzeżonymi sieciami.</string>
     <string name="source_dependencies">Zależności</string>
@@ -302,4 +302,7 @@
     <string name="tools">Narzędzia</string>
     <string name="extras_export">Eksportuj dodatki (Ulubione, ignorowane aktualizacje itp.)</string>
     <string name="file_share_text">Plik z Neo Store</string>
+    <string name="show_trackers">Pokaż elementy śledzące</string>
+    <string name="show_trackers_description">Pobierz i pokaż trackery aplikacji z Exodus Privacy.</string>
+    <string name="no_trackers_data_available">Brak (jeszcze) danych na temat elementów śledzących!</string>
 </resources>
