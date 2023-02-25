@@ -260,10 +260,10 @@
     <string name="trackers_bug_description">Rastreadores usados para relatar os problemas técnicos que o aplicativo pode enfrentar.</string>
     <string name="source_proprietary">Proprietário</string>
     <string name="source_proprietary_description">O código fonte do aplicativo não é acessível publicamente.</string>
-    <string name="source_open">Código Aberto</string>
+    <string name="source_open">Software livre</string>
     <string name="source_open_description">O código-fonte do aplicativo é acessível abertamente.</string>
     <string name="source_copyleft">Permissão de cópia</string>
-    <string name="source_copyleft_description">O aplicativo consiste apenas de conteúdo livre.</string>
+    <string name="source_copyleft_description">Compartilhar o programa requer distribuir as alterações feitas ao mesmo.</string>
     <string name="source_copyright">Direitos autorais</string>
     <string name="source_copyright_description">O aplicativo depende de conteúdo protegido por direitos autorais ou se conecta a redes proprietárias.</string>
     <string name="source_dependencies">Dependências</string>
@@ -291,4 +291,17 @@
     <string name="permission_physical_data">Permissões para dados físicos</string>
     <string name="action_install_tc">Instalar TrackerControl</string>
     <string name="app_installed">Instalado</string>
+    <string name="no_trackers_data_available">Nenhum dado sobre rastreadores está disponível (ainda)!</string>
+    <string name="vulnerabilities">Vulnerabilidades.</string>
+    <string name="vulnerabilities_installed_apps">Estes aplicativos instalados têm vulnerabilidades conhecidas!</string>
+    <string name="no_vulnerabilities_installed_apps">Nenhum aplicativo instalado tem vulnerabilidades conhecidas.</string>
+    <string name="extras_export">Exportar extras (Favoritos, Ignorar atualizações, etc.)</string>
+    <string name="extras_import">Importar extras (Favoritos, Ignorar atualizações, etc.)</string>
+    <string name="tools">Ferramentas</string>
+    <string name="file_share_text">Arquivo da Neo Store</string>
+    <string name="show_trackers_description">Obter e mostrar os rastreadores de apps da Exodus Privacy.</string>
+    <string name="show_trackers">Mostrar rastreadores</string>
+    <string name="edit">Editar</string>
+    <string name="only_on_battery">Apenas quando carregando</string>
+    <string name="allowed_anti_features">Anti-features permitidas</string>
 </resources>
