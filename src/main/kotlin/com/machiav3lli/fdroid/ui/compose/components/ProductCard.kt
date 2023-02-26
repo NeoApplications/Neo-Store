@@ -24,7 +24,8 @@ import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.network.CoilDownloader
 import com.machiav3lli.fdroid.ui.compose.utils.NetworkImage
 
-val PRODUCT_CARD_HEIGHT = 80.dp
+val PRODUCT_CARD_ICON = 48.dp
+val PRODUCT_CARD_HEIGHT = 64.dp
 val PRODUCT_CARD_WIDTH = 220.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,13 +61,13 @@ fun ProductCard(
             modifier = Modifier.padding(8.dp),
         ) {
             NetworkImage(
-                modifier = Modifier.size(64.dp),
+                modifier = Modifier.size(PRODUCT_CARD_ICON),
                 data = imageData
             )
 
             Column(Modifier.height(IntrinsicSize.Min)) {
                 Text(
-                    modifier = Modifier.padding(4.dp, 2.dp),
+                    modifier = Modifier.padding(4.dp, 1.dp),
                     text = product.name,
                     style = MaterialTheme.typography.bodySmall,
                     overflow = TextOverflow.Ellipsis,
@@ -74,7 +75,7 @@ fun ProductCard(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    modifier = Modifier.padding(4.dp, 1.dp),
+                    modifier = Modifier.padding(4.dp, 0.dp),
                     text = product.version,
                     style = MaterialTheme.typography.labelSmall,
                     overflow = TextOverflow.Ellipsis,

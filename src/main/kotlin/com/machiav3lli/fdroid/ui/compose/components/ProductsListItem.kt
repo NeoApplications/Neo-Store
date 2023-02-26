@@ -81,14 +81,14 @@ fun ProductsListItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             NetworkImage(
-                modifier = Modifier.size(64.dp),
+                modifier = Modifier.size(PRODUCT_CARD_ICON),
                 data = imageData
             )
 
             Column(
                 modifier = Modifier
                     .weight(1f, true)
-                    .height(64.dp)
+                    .height(PRODUCT_CARD_ICON)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),

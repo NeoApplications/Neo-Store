@@ -125,7 +125,7 @@ fun RowScope.NavBarItem(
                         CircleShape
                     )
                     .padding(8.dp)
-                    .size(if (selected) 36.dp else 26.dp),
+                    .size(if (selected) 32.dp else 24.dp),
                 tint = if (selected) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.onSurface
             )

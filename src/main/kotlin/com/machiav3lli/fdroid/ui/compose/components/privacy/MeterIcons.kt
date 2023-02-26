@@ -16,6 +16,7 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -41,7 +42,8 @@ fun MeterIconsBar(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(
             modifier = Modifier
@@ -51,7 +53,8 @@ fun MeterIconsBar(
                     MaterialTheme.shapes.medium,
                 )
                 .padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             if (Preferences[Preferences.Key.ShowTrackers]) {
                 Icon(
@@ -106,7 +109,7 @@ fun MeterIcon(
             Surface(
                 modifier = Modifier
                     .weight(1f)
-                    .height(32.dp),
+                    .height(24.dp),
                 color = if (isSelected) color else color.copy(alpha = 0.3f),
                 shape = RoundedCornerShape(
                     topStart = if (index == 0) 8.dp else if (isSelected) 2.dp else 0.dp,
