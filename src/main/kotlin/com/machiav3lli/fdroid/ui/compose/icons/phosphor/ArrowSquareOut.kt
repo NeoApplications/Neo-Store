@@ -18,8 +18,8 @@ val Phosphor.ArrowSquareOut: ImageVector
         }
         _arrow_square_out = Builder(
             name = "Arrow-square-out",
-            defaultWidth = 32.0.dp,
-            defaultHeight = 32.0.dp,
+            defaultWidth = 24.0.dp,
+            defaultHeight = 24.0.dp,
             viewportWidth = 256.0f,
             viewportHeight = 256.0f,
         ).apply {

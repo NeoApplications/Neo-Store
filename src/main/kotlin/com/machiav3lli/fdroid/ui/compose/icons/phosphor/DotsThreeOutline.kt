@@ -18,8 +18,8 @@ val Phosphor.DotsThreeOutline: ImageVector
         }
         _dots_three_outline = Builder(
             name = "Dots-three-outline",
-            defaultWidth = 32.0.dp,
-            defaultHeight = 32.0.dp,
+            defaultWidth = 24.0.dp,
+            defaultHeight = 24.0.dp,
             viewportWidth = 256.0f,
             viewportHeight = 256.0f,
         ).apply {
