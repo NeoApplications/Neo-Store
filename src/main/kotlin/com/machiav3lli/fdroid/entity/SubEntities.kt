@@ -22,6 +22,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.BookBookmark
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Books
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Brain
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Chat
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Clock
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Code
@@ -36,6 +37,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Graph
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Key
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Leaf
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Nut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.PaintBrush
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.PenNib
@@ -313,6 +315,26 @@ sealed class Request {
             get() = false
         override val numberOfItems: Int
             get() = Preferences[Preferences.Key.NewApps]
+    }
+}
+
+data class Permission(
+    val nameId: Int,
+    val icon: ImageVector,
+    val descriptionId: Int,
+    val warningTextId: Int = -1,
+) {
+    companion object {
+        val BatteryOptimization = Permission(
+            R.string.ignore_battery_optimization_title,
+            Phosphor.Leaf,
+            R.string.ignore_battery_optimization_message,
+        )
+        val PostNotifications = Permission(
+            R.string.post_notifications_permission_title,
+            Phosphor.CircleWavyWarning,
+            R.string.post_notifications_permission_message,
+        )
     }
 }
 

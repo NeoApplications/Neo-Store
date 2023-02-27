@@ -303,4 +303,6 @@
     <string name="show_trackers">Show trackers</string>
     <string name="show_trackers_description">Get and show apps\' trackers from Exodus Privacy.</string>
     <string name="no_trackers_data_available">No data on trackers is available (yet)!</string>
+    <string name="post_notifications_permission_title">Permission to post notifications</string>
+    <string name="post_notifications_permission_message">Starting Android 13 apps require this permission to be able to post notifications.</string>
 </resources>
