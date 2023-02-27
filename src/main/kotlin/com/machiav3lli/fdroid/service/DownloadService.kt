@@ -249,8 +249,8 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
             }
         }
         val installer = suspend {
-            AppInstaller.getInstance(MainApplication.mainActivity)
-                ?.defaultInstaller?.install(task.name, task.release.cacheFileName)
+            val installerInstance = AppInstaller.getInstance(applicationContext)
+            installerInstance?.defaultInstaller?.install(task.name, task.release.cacheFileName)
         }
         if (MainApplication.mainActivity != null &&
             AppInstaller.getInstance(MainApplication.mainActivity)?.defaultInstaller is LegacyInstaller
