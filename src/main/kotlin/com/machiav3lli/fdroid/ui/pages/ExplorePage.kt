@@ -17,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,12 +40,15 @@ import com.machiav3lli.fdroid.ui.navigation.SideNavBar
 import com.machiav3lli.fdroid.ui.viewmodels.ExploreVM
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
 fun ExplorePage(viewModel: ExploreVM) {
     val context = LocalContext.current
     val mainActivityX = context as MainActivityX
+    val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
     val filteredProducts by viewModel.filteredProducts.collectAsState()
     val installedList by viewModel.installed.collectAsState(null)
     val repositories by viewModel.repositories.collectAsState(null)
@@ -126,10 +130,14 @@ fun ExplorePage(viewModel: ExploreVM) {
             ) {
                 Preferences[Preferences.Key.CategoriesFilterExplore] = it
                 selectedCategory.value = it
+                scope.launch {
+                    listState.animateScrollToItem(0)
+                }
             }
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Absolute.spacedBy(4.dp),
+                state = listState,
             ) {
                 items(
                     items = filteredProducts?.map { it.toItem(installedList?.get(it.packageName)) }
