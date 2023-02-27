@@ -403,6 +403,42 @@ data class Repository(
             "7B03B0232209B21B10A30A63897D3C6BCA4F58FE29BC3477E8E3D8CF8E304028",
             ""
         )
+        private val STACK_WALLET = defaultRepository(
+            "https://fdroid.stackwallet.com",
+            "Stack Wallet",
+            "An open-source, non-custodial, privacy-preserving cryptocurrency wallet.",
+            21,
+            false,
+            "764B4262F75750A5F620A205CEE2886F18635FBDA18DF40758F5A1A45A950F84",
+            ""
+        )
+        private val C_GEO = defaultRepository(
+            "https://fdroid.stackwallet.com",
+            "c:geo",
+            "An open-source, full-featured, always ready-to-go Geocaching application. This is the stable channel.",
+            21,
+            false,
+            "370BB4D550C391D5DCCB6C81FD82FDA4892964764E085A09B7E075E9BAD5ED98",
+            ""
+        )
+        private val C_GEO_NIGHTLY = defaultRepository(
+            "https://fdroid.stackwallet.com",
+            "c:geo nightly",
+            "An open-source, full-featured, always ready-to-go Geocaching application. This is the nightly channel.",
+            21,
+            false,
+            "370BB4D550C391D5DCCB6C81FD82FDA4892964764E085A09B7E075E9BAD5ED98",
+            ""
+        )
+        private val PETER_CXY = defaultRepository(
+            "https://fdroid.typeblog.net/",
+            "PeterCxy's Shelter repo",
+            "An open-source, non-custodial, privacy-preserving cryptocurrency wallet.",
+            21,
+            false,
+            "1A7E446C491C80BC2F83844A26387887990F97F2F379AE7B109679FEAE3DBC8C",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, F_DROID_ARCHIVE,
@@ -419,7 +455,9 @@ data class Repository(
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
             FROSTNERD, FROSTNERD_ARCHIVE,
             UNOFFICIAL_FIREFOX, PATCHED, WIND, UMBRELLA,
-            CRYPTOMATOR, TWIN_HELIX
+            CRYPTOMATOR, TWIN_HELIX,
+            C_GEO, C_GEO_NIGHTLY, PETER_CXY,
+            STACK_WALLET,
         )
 
         val addedReposV9 = listOf(
