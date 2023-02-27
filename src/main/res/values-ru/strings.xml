@@ -305,4 +305,9 @@
     <string name="show_trackers">Показывать трекеры</string>
     <string name="show_trackers_description">Показывать информацию о трекерах в приложении из базы Exodus Privacy.</string>
     <string name="no_trackers_data_available">Данные о трекерах отсутствуют (пока)!</string>
+    <string name="enable_download_directory">Пользовательская папка загрузки</string>
+    <string name="enable_download_directory_summary">Сохранять загруженные APK в указанной папке.</string>
+    <string name="custom_download_directory">Пользовательская папка загрузки</string>
+    <string name="post_notifications_permission_title">Разрешение на уведомления</string>
+    <string name="post_notifications_permission_message">Начиная с Android 13 приложениям требуется это разрешение, чтобы показывать уведомления.</string>
 </resources>
