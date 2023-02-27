@@ -12,8 +12,12 @@ import android.os.ParcelFileDescriptor
 import android.provider.OpenableColumns
 import android.system.Os
 import androidx.core.content.FileProvider
+import androidx.documentfile.provider.DocumentFile
+import com.anggrayudi.storage.file.getAbsolutePath
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.utility.extension.android.Android
+import com.machiav3lli.fdroid.utility.getDownloadFolder
+import com.machiav3lli.fdroid.utility.isDownloadExternal
 import java.io.File
 import java.util.*
 import kotlin.concurrent.thread
@@ -114,6 +118,8 @@ object Cache {
                         file.delete()
                     }
                 }
+                if (name == "releases" && isDownloadExternal)
+                    cleanupDir(context, context.getDownloadFolder(), hours)
             }
         }
     }
@@ -132,6 +138,30 @@ object Cache {
             if (older) {
                 if (it.isDirectory) {
                     cleanupDir(it, hours)
+                    if (it.isDirectory) {
+                        it.delete()
+                    }
+                } else {
+                    it.delete()
+                }
+            }
+        }
+    }
+
+    private fun cleanupDir(context: Context, dir: DocumentFile?, hours: Int) {
+        dir?.listFiles()?.forEach {
+            val older = hours <= 0 || run {
+                val olderThan = System.currentTimeMillis() / 1000L - hours * 60 * 60
+                try {
+                    val stat = Os.lstat(it.getAbsolutePath(context))
+                    stat.st_atime < olderThan
+                } catch (e: Exception) {
+                    false
+                }
+            }
+            if (older) {
+                if (it.isDirectory) {
+                    cleanupDir(context, it, hours)
                     if (it.isDirectory) {
                         it.delete()
                     }
