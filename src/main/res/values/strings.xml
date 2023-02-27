@@ -308,4 +308,5 @@
     <string name="enable_download_directory">Use custom download directory</string>
     <string name="enable_download_directory_summary">Allow keeping downloaded APKs in a specific directory.</string>
     <string name="custom_download_directory">Custom download directory</string>
+    <string name="ignore_vulns">Ignore reported security vulnerabilities</string>
 </resources>

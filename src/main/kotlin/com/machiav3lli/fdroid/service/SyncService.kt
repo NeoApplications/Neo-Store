@@ -462,8 +462,10 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                 section = Section.All,
                                 order = Order.NAME,
                                 ascending = true,
-                            ).filter { it.antiFeatures.contains(AntiFeature.KNOWN_VULN.key) }
-                            .let { installedWithVulns ->
+                            ).filter {
+                                it.antiFeatures.contains(AntiFeature.KNOWN_VULN.key)
+                                        && db.extrasDao[it.packageName]?.ignoreVulns != true
+                            }.let { installedWithVulns ->
                                 if (installedWithVulns.isNotEmpty())
                                     displayVulnerabilitiesNotification(
                                         installedWithVulns.map(Product::toItem)

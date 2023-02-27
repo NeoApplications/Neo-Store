@@ -52,7 +52,7 @@ import kotlinx.coroutines.launch
         ExodusInfo::class,
         Tracker::class,
     ],
-    version = 14,
+    version = 15,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(

@@ -211,6 +211,22 @@ class AppSheetVM(val db: DatabaseX, val packageName: String, developer: String) 
         }
     }
 
+    fun setIgnoreVulns(packageName: String, setBoolean: Boolean) {
+        viewModelScope.launch {
+            saveIgnoreVulns(packageName, setBoolean)
+        }
+    }
+
+    private suspend fun saveIgnoreVulns(packageName: String, setBoolean: Boolean) {
+        withContext(Dispatchers.IO) {
+            val oldValue = db.extrasDao[packageName]
+            if (oldValue != null) db.extrasDao
+                .insertReplace(oldValue.copy(ignoreVulns = setBoolean))
+            else db.extrasDao
+                .insertReplace(Extras(packageName, ignoreVulns = setBoolean))
+        }
+    }
+
     fun setFavorite(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
             saveFavorite(packageName, setBoolean)

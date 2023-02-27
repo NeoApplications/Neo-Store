@@ -16,6 +16,8 @@ data class Extras(
     var favorite: Boolean = false,
     var ignoreUpdates: Boolean = false,
     var ignoredVersion: Long = 0L,
+    @ColumnInfo(defaultValue = "0")
+    var ignoreVulns: Boolean = false,
 ) {
     fun toJSON() = Json.encodeToString(this)
 

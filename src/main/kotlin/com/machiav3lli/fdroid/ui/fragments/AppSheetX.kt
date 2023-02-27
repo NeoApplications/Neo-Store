@@ -582,6 +582,17 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                 )
                             }
                         }
+                        item {
+                            AnimatedVisibility(visible = installed != null) {
+                                SwitchPreference(
+                                    text = stringResource(id = R.string.ignore_vulns),
+                                    initSelected = { extras?.ignoreVulns == true },
+                                    onCheckedChanged = {
+                                        viewModel.setIgnoreVulns(product.packageName, it)
+                                    }
+                                )
+                            }
+                        }
                         if (Preferences[Preferences.Key.ShowScreenshots]) {
                             item {
                                 ScreenshotList(screenShots = suggestedProductRepo.first.screenshots.map {
