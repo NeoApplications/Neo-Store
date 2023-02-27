@@ -45,7 +45,7 @@ fun PrivacyCard(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     ExpandableBlock(
-        modifier = modifier,
+        modifier = modifier.padding(horizontal = 8.dp),
         heading = heading,
         positive = true,
         preExpanded = preExpanded

@@ -603,6 +603,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                         if (links.isNotEmpty()) {
                             item {
                                 ExpandableBlock(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
                                     heading = stringResource(id = R.string.links),
                                     positive = true,
                                     preExpanded = true
@@ -628,6 +629,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                         if (product.donates.isNotEmpty()) {
                             item {
                                 ExpandableBlock(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
                                     heading = stringResource(id = R.string.donate),
                                     positive = true,
                                     preExpanded = false

@@ -54,7 +54,7 @@ fun ExpandableBlock(
         Column(modifier = modifier) {
             ExpandableBlockHeader(heading, positive)
             AnimatedVisibility(visible = expanded) {
-                Column(Modifier.padding(bottom = 16.dp)) {
+                Column(Modifier.padding(bottom = 8.dp)) {
                     content()
                 }
             }
