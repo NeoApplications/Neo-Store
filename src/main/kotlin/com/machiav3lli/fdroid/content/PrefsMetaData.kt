@@ -35,6 +35,10 @@ val BooleanPrefsMeta = mapOf(
         R.string.root_session_installer,
         R.string.root_session_installer_description
     ),
+    Preferences.Key.EnableDownloadDirectory to Pair(
+        R.string.enable_download_directory,
+        R.string.enable_download_directory_summary
+    ),
 )
 
 val NonBooleanPrefsMeta = mapOf(
@@ -46,6 +50,7 @@ val NonBooleanPrefsMeta = mapOf(
     Preferences.Key.AutoSync to R.string.sync_repositories_automatically,
     Preferences.Key.AutoSyncInterval to R.string.auto_sync_interval,
     Preferences.Key.Installer to R.string.prefs_installer,
+    Preferences.Key.DownloadDirectory to R.string.custom_download_directory,
     Preferences.Key.ReleasesCacheRetention to R.string.releases_cache_retention,
     Preferences.Key.ImagesCacheRetention to R.string.images_cache_retention,
     Preferences.Key.ProxyType to R.string.proxy_type,
@@ -106,6 +111,10 @@ val PrefsDependencies = mapOf(
     Preferences.Key.RootSessionInstaller to Pair(
         Preferences.Key.Installer,
         listOf(Preferences.Installer.Root)
+    ),
+    Preferences.Key.DownloadDirectory to Pair(
+        Preferences.Key.EnableDownloadDirectory,
+        listOf(true)
     ),
     Preferences.Key.ProxyHost to Pair(
         Preferences.Key.ProxyType,

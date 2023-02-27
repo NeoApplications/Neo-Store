@@ -30,6 +30,8 @@ object Preferences : OnSharedPreferenceChangeListener {
         Key.AutoSync,
         Key.AutoSyncInterval,
         Key.ReleasesCacheRetention,
+        Key.DownloadDirectory,
+        Key.EnableDownloadDirectory,
         Key.ImagesCacheRetention,
         Key.InstallAfterSync,
         Key.IncompatibleVersions,
@@ -178,6 +180,11 @@ object Preferences : OnSharedPreferenceChangeListener {
             "auto_sync",
             Value.EnumerationValue(Preferences.AutoSync.Wifi)
         )
+
+        object EnableDownloadDirectory :
+            Key<Boolean>("download_directory_enable", Value.BooleanValue(false))
+
+        object DownloadDirectory : Key<String>("download_directory_value", Value.StringValue(""))
 
         object ReleasesCacheRetention : Key<Int>("releases_cache_retention", Value.IntValue(1))
 
