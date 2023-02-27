@@ -60,6 +60,13 @@ fun AppInfoHeader(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                if (mainAction != ActionState.Bookmark || mainAction != ActionState.Bookmarked) {
+                    val secondAction =
+                        possibleActions.find { it == ActionState.Bookmark || it == ActionState.Bookmarked }
+                    SecondaryActionButton(packageState = secondAction) {
+                        onAction(secondAction)
+                    }
+                }
                 MainActionButton(
                     modifier = Modifier.weight(1f),
                     actionState = mainAction ?: ActionState.Install,
@@ -68,7 +75,10 @@ fun AppInfoHeader(
                     }
                 )
             }
-            AnimatedVisibility(visible = possibleActions.isNotEmpty()) {
+            val secondaryActions = possibleActions
+                .minus(ActionState.Bookmark)
+                .minus(ActionState.Bookmarked)
+            AnimatedVisibility(visible = secondaryActions.isNotEmpty()) {
                 FlowRow(
                     modifier = modifier
                         .fillMaxWidth(),
@@ -76,7 +86,7 @@ fun AppInfoHeader(
                     mainAxisSpacing = 8.dp,
                     crossAxisSpacing = 8.dp
                 ) {
-                    possibleActions.forEach {
+                    secondaryActions.forEach {
                         SecondaryActionButton(packageState = it) {
                             onAction(it)
                         }
