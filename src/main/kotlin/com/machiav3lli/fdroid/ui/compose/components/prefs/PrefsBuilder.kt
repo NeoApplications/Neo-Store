@@ -21,6 +21,11 @@ fun PrefsBuilder(
             index = index,
             groupSize = size,
         ) { onDialogPref(prefKey) }
+        prefKey is Preferences.Key.DownloadDirectory -> LaunchPreference(
+            prefKey = prefKey as Preferences.Key<String>,
+            index = index,
+            groupSize = size,
+        ) { onDialogPref(prefKey) }
         prefKey.default is Preferences.Value.StringValue -> StringPreference(
             prefKey = prefKey as Preferences.Key<String>,
             index = index,

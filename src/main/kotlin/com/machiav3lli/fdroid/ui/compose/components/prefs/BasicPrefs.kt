@@ -216,6 +216,48 @@ fun LanguagePreference(
 }
 
 @Composable
+fun LaunchPreference(
+    modifier: Modifier = Modifier,
+    prefKey: Preferences.Key<String>,
+    index: Int = 1,
+    groupSize: Int = 1,
+    onClick: (() -> Unit) = {},
+) {
+    val context = LocalContext.current
+    val dependency = PrefsDependencies[prefKey]
+    var isEnabled by remember {
+        mutableStateOf(
+            dependency?.let { Preferences[dependency.first] in dependency.second }
+                ?: true)
+    }
+    var prefValue by remember {
+        mutableStateOf(Preferences[prefKey])
+    }
+
+    SideEffect {
+        CoroutineScope(Dispatchers.Default).launch {
+            Preferences.subject.collect {
+                when (it) {
+                    prefKey           -> prefValue = Preferences[prefKey]
+                    dependency?.first -> isEnabled = Preferences[it] in dependency.second
+                    else              -> {}
+                }
+            }
+        }
+    }
+
+    BasePreference(
+        modifier = modifier,
+        titleId = NonBooleanPrefsMeta[prefKey] ?: -1,
+        summary = prefValue,
+        index = index,
+        groupSize = groupSize,
+        isEnabled = isEnabled,
+        onClick = onClick
+    )
+}
+
+@Composable
 fun EnumPreference(
     modifier: Modifier = Modifier,
     prefKey: Preferences.Key<Preferences.Enumeration<*>>,

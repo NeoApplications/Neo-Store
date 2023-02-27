@@ -1,5 +1,10 @@
 package com.machiav3lli.fdroid.ui.pages
 
+import android.app.Activity
+import android.content.Intent
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +31,7 @@ import com.machiav3lli.fdroid.ui.dialog.EnumSelectionPrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.IntInputPrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.LanguagePrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.StringInputPrefDialogUI
+import com.machiav3lli.fdroid.utility.DOWNLOAD_DIRECTORY_INTENT
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,9 +53,31 @@ fun PrefsPersonalPage() {
         Preferences.Key.NewApps,
     )
     val cachePrefs = listOf(
+        Preferences.Key.EnableDownloadDirectory,
+        Preferences.Key.DownloadDirectory,
         Preferences.Key.ReleasesCacheRetention,
         Preferences.Key.ImagesCacheRetention,
     )
+
+    val downloadDirectoryLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.data != null && result.resultCode == Activity.RESULT_OK) {
+                result.data?.let {
+                    val uri = it.data ?: return@let
+                    val oldDir = Preferences[Preferences.Key.DownloadDirectory]
+
+                    if (oldDir != uri.toString()) {
+                        val flags = it.flags and (
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                                )
+                        context.contentResolver.takePersistableUriPermission(uri, flags)
+                        Log.i(context.packageName, "Setting download uri: $uri")
+                        Preferences[Preferences.Key.DownloadDirectory] = uri.toString()
+                    }
+                }
+            }
+        }
 
     Scaffold(
         modifier = Modifier.fillMaxSize()
@@ -81,7 +109,9 @@ fun PrefsPersonalPage() {
         }
 
         if (openDialog.value) {
-            BaseDialog(openDialogCustom = openDialog) {
+            if (dialogPref == Preferences.Key.DownloadDirectory) {
+                downloadDirectoryLauncher.launch(DOWNLOAD_DIRECTORY_INTENT)
+            } else BaseDialog(openDialogCustom = openDialog) {
                 when (dialogPref?.default?.value) {
                     PREFS_LANGUAGE_DEFAULT -> LanguagePrefDialogUI(
                         openDialogCustom = openDialog
