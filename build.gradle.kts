@@ -153,6 +153,9 @@ dependencies {
     implementation("org.jetbrains:markdown:0.3.6")
     implementation("de.charlex.compose:html-text:1.4.1")
 
+    // Storage
+    implementation("com.anggrayudi:storage:1.5.4")
+
     // Coroutines / Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
