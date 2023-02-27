@@ -34,6 +34,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -57,7 +58,7 @@ fun SideNavBar(
     LazyColumn(
         modifier = modifier
             .fillMaxHeight()
-            .padding(4.dp)
+            .padding(horizontal = 4.dp)
             .horizontalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -87,7 +88,7 @@ fun SideNavBarItem(
     label: String,
     selected: Boolean = true,
     colors: SideNavBarItemColors = SideNavBarItemColors(
-        indicatorColor = MaterialTheme.colorScheme.surface,
+        indicatorColor = MaterialTheme.colorScheme.surfaceColorAtElevation(48.dp),
         selectedIconColor = MaterialTheme.colorScheme.primary,
         selectedTextColor = MaterialTheme.colorScheme.primary,
         unselectedIconColor = MaterialTheme.colorScheme.onSurface,
