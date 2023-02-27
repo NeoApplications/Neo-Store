@@ -37,7 +37,7 @@ fun ExpandableBlock(
     heading: String? = null,
     positive: Boolean = true,
     preExpanded: Boolean = false,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     var expanded by rememberSaveable { mutableStateOf(preExpanded) }
     val tonalElevation by animateDpAsState(
@@ -65,7 +65,7 @@ fun ExpandableBlock(
 @Composable
 fun ExpandableBlockHeader(
     heading: String? = null,
-    positive: Boolean
+    positive: Boolean,
 ) {
     var spacerHeight = 0
     if (heading == null) spacerHeight += 8

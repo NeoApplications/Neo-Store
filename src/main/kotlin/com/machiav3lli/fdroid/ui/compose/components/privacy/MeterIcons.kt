@@ -139,17 +139,17 @@ fun MeterIcon(
 }
 
 fun getTrackersTooltip(note: Int) = when (note) {
-    1 -> R.string.trackers_note_1
-    2 -> R.string.trackers_note_2
-    3 -> R.string.trackers_note_3
-    4 -> R.string.trackers_note_4
+    1    -> R.string.trackers_note_1
+    2    -> R.string.trackers_note_2
+    3    -> R.string.trackers_note_3
+    4    -> R.string.trackers_note_4
     else -> R.string.trackers_note_0
 }
 
 fun getPermissionsTooltip(note: Int) = when (note) {
-    1 -> R.string.permissions_note_1
-    2 -> R.string.permissions_note_2
-    3 -> R.string.permissions_note_3
-    4 -> R.string.permissions_note_4
+    1    -> R.string.permissions_note_1
+    2    -> R.string.permissions_note_2
+    3    -> R.string.permissions_note_3
+    4    -> R.string.permissions_note_4
     else -> R.string.permissions_note_0
 }

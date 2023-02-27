@@ -33,7 +33,7 @@ val PRODUCT_CARD_WIDTH = 220.dp
 fun ProductCard(
     item: ProductItem,
     repo: Repository? = null,
-    onUserClick: (ProductItem) -> Unit = {}
+    onUserClick: (ProductItem) -> Unit = {},
 ) {
 
     val product by remember(item) { mutableStateOf(item) }

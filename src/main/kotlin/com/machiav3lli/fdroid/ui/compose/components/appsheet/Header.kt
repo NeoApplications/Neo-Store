@@ -44,7 +44,7 @@ fun AppInfoHeader(
     modifier: Modifier = Modifier,
     mainAction: ActionState?,
     possibleActions: Set<ActionState>,
-    onAction: (ActionState?) -> Unit = { }
+    onAction: (ActionState?) -> Unit = { },
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
@@ -104,7 +104,7 @@ fun TopBarHeader(
     appName: String,
     packageName: String,
     state: DownloadState? = null,
-    actions: @Composable () -> Unit = {}
+    actions: @Composable () -> Unit = {},
 ) {
     Surface(
         modifier = modifier
@@ -154,7 +154,7 @@ fun CardButton(
     icon: ImageVector,
     description: String = "",
     onClick: () -> Unit = {},
-    onLongClick: () -> Unit = {}
+    onLongClick: () -> Unit = {},
 ) {
     Surface(
         modifier = modifier
@@ -178,7 +178,7 @@ fun DownloadProgress(
     modifier: Modifier = Modifier,
     totalSize: Long,
     downloaded: Long?,
-    isIndeterminate: Boolean
+    isIndeterminate: Boolean,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),

@@ -46,7 +46,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun IntInputPrefDialogUI(
     prefKey: Preferences.Key<Int>,
-    openDialogCustom: MutableState<Boolean>
+    openDialogCustom: MutableState<Boolean>,
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
@@ -148,7 +148,7 @@ fun IntInputPrefDialogUIPrefview() {
 @Composable
 fun StringInputPrefDialogUI(
     prefKey: Preferences.Key<String>,
-    openDialogCustom: MutableState<Boolean>
+    openDialogCustom: MutableState<Boolean>,
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current

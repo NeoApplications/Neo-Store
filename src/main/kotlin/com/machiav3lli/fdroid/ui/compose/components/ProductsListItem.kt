@@ -47,7 +47,7 @@ fun ProductsListItem(
     onUserClick: (ProductItem) -> Unit = {},
     onFavouriteClick: (ProductItem) -> Unit = {},
     installed: Installed? = null,
-    onActionClick: (ProductItem) -> Unit = {}
+    onActionClick: (ProductItem) -> Unit = {},
 ) {
     val product by remember(item) { mutableStateOf(item) }
     val imageData by remember(product, repo) {
@@ -142,7 +142,7 @@ fun ExpandedItemContent(
     installed: Installed? = null,
     favourite: Boolean = false,
     onFavourite: (ProductItem) -> Unit = {},
-    onActionClicked: (ProductItem) -> Unit = {}
+    onActionClicked: (ProductItem) -> Unit = {},
 ) {
     Box(contentAlignment = Alignment.CenterEnd) {
         Row(
@@ -160,7 +160,7 @@ fun ExpandedItemContent(
             AnimatedVisibility(visible = installed == null || installed.launcherActivities.isNotEmpty()) {
                 val action = when {
                     installed != null -> ActionState.Launch
-                    else -> ActionState.Install
+                    else              -> ActionState.Install
                 }
                 ActionButton(
                     text = stringResource(id = action.textId),

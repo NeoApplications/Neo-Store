@@ -89,11 +89,11 @@ fun PrefsUpdatesPage() {
         if (openDialog.value) {
             BaseDialog(openDialogCustom = openDialog) {
                 when (dialogPref?.default?.value) {
-                    is String -> StringInputPrefDialogUI(
+                    is String                     -> StringInputPrefDialogUI(
                         prefKey = dialogPref as Preferences.Key<String>,
                         openDialogCustom = openDialog
                     )
-                    is Int -> IntInputPrefDialogUI(
+                    is Int                        -> IntInputPrefDialogUI(
                         prefKey = dialogPref as Preferences.Key<Int>,
                         openDialogCustom = openDialog
                     )
@@ -101,7 +101,7 @@ fun PrefsUpdatesPage() {
                         prefKey = dialogPref as Preferences.Key<Preferences.Enumeration<*>>,
                         openDialogCustom = openDialog
                     )
-                    else -> {}
+                    else                          -> {}
                 }
             }
         }

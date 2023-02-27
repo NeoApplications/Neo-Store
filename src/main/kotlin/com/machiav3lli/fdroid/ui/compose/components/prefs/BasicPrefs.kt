@@ -143,7 +143,7 @@ fun SwitchPreference(
             Preferences.subject.collect {
                 when (it) {
                     dependency?.first -> isEnabled = Preferences[it] in dependency.second
-                    else -> {}
+                    else              -> {}
                 }
             }
         }
@@ -198,7 +198,7 @@ fun LanguagePreference(
             Preferences.subject.collect {
                 when (it) {
                     dependency?.first -> isEnabled = Preferences[it] in dependency.second
-                    else -> {}
+                    else              -> {}
                 }
             }
         }
@@ -284,9 +284,9 @@ fun EnumPreference(
                             Shell.getShell().isRoot
                         }
                     }
-                    prefKey -> prefValue = Preferences[prefKey]
-                    dependency?.first -> isEnabled = Preferences[it] in dependency.second
-                    else -> {}
+                    prefKey                   -> prefValue = Preferences[prefKey]
+                    dependency?.first         -> isEnabled = Preferences[it] in dependency.second
+                    else                      -> {}
                 }
             }
         }
@@ -324,9 +324,9 @@ fun IntPreference(
         CoroutineScope(Dispatchers.Default).launch {
             Preferences.subject.collect {
                 when (it) {
-                    prefKey -> prefValue = Preferences[prefKey]
+                    prefKey           -> prefValue = Preferences[prefKey]
                     dependency?.first -> isEnabled = Preferences[it] in dependency.second
-                    else -> {}
+                    else              -> {}
                 }
             }
         }
@@ -364,9 +364,9 @@ fun StringPreference(
         CoroutineScope(Dispatchers.Default).launch {
             Preferences.subject.collect {
                 when (it) {
-                    prefKey -> prefValue = Preferences[prefKey]
+                    prefKey           -> prefValue = Preferences[prefKey]
                     dependency?.first -> isEnabled = Preferences[it] in dependency.second
-                    else -> {}
+                    else              -> {}
                 }
             }
         }

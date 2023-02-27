@@ -113,14 +113,14 @@ fun PrefsPersonalPage() {
                 downloadDirectoryLauncher.launch(DOWNLOAD_DIRECTORY_INTENT)
             } else BaseDialog(openDialogCustom = openDialog) {
                 when (dialogPref?.default?.value) {
-                    PREFS_LANGUAGE_DEFAULT -> LanguagePrefDialogUI(
+                    PREFS_LANGUAGE_DEFAULT        -> LanguagePrefDialogUI(
                         openDialogCustom = openDialog
                     )
-                    is String -> StringInputPrefDialogUI(
+                    is String                     -> StringInputPrefDialogUI(
                         prefKey = dialogPref as Preferences.Key<String>,
                         openDialogCustom = openDialog
                     )
-                    is Int -> IntInputPrefDialogUI(
+                    is Int                        -> IntInputPrefDialogUI(
                         prefKey = dialogPref as Preferences.Key<Int>,
                         openDialogCustom = openDialog
                     )
@@ -128,7 +128,7 @@ fun PrefsPersonalPage() {
                         prefKey = dialogPref as Preferences.Key<Preferences.Enumeration<*>>,
                         openDialogCustom = openDialog
                     )
-                    else -> {}
+                    else                          -> {}
                 }
             }
         }

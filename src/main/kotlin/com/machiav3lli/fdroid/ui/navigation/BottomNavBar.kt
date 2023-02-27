@@ -143,11 +143,6 @@ fun RowScope.NavBarItem(
                 overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colorScheme.onSurface,
             )
-            /*NavigationBarItemDefaults.colors(
-                indicatorColor = MaterialTheme.colorScheme.background,
-                selectedIconColor = MaterialTheme.colorScheme.primary,
-                unselectedIconColor = MaterialTheme.colorScheme.onSurface,
-            )*/
         }
     }
 }

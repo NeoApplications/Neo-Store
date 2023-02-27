@@ -54,7 +54,7 @@ object Cache {
                 generateSequence(this) { it.parentFile!! }.takeWhile { it != cacheDir }.forEach {
                     when {
                         it.isDirectory -> applyOrMode(it, 0b001001001)
-                        it.isFile -> applyOrMode(it, 0b100100100)
+                        it.isFile      -> applyOrMode(it, 0b100100100)
                     }
                 }
             }
@@ -183,7 +183,7 @@ object Cache {
                     File(context!!.cacheDir, uri.encodedPath!!),
                     "application/vnd.android.package-archive"
                 )
-                else -> throw SecurityException()
+                else       -> throw SecurityException()
             }
         }
 
@@ -197,8 +197,8 @@ object Cache {
             val columns = (projection ?: defaultColumns).mapNotNull {
                 when (it) {
                     OpenableColumns.DISPLAY_NAME -> Pair(it, file.name)
-                    OpenableColumns.SIZE -> Pair(it, file.length())
-                    else -> null
+                    OpenableColumns.SIZE         -> Pair(it, file.length())
+                    else                         -> null
                 }
             }.unzip()
             return MatrixCursor(columns.first.toTypedArray()).apply { addRow(columns.second.toTypedArray()) }
@@ -220,15 +220,15 @@ object Cache {
 
         override fun openFile(uri: Uri, mode: String): ParcelFileDescriptor? {
             val openMode = when (mode) {
-                "r" -> ParcelFileDescriptor.MODE_READ_ONLY
+                "r"       -> ParcelFileDescriptor.MODE_READ_ONLY
                 "w", "wt" -> ParcelFileDescriptor.MODE_WRITE_ONLY or ParcelFileDescriptor.MODE_CREATE or
                         ParcelFileDescriptor.MODE_TRUNCATE
-                "wa" -> ParcelFileDescriptor.MODE_WRITE_ONLY or ParcelFileDescriptor.MODE_CREATE or
+                "wa"      -> ParcelFileDescriptor.MODE_WRITE_ONLY or ParcelFileDescriptor.MODE_CREATE or
                         ParcelFileDescriptor.MODE_APPEND
-                "rw" -> ParcelFileDescriptor.MODE_READ_WRITE or ParcelFileDescriptor.MODE_CREATE
-                "rwt" -> ParcelFileDescriptor.MODE_READ_WRITE or ParcelFileDescriptor.MODE_CREATE or
+                "rw"      -> ParcelFileDescriptor.MODE_READ_WRITE or ParcelFileDescriptor.MODE_CREATE
+                "rwt"     -> ParcelFileDescriptor.MODE_READ_WRITE or ParcelFileDescriptor.MODE_CREATE or
                         ParcelFileDescriptor.MODE_TRUNCATE
-                else -> throw IllegalArgumentException()
+                else      -> throw IllegalArgumentException()
             }
             val file = getFileAndTypeForUri(uri).first
             return ParcelFileDescriptor.open(file, openMode)

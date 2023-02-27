@@ -76,7 +76,7 @@ fun PrefsReposPage(viewModel: PrefsVM, address: String, fingerprint: String) {
             ) {
                 if (Intent(INTENT_ACTION_BINARY_EYE).resolveActivity(prefsActivityX.packageManager) != null) {
                     Row(
-                        modifier = Modifier.padding(4.dp),
+                        modifier = Modifier.padding(horizontal = 4.dp),
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         FilledTonalButton(
