@@ -481,5 +481,10 @@ data class Repository(
         val addedReposV14 = listOf(
             FLUFFY_CHAT, FLUFFY_CHAT_NIGHTLY, BEOCODE, ANONYMOUS_MESSENGER
         )
+
+        val addedReposV15 = listOf(
+            KDE_RELEASE, STACK_WALLET,
+            C_GEO, C_GEO_NIGHTLY, PETER_CXY
+        )
     }
 }
