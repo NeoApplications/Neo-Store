@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.content.IntPrefsRanges
 import com.machiav3lli.fdroid.content.NonBooleanPrefsMeta
@@ -49,6 +50,8 @@ fun IntInputPrefDialogUI(
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
+    val range = IntPrefsRanges[prefKey]
+    val nnRange = range ?: 0..1000000
     val textFieldFocusRequester = remember { FocusRequester() }
     var savedValue by remember {
         mutableStateOf(Preferences[prefKey])
@@ -72,7 +75,14 @@ fun IntInputPrefDialogUI(
         ) {
             Text(
                 text = stringResource(NonBooleanPrefsMeta[prefKey] ?: -1),
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = "${nnRange.first}-${nnRange.last}",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
             )
             TextField(
                 modifier = Modifier
@@ -86,11 +96,13 @@ fun IntInputPrefDialogUI(
                 ),
                 shape = MaterialTheme.shapes.medium,
                 singleLine = true,
+                placeholder = {
+                    Text(text = "${nnRange.first}-${nnRange.last}")
+                },
                 onValueChange = {
                     savedValue = if (it.isNotEmpty())
                         it.filter { it.isDigit() }
-                            .toIntOrNull()?.coerceIn(IntPrefsRanges[prefKey] ?: 0..1000000)
-                            ?: IntPrefsRanges[prefKey]?.start
+                            .toIntOrNull()
                             ?: prefKey.default.value
                     else -1
                 },
@@ -112,7 +124,7 @@ fun IntInputPrefDialogUI(
                     modifier = Modifier.padding(start = 16.dp),
                     onClick = {
                         Preferences[prefKey] =
-                            savedValue.coerceIn(IntPrefsRanges[prefKey] ?: 0..1000000)
+                            savedValue.coerceIn(nnRange)
                         openDialogCustom.value = false
                     }
                 )
