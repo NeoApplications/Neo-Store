@@ -23,6 +23,7 @@ import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.ui.pages.ExplorePage
 import com.machiav3lli.fdroid.ui.pages.InstalledPage
 import com.machiav3lli.fdroid.ui.pages.LatestPage
+import com.machiav3lli.fdroid.ui.pages.PermissionsPage
 import com.machiav3lli.fdroid.ui.pages.PrefsOtherPage
 import com.machiav3lli.fdroid.ui.pages.PrefsPersonalPage
 import com.machiav3lli.fdroid.ui.pages.PrefsReposPage
@@ -37,8 +38,13 @@ fun MainNavHost(
     AnimatedNavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Preferences[Preferences.Key.DefaultTab].valueString
+        startDestination = NavItem.Permissions.destination,
     ) {
+        slideDownComposable(NavItem.Permissions.destination) {
+            PermissionsPage {
+                navController.navigate(Preferences[Preferences.Key.DefaultTab].valueString)
+            }
+        }
         slideDownComposable(NavItem.Explore.destination) {
             val viewModel = MainApplication.mainActivity?.exploreViewModel!!
             ExplorePage(viewModel)

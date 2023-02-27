@@ -27,9 +27,13 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Graph
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.House
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserGear
 
 sealed class NavItem(var title: Int, var icon: ImageVector, var destination: String) {
+    object Permissions :
+        NavItem(R.string.permissions, Phosphor.ShieldStar, "main_permissions")
+
     object Explore :
         NavItem(R.string.explore, Phosphor.Compass, "main_explore")
 
