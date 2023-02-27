@@ -2,14 +2,15 @@ package com.machiav3lli.fdroid.ui.activities
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.os.PowerManager
 import android.view.KeyEvent
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -30,9 +32,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.EXTRA_INTENT_HANDLED
@@ -58,11 +57,9 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.ExploreVM
 import com.machiav3lli.fdroid.ui.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.ui.viewmodels.LatestVM
-import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.setCustomTheme
-import com.machiav3lli.fdroid.utility.showBatteryOptimizationDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -86,7 +83,6 @@ class MainActivityX : AppCompatActivity() {
         class Install(val packageName: String?, val cacheFileName: String?) : SpecialIntent()
     }
 
-    private lateinit var powerManager: PowerManager
     private lateinit var navController: NavHostController
     private val cScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
     val syncConnection = Connection(SyncService::class.java)
@@ -114,8 +110,8 @@ class MainActivityX : AppCompatActivity() {
     private lateinit var sheetApp: AppSheetX
 
     @OptIn(
-        ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class,
-        ExperimentalPermissionsApi::class
+        ExperimentalAnimationApi::class,
+        ExperimentalMaterial3Api::class
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
@@ -123,8 +119,6 @@ class MainActivityX : AppCompatActivity() {
         setCustomTheme()
         MainApplication.mainActivity = this
         super.onCreate(savedInstanceState)
-
-        powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
 
         setContent {
             AppTheme(
@@ -141,44 +135,59 @@ class MainActivityX : AppCompatActivity() {
                 val mScope = rememberCoroutineScope()
                 navController = rememberAnimatedNavController()
                 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-                val permissionStatePostNotifications =
-                    if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) {
-                        rememberPermissionState(android.Manifest.permission.POST_NOTIFICATIONS)
-                    } else null
+                var barVisible by remember { mutableStateOf(true) }
+
+                navController.addOnDestinationChangedListener { _, destination, _ ->
+                    barVisible = destination.route != NavItem.Permissions.destination
+                }
 
                 Scaffold(
                     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                     containerColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
-                    bottomBar = { BottomNavBar(page = NAV_MAIN, navController = navController) },
+                    bottomBar = {
+                        AnimatedVisibility(
+                            barVisible,
+                            enter = slideInVertically { height -> height },
+                            exit = slideOutVertically { height -> height },
+                        ) {
+                            BottomNavBar(page = NAV_MAIN, navController = navController)
+                        }
+                    },
                     topBar = {
                         TopBar(
                             title = stringResource(id = R.string.application_name),
                             scrollBehavior = scrollBehavior,
                         ) {
-                            ExpandableSearchAction(
-                                query = query,
-                                expanded = expanded,
-                                onClose = {
-                                    mScope.launch { _searchQuery.emit("") }
-                                },
-                                onQueryChanged = { newQuery ->
-                                    if (newQuery != query) {
-                                        mScope.launch { _searchQuery.emit(newQuery) }
+                            AnimatedVisibility(barVisible) {
+                                ExpandableSearchAction(
+                                    query = query,
+                                    expanded = expanded,
+                                    onClose = {
+                                        mScope.launch { _searchQuery.emit("") }
+                                    },
+                                    onQueryChanged = { newQuery ->
+                                        if (newQuery != query) {
+                                            mScope.launch { _searchQuery.emit(newQuery) }
+                                        }
                                     }
-                                }
-                            )
-                            TopBarAction(
-                                icon = Phosphor.ArrowsClockwise,
-                                description = stringResource(id = R.string.sync_repositories)
-                            ) {
-                                syncConnection.binder?.sync(SyncService.SyncRequest.MANUAL)
+                                )
                             }
-                            TopBarAction(
-                                icon = Phosphor.GearSix,
-                                description = stringResource(id = R.string.settings)
-                            ) {
-                                navController.navigate(NavItem.Prefs.destination)
+                            AnimatedVisibility(barVisible) {
+                                TopBarAction(
+                                    icon = Phosphor.ArrowsClockwise,
+                                    description = stringResource(id = R.string.sync_repositories)
+                                ) {
+                                    syncConnection.binder?.sync(SyncService.SyncRequest.MANUAL)
+                                }
+                            }
+                            AnimatedVisibility(barVisible) {
+                                TopBarAction(
+                                    icon = Phosphor.GearSix,
+                                    description = stringResource(id = R.string.settings)
+                                ) {
+                                    navController.navigate(NavItem.Prefs.destination)
+                                }
                             }
                         }
                     }
@@ -187,8 +196,6 @@ class MainActivityX : AppCompatActivity() {
                         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
                             handleIntent(intent)
                         }
-                        if (permissionStatePostNotifications?.status?.isGranted == false)
-                            permissionStatePostNotifications.launchPermissionRequest()
                     }
 
                     MainNavHost(
@@ -209,8 +216,6 @@ class MainActivityX : AppCompatActivity() {
         super.onResume()
         if (currentTheme != Preferences[Preferences.Key.Theme].resId)
             recreate()
-        if (!powerManager.isIgnoringBatteryOptimizations(this.packageName) && !Preferences[Preferences.Key.IgnoreIgnoreBatteryOptimization])
-            showBatteryOptimizationDialog()
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
