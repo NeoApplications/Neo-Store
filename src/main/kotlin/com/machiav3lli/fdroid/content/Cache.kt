@@ -89,9 +89,9 @@ object Cache {
         thread {
             cleanup(
                 context,
-                Pair("images", Preferences[Preferences.Key.ImagesCacheRetention]),
+                Pair("images", Preferences[Preferences.Key.ImagesCacheRetention] * 24),
                 Pair("partial", 24),
-                Pair("releases", Preferences[Preferences.Key.ReleasesCacheRetention]),
+                Pair("releases", Preferences[Preferences.Key.ReleasesCacheRetention] * 24),
                 Pair("temporary", 1)
             )
         }
