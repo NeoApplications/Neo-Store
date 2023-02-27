@@ -8,6 +8,9 @@ import android.util.Log
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.whenResumed
+import com.anggrayudi.storage.callback.FileCallback
+import com.anggrayudi.storage.file.copyFileTo
+import com.anggrayudi.storage.file.toDocumentFile
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
@@ -29,6 +32,8 @@ import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
 import com.machiav3lli.fdroid.utility.extension.text.hex
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
+import com.machiav3lli.fdroid.utility.getDownloadFolder
+import com.machiav3lli.fdroid.utility.isDownloadExternal
 import com.machiav3lli.fdroid.utility.showNotificationError
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
@@ -226,6 +231,22 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
     private fun publishSuccess(task: Task) {
         scope.launch {
             mutableStateSubject.emit(State.Success(task.packageName, task.name, task.release))
+        }
+        if (isDownloadExternal) {
+            getDownloadFolder()?.let { downloadFolder ->
+                val cacheFile = Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
+                    .toDocumentFile(applicationContext)
+                scope.launch {
+                    if (downloadFolder.findFile(task.release.cacheFileName)?.exists() != true) {
+                        cacheFile?.copyFileTo(
+                            applicationContext,
+                            downloadFolder,
+                            null,
+                            object : FileCallback() {}
+                        )
+                    }
+                }
+            }
         }
         val installer = suspend {
             AppInstaller.getInstance(MainApplication.mainActivity)
