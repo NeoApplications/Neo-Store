@@ -1,12 +1,15 @@
 package com.machiav3lli.fdroid.ui.pages
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,9 +29,9 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
-import com.machiav3lli.fdroid.ui.compose.ProductsVerticalRecycler
 import com.machiav3lli.fdroid.ui.compose.components.ActionChip
 import com.machiav3lli.fdroid.ui.compose.components.CategoryChip
+import com.machiav3lli.fdroid.ui.compose.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.navigation.NavItem
@@ -124,30 +127,41 @@ fun ExplorePage(viewModel: ExploreVM) {
                 Preferences[Preferences.Key.CategoriesFilterExplore] = it
                 selectedCategory.value = it
             }
-            ProductsVerticalRecycler(
-                productsList = filteredProducts,
-                repositories = repositoriesMap,
-                favorites = favorites,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                onUserClick = { item ->
-                    mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
-                    mainActivityX.navigateProduct(item.packageName, item.developer)
-                },
-                onFavouriteClick = { item ->
-                    viewModel.setFavorite(
-                        item.packageName,
-                        !favorites.contains(item.packageName)
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Absolute.spacedBy(4.dp),
+            ) {
+                items(
+                    items = filteredProducts?.map { it.toItem(installedList?.get(it.packageName)) }
+                        ?: emptyList()
+                ) { item ->
+                    ProductsListItem(
+                        item = item,
+                        repo = repositoriesMap[item.repositoryId],
+                        isFavorite = favorites.contains(item.packageName),
+                        onUserClick = {
+                            mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
+                            mainActivityX.navigateProduct(it.packageName, item.developer)
+                        },
+                        onFavouriteClick = {
+                            viewModel.setFavorite(
+                                it.packageName,
+                                !favorites.contains(it.packageName)
+                            )
+                        },
+                        installed = installedList?.get(item.packageName),
+                        onActionClick = {
+                            val installed = installedList?.get(it.packageName)
+                            if (installed != null && installed.launcherActivities.isNotEmpty())
+                                context.onLaunchClick(
+                                    installed,
+                                    mainActivityX.supportFragmentManager
+                                )
+                            else
+                                mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                        }
                     )
-                },
-                getInstalled = { packageName -> installedList?.get(packageName) }
-            ) { item ->
-                val installed = installedList?.get(item.packageName)
-                if (installed != null && installed.launcherActivities.isNotEmpty())
-                    context.onLaunchClick(installed, mainActivityX.supportFragmentManager)
-                else
-                    mainActivityX.syncConnection.binder?.installApps(listOf(item))
+                }
             }
         }
     }
