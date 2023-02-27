@@ -273,4 +273,5 @@
     <string name="action_open_tc">Åpne TrackerControl</string>
     <string name="action_install_tc">Installer TrackerControl</string>
     <string name="source_copyright">Opphavsrett</string>
+    <string name="permission_not_present">Finnes ikke på systemet ditt</string>
 </resources>
