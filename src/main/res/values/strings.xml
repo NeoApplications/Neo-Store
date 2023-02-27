@@ -255,7 +255,7 @@
     <string name="trackers_ads">Ads trackers</string>
     <string name="trackers_ads_description">Trackers used to show advertisements and track your interaction with these.</string>
     <string name="trackers_profiling">Profiling trackers</string>
-    <string name="trackers_profiling_description">Trackers that try to create a profile of you, based on the data they aggregates.</string>
+    <string name="trackers_profiling_description">Trackers that try to create a profile of you, based on the data they aggregate.</string>
     <string name="trackers_location">Location trackers</string>
     <string name="trackers_location_description">Trackers that focus on tracking your physical location.</string>
     <string name="trackers_bug">Bug reporting trackers</string>
@@ -302,10 +302,10 @@
     <string name="allowed_anti_features">Allowed Anti-features</string>
     <string name="show_trackers">Show trackers</string>
     <string name="show_trackers_description">Get and show apps\' trackers from Exodus Privacy.</string>
-    <string name="no_trackers_data_available">No data on trackers is available (yet)!</string>
+    <string name="no_trackers_data_available">No data on trackers available (yet).</string>
     <string name="post_notifications_permission_title">Permission to post notifications</string>
     <string name="post_notifications_permission_message">Starting Android 13 apps require this permission to be able to post notifications.</string>
     <string name="enable_download_directory">Use custom download folder</string>
-    <string name="enable_download_directory_summary">Allow keeping downloaded APKs in a specific directory.</string>
-    <string name="custom_download_directory">Custom download directory</string>
+    <string name="enable_download_directory_summary">Allows keeping downloaded APKs in a chosen folder.</string>
+    <string name="custom_download_directory">Custom download folder</string>
 </resources>
