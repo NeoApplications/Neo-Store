@@ -96,8 +96,8 @@ val PrefsEntries = mapOf(
 )
 
 val IntPrefsRanges = mapOf(
-    Preferences.Key.UpdatedApps to 1..400,
-    Preferences.Key.NewApps to 1..200,
+    Preferences.Key.UpdatedApps to 1..1000,
+    Preferences.Key.NewApps to 1..300,
     Preferences.Key.AutoSyncInterval to (
             if (Android.sdk(VERSION_CODES.N)) JobInfo.getMinPeriodMillis().milliseconds.inWholeMinutes.toInt()
             else 15
