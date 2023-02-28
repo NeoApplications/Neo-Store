@@ -252,7 +252,7 @@
     <string name="trackers_ads">متتبع الإعلانات</string>
     <string name="trackers_ads_description">متتبع لعرض الإعلانات وتتبع تفاعلك معها.</string>
     <string name="trackers_profiling">متتبع التنميط</string>
-    <string name="trackers_profiling_description">متتبعات التي تحاول إنشاء ملف تعريف لك ، بناءً على البيانات التي تجمعها.</string>
+    <string name="trackers_profiling_description">المتتبعات التي تحاول إنشاء ملف تعريف لك ، بناءً على البيانات التي تجمعها.</string>
     <string name="trackers_location">متتبعات الموقع</string>
     <string name="trackers_location_description">المتتبعات التي تركز على تتبع موقعك الفعلي.</string>
     <string name="trackers_bug">متتبعات لرصد الأخطاء البرمجية</string>
@@ -306,10 +306,10 @@
     <string name="allowed_anti_features">الميزات المضادة المسموح بها</string>
     <string name="show_trackers">عرض المتتبعات</string>
     <string name="show_trackers_description">احصل على متتبعات التطبيقات وأظهرها من خصوصية Exodus.</string>
-    <string name="no_trackers_data_available">لا توجد بيانات متاحة عن المتعقبات (حتى الآن)!</string>
-    <string name="enable_download_directory_summary">السماح بالاحتفاظ بملفات APK التي تم تحميلها في مسار معين.</string>
+    <string name="no_trackers_data_available">لا توجد بيانات متاحة عن المتعقبات (حتى الآن).</string>
+    <string name="enable_download_directory_summary">يسمح بالاحتفاظ بملفات APK التي تم تنزيلها في مجلد مختار.</string>
     <string name="post_notifications_permission_title">إذن نشر إشعار</string>
     <string name="post_notifications_permission_message">يتطلب بدء تشغيل تطبيقات Android 13 هذا الإذن لتتمكن من نشر الإشعارات.</string>
-    <string name="enable_download_directory">استخدم مسار التحميل المخصص</string>
-    <string name="custom_download_directory">دليل تنزيل مخصص</string>
+    <string name="enable_download_directory">استخدام مجلد التنزيل المخصص</string>
+    <string name="custom_download_directory">مجلد تنزيل مخصص</string>
 </resources>
