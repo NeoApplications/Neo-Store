@@ -304,4 +304,5 @@
     <string name="edit">Editar</string>
     <string name="only_on_battery">Apenas quando carregando</string>
     <string name="allowed_anti_features">Anti-features permitidas</string>
+    <string name="custom_download_directory">Pasta de download personalizada</string>
 </resources>
