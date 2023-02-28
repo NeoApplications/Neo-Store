@@ -304,4 +304,5 @@
     <string name="show_trackers">Mostrar rastreadores</string>
     <string name="show_trackers_description">Obtenha e mostre os rastreadores de aplicativos da Exodus Privacy.</string>
     <string name="no_trackers_data_available">Nenhum dado sobre rastreadores está disponível (ainda)!</string>
+    <string name="custom_download_directory">Pasta de download personalizada</string>
 </resources>
