@@ -278,7 +278,7 @@
     <string name="permission_contacts">Contatti</string>
     <string name="permission_sms">SMS/MMS</string>
     <string name="permission_storage">Archiviazione e media</string>
-    <string name="trackers_profiling_description">Tracciatori che cercano di creare un profilo dell\'utente in base ai dati aggregati.</string>
+    <string name="trackers_profiling_description">Tracker che tentano di creare un tuo profilo, in base ai dati che aggregano.</string>
     <string name="permission_phone">Telefono</string>
     <string name="permission_location">Posizione</string>
     <string name="permission_camera">Fotocamera</string>
@@ -303,10 +303,10 @@
     <string name="file_share_text">File da Neo Store</string>
     <string name="show_trackers">Mostra tracker</string>
     <string name="show_trackers_description">Ottieni e mostra i tracker delle app da Exodus Privacy.</string>
-    <string name="no_trackers_data_available">Nessun dato sui tracker disponibile (per ora)!</string>
+    <string name="no_trackers_data_available">Nessun dato disponibile sui tracker (ancora).</string>
     <string name="custom_download_directory">Cartella di download personalizzata</string>
     <string name="post_notifications_permission_title">Autorizzazione a inviare notifiche</string>
     <string name="post_notifications_permission_message">A partire da Android 13 le applicazioni richiedono questa autorizzazione per poter inviare notifiche.</string>
-    <string name="enable_download_directory">Usa una cartella di download personalizzata</string>
-    <string name="enable_download_directory_summary">Consenti di mantenere gli APK scaricati in una cartella specifica.</string>
+    <string name="enable_download_directory">Usa cartella di download personalizzata</string>
+    <string name="enable_download_directory_summary">Consente di mantenere gli APK scaricati in una cartella scelta.</string>
 </resources>
