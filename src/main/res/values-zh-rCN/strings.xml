@@ -301,5 +301,10 @@
     <string name="file_share_text">来自 Neo 商店的文件</string>
     <string name="show_trackers">显示跟踪器</string>
     <string name="show_trackers_description">从 Exodus Privacy 获取并显示应用程序的跟踪器。</string>
-    <string name="no_trackers_data_available">（尚且）没有关于跟踪器的数据！</string>
+    <string name="no_trackers_data_available">没有关于跟踪器的数据（尚未）。</string>
+    <string name="post_notifications_permission_title">允许发布通知</string>
+    <string name="post_notifications_permission_message">启动 Android 13 应用需要此权限才能发布通知。</string>
+    <string name="enable_download_directory">使用自定义下载文件夹</string>
+    <string name="enable_download_directory_summary">允许将下载的 APK 保存在选定的文件夹中。</string>
+    <string name="custom_download_directory">自定义下载文件夹</string>
 </resources>
