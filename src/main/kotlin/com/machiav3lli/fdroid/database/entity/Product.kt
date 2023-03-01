@@ -223,3 +223,9 @@ fun Product.asProductTemp(): ProductTemp = ProductTemp(
     changelog = changelog,
     whatsNew = whatsNew
 )
+
+data class IconDetails(
+    var packageName: String,
+    var icon: String = "",
+    var metadataIcon: String = "",
+)

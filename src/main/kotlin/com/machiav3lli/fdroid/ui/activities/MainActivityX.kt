@@ -292,7 +292,7 @@ class MainActivityX : AppCompatActivity() {
                 } else {
                     val packageName = intent.packageName
                     if (!packageName.isNullOrEmpty()) {
-                        navigateProduct(packageName, "")
+                        navigateProduct(packageName)
                     }
                 }
             }
@@ -315,8 +315,8 @@ class MainActivityX : AppCompatActivity() {
         super.attachBaseContext(ContextWrapperX.wrap(newBase))
     }
 
-    internal fun navigateProduct(packageName: String, developer: String) {
-        sheetApp = AppSheetX(packageName, developer)
+    internal fun navigateProduct(packageName: String) {
+        sheetApp = AppSheetX(packageName)
         sheetApp.showNow(supportFragmentManager, "Product $packageName")
     }
 

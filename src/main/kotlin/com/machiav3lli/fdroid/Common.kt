@@ -28,6 +28,7 @@ const val TABLE_REPOSITORY = "repository"
 const val TABLE_REPOSITORY_NAME = "repository"
 const val TABLE_EXTRAS = "extras"
 const val TABLE_EXTRAS_NAME = "extras"
+const val TABLE_DOWNLOADED_NAME = "downloaded"
 
 const val ROW_REPOSITORY_ID = "repositoryId"
 const val ROW_PACKAGE_NAME = "packageName"
@@ -61,6 +62,9 @@ const val ROW_CAN_UPDATE = "can_update"
 const val ROW_IGNORED_VERSION = "ignoredVersion"
 const val ROW_IGNORE_UPDATES = "ignoreUpdates"
 const val ROW_FAVORITE = "favorite"
+
+const val FIELD_CACHEFILENAME = "cacheFileName"
+const val FIELD_VERSION = "version"
 
 const val RELEASE_STATE_NONE = 0
 const val RELEASE_STATE_SUGGESTED = 1

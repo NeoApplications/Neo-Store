@@ -5,6 +5,7 @@ import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.entity.Author
 import com.machiav3lli.fdroid.entity.Donate
 import com.machiav3lli.fdroid.entity.Screenshot
+import com.machiav3lli.fdroid.service.DownloadService
 
 object Converters {
     @TypeConverter
@@ -61,6 +62,14 @@ object Converters {
     @TypeConverter
     @JvmStatic
     fun toByteArray(author: Author) = author.toJSON().toByteArray()
+
+    @TypeConverter
+    @JvmStatic
+    fun toDownloadState(byteArray: ByteArray) = DownloadService.State.fromJson(String(byteArray))
+
+    @TypeConverter
+    @JvmStatic
+    fun toByteArray(state: DownloadService.State) = state.toJSON().toByteArray()
 
     @TypeConverter
     @JvmStatic

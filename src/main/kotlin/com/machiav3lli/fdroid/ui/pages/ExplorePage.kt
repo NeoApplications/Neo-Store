@@ -1,12 +1,15 @@
 package com.machiav3lli.fdroid.ui.pages
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,9 +30,9 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
-import com.machiav3lli.fdroid.ui.compose.ProductsVerticalRecycler
 import com.machiav3lli.fdroid.ui.compose.components.ActionChip
 import com.machiav3lli.fdroid.ui.compose.components.CategoryChip
+import com.machiav3lli.fdroid.ui.compose.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.navigation.NavItem
@@ -36,12 +40,15 @@ import com.machiav3lli.fdroid.ui.navigation.SideNavBar
 import com.machiav3lli.fdroid.ui.viewmodels.ExploreVM
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
 fun ExplorePage(viewModel: ExploreVM) {
     val context = LocalContext.current
     val mainActivityX = context as MainActivityX
+    val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
     val filteredProducts by viewModel.filteredProducts.collectAsState()
     val installedList by viewModel.installed.collectAsState(null)
     val repositories by viewModel.repositories.collectAsState(null)
@@ -123,31 +130,45 @@ fun ExplorePage(viewModel: ExploreVM) {
             ) {
                 Preferences[Preferences.Key.CategoriesFilterExplore] = it
                 selectedCategory.value = it
+                scope.launch {
+                    listState.animateScrollToItem(0)
+                }
             }
-            ProductsVerticalRecycler(
-                productsList = filteredProducts,
-                repositories = repositoriesMap,
-                favorites = favorites,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                onUserClick = { item ->
-                    mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
-                    mainActivityX.navigateProduct(item.packageName, item.developer)
-                },
-                onFavouriteClick = { item ->
-                    viewModel.setFavorite(
-                        item.packageName,
-                        !favorites.contains(item.packageName)
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Absolute.spacedBy(4.dp),
+                state = listState,
+            ) {
+                items(
+                    items = filteredProducts?.map { it.toItem() } ?: emptyList(),
+                ) { item ->
+                    ProductsListItem(
+                        item = item,
+                        repo = repositoriesMap[item.repositoryId],
+                        isFavorite = favorites.contains(item.packageName),
+                        onUserClick = {
+                            mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
+                            mainActivityX.navigateProduct(it.packageName)
+                        },
+                        onFavouriteClick = {
+                            viewModel.setFavorite(
+                                it.packageName,
+                                !favorites.contains(it.packageName)
+                            )
+                        },
+                        installed = installedList?.get(item.packageName),
+                        onActionClick = {
+                            val installed = installedList?.get(it.packageName)
+                            if (installed != null && installed.launcherActivities.isNotEmpty())
+                                context.onLaunchClick(
+                                    installed,
+                                    mainActivityX.supportFragmentManager
+                                )
+                            else
+                                mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                        }
                     )
-                },
-                getInstalled = { packageName -> installedList?.get(packageName) }
-            ) { item ->
-                val installed = installedList?.get(item.packageName)
-                if (installed != null && installed.launcherActivities.isNotEmpty())
-                    context.onLaunchClick(installed, mainActivityX.supportFragmentManager)
-                else
-                    mainActivityX.syncConnection.binder?.installApps(listOf(item))
+                }
             }
         }
     }

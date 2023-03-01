@@ -22,16 +22,24 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AppSheetVM(val db: DatabaseX, val packageName: String, developer: String) : ViewModel() {
+class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val products = db.productDao.getFlow(packageName).mapLatest { it.filterNotNull() }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val developer = products.mapLatest { it.first().author.name }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        ""
+    )
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val exodusInfo = db.exodusInfoDao.getFlow(packageName)
@@ -106,11 +114,13 @@ class AppSheetVM(val db: DatabaseX, val packageName: String, developer: String) 
         Extras(packageName)
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val authorProducts = db.productDao.getAuthorPackagesFlow(developer).transformLatest { prods ->
-        if (developer.isNotEmpty()) emit(
+    val authorProducts = combineTransform(
+        db.productDao.getAuthorPackagesFlow(developer.value),
+        developer
+    ) { prods, dev ->
+        if (dev.isNotEmpty()) emit(
             prods
-                .filter { it.packageName != packageName && it.author.name == developer }
+                .filter { it.packageName != packageName && it.author.name == dev }
                 .groupBy { it.packageName }
                 .map { it.value.maxByOrNull(Product::added)!! }
         )
@@ -153,12 +163,12 @@ class AppSheetVM(val db: DatabaseX, val packageName: String, developer: String) 
                 else actions += ActionState.Bookmark
             }
             val primaryAction = when {
-                canUpdate  -> ActionState.Update
-                canLaunch  -> ActionState.Launch
+                canUpdate -> ActionState.Update
+                canLaunch -> ActionState.Launch
                 canInstall -> ActionState.Install
-                canShare   -> ActionState.Share
+                canShare -> ActionState.Share
                 bookmarked -> ActionState.Bookmarked
-                else       -> ActionState.Bookmark
+                else -> ActionState.Bookmark
             }
 
             withContext(Dispatchers.Main) {
@@ -211,6 +221,22 @@ class AppSheetVM(val db: DatabaseX, val packageName: String, developer: String) 
         }
     }
 
+    fun setIgnoreVulns(packageName: String, setBoolean: Boolean) {
+        viewModelScope.launch {
+            saveIgnoreVulns(packageName, setBoolean)
+        }
+    }
+
+    private suspend fun saveIgnoreVulns(packageName: String, setBoolean: Boolean) {
+        withContext(Dispatchers.IO) {
+            val oldValue = db.extrasDao[packageName]
+            if (oldValue != null) db.extrasDao
+                .insertReplace(oldValue.copy(ignoreVulns = setBoolean))
+            else db.extrasDao
+                .insertReplace(Extras(packageName, ignoreVulns = setBoolean))
+        }
+    }
+
     fun setFavorite(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
             saveFavorite(packageName, setBoolean)
@@ -227,12 +253,12 @@ class AppSheetVM(val db: DatabaseX, val packageName: String, developer: String) 
         }
     }
 
-    class Factory(val db: DatabaseX, val packageName: String, val developer: String) :
+    class Factory(val db: DatabaseX, val packageName: String) :
         ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(AppSheetVM::class.java)) {
-                return AppSheetVM(db, packageName, developer) as T
+                return AppSheetVM(db, packageName) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
