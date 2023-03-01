@@ -312,4 +312,6 @@
     <string name="post_notifications_permission_message">يتطلب بدء تشغيل تطبيقات Android 13 هذا الإذن لتتمكن من نشر الإشعارات.</string>
     <string name="enable_download_directory">استخدام مجلد التنزيل المخصص</string>
     <string name="custom_download_directory">مجلد تنزيل مخصص</string>
+    <string name="downloads">التنزيلات</string>
+    <string name="ignore_vulns">تجاهل الثغرات الأمنية المبلغ عنها</string>
 </resources>
