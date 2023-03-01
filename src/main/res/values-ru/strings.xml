@@ -310,4 +310,6 @@
     <string name="custom_download_directory">Пользовательская папка загрузки</string>
     <string name="post_notifications_permission_title">Разрешение на уведомления</string>
     <string name="post_notifications_permission_message">Начиная с Android 13 приложениям требуется это разрешение, чтобы показывать уведомления.</string>
+    <string name="ignore_vulns">Игнорировать известные уязвимости безопасности</string>
+    <string name="downloads">Загрузки</string>
 </resources>
