@@ -307,4 +307,6 @@
     <string name="enable_download_directory">使用自定义下载文件夹</string>
     <string name="enable_download_directory_summary">允许将下载的 APK 保存在选定的文件夹中。</string>
     <string name="custom_download_directory">自定义下载文件夹</string>
+    <string name="downloads">下载</string>
+    <string name="ignore_vulns">忽略报告的安全漏洞</string>
 </resources>
