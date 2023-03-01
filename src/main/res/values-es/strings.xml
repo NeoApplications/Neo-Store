@@ -284,7 +284,7 @@
     <string name="permission_other">Otros permisos</string>
     <string name="permission_internet">Internet</string>
     <string name="trackers_identification_description">Los rastreadores permiten a las aplicaciones utilizar los servicios de inicio de sesión de determinados servicios, como Facebook.</string>
-    <string name="trackers_profiling_description">Rastreadores que intentan crear un perfil de usted, basándose en los datos que agregan.</string>
+    <string name="trackers_profiling_description">Rastreadores que intentan crear un perfil tuyo, basándose en los datos que agregan.</string>
     <string name="source_proprietary_description">El código fuente de la aplicación no es de acceso público.</string>
     <string name="trackers_note_3">Tiene un par de rastreadores</string>
     <string name="source_copyright_description">La aplicación depende de contenidos protegidos por derechos de autor o se conecta a redes propietarias.</string>
@@ -303,5 +303,10 @@
     <string name="allowed_anti_features">Anticaracterísticas permitidas</string>
     <string name="show_trackers">Mostrar rastreadores</string>
     <string name="show_trackers_description">Obtén y muestra los rastreadores de las aplicaciones desde Exodus Privacy.</string>
-    <string name="no_trackers_data_available">¡No hay datos disponibles sobre los rastreadores (todavía)!</string>
+    <string name="no_trackers_data_available">No se dispone de datos sobre los rastreadores (todavía).</string>
+    <string name="enable_download_directory">Utilizar un directorio de descarga personalizado</string>
+    <string name="enable_download_directory_summary">Permite mantener los APKs descargados en un directorio específico.</string>
+    <string name="custom_download_directory">Directorio de descarga personalizado</string>
+    <string name="post_notifications_permission_title">Permiso para enviar notificaciones</string>
+    <string name="post_notifications_permission_message">A partir de Android 13 las aplicaciones requieren este permiso para poder publicar notificaciones.</string>
 </resources>
