@@ -54,6 +54,7 @@ import com.machiav3lli.fdroid.TABLE_REPOSITORY_NAME
 import com.machiav3lli.fdroid.database.QueryBuilder
 import com.machiav3lli.fdroid.database.entity.CategoryTemp
 import com.machiav3lli.fdroid.database.entity.Extras
+import com.machiav3lli.fdroid.database.entity.IconDetails
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.ProductTemp
 import com.machiav3lli.fdroid.database.entity.asProductTemp
@@ -79,6 +80,14 @@ interface ProductDao : BaseDao<Product> {
 
     @Query("SELECT * FROM product WHERE packageName = :packageName")
     fun getFlow(packageName: String): Flow<List<Product?>>
+
+
+    @get:Query("SELECT packageName, icon, metadataIcon FROM product GROUP BY packageName HAVING 1")
+    val iconDetails: List<IconDetails>
+
+
+    @get:Query("SELECT packageName, icon, metadataIcon FROM product GROUP BY packageName HAVING 1")
+    val iconDetailsFlow: Flow<List<IconDetails>>
 
     @Query("DELETE FROM product WHERE repositoryId = :id")
     fun deleteById(id: Long): Int
