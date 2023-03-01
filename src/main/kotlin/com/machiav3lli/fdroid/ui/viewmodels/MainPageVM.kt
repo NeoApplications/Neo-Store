@@ -135,6 +135,20 @@ open class MainPageVM(
 
     val downloadsMap = mutableStateMapOf<String, Pair<ProductItem, DownloadService.State>>()
 
+    val iconDetails = db.productDao.iconDetailsFlow.mapLatest {
+        it.associateBy { it.packageName }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = emptyMap(),
+    )
+
+    val downloaded = db.downloadedDao.allFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = emptyList(),
+    )
+
     fun setFavorite(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
             saveFavorite(packageName, setBoolean)
