@@ -307,4 +307,6 @@
     <string name="enable_download_directory">Gunakan folder unduhan khusus</string>
     <string name="enable_download_directory_summary">Memperbolehkan menjaga APK terunduh di folder yang dipilih.</string>
     <string name="custom_download_directory">Folder unduhan khusus</string>
+    <string name="ignore_vulns">Abaikan kerentanan keamanan yang dilaporkan</string>
+    <string name="downloads">Unduhan</string>
 </resources>
