@@ -46,6 +46,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.io.File
 import java.security.MessageDigest
 import kotlin.math.roundToInt
@@ -61,37 +65,83 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
 
     private val scope = CoroutineScope(Dispatchers.Default)
 
-    sealed class State(val packageName: String, val name: String, val version: String) {
-        class Pending(packageName: String, name: String, version: String) :
-            State(packageName, name, version)
+    @Serializable
+    sealed class State {
+        abstract val packageName: String
+        abstract val name: String
+        abstract val version: String
+        abstract val cacheFileName: String
+        abstract val repoId: Long
 
-        class Connecting(packageName: String, name: String, version: String) :
-            State(packageName, name, version)
+        @Serializable
+        class Pending(
+            override val packageName: String,
+            override val name: String,
+            override val version: String,
+            override val cacheFileName: String,
+            override val repoId: Long,
+        ) : State()
 
+        @Serializable
+        class Connecting(
+            override val packageName: String,
+            override val name: String,
+            override val version: String,
+            override val cacheFileName: String,
+            override val repoId: Long,
+        ) : State()
+
+        @Serializable
         class Downloading(
-            packageName: String,
-            name: String,
-            version: String,
+            override val packageName: String,
+            override val name: String,
+            override val version: String,
+            override val cacheFileName: String,
+            override val repoId: Long,
             val read: Long,
             val total: Long?,
-        ) : State(packageName, name, version)
+        ) : State()
 
+        @Serializable
         class Success(
-            packageName: String, name: String, val release: Release,
-        ) : State(packageName, name, release.version)
+            override val packageName: String,
+            override val name: String,
+            override val version: String,
+            override val cacheFileName: String,
+            override val repoId: Long,
+            val release: Release,
+        ) : State()
 
-        class Error(packageName: String, name: String, version: String) :
-            State(packageName, name, version)
+        @Serializable
+        class Error(
+            override val packageName: String,
+            override val name: String,
+            override val version: String,
+            override val cacheFileName: String,
+            override val repoId: Long,
+        ) : State()
 
-        class Cancel(packageName: String, name: String, version: String) :
-            State(packageName, name, version)
+        @Serializable
+        class Cancel(
+            override val packageName: String,
+            override val name: String,
+            override val version: String,
+            override val cacheFileName: String,
+            override val repoId: Long,
+        ) : State()
+
+        fun toJSON() = Json.encodeToString(this)
+
+        companion object {
+            fun fromJson(json: String) = Json.decodeFromString<State>(json)
+        }
     }
 
     private val mutableStateSubject = MutableSharedFlow<State>()
 
     class Task(
         val packageName: String, val name: String, val release: Release,
-        val url: String, val authentication: String,
+        val url: String, val repoId: Long, val authentication: String,
     ) {
         val notificationTag: String
             get() = "download-$packageName"
@@ -120,9 +170,11 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                 name,
                 release,
                 release.getDownloadUrl(repository),
-                repository.authentication
+                repository.id,
+                repository.authentication,
             )
             if (Cache.getReleaseFile(this@DownloadService, release.cacheFileName).exists()) {
+                Log.i(this::javaClass.name, "Running publish success from fun enqueue")
                 publishSuccess(task)
             } else {
                 cancelTasks(packageName)
@@ -137,7 +189,9 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                             State.Pending(
                                 packageName,
                                 name,
-                                release.version
+                                release.version,
+                                task.release.cacheFileName,
+                                task.repoId,
                             )
                         )
                     }
@@ -168,6 +222,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
         }
 
         downloadState.onEach { publishForegroundState(false, it) }.launchIn(scope)
+        mutableStateSubject.onEach { (application as MainApplication).db.downloadedDao.insertReplace() }
     }
 
     override fun onDestroy() {
@@ -186,14 +241,16 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
     }
 
     private fun cancelTasks(packageName: String?) {
-        tasks.removeAll {
-            (packageName == null || it.packageName == packageName) && run {
+        tasks.removeAll { task ->
+            (packageName == null || task.packageName == packageName) && run {
                 scope.launch {
                     mutableStateSubject.emit(
                         State.Cancel(
-                            it.packageName,
-                            it.name,
-                            "–"
+                            task.packageName,
+                            task.name,
+                            task.release.version,
+                            task.release.cacheFileName,
+                            task.repoId,
                         )
                     )
                 }
@@ -203,19 +260,21 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
     }
 
     private fun cancelCurrentTask(packageName: String?) {
-        currentTask?.let {
-            if (packageName == null || it.task.packageName == packageName) {
+        currentTask?.let { current ->
+            if (packageName == null || current.task.packageName == packageName) {
                 currentTask = null
                 scope.launch {
                     mutableStateSubject.emit(
                         State.Cancel(
-                            it.task.packageName,
-                            it.task.name,
-                            "–"
+                            current.task.packageName,
+                            current.task.name,
+                            current.task.release.version,
+                            current.task.release.cacheFileName,
+                            current.task.repoId,
                         )
                     )
                 }
-                it.disposable.dispose()
+                current.disposable.dispose()
             }
         }
     }
@@ -230,7 +289,16 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
 
     private fun publishSuccess(task: Task) {
         scope.launch {
-            mutableStateSubject.emit(State.Success(task.packageName, task.name, task.release))
+            mutableStateSubject.emit(
+                State.Success(
+                    task.packageName,
+                    task.name,
+                    task.release.version,
+                    task.release.cacheFileName,
+                    task.repoId,
+                    task.release
+                )
+            )
         }
         if (isDownloadExternal) {
             getDownloadFolder()?.let { downloadFolder ->
@@ -374,7 +442,9 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                 val initialState = State.Connecting(
                     task.packageName,
                     task.name,
-                    task.release.version
+                    task.release.version,
+                    task.release.cacheFileName,
+                    task.repoId,
                 )
                 stateNotificationBuilder.setWhen(System.currentTimeMillis())
                 publishForegroundState(true, initialState)
@@ -396,8 +466,10 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                                         task.packageName,
                                         task.name,
                                         task.release.version,
+                                        task.release.cacheFileName,
+                                        task.repoId,
                                         read,
-                                        total
+                                        total,
                                     )
                                 )
                             }
@@ -418,6 +490,8 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                                         task.packageName,
                                         task.name,
                                         task.release.version,
+                                        task.release.cacheFileName,
+                                        task.repoId,
                                     )
                                 )
                             }
@@ -427,6 +501,10 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                                 val releaseFile =
                                     Cache.getReleaseFile(this, task.release.cacheFileName)
                                 partialReleaseFile.renameTo(releaseFile)
+                                Log.i(
+                                    this::javaClass.name,
+                                    "Running publish success from fun handleDownload"
+                                )
                                 publishSuccess(task)
                             } else {
                                 partialReleaseFile.delete()
@@ -437,6 +515,8 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                                             task.packageName,
                                             task.name,
                                             task.release.version,
+                                            task.release.cacheFileName,
+                                            task.repoId,
                                         )
                                     )
                                 }
