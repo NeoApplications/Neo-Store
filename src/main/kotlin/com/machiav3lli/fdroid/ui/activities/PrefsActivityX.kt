@@ -137,6 +137,7 @@ class PrefsActivityX : AppCompatActivity() {
         syncConnection.bind(this)
     }
 
+    @Deprecated("Deprecated in Java", ReplaceWith("finishAfterTransition()"))
     override fun onBackPressed() {
         finishAfterTransition()
     }

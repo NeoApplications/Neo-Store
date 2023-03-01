@@ -140,8 +140,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                 state = listState,
             ) {
                 items(
-                    items = filteredProducts?.map { it.toItem(installedList?.get(it.packageName)) }
-                        ?: emptyList()
+                    items = filteredProducts?.map { it.toItem() } ?: emptyList(),
                 ) { item ->
                     ProductsListItem(
                         item = item,

@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.database.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.machiav3lli.fdroid.TABLE_EXTRAS_NAME

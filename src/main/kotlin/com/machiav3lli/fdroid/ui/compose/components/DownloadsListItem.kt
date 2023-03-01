@@ -60,14 +60,14 @@ fun DownloadsListItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         NetworkImage(
-            modifier = Modifier.size(64.dp),
+            modifier = Modifier.size(48.dp),
             data = imageData
         )
 
         Column(
             modifier = Modifier
                 .weight(1f, true)
-                .height(64.dp),
+                .height(48.dp),
         ) {
             Row(
                 modifier = Modifier

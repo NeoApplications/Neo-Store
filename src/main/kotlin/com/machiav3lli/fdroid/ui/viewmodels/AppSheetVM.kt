@@ -163,12 +163,12 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
                 else actions += ActionState.Bookmark
             }
             val primaryAction = when {
-                canUpdate  -> ActionState.Update
-                canLaunch  -> ActionState.Launch
+                canUpdate -> ActionState.Update
+                canLaunch -> ActionState.Launch
                 canInstall -> ActionState.Install
-                canShare   -> ActionState.Share
+                canShare -> ActionState.Share
                 bookmarked -> ActionState.Bookmarked
-                else       -> ActionState.Bookmark
+                else -> ActionState.Bookmark
             }
 
             withContext(Dispatchers.Main) {
