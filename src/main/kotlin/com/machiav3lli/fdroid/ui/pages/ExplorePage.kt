@@ -149,7 +149,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                         isFavorite = favorites.contains(item.packageName),
                         onUserClick = {
                             mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
-                            mainActivityX.navigateProduct(it.packageName, item.developer)
+                            mainActivityX.navigateProduct(it.packageName)
                         },
                         onFavouriteClick = {
                             viewModel.setFavorite(

@@ -105,7 +105,7 @@ fun LatestPage(viewModel: LatestVM) {
                     productsList = secondaryList,
                     repositories = repositoriesMap
                 ) { item ->
-                    mainActivityX.navigateProduct(item.packageName, item.developer)
+                    mainActivityX.navigateProduct(item.packageName)
                 }
             }
         }
@@ -133,7 +133,7 @@ fun LatestPage(viewModel: LatestVM) {
                 isFavorite = favorites.contains(item.packageName),
                 onUserClick = {
                     mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
-                    mainActivityX.navigateProduct(it.packageName, item.developer)
+                    mainActivityX.navigateProduct(it.packageName)
                 },
                 onFavouriteClick = {
                     viewModel.setFavorite(

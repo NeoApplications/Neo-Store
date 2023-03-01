@@ -135,18 +135,16 @@ import kotlin.math.floor
 class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     companion object {
         private const val EXTRA_PACKAGE_NAME = "packageName"
-        private const val EXTRA_DEVELOPER = "developer"
     }
 
-    constructor(packageName: String, developer: String) : this() {
+    constructor(packageName: String) : this() {
         arguments = Bundle().apply {
             putString(EXTRA_PACKAGE_NAME, packageName)
-            putString(EXTRA_DEVELOPER, developer)
         }
     }
 
     val viewModel: AppSheetVM by viewModels {
-        AppSheetVM.Factory(mainActivityX.db, packageName, developer)
+        AppSheetVM.Factory(mainActivityX.db, packageName)
     }
     var showPrivacyPage by mutableStateOf(false)
 
@@ -154,8 +152,6 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         get() = requireActivity() as MainActivityX
     val packageName: String
         get() = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
-    val developer: String
-        get() = requireArguments().getString(EXTRA_DEVELOPER)!!
 
     private val downloadConnection = Connection(DownloadService::class.java, onBind = { _, binder ->
         CoroutineScope(Dispatchers.Default).launch {
@@ -682,10 +678,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                                             ?: emptyMap(),
                                         rowsNumber = 1,
                                     ) { item ->
-                                        mainActivityX.navigateProduct(
-                                            item.packageName,
-                                            item.developer
-                                        )
+                                        mainActivityX.navigateProduct(item.packageName)
                                     }
                                 }
                             }
