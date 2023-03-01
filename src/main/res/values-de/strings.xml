@@ -274,4 +274,9 @@
     <string name="action_open_tc">Öffne TrackerControl</string>
     <string name="action_install_tc">Installiere TrackerControl</string>
     <string name="action_open_website">Besuche die Webseite</string>
+    <string name="action_open_code">Siehe Code</string>
+    <string name="trackers_note_0">Ist es eine App oder Spyware\?</string>
+    <string name="trackers_note_2">Warum werden diese Tracker benötigt\?</string>
+    <string name="trackers_note_4">Wenige bis garkeine Tracker</string>
+    <string name="trackers_note_3">Hat ein paar tracker</string>
 </resources>
