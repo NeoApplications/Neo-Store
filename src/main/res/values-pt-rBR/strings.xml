@@ -291,7 +291,7 @@
     <string name="permission_physical_data">Permissões para dados físicos</string>
     <string name="action_install_tc">Instalar TrackerControl</string>
     <string name="app_installed">Instalado</string>
-    <string name="no_trackers_data_available">Nenhum dado sobre rastreadores está disponível (ainda)!</string>
+    <string name="no_trackers_data_available">Nenhum dado sobre rastreadores disponível (ainda).</string>
     <string name="vulnerabilities">Vulnerabilidades.</string>
     <string name="vulnerabilities_installed_apps">Estes aplicativos instalados têm vulnerabilidades conhecidas!</string>
     <string name="no_vulnerabilities_installed_apps">Nenhum aplicativo instalado tem vulnerabilidades conhecidas.</string>
@@ -305,4 +305,10 @@
     <string name="only_on_battery">Apenas quando carregando</string>
     <string name="allowed_anti_features">Anti-features permitidas</string>
     <string name="custom_download_directory">Pasta de download personalizada</string>
+    <string name="enable_download_directory_summary">Permite manter os APKs baixados em uma pasta escolhida.</string>
+    <string name="post_notifications_permission_title">Permissão para postar notificações</string>
+    <string name="post_notifications_permission_message">A partir do Android 13, os apps precisam desta permissão para poder postar notificações.</string>
+    <string name="enable_download_directory">Usar pasta de download personalizada</string>
+    <string name="downloads">Downloads</string>
+    <string name="ignore_vulns">Ignorar vulnerabilidades de segurança reportadas</string>
 </resources>
