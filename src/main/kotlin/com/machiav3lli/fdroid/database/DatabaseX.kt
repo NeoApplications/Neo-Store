@@ -10,6 +10,7 @@ import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.machiav3lli.fdroid.database.dao.CategoryDao
 import com.machiav3lli.fdroid.database.dao.CategoryTempDao
+import com.machiav3lli.fdroid.database.dao.DownloadedDao
 import com.machiav3lli.fdroid.database.dao.ExodusInfoDao
 import com.machiav3lli.fdroid.database.dao.ExtrasDao
 import com.machiav3lli.fdroid.database.dao.InstalledDao
@@ -20,6 +21,7 @@ import com.machiav3lli.fdroid.database.dao.RepositoryDao
 import com.machiav3lli.fdroid.database.dao.TrackerDao
 import com.machiav3lli.fdroid.database.entity.Category
 import com.machiav3lli.fdroid.database.entity.CategoryTemp
+import com.machiav3lli.fdroid.database.entity.Downloaded
 import com.machiav3lli.fdroid.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Installed
@@ -51,8 +53,9 @@ import kotlinx.coroutines.launch
         Extras::class,
         ExodusInfo::class,
         Tracker::class,
+        Downloaded::class,
     ],
-    version = 15,
+    version = 16,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -89,6 +92,10 @@ import kotlinx.coroutines.launch
             to = 15,
             spec = DatabaseX.Companion.MigrationSpec14to15::class
         ),
+        AutoMigration(
+            from = 15,
+            to = 16,
+        ),
     ]
 )
 @TypeConverters(Converters::class)
@@ -103,7 +110,7 @@ abstract class DatabaseX : RoomDatabase() {
     abstract val extrasDao: ExtrasDao
     abstract val exodusInfoDao: ExodusInfoDao
     abstract val trackerDao: TrackerDao
-    // TODO downloaded releases class/dao
+    abstract val downloadedDao: DownloadedDao
 
     companion object {
         @Volatile
