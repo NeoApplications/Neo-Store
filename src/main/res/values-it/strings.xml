@@ -309,4 +309,6 @@
     <string name="post_notifications_permission_message">A partire da Android 13 le applicazioni richiedono questa autorizzazione per poter inviare notifiche.</string>
     <string name="enable_download_directory">Usa cartella di download personalizzata</string>
     <string name="enable_download_directory_summary">Consente di mantenere gli APK scaricati in una cartella scelta.</string>
+    <string name="downloads">Download</string>
+    <string name="ignore_vulns">Ignora vulnerabilità di sicurezza segnalate</string>
 </resources>
