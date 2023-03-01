@@ -21,6 +21,7 @@ import com.machiav3lli.fdroid.NOTIFICATION_ID_UPDATES
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
+import com.machiav3lli.fdroid.database.entity.Downloaded
 import com.machiav3lli.fdroid.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Repository
@@ -107,7 +108,18 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         Connection(DownloadService::class.java, onBind = { _, dBinder ->
             CoroutineScope(Dispatchers.Default).launch {
                 dBinder.stateSubject
-                    .collectLatest { binder.updateDownloadState(it) }
+                    .collectLatest {
+                        binder.updateDownloadState(it)
+                        db.downloadedDao.insertReplace(
+                            Downloaded(
+                                packageName = it.packageName,
+                                version = it.version,
+                                cacheFileName = it.cacheFileName,
+                                changed = System.currentTimeMillis(),
+                                state = it,
+                            )
+                        )
+                    }
             }
         }, onUnbind = { _, _ ->
             if (downloadServiceMutex.isLocked) downloadServiceMutex.unlock()
