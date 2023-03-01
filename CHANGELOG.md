@@ -1,10 +1,39 @@
 CHANGELOG
 =========
 
+0.9.15 (01.03.2023) 40+ Commits +30 Translations
+------------------
+
+### Function
+
+- Add: KDE (Stable), C:Geo, Stack Wallet & PeterCxy's Shelter repos
+- Add: Option for external download folder
+- Fix: Background (silent) installer
+- Fix: Cache clean up time in days not hours
+- Update: Navigating to AppSheet without input of dev name
+- Update: Simplify apps list in ExplorePage
+
+### UI
+
+- Fix: Expandable layout's padding
+- Update: Move favorite button beside main action
+- Update: BottomNav, SideNav layouts
+- Update: Smaller layout icons
+
+### UX
+
+- Add: Permissions page
+- Add: Downloads page (switch) to InstalledPage
+- Add: Option to ignore notification on security vulnerabilities
+- Update: Scroll to top when changing category in ExplorePage
+- Update: Increase showing new & updated apps limit
+- Update: Improve preference dialog value setting
+
 0.9.14 (07.02.2023) 120+ Commits +80 Translations
 ------------------
 
 ### Function
+
 - Fix: Not detecting root permission
 - Fix: Unbinding DownloadService crash
 - Fix: Crash on rxjava's throwable nullability
@@ -15,10 +44,12 @@ CHANGELOG
 - Remove: Unused Gradle options
 
 ### UI
+
 - Update: Revamp InstalledPage
 - Update: Revamp BottomNavBar button
 
 ### UX
+
 - Add: Option to disable getting/showing trackers
 - Add: FluffyChat nightly, Anonymous Messenger and BeoCode to default repos
 - Add: Tooltip when trackers data isn't available
@@ -31,6 +62,7 @@ CHANGELOG
 ------------------
 
 ### Function
+
 - Add: Repository's authentication pair setter/getter
 - Add: Job IdRange for Sync jobs
 - Add: DownloadState to SyncService
@@ -53,6 +85,7 @@ CHANGELOG
 - Remove: Unused Dependencies
 
 ### UI
+
 - Add: Cleaner splash screen icon
 - Add: Filter Download state changes percentually
 - Add: Warning card to AppSheet on known vulnerability
@@ -62,6 +95,7 @@ CHANGELOG
 - Update: Snackbar stays shorter
 
 ### UX
+
 - Add: Auto-sync option on charging
 - Add: Active downloads list to Installed
 - Add: Description text to ActionButtons (for screen readers, needs testing)
@@ -77,6 +111,7 @@ CHANGELOG
 ------------------
 
 ### Function
+
 - Add: Notifications permission (for A13)
 - Add: Ask for PostNotifications permission on start
 - Fix: Improve search performance (credits @pedrox-hs)
@@ -88,11 +123,13 @@ CHANGELOG
 - Update: TargetSDK 33
 
 ### UI
+
 - Fix: Location permission group icon
 - Update: ProductCard layout
 - Update: Horizontal Product recycler layouts
 
 ### UX
+
 - Add: Categories SideNavBar to explorer
 - Fix: Category SideBar not updating according to SortFilterSheet
 - Update: Change category filter to single selection
@@ -100,18 +137,23 @@ CHANGELOG
 
 0.9.11 (03.12.2022) 70+ Commits +15 Translations
 ------------------
+
 ### Function
+
 - Fix: Memory leak in Main & Prefs
 
 ### UI
+
 - Add: The all new Privacy Visualization (Neo Meter Icons)
 - Add: The all new Privacy Panel
 
 ### UX
+
 - Fix: Opening the same RepoSheet repeatedly
 
 0.9.10 (22.11.2022) 230+ Commits
 ------------------
+
 - Add: App icon based on system theme
 - Add: Installer type preference (including Legacy mode for dumb MIUI)
 - Add: Specific screenshot placeholder
@@ -125,12 +167,14 @@ CHANGELOG
 
 0.9.9 (31.10.2022) 7 Commits
 ------------------
+
 - Add: Scan repo QrCode using BinaryEye (if installed)
 - Fix: Lock in Installed after launching from updates notification
 - Fix: Improve handling intent
 
 0.9.8 (27.10.2022) +60 Commits
 ------------------
+
 - Add: Support for fdroidrepo:// intents (simple addition of repositories)
 - Add: Support for market://search? intents (used by some launchers)
 - Add: Share option for IzzyOnDroid apps
@@ -148,6 +192,7 @@ CHANGELOG
 
 0.9.7 (11.10.2022) +50 Commits
 ------------------
+
 - Add: Other apps from the developer
 - Add: Scrolling TopBar
 - Add: Rest of the data from the table to query return
@@ -165,6 +210,7 @@ CHANGELOG
 
 0.9.6 (05.10.2022) +90 Commits
 ------------------
+
 - Add: Sort/Filter sheet
 - Add: Explicit favorites shortcut
 - Add: TargetSDK to info chips
@@ -179,6 +225,7 @@ CHANGELOG
 
 0.9.5 (19.09.2022) +120 Commits
 ------------------
+
 - Add: Useful links in Prefs
 - Update: Revamp AppSheet's Head & Header
 - Update: Repo item's text colors
@@ -191,6 +238,7 @@ CHANGELOG
 
 0.9.4 (18.08.2022)
 ------------------
+
 - Fix: Showing updates notification even when disabled
 - Add: Threema, Stable Calyx OS and Session to preset-repositories
 - Fix(try): Background installer
@@ -199,6 +247,7 @@ CHANGELOG
 
 0.9.3 (06.08.2022)
 ------------------
+
 - Add: Favorites category
 - Add: Option to set sync interval
 - Add: Supporting auto importing fdroidrepos: repo addresses from clipboard
@@ -211,6 +260,7 @@ CHANGELOG
 
 0.9.2 (28.07.2022)
 ------------------
+
 - Fix: Setting ignore updates doesn't hide from updates
 - Fix: Alphabetical sorting of Installed
 - Fix: Nested scrolling of AppSheet
@@ -220,6 +270,7 @@ CHANGELOG
 
 0.9.1 (10.07.2022)
 ------------------
+
 - Add: System dynamic theme (aka. Material You)
 - Add: 7 new preset repositories
 - Add: Architecture label on releases for a specific architecture
@@ -232,6 +283,7 @@ CHANGELOG
 
 0.9.0 (07.07.2022)
 ------------------
+
 - Renamed package to com.machaiv3lli.fdroid
 - Fully new UI/UX with Material Design 3
 - Add: Update all
@@ -256,6 +308,7 @@ CHANGELOG
 
 0.4.3 (20.12.2021)
 ------------------
+
 - Fix: Screenshot placeholder icon
 - Fix: Soft crash when starting AppDetails
 - Fix: Run only one instance of root installer
@@ -263,6 +316,7 @@ CHANGELOG
 
 0.4.2 (15.12.2021)
 ------------------
+
 - Update: More of Material Design 3
 - Clean up: Huge parts of the code base
 - Update: Optimize installer
@@ -274,14 +328,18 @@ CHANGELOG
 - Fix: Screenshots size before loading
 - Fix: Action Text Color visibility
 - Fix: App version text being colored when not planed
-- Update translations: Hindi, Hungarian, Finnish, Norwegian, Chinese(Simplified), Turkish, Russian, Portoguese(Brazil), German, French, Italian, Arabic (Saudi Arabia), Spanish, Sinhala, Polish, Dutch, Greek
+- Update translations: Hindi, Hungarian, Finnish, Norwegian, Chinese(Simplified), Turkish, Russian,
+  Portoguese(Brazil), German, French, Italian, Arabic (Saudi Arabia), Spanish, Sinhala, Polish,
+  Dutch, Greek
 
 0.4.1 (17.11.2021)
 ------------------
+
 - Fix Normal Install Crash
 
 0.4.0 (17.11.2021)
 ------------------
+
 - Add: Language preference
 - Update: horizontal scrolling screenshots
 - Fix: Background root installer
@@ -290,6 +348,7 @@ CHANGELOG
 
 0.3.6 (28.10.2021)
 ------------------
+
 - Add Icon for opening Details
 - Top App Bar Differences made more prominent
 - Root Permission will only be asked when used

@@ -1,0 +1,8 @@
+Add: KDE (Stable), C:Geo, Stack Wallet & PeterCxy's Shelter repos
+Add: Option for external download folder
+Add: Permissions page
+Add: Downloads page (switch) to InstalledPage
+Add: Option to ignore notification on security vulnerabilities
+Fix: Background (silent) installer
+Update: Improve preference dialog value setting
++ more than 40 commits & 30 translation contributions
