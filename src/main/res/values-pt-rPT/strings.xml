@@ -303,5 +303,12 @@
     <string name="allowed_anti_features">Anti-funções permitidas</string>
     <string name="show_trackers">Mostrar rastreadores</string>
     <string name="show_trackers_description">Obtenha e mostre os rastreadores de aplicativos da Exodus Privacy.</string>
-    <string name="no_trackers_data_available">Nenhum dado sobre rastreadores está disponível (ainda)!</string>
+    <string name="no_trackers_data_available">Não há dados disponíveis sobre rastreadores (ainda).</string>
+    <string name="post_notifications_permission_title">Permissão para enviar notificações</string>
+    <string name="post_notifications_permission_message">Iniciar aplicativos do Android 13 requer essa permissão para poder postar notificações.</string>
+    <string name="enable_download_directory">Usar pasta de download personalizada</string>
+    <string name="enable_download_directory_summary">Permite manter os APKs descarregados numa pasta escolhida.</string>
+    <string name="custom_download_directory">Pasta de download personalizada</string>
+    <string name="ignore_vulns">Ignorar as vulnerabilidades de segurança relatadas</string>
+    <string name="downloads">Transferências</string>
 </resources>
