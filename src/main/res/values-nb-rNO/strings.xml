@@ -308,4 +308,6 @@
     <string name="trackers_note_0">Er dette et program, eller spionvare\?</string>
     <string name="trackers_note_1">Inkluderer mange sporere for sensitive data</string>
     <string name="trackers_note_4">Minimalt antall eller ingen sporere</string>
+    <string name="ignore_vulns">Ignorer rapporterte sikkerhetssårbarheter</string>
+    <string name="downloads">Nedlastinger</string>
 </resources>
