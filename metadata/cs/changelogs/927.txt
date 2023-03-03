@@ -1,0 +1,8 @@
+Přidáno: repozitáře KDE (Stable), C:Geo, Stack Wallet & PeterCxy's Shelter
+Přidáno: Možnost externí složky pro stahování
+Přidáno: Stránka s oprávněními
+Přidáno: Stránka stahování (přepínač) na stránce nainstalovaných
+Přidáno: Možnost ignorovat oznámení o bezpečnostních chybách
+Oprava: Instalační program na pozadí (tichý)
+Aktualizace: Vylepšení nastavení hodnot dialogového okna předvoleb
++ více než 40 revizí a 30 příspěvků k překladům
