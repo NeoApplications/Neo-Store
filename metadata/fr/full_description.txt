@@ -1,32 +1,11 @@
-Un client F-Droid Material Design rapide
+Un client F-Droid rapide et riche en fonctionnalités :
 
-Fonctionnalités :
-
-* Style F-Droid Material Design 3
-* Pas de cartes ou d'animations inappropriées
+* UX axé sur les possibilités offertes aux utilisateurs
+* Pas de fiches ou d'animations inappropriées
 * Synchronisation rapide des dépôts
 * Composants Android standard et dépendances minimales
 
-Disponible en :
+Une adaptation/modification directe de Foxy-Droid
 
-- Portugais Brésilien
-- Anglais
-- Finnois
-- Français
-- Allemand
-- Grec
-- Hongrois
-- Italien
-- Norvégien Bokmål
-- Arabe péninsulaire
-- Polonais
-- Russe
-- Chinois Simplifié
-- Espagnol
-- Turc
-- Ukrainien
-
-Ceci est un adaptation/modification directe de Foxy-Droid
-
-Logiciel libre sous copyleft, sous licence GPLv3+. \
-Utilisez, étudiez, modifiez et partagez avec tout le monde.
+Logiciel libre copylefté, sous licence GPLv3+. \
+Utilisez, étudiez, modifiez et partagez ; avec tous.

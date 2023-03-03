@@ -1,0 +1,8 @@
+Ajout : repos KDE (Stable), C:Geo, Stack Wallet et PeterCxy's Shelter
+Ajout : Option pour un dossier de téléchargement externe
+Ajout : Page de permissions
+Ajout : Page des téléchargements (passage) à InstalledPage
+Ajouté : Option pour ignorer les notifications sur les failles de sécurité
+Correction : Installateur (silencieux) en arrière-plan
+Mise à jour : Amélioration du réglage des valeurs de la boîte de dialogue des préférences
++ plus de 40 commits et 30 contributions à la traduction

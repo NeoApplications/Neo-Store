@@ -1,0 +1,7 @@
+Correction : Non détection de la permission root
+Correction : Plantages liés au service Sync- & Download
+Mise à jour : Refonte de la page "Installed"
+Ajout : Option pour désactiver la récupération et l'affichage des trackers
+Ajout : FluffyChat nightly, Anonymous Messenger et BeoCode aux dépôts par défaut
+Correction : Non mise à jour de la liste des applications installées lors de la (dés)installation d'applications
++ plus de 80 traductions et autres contributions
