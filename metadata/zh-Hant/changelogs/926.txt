@@ -1,0 +1,7 @@
+修復：未檢測到 root 權限
+修復：與同步和下載服務相關的崩潰
+更新：改造 InstalledPage
+添加：禁用獲取/顯示跟踪器的選項
+添加：FluffyChat nightly、Anonymous Messenger 和 BeoCode 到默認存儲庫
+修復：在（卸載）安裝應用程序時不更新已安裝的應用程序列表
++ 超過 80 種翻譯和其他貢獻
