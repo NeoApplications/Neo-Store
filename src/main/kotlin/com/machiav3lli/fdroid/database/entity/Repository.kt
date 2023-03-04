@@ -433,7 +433,7 @@ data class Repository(
         private val PETER_CXY = defaultRepository(
             "https://fdroid.typeblog.net/",
             "PeterCxy's Shelter repo",
-            "An open-source, non-custodial, privacy-preserving cryptocurrency wallet.",
+            "Shelter is a Free and Open-Source (FOSS) app that leverages the \"Work Profile\" feature of Android to provide an isolated space that you can install or clone apps into.",
             21,
             false,
             "1A7E446C491C80BC2F83844A26387887990F97F2F379AE7B109679FEAE3DBC8C",
