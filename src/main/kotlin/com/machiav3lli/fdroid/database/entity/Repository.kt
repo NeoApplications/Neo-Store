@@ -439,6 +439,15 @@ data class Repository(
             "1A7E446C491C80BC2F83844A26387887990F97F2F379AE7B109679FEAE3DBC8C",
             ""
         )
+        private val JAK_LINUX = defaultRepository(
+            "https://jak-linux.org/fdroid/repo",
+            "Julian Andres Klode's repo",
+            "The official repository for DNS66.",
+            21,
+            false,
+            "C00A81E44BFF606530C4C7A2137BAC5F1C03D2FDEF6DB3B84C71386EA9BFD225",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, F_DROID_ARCHIVE,
@@ -458,6 +467,7 @@ data class Repository(
             CRYPTOMATOR, TWIN_HELIX,
             C_GEO, C_GEO_NIGHTLY, PETER_CXY,
             STACK_WALLET,
+            JAK_LINUX,
         )
 
         val addedReposV9 = listOf(
