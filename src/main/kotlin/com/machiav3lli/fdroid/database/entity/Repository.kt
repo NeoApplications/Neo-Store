@@ -413,7 +413,7 @@ data class Repository(
             ""
         )
         private val C_GEO = defaultRepository(
-            "https://fdroid.stackwallet.com",
+            "https://fdroid.cgeo.org",
             "c:geo",
             "An open-source, full-featured, always ready-to-go Geocaching application. This is the stable channel.",
             21,
@@ -422,7 +422,7 @@ data class Repository(
             ""
         )
         private val C_GEO_NIGHTLY = defaultRepository(
-            "https://fdroid.stackwallet.com",
+            "https://fdroid.cgeo.org/nightly",
             "c:geo nightly",
             "An open-source, full-featured, always ready-to-go Geocaching application. This is the nightly channel.",
             21,
