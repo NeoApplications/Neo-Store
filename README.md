@@ -41,7 +41,7 @@ You can join either our [Telegram](https://t.me/neo_android_store) or [Matrix](h
 
 [<img src="https://docs.cloudron.io/img/element-logo.png" alt="Join Matrix Channel" width="11%" align="center" />](https://matrix.to/#/#neo-store:matrix.org)
 
-## Translations :left_speech_bubble:
+## Translations :left_speech_bubble: [<img align="right" src="https://hosted.weblate.org/widgets/neo-store/-/287x66-white.png" alt="Übersetzungsstatus" />](https://hosted.weblate.org/engage/neo-store/?utm_source=widget)
 
 Contribute your translations to Neo Store on [Hosted Weblate](https://hosted.weblate.org/engage/neo-store/). <br> Adding new languages is always accepted and supported.
 
