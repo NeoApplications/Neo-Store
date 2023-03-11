@@ -1,0 +1,7 @@
+- Bagong UI/UX gamit ang Material Design 3
+- Bago: Butong pang-update sa lahat
+- Bago: Kagustuhan sa wika
+- Bago: Paborito (higit pang mga feature sa hinaharap)
+- Inayos: Awtomatikong pag-update sa listahan ng mga na-install at maa-update na app
+- Inayos: Pag-crash sa A12+ (i-disable ang optimisasyon sa baterya)
+- Inayos: Root installer
