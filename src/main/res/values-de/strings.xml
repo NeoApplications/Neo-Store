@@ -252,9 +252,9 @@
     <string name="trackers_location_description">Tracker, die sich auf die Verfolgung Ihres Standorts konzentrieren.</string>
     <string name="source_copyleft">Copyleft</string>
     <string name="source_copyleft_description">Die App besteht nur aus kostenlosen Inhalten.</string>
-    <string name="permission_identification_data">Berechtigungen für Identifikationsdaten</string>
+    <string name="permission_identification_data">Berechtigungen für Zugriff auf Identifikationsdaten</string>
     <string name="trackers">Tracker</string>
-    <string name="trackers_identification">Identifikations-Tracker</string>
+    <string name="trackers_identification">Identifikationstracker</string>
     <string name="trackers_identification_description">Mithilfe von Trackern können Anwendungen die Login-Funktion bestimmter Dienste, z. B. Facebook, nutzen.</string>
     <string name="trackers_analytics">Analyse Tracker</string>
     <string name="trackers_analytics_description">Tracker, die verwendet werden, um Statistiken über Ihre Nutzung von Apps zu sammeln, z. B. Tippen und Klicken.</string>
