@@ -257,7 +257,7 @@
     <string name="trackers_identification">Identifikationstracker</string>
     <string name="trackers_identification_description">Tracker erlauben Applikationen auf Login-Daten bestimmter Services zuzugreifen (z.B. Facebook)</string>
     <string name="trackers_analytics">Analyse Tracker</string>
-    <string name="trackers_analytics_description">Tracker, die verwendet werden, um Statistiken über Ihre Nutzung von Apps zu sammeln, z. B. Tippen und Klicken.</string>
+    <string name="trackers_analytics_description">Diese Tracker werden verwendet, um Statistiken über Ihre Verwendung von Apps zu erstellen, wie z.B. Klicks.</string>
     <string name="trackers_ads">Werbe Tracker</string>
     <string name="trackers_ads_description">Tracker, die verwendet werden, um Werbung anzuzeigen und Ihre Interaktion mit diesen zu verfolgen.</string>
     <string name="trackers_profiling">Profilbildungstracker</string>
