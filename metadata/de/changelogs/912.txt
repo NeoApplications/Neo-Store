@@ -2,5 +2,5 @@ Fix: Einstellung "Updates Ignorieren" wird nicht versteckt
 Fix: Alphabetische Sortierung von Installiertem
 Fix: Nested Scrolling des AppSheet
 Fix: Install Action wird angezeigt, während der Download läuft
-Fix: StatusBar Icons Sichtbarkeit im Dynamische-Farben Theme
+Fix: StatusBar Icons Sichtbarkeit in dynamischem Farben-Theme
 Update: Übersetzungen

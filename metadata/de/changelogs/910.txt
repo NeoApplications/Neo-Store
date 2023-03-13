@@ -1,5 +1,5 @@
-- Hinzugefügt: Dynamisches System Theme (aka Material You)
-- Hinzugefügt: 7 neue Voreinstellungen Repositories
+- Hinzugefügt: Dynamisches System-Theme (aka Material You)
+- Hinzugefügt: 7 neue Voreinstellungen für Repositories
 - Hinzugefügt: Architektur-Label bei Releases für spezifische Architekturen
 - Entfernt: UnifiedPush Repository (ist tot)
 - Fix: Nervige "0 Updates" Benachrichtigung

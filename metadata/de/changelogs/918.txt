@@ -3,5 +3,5 @@ Hinzugefügt: Unterstützung für market://search? intents
 Hinzugefügt: Teilenoption für IzzyOnDroid-Anwendungen
 Hinzugefügt: GitJournal & Revolt zu den voreingestellten Repos
 Aktualisiert: Überarbeitung der ReleaseItems
-Entfernt: Alefvanoon Voreinstellungs-Repo
+Entfernt: Alefvanoon Repo
 Für weitere Details siehe das vollständige Changelog…

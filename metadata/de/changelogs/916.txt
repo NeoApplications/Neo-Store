@@ -1,6 +1,6 @@
 Hinzugefügt: Sortier-/Filterfunktion
 Hinzugefügt: Explizite Favoriten-Verknüpfung
-Hinzugefügt: TargetSDK zu Info-Chips
+Hinzugefügt: Ziel-SDK zu Info-Chips
 Aktualisiert: Ersetzen der Material-Icons durch Phosphor
 Update: BottomNavBar, AppSheet's und EditRepoSheet's Layouts
 Fix: Anzeige der Update-Sekundäraktion während des Herunterladens

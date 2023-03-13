@@ -1,7 +1,7 @@
 - Komplett neue UX/UI mit MD3
 - Hinzugefügt: Update "All"-Button
-- Hinzugefügt: Sprachpräferenz
-- Hinzugefügt: Favorit (weitere Features später)
+- Hinzugefügt: Spracheinstellung
+- Hinzugefügt: Favoriten (weitere Features später)
 - Fix: Auto-Update der Installiert/Updates Listen
 - Fix: Crash auf A12+ (Batterie-Optimierung muss ausgeschaltet werden)
-- Fix: Root Installer
+- Fix: Root-Installer

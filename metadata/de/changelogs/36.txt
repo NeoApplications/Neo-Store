@@ -1,7 +1,7 @@
 - Icon für Detailreiter ergänzt
 - Top App Bar Unterschiede prominenter gestaltet
-- Root Rechte werden nur noch abgefragt, wenn genutzt
-- Switch Visibility fixes
+- Root-Rechte werden nur noch abgefragt, wenn genutzt
+- Korrekturen der Schaltersichtbarkeiten
 - Arabische Übersetzung hinzugefügt
-- Long press auf source Icon führt zu Kopieren des Links
+- Langer Druck auf Quelle-Icon führt zu Kopieren des Links
 - Toast durch Snackbar ersetzt
