@@ -1,6 +1,6 @@
 - Mehr Material Design 3
-- Fix: root & default Installer
+- Fix: Root- & Default-Installer
 - Fix: Gecachte Datei wird nach Deinstallation gelöscht
-- Fix: Crash wenn Download offline versucht wird
+- Fix: Crash, wenn Download offline versucht wird
 - Update: Übersetzungen für 17+ Sprachen
 - Viele kleine Fixes & Verbesserungen…

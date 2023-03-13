@@ -1,6 +1,6 @@
-- Update: Collapsing toolbar
+- Update: Einklappbare Toolbar
 - Update: Verbesserung der Installer (root & non-root)
-- Update: Neues App Icon (nochmal)
+- Update: Neues App-Icon (nochmal)
 - Update: Release Info-Block Design
 - Update: Umgang von fehlenden Namen und Icons von Autoren
 - Weitere Fixes, Tweaks und Clean-Ups

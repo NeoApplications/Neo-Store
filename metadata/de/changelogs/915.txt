@@ -1,7 +1,7 @@
-Aktualisieren: AppSheet's UI überarbeitet
+Update: AppSheet's UI überarbeitet
 Update: Navigation vollständig nach Compose migrieren
 Update: Einstellungen zu Compose migrieren
-Update: Erlaubt die Einstellung einer höheren Zahl für den Recycler von aktualisierten/neuen Apps und das Synchronisationsintervall
+Update: Erlaubt die Einstellung einer höheren Zahl für den Recycler von aktualisierten/neuen Apps und des Synchronisationsintervalls
 Hinzufügen: Nützliche Links in den Voreinstellungen
 Fix: ActionButtons Sichtbarkeit
 Fix: Repo-Beschreibung vor der ersten Synchronisation anzeigen

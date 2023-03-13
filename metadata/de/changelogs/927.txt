@@ -1,0 +1,8 @@
+Hinzugefügt: KDE (Stable), C:Geo, Stack Wallet & PeterCxy's Shelter Repos
+Hinzugefügt: Option für externen Downloadordner
+Hinzugefügt: Berechtigungen-Seite
+Hinzugefügt: Downloads-Seite zu InstalledPage-Schalter
+Hinzugefügt: Option um Ausblenden von Benachrichtigungen bezüglich Sicherheitproblemen
+Fix: Hintergrund (Silent)-Installer
+Update: Verbesserung des Einstellungen-Dialoges 
++ mehr als 40 Commits & 30 Übersetzungen

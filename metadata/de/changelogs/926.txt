@@ -1,0 +1,7 @@
+Fix: Root-Berechtigung wird nicht erkannt
+Fix: Sync- & Download-Service Abstürze
+Update: Überarbeitung Installed-Seite
+Hinzugefügt: Option um Tracker anzuzeigen
+Hinzugefügt: FluffyChat nightly, Anonymous Messenger and BeoCode zu den voreingestellten Repos
+Fix: Keine Aktualisierung der Installierten Apps in der Liste der (de)installierten Apps
++ mehr als 80 Beträge zu Übersetzungen und andere Beträge
