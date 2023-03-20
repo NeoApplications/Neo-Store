@@ -55,6 +55,7 @@ import com.machiav3lli.fdroid.database.QueryBuilder
 import com.machiav3lli.fdroid.database.entity.CategoryTemp
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.IconDetails
+import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.ProductTemp
 import com.machiav3lli.fdroid.database.entity.asProductTemp
@@ -91,6 +92,12 @@ interface ProductDao : BaseDao<Product> {
 
     @Query("DELETE FROM product WHERE repositoryId = :id")
     fun deleteById(id: Long): Int
+
+    @get:Query("SELECT DISTINCT licenses FROM product")
+    val allLicenses: List<Licenses>
+
+    @get:Query("SELECT DISTINCT licenses FROM product")
+    val allLicensesFlow: Flow<List<Licenses>>
 
     @RawQuery
     fun queryObject(query: SupportSQLiteQuery): List<Product>

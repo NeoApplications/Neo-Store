@@ -224,6 +224,9 @@ fun Product.asProductTemp(): ProductTemp = ProductTemp(
     whatsNew = whatsNew
 )
 
+data class Licenses(
+    val licenses: List<String>,
+)
 data class IconDetails(
     var packageName: String,
     var icon: String = "",
