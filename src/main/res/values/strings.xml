@@ -310,4 +310,13 @@
     <string name="custom_download_directory">Custom download folder</string>
     <string name="ignore_vulns">Ignore reported security vulnerabilities</string>
     <string name="downloads">Downloads</string>
+    <string name="ignore">Ignore</string>
+    <string name="warning_disable_battery_optimization">Starting Android 12, the app requires battery optimization to do background processes like syncing and downloading. If you ignore this permission you\'re left on your own and your crash reports will be ignored.</string>
+    <string name="warning_show_notification">Starting Android 13, the app requires this permission to be notify you on the different processes. If you ignore this permission, you won\'t get any notifications.</string>
+    <string name="disable_signature_check">Disable signature check</string>
+    <string name="disable_signature_check_summary">Don\'t check if the downloaded apk have the same signature as the installed app.</string>
+    <string name="keep_install_notification">Keep install notification</string>
+    <string name="keep_install_notification_summary">Keep the notification of successfully installing an app.</string>
+    <string name="allowed_licenses">Allowed licenses</string>
+    <string name="cancel_all">Cancel all</string>
 </resources>
