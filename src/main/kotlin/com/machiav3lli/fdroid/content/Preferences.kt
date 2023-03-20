@@ -315,7 +315,7 @@ object Preferences : OnSharedPreferenceChangeListener {
 
     sealed class AutoSync(override val valueString: String) : Enumeration<AutoSync> {
         override val values: List<AutoSync>
-            get() = listOf(Never, Wifi, WifiBattery, Always)
+            get() = listOf(Never, Wifi, WifiBattery, Battery, Always)
 
         object Never : AutoSync("never")
         object Wifi : AutoSync("wifi")
