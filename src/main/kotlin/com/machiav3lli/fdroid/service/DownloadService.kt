@@ -18,6 +18,7 @@ import com.machiav3lli.fdroid.NOTIFICATION_ID_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Cache
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.installer.AppInstaller
@@ -366,7 +367,9 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                 ValidationError.METADATA
             } else {
                 val signature = packageInfo.singleSignature?.let(Utils::calculateHash).orEmpty()
-                if (signature.isEmpty() || signature != task.release.signature) {
+                if ((signature.isEmpty() || signature != task.release.signature)
+                    && !Preferences[Preferences.Key.DisableSignatureCheck]
+                ) {
                     ValidationError.SIGNATURE
                 } else {
                     val permissions =

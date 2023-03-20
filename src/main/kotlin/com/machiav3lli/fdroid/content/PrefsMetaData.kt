@@ -35,6 +35,10 @@ val BooleanPrefsMeta = mapOf(
         R.string.incompatible_versions,
         R.string.incompatible_versions_summary
     ),
+    Preferences.Key.DisableSignatureCheck to Pair(
+        R.string.disable_signature_check,
+        R.string.disable_signature_check_summary
+    ),
     Preferences.Key.RootSessionInstaller to Pair(
         R.string.root_session_installer,
         R.string.root_session_installer_description

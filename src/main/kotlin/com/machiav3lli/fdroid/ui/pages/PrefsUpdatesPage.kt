@@ -45,6 +45,7 @@ fun PrefsUpdatesPage() {
         Preferences.Key.KeepInstallNotification,
         Preferences.Key.UpdateUnstable,
         Preferences.Key.IncompatibleVersions,
+        Preferences.Key.DisableSignatureCheck,
     )
     val installPrefs = listOf(
         Preferences.Key.Installer,

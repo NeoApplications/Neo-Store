@@ -35,6 +35,7 @@ object Preferences : OnSharedPreferenceChangeListener {
         Key.ImagesCacheRetention,
         Key.InstallAfterSync,
         Key.IncompatibleVersions,
+        Key.DisableSignatureCheck,
         Key.ShowScreenshots,
         Key.ShowTrackers,
         Key.UpdatedApps,
@@ -204,6 +205,9 @@ object Preferences : OnSharedPreferenceChangeListener {
 
         object IncompatibleVersions :
             Key<Boolean>("incompatible_versions", Value.BooleanValue(false))
+
+        object DisableSignatureCheck :
+            Key<Boolean>("disable_signature_check", Value.BooleanValue(false))
 
         object ShowScreenshots :
             Key<Boolean>("show_screenshots", Value.BooleanValue(true))
