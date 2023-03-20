@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.ui.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +46,7 @@ import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.index.RepositoryUpdater.db
 import com.machiav3lli.fdroid.ui.compose.components.ActionButton
@@ -58,6 +60,8 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SortDescending
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.isDarkTheme
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.mapLatest
 
 class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
 
@@ -97,13 +101,22 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
     override fun updateSheet() {
     }
 
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+    @SuppressLint("FlowOperatorInvokedInComposition")
+    @OptIn(
+        ExperimentalMaterial3Api::class,
+        ExperimentalComposeUiApi::class,
+        ExperimentalCoroutinesApi::class
+    )
     @Composable
     fun SortFilterPage(navPage: String) {
         val nestedScrollConnection = rememberNestedScrollInteropConnection()
         val dbHandler = ((context as AppCompatActivity).application as MainApplication).db
         val repos by dbHandler.repositoryDao.allFlow.collectAsState(emptyList())
         val categories by db.categoryDao.allNamesFlow.collectAsState(emptyList())
+        val licenses by db.productDao.allLicensesFlow.mapLatest {
+            it.map(Licenses::licenses).flatten().distinct()
+        }
+            .collectAsState(emptyList())
         val activeRepos by remember(repos) { mutableStateOf(repos.filter { it.enabled }) }
 
         val sortKey = when (navPage) {
@@ -131,6 +144,11 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
             NavItem.Installed.destination -> Preferences.Key.AntifeaturesFilterInstalled
             else                          -> Preferences.Key.AntifeaturesFilterExplore // NavItem.Explore
         }
+        val licensesFilterKey = when (navPage) {
+            NavItem.Latest.destination    -> Preferences.Key.LicensesFilterLatest
+            NavItem.Installed.destination -> Preferences.Key.LicensesFilterInstalled
+            else                          -> Preferences.Key.LicensesFilterExplore // NavItem.Explore
+        }
 
         var sortOption by remember(Preferences[sortKey]) {
             mutableStateOf(Preferences[sortKey])
@@ -146,6 +164,9 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
         }
         val filteredAntifeatures by remember(Preferences[antifeaturesFilterKey]) {
             mutableStateOf(Preferences[antifeaturesFilterKey].toMutableSet())
+        }
+        val filteredLicenses by remember(Preferences[licensesFilterKey]) {
+            mutableStateOf(Preferences[licensesFilterKey].toMutableSet())
         }
 
         Scaffold(
@@ -171,6 +192,7 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                             Preferences[reposFilterKey] = reposFilterKey.default.value
                             Preferences[categoriesFilterKey] = categoriesFilterKey.default.value
                             Preferences[antifeaturesFilterKey] = antifeaturesFilterKey.default.value
+                            Preferences[licensesFilterKey] = licensesFilterKey.default.value
                             dismissAllowingStateLoss()
                         }
                         ActionButton(
@@ -185,6 +207,7 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                                 Preferences[reposFilterKey] = filteredOutRepos
                                 Preferences[categoriesFilterKey] = filterCategory
                                 Preferences[antifeaturesFilterKey] = filteredAntifeatures
+                                Preferences[licensesFilterKey] = filteredLicenses
                                 dismissAllowingStateLoss()
                             }
                         )
@@ -326,6 +349,39 @@ class SortFilterSheet() : FullscreenBottomSheetDialogFragment() {
                                     filteredAntifeatures.remove(it.key)
                                 else
                                     filteredAntifeatures.add(it.key)
+                            }
+                        }
+                    }
+                }
+                item {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.allowed_licenses),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        mainAxisSpacing = 8.dp,
+                        crossAxisSpacing = 4.dp,
+                        mainAxisAlignment = MainAxisAlignment.Center,
+                    ) {
+                        licenses.forEach {
+                            var checked by remember {
+                                mutableStateOf(
+                                    !filteredLicenses.contains(it)
+                                )
+                            }
+
+                            SelectChip(
+                                text = it,
+                                checked = checked
+                            ) {
+                                checked = !checked
+                                if (checked)
+                                    filteredLicenses.remove(it)
+                                else
+                                    filteredLicenses.add(it)
                             }
                         }
                     }
