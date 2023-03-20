@@ -59,6 +59,9 @@ object Preferences : OnSharedPreferenceChangeListener {
         Key.AntifeaturesFilterExplore,
         Key.AntifeaturesFilterLatest,
         Key.AntifeaturesFilterInstalled,
+        Key.LicensesFilterExplore,
+        Key.LicensesFilterLatest,
+        Key.LicensesFilterInstalled,
         Key.Theme,
         Key.DefaultTab,
         Key.UpdateNotify,
@@ -287,6 +290,21 @@ object Preferences : OnSharedPreferenceChangeListener {
 
         object AntifeaturesFilterInstalled : Key<Set<String>>(
             "antifeatures_filter_installed",
+            Value.StringSetValue(emptySet())
+        )
+
+        object LicensesFilterExplore : Key<Set<String>>(
+            "licenses_filter_explore",
+            Value.StringSetValue(emptySet())
+        )
+
+        object LicensesFilterLatest : Key<Set<String>>(
+            "licenses_filter_latest",
+            Value.StringSetValue(emptySet())
+        )
+
+        object LicensesFilterInstalled : Key<Set<String>>(
+            "licenses_filter_installed",
             Value.StringSetValue(emptySet())
         )
 
