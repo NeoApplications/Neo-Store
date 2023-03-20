@@ -22,6 +22,7 @@ import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_ID_VULNS
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.index.RepositoryUpdater
@@ -313,7 +314,10 @@ fun InstallerService.notifyStatus(intent: Intent?) {
                     .setSmallIcon(android.R.drawable.stat_sys_download_done)
                     .setContentTitle(getString(R.string.installed))
                     .setContentText(appLabel)
-                    .setTimeoutAfter(InstallerService.INSTALLED_NOTIFICATION_TIMEOUT)
+                    .apply {
+                        if (!Preferences[Preferences.Key.KeepInstallNotification])
+                            setTimeoutAfter(InstallerService.INSTALLED_NOTIFICATION_TIMEOUT)
+                    }
                     .build()
                 notificationManager.notify(
                     notificationTag,

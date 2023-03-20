@@ -65,6 +65,7 @@ object Preferences : OnSharedPreferenceChangeListener {
         Key.Theme,
         Key.DefaultTab,
         Key.UpdateNotify,
+        Key.KeepInstallNotification,
         Key.UpdateUnstable,
         Key.IgnoreIgnoreBatteryOptimization
     ).map { Pair(it.name, it) }.toMap()
@@ -194,6 +195,9 @@ object Preferences : OnSharedPreferenceChangeListener {
         object ImagesCacheRetention : Key<Int>("images_cache_retention", Value.IntValue(14))
 
         object AutoSyncInterval : Key<Int>("auto_sync_interval", Value.IntValue(60))
+
+        object KeepInstallNotification :
+            Key<Boolean>("keep_install_notification", Value.BooleanValue(false))
 
         object InstallAfterSync :
             Key<Boolean>("auto_sync_install", Value.BooleanValue(Android.sdk(31)))

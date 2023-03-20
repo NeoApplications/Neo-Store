@@ -42,6 +42,7 @@ fun PrefsUpdatesPage() {
     val updatesPrefs = listOf(
         Preferences.Key.InstallAfterSync,
         Preferences.Key.UpdateNotify,
+        Preferences.Key.KeepInstallNotification,
         Preferences.Key.UpdateUnstable,
         Preferences.Key.IncompatibleVersions,
     )

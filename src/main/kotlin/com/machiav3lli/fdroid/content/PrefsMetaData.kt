@@ -23,6 +23,10 @@ val BooleanPrefsMeta = mapOf(
         R.string.notify_about_updates,
         R.string.notify_about_updates_summary
     ),
+    Preferences.Key.KeepInstallNotification to Pair(
+        R.string.keep_install_notification,
+        R.string.keep_install_notification_summary
+    ),
     Preferences.Key.UpdateUnstable to Pair(
         R.string.unstable_updates,
         R.string.unstable_updates_summary
