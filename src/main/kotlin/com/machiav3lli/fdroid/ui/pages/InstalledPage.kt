@@ -100,6 +100,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                     Preferences.Key.ReposFilterInstalled,
                     Preferences.Key.CategoriesFilterInstalled,
                     Preferences.Key.AntifeaturesFilterInstalled,
+                    Preferences.Key.LicensesFilterInstalled,
                     Preferences.Key.SortOrderInstalled,
                     Preferences.Key.SortOrderAscendingInstalled,
                     -> viewModel.setSortFilter(
@@ -107,6 +108,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                             Preferences[Preferences.Key.ReposFilterInstalled],
                             Preferences[Preferences.Key.CategoriesFilterInstalled],
                             Preferences[Preferences.Key.AntifeaturesFilterInstalled],
+                            Preferences[Preferences.Key.LicensesFilterInstalled],
                             Preferences[Preferences.Key.SortOrderInstalled],
                             Preferences[Preferences.Key.SortOrderAscendingInstalled],
                         ).toString()

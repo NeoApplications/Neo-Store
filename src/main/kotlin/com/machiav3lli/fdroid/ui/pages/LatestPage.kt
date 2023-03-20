@@ -65,6 +65,7 @@ fun LatestPage(viewModel: LatestVM) {
                     Preferences.Key.ReposFilterLatest,
                     Preferences.Key.CategoriesFilterLatest,
                     Preferences.Key.AntifeaturesFilterLatest,
+                    Preferences.Key.LicensesFilterLatest,
                     Preferences.Key.SortOrderLatest,
                     Preferences.Key.SortOrderAscendingLatest,
                     -> viewModel.setSortFilter(
@@ -72,6 +73,7 @@ fun LatestPage(viewModel: LatestVM) {
                             Preferences[Preferences.Key.ReposFilterLatest],
                             Preferences[Preferences.Key.CategoriesFilterLatest],
                             Preferences[Preferences.Key.AntifeaturesFilterLatest],
+                            Preferences[Preferences.Key.LicensesFilterLatest],
                             Preferences[Preferences.Key.SortOrderLatest],
                             Preferences[Preferences.Key.SortOrderAscendingLatest],
                         ).toString()

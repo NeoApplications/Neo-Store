@@ -202,6 +202,7 @@ sealed class Request {
     internal abstract val filteredOutRepos: Set<String>
     internal abstract val category: String
     internal abstract val filteredAntiFeatures: Set<String>
+    internal abstract val filteredLicenses: Set<String>
     internal abstract val section: Section
     internal abstract val order: Order
     internal abstract val ascending: Boolean
@@ -225,6 +226,8 @@ sealed class Request {
             get() = Preferences[Preferences.Key.CategoriesFilterExplore]
         override val filteredAntiFeatures: Set<String>
             get() = Preferences[Preferences.Key.AntifeaturesFilterExplore]
+        override val filteredLicenses: Set<String>
+            get() = Preferences[Preferences.Key.LicensesFilterExplore]
         override val ascending: Boolean
             get() = Preferences[Preferences.Key.SortOrderAscendingExplore]
     }
@@ -246,6 +249,8 @@ sealed class Request {
             get() = Preferences[Preferences.Key.CategoriesFilterInstalled]
         override val filteredAntiFeatures: Set<String>
             get() = Preferences[Preferences.Key.AntifeaturesFilterInstalled]
+        override val filteredLicenses: Set<String>
+            get() = Preferences[Preferences.Key.LicensesFilterInstalled]
         override val ascending: Boolean
             get() = Preferences[Preferences.Key.SortOrderAscendingInstalled]
     }
@@ -264,6 +269,8 @@ sealed class Request {
         override val category: String
             get() = FILTER_CATEGORY_ALL
         override val filteredAntiFeatures: Set<String>
+            get() = emptySet()
+        override val filteredLicenses: Set<String>
             get() = emptySet()
         override val order: Order
             get() = Order.NAME
@@ -286,6 +293,8 @@ sealed class Request {
             get() = Preferences[Preferences.Key.CategoriesFilterLatest]
         override val filteredAntiFeatures: Set<String>
             get() = Preferences[Preferences.Key.AntifeaturesFilterLatest]
+        override val filteredLicenses: Set<String>
+            get() = Preferences[Preferences.Key.LicensesFilterLatest]
         override val order: Order
             get() = Preferences[Preferences.Key.SortOrderLatest].order
         override val ascending: Boolean
@@ -308,6 +317,8 @@ sealed class Request {
         override val category: String
             get() = FILTER_CATEGORY_ALL
         override val filteredAntiFeatures: Set<String>
+            get() = emptySet()
+        override val filteredLicenses: Set<String>
             get() = emptySet()
         override val order: Order
             get() = Order.DATE_ADDED

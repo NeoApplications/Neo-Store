@@ -76,6 +76,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                     Preferences.Key.ReposFilterExplore,
                     Preferences.Key.CategoriesFilterExplore,
                     Preferences.Key.AntifeaturesFilterExplore,
+                    Preferences.Key.LicensesFilterExplore,
                     Preferences.Key.SortOrderExplore,
                     Preferences.Key.SortOrderAscendingExplore,
                     -> viewModel.setSortFilter(
@@ -83,6 +84,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                             Preferences[Preferences.Key.ReposFilterExplore],
                             Preferences[Preferences.Key.CategoriesFilterExplore],
                             Preferences[Preferences.Key.AntifeaturesFilterExplore],
+                            Preferences[Preferences.Key.LicensesFilterExplore],
                             Preferences[Preferences.Key.SortOrderExplore],
                             Preferences[Preferences.Key.SortOrderAscendingExplore],
                         ).toString()

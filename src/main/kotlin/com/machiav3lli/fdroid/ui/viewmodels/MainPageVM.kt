@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Installed
+import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Request
@@ -132,6 +133,11 @@ open class MainPageVM(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val categories = db.categoryDao.allNamesFlow.mapLatest { it }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val licenses = db.productDao.allLicensesFlow.mapLatest {
+        it.map(Licenses::licenses).flatten().distinct()
+    }
 
     val downloadsMap = mutableStateMapOf<String, Pair<ProductItem, DownloadService.State>>()
 
