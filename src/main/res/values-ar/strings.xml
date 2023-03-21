@@ -314,4 +314,15 @@
     <string name="custom_download_directory">مجلد تنزيل مخصص</string>
     <string name="downloads">التنزيلات</string>
     <string name="ignore_vulns">تجاهل الثغرات الأمنية المبلغ عنها</string>
+    <string name="disable_download_version_check_summary">يسمح بتنزيل الإصدارات القديمة من التطبيقات المثبتة. يمكن استخدامه مع رقعة \"letmedowngrade\" من Magisk.</string>
+    <string name="ignore">تجاهل</string>
+    <string name="warning_disable_battery_optimization">بدءًا من Android 12 ، يتطلب التطبيق تحسين البطارية للقيام بعمليات في الخلفية مثل المزامنة والتنزيل. إذا تجاهلت هذا الإذن ، فستترك لوحدك وسيتم تجاهل تقارير الأعطال الخاصة بك.</string>
+    <string name="warning_show_notification">بدءا من Android 13 ، يتطلب التطبيق هذا الإذن لإعلامك بالعمليات المختلفة. إذا تجاهلت هذا الإذن، فلن تتلقى أي إشعارات.</string>
+    <string name="disable_signature_check_summary">لا تتحقق مما إذا كان APK الذي تم تنزيله له نفس توقيع التطبيق المثبت.</string>
+    <string name="disable_signature_check">تعطيل التحقق من التوقيع</string>
+    <string name="keep_install_notification">استمر في إشعار التثبيت</string>
+    <string name="keep_install_notification_summary">احتفظ بإشعار تثبيت التطبيق بنجاح.</string>
+    <string name="allowed_licenses">التراخيص المسموح بها</string>
+    <string name="cancel_all">إلغاء الكل</string>
+    <string name="disable_download_version_check">تعطيل التحقق من إصدار التنزيل</string>
 </resources>
