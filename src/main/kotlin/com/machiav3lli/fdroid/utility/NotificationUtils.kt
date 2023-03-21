@@ -112,8 +112,12 @@ fun Context.displayVulnerabilitiesNotification(
             NOTIFICATION_ID_VULNS, NotificationCompat
                 .Builder(this, NOTIFICATION_CHANNEL_VULNS)
                 .setSmallIcon(R.drawable.ic_new_releases)
-                .setContentTitle(getString(if (productItems.isNotEmpty()) R.string.vulnerabilities_installed_apps
-                else R.string.no_vulnerabilities_installed_apps))
+                .setContentTitle(
+                    getString(
+                        if (productItems.isNotEmpty()) R.string.vulnerabilities_installed_apps
+                        else R.string.no_vulnerabilities_installed_apps
+                    )
+                )
                 .setColor(
                     ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
                         .getColorFromAttr(android.R.attr.textColorTertiary).defaultColor

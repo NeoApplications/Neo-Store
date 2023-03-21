@@ -258,10 +258,10 @@ interface ProductDao : BaseDao<Product> {
 
         // Filter only the selected repository/category
         when (section) {
-            is Section.FAVORITE   -> {
+            is Section.FAVORITE -> {
                 builder += "AND COALESCE($TABLE_EXTRAS.$ROW_FAVORITE, 0) != 0"
             }
-            else                  -> {}
+            else                -> {}
         }
 
         when (updateCategory) {

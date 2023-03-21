@@ -310,7 +310,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
     override fun onReleaseClick(release: Release) {
         val installedItem = viewModel.installedItem.value
         when {
-            release.incompatibilities.isNotEmpty()                                   -> {
+            release.incompatibilities.isNotEmpty()                               -> {
                 MessageDialog(
                     MessageDialog.Message.ReleaseIncompatible(
                         release.incompatibilities,
@@ -323,12 +323,14 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                     && !Preferences[Preferences.Key.DisableDownloadVersionCheck] -> {
                 MessageDialog(MessageDialog.Message.ReleaseOlder).show(childFragmentManager)
             }
-            installedItem != null && installedItem.signature != release.signature    -> {
+            installedItem != null
+                    && installedItem.signature != release.signature
+                    && !Preferences[Preferences.Key.DisableSignatureCheck]       -> {
                 MessageDialog(MessageDialog.Message.ReleaseSignatureMismatch).show(
                     childFragmentManager
                 )
             }
-            else                                                                     -> {
+            else                                                                -> {
                 val productRepository =
                     viewModel.productRepos.value.asSequence()
                         .filter { it -> it.first.releases.any { it === release } }

@@ -7,7 +7,6 @@ import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
@@ -254,11 +253,8 @@ fun Context.showBatteryOptimizationDialog() {
                     R.string.ignore_battery_optimization_not_supported,
                     Toast.LENGTH_LONG
                 ).show()
-                Preferences[Preferences.Key.IgnoreIgnoreBatteryOptimization] = true
+                Preferences[Preferences.Key.IgnoreDisableBatteryOptimization] = true
             }
-        }
-        .setNeutralButton(R.string.dialog_refuse) { _: DialogInterface?, _: Int ->
-            Preferences[Preferences.Key.IgnoreIgnoreBatteryOptimization] = true
         }
         .show()
 }

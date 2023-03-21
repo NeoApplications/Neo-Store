@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.Extras
+import com.machiav3lli.fdroid.database.entity.IconDetails
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.database.entity.Product
@@ -142,7 +143,7 @@ open class MainPageVM(
     val downloadsMap = mutableStateMapOf<String, Pair<ProductItem, DownloadService.State>>()
 
     val iconDetails = db.productDao.iconDetailsFlow.mapLatest {
-        it.associateBy { it.packageName }
+        it.associateBy(IconDetails::packageName)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
