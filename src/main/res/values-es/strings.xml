@@ -311,4 +311,15 @@
     <string name="post_notifications_permission_message">A partir de Android 13 las aplicaciones requieren este permiso para poder publicar notificaciones.</string>
     <string name="downloads">Descargas</string>
     <string name="ignore_vulns">Ignorar las vulnerabilidades de seguridad notificadas</string>
+    <string name="disable_download_version_check_summary">Permite descargar versiones anteriores de aplicaciones instaladas. Se puede usar en combinación con el parche \"letmedowngrade\" de Magisk.</string>
+    <string name="ignore">Ignorar</string>
+    <string name="warning_disable_battery_optimization">A partir de Android 12, la aplicación requiere la optimización de la batería para realizar procesos en segundo plano como la sincronización y la descarga. Si ignoras este permiso, te quedarás solo y tus informes de bloqueos serán ignorados.</string>
+    <string name="keep_install_notification_summary">Mantén la notificación de haber instalado correctamente una aplicación.</string>
+    <string name="allowed_licenses">Licencias autorizadas</string>
+    <string name="cancel_all">Cancelar todo</string>
+    <string name="disable_download_version_check">Desactivar la comprobación de la versión de descarga</string>
+    <string name="disable_signature_check">Desactivar el control de firmas</string>
+    <string name="warning_show_notification">A partir de Android 13, la aplicación requiere este permiso para notificarte sobre los diferentes procesos. Si ignoras este permiso, no recibirás ninguna notificación.</string>
+    <string name="keep_install_notification">Mantener la notificación de la instalación</string>
+    <string name="disable_signature_check_summary">No compruebar si el APK descargado tiene la misma firma que la aplicación instalada.</string>
 </resources>
