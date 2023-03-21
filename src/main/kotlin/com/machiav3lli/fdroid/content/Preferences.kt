@@ -68,7 +68,8 @@ object Preferences : OnSharedPreferenceChangeListener {
         Key.UpdateNotify,
         Key.KeepInstallNotification,
         Key.UpdateUnstable,
-        Key.IgnoreIgnoreBatteryOptimization
+        Key.IgnoreDisableBatteryOptimization,
+        Key.IgnoreShowNotifications,
     ).map { Pair(it.name, it) }.toMap()
 
     fun init(context: Context) {
@@ -335,8 +336,11 @@ object Preferences : OnSharedPreferenceChangeListener {
         object UpdateNotify : Key<Boolean>("update_notify", Value.BooleanValue(true))
         object UpdateUnstable : Key<Boolean>("update_unstable", Value.BooleanValue(false))
 
-        object IgnoreIgnoreBatteryOptimization :
-            Key<Boolean>("ignore_ignore_battery_optimization", Value.BooleanValue(false))
+        object IgnoreDisableBatteryOptimization :
+            Key<Boolean>("ignore_disable_battery_optimization", Value.BooleanValue(false))
+
+        object IgnoreShowNotifications :
+            Key<Boolean>("ignore_show_notifications", Value.BooleanValue(false))
     }
 
     sealed class AutoSync(override val valueString: String) : Enumeration<AutoSync> {
