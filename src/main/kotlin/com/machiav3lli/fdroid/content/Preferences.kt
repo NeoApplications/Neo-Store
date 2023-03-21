@@ -67,6 +67,7 @@ object Preferences : OnSharedPreferenceChangeListener {
         Key.DefaultTab,
         Key.UpdateNotify,
         Key.KeepInstallNotification,
+        Key.DisableDownloadVersionCheck,
         Key.UpdateUnstable,
         Key.IgnoreDisableBatteryOptimization,
         Key.IgnoreShowNotifications,
@@ -206,6 +207,9 @@ object Preferences : OnSharedPreferenceChangeListener {
 
         object IncompatibleVersions :
             Key<Boolean>("incompatible_versions", Value.BooleanValue(false))
+
+        object DisableDownloadVersionCheck :
+            Key<Boolean>("disable_download_version_check", Value.BooleanValue(false))
 
         object DisableSignatureCheck :
             Key<Boolean>("disable_signature_check", Value.BooleanValue(false))

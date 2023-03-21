@@ -318,7 +318,9 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                     )
                 ).show(childFragmentManager)
             }
-            installedItem != null && installedItem.versionCode > release.versionCode -> {
+            installedItem != null
+                    && installedItem.versionCode > release.versionCode
+                    && !Preferences[Preferences.Key.DisableDownloadVersionCheck] -> {
                 MessageDialog(MessageDialog.Message.ReleaseOlder).show(childFragmentManager)
             }
             installedItem != null && installedItem.signature != release.signature    -> {
