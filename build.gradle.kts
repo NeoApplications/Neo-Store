@@ -1,7 +1,7 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val composeVersion = "1.3.1"
-val composeCompilerVersion = "1.4.0"
+val composeVersion = "1.4.0-rc01"
+val composeCompilerVersion = "1.4.3"
 val roomVersion = "2.5.0"
 val navigationVersion = "2.5.3"
 val accompanistVersion = "0.28.0"
@@ -157,7 +157,7 @@ dependencies {
     implementation("com.anggrayudi:storage:1.5.4")
 
     // Coroutines / Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
