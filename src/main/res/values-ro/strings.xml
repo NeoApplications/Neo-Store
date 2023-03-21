@@ -301,7 +301,25 @@
     <string name="allowed_anti_features">Anti-funcții permise</string>
     <string name="show_trackers">Afișare urmăritori</string>
     <string name="show_trackers_description">Obține și afișează urmăritorii aplicațiilor din Exodus Privacy.</string>
-    <string name="no_trackers_data_available">Nu sunt disponibile (încă) date despre urmăritori!</string>
+    <string name="no_trackers_data_available">Nu sunt disponibile (încă) date despre urmăritori.</string>
     <string name="permission_sms">SMS/MMS</string>
     <string name="source_copyleft">Copyleft</string>
+    <string name="disable_signature_check_summary">Nu se verifică dacă APK-ul descărcat are aceeași semnătură ca și aplicația instalată.</string>
+    <string name="ignore">Ignoră</string>
+    <string name="warning_disable_battery_optimization">Începând cu Android 12, aplicația necesită optimizarea bateriei pentru a rula procese în fundal, cum ar fi sincronizarea și descărcarea. Dacă ignori această permisiune, rămâi pe cont propriu și rapoartele de accident vor fi ignorate.</string>
+    <string name="disable_signature_check">Dezactivează verificarea semnăturii</string>
+    <string name="keep_install_notification">Notificare permanentă despre instalare</string>
+    <string name="keep_install_notification_summary">Păstrează notificarea privind instalarea cu succes a unei aplicații.</string>
+    <string name="enable_download_directory_summary">Permite păstrarea APK-urilor descărcate într-un dosar ales.</string>
+    <string name="disable_download_version_check">Dezactivează verificarea versiunii de descărcare</string>
+    <string name="warning_show_notification">Începând cu Android 13, aplicația are nevoie de această permisiune pentru a notifica cu privire la diferite procese. Dacă ignori această permisiune, nu vei primi nicio notificare.</string>
+    <string name="allowed_licenses">Licențe permise</string>
+    <string name="cancel_all">Anulează tot</string>
+    <string name="disable_download_version_check_summary">Permite descărcarea versiunilor mai vechi ale aplicațiilor instalate. Poate fi utilizat în combinație cu modulul \"letmedowngrade\" de la Magisk.</string>
+    <string name="post_notifications_permission_title">Permisiune de a posta notificări</string>
+    <string name="post_notifications_permission_message">Începând cu Android 13, aplicațiile au nevoie de această permisiune pentru a putea posta notificări.</string>
+    <string name="custom_download_directory">Dosar de descărcare personalizat</string>
+    <string name="enable_download_directory">Utilizează un dosar de descărcare personalizat</string>
+    <string name="ignore_vulns">Ignoră vulnerabilitățile de securitate raportate</string>
+    <string name="downloads">Descărcări</string>
 </resources>
