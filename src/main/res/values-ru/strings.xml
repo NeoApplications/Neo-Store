@@ -312,4 +312,15 @@
     <string name="post_notifications_permission_message">Начиная с Android 13 приложениям требуется это разрешение, чтобы показывать уведомления.</string>
     <string name="ignore_vulns">Игнорировать известные уязвимости безопасности</string>
     <string name="downloads">Загрузки</string>
+    <string name="warning_disable_battery_optimization">Начиная с Android 12, приложению требуется оптимизации батареи для выполнения фоновых процессов, таких как синхронизация и загрузка. Если вы проигнорируете и не предоставите это разрешение, ваши отчёты об ошибках будут проигнорированы.</string>
+    <string name="disable_signature_check_summary">Не проверять, имеет ли загруженный APK ту же подпись, что и установленное приложение.</string>
+    <string name="disable_download_version_check_summary">Разрешается загружать старые версии установленных приложений. Может использоваться в сочетании с патчем Magisk \"letmedowngrade\".</string>
+    <string name="ignore">Игнорировать</string>
+    <string name="warning_show_notification">Начиная с Android 13, приложению требуется это разрешение, чтобы уведомлять вас о различных процессах. Если вы проигнорируете это разрешение, то не будете получать никаких уведомлений.</string>
+    <string name="disable_signature_check">Отключить проверку подписи</string>
+    <string name="keep_install_notification_summary">Не убирать уведомление об успешной установке приложения.</string>
+    <string name="keep_install_notification">Постоянное уведомление об установке</string>
+    <string name="allowed_licenses">Допустимые лицензии</string>
+    <string name="cancel_all">Отменить все</string>
+    <string name="disable_download_version_check">Не проверять версию при загрузке</string>
 </resources>
