@@ -311,4 +311,15 @@
     <string name="post_notifications_permission_title">Oprávnění odesílat oznámení</string>
     <string name="downloads">Stahování</string>
     <string name="ignore_vulns">Ignorovat nahlášené zranitelnosti v zabezpečení</string>
+    <string name="ignore">Ignorovat</string>
+    <string name="warning_disable_battery_optimization">Od systému Android 12 vyžaduje aplikace optimalizaci baterie pro procesy na pozadí, jako je synchronizace a stahování. Pokud toto oprávnění ignorujete, jste odkázáni sami na sebe a vaše hlášení o pádu budou ignorována.</string>
+    <string name="warning_show_notification">Od systému Android 13 aplikace vyžaduje toto oprávnění, aby vás mohla upozorňovat na různé procesy. Pokud toto oprávnění ignorujete, nebudete dostávat žádná oznámení.</string>
+    <string name="disable_signature_check">Zakázat kontrolu podpisu</string>
+    <string name="keep_install_notification">Ponechat oznámení o instalaci</string>
+    <string name="keep_install_notification_summary">Ponechat oznámení o úspěšné instalaci aplikace.</string>
+    <string name="allowed_licenses">Povolené licence</string>
+    <string name="cancel_all">Zrušit vše</string>
+    <string name="disable_download_version_check">Zakázat kontrolu verze ke stažení</string>
+    <string name="disable_signature_check_summary">Nekontrolovat, zda má stažený soubor APK stejný podpis jako nainstalovaná aplikace.</string>
+    <string name="disable_download_version_check_summary">Umožňuje stahování starších verzí nainstalovaných aplikací. Lze použít v kombinaci s Magisk patchem \"letmedowngrade\".</string>
 </resources>
