@@ -10,10 +10,10 @@ val retrofitVersion = "2.9.0"
 
 plugins {
     id("com.android.application") version ("7.4.2")
-    kotlin("android") version ("1.8.0")
-    kotlin("kapt") version ("1.8.0")
-    kotlin("plugin.serialization") version ("1.8.0")
-    id("com.google.devtools.ksp") version ("1.8.0-1.0.8")
+    kotlin("android") version ("1.8.10")
+    kotlin("kapt") version ("1.8.10")
+    kotlin("plugin.serialization") version ("1.8.10")
+    id("com.google.devtools.ksp") version ("1.8.10-1.0.9")
     id("com.google.dagger.hilt.android") version ("2.45")
 }
 
@@ -117,8 +117,8 @@ android {
 dependencies {
 
     // Core
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0")
-    implementation("com.google.devtools.ksp:symbol-processing-api:1.8.0-1.0.8")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10")
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.8.10-1.0.9")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.work:work-runtime-ktx:2.8.0")
 
