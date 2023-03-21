@@ -310,4 +310,12 @@
     <string name="custom_download_directory">Ipinasadyang folder para sa mga download</string>
     <string name="ignore_vulns">Huwag pansinin ang mga naiulat na butas sa seguridad</string>
     <string name="downloads">Mga Download</string>
+    <string name="warning_disable_battery_optimization">Simula Android 12, kailangan ng app ang optimisasyon sa baterya para gawin ang mga proseso sa background tulad ng pagsi-sync at pagda-download. Kung hindi mo papansinin ang pahintulot na ito, ikaw na lang ang bahala sa sarili mo at hindi na papansinin ang mga ulat sa pag-crash.</string>
+    <string name="disable_signature_check_summary">Huwag siguraduhing magkapareho ang pirma ng na-download na APK at ng naka-install na app.</string>
+    <string name="ignore">Huwag pansinin</string>
+    <string name="warning_show_notification">Simula Android 13, kailangan ang pahintulot na ito para maabisuhan ka sa mga kasalukyang proseso. Kung hindi mo papansinin ang pahintulot na ito, wala kang notipikasyong makikita.</string>
+    <string name="disable_signature_check">Huwag beripikahin ang mga pirma</string>
+    <string name="keep_install_notification">Panatilihin ang notipikasyon ng pag-install</string>
+    <string name="keep_install_notification_summary">Panatilihin ang notipikasyon ng matagumpay na pag-install ng app.</string>
+    <string name="allowed_licenses">Mga pinapayagang lisensya</string>
 </resources>
