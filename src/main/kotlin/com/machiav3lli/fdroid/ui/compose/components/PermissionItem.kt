@@ -16,13 +16,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.Permission
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PermissionItem(
     item: Permission,
     onClick: () -> Unit = {},
+    onIgnore: () -> Unit = {},
 ) {
     Surface(
         shape = MaterialTheme.shapes.large,
@@ -56,6 +61,17 @@ fun PermissionItem(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+                )
+            }
+            if (item.ignorePref != null) {
+                ActionButton(
+                    text = stringResource(id = R.string.ignore),
+                    icon = Phosphor.X,
+                    positive = false,
+                    onClick = {
+                        Preferences[item.ignorePref] = true
+                        onIgnore()
+                    }
                 )
             }
         }

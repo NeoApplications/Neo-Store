@@ -14,8 +14,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -23,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.machiav3lli.fdroid.MainApplication
@@ -31,6 +35,9 @@ import com.machiav3lli.fdroid.entity.Permission
 import com.machiav3lli.fdroid.ui.compose.components.PermissionItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.showBatteryOptimizationDialog
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -42,28 +49,21 @@ fun PermissionsPage(navigateToMain: () -> Unit) {
     val permissionStatePostNotifications = if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) {
         rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
     } else null
+    val ignored by remember { mutableStateOf(0) }
     val permissionsList = remember {
         mutableStateListOf<Pair<Permission, () -> Unit>>()
     }
 
     val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(key1 = lifecycleOwner, effect = {
+    DisposableEffect(key1 = lifecycleOwner, key2 = ignored, effect = {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                permissionsList.clear()
-                permissionsList.addAll(buildList {
-                    if (!powerManager.isIgnoringBatteryOptimizations(context.packageName)
-                        && (!Preferences[Preferences.Key.IgnoreIgnoreBatteryOptimization]
-                                || Android.sdk(Build.VERSION_CODES.S))
-                    ) add(Pair(Permission.BatteryOptimization) {
-                        context.showBatteryOptimizationDialog()
-                    })
-                    if (permissionStatePostNotifications?.status?.isGranted == false)
-                        add(Pair(Permission.PostNotifications) {
-                            permissionStatePostNotifications.launchPermissionRequest()
-                        })
-                })
-                if (permissionsList.isEmpty()) navigateToMain()
+                permissionsList.refresh(
+                    context,
+                    powerManager,
+                    permissionStatePostNotifications,
+                    navigateToMain,
+                )
             }
         }
 
@@ -79,9 +79,41 @@ fun PermissionsPage(navigateToMain: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(8.dp)
         ) {
-            items(permissionsList) {
-                PermissionItem(it.first, it.second)
+            items(permissionsList) { pair ->
+                PermissionItem(pair.first, pair.second) {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        permissionsList.refresh(
+                            context,
+                            powerManager,
+                            permissionStatePostNotifications,
+                            navigateToMain,
+                        )
+                    }
+                }
             }
         }
     }
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+fun SnapshotStateList<Pair<Permission, () -> Unit>>.refresh(
+    context: Context,
+    powerManager: PowerManager,
+    permissionStatePostNotifications: PermissionState?,
+    navigateToMain: () -> Unit,
+) {
+    clear()
+    addAll(buildList {
+        if (!powerManager.isIgnoringBatteryOptimizations(context.packageName)
+            && !Preferences[Preferences.Key.IgnoreDisableBatteryOptimization]
+        ) add(Pair(Permission.BatteryOptimization) {
+            context.showBatteryOptimizationDialog()
+        })
+        if (permissionStatePostNotifications?.status?.isGranted == false
+            && !Preferences[Preferences.Key.IgnoreShowNotifications]
+        ) add(Pair(Permission.PostNotifications) {
+            permissionStatePostNotifications.launchPermissionRequest()
+        })
+    })
+    if (isEmpty()) navigateToMain()
 }

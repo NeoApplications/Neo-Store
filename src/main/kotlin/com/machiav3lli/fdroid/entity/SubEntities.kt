@@ -334,17 +334,22 @@ data class Permission(
     val icon: ImageVector,
     val descriptionId: Int,
     val warningTextId: Int = -1,
+    val ignorePref: Preferences.Key<Boolean>? = null,
 ) {
     companion object {
         val BatteryOptimization = Permission(
             R.string.ignore_battery_optimization_title,
             Phosphor.Leaf,
             R.string.ignore_battery_optimization_message,
+            R.string.warning_disable_battery_optimization,
+            Preferences.Key.IgnoreDisableBatteryOptimization,
         )
         val PostNotifications = Permission(
             R.string.post_notifications_permission_title,
             Phosphor.CircleWavyWarning,
             R.string.post_notifications_permission_message,
+            R.string.warning_show_notification,
+            Preferences.Key.IgnoreShowNotifications,
         )
     }
 }
