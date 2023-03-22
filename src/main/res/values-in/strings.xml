@@ -309,4 +309,15 @@
     <string name="custom_download_directory">Folder unduhan khusus</string>
     <string name="ignore_vulns">Abaikan kerentanan keamanan yang dilaporkan</string>
     <string name="downloads">Unduhan</string>
+    <string name="disable_signature_check_summary">Jangan periksa apakah APK yang diunduh memiliki tanda tangan yang sama dengan aplikasi yang diinstal.</string>
+    <string name="ignore">Abaikan</string>
+    <string name="warning_show_notification">Mulai Android 13, aplikasi ini memerlukan izin ini untuk memberi tahu Anda tentang berbagai proses. Jika Anda mengabaikan izin ini, Anda tidak akan mendapatkan pemberitahuan apa pun.</string>
+    <string name="disable_signature_check">Nonaktifkan pemeriksaan tanda tangan</string>
+    <string name="keep_install_notification">Jaga notifikasi penginstalan</string>
+    <string name="allowed_licenses">Lisensi yang diperbolehkan</string>
+    <string name="keep_install_notification_summary">Jaga notifikasi ketika berhasil menginstal aplikasi.</string>
+    <string name="cancel_all">Batal semua</string>
+    <string name="disable_download_version_check">Nonaktifkan pemeriksaan versi terunduh</string>
+    <string name="warning_disable_battery_optimization">Mulai Android 12, aplikasi ini membutuhkan pengoptimalan baterai untuk melakukan proses latar belakang seperti sinkronisasi dan pengunduhan. Jika Anda mengabaikan izin ini, Anda akan dibiarkan berjalan sendiri dan laporan kerusakan akan diabaikan.</string>
+    <string name="disable_download_version_check_summary">Memperbolehkan mengunduh versi lama dari aplikasi yang terinstal. Dapat digunakan dengan kombinasi patch Magisk \"letmedowngrade\".</string>
 </resources>
