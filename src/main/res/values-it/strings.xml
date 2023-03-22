@@ -311,4 +311,15 @@
     <string name="enable_download_directory_summary">Consente di mantenere gli APK scaricati in una cartella scelta.</string>
     <string name="downloads">Scaricate</string>
     <string name="ignore_vulns">Ignora vulnerabilità di sicurezza segnalate</string>
+    <string name="ignore">Ignora</string>
+    <string name="warning_disable_battery_optimization">A partire da Android 12, l\'app richiede l\'ottimizzazione della batteria per eseguire processi in background come la sincronizzazione e il download. Se ignori questa autorizzazione, rimani da solo e i tuoi rapporti sugli arresti anomali verranno ignorati.</string>
+    <string name="warning_show_notification">A partire da Android 13, l\'app richiede questa autorizzazione per ricevere notifiche sui diversi processi. Se ignori questa autorizzazione, non riceverai alcuna notifica.</string>
+    <string name="disable_signature_check">Disabilita controllo firma</string>
+    <string name="keep_install_notification">Mantieni notifica installazione</string>
+    <string name="keep_install_notification_summary">Mantieni la notifica di avvenuta installazione di un\'applicazione.</string>
+    <string name="allowed_licenses">Licenze consentite</string>
+    <string name="cancel_all">Annulla tutto</string>
+    <string name="disable_download_version_check">Disabilita controllo versione di download</string>
+    <string name="disable_signature_check_summary">Non controllare se l\'APK scaricato ha la stessa firma dell\'app installata.</string>
+    <string name="disable_download_version_check_summary">Consente di scaricare versioni precedenti delle app installate. Può essere utilizzato in combinazione con la patch \"letmedowngrade\" di Magisk.</string>
 </resources>
