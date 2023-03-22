@@ -311,4 +311,15 @@
     <string name="custom_download_directory">Pasta de download personalizada</string>
     <string name="ignore_vulns">Ignorar as vulnerabilidades de segurança relatadas</string>
     <string name="downloads">Transferências</string>
+    <string name="disable_signature_check_summary">Não verifique se o APK descarregado tem a mesma assinatura que o aplicativo instalado.</string>
+    <string name="ignore">Ignorar</string>
+    <string name="disable_signature_check">Desativar verificação de assinatura</string>
+    <string name="keep_install_notification_summary">Manter a notificação de instalação bem sucedida de uma aplicação.</string>
+    <string name="disable_download_version_check_summary">Permite descarregar versões mais antigas das aplicações instaladas. Pode ser utilizado em combinação com o patch \"letmedowngrade\" da Magisk.</string>
+    <string name="keep_install_notification">Manter notificação de instalação</string>
+    <string name="warning_disable_battery_optimization">A partir do Android 12, a aplicação requer otimização da bateria para fazer processos de fundo como a sincronização e o download. Se ignorar esta permissão é deixado por sua conta e os seus relatórios de crash serão ignorados.</string>
+    <string name="warning_show_notification">A partir do Android 13, o aplicativo requer esta permissão para ser notificado sobre os diferentes processos. Se ignorar esta permissão, não receberá qualquer notificação.</string>
+    <string name="allowed_licenses">Licenças permitidas</string>
+    <string name="cancel_all">Cancelar tudo</string>
+    <string name="disable_download_version_check">Desativar a verificação da versão de download</string>
 </resources>
