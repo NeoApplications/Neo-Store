@@ -310,4 +310,15 @@
     <string name="allowed_anti_features">Anticaracterísticas permitidas</string>
     <string name="ignore_vulns">Ignorar vulnerabilidades de seguranza notificadas</string>
     <string name="downloads">Descarregamentos</string>
+    <string name="disable_download_version_check_summary">Permite descarregar versións máis antigas das aplicacións intaladas. Pode ser usado co parche \"letmedowngrade\" de Magisk.</string>
+    <string name="ignore">Ignorar</string>
+    <string name="warning_disable_battery_optimization">A partir de Android 12, a aplicación requere optimización da batería para executar procesos en segundo plano, como sincronizacións e descarregamentos. Se ignorar este permiso, os informes de erros serán ignorados.</string>
+    <string name="warning_show_notification">A partir de Android 13, a aplicación requere este permiso para ser notificado sobre os distintos procesos. Se ignorar este permiso, non recibirá notificacións.</string>
+    <string name="disable_signature_check">Desactivar verificación de sinaturas</string>
+    <string name="disable_signature_check_summary">Non comprobar se o APK descarregado ten a mesma sinatura que a aplicación instalada.</string>
+    <string name="keep_install_notification">Manter a notificación de instalación</string>
+    <string name="keep_install_notification_summary">Manter a notificación de instalación exitosa.</string>
+    <string name="allowed_licenses">Licenzas autorizadas</string>
+    <string name="cancel_all">Cancelar todo</string>
+    <string name="disable_download_version_check">Desactivar verificación da versión de descarregamento</string>
 </resources>
