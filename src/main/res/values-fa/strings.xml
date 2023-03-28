@@ -253,4 +253,10 @@
     <string name="trackers_location">ردیاب های مکان</string>
     <string name="action_change_permissions">تغییر مجوزها</string>
     <string name="action_open_website">گشودن وب سایت</string>
+    <string name="trackers_analytics">ردیاب های تجزیه و تحلیل</string>
+    <string name="permission_nearby_devices">دستگاه های نزدیک</string>
+    <string name="permission_physical_data">دسترسی برای داده های فیزیکی</string>
+    <string name="permission_identification_data">دسترسی برای داده های شناسایی</string>
+    <string name="trackers_identification">ردیاب های شناسایی</string>
+    <string name="trackers_bug">ردیاب های گزارش دهنده اشکال</string>
 </resources>
