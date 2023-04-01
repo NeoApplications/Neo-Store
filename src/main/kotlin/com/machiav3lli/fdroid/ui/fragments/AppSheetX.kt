@@ -31,7 +31,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -46,7 +45,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -330,7 +328,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
                     childFragmentManager
                 )
             }
-            else                                                                -> {
+            else                                                                 -> {
                 val productRepository =
                     viewModel.productRepos.value.asSequence()
                         .filter { it -> it.first.releases.any { it === release } }
@@ -388,11 +386,7 @@ class AppSheetX() : FullscreenBottomSheetDialogFragment(), Callbacks {
         }
     }
 
-    @OptIn(
-        ExperimentalMaterial3Api::class,
-        ExperimentalFoundationApi::class,
-        ExperimentalComposeUiApi::class
-    )
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     fun AppSheet() {
         val context = LocalContext.current

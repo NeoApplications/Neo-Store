@@ -50,7 +50,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.fragments.AppSheetX
-import com.machiav3lli.fdroid.ui.fragments.SortFilterSheet
 import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.MainNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavItem
@@ -106,7 +105,6 @@ class MainActivityX : AppCompatActivity() {
         InstalledVM.Factory(db)
     }
 
-    private lateinit var sheetSortFilter: SortFilterSheet
     private lateinit var sheetApp: AppSheetX
 
     @OptIn(
@@ -318,10 +316,5 @@ class MainActivityX : AppCompatActivity() {
     internal fun navigateProduct(packageName: String) {
         sheetApp = AppSheetX(packageName)
         sheetApp.showNow(supportFragmentManager, "Product $packageName")
-    }
-
-    internal fun navigateSortFilter(navPage: String) {
-        sheetSortFilter = SortFilterSheet(navPage)
-        sheetSortFilter.showNow(supportFragmentManager, "Sort/Filter Page of: $navPage")
     }
 }
