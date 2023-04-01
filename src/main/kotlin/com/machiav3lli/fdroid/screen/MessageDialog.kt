@@ -10,7 +10,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.RepoManager
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.utility.KParcelable
 import com.machiav3lli.fdroid.utility.PackageItemResolver
@@ -23,21 +22,6 @@ class MessageDialog() : DialogFragment() {
     }
 
     sealed class Message : KParcelable {
-        class DeleteRepositoryConfirm(val repoId: Long) : Message() {
-            override fun writeToParcel(dest: Parcel, flags: Int) {
-                dest.writeLong(repoId)
-            }
-
-            companion object {
-                @Suppress("unused")
-                @JvmField
-                val CREATOR = KParcelable.creator {
-                    val repoId = it.readLong()
-                    DeleteRepositoryConfirm(repoId)
-                }
-            }
-        }
-
         object CantEditSyncing : Message() {
             @Suppress("unused")
             @JvmField
@@ -152,14 +136,6 @@ class MessageDialog() : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val dialog = MaterialAlertDialogBuilder(requireContext())
         when (val message = requireArguments().getParcelable<Message>(EXTRA_MESSAGE)!!) {
-            is Message.DeleteRepositoryConfirm  -> {
-                dialog.setTitle(R.string.confirmation)
-                dialog.setMessage(R.string.delete_repository_DESC)
-                dialog.setPositiveButton(R.string.delete) { _, _ ->
-                    (parentFragment as RepoManager).onDeleteConfirm(message.repoId)
-                }
-                dialog.setNegativeButton(R.string.cancel, null)
-            }
             is Message.CantEditSyncing          -> {
                 dialog.setTitle(R.string.action_failed)
                 dialog.setMessage(R.string.cant_edit_sync_DESC)

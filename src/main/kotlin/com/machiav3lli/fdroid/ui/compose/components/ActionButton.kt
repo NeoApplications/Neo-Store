@@ -38,18 +38,18 @@ fun ActionButton(
     positive: Boolean = true,
     icon: ImageVector? = null,
     enabled: Boolean = true,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     ElevatedButton(
         modifier = modifier,
         colors = ButtonDefaults.elevatedButtonColors(
             contentColor = when {
                 positive -> MaterialTheme.colorScheme.onPrimaryContainer
-                else -> MaterialTheme.colorScheme.onTertiaryContainer
+                else     -> MaterialTheme.colorScheme.onTertiaryContainer
             },
             containerColor = when {
                 positive -> MaterialTheme.colorScheme.primaryContainer
-                else -> MaterialTheme.colorScheme.tertiaryContainer
+                else     -> MaterialTheme.colorScheme.tertiaryContainer
             }
         ),
         enabled = enabled,
@@ -104,7 +104,7 @@ fun FlatActionButton(
 fun MainActionButton(
     modifier: Modifier = Modifier,
     actionState: ActionState,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
 
     ElevatedButton(
@@ -114,14 +114,14 @@ fun MainActionButton(
         },
         colors = ButtonDefaults.elevatedButtonColors(
             containerColor = when (actionState) {
-                is ActionState.Cancel -> MaterialTheme.colorScheme.tertiaryContainer
+                is ActionState.Cancel   -> MaterialTheme.colorScheme.tertiaryContainer
                 is ActionState.NoAction -> MaterialTheme.colorScheme.inverseSurface
-                else -> MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
+                else                    -> MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
             },
             contentColor = when (actionState) {
-                is ActionState.Cancel -> MaterialTheme.colorScheme.onTertiaryContainer
+                is ActionState.Cancel   -> MaterialTheme.colorScheme.onTertiaryContainer
                 is ActionState.NoAction -> MaterialTheme.colorScheme.inverseOnSurface
-                else -> MaterialTheme.colorScheme.primary
+                else                    -> MaterialTheme.colorScheme.primary
             },
         )
     ) {
@@ -132,7 +132,7 @@ fun MainActionButton(
                     is ActionState.Cancel ->
                         (slideInVertically { height -> height } + fadeIn() with
                                 slideOutVertically { height -> -height } + fadeOut())
-                    else ->
+                    else                  ->
                         (slideInVertically { height -> -height } + fadeIn() with
                                 slideOutVertically { height -> height } + fadeOut())
                 }
@@ -156,7 +156,7 @@ fun MainActionButton(
 fun SecondaryActionButton(
     modifier: Modifier = Modifier,
     packageState: ComponentState?,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     packageState?.let {
         ElevatedButton(
