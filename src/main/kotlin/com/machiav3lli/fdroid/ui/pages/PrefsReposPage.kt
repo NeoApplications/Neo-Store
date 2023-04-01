@@ -10,14 +10,18 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -28,10 +32,10 @@ import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.ui.compose.RepositoriesRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.QrCode
+import com.machiav3lli.fdroid.ui.fragments.RepoPage
 import com.machiav3lli.fdroid.ui.viewmodels.PrefsVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,17 +43,10 @@ import kotlinx.coroutines.launch
 fun PrefsReposPage(viewModel: PrefsVM, address: String, fingerprint: String) {
     val context = LocalContext.current
     val prefsActivityX = context as PrefsActivityX
+    val scope = rememberCoroutineScope()
     val repos by viewModel.repositories.collectAsState()
-
-    LaunchedEffect(key1 = viewModel.showSheet) {
-        viewModel.showSheet.collectLatest {
-            if (it?.editMode == true) {
-                prefsActivityX.navigateEditRepo(it.repositoryId)
-            } else if (it != null && !it.editMode) {
-                prefsActivityX.navigateRepo(it.repositoryId)
-            }
-        }
-    }
+    val sheetData by viewModel.showSheet.collectAsState(initial = null)
+    val sheetState = rememberModalBottomSheetState(true)
 
     LaunchedEffect(key1 = address) {
         if (address.isNotEmpty()) {
@@ -134,5 +131,29 @@ fun PrefsReposPage(viewModel: PrefsVM, address: String, fingerprint: String) {
             },
             onLongClick = { viewModel.showRepositorySheet(it.id) }
         )
+
+        if (sheetData != null) {
+            ModalBottomSheet(
+                sheetState = sheetState,
+                containerColor = MaterialTheme.colorScheme.background,
+                dragHandle = null,
+                scrimColor = Color.Transparent,
+                onDismissRequest = {
+                    viewModel.closeRepositorySheet()
+                    scope.launch { sheetState.hide() }
+                }
+            ) {
+                sheetData?.let {
+                    RepoPage(
+                        repositoryId = it.repositoryId,
+                        initEditMode = it.editMode,
+                        onDismiss = {
+                            viewModel.closeRepositorySheet()
+                            scope.launch { sheetState.hide() }
+                        }
+                    ) { newRepo -> viewModel.updateRepo(newRepo) }
+                }
+            }
+        }
     }
 }
