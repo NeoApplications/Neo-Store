@@ -64,6 +64,12 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
         }
     }
 
+    fun closeRepositorySheet() {
+        viewModelScope.launch {
+            _showSheet.emit(null)
+        }
+    }
+
     private suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long =
         withContext(Dispatchers.IO) {
             db.repositoryDao.insert(
@@ -75,6 +81,20 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
             )
             db.repositoryDao.latestAddedId()
         }
+
+    fun updateRepo(newValue: Repository?) {
+        newValue?.let {
+            viewModelScope.launch {
+                update(it)
+            }
+        }
+    }
+
+    private suspend fun update(newValue: Repository) {
+        withContext(Dispatchers.IO) {
+            db.repositoryDao.put(newValue)
+        }
+    }
 
     fun insertExtras(vararg items: Extras) {
         viewModelScope.launch {
