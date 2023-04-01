@@ -6,17 +6,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -30,16 +36,20 @@ import com.machiav3lli.fdroid.ui.compose.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.compose.utils.vertical
+import com.machiav3lli.fdroid.ui.fragments.SortFilterPage
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.LatestVM
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LatestPage(viewModel: LatestVM) {
     val context = LocalContext.current
     val mainActivityX = context as MainActivityX
+    val scope = rememberCoroutineScope()
     val filteredPrimaryList by viewModel.filteredProducts.collectAsState()
     val secondaryList by viewModel.secondaryProducts.collectAsState(null)
     val installedList by viewModel.installed.collectAsState(null)
@@ -48,6 +58,8 @@ fun LatestPage(viewModel: LatestVM) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
     val favorites by mainActivityX.db.extrasDao.favoritesFlow.collectAsState(emptyArray())
+    var showSortSheet by remember { mutableStateOf(false) }
+    val sortSheetState = rememberModalBottomSheetState(true)
 
     LaunchedEffect(Unit) {
         mainActivityX.syncConnection.bind(context)
@@ -123,7 +135,7 @@ fun LatestPage(viewModel: LatestVM) {
                 ActionChip(
                     text = stringResource(id = R.string.sort_filter),
                     icon = Phosphor.FunnelSimple
-                ) { mainActivityX.navigateSortFilter(NavItem.Latest.destination) }
+                ) { showSortSheet = true }
             }
         }
         items(
@@ -155,6 +167,24 @@ fun LatestPage(viewModel: LatestVM) {
                         mainActivityX.syncConnection.binder?.installApps(listOf(it))
                 }
             )
+        }
+    }
+
+    if (showSortSheet) {
+        ModalBottomSheet(
+            sheetState = sortSheetState,
+            containerColor = MaterialTheme.colorScheme.background,
+            dragHandle = null,
+            scrimColor = Color.Transparent,
+            onDismissRequest = {
+                scope.launch { sortSheetState.hide() }
+                showSortSheet = false
+            }
+        ) {
+            SortFilterPage(NavItem.Latest.destination) {
+                scope.launch { sortSheetState.hide() }
+                showSortSheet = false
+            }
         }
     }
 }

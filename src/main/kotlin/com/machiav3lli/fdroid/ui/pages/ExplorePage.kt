@@ -10,7 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,6 +24,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -35,6 +39,7 @@ import com.machiav3lli.fdroid.ui.compose.components.CategoryChip
 import com.machiav3lli.fdroid.ui.compose.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
+import com.machiav3lli.fdroid.ui.fragments.SortFilterPage
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.SideNavBar
 import com.machiav3lli.fdroid.ui.viewmodels.ExploreVM
@@ -43,6 +48,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExplorePage(viewModel: ExploreVM) {
     val context = LocalContext.current
@@ -60,6 +66,8 @@ fun ExplorePage(viewModel: ExploreVM) {
     val selectedCategory = remember(Preferences[Preferences.Key.CategoriesFilterExplore]) {
         mutableStateOf(Preferences[Preferences.Key.CategoriesFilterExplore])
     }
+    var showSortSheet by remember { mutableStateOf(false) }
+    val sortSheetState = rememberModalBottomSheetState(true)
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
@@ -123,7 +131,9 @@ fun ExplorePage(viewModel: ExploreVM) {
             ActionChip(
                 text = stringResource(id = R.string.sort_filter),
                 icon = Phosphor.FunnelSimple
-            ) { mainActivityX.navigateSortFilter(NavItem.Explore.destination) }
+            ) {
+                showSortSheet = true
+            }
         }
         Row {
             SideNavBar(
@@ -171,6 +181,25 @@ fun ExplorePage(viewModel: ExploreVM) {
                         }
                     )
                 }
+            }
+        }
+
+    }
+
+    if (showSortSheet) {
+        ModalBottomSheet(
+            sheetState = sortSheetState,
+            containerColor = MaterialTheme.colorScheme.background,
+            dragHandle = null,
+            scrimColor = Color.Transparent,
+            onDismissRequest = {
+                scope.launch { sortSheetState.hide() }
+                showSortSheet = false
+            }
+        ) {
+            SortFilterPage(NavItem.Explore.destination) {
+                scope.launch { sortSheetState.hide() }
+                showSortSheet = false
             }
         }
     }

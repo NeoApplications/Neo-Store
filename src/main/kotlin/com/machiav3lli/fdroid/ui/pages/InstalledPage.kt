@@ -23,8 +23,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -32,9 +34,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
@@ -57,6 +61,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUp
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
+import com.machiav3lli.fdroid.ui.fragments.SortFilterPage
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.utility.onLaunchClick
@@ -71,6 +76,7 @@ import kotlinx.coroutines.withContext
 fun InstalledPage(viewModel: InstalledVM) {
     val context = LocalContext.current
     val mainActivityX = context as MainActivityX
+    val scope = rememberCoroutineScope()
     val filteredPrimaryList by viewModel.filteredProducts.collectAsState()
     val secondaryList by viewModel.secondaryProducts.collectAsState(null)
     val installedList by viewModel.installed.collectAsState(null)
@@ -84,6 +90,8 @@ fun InstalledPage(viewModel: InstalledVM) {
     val downloads = viewModel.downloadsMap
     val iconDetails by viewModel.iconDetails.collectAsState()
     val downloaded by viewModel.downloaded.collectAsState()
+    var showSortSheet by remember { mutableStateOf(false) }
+    val sortSheetState = rememberModalBottomSheetState(true)
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
@@ -273,7 +281,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                             ActionChip(
                                 text = stringResource(id = R.string.sort_filter),
                                 icon = Phosphor.FunnelSimple
-                            ) { mainActivityX.navigateSortFilter(NavItem.Installed.destination) }
+                            ) { showSortSheet = true }
                         }
                     }
                     items(
@@ -334,6 +342,24 @@ fun InstalledPage(viewModel: InstalledVM) {
                             mainActivityX.navigateProduct(item.packageName)
                         }
                     }
+                }
+            }
+        }
+
+        if (showSortSheet) {
+            ModalBottomSheet(
+                sheetState = sortSheetState,
+                containerColor = MaterialTheme.colorScheme.background,
+                dragHandle = null,
+                scrimColor = Color.Transparent,
+                onDismissRequest = {
+                    scope.launch { sortSheetState.hide() }
+                    showSortSheet = false
+                }
+            ) {
+                SortFilterPage(NavItem.Installed.destination) {
+                    scope.launch { sortSheetState.hide() }
+                    showSortSheet = false
                 }
             }
         }
