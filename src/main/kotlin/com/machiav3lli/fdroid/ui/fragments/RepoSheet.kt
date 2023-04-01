@@ -288,7 +288,8 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                             value = addressFieldValue,
                             colors = TextFieldDefaults.textFieldColors(
                                 containerColor = Color.Transparent,
-                                textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                             ),
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                             keyboardActions = KeyboardActions(
@@ -349,7 +350,8 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                         value = fingerprintFieldValue,
                         colors = TextFieldDefaults.textFieldColors(
                             containerColor = Color.Transparent,
-                            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         ),
                         textStyle = LocalTextStyle.current.copy(fontFamily = FontFamily.Monospace),
                         keyboardOptions = KeyboardOptions(
@@ -378,7 +380,8 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                         value = usernameFieldValue,
                         colors = TextFieldDefaults.textFieldColors(
                             containerColor = Color.Transparent,
-                            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         ),
                         isError = usernameValidity.value,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -407,7 +410,8 @@ class RepoSheet() : FullscreenBottomSheetDialogFragment(true), RepoManager {
                         value = passwordFieldValue,
                         colors = TextFieldDefaults.textFieldColors(
                             containerColor = Color.Transparent,
-                            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         ),
                         isError = passwordValidity.value,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
