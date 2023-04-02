@@ -91,10 +91,10 @@
     <string name="no_applications_available">Нет доступных приложений</string>
     <string name="no_applications_installed">Нет установленных приложений</string>
     <string name="no_description_available_DESC">Описание отсутствует.</string>
-    <string name="no_matching_applications_found">Не удалось найти ни одного подобного приложения</string>
+    <string name="no_matching_applications_found">Не найдено ни одного подобного приложения</string>
     <string name="no_proxy">Без прокси</string>
     <string name="notify_about_updates">Уведомлять о новых версиях приложений</string>
-    <string name="notify_about_updates_summary">Отображать уведомление о доступности новых версий.</string>
+    <string name="notify_about_updates_summary">Показывать уведомление о доступности новых версий.</string>
     <string name="number_of_applications">Количество приложений</string>
     <string name="ok">ОК</string>
     <string name="only_compatible_with_FORMAT">Совместимо только с %s</string>
@@ -202,7 +202,7 @@
     <string name="no_permissions_identified">Запрашиваемые разрешения не обнаружены</string>
     <string name="no_action_possible">Действия невозможны</string>
     <string name="show_screenshots">Показывать снимки экрана</string>
-    <string name="show_screenshots_description">Отображать снимки экрана на странице приложения.</string>
+    <string name="show_screenshots_description">Показывать снимки экрана на странице приложения.</string>
     <string name="favorite_add">Добавить в избранное</string>
     <string name="favorite_remove">Удалить из избранного</string>
     <string name="open">Открыть</string>
