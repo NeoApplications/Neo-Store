@@ -1,7 +1,6 @@
 package com.machiav3lli.fdroid.ui.compose.components
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Switch
@@ -20,7 +19,7 @@ fun SwitchPreference(
     modifier: Modifier = Modifier,
     text: String,
     initSelected: () -> Boolean,
-    onCheckedChanged: (Boolean) -> Unit
+    onCheckedChanged: (Boolean) -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -29,8 +28,10 @@ fun SwitchPreference(
         verticalAlignment = Alignment.CenterVertically
     ) {
         val (selected, select) = remember { mutableStateOf(initSelected()) }
-        Text(text = text)
-        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            modifier = Modifier.weight(1f, true),
+            text = text,
+        )
         Switch(
             checked = selected,
             colors = SwitchDefaults.colors(uncheckedBorderColor = Color.Transparent),
