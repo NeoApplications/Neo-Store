@@ -5,6 +5,7 @@ import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
 import com.machiav3lli.fdroid.TABLE_PRODUCT_NAME
 import com.machiav3lli.fdroid.TABLE_PRODUCT_TEMP_NAME
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.Author
 import com.machiav3lli.fdroid.entity.Donate
@@ -134,8 +135,10 @@ open class Product(
             matchRank = 0
         )
 
-    fun canUpdate(installed: Installed?): Boolean =
-        installed != null && compatible && versionCode > installed.versionCode && installed.signature in signatures
+    fun canUpdate(installed: Installed?): Boolean = installed != null &&
+            compatible &&
+            versionCode > installed.versionCode &&
+            (installed.signature in signatures || Preferences[Preferences.Key.DisableSignatureCheck])
 
     fun refreshVariables() {
         this.versionCode = selectedReleases.firstOrNull()?.versionCode ?: 0L

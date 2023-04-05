@@ -118,7 +118,11 @@ object Utils {
     ) {
         val productRepository = findSuggestedProduct(products, installed) { it.first }
         val compatibleReleases = productRepository?.first?.selectedReleases.orEmpty()
-            .filter { installed == null || installed.signature == it.signature }
+            .filter {
+                installed == null ||
+                        installed.signature == it.signature ||
+                        Preferences[Preferences.Key.DisableSignatureCheck]
+            }
         val releaseFlow = MutableStateFlow(compatibleReleases.firstOrNull())
         if (compatibleReleases.size > 1) {
             releaseFlow.emit(
@@ -209,8 +213,11 @@ fun <T> findSuggestedProduct(
     return products.maxWithOrNull(
         compareBy(
             {
-                extract(it).compatible &&
-                        (installed == null || installed.signature in extract(it).signatures)
+                extract(it).compatible && (
+                        installed == null ||
+                                installed.signature in extract(it).signatures ||
+                                Preferences[Preferences.Key.DisableSignatureCheck]
+                        )
             },
             { extract(it).versionCode },
         )

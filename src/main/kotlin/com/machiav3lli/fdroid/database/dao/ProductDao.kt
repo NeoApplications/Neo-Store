@@ -51,6 +51,7 @@ import com.machiav3lli.fdroid.TABLE_PRODUCT
 import com.machiav3lli.fdroid.TABLE_PRODUCT_NAME
 import com.machiav3lli.fdroid.TABLE_REPOSITORY
 import com.machiav3lli.fdroid.TABLE_REPOSITORY_NAME
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.QueryBuilder
 import com.machiav3lli.fdroid.database.entity.CategoryTemp
 import com.machiav3lli.fdroid.database.entity.Extras
@@ -183,7 +184,8 @@ interface ProductDao : BaseDao<Product> {
         val builder = QueryBuilder()
 
         // TODO improve signature matching logic
-        val signatureMatches = """$TABLE_INSTALLED.$ROW_SIGNATURE IS NOT NULL AND
+        val signatureMatches = if (Preferences[Preferences.Key.DisableSignatureCheck]) "1"
+        else """$TABLE_INSTALLED.$ROW_SIGNATURE IS NOT NULL AND
         $TABLE_PRODUCT.$ROW_SIGNATURES LIKE ('%' || $TABLE_INSTALLED.$ROW_SIGNATURE || '%') AND
         $TABLE_PRODUCT.$ROW_SIGNATURES != ''"""
 
