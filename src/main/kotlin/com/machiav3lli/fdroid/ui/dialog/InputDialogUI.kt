@@ -133,17 +133,6 @@ fun IntInputPrefDialogUI(
     }
 }
 
-//@Preview
-@Composable
-fun IntInputPrefDialogUIPrefview() {
-    val state = remember {
-        mutableStateOf(true)
-    }
-    AppTheme {
-        IntInputPrefDialogUI(Preferences.Key.NewApps, state)
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StringInputPrefDialogUI(
@@ -212,16 +201,5 @@ fun StringInputPrefDialogUI(
                 )
             }
         }
-    }
-}
-
-//@Preview
-@Composable
-fun StringInputPrefDialogUIPrefview() {
-    val state = remember {
-        mutableStateOf(true)
-    }
-    AppTheme {
-        StringInputPrefDialogUI(Preferences.Key.ProxyHost, state)
     }
 }

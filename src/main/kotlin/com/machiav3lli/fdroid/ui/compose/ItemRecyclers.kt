@@ -23,40 +23,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ProductItem
-import com.machiav3lli.fdroid.ui.compose.components.PRODUCT_CARD_HEIGHT
-import com.machiav3lli.fdroid.ui.compose.components.ProductCard
-import com.machiav3lli.fdroid.ui.compose.components.ProductsListItem
-import com.machiav3lli.fdroid.ui.compose.components.RepositoryItem
-
-@Composable
-fun ProductsVerticalRecycler(
-    productsList: List<Product>?,
-    repositories: Map<Long, Repository>,
-    favorites: Array<String> = emptyArray(),
-    modifier: Modifier = Modifier.fillMaxSize(),
-    onUserClick: (ProductItem) -> Unit = {},
-    onFavouriteClick: (ProductItem) -> Unit = {},
-    getInstalled: (String) -> Installed? = { null },
-    onActionClick: (ProductItem) -> Unit = {},
-) {
-    VerticalItemList(list = productsList, modifier = modifier) {
-        it.toItem(getInstalled(it.packageName)).let { item ->
-            ProductsListItem(
-                item = item,
-                repo = repositories[item.repositoryId],
-                isFavorite = favorites.contains(item.packageName),
-                onUserClick = onUserClick,
-                onFavouriteClick = onFavouriteClick,
-                installed = getInstalled.invoke(item.packageName),
-                onActionClick = onActionClick
-            )
-        }
-    }
-}
+import com.machiav3lli.fdroid.ui.components.PRODUCT_CARD_HEIGHT
+import com.machiav3lli.fdroid.ui.components.ProductCard
+import com.machiav3lli.fdroid.ui.components.RepositoryItem
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -117,7 +89,7 @@ fun <T> VerticalItemList(
         contentAlignment = if (list.isNullOrEmpty()) Alignment.Center else Alignment.TopStart
     ) {
         when {
-            list == null      -> Text(
+            list == null -> Text(
                 text = stringResource(id = R.string.loading_list),
                 color = MaterialTheme.colorScheme.onBackground
             )
@@ -126,7 +98,7 @@ fun <T> VerticalItemList(
                     items(items = list, key = itemKey, itemContent = itemContent)
                 }
             }
-            else              -> Text(
+            else -> Text(
                 text = stringResource(id = R.string.no_applications_available),
                 color = MaterialTheme.colorScheme.onBackground
             )
