@@ -15,8 +15,10 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -49,10 +51,11 @@ import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
-import com.machiav3lli.fdroid.ui.fragments.AppSheetX
 import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.MainNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.ui.pages.AppSheet
+import com.machiav3lli.fdroid.ui.viewmodels.AppSheetVM
 import com.machiav3lli.fdroid.ui.viewmodels.ExploreVM
 import com.machiav3lli.fdroid.ui.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.ui.viewmodels.LatestVM
@@ -89,6 +92,7 @@ class MainActivityX : AppCompatActivity() {
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
     lateinit var expanded: MutableState<Boolean>
+    private lateinit var appSheetPackage: MutableState<String>
 
     val db
         get() = (application as MainApplication).db
@@ -104,8 +108,6 @@ class MainActivityX : AppCompatActivity() {
     val installedViewModel: InstalledVM by viewModels {
         InstalledVM.Factory(db)
     }
-
-    private lateinit var sheetApp: AppSheetX
 
     @OptIn(
         ExperimentalAnimationApi::class,
@@ -137,6 +139,14 @@ class MainActivityX : AppCompatActivity() {
 
                 navController.addOnDestinationChangedListener { _, destination, _ ->
                     barVisible = destination.route != NavItem.Permissions.destination
+                }
+                appSheetPackage = remember { mutableStateOf("") }
+                val appSheetState = rememberModalBottomSheetState(true)
+                val appSheetVM = remember(appSheetPackage.value) {
+                    AppSheetVM(
+                        MainApplication.db,
+                        appSheetPackage.value,
+                    )
                 }
 
                 Scaffold(
@@ -200,6 +210,28 @@ class MainActivityX : AppCompatActivity() {
                         modifier = Modifier.padding(paddingValues),
                         navController = navController
                     )
+
+                    if (appSheetPackage.value.isNotEmpty()) {
+                        ModalBottomSheet(
+                            sheetState = appSheetState,
+                            containerColor = MaterialTheme.colorScheme.background,
+                            dragHandle = null,
+                            scrimColor = Color.Transparent,
+                            onDismissRequest = {
+                                mScope.launch { appSheetState.hide() }
+                                appSheetPackage.value = ""
+                            }
+                        ) {
+
+                            AppSheet(
+                                appSheetVM,
+                                appSheetPackage.value,
+                            ) {
+                                mScope.launch { appSheetState.hide() }
+                                appSheetPackage.value = ""
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -314,7 +346,6 @@ class MainActivityX : AppCompatActivity() {
     }
 
     internal fun navigateProduct(packageName: String) {
-        sheetApp = AppSheetX(packageName)
-        sheetApp.showNow(supportFragmentManager, "Product $packageName")
+        appSheetPackage.value = packageName
     }
 }
