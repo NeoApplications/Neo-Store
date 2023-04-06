@@ -37,6 +37,7 @@ import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.entity.DownloadState
 import com.machiav3lli.fdroid.entity.LinkType
 import com.machiav3lli.fdroid.entity.PermissionGroup
 import com.machiav3lli.fdroid.service.Connection
@@ -51,6 +52,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.User
 import com.machiav3lli.fdroid.ui.compose.utils.Callbacks
 import com.machiav3lli.fdroid.ui.dialog.LaunchDialog
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.ui.viewmodels.AppSheetVM
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.android.singleSignature
 import com.machiav3lli.fdroid.utility.extension.android.versionCodeCompat
@@ -307,6 +309,56 @@ fun Context.startLauncherActivity(packageName: String, name: String) {
     } catch (e: Exception) {
         e.printStackTrace()
     }
+}
+
+fun Context.shareIntent(packageName: String, appName: String, repository: String) {
+    val shareIntent = Intent(Intent.ACTION_SEND)
+    val extraText = when {
+        repository.contains("IzzyOnDroid") -> "https://apt.izzysoft.de/fdroid/index/apk/$packageName"
+        else                               -> if (Android.sdk(24)) {
+            "https://www.f-droid.org/${resources.configuration.locales[0].language}/packages/${packageName}/"
+        } else "https://www.f-droid.org/${resources.configuration.locale.language}/packages/${packageName}/"
+    }
+
+    shareIntent.type = "text/plain"
+    shareIntent.putExtra(Intent.EXTRA_TITLE, appName)
+    shareIntent.putExtra(Intent.EXTRA_SUBJECT, appName)
+    shareIntent.putExtra(Intent.EXTRA_TEXT, extraText)
+
+    startActivity(Intent.createChooser(shareIntent, "Where to Send?"))
+}
+
+fun updateDownloadState(viewModel: AppSheetVM, downloadState: DownloadService.State?) {
+    val state = when (downloadState) {
+        is DownloadService.State.Pending     -> DownloadState.Pending
+        is DownloadService.State.Connecting  -> DownloadState.Connecting
+        is DownloadService.State.Downloading -> DownloadState.Downloading(
+            downloadState.read,
+            downloadState.total
+        )
+        else                                 -> null
+    }
+    viewModel.updateDownloadState(state)
+    viewModel.updateActions()
+}
+
+
+fun Context.shareReleaseIntent(appName: String, address: String) {
+    val shareIntent = Intent(Intent.ACTION_SEND)
+    shareIntent.type = "text/plain"
+    shareIntent.putExtra(Intent.EXTRA_TITLE, appName)
+    shareIntent.putExtra(Intent.EXTRA_SUBJECT, appName)
+    shareIntent.putExtra(Intent.EXTRA_TEXT, address)
+
+    startActivity(Intent.createChooser(shareIntent, "Where to share?"))
+}
+
+
+fun Context.openPermissionPage(packageName: String) {
+    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(
+        Uri.fromParts("package", packageName, null)
+    )
+    startActivity(intent)
 }
 
 fun Product.generateLinks(context: Context): List<LinkType> {
