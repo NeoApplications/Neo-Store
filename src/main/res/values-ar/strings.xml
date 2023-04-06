@@ -252,7 +252,7 @@
     <string name="trackers_ads">متتبع الإعلانات</string>
     <string name="trackers_ads_description">متتبع لعرض الإعلانات وتتبع تفاعلك معها.</string>
     <string name="trackers_profiling">متتبع التنميط</string>
-    <string name="trackers_profiling_description">متتبعات التي تحاول إنشاء ملف تعريف لك ، بناءً على البيانات التي تجمعها.</string>
+    <string name="trackers_profiling_description">المتتبعات التي تحاول إنشاء ملف تعريف لك ، بناءً على البيانات التي تجمعها.</string>
     <string name="trackers_location">متتبعات الموقع</string>
     <string name="trackers_location_description">المتتبعات التي تركز على تتبع موقعك الفعلي.</string>
     <string name="trackers_bug">متتبعات لرصد الأخطاء البرمجية</string>
@@ -306,10 +306,23 @@
     <string name="allowed_anti_features">الميزات المضادة المسموح بها</string>
     <string name="show_trackers">عرض المتتبعات</string>
     <string name="show_trackers_description">احصل على متتبعات التطبيقات وأظهرها من خصوصية Exodus.</string>
-    <string name="no_trackers_data_available">لا توجد بيانات متاحة عن المتعقبات (حتى الآن)!</string>
-    <string name="enable_download_directory_summary">السماح بالاحتفاظ بملفات APK التي تم تحميلها في مسار معين.</string>
+    <string name="no_trackers_data_available">لا توجد بيانات متاحة عن المتعقبات (حتى الآن).</string>
+    <string name="enable_download_directory_summary">يسمح بالاحتفاظ بملفات APK التي تم تنزيلها في مجلد مختار.</string>
     <string name="post_notifications_permission_title">إذن نشر إشعار</string>
     <string name="post_notifications_permission_message">يتطلب بدء تشغيل تطبيقات Android 13 هذا الإذن لتتمكن من نشر الإشعارات.</string>
-    <string name="enable_download_directory">استخدم مسار التحميل المخصص</string>
-    <string name="custom_download_directory">دليل تنزيل مخصص</string>
+    <string name="enable_download_directory">استخدام مجلد التنزيل المخصص</string>
+    <string name="custom_download_directory">مجلد تنزيل مخصص</string>
+    <string name="downloads">التنزيلات</string>
+    <string name="ignore_vulns">تجاهل الثغرات الأمنية المبلغ عنها</string>
+    <string name="disable_download_version_check_summary">يسمح بتنزيل الإصدارات القديمة من التطبيقات المثبتة. يمكن استخدامه مع رقعة \"letmedowngrade\" من Magisk.</string>
+    <string name="ignore">تجاهل</string>
+    <string name="warning_disable_battery_optimization">بدءًا من Android 12 ، يتطلب التطبيق تحسين البطارية للقيام بعمليات في الخلفية مثل المزامنة والتنزيل. إذا تجاهلت هذا الإذن ، فستترك لوحدك وسيتم تجاهل تقارير الأعطال الخاصة بك.</string>
+    <string name="warning_show_notification">بدءا من Android 13 ، يتطلب التطبيق هذا الإذن لإعلامك بالعمليات المختلفة. إذا تجاهلت هذا الإذن، فلن تتلقى أي إشعارات.</string>
+    <string name="disable_signature_check_summary">لا تتحقق مما إذا كان APK الذي تم تنزيله له نفس توقيع التطبيق المثبت.</string>
+    <string name="disable_signature_check">تعطيل التحقق من التوقيع</string>
+    <string name="keep_install_notification">استمر في إشعار التثبيت</string>
+    <string name="keep_install_notification_summary">احتفظ بإشعار تثبيت التطبيق بنجاح.</string>
+    <string name="allowed_licenses">التراخيص المسموح بها</string>
+    <string name="cancel_all">إلغاء الكل</string>
+    <string name="disable_download_version_check">تعطيل التحقق من إصدار التنزيل</string>
 </resources>

@@ -301,5 +301,23 @@
     <string name="file_share_text">来自 Neo 商店的文件</string>
     <string name="show_trackers">显示跟踪器</string>
     <string name="show_trackers_description">从 Exodus Privacy 获取并显示应用程序的跟踪器。</string>
-    <string name="no_trackers_data_available">（尚且）没有关于跟踪器的数据！</string>
+    <string name="no_trackers_data_available">没有关于跟踪器的数据（尚未）。</string>
+    <string name="post_notifications_permission_title">允许发布通知</string>
+    <string name="post_notifications_permission_message">启动 Android 13 应用需要此权限才能发布通知。</string>
+    <string name="enable_download_directory">使用自定义下载文件夹</string>
+    <string name="enable_download_directory_summary">允许将下载的 APK 保存在选定的文件夹中。</string>
+    <string name="custom_download_directory">自定义下载文件夹</string>
+    <string name="downloads">下载</string>
+    <string name="ignore_vulns">忽略报告的安全漏洞</string>
+    <string name="disable_signature_check_summary">不要检查下载的 APK 是否与已安装的应用具有相同的签名。</string>
+    <string name="disable_download_version_check_summary">允许下载旧版本的已安装应用程序。可与 Magisk 的“letmedowngrade”补丁结合使用。</string>
+    <string name="ignore">忽略</string>
+    <string name="warning_disable_battery_optimization">从 Android 12 开始，此应用需要电池优化才能执行同步和下载等后台进程。如果您不授予此权限，您就只能依靠自己了，您的崩溃报告将被忽略。</string>
+    <string name="disable_signature_check">禁用签名检查</string>
+    <string name="keep_install_notification">保留安装通知</string>
+    <string name="keep_install_notification_summary">保留成功安装应用的通知。</string>
+    <string name="allowed_licenses">允许的许可证</string>
+    <string name="cancel_all">全部取消</string>
+    <string name="disable_download_version_check">禁止下载版本检查</string>
+    <string name="warning_show_notification">从 Android 13 开始，此应用需要通知权限才能在不同进程中通知您。如果您不授予此权限，您将不会收到任何通知。</string>
 </resources>

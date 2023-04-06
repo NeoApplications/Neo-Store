@@ -253,7 +253,7 @@
     <string name="trackers_ads">Pelacak iklan</string>
     <string name="trackers_ads_description">Pelacak yang digunakan untuk menampilkan iklan dan melacak interaksinya.</string>
     <string name="trackers_profiling">Pelacak profil</string>
-    <string name="trackers_profiling_description">Pelacak yang mencoba untuk membuat sebuah profil dari Anda, berdasarkan data yang nereka kumpulkan.</string>
+    <string name="trackers_profiling_description">Pelacak yang mencoba untuk membuat sebuah profil dari Anda, berdasarkan data yang mereka kumpulkan.</string>
     <string name="trackers_location">Pelacak lokasi</string>
     <string name="trackers_location_description">Pelacak yang fokus pada melacak lokasi fisik Anda.</string>
     <string name="trackers_bug">Pelacak laporan kutu</string>
@@ -301,5 +301,23 @@
     <string name="allowed_anti_features">Anti-fitur yang diizinkan</string>
     <string name="show_trackers">Tampilkan pelacak</string>
     <string name="show_trackers_description">Dapatkan dan tampilkan pelacak aplikasi dari Exodus Privacy.</string>
-    <string name="no_trackers_data_available">Belum ada data yang tersedia pada pelacak!</string>
+    <string name="no_trackers_data_available">Belum ada data yang tersedia pada pelacak.</string>
+    <string name="post_notifications_permission_title">Izin untuk mengirim notifikasi</string>
+    <string name="post_notifications_permission_message">Mulai dari Android 13, aplikasi memerlukan izin ini untuk dapat mengirim pemberitahuan.</string>
+    <string name="enable_download_directory">Gunakan folder unduhan khusus</string>
+    <string name="enable_download_directory_summary">Memperbolehkan menjaga APK terunduh di folder yang dipilih.</string>
+    <string name="custom_download_directory">Folder unduhan khusus</string>
+    <string name="ignore_vulns">Abaikan kerentanan keamanan yang dilaporkan</string>
+    <string name="downloads">Unduhan</string>
+    <string name="disable_signature_check_summary">Jangan periksa apakah APK yang diunduh memiliki tanda tangan yang sama dengan aplikasi yang diinstal.</string>
+    <string name="ignore">Abaikan</string>
+    <string name="warning_show_notification">Mulai Android 13, aplikasi ini memerlukan izin ini untuk memberi tahu Anda tentang berbagai proses. Jika Anda mengabaikan izin ini, Anda tidak akan mendapatkan pemberitahuan apa pun.</string>
+    <string name="disable_signature_check">Nonaktifkan pemeriksaan tanda tangan</string>
+    <string name="keep_install_notification">Jaga notifikasi penginstalan</string>
+    <string name="allowed_licenses">Lisensi yang diperbolehkan</string>
+    <string name="keep_install_notification_summary">Jaga notifikasi ketika berhasil menginstal aplikasi.</string>
+    <string name="cancel_all">Batal semua</string>
+    <string name="disable_download_version_check">Nonaktifkan pemeriksaan versi terunduh</string>
+    <string name="warning_disable_battery_optimization">Mulai Android 12, aplikasi ini membutuhkan pengoptimalan baterai untuk melakukan proses latar belakang seperti sinkronisasi dan pengunduhan. Jika Anda mengabaikan izin ini, Anda akan dibiarkan berjalan sendiri dan laporan kerusakan akan diabaikan.</string>
+    <string name="disable_download_version_check_summary">Memperbolehkan mengunduh versi lama dari aplikasi yang terinstal. Dapat digunakan dengan kombinasi patch Magisk \"letmedowngrade\".</string>
 </resources>

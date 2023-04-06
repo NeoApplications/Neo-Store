@@ -159,7 +159,7 @@
     <string name="trackers_ads">Rastreadores de anúncios</string>
     <string name="trackers_ads_description">Rastreadores utilizados para mostrar anúncios e rastrear a sua interacção com estes.</string>
     <string name="trackers_profiling">Rastreadores de perfil</string>
-    <string name="trackers_profiling_description">Rastreadores que tentam criar um perfil de si, com base nos dados que agregam.</string>
+    <string name="trackers_profiling_description">Rastreadores que tentam criar um perfil seu, com base nos dados que agregam.</string>
     <string name="trackers_location">Rastreadores de localização</string>
     <string name="trackers_location_description">Rastreadores que se concentram no rastreio da sua localização física.</string>
     <string name="trackers_bug">Rastreadores de informação de bugs</string>
@@ -303,5 +303,23 @@
     <string name="allowed_anti_features">Anti-Características permitidas</string>
     <string name="show_trackers">Mostrar rastreadores</string>
     <string name="show_trackers_description">Obtenha e mostre os rastreadores de aplicativos da Exodus Privacy.</string>
-    <string name="no_trackers_data_available">Nenhum dado sobre rastreadores está disponível (ainda)!</string>
+    <string name="no_trackers_data_available">Não existem dados sobre rastreadores disponíveis (ainda).</string>
+    <string name="custom_download_directory">Pasta de download personalizada</string>
+    <string name="post_notifications_permission_title">Permissão para enviar notificações</string>
+    <string name="post_notifications_permission_message">Iniciar aplicativos do Android 13 requer essa permissão para poder postar notificações.</string>
+    <string name="enable_download_directory_summary">Permite manter APKs baixados em uma pasta escolhida.</string>
+    <string name="enable_download_directory">Usar pasta de download personalizada</string>
+    <string name="ignore_vulns">Ignorar vulnerabilidades de segurança relatadas</string>
+    <string name="downloads">Transferências</string>
+    <string name="ignore">Ignorar</string>
+    <string name="disable_signature_check_summary">Não verifique se o APK descarregado tem a mesma assinatura que o aplicativo instalado.</string>
+    <string name="keep_install_notification">Manter notificação de instalação</string>
+    <string name="keep_install_notification_summary">Manter a notificação de instalação bem sucedida de uma aplicação.</string>
+    <string name="allowed_licenses">Licenças permitidas</string>
+    <string name="cancel_all">Cancelar tudo</string>
+    <string name="disable_download_version_check">Desativar a verificação da versão de download</string>
+    <string name="warning_disable_battery_optimization">A partir do Android 12, a aplicação requer otimização da bateria para fazer processos de fundo como a sincronização e o download. Se ignorar esta permissão é deixado por sua conta e os seus relatórios de crash serão ignorados.</string>
+    <string name="disable_signature_check">Desativar verificação de assinatura</string>
+    <string name="warning_show_notification">A partir do Android 13, o aplicativo requer esta permissão para ser notificado sobre os diferentes processos. Se ignorar esta permissão, não receberá qualquer notificação.</string>
+    <string name="disable_download_version_check_summary">Permite descarregar versões mais antigas das aplicações instaladas. Pode ser utilizado em combinação com o patch \"letmedowngrade\" da Magisk.</string>
 </resources>

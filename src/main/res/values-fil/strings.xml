@@ -302,5 +302,20 @@
     <string name="allowed_anti_features">Mga pinayagang \'Di-gustong feature</string>
     <string name="show_trackers">Ipakita ang mga tracker</string>
     <string name="show_trackers_description">Kunin at ipakita ang mga tracker sa app mula sa talaan ng Exodus Privacy.</string>
-    <string name="no_trackers_data_available">Wala (pang) datos tungkol sa mga tracker!</string>
+    <string name="no_trackers_data_available">Wala (pang) datos tungkol sa mga tracker.</string>
+    <string name="post_notifications_permission_title">Pahintulot para magpaskil ng mga notipikasyon</string>
+    <string name="post_notifications_permission_message">Kailangan ng mga app ang pahintulot na ito para makapagpaskil ng mga notipikasyon simula Android 13.</string>
+    <string name="enable_download_directory_summary">Ilagay at panatilihin ang mga na-download na APK sa napiling folder.</string>
+    <string name="enable_download_directory">Gumamit ng ipinasadyang folder para sa mga download</string>
+    <string name="custom_download_directory">Ipinasadyang folder para sa mga download</string>
+    <string name="ignore_vulns">Huwag pansinin ang mga naiulat na butas sa seguridad</string>
+    <string name="downloads">Mga Download</string>
+    <string name="warning_disable_battery_optimization">Simula Android 12, kailangan ng app ang optimisasyon sa baterya para gawin ang mga proseso sa background tulad ng pagsi-sync at pagda-download. Kung hindi mo papansinin ang pahintulot na ito, ikaw na lang ang bahala sa sarili mo at hindi na papansinin ang mga ulat sa pag-crash.</string>
+    <string name="disable_signature_check_summary">Huwag siguraduhing magkapareho ang pirma ng na-download na APK at ng naka-install na app.</string>
+    <string name="ignore">Huwag pansinin</string>
+    <string name="warning_show_notification">Simula Android 13, kailangan ang pahintulot na ito para maabisuhan ka sa mga kasalukyang proseso. Kung hindi mo papansinin ang pahintulot na ito, wala kang notipikasyong makikita.</string>
+    <string name="disable_signature_check">Huwag beripikahin ang mga pirma</string>
+    <string name="keep_install_notification">Panatilihin ang notipikasyon ng pag-install</string>
+    <string name="keep_install_notification_summary">Panatilihin ang notipikasyon ng matagumpay na pag-install ng app.</string>
+    <string name="allowed_licenses">Mga pinapayagang lisensya</string>
 </resources>

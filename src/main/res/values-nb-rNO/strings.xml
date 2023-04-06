@@ -308,4 +308,17 @@
     <string name="trackers_note_0">Er dette et program, eller spionvare\?</string>
     <string name="trackers_note_1">Inkluderer mange sporere for sensitive data</string>
     <string name="trackers_note_4">Minimalt antall eller ingen sporere</string>
+    <string name="ignore_vulns">Ignorer rapporterte sikkerhetssårbarheter</string>
+    <string name="downloads">Nedlastinger</string>
+    <string name="cancel_all">Avbryt alle</string>
+    <string name="keep_install_notification">Behold installasjonsmerknad</string>
+    <string name="warning_disable_battery_optimization">Fra Android 12 krever programmet batterioptimisering for å synkronisere og laste ned. Hvis du ignorerer dette vil dine krasjrapporter ignoreres.</string>
+    <string name="disable_download_version_check">Skru av sjekk av nedlastingsversjon</string>
+    <string name="warning_show_notification">Fra Android 13 krever programmet tilgang til å gi merknader om de forskjellige prosessene. Hvis du ignorerer dette får du ingen merknader.</string>
+    <string name="keep_install_notification_summary">Behold merknad om installasjon av program.</string>
+    <string name="disable_download_version_check_summary">Tillater nedlasting av eldre versjoner av installerte programmer. Kan brukes med magisk sin «letmedowngrade»-feilfiks.</string>
+    <string name="disable_signature_check_summary">Ikke sjekk om nedlastet APK har samme signatur som installert program.</string>
+    <string name="allowed_licenses">Tillatte lisenser</string>
+    <string name="ignore">Ignorer</string>
+    <string name="disable_signature_check">Skru av signatursjekk</string>
 </resources>

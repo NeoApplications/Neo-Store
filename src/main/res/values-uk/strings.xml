@@ -304,5 +304,23 @@
     <string name="file_share_text">Файл з NeoStore</string>
     <string name="show_trackers">Показати трекери</string>
     <string name="show_trackers_description">Отримуйте та показуйте трекери застосунків від Exodus Privacy.</string>
-    <string name="no_trackers_data_available">Даних про стеження немає (поки що)!</string>
+    <string name="no_trackers_data_available">Даних про стеження немає (поки що).</string>
+    <string name="post_notifications_permission_title">Дозвіл на надсилання сповіщень</string>
+    <string name="post_notifications_permission_message">Запуск застосунків Android 13 вимагає дозволу, щоб мати можливість розміщувати сповіщення.</string>
+    <string name="enable_download_directory">Використовувати власну теку завантажень</string>
+    <string name="enable_download_directory_summary">Дозволяє зберігати завантажені APK у вибраній папці.</string>
+    <string name="custom_download_directory">Власна тека завантажень</string>
+    <string name="ignore_vulns">Ігнорувати виявлені вразливості безпеки</string>
+    <string name="downloads">Завантаження</string>
+    <string name="disable_signature_check_summary">Не перевіряти, чи завантажений APK має той самий підпис, що і встановлений застосунок.</string>
+    <string name="ignore">Ігнорувати</string>
+    <string name="disable_signature_check">Вимкнути перевірку підпису</string>
+    <string name="allowed_licenses">Дозволені ліцензії</string>
+    <string name="cancel_all">Скасувати все</string>
+    <string name="disable_download_version_check">Вимкнути перевірку версії завантаження</string>
+    <string name="warning_disable_battery_optimization">Починаючи з Android 12, застосунок вимагає оптимізації батареї, щоб зробити фонові процеси, такі як синхронізація та завантаження. Якщо ви ігноруєте цей дозвіл, ви залишені самостійно, і ваші звіти про збої будуть проігноровані.</string>
+    <string name="warning_show_notification">Починаючи з Android 13, застосунок вимагає цього дозволу, щоб повідомити вас про різні процеси. Якщо ви ігноруєте цей дозвіл, ви не отримаєте жодних повідомлень.</string>
+    <string name="disable_download_version_check_summary">Дозволяє завантажувати старіші версії встановлених застосунків. Може використовуватися у поєднанні з патчем Magisk \"letmedowngrade\".</string>
+    <string name="keep_install_notification">Отримувати сповіщення про встановлення</string>
+    <string name="keep_install_notification_summary">Зберігайте сповіщення про успішне встановлення застосунку.</string>
 </resources>
