@@ -1,12 +1,14 @@
 package com.machiav3lli.fdroid.ui.compose.components.privacy
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,23 +28,26 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.compose.components.Tooltip
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowCircleLeft
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowCircleRight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyQuestion
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CrosshairSimple
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Nut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
 import com.machiav3lli.fdroid.ui.compose.theme.LightGreen
 import com.machiav3lli.fdroid.ui.compose.theme.Orange
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MeterIconsBar(
     modifier: Modifier = Modifier,
     selectedTrackers: Int? = null,
     selectedPermissions: Int? = null,
+    pagerState: PagerState,
     onClick: () -> Unit = {},
 ) {
     Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier.padding(horizontal = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(
@@ -83,8 +88,10 @@ fun MeterIconsBar(
         }
         IconButton(onClick = onClick) {
             Icon(
-                imageVector = Phosphor.Nut,
-                contentDescription = ""
+                imageVector = if (pagerState.currentPage == 0) Phosphor.ArrowCircleRight
+                else Phosphor.ArrowCircleLeft,
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = stringResource(id = R.string.privacy_panel)
             )
         }
     }
