@@ -24,11 +24,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.NonBooleanPrefsMeta
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.content.PrefsEntries
+import com.machiav3lli.fdroid.ui.compose.components.ActionButton
 import com.machiav3lli.fdroid.ui.compose.components.DialogNegativeButton
 import com.machiav3lli.fdroid.ui.compose.components.DialogPositiveButton
+import com.machiav3lli.fdroid.ui.compose.components.FlatActionButton
 import com.machiav3lli.fdroid.ui.compose.components.SingleSelectionListItem
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.Utils.getLocaleOfCode
@@ -152,6 +155,60 @@ fun EnumSelectionPrefDialogUI(
                         openDialogCustom.value = false
                     }
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun <T> ActionSelectionDialogUI(
+    titleId: Int,
+    options: Map<T, String>,
+    openDialogCustom: MutableState<Boolean>,
+    onAction: (T) -> Unit,
+) {
+    val context = LocalContext.current
+
+    Card(
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.padding(8.dp),
+        elevation = CardDefaults.elevatedCardElevation(8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = stringResource(titleId),
+                style = MaterialTheme.typography.titleLarge
+            )
+            LazyColumn(
+                modifier = Modifier
+                    .padding(top = 16.dp, bottom = 8.dp)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                items(items = options.keys.toList()) {
+                    ActionButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = options[it] ?: stringResource(id = R.string.unknown),
+                    ) {
+                        onAction(it)
+                    }
+                }
+            }
+
+            Row(
+                Modifier.fillMaxWidth()
+            ) {
+                FlatActionButton(
+                    modifier = Modifier.weight(1f),
+                    text = stringResource(id = R.string.cancel)
+                ) {
+                    openDialogCustom.value = false
+                }
             }
         }
     }
