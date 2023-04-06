@@ -2,7 +2,6 @@ package com.machiav3lli.fdroid.ui.compose.components.appsheet
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,7 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -105,43 +103,39 @@ fun TopBarHeader(
     state: DownloadState? = null,
     actions: @Composable () -> Unit = {},
 ) {
-    Surface(
-        modifier = modifier
-            .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 0.dp)
-            .fillMaxWidth(),
-        shape = MaterialTheme.shapes.large,
-        tonalElevation = 8.dp
+    Column(
+        Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
     ) {
-        Column {
-            Row(
-                modifier = modifier.padding(16.dp),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
+        Row(
+            modifier = modifier.padding(0.dp),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            NetworkImage(
+                modifier = Modifier.size(56.dp),
+                data = icon
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.SpaceAround
             ) {
-                NetworkImage(
-                    modifier = Modifier.size(56.dp),
-                    data = icon
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.Start,
-                    verticalArrangement = Arrangement.SpaceAround
-                ) {
-                    Text(text = appName, style = MaterialTheme.typography.titleLarge)
-                    Text(text = packageName, style = MaterialTheme.typography.bodyMedium)
-                }
-                Box { actions() }
+                Text(text = appName, style = MaterialTheme.typography.titleMedium)
+                Text(text = packageName, style = MaterialTheme.typography.bodyMedium)
             }
+            Box { actions() }
+        }
 
-            AnimatedVisibility(visible = state is DownloadState) {
-                DownloadProgress(
-                    modifier = Modifier.padding(horizontal = 12.dp),
-                    totalSize = if (state is DownloadState.Downloading) state.total ?: 1L else 1L,
-                    isIndeterminate = state !is DownloadState.Downloading,
-                    downloaded = if (state is DownloadState.Downloading) state.downloaded else 0L,
-                )
-            }
+        AnimatedVisibility(visible = state is DownloadState) {
+            DownloadProgress(
+                modifier = Modifier.padding(horizontal = 4.dp),
+                totalSize = if (state is DownloadState.Downloading) state.total ?: 1L else 1L,
+                isIndeterminate = state !is DownloadState.Downloading,
+                downloaded = if (state is DownloadState.Downloading) state.downloaded else 0L,
+            )
         }
     }
 }
@@ -159,7 +153,6 @@ fun CardButton(
         modifier = modifier
             .clip(MaterialTheme.shapes.medium)
             .combinedClickable(onClick = onClick, onLongClick = onLongClick)
-            .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
             .padding(vertical = 18.dp, horizontal = 12.dp),
         color = Color.Transparent
     ) {

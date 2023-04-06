@@ -97,7 +97,6 @@ import com.machiav3lli.fdroid.ui.compose.components.toScreenshotItem
 import com.machiav3lli.fdroid.ui.compose.icons.Icon
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.icon.Opensource
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowCircleLeft
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyleft
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyright
@@ -366,40 +365,33 @@ fun AppSheet(
                         icon = imageData,
                         state = downloadState,
                         actions = {
-                            if (!showPrivacyPage)
-                                CardButton(
-                                    icon = if (privacyNote.sourceType.isFree) Phosphor.Copyleft
-                                    else if (privacyNote.sourceType.isOpenSource) Icon.Opensource
-                                    else if (privacyNote.sourceType.isSourceAvailable) Phosphor.Copyright
-                                    else Phosphor.GlobeSimple,
-                                    description = stringResource(id = R.string.source_code),
-                                    onClick = {
-                                        product.source.let { link ->
-                                            if (link.isNotEmpty()) {
-                                                context.startActivity(
-                                                    Intent(Intent.ACTION_VIEW, link.toUri())
+                            CardButton(
+                                icon = if (privacyNote.sourceType.isFree) Phosphor.Copyleft
+                                else if (privacyNote.sourceType.isOpenSource) Icon.Opensource
+                                else if (privacyNote.sourceType.isSourceAvailable) Phosphor.Copyright
+                                else Phosphor.GlobeSimple,
+                                description = stringResource(id = R.string.source_code),
+                                onClick = {
+                                    product.source.let { link ->
+                                        if (link.isNotEmpty()) {
+                                            context.startActivity(
+                                                Intent(Intent.ACTION_VIEW, link.toUri())
+                                            )
+                                        } else if (product.web.isNotEmpty()) {
+                                            context.startActivity(
+                                                Intent(
+                                                    Intent.ACTION_VIEW,
+                                                    product.web.toUri()
                                                 )
-                                            } else if (product.web.isNotEmpty()) {
-                                                context.startActivity(
-                                                    Intent(
-                                                        Intent.ACTION_VIEW,
-                                                        product.web.toUri()
-                                                    )
-                                                )
-                                            }
-                                        }
-                                    },
-                                    onLongClick = {
-                                        product.source.let { link ->
-                                            if (link.isNotEmpty()) copyLinkToClipboard(link)
-
+                                            )
                                         }
                                     }
-                                ) else CardButton(
-                                icon = Phosphor.ArrowCircleLeft,
-                                description = stringResource(id = R.string.cancel),
-                                onClick = {
-                                    showPrivacyPage = false
+                                },
+                                onLongClick = {
+                                    product.source.let { link ->
+                                        if (link.isNotEmpty()) copyLinkToClipboard(link)
+
+                                    }
                                 }
                             )
                         },
