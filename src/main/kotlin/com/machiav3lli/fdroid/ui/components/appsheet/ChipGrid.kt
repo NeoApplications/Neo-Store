@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.ui.compose.components.appsheet
+package com.machiav3lli.fdroid.ui.components.appsheet
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues

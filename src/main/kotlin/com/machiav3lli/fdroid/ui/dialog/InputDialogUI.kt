@@ -37,9 +37,8 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.content.IntPrefsRanges
 import com.machiav3lli.fdroid.content.NonBooleanPrefsMeta
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.ui.compose.components.DialogNegativeButton
-import com.machiav3lli.fdroid.ui.compose.components.DialogPositiveButton
-import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
+import com.machiav3lli.fdroid.ui.components.DialogNegativeButton
+import com.machiav3lli.fdroid.ui.components.DialogPositiveButton
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)

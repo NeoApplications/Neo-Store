@@ -38,17 +38,17 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.SyncService
-import com.machiav3lli.fdroid.ui.compose.components.TopBar
+import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.PrefsNavHost
-import com.machiav3lli.fdroid.ui.viewmodels.PrefsVM
 import com.machiav3lli.fdroid.utility.destinationToItem
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.setCustomTheme
+import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.launch
 
 class PrefsActivityX : AppCompatActivity() {

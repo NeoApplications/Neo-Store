@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.entity.DialogKey
-import com.machiav3lli.fdroid.ui.compose.components.ActionButton
-import com.machiav3lli.fdroid.ui.compose.components.FlatActionButton
+import com.machiav3lli.fdroid.ui.components.ActionButton
+import com.machiav3lli.fdroid.ui.components.FlatActionButton
 import com.machiav3lli.fdroid.utility.extension.android.Android
 
 @Composable
@@ -102,7 +102,6 @@ fun KeyDialogUI(
     onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
-    val packageManager = context.packageManager
 
     ActionsDialogUI(
         titleText = when (key) {

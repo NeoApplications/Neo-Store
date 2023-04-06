@@ -28,11 +28,11 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.NonBooleanPrefsMeta
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.content.PrefsEntries
-import com.machiav3lli.fdroid.ui.compose.components.ActionButton
-import com.machiav3lli.fdroid.ui.compose.components.DialogNegativeButton
-import com.machiav3lli.fdroid.ui.compose.components.DialogPositiveButton
-import com.machiav3lli.fdroid.ui.compose.components.FlatActionButton
-import com.machiav3lli.fdroid.ui.compose.components.SingleSelectionListItem
+import com.machiav3lli.fdroid.ui.components.ActionButton
+import com.machiav3lli.fdroid.ui.components.DialogNegativeButton
+import com.machiav3lli.fdroid.ui.components.DialogPositiveButton
+import com.machiav3lli.fdroid.ui.components.FlatActionButton
+import com.machiav3lli.fdroid.ui.components.SingleSelectionListItem
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.Utils.getLocaleOfCode
 
