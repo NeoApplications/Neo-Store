@@ -34,6 +34,7 @@ import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV11
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV12
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV14
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV15
+import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV17
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV9
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.defaultRepositories
 import com.machiav3lli.fdroid.database.entity.Tracker
@@ -55,7 +56,7 @@ import kotlinx.coroutines.launch
         Tracker::class,
         Downloaded::class,
     ],
-    version = 16,
+    version = 17,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -95,6 +96,11 @@ import kotlinx.coroutines.launch
         AutoMigration(
             from = 15,
             to = 16,
+        ),
+        AutoMigration(
+            from = 16,
+            to = 17,
+            spec = DatabaseX.Companion.MigrationSpec16to17::class
         ),
     ]
 )
@@ -181,6 +187,13 @@ abstract class DatabaseX : RoomDatabase() {
             }
         }
 
+        class MigrationSpec16to17 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(16)
+            }
+        }
+
         fun onPostMigrate(from: Int) {
             val preRepos = mutableListOf<Repository>()
             if (from == 8) preRepos.addAll(addedReposV9)
@@ -189,6 +202,7 @@ abstract class DatabaseX : RoomDatabase() {
             if (from == 11) preRepos.addAll(addedReposV12)
             if (from == 13) preRepos.addAll(addedReposV14)
             if (from == 14) preRepos.addAll(addedReposV15)
+            if (from == 16) preRepos.addAll(addedReposV17)
             GlobalScope.launch(Dispatchers.IO) {
                 preRepos.forEach {
                     INSTANCE?.repositoryDao?.put(it)

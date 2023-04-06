@@ -496,5 +496,9 @@ data class Repository(
             KDE_RELEASE, STACK_WALLET,
             C_GEO, C_GEO_NIGHTLY, PETER_CXY
         )
+
+        val addedReposV17 = listOf(
+            JAK_LINUX, C_GEO, C_GEO_NIGHTLY,
+        )
     }
 }
