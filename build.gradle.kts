@@ -4,7 +4,7 @@ val composeVersion = "1.4.0"
 val composeCompilerVersion = "1.4.3"
 val roomVersion = "2.5.1"
 val navigationVersion = "2.5.3"
-val accompanistVersion = "0.30.0"
+val accompanistVersion = "0.30.1"
 val hiltVersion = "2.45"
 val retrofitVersion = "2.9.0"
 
