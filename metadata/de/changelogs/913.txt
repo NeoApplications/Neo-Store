@@ -1,7 +1,7 @@
-Hinzugefügt: Favoriten Kategorie
+Hinzugefügt: Favoriten-Kategorie
 Hinzugefügt: Option um Sync-Interval zu verwalten
 Hinzugefügt: Support Auto-Import von fdroidrepos: repo Adressen aus der Zwischenablage
 Fix: Nested Scrolling des AppSheet
 Fix: Repository Apps Count
-Fix: Erlauben der Retention von apk bis "consumed"
+Fix: Erlauben der Retention von APK bis "verbraucht"
 Update: App Beschreibung/Changelog Text ist auswählbar

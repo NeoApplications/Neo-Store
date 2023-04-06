@@ -15,6 +15,7 @@ import android.net.NetworkRequest
 import android.os.Build.VERSION_CODES
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.mutableStateOf
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import com.google.android.material.color.DynamicColors
@@ -50,7 +51,7 @@ class MainApplication : Application(), ImageLoaderFactory {
 
     lateinit var db: DatabaseX
     lateinit var mActivity: AppCompatActivity
-    //lateinit var wm: WorksManager
+    //var wm: WorksManager? = null
 
     companion object {
         private var appRef: WeakReference<MainApplication> = WeakReference(null)
@@ -69,8 +70,19 @@ class MainApplication : Application(), ImageLoaderFactory {
                 prefsActivityRef = WeakReference(mainActivity)
             }
 
-        //val wm: WorksManager get() = neo_store.wm
-        //val db: DatabaseX get() = neo_store.db
+        val context: Context get() = neo_store.applicationContext
+
+        //val wm: WorksManager get() = neo_store.wm!!
+        val db: DatabaseX get() = neo_store.db
+
+        val progress = mutableStateOf(Pair(false, 0f))
+
+        fun setProgress(now: Int = 0, max: Int = 0) {
+            if (max <= 0)
+                progress.value = Pair(false, 0f)
+            else
+                progress.value = Pair(true, 1f * now / max)
+        }
     }
 
     override fun onCreate() {
@@ -94,7 +106,7 @@ class MainApplication : Application(), ImageLoaderFactory {
         }*/
 
         //wm = WorksManager(applicationContext)
-        //wm.prune()
+        //wm?.prune()
         Cache.cleanup(this)
         updateSyncJob(false)
     }

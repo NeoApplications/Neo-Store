@@ -16,17 +16,9 @@ import android.content.pm.Signature
 import android.content.res.Configuration
 import android.net.Uri
 import android.provider.Settings
-import android.text.SpannableStringBuilder
-import android.text.style.BulletSpan
-import android.text.style.ClickableSpan
-import android.text.style.URLSpan
-import android.text.util.Linkify
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.text.HtmlCompat
-import androidx.core.text.util.LinkifyCompat
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavDestination
 import com.machiav3lli.fdroid.BuildConfig
@@ -37,6 +29,7 @@ import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.entity.DownloadState
 import com.machiav3lli.fdroid.entity.LinkType
 import com.machiav3lli.fdroid.entity.PermissionGroup
 import com.machiav3lli.fdroid.service.Connection
@@ -48,7 +41,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Bug
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyleft
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GlobeSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.User
-import com.machiav3lli.fdroid.ui.compose.utils.Callbacks
 import com.machiav3lli.fdroid.ui.dialog.LaunchDialog
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
@@ -56,9 +48,9 @@ import com.machiav3lli.fdroid.utility.extension.android.singleSignature
 import com.machiav3lli.fdroid.utility.extension.android.versionCodeCompat
 import com.machiav3lli.fdroid.utility.extension.text.hex
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
+import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.lang.ref.WeakReference
 import java.security.MessageDigest
 import java.security.cert.Certificate
 import java.security.cert.CertificateEncodingException
@@ -118,7 +110,11 @@ object Utils {
     ) {
         val productRepository = findSuggestedProduct(products, installed) { it.first }
         val compatibleReleases = productRepository?.first?.selectedReleases.orEmpty()
-            .filter { installed == null || installed.signature == it.signature }
+            .filter {
+                installed == null ||
+                        installed.signature == it.signature ||
+                        Preferences[Preferences.Key.DisableSignatureCheck]
+            }
         val releaseFlow = MutableStateFlow(compatibleReleases.firstOrNull())
         if (compatibleReleases.size > 1) {
             releaseFlow.emit(
@@ -209,8 +205,11 @@ fun <T> findSuggestedProduct(
     return products.maxWithOrNull(
         compareBy(
             {
-                extract(it).compatible &&
-                        (installed == null || installed.signature in extract(it).signatures)
+                extract(it).compatible && (
+                        installed == null ||
+                                installed.signature in extract(it).signatures ||
+                                Preferences[Preferences.Key.DisableSignatureCheck]
+                        )
             },
             { extract(it).versionCode },
         )
@@ -300,6 +299,56 @@ fun Context.startLauncherActivity(packageName: String, name: String) {
     } catch (e: Exception) {
         e.printStackTrace()
     }
+}
+
+fun Context.shareIntent(packageName: String, appName: String, repository: String) {
+    val shareIntent = Intent(Intent.ACTION_SEND)
+    val extraText = when {
+        repository.contains("IzzyOnDroid") -> "https://apt.izzysoft.de/fdroid/index/apk/$packageName"
+        else                               -> if (Android.sdk(24)) {
+            "https://www.f-droid.org/${resources.configuration.locales[0].language}/packages/${packageName}/"
+        } else "https://www.f-droid.org/${resources.configuration.locale.language}/packages/${packageName}/"
+    }
+
+    shareIntent.type = "text/plain"
+    shareIntent.putExtra(Intent.EXTRA_TITLE, appName)
+    shareIntent.putExtra(Intent.EXTRA_SUBJECT, appName)
+    shareIntent.putExtra(Intent.EXTRA_TEXT, extraText)
+
+    startActivity(Intent.createChooser(shareIntent, "Where to Send?"))
+}
+
+fun updateDownloadState(viewModel: AppSheetVM, downloadState: DownloadService.State?) {
+    val state = when (downloadState) {
+        is DownloadService.State.Pending     -> DownloadState.Pending
+        is DownloadService.State.Connecting  -> DownloadState.Connecting
+        is DownloadService.State.Downloading -> DownloadState.Downloading(
+            downloadState.read,
+            downloadState.total
+        )
+        else                                 -> null
+    }
+    viewModel.updateDownloadState(state)
+    viewModel.updateActions()
+}
+
+
+fun Context.shareReleaseIntent(appName: String, address: String) {
+    val shareIntent = Intent(Intent.ACTION_SEND)
+    shareIntent.type = "text/plain"
+    shareIntent.putExtra(Intent.EXTRA_TITLE, appName)
+    shareIntent.putExtra(Intent.EXTRA_SUBJECT, appName)
+    shareIntent.putExtra(Intent.EXTRA_TEXT, address)
+
+    startActivity(Intent.createChooser(shareIntent, "Where to share?"))
+}
+
+
+fun Context.openPermissionPage(packageName: String) {
+    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(
+        Uri.fromParts("package", packageName, null)
+    )
+    startActivity(intent)
 }
 
 fun Product.generateLinks(context: Context): List<LinkType> {
@@ -443,63 +492,6 @@ fun Collection<Product>.matchSearchQuery(searchQuery: String): List<Product> {
                 (if ("${it.summary} ${it.author.name}".contains(searchRegex)) 3 else 0) or
                 (if (it.description.contains(searchRegex)) 1 else 0)
     }
-}
-
-// TODO move to a new file
-
-private class LinkSpan(private val url: String, callbacks: Callbacks) :
-    ClickableSpan() {
-    private val callbacksReference = WeakReference(callbacks)
-
-    override fun onClick(view: View) {
-        val callbacks = callbacksReference.get()
-        val uri = try {
-            Uri.parse(url)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-        if (callbacks != null && uri != null) {
-            callbacks.onUriClick(uri, true)
-        }
-    }
-}
-
-fun formatHtml(text: String, callbacks: Callbacks): SpannableStringBuilder {
-    val html = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
-    val builder = run {
-        val builder = SpannableStringBuilder(html)
-        val last = builder.indexOfLast { it != '\n' }
-        val first = builder.indexOfFirst { it != '\n' }
-        if (last >= 0) {
-            builder.delete(last + 1, builder.length)
-        }
-        if (first in 1 until last) {
-            builder.delete(0, first - 1)
-        }
-        generateSequence(builder) {
-            val index = it.indexOf("\n\n\n")
-            if (index >= 0) it.delete(index, index + 1) else null
-        }.last()
-    }
-    LinkifyCompat.addLinks(builder, Linkify.WEB_URLS or Linkify.EMAIL_ADDRESSES)
-    val urlSpans = builder.getSpans(0, builder.length, URLSpan::class.java).orEmpty()
-    for (span in urlSpans) {
-        val start = builder.getSpanStart(span)
-        val end = builder.getSpanEnd(span)
-        val flags = builder.getSpanFlags(span)
-        builder.removeSpan(span)
-        builder.setSpan(LinkSpan(span.url, callbacks), start, end, flags)
-    }
-    val bulletSpans = builder.getSpans(0, builder.length, BulletSpan::class.java).orEmpty()
-        .asSequence().map { Pair(it, builder.getSpanStart(it)) }
-        .sortedByDescending { it.second }
-    for (spanPair in bulletSpans) {
-        val (span, start) = spanPair
-        builder.removeSpan(span)
-        builder.insert(start, "\u2022 ")
-    }
-    return builder
 }
 
 val currentTimestamp: String

@@ -1,7 +1,7 @@
-Ajout : Prise en charge des URI fdroidrepo(s)
+Ajout : Prise en charge des URI de dépôt(s) fdroid
 Ajout : Prise en charge des recherches market://search?
-Ajout : Option de partage pour les applications IzzyOnDroid
-Ajout : GitJournal & Revolt aux dépôts prédéfinis
+Ajout : Option de partage des applications IzzyOnDroid
+Ajout : dépôts prédéfinis GitJournal & Revolt
 Mise à jour : Refonte de ReleaseItems
 Suppression : dépôt prédéfini Alefvanoon
 Pour plus de détails, consultez le changelog complet…

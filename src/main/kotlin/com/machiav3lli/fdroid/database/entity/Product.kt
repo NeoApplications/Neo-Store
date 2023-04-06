@@ -5,6 +5,7 @@ import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
 import com.machiav3lli.fdroid.TABLE_PRODUCT_NAME
 import com.machiav3lli.fdroid.TABLE_PRODUCT_TEMP_NAME
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.Author
 import com.machiav3lli.fdroid.entity.Donate
@@ -21,7 +22,7 @@ import kotlinx.serialization.json.Json
 @Serializable
 open class Product(
     var repositoryId: Long,
-    var packageName: String
+    var packageName: String,
 ) {
     var label: String = ""
     var summary: String = ""
@@ -69,7 +70,7 @@ open class Product(
         web: String = "",
         tracker: String = "",
         changelog: String = "",
-        whatsNew: String = ""
+        whatsNew: String = "",
     ) : this(repositoryId, packageName) {
         this.label = label
         this.summary = summary
@@ -134,8 +135,10 @@ open class Product(
             matchRank = 0
         )
 
-    fun canUpdate(installed: Installed?): Boolean =
-        installed != null && compatible && versionCode > installed.versionCode && installed.signature in signatures
+    fun canUpdate(installed: Installed?): Boolean = installed != null &&
+            compatible &&
+            versionCode > installed.versionCode &&
+            (installed.signature in signatures || Preferences[Preferences.Key.DisableSignatureCheck])
 
     fun refreshVariables() {
         this.versionCode = selectedReleases.firstOrNull()?.versionCode ?: 0L
@@ -173,7 +176,7 @@ class ProductTemp(
     web: String = "",
     tracker: String = "",
     changelog: String = "",
-    whatsNew: String = ""
+    whatsNew: String = "",
 ) : Product(
     repositoryId = repositoryId,
     packageName = packageName,
@@ -227,6 +230,7 @@ fun Product.asProductTemp(): ProductTemp = ProductTemp(
 data class Licenses(
     val licenses: List<String>,
 )
+
 data class IconDetails(
     var packageName: String,
     var icon: String = "",

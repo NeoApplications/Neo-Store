@@ -1,0 +1,6 @@
+Ajout : Avertissements sur les applications présentant des vulnérabilités connues
+Correction : Amélioration de la saturation des performances causée par la recherche (crédits @SocratesDz)
+Correction : Plantage de l'installateur
+Mise à jour : Refonte de la fonctionnalité de synchronisation automatique
+Mise à jour : Refonte des pages de repo
++ plus de 60 contributions de traduction

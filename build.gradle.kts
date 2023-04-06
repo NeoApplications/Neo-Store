@@ -1,10 +1,10 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val composeVersion = "1.4.0-rc01"
+val composeVersion = "1.4.0"
 val composeCompilerVersion = "1.4.3"
-val roomVersion = "2.5.0"
+val roomVersion = "2.5.1"
 val navigationVersion = "2.5.3"
-val accompanistVersion = "0.28.0"
+val accompanistVersion = "0.30.1"
 val hiltVersion = "2.45"
 val retrofitVersion = "2.9.0"
 
@@ -120,14 +120,14 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10")
     implementation("com.google.devtools.ksp:symbol-processing-api:1.8.10-1.0.9")
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation("androidx.work:work-runtime-ktx:2.8.0")
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     // Material3
     implementation("com.google.android.material:material:1.8.0")
 
     // Coil
-    implementation("io.coil-kt:coil:2.2.2")
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation("io.coil-kt:coil:2.3.0")
+    implementation("io.coil-kt:coil-compose:2.3.0")
 
     // Dagger Hilt
     kapt("com.google.dagger:hilt-compiler:$hiltVersion")
@@ -157,7 +157,7 @@ dependencies {
     implementation("com.anggrayudi:storage:1.5.4")
 
     // Coroutines / Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
@@ -171,12 +171,11 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.0.1")
+    implementation("androidx.compose.material3:material3:1.1.0-beta01")
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
-    implementation("com.google.accompanist:accompanist-pager:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")

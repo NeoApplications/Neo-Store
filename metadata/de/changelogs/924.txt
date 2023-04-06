@@ -1,0 +1,6 @@
+Hinzugefügt: Warnung für Apps mit bekannten Sicherheitsproblemen
+Fix: Verbesserung der Performance-Überlastung ausgelöst durch die Suche (Credits @SocratesDz)
+Fix: Installerabstürze
+Update: Überarbeitung der Auto-Sync-Funktion
+Update: Überarbeitung der Repo-Seite
++ mehr als 60 Übersetzungen

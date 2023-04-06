@@ -321,4 +321,7 @@
     <string name="cancel_all">Cancel all</string>
     <string name="disable_download_version_check">Disable download version check</string>
     <string name="disable_download_version_check_summary">Allows downloading older versions of installed apps. Can be used in combination with Magisk\'s \"letmedowngrade\" patch.</string>
+    <string name="privacy_panel">Privacy panel</string>
+    <string name="show_categories_bar">Show categories bar</string>
+    <string name="show_categories_bar_description">Show categories side bar in explore page.</string>
 </resources>

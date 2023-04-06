@@ -37,9 +37,8 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.content.IntPrefsRanges
 import com.machiav3lli.fdroid.content.NonBooleanPrefsMeta
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.ui.compose.components.DialogNegativeButton
-import com.machiav3lli.fdroid.ui.compose.components.DialogPositiveButton
-import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
+import com.machiav3lli.fdroid.ui.components.DialogNegativeButton
+import com.machiav3lli.fdroid.ui.components.DialogPositiveButton
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -133,17 +132,6 @@ fun IntInputPrefDialogUI(
     }
 }
 
-//@Preview
-@Composable
-fun IntInputPrefDialogUIPrefview() {
-    val state = remember {
-        mutableStateOf(true)
-    }
-    AppTheme {
-        IntInputPrefDialogUI(Preferences.Key.NewApps, state)
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StringInputPrefDialogUI(
@@ -212,16 +200,5 @@ fun StringInputPrefDialogUI(
                 )
             }
         }
-    }
-}
-
-//@Preview
-@Composable
-fun StringInputPrefDialogUIPrefview() {
-    val state = remember {
-        mutableStateOf(true)
-    }
-    AppTheme {
-        StringInputPrefDialogUI(Preferences.Key.ProxyHost, state)
     }
 }

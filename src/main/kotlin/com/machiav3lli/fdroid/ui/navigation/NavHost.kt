@@ -20,14 +20,14 @@ import com.google.accompanist.navigation.animation.composable
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
-import com.machiav3lli.fdroid.ui.pages.ExplorePage
-import com.machiav3lli.fdroid.ui.pages.InstalledPage
-import com.machiav3lli.fdroid.ui.pages.LatestPage
-import com.machiav3lli.fdroid.ui.pages.PermissionsPage
-import com.machiav3lli.fdroid.ui.pages.PrefsOtherPage
-import com.machiav3lli.fdroid.ui.pages.PrefsPersonalPage
-import com.machiav3lli.fdroid.ui.pages.PrefsReposPage
-import com.machiav3lli.fdroid.ui.pages.PrefsUpdatesPage
+import com.machiav3lli.fdroid.pages.ExplorePage
+import com.machiav3lli.fdroid.pages.InstalledPage
+import com.machiav3lli.fdroid.pages.LatestPage
+import com.machiav3lli.fdroid.pages.PermissionsPage
+import com.machiav3lli.fdroid.pages.PrefsOtherPage
+import com.machiav3lli.fdroid.pages.PrefsPersonalPage
+import com.machiav3lli.fdroid.pages.PrefsReposPage
+import com.machiav3lli.fdroid.pages.PrefsUpdatesPage
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

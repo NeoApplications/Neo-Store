@@ -38,18 +38,17 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.SyncService
-import com.machiav3lli.fdroid.ui.compose.components.TopBar
+import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
-import com.machiav3lli.fdroid.ui.fragments.RepoSheet
 import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.PrefsNavHost
-import com.machiav3lli.fdroid.ui.viewmodels.PrefsVM
 import com.machiav3lli.fdroid.utility.destinationToItem
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.setCustomTheme
+import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.launch
 
 class PrefsActivityX : AppCompatActivity() {
@@ -75,8 +74,6 @@ class PrefsActivityX : AppCompatActivity() {
     val prefsViewModel: PrefsVM by viewModels {
         PrefsVM.Factory(db)
     }
-
-    private lateinit var sheetRepo: RepoSheet
 
     @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -252,15 +249,5 @@ class PrefsActivityX : AppCompatActivity() {
     fun openScanner() {
         intent.putExtra(EXTRA_INTENT_HANDLED, false)
         resultLauncher.launch(Intent(INTENT_ACTION_BINARY_EYE))
-    }
-
-    internal fun navigateRepo(repoId: Long) {
-        sheetRepo = RepoSheet(repoId)
-        sheetRepo.showNow(supportFragmentManager, "Repository $repoId")
-    }
-
-    internal fun navigateEditRepo(repoId: Long) {
-        sheetRepo = RepoSheet(repoId, true)
-        sheetRepo.showNow(supportFragmentManager, "Edit Repository $repoId")
     }
 }

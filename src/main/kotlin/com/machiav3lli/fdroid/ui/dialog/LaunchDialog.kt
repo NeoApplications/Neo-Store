@@ -7,7 +7,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.utility.startLauncherActivity
 
-class LaunchDialog(val packageName: String) : DialogFragment() {
+class LaunchDialog(val packageName: String) : DialogFragment() { // TODO replace with composable
     companion object {
         private const val EXTRA_NAMES = "names"
         private const val EXTRA_LABELS = "labels"

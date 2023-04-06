@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.ui.compose.icons.Icon
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.icon.IcDonateFlattr
@@ -327,6 +328,22 @@ sealed class Request {
         override val numberOfItems: Int
             get() = Preferences[Preferences.Key.NewApps]
     }
+}
+
+sealed class DialogKey {
+    data class Link(val uri: Uri) : DialogKey()
+    data class ReleaseIncompatible(
+        val incompatibilities: List<Release.Incompatibility>,
+        val platforms: List<String>,
+        val minSdkVersion: Int,
+        val maxSdkVersion: Int,
+    ) : DialogKey()
+
+    data class ReleaseIssue(val resId: Int) : DialogKey()
+    data class Launch(
+        val packageName: String,
+        val launcherActivities: List<Pair<String, String>>,
+    ) : DialogKey()
 }
 
 data class Permission(
