@@ -15,6 +15,10 @@ val BooleanPrefsMeta = mapOf(
         R.string.show_trackers,
         R.string.show_trackers_description
     ),
+    Preferences.Key.ShowCategoriesBar to Pair(
+        R.string.show_categories_bar,
+        R.string.show_categories_bar_description
+    ),
     Preferences.Key.InstallAfterSync to Pair(
         R.string.install_after_sync,
         R.string.install_after_sync_summary

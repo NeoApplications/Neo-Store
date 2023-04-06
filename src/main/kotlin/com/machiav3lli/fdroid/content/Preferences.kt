@@ -38,6 +38,7 @@ object Preferences : OnSharedPreferenceChangeListener {
         Key.DisableSignatureCheck,
         Key.ShowScreenshots,
         Key.ShowTrackers,
+        Key.ShowCategoriesBar,
         Key.UpdatedApps,
         Key.NewApps,
         Key.ProxyHost,
@@ -218,6 +219,8 @@ object Preferences : OnSharedPreferenceChangeListener {
             Key<Boolean>("show_screenshots", Value.BooleanValue(true))
 
         object ShowTrackers : Key<Boolean>("show_trackers", Value.BooleanValue(true))
+
+        object ShowCategoriesBar : Key<Boolean>("show_categories_bar", Value.BooleanValue(true))
 
         object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(100))
         object NewApps : Key<Int>("new_apps", Value.IntValue(30))

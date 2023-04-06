@@ -135,7 +135,7 @@ fun ExplorePage(viewModel: ExploreVM) {
             }
         }
         Row {
-            SideNavBar(
+            if (Preferences[Preferences.Key.ShowCategoriesBar]) SideNavBar(
                 keys = listOf(FILTER_CATEGORY_ALL) + (categories.sorted()),
                 selectedKey = selectedCategory,
             ) {
