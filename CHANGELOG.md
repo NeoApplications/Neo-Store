@@ -1,6 +1,35 @@
 CHANGELOG
 =========
 
+1.0.0 (??.??.2023) 40+ Commits +70 Translations
+------------------
+
+### Function
+
+- Add: Preference to disable signature check for updates/installs
+- Add: Preference to disable download version check
+- Add: Julian Andres Klode's repo (credits @ishanarora)
+- Fix: Auto-sync on "Only charging"
+- Fix: The description for PeterCxy's Shelter repo (credits @ishanarora)
+- Fix: c:geo repository (credits @ishanarora)
+
+### UI
+
+- Add: Preference to show/hide categories bar
+- Add: Linking database from Application
+- Fix: Switch layout on low-dpi/multi-lines
+- Update: Revamp AppSheet header
+- Update: Revamp all sheets into composable only
+- Update: Revamp Message/Launch-Dialogs into composables
+- Update: Revamp layout corners
+
+### UX
+
+- Add: Licenses filters
+- Add: Permission ignore button
+- Add: Preference to keep notification of successfully installed app
+- Update: Using pager in App Sheet for Privacy Panel
+
 0.9.15 (01.03.2023) 40+ Commits +30 Translations
 ------------------
 
