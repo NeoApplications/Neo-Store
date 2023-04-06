@@ -322,4 +322,7 @@
     <string name="allowed_licenses">Licenças permitidas</string>
     <string name="cancel_all">Cancelar tudo</string>
     <string name="disable_download_version_check">Desativar a verificação da versão de download</string>
+    <string name="show_categories_bar">Mostrar barra de categorias</string>
+    <string name="show_categories_bar_description">Mostrar as categorias barra lateral na página de exploração.</string>
+    <string name="privacy_panel">Painel de privacidade</string>
 </resources>
