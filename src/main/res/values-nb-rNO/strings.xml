@@ -321,4 +321,7 @@
     <string name="allowed_licenses">Tillatte lisenser</string>
     <string name="ignore">Ignorer</string>
     <string name="disable_signature_check">Skru av signatursjekk</string>
+    <string name="privacy_panel">Personvernspanel</string>
+    <string name="show_categories_bar">Vis kategorifelt</string>
+    <string name="show_categories_bar_description">Vis kategorisidefelt i utforskning.</string>
 </resources>
