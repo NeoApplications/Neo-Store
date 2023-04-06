@@ -19,11 +19,15 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.database.entity.Release
+import com.machiav3lli.fdroid.entity.DialogKey
 import com.machiav3lli.fdroid.ui.compose.components.ActionButton
 import com.machiav3lli.fdroid.ui.compose.components.FlatActionButton
+import com.machiav3lli.fdroid.utility.extension.android.Android
 
 @Composable
 fun ActionsDialogUI(
@@ -88,4 +92,91 @@ fun ActionsDialogUI(
             }
         }
     }
+}
+
+@Composable
+fun KeyDialogUI(
+    key: DialogKey?,
+    openDialog: MutableState<Boolean>,
+    primaryAction: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val context = LocalContext.current
+    val packageManager = context.packageManager
+
+    ActionsDialogUI(
+        titleText = when (key) {
+            is DialogKey.ReleaseIncompatible,
+            is DialogKey.ReleaseIssue,
+                              -> stringResource(id = R.string.incompatible_version)
+            is DialogKey.Link -> stringResource(id = R.string.confirmation)
+            else              -> ""
+        }.toString(),
+        messageText = when (key) {
+            is DialogKey.ReleaseIssue        -> stringResource(id = key.resId)
+            is DialogKey.Link                -> stringResource(
+                id = R.string.open_DESC_FORMAT,
+                key.uri
+            )
+            is DialogKey.ReleaseIncompatible -> {
+                val builder = StringBuilder()
+                val minSdkVersion = if (Release.Incompatibility.MinSdk in key.incompatibilities)
+                    key.minSdkVersion else null
+                val maxSdkVersion = if (Release.Incompatibility.MaxSdk in key.incompatibilities)
+                    key.maxSdkVersion else null
+                if (minSdkVersion != null || maxSdkVersion != null) {
+                    val versionMessage = minSdkVersion?.let {
+                        stringResource(
+                            R.string.incompatible_api_min_DESC_FORMAT,
+                            it
+                        )
+                    } ?: maxSdkVersion?.let {
+                        stringResource(
+                            R.string.incompatible_api_max_DESC_FORMAT,
+                            it
+                        )
+                    }
+                    builder.append(
+                        stringResource(
+                            R.string.incompatible_api_DESC_FORMAT,
+                            Android.name, Android.sdk, versionMessage.orEmpty()
+                        )
+                    ).append("\n\n")
+                }
+                if (Release.Incompatibility.Platform in key.incompatibilities) {
+                    builder.append(
+                        stringResource(
+                            R.string.incompatible_platforms_DESC_FORMAT,
+                            Android.primaryPlatform ?: stringResource(R.string.unknown),
+                            key.platforms.joinToString(separator = ", ")
+                        )
+                    ).append("\n\n")
+                }
+                val features = key.incompatibilities
+                    .mapNotNull { it as? Release.Incompatibility.Feature }
+                if (features.isNotEmpty()) {
+                    builder.append(stringResource(R.string.incompatible_features_DESC))
+                    for (feature in features) {
+                        builder.append("\n\u2022 ").append(feature.feature)
+                    }
+                    builder.append("\n\n")
+                }
+                if (builder.isNotEmpty()) {
+                    builder.delete(builder.length - 2, builder.length)
+                }
+                builder.toString()
+            }
+            else                             -> ""
+        }.toString(),
+        openDialogCustom = openDialog,
+        primaryText = when (key) {
+            is DialogKey.ReleaseIssue,
+            is DialogKey.ReleaseIncompatible,
+            is DialogKey.Link,
+                 -> stringResource(id = R.string.ok)
+            else -> ""
+        },
+        primaryAction = primaryAction,
+        secondaryAction = onDismiss,
+    )
 }
