@@ -176,7 +176,6 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
-    implementation("com.google.accompanist:accompanist-pager:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
