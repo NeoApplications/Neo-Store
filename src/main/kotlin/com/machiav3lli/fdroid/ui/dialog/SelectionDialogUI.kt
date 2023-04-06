@@ -38,7 +38,7 @@ import com.machiav3lli.fdroid.utility.Utils.getLocaleOfCode
 
 @Composable
 fun LanguagePrefDialogUI(
-    openDialogCustom: MutableState<Boolean>
+    openDialogCustom: MutableState<Boolean>,
 ) {
     val context = LocalContext.current
     val prefKey = Preferences.Key.Language
@@ -102,7 +102,7 @@ fun LanguagePrefDialogUI(
 @Composable
 fun EnumSelectionPrefDialogUI(
     prefKey: Preferences.Key<Preferences.Enumeration<*>>,
-    openDialogCustom: MutableState<Boolean>
+    openDialogCustom: MutableState<Boolean>,
 ) {
     val context = LocalContext.current
     var selected by remember { mutableStateOf(Preferences[prefKey]) }

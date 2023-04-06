@@ -61,7 +61,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUp
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
-import com.machiav3lli.fdroid.ui.fragments.SortFilterPage
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.utility.onLaunchClick

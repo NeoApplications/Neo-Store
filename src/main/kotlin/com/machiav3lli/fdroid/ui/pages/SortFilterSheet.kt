@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.ui.fragments
+package com.machiav3lli.fdroid.ui.pages
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement

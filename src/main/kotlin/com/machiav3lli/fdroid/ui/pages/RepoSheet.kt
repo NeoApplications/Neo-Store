@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.ui.fragments
+package com.machiav3lli.fdroid.ui.pages
 
 import android.content.ClipboardManager
 import android.content.Context

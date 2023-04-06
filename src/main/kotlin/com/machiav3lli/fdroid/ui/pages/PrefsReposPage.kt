@@ -32,7 +32,6 @@ import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.ui.compose.RepositoriesRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.QrCode
-import com.machiav3lli.fdroid.ui.fragments.RepoPage
 import com.machiav3lli.fdroid.ui.viewmodels.PrefsVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

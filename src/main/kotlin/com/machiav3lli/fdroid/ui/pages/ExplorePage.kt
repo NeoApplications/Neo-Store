@@ -39,7 +39,6 @@ import com.machiav3lli.fdroid.ui.compose.components.CategoryChip
 import com.machiav3lli.fdroid.ui.compose.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
-import com.machiav3lli.fdroid.ui.fragments.SortFilterPage
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.SideNavBar
 import com.machiav3lli.fdroid.ui.viewmodels.ExploreVM

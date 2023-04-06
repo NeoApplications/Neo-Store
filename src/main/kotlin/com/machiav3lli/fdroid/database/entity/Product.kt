@@ -22,7 +22,7 @@ import kotlinx.serialization.json.Json
 @Serializable
 open class Product(
     var repositoryId: Long,
-    var packageName: String
+    var packageName: String,
 ) {
     var label: String = ""
     var summary: String = ""
@@ -70,7 +70,7 @@ open class Product(
         web: String = "",
         tracker: String = "",
         changelog: String = "",
-        whatsNew: String = ""
+        whatsNew: String = "",
     ) : this(repositoryId, packageName) {
         this.label = label
         this.summary = summary
@@ -176,7 +176,7 @@ class ProductTemp(
     web: String = "",
     tracker: String = "",
     changelog: String = "",
-    whatsNew: String = ""
+    whatsNew: String = "",
 ) : Product(
     repositoryId = repositoryId,
     packageName = packageName,
@@ -230,6 +230,7 @@ fun Product.asProductTemp(): ProductTemp = ProductTemp(
 data class Licenses(
     val licenses: List<String>,
 )
+
 data class IconDetails(
     var packageName: String,
     var icon: String = "",
