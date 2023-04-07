@@ -301,4 +301,26 @@
     <string name="only_on_battery">僅在充電時</string>
     <string name="edit">編輯</string>
     <string name="allowed_anti_features">允許的反特徵</string>
+    <string name="privacy_panel">隱私面板</string>
+    <string name="show_categories_bar_description">在探索頁面中顯示類別側欄。</string>
+    <string name="show_categories_bar">顯示類別欄</string>
+    <string name="disable_signature_check_summary">不要檢查下載的APK是否與已安裝的應用程式具有相同的簽名。</string>
+    <string name="ignore">忽視</string>
+    <string name="warning_show_notification">從 Android 13 開始，該應用需要此權限才能在不同進程中通知您。如果您忽略此權限，您將不會收到任何通知。</string>
+    <string name="warning_disable_battery_optimization">從 Android 12 開始，該應用需要電池優化才能執行同步和下載等後台進程。如果您忽略此權限，您就只能靠自己了，您的崩潰報告也將被忽略。</string>
+    <string name="disable_signature_check">禁用簽名檢查</string>
+    <string name="keep_install_notification">保留安裝通知</string>
+    <string name="keep_install_notification_summary">保留成功安裝應用程式的通知。</string>
+    <string name="allowed_licenses">允許的許可證</string>
+    <string name="cancel_all">全部取消</string>
+    <string name="disable_download_version_check">禁用下載版本檢查</string>
+    <string name="disable_download_version_check_summary">允許下載舊版本的已安裝應用程序。可以與 Magisk 的 \"letmedowngrade\" 補丁結合使用。</string>
+    <string name="post_notifications_permission_title">允許發布通知</string>
+    <string name="post_notifications_permission_message">啟動 Android 13 應用需要此權限才能發布通知。</string>
+    <string name="enable_download_directory">使用自定義下載文件夾</string>
+    <string name="enable_download_directory_summary">允許將下載的 APK 保存在選定的文件夾中。</string>
+    <string name="custom_download_directory">自定義下載文件夾</string>
+    <string name="no_trackers_data_available">沒有可用的跟踪器數據（還）。</string>
+    <string name="ignore_vulns">忽略報告的安全漏洞</string>
+    <string name="downloads">下載</string>
 </resources>
