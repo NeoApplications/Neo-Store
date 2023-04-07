@@ -320,4 +320,7 @@
     <string name="disable_download_version_check">Nonaktifkan pemeriksaan versi terunduh</string>
     <string name="warning_disable_battery_optimization">Mulai Android 12, aplikasi ini membutuhkan pengoptimalan baterai untuk melakukan proses latar belakang seperti sinkronisasi dan pengunduhan. Jika Anda mengabaikan izin ini, Anda akan dibiarkan berjalan sendiri dan laporan kerusakan akan diabaikan.</string>
     <string name="disable_download_version_check_summary">Memperbolehkan mengunduh versi lama dari aplikasi yang terinstal. Dapat digunakan dengan kombinasi patch Magisk \"letmedowngrade\".</string>
+    <string name="privacy_panel">Panel privasi</string>
+    <string name="show_categories_bar_description">Tampilkan bilah samping kategori di halaman jelajahi.</string>
+    <string name="show_categories_bar">Tampilkan bilah kategori</string>
 </resources>
