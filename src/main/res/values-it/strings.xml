@@ -322,4 +322,7 @@
     <string name="disable_download_version_check">Disabilita controllo versione di download</string>
     <string name="disable_signature_check_summary">Non controllare se l\'APK scaricato ha la stessa firma dell\'app installata.</string>
     <string name="disable_download_version_check_summary">Consente di scaricare versioni precedenti delle app installate. Può essere utilizzato in combinazione con la patch \"letmedowngrade\" di Magisk.</string>
+    <string name="show_categories_bar">Mostra barra categorie</string>
+    <string name="show_categories_bar_description">Mostra barra laterale categorie nella pagina esplora.</string>
+    <string name="privacy_panel">Pannello privacy</string>
 </resources>
