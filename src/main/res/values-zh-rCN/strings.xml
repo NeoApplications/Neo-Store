@@ -320,4 +320,7 @@
     <string name="cancel_all">全部取消</string>
     <string name="disable_download_version_check">禁止下载版本检查</string>
     <string name="warning_show_notification">从 Android 13 开始，此应用需要通知权限才能在不同进程中通知您。如果您不授予此权限，您将不会收到任何通知。</string>
+    <string name="show_categories_bar">显示类别栏</string>
+    <string name="privacy_panel">隐私面板</string>
+    <string name="show_categories_bar_description">在探索页面中显示类别侧栏。</string>
 </resources>
