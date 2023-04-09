@@ -259,4 +259,9 @@
     <string name="permission_identification_data">دسترسی برای داده های شناسایی</string>
     <string name="trackers_identification">ردیاب های شناسایی</string>
     <string name="trackers_bug">ردیاب های گزارش دهنده اشکال</string>
+    <string name="action_install_tc">نصب کنترل ردیاب</string>
+    <string name="trackers_in">ردیاب ها در %s</string>
+    <string name="source_proprietary">انحصاری</string>
+    <string name="action_open_tc">باز کردن کنترل ردیاب</string>
+    <string name="trackers_note_4">حداقل بدون ردیاب</string>
 </resources>
