@@ -310,4 +310,18 @@
     <string name="post_notifications_permission_message">A partire dae Android 13 sas aplicatziones tenent bisòngiu de custu permissu pro pòdere imbiare notìficas.</string>
     <string name="ignore_vulns">Ignora sas vulnerabilidades de seguresa sinnaladas</string>
     <string name="downloads">Iscarrigamentos</string>
+    <string name="privacy_panel">Pannellu de riservadesa</string>
+    <string name="show_categories_bar_description">Ammustra s\'istanga de sas categorias in sa pàgina de esploratzione.</string>
+    <string name="show_categories_bar">Ammustra s\'istanga de categorias</string>
+    <string name="disable_download_version_check_summary">Permite s\'iscarrigamentu de versiones prus betzas de sas aplicatziones installadas. Si podet impreare in cumbinatzione cun su taparatu \"letmedowngrade\" de Magisk.</string>
+    <string name="disable_signature_check_summary">Non verìfiches si s\'APK iscarrigadu tenet sa matessi firma de s\'aplicatzione installada.</string>
+    <string name="ignore">Ignora</string>
+    <string name="warning_disable_battery_optimization">Incumintzende dae Android 12, s\'aplicatzione tenet bisòngiu de s\'otimizatzione de sa bateria pro fàghere protzessos in s\'isfundu comente sa sincronizatzione e s\'iscarrigamentu. Si as a igorare custu permissu as a abarrare a sa sola e sas sinnalatziones tuas deistudaduras anòmalas ant a èssere ignoradas.</string>
+    <string name="warning_show_notification">Incumintzende dae Android 13, s\'aplicatzione tenet bisòngiu de custu permissu pro ti notificare subra de sos protzessos diferentes. Si as a ignorare custu permissu no as a retzire peruna notìfica.</string>
+    <string name="disable_signature_check">Inabìlita su controllu de sas firmas</string>
+    <string name="keep_install_notification">Mantene sa notìfica de s\'installatzione</string>
+    <string name="keep_install_notification_summary">Mantene sa notìfica de installatzione curreta de un\'aplicatzione.</string>
+    <string name="allowed_licenses">Litzèntzias permìtidas</string>
+    <string name="cancel_all">Annulla totu</string>
+    <string name="disable_download_version_check">Iscàrriga sa verìfica de sa versione de iscarrigamentu</string>
 </resources>
