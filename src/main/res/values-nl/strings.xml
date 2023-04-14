@@ -204,4 +204,6 @@
         <item quantity="one"/>
         <item quantity="other"/>
     </plurals>
+    <string name="incompatible_older_DESC">Deze versie is ouder dan degene die op uw apparaat is geïnstalleerd. Verwijder die eerst.</string>
+    <string name="incompatible_platforms_DESC_FORMAT">Het %1$s platform wordt niet ondersteund. Ondersteunde platforms: %2$s.</string>
 </resources>
