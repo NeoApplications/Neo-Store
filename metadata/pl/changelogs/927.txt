@@ -1,0 +1,8 @@
+Dodano: KDE (Stabilne), C:Geo, Stack Wallet i repozytorium PeteraCxy's Shelter
+Dodano: Opcja zewnętrznego folderu do pobrania
+Dodano: Strona z uprawnieniami
+Dodano: Strona pobierania (przełącznik) na InstalledPage
+Dodano: Opcja ignorowania powiadomień o lukach w zabezpieczeniach
+Poprawka: Instalator w tle (cichy)
+Aktualizacja: Poprawa ustawienia wartości w oknie dialogowym preferencji
++ ponad 40 commitów i 30 wkładów w tłumaczenia
