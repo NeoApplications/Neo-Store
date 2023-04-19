@@ -1,1 +1,1 @@
-Materyal Tasarım'a sahip modern bir F-Droid istemcisi.
+Zengin özelliklere sahip modern bir F-Droid istemcisi.
