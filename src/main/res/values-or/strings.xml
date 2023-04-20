@@ -1,2 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="password">ପାସ୍‍ୱର୍ଡ଼</string>
+    <string name="permissions">ଅନୁମତି</string>
+    <string name="show_more">ଆହୁରି ଦେଖାଅ</string>
+    <string name="screenshots">ସ୍କ୍ରୀନ୍‍ସଟ୍</string>
+    <string name="search">ସନ୍ଧାନ</string>
+    <string name="system">ସିଷ୍ଟମ୍</string>
+    <string name="settings">ସେଟିଂ</string>
+    <string name="name">ନାମ</string>
+    <string name="address">ଠିକଣା</string>
+    <string name="always">ସର୍ଵଦା</string>
+    <string name="dark">ଗାଢ଼</string>
+    <string name="available">ଉପଲବ୍ଧ</string>
+    <string name="amoled">କଳା</string>
+    <string name="application">ଆପ୍</string>
+    <string name="new_updates_available">ନୂଆ ସଂସ୍କରଣ ଉପଲବ୍ଧ</string>
+    <string name="delete">ଵିଲୋପ</string>
+    <string name="description">ଵର୍ଣ୍ଣନା</string>
+    <string name="details">ଵିଵରଣୀ</string>
+    <string name="invalid_address">ଅଵୈଧ ଠିକଣା</string>
+    <string name="light">ହାଲୁକା</string>
+    <string name="ok">ଠିକ୍ ଅଛି</string>
+    <string name="other">ଅନ୍ୟ</string>
+    <string name="size">ଆକାର</string>
+    <string name="skip">ବାଦ୍ ଦିଅ</string>
+</resources>
