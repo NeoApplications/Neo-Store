@@ -1,19 +1,20 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val composeVersion = "1.4.0"
-val composeCompilerVersion = "1.4.3"
-val roomVersion = "2.5.1"
-val navigationVersion = "2.5.3"
-val accompanistVersion = "0.30.1"
+val accompanistVersion = "0.31.0-alpha"
+val composeVersion = "1.5.0-alpha03"
+val composeCompilerVersion = "1.4.6"
 val hiltVersion = "2.45"
+val material3Version = "1.1.0-rc01"
+val navigationVersion = "2.6.0-beta01"
 val retrofitVersion = "2.9.0"
+val roomVersion = "2.5.1"
 
 plugins {
     id("com.android.application") version ("8.0.0")
-    kotlin("android") version ("1.8.10")
-    kotlin("kapt") version ("1.8.10")
-    kotlin("plugin.serialization") version ("1.8.10")
-    id("com.google.devtools.ksp") version ("1.8.10-1.0.9")
+    kotlin("android") version ("1.8.20")
+    kotlin("kapt") version ("1.8.20")
+    kotlin("plugin.serialization") version ("1.8.20")
+    id("com.google.devtools.ksp") version ("1.8.20-1.0.11")
     id("com.google.dagger.hilt.android") version ("2.45")
 }
 
@@ -118,8 +119,8 @@ android {
 dependencies {
 
     // Core
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10")
-    implementation("com.google.devtools.ksp:symbol-processing-api:1.8.10-1.0.9")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20")
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.8.20-1.0.11")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
@@ -144,7 +145,7 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
 
     // LibSu
-    implementation("com.github.topjohnwu.libsu:core:5.0.4")
+    implementation("com.github.topjohnwu.libsu:core:5.0.5")
 
     // JSON
     implementation("com.fasterxml.jackson.core:jackson-core:2.14.2")
@@ -172,7 +173,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.1.0-beta01")
+    implementation("androidx.compose.material3:material3:$material3Version")
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
