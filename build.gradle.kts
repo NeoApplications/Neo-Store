@@ -9,7 +9,7 @@ val hiltVersion = "2.45"
 val retrofitVersion = "2.9.0"
 
 plugins {
-    id("com.android.application") version ("7.4.2")
+    id("com.android.application") version ("8.0.0")
     kotlin("android") version ("1.8.10")
     kotlin("kapt") version ("1.8.10")
     kotlin("plugin.serialization") version ("1.8.10")
