@@ -182,8 +182,6 @@ dependencies {
 
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    debugImplementation("androidx.customview:customview-poolingcontainer:1.0.0")
-    debugImplementation("androidx.customview:customview:1.2.0-alpha02")
 }
 
 // using a task as a preBuild dependency instead of a function that takes some time insures that it runs
