@@ -262,18 +262,21 @@ fun AppSheet(
                 )
                 openDialog.value = true
             }
+
             installedItem != null
                     && installedItem.versionCode > release.versionCode
                     && !Preferences[Preferences.Key.DisableDownloadVersionCheck] -> {
                 dialogKey.value = DialogKey.ReleaseIssue(R.string.incompatible_older_DESC)
                 openDialog.value = true
             }
+
             installedItem != null
                     && installedItem.signature != release.signature
                     && !Preferences[Preferences.Key.DisableSignatureCheck]       -> {
                 dialogKey.value = DialogKey.ReleaseIssue(R.string.incompatible_signature_DESC)
                 openDialog.value = true
             }
+
             else                                                                 -> {
                 val productRepository =
                     viewModel.productRepos.value.asSequence()
@@ -306,6 +309,7 @@ fun AppSheet(
                 }
                 Unit
             }
+
             ActionState.Launch    -> {
                 viewModel.installedItem.value?.let { installed ->
                     if (installed.launcherActivities.size >= 2) {
@@ -322,12 +326,14 @@ fun AppSheet(
 
                 Unit
             }
+
             ActionState.Details   -> {
                 context.startActivity(
                     Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                         .setData(Uri.parse("package:$packageName"))
                 )
             }
+
             ActionState.Uninstall -> {
                 scope.launch {
                     AppInstaller.getInstance(MainApplication.mainActivity)?.defaultInstaller
@@ -335,12 +341,14 @@ fun AppSheet(
                 }
                 Unit
             }
+
             is ActionState.Cancel -> { // TODO fix cancel, send a cancel intent maybe?
                 val binder = downloadConnection.binder
                 if (viewModel.downloadState.value != null && binder != null) {
                     binder.cancel(packageName)
                 } else Unit
             }
+
             ActionState.Share     -> {
                 context.shareIntent(
                     packageName,
@@ -348,11 +356,13 @@ fun AppSheet(
                     productRepos[0].second.name
                 )
             }
+
             ActionState.Bookmark,
             ActionState.Bookmarked,
                                   -> {
                 viewModel.setFavorite(packageName, action is ActionState.Bookmark)
             }
+
             else                  -> Unit
         }::class
     }
@@ -978,6 +988,7 @@ fun AppSheet(
                                 openDialog.value = false
                             }
                         )
+
                         else                -> KeyDialogUI(
                             key = dialogKey.value,
                             openDialog = openDialog,
@@ -995,6 +1006,7 @@ fun AppSheet(
                                             e.printStackTrace()
                                         }
                                     }
+
                                     else              -> {
                                         dialogKey.value = null
                                         openDialog.value = false

@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 inline fun Modifier.addIf(
     condition: Boolean,
-    crossinline factory: @Composable Modifier.() -> Modifier
+    crossinline factory: @Composable Modifier.() -> Modifier,
 ): Modifier =
     if (condition) factory() else this
 

@@ -55,6 +55,7 @@ fun BottomNavBar(page: Int = NAV_MAIN, navController: NavHostController) {
             NavItem.ReposPrefs,
             NavItem.OtherPrefs,
         )
+
         else      -> listOf(
             NavItem.Explore,
             NavItem.Latest,

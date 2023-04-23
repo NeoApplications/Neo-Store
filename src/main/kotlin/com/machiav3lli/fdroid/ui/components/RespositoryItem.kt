@@ -33,7 +33,7 @@ fun RepositoryItem(
     modifier: Modifier = Modifier,
     repository: Repository,
     onClick: (Repository) -> Unit = {},
-    onLongClick: (Repository) -> Unit = {}
+    onLongClick: (Repository) -> Unit = {},
 ) {
     val (isEnabled, enable) = remember(repository.enabled) {
         mutableStateOf(repository.enabled)
@@ -45,7 +45,6 @@ fun RepositoryItem(
 
     Surface(
         modifier = modifier
-            .padding(horizontal = 16.dp, vertical = 4.dp)
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
             .combinedClickable(

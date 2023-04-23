@@ -29,7 +29,7 @@ import de.charlex.compose.HtmlText
 fun HtmlTextBlock(
     modifier: Modifier = Modifier,
     description: String,
-    isExpandable: Boolean = true
+    isExpandable: Boolean = true,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),

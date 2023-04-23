@@ -97,6 +97,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                             Preferences[Preferences.Key.SortOrderAscendingExplore],
                         ).toString()
                     )
+
                     else -> {}
                 }
             }
@@ -150,7 +151,7 @@ fun ExplorePage(viewModel: ExploreVM) {
             }
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Absolute.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
                 state = listState,
             ) {
                 items(

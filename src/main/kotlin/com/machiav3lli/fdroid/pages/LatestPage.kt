@@ -90,6 +90,7 @@ fun LatestPage(viewModel: LatestVM) {
                             Preferences[Preferences.Key.SortOrderAscendingLatest],
                         ).toString()
                     )
+
                     else -> {}
                 }
             }

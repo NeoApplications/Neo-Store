@@ -19,7 +19,6 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.pages.ExplorePage
 import com.machiav3lli.fdroid.pages.InstalledPage
 import com.machiav3lli.fdroid.pages.LatestPage
@@ -28,6 +27,7 @@ import com.machiav3lli.fdroid.pages.PrefsOtherPage
 import com.machiav3lli.fdroid.pages.PrefsPersonalPage
 import com.machiav3lli.fdroid.pages.PrefsReposPage
 import com.machiav3lli.fdroid.pages.PrefsUpdatesPage
+import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

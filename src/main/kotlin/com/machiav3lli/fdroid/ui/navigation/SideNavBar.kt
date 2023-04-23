@@ -20,6 +20,7 @@ package com.machiav3lli.fdroid.ui.navigation
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -29,7 +30,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -58,8 +58,11 @@ fun SideNavBar(
     LazyColumn(
         modifier = modifier
             .fillMaxHeight()
-            .padding(horizontal = 4.dp)
             .horizontalScroll(rememberScrollState()),
+        contentPadding = PaddingValues(
+            vertical = 12.dp,
+            horizontal = 4.dp,
+        ),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(items) { item ->
@@ -80,7 +83,6 @@ fun SideNavBar(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SideNavBarItem(
     modifier: Modifier = Modifier,

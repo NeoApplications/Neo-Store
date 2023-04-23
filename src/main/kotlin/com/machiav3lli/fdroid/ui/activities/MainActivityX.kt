@@ -248,6 +248,7 @@ class MainActivityX : AppCompatActivity() {
                 expanded.value = false
                 true
             }
+
             keyCode == KeyEvent.KEYCODE_BACK                   -> moveTaskToBack(true)
             else                                               -> super.onKeyDown(keyCode, event)
         }
@@ -265,9 +266,11 @@ class MainActivityX : AppCompatActivity() {
                 uri?.scheme == "package" || uri?.scheme == "fdroid.app" -> {
                     uri.schemeSpecificPart?.nullIfEmpty()
                 }
+
                 uri?.scheme == "market" && uri.host == "details"        -> {
                     uri.getQueryParameter("id")?.nullIfEmpty()
                 }
+
                 uri != null && uri.scheme in setOf("http", "https")     -> {
                     val host = uri.host.orEmpty()
                     if (host == "f-droid.org" || host.endsWith(".f-droid.org")) {
@@ -276,6 +279,7 @@ class MainActivityX : AppCompatActivity() {
                         null
                     }
                 }
+
                 else                                                    -> {
                     null
                 }
@@ -288,6 +292,7 @@ class MainActivityX : AppCompatActivity() {
                 // TODO directly update the apps??
                 navController.navigate(NavItem.Installed.destination)
             }
+
             is SpecialIntent.Install -> {
                 val packageName = specialIntent.packageName
                 if (!packageName.isNullOrEmpty()) {
@@ -319,12 +324,14 @@ class MainActivityX : AppCompatActivity() {
                     }
                 }
             }
+
             ACTION_UPDATES     -> { // TODO Handle EXTRA_UPDATES
                 if (!intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)) {
                     intent.putExtra(EXTRA_INTENT_HANDLED, true)
                     handleSpecialIntent(SpecialIntent.Updates)
                 }
             }
+
             ACTION_INSTALL     -> handleSpecialIntent(
                 SpecialIntent.Install(
                     intent.packageName,

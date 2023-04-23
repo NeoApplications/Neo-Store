@@ -93,7 +93,7 @@ android {
             )
         }
     }
-    packagingOptions {
+    packaging {
         jniLibs {
             excludes += listOf("/okhttp3/internal/publicsuffix/*")
         }

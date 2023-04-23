@@ -173,6 +173,7 @@ fun Context.showNotificationError(repository: Repository, exception: Exception) 
                             RepositoryUpdater.ErrorType.VALIDATION -> R.string.validation_index_error_DESC
                             RepositoryUpdater.ErrorType.PARSING    -> R.string.parsing_index_error_DESC
                         }
+
                         else                                 -> R.string.unknown_error_DESC
                     }
                 )
@@ -193,7 +194,7 @@ fun Context.showNotificationError(
             .setSmallIcon(android.R.drawable.stat_sys_warning)
             .setColor(
                 ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
-                    .getColorFromAttr(R.attr.colorPrimary).defaultColor
+                    .getColorFromAttr(androidx.appcompat.R.attr.colorPrimary).defaultColor
             )
             .setContentIntent(
                 PendingIntent.getActivity(
@@ -220,6 +221,7 @@ fun Context.showNotificationError(
                         )
                         setContentText(getString(R.string.network_error_DESC))
                     }
+
                     is DownloadService.ErrorType.Http       -> {
                         setContentTitle(
                             getString(
@@ -229,6 +231,7 @@ fun Context.showNotificationError(
                         )
                         setContentText(getString(R.string.http_error_DESC))
                     }
+
                     is DownloadService.ErrorType.Validation -> {
                         setContentTitle(
                             getString(
@@ -294,7 +297,7 @@ fun InstallerService.notifyStatus(intent: Intent?) {
         .setAutoCancel(true)
         .setColor(
             ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
-                .getColorFromAttr(R.attr.colorPrimary).defaultColor
+                .getColorFromAttr(androidx.appcompat.R.attr.colorPrimary).defaultColor
         )
 
     when (status) {
@@ -309,6 +312,7 @@ fun InstallerService.notifyStatus(intent: Intent?) {
                     .build()
             )
         }
+
         PackageInstaller.STATUS_SUCCESS             -> {
             if (installerAction == InstallerService.ACTION_UNINSTALL)
             // remove any notification for this app
@@ -330,9 +334,11 @@ fun InstallerService.notifyStatus(intent: Intent?) {
                 )
             }
         }
+
         PackageInstaller.STATUS_FAILURE_ABORTED     -> {
             // do nothing if user cancels
         }
+
         else                                        -> {
             // problem occurred when installing/uninstalling package
             // STATUS_FAILURE, STATUS_FAILURE_STORAGE ,STATUS_FAILURE_BLOCKED, STATUS_FAILURE_INCOMPATIBLE, STATUS_FAILURE_CONFLICT, STATUS_FAILURE_INVALID

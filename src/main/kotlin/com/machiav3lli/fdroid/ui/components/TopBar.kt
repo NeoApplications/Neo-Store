@@ -16,8 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
-import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -47,14 +46,13 @@ import com.machiav3lli.fdroid.ui.compose.utils.HorizontalExpandingVisibility
 @Composable
 fun TopBar(
     title: String,
-    scrollBehavior: TopAppBarScrollBehavior? = null,
     actions: @Composable (RowScope.() -> Unit) = {},
 ) {
     TopAppBar(
         title = {
             Text(text = title, style = MaterialTheme.typography.headlineSmall)
         },
-        colors = topAppBarColors(
+        colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
             scrolledContainerColor = MaterialTheme.colorScheme.background,
             titleContentColor = MaterialTheme.colorScheme.onBackground,
@@ -62,7 +60,6 @@ fun TopBar(
             navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
         ),
         actions = actions,
-        scrollBehavior = scrollBehavior
     )
 }
 
@@ -106,7 +103,6 @@ fun CollapsedSearchView(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpandedSearchView(
     query: String,
@@ -142,7 +138,11 @@ fun ExpandedSearchView(
             modifier = Modifier
                 .weight(1f)
                 .focusRequester(textFieldFocusRequester),
-            colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+            ),
             leadingIcon = {
                 Icon(
                     modifier = Modifier.size(24.dp),

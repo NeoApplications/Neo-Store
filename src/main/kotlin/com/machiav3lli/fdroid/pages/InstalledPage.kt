@@ -121,6 +121,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                             Preferences[Preferences.Key.SortOrderAscendingInstalled],
                         ).toString()
                     )
+
                     else -> {}
                 }
             }

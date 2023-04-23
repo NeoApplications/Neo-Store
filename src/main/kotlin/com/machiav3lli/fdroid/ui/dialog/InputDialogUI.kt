@@ -10,7 +10,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -41,7 +40,6 @@ import com.machiav3lli.fdroid.ui.components.DialogNegativeButton
 import com.machiav3lli.fdroid.ui.components.DialogPositiveButton
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IntInputPrefDialogUI(
     prefKey: Preferences.Key<Int>,
@@ -89,7 +87,7 @@ fun IntInputPrefDialogUI(
                     .focusRequester(textFieldFocusRequester),
                 value = if (savedValue != -1) savedValue.toString()
                 else "",
-                colors = TextFieldDefaults.textFieldColors(
+                colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                 ),
@@ -132,7 +130,6 @@ fun IntInputPrefDialogUI(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StringInputPrefDialogUI(
     prefKey: Preferences.Key<String>,
@@ -170,7 +167,7 @@ fun StringInputPrefDialogUI(
                     .fillMaxWidth()
                     .focusRequester(textFieldFocusRequester),
                 value = savedValue,
-                colors = TextFieldDefaults.textFieldColors(
+                colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                 ),

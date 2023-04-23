@@ -3,7 +3,6 @@ package com.machiav3lli.fdroid.ui.compose
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -93,11 +92,16 @@ fun <T> VerticalItemList(
                 text = stringResource(id = R.string.loading_list),
                 color = MaterialTheme.colorScheme.onBackground
             )
+
             list.isNotEmpty() -> {
-                LazyColumn(verticalArrangement = spacedBy(4.dp)) {
+                LazyColumn(
+                    contentPadding = PaddingValues(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
                     items(items = list, key = itemKey, itemContent = itemContent)
                 }
             }
+
             else -> Text(
                 text = stringResource(id = R.string.no_applications_available),
                 color = MaterialTheme.colorScheme.onBackground
