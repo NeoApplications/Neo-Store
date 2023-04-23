@@ -32,6 +32,7 @@ import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.ui.compose.RepositoriesRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.QrCode
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -121,7 +122,9 @@ fun PrefsReposPage(viewModel: PrefsVM, address: String, fingerprint: String) {
     ) { paddingValues ->
         val sortedRepoList = remember(repos) { repos.sortedBy { !it.enabled } }
         RepositoriesRecycler(
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier
+                .blockBorder()
+                .padding(paddingValues),
             repositoriesList = sortedRepoList,
             onClick = {
                 CoroutineScope(Dispatchers.Default).launch {

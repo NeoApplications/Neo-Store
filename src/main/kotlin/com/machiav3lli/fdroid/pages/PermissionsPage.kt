@@ -6,7 +6,7 @@ import android.os.Build
 import android.os.PowerManager
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -32,6 +32,7 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.Permission
 import com.machiav3lli.fdroid.ui.components.PermissionItem
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.showBatteryOptimizationDialog
 import kotlinx.coroutines.CoroutineScope
@@ -73,7 +74,8 @@ fun PermissionsPage(navigateToMain: () -> Unit) {
     Scaffold { paddingValues ->
         LazyColumn(
             modifier = Modifier
-                .fillMaxWidth()
+                .blockBorder()
+                .fillMaxSize()
                 .padding(paddingValues),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(8.dp)

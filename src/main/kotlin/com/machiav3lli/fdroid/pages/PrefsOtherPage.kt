@@ -27,6 +27,7 @@ import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.entity.LinkRef
 import com.machiav3lli.fdroid.ui.components.prefs.BasePreference
 import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroup
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.EnumSelectionPrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.IntInputPrefDialogUI
@@ -91,6 +92,7 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
+                .blockBorder()
                 .fillMaxSize()
                 .padding(horizontal = 8.dp),
             contentPadding = paddingValues,

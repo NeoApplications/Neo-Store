@@ -39,6 +39,7 @@ import com.machiav3lli.fdroid.ui.components.CategoryChip
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.SideNavBar
 import com.machiav3lli.fdroid.utility.onLaunchClick
@@ -134,7 +135,9 @@ fun ExplorePage(viewModel: ExploreVM) {
                 showSortSheet = true
             }
         }
-        Row {
+        Row(
+            modifier = Modifier.blockBorder(),
+        ) {
             if (Preferences[Preferences.Key.ShowCategoriesBar]) SideNavBar(
                 keys = listOf(FILTER_CATEGORY_ALL) + (categories.sorted()),
                 selectedKey = selectedCategory,

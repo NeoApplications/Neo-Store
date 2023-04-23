@@ -35,6 +35,7 @@ import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.compose.utils.vertical
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
@@ -97,6 +98,7 @@ fun LatestPage(viewModel: LatestVM) {
 
     LazyColumn(
         Modifier
+            .blockBorder()
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize(),
     ) {

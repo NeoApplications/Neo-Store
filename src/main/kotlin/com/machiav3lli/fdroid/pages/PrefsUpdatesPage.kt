@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroup
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.EnumSelectionPrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.IntInputPrefDialogUI
@@ -56,6 +57,7 @@ fun PrefsUpdatesPage() {
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
+                .blockBorder()
                 .fillMaxSize()
                 .padding(horizontal = 8.dp),
             contentPadding = paddingValues,
