@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -46,6 +45,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowUUpLeft
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SortAscending
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SortDescending
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.mapLatest
@@ -119,7 +119,6 @@ fun SortFilterPage(navPage: String, onDismiss: () -> Unit) {
             Column(
                 modifier = Modifier.padding(horizontal = 8.dp)
             ) {
-                Divider(thickness = 2.dp)
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -168,6 +167,7 @@ fun SortFilterPage(navPage: String, onDismiss: () -> Unit) {
                     start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
                     end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
                 )
+                .blockBorder()
                 .nestedScroll(nestedScrollConnection)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp),

@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,6 +26,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -44,6 +48,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
@@ -58,6 +63,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TrashSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.dialog.ActionsDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
@@ -65,7 +71,8 @@ import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import kotlinx.coroutines.launch
 import java.net.URI
 import java.net.URL
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -166,221 +173,8 @@ fun RepoPage(
         )
     }
 
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        if ((repo?.updated ?: -1) > 0L && !editMode) {
-            item {
-                TitleText(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.name),
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                BlockText(text = repo?.name)
-            }
-        }
-        if (!editMode) {
-            item {
-                TitleText(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.description),
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                BlockText(text = repo?.description?.replace("\n", " "))
-            }
-        }
-        if ((repo?.updated ?: -1) > 0L && !editMode) {
-            item {
-                TitleText(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.recently_updated),
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                BlockText(
-                    text = if (repo != null && repo?.updated != null) {
-                        val date = Date(repo?.updated ?: 0)
-                        val format =
-                            if (DateUtils.isToday(date.time)) DateUtils.FORMAT_SHOW_TIME else
-                                DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE
-                        DateUtils.formatDateTime(context, date.time, format)
-                    } else stringResource(R.string.unknown)
-                )
-            }
-        }
-        if (!editMode && repo?.enabled == true &&
-            (repo?.lastModified.orEmpty().isNotEmpty() ||
-                    repo?.entityTag.orEmpty().isNotEmpty())
-        ) {
-            item {
-                TitleText(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.number_of_applications),
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                BlockText(text = appsCount.toString())
-            }
-        }
-        item {
-            TitleText(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.address),
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            AnimatedVisibility(visible = !editMode) {
-                BlockText(text = repo?.address)
-            }
-            AnimatedVisibility(visible = editMode) {
-                Column {
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = addressFieldValue,
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color.Transparent,
-                            unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        ),
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                        keyboardActions = KeyboardActions(
-                            onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                        ),
-                        onValueChange = {
-                            addressFieldValue = it
-                            invalidateAddress(addressValidity, addressFieldValue.text)
-                        }
-                    )
-                    if (repo?.mirrors?.isNotEmpty() == true) LazyRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        items(repo?.mirrors ?: emptyList()) { text ->
-                            SelectChip(
-                                text = text,
-                                checked = text == addressFieldValue.text,
-                            ) {
-                                addressFieldValue = TextFieldValue(
-                                    text = text,
-                                    selection = TextRange(text.length)
-                                )
-                                invalidateAddress(addressValidity, addressFieldValue.text)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        item {
-            TitleText(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.fingerprint),
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            AnimatedVisibility(visible = !editMode) {
-                BlockText(
-                    text = if (
-                        (repo?.updated ?: -1) > 0L
-                        && repo?.fingerprint.isNullOrEmpty()
-                    ) stringResource(id = R.string.repository_unsigned_DESC)
-                    else repo?.fingerprint
-                        ?.windowed(2, 2, false)
-                        ?.joinToString(separator = " ") { it.uppercase(Locale.US) + " " },
-                    color = if (
-                        (repo?.updated ?: -1) > 0L
-                        && repo?.fingerprint?.isEmpty() == true
-                    ) MaterialTheme.colorScheme.error
-                    else MaterialTheme.colorScheme.onSurfaceVariant,
-                    monospace = true,
-                )
-            }
-            AnimatedVisibility(visible = editMode) {
-                OutlinedTextField(
-                    // TODO accept only hex literals
-                    modifier = Modifier.fillMaxWidth(),
-                    value = fingerprintFieldValue,
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.Transparent,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    ),
-                    textStyle = LocalTextStyle.current.copy(fontFamily = FontFamily.Monospace),
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Next,
-                        capitalization = KeyboardCapitalization.Characters,
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                    ),
-                    onValueChange = {
-                        fingerprintFieldValue = it
-                        invalidateFingerprint(fingerprintValidity, fingerprintFieldValue.text)
-                    }
-                )
-            }
-        }
-        if (editMode) {
-            item {
-                TitleText(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.username),
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = usernameFieldValue,
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.Transparent,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    ),
-                    isError = usernameValidity.value,
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                    ),
-                    onValueChange = {
-                        usernameFieldValue = it
-                        invalidateAuthentication(
-                            usernameValidity,
-                            usernameFieldValue.text,
-                            passwordFieldValue.text,
-                        )
-                    }
-                )
-            }
-            item {
-                TitleText(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.password),
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    value = passwordFieldValue,
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.Transparent,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    ),
-                    isError = passwordValidity.value,
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(
-                        onDone = { focusManager.clearFocus() }
-                    ),
-                    onValueChange = {
-                        passwordFieldValue = it
-                        invalidateAuthentication(
-                            passwordValidity,
-                            usernameFieldValue.text,
-                            passwordFieldValue.text,
-                        )
-                    }
-                )
-            }
-        }
-        item {
-            Divider(thickness = 2.dp)
+    Scaffold(
+        bottomBar = {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -446,6 +240,236 @@ fun RepoPage(
                         }
                     }
                 )
+            }
+        }
+    ) { paddingValues ->
+        LazyColumn(
+            modifier = Modifier
+                .padding(
+                    bottom = paddingValues.calculateBottomPadding(),
+                    start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
+                    end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
+                )
+                .blockBorder()
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(16.dp)
+        ) {
+            if ((repo?.updated ?: -1) > 0L && !editMode) {
+                item {
+                    TitleText(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.name),
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    BlockText(text = repo?.name)
+                }
+            }
+            if (!editMode) {
+                item {
+                    TitleText(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.description),
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    BlockText(text = repo?.description?.replace("\n", " "))
+                }
+            }
+            if ((repo?.updated ?: -1) > 0L && !editMode) {
+                item {
+                    TitleText(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.recently_updated),
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    BlockText(
+                        text = if (repo != null && repo?.updated != null) {
+                            val date = Date(repo?.updated ?: 0)
+                            val format =
+                                if (DateUtils.isToday(date.time)) DateUtils.FORMAT_SHOW_TIME else
+                                    DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE
+                            DateUtils.formatDateTime(context, date.time, format)
+                        } else stringResource(R.string.unknown)
+                    )
+                }
+            }
+            if (!editMode && repo?.enabled == true &&
+                (repo?.lastModified.orEmpty().isNotEmpty() ||
+                        repo?.entityTag.orEmpty().isNotEmpty())
+            ) {
+                item {
+                    TitleText(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.number_of_applications),
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    BlockText(text = appsCount.toString())
+                }
+            }
+            item {
+                TitleText(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.address),
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                AnimatedVisibility(visible = !editMode) {
+                    BlockText(text = repo?.address)
+                }
+                AnimatedVisibility(visible = editMode) {
+                    Column {
+                        OutlinedTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = addressFieldValue,
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = Color.Transparent,
+                                unfocusedContainerColor = Color.Transparent,
+                                disabledContainerColor = Color.Transparent,
+                                unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            ),
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                            keyboardActions = KeyboardActions(
+                                onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                            ),
+                            onValueChange = {
+                                addressFieldValue = it
+                                invalidateAddress(addressValidity, addressFieldValue.text)
+                            }
+                        )
+                        if (repo?.mirrors?.isNotEmpty() == true) LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            items(repo?.mirrors ?: emptyList()) { text ->
+                                SelectChip(
+                                    text = text,
+                                    checked = text == addressFieldValue.text,
+                                ) {
+                                    addressFieldValue = TextFieldValue(
+                                        text = text,
+                                        selection = TextRange(text.length)
+                                    )
+                                    invalidateAddress(addressValidity, addressFieldValue.text)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            item {
+                TitleText(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.fingerprint),
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                AnimatedVisibility(visible = !editMode) {
+                    BlockText(
+                        text = if (
+                            (repo?.updated ?: -1) > 0L
+                            && repo?.fingerprint.isNullOrEmpty()
+                        ) stringResource(id = R.string.repository_unsigned_DESC)
+                        else repo?.fingerprint
+                            ?.windowed(2, 2, false)
+                            ?.joinToString(separator = " ") { it.uppercase(Locale.US) + " " },
+                        color = if (
+                            (repo?.updated ?: -1) > 0L
+                            && repo?.fingerprint?.isEmpty() == true
+                        ) MaterialTheme.colorScheme.error
+                        else MaterialTheme.colorScheme.onSurfaceVariant,
+                        monospace = true,
+                    )
+                }
+                AnimatedVisibility(visible = editMode) {
+                    OutlinedTextField(
+                        // TODO accept only hex literals
+                        modifier = Modifier.fillMaxWidth(),
+                        value = fingerprintFieldValue,
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        ),
+                        textStyle = LocalTextStyle.current.copy(fontFamily = FontFamily.Monospace),
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Next,
+                            capitalization = KeyboardCapitalization.Characters,
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                        ),
+                        onValueChange = {
+                            fingerprintFieldValue = it
+                            invalidateFingerprint(fingerprintValidity, fingerprintFieldValue.text)
+                        }
+                    )
+                }
+            }
+            if (editMode) {
+                item {
+                    TitleText(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.username),
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = usernameFieldValue,
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        ),
+                        isError = usernameValidity.value,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(
+                            onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                        ),
+                        onValueChange = {
+                            usernameFieldValue = it
+                            invalidateAuthentication(
+                                usernameValidity,
+                                usernameFieldValue.text,
+                                passwordFieldValue.text,
+                            )
+                        }
+                    )
+                }
+                item {
+                    TitleText(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.password),
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        value = passwordFieldValue,
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        ),
+                        isError = passwordValidity.value,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(
+                            onDone = { focusManager.clearFocus() }
+                        ),
+                        onValueChange = {
+                            passwordFieldValue = it
+                            invalidateAuthentication(
+                                passwordValidity,
+                                usernameFieldValue.text,
+                                passwordFieldValue.text,
+                            )
+                        }
+                    )
+                }
             }
         }
     }

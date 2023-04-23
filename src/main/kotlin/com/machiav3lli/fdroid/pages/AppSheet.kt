@@ -103,6 +103,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyleft
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyright
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GlobeSimple
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.dialog.ActionSelectionDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
@@ -359,7 +360,9 @@ fun AppSheet(
     suggestedProductRepo?.let { (product, repo) ->
         Scaffold(
             topBar = {
-                Column {
+                Column(
+                    modifier = Modifier.padding(bottom = 8.dp),
+                ) {
                     TopBarHeader(
                         appName = product.label,
                         packageName = product.packageName,
@@ -421,15 +424,20 @@ fun AppSheet(
             contentColor = MaterialTheme.colorScheme.onBackground,
             snackbarHost = { SnackbarHost(snackbarHostState) },
         ) { paddingValues ->
-            HorizontalPager(pageCount = 2, state = pagerState) { pageIndex ->
+            HorizontalPager(
+                pageCount = 2,
+                state = pagerState,
+                modifier = Modifier
+                    .padding(
+                        top = paddingValues.calculateTopPadding() - 4.dp,
+                        start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
+                        end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
+                    )
+                    .blockBorder(),
+            ) { pageIndex ->
                 if (pageIndex == 0) {
                     LazyColumn(
                         modifier = Modifier
-                            .padding(
-                                top = paddingValues.calculateTopPadding() - 4.dp,
-                                start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
-                                end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
-                            )
                             .nestedScroll(nestedScrollConnection)
                             .fillMaxSize(),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -612,11 +620,6 @@ fun AppSheet(
                 } else {
                     LazyColumn(
                         modifier = Modifier
-                            .padding(
-                                top = paddingValues.calculateTopPadding() - 4.dp,
-                                start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
-                                end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
-                            )
                             .nestedScroll(nestedScrollConnection)
                             .fillMaxSize(),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
