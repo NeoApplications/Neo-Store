@@ -40,20 +40,20 @@ fun MainNavHost(
         navController = navController,
         startDestination = NavItem.Permissions.destination,
     ) {
-        slideDownComposable(NavItem.Permissions.destination) {
+        fadeComposable(NavItem.Permissions.destination) {
             PermissionsPage {
                 navController.navigate(Preferences[Preferences.Key.DefaultTab].valueString)
             }
         }
-        slideDownComposable(NavItem.Explore.destination) {
+        fadeComposable(NavItem.Explore.destination) {
             val viewModel = MainApplication.mainActivity?.exploreViewModel!!
             ExplorePage(viewModel)
         }
-        slideDownComposable(route = NavItem.Latest.destination) {
+        fadeComposable(route = NavItem.Latest.destination) {
             val viewModel = MainApplication.mainActivity?.latestViewModel!!
             LatestPage(viewModel)
         }
-        slideDownComposable(NavItem.Installed.destination) {
+        fadeComposable(NavItem.Installed.destination) {
             val viewModel = MainApplication.mainActivity?.installedViewModel!!
             InstalledPage(viewModel)
         }
@@ -73,13 +73,13 @@ fun PrefsNavHost(
         navController = navController,
         startDestination = NavItem.PersonalPrefs.destination
     ) {
-        slideDownComposable(NavItem.PersonalPrefs.destination) {
+        fadeComposable(NavItem.PersonalPrefs.destination) {
             PrefsPersonalPage()
         }
-        slideDownComposable(NavItem.UpdatesPrefs.destination) {
+        fadeComposable(NavItem.UpdatesPrefs.destination) {
             PrefsUpdatesPage()
         }
-        slideDownComposable(
+        fadeComposable(
             "${NavItem.ReposPrefs.destination}?address={address}?fingerprint={fingerprint}",
             args = listOf(
                 navArgument("address") {
@@ -98,7 +98,7 @@ fun PrefsNavHost(
             val fingerprint = args.getString("fingerprint")?.uppercase() ?: ""
             PrefsReposPage(viewModel, address, fingerprint)
         }
-        slideDownComposable(NavItem.OtherPrefs.destination) {
+        fadeComposable(NavItem.OtherPrefs.destination) {
             val viewModel = MainApplication.prefsActivity?.prefsViewModel!!
             PrefsOtherPage(viewModel)
         }
