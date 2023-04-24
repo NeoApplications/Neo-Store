@@ -1,24 +1,21 @@
 package com.machiav3lli.fdroid.ui.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.database.entity.Downloaded
 import com.machiav3lli.fdroid.database.entity.IconDetails
 import com.machiav3lli.fdroid.database.entity.Installed
@@ -49,29 +46,23 @@ fun DownloadsListItem(
         )
     }
 
-    Row(
+    ListItem(
         modifier = Modifier
             .clip(MaterialTheme.shapes.large)
             .clickable { onUserClick(product) }
-            .padding(8.dp)
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        NetworkImage(
-            modifier = Modifier.size(48.dp),
-            data = imageData
-        )
-
-        Column(
-            modifier = Modifier
-                .weight(1f, true)
-                .height(48.dp),
-        ) {
+        colors = ListItemDefaults.colors(
+            containerColor = Color.Transparent,
+        ),
+        leadingContent = {
+            NetworkImage(
+                modifier = Modifier.size(PRODUCT_CARD_ICON),
+                data = imageData
+            )
+        },
+        headlineContent = {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(
                     text = product.name,
@@ -90,15 +81,16 @@ fun DownloadsListItem(
                     style = MaterialTheme.typography.titleSmall,
                 )
             }
+        },
+        supportingContent = {
             DownloadProgress(
-                modifier = Modifier.padding(horizontal = 4.dp),
                 totalSize = if (state is DownloadService.State.Downloading) state.total
                     ?: 1L else 1L,
                 isIndeterminate = state !is DownloadService.State.Downloading,
                 downloaded = if (state is DownloadService.State.Downloading) state.read else 0L,
             )
-        }
-    }
+        },
+    )
 }
 
 @Composable
@@ -123,29 +115,23 @@ fun DownloadedItem(
         )
     }
 
-    Row(
+    ListItem(
         modifier = Modifier
             .clip(MaterialTheme.shapes.large)
             .clickable { onUserClick(download) }
-            .padding(8.dp)
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        NetworkImage(
-            modifier = Modifier.size(48.dp),
-            data = imageData
-        )
-
-        Column(
-            modifier = Modifier
-                .weight(1f, true)
-                .height(48.dp),
-        ) {
+        colors = ListItemDefaults.colors(
+            containerColor = Color.Transparent,
+        ),
+        leadingContent = {
+            NetworkImage(
+                modifier = Modifier.size(PRODUCT_CARD_ICON),
+                data = imageData
+            )
+        },
+        headlineContent = {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(
                     text = download.state.name,
@@ -154,18 +140,19 @@ fun DownloadedItem(
                     softWrap = true,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleSmall
                 )
                 Text(
                     text = if (installed != null && installed.version != state.version) "${download.version} → ${state.version}"
                     else state.version,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.labelSmall,
                 )
             }
+        },
+        supportingContent = {
             DownloadProgress(
-                modifier = Modifier.padding(horizontal = 4.dp),
                 totalSize = when (state) {
                     is DownloadService.State.Downloading -> state.total ?: 1L
                     is DownloadService.State.Cancel      -> 0L
@@ -181,5 +168,5 @@ fun DownloadedItem(
                 finishedTime = download.changed,
             )
         }
-    }
+    )
 }
