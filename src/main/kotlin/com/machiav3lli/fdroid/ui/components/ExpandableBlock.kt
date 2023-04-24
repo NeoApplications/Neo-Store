@@ -45,14 +45,14 @@ fun ExpandableBlock(
 
     Surface(
         modifier = Modifier.animateContentSize(),
-        shape = MaterialTheme.shapes.large,
+        shape = MaterialTheme.shapes.extraLarge,
         onClick = { expanded = !expanded },
         tonalElevation = tonalElevation
     ) {
-        Column(modifier = modifier) {
+        Column {
             ExpandableBlockHeader(heading, positive)
             AnimatedVisibility(visible = expanded) {
-                Column(Modifier.padding(bottom = 8.dp)) {
+                Column(modifier.padding(bottom = 8.dp)) {
                     content()
                 }
             }
