@@ -24,9 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
+import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.DownloadState
 import com.machiav3lli.fdroid.ui.components.MainActionButton
@@ -34,6 +36,7 @@ import com.machiav3lli.fdroid.ui.components.NetworkImage
 import com.machiav3lli.fdroid.ui.components.SecondaryActionButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
+import com.machiav3lli.fdroid.utility.extension.text.formatDateTime
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
 
 @Composable
@@ -171,6 +174,7 @@ fun DownloadProgress(
     totalSize: Long,
     downloaded: Long?,
     isIndeterminate: Boolean,
+    finishedTime: Long = 0L,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -182,6 +186,17 @@ fun DownloadProgress(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(ShapeDefaults.Large),
+            )
+        } else if (totalSize < 1L) {
+            Text(
+                text = stringResource(
+                    id = if (totalSize == 0L) R.string.canceled
+                    else R.string.error
+                )
+            )
+        } else if (downloaded == totalSize && totalSize == 1L) {
+            Text(
+                text = "${stringResource(id = R.string.finished)} ${finishedTime.formatDateTime()}"
             )
         } else {
             Text(

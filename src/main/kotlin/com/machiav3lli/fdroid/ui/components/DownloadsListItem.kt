@@ -166,14 +166,19 @@ fun DownloadedItem(
             }
             DownloadProgress(
                 modifier = Modifier.padding(horizontal = 4.dp),
-                totalSize = if (state is DownloadService.State.Downloading) state.total
-                    ?: 1L else 1L,
+                totalSize = when (state) {
+                    is DownloadService.State.Downloading -> state.total ?: 1L
+                    is DownloadService.State.Cancel      -> 0L
+                    is DownloadService.State.Error       -> -1L
+                    else                                 -> 1L
+                },
                 isIndeterminate = state is DownloadService.State.Pending || state is DownloadService.State.Connecting,
                 downloaded = when (state) {
                     is DownloadService.State.Downloading -> state.read
                     is DownloadService.State.Success     -> 1L
                     else                                 -> 0L
                 },
+                finishedTime = download.changed,
             )
         }
     }
