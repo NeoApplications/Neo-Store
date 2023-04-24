@@ -412,7 +412,8 @@ fun AppSheet(
                     )
                     AppInfoChips(
                         product = product,
-                        latestRelease = product.displayRelease
+                        latestRelease = product.displayRelease,
+                        installed = installed,
                     )
                     MeterIconsBar(
                         modifier = Modifier.fillMaxWidth(),
