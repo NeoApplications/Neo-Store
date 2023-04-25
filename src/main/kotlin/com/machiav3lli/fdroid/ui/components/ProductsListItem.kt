@@ -1,20 +1,18 @@
 package com.machiav3lli.fdroid.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
@@ -32,10 +29,10 @@ import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.network.CoilDownloader
+import com.machiav3lli.fdroid.ui.components.appsheet.ReleaseBadge
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
-import com.machiav3lli.fdroid.ui.compose.utils.addIf
 
 @Composable
 fun ProductsListItem(
@@ -73,21 +70,18 @@ fun ProductsListItem(
             )
         }
     ) {
-        Row(
+        ListItem(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            NetworkImage(
-                modifier = Modifier.size(PRODUCT_CARD_ICON),
-                data = imageData
-            )
-
-            Column(
-                modifier = Modifier
-                    .weight(1f, true)
-                    .height(PRODUCT_CARD_ICON)
-            ) {
+            colors = ListItemDefaults.colors(
+                containerColor = Color.Transparent,
+            ),
+            leadingContent = {
+                NetworkImage(
+                    modifier = Modifier.size(PRODUCT_CARD_ICON),
+                    data = imageData
+                )
+            },
+            headlineContent = {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -99,37 +93,30 @@ fun ProductsListItem(
                         softWrap = true,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleSmall
                     )
-                    Text(
-                        modifier = Modifier
-                            .addIf(product.canUpdate) {
-                                background(
-                                    MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
-                                    MaterialTheme.shapes.large
-                                ).padding(vertical = 2.dp, horizontal = 4.dp)
-                            },
-                        text = if (product.canUpdate) "${product.installedVersion} → ${product.version}"
-                        else installed?.version ?: product.version,
+                    if (product.canUpdate) ReleaseBadge(
+                        text = "${product.installedVersion} → ${product.version}",
+                    )
+                    else Text(
+                        text = installed?.version ?: product.version,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
                         style = MaterialTheme.typography.bodySmall,
-                        fontWeight = if (product.canUpdate) FontWeight.ExtraBold
-                        else null
                     )
                 }
+            },
+            supportingContent = {
                 Text(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     text = product.summary,
                     style = MaterialTheme.typography.bodySmall,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 2,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-            }
-        }
+            },
+        )
     }
 }
 
