@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ProductItem
@@ -35,6 +36,7 @@ fun ProductsHorizontalRecycler(
     modifier: Modifier = Modifier,
     productsList: List<Product>?,
     repositories: Map<Long, Repository>,
+    installedMap: Map<String, Installed> = emptyMap(),
     rowsNumber: Int = 2,
     onUserClick: (ProductItem) -> Unit = {},
 ) {
@@ -45,7 +47,7 @@ fun ProductsHorizontalRecycler(
         contentPadding = PaddingValues(horizontal = 8.dp),
     ) {
         items(productsList ?: emptyList()) { product ->
-            product.toItem().let { item ->
+            product.toItem(installedMap[product.packageName]).let { item ->
                 ProductCard(item, repositories[item.repositoryId], onUserClick)
             }
         }

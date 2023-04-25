@@ -52,7 +52,7 @@ fun LatestPage(viewModel: LatestVM) {
     val scope = rememberCoroutineScope()
     val filteredPrimaryList by viewModel.filteredProducts.collectAsState()
     val secondaryList by viewModel.secondaryProducts.collectAsState(null)
-    val installedList by viewModel.installed.collectAsState(null)
+    val installedList by viewModel.installed.collectAsState(emptyMap())
     val repositories by viewModel.repositories.collectAsState(null)
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
@@ -119,7 +119,8 @@ fun LatestPage(viewModel: LatestVM) {
                 ProductsHorizontalRecycler(
                     modifier = Modifier.weight(1f),
                     productsList = secondaryList,
-                    repositories = repositoriesMap
+                    repositories = repositoriesMap,
+                    installedMap = installedList,
                 ) { item ->
                     mainActivityX.navigateProduct(item.packageName)
                 }
@@ -141,7 +142,8 @@ fun LatestPage(viewModel: LatestVM) {
             }
         }
         items(
-            items = filteredPrimaryList?.map { it.toItem() } ?: emptyList(),
+            items = filteredPrimaryList?.map { it.toItem(installedList[it.packageName]) }
+                ?: emptyList(),
         ) { item ->
             ProductsListItem(
                 item = item,

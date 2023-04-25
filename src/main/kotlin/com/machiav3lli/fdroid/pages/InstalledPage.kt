@@ -79,7 +79,7 @@ fun InstalledPage(viewModel: InstalledVM) {
     val scope = rememberCoroutineScope()
     val filteredPrimaryList by viewModel.filteredProducts.collectAsState()
     val secondaryList by viewModel.secondaryProducts.collectAsState(null)
-    val installedList by viewModel.installed.collectAsState(null)
+    val installedList by viewModel.installed.collectAsState(emptyMap())
     val repositories by viewModel.repositories.collectAsState(null)
     var showDownloadsPage by remember { mutableStateOf(false) }
     val repositoriesMap by remember(repositories) {
@@ -236,6 +236,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                                 modifier = Modifier.weight(1f),
                                 productsList = secondaryList,
                                 repositories = repositoriesMap,
+                                installedMap = installedList,
                                 rowsNumber = secondaryList?.size?.coerceIn(1, 2) ?: 1,
                             ) { item ->
                                 mainActivityX.navigateProduct(item.packageName)
@@ -288,7 +289,8 @@ fun InstalledPage(viewModel: InstalledVM) {
                         }
                     }
                     items(
-                        filteredPrimaryList?.map { it.toItem() } ?: emptyList()
+                        filteredPrimaryList?.map { it.toItem(installedList[it.packageName]) }
+                            ?: emptyList()
                     ) { item ->
                         ProductsListItem(
                             item = item,

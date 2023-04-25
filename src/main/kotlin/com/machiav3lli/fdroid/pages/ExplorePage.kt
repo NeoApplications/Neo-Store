@@ -56,7 +56,7 @@ fun ExplorePage(viewModel: ExploreVM) {
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
     val filteredProducts by viewModel.filteredProducts.collectAsState()
-    val installedList by viewModel.installed.collectAsState(null)
+    val installedList by viewModel.installed.collectAsState(emptyMap())
     val repositories by viewModel.repositories.collectAsState(null)
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
@@ -155,7 +155,8 @@ fun ExplorePage(viewModel: ExploreVM) {
                 state = listState,
             ) {
                 items(
-                    items = filteredProducts?.map { it.toItem() } ?: emptyList(),
+                    items = filteredProducts?.map { it.toItem(installedList[it.packageName]) }
+                        ?: emptyList(),
                 ) { item ->
                     ProductsListItem(
                         item = item,
