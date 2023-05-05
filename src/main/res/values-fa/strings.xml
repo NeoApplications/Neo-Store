@@ -264,4 +264,9 @@
     <string name="source_proprietary">انحصاری</string>
     <string name="action_open_tc">باز کردن کنترل ردیاب</string>
     <string name="trackers_note_4">حداقل بدون ردیاب</string>
+    <string name="show_categories_bar">نمایش دسته‌بندی ها</string>
+    <string name="disable_signature_check">از کار انداختن بررسی امضا</string>
+    <string name="cancel_all">لغو همه</string>
+    <string name="source_dependencies">وابستگی‌ها</string>
+    <string name="trackers_none">هیچ ردیابی برای نمایش ندارد</string>
 </resources>
