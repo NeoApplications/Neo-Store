@@ -215,28 +215,23 @@ fun DownloadProgress(
 
 @Composable
 fun WarningCard(message: String) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.large,
-        color = MaterialTheme.colorScheme.errorContainer,
-        tonalElevation = 8.dp
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
+    ListItem(
+        modifier = Modifier.clip(MaterialTheme.shapes.large),
+        colors = ListItemDefaults.colors(
+            containerColor = MaterialTheme.colorScheme.errorContainer,
+        ),
+        leadingContent = {
             Icon(
                 imageVector = Phosphor.CircleWavyWarning,
                 tint = MaterialTheme.colorScheme.onErrorContainer,
                 contentDescription = message,
             )
+        },
+        headlineContent = {
             Text(
                 text = message,
                 color = MaterialTheme.colorScheme.onErrorContainer,
             )
         }
-    }
+    )
 }
