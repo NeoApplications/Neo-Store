@@ -35,7 +35,7 @@ import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ActionChip
-import com.machiav3lli.fdroid.ui.components.CategoryChip
+import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
@@ -117,17 +117,16 @@ fun ExplorePage(viewModel: ExploreVM) {
                 mutableStateOf(false)
             }
 
-            CategoryChip(
-                category = stringResource(id = R.string.favorite_applications),
-                isSelected = favoriteFilter,
-                onSelected = {
-                    favoriteFilter = !favoriteFilter
-                    viewModel.setSections(
-                        if (it) Section.FAVORITE
-                        else Section.All
-                    )
-                }
-            )
+            SelectChip(
+                text = stringResource(id = R.string.favorite_applications),
+                checked = favoriteFilter
+            ) {
+                favoriteFilter = !favoriteFilter
+                viewModel.setSections(
+                    if (favoriteFilter) Section.FAVORITE
+                    else Section.All
+                )
+            }
             Spacer(modifier = Modifier.weight(1f))
             ActionChip(
                 text = stringResource(id = R.string.sort_filter),
