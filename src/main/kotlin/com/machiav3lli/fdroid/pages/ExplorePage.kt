@@ -200,7 +200,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                 showSortSheet = false
             }
         ) {
-            SortFilterPage(NavItem.Explore.destination) {
+            SortFilterSheet(NavItem.Explore.destination) {
                 scope.launch { sortSheetState.hide() }
                 showSortSheet = false
             }

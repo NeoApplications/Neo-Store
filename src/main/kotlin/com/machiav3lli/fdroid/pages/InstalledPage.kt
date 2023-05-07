@@ -362,7 +362,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                     showSortSheet = false
                 }
             ) {
-                SortFilterPage(NavItem.Installed.destination) {
+                SortFilterSheet(NavItem.Installed.destination) {
                     scope.launch { sortSheetState.hide() }
                     showSortSheet = false
                 }

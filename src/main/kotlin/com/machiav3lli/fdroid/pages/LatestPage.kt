@@ -185,7 +185,7 @@ fun LatestPage(viewModel: LatestVM) {
                 showSortSheet = false
             }
         ) {
-            SortFilterPage(NavItem.Latest.destination) {
+            SortFilterSheet(NavItem.Latest.destination) {
                 scope.launch { sortSheetState.hide() }
                 showSortSheet = false
             }
