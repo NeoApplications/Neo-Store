@@ -4,16 +4,15 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
@@ -33,6 +32,7 @@ import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.DownloadState
 import com.machiav3lli.fdroid.ui.components.MainActionButton
 import com.machiav3lli.fdroid.ui.components.NetworkImage
+import com.machiav3lli.fdroid.ui.components.PRODUCT_CARD_ICON
 import com.machiav3lli.fdroid.ui.components.SecondaryActionButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
@@ -48,7 +48,7 @@ fun AppInfoHeader(
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.large,
+        shape = MaterialTheme.shapes.extraLarge,
         tonalElevation = 8.dp
     ) {
         Column(
@@ -107,30 +107,29 @@ fun TopBarHeader(
     actions: @Composable () -> Unit = {},
 ) {
     Column(
-        Modifier
-            .padding(8.dp)
-            .fillMaxWidth()
+        modifier.fillMaxWidth(),
     ) {
-        Row(
-            modifier = modifier.padding(0.dp),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            NetworkImage(
-                modifier = Modifier.size(56.dp),
-                data = icon
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.SpaceAround
-            ) {
+        ListItem(
+            modifier = Modifier.fillMaxWidth(),
+            colors = ListItemDefaults.colors(
+                containerColor = Color.Transparent,
+            ),
+            leadingContent = {
+                NetworkImage(
+                    modifier = Modifier.size(PRODUCT_CARD_ICON),
+                    data = icon
+                )
+            },
+            headlineContent = {
                 Text(text = appName, style = MaterialTheme.typography.titleMedium)
+            },
+            supportingContent = {
                 Text(text = packageName, style = MaterialTheme.typography.bodyMedium)
+            },
+            trailingContent = {
+                actions()
             }
-            Box { actions() }
-        }
+        )
 
         AnimatedVisibility(visible = state is DownloadState) {
             DownloadProgress(
@@ -154,16 +153,15 @@ fun CardButton(
 ) {
     Surface(
         modifier = modifier
-            .clip(MaterialTheme.shapes.medium)
+            .clip(MaterialTheme.shapes.extraLarge)
             .combinedClickable(onClick = onClick, onLongClick = onLongClick)
-            .padding(12.dp),
-        color = Color.Transparent
+            .padding(8.dp),
+        color = Color.Transparent,
     ) {
         Icon(
-            modifier = Modifier.size(32.dp),
+            modifier = Modifier.size(PRODUCT_CARD_ICON - 16.dp),
             imageVector = icon,
             contentDescription = description,
-            tint = MaterialTheme.colorScheme.primary
         )
     }
 }
@@ -192,15 +190,18 @@ fun DownloadProgress(
                 text = stringResource(
                     id = if (totalSize == 0L) R.string.canceled
                     else R.string.error
-                )
+                ),
+                style = MaterialTheme.typography.bodySmall,
             )
         } else if (downloaded == totalSize && totalSize == 1L) {
             Text(
-                text = "${stringResource(id = R.string.finished)} ${finishedTime.formatDateTime()}"
+                text = "${stringResource(id = R.string.finished)} ${finishedTime.formatDateTime()}",
+                style = MaterialTheme.typography.bodySmall,
             )
         } else {
             Text(
-                text = "${downloaded?.formatSize()}/${totalSize.formatSize()}"
+                text = "${downloaded?.formatSize()}/${totalSize.formatSize()}",
+                style = MaterialTheme.typography.bodySmall,
             )
             LinearProgressIndicator(
                 modifier = Modifier
