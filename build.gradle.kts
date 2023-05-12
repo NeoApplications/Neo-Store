@@ -1,13 +1,14 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val accompanistVersion = "0.31.0-alpha"
+val accompanistVersion = "0.31.1-alpha"
 val composeVersion = "1.5.0-alpha03"
 val composeCompilerVersion = "1.4.6"
-val hiltVersion = "2.45"
+val hiltVersion = "2.46"
 val material3Version = "1.1.0-rc01"
 val navigationVersion = "2.6.0-beta01"
 val retrofitVersion = "2.9.0"
 val roomVersion = "2.5.1"
+val coroutinesVersion = "1.7.0"
 
 plugins {
     id("com.android.application") version ("8.0.1")
@@ -125,7 +126,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     // Material3
-    implementation("com.google.android.material:material:1.8.0")
+    implementation("com.google.android.material:material:1.9.0")
 
     // Coil
     implementation("io.coil-kt:coil:2.3.0")
@@ -148,7 +149,7 @@ dependencies {
     implementation("com.github.topjohnwu.libsu:core:5.0.5")
 
     // JSON
-    implementation("com.fasterxml.jackson.core:jackson-core:2.14.2")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.15.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
     // Markdown
@@ -160,8 +161,8 @@ dependencies {
 
     // Coroutines / Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
     // Room
     implementation("androidx.room:room-runtime:$roomVersion")
