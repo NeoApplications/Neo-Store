@@ -5,6 +5,8 @@ import android.content.Context
 import android.net.Uri
 import android.text.format.DateUtils
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,14 +21,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
@@ -36,17 +35,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.MainApplication
@@ -65,6 +57,8 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.dialog.ActionsDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
+import com.machiav3lli.fdroid.ui.dialog.DIALOG_NONE
+import com.machiav3lli.fdroid.ui.dialog.StringInputDialogUI
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import kotlinx.coroutines.launch
@@ -72,6 +66,11 @@ import java.net.URI
 import java.net.URL
 import java.util.Date
 import java.util.Locale
+
+const val DIALOG_ADDRESS = 1
+const val DIALOG_FINGERPRINT = 2
+const val DIALOG_USERNAME = 3
+const val DIALOG_PASSWORD = 4
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,40 +88,22 @@ fun RepoPage(
         .collectAsState(0)
     var editMode by remember { mutableStateOf(initEditMode) }
     val openDeleteDialog = remember { mutableStateOf(false) }
-
-    val focusManager = LocalFocusManager.current
+    val openDialog = remember { mutableStateOf(false) }
+    val dialogProps = remember {
+        mutableStateOf(DIALOG_NONE)
+    }
 
     var addressFieldValue by remember(repo) {
-        mutableStateOf(
-            TextFieldValue(
-                repo?.address.orEmpty(),
-                TextRange(repo?.address.orEmpty().length),
-            )
-        )
+        mutableStateOf(repo?.address.orEmpty())
     }
     var fingerprintFieldValue by remember(repo) {
-        mutableStateOf(
-            TextFieldValue(
-                repo?.fingerprint.orEmpty(),
-                TextRange(repo?.fingerprint.orEmpty().length),
-            )
-        )
+        mutableStateOf(repo?.fingerprint.orEmpty())
     }
     var usernameFieldValue by remember(repo) {
-        mutableStateOf(
-            TextFieldValue(
-                repo?.authenticationPair?.first.orEmpty(),
-                TextRange(repo?.authenticationPair?.first.orEmpty().length),
-            )
-        )
+        mutableStateOf(repo?.authenticationPair?.first.orEmpty())
     }
     var passwordFieldValue by remember(repo) {
-        mutableStateOf(
-            TextFieldValue(
-                repo?.authenticationPair?.second.orEmpty(),
-                TextRange(repo?.authenticationPair?.second.orEmpty().length),
-            )
-        )
+        mutableStateOf(repo?.authenticationPair?.second.orEmpty())
     }
 
     val addressValidity = remember { mutableStateOf(false) }
@@ -152,23 +133,22 @@ fun RepoPage(
                 Pair(null, null)
             }
             if (addressText != null)
-                addressFieldValue = TextFieldValue(addressText, TextRange(addressText.length))
+                addressFieldValue = addressText
             if (fingerprintText != null)
-                fingerprintFieldValue =
-                    TextFieldValue(fingerprintText, TextRange(fingerprintText.length))
+                fingerprintFieldValue = fingerprintText
         }
 
-        invalidateAddress(addressValidity, addressFieldValue.text)
-        invalidateFingerprint(fingerprintValidity, fingerprintFieldValue.text)
+        invalidateAddress(addressValidity, addressFieldValue)
+        invalidateFingerprint(fingerprintValidity, fingerprintFieldValue)
         invalidateAuthentication(
             passwordValidity,
-            usernameFieldValue.text,
-            passwordFieldValue.text,
+            usernameFieldValue,
+            passwordFieldValue,
         )
         invalidateAuthentication(
             usernameValidity,
-            usernameFieldValue.text,
-            passwordFieldValue.text,
+            usernameFieldValue,
+            passwordFieldValue,
         )
     }
 
@@ -194,22 +174,10 @@ fun RepoPage(
                         openDeleteDialog.value = true
                     else {
                         editMode = false
-                        addressFieldValue = TextFieldValue(
-                            repo?.address.orEmpty(),
-                            TextRange(repo?.address.orEmpty().length),
-                        )
-                        fingerprintFieldValue = TextFieldValue(
-                            repo?.fingerprint.orEmpty(),
-                            TextRange(repo?.fingerprint.orEmpty().length),
-                        )
-                        usernameFieldValue = TextFieldValue(
-                            repo?.authenticationPair?.first.orEmpty(),
-                            TextRange(repo?.authenticationPair?.first.orEmpty().length),
-                        )
-                        passwordFieldValue = TextFieldValue(
-                            repo?.authenticationPair?.second.orEmpty(),
-                            TextRange(repo?.authenticationPair?.second.orEmpty().length),
-                        )
+                        addressFieldValue = repo?.address.orEmpty()
+                        fingerprintFieldValue = repo?.fingerprint.orEmpty()
+                        usernameFieldValue = repo?.authenticationPair?.first.orEmpty()
+                        passwordFieldValue = repo?.authenticationPair?.second.orEmpty()
                     }
                 }
                 ActionButton(
@@ -227,11 +195,11 @@ fun RepoPage(
                         else {
                             // TODO show readable error
                             updateRepo(repo?.apply {
-                                address = addressFieldValue.text
-                                fingerprint = fingerprintFieldValue.text.uppercase()
+                                address = addressFieldValue
+                                fingerprint = fingerprintFieldValue.uppercase()
                                 setAuthentication(
-                                    usernameFieldValue.text,
-                                    passwordFieldValue.text,
+                                    usernameFieldValue,
+                                    passwordFieldValue,
                                 )
                             })
                             // TODO sync a new when is already active
@@ -316,25 +284,22 @@ fun RepoPage(
                 }
                 AnimatedVisibility(visible = editMode) {
                     Column {
-                        OutlinedTextField(
+                        OutlinedCard(
                             modifier = Modifier.fillMaxWidth(),
-                            value = addressFieldValue,
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color.Transparent,
-                                unfocusedContainerColor = Color.Transparent,
-                                disabledContainerColor = Color.Transparent,
-                                unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            ),
-                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                            keyboardActions = KeyboardActions(
-                                onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                            ),
-                            onValueChange = {
-                                addressFieldValue = it
-                                invalidateAddress(addressValidity, addressFieldValue.text)
+                            shape = MaterialTheme.shapes.large,
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                            onClick = {
+                                dialogProps.value = DIALOG_ADDRESS
+                                openDialog.value = true
                             }
-                        )
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Text(text = addressFieldValue)
+                            }
+                        }
                         if (repo?.mirrors?.isNotEmpty() == true) LazyRow(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -342,13 +307,10 @@ fun RepoPage(
                             items(repo?.mirrors ?: emptyList()) { text ->
                                 SelectChip(
                                     text = text,
-                                    checked = text == addressFieldValue.text,
+                                    checked = text == addressFieldValue,
                                 ) {
-                                    addressFieldValue = TextFieldValue(
-                                        text = text,
-                                        selection = TextRange(text.length)
-                                    )
-                                    invalidateAddress(addressValidity, addressFieldValue.text)
+                                    addressFieldValue = text
+                                    invalidateAddress(addressValidity, addressFieldValue)
                                 }
                             }
                         }
@@ -379,30 +341,25 @@ fun RepoPage(
                     )
                 }
                 AnimatedVisibility(visible = editMode) {
-                    OutlinedTextField(
-                        // TODO accept only hex literals
+                    OutlinedCard(
                         modifier = Modifier.fillMaxWidth(),
-                        value = fingerprintFieldValue,
-                        colors = TextFieldDefaults.colors(
-                            unfocusedContainerColor = Color.Transparent,
-                            disabledContainerColor = Color.Transparent,
-                            focusedContainerColor = Color.Transparent,
-                            unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        ),
-                        textStyle = LocalTextStyle.current.copy(fontFamily = FontFamily.Monospace),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next,
-                            capitalization = KeyboardCapitalization.Characters,
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                        ),
-                        onValueChange = {
-                            fingerprintFieldValue = it
-                            invalidateFingerprint(fingerprintValidity, fingerprintFieldValue.text)
+                        shape = MaterialTheme.shapes.large,
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                        onClick = {
+                            dialogProps.value = DIALOG_FINGERPRINT
+                            openDialog.value = true
                         }
-                    )
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(text = fingerprintFieldValue
+                                .windowed(2, 2, false)
+                                .joinToString(separator = " ") { it.uppercase(Locale.US) + " " }
+                            )
+                        }
+                    }
                 }
             }
             if (editMode) {
@@ -412,62 +369,50 @@ fun RepoPage(
                         text = stringResource(id = R.string.username),
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedTextField(
+                    OutlinedCard(
                         modifier = Modifier.fillMaxWidth(),
-                        value = usernameFieldValue,
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.Transparent,
-                            unfocusedContainerColor = Color.Transparent,
-                            disabledContainerColor = Color.Transparent,
-                            unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        ),
-                        isError = usernameValidity.value,
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                        keyboardActions = KeyboardActions(
-                            onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                        ),
-                        onValueChange = {
-                            usernameFieldValue = it
-                            invalidateAuthentication(
-                                usernameValidity,
-                                usernameFieldValue.text,
-                                passwordFieldValue.text,
-                            )
+                        shape = MaterialTheme.shapes.large,
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                        onClick = {
+                            dialogProps.value = DIALOG_USERNAME
+                            openDialog.value = true
                         }
-                    )
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(text = usernameFieldValue)
+                        }
+                    }
                 }
                 item {
                     TitleText(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .clickable {
+                                dialogProps.value = DIALOG_PASSWORD
+                                openDialog.value = true
+                            }
+                            .fillMaxWidth(),
                         text = stringResource(id = R.string.password),
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        value = passwordFieldValue,
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.Transparent,
-                            unfocusedContainerColor = Color.Transparent,
-                            disabledContainerColor = Color.Transparent,
-                            unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        ),
-                        isError = passwordValidity.value,
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                        keyboardActions = KeyboardActions(
-                            onDone = { focusManager.clearFocus() }
-                        ),
-                        onValueChange = {
-                            passwordFieldValue = it
-                            invalidateAuthentication(
-                                passwordValidity,
-                                usernameFieldValue.text,
-                                passwordFieldValue.text,
-                            )
+                    OutlinedCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = MaterialTheme.shapes.large,
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                        onClick = {
+                            dialogProps.value = DIALOG_PASSWORD
+                            openDialog.value = true
                         }
-                    )
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(text = passwordFieldValue)
+                        }
+                    }
                 }
             }
         }
@@ -489,6 +434,64 @@ fun RepoPage(
                     }
                 },
             )
+        }
+    }
+
+    if (openDialog.value) BaseDialog(openDialogCustom = openDialog) {
+        dialogProps.value.let { dialogMode ->
+            when (dialogMode) {
+                DIALOG_ADDRESS -> {
+                    StringInputDialogUI(
+                        titleText = stringResource(id = R.string.address),
+                        initValue = repo?.address ?: "",
+                        openDialogCustom = openDialog
+                    ) {
+                        addressFieldValue = it
+                        invalidateAddress(addressValidity, addressFieldValue)
+                    }
+                }
+
+                DIALOG_FINGERPRINT -> {
+                    StringInputDialogUI(
+                        titleText = stringResource(id = R.string.fingerprint),
+                        initValue = repo?.fingerprint ?: "",
+                        openDialogCustom = openDialog
+                    ) {
+                        fingerprintFieldValue = it
+                        invalidateFingerprint(fingerprintValidity, fingerprintFieldValue)
+                    }
+                }
+
+                DIALOG_USERNAME -> {
+                    StringInputDialogUI(
+                        titleText = stringResource(id = R.string.username),
+                        initValue = repo?.authenticationPair?.first ?: "",
+                        openDialogCustom = openDialog
+                    ) {
+                        usernameFieldValue = it
+                        invalidateAuthentication(
+                            passwordValidity,
+                            usernameFieldValue,
+                            passwordFieldValue,
+                        )
+                    }
+                }
+
+                DIALOG_PASSWORD -> {
+                    StringInputDialogUI(
+                        titleText = stringResource(id = R.string.password),
+                        initValue = repo?.authenticationPair?.second ?: "",
+                        openDialogCustom = openDialog
+                    ) {
+                        passwordFieldValue = it
+                        invalidateAuthentication(
+                            passwordValidity,
+                            usernameFieldValue,
+                            passwordFieldValue,
+                        )
+                    }
+                }
+            }
         }
     }
 }
