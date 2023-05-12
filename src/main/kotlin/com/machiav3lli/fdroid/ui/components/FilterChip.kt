@@ -61,7 +61,9 @@ private fun categoryChipTransition(selected: Boolean): CategoryChipTransition {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectChip(
+    modifier: Modifier = Modifier,
     text: String,
+    icon: ImageVector = Phosphor.Check,
     checked: Boolean = false,
     colors: SelectableChipColors = FilterChipDefaults.filterChipColors(
         containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -76,6 +78,7 @@ fun SelectChip(
     val categoryChipTransitionState = categoryChipTransition(selected = checked)
 
     FilterChip(
+        modifier = modifier,
         colors = colors,
         shape = RoundedCornerShape(categoryChipTransitionState.cornerRadius),
         border = null,
@@ -87,9 +90,8 @@ fun SelectChip(
                 exit = scaleOut(),
             ) {
                 Icon(
-                    imageVector = Phosphor.Check,
+                    imageVector = icon,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             }
         },
