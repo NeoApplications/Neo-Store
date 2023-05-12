@@ -35,7 +35,7 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
     val products = db.productDao.getFlow(packageName).mapLatest { it.filterNotNull() }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val developer = products.mapLatest { it.first().author.name }.stateIn(
+    private val developer = products.mapLatest { it.firstOrNull()?.author?.name ?: "" }.stateIn(
         viewModelScope,
         SharingStarted.Lazily,
         ""
