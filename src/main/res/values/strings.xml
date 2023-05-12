@@ -328,4 +328,5 @@
     <string name="canceled">Canceled</string>
     <string name="error">Error</string>
     <string name="clear_text">Clear text</string>
+    <string name="list_apps">Show repository\'s apps</string>
 </resources>

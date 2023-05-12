@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
@@ -50,6 +51,7 @@ import com.machiav3lli.fdroid.ui.components.BlockText
 import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.TitleText
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TrashSimple
@@ -58,6 +60,7 @@ import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.dialog.ActionsDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.DIALOG_NONE
+import com.machiav3lli.fdroid.ui.dialog.ProductsListDialogUI
 import com.machiav3lli.fdroid.ui.dialog.StringInputDialogUI
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
@@ -71,6 +74,7 @@ const val DIALOG_ADDRESS = 1
 const val DIALOG_FINGERPRINT = 2
 const val DIALOG_USERNAME = 3
 const val DIALOG_PASSWORD = 4
+const val DIALOG_PRODUCTS = 5
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -270,7 +274,23 @@ fun RepoPage(
                         text = stringResource(id = R.string.number_of_applications),
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    BlockText(text = appsCount.toString())
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                dialogProps.value = DIALOG_PRODUCTS
+                                openDialog.value = true
+                            },
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        BlockText(
+                            text = appsCount.toString()
+                        )
+                        Icon(
+                            imageVector = Phosphor.ArrowSquareOut,
+                            contentDescription = stringResource(id = R.string.list_apps)
+                        )
+                    }
                 }
             }
             item {
@@ -491,6 +511,11 @@ fun RepoPage(
                         )
                     }
                 }
+
+                DIALOG_PRODUCTS -> ProductsListDialogUI(
+                    repositoryId = repositoryId,
+                    title = repo?.name.orEmpty(),
+                )
             }
         }
     }
