@@ -4,21 +4,17 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,7 +39,7 @@ fun RepositoryItem(
         else MaterialTheme.colorScheme.background
     )
 
-    Surface(
+    ListItem(
         modifier = modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
@@ -54,40 +50,30 @@ fun RepositoryItem(
                 },
                 onLongClick = { onLongClick(repository) }
             ),
-        color = backgroundColor,
-        shape = MaterialTheme.shapes.large
-    ) {
-        Row(
-            modifier = Modifier.padding(
-                horizontal = 12.dp,
-                vertical = 16.dp
-            ),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            Column(
-                modifier = modifier.fillMaxWidth(0.9f),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+        colors = ListItemDefaults.colors(
+            containerColor = backgroundColor,
+        ),
+        headlineContent = {
+            Text(
+                text = repository.name.trim(),
+                style = MaterialTheme.typography.titleMedium,
+                color = if (isEnabled) MaterialTheme.colorScheme.onPrimaryContainer
+                else MaterialTheme.colorScheme.onSurface,
+                maxLines = 1
+            )
+        },
+        supportingContent = {
+            repository.description.trim().let {
                 Text(
-                    text = repository.name.trim(),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = if (isEnabled) MaterialTheme.colorScheme.onPrimaryContainer
-                    else MaterialTheme.colorScheme.onSurface,
+                    text = it,
+                    style = MaterialTheme.typography.bodyMedium,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1
                 )
-                repository.description.trim().let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodyMedium,
-                        overflow = TextOverflow.Ellipsis,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1
-                    )
-                }
             }
+        },
+        trailingContent = {
             AnimatedVisibility(visible = isEnabled) {
                 Icon(
                     imageVector = Phosphor.Check,
@@ -96,5 +82,5 @@ fun RepositoryItem(
                 )
             }
         }
-    }
+    )
 }
