@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -32,9 +31,16 @@ fun LinkItem(
             .clip(MaterialTheme.shapes.large)
             .combinedClickable(
                 onClick = { onClick(linkType.link) },
-                onLongClick = { onLongClick(linkType.link) })
-            .padding(1.dp),
+                onLongClick = { onLongClick(linkType.link) }
+            ),
         colors = ListItemDefaults.colors(),
+        leadingContent = {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                imageVector = linkType.icon,
+                contentDescription = linkType.title
+            )
+        },
         headlineContent = {
             Text(
                 text = linkType.title,
@@ -54,13 +60,6 @@ fun LinkItem(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-        },
-        leadingContent = {
-            Icon(
-                modifier = Modifier.size(24.dp),
-                imageVector = linkType.icon,
-                contentDescription = linkType.title
-            )
         },
     )
 }

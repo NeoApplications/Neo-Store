@@ -7,7 +7,6 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -248,7 +247,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
                     if (downloads.isNotEmpty()) item {
                         Text(
-                            modifier = Modifier.padding(horizontal = 8.dp),
+                            modifier = Modifier.padding(8.dp),
                             text = stringResource(id = R.string.downloading)
                         )
                     }
@@ -328,13 +327,11 @@ fun InstalledPage(viewModel: InstalledVM) {
             exit = slideOutVertically { height -> height } + fadeOut(),
         ) {
             Column(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(8.dp),
+                    contentPadding = paddingValues,
                 ) {
                     items(items = downloaded.sortedByDescending { it.changed }) { item ->
                         DownloadedItem(

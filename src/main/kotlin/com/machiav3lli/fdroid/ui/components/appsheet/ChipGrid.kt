@@ -51,7 +51,7 @@ fun AppInfoChips(
         items(list) { text ->
             SelectChip(
                 text = text,
-                checked = false
+                checked = false,
             )
         }
     }

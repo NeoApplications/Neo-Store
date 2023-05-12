@@ -327,4 +327,5 @@
     <string name="finished">Finished</string>
     <string name="canceled">Canceled</string>
     <string name="error">Error</string>
+    <string name="clear_text">Clear text</string>
 </resources>

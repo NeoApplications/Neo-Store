@@ -44,6 +44,7 @@ fun ProductsHorizontalRecycler(
         modifier = modifier.height(PRODUCT_CARD_HEIGHT * rowsNumber + 8.dp),
         rows = StaggeredGridCells.Fixed(rowsNumber),
         verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalItemSpacing = 8.dp,
         contentPadding = PaddingValues(horizontal = 8.dp),
     ) {
         items(productsList ?: emptyList()) { product ->

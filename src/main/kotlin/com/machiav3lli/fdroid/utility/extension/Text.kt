@@ -6,6 +6,10 @@ import android.util.Log
 import java.text.DateFormat
 import java.util.*
 
+
+val RE_jumpChars = Regex("""[\t]""")
+val RE_finishChars = Regex("""[\n]""")
+
 fun <T : CharSequence> T.nullIfEmpty(): T? {
     return if (isNullOrEmpty()) null else this
 }
@@ -60,7 +64,7 @@ fun Char.halfByte(): Int {
         in '0'..'9' -> this - '0'
         in 'a'..'f' -> this - 'a' + 10
         in 'A'..'F' -> this - 'A' + 10
-        else -> -1
+        else        -> -1
     }
 }
 

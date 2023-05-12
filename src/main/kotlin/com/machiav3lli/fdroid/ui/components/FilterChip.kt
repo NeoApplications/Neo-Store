@@ -149,7 +149,9 @@ fun ChipsSwitch(
                 Text(
                     text = stringResource(id = firstTextId),
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(vertical = 8.dp),
                 )
             }
         )
@@ -167,7 +169,9 @@ fun ChipsSwitch(
                 Text(
                     text = stringResource(id = secondTextId),
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(vertical = 8.dp),
                 )
             },
             trailingIcon = {
