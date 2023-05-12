@@ -4,16 +4,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -35,10 +36,11 @@ import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ActionChip
-import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
+import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.SideNavBar
@@ -110,15 +112,26 @@ fun ExplorePage(viewModel: ExploreVM) {
             .fillMaxSize()
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 6.dp),
+            modifier = Modifier.padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             var favoriteFilter by remember {
                 mutableStateOf(false)
             }
 
             SelectChip(
+                modifier = Modifier.weight(1f),
                 text = stringResource(id = R.string.favorite_applications),
+                icon = Phosphor.HeartStraightFill,
+                colors = FilterChipDefaults.filterChipColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    selectedContainerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(48.dp),
+                    selectedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                    selectedLabelColor = MaterialTheme.colorScheme.primary,
+                    iconColor = MaterialTheme.colorScheme.onSurface,
+                    labelColor = MaterialTheme.colorScheme.onSurface,
+                ),
                 checked = favoriteFilter
             ) {
                 favoriteFilter = !favoriteFilter
@@ -127,8 +140,8 @@ fun ExplorePage(viewModel: ExploreVM) {
                     else Section.All
                 )
             }
-            Spacer(modifier = Modifier.weight(1f))
             ActionChip(
+                modifier = Modifier.weight(1f),
                 text = stringResource(id = R.string.sort_filter),
                 icon = Phosphor.FunnelSimple
             ) {
