@@ -77,6 +77,9 @@ interface ProductDao : BaseDao<Product> {
     @Query("SELECT COUNT(*) FROM product WHERE repositoryId = :id")
     fun countForRepositoryFlow(id: Long): Flow<Long>
 
+    @Query("SELECT * FROM product WHERE repositoryId = :repoId ORDER BY label")
+    fun productsForRepositoryFlow(repoId: Long): Flow<List<Product>>
+
     @Query("SELECT * FROM product WHERE packageName = :packageName")
     fun get(packageName: String): List<Product>
 
@@ -263,6 +266,7 @@ interface ProductDao : BaseDao<Product> {
             is Section.FAVORITE -> {
                 builder += "AND COALESCE($TABLE_EXTRAS.$ROW_FAVORITE, 0) != 0"
             }
+
             else                -> {}
         }
 
