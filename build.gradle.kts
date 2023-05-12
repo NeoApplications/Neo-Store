@@ -10,7 +10,7 @@ val retrofitVersion = "2.9.0"
 val roomVersion = "2.5.1"
 
 plugins {
-    id("com.android.application") version ("8.0.0")
+    id("com.android.application") version ("8.0.1")
     kotlin("android") version ("1.8.20")
     kotlin("kapt") version ("1.8.20")
     kotlin("plugin.serialization") version ("1.8.20")
