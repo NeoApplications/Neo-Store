@@ -6,7 +6,6 @@ import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -19,6 +18,7 @@ fun ActionChip(
     modifier: Modifier = Modifier,
     text: String,
     icon: ImageVector,
+    positive: Boolean = true,
     onClick: () -> Unit = {},
 ) {
     AssistChip(
@@ -33,11 +33,14 @@ fun ActionChip(
                 contentDescription = stringResource(id = R.string.sort_filter)
             )
         },
-        shape = MaterialTheme.shapes.medium,
+        shape = MaterialTheme.shapes.large,
         colors = AssistChipDefaults.assistChipColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(48.dp),
-            labelColor = MaterialTheme.colorScheme.onSurface,
-            leadingIconContentColor = MaterialTheme.colorScheme.onSurface,
+            containerColor = if (positive) MaterialTheme.colorScheme.primaryContainer
+            else MaterialTheme.colorScheme.tertiaryContainer,
+            labelColor = if (positive) MaterialTheme.colorScheme.onPrimaryContainer
+            else MaterialTheme.colorScheme.onTertiaryContainer,
+            leadingIconContentColor = if (positive) MaterialTheme.colorScheme.onPrimaryContainer
+            else MaterialTheme.colorScheme.onTertiaryContainer,
         ),
         border = null,
         onClick = onClick
