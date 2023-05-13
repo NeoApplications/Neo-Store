@@ -13,6 +13,7 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,17 +47,6 @@ fun ProductsListItem(
 ) {
     val product by remember(item) { mutableStateOf(item) }
     val isExpanded = rememberSaveable { mutableStateOf(false) }
-    val imageData by remember(product, repo) {
-        mutableStateOf(
-            CoilDownloader.createIconUri(
-                product.packageName,
-                product.icon,
-                product.metadataIcon,
-                repo?.address,
-                repo?.authentication
-            ).toString()
-        )
-    }
 
     ExpandableCard(
         isExpanded = isExpanded,
@@ -71,54 +61,81 @@ fun ProductsListItem(
             )
         }
     ) {
-        ListItem(
-            modifier = Modifier.fillMaxWidth(),
-            colors = ListItemDefaults.colors(
-                containerColor = Color.Transparent,
-            ),
-            leadingContent = {
-                NetworkImage(
-                    modifier = Modifier.size(PRODUCT_CARD_ICON),
-                    data = imageData
-                )
-            },
-            headlineContent = {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = product.name,
-                        modifier = Modifier
-                            .weight(1f),
-                        softWrap = true,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.titleSmall
-                    )
-                    if (product.canUpdate) ReleaseBadge(
-                        text = "${product.installedVersion} → ${product.version}",
-                    )
-                    else Text(
-                        text = installed?.version ?: product.version,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                }
-            },
-            supportingContent = {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = product.summary,
-                    style = MaterialTheme.typography.bodySmall,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = if (isExpanded.value) Int.MAX_VALUE else 2,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            },
+        ProductItemContent(
+            product = product,
+            repo = repo,
+            installed = installed,
+            isExpanded = isExpanded,
         )
     }
+}
+
+@Composable
+fun ProductItemContent(
+    product: ProductItem,
+    repo: Repository? = null,
+    installed: Installed? = null,
+    isExpanded: MutableState<Boolean> = mutableStateOf(false),
+) {
+    val imageData by remember(product, repo) {
+        mutableStateOf(
+            CoilDownloader.createIconUri(
+                product.packageName,
+                product.icon,
+                product.metadataIcon,
+                repo?.address,
+                repo?.authentication
+            ).toString()
+        )
+    }
+
+    ListItem(
+        modifier = Modifier.fillMaxWidth(),
+        colors = ListItemDefaults.colors(
+            containerColor = Color.Transparent,
+        ),
+        leadingContent = {
+            NetworkImage(
+                modifier = Modifier.size(PRODUCT_CARD_ICON),
+                data = imageData
+            )
+        },
+        headlineContent = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = product.name,
+                    modifier = Modifier
+                        .weight(1f),
+                    softWrap = true,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.titleSmall
+                )
+                if (product.canUpdate) ReleaseBadge(
+                    text = "${product.installedVersion} → ${product.version}",
+                )
+                else Text(
+                    text = installed?.version ?: product.version,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+        },
+        supportingContent = {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = product.summary,
+                style = MaterialTheme.typography.bodySmall,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = if (isExpanded.value) Int.MAX_VALUE else 2,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        },
+    )
 }
 
 @Composable
