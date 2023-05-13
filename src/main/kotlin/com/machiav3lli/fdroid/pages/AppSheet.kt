@@ -522,7 +522,6 @@ fun AppSheet(
                         if (links.isNotEmpty()) {
                             item {
                                 ExpandableBlock(
-                                    modifier = Modifier.padding(horizontal = 8.dp),
                                     heading = stringResource(id = R.string.links),
                                     positive = true,
                                     preExpanded = true
@@ -544,13 +543,13 @@ fun AppSheet(
                         if (product.donates.isNotEmpty()) {
                             item {
                                 ExpandableBlock(
-                                    modifier = Modifier.padding(horizontal = 8.dp),
                                     heading = stringResource(id = R.string.donate),
                                     positive = true,
                                     preExpanded = false
                                 ) {
                                     product.donates.forEach { item ->
-                                        LinkItem(linkType = DonateType(item, context),
+                                        LinkItem(
+                                            linkType = DonateType(item, context),
                                             onClick = { link ->
                                                 link?.let { onUriClick(it, true) }
                                             },

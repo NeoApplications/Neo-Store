@@ -10,9 +10,9 @@ import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun TitleText(
+    modifier: Modifier = Modifier,
     text: String?,
     color: Color = MaterialTheme.colorScheme.onSurface,
-    modifier: Modifier = Modifier,
 ) = Text(
     text = text.orEmpty(),
     style = MaterialTheme.typography.titleMedium,
@@ -23,10 +23,10 @@ fun TitleText(
 
 @Composable
 fun BlockText(
+    modifier: Modifier = Modifier,
     text: String?,
     color: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     monospace: Boolean = false,
-    modifier: Modifier = Modifier,
 ) = Text(
     text = text.orEmpty(),
     style = MaterialTheme.typography.bodyLarge,

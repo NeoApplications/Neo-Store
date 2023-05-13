@@ -6,11 +6,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -186,13 +184,13 @@ fun InstalledPage(viewModel: InstalledVM) {
             enter = slideInVertically { height -> height } + fadeIn(),
             exit = slideOutVertically { height -> -height } + fadeOut(),
         ) {
-            Column(
-                Modifier
+            LazyColumn(
+                modifier = Modifier
                     .padding(paddingValues)
                     .fillMaxSize()
             ) {
-                AnimatedVisibility(visible = secondaryList.orEmpty().isNotEmpty()) {
-                    Column {
+                item {
+                    AnimatedVisibility(visible = secondaryList.orEmpty().isNotEmpty()) {
                         Row(
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             verticalAlignment = Alignment.CenterVertically
@@ -230,94 +228,94 @@ fun InstalledPage(viewModel: InstalledVM) {
                                 }
                             }
                         }
-                        AnimatedVisibility(visible = updatesVisible) {
-                            ProductsHorizontalRecycler(
-                                modifier = Modifier.weight(1f),
-                                productsList = secondaryList,
-                                repositories = repositoriesMap,
-                                installedMap = installedList,
-                                rowsNumber = secondaryList?.size?.coerceIn(1, 2) ?: 1,
-                            ) { item ->
-                                mainActivityX.navigateProduct(item.packageName)
-                            }
+                    }
+                }
+                item {
+                    AnimatedVisibility(
+                        visible = updatesVisible && secondaryList.orEmpty().isNotEmpty()
+                    ) {
+                        ProductsHorizontalRecycler(
+                            productsList = secondaryList,
+                            repositories = repositoriesMap,
+                            installedMap = installedList,
+                            rowsNumber = secondaryList?.size?.coerceIn(1, 2) ?: 1,
+                        ) { item ->
+                            mainActivityX.navigateProduct(item.packageName)
                         }
                     }
                 }
-
-                LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                    if (downloads.isNotEmpty()) item {
+                if (downloads.isNotEmpty()) item {
+                    Text(
+                        modifier = Modifier.padding(8.dp),
+                        text = stringResource(id = R.string.downloading)
+                    )
+                }
+                if (downloads.isNotEmpty()) items(downloads.toList()) { (packageName, value) ->
+                    val (item, state) = value
+                    val installed = installedList?.get(packageName)
+                    if (state.version != installed?.version) DownloadsListItem(
+                        item = item,
+                        state = state,
+                        repo = repositoriesMap[value.first.repositoryId],
+                        installed = installedList?.get(packageName)
+                    ) {
+                        mainActivityX.navigateProduct(item.packageName)
+                    }
+                    else viewModel.updateDownloadState(
+                        DownloadService.State.Cancel(
+                            item.packageName,
+                            item.name,
+                            state.version,
+                            state.cacheFileName,
+                            state.repoId,
+                        )
+                    )
+                }
+                item {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Text(
-                            modifier = Modifier.padding(8.dp),
-                            text = stringResource(id = R.string.downloading)
+                            text = stringResource(id = R.string.installed_applications),
+                            modifier = Modifier.weight(1f),
                         )
+                        ActionChip(
+                            text = stringResource(id = R.string.sort_filter),
+                            icon = Phosphor.FunnelSimple
+                        ) { showSortSheet = true }
                     }
-                    if (downloads.isNotEmpty()) items(downloads.toList()) { (packageName, value) ->
-                        val (item, state) = value
-                        val installed = installedList?.get(packageName)
-                        if (state.version != installed?.version) DownloadsListItem(
-                            item = item,
-                            state = state,
-                            repo = repositoriesMap[value.first.repositoryId],
-                            installed = installedList?.get(packageName)
-                        ) {
-                            mainActivityX.navigateProduct(item.packageName)
-                        }
-                        else viewModel.updateDownloadState(
-                            DownloadService.State.Cancel(
-                                item.packageName,
-                                item.name,
-                                state.version,
-                                state.cacheFileName,
-                                state.repoId,
+                }
+                items(
+                    filteredPrimaryList?.map { it.toItem(installedList[it.packageName]) }
+                        ?: emptyList()
+                ) { item ->
+                    ProductsListItem(
+                        item = item,
+                        repo = repositoriesMap[item.repositoryId],
+                        isFavorite = favorites.contains(item.packageName),
+                        onUserClick = {
+                            mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
+                            mainActivityX.navigateProduct(it.packageName)
+                        },
+                        onFavouriteClick = { pi ->
+                            viewModel.setFavorite(
+                                pi.packageName,
+                                !favorites.contains(pi.packageName)
                             )
-                        )
-                    }
-                    item {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.installed_applications),
-                                modifier = Modifier.weight(1f),
-                            )
-                            ActionChip(
-                                text = stringResource(id = R.string.sort_filter),
-                                icon = Phosphor.FunnelSimple
-                            ) { showSortSheet = true }
-                        }
-                    }
-                    items(
-                        filteredPrimaryList?.map { it.toItem(installedList[it.packageName]) }
-                            ?: emptyList()
-                    ) { item ->
-                        ProductsListItem(
-                            item = item,
-                            repo = repositoriesMap[item.repositoryId],
-                            isFavorite = favorites.contains(item.packageName),
-                            onUserClick = {
-                                mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
-                                mainActivityX.navigateProduct(it.packageName)
-                            },
-                            onFavouriteClick = { pi ->
-                                viewModel.setFavorite(
-                                    pi.packageName,
-                                    !favorites.contains(pi.packageName)
+                        },
+                        installed = installedList?.get(item.packageName),
+                        onActionClick = {
+                            val installed = installedList?.get(it.packageName)
+                            if (installed != null && installed.launcherActivities.isNotEmpty())
+                                context.onLaunchClick(
+                                    installed,
+                                    mainActivityX.supportFragmentManager
                                 )
-                            },
-                            installed = installedList?.get(item.packageName),
-                            onActionClick = {
-                                val installed = installedList?.get(it.packageName)
-                                if (installed != null && installed.launcherActivities.isNotEmpty())
-                                    context.onLaunchClick(
-                                        installed,
-                                        mainActivityX.supportFragmentManager
-                                    )
-                                else
-                                    mainActivityX.syncConnection.binder?.installApps(listOf(it))
-                            }
-                        )
-                    }
+                            else
+                                mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                        }
+                    )
                 }
             }
         }
@@ -326,23 +324,19 @@ fun InstalledPage(viewModel: InstalledVM) {
             enter = slideInVertically { height -> -height } + fadeIn(),
             exit = slideOutVertically { height -> height } + fadeOut(),
         ) {
-            Column(
+            LazyColumn(
                 modifier = Modifier.fillMaxSize(),
+                contentPadding = paddingValues,
             ) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = paddingValues,
-                ) {
-                    items(items = downloaded.sortedByDescending { it.changed }) { item ->
-                        DownloadedItem(
-                            item = item,
-                            iconDetails = iconDetails[item.packageName],
-                            repo = repositoriesMap[item.state.repoId],
-                            state = item.state,
-                            installed = installedList?.get(item.packageName)
-                        ) {
-                            mainActivityX.navigateProduct(item.packageName)
-                        }
+                items(items = downloaded.sortedByDescending { it.changed }) { item ->
+                    DownloadedItem(
+                        item = item,
+                        iconDetails = iconDetails[item.packageName],
+                        repo = repositoriesMap[item.state.repoId],
+                        state = item.state,
+                        installed = installedList?.get(item.packageName)
+                    ) {
+                        mainActivityX.navigateProduct(item.packageName)
                     }
                 }
             }
