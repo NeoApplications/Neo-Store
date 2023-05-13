@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -41,7 +42,9 @@ fun ProductsHorizontalRecycler(
     onUserClick: (ProductItem) -> Unit = {},
 ) {
     LazyHorizontalStaggeredGrid(
-        modifier = modifier.height(PRODUCT_CARD_HEIGHT * rowsNumber + 8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(PRODUCT_CARD_HEIGHT * rowsNumber + 8.dp),
         rows = StaggeredGridCells.Fixed(rowsNumber),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalItemSpacing = 8.dp,
