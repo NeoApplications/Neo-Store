@@ -2,9 +2,9 @@ package com.machiav3lli.fdroid.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.machiav3lli.fdroid.TABLE_INSTALLED_NAME
+import com.machiav3lli.fdroid.TABLE_INSTALLED
 
-@Entity(tableName = TABLE_INSTALLED_NAME)
+@Entity(tableName = TABLE_INSTALLED)
 data class Installed(
     @PrimaryKey
     var packageName: String = "",

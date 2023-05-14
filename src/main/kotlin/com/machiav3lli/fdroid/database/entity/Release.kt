@@ -5,7 +5,7 @@ import androidx.room.Entity
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_SIGNATURE
 import com.machiav3lli.fdroid.ROW_VERSION_CODE
-import com.machiav3lli.fdroid.TABLE_RELEASE_NAME
+import com.machiav3lli.fdroid.TABLE_RELEASE
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -13,7 +13,7 @@ import kotlinx.serialization.json.Json
 
 // TODO make a Room entity
 @Entity(
-    tableName = TABLE_RELEASE_NAME,
+    tableName = TABLE_RELEASE,
     primaryKeys = [ROW_PACKAGE_NAME, ROW_VERSION_CODE, ROW_SIGNATURE]
 )
 @Serializable

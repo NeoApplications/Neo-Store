@@ -3,8 +3,8 @@ package com.machiav3lli.fdroid.database.entity
 import androidx.room.Entity
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
-import com.machiav3lli.fdroid.TABLE_PRODUCT_NAME
-import com.machiav3lli.fdroid.TABLE_PRODUCT_TEMP_NAME
+import com.machiav3lli.fdroid.TABLE_PRODUCT
+import com.machiav3lli.fdroid.TABLE_PRODUCT_TEMP
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.Author
@@ -18,7 +18,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 // TODO Add Product Extras to handle favorite lists etc..
-@Entity(tableName = TABLE_PRODUCT_NAME, primaryKeys = [ROW_REPOSITORY_ID, ROW_PACKAGE_NAME])
+@Entity(tableName = TABLE_PRODUCT, primaryKeys = [ROW_REPOSITORY_ID, ROW_PACKAGE_NAME])
 @Serializable
 open class Product(
     var repositoryId: Long,
@@ -153,7 +153,7 @@ open class Product(
     }
 }
 
-@Entity(tableName = TABLE_PRODUCT_TEMP_NAME)
+@Entity(tableName = TABLE_PRODUCT_TEMP)
 class ProductTemp(
     repositoryId: Long,
     packageName: String,

@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.machiav3lli.fdroid.ROW_ID
-import com.machiav3lli.fdroid.TABLE_REPOSITORY_NAME
+import com.machiav3lli.fdroid.TABLE_REPOSITORY
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -14,7 +14,7 @@ import kotlinx.serialization.json.Json
 import java.net.URL
 import java.nio.charset.Charset
 
-@Entity(tableName = TABLE_REPOSITORY_NAME)
+@Entity(tableName = TABLE_REPOSITORY)
 @Serializable
 data class Repository(
     @PrimaryKey(autoGenerate = true)

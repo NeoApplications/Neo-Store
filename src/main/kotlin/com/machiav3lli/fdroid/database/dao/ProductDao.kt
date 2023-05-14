@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.database.dao
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
@@ -12,7 +13,6 @@ import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.ROW_ADDED
 import com.machiav3lli.fdroid.ROW_ANTIFEATURES
 import com.machiav3lli.fdroid.ROW_AUTHOR
-import com.machiav3lli.fdroid.ROW_CAN_UPDATE
 import com.machiav3lli.fdroid.ROW_CATEGORIES
 import com.machiav3lli.fdroid.ROW_CHANGELOG
 import com.machiav3lli.fdroid.ROW_COMPATIBLE
@@ -42,15 +42,10 @@ import com.machiav3lli.fdroid.ROW_VERSION_CODE
 import com.machiav3lli.fdroid.ROW_WEB
 import com.machiav3lli.fdroid.ROW_WHATS_NEW
 import com.machiav3lli.fdroid.TABLE_CATEGORY
-import com.machiav3lli.fdroid.TABLE_CATEGORY_NAME
 import com.machiav3lli.fdroid.TABLE_EXTRAS
-import com.machiav3lli.fdroid.TABLE_EXTRAS_NAME
 import com.machiav3lli.fdroid.TABLE_INSTALLED
-import com.machiav3lli.fdroid.TABLE_INSTALLED_NAME
 import com.machiav3lli.fdroid.TABLE_PRODUCT
-import com.machiav3lli.fdroid.TABLE_PRODUCT_NAME
 import com.machiav3lli.fdroid.TABLE_REPOSITORY
-import com.machiav3lli.fdroid.TABLE_REPOSITORY_NAME
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.QueryBuilder
 import com.machiav3lli.fdroid.database.entity.CategoryTemp
@@ -186,116 +181,112 @@ interface ProductDao : BaseDao<Product> {
     ): SupportSQLiteQuery {
         val builder = QueryBuilder()
 
+        // Selection
+        builder += generateSelectFields()
+
         // TODO improve signature matching logic
         val signatureMatches = if (Preferences[Preferences.Key.DisableSignatureCheck]) "1"
-        else """$TABLE_INSTALLED.$ROW_SIGNATURE IS NOT NULL AND
-        $TABLE_PRODUCT.$ROW_SIGNATURES LIKE ('%' || $TABLE_INSTALLED.$ROW_SIGNATURE || '%') AND
-        $TABLE_PRODUCT.$ROW_SIGNATURES != ''"""
+        else """
+            $TABLE_INSTALLED.$ROW_SIGNATURE IS NOT NULL AND
+            $TABLE_PRODUCT.$ROW_SIGNATURES LIKE ('%' || $TABLE_INSTALLED.$ROW_SIGNATURE || '%') AND
+            $TABLE_PRODUCT.$ROW_SIGNATURES != ''
+            """
 
-        // Select the return fields
-        builder += """SELECT $TABLE_PRODUCT.rowid AS $ROW_ID, $TABLE_PRODUCT.$ROW_REPOSITORY_ID,
-        $TABLE_PRODUCT.$ROW_PACKAGE_NAME, $TABLE_PRODUCT.$ROW_LABEL,
-        $TABLE_PRODUCT.$ROW_SUMMARY, $TABLE_PRODUCT.$ROW_DESCRIPTION,
-        (COALESCE($TABLE_EXTRAS.$ROW_IGNORED_VERSION, -1) != $TABLE_PRODUCT.$ROW_VERSION_CODE AND
-        COALESCE($TABLE_EXTRAS.$ROW_IGNORE_UPDATES, 0) = 0 AND $TABLE_PRODUCT.$ROW_COMPATIBLE != 0 AND
-        $TABLE_PRODUCT.$ROW_VERSION_CODE > COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff) AND
-        $signatureMatches) AS $ROW_CAN_UPDATE, $TABLE_PRODUCT.$ROW_ICON,
-        $TABLE_PRODUCT.$ROW_METADATA_ICON, $TABLE_PRODUCT.$ROW_RELEASES, $TABLE_PRODUCT.$ROW_CATEGORIES,
-        $TABLE_PRODUCT.$ROW_ANTIFEATURES, $TABLE_PRODUCT.$ROW_LICENSES, $TABLE_PRODUCT.$ROW_DONATES,
-        $TABLE_PRODUCT.$ROW_SCREENSHOTS, $TABLE_PRODUCT.$ROW_VERSION_CODE,
-        $TABLE_PRODUCT.$ROW_SUGGESTED_VERSION_CODE, $TABLE_PRODUCT.$ROW_SIGNATURES,
-        $TABLE_PRODUCT.$ROW_COMPATIBLE, $TABLE_PRODUCT.$ROW_AUTHOR,
-        $TABLE_PRODUCT.$ROW_SOURCE, $TABLE_PRODUCT.$ROW_WEB,
-        $TABLE_PRODUCT.$ROW_TRACKER, $TABLE_PRODUCT.$ROW_CHANGELOG,
-        $TABLE_PRODUCT.$ROW_WHATS_NEW,"""
+        //builder +=
+        """
+            MAX(($TABLE_PRODUCT.$ROW_COMPATIBLE AND
+            ($TABLE_INSTALLED.$ROW_SIGNATURE IS NULL OR $signatureMatches)) ||
+            PRINTF('%016X', $TABLE_PRODUCT.$ROW_VERSION_CODE))
+            """
 
-        // Take product as main table
-        builder += """MAX(($TABLE_PRODUCT.$ROW_COMPATIBLE AND
-        ($TABLE_INSTALLED.$ROW_SIGNATURE IS NULL OR $signatureMatches)) ||
-        PRINTF('%016X', $TABLE_PRODUCT.$ROW_VERSION_CODE)) FROM $TABLE_PRODUCT_NAME AS $TABLE_PRODUCT"""
+        builder.addFrom(TABLE_PRODUCT)
 
-        // Merge the matching repositories
-        builder += """JOIN $TABLE_REPOSITORY_NAME AS $TABLE_REPOSITORY
-        ON $TABLE_PRODUCT.$ROW_REPOSITORY_ID = $TABLE_REPOSITORY.$ROW_ID"""
+        // Joining
+        builder.addJoin(
+            TABLE_REPOSITORY,
+            false,
+            "$TABLE_PRODUCT.$ROW_REPOSITORY_ID = $TABLE_REPOSITORY.$ROW_ID",
+        )
+        builder.addJoin(
+            TABLE_EXTRAS,
+            true,
+            "$TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_EXTRAS.$ROW_PACKAGE_NAME",
+        )
+        builder.addJoin(
+            TABLE_INSTALLED,
+            !installed && !updates,
+            "$TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_INSTALLED.$ROW_PACKAGE_NAME",
+        )
+        builder.addJoin(
+            TABLE_CATEGORY,
+            false,
+            "$TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_CATEGORY.$ROW_PACKAGE_NAME",
+        )
 
-        // Merge the matching extras
-        builder += """LEFT JOIN $TABLE_EXTRAS_NAME AS $TABLE_EXTRAS
-        ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_EXTRAS.$ROW_PACKAGE_NAME"""
-
-        // Merge the matching installed
-        if (!installed && !updates) builder += "LEFT"
-        builder += """JOIN $TABLE_INSTALLED_NAME AS $TABLE_INSTALLED
-        ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_INSTALLED.$ROW_PACKAGE_NAME"""
-
-        // Merge the matching category
-        builder += """JOIN $TABLE_CATEGORY_NAME AS $TABLE_CATEGORY
-        ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_CATEGORY.$ROW_PACKAGE_NAME"""
-
-        // Filter only active repositories
-        builder += """WHERE $TABLE_REPOSITORY.$ROW_ENABLED != 0"""
-
-        // Filter based on the developer
+        // Filtering
+        builder.addWhere("$TABLE_REPOSITORY.$ROW_ENABLED = 1")
         if (author.isNotEmpty()) {
-            builder += "AND $TABLE_PRODUCT.$ROW_AUTHOR = ?"
-            builder %= author
+            builder.addWhere("$TABLE_PRODUCT.$ROW_AUTHOR = ?").addArgument(author)
         }
-
-        // Filter out repositories
         if (filteredOutRepos.isNotEmpty()) {
-            builder += "AND $TABLE_PRODUCT.$ROW_REPOSITORY_ID NOT IN(${filteredOutRepos.joinToString { "'$it'" }})"
+            builder.addWhere("$TABLE_PRODUCT.$ROW_REPOSITORY_ID NOT IN (${filteredOutRepos.joinToString { it }})")
         }
-
-        // Filter out categories
         if (category != FILTER_CATEGORY_ALL) {
-            builder += "AND $TABLE_CATEGORY.$ROW_LABEL = ?"
-            builder %= category
+            builder.addWhere("$TABLE_CATEGORY.$ROW_LABEL = ?").addArgument(category)
         }
-
-        // Filter out anti-features
         filteredAntiFeatures.forEach {
-            builder += "AND $TABLE_PRODUCT.$ROW_ANTIFEATURES NOT LIKE '%$it%'"
+            builder.addWhere("$TABLE_PRODUCT.$ROW_ANTIFEATURES NOT LIKE '%$it%'")
         }
-
-        // Filter out licenses
         filteredLicenses.forEach {
-            builder += "AND $TABLE_PRODUCT.$ROW_LICENSES NOT LIKE '%$it%'"
+            builder.addWhere("$TABLE_PRODUCT.$ROW_LICENSES NOT LIKE '%$it%'")
         }
-
-        // Filter only the selected repository/category
-        when (section) {
-            is Section.FAVORITE -> {
-                builder += "AND COALESCE($TABLE_EXTRAS.$ROW_FAVORITE, 0) != 0"
-            }
-
-            else                -> {}
+        if (section == Section.FAVORITE) {
+            builder.addWhere("COALESCE($TABLE_EXTRAS.$ROW_FAVORITE, 0) != 0")
         }
 
         when (updateCategory) {
             UpdateCategory.ALL     -> Unit
-            UpdateCategory.NEW     -> builder += """AND $TABLE_PRODUCT.$ROW_ADDED = $TABLE_PRODUCT.$ROW_UPDATED"""
-            UpdateCategory.UPDATED -> builder += """AND $TABLE_PRODUCT.$ROW_ADDED < $TABLE_PRODUCT.$ROW_UPDATED"""
+            UpdateCategory.NEW     -> builder.addWhere("$TABLE_PRODUCT.$ROW_ADDED = $TABLE_PRODUCT.$ROW_UPDATED")
+            UpdateCategory.UPDATED -> builder.addWhere("$TABLE_PRODUCT.$ROW_ADDED < $TABLE_PRODUCT.$ROW_UPDATED")
         }
 
-        // Sum up all products with the same package name
-        builder += "GROUP BY $TABLE_PRODUCT.$ROW_PACKAGE_NAME HAVING 1"
+        builder.addGroupBy("$TABLE_PRODUCT.$ROW_PACKAGE_NAME")
 
-        // Filter if only can update
         if (updates) {
-            builder += "AND $ROW_CAN_UPDATE"
+            builder += """
+                AND COALESCE($TABLE_EXTRAS.$ROW_IGNORED_VERSION, -1) != $TABLE_PRODUCT.$ROW_VERSION_CODE
+                AND COALESCE($TABLE_EXTRAS.$ROW_IGNORE_UPDATES, 0) = 0 AND $TABLE_PRODUCT.$ROW_COMPATIBLE != 0
+                AND $TABLE_PRODUCT.$ROW_VERSION_CODE > COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff)
+                AND $signatureMatches
+                """
         }
 
-        // Set sorting order
-        builder += "ORDER BY"
-        when (order) {
-            Order.NAME        -> Unit
-            Order.DATE_ADDED  -> builder += "$TABLE_PRODUCT.$ROW_ADDED ${if (ascending) "ASC" else "DESC"},"
-            Order.LAST_UPDATE -> builder += "$TABLE_PRODUCT.$ROW_UPDATED ${if (ascending) "ASC" else "DESC"},"
-        }::class
-        builder += "$TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ${if (!ascending && order == Order.NAME) "DESC" else "ASC"}${if (numberOfItems > 0) " LIMIT $numberOfItems" else ""}"
+        // Ordering
+        builder.addOrderBy(
+            when (order) {
+                Order.NAME        -> "$TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ${if (!ascending) "DESC" else "ASC"}"
+                Order.DATE_ADDED  -> "$TABLE_PRODUCT.$ROW_ADDED ${if (ascending) "ASC" else "DESC"}, $TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ASC"
+                Order.LAST_UPDATE -> "$TABLE_PRODUCT.$ROW_UPDATED ${if (ascending) "ASC" else "DESC"}, $TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ASC"
+            }.let {
+                "$it ${if (numberOfItems > 0) " LIMIT $numberOfItems" else ""}"
+            }
+        )
 
+        Log.v(this::class.simpleName, builder.build())
         return SimpleSQLiteQuery(builder.build(), builder.arguments.toTypedArray())
     }
 }
+
+private fun generateSelectFields(): String = """SELECT $TABLE_PRODUCT.$ROW_REPOSITORY_ID,
+        $TABLE_PRODUCT.$ROW_PACKAGE_NAME, $TABLE_PRODUCT.$ROW_LABEL,
+        $TABLE_PRODUCT.$ROW_SUMMARY, $TABLE_PRODUCT.$ROW_DESCRIPTION, $TABLE_PRODUCT.$ROW_ADDED,
+        $TABLE_PRODUCT.$ROW_UPDATED, $TABLE_PRODUCT.$ROW_ICON, $TABLE_PRODUCT.$ROW_METADATA_ICON,
+        $TABLE_PRODUCT.$ROW_RELEASES, $TABLE_PRODUCT.$ROW_CATEGORIES, $TABLE_PRODUCT.$ROW_ANTIFEATURES,
+        $TABLE_PRODUCT.$ROW_LICENSES, $TABLE_PRODUCT.$ROW_DONATES, $TABLE_PRODUCT.$ROW_SCREENSHOTS,
+        $TABLE_PRODUCT.$ROW_VERSION_CODE, $TABLE_PRODUCT.$ROW_SUGGESTED_VERSION_CODE,
+        $TABLE_PRODUCT.$ROW_SIGNATURES, $TABLE_PRODUCT.$ROW_COMPATIBLE,
+        $TABLE_PRODUCT.$ROW_AUTHOR, $TABLE_PRODUCT.$ROW_SOURCE, $TABLE_PRODUCT.$ROW_WEB,
+        $TABLE_PRODUCT.$ROW_TRACKER, $TABLE_PRODUCT.$ROW_CHANGELOG, $TABLE_PRODUCT.$ROW_WHATS_NEW"""
 
 @Dao
 interface ProductTempDao : BaseDao<ProductTemp> {

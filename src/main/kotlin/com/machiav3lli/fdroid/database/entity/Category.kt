@@ -4,7 +4,7 @@ import androidx.room.Entity
 import com.machiav3lli.fdroid.*
 
 @Entity(
-    tableName = TABLE_CATEGORY_NAME,
+    tableName = TABLE_CATEGORY,
     primaryKeys = [ROW_REPOSITORY_ID, ROW_PACKAGE_NAME, ROW_LABEL]
 )
 open class Category {
@@ -13,5 +13,5 @@ open class Category {
     var label = ""
 }
 
-@Entity(tableName = TABLE_CATEGORY_TEMP_NAME)
+@Entity(tableName = TABLE_CATEGORY_TEMP)
 class CategoryTemp : Category()
