@@ -325,4 +325,11 @@
     <string name="show_categories_bar">Mostra barra categorie</string>
     <string name="show_categories_bar_description">Mostra barra laterale categorie nella pagina esplora.</string>
     <string name="privacy_panel">Pannello privacy</string>
+    <string name="finished">Finito</string>
+    <string name="clear_text">Pulisci testo</string>
+    <string name="previous">Precedente</string>
+    <string name="canceled">Annullato</string>
+    <string name="error">Errore</string>
+    <string name="list_apps">Mostra app del repository</string>
+    <string name="next">Successivo</string>
 </resources>
