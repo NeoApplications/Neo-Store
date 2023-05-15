@@ -79,7 +79,7 @@ fun ScreenshotsPage(
             ) {
                 SecondaryActionButton(
                     icon = Phosphor.ArrowCircleLeft,
-                    description = stringResource(id = R.string.privacy_panel)
+                    description = stringResource(id = R.string.previous)
                 ) {
                     scope.launch { pagerState.animateScrollToPage(currentPage - 1) }
                 }
@@ -88,7 +88,7 @@ fun ScreenshotsPage(
             AnimatedVisibility(visible = currentPage < screenshots.size - 1) {
                 SecondaryActionButton(
                     icon = Phosphor.ArrowCircleRight,
-                    description = stringResource(id = R.string.privacy_panel)
+                    description = stringResource(id = R.string.next)
                 ) {
                     scope.launch { pagerState.animateScrollToPage(currentPage + 1) }
                 }

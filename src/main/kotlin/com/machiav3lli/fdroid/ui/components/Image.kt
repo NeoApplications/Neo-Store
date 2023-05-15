@@ -27,7 +27,7 @@ fun NetworkImage(
     data: String?,
     contentScale: ContentScale = ContentScale.Crop,
     isScreenshot: Boolean = false,
-    shape: Shape = MaterialTheme.shapes.medium
+    shape: Shape = MaterialTheme.shapes.medium,
 ) {
     AsyncImage(
         modifier = modifier.clip(shape),

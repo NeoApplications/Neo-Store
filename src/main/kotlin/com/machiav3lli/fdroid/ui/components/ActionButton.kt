@@ -1,13 +1,12 @@
 package com.machiav3lli.fdroid.ui.components
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -99,7 +98,6 @@ fun FlatActionButton(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainActionButton(
     modifier: Modifier = Modifier,
@@ -130,11 +128,12 @@ fun MainActionButton(
             transitionSpec = {
                 when (targetState) {
                     is ActionState.Cancel ->
-                        (slideInVertically { height -> height } + fadeIn() with
-                                slideOutVertically { height -> -height } + fadeOut())
+                        ((slideInVertically { height -> height } + fadeIn()).togetherWith(
+                            slideOutVertically { height -> -height } + fadeOut()))
+
                     else                  ->
-                        (slideInVertically { height -> -height } + fadeIn() with
-                                slideOutVertically { height -> height } + fadeOut())
+                        ((slideInVertically { height -> -height } + fadeIn()).togetherWith(
+                            slideOutVertically { height -> height } + fadeOut()))
                 }
                     .using(SizeTransform(clip = false))
             }
@@ -160,6 +159,7 @@ fun SecondaryActionButton(
 ) {
     packageState?.let {
         SecondaryActionButton(
+            modifier = modifier,
             icon = it.icon,
             description = stringResource(id = it.textId),
             onClick = onClick,

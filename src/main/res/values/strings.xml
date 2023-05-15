@@ -329,4 +329,6 @@
     <string name="error">Error</string>
     <string name="clear_text">Clear text</string>
     <string name="list_apps">Show repository\'s apps</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
 </resources>
