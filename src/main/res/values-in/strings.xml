@@ -323,4 +323,11 @@
     <string name="privacy_panel">Panel privasi</string>
     <string name="show_categories_bar_description">Tampilkan bilah samping kategori di halaman jelajahi.</string>
     <string name="show_categories_bar">Tampilkan bilah kategori</string>
+    <string name="previous">Sebelumnya</string>
+    <string name="list_apps">Tampilkan aplikasi repositori</string>
+    <string name="canceled">Dibatalkan</string>
+    <string name="clear_text">Hapus teks</string>
+    <string name="finished">Selesai</string>
+    <string name="error">Eror</string>
+    <string name="next">Berikutnya</string>
 </resources>
