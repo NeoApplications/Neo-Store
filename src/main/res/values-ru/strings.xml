@@ -323,4 +323,7 @@
     <string name="allowed_licenses">Допустимые лицензии</string>
     <string name="cancel_all">Отменить все</string>
     <string name="disable_download_version_check">Не проверять версию при загрузке</string>
+    <string name="privacy_panel">Панель конфиденциальности</string>
+    <string name="show_categories_bar">Показывать панель категорий</string>
+    <string name="show_categories_bar_description">Показывать боковую панель категорий на странице обзора.</string>
 </resources>

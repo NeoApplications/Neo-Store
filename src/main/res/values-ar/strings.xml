@@ -325,4 +325,7 @@
     <string name="allowed_licenses">التراخيص المسموح بها</string>
     <string name="cancel_all">إلغاء الكل</string>
     <string name="disable_download_version_check">تعطيل التحقق من إصدار التنزيل</string>
+    <string name="privacy_panel">لوحة الخصوصية</string>
+    <string name="show_categories_bar">إظهار شريط الفئات</string>
+    <string name="show_categories_bar_description">إظهار الشريط الجانبي للفئات في صفحة الاستكشاف.</string>
 </resources>

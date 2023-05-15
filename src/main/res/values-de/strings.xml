@@ -310,4 +310,18 @@
     <string name="post_notifications_permission_title">Erlaubnis um Benachrichtigungen zu senden</string>
     <string name="post_notifications_permission_message">A13-Apps benötigen die Erlaubnis Benachrichtigungen zu senden, damit diese gestartet werden können.</string>
     <string name="vulnerabilities_installed_apps">Diese installierten Apps haben keine Sicherheitsprobleme!</string>
+    <string name="show_categories_bar">Kategorienleiste anzeigen</string>
+    <string name="show_categories_bar_description">Zeigt die Kategorienleiste auf der Entdecken-Seite an.</string>
+    <string name="privacy_panel">Privatsphäre Bereich</string>
+    <string name="ignore">Ignorieren</string>
+    <string name="disable_signature_check">Signaturprüfung deaktivieren</string>
+    <string name="keep_install_notification">Installationsbenachrichtigung erhalten</string>
+    <string name="allowed_licenses">Zulässige Lizenzen</string>
+    <string name="keep_install_notification_summary">Benachrichtigung über die erfolgreiche Installation einer Anwendung erhalten.</string>
+    <string name="cancel_all">Alle abbrechen</string>
+    <string name="disable_download_version_check">Überprüfung der Download-Version deaktivieren</string>
+    <string name="warning_disable_battery_optimization">Ab Android 12 benötigt die App eine Ausnahme der Akku-Optimierung, um Hintergrundprozesse wie das Synchronisieren und Herunterladen durchzuführen. Wird dies nicht erteilt, sind Sie auf sich allein gestellt und Ihre Absturzberichte werden ignoriert.</string>
+    <string name="warning_show_notification">Ab Android 13 benötigt die App diese Berechtigung, um Sie über verschiedene Prozesse zu benachrichtigen. Wenn Sie diese Erlaubnis ignorieren, werden Sie keine Benachrichtigungen erhalten.</string>
+    <string name="disable_download_version_check_summary">Ermöglicht das Herunterladen älterer Versionen installierter Anwendungen. Kann in Kombination mit dem \"letmedowngrade\"-Patch von Magisk verwendet werden.</string>
+    <string name="disable_signature_check_summary">Überprüfung, ob die Signaturen der heruntergeladen mit der bereits installierten App übereinstimmen deaktivieren.</string>
 </resources>

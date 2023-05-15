@@ -322,4 +322,7 @@
     <string name="disable_signature_check">Desativar verificação de assinatura</string>
     <string name="warning_show_notification">A partir do Android 13, o aplicativo requer esta permissão para ser notificado sobre os diferentes processos. Se ignorar esta permissão, não receberá qualquer notificação.</string>
     <string name="disable_download_version_check_summary">Permite descarregar versões mais antigas das aplicações instaladas. Pode ser utilizado em combinação com o patch \"letmedowngrade\" da Magisk.</string>
+    <string name="show_categories_bar_description">Mostrar as categorias barra lateral na página de exploração.</string>
+    <string name="privacy_panel">Painel de privacidade</string>
+    <string name="show_categories_bar">Mostrar barra de categorias</string>
 </resources>

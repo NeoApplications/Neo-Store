@@ -323,4 +323,7 @@
     <string name="disable_download_version_check_summary">Дозволяє завантажувати старіші версії встановлених застосунків. Може використовуватися у поєднанні з патчем Magisk \"letmedowngrade\".</string>
     <string name="keep_install_notification">Отримувати сповіщення про встановлення</string>
     <string name="keep_install_notification_summary">Зберігайте сповіщення про успішне встановлення застосунку.</string>
+    <string name="privacy_panel">Панель конфіденційності</string>
+    <string name="show_categories_bar_description">Показати бічну панель категорій на сторінці огляду.</string>
+    <string name="show_categories_bar">Показати панель категорій</string>
 </resources>

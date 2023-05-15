@@ -32,7 +32,7 @@
         <item quantity="other">%d برنامه نسخه‌های جدید دارند.</item>
     </plurals>
     <string name="number_of_applications">تعداد برنامه‌ها</string>
-    <string name="notify_about_updates_summary">نمایش یک اعلان وقتی نسخه‌هایی جدید موجود است</string>
+    <string name="notify_about_updates_summary">نمایش یک اعلان وقتی که نسخه‌های جدید موجود است</string>
     <string name="all_applications">همهٔ برنامه‌ها</string>
     <string name="action_failed">عملیات ناموفق بود</string>
     <string name="already_exists">از قبل وجود داشته است</string>
@@ -63,7 +63,7 @@
     <string name="updates">به‌روزرسانی‌ها</string>
     <string name="update">به‌روزرسانی</string>
     <string name="unverified">بررسی‌نشده</string>
-    <string name="unstable_updates_summary">پیشنهاد نصب نسخه‌های ناپایدار</string>
+    <string name="unstable_updates_summary">پیشنهاد نصب نسخه‌های ناپایدار.</string>
     <string name="unstable_updates">به‌روزرسانی‌های ناپایدار</string>
     <string name="unsigned">امضانشده</string>
     <string name="tap_to_install_DESC">برای نصب ضربه بزنید.</string>
@@ -192,7 +192,7 @@
     <string name="root_session_installer">از نصب کننده ی جلسه ی روت (root session installer) استفاده کنید</string>
     <string name="root_session_installer_description">‏این جلسه ی نصب کننده (session installer) کمی کند تر از legacy installer است، ولی از مشکلات با برنامه های نصب شده در اندروید ۱۳ و بالاتر جلوگیری می کند.</string>
     <string name="ignore_battery_optimization_title">نادیده گرفتن بهینه سازی باتری</string>
-    <string name="ignore_battery_optimization_message">از اندروید ۱۲ و بعد، برای سرویس های پیش زمینه محدودیت هایی وجود دارد که باعث مشکلات با دانلود های این برنامه پبش آید. برای جلوگیری از این مشکل، شما باید بهینه سازی باتری را خاموش کنید</string>
+    <string name="ignore_battery_optimization_message">از اندروید ۱۲ و بعد، برای سرویس های پیش زمینه محدودیت هایی وجود دارد که باعث مشکلات با دانلود های این برنامه پیش آید. برای جلوگیری از این مشکل، شما باید بهینه سازی باتری را خاموش کنید.</string>
     <string name="releases">انتشارها</string>
     <string name="legacy_installer">نصب‌کننده قدیمی (سازگار با MIUI)</string>
     <string name="no_updates_available">هیچ نسخه ای موجود نیست</string>
@@ -259,4 +259,14 @@
     <string name="permission_identification_data">دسترسی برای داده های شناسایی</string>
     <string name="trackers_identification">ردیاب های شناسایی</string>
     <string name="trackers_bug">ردیاب های گزارش دهنده اشکال</string>
+    <string name="action_install_tc">نصب کنترل ردیاب</string>
+    <string name="trackers_in">ردیاب ها در %s</string>
+    <string name="source_proprietary">انحصاری</string>
+    <string name="action_open_tc">باز کردن کنترل ردیاب</string>
+    <string name="trackers_note_4">حداقل بدون ردیاب</string>
+    <string name="show_categories_bar">نمایش دسته‌بندی ها</string>
+    <string name="disable_signature_check">از کار انداختن بررسی امضا</string>
+    <string name="cancel_all">لغو همه</string>
+    <string name="source_dependencies">وابستگی‌ها</string>
+    <string name="trackers_none">هیچ ردیابی برای نمایش ندارد</string>
 </resources>

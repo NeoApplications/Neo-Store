@@ -322,4 +322,7 @@
     <string name="disable_download_version_check">Zakázat kontrolu verze ke stažení</string>
     <string name="disable_signature_check_summary">Nekontrolovat, zda má stažený soubor APK stejný podpis jako nainstalovaná aplikace.</string>
     <string name="disable_download_version_check_summary">Umožňuje stahování starších verzí nainstalovaných aplikací. Lze použít v kombinaci s Magisk patchem \"letmedowngrade\".</string>
+    <string name="show_categories_bar">Zobrazit lištu kategorií</string>
+    <string name="show_categories_bar_description">Zobrazit postranní lištu kategorií na stránce prozkoumávání.</string>
+    <string name="privacy_panel">Panel ochrany soukromí</string>
 </resources>

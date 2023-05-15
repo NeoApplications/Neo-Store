@@ -322,4 +322,7 @@
     <string name="enable_download_directory">Utilizează un dosar de descărcare personalizat</string>
     <string name="ignore_vulns">Ignoră vulnerabilitățile de securitate raportate</string>
     <string name="downloads">Descărcări</string>
+    <string name="privacy_panel">Panou de confidențialitate</string>
+    <string name="show_categories_bar_description">Se afișează bara laterală a categoriilor în pagina de explorare.</string>
+    <string name="show_categories_bar">Afișare bară de categorii</string>
 </resources>

@@ -322,4 +322,7 @@
     <string name="warning_show_notification">A partir de Android 13, la aplicación requiere este permiso para notificarte sobre los diferentes procesos. Si ignoras este permiso, no recibirás ninguna notificación.</string>
     <string name="keep_install_notification">Mantener la notificación de la instalación</string>
     <string name="disable_signature_check_summary">No compruebar si el APK descargado tiene la misma firma que la aplicación instalada.</string>
+    <string name="show_categories_bar">Mostrar la barra de categorías</string>
+    <string name="privacy_panel">Panel de privacidad</string>
+    <string name="show_categories_bar_description">Mostrar la barra lateral de categorías en la página de exploración.</string>
 </resources>
