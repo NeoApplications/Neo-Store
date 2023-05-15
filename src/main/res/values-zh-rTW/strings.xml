@@ -323,4 +323,11 @@
     <string name="no_trackers_data_available">沒有可用的跟踪器數據（還）。</string>
     <string name="ignore_vulns">忽略報告的安全漏洞</string>
     <string name="downloads">下載</string>
+    <string name="clear_text">明文</string>
+    <string name="previous">以前</string>
+    <string name="next">下一页</string>
+    <string name="error">錯誤</string>
+    <string name="canceled">已取消</string>
+    <string name="finished">已完成</string>
+    <string name="list_apps">顯示存儲庫的應用程式</string>
 </resources>
