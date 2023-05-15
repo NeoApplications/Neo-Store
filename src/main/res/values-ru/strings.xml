@@ -326,4 +326,11 @@
     <string name="privacy_panel">Панель конфиденциальности</string>
     <string name="show_categories_bar">Показывать панель категорий</string>
     <string name="show_categories_bar_description">Показывать боковую панель категорий на странице обзора.</string>
+    <string name="canceled">Отменено</string>
+    <string name="error">Ошибка</string>
+    <string name="clear_text">Чистый текст</string>
+    <string name="previous">Назад</string>
+    <string name="list_apps">Показывать репозитории приложений</string>
+    <string name="finished">Завершено</string>
+    <string name="next">Вперёд</string>
 </resources>
