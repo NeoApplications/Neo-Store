@@ -57,7 +57,7 @@ fun ScreenshotList(
             NetworkImage(
                 modifier = Modifier
                     .wrapContentWidth()
-                    .requiredHeight(300.dp)
+                    .requiredHeight(250.dp)
                     .clip(MaterialTheme.shapes.large)
                     .clickable { onScreenShotClick(index) },
                 contentScale = ContentScale.Fit,
