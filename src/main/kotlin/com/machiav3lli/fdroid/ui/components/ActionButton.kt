@@ -159,21 +159,35 @@ fun SecondaryActionButton(
     onClick: () -> Unit,
 ) {
     packageState?.let {
-        ElevatedButton(
-            modifier = modifier,
-            colors = ButtonDefaults.elevatedButtonColors(
-                containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp),
-                contentColor = MaterialTheme.colorScheme.primary
-            ),
-            onClick = { onClick() }
+        SecondaryActionButton(
+            icon = it.icon,
+            description = stringResource(id = it.textId),
+            onClick = onClick,
+        )
+    }
+}
+
+@Composable
+fun SecondaryActionButton(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    description: String,
+    onClick: () -> Unit,
+) {
+    ElevatedButton(
+        modifier = modifier,
+        colors = ButtonDefaults.elevatedButtonColors(
+            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp),
+            contentColor = MaterialTheme.colorScheme.primary
+        ),
+        onClick = { onClick() }
+    ) {
+        Row(
+            Modifier.defaultMinSize(minHeight = ButtonDefaults.MinHeight),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                Modifier.defaultMinSize(minHeight = ButtonDefaults.MinHeight),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(imageVector = it.icon, contentDescription = stringResource(id = it.textId))
-            }
+            Icon(imageVector = icon, contentDescription = description)
         }
     }
 }
