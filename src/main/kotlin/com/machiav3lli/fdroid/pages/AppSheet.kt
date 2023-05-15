@@ -27,13 +27,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -125,7 +128,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlin.math.floor
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AppSheet(
     viewModel: AppSheetVM,
@@ -141,6 +144,7 @@ fun AppSheet(
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
     val pagerState = rememberPagerState()
     var screenshotPage by remember { mutableStateOf(0) }
+    val screenshotsPageState = rememberModalBottomSheetState(true)
     val installed by viewModel.installedItem.collectAsState(null)
     val products by viewModel.products.collectAsState(null)
     val exodusInfo by viewModel.exodusInfo.collectAsState(null)
@@ -959,7 +963,15 @@ fun AppSheet(
             }
 
             if (showScreenshots.value) {
-                BaseDialog(openDialogCustom = showScreenshots) {
+                ModalBottomSheet(
+                    sheetState = screenshotsPageState,
+                    containerColor = Color.Transparent,
+                    dragHandle = null,
+                    onDismissRequest = {
+                        scope.launch { screenshotsPageState.hide() }
+                        showScreenshots.value = false
+                    }
+                ) {
                     ScreenshotsPage(
                         screenshots = suggestedProductRepo.first.screenshots.map {
                             it.toScreenshotItem(
