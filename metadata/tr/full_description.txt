@@ -1,32 +1,9 @@
-Materyal Tasarım'a sahip hızlı bir F-Droid istemcisi
-
-Özellikler:
-
-* F-Droid tarzı Materyal Tasarım
-* Kartlar veya uygunsuz animasyonlar yok
-* Hızlı depo eşleme
-* Standart Android bileşenleri ve minimum bağımlılığa sahip
-
-Mevcut:
-
-- Brezilya Portekizcesi
-- İngilizce
-- Fince
-- Fransızca
-- Alman
-- Yunan
-- Macarca
-- İtalyan
-- Norveççe Bokmål
-- Yarımada Arapçası
-- Lehçe
-- Rusça
-- Basitleştirilmiş Çince
-- İspanyolca
-- Türkçe
-- Ukrayna
-
-Foxy-Droid'in doğrudan bir uyarlaması/modifikasyonu
-
-Telif müsaadeli özgür yazılım, GPLv3+ lisanslı. \
-Kullanın, inceleyin, değiştirin ve paylaşın; herkesle.
+Zengin özelliklere sahip hızlı F-Droid istemcisi: 
+* Kullanıcıları güçlendirmeye odaklı UX 
+* Kart veya uygunsuz animasyon yok 
+* Hızlı depo senkronizasyonu 
+* Standart Android bileşenleri ve minimum 
+bağımlılıklar Foxy-Droid
+ 
+ 
+Copylefted libre yazılımının doğrudan uyarlaması/modifikasyonu, lisanslı GPLv3+. \  Kullanın, inceleyin, değiştirin ve paylaşın; hepsiyle.

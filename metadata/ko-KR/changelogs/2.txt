@@ -1,0 +1,4 @@
+* 기타 UI 변경
+* 전체 코드베이스 리포맷
+* 의존성 업데이트
+* Preferences를 Settings로 이름 변경
