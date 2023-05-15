@@ -325,4 +325,11 @@
     <string name="show_categories_bar">Zobrazit lištu kategorií</string>
     <string name="show_categories_bar_description">Zobrazit postranní lištu kategorií na stránce prozkoumávání.</string>
     <string name="privacy_panel">Panel ochrany soukromí</string>
+    <string name="error">Chyba</string>
+    <string name="list_apps">Zobrazit aplikace v repozitáři</string>
+    <string name="previous">Předchozí</string>
+    <string name="canceled">Zrušeno</string>
+    <string name="clear_text">Vymazat text</string>
+    <string name="finished">Dokončeno</string>
+    <string name="next">Další</string>
 </resources>
