@@ -40,7 +40,7 @@ fun ScreenshotsPage(
     page: Int,
 ) {
     val scope = rememberCoroutineScope()
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { screenshots.size })
     val currentPage by remember(pagerState.currentPage) {
         mutableStateOf(pagerState.currentPage)
     }
@@ -51,7 +51,7 @@ fun ScreenshotsPage(
         contentAlignment = Alignment.Center,
     ) {
 
-        HorizontalPager(pageCount = screenshots.size, state = pagerState) { page ->
+        HorizontalPager(state = pagerState) { page ->
             val screenshot = screenshots[page]
             var image by remember { mutableStateOf<String?>(null) }
 

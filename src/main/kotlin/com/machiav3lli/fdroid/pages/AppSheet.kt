@@ -142,7 +142,7 @@ fun AppSheet(
     val showScreenshots = remember { mutableStateOf(false) }
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { 2 })
     var screenshotPage by remember { mutableStateOf(0) }
     val screenshotsPageState = rememberModalBottomSheetState(true)
     val installed by viewModel.installedItem.collectAsState(null)
@@ -440,7 +440,6 @@ fun AppSheet(
             snackbarHost = { SnackbarHost(snackbarHostState) },
         ) { paddingValues ->
             HorizontalPager(
-                pageCount = 2,
                 state = pagerState,
                 modifier = Modifier
                     .padding(

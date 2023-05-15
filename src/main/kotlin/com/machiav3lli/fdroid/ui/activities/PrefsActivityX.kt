@@ -88,12 +88,12 @@ class PrefsActivityX : AppCompatActivity() {
                 }
             ) {
                 navController = rememberAnimatedNavController()
-                var pageTitle: Int? by remember {
+                var pageTitle by remember {
                     mutableStateOf(NavItem.Prefs.title)
                 }
 
                 navController.addOnDestinationChangedListener { _, destination, _ ->
-                    pageTitle = destination.destinationToItem()?.title
+                    pageTitle = destination.destinationToItem()?.title ?: NavItem.Prefs.title
                 }
 
                 Scaffold(
@@ -101,7 +101,7 @@ class PrefsActivityX : AppCompatActivity() {
                     contentColor = MaterialTheme.colorScheme.onBackground,
                     bottomBar = { BottomNavBar(page = NAV_PREFS, navController = navController) },
                     topBar = {
-                        TopBar(title = stringResource(id = pageTitle ?: NavItem.Prefs.title))
+                        TopBar(title = stringResource(id = pageTitle))
                     }
                 ) { paddingValues ->
                     LaunchedEffect(key1 = navController) {
