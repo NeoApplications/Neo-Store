@@ -12,10 +12,10 @@ val coroutinesVersion = "1.7.0"
 
 plugins {
     id("com.android.application") version ("8.0.1")
-    kotlin("android") version ("1.8.20")
-    kotlin("kapt") version ("1.8.20")
-    kotlin("plugin.serialization") version ("1.8.20")
-    id("com.google.devtools.ksp") version ("1.8.20-1.0.11")
+    kotlin("android") version ("1.8.21")
+    kotlin("kapt") version ("1.8.21")
+    kotlin("plugin.serialization") version ("1.8.21")
+    id("com.google.devtools.ksp") version ("1.8.21-1.0.11")
     id("com.google.dagger.hilt.android") version ("2.45")
 }
 
@@ -120,8 +120,8 @@ android {
 dependencies {
 
     // Core
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20")
-    implementation("com.google.devtools.ksp:symbol-processing-api:1.8.20-1.0.11")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21")
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.8.21-1.0.11")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
