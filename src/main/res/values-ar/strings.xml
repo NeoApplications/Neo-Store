@@ -328,4 +328,11 @@
     <string name="privacy_panel">لوحة الخصوصية</string>
     <string name="show_categories_bar">إظهار شريط الفئات</string>
     <string name="show_categories_bar_description">إظهار الشريط الجانبي للفئات في صفحة الاستكشاف.</string>
+    <string name="error">خطأ</string>
+    <string name="clear_text">مسح النص</string>
+    <string name="canceled">ألغيت</string>
+    <string name="previous">السابق</string>
+    <string name="finished">منتهي</string>
+    <string name="list_apps">إظهار تطبيقات المستودع</string>
+    <string name="next">التالي</string>
 </resources>
