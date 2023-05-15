@@ -323,4 +323,11 @@
     <string name="show_categories_bar">显示类别栏</string>
     <string name="privacy_panel">隐私面板</string>
     <string name="show_categories_bar_description">在探索页面中显示类别侧栏。</string>
+    <string name="clear_text">明文</string>
+    <string name="list_apps">显示存储库的应用程序</string>
+    <string name="next">下一页</string>
+    <string name="canceled">已取消</string>
+    <string name="finished">已完成</string>
+    <string name="previous">上一页</string>
+    <string name="error">错误</string>
 </resources>
