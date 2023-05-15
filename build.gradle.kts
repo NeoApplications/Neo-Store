@@ -1,14 +1,14 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val accompanistVersion = "0.31.1-alpha"
-val composeVersion = "1.5.0-alpha03"
-val composeCompilerVersion = "1.4.6"
-val hiltVersion = "2.46"
-val material3Version = "1.1.0-rc01"
-val navigationVersion = "2.6.0-beta01"
+val accompanistVersion = "0.31.2-alpha"
+val composeVersion = "1.5.0-alpha04"
+val composeCompilerVersion = "1.4.7"
+val hiltVersion = "2.46.1"
+val material3Version = "1.1.0"
+val navigationVersion = "2.6.0-rc01"
 val retrofitVersion = "2.9.0"
 val roomVersion = "2.5.1"
-val coroutinesVersion = "1.7.0"
+val coroutinesVersion = "1.7.1"
 
 plugins {
     id("com.android.application") version ("8.0.1")
@@ -150,7 +150,7 @@ dependencies {
 
     // JSON
     implementation("com.fasterxml.jackson.core:jackson-core:2.15.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
     // Markdown
     implementation("org.jetbrains:markdown:0.4.1")
