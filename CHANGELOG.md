@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-1.0.0 (??.??.2023) 40+ Commits +70 Translations
+1.0.0 (??.??.2023) 90+ Commits +110 Translations
 ------------------
 
 ### Function
@@ -12,23 +12,42 @@ CHANGELOG
 - Fix: Auto-sync on "Only charging"
 - Fix: The description for PeterCxy's Shelter repo (credits @ishanarora)
 - Fix: c:geo repository (credits @ishanarora)
+- Update: Optimize the main products query
 
 ### UI
 
 - Add: Preference to show/hide categories bar
 - Add: Linking database from Application
+- Add: (Products)List, StringInput DialogUIs
+- Add: Block border to sheets & pages
 - Fix: Switch layout on low-dpi/multi-lines
-- Update: Revamp AppSheet header
+- Fix: Screenshots scaling issue after opening once
+- Fix: Pre-mature cutting horizontal products recycler layout
+- Fix: Avoid forgetting expand-state of description text
 - Update: Revamp all sheets into composable only
 - Update: Revamp Message/Launch-Dialogs into composables
-- Update: Revamp layout corners
+- Update: Larger layout corners
+- Update: Revamp all sheets
+- Update: Revamp all chips
+- Update: Revamp all items using ItemList
+- Update: Revamp screenshots layouts
+- Update: Revamp ExplorePage
+- Update: Replace slide animated compose with fade
+- Remove: Scrollable top bars
 
 ### UX
 
 - Add: Licenses filters
 - Add: Permission ignore button
 - Add: Preference to keep notification of successfully installed app
+- Add: Slide down to close gesture to screenshots viewer
+- Add: Apps list to RepoSheet
+- Fix: Showing updatable label for Product items
+- Fix: Showing right version in AppSheet's header
 - Update: Using pager in App Sheet for Privacy Panel
+- Update: Bind short description lines limit to extended state
+- Update: Better download state communication
+- Remove: Zooming on screenshots
 
 0.9.15 (01.03.2023) 40+ Commits +30 Translations
 ------------------
