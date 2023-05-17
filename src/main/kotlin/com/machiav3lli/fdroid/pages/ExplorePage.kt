@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.pages
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -109,7 +110,7 @@ fun ExplorePage(viewModel: ExploreVM) {
     Column(
         Modifier
             .background(MaterialTheme.colorScheme.background)
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 8.dp),
@@ -165,6 +166,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 state = listState,
+                contentPadding = PaddingValues(vertical = 8.dp),
             ) {
                 items(
                     items = filteredProducts?.map { it.toItem(installedList[it.packageName]) }

@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.pages
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -102,6 +103,7 @@ fun LatestPage(viewModel: LatestVM) {
             .blockBorder()
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize(),
+        contentPadding = PaddingValues(vertical = 8.dp),
     ) {
         item {
             Row(

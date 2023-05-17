@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -187,10 +188,11 @@ fun InstalledPage(viewModel: InstalledVM) {
             LazyColumn(
                 modifier = Modifier
                     .padding(paddingValues)
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                contentPadding = PaddingValues(vertical = 8.dp),
             ) {
                 item {
-                    AnimatedVisibility(visible = secondaryList.orEmpty().isNotEmpty()) {
+                    if (secondaryList.orEmpty().isNotEmpty()) {
                         Row(
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             verticalAlignment = Alignment.CenterVertically
@@ -231,9 +233,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                     }
                 }
                 item {
-                    AnimatedVisibility(
-                        visible = updatesVisible && secondaryList.orEmpty().isNotEmpty()
-                    ) {
+                    if (updatesVisible && secondaryList.orEmpty().isNotEmpty()) {
                         ProductsHorizontalRecycler(
                             productsList = secondaryList,
                             repositories = repositoriesMap,
