@@ -326,4 +326,11 @@
     <string name="privacy_panel">Панель конфіденційності</string>
     <string name="show_categories_bar_description">Показати бічну панель категорій на сторінці огляду.</string>
     <string name="show_categories_bar">Показати панель категорій</string>
+    <string name="finished">Готово</string>
+    <string name="previous">Попередній</string>
+    <string name="error">Помилка</string>
+    <string name="canceled">Скасовано</string>
+    <string name="clear_text">Очистити текст</string>
+    <string name="list_apps">Показати застосунки репозиторію</string>
+    <string name="next">Наступний</string>
 </resources>
