@@ -192,13 +192,6 @@ interface ProductDao : BaseDao<Product> {
             $TABLE_PRODUCT.$ROW_SIGNATURES != ''
             """
 
-        //builder +=
-        """
-            MAX(($TABLE_PRODUCT.$ROW_COMPATIBLE AND
-            ($TABLE_INSTALLED.$ROW_SIGNATURE IS NULL OR $signatureMatches)) ||
-            PRINTF('%016X', $TABLE_PRODUCT.$ROW_VERSION_CODE))
-            """
-
         builder.addFrom(TABLE_PRODUCT)
 
         // Joining
@@ -253,12 +246,14 @@ interface ProductDao : BaseDao<Product> {
         builder.addGroupBy("$TABLE_PRODUCT.$ROW_PACKAGE_NAME")
 
         if (updates) {
-            builder += """
-                AND COALESCE($TABLE_EXTRAS.$ROW_IGNORED_VERSION, -1) != $TABLE_PRODUCT.$ROW_VERSION_CODE
-                AND COALESCE($TABLE_EXTRAS.$ROW_IGNORE_UPDATES, 0) = 0 AND $TABLE_PRODUCT.$ROW_COMPATIBLE != 0
-                AND $TABLE_PRODUCT.$ROW_VERSION_CODE > COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff)
-                AND $signatureMatches
+            builder.addWhere(
                 """
+                (COALESCE($TABLE_EXTRAS.$ROW_IGNORED_VERSION, -1) != $TABLE_PRODUCT.$ROW_VERSION_CODE AND
+                COALESCE($TABLE_EXTRAS.$ROW_IGNORE_UPDATES, 0) = 0 AND $TABLE_PRODUCT.$ROW_COMPATIBLE != 0 AND
+                $TABLE_PRODUCT.$ROW_VERSION_CODE > COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff) AND
+                $signatureMatches)
+                """
+            )
         }
 
         // Ordering
