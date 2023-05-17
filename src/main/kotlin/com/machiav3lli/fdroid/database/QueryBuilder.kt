@@ -51,7 +51,7 @@ class QueryBuilder {
     }
 
     fun addGroupBy(condition: String): QueryBuilder {
-        this += "GROUP BY $condition"
+        this += "GROUP BY $condition HAVING 1"
         return this
     }
 
