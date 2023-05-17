@@ -98,7 +98,6 @@ fun DownloadedItem(
     item: Downloaded,
     iconDetails: IconDetails?,
     repo: Repository? = null,
-    installed: Installed? = null,
     state: DownloadService.State,
     onUserClick: (Downloaded) -> Unit = {},
 ) {
@@ -143,8 +142,7 @@ fun DownloadedItem(
                     style = MaterialTheme.typography.titleSmall
                 )
                 Text(
-                    text = if (installed != null && installed.version != state.version) "${download.version} → ${state.version}"
-                    else state.version,
+                    text = state.version,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                     style = MaterialTheme.typography.labelSmall,

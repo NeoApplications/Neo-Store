@@ -333,8 +333,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                         item = item,
                         iconDetails = iconDetails[item.packageName],
                         repo = repositoriesMap[item.state.repoId],
-                        state = item.state,
-                        installed = installedList?.get(item.packageName)
+                        state = item.state
                     ) {
                         mainActivityX.navigateProduct(item.packageName)
                     }
