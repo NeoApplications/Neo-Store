@@ -324,4 +324,10 @@
     <string name="warning_show_notification">Ab Android 13 benötigt die App diese Berechtigung, um Sie über verschiedene Prozesse zu benachrichtigen. Wenn Sie diese Erlaubnis ignorieren, werden Sie keine Benachrichtigungen erhalten.</string>
     <string name="disable_download_version_check_summary">Ermöglicht das Herunterladen älterer Versionen installierter Anwendungen. Kann in Kombination mit dem \"letmedowngrade\"-Patch von Magisk verwendet werden.</string>
     <string name="disable_signature_check_summary">Überprüfung, ob die Signaturen der heruntergeladen mit der bereits installierten App übereinstimmen deaktivieren.</string>
+    <string name="canceled">Abgebrochen</string>
+    <string name="list_apps">Apps des Repositorys anzeigen</string>
+    <string name="finished">Erledigt</string>
+    <string name="next">Nächste</string>
+    <string name="error">Fehler</string>
+    <string name="previous">Vorherige</string>
 </resources>
