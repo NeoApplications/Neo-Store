@@ -27,8 +27,8 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 23
         targetSdk = 33
-        versionCode = 1001
-        versionName = "1.0.0-alpha02"
+        versionCode = 1002
+        versionName = "1.0.0-alpha03"
         buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
 
         javaCompileOptions {
