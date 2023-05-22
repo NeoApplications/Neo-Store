@@ -311,4 +311,25 @@
     <string name="ignore_vulns">Ignorer les failles de sécurité signalées</string>
     <string name="downloads">Téléchargements</string>
     <string name="show_trackers_description">Récupérer et afficher les traqueurs des applications depuis Exodus Privacy.</string>
+    <string name="privacy_panel">Panneau de confidentialité</string>
+    <string name="show_categories_bar">Afficher la barre des catégories</string>
+    <string name="show_categories_bar_description">Afficher la barre latérale des catégories dans la page Explorer.</string>
+    <string name="finished">Terminé</string>
+    <string name="canceled">Annulé</string>
+    <string name="error">Erreur</string>
+    <string name="clear_text">Effacer le texte</string>
+    <string name="list_apps">Afficher les applications du dépôt</string>
+    <string name="previous">Précédent</string>
+    <string name="next">Suivant</string>
+    <string name="disable_signature_check_summary">Ne pas vérifier si l\'APK téléchargé a la même signature que l\'appli installée.</string>
+    <string name="ignore">Ignorer</string>
+    <string name="warning_show_notification">À partir d\'Android 13, l\'appli nécessite cette permission pour vous notifier des différentes tâches. Si vous ignorez cette permission, vous ne recevrez aucune notification.</string>
+    <string name="disable_signature_check">Désactiver la vérification de signature</string>
+    <string name="keep_install_notification">Conserver la notification d\'installation</string>
+    <string name="keep_install_notification_summary">Conserver la notification de succès d\'installation d\'une appli.</string>
+    <string name="allowed_licenses">Licenses autorisées</string>
+    <string name="cancel_all">Tout annuler</string>
+    <string name="disable_download_version_check">Désactiver la vérification de version de téléchargement</string>
+    <string name="disable_download_version_check_summary">Permet de télécharger d\'anciennes versions d\'applications installées. Peut être utilisé en combinaison avec le patch \"letmedowngrade\" de Magisk.</string>
+    <string name="warning_disable_battery_optimization">À partir d\'Android 12, l\'appli nécessite l\'optimisation de la batterie pour effectuer des tâches en arrière-plan comme synchroniser et télécharger. Si vous ignorez cette permission vous serez livré à vous-même et vos rapports de crash seront ignorés.</string>
 </resources>
