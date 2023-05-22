@@ -41,8 +41,6 @@ import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
 import com.machiav3lli.fdroid.utility.showNotificationError
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -88,7 +86,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     private class Task(val repositoryId: Long, val manual: Boolean)
     private data class CurrentTask(
-        val task: Task?, val disposable: Any,
+        val task: Task?, val job: kotlinx.coroutines.Job,
         val hasUpdates: Boolean, val lastState: State,
     )
 
@@ -284,8 +282,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         return currentTask?.let {
             if (condition(it)) {
                 currentTask = null
-                if (it.disposable is kotlinx.coroutines.Job) it.disposable.cancel()
-                else if (it.disposable is Disposable) it.disposable.dispose()
+                it.job.cancel()
                 RepositoryUpdater.await()
                 it
             } else {
@@ -326,6 +323,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                             setContentText(getString(R.string.connecting))
                             setProgress(0, 0, true)
                         }
+
                         is State.Syncing    -> {
                             setContentTitle(getString(R.string.syncing_FORMAT, state.name))
                             when (state.stage) {
@@ -342,6 +340,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                         setProgress(0, 0, true)
                                     }
                                 }
+
                                 RepositoryUpdater.Stage.PROCESS  -> {
                                     val progress =
                                         state.total?.let { 100f * state.read / it }?.roundToInt()
@@ -353,6 +352,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                     )
                                     setProgress(100, progress ?: 0, progress == null)
                                 }
+
                                 RepositoryUpdater.Stage.MERGE    -> {
                                     val progress = (100f * state.read / (state.total
                                         ?: state.read)).roundToInt()
@@ -364,12 +364,14 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                     )
                                     setProgress(100, progress, false)
                                 }
+
                                 RepositoryUpdater.Stage.COMMIT   -> {
                                     setContentText(getString(R.string.saving_details))
                                     setProgress(0, 0, true)
                                 }
                             }
                         }
+
                         is State.Finishing  -> {
                             setContentTitle(getString(R.string.syncing))
                             setContentText(null)
@@ -403,15 +405,15 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                         val initialState = State.Connecting(repository.name)
                         publishForegroundState(true, initialState)
                         val unstable = Preferences[Preferences.Key.UpdateUnstable]
-                        lateinit var disposable: Disposable
-                        disposable = RepositoryUpdater
-                            .update(
-                                this@SyncService,
-                                repository,
-                                unstable
-                            ) { stage, progress, total ->
-                                if (!disposable.isDisposed) {
-                                    scope.launch {
+
+                        val job = scope.launch {
+                            try {
+                                val result = RepositoryUpdater.update(
+                                    this@SyncService,
+                                    repository,
+                                    unstable
+                                ) { stage, progress, total ->
+                                    CoroutineScope(Dispatchers.Main).launch {
                                         mutableStateSubject.emit(
                                             State.Syncing(
                                                 repository.name,
@@ -422,17 +424,18 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                                         )
                                     }
                                 }
-                            }
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe { result: Boolean?, throwable: Throwable? ->
+
                                 currentTask = null
-                                throwable?.printStackTrace()
-                                if (throwable != null && task.manual) {
+                                handleNextTask(result || hasUpdates)
+                            } catch (throwable: Throwable) {
+                                throwable.printStackTrace()
+                                if (task.manual) {
                                     showNotificationError(repository, throwable as Exception)
                                 }
-                                handleNextTask((result != null && result) || hasUpdates)
+                                handleNextTask(hasUpdates)
                             }
-                        currentTask = CurrentTask(task, disposable, hasUpdates, initialState)
+                        }
+                        currentTask = CurrentTask(task, job, hasUpdates, initialState)
                     } else if (task.repositoryId == EXODUS_TRACKERS_SYNC) {
                         fetchTrackers()
                         handleNextTask(hasUpdates)

@@ -8,18 +8,19 @@ import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.network.Downloader
+import com.machiav3lli.fdroid.utility.CoroutineUtils
 import com.machiav3lli.fdroid.utility.ProgressInputStream
-import com.machiav3lli.fdroid.utility.RxUtils
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.unhex
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.xml.sax.InputSource
 import java.io.File
 import java.security.cert.X509Certificate
-import java.util.*
+import java.util.Locale
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 import javax.xml.parsers.SAXParserFactory
@@ -64,34 +65,36 @@ object RepositoryUpdater {
     fun init(context: Context) {
         db = DatabaseX.getInstance(context)
         var lastDisabled = setOf<Long>()
-        Observable.just(Unit)
-            //.concatWith(Database.observable(Database.Subject.Repositories)) // TODO have to be replaced like whole rxJava
-            .observeOn(Schedulers.io())
-            .flatMapSingle {
-                RxUtils.querySingle {
+
+        runBlocking(Dispatchers.IO) {
+            launch {
+                val newDisabled = CoroutineUtils.querySingle {
                     db.repositoryDao.allDisabled
-                }
-            }
-            .forEach { it ->
-                val newDisabled = it.toSet()
+                }.toSet()
+
                 val disabled = newDisabled - lastDisabled
                 lastDisabled = newDisabled
+
                 if (disabled.isNotEmpty()) {
-                    val pairs = (disabled.asSequence().map { Pair(it, false) }).toSet()
-                    synchronized(cleanupLock) { db.cleanUp(pairs) }
+                    val pairs = disabled.asSequence().map { Pair(it, false) }.toSet()
+
+                    synchronized(cleanupLock) {
+                        db.cleanUp(pairs)
+                    }
                 }
             }
+        }
     }
 
     fun await() {
         synchronized(updaterLock) { }
     }
 
-    fun update(
+    suspend fun update(
         context: Context,
         repository: Repository, unstable: Boolean,
         callback: (Stage, Long, Long?) -> Unit,
-    ): Single<Boolean> {
+    ): Boolean {
         return update(
             context,
             repository,
@@ -101,40 +104,42 @@ object RepositoryUpdater {
         )
     }
 
-    private fun update(
+    private suspend fun update(
         context: Context,
         repository: Repository, indexTypes: List<IndexType>, unstable: Boolean,
         callback: (Stage, Long, Long?) -> Unit,
-    ): Single<Boolean> {
+    ): Boolean {
         val indexType = indexTypes[0]
-        return downloadIndex(context, repository, indexType, callback)
-            .flatMap { (result, file) ->
-                when {
-                    result.isNotChanged -> {
-                        file.delete()
-                        Single.just(false)
+        return withContext(Dispatchers.IO) {
+            val (result, file) = downloadIndex(context, repository, indexType, callback)
+
+            when {
+                result.isNotChanged -> {
+                    file.delete()
+                    false
+                }
+
+                !result.success     -> {
+                    file.delete()
+                    if (result.code == 404 && indexTypes.isNotEmpty()) {
+                        update(
+                            context,
+                            repository,
+                            indexTypes.subList(1, indexTypes.size),
+                            unstable,
+                            callback
+                        )
+                    } else {
+                        throw UpdateException(
+                            ErrorType.HTTP,
+                            "Invalid response: HTTP ${result.code}"
+                        )
                     }
-                    !result.success -> {
-                        file.delete()
-                        if (result.code == 404 && indexTypes.isNotEmpty()) {
-                            update(
-                                context,
-                                repository,
-                                indexTypes.subList(1, indexTypes.size),
-                                unstable,
-                                callback
-                            )
-                        } else {
-                            Single.error(
-                                UpdateException(
-                                    ErrorType.HTTP,
-                                    "Invalid response: HTTP ${result.code}"
-                                )
-                            )
-                        }
-                    }
-                    else -> {
-                        RxUtils.managedSingle {
+                }
+
+                else                -> {
+                    launch {
+                        CoroutineUtils.managedSingle {
                             processFile(
                                 context,
                                 repository, indexType, unstable,
@@ -142,46 +147,39 @@ object RepositoryUpdater {
                             )
                         }
                     }
+                    true
                 }
             }
+        }
     }
 
-    private fun downloadIndex(
+    private suspend fun downloadIndex(
         context: Context,
         repository: Repository, indexType: IndexType,
         callback: (Stage, Long, Long?) -> Unit,
-    ): Single<Pair<Downloader.Result, File>> {
-        return Single.just(Unit)
-            .map { Cache.getTemporaryFile(context) }
-            .flatMap { file ->
-                Downloader
-                    .download(
-                        Uri.parse(repository.address).buildUpon()
-                            .appendPath(indexType.jarName).build().toString(),
-                        file,
-                        repository.lastModified,
-                        repository.entityTag,
-                        repository.authentication
-                    ) { read, total -> callback(Stage.DOWNLOAD, read, total) }
-                    .subscribeOn(Schedulers.io())
-                    .map { Pair(it, file) }
-                    .onErrorResumeNext {
-                        file.delete()
-                        when (it) {
-                            is InterruptedException, is RuntimeException, is Error -> Single.error(
-                                it
-                            )
-                            is Exception -> Single.error(
-                                UpdateException(
-                                    ErrorType.NETWORK,
-                                    "Network error",
-                                    it
-                                )
-                            )
-                            else -> Single.error(it)
-                        }
-                    }
+    ): Pair<Downloader.Result, File> {
+        val file = Cache.getTemporaryFile(context)
+        return withContext(Dispatchers.IO) {
+            try {
+                val result = Downloader.download(
+                    Uri.parse(repository.address).buildUpon()
+                        .appendPath(indexType.jarName).build().toString(),
+                    file,
+                    repository.lastModified,
+                    repository.entityTag,
+                    repository.authentication
+                ) { read, total -> callback(Stage.DOWNLOAD, read, total) }
+                Pair(result, file)
+            } catch (e: Exception) {
+                // onErrorResumeNext replacement?
+                file.delete()
+                throw UpdateException(
+                    ErrorType.NETWORK,
+                    "Network error",
+                    e
+                )
             }
+        }
     }
 
     private fun processFile(
@@ -253,6 +251,7 @@ object RepositoryUpdater {
                         }
                         Pair(changedRepository, certificateFromIndex)
                     }
+
                     IndexType.INDEX_V1 -> {
                         var changedRepository: Repository? = null
 
@@ -417,7 +416,11 @@ object RepositoryUpdater {
             } catch (e: Exception) {
                 throw when (e) {
                     is UpdateException, is InterruptedException -> e
-                    else -> UpdateException(ErrorType.PARSING, "Error parsing index", e)
+                    else                                        -> UpdateException(
+                        ErrorType.PARSING,
+                        "Error parsing index",
+                        e
+                    )
                 }
             } finally {
                 file.delete()

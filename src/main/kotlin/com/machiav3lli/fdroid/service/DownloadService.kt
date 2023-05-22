@@ -36,8 +36,6 @@ import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.getDownloadFolder
 import com.machiav3lli.fdroid.utility.isDownloadExternal
 import com.machiav3lli.fdroid.utility.showNotificationError
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -48,7 +46,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -148,7 +145,10 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
             get() = "download-$packageName"
     }
 
-    private data class CurrentTask(val task: Task, val disposable: Disposable, val lastState: State)
+    private data class CurrentTask(
+        val task: Task, val job: kotlinx.coroutines.Job,
+        val lastState: State,
+    )
 
     private var started = false
     private val tasks = mutableListOf<Task>()
@@ -275,7 +275,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                         )
                     )
                 }
-                current.disposable.dispose()
+                current.job.cancel()
             }
         }
     }
@@ -415,6 +415,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                         setContentText(getString(R.string.connecting))
                         setProgress(1, 0, true)
                     }
+
                     is State.Downloading                                                -> {
                         setContentTitle(getString(R.string.downloading_FORMAT, state.name))
                         if (state.total != null) {
@@ -425,6 +426,7 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                             setProgress(0, 0, true)
                         }
                     }
+
                     is State.Pending, is State.Success, is State.Error, is State.Cancel -> {
                         throw IllegalStateException()
                     }
@@ -453,81 +455,77 @@ class DownloadService : ConnectionService<DownloadService.Binder>() {
                 publishForegroundState(true, initialState)
                 val partialReleaseFile =
                     Cache.getPartialReleaseFile(this, task.release.cacheFileName)
-                lateinit var disposable: Disposable
-                disposable = Downloader
-                    .download(
+
+                val job = scope.launch {
+                    val result = Downloader.download(
                         task.url,
                         partialReleaseFile,
                         "",
                         "",
                         task.authentication
                     ) { read, total ->
-                        if (!disposable.isDisposed) {
-                            scope.launch {
-                                mutableDownloadState.emit(
-                                    State.Downloading(
-                                        task.packageName,
-                                        task.name,
-                                        task.release.version,
-                                        task.release.cacheFileName,
-                                        task.repoId,
-                                        read,
-                                        total,
-                                    )
+                        CoroutineScope(Dispatchers.Main).launch {
+                            mutableDownloadState.emit(
+                                State.Downloading(
+                                    task.packageName,
+                                    task.name,
+                                    task.release.version,
+                                    task.release.cacheFileName,
+                                    task.repoId,
+                                    read,
+                                    total,
                                 )
-                            }
-                        }
-                    }
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { result: Downloader.Result?, throwable: Throwable? ->
-                        currentTask = null
-                        throwable?.printStackTrace()
-                        if (result == null || !result.success) {
-                            showNotificationError(
-                                task,
-                                if (result != null) ErrorType.Http else ErrorType.Network
                             )
-                            scope.launch {
-                                mutableStateSubject.emit(
-                                    State.Error(
-                                        task.packageName,
-                                        task.name,
-                                        task.release.version,
-                                        task.release.cacheFileName,
-                                        task.repoId,
-                                    )
-                                )
-                            }
-                        } else {
-                            val validationError = validatePackage(task, partialReleaseFile)
-                            if (validationError == null) {
-                                val releaseFile =
-                                    Cache.getReleaseFile(this, task.release.cacheFileName)
-                                partialReleaseFile.renameTo(releaseFile)
-                                Log.i(
-                                    this::javaClass.name,
-                                    "Running publish success from fun handleDownload"
-                                )
-                                publishSuccess(task)
-                            } else {
-                                partialReleaseFile.delete()
-                                showNotificationError(task, ErrorType.Validation(validationError))
-                                scope.launch {
-                                    mutableStateSubject.emit(
-                                        State.Error(
-                                            task.packageName,
-                                            task.name,
-                                            task.release.version,
-                                            task.release.cacheFileName,
-                                            task.repoId,
-                                        )
-                                    )
-                                }
-                            }
                         }
-                        handleDownload()
                     }
-                currentTask = CurrentTask(task, disposable, initialState)
+
+                    currentTask = null
+
+                    if (!result.success) {
+                        showNotificationError(
+                            task,
+                            if (result != null) ErrorType.Http else ErrorType.Network
+                        )
+                        mutableStateSubject.emit(
+                            State.Error(
+                                task.packageName,
+                                task.name,
+                                task.release.version,
+                                task.release.cacheFileName,
+                                task.repoId,
+                            )
+                        )
+                    } else {
+                        val validationError = validatePackage(task, partialReleaseFile)
+                        if (validationError == null) {
+                            val releaseFile = Cache.getReleaseFile(
+                                this@DownloadService,
+                                task.release.cacheFileName
+                            )
+                            partialReleaseFile.renameTo(releaseFile)
+                            Log.i(
+                                this@DownloadService::javaClass.name,
+                                "Running publish success from fun handleDownload"
+                            )
+                            publishSuccess(task)
+                        } else {
+                            partialReleaseFile.delete()
+                            showNotificationError(task, ErrorType.Validation(validationError))
+                            mutableStateSubject.emit(
+                                State.Error(
+                                    task.packageName,
+                                    task.name,
+                                    task.release.version,
+                                    task.release.cacheFileName,
+                                    task.repoId,
+                                )
+                            )
+                        }
+                    }
+                }
+                handleDownload()
+
+                currentTask = CurrentTask(task, job, initialState)
             } else if (started) {
                 started = false
                 stopForeground(true)

@@ -1,9 +1,9 @@
 package com.machiav3lli.fdroid.network
 
+import com.machiav3lli.fdroid.utility.CoroutineUtils
 import com.machiav3lli.fdroid.utility.ProgressInputStream
-import com.machiav3lli.fdroid.utility.RxUtils
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.Cache
 import okhttp3.Call
 import okhttp3.OkHttpClient
@@ -67,63 +67,69 @@ object Downloader {
         return client.newCall(newRequest)
     }
 
-    fun download(
+    suspend fun download(
         url: String, target: File, lastModified: String, entityTag: String, authentication: String,
         callback: ((read: Long, total: Long?) -> Unit)?,
-    ): Single<Result> {
-        val start = if (target.exists()) target.length().let { if (it > 0L) it else null } else null
-        val request = Request.Builder().url(url)
-            .apply {
-                if (entityTag.isNotEmpty()) {
-                    addHeader("If-None-Match", entityTag)
-                } else if (lastModified.isNotEmpty()) {
-                    addHeader("If-Modified-Since", lastModified)
+    ): Result {
+        return withContext(Dispatchers.IO) {
+            val start =
+                if (target.exists()) target.length().let { if (it > 0L) it else null } else null
+            val request = Request.Builder().url(url)
+                .apply {
+                    if (entityTag.isNotEmpty()) {
+                        addHeader("If-None-Match", entityTag)
+                    } else if (lastModified.isNotEmpty()) {
+                        addHeader("If-Modified-Since", lastModified)
+                    }
+                    if (start != null) {
+                        addHeader("Range", "bytes=$start-")
+                    }
                 }
-                if (start != null) {
-                    addHeader("Range", "bytes=$start-")
-                }
-            }
+            try {
+                val response =
+                    CoroutineUtils.callSingle { createCall(request, authentication, null) }
+                val result = CoroutineUtils.managedSingle {
+                    response.use {
+                        if (response.code == 304) {
+                            Result(response.code, lastModified, entityTag)
+                        } else {
+                            val body = it.body
+                                ?: throw Exception("Response body is null") // TODO is it needed?
+                            val append = start != null && response.header("Content-Range") != null
+                            val progressStart = if (append && start != null) start else 0L
+                            val progressTotal = body.contentLength()
+                                .let { len -> if (len >= 0L) len else null }
+                                ?.let { len -> progressStart + len }
 
-        return RxUtils
-            .callSingle { createCall(request, authentication, null) }
-            .subscribeOn(Schedulers.io())
-            .flatMap { result ->
-                RxUtils
-                    .managedSingle {
-                        result.use { it ->
-                            if (result.code == 304) {
-                                Result(it.code, lastModified, entityTag)
-                            } else {
-                                val body = it.body!!
-                                val append = start != null && it.header("Content-Range") != null
-                                val progressStart = if (append && start != null) start else 0L
-                                val progressTotal =
-                                    body.contentLength().let { if (it >= 0L) it else null }
-                                        ?.let { progressStart + it }
-                                val inputStream = ProgressInputStream(body.byteStream()) {
-                                    if (Thread.interrupted()) {
-                                        throw InterruptedException()
-                                    }
-                                    callback?.invoke(progressStart + it, progressTotal)
+                            val inputStream = ProgressInputStream(body.byteStream()) {
+                                if (Thread.interrupted()) {
+                                    throw InterruptedException()
                                 }
-                                inputStream.use { input ->
-                                    val outputStream = if (append) FileOutputStream(
-                                        target,
-                                        true
-                                    ) else FileOutputStream(target)
-                                    outputStream.use { output ->
-                                        input.copyTo(output)
-                                        output.fd.sync()
-                                    }
-                                }
-                                Result(
-                                    it.code,
-                                    it.header("Last-Modified").orEmpty(),
-                                    it.header("ETag").orEmpty()
-                                )
+                                callback?.invoke(progressStart + it, progressTotal)
                             }
+                            inputStream.use { input ->
+                                val outputStream = if (append) FileOutputStream(
+                                    target,
+                                    true
+                                ) else FileOutputStream(target)
+                                outputStream.use { output ->
+                                    input.copyTo(output)
+                                    output.fd.sync()
+                                }
+                            }
+
+                            Result(
+                                response.code,
+                                response.header("Last-Modified").orEmpty(),
+                                response.header("ETag").orEmpty()
+                            )
                         }
                     }
+                }
+                result
+            } catch (e: Exception) {
+                throw e
             }
+        }
     }
 }
