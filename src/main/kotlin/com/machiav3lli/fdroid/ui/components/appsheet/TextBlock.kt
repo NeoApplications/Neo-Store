@@ -1,8 +1,6 @@
 package com.machiav3lli.fdroid.ui.components.appsheet
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateIntAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,8 +26,8 @@ import de.charlex.compose.HtmlText
 @Composable
 fun HtmlTextBlock(
     modifier: Modifier = Modifier,
-    description: String,
-    isExpandable: Boolean = true,
+    shortText: String,
+    longText: String = "",
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -41,24 +39,20 @@ fun HtmlTextBlock(
             shape = MaterialTheme.shapes.large,
             color = Color.Transparent
         ) {
-            val maxLines by animateIntAsState(
-                targetValue = if (isExpanded || !isExpandable) Int.MAX_VALUE else 12,
-                animationSpec = tween(durationMillis = 200)
-            )
             SelectionContainer {
                 HtmlText(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
                         .animateContentSize(),
-                    text = description,
+                    text = if (isExpanded) longText
+                    else shortText,
                     color = MaterialTheme.colorScheme.onBackground,
-                    maxLines = maxLines,
                     overflow = TextOverflow.Ellipsis
                 )
             }
         }
-        if (description.length >= 290 && isExpandable) {
+        if (longText.isNotEmpty()) {
             FilledTonalButton(onClick = { isExpanded = !isExpanded }) {
                 Text(text = stringResource(id = if (isExpanded) R.string.show_less else R.string.show_more))
             }

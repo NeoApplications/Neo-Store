@@ -519,7 +519,10 @@ fun AppSheet(
                             }
                         }
                         item { // TODO add markdown parsing
-                            if (product.description.isNotEmpty()) HtmlTextBlock(description = product.description)
+                            if ((product.description + product.summary).isNotEmpty()) HtmlTextBlock(
+                                shortText = product.summary,
+                                longText = product.description
+                            )
                         }
                         val links = product.generateLinks(context)
                         if (links.isNotEmpty()) {
@@ -596,10 +599,7 @@ fun AppSheet(
                                     positive = true,
                                     preExpanded = true
                                 ) {
-                                    HtmlTextBlock(
-                                        description = product.whatsNew,
-                                        isExpandable = false
-                                    )
+                                    HtmlTextBlock(shortText = product.whatsNew)
                                 }
                             }
                         }
