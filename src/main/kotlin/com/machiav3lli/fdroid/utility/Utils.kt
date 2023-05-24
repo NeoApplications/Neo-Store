@@ -51,6 +51,7 @@ import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.net.URL
 import java.security.MessageDigest
 import java.security.cert.Certificate
 import java.security.cert.CertificateEncodingException
@@ -513,6 +514,14 @@ fun NavDestination.destinationToItem(): NavItem? = listOf(
     NavItem.ReposPrefs,
     NavItem.OtherPrefs
 ).find { this.route == it.destination }
+
+fun getBaseUrl(fullUrl: String): String {
+    val url = URL(fullUrl)
+    val protocol = url.protocol
+    val host = url.host
+    val port = if (url.port != -1) ":${url.port}" else ""
+    return "$protocol://$host$port/"
+}
 
 fun Activity.setCustomTheme() {
     AppCompatDelegate.setDefaultNightMode(Preferences[Preferences.Key.Theme].nightMode)
