@@ -11,7 +11,7 @@ val roomVersion = "2.5.1"
 val coroutinesVersion = "1.7.1"
 
 plugins {
-    id("com.android.application") version ("8.0.1")
+    id("com.android.application") version ("8.0.2")
     kotlin("android") version ("1.8.21")
     kotlin("kapt") version ("1.8.21")
     kotlin("plugin.serialization") version ("1.8.21")
