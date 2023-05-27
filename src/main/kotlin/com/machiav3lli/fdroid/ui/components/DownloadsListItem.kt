@@ -21,7 +21,7 @@ import com.machiav3lli.fdroid.database.entity.IconDetails
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ProductItem
-import com.machiav3lli.fdroid.network.CoilDownloader
+import com.machiav3lli.fdroid.network.createIconUri
 import com.machiav3lli.fdroid.service.DownloadService
 import com.machiav3lli.fdroid.ui.components.appsheet.DownloadProgress
 
@@ -36,7 +36,7 @@ fun DownloadsListItem(
     val product by remember(item) { mutableStateOf(item) }
     val imageData by remember(product, repo) {
         mutableStateOf(
-            CoilDownloader.createIconUri(
+            createIconUri(
                 product.packageName,
                 product.icon,
                 product.metadataIcon,
@@ -104,7 +104,7 @@ fun DownloadedItem(
     val download by remember(item) { mutableStateOf(item) }
     val imageData by remember(download, repo) {
         mutableStateOf(
-            CoilDownloader.createIconUri(
+            createIconUri(
                 download.packageName,
                 iconDetails?.icon ?: "",
                 iconDetails?.metadataIcon ?: "",

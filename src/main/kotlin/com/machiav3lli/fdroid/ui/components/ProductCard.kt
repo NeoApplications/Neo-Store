@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ProductItem
-import com.machiav3lli.fdroid.network.CoilDownloader
+import com.machiav3lli.fdroid.network.createIconUri
 
 val PRODUCT_CARD_ICON = 48.dp
 val PRODUCT_CARD_HEIGHT = 64.dp
@@ -36,7 +36,7 @@ fun ProductCard(
     val product by remember(item) { mutableStateOf(item) }
     val imageData by remember(product, repo) {
         mutableStateOf(
-            CoilDownloader.createIconUri(
+            createIconUri(
                 product.packageName,
                 product.icon,
                 product.metadataIcon,

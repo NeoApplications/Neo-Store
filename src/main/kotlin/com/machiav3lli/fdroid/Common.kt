@@ -68,6 +68,18 @@ const val JOB_ID_SYNC = 1
 const val NETWORK_TYPE_WIFI = 16
 const val EXODUS_TRACKERS_SYNC = -22L
 
+const val HOST_ICON = "icon"
+const val HOST_SCREENSHOT = "screenshot"
+const val QUERY_ADDRESS = "address"
+const val QUERY_AUTHENTICATION = "authentication"
+const val QUERY_PACKAGE_NAME = "packageName"
+const val QUERY_ICON = "icon"
+const val QUERY_METADATA_ICON = "metadataIcon"
+const val QUERY_LOCALE = "locale"
+const val QUERY_DEVICE = "device"
+const val QUERY_SCREENSHOT = "screenshot"
+const val QUERY_DPI = "dpi"
+
 const val PREFS_LANGUAGE = "languages"
 const val PREFS_LANGUAGE_DEFAULT = "system"
 

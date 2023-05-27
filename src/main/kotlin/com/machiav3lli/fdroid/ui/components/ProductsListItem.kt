@@ -29,7 +29,7 @@ import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.ProductItem
-import com.machiav3lli.fdroid.network.CoilDownloader
+import com.machiav3lli.fdroid.network.createIconUri
 import com.machiav3lli.fdroid.ui.components.appsheet.ReleaseBadge
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
@@ -79,7 +79,7 @@ fun ProductItemContent(
 ) {
     val imageData by remember(product, repo) {
         mutableStateOf(
-            CoilDownloader.createIconUri(
+            createIconUri(
                 product.packageName,
                 product.icon,
                 product.metadataIcon,

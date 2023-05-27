@@ -20,7 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.Screenshot
-import com.machiav3lli.fdroid.network.CoilDownloader
+import com.machiav3lli.fdroid.network.createScreenshotUri
 
 data class ScreenshotItem(
     val screenShot: Screenshot,
@@ -47,7 +47,7 @@ fun ScreenshotList(
             var image by remember { mutableStateOf<String?>(null) }
 
             SideEffect {
-                image = CoilDownloader.createScreenshotUri(
+                image = createScreenshotUri(
                     it.repository,
                     it.packageName,
                     it.screenShot

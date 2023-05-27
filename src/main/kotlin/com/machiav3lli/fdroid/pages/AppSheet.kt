@@ -78,7 +78,7 @@ import com.machiav3lli.fdroid.entity.SourceInfo
 import com.machiav3lli.fdroid.entity.TrackersGroup.Companion.getTrackersGroup
 import com.machiav3lli.fdroid.entity.toAntiFeature
 import com.machiav3lli.fdroid.installer.AppInstaller
-import com.machiav3lli.fdroid.network.CoilDownloader
+import com.machiav3lli.fdroid.network.createIconUri
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.DownloadService
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
@@ -188,7 +188,7 @@ fun AppSheet(
     val imageData by remember(suggestedProductRepo) {
         mutableStateOf(
             suggestedProductRepo?.let {
-                CoilDownloader.createIconUri(
+                createIconUri(
                     it.first.packageName,
                     it.first.icon,
                     it.first.metadataIcon,

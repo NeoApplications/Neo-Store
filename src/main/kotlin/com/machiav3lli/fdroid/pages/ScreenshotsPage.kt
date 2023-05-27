@@ -24,7 +24,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.network.CoilDownloader
+import com.machiav3lli.fdroid.network.createScreenshotUri
 import com.machiav3lli.fdroid.ui.components.NetworkImage
 import com.machiav3lli.fdroid.ui.components.ScreenshotItem
 import com.machiav3lli.fdroid.ui.components.SecondaryActionButton
@@ -56,7 +56,7 @@ fun ScreenshotsPage(
             var image by remember { mutableStateOf<String?>(null) }
 
             SideEffect {
-                image = CoilDownloader.createScreenshotUri(
+                image = createScreenshotUri(
                     screenshot.repository,
                     screenshot.packageName,
                     screenshot.screenShot
