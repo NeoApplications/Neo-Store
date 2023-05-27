@@ -1,11 +1,12 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
 val accompanistVersion = "0.31.2-alpha"
-val composeVersion = "1.5.0-alpha04"
+val composeVersion = "1.5.0-beta01"
 val composeCompilerVersion = "1.4.7"
 val hiltVersion = "2.46.1"
 val material3Version = "1.1.0"
-val navigationVersion = "2.6.0-rc01"
+val navigationVersion = "2.7.0-alpha01"
+val okhttpVersion = "5.0.0-alpha.9"
 val retrofitVersion = "2.9.0"
 val roomVersion = "2.5.1"
 val coroutinesVersion = "1.7.1"
@@ -129,15 +130,16 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
 
     // Coil
-    implementation("io.coil-kt:coil:2.3.0")
-    implementation("io.coil-kt:coil-compose:2.3.0")
+    implementation("io.coil-kt:coil:2.4.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
     // Dagger Hilt
     kapt("com.google.dagger:hilt-compiler:$hiltVersion")
     implementation("com.google.dagger:hilt-android:$hiltVersion")
 
     // OkHttps
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.9")
+    implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
+    implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
 
@@ -145,7 +147,7 @@ dependencies {
     implementation("com.github.topjohnwu.libsu:core:5.0.5")
 
     // JSON
-    implementation("com.fasterxml.jackson.core:jackson-core:2.15.0")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.15.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
     // Markdown
