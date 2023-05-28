@@ -1,0 +1,4 @@
+- Fejlrettelse: Skærmbillede pladsholder-ikon
+- Fejlrettelse: Blødt nedbrud ved start af AppOplysninger
+- Fejlrettelse: Kør kun én instans af rodinstallatør
+- Fejlrettelse: Rodinstallatør

@@ -1,0 +1,7 @@
+Tilføjet: Kategorien Favoritter
+Tilføjet: Valgmulighed til at indstille synkroniseringsinterval
+Tilføjet: Understøttelse af autoimport af fdroidrepos: depotadresser fra udklipsholder
+Fejlrettelse: Indpakket rulning af AppSheet
+Fejlrettelse: Depotapps antal
+Fejlrettelse: Tillad bevaring af apk indtil den er "forbrugt"
+Opdatering: Gør app-beskrivelse/-ændringslogtekst valgbar

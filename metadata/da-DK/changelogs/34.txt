@@ -1,0 +1,6 @@
+- Opdatering: Minimerbar værktøjslinje
+- Opdatering: Forbedrede installatører (Rod & ikke-rod)
+- Opdatering: Nyt app-ikon(igen)
+- Opdatering: Frigiv infoblok-design
+- Opdatering: Få styr på manglende forfatternavne og -ikoner
+- Andre fejlrettelser, justeringer og rengøring

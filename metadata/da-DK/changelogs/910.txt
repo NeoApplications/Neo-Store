@@ -1,0 +1,8 @@
+- Tilføjet: System dynamisk tema (også kaldet Materielt Dig)
+- Tilføjet: 7 nye forudindstillede depoter
+- Tilføjet: Arkitekturmærker på udgivelser for specifikke arkitekturer
+- Fjernet: UnifiedPush-depot (dødt)
+- Fejlrettelse: Irriterende notifikation om 0 opdateringer
+- Fejlrettelse: Skjul Forfatters hjemmesidelink, når utilgængeligt
+- Fejlrettelse: Behandling af udklipsholders indhold til depot-URL
+- Fejlrettelse: Link i indstillinger

@@ -1,0 +1,7 @@
+Tilføjet: Andre apps fra udvikleren
+Tilføjet: Rullende TopLinje
+Fejlrettelse: Nogle farvelægningsproblemer med dynamisk tema
+Opdatering: Nye skærmbilledfremviser (retter tidligere problemer og tillader zoom)
+Opdatering: Mange opsætninger
+Opdatering: Fornyet tema-backend (nogle visuelle rettelser)
+For flere oplysninger, kontrollér den fulde ændringslog…

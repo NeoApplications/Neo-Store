@@ -1,0 +1,4 @@
+* Diverse ændringer i brugerflade
+* Omformaterede hele kodebasen
+* Opdaterede afhængigheder
+* Omdøbte Præferencer til Indstillinger

@@ -1,0 +1,7 @@
+Tilføjet: Notifikationstilladelse (til A13)
+Tilføjet: Kategorier SideNavBar til stifinder
+Fejlrettelse: Gammeldags & Rodinstallatør
+Fejlrettelse: Forbedret søgeydelse (tak til @pedrox-hs)
+Opdatering: Opsætning for horisontale apps
+Opdatering: Efterspørger rod-tilladelse ved indstilling af rod-installatør
++ flere end 60 oversættelsesbidrag

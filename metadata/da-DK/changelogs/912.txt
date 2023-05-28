@@ -1,0 +1,6 @@
+Fejlrettelse: Indstilling af ignorér opdateringer skjuler ikke fra opdateringer
+Fejlrettelse: Alfabetisk sortering af Installerede
+Fejlrettelse: Indpakket rulning af AppSheet
+Fejlrettelse: Visning af installationshandling, mens overførsel er i gang
+Fejlrettelse: StatusLinje-ikoners synlighed på dynamiske farvers tema
+Opdatering: Oversættelser

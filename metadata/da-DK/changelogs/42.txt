@@ -1,0 +1,6 @@
+- Mere af Materielt Design 3
+- Fejlrettelse: Rod- og normal installatør
+- Fejlrettelse: Slet Mellemlagret Fil Efter Afinstallation
+- Fejlrettelse: Nedbrud ved tryk på hent, mens af linjen
+- Opdateret oversættelser af mere end 17 sprog
+- Mange små fejlrettelser og justeringer…

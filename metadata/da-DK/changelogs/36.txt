@@ -1,0 +1,7 @@
+- Tilføjet Ikon for åbning af Oplysninger
+- Top-Applinje forskelle gjort mere prominente
+- Rod-tilladelse vil kun blive efterspurgt når det skal bruges
+- Kontakters Synlighed rettet
+- Tilføjet Arabisk Oversættelse
+- Langt tryk på Kildeikon for at kopiere link
+- Erstattet Toast med Snackbar
