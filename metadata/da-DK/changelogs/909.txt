@@ -1,0 +1,7 @@
+- Helt ny brugerflade med Materielt Design 3
+- Tilføjet: Knappen Opdatér alle
+- Tilføjet: Sprogpræference
+- Tilføjet: Favorit (videre funktioner kommer senere)
+- Fejlrettelse: Autoopdatering af installeret-/opdateringer-lister
+- Fejlrettelse: Nedbrud på A12+ (nødt til at deaktivere batterioptimering)
+- Fejlrettelse: Rodinstallatør

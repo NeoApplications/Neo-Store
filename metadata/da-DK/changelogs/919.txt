@@ -1,0 +1,3 @@
+Tilføjet: Skan depot-QRkode vha. BinaryEye (hvis installeret)
+Fejlrettelse: Lås i Installeret efter lancering fra opdateringer-notifikation
+Fejlrettelse: Forbedret håndtering af hensigt

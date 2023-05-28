@@ -1,0 +1,5 @@
+- Tilføjet: Sprogpræference
+- Opdatering: Horisontal rulning af skærmbilleder
+- Fejlrettelse: Baggrunds-rodinstallatør
+- Tilføjet: Beder kun om rodadgang, når det er valgt
+- Tonsvis af justeringer i brugerflade

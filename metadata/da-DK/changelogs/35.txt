@@ -1,0 +1,3 @@
+- Gamle Ikoner Erstattet med Materielle ikoner
+- Problemer med Top-Applinje Rettede
+- Tilføjet Ikoner til Installér- og Afbryd-Knapper, for at Forbedre Tilgængelighed

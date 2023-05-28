@@ -1,0 +1,6 @@
+- Opdatering: Design til MD3
+- Opdatering: Bedre UX for skærmbillede
+- Fejlrettelse: Fastfrysning under installation af applikation med rod-metoden
+- Opdatering: Fornyede temaprofiler
+- Tilføjelse: Deling af link (kun officiel F-Droid indtil videre)
+- Andre små rettelser i brugerflade

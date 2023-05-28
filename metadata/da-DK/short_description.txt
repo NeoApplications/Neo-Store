@@ -1,1 +1,1 @@
-En moderne F-Droid-klient med mange funktioner.
+En moderne, fuldt funktionel F-Droid-klient.

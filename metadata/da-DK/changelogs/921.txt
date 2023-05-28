@@ -1,0 +1,5 @@
+Fejlrettelse: Hukommelseslæk i Hoved & Præferencer
+Tilføjet: Den helt nye Privatlivsvisualisering (Neo Meter-Ikoner)
+Tilføjet: Det helt nye Privatlivspanel
+Fejlrettelse: Gentagen åbning af det samme RepoSheet
++ flere end 15 oversættelsesbidrag

@@ -1,0 +1,5 @@
+Tilføjet: App-ikon baseret på systemtema
+Tilføjet: Installatørtype-præference (inklusiv Gammeldags tilstand til dumme MIUI)
+Fejlrettelse: Navigation efter lancering fra opdateringer-notifikation
+Fejlrettelse: Overførselslinje afspejler ikke sandt fremskridt
+Et par flere i den fulde ændringslog…
