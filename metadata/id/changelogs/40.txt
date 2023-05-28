@@ -1,0 +1,5 @@
+- Ditambahkan: Preferensi bahasa
+- Pembaruan: tangkapan layar gulir horizontal
+- Perbaiki: Pemasang root latar belakang
+- Menambahkan: Hanya meminta root saat dipilih
+- Banyak sekali penyesuaian UI/UX

@@ -1,0 +1,7 @@
+- Menambahkan Ikon untuk membuka Detail
+- Perbedaan Bilah Aplikasi Atas dibuat lebih menonjol
+- Izin Root hanya akan ditanyakan saat digunakan
+- Perbaikan Visibilitas Beralih
+- Terjemahan Bahasa Arab
+- Tekan lama Ikon sumber untuk menyalin tautan
+- Mengganti Roti Bakar dengan Snackbar

@@ -1,0 +1,9 @@
+- Menambahkan: Tema dinamis sistem (alias. Materi Anda)
+- Tambah: 7 repositori preset baru
+- Tambah: Label arsitektur pada rilis untuk arsitektur tertentu
+- Hapus: Repositori UnifiedPush (mati)
+- Perbaiki: Pemberitahuan pembaruan 0 yang mengganggu
+- Perbaikan: Sembunyikan tautan situs web penulis jika tidak tersedia
+- Perbaiki: Mengurai konten papan klip untuk URI repo
+- Perbaiki: Tautan di pengaturan
+- Perbaikan: Tidak menampilkan tindakan pembaruan

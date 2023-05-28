@@ -1,0 +1,6 @@
+- Lebih lanjut tentang Desain Material 3
+- Perbaiki: Root dan penginstal default
+- Perbaiki: Menghapus File Tembolok Setelah Mencopot Pemasangan
+- Perbaiki: Kerusakan saat menekan unduhan saat offline
+- Perbarui terjemahan lebih dari 17 bahasa
+- Banyak perbaikan dan penyesuaian kecil…

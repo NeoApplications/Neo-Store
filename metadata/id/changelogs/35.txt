@@ -1,0 +1,3 @@
+- Ikon Lama Diganti dengan Ikon Material
+- Masalah Bilah Aplikasi Atas telah diperbaiki
+- Menambahkan Ikon untuk Menginstal dan Tombol Batal untuk Meningkatkan Aksesibilitas

@@ -1,0 +1,6 @@
+Perbaikan: Pengaturan abaikan pembaruan tidak menyembunyikan dari pembaruan
+Perbaikan: Pengurutan menurut abjad dari Terinstal
+Perbaikan: Pengguliran bersarang dari AppSheet
+Perbaikan: Menampilkan tindakan penginstalan saat pengunduhan sedang berjalan
+Perbaikan: Visibilitas ikon StatusBar pada tema warna dinamis
+Pembaruan: Terjemahan
