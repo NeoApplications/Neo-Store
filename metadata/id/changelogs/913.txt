@@ -1,0 +1,7 @@
+Tambahkan: Kategori favorit
+Tambah: Opsi untuk mengatur interval sinkronisasi
+Tambah: Mendukung pengimporan otomatis fdroidrepos: alamat repo dari papan klip
+Perbaiki: Pengguliran bersarang dari AppSheet
+Perbaiki: Jumlah aplikasi repositori
+Perbaikan: Izinkan penyimpanan apk hingga "dikonsumsi"
+Pembaruan: Membuat deskripsi aplikasi / teks changog dapat dipilih

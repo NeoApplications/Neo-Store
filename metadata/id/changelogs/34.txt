@@ -1,0 +1,6 @@
+- Pembaruan: Bilah alat yang runtuh
+- Pembaruan: Memperbaiki penginstal (Root & non-root)
+- Pembaruan: Ikon aplikasi baru (lagi)
+- Pembaruan: Desain blok info rilis
+- Pembaruan: Menangani nama dan ikon penulis yang hilang
+- Perbaikan, penyesuaian, dan pembersihan lainnya

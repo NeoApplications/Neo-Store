@@ -1,0 +1,7 @@
+- UI/UX yang sepenuhnya baru dengan Material Design 3
+- Tambah: Perbarui semua tombol
+- Tambah: Preferensi bahasa
+- Tambahkan: Favorit (fitur lebih lanjut yang akan datang kemudian)
+- Perbaiki: Memperbarui daftar terinstal/pembaruan secara otomatis
+- Perbaiki: Kerusakan pada A12+ (harus menonaktifkan pengoptimalan baterai)
+- Perbaiki: Penginstal root

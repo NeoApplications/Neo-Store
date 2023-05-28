@@ -1,0 +1,8 @@
+Menambahkan: Repositori KDE (Stabil), C:Geo, Dompet Tumpukan & Tempat Penampungan PeterCxy
+Tambahkan: Opsi untuk folder unduhan eksternal
+Tambah: Halaman perizinan
+Tambahkan: Halaman unduhan (alihkan ke Halaman Terinstal)
+Tambah: Opsi untuk mengabaikan pemberitahuan tentang kerentanan keamanan
+Perbaikan: Penginstal latar belakang (diam)
+Pembaruan: Memperbaiki pengaturan nilai dialog preferensi
++ lebih dari 40 komitmen & 30 kontribusi terjemahan

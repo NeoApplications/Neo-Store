@@ -1,0 +1,5 @@
+Perbaikan: Menampilkan notifikasi pembaruan meskipun dinonaktifkan
+Tambah: Threema, Stable Calyx OS, dan Sesi ke repositori yang telah ditetapkan sebelumnya
+Perbaiki (coba): Penginstal latar belakang
+Tambah: Rilis aplikasi dan opsi retensi cache gambar
+Perbarui terjemahan
