@@ -1,0 +1,7 @@
+Pembaruan: Mengubah UI AppSheet
+Pembaruan: Migrasi navigasi sepenuhnya ke Compose
+Pembaruan: Migrasi preferensi ke Compose
+Pembaruan: Memungkinkan pengaturan angka yang lebih tinggi untuk pendaur ulang aplikasi yang diperbarui/baru dan interval sinkronisasi
+Tambah: Tautan yang berguna di Preferensi
+Perbaikan: Visibilitas Tombol Aksi
+Perbaikan: Tampilkan deskripsi Repo sebelum sinkronisasi pertama

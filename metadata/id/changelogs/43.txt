@@ -1,0 +1,4 @@
+- Perbaikan: Ikon penampung tangkapan layar
+- Perbaikan: Kerusakan ringan saat memulai AppDetails
+- Perbaikan: Jalankan hanya satu contoh penginstal root
+- Perbaikan: Penginstal root
