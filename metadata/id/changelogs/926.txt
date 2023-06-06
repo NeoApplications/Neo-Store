@@ -1,0 +1,7 @@
+Perbaikan: Tidak mendeteksi izin root
+Perbaikan: Kerusakan terkait Sinkronisasi & Layanan Unduhan
+Pembaruan: Mengubah InstalledPage
+Tambah: Opsi untuk menonaktifkan mendapatkan/memperlihatkan pelacak
+Tambah: FluffyChat setiap malam, Anonymous Messenger dan BeoCode ke repositori default
+Perbaiki: Tidak memperbarui daftar aplikasi yang terinstal pada aplikasi yang tidak terinstal
++ lebih dari 80 terjemahan dan kontribusi lainnya
