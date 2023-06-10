@@ -89,7 +89,7 @@ class MainActivityX : AppCompatActivity() {
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
-    lateinit var expanded: MutableState<Boolean>
+    private lateinit var expanded: MutableState<Boolean>
     private lateinit var appSheetPackage: MutableState<String>
 
     val db
@@ -174,7 +174,7 @@ class MainActivityX : AppCompatActivity() {
                                     }
                                 )
                             }
-                            AnimatedVisibility(barVisible) {
+                            AnimatedVisibility(barVisible && !expanded.value) {
                                 TopBarAction(
                                     icon = Phosphor.ArrowsClockwise,
                                     description = stringResource(id = R.string.sync_repositories)
@@ -182,7 +182,7 @@ class MainActivityX : AppCompatActivity() {
                                     syncConnection.binder?.sync(SyncService.SyncRequest.MANUAL)
                                 }
                             }
-                            AnimatedVisibility(barVisible) {
+                            AnimatedVisibility(barVisible && !expanded.value) {
                                 TopBarAction(
                                     icon = Phosphor.GearSix,
                                     description = stringResource(id = R.string.settings)
