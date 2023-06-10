@@ -29,6 +29,7 @@ import com.machiav3lli.fdroid.network.Downloader
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.PackageChangedReceiver
 import com.machiav3lli.fdroid.service.SyncService
+import com.machiav3lli.fdroid.service.WorkerManager
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.utility.Utils.setLanguage
@@ -51,7 +52,7 @@ class MainApplication : Application(), ImageLoaderFactory {
 
     lateinit var db: DatabaseX
     lateinit var mActivity: AppCompatActivity
-    //var wm: WorksManager? = null
+    var wm: WorkerManager? = null
 
     companion object {
         private var appRef: WeakReference<MainApplication> = WeakReference(null)
@@ -72,7 +73,7 @@ class MainApplication : Application(), ImageLoaderFactory {
 
         val context: Context get() = neo_store.applicationContext
 
-        //val wm: WorksManager get() = neo_store.wm!!
+        val wm: WorkerManager get() = neo_store.wm!!
         val db: DatabaseX get() = neo_store.db
 
         val progress = mutableStateOf(Pair(false, 0f))
@@ -105,8 +106,8 @@ class MainApplication : Application(), ImageLoaderFactory {
             forceSyncAll()
         }*/
 
-        //wm = WorksManager(applicationContext)
-        //wm?.prune()
+        wm = WorkerManager(applicationContext)
+        wm?.prune()
         Cache.cleanup(this)
         updateSyncJob(false)
     }
