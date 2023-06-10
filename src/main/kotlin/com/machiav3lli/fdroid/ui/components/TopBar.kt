@@ -1,8 +1,5 @@
 package com.machiav3lli.fdroid.ui.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -24,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -119,53 +115,43 @@ fun ExpandedSearchView(
         mutableStateOf(TextFieldValue(query, TextRange(query.length)))
     }
 
-    Row(
+    TextField(
+        value = textFieldValue,
+        onValueChange = {
+            textFieldValue = it
+            onQueryChanged(it.text)
+        },
         modifier = modifier
             .fillMaxWidth()
-            .background(
-                color = Color.Transparent,
-                shape = MaterialTheme.shapes.medium
-            ),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        TextField(
-            value = textFieldValue,
-            onValueChange = {
-                textFieldValue = it
-                onQueryChanged(it.text)
-            },
-            modifier = Modifier
-                .weight(1f)
-                .focusRequester(textFieldFocusRequester),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-            ),
-            leadingIcon = {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = Phosphor.MagnifyingGlass,
-                    contentDescription = stringResource(id = R.string.search),
-                )
-            },
-            singleLine = true,
-            label = { Text(text = stringResource(id = R.string.search)) },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-        )
-        TopBarAction(
-            icon = Phosphor.X,
-            description = stringResource(id = R.string.cancel),
-            onClick = {
+            .focusRequester(textFieldFocusRequester),
+        colors = TextFieldDefaults.colors(
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+        ),
+        shape = MaterialTheme.shapes.extraLarge,
+        leadingIcon = {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                imageVector = Phosphor.MagnifyingGlass,
+                contentDescription = stringResource(id = R.string.search),
+            )
+        },
+        trailingIcon = {
+            TopBarAction(
+                icon = Phosphor.X,
+                description = stringResource(id = R.string.cancel)
+            ) {
                 textFieldValue = TextFieldValue(text = "")
                 focusManager.clearFocus()
                 onExpanded(false)
                 onClose()
             }
-        )
-    }
+        },
+        singleLine = true,
+        label = { Text(text = stringResource(id = R.string.search)) },
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+    )
 }
 
 @Composable
