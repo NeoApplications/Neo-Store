@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.net.Uri
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
@@ -16,7 +15,6 @@ import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_INSTALLER
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
-import com.machiav3lli.fdroid.NOTIFICATION_ID_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_INSTALLER
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_UPDATES
@@ -27,7 +25,10 @@ import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.installer.InstallerService
-import com.machiav3lli.fdroid.service.DownloadService
+import com.machiav3lli.fdroid.service.worker.ActionReceiver
+import com.machiav3lli.fdroid.service.works.DownloadTask
+import com.machiav3lli.fdroid.service.works.ErrorType
+import com.machiav3lli.fdroid.service.works.ValidationError
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.utility.extension.android.notificationManager
 import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
@@ -171,78 +172,79 @@ fun Context.showNotificationError(repository: Repository, exception: Exception) 
     )
 }
 
-fun Context.showNotificationError(
-    task: DownloadService.Task,
-    errorType: DownloadService.ErrorType,
-) {
-    notificationManager.notify(task.notificationTag,
-        NOTIFICATION_ID_DOWNLOADING,
-        NotificationCompat
-            .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
-            .setAutoCancel(true)
-            .setSmallIcon(android.R.drawable.stat_sys_warning)
-            .setColor(
-                ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
-                    .getColorFromAttr(androidx.appcompat.R.attr.colorPrimary).defaultColor
-            )
-            .setContentIntent(
-                PendingIntent.getActivity(
-                    this,
-                    0,
-                    Intent(this, MainActivityX::class.java)
-                        .setAction(Intent.ACTION_VIEW)
-                        .setData(Uri.parse("package:${task.packageName}"))
-                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                    if (Android.sdk(23))
-                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                    else
-                        PendingIntent.FLAG_UPDATE_CURRENT
+fun Context.downloadNotificationBuilder() = NotificationCompat
+    .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
+    .setSmallIcon(android.R.drawable.stat_sys_download)
+    .setGroup(NOTIFICATION_CHANNEL_DOWNLOADING)
+    .setOngoing(true)
+    .setSilent(true)
+    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+    .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+    .addAction(
+        0, getString(R.string.cancel),
+        PendingIntent.getBroadcast(
+            applicationContext,
+            0,
+            Intent(applicationContext, ActionReceiver::class.java)
+                .setAction(ActionReceiver.COMMAND_CANCEL_DOWNLOAD)
+                .putExtra(ActionReceiver.ARG_PACKAGE_NAME, packageName),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+
+        )
+    )
+    .setProgress(0, 0, true)
+
+fun NotificationCompat.Builder.updateWithError(
+    context: Context,
+    task: DownloadTask,
+    errorType: ErrorType?,
+) = apply {
+    if (errorType != null) {
+        setAutoCancel(true)
+        setSmallIcon(android.R.drawable.stat_sys_warning)
+        when (errorType) {
+            is ErrorType.Network    -> {
+                setContentTitle(
+                    context.getString(
+                        R.string.could_not_download_FORMAT,
+                        task.name
+                    )
                 )
-            )
-            .apply {
-                when (errorType) {
-                    is DownloadService.ErrorType.Network    -> {
-                        setContentTitle(
-                            getString(
-                                R.string.could_not_download_FORMAT,
-                                task.name
-                            )
-                        )
-                        setContentText(getString(R.string.network_error_DESC))
-                    }
-
-                    is DownloadService.ErrorType.Http       -> {
-                        setContentTitle(
-                            getString(
-                                R.string.could_not_download_FORMAT,
-                                task.name
-                            )
-                        )
-                        setContentText(getString(R.string.http_error_DESC))
-                    }
-
-                    is DownloadService.ErrorType.Validation -> {
-                        setContentTitle(
-                            getString(
-                                R.string.could_not_validate_FORMAT,
-                                task.name
-                            )
-                        )
-                        setContentText(
-                            getString(
-                                when (errorType.validateError) {
-                                    DownloadService.ValidationError.INTEGRITY   -> R.string.integrity_check_error_DESC
-                                    DownloadService.ValidationError.FORMAT      -> R.string.file_format_error_DESC
-                                    DownloadService.ValidationError.METADATA    -> R.string.invalid_metadata_error_DESC
-                                    DownloadService.ValidationError.SIGNATURE   -> R.string.invalid_signature_error_DESC
-                                    DownloadService.ValidationError.PERMISSIONS -> R.string.invalid_permissions_error_DESC
-                                }
-                            )
-                        )
-                    }
-                }::class
+                setContentText(context.getString(R.string.network_error_DESC))
             }
-            .build())
+
+            is ErrorType.Http       -> {
+                setContentTitle(
+                    context.getString(
+                        R.string.could_not_download_FORMAT,
+                        task.name
+                    )
+                )
+                setContentText(context.getString(R.string.http_error_DESC))
+            }
+
+            is ErrorType.Validation -> {
+                setContentTitle(
+                    context.getString(
+                        R.string.could_not_validate_FORMAT,
+                        task.name
+                    )
+                )
+                setContentText(
+                    context.getString(
+                        when (errorType.validateError) {
+                            ValidationError.INTEGRITY   -> R.string.integrity_check_error_DESC
+                            ValidationError.FORMAT      -> R.string.file_format_error_DESC
+                            ValidationError.METADATA    -> R.string.invalid_metadata_error_DESC
+                            ValidationError.SIGNATURE   -> R.string.invalid_signature_error_DESC
+                            ValidationError.PERMISSIONS -> R.string.invalid_permissions_error_DESC
+                            ValidationError.NONE        -> -1
+                        }
+                    )
+                )
+            }
+        }::class
+    }
 }
 
 /**
