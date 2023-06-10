@@ -3,7 +3,6 @@ package com.machiav3lli.fdroid.installer
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.util.AndroidRuntimeException
 import com.machiav3lli.fdroid.content.Cache
 import com.machiav3lli.fdroid.content.Cache.getReleaseFileUri
@@ -30,14 +29,10 @@ class LegacyInstaller(context: Context) : BaseInstaller(context) {
     override suspend fun uninstall(packageName: String) = mOldDefaultUninstaller(packageName)
 
     private suspend fun mOldDefaultInstaller(cacheFile: File) {
-        val (uri, flags) = if (Android.sdk(Build.VERSION_CODES.N)) {
-            Pair(
-                Cache.getReleaseFile(context, cacheFile.name).getReleaseFileUri(context),
-                Intent.FLAG_GRANT_READ_URI_PERMISSION
-            )
-        } else {
-            Pair(Uri.fromFile(cacheFile), 0)
-        }
+        val (uri, flags) = Pair(
+            Cache.getReleaseFile(context, cacheFile.name).getReleaseFileUri(context),
+            Intent.FLAG_GRANT_READ_URI_PERMISSION
+        )
 
         @Suppress("DEPRECATION")
         withContext(Dispatchers.IO) {

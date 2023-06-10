@@ -29,7 +29,6 @@ import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.installer.InstallerService
 import com.machiav3lli.fdroid.service.DownloadService
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
-import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.android.notificationManager
 import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
 
@@ -72,10 +71,7 @@ fun Context.displayUpdatesNotification(
                                 MainActivityX.EXTRA_UPDATES,
                                 productItems.map { it.packageName }.toTypedArray()
                             ),
-                        if (Android.sdk(23))
-                            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                        else
-                            PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                     )
                 )
                 .setStyle(NotificationCompat.InboxStyle().applyHack {
@@ -91,11 +87,7 @@ fun Context.displayUpdatesNotification(
                     if (productItems.size > maxUpdates) {
                         val summary =
                             getString(R.string.plus_more_FORMAT, productItems.size - maxUpdates)
-                        if (Android.sdk(24)) {
-                            addLine(summary)
-                        } else {
-                            setSummaryText(summary)
-                        }
+                        addLine(summary)
                     }
                 })
                 .build()
@@ -132,10 +124,7 @@ fun Context.displayVulnerabilitiesNotification(
                                 MainActivityX.EXTRA_UPDATES,
                                 productItems.map { it.packageName }.toTypedArray()
                             ),
-                        if (Android.sdk(23))
-                            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                        else
-                            PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                     )
                 )
                 .setStyle(NotificationCompat.InboxStyle().applyHack {

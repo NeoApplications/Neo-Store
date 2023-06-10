@@ -19,7 +19,7 @@ import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.getDownloadFolder
 import com.machiav3lli.fdroid.utility.isDownloadExternal
 import java.io.File
-import java.util.*
+import java.util.UUID
 import kotlin.concurrent.thread
 
 object Cache {
@@ -47,18 +47,7 @@ object Cache {
     }
 
     fun getReleaseFile(context: Context, cacheFileName: String): File {
-        return File(ensureCacheDir(context, "releases"), cacheFileName).apply {
-            if (!Android.sdk(24)) {
-                // Make readable for package installer
-                val cacheDir = context.cacheDir.parentFile!!.parentFile!!
-                generateSequence(this) { it.parentFile!! }.takeWhile { it != cacheDir }.forEach {
-                    when {
-                        it.isDirectory -> applyOrMode(it, 0b001001001)
-                        it.isFile      -> applyOrMode(it, 0b100100100)
-                    }
-                }
-            }
-        }
+        return File(ensureCacheDir(context, "releases"), cacheFileName)
     }
 
     fun File.getReleaseFileUri(context: Context): Uri {
@@ -183,6 +172,7 @@ object Cache {
                     File(context!!.cacheDir, uri.encodedPath!!),
                     "application/vnd.android.package-archive"
                 )
+
                 else       -> throw SecurityException()
             }
         }
@@ -223,11 +213,14 @@ object Cache {
                 "r"       -> ParcelFileDescriptor.MODE_READ_ONLY
                 "w", "wt" -> ParcelFileDescriptor.MODE_WRITE_ONLY or ParcelFileDescriptor.MODE_CREATE or
                         ParcelFileDescriptor.MODE_TRUNCATE
+
                 "wa"      -> ParcelFileDescriptor.MODE_WRITE_ONLY or ParcelFileDescriptor.MODE_CREATE or
                         ParcelFileDescriptor.MODE_APPEND
+
                 "rw"      -> ParcelFileDescriptor.MODE_READ_WRITE or ParcelFileDescriptor.MODE_CREATE
                 "rwt"     -> ParcelFileDescriptor.MODE_READ_WRITE or ParcelFileDescriptor.MODE_CREATE or
                         ParcelFileDescriptor.MODE_TRUNCATE
+
                 else      -> throw IllegalArgumentException()
             }
             val file = getFileAndTypeForUri(uri).first

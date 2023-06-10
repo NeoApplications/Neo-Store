@@ -93,8 +93,7 @@ class InstallerService : Service() {
                 .setData(Uri.parse("package:$name"))
                 .putExtra(Intent.EXTRA_INTENT, promptIntent)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-            if (Android.sdk(23)) PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            else PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
 }

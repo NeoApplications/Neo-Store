@@ -56,7 +56,8 @@ import java.security.MessageDigest
 import java.security.cert.Certificate
 import java.security.cert.CertificateEncodingException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 object Utils {
     fun PackageInfo.toInstalledItem(launcherActivities: List<Pair<String, String>> = emptyList()): Installed {
@@ -145,7 +146,7 @@ object Utils {
             setLocalCode = Locale.getDefault().toString()
         }
         val config = resources.configuration
-        val sysLocale = if (Android.sdk(24)) config.locales[0] else config.locale
+        val sysLocale = config.locales[0]
         if (setLocalCode != sysLocale.toString() || setLocalCode != "${sysLocale.language}-r${sysLocale.country}") {
             val newLocale = getLocaleOfCode(setLocalCode)
             Locale.setDefault(newLocale)
@@ -170,20 +171,22 @@ object Utils {
     }
 
     fun Context.getLocaleOfCode(localeCode: String): Locale = when {
-        localeCode.isEmpty()      -> if (Android.sdk(24)) {
-            resources.configuration.locales[0]
-        } else {
-            resources.configuration.locale
-        }
-        localeCode.contains("-r") -> Locale(
+        localeCode.isEmpty()
+             -> resources.configuration.locales[0]
+
+        localeCode.contains("-r")
+             -> Locale(
             localeCode.substring(0, 2),
             localeCode.substring(4)
         )
-        localeCode.contains("_")  -> Locale(
+
+        localeCode.contains("_")
+             -> Locale(
             localeCode.substring(0, 2),
             localeCode.substring(3)
         )
-        else                      -> Locale(localeCode)
+
+        else -> Locale(localeCode)
     }
 
     /**
@@ -305,10 +308,11 @@ fun Context.startLauncherActivity(packageName: String, name: String) {
 fun Context.shareIntent(packageName: String, appName: String, repository: String) {
     val shareIntent = Intent(Intent.ACTION_SEND)
     val extraText = when {
-        repository.contains("IzzyOnDroid") -> "https://apt.izzysoft.de/fdroid/index/apk/$packageName"
-        else                               -> if (Android.sdk(24)) {
-            "https://www.f-droid.org/${resources.configuration.locales[0].language}/packages/${packageName}/"
-        } else "https://www.f-droid.org/${resources.configuration.locale.language}/packages/${packageName}/"
+        repository.contains("IzzyOnDroid")
+        -> "https://apt.izzysoft.de/fdroid/index/apk/$packageName"
+
+        else
+        -> "https://www.f-droid.org/${resources.configuration.locales[0].language}/packages/${packageName}/"
     }
 
     shareIntent.type = "text/plain"
@@ -327,6 +331,7 @@ fun updateDownloadState(viewModel: AppSheetVM, downloadState: DownloadService.St
             downloadState.read,
             downloadState.total
         )
+
         else                                 -> null
     }
     viewModel.updateDownloadState(state)

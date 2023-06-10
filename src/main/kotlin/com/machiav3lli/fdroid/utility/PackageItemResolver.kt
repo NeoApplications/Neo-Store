@@ -36,14 +36,10 @@ object PackageItemResolver {
             nonLocalized != null -> {
                 nonLocalized
             }
-            resId != 0 -> {
-                val locales = if (Android.sdk(24)) {
-                    val localesList = context.resources.configuration.locales
-                    (0 until localesList.size()).map(localesList::get)
-                } else {
-                    @Suppress("DEPRECATION")
-                    listOf(context.resources.configuration.locale)
-                }
+
+            resId != 0           -> {
+                val localesList = context.resources.configuration.locales
+                val locales = (0 until localesList.size()).map(localesList::get)
                 val cacheKey = CacheKey(locales, packageName, resId)
                 if (cache.containsKey(cacheKey)) {
                     cache[cacheKey]
@@ -66,7 +62,8 @@ object PackageItemResolver {
                     label
                 }
             }
-            else -> {
+
+            else                 -> {
                 null
             }
         }
@@ -97,17 +94,17 @@ object PackageItemResolver {
     fun getPermissionGroup(permissionInfo: PermissionInfo): PermissionGroup {
         return if (Android.sdk(29)) {
             when (permissionInfo.name) {
-                in CONTACTS_PERMISSIONS -> PermissionGroup.Contacts
-                in CALENDAR_PERMISSIONS -> PermissionGroup.Calendar
-                in SMS_PERMISSIONS -> PermissionGroup.SMS
-                in STORAGE_PERMISSIONS -> PermissionGroup.Storage
-                in PHONE_PERMISSIONS -> PermissionGroup.Phone
-                in LOCATION_PERMISSIONS -> PermissionGroup.Location
-                in MICROPHONE_PERMISSIONS -> PermissionGroup.Microphone
-                in CAMERA_PERMISSIONS -> PermissionGroup.Camera
+                in CONTACTS_PERMISSIONS       -> PermissionGroup.Contacts
+                in CALENDAR_PERMISSIONS       -> PermissionGroup.Calendar
+                in SMS_PERMISSIONS            -> PermissionGroup.SMS
+                in STORAGE_PERMISSIONS        -> PermissionGroup.Storage
+                in PHONE_PERMISSIONS          -> PermissionGroup.Phone
+                in LOCATION_PERMISSIONS       -> PermissionGroup.Location
+                in MICROPHONE_PERMISSIONS     -> PermissionGroup.Microphone
+                in CAMERA_PERMISSIONS         -> PermissionGroup.Camera
                 in NEARBY_DEVICES_PERMISSIONS -> PermissionGroup.NearbyDevices
-                in INTERNET_PERMISSIONS -> PermissionGroup.Internet
-                else -> PermissionGroup.Other
+                in INTERNET_PERMISSIONS       -> PermissionGroup.Internet
+                else                          -> PermissionGroup.Other
             }
         } else {
             permissionInfo.group?.getPermissionGroup() ?: PermissionGroup.Other

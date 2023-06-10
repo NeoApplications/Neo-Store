@@ -246,9 +246,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                         )
                         else setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
                     } else setRequiredNetworkType(connectionType)
-                    if (Android.sdk(VERSION_CODES.N))
-                        setPeriodic(period, JobInfo.getMinFlexMillis())
-                    else setPeriodic(period)
+                    setPeriodic(period, JobInfo.getMinFlexMillis())
                     if (Android.sdk(VERSION_CODES.O)) {
                         setRequiresBatteryNotLow(true)
                         setRequiresStorageNotLow(true)

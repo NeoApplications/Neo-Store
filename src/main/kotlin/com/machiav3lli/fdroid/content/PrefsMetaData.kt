@@ -1,7 +1,6 @@
 package com.machiav3lli.fdroid.content
 
 import android.app.job.JobInfo
-import android.os.Build.VERSION_CODES
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import kotlin.time.Duration.Companion.milliseconds
@@ -114,10 +113,8 @@ val PrefsEntries = mapOf(
 val IntPrefsRanges = mapOf(
     Preferences.Key.UpdatedApps to 1..1000,
     Preferences.Key.NewApps to 1..300,
-    Preferences.Key.AutoSyncInterval to (
-            if (Android.sdk(VERSION_CODES.N)) JobInfo.getMinPeriodMillis().milliseconds.inWholeMinutes.toInt()
-            else 15
-            )..43200,
+    Preferences.Key.AutoSyncInterval to
+            JobInfo.getMinPeriodMillis().milliseconds.inWholeMinutes.toInt()..43200,
     Preferences.Key.ReleasesCacheRetention to 0..365,
     Preferences.Key.ImagesCacheRetention to 0..365,
     Preferences.Key.ProxyPort to 1..65535,
