@@ -1,10 +1,10 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val accompanistVersion = "0.31.2-alpha"
+val accompanistVersion = "0.31.3-beta"
 val composeVersion = "1.5.0-beta01"
 val composeCompilerVersion = "1.4.7"
 val hiltVersion = "2.46.1"
-val material3Version = "1.1.0"
+val material3Version = "1.2.0-alpha02"
 val navigationVersion = "2.7.0-alpha01"
 val okhttpVersion = "5.0.0-alpha.9"
 val retrofitVersion = "2.9.0"
@@ -147,7 +147,7 @@ dependencies {
     implementation("com.github.topjohnwu.libsu:core:5.0.5")
 
     // JSON
-    implementation("com.fasterxml.jackson.core:jackson-core:2.15.1")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.15.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
     // Markdown
