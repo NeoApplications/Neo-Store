@@ -1,0 +1,44 @@
+package com.machiav3lli.fdroid.service
+
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import com.machiav3lli.fdroid.MainApplication
+
+class ActionReceiver : BroadcastReceiver() {
+
+    companion object {
+        const val COMMAND_CANCEL_SYNC = "cancel_sync"
+        const val COMMAND_CANCEL_SYNC_ALL = "cancel_sync_all"
+        const val COMMAND_CANCEL_DOWNLOAD = "cancel_download"
+        const val COMMAND_CANCEL_DOWNLOAD_ALL = "cancel_download_all"
+
+        const val ARG_PACKAGE_NAME = "package_name"
+        const val ARG_REPO_ID = "repo_id"
+    }
+
+    override fun onReceive(context: Context, intent: Intent?) {
+        if (intent == null) return
+        when (intent.action) {
+            COMMAND_CANCEL_DOWNLOAD     -> {
+                val packageName = intent.getStringExtra(ARG_PACKAGE_NAME)
+                MainApplication.wm.cancelDownload(packageName)
+            }
+
+            COMMAND_CANCEL_DOWNLOAD_ALL -> {
+                MainApplication.wm.cancelDownloadAll()
+            }
+
+            COMMAND_CANCEL_SYNC         -> {
+                val repoId = intent.getLongExtra(ARG_REPO_ID, -1)
+                MainApplication.wm.cancelSync(repoId)
+            }
+
+            COMMAND_CANCEL_SYNC_ALL     -> {
+                MainApplication.wm.cancelSyncAll()
+            }
+
+            else                        -> {}
+        }
+    }
+}
