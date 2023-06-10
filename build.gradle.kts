@@ -26,7 +26,7 @@ android {
 
     defaultConfig {
         applicationId = "com.machiav3lli.fdroid"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 33
         versionCode = 1002
         versionName = "1.0.0-alpha03"
