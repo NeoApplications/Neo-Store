@@ -1,7 +1,5 @@
 package com.machiav3lli.fdroid.service
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.job.JobParameters
 import android.app.job.JobService
@@ -14,8 +12,6 @@ import androidx.work.Configuration
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.EXODUS_TRACKERS_SYNC
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
-import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
-import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
@@ -34,8 +30,6 @@ import com.machiav3lli.fdroid.network.RExodusAPI
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.displayUpdatesNotification
 import com.machiav3lli.fdroid.utility.displayVulnerabilitiesNotification
-import com.machiav3lli.fdroid.utility.extension.android.Android
-import com.machiav3lli.fdroid.utility.extension.android.notificationManager
 import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
 import com.machiav3lli.fdroid.utility.showNotificationError
@@ -212,23 +206,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         super.onCreate()
 
         db = DatabaseX.getInstance(applicationContext)
-        if (Android.sdk(26)) {
-            NotificationChannel(
-                NOTIFICATION_CHANNEL_SYNCING,
-                getString(R.string.syncing), NotificationManager.IMPORTANCE_LOW
-            )
-                .apply { setShowBadge(false) }
-                .let(notificationManager::createNotificationChannel)
-            NotificationChannel(
-                NOTIFICATION_CHANNEL_UPDATES,
-                getString(R.string.updates), NotificationManager.IMPORTANCE_LOW
-            )
-                .let(notificationManager::createNotificationChannel)
-            NotificationChannel(
-                NOTIFICATION_CHANNEL_VULNS,
-                getString(R.string.vulnerabilities), NotificationManager.IMPORTANCE_HIGH
-            ).let(notificationManager::createNotificationChannel)
-        }
 
         downloadConnection.bind(this)
         stateSubject.onEach { publishForegroundState(false, it) }.launchIn(scope)

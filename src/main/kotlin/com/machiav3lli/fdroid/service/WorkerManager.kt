@@ -8,7 +8,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.snapshots.SnapshotStateMap
@@ -24,6 +26,9 @@ import com.machiav3lli.fdroid.ARG_RESULT_CODE
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
+import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
+import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
+import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
 import com.machiav3lli.fdroid.NOTIFICATION_ID_DOWNLOADING
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
@@ -67,6 +72,7 @@ class WorkerManager(appContext: Context) {
         context.registerReceiver(actionReceiver, IntentFilter())
 
         notificationManager = NotificationManagerCompat.from(context)
+        if (Android.sdk(Build.VERSION_CODES.O)) createNotificationChannels()
 
         workManager.pruneWork()
         /*workManager.getWorkInfosByTagLiveData(
@@ -161,6 +167,33 @@ class WorkerManager(appContext: Context) {
                 else it
             )
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannels() {
+        NotificationChannel(
+            NOTIFICATION_CHANNEL_DOWNLOADING,
+            context.getString(R.string.downloading),
+            NotificationManager.IMPORTANCE_LOW
+        )
+            .apply { setShowBadge(false) }
+            .let(notificationManager::createNotificationChannel)
+        NotificationChannel(
+            NOTIFICATION_CHANNEL_SYNCING,
+            context.getString(R.string.syncing),
+            NotificationManager.IMPORTANCE_LOW
+        )
+            .apply { setShowBadge(false) }
+            .let(notificationManager::createNotificationChannel)
+        NotificationChannel(
+            NOTIFICATION_CHANNEL_UPDATES,
+            context.getString(R.string.updates), NotificationManager.IMPORTANCE_LOW
+        )
+            .let(notificationManager::createNotificationChannel)
+        NotificationChannel(
+            NOTIFICATION_CHANNEL_VULNS,
+            context.getString(R.string.vulnerabilities), NotificationManager.IMPORTANCE_HIGH
+        ).let(notificationManager::createNotificationChannel)
     }
 
     companion object {
@@ -396,18 +429,7 @@ class WorkerManager(appContext: Context) {
                 .setProgress(allCount, allProcessed, false)
                 .setContentText("$allProcessed / $allCount")
                 .apply {
-                    if (Android.sdk(26)) {
-                        NotificationChannel(
-                            NOTIFICATION_CHANNEL_DOWNLOADING,
-                            appContext.getString(R.string.downloading),
-                            NotificationManager.IMPORTANCE_LOW
-                        )
-                            .apply {
-                                setOngoing(allCount > 0)
-                                setShowBadge(false)
-                            }
-                            .let(MainApplication.wm.notificationManager::createNotificationChannel)
-                    }
+                    setOngoing(allCount > 0)
 
                     if (ActivityCompat.checkSelfPermission(
                             appContext,
