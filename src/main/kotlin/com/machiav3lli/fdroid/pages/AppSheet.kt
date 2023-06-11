@@ -38,7 +38,6 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -79,8 +78,8 @@ import com.machiav3lli.fdroid.entity.TrackersGroup.Companion.getTrackersGroup
 import com.machiav3lli.fdroid.entity.toAntiFeature
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.network.createIconUri
-import com.machiav3lli.fdroid.service.Connection
-import com.machiav3lli.fdroid.service.DownloadService
+import com.machiav3lli.fdroid.service.ActionReceiver
+import com.machiav3lli.fdroid.service.works.DownloadWorker
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ExpandableBlock
 import com.machiav3lli.fdroid.ui.components.ScreenshotList
@@ -287,9 +286,11 @@ fun AppSheet(
                         .filter { it -> it.first.releases.any { it === release } }
                         .firstOrNull()
                 if (productRepository != null) {
-                    downloadConnection.binder?.enqueue(
-                        packageName, productRepository.first.label,
-                        productRepository.second, release
+                    DownloadWorker.enqueue(
+                        packageName,
+                        productRepository.first.label,
+                        productRepository.second,
+                        release
                     )
                 }
             }
@@ -307,8 +308,7 @@ fun AppSheet(
                     startUpdate(
                         packageName,
                         installedItem,
-                        productRepos,
-                        downloadConnection
+                        productRepos
                     )
                 }
                 Unit

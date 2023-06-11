@@ -29,11 +29,9 @@ import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
-import com.machiav3lli.fdroid.entity.DownloadState
 import com.machiav3lli.fdroid.entity.LinkType
 import com.machiav3lli.fdroid.entity.PermissionGroup
-import com.machiav3lli.fdroid.service.Connection
-import com.machiav3lli.fdroid.service.DownloadService
+import com.machiav3lli.fdroid.service.works.DownloadWorker
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.At
@@ -108,7 +106,6 @@ object Utils {
         packageName: String,
         installed: Installed?,
         products: List<Pair<Product, Repository>>,
-        downloadConnection: Connection<DownloadService.Binder, DownloadService>,
     ) {
         val productRepository = findSuggestedProduct(products, installed) { it.first }
         val compatibleReleases = productRepository?.first?.selectedReleases.orEmpty()
@@ -127,14 +124,13 @@ object Utils {
                     ?: compatibleReleases.firstOrNull()
             )
         }
-        val binder = downloadConnection.binder
         releaseFlow.collect {
-            if (productRepository != null && it != null && binder != null) {
-                binder.enqueue(
+            if (productRepository != null && it != null) {
+                DownloadWorker.enqueue(
                     packageName,
                     productRepository.first.label,
                     productRepository.second,
-                    it
+                    it,
                 )
             }
         }
