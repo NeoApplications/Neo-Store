@@ -55,6 +55,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.EXODUS_TRACKER_WEBSITE
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
@@ -330,7 +331,7 @@ fun AppSheet(
             is ActionState.Cancel -> {
                 val cancelIntent = Intent(context, ActionReceiver::class.java).apply {
                     this.action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD
-                    putExtra(ActionReceiver.ARG_PACKAGE_NAME, packageName)
+                    putExtra(ARG_PACKAGE_NAME, packageName)
                 }
                 mainActivityX.startActivity(cancelIntent)
             }

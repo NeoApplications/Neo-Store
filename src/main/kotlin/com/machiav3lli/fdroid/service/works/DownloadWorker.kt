@@ -16,6 +16,18 @@ import com.anggrayudi.storage.callback.FileCallback
 import com.anggrayudi.storage.file.copyFileTo
 import com.anggrayudi.storage.file.toDocumentFile
 import com.google.common.util.concurrent.ListenableFuture
+import com.machiav3lli.fdroid.ARG_AUTHENTICATION
+import com.machiav3lli.fdroid.ARG_NAME
+import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
+import com.machiav3lli.fdroid.ARG_PROGRESS
+import com.machiav3lli.fdroid.ARG_READ
+import com.machiav3lli.fdroid.ARG_RELEASE
+import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
+import com.machiav3lli.fdroid.ARG_RESULT_CODE
+import com.machiav3lli.fdroid.ARG_STARTED
+import com.machiav3lli.fdroid.ARG_TOTAL
+import com.machiav3lli.fdroid.ARG_URL
+import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Cache
@@ -45,27 +57,13 @@ class DownloadWorker(
     params: WorkerParameters,
 ) : CoroutineWorker(context, params) {
 
-    class Progress(
+    data class Progress(
         val progress: Int = 0,
         val read: Long = -1L,
         val total: Long = -1L,
     )
 
     companion object {
-        const val TAG = "DownloadWorker"
-        const val ARG_STARTED = "STARTED"
-        const val ARG_PACKAGE_NAME = "PACKAGE_NAME"
-        const val ARG_NAME = "NAME"
-        const val ARG_RELEASE = "RELEASE"
-        const val ARG_URL = "URL"
-        const val ARG_REPOSITORY_ID = "REPOSITORY_ID"
-        const val ARG_AUTHENTICATION = "AUTHENTICATION"
-        const val ARG_RESULT_CODE = "RESULT_CODE"
-        const val ARG_VALIDATION_ERROR = "VALIDATION_ERROR"
-        const val ARG_PROGRESS = "PROGRESS"
-        const val ARG_READ = "READ"
-        const val ARG_TOTAL = "TOTAL"
-
         fun enqueue(
             packageName: String,
             name: String,
@@ -86,7 +84,7 @@ class DownloadWorker(
                 .addTag("download_$packageName")
                 .build()
 
-            MainApplication.wm.wm.beginWith(downloadRequest).enqueue()
+            MainApplication.wm.workManager.beginWith(downloadRequest).enqueue()
         }
 
         fun getTask(data: Data) = DownloadTask(
@@ -104,10 +102,6 @@ class DownloadWorker(
             data.getLong(ARG_READ, 0L),
             data.getLong(ARG_TOTAL, 0L),
         )
-
-        fun cancel(packageName: String) {
-            MainApplication.wm.wm.cancelAllWorkByTag(TAG + packageName)
-        }
     }
 
     private val scope = CoroutineScope(Dispatchers.Default)

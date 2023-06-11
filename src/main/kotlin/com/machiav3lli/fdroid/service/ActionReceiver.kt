@@ -3,6 +3,8 @@ package com.machiav3lli.fdroid.service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
+import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
 import com.machiav3lli.fdroid.MainApplication
 
 class ActionReceiver : BroadcastReceiver() {
@@ -12,9 +14,6 @@ class ActionReceiver : BroadcastReceiver() {
         const val COMMAND_CANCEL_SYNC_ALL = "cancel_sync_all"
         const val COMMAND_CANCEL_DOWNLOAD = "cancel_download"
         const val COMMAND_CANCEL_DOWNLOAD_ALL = "cancel_download_all"
-
-        const val ARG_PACKAGE_NAME = "package_name"
-        const val ARG_REPO_ID = "repo_id"
     }
 
     override fun onReceive(context: Context, intent: Intent?) {
@@ -30,7 +29,7 @@ class ActionReceiver : BroadcastReceiver() {
             }
 
             COMMAND_CANCEL_SYNC         -> {
-                val repoId = intent.getLongExtra(ARG_REPO_ID, -1)
+                val repoId = intent.getLongExtra(ARG_REPOSITORY_ID, -1)
                 MainApplication.wm.cancelSync(repoId)
             }
 

@@ -19,6 +19,9 @@ import androidx.lifecycle.withResumed
 import androidx.work.Data
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
+import com.machiav3lli.fdroid.ARG_RESULT_CODE
+import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_DOWNLOADING
@@ -46,7 +49,7 @@ import kotlinx.coroutines.sync.withLock
 
 class WorkerManager(appContext: Context) {
 
-    var wm: WorkManager
+    var workManager: WorkManager
     var actionReceiver: ActionReceiver
     var context: Context = appContext
     val notificationManager: NotificationManagerCompat
@@ -58,20 +61,20 @@ class WorkerManager(appContext: Context) {
     }
 
     init {
-        wm = WorkManager.getInstance(context)
+        workManager = WorkManager.getInstance(context)
         actionReceiver = ActionReceiver()
 
         context.registerReceiver(actionReceiver, IntentFilter())
 
         notificationManager = NotificationManagerCompat.from(context)
 
-        wm.pruneWork()
-        /*wm.getWorkInfosByTagLiveData(
+        workManager.pruneWork()
+        /*workManager.getWorkInfosByTagLiveData(
             SyncWorker::class.qualifiedName!!
         ).observeForever {
             onSyncProgress(this, it)
         }*/
-        wm.getWorkInfosByTagLiveData(
+        workManager.getWorkInfosByTagLiveData(
             DownloadWorker::class.qualifiedName!!
         ).observeForever {
             onDownloadProgress(this, it)
@@ -122,7 +125,7 @@ class WorkerManager(appContext: Context) {
     }
 
     fun prune() {
-        wm.pruneWork()
+        workManager.pruneWork()
     }
 
     fun cancelSyncAll() {
@@ -146,14 +149,14 @@ class WorkerManager(appContext: Context) {
     fun cancelDownloadAll() {
         MainApplication.wm.prune()
         DownloadWorker::class.qualifiedName?.let {
-            wm.cancelAllWorkByTag(it)
+            workManager.cancelAllWorkByTag(it)
         }
         MainApplication.setProgress() // TODO re-consider
     }
 
     fun cancelDownload(packageName: String?) {
         DownloadWorker::class.qualifiedName?.let {
-            wm.cancelAllWorkByTag(
+            workManager.cancelAllWorkByTag(
                 if (packageName != null) "download_$packageName"
                 else it
             )
@@ -216,7 +219,9 @@ class WorkerManager(appContext: Context) {
             workInfos: MutableList<WorkInfo>? = null,
         ) {
             val downloads = workInfos
-                ?: manager.wm.getWorkInfosByTag(DownloadWorker::class.qualifiedName!!).get()
+                ?: manager.workManager
+                    .getWorkInfosByTag(DownloadWorker::class.qualifiedName!!)
+                    .get()
                 ?: return
 
             val appContext = MainApplication.context
@@ -233,9 +238,9 @@ class WorkerManager(appContext: Context) {
                 data.takeIf { it != Data.EMPTY }?.let { data ->
                     val task = DownloadWorker.getTask(data)
                     val progress = DownloadWorker.getProgress(data)
-                    val resultCode = data.getInt(DownloadWorker.ARG_RESULT_CODE, 0)
+                    val resultCode = data.getInt(ARG_RESULT_CODE, 0)
                     val validationError = ValidationError.values()[
-                            data.getInt(DownloadWorker.ARG_VALIDATION_ERROR, 0)
+                            data.getInt(ARG_VALIDATION_ERROR, 0)
                     ]
 
                     val notificationBuilder = appContext.downloadNotificationBuilder()
@@ -243,7 +248,7 @@ class WorkerManager(appContext: Context) {
 
                     val cancelIntent = Intent(appContext, ActionReceiver::class.java).apply {
                         action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD
-                        putExtra(ActionReceiver.ARG_PACKAGE_NAME, wi.id.toString())
+                        putExtra(ARG_PACKAGE_NAME, wi.id.toString())
                     }
                     val cancelPendingIntent = PendingIntent.getBroadcast(
                         appContext,
