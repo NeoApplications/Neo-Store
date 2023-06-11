@@ -1,64 +1,32 @@
 package com.machiav3lli.fdroid.network
 
+import android.util.Log
 import com.machiav3lli.fdroid.utility.ProgressInputStream
 import com.machiav3lli.fdroid.utility.getBaseUrl
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.Cache
+import okhttp3.CacheControl
 import okhttp3.Call
+import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.ResponseBody
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Streaming
-import retrofit2.http.Url
+import okhttp3.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.net.InetSocketAddress
 import java.net.Proxy
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
 object Downloader {
-    private val clients = mutableMapOf<ClientConfiguration, OkHttpClient>()
-    private val onionProxy = Proxy(Proxy.Type.SOCKS, InetSocketAddress("127.0.0.1", 9050))
-    var proxy: Proxy? = null
-        set(value) {
-            if (field != value) {
-                synchronized(clients) {
-                    field = value
-                    clients.keys.removeAll { !it.onion }
-                }
-            }
-        }
-
-    private var client: OkHttpClient = OkHttpClient.Builder()
-        .connectTimeout(30L, TimeUnit.SECONDS)
-        .readTimeout(15L, TimeUnit.SECONDS)
-        .writeTimeout(15L, TimeUnit.SECONDS)
-        .build()
-
-    private var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://PLACEHOLDER/") // TODO replace with the appropriate base URL?
-        .client(client)
-        .build()
-
-    private val apiService: ApiService = retrofit.create(ApiService::class.java)
-
-    private data class ClientConfiguration(val cache: Cache?, val onion: Boolean)
-    interface ApiService {
-        @GET
-        @Streaming
-        suspend fun downloadFile(
-            @Url url: String,
-            @Header("If-Modified-Since") lastModified: String?,
-            @Header("If-None-Match") entityTag: String?,
-            @Header("Range") range: String?,
-            @Header("Authorization") authentication: String,
-        ): Response<ResponseBody>
-    }
+    private const val DEFAULT_MAX_IDLE_CONNECTIONS = 5 // TODO make configurable
+    private const val DEFAULT_KEEP_ALIVE_DURATION_MS = 5_000L
+    private const val CONNECT_TIMEOUT = 30L
+    private const val READ_TIMEOUT = 15L
+    private const val WRITE_TIMEOUT = 15L
 
     class Result(val code: Int, val lastModified: String, val entityTag: String) {
         val success: Boolean
@@ -67,18 +35,50 @@ object Downloader {
         val isNotChanged: Boolean
             get() = code == 304
 
-        constructor(response: Response<ResponseBody>) : this(
-            response.code(),
-            response.headers()["Last-Modified"].orEmpty(),
-            response.headers()["ETag"].orEmpty()
+        constructor(response: Response) : this(
+            response.code,
+            response.headers["Last-Modified"].orEmpty(),
+            response.headers["ETag"].orEmpty()
         )
     }
 
+    private val clients = ConcurrentHashMap<String, OkHttpClient>()
+    private val connectionPools = ConcurrentHashMap<String, ConnectionPool>()
+    private val onionProxy = Proxy(Proxy.Type.SOCKS, InetSocketAddress("127.0.0.1", 9050))
+    var proxy: Proxy? = null
+        set(value) {
+            if (field != value) {
+                synchronized(clients) {
+                    field = value
+                    clients.keys.removeAll { !it.endsWith(".onion") }
+                }
+            }
+        }
+
+    private fun getProxy(onion: Boolean) = if (onion) onionProxy else proxy
+
+    private fun buildRequest(
+        url: String,
+        lastModified: String,
+        entityTag: String,
+        authentication: String,
+        range: String?,
+    ): Request.Builder = Request.Builder()
+        .url(url)
+        .header("If-Modified-Since", lastModified)
+        .header("If-None-Match", entityTag)
+        .header("Authorization", authentication)
+        .apply {
+            if (range != null) header("Range", range)
+        }
+
     private fun createClient(proxy: Proxy?, cache: Cache?): OkHttpClient = OkHttpClient.Builder()
-        .connectTimeout(30L, TimeUnit.SECONDS)
-        .readTimeout(15L, TimeUnit.SECONDS)
-        .writeTimeout(15L, TimeUnit.SECONDS)
-        .proxy(proxy).cache(cache).build()
+        .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+        .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+        .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+        .proxy(proxy)
+        .cache(cache)
+        .build()
 
     fun createCall(request: Request.Builder, authentication: String, cache: Cache?): Call {
         val newRequest = if (authentication.isNotEmpty()) {
@@ -91,14 +91,10 @@ object Downloader {
     }
 
     private fun updateClient(hostUrl: String, cache: Cache?): OkHttpClient {
-        val isOnion = hostUrl.endsWith(".onion")
         return synchronized(clients) {
-            val proxy = if (isOnion) onionProxy else proxy
-            val clientConfiguration = ClientConfiguration(cache, isOnion)
-            clients[clientConfiguration] ?: run {
-                val client = createClient(proxy, cache)
-                clients[clientConfiguration] = client
-                client
+            clients.getOrPut(hostUrl) {
+                val isOnion = hostUrl.endsWith(".onion")
+                createClient(getProxy(isOnion), cache)
             }
         }
     }
@@ -109,47 +105,92 @@ object Downloader {
         lastModified: String,
         entityTag: String,
         authentication: String,
-        callback: ((read: Long, total: Long?) -> Unit)?,
+        callback: (suspend (read: Long, total: Long?) -> Unit)?,
     ): Result {
         return withContext(Dispatchers.IO) {
-            val start =
-                if (target.exists()) target.length().let { if (it > 0L) it else null } else null
-            val rangeHeader = start?.let { "bytes=$start-" }
+            val start = if (target.exists()) target.length().coerceAtLeast(0L)
+            else null
+            Log.i(this.javaClass.name, "Start = $start")
+            val rangeHeader = start?.let { "bytes=$it-" }
             val baseUrl = getBaseUrl(url)
-            client = updateClient(baseUrl, null)
-            retrofit = retrofit.newBuilder().baseUrl(baseUrl).client(client).build()
-            val response =
-                apiService.downloadFile(url, lastModified, entityTag, rangeHeader, authentication)
 
-            val result = response.body().use { responseBody ->
-                if (response.code() == 304) {
-                    Result(response.code(), lastModified, entityTag)
+            val connectionPool = connectionPools.getOrPut(baseUrl) {
+                ConnectionPool(
+                    DEFAULT_MAX_IDLE_CONNECTIONS,
+                    DEFAULT_KEEP_ALIVE_DURATION_MS,
+                    TimeUnit.MILLISECONDS
+                )
+            }
+
+            val request: Request = buildRequest(
+                url,
+                lastModified,
+                entityTag,
+                authentication,
+                rangeHeader,
+            ).apply {
+                val cacheControl = CacheControl.Builder()
+                    .maxAge(1, TimeUnit.MINUTES)
+                    .build()
+                cacheControl(cacheControl)
+                header("Accept-Encoding", "gzip, deflate")
+            }.build()
+
+            val client = clients.getOrPut(baseUrl) {
+                OkHttpClient.Builder()
+                    .connectionPool(connectionPool)
+                    .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                    .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+                    .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+                    .followRedirects(true)
+                    .followSslRedirects(true)
+                    .retryOnConnectionFailure(true)
+                    .build()
+            }
+
+            val call = client.newCall(request)
+            val response = call.execute()
+
+            val result = response.body.use { responseBody ->
+                if (response.code == 304) {
+                    Result(response.code, lastModified, entityTag)
                 } else if (response.isSuccessful) {
-                    val append = start != null && response.headers()["Content-Range"] != null
+                    val append = start != null && response.headers["Content-Range"] != null
                     val progressStart = if (append && start != null) start else 0L
-                    val progressTotal =
-                        responseBody?.contentLength()?.let { len -> if (len >= 0L) len else null }
-                            ?.let { len -> progressStart + len }
+                    val contentLength = responseBody.contentLength().coerceAtLeast(0L)
+                    val progressTotal = if (append) progressStart + contentLength
+                    else contentLength
 
-                    val inputStream = ProgressInputStream(responseBody!!.byteStream()) {
-                        if (Thread.interrupted()) {
-                            throw InterruptedException()
+                    withContext(Dispatchers.IO) {
+                        val inputStream = ProgressInputStream(responseBody.byteStream()) {
+                            if (Thread.interrupted()) {
+                                throw InterruptedException()
+                            }
+                            CoroutineScope(Dispatchers.IO).launch {
+                                callback?.invoke(progressStart + it, progressTotal)
+                            }
                         }
-                        callback?.invoke(progressStart + it, progressTotal)
-                    }
 
-                    inputStream.use { input ->
-                        val outputStream =
-                            if (append) FileOutputStream(target, true) else FileOutputStream(target)
-                        outputStream.use { output ->
-                            input.copyTo(output)
-                            output.fd.sync()
+                        inputStream.use { input ->
+                            val outputStream = FileOutputStream(target, append)
+                            outputStream.use { output ->
+                                input.copyTo(output)
+                                output.fd.sync()
+                            }
                         }
                     }
 
                     Result(response)
+                } else if (response.code == 416) {
+                    // Error code 416 means the requested range is invalid → retry from start
+                    Log.w(
+                        this.javaClass.name,
+                        "Failed to download file ($url) with Range $rangeHeader."
+                    )
+                    target.delete()
+                    download(url, target, lastModified, entityTag, authentication, callback)
                 } else {
-                    throw Exception("Failed to download file. Response code: ${response.code()}")
+                    throw Exception("Failed to download file. Response code ${response.code}:${response.message}")
                 }
             }
 
