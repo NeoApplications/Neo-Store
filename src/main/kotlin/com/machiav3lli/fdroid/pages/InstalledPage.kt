@@ -26,7 +26,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -45,7 +44,6 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Product
-import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.DownloadService
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ActionChip
@@ -63,9 +61,7 @@ import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.InstalledVM
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -123,22 +119,6 @@ fun InstalledPage(viewModel: InstalledVM) {
                     else -> {}
                 }
             }
-        }
-    }
-
-    DisposableEffect(key1 = lifecycleOwner) {
-        val downloadConnection = Connection(DownloadService::class.java, onBind = { _, binder ->
-            CoroutineScope(Dispatchers.Default).launch {
-                binder.stateSubject
-                    .collectLatest {
-                        viewModel.updateDownloadState(it)
-                    }
-            }
-        })
-
-        downloadConnection.bind(context)
-        onDispose {
-            downloadConnection.unbind(context)
         }
     }
 

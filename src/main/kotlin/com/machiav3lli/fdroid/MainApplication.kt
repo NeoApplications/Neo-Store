@@ -102,10 +102,6 @@ class MainApplication : Application(), ImageLoaderFactory {
         listenApplications()
         listenPreferences()
 
-        /*if (databaseUpdated) {
-            forceSyncAll()
-        }*/
-
         wm = WorkerManager(applicationContext)
         wm?.prune()
         Cache.cleanup(this)
@@ -162,17 +158,21 @@ class MainApplication : Application(), ImageLoaderFactory {
                                                    -> {
                         updateProxy()
                     }
+
                     Preferences.Key.AutoSync,
                     Preferences.Key.AutoSyncInterval,
                                                    -> {
                         updateSyncJob(true)
                     }
+
                     Preferences.Key.UpdateUnstable -> {
                         forceSyncAll()
                     }
+
                     Preferences.Key.Theme          -> {
                         CoroutineScope(Dispatchers.Main).launch { mActivity.recreate() }
                     }
+
                     Preferences.Key.Language       -> {
                         val refresh = Intent.makeRestartActivityTask(
                             ComponentName(
@@ -182,6 +182,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                         )
                         applicationContext.startActivity(refresh)
                     }
+
                     else                           -> return@collect
                 }
             }
@@ -197,6 +198,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                     jobScheduler.cancel(JOB_ID_SYNC)
                     Log.i(this::javaClass.name, "Canceled next auto-sync run.")
                 }
+
                 is Preferences.AutoSync.Wifi,
                 is Preferences.AutoSync.WifiBattery,
                                                -> {
@@ -206,6 +208,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                         chargingBattery = autoSync is Preferences.AutoSync.WifiBattery,
                     )
                 }
+
                 is Preferences.AutoSync.Battery,
                                                -> {
                     autoSync(
@@ -214,6 +217,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                         chargingBattery = true,
                     )
                 }
+
                 is Preferences.AutoSync.Always -> {
                     autoSync(
                         jobScheduler = jobScheduler,
@@ -266,6 +270,7 @@ class MainApplication : Application(), ImageLoaderFactory {
             Proxy.Type.DIRECT                 -> {
                 null
             }
+
             Proxy.Type.HTTP, Proxy.Type.SOCKS -> {
                 try {
                     InetSocketAddress.createUnresolved(host, port)

@@ -17,7 +17,6 @@ import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
-import com.machiav3lli.fdroid.NOTIFICATION_ID_UPDATES
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
@@ -46,9 +45,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -65,7 +62,7 @@ import kotlin.math.roundToInt
 @AndroidEntryPoint
 class SyncService : ConnectionService<SyncService.Binder>() {
     companion object {
-        private const val ACTION_CANCEL = "${BuildConfig.APPLICATION_ID}.intent.action.CANCEL"
+        const val ACTION_CANCEL = "${BuildConfig.APPLICATION_ID}.intent.action.CANCEL"
 
         private val mutableStateSubject = MutableSharedFlow<State>()
         private val mutableFinishState = MutableSharedFlow<Unit>()
@@ -107,8 +104,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             CoroutineScope(Dispatchers.Default).launch {
                 dBinder.stateSubject
                     .collectLatest {
-                        binder.updateDownloadState(it)
-                        db.downloadedDao.insertReplace(
+                        //binder.updateDownloadState(it)
+                        db.downloadedDao.insertReplace( // TODO move to WorkerManager
                             Downloaded(
                                 packageName = it.packageName,
                                 version = it.version,
@@ -131,9 +128,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
     inner class Binder : android.os.Binder() {
         val finish: SharedFlow<Unit>
             get() = finishState
-
-        private val _downloadState = MutableStateFlow<DownloadService.State?>(null)
-        val downloadState: StateFlow<DownloadService.State?> = _downloadState
 
         private fun sync(ids: List<Long>, request: SyncRequest) {
             val cancelledTask =
@@ -183,13 +177,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
             return removed || currentTask != null
         }
 
-        fun setUpdateNotificationBlocker(fragment: Fragment?) { // TODO should the notification be canceled on opening a specific page?
-            updateNotificationBlockerFragment = fragment?.let(::WeakReference)
-            if (fragment != null) {
-                notificationManager.cancel(NOTIFICATION_ID_UPDATES)
-            }
-        }
-
         suspend fun setEnabled(repository: Repository, enabled: Boolean): Boolean =
             withContext(Dispatchers.IO) {
                 db.repositoryDao.put(repository.enable(enabled))
@@ -207,10 +194,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                 true
             }
 
-        suspend fun isCurrentlySyncing(repositoryId: Long): Boolean = withContext(Dispatchers.IO) {
-            currentTask?.task?.repositoryId == repositoryId
-        }
-
         suspend fun deleteRepository(repositoryId: Long): Boolean = withContext(Dispatchers.IO) {
             val repository = db.repositoryDao.get(repositoryId)
             repository != null && run {
@@ -218,10 +201,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                 db.repositoryDao.deleteById(repository.id)
                 true
             }
-        }
-
-        suspend fun updateDownloadState(state: DownloadService.State) {
-            _downloadState.emit(state)
         }
     }
 
@@ -257,10 +236,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        /*CoroutineScope(Dispatchers.IO).launch {
-            while (downloadServiceMutex.isLocked) delay(500)
-            if (downloadConnection.binder != null) downloadConnection.unbind(this@SyncService)
-        }*/
         cancelTasks { true }
         cancelCurrentTask { true }
     }
@@ -536,8 +511,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                             Utils.startUpdate(
                                 packageName,
                                 installed,
-                                productRepository,
-                                downloadConnection
+                                productRepository
                             )
                         }
                     }.forEach { it.await() }

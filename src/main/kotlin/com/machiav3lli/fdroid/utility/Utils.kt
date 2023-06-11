@@ -46,7 +46,6 @@ import com.machiav3lli.fdroid.utility.extension.android.singleSignature
 import com.machiav3lli.fdroid.utility.extension.android.versionCodeCompat
 import com.machiav3lli.fdroid.utility.extension.text.hex
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
-import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.net.URL
@@ -319,22 +318,6 @@ fun Context.shareIntent(packageName: String, appName: String, repository: String
     startActivity(Intent.createChooser(shareIntent, "Where to Send?"))
 }
 
-fun updateDownloadState(viewModel: AppSheetVM, downloadState: DownloadService.State?) {
-    val state = when (downloadState) {
-        is DownloadService.State.Pending     -> DownloadState.Pending
-        is DownloadService.State.Connecting  -> DownloadState.Connecting
-        is DownloadService.State.Downloading -> DownloadState.Downloading(
-            downloadState.read,
-            downloadState.total
-        )
-
-        else                                 -> null
-    }
-    viewModel.updateDownloadState(state)
-    viewModel.updateActions()
-}
-
-
 fun Context.shareReleaseIntent(appName: String, address: String) {
     val shareIntent = Intent(Intent.ACTION_SEND)
     shareIntent.type = "text/plain"
@@ -412,7 +395,7 @@ fun Product.generateLinks(context: Context): List<LinkType> {
     return links
 }
 
-fun Release.generatePermissionGroups(context: Context): Map<PermissionGroup, List<PermissionInfo>> { // TODO other permissions as last group
+fun Release.generatePermissionGroups(context: Context): Map<PermissionGroup, List<PermissionInfo>> {
     val packageManager = context.packageManager
     return permissions
         .asSequence().mapNotNull {
@@ -425,34 +408,6 @@ fun Release.generatePermissionGroups(context: Context): Map<PermissionGroup, Lis
         .groupBy(PackageItemResolver::getPermissionGroup)
 }
 
-fun List<PermissionInfo>.getLabels(context: Context): List<String> {
-    val localCache = PackageItemResolver.LocalCache()
-
-    val labels = map { permission ->
-        val labelFromPackage =
-            PackageItemResolver.loadLabel(context, localCache, permission)
-        val label = labelFromPackage ?: run {
-            val prefixes =
-                listOf("android.permission.", "com.android.browser.permission.")
-            prefixes.find { permission.name.startsWith(it) }?.let { it ->
-                val transform = permission.name.substring(it.length)
-                if (transform.matches("[A-Z_]+".toRegex())) {
-                    transform.split("_")
-                        .joinToString(separator = " ") { it.lowercase(Locale.US) }
-                } else {
-                    null
-                }
-            }
-        }
-        if (label == null) {
-            Pair(false, permission.name)
-        } else {
-            Pair(true, label.first().uppercaseChar() + label.substring(1, label.length))
-        }
-    }
-    return labels.sortedBy { it.first }.map { it.second }
-}
-
 fun List<PermissionInfo>.getLabelsAndDescriptions(context: Context): List<String> {
     val localCache = PackageItemResolver.LocalCache()
 
@@ -462,8 +417,8 @@ fun List<PermissionInfo>.getLabelsAndDescriptions(context: Context): List<String
         val label = labelFromPackage ?: run {
             val prefixes =
                 listOf("android.permission.", "com.android.browser.permission.")
-            prefixes.find { permission.name.startsWith(it) }?.let { it ->
-                val transform = permission.name.substring(it.length)
+            prefixes.find { permission.name.startsWith(it) }?.let { prefix ->
+                val transform = permission.name.substring(prefix.length)
                 if (transform.matches("[A-Z_]+".toRegex())) {
                     transform.split("_")
                         .joinToString(separator = " ") { it.lowercase(Locale.US) }

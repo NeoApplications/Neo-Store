@@ -118,12 +118,8 @@ import com.machiav3lli.fdroid.utility.openPermissionPage
 import com.machiav3lli.fdroid.utility.shareIntent
 import com.machiav3lli.fdroid.utility.shareReleaseIntent
 import com.machiav3lli.fdroid.utility.startLauncherActivity
-import com.machiav3lli.fdroid.utility.updateDownloadState
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlin.math.floor
 
@@ -201,24 +197,9 @@ fun AppSheet(
     val nestedScrollConnection = rememberNestedScrollInteropConnection()
     val coroutineScope = rememberCoroutineScope()
 
-    val downloadConnection = Connection(DownloadService::class.java, onBind = { _, binder ->
-        CoroutineScope(Dispatchers.Default).launch {
-            binder.stateSubject
-                .filter { it.packageName == packageName }
-                .collectLatest { updateDownloadState(viewModel, it) }
-        }
-    })
-
     LaunchedEffect(key1 = Unit) {
         viewModel.productRepos.collectLatest {
             viewModel.updateActions()
-        }
-    }
-
-    DisposableEffect(key1 = downloadConnection) {
-        downloadConnection.bind(context)
-        onDispose {
-            downloadConnection.unbind(context)
         }
     }
 
@@ -346,11 +327,12 @@ fun AppSheet(
                 Unit
             }
 
-            is ActionState.Cancel -> { // TODO fix cancel, send a cancel intent maybe?
-                val binder = downloadConnection.binder
-                if (viewModel.downloadState.value != null && binder != null) {
-                    binder.cancel(packageName)
-                } else Unit
+            is ActionState.Cancel -> {
+                val cancelIntent = Intent(context, ActionReceiver::class.java).apply {
+                    this.action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD
+                    putExtra(ActionReceiver.ARG_PACKAGE_NAME, packageName)
+                }
+                mainActivityX.startActivity(cancelIntent)
             }
 
             ActionState.Share     -> {
