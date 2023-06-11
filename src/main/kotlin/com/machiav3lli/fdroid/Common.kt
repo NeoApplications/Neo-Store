@@ -84,8 +84,9 @@ const val RELEASE_STATE_NONE = 0
 const val RELEASE_STATE_SUGGESTED = 1
 const val RELEASE_STATE_INSTALLED = 2
 
-const val JOB_ID_SYNC = 1
-const val NETWORK_TYPE_WIFI = 16
+const val TAG_SYNC_ONETIME = "sync_onetime"
+const val TAG_SYNC_PERIODIC = "sync_periodic"
+
 const val EXODUS_TRACKERS_SYNC = -22L
 
 const val HOST_ICON = "icon"
