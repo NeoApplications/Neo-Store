@@ -11,6 +11,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
+import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_INSTALLER
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
@@ -27,12 +28,14 @@ import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.installer.InstallerService
 import com.machiav3lli.fdroid.service.ActionReceiver
+import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.works.DownloadTask
 import com.machiav3lli.fdroid.service.works.ErrorType
 import com.machiav3lli.fdroid.service.works.ValidationError
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.utility.extension.android.notificationManager
 import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
+import com.machiav3lli.fdroid.utility.extension.text.formatSize
 
 /**
  * Displays summary of available updates.
@@ -173,6 +176,26 @@ fun Context.showNotificationError(repository: Repository, exception: Exception) 
     )
 }
 
+fun Context.syncNotificationBuilder() = NotificationCompat
+    .Builder(MainApplication.context, NOTIFICATION_CHANNEL_SYNCING)
+    .setSmallIcon(R.drawable.ic_sync)
+    .setOngoing(true)
+    .setSilent(true)
+    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+    .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+    .addAction(
+        R.drawable.ic_cancel,
+        MainApplication.context.getString(R.string.cancel_all),
+        PendingIntent.getBroadcast(
+            MainApplication.context,
+            "<SYNC_ALL>".hashCode(),
+            Intent(MainApplication.context, ActionReceiver::class.java).apply {
+                action = ActionReceiver.COMMAND_CANCEL_SYNC_ALL
+            },
+            PendingIntent.FLAG_IMMUTABLE
+        )
+    )
+
 fun Context.downloadNotificationBuilder() = NotificationCompat
     .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
     .setSmallIcon(android.R.drawable.stat_sys_download)
@@ -194,6 +217,52 @@ fun Context.downloadNotificationBuilder() = NotificationCompat
         )
     )
     .setProgress(0, 0, true)
+
+fun NotificationCompat.Builder.updateProgress(
+    context: Context,
+    progress: SyncWorker.Progress,
+) {
+    when (progress.stage) {
+        RepositoryUpdater.Stage.DOWNLOAD -> {
+            if (progress.total >= 0) {
+                setContentText("${progress.read.formatSize()} / ${progress.total.formatSize()}")
+                setProgress(
+                    100,
+                    progress.percentage,
+                    false
+                )
+            } else {
+                setContentText(progress.read.formatSize())
+                setProgress(0, 0, true)
+            }
+        }
+
+        RepositoryUpdater.Stage.PROCESS  -> {
+            setContentText(
+                context.getString(
+                    R.string.processing_FORMAT,
+                    "${progress.percentage}%"
+                )
+            )
+            setProgress(100, progress.percentage, progress == null)
+        }
+
+        RepositoryUpdater.Stage.MERGE    -> {
+            setContentText(
+                context.getString(
+                    R.string.merging_FORMAT,
+                    "${progress.read} / ${progress.total}"
+                )
+            )
+            setProgress(100, progress.percentage, false)
+        }
+
+        RepositoryUpdater.Stage.COMMIT   -> {
+            setContentText(context.getString(R.string.saving_details))
+            setProgress(0, 0, true)
+        }
+    }
+}
 
 fun NotificationCompat.Builder.updateWithError(
     context: Context,
