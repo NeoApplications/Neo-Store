@@ -1,14 +1,10 @@
 package com.machiav3lli.fdroid.service
 
 import android.app.PendingIntent
-import android.app.job.JobParameters
-import android.app.job.JobService
 import android.content.Intent
 import android.util.Log
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
-import androidx.fragment.app.Fragment
-import androidx.work.Configuration
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.EXODUS_TRACKERS_SYNC
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
@@ -16,7 +12,6 @@ import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
-import com.machiav3lli.fdroid.database.entity.Downloaded
 import com.machiav3lli.fdroid.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Repository
@@ -37,11 +32,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -49,7 +41,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import java.lang.ref.WeakReference
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -59,10 +50,7 @@ class SyncService : ConnectionService<SyncService.Binder>() {
         const val ACTION_CANCEL = "${BuildConfig.APPLICATION_ID}.intent.action.CANCEL"
 
         private val mutableStateSubject = MutableSharedFlow<State>()
-        private val mutableFinishState = MutableSharedFlow<Unit>()
-
         private val stateSubject = mutableStateSubject.asSharedFlow()
-        private val finishState = mutableFinishState.asSharedFlow()
     }
 
     private sealed class State {
@@ -89,87 +77,17 @@ class SyncService : ConnectionService<SyncService.Binder>() {
     private val tasks = mutableListOf<Task>()
     private var currentTask: CurrentTask? = null
 
-    private var updateNotificationBlockerFragment: WeakReference<Fragment>? = null
-
     private val downloadServiceMutex = Mutex()
-
-    private val downloadConnection =
-        Connection(DownloadService::class.java, onBind = { _, dBinder ->
-            CoroutineScope(Dispatchers.Default).launch {
-                dBinder.stateSubject
-                    .collectLatest {
-                        //binder.updateDownloadState(it)
-                        db.downloadedDao.insertReplace( // TODO move to WorkerManager
-                            Downloaded(
-                                packageName = it.packageName,
-                                version = it.version,
-                                cacheFileName = it.cacheFileName,
-                                changed = System.currentTimeMillis(),
-                                state = it,
-                            )
-                        )
-                    }
-            }
-        }, onUnbind = { _, _ ->
-            if (downloadServiceMutex.isLocked) downloadServiceMutex.unlock()
-        })
-
-    enum class SyncRequest { AUTO, MANUAL, FORCE }
 
     @Inject
     lateinit var repoExodusAPI: RExodusAPI
 
-    inner class Binder : android.os.Binder() {
-        val finish: SharedFlow<Unit>
-            get() = finishState
-
-        private fun sync(ids: List<Long>, request: SyncRequest) {
-            val cancelledTask =
-                cancelCurrentTask { request == SyncRequest.FORCE && it.task?.repositoryId in ids }
-            cancelTasks { !it.manual && it.repositoryId in ids }
-            val currentIds =
-                synchronized(tasks) { tasks.map { it.repositoryId }.toSet() }
-            val manual = request != SyncRequest.AUTO
-            synchronized(tasks) {
-                tasks += ids.filter {
-                    it !in currentIds &&
-                            it != currentTask?.task?.repositoryId
-                }.map { Task(it, manual) }
-            }
-            handleNextTask(cancelledTask?.hasUpdates == true)
-            if (request != SyncRequest.AUTO && started == Started.AUTO) {
-                started = Started.MANUAL
-                startSelf()
-                handleSetStarted()
-                currentTask?.lastState?.let { publishForegroundState(true, it) }
-            }
-        }
+    inner class Binder : android.os.Binder() { // TODO migrate to Worker
 
         fun updateApps(products: List<ProductItem>) = batchUpdate(products)
         fun installApps(products: List<ProductItem>) = batchUpdate(products, true)
 
         fun fetchExodusInfo(packageName: String) = fetchExodusData(packageName)
-
-        fun sync(request: SyncRequest) {
-            scope.launch {
-                val ids = db.repositoryDao.all.filter { it.enabled }.map { it.id }
-                    .toList() + EXODUS_TRACKERS_SYNC
-                sync(ids, request)
-            }
-        }
-
-        fun sync(repository: Repository) {
-            if (repository.enabled) {
-                sync(listOf(repository.id), SyncRequest.FORCE)
-            }
-        }
-
-        fun cancelAuto(): Boolean {
-            val removed = cancelTasks { !it.manual }
-            val currentTask = cancelCurrentTask { it.task?.manual == false }
-            handleNextTask(currentTask?.hasUpdates == true)
-            return removed || currentTask != null
-        }
 
         suspend fun setEnabled(repository: Repository, enabled: Boolean): Boolean =
             withContext(Dispatchers.IO) {
@@ -204,10 +122,8 @@ class SyncService : ConnectionService<SyncService.Binder>() {
 
     override fun onCreate() {
         super.onCreate()
-
         db = DatabaseX.getInstance(applicationContext)
 
-        downloadConnection.bind(this)
         stateSubject.onEach { publishForegroundState(false, it) }.launchIn(scope)
     }
 
@@ -403,7 +319,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                             ).map { it.toItem() }.let { result ->
                                 if (result.isNotEmpty()) {
                                     if (hasUpdates && Preferences[Preferences.Key.UpdateNotify] &&
-                                        updateNotificationBlockerFragment?.get()?.isAdded != true &&
                                         result.isNotEmpty()
                                     ) displayUpdatesNotification(
                                         result,
@@ -443,7 +358,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                             disposable.join()
                             downloadServiceMutex.withLock {
                                 Log.i(this::javaClass.name, "emitting finish: had no updates")
-                                mutableFinishState.emit(Unit)
                             }
                             val needStop = started == Started.MANUAL
                             started = Started.NO
@@ -493,7 +407,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                         }
                     }.forEach { it.await() }
             }
-            downloadConnection.unbind(this@SyncService)
             if (downloadServiceMutex.isLocked) downloadServiceMutex.unlock()
         }
     }
@@ -542,51 +455,6 @@ class SyncService : ConnectionService<SyncService.Binder>() {
                     Log.e(this::javaClass.name, "Failed fetching exodus info", e)
                 }
             }
-        }
-    }
-
-    class Job : JobService() {
-        init {
-            Configuration.Builder().setJobSchedulerJobIdRange(1000, 2000).build()
-        }
-
-        private val jobScope = CoroutineScope(Dispatchers.Default)
-        private var syncParams: JobParameters? = null
-        private val syncConnection =
-            Connection(SyncService::class.java, onBind = { connection, binder ->
-                jobScope.launch {
-                    binder.finish.collect {
-                        val params = syncParams
-                        if (params != null) {
-                            syncParams = null
-                            connection.unbind(this@Job)
-                            jobFinished(params, false)
-                        }
-                    }
-                }
-                binder.sync(SyncRequest.AUTO)
-            }, onUnbind = { _, binder ->
-                binder.cancelAuto()
-                jobScope.cancel()
-                val params = syncParams
-                if (params != null) {
-                    syncParams = null
-                    jobFinished(params, true)
-                }
-            })
-
-        override fun onStartJob(params: JobParameters): Boolean {
-            syncParams = params
-            syncConnection.bind(this)
-            return true
-        }
-
-        override fun onStopJob(params: JobParameters): Boolean {
-            syncParams = null
-            jobScope.cancel()
-            val reschedule = syncConnection.binder?.cancelAuto() == true
-            syncConnection.unbind(this)
-            return reschedule
         }
     }
 }

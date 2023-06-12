@@ -110,7 +110,7 @@ object Downloader {
         return withContext(Dispatchers.IO) {
             val start = if (target.exists()) target.length().coerceAtLeast(0L)
             else null
-            Log.i(this.javaClass.name, "Start = $start")
+            Log.i(this.javaClass.name, "download start byte = $start")
             val rangeHeader = start?.let { "bytes=$it-" }
             val baseUrl = getBaseUrl(url)
 

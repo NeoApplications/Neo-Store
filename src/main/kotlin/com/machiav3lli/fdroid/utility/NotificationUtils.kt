@@ -205,7 +205,8 @@ fun Context.downloadNotificationBuilder() = NotificationCompat
     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
     .setCategory(NotificationCompat.CATEGORY_PROGRESS)
     .addAction(
-        0, getString(R.string.cancel),
+        R.drawable.ic_cancel,
+        getString(R.string.cancel),
         PendingIntent.getBroadcast(
             applicationContext,
             0,

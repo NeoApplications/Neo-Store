@@ -69,7 +69,7 @@ object RepositoryUpdater {
         runBlocking(Dispatchers.IO) {
             launch {
                 val newDisabled = CoroutineUtils.querySingle {
-                    db.repositoryDao.allDisabled
+                    db.repositoryDao.allDisabledIds
                 }.toSet()
 
                 val disabled = newDisabled - lastDisabled

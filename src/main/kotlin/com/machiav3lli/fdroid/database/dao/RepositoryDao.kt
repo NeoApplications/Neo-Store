@@ -47,7 +47,7 @@ interface RepositoryDao : BaseDao<Repository> {
     val allEnabledIds: List<Long>
 
     @get:Query("SELECT _id FROM repository WHERE enabled == 0 ORDER BY _id ASC")
-    val allDisabled: List<Long>
+    val allDisabledIds: List<Long>
 
     // TODO clean up products and other tables afterwards
     @Query("DELETE FROM repository WHERE _id = :id")

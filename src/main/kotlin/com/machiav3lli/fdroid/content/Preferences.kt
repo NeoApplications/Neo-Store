@@ -70,6 +70,7 @@ object Preferences : OnSharedPreferenceChangeListener {
         Key.KeepInstallNotification,
         Key.DisableDownloadVersionCheck,
         Key.UpdateUnstable,
+        // invisible values
         Key.IgnoreDisableBatteryOptimization,
         Key.IgnoreShowNotifications,
     ).map { Pair(it.name, it) }.toMap()
