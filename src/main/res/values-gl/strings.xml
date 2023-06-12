@@ -321,4 +321,14 @@
     <string name="allowed_licenses">Licenzas autorizadas</string>
     <string name="cancel_all">Cancelar todo</string>
     <string name="disable_download_version_check">Desactivar verificación da versión de descarregamento</string>
+    <string name="privacy_panel">Panel de privacidade</string>
+    <string name="show_categories_bar">Mostrar a barra de categorías</string>
+    <string name="show_categories_bar_description">Mostrar a barra lateral de categorías ba páxina de exploración.</string>
+    <string name="finished">Finalizado</string>
+    <string name="canceled">Cancelado</string>
+    <string name="error">Erro</string>
+    <string name="clear_text">Borrar o texto</string>
+    <string name="list_apps">Mostrar as aplicacións do repositorio</string>
+    <string name="previous">Anterior</string>
+    <string name="next">Seguinte</string>
 </resources>
