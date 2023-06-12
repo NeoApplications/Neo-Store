@@ -210,7 +210,6 @@ class MainActivityX : AppCompatActivity() {
                         ModalBottomSheet(
                             sheetState = appSheetState,
                             containerColor = MaterialTheme.colorScheme.background,
-                            dragHandle = null,
                             scrimColor = Color.Transparent,
                             onDismissRequest = {
                                 mScope.launch { appSheetState.hide() }

@@ -948,7 +948,6 @@ fun AppSheet(
                 ModalBottomSheet(
                     sheetState = screenshotsPageState,
                     containerColor = Color.Transparent,
-                    dragHandle = null,
                     onDismissRequest = {
                         scope.launch { screenshotsPageState.hide() }
                         showScreenshots.value = false

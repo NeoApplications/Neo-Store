@@ -208,7 +208,6 @@ fun ExplorePage(viewModel: ExploreVM) {
         ModalBottomSheet(
             sheetState = sortSheetState,
             containerColor = MaterialTheme.colorScheme.background,
-            dragHandle = null,
             scrimColor = Color.Transparent,
             onDismissRequest = {
                 scope.launch { sortSheetState.hide() }

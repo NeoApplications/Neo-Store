@@ -138,7 +138,6 @@ fun PrefsReposPage(viewModel: PrefsVM, address: String, fingerprint: String) {
             ModalBottomSheet(
                 sheetState = sheetState,
                 containerColor = MaterialTheme.colorScheme.background,
-                dragHandle = null,
                 scrimColor = Color.Transparent,
                 onDismissRequest = {
                     viewModel.closeRepositorySheet()
