@@ -22,6 +22,7 @@ import androidx.work.Data
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
+import com.machiav3lli.fdroid.ARG_REPOSITORY_NAME
 import com.machiav3lli.fdroid.ARG_RESULT_CODE
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
 import com.machiav3lli.fdroid.MainApplication
@@ -30,11 +31,15 @@ import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
 import com.machiav3lli.fdroid.NOTIFICATION_ID_DOWNLOADING
+import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.installer.InstallerService
 import com.machiav3lli.fdroid.installer.LegacyInstaller
+import com.machiav3lli.fdroid.service.worker.SyncState
+import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.works.DownloadState
 import com.machiav3lli.fdroid.service.works.DownloadTask
 import com.machiav3lli.fdroid.service.works.DownloadWorker
@@ -43,6 +48,8 @@ import com.machiav3lli.fdroid.service.works.ValidationError
 import com.machiav3lli.fdroid.utility.downloadNotificationBuilder
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
+import com.machiav3lli.fdroid.utility.syncNotificationBuilder
+import com.machiav3lli.fdroid.utility.updateProgress
 import com.machiav3lli.fdroid.utility.updateWithError
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CoroutineScope
@@ -75,11 +82,11 @@ class WorkerManager(appContext: Context) {
         if (Android.sdk(Build.VERSION_CODES.O)) createNotificationChannels()
 
         workManager.pruneWork()
-        /*workManager.getWorkInfosByTagLiveData(
+        workManager.getWorkInfosByTagLiveData(
             SyncWorker::class.qualifiedName!!
         ).observeForever {
             onSyncProgress(this, it)
-        }*/
+        }
         workManager.getWorkInfosByTagLiveData(
             DownloadWorker::class.qualifiedName!!
         ).observeForever {
@@ -135,21 +142,20 @@ class WorkerManager(appContext: Context) {
     }
 
     fun cancelSyncAll() {
-        /*MainApplication.wm.prune()
+        MainApplication.wm.prune()
         SyncWorker::class.qualifiedName?.let {
-            wm.cancelAllWorkByTag(it)
+            workManager.cancelAllWorkByTag(it)
         }
         MainApplication.setProgress() // TODO re-consider
-         */
     }
 
     fun cancelSync(repoId: Long = -1) {
-        /*SyncWorker::class.qualifiedName?.let {
-            wm.cancelAllWorkByTag(
+        SyncWorker::class.qualifiedName?.let {
+            workManager.cancelAllWorkByTag(
                 if (repoId != -1L) "sync_$repoId"
-                else it
+                else TAG_SYNC_ONETIME
             )
-        }*/
+        }
     }
 
     fun cancelDownloadAll() {
@@ -197,7 +203,35 @@ class WorkerManager(appContext: Context) {
     }
 
     companion object {
+        val syncsRunning = SnapshotStateMap<Long, SyncState>()
         val downloadsRunning = SnapshotStateMap<String, DownloadState>()
+
+        private val syncNotificationBuilder by lazy {
+            NotificationCompat
+                .Builder(MainApplication.context, NOTIFICATION_CHANNEL_SYNCING)
+                .setGroup(NOTIFICATION_CHANNEL_SYNCING)
+                .setGroupSummary(true)
+                .setSortKey("0")
+                .setSmallIcon(R.drawable.ic_sync)
+                .setContentTitle(MainApplication.context.getString(R.string.syncing))
+                .setOngoing(true)
+                .setSilent(true)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+                .addAction(
+                    R.drawable.ic_cancel,
+                    MainApplication.context.getString(R.string.cancel_all),
+                    PendingIntent.getBroadcast(
+                        MainApplication.context,
+                        "<SYNC_ALL>".hashCode(),
+                        Intent(MainApplication.context, ActionReceiver::class.java).apply {
+                            action = ActionReceiver.COMMAND_CANCEL_SYNC_ALL
+                        },
+                        PendingIntent.FLAG_IMMUTABLE
+                    )
+                )
+        }
 
         private val downloadNotificationBuilder by lazy {
             NotificationCompat
@@ -216,7 +250,7 @@ class WorkerManager(appContext: Context) {
                     MainApplication.context.getString(R.string.cancel_all),
                     PendingIntent.getBroadcast(
                         MainApplication.context,
-                        "<ALL>".hashCode(),
+                        "<DOWNLOAD_ALL>".hashCode(),
                         Intent(MainApplication.context, ActionReceiver::class.java).apply {
                             action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD_ALL
                         },
@@ -244,7 +278,112 @@ class WorkerManager(appContext: Context) {
             manager: WorkerManager,
             workInfos: MutableList<WorkInfo>? = null,
         ) {
-            // TODO implementation
+            val syncs = workInfos
+                ?: manager.workManager
+                    .getWorkInfosByTag(SyncWorker::class.qualifiedName!!)
+                    .get()
+                ?: return
+
+            val context = MainApplication.context
+            syncsRunning.clear() // TODO re-evaluate
+
+            syncs.forEach { wi ->
+                val data = wi.outputData.takeIf {
+                    it != Data.EMPTY
+                } ?: wi.progress
+
+                data.takeIf { it != Data.EMPTY }?.let { data ->
+                    val task = SyncWorker.getTask(data)
+                    val state = SyncWorker.getState(data)
+                    val progress = SyncWorker.getProgress(data)
+                    val repoName = data.getString(ARG_REPOSITORY_NAME)
+
+                    val notificationBuilder = context.syncNotificationBuilder()
+
+                    syncsRunning.compute(task.repositoryId) { _, _ ->
+                        when (wi.state) {
+                            WorkInfo.State.ENQUEUED,
+                            WorkInfo.State.BLOCKED,
+                            WorkInfo.State.SUCCEEDED,
+                            WorkInfo.State.CANCELLED,
+                            -> {
+                                null
+                            }
+
+                            WorkInfo.State.RUNNING,
+                            -> {
+                                when (state) {
+                                    SyncState.CONNECTING -> {
+                                        notificationBuilder
+                                            .setContentTitle(
+                                                context.getString(
+                                                    R.string.syncing_FORMAT,
+                                                    repoName
+                                                )
+                                            )
+                                            .setContentText(context.getString(R.string.connecting))
+                                            .setProgress(0, 0, true)
+                                    }
+
+                                    SyncState.SYNCING    -> {
+                                        notificationBuilder
+                                            .setContentTitle(
+                                                context.getString(
+                                                    R.string.syncing_FORMAT,
+                                                    repoName
+                                                )
+                                            )
+                                            .updateProgress(context, progress)
+                                    }
+
+                                    else                 -> {}
+                                }
+                                state
+                            }
+
+                            WorkInfo.State.FAILED,
+                            -> {
+                                notificationBuilder
+                                    .setContentTitle(
+                                        context.getString(
+                                            R.string.syncing_FORMAT,
+                                            repoName
+                                        )
+                                    )
+                                    .setContentText(context.getString(R.string.action_failed))
+                                    .setSmallIcon(R.drawable.ic_new_releases)
+                                SyncState.FAILED
+                            }
+                        }
+                    }.let {
+                        if (ActivityCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.POST_NOTIFICATIONS
+                            ) == PackageManager.PERMISSION_GRANTED
+                        ) {
+                            if (it != null) MainApplication.wm.notificationManager.notify(
+                                NOTIFICATION_ID_SYNCING + task.repositoryId.toInt(),
+                                notificationBuilder.build()
+                            ) else MainApplication.wm.notificationManager
+                                .cancel(NOTIFICATION_ID_SYNCING + task.repositoryId.toInt())
+                        }
+                    }
+                }
+            }
+
+            if (syncsRunning.isNotEmpty()) MainApplication.wm.notificationManager.notify(
+                NOTIFICATION_ID_SYNCING,
+                syncNotificationBuilder.build()
+            )
+            else CoroutineScope(Dispatchers.Default).launch {
+                MainApplication.wm.notificationManager
+                    .cancel(NOTIFICATION_ID_SYNCING)
+                MainApplication.db.repositoryDao.allEnabledIds.forEach {
+                    MainApplication.wm.notificationManager
+                        .cancel(NOTIFICATION_ID_SYNCING + it.toInt())
+                }
+            }
+            // TODO update updatable apps
         }
 
         private fun onDownloadProgressNoSync(
@@ -364,7 +503,10 @@ class WorkerManager(appContext: Context) {
                                 allProcessed += 1
                                 notificationBuilder.setOngoing(false)
                                     .setContentTitle(
-                                        appContext.getString(R.string.downloaded_FORMAT, task.name)
+                                        appContext.getString(
+                                            R.string.downloaded_FORMAT,
+                                            task.name
+                                        )
                                     )
                                 MainApplication.wm.enqueueToBeInstalled(task)
                                 if (!Preferences[Preferences.Key.KeepInstallNotification]) {

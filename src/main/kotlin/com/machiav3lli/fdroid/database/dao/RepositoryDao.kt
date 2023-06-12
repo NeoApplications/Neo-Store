@@ -43,6 +43,9 @@ interface RepositoryDao : BaseDao<Repository> {
     @get:Query("SELECT * FROM repository ORDER BY _id ASC")
     val allLive: LiveData<List<Repository>>
 
+    @get:Query("SELECT _id FROM repository WHERE enabled != 0 ORDER BY _id ASC")
+    val allEnabledIds: List<Long>
+
     @get:Query("SELECT _id FROM repository WHERE enabled == 0 ORDER BY _id ASC")
     val allDisabled: List<Long>
 
