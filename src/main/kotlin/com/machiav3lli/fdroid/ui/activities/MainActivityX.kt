@@ -43,6 +43,8 @@ import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.pages.AppSheet
 import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.SyncService
+import com.machiav3lli.fdroid.service.worker.SyncRequest
+import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.ui.components.ExpandableSearchAction
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.components.TopBarAction
@@ -179,7 +181,7 @@ class MainActivityX : AppCompatActivity() {
                                     icon = Phosphor.ArrowsClockwise,
                                     description = stringResource(id = R.string.sync_repositories)
                                 ) {
-                                    syncConnection.binder?.sync(SyncService.SyncRequest.MANUAL)
+                                    SyncWorker.enqueueAll(SyncRequest.MANUAL)
                                 }
                             }
                             AnimatedVisibility(barVisible && !expanded.value) {

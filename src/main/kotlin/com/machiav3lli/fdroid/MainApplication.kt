@@ -2,20 +2,16 @@ package com.machiav3lli.fdroid
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.app.job.JobInfo
-import android.app.job.JobScheduler
 import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.IntentFilter
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
-import android.os.Build.VERSION_CODES
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.mutableStateOf
+import androidx.work.NetworkType
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import com.google.android.material.color.DynamicColors
@@ -26,10 +22,10 @@ import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.network.CoilDownloader
 import com.machiav3lli.fdroid.network.Downloader
-import com.machiav3lli.fdroid.service.Connection
 import com.machiav3lli.fdroid.service.PackageChangedReceiver
-import com.machiav3lli.fdroid.service.SyncService
 import com.machiav3lli.fdroid.service.WorkerManager
+import com.machiav3lli.fdroid.service.worker.SyncRequest
+import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.utility.Utils.setLanguage
@@ -43,7 +39,6 @@ import java.lang.ref.WeakReference
 import java.net.InetSocketAddress
 import java.net.Proxy
 import java.util.*
-import kotlin.time.Duration.Companion.minutes
 
 
 @Suppress("unused")
@@ -190,12 +185,12 @@ class MainApplication : Application(), ImageLoaderFactory {
     }
 
     private fun updateSyncJob(force: Boolean) {
-        val jobScheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
-        val reschedule = force || jobScheduler.allPendingJobs.none { it.id == JOB_ID_SYNC }
+        val wm = MainApplication.wm.workManager
+        val reschedule = force || wm.getWorkInfosByTag(TAG_SYNC_PERIODIC).get().isEmpty()
         if (reschedule) {
             when (val autoSync = Preferences[Preferences.Key.AutoSync]) {
                 is Preferences.AutoSync.Never  -> {
-                    jobScheduler.cancel(JOB_ID_SYNC)
+                    wm.cancelAllWorkByTag(TAG_SYNC_PERIODIC)
                     Log.i(this::javaClass.name, "Canceled next auto-sync run.")
                 }
 
@@ -203,8 +198,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                 is Preferences.AutoSync.WifiBattery,
                                                -> {
                     autoSync(
-                        jobScheduler = jobScheduler,
-                        connectionType = NETWORK_TYPE_WIFI,
+                        connectionType = NetworkType.UNMETERED,
                         chargingBattery = autoSync is Preferences.AutoSync.WifiBattery,
                     )
                 }
@@ -212,16 +206,14 @@ class MainApplication : Application(), ImageLoaderFactory {
                 is Preferences.AutoSync.Battery,
                                                -> {
                     autoSync(
-                        jobScheduler = jobScheduler,
-                        connectionType = JobInfo.NETWORK_TYPE_ANY,
+                        connectionType = NetworkType.CONNECTED,
                         chargingBattery = true,
                     )
                 }
 
                 is Preferences.AutoSync.Always -> {
                     autoSync(
-                        jobScheduler = jobScheduler,
-                        connectionType = JobInfo.NETWORK_TYPE_ANY
+                        connectionType = NetworkType.CONNECTED
                     )
                 }
             }
@@ -229,36 +221,12 @@ class MainApplication : Application(), ImageLoaderFactory {
     }
 
     private fun autoSync(
-        jobScheduler: JobScheduler,
-        connectionType: Int,
+        connectionType: NetworkType,
         chargingBattery: Boolean = false,
     ) {
-        val period = Preferences[Preferences.Key.AutoSyncInterval].minutes.inWholeMilliseconds
-        jobScheduler.schedule(
-            JobInfo
-                .Builder(
-                    JOB_ID_SYNC,
-                    ComponentName(this, SyncService.Job::class.java)
-                )
-                .setRequiresCharging(chargingBattery)
-                .apply {
-                    if (connectionType == NETWORK_TYPE_WIFI) {
-                        if (Android.sdk(VERSION_CODES.P)) setRequiredNetwork(
-                            NetworkRequest.Builder()
-                                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-                                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI_AWARE)
-                                .build()
-                        )
-                        else setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-                    } else setRequiredNetworkType(connectionType)
-                    setPeriodic(period, JobInfo.getMinFlexMillis())
-                    if (Android.sdk(VERSION_CODES.O)) {
-                        setRequiresBatteryNotLow(true)
-                        setRequiresStorageNotLow(true)
-                    }
-                }
-                .setPersisted(true)
-                .build()
+        SyncWorker.enqueuePeriodic(
+            connectionType = connectionType,
+            chargingBattery = chargingBattery,
         )
     }
 
@@ -290,10 +258,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                 db.repositoryDao.put(it.copy(lastModified = "", entityTag = ""))
             }
         }
-        Connection(SyncService::class.java, onBind = { connection, binder ->
-            binder.sync(SyncService.SyncRequest.FORCE)
-            connection.unbind(this)
-        }).bind(this)
+        SyncWorker.enqueueAll(SyncRequest.FORCE)
     }
 
     class BootReceiver : BroadcastReceiver() {
