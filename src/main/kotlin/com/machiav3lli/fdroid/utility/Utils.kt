@@ -31,7 +31,7 @@ import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.LinkType
 import com.machiav3lli.fdroid.entity.PermissionGroup
-import com.machiav3lli.fdroid.service.works.DownloadWorker
+import com.machiav3lli.fdroid.service.worker.DownloadWorker
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.At

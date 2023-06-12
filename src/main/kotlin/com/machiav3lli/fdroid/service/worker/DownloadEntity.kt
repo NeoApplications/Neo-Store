@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.service.works
+package com.machiav3lli.fdroid.service.worker
 
 import com.machiav3lli.fdroid.database.entity.Release
 import kotlinx.serialization.Serializable

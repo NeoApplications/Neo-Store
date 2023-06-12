@@ -40,11 +40,11 @@ import com.machiav3lli.fdroid.installer.InstallerService
 import com.machiav3lli.fdroid.installer.LegacyInstaller
 import com.machiav3lli.fdroid.service.worker.SyncState
 import com.machiav3lli.fdroid.service.worker.SyncWorker
-import com.machiav3lli.fdroid.service.works.DownloadState
-import com.machiav3lli.fdroid.service.works.DownloadTask
-import com.machiav3lli.fdroid.service.works.DownloadWorker
-import com.machiav3lli.fdroid.service.works.ErrorType
-import com.machiav3lli.fdroid.service.works.ValidationError
+import com.machiav3lli.fdroid.service.worker.DownloadState
+import com.machiav3lli.fdroid.service.worker.DownloadTask
+import com.machiav3lli.fdroid.service.worker.DownloadWorker
+import com.machiav3lli.fdroid.service.worker.ErrorType
+import com.machiav3lli.fdroid.service.worker.ValidationError
 import com.machiav3lli.fdroid.utility.downloadNotificationBuilder
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.formatSize

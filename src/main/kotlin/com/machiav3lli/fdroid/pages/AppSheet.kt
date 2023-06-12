@@ -80,7 +80,7 @@ import com.machiav3lli.fdroid.entity.toAntiFeature
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.network.createIconUri
 import com.machiav3lli.fdroid.service.ActionReceiver
-import com.machiav3lli.fdroid.service.works.DownloadWorker
+import com.machiav3lli.fdroid.service.worker.DownloadWorker
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ExpandableBlock
 import com.machiav3lli.fdroid.ui.components.ScreenshotList

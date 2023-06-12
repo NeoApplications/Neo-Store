@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.service.works
+package com.machiav3lli.fdroid.service.worker
 
 import android.content.Context
 import android.content.pm.PackageManager

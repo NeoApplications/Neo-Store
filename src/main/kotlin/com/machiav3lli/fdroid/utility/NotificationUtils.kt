@@ -29,9 +29,9 @@ import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.installer.InstallerService
 import com.machiav3lli.fdroid.service.ActionReceiver
 import com.machiav3lli.fdroid.service.worker.SyncWorker
-import com.machiav3lli.fdroid.service.works.DownloadTask
-import com.machiav3lli.fdroid.service.works.ErrorType
-import com.machiav3lli.fdroid.service.works.ValidationError
+import com.machiav3lli.fdroid.service.worker.DownloadTask
+import com.machiav3lli.fdroid.service.worker.ErrorType
+import com.machiav3lli.fdroid.service.worker.ValidationError
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.utility.extension.android.notificationManager
 import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
