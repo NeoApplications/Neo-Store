@@ -515,8 +515,8 @@ class WorkerManager(appContext: Context) {
                                 if (!Preferences[Preferences.Key.KeepInstallNotification]) {
                                     notificationBuilder.setTimeoutAfter(InstallerService.INSTALLED_NOTIFICATION_TIMEOUT)
                                     cancelNotification = true
-                                    null
-                                } else DownloadState.Success(
+                                }
+                                DownloadState.Success(
                                     packageName = task.packageName,
                                     name = task.name,
                                     version = task.release.version,
