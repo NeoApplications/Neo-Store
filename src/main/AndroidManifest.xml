@@ -130,10 +130,6 @@
             android:foregroundServiceType="dataSync" />
 
         <service
-            android:name=".service.DownloadService"
-            android:foregroundServiceType="dataSync" />
-
-        <service
             android:name=".installer.InstallerService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />
