@@ -48,7 +48,6 @@ import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
-import com.machiav3lli.fdroid.ui.components.DownloadsListItem
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -81,9 +80,9 @@ fun InstalledPage(viewModel: InstalledVM) {
     }
     val favorites by mainActivityX.db.extrasDao.favoritesFlow.collectAsState(emptyArray())
     val lifecycleOwner = LocalLifecycleOwner.current
-    val downloads = viewModel.downloadsMap
     val iconDetails by viewModel.iconDetails.collectAsState()
     val downloaded by viewModel.downloaded.collectAsState()
+    val downloads = downloaded.filter { it.state is DownloadState.Downloading }
     var showSortSheet by remember { mutableStateOf(false) }
     val sortSheetState = rememberModalBottomSheetState(true)
 
@@ -230,26 +229,17 @@ fun InstalledPage(viewModel: InstalledVM) {
                         text = stringResource(id = R.string.downloading)
                     )
                 }
-                if (downloads.isNotEmpty()) items(downloads.toList()) { (packageName, value) ->
-                    val (item, state) = value
-                    val installed = installedList?.get(packageName)
-                    if (state.version != installed?.version) DownloadsListItem(
+                if (downloads.isNotEmpty()) items(items = downloads
+                    .sortedByDescending { it.changed }
+                ) { item ->
+                    DownloadedItem(
                         item = item,
-                        state = state,
-                        repo = repositoriesMap[value.first.repositoryId],
-                        installed = installedList?.get(packageName)
+                        iconDetails = iconDetails[item.packageName],
+                        repo = repositoriesMap[item.state.repoId],
+                        state = item.state
                     ) {
                         mainActivityX.navigateProduct(item.packageName)
                     }
-                    else viewModel.updateDownloadState(
-                        DownloadState.Cancel(
-                            item.packageName,
-                            item.name,
-                            state.version,
-                            state.cacheFileName,
-                            state.repoId,
-                        )
-                    )
                 }
                 item {
                     Row(
