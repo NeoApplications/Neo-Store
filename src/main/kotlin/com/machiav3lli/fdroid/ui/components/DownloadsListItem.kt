@@ -22,7 +22,7 @@ import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.network.createIconUri
-import com.machiav3lli.fdroid.service.DownloadService
+import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.ui.components.appsheet.DownloadProgress
 
 @Composable
@@ -30,7 +30,7 @@ fun DownloadsListItem(
     item: ProductItem,
     repo: Repository? = null,
     installed: Installed? = null,
-    state: DownloadService.State,
+    state: DownloadState,
     onUserClick: (ProductItem) -> Unit = {},
 ) {
     val product by remember(item) { mutableStateOf(item) }
@@ -84,10 +84,10 @@ fun DownloadsListItem(
         },
         supportingContent = {
             DownloadProgress(
-                totalSize = if (state is DownloadService.State.Downloading) state.total
+                totalSize = if (state is DownloadState.Downloading) state.total
                     ?: 1L else 1L,
-                isIndeterminate = state !is DownloadService.State.Downloading,
-                downloaded = if (state is DownloadService.State.Downloading) state.read else 0L,
+                isIndeterminate = state !is DownloadState.Downloading,
+                downloaded = if (state is DownloadState.Downloading) state.read else 0L,
             )
         },
     )
@@ -98,7 +98,7 @@ fun DownloadedItem(
     item: Downloaded,
     iconDetails: IconDetails?,
     repo: Repository? = null,
-    state: DownloadService.State,
+    state: DownloadState,
     onUserClick: (Downloaded) -> Unit = {},
 ) {
     val download by remember(item) { mutableStateOf(item) }
@@ -152,16 +152,16 @@ fun DownloadedItem(
         supportingContent = {
             DownloadProgress(
                 totalSize = when (state) {
-                    is DownloadService.State.Downloading -> state.total ?: 1L
-                    is DownloadService.State.Cancel      -> 0L
-                    is DownloadService.State.Error       -> -1L
-                    else                                 -> 1L
+                    is DownloadState.Downloading -> state.total ?: 1L
+                    is DownloadState.Cancel      -> 0L
+                    is DownloadState.Error       -> -1L
+                    else                         -> 1L
                 },
-                isIndeterminate = state is DownloadService.State.Pending || state is DownloadService.State.Connecting,
+                isIndeterminate = state is DownloadState.Pending || state is DownloadState.Connecting,
                 downloaded = when (state) {
-                    is DownloadService.State.Downloading -> state.read
-                    is DownloadService.State.Success     -> 1L
-                    else                                 -> 0L
+                    is DownloadState.Downloading -> state.read
+                    is DownloadState.Success     -> 1L
+                    else                         -> 0L
                 },
                 finishedTime = download.changed,
             )

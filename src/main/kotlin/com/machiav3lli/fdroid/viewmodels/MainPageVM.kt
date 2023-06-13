@@ -14,7 +14,7 @@ import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Request
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.Source
-import com.machiav3lli.fdroid.service.DownloadService
+import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.utility.matchSearchQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -140,7 +140,7 @@ open class MainPageVM(
         it.map(Licenses::licenses).flatten().distinct()
     }
 
-    val downloadsMap = mutableStateMapOf<String, Pair<ProductItem, DownloadService.State>>()
+    val downloadsMap = mutableStateMapOf<String, Pair<ProductItem, DownloadState>>()
 
     val iconDetails = db.productDao.iconDetailsFlow.mapLatest {
         it.associateBy(IconDetails::packageName)
@@ -172,11 +172,11 @@ open class MainPageVM(
         }
     }
 
-    fun updateDownloadState(state: DownloadService.State) {
+    fun updateDownloadState(state: DownloadState) {
         when (state) {
-            is DownloadService.State.Downloading,
-            is DownloadService.State.Pending,
-            is DownloadService.State.Connecting,
+            is DownloadState.Downloading,
+            is DownloadState.Pending,
+            is DownloadState.Connecting,
             -> {
                 val installed = db.installedDao.get(state.packageName)
                 val product: Product
@@ -187,7 +187,7 @@ open class MainPageVM(
                 }
                 downloadsMap[state.packageName] = Pair(product.toItem(installed), state)
             }
-            is DownloadService.State.Success,
+            is DownloadState.Success,
             -> {
                 val installed = db.installedDao.get(state.packageName)
                 if (installed != null && installed.versionCode == state.release.versionCode)
@@ -202,8 +202,8 @@ open class MainPageVM(
                     downloadsMap[state.packageName] = Pair(product.toItem(installed), state)
                 }
             }
-            is DownloadService.State.Error,
-            is DownloadService.State.Cancel,
+            is DownloadState.Error,
+            is DownloadState.Cancel,
             -> {
                 downloadsMap.remove(state.packageName)
             }

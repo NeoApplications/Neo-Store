@@ -5,7 +5,7 @@ import com.machiav3lli.fdroid.FIELD_CACHEFILENAME
 import com.machiav3lli.fdroid.FIELD_VERSION
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.TABLE_DOWNLOADED
-import com.machiav3lli.fdroid.service.DownloadService
+import com.machiav3lli.fdroid.service.worker.DownloadState
 
 @Entity(
     tableName = TABLE_DOWNLOADED,
@@ -16,5 +16,5 @@ data class Downloaded(
     var version: String = "",
     var cacheFileName: String = "",
     var changed: Long = 0L,
-    var state: DownloadService.State,
+    var state: DownloadState,
 )

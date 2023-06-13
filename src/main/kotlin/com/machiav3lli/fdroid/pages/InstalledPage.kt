@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Product
-import com.machiav3lli.fdroid.service.DownloadService
+import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
@@ -242,7 +242,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                         mainActivityX.navigateProduct(item.packageName)
                     }
                     else viewModel.updateDownloadState(
-                        DownloadService.State.Cancel(
+                        DownloadState.Cancel(
                             item.packageName,
                             item.name,
                             state.version,
