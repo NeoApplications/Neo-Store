@@ -330,4 +330,5 @@
     <string name="next">Nächste</string>
     <string name="error">Fehler</string>
     <string name="previous">Vorherige</string>
+    <string name="clear_text">Lösche Text</string>
 </resources>
