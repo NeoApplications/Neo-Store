@@ -35,15 +35,16 @@ import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.database.entity.Downloaded
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.installer.InstallerService
 import com.machiav3lli.fdroid.installer.LegacyInstaller
-import com.machiav3lli.fdroid.service.worker.SyncState
-import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.service.worker.DownloadTask
 import com.machiav3lli.fdroid.service.worker.DownloadWorker
 import com.machiav3lli.fdroid.service.worker.ErrorType
+import com.machiav3lli.fdroid.service.worker.SyncState
+import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.worker.ValidationError
 import com.machiav3lli.fdroid.utility.downloadNotificationBuilder
 import com.machiav3lli.fdroid.utility.extension.android.Android
@@ -550,10 +551,21 @@ class WorkerManager(appContext: Context) {
                                 )
                             }
                         }
+                    }?.let {
+                        CoroutineScope(Dispatchers.Default).launch {
+                            MainApplication.db.downloadedDao.insertReplace(
+                                Downloaded(
+                                    it.packageName,
+                                    it.version,
+                                    it.cacheFileName,
+                                    System.currentTimeMillis(),
+                                    it
+                                )
+                            )
+                        }
                     }
 
                     manager.prune()
-
 
                     if (cancelNotification)
                         MainApplication.wm.notificationManager.cancel(task.key.hashCode())
