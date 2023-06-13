@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.viewmodels
 
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -10,11 +9,9 @@ import com.machiav3lli.fdroid.database.entity.IconDetails
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.database.entity.Product
-import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Request
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.Source
-import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.utility.matchSearchQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -140,8 +137,7 @@ open class MainPageVM(
         it.map(Licenses::licenses).flatten().distinct()
     }
 
-    val downloadsMap = mutableStateMapOf<String, Pair<ProductItem, DownloadState>>()
-
+    @OptIn(ExperimentalCoroutinesApi::class)
     val iconDetails = db.productDao.iconDetailsFlow.mapLatest {
         it.associateBy(IconDetails::packageName)
     }.stateIn(
@@ -169,44 +165,6 @@ open class MainPageVM(
                 .insertReplace(oldValue.copy(favorite = setBoolean))
             else db.extrasDao
                 .insertReplace(Extras(packageName, favorite = setBoolean))
-        }
-    }
-
-    fun updateDownloadState(state: DownloadState) {
-        when (state) {
-            is DownloadState.Downloading,
-            is DownloadState.Pending,
-            is DownloadState.Connecting,
-            -> {
-                val installed = db.installedDao.get(state.packageName)
-                val product: Product
-                db.productDao.get(state.packageName).also { products ->
-                    product = products.filter {
-                        it.compatible && (installed == null || it.signatures.contains(installed.signature))
-                    }.maxBy { it.suggestedVersionCode }
-                }
-                downloadsMap[state.packageName] = Pair(product.toItem(installed), state)
-            }
-            is DownloadState.Success,
-            -> {
-                val installed = db.installedDao.get(state.packageName)
-                if (installed != null && installed.versionCode == state.release.versionCode)
-                    downloadsMap.remove(state.packageName)
-                else {
-                    val product: Product
-                    db.productDao.get(state.packageName).also { products ->
-                        product = products.filter {
-                            it.compatible && (installed == null || it.signatures.contains(installed.signature))
-                        }.maxBy { it.suggestedVersionCode }
-                    }
-                    downloadsMap[state.packageName] = Pair(product.toItem(installed), state)
-                }
-            }
-            is DownloadState.Error,
-            is DownloadState.Cancel,
-            -> {
-                downloadsMap.remove(state.packageName)
-            }
         }
     }
 }
