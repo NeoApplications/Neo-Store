@@ -361,20 +361,22 @@ class WorkerManager(appContext: Context) {
                                 Manifest.permission.POST_NOTIFICATIONS
                             ) == PackageManager.PERMISSION_GRANTED
                         ) {
-                            if (it != null) MainApplication.wm.notificationManager.notify(
-                                NOTIFICATION_ID_SYNCING + task.repositoryId.toInt(),
-                                notificationBuilder.build()
-                            ) else MainApplication.wm.notificationManager
+                            if (it != null) MainApplication.wm.notificationManager
+                                .notify(
+                                    NOTIFICATION_ID_SYNCING + task.repositoryId.toInt(),
+                                    notificationBuilder.setOngoing(it != SyncState.FAILED).build()
+                                ) else MainApplication.wm.notificationManager
                                 .cancel(NOTIFICATION_ID_SYNCING + task.repositoryId.toInt())
                         }
                     }
                 }
             }
 
-            if (syncsRunning.isNotEmpty()) MainApplication.wm.notificationManager.notify(
-                NOTIFICATION_ID_SYNCING,
-                syncNotificationBuilder.build()
-            )
+            if (syncsRunning.values.any { it != SyncState.FAILED })
+                MainApplication.wm.notificationManager.notify(
+                    NOTIFICATION_ID_SYNCING,
+                    syncNotificationBuilder.build()
+                )
             else CoroutineScope(Dispatchers.Default).launch {
                 MainApplication.wm.notificationManager
                     .cancel(NOTIFICATION_ID_SYNCING)
