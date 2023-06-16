@@ -420,8 +420,24 @@ class WorkerManager(appContext: Context) {
                     MainApplication.wm.notificationManager
                         .cancel(NOTIFICATION_ID_SYNCING + it.toInt())
                 }
+                MainApplication.db.productDao
+                    .queryObject(
+                        installed = true,
+                        updates = true,
+                        section = Section.All,
+                        order = Order.NAME,
+                        ascending = true,
+                    )
+                    .map { it.toItem() }
+                    .let { result ->
+                        if (result.isNotEmpty() && Preferences[Preferences.Key.UpdateNotify])
+                            context.displayUpdatesNotification(result, true)
+                        if (Preferences[Preferences.Key.InstallAfterSync]) {
+                            MainApplication.wm.update(*result.toTypedArray())
+                        }
+                    }
+                // TODO notify of vulnerabilities
             }
-            // TODO update updatable apps
         }
 
         private fun onDownloadProgressNoSync(
