@@ -4,6 +4,8 @@ val accompanistVersion = "0.31.3-beta"
 val composeVersion = "1.5.0-beta02"
 val composeCompilerVersion = "1.4.7"
 val hiltVersion = "2.46.1"
+val koinVersion = "3.4.2"
+val koinKspVersion = "1.2.2"
 val material3Version = "1.2.0-alpha02"
 val navigationVersion = "2.7.0-beta01"
 val okhttpVersion = "5.0.0-alpha.11"
@@ -136,6 +138,12 @@ dependencies {
     // Dagger Hilt
     kapt("com.google.dagger:hilt-compiler:$hiltVersion")
     implementation("com.google.dagger:hilt-android:$hiltVersion")
+
+    // Koin
+    implementation("io.insert-koin:koin-android:$koinVersion")
+    implementation("io.insert-koin:koin-androidx-workmanager:$koinVersion")
+    implementation("io.insert-koin:koin-annotations:$koinKspVersion")
+    ksp("io.insert-koin:koin-ksp-compiler:$koinKspVersion")
 
     // OkHttps
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
