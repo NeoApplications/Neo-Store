@@ -1,12 +1,12 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
 val accompanistVersion = "0.31.3-beta"
-val composeVersion = "1.5.0-beta01"
+val composeVersion = "1.5.0-beta02"
 val composeCompilerVersion = "1.4.7"
 val hiltVersion = "2.46.1"
 val material3Version = "1.2.0-alpha02"
-val navigationVersion = "2.7.0-alpha01"
-val okhttpVersion = "5.0.0-alpha.9"
+val navigationVersion = "2.7.0-beta01"
+val okhttpVersion = "5.0.0-alpha.11"
 val retrofitVersion = "2.9.0"
 val roomVersion = "2.5.1"
 val coroutinesVersion = "1.7.1"
