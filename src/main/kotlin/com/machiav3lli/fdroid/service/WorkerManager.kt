@@ -71,8 +71,8 @@ class WorkerManager(appContext: Context) {
     var actionReceiver: ActionReceiver
     var context: Context = appContext
     val notificationManager: NotificationManagerCompat
-    val scope = CoroutineScope(Dispatchers.Default)
-    val ioScope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(Dispatchers.Default)
+    private val ioScope = CoroutineScope(Dispatchers.IO)
 
     private val appsToBeInstalled = SnapshotStateList<DownloadTask>()
 
@@ -101,7 +101,7 @@ class WorkerManager(appContext: Context) {
             onDownloadProgress(this, it)
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
+        ioScope.launch {
             snapshotFlow { appsToBeInstalled.toList() }.collectLatest {
                 val lock = Mutex()
 
@@ -119,20 +119,20 @@ class WorkerManager(appContext: Context) {
                         if (MainApplication.mainActivity != null &&
                             AppInstaller.getInstance(context)?.defaultInstaller is LegacyInstaller
                         ) {
-                            CoroutineScope(Dispatchers.Default).launch {
+                            scope.launch {
                                 Log.i(
                                     this::javaClass.name,
                                     "Waiting activity to install: ${task.packageName}"
                                 )
                                 MainApplication.mainActivity?.withResumed {
-                                    CoroutineScope(Dispatchers.IO).launch {
+                                    ioScope.launch {
                                         installer()
                                     }
                                 }
                             }
                         } else {
                             Log.i(this::javaClass.name, "Installing downloaded: ${task.url}")
-                            CoroutineScope(Dispatchers.IO).launch { installer() }
+                            ioScope.launch { installer() }
                         }
                     }
                 }
@@ -635,7 +635,7 @@ class WorkerManager(appContext: Context) {
             downloadNotificationBuilder
                 .setProgress(allCount, allProcessed, false)
                 .setContentText("$allProcessed / $allCount")
-                .apply {
+                .apply { // TODO fix pinned notification
                     setOngoing(allCount > 0)
 
                     if (ActivityCompat.checkSelfPermission(
@@ -645,7 +645,7 @@ class WorkerManager(appContext: Context) {
                     ) MainApplication.wm.notificationManager.notify(
                         NOTIFICATION_CHANNEL_DOWNLOADING,
                         NOTIFICATION_ID_DOWNLOADING,
-                        downloadNotificationBuilder.build()
+                        this.build()
                     )
                 }
         }

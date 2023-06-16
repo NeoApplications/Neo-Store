@@ -1,6 +1,11 @@
 package com.machiav3lli.fdroid.network
 
 import android.util.Log
+import com.machiav3lli.fdroid.CLIENT_CONNECT_TIMEOUT
+import com.machiav3lli.fdroid.CLIENT_READ_TIMEOUT
+import com.machiav3lli.fdroid.CLIENT_WRITE_TIMEOUT
+import com.machiav3lli.fdroid.POOL_DEFAULT_KEEP_ALIVE_DURATION_MS
+import com.machiav3lli.fdroid.POOL_DEFAULT_MAX_IDLE_CONNECTIONS
 import com.machiav3lli.fdroid.utility.ProgressInputStream
 import com.machiav3lli.fdroid.utility.getBaseUrl
 import kotlinx.coroutines.CoroutineScope
@@ -22,12 +27,6 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
 object Downloader {
-    private const val DEFAULT_MAX_IDLE_CONNECTIONS = 5 // TODO make configurable
-    private const val DEFAULT_KEEP_ALIVE_DURATION_MS = 5_000L
-    private const val CONNECT_TIMEOUT = 30L
-    private const val READ_TIMEOUT = 15L
-    private const val WRITE_TIMEOUT = 15L
-
     class Result(val code: Int, val lastModified: String, val entityTag: String) {
         val success: Boolean
             get() = code == 200 || code == 206
@@ -73,9 +72,9 @@ object Downloader {
         }
 
     private fun createClient(proxy: Proxy?, cache: Cache?): OkHttpClient = OkHttpClient.Builder()
-        .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
-        .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-        .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+        .connectTimeout(CLIENT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
+        .readTimeout(CLIENT_READ_TIMEOUT, TimeUnit.SECONDS)
+        .writeTimeout(CLIENT_WRITE_TIMEOUT, TimeUnit.SECONDS)
         .proxy(proxy)
         .cache(cache)
         .build()
@@ -116,8 +115,8 @@ object Downloader {
 
             val connectionPool = connectionPools.getOrPut(baseUrl) {
                 ConnectionPool(
-                    DEFAULT_MAX_IDLE_CONNECTIONS,
-                    DEFAULT_KEEP_ALIVE_DURATION_MS,
+                    POOL_DEFAULT_MAX_IDLE_CONNECTIONS,
+                    POOL_DEFAULT_KEEP_ALIVE_DURATION_MS,
                     TimeUnit.MILLISECONDS
                 )
             }
@@ -139,9 +138,9 @@ object Downloader {
             val client = clients.getOrPut(baseUrl) {
                 OkHttpClient.Builder()
                     .connectionPool(connectionPool)
-                    .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
-                    .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-                    .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+                    .connectTimeout(CLIENT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                    .readTimeout(CLIENT_READ_TIMEOUT, TimeUnit.SECONDS)
+                    .writeTimeout(CLIENT_WRITE_TIMEOUT, TimeUnit.SECONDS)
                     .followRedirects(true)
                     .followSslRedirects(true)
                     .retryOnConnectionFailure(true)

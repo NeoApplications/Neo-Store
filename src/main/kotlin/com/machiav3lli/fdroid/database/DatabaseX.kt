@@ -211,22 +211,18 @@ abstract class DatabaseX : RoomDatabase() {
         }
     }
 
-    fun cleanUp(pairs: Set<Pair<Long, Boolean>>) {
+    fun cleanUp(vararg pairs: Pair<Long, Boolean>) {
         runInTransaction {
-            pairs.windowed(10, 10, true).map {
-                it.map { pair -> pair.first }
-                    .toLongArray()
-                    .forEach { id ->
-                        productDao.deleteById(id)
-                        categoryDao.deleteById(id)
-                    }
-                it.filter { pair -> pair.second }
-                    .map { pair -> pair.first }
-                    .toLongArray()
-                    .forEach { id -> repositoryDao.deleteById(id) }
+            pairs.forEach { pair ->
+                val id = pair.first
+                productDao.deleteById(id)
+                categoryDao.deleteById(id)
+                if (pair.second) repositoryDao.deleteById(id)
             }
         }
     }
+
+    fun cleanUp(pairs: Set<Pair<Long, Boolean>>) = cleanUp(*pairs.toTypedArray())
 
     fun finishTemporary(repository: Repository, success: Boolean) {
         runInTransaction {

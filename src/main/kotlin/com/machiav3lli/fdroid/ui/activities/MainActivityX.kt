@@ -41,8 +41,6 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.pages.AppSheet
-import com.machiav3lli.fdroid.service.Connection
-import com.machiav3lli.fdroid.service.SyncService
 import com.machiav3lli.fdroid.service.worker.SyncRequest
 import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.ui.components.ExpandableSearchAction
@@ -85,7 +83,6 @@ class MainActivityX : AppCompatActivity() {
 
     private lateinit var navController: NavHostController
     private val cScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
-    val syncConnection = Connection(SyncService::class.java)
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
@@ -227,11 +224,6 @@ class MainActivityX : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        syncConnection.bind(this)
     }
 
     override fun onResume() {

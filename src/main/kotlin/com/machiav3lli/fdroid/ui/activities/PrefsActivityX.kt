@@ -33,8 +33,6 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NAV_PREFS
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.installer.AppInstaller
-import com.machiav3lli.fdroid.service.Connection
-import com.machiav3lli.fdroid.service.SyncService
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
@@ -63,7 +61,6 @@ class PrefsActivityX : AppCompatActivity() {
     }
 
     private lateinit var navController: NavHostController
-    val syncConnection = Connection(SyncService::class.java)
 
     val db
         get() = (application as MainApplication).db
@@ -117,11 +114,6 @@ class PrefsActivityX : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        syncConnection.bind(this)
     }
 
     @Deprecated("Deprecated in Java", ReplaceWith("finishAfterTransition()"))
