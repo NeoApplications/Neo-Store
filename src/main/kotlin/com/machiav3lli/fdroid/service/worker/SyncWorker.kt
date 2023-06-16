@@ -71,20 +71,23 @@ class SyncWorker(
             vararg ids: Long,
         ) {
             ids.map { repoId ->
-                val data = workDataOf(
-                    ARG_REPOSITORY_ID to repoId,
-                    ARG_SYNC_REQUEST to request.ordinal,
-                )
 
-                MainApplication.wm.workManager.enqueueUniqueWork(
-                    "sync_$repoId",
-                    ExistingWorkPolicy.REPLACE,
-                    OneTimeWorkRequestBuilder<SyncWorker>()
-                        .setInputData(data)
-                        .addTag(TAG_SYNC_ONETIME)
-                        .addTag("sync_$repoId")
-                        .build()
-                )
+                if (repoId != EXODUS_TRACKERS_SYNC) {
+                    val data = workDataOf(
+                        ARG_REPOSITORY_ID to repoId,
+                        ARG_SYNC_REQUEST to request.ordinal,
+                    )
+
+                    MainApplication.wm.workManager.enqueueUniqueWork(
+                        "sync_$repoId",
+                        ExistingWorkPolicy.REPLACE,
+                        OneTimeWorkRequestBuilder<SyncWorker>()
+                            .setInputData(data)
+                            .addTag(TAG_SYNC_ONETIME)
+                            .addTag("sync_$repoId")
+                            .build()
+                    )
+                } else ExodusWorker.fetchTrackers()
             }
         }
 
