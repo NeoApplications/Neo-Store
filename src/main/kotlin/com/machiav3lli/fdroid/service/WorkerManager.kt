@@ -36,6 +36,9 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Downloaded
+import com.machiav3lli.fdroid.entity.Order
+import com.machiav3lli.fdroid.entity.ProductItem
+import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.installer.InstallerService
 import com.machiav3lli.fdroid.installer.LegacyInstaller
@@ -46,6 +49,8 @@ import com.machiav3lli.fdroid.service.worker.ErrorType
 import com.machiav3lli.fdroid.service.worker.SyncState
 import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.worker.ValidationError
+import com.machiav3lli.fdroid.utility.Utils
+import com.machiav3lli.fdroid.utility.displayUpdatesNotification
 import com.machiav3lli.fdroid.utility.downloadNotificationBuilder
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
@@ -66,6 +71,8 @@ class WorkerManager(appContext: Context) {
     var actionReceiver: ActionReceiver
     var context: Context = appContext
     val notificationManager: NotificationManagerCompat
+    val scope = CoroutineScope(Dispatchers.Default)
+    val ioScope = CoroutineScope(Dispatchers.IO)
 
     private val appsToBeInstalled = SnapshotStateList<DownloadTask>()
 
@@ -173,6 +180,34 @@ class WorkerManager(appContext: Context) {
                 if (packageName != null) "download_$packageName"
                 else it
             )
+        }
+    }
+
+    fun install(vararg product: ProductItem) = batchUpdate(product.toList(), true)
+
+    fun update(vararg product: ProductItem) = batchUpdate(product.toList(), false)
+
+    private fun batchUpdate(productItems: List<ProductItem>, enforce: Boolean = false) {
+        scope.launch {
+            productItems.map { productItem ->
+                Triple(
+                    productItem.packageName,
+                    MainApplication.db.installedDao.get(productItem.packageName),
+                    MainApplication.db.repositoryDao.get(productItem.repositoryId)
+                )
+            }
+                .filter { (_, installed, repo) -> (enforce || installed != null) && repo != null }
+                .forEach { (packageName, installed, repo) ->
+                    val productRepository = MainApplication.db.productDao.get(packageName)
+                        .filter { product -> product.repositoryId == repo!!.id }
+                        .map { product -> Pair(product, repo!!) }
+                    Utils.startUpdate(
+                        packageName,
+                        installed,
+                        productRepository
+                    )
+                }
+
         }
     }
 
