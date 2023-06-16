@@ -46,7 +46,7 @@ fun RepositoryItem(
             .combinedClickable(
                 onClick = {
                     enable(!isEnabled)
-                    onClick(repository.copy(enabled = !repository.enabled))
+                    onClick(repository)
                 },
                 onLongClick = { onLongClick(repository) }
             ),

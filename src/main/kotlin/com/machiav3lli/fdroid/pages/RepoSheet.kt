@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.Repository
-import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
+import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.BlockText
 import com.machiav3lli.fdroid.ui.components.SelectChip
@@ -448,8 +448,7 @@ fun RepoPage(
                 primaryIcon = Phosphor.TrashSimple,
                 primaryAction = {
                     scope.launch {
-                        (context as PrefsActivityX).syncConnection
-                            .binder?.deleteRepository(repositoryId)
+                        SyncWorker.deleteRepo(repositoryId)
                         onDismiss()
                     }
                 },
