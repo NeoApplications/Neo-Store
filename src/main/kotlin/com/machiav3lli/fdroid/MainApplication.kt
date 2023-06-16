@@ -22,6 +22,7 @@ import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.network.CoilDownloader
 import com.machiav3lli.fdroid.network.Downloader
+import com.machiav3lli.fdroid.network.exodusModule
 import com.machiav3lli.fdroid.service.PackageChangedReceiver
 import com.machiav3lli.fdroid.service.WorkerManager
 import com.machiav3lli.fdroid.service.worker.SyncRequest
@@ -35,6 +36,9 @@ import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 import java.lang.ref.WeakReference
 import java.net.InetSocketAddress
 import java.net.Proxy
@@ -90,6 +94,12 @@ class MainApplication : Application(), ImageLoaderFactory {
                 .build()
         )
         appRef = WeakReference(this)
+
+        startKoin {
+            androidLogger()
+            androidContext(this@MainApplication)
+            modules(exodusModule)
+        }
 
         db = DatabaseX.getInstance(applicationContext)
         Preferences.init(this)

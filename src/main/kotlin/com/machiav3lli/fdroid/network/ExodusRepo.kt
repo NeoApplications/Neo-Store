@@ -2,78 +2,86 @@ package com.machiav3lli.fdroid.network
 
 import android.util.Log
 import com.machiav3lli.fdroid.BuildConfig
+import com.machiav3lli.fdroid.CLIENT_CONNECT_TIMEOUT
+import com.machiav3lli.fdroid.CLIENT_READ_TIMEOUT
+import com.machiav3lli.fdroid.CLIENT_WRITE_TIMEOUT
 import com.machiav3lli.fdroid.database.entity.ExodusData
 import com.machiav3lli.fdroid.database.entity.Trackers
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
-import javax.inject.Inject
-import javax.inject.Singleton
+import okhttp3.Request
+import org.koin.dsl.module
+import java.net.InetSocketAddress
+import java.net.Proxy
+import java.util.concurrent.TimeUnit
 
-class RExodusAPI @Inject constructor(
-    private val exodusAPIInterface: IExodusAPI
-) {
+class RExodusAPI {
 
-    suspend fun getTrackers(): Trackers {
-        val result = exodusAPIInterface.getTrackers()
+    private val onionProxy = Proxy(Proxy.Type.SOCKS, InetSocketAddress("127.0.0.1", 9050))
+    var proxy: Proxy? = null
+        set(value) {
+            if (field != value) {
+                field = value
+            }
+        }
+
+    private fun getProxy(onion: Boolean) = if (onion) onionProxy else proxy
+
+    val client = OkHttpClient.Builder()
+        .connectTimeout(CLIENT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
+        .readTimeout(CLIENT_READ_TIMEOUT, TimeUnit.SECONDS)
+        .writeTimeout(CLIENT_WRITE_TIMEOUT, TimeUnit.SECONDS)
+        .proxy(getProxy(false))
+        .retryOnConnectionFailure(true)
+        .build()
+
+    companion object {
+        const val URL_BASE = "https://reports.exodus-privacy.eu.org/api"
+        const val AUTHENTICATION = "Token ${BuildConfig.KEY_API_EXODUS}"
+    }
+
+    fun getTrackers(): Trackers {
+        val request = Request.Builder()
+            .url("$URL_BASE/trackers")
+            .header("Authorization", AUTHENTICATION)
+            .build()
+
+        val result = client.newCall(request).execute()
         if (!result.isSuccessful)
-            Log.w(this::javaClass.name, "getTrackers() failed: Response code  ${result.code()}")
+            Log.w(this::javaClass.name, "getTrackers() failed: Response code  ${result.code}")
+
+        val moshi = Moshi.Builder().build()
+        val adapter = moshi.adapter(Trackers::class.java)
+
         return when {
-            result.isSuccessful -> result.body() ?: Trackers()
-            else -> Trackers()
+            result.isSuccessful -> adapter.fromJson(result.body.string()) ?: Trackers()
+            else                -> Trackers()
         }
     }
 
-    suspend fun getExodusInfo(packageName: String): List<ExodusData> {
-        val result = exodusAPIInterface.getExodusData(packageName)
+    fun getExodusInfo(packageName: String): List<ExodusData> {
+        val request = Request.Builder()
+            .url("$URL_BASE/search/$packageName/details")
+            .header("Authorization", AUTHENTICATION)
+            .build()
+
+        val result = client.newCall(request).execute()
         if (!result.isSuccessful)
-            Log.w(this::javaClass.name, "getExodusInfo() failed: Response code ${result.code()}")
+            Log.w(this::javaClass.name, "getExodusInfo() failed: Response code ${result.code}")
+
+        val moshi = Moshi.Builder().build()
+        val exodusDataListType =
+            Types.newParameterizedType(List::class.java, ExodusData::class.java)
+        val adapter = moshi.adapter<List<ExodusData>>(exodusDataListType)
+
         return when {
-            result.isSuccessful -> result.body() ?: emptyList()
-            else -> emptyList()
+            result.isSuccessful -> adapter.fromJson(result.body.string()) ?: emptyList()
+            else                -> emptyList()
         }
     }
 }
 
-@Module
-@InstallIn(SingletonComponent::class)
-object ExodusModule {
-
-    @Singleton
-    @Provides
-    fun provideExodusAPIInstance(okHttpClient: OkHttpClient): IExodusAPI {
-        return Retrofit.Builder()
-            .baseUrl(IExodusAPI.URL_BASE)
-            .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build()
-            .create(IExodusAPI::class.java)
-    }
-
-    @Singleton
-    @Provides
-    fun provideOkHttpClient(interceptor: Interceptor): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .build()
-    }
-
-    @Singleton
-    @Provides
-    fun provideInterceptor(): Interceptor {
-        return Interceptor { chain ->
-            val builder = chain.request().newBuilder().apply {
-                header(
-                    "Authorization",
-                    "Token ${BuildConfig.KEY_API_EXODUS}"
-                )
-            }
-            return@Interceptor chain.proceed(builder.build())
-        }
-    }
+val exodusModule = module {
+    single { RExodusAPI() }
 }
