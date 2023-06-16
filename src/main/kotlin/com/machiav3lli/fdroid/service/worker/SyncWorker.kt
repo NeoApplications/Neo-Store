@@ -34,6 +34,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.TAG_SYNC_PERIODIC
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.service.ActionReceiver
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
@@ -41,6 +42,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.future.future
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
@@ -144,6 +146,27 @@ class SyncWorker(
             }
         }
 
+        suspend fun enableRepo(repository: Repository, enabled: Boolean): Boolean =
+            withContext(Dispatchers.IO) {
+                MainApplication.db.repositoryDao.put(repository.enable(enabled))
+                if (enabled) {
+                    enqueue(SyncRequest.MANUAL, repository.id)
+                } else {
+                    MainApplication.wm.cancelSync(repository.id)
+                    MainApplication.db.cleanUp(Pair(repository.id, false))
+                }
+                true
+            }
+
+        suspend fun deleteRepo(repoId: Long): Boolean = withContext(Dispatchers.IO) {
+            val repository = MainApplication.db.repositoryDao.get(repoId)
+            repository != null && run {
+                enableRepo(repository, false)
+                MainApplication.db.repositoryDao.deleteById(repoId)
+                true
+            }
+        }
+
         fun getTask(data: Data) = SyncTask(
             data.getLong(ARG_REPOSITORY_ID, -1L),
             SyncRequest.values()[
@@ -235,8 +258,6 @@ class SyncWorker(
                     )
                 )
             }
-            //} else if (task.repositoryId == EXODUS_TRACKERS_SYNC) {
-            // TODO fetchTrackers()
         } else {
             return Result.success(
                 workDataOf(
