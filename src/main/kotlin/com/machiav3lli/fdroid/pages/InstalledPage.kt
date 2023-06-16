@@ -45,6 +45,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.service.worker.DownloadState
+import com.machiav3lli.fdroid.service.worker.ExodusWorker
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
@@ -262,7 +263,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                         repo = repositoriesMap[item.repositoryId],
                         isFavorite = favorites.contains(item.packageName),
                         onUserClick = {
-                            mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
+                            ExodusWorker.fetchExodusInfo(item.packageName)
                             mainActivityX.navigateProduct(it.packageName)
                         },
                         onFavouriteClick = { pi ->

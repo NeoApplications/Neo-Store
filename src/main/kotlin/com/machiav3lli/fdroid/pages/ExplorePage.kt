@@ -36,6 +36,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.index.RepositoryUpdater
+import com.machiav3lli.fdroid.service.worker.ExodusWorker
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
@@ -178,7 +179,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                         repo = repositoriesMap[item.repositoryId],
                         isFavorite = favorites.contains(item.packageName),
                         onUserClick = {
-                            mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
+                            ExodusWorker.fetchExodusInfo(item.packageName)
                             mainActivityX.navigateProduct(it.packageName)
                         },
                         onFavouriteClick = {

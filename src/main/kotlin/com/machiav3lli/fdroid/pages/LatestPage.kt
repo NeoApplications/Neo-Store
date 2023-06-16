@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.service.worker.ExodusWorker
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
@@ -64,7 +65,6 @@ fun LatestPage(viewModel: LatestVM) {
     val sortSheetState = rememberModalBottomSheetState(true)
 
     LaunchedEffect(Unit) {
-        mainActivityX.syncConnection.bind(context)
         withContext(Dispatchers.IO) {
             mainActivityX.searchQuery.collect { newQuery ->
                 viewModel.setSearchQuery(newQuery)
@@ -153,7 +153,7 @@ fun LatestPage(viewModel: LatestVM) {
                 repo = repositoriesMap[item.repositoryId],
                 isFavorite = favorites.contains(item.packageName),
                 onUserClick = {
-                    mainActivityX.syncConnection.binder?.fetchExodusInfo(item.packageName)
+                    ExodusWorker.fetchExodusInfo(item.packageName)
                     mainActivityX.navigateProduct(it.packageName)
                 },
                 onFavouriteClick = {
