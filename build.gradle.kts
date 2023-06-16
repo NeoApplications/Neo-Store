@@ -10,6 +10,7 @@ val material3Version = "1.2.0-alpha02"
 val navigationVersion = "2.7.0-beta01"
 val okhttpVersion = "5.0.0-alpha.11"
 val retrofitVersion = "2.9.0"
+val moshiVersion = "1.15.0"
 val roomVersion = "2.5.1"
 val coroutinesVersion = "1.7.1"
 
@@ -150,6 +151,10 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
+
+    // Moshi
+    implementation("com.squareup.moshi:moshi:$moshiVersion")
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
 
     // LibSu
     implementation("com.github.topjohnwu.libsu:core:5.0.5")
