@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
@@ -170,7 +171,7 @@ fun LatestPage(viewModel: LatestVM) {
                             mainActivityX.supportFragmentManager
                         )
                     else
-                        mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                        MainApplication.wm.install(it)
                 }
             )
         }

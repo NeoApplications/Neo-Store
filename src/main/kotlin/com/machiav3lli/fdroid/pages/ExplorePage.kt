@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
+import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.Section
@@ -195,7 +196,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                                     mainActivityX.supportFragmentManager
                                 )
                             else
-                                mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                                MainApplication.wm.install(it)
                         }
                     )
                 }

@@ -40,6 +40,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Product
@@ -199,10 +200,8 @@ fun InstalledPage(viewModel: InstalledVM) {
                                 icon = Phosphor.Download,
                             ) {
                                 secondaryList?.let {
-                                    mainActivityX.syncConnection.binder?.updateApps(
-                                        it.map(
-                                            Product::toItem
-                                        )
+                                    MainApplication.wm.update(
+                                        *it.map(Product::toItem).toTypedArray()
                                     )
                                 }
                             }
@@ -281,7 +280,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                                     mainActivityX.supportFragmentManager
                                 )
                             else
-                                mainActivityX.syncConnection.binder?.installApps(listOf(it))
+                                MainApplication.wm.install(it)
                         }
                     )
                 }
