@@ -24,7 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import androidx.navigation.compose.rememberNavController
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.EXTRA_INTENT_HANDLED
@@ -84,7 +84,7 @@ class PrefsActivityX : AppCompatActivity() {
                     else -> isDarkTheme
                 }
             ) {
-                navController = rememberAnimatedNavController()
+                navController = rememberNavController()
                 var pageTitle by remember {
                     mutableStateOf(NavItem.Prefs.title)
                 }

@@ -14,9 +14,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.activity
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.pages.ExplorePage
@@ -29,13 +29,12 @@ import com.machiav3lli.fdroid.pages.PrefsReposPage
 import com.machiav3lli.fdroid.pages.PrefsUpdatesPage
 import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
 ) =
-    AnimatedNavHost(
+    NavHost(
         modifier = modifier,
         navController = navController,
         startDestination = NavItem.Permissions.destination,
@@ -68,7 +67,7 @@ fun PrefsNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
 ) =
-    AnimatedNavHost(
+    NavHost(
         modifier = modifier,
         navController = navController,
         startDestination = NavItem.PersonalPrefs.destination
@@ -104,11 +103,10 @@ fun PrefsNavHost(
         }
     }
 
-@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.slideDownComposable(
     route: String,
     args: List<NamedNavArgument> = emptyList(),
-    composable: @Composable (AnimatedVisibilityScope.(NavBackStackEntry) -> Unit),
+    content: @Composable (AnimatedVisibilityScope.(NavBackStackEntry) -> Unit),
 ) {
     composable(
         route,
@@ -116,15 +114,14 @@ fun NavGraphBuilder.slideDownComposable(
         enterTransition = { slideInVertically { height -> -height } + fadeIn() },
         exitTransition = { slideOutVertically { height -> height } + fadeOut() }
     ) {
-        composable(it)
+        content(it)
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.fadeComposable(
     route: String,
     args: List<NamedNavArgument> = emptyList(),
-    composable: @Composable (AnimatedVisibilityScope.(NavBackStackEntry) -> Unit),
+    content: @Composable (AnimatedVisibilityScope.(NavBackStackEntry) -> Unit),
 ) {
     composable(
         route,
@@ -132,6 +129,6 @@ fun NavGraphBuilder.fadeComposable(
         enterTransition = { fadeIn(initialAlpha = 0.3f) },
         exitTransition = { fadeOut(targetAlpha = 0.3f) }
     ) {
-        composable(it)
+        content(it)
     }
 }
