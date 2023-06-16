@@ -3,13 +3,11 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 val accompanistVersion = "0.31.3-beta"
 val composeVersion = "1.5.0-beta02"
 val composeCompilerVersion = "1.4.7"
-val hiltVersion = "2.46.1"
 val koinVersion = "3.4.2"
 val koinKspVersion = "1.2.2"
 val material3Version = "1.2.0-alpha02"
 val navigationVersion = "2.7.0-beta01"
 val okhttpVersion = "5.0.0-alpha.11"
-val retrofitVersion = "2.9.0"
 val moshiVersion = "1.15.0"
 val roomVersion = "2.5.1"
 val coroutinesVersion = "1.7.1"
@@ -20,7 +18,6 @@ plugins {
     kotlin("kapt") version ("1.8.21")
     kotlin("plugin.serialization") version ("1.8.21")
     id("com.google.devtools.ksp") version ("1.8.21-1.0.11")
-    id("com.google.dagger.hilt.android") version ("2.45")
 }
 
 android {
@@ -136,10 +133,6 @@ dependencies {
     implementation("io.coil-kt:coil:2.4.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
 
-    // Dagger Hilt
-    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
-    implementation("com.google.dagger:hilt-android:$hiltVersion")
-
     // Koin
     implementation("io.insert-koin:koin-android:$koinVersion")
     implementation("io.insert-koin:koin-androidx-workmanager:$koinVersion")
@@ -149,8 +142,6 @@ dependencies {
     // OkHttps
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
 
     // Moshi
     implementation("com.squareup.moshi:moshi:$moshiVersion")
@@ -188,7 +179,6 @@ dependencies {
     implementation("androidx.compose.material3:material3:$material3Version")
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
-    implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
