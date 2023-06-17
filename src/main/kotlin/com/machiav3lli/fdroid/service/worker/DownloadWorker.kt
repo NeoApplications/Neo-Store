@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.work.CoroutineWorker
 import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
 import androidx.work.ForegroundInfo
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
@@ -84,7 +85,12 @@ class DownloadWorker(
                 .addTag("download_$packageName")
                 .build()
 
-            MainApplication.wm.workManager.beginWith(downloadRequest).enqueue()
+            MainApplication.wm.workManager
+                .beginUniqueWork(
+                    "$packageName-${repository.id}-${release.version}",
+                    ExistingWorkPolicy.KEEP,
+                    downloadRequest,
+                ).enqueue()
         }
 
         fun getTask(data: Data) = DownloadTask(
