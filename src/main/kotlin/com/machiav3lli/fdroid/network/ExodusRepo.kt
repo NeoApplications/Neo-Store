@@ -7,8 +7,6 @@ import com.machiav3lli.fdroid.CLIENT_READ_TIMEOUT
 import com.machiav3lli.fdroid.CLIENT_WRITE_TIMEOUT
 import com.machiav3lli.fdroid.database.entity.ExodusData
 import com.machiav3lli.fdroid.database.entity.Trackers
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.koin.dsl.module
@@ -51,11 +49,8 @@ class RExodusAPI {
         if (!result.isSuccessful)
             Log.w(this::javaClass.name, "getTrackers() failed: Response code  ${result.code}")
 
-        val moshi = Moshi.Builder().build()
-        val adapter = moshi.adapter(Trackers::class.java)
-
         return when {
-            result.isSuccessful -> adapter.fromJson(result.body.string()) ?: Trackers()
+            result.isSuccessful -> Trackers.fromJson(result.body.string()) ?: Trackers()
             else                -> Trackers()
         }
     }
@@ -70,13 +65,8 @@ class RExodusAPI {
         if (!result.isSuccessful)
             Log.w(this::javaClass.name, "getExodusInfo() failed: Response code ${result.code}")
 
-        val moshi = Moshi.Builder().build()
-        val exodusDataListType =
-            Types.newParameterizedType(List::class.java, ExodusData::class.java)
-        val adapter = moshi.adapter<List<ExodusData>>(exodusDataListType)
-
         return when {
-            result.isSuccessful -> adapter.fromJson(result.body.string()) ?: emptyList()
+            result.isSuccessful -> ExodusData.listFromJson(result.body.string())
             else                -> emptyList()
         }
     }
