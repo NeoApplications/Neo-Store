@@ -5,6 +5,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,8 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.flowlayout.FlowRow
-import com.google.accompanist.flowlayout.MainAxisAlignment
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.DownloadState
@@ -39,6 +39,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.utility.extension.text.formatDateTime
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AppInfoHeader(
     modifier: Modifier = Modifier,
@@ -80,11 +81,12 @@ fun AppInfoHeader(
                 .minus(ActionState.Bookmarked)
             AnimatedVisibility(visible = secondaryActions.isNotEmpty()) {
                 FlowRow(
-                    modifier = modifier
-                        .fillMaxWidth(),
-                    mainAxisAlignment = MainAxisAlignment.Center,
-                    mainAxisSpacing = 8.dp,
-                    crossAxisSpacing = 8.dp
+                    modifier = modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(
+                        8.dp,
+                        Alignment.CenterHorizontally
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     secondaryActions.forEach {
                         SecondaryActionButton(packageState = it) {

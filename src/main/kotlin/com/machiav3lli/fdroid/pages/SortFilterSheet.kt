@@ -3,6 +3,8 @@ package com.machiav3lli.fdroid.pages
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -30,7 +32,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.flowlayout.FlowRow
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
@@ -52,7 +53,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.mapLatest
 
 @SuppressLint("FlowOperatorInvokedInComposition")
-@OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalLayoutApi::class
+)
 @Composable
 fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
     val context = LocalContext.current
@@ -186,7 +190,7 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
             item {
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
-                    mainAxisSpacing = 8.dp,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
 
                     sortKey.default.value.values.forEach {
@@ -221,7 +225,7 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
             item {
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
-                    mainAxisSpacing = 8.dp,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     activeRepos.sortedBy { it.name }.forEach {
                         var checked by remember {
@@ -254,7 +258,7 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
             item {
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
-                    mainAxisSpacing = 8.dp,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     (listOf(FILTER_CATEGORY_ALL) + categories.sorted()).forEach {
                         SelectChip(
@@ -277,7 +281,7 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
             item {
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
-                    mainAxisSpacing = 8.dp,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     AntiFeature.values().sortedBy { context.getString(it.titleResId) }
                         .forEach {
@@ -311,7 +315,7 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
             item {
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
-                    mainAxisSpacing = 8.dp,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     licenses.sorted().forEach {
                         var checked by remember {
