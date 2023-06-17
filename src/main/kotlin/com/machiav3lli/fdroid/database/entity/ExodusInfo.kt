@@ -2,6 +2,9 @@ package com.machiav3lli.fdroid.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Entity
 data class ExodusInfo(
@@ -21,12 +24,13 @@ data class ExodusInfo(
     override val creator: String = String(),
     override val downloads: String = String(),
     override val trackers: List<Int> = emptyList(),
-    override val permissions: List<String> = emptyList()
+    override val permissions: List<String> = emptyList(),
 ) : ExodusData(
     handle, app_name, uaid, version_name, version_code, source,
     icon_hash, apk_hash, created, updated, report, creator, downloads, trackers, permissions,
 )
 
+@Serializable
 open class ExodusData(
     open val handle: String = String(),
     open val app_name: String = String(),
@@ -42,10 +46,18 @@ open class ExodusData(
     open val creator: String = String(),
     open val downloads: String = String(),
     open val trackers: List<Int> = emptyList(),
-    open val permissions: List<String> = emptyList()
+    open val permissions: List<String> = emptyList(),
 ) {
     fun toExodusInfo(packageName: String) = ExodusInfo(
         packageName, handle, app_name, uaid, version_name, version_code, source,
         icon_hash, apk_hash, created, updated, report, creator, downloads, trackers, permissions
     )
+
+    fun toJSON() = Json.encodeToString(this)
+
+    companion object {
+        private val jsonConfig = Json { ignoreUnknownKeys = true }
+        fun fromJson(json: String) = jsonConfig.decodeFromString<ExodusData>(json)
+        fun listFromJson(json: String) = jsonConfig.decodeFromString<List<ExodusData>>(json)
+    }
 }

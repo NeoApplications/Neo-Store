@@ -2,6 +2,9 @@ package com.machiav3lli.fdroid.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Entity
 data class Tracker(
@@ -26,6 +29,7 @@ data class Tracker(
     documentation,
 )
 
+@Serializable
 open class TrackerData(
     open val name: String = String(),
     open val network_signature: String = String(),
@@ -37,6 +41,14 @@ open class TrackerData(
     open val documentation: List<String> = emptyList(),
 )
 
+@Serializable
 data class Trackers(
-    val trackers: Map<String, TrackerData> = emptyMap()
-)
+    val trackers: Map<String, TrackerData> = emptyMap(),
+) {
+    fun toJSON() = Json.encodeToString(this)
+
+    companion object {
+        private val jsonConfig = Json { ignoreUnknownKeys = true }
+        fun fromJson(json: String) = jsonConfig.decodeFromString<Trackers>(json)
+    }
+}
