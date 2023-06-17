@@ -143,10 +143,6 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
 
-    // Moshi
-    implementation("com.squareup.moshi:moshi:$moshiVersion")
-    ksp("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
-
     // LibSu
     implementation("com.github.topjohnwu.libsu:core:5.0.5")
 
@@ -179,7 +175,6 @@ dependencies {
     implementation("androidx.compose.material3:material3:$material3Version")
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
-    implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
