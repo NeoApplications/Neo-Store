@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.service.worker
 
+import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.Release
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -92,6 +93,18 @@ sealed class DownloadState {
         override val cacheFileName: String,
         override val repoId: Long,
     ) : DownloadState()
+
+    val description: Int
+        get() = when (this) {
+            is Pending     -> R.string.pending
+            is Connecting  -> R.string.connecting
+            is Downloading -> R.string.downloading
+            is Success     -> R.string.installing
+            else           -> R.string.cancel
+        }
+
+    val isActive: Boolean
+        get() = this is Connecting || this is Downloading || this is Pending
 
     fun toJSON() = Json.encodeToString(this)
 
