@@ -420,7 +420,7 @@ class WorkerManager(appContext: Context) {
                 MainApplication.wm.notificationManager
                     .cancel(NOTIFICATION_ID_SYNCING)
                 MainApplication.db.repositoryDao.allEnabledIds.forEach {
-                    MainApplication.wm.notificationManager
+                    if (syncsRunning[it] == null) MainApplication.wm.notificationManager
                         .cancel(NOTIFICATION_ID_SYNCING + it.toInt())
                 }
                 MainApplication.db.productDao
