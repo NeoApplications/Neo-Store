@@ -28,8 +28,8 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1002
-        versionName = "1.0.0-alpha03"
+        versionCode = 1003
+        versionName = "1.0.0-alpha04"
         buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
 
         javaCompileOptions {
@@ -67,6 +67,14 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = composeCompilerVersion
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName =
+                "Neo_Store_${variant.name}_${variant.versionName}.apk"
+        }
+        true
     }
 
     buildTypes {
@@ -138,6 +146,10 @@ dependencies {
     implementation("io.insert-koin:koin-androidx-workmanager:$koinVersion")
     implementation("io.insert-koin:koin-annotations:$koinKspVersion")
     ksp("io.insert-koin:koin-ksp-compiler:$koinKspVersion")
+
+    // Ktor
+    implementation("io.ktor:ktor-client-core:2.3.1")
+    implementation("io.ktor:ktor-client-okhttp:2.3.1")
 
     // OkHttps
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")

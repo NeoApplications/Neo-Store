@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-1.0.0 (??.??.2023) 90+ Commits +110 Translations
+1.0.0 (??.??.2023) 160+ Commits +130 Translations
 ------------------
 
 ### Function
@@ -9,10 +9,20 @@ CHANGELOG
 - Add: Preference to disable signature check for updates/installs
 - Add: Preference to disable download version check
 - Add: Julian Andres Klode's repo (credits @ishanarora)
+- Add: Display localized product name and description (credits @BLumia)
 - Fix: Auto-sync on "Only charging"
 - Fix: The description for PeterCxy's Shelter repo (credits @ishanarora)
 - Fix: c:geo repository (credits @ishanarora)
+- Fix: Updates Product query
 - Update: Optimize the main products query
+- Update: Migrate download, exodus & sync backend from Sevice- to Worker-based
+- Update: Revamp Downloader
+- Update: Replace RxJava usage with Coroutines
+- Update: Allow parallel downloads from different repositories
+- Update: Allow parallel sync of repos
+- Update: Revamp the ExodusAPI classes
+- Update: minSDK to 24
+- Remove: Dependencies of deprecated usage
 
 ### UI
 
@@ -24,6 +34,8 @@ CHANGELOG
 - Fix: Screenshots scaling issue after opening once
 - Fix: Pre-mature cutting horizontal products recycler layout
 - Fix: Avoid forgetting expand-state of description text
+- Fix: Content padding of Main pages
+- Fix: Ghost clicking settings when search is expanded
 - Update: Revamp all sheets into composable only
 - Update: Revamp Message/Launch-Dialogs into composables
 - Update: Larger layout corners
@@ -33,6 +45,8 @@ CHANGELOG
 - Update: Revamp screenshots layouts
 - Update: Revamp ExplorePage
 - Update: Replace slide animated compose with fade
+- Update: Revamp search bar layout
+- Update: Revamp PermissionItem
 - Remove: Scrollable top bars
 
 ### UX
@@ -44,9 +58,12 @@ CHANGELOG
 - Add: Apps list to RepoSheet
 - Fix: Showing updatable label for Product items
 - Fix: Showing right version in AppSheet's header
+- Fix: Showing downloaded version (in downloads log)
 - Update: Using pager in App Sheet for Privacy Panel
 - Update: Bind short description lines limit to extended state
 - Update: Better download state communication
+- Update: Show short description for unexpanded description
+- Update: Revamp download and sync notifications
 - Remove: Zooming on screenshots
 
 0.9.15 (01.03.2023) 40+ Commits +30 Translations
