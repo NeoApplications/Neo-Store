@@ -333,7 +333,7 @@ fun AppSheet(
                     this.action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD
                     putExtra(ARG_PACKAGE_NAME, packageName)
                 }
-                mainActivityX.startActivity(cancelIntent)
+                mainActivityX.sendBroadcast(cancelIntent)
             }
 
             ActionState.Share     -> {
