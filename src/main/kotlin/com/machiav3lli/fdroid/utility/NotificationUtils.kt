@@ -27,9 +27,9 @@ import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.installer.InstallerService
 import com.machiav3lli.fdroid.service.ActionReceiver
-import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.worker.DownloadTask
 import com.machiav3lli.fdroid.service.worker.ErrorType
+import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.worker.ValidationError
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.utility.extension.android.notificationManager
@@ -178,6 +178,7 @@ fun Context.showNotificationError(repository: Repository, exception: Exception) 
 fun Context.syncNotificationBuilder() = NotificationCompat
     .Builder(MainApplication.context, NOTIFICATION_CHANNEL_SYNCING)
     .setSmallIcon(R.drawable.ic_sync)
+    .setGroup(NOTIFICATION_CHANNEL_SYNCING)
     .setOngoing(true)
     .setSilent(true)
     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
