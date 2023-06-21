@@ -520,6 +520,11 @@ class WorkerManager(appContext: Context) {
                                     )
                                     .setContentText("${progress.read.formatSize()} / ${progress.total.formatSize()}")
                                     .setProgress(100, progress.progress, false)
+                                    .addAction(
+                                        R.drawable.ic_cancel,
+                                        appContext.getString(R.string.cancel),
+                                        cancelPendingIntent
+                                    )
                                 DownloadState.Downloading(
                                     task.packageName,
                                     task.name,

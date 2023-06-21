@@ -10,7 +10,6 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
-import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_INSTALLER
@@ -204,19 +203,6 @@ fun Context.downloadNotificationBuilder() = NotificationCompat
     .setSilent(true)
     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
     .setCategory(NotificationCompat.CATEGORY_PROGRESS)
-    .addAction(
-        R.drawable.ic_cancel,
-        getString(R.string.cancel),
-        PendingIntent.getBroadcast(
-            applicationContext,
-            0,
-            Intent(applicationContext, ActionReceiver::class.java)
-                .setAction(ActionReceiver.COMMAND_CANCEL_DOWNLOAD)
-                .putExtra(ARG_PACKAGE_NAME, packageName),
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-
-        )
-    )
     .setProgress(0, 0, true)
 
 fun NotificationCompat.Builder.updateProgress(
