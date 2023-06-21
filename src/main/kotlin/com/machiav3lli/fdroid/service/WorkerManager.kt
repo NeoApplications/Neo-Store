@@ -36,6 +36,8 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Downloaded
+import com.machiav3lli.fdroid.database.entity.Product
+import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.Order
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Section
@@ -51,6 +53,7 @@ import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.worker.ValidationError
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.displayUpdatesNotification
+import com.machiav3lli.fdroid.utility.displayVulnerabilitiesNotification
 import com.machiav3lli.fdroid.utility.downloadNotificationBuilder
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
@@ -436,7 +439,22 @@ class WorkerManager(appContext: Context) {
                             MainApplication.wm.update(*result.toTypedArray())
                         }
                     }
-                // TODO notify of vulnerabilities
+                MainApplication.db.productDao
+                    .queryObject(
+                        installed = true,
+                        updates = false,
+                        section = Section.All,
+                        order = Order.NAME,
+                        ascending = true,
+                    ).filter { product ->
+                        product.antiFeatures.contains(AntiFeature.KNOWN_VULN.key)
+                                && MainApplication.db.extrasDao[product.packageName]?.ignoreVulns != true
+                    }.let { installedWithVulns ->
+                        if (installedWithVulns.isNotEmpty())
+                            context.displayVulnerabilitiesNotification(
+                                installedWithVulns.map(Product::toItem)
+                            )
+                    }
             }
         }
 
