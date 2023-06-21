@@ -309,7 +309,7 @@
     <string name="file_share_text">Datei aus Neo Store</string>
     <string name="post_notifications_permission_title">Erlaubnis um Benachrichtigungen zu senden</string>
     <string name="post_notifications_permission_message">A13-Apps benötigen die Erlaubnis Benachrichtigungen zu senden, damit diese gestartet werden können.</string>
-    <string name="vulnerabilities_installed_apps">Diese installierten Apps haben keine Sicherheitsprobleme!</string>
+    <string name="vulnerabilities_installed_apps">Diese installierten Apps haben Sicherheitsprobleme!</string>
     <string name="show_categories_bar">Kategorienleiste anzeigen</string>
     <string name="show_categories_bar_description">Zeigt die Kategorienleiste auf der Entdecken-Seite an.</string>
     <string name="privacy_panel">Privatsphäre Bereich</string>
