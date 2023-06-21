@@ -10,7 +10,6 @@ import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ActionState
-import com.machiav3lli.fdroid.entity.DownloadState
 import com.machiav3lli.fdroid.entity.PrivacyData
 import com.machiav3lli.fdroid.entity.toAntiFeature
 import com.machiav3lli.fdroid.utility.findSuggestedProduct
@@ -18,14 +17,15 @@ import com.machiav3lli.fdroid.utility.generatePermissionGroups
 import com.machiav3lli.fdroid.utility.toPrivacyNote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.combineTransform
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -52,15 +52,12 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
     @OptIn(ExperimentalCoroutinesApi::class)
     val repositories = db.repositoryDao.allFlow.mapLatest { it }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val installedItem = db.installedDao.getFlow(packageName).transformLatest {
-        emit(it)
-        updateActions()
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.Lazily,
-        null
-    )
+    val installedItem = db.installedDao.getFlow(packageName)
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            null
+        )
 
     private val _productRepos = MutableStateFlow<List<Pair<Product, Repository>>>(emptyList())
     val productRepos: StateFlow<List<Pair<Product, Repository>>> = _productRepos
@@ -90,29 +87,22 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         it.toPrivacyNote()
     }
 
-    private val _downloadState = MutableStateFlow<DownloadState?>(null)
-    val downloadState: StateFlow<DownloadState?> = _downloadState
-    fun updateDownloadState(ds: DownloadState?) {
-        viewModelScope.launch {
-            _downloadState.emit(ds)
-        }
-    }
-
-    private val _mainAction = MutableStateFlow<ActionState?>(null)
-    val mainAction: StateFlow<ActionState?> = _mainAction
-
-    private val _subActions = MutableStateFlow<Set<ActionState>>(emptySet())
-    val subActions: StateFlow<Set<ActionState>> = _subActions
-
     @OptIn(ExperimentalCoroutinesApi::class)
-    val extras = db.extrasDao.getFlow(packageName).transformLatest {
-        emit(it)
-        updateActions()
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.Lazily,
-        Extras(packageName)
-    )
+    val downloadingState = db.downloadedDao.getLatestFlow(packageName)
+        .mapLatest { it?.state }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            null
+        )
+
+
+    val extras = db.extrasDao.getFlow(packageName)
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            Extras(packageName)
+        )
 
     val authorProducts = combineTransform(
         db.productDao.getAuthorPackagesFlow(developer.value),
@@ -126,37 +116,29 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         )
     }
 
-    fun updateActions() {
-        viewModelScope.launch {
-            updateUI()
-        }
-    }
-
-    private suspend fun updateUI() {
-        withContext(Dispatchers.IO) {
-            val installed = installedItem.value
-            val productRepos = productRepos.value
-            val product = findSuggestedProduct(productRepos, installed) { it.first }?.first
+    private val actions: Flow<Pair<ActionState?, Set<ActionState>>> =
+        combine(productRepos, downloadingState, installedItem, extras) { prs, ds, ins, ex ->
+            val product = findSuggestedProduct(prs, ins) { it.first }?.first
             val compatible = product != null && product.selectedReleases.firstOrNull()
                 .let { it != null && it.incompatibilities.isEmpty() }
             val canInstall =
-                product != null && installed == null && compatible && _downloadState.value == null
+                product != null && ins == null && compatible && ds?.isActive != true
             val canUpdate =
-                product != null && compatible && product.canUpdate(installed) &&
-                        !shouldIgnore(product.versionCode) && _downloadState.value == null
-            val canUninstall = product != null && installed != null && !installed.isSystem
+                product != null && compatible && product.canUpdate(ins) &&
+                        !shouldIgnore(product.versionCode) && ds?.isActive != true
+            val canUninstall = product != null && ins != null && !ins.isSystem
             val canLaunch = product != null &&
-                    installed != null && installed.launcherActivities.isNotEmpty()
+                    ins != null && ins.launcherActivities.isNotEmpty()
             val canShare = product != null &&
-                    productRepos[0].second.name in setOf("F-Droid", "IzzyOnDroid F-Droid Repo")
-            val bookmarked = extras.value?.favorite ?: false
+                    prs[0].second.name in setOf("F-Droid", "IzzyOnDroid F-Droid Repo")
+            val bookmarked = ex?.favorite ?: false
 
             val actions = mutableSetOf<ActionState>()
             synchronized(actions) {
                 if (canUpdate) actions += ActionState.Update
                 else if (canInstall) actions += ActionState.Install
                 if (canLaunch) actions += ActionState.Launch
-                if (installed != null) actions += ActionState.Details
+                if (ins != null) actions += ActionState.Details
                 if (canUninstall) actions += ActionState.Uninstall
                 if (canShare) actions += ActionState.Share
                 if (bookmarked) actions += ActionState.Bookmarked
@@ -171,19 +153,33 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
                 else -> ActionState.Bookmark
             }
 
-            withContext(Dispatchers.Main) {
-                synchronized(actions) { _subActions.value = actions }
-
-                if (_downloadState.value != null && _mainAction.value?.textId != _downloadState.value?.textId)
-                    _downloadState.value?.let {
-                        _mainAction.value = ActionState.Cancel(it.textId)
-                    }
-                else if (_downloadState.value == null)
-                    _mainAction.value = primaryAction
-                true
-            }
+            val mA = if (ds != null && ds.isActive)
+                ActionState.Cancel(ds.description)
+            else primaryAction
+            Pair(mA, actions)
+        }.distinctUntilChanged { old, new ->
+            val omA = old.first
+            val nmA = new.first
+            val matchCancel =
+                !(omA is ActionState.Cancel && nmA is ActionState.Cancel && nmA.textId != omA.textId)
+            old.second == new.second && matchCancel
         }
-    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val mainAction: StateFlow<ActionState?> = actions.mapLatest { it.first }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            null
+        )
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val subActions: StateFlow<Set<ActionState>> = actions.mapLatest { it.second }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            emptySet()
+        )
 
     private fun shouldIgnore(appVersionCode: Long): Boolean =
         extras.value?.ignoredVersion == appVersionCode || extras.value?.ignoreUpdates == true

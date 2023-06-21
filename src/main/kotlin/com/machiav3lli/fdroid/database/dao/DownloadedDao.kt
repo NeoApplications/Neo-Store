@@ -16,6 +16,12 @@ interface DownloadedDao : BaseDao<Downloaded> {
     @Query("SELECT * FROM downloaded WHERE packageName = :packageName")
     fun getFlow(packageName: String): Flow<List<Downloaded?>>
 
+    @Query("SELECT * FROM downloaded WHERE packageName = :packageName ORDER BY changed LIMIT 1")
+    fun getLatest(packageName: String): Downloaded?
+
+    @Query("SELECT * FROM downloaded WHERE packageName = :packageName ORDER BY changed DESC LIMIT 1")
+    fun getLatestFlow(packageName: String): Flow<Downloaded?>
+
     @Query("DELETE FROM downloaded WHERE packageName = :packageName")
     fun delete(packageName: String)
 
