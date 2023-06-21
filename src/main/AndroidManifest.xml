@@ -140,6 +140,10 @@
             android:exported="false"
             android:grantUriPermissions="true" />
 
+        <receiver
+            android:name=".service.ActionReceiver"
+            android:exported="true" />
+
     </application>
 
 </manifest>
