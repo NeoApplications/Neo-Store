@@ -29,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.entity.ActionState
-import com.machiav3lli.fdroid.entity.DownloadState
+import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.ui.components.MainActionButton
 import com.machiav3lli.fdroid.ui.components.NetworkImage
 import com.machiav3lli.fdroid.ui.components.PRODUCT_CARD_ICON
@@ -138,7 +138,7 @@ fun TopBarHeader(
                 modifier = Modifier.padding(horizontal = 4.dp),
                 totalSize = if (state is DownloadState.Downloading) state.total ?: 1L else 1L,
                 isIndeterminate = state !is DownloadState.Downloading,
-                downloaded = if (state is DownloadState.Downloading) state.downloaded else 0L,
+                downloaded = if (state is DownloadState.Downloading) state.read else 0L,
             )
         }
     }

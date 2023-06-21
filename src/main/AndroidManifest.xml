@@ -126,10 +126,6 @@
         </activity>
 
         <service
-            android:name=".service.SyncService"
-            android:foregroundServiceType="dataSync" />
-
-        <service
             android:name=".installer.InstallerService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />

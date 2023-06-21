@@ -38,7 +38,6 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -120,7 +119,6 @@ import com.machiav3lli.fdroid.utility.shareIntent
 import com.machiav3lli.fdroid.utility.shareReleaseIntent
 import com.machiav3lli.fdroid.utility.startLauncherActivity
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.math.floor
 
@@ -149,8 +147,8 @@ fun AppSheet(
     val privacyNote by viewModel.privacyNote.collectAsState(PrivacyNote())
     val authorProducts by viewModel.authorProducts.collectAsState(null)
     val repos by viewModel.repositories.collectAsState(null)
-    val downloadState by viewModel.downloadState.collectAsState(null)
-    val mainAction by viewModel.mainAction.collectAsState(if (installed == null) ActionState.Install else ActionState.Launch)
+    val downloadState by viewModel.downloadingState.collectAsState()
+    val mainAction by viewModel.mainAction.collectAsState()
     val actions by viewModel.subActions.collectAsState()
     val extras by viewModel.extras.collectAsState()
     val productRepos = products?.mapNotNull { product ->
@@ -197,12 +195,6 @@ fun AppSheet(
     val snackbarHostState = remember { SnackbarHostState() }
     val nestedScrollConnection = rememberNestedScrollInteropConnection()
     val coroutineScope = rememberCoroutineScope()
-
-    LaunchedEffect(key1 = Unit) {
-        viewModel.productRepos.collectLatest {
-            viewModel.updateActions()
-        }
-    }
 
     val onUriClick = { uri: Uri, shouldConfirm: Boolean ->
         if (shouldConfirm && (uri.scheme == "http" || uri.scheme == "https")) {

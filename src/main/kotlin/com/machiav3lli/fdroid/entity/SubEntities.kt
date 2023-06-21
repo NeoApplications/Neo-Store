@@ -53,7 +53,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Swatches
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TrashSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -131,19 +130,6 @@ fun String.toAntiFeature(): AntiFeature? = AntiFeature.values().find { it.key ==
 sealed interface ComponentState {
     val icon: ImageVector
     val textId: Int
-}
-
-sealed class DownloadState(
-    @StringRes override val textId: Int,
-    override val icon: ImageVector = Phosphor.X,
-) : ComponentState {
-
-    object Pending : DownloadState(R.string.pending)
-    object Connecting : DownloadState(R.string.connecting)
-    class Downloading(val downloaded: Long, val total: Long?) :
-        DownloadState(R.string.downloading)
-
-    object Installing : DownloadState(R.string.installing)
 }
 
 sealed class ActionState(
