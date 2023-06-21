@@ -161,7 +161,7 @@ class DownloadWorker(
                     ARG_TOTAL to 0,
                 )
             }
-            setProgress(progress)
+            if (!isStopped) setProgress(progress)
         }.let { result ->
             if (!result.success) {
                 Log.i(this::javaClass.name, "Worker failure by error ${result.code}")
