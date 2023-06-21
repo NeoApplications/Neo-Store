@@ -492,7 +492,7 @@ class WorkerManager(appContext: Context) {
 
                     val cancelIntent = Intent(appContext, ActionReceiver::class.java).apply {
                         action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD
-                        putExtra(ARG_PACKAGE_NAME, wi.id.toString())
+                        putExtra(ARG_PACKAGE_NAME, task.packageName)
                     }
                     val cancelPendingIntent = PendingIntent.getBroadcast(
                         appContext,
@@ -659,7 +659,9 @@ class WorkerManager(appContext: Context) {
                 .setProgress(allCount, allProcessed, false)
                 .setContentText("$allProcessed / $allCount")
                 .apply { // TODO fix pinned notification
-                    setOngoing(allCount > 0)
+                    setOngoing(allCount > allProcessed)
+                    if (allProcessed == allCount)
+                        setTimeoutAfter(InstallerService.INSTALLED_NOTIFICATION_TIMEOUT)
 
                     if (ActivityCompat.checkSelfPermission(
                             appContext,
