@@ -311,4 +311,6 @@
     <string name="enable_download_directory">Usar pasta de download personalizada</string>
     <string name="downloads">Downloads</string>
     <string name="ignore_vulns">Ignorar vulnerabilidades de segurança reportadas</string>
+    <string name="ignore">Ignorar</string>
+    <string name="warning_disable_battery_optimization">A partir do Android 12, o aplicativo requer otimização da bateria para realizar processos em segundo plano, como sincronização e download. Se você ignorar essa permissão, ficará por conta própria e seus relatórios de falhas serão ignorados.</string>
 </resources>
