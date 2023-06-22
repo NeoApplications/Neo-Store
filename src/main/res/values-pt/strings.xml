@@ -219,7 +219,7 @@
     <string name="favorite_add">Adicionar aos favoritos</string>
     <string name="open">Abrir</string>
     <string name="loading_list">A carregar lista…</string>
-    <string name="releases">Versões</string>
+    <string name="releases">Lançamentos</string>
     <string name="no_updates_available">Nenhuma versão disponível</string>
     <string name="dynamic">Sistema Dinâmico</string>
     <string name="auto_sync_interval">Intervalo de Sincronização Automática (Em minutos)</string>
