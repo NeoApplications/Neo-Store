@@ -202,7 +202,7 @@
     <string name="root_session_installer">Utilizar instalação no modo \'root\'</string>
     <string name="root_session_installer_description">Mais lento mas é a melhor opção para Android 13+.</string>
     <string name="show_screenshots">Mostrar imagens</string>
-    <string name="releases">Versões</string>
+    <string name="releases">Lançamentos</string>
     <string name="favorite_remove">Remover dos favoritos</string>
     <string name="favorite_add">Adicionar aos favoritos</string>
     <string name="open">Abrir</string>
