@@ -17,7 +17,7 @@
     <string name="bug_tracker">Sledování chyb</string>
     <string name="cancel">Zrušit</string>
     <string name="cant_edit_sync_DESC">Nelze upravit synchronizující se repozitáře…</string>
-    <string name="changelog">Co je nového</string>
+    <string name="changelog">Seznam změn</string>
     <string name="changes">Změny</string>
     <string name="checking_repository">Kontrola repozitáře…</string>
     <string name="compiled_for_debugging">Kompilováno pro ladění</string>
