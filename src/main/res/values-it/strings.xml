@@ -206,7 +206,7 @@
     <string name="favorite_remove">Rimuovi dalle preferite</string>
     <string name="favorite_add">Aggiungi alle preferite</string>
     <string name="loading_list">Caricamento dell\'elenco…</string>
-    <string name="releases">Versioni</string>
+    <string name="releases">Rilasci</string>
     <string name="no_updates_available">Nessuna versione disponibile</string>
     <string name="dynamic">Dinamico di sistema</string>
     <string name="auto_sync_interval">Intervallo di sincronizzazione automatica (in minuti)</string>
