@@ -35,6 +35,7 @@ import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV12
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV14
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV15
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV17
+import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV18
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV9
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.defaultRepositories
 import com.machiav3lli.fdroid.database.entity.Tracker
@@ -56,7 +57,7 @@ import kotlinx.coroutines.launch
         Tracker::class,
         Downloaded::class,
     ],
-    version = 17,
+    version = 18,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -101,6 +102,11 @@ import kotlinx.coroutines.launch
             from = 16,
             to = 17,
             spec = DatabaseX.Companion.MigrationSpec16to17::class
+        ),
+        AutoMigration(
+            from = 17,
+            to = 18,
+            spec = DatabaseX.Companion.MigrationSpec17to18::class
         ),
     ]
 )
@@ -194,6 +200,13 @@ abstract class DatabaseX : RoomDatabase() {
             }
         }
 
+        class MigrationSpec17to18 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(17)
+            }
+        }
+
         fun onPostMigrate(from: Int) {
             val preRepos = mutableListOf<Repository>()
             if (from == 8) preRepos.addAll(addedReposV9)
@@ -203,9 +216,11 @@ abstract class DatabaseX : RoomDatabase() {
             if (from == 13) preRepos.addAll(addedReposV14)
             if (from == 14) preRepos.addAll(addedReposV15)
             if (from == 16) preRepos.addAll(addedReposV17)
+            if (from == 17) preRepos.addAll(addedReposV18)
             GlobalScope.launch(Dispatchers.IO) {
                 preRepos.forEach {
                     INSTANCE?.repositoryDao?.put(it)
+                    if (from == 17) INSTANCE?.downloadedDao?.emptyTable()
                 }
             }
         }
