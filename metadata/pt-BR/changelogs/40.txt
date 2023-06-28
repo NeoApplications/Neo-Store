@@ -1,0 +1,5 @@
+- Adicionado: preferência de idioma
+- Atualização: capturas de tela com rolagem horizontal
+- Correção: Instalador root em segundo plano
+- Adição: Solicitar root somente quando selecionado
+- Diversos ajustes de UI/UX

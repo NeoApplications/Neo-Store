@@ -1,0 +1,7 @@
+- Adicionado Ícone para abrir Detalhes
+- As diferenças na barra superior de aplicativos ficaram mais proeminentes
+- A permissão de root só será solicitada quando usada
+- Correções na visibilidade da chave
+- Adicionada tradução para o árabe
+- Pressione longamente o ícone de código-fonte para copiar o link
+- Substituição do Toast pela Snackbar
