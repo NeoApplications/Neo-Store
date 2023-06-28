@@ -332,4 +332,6 @@
     <string name="clear_text">Vymazat text</string>
     <string name="finished">Dokončeno</string>
     <string name="next">Další</string>
+    <string name="alt_navbar_item">Použít alternativní položku navigační lišty</string>
+    <string name="alt_navbar_item_description">Použijte alternativní/staré rozložení položek navigačního panelu, které zobrazuje popisky nevybraných položek.</string>
 </resources>
