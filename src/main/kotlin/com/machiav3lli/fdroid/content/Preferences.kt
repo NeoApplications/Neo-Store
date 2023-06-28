@@ -39,6 +39,7 @@ object Preferences : OnSharedPreferenceChangeListener {
         Key.ShowScreenshots,
         Key.ShowTrackers,
         Key.ShowCategoriesBar,
+        Key.AltNavBarItem,
         Key.UpdatedApps,
         Key.NewApps,
         Key.ProxyHost,
@@ -222,6 +223,8 @@ object Preferences : OnSharedPreferenceChangeListener {
         object ShowTrackers : Key<Boolean>("show_trackers", Value.BooleanValue(true))
 
         object ShowCategoriesBar : Key<Boolean>("show_categories_bar", Value.BooleanValue(true))
+
+        object AltNavBarItem : Key<Boolean>("alt_navbar_item", Value.BooleanValue(false))
 
         object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(100))
         object NewApps : Key<Int>("new_apps", Value.IntValue(30))

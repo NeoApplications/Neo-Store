@@ -331,4 +331,6 @@
     <string name="list_apps">Show repository\'s apps</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+    <string name="alt_navbar_item">Use alternative navigation bar item</string>
+    <string name="alt_navbar_item_description">Use the alternative/old navigation bar item layout, which shows label of unselected items.</string>
 </resources>

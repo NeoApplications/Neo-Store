@@ -45,6 +45,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.machiav3lli.fdroid.NAV_MAIN
 import com.machiav3lli.fdroid.NAV_PREFS
+import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.ui.compose.utils.addIf
 
 @Composable
 fun BottomNavBar(page: Int = NAV_MAIN, navController: NavHostController) {
@@ -73,7 +75,27 @@ fun BottomNavBar(page: Int = NAV_MAIN, navController: NavHostController) {
         items.forEach { item ->
             val selected = currentDestination?.contains(item.destination) ?: false
 
-            NavBarItem(
+            if (Preferences[Preferences.Key.AltNavBarItem])
+                AltNavBarItem(
+                    modifier = Modifier.weight(1f),
+                    icon = item.icon,
+                    labelId = item.title,
+                    selected = selected,
+                    onClick = {
+                        navController.navigate(item.destination) {
+                            navBackStackEntry?.destination?.let {
+                                popUpTo(it.route.orEmpty()) {
+                                    inclusive = true
+                                    saveState = true
+                                }
+                            }
+                            launchSingleTop = true
+                            restoreState = page == NAV_MAIN
+                        }
+                    }
+                )
+            else NavBarItem(
+                modifier = Modifier.weight(if (selected) 2f else 1f),
                 icon = item.icon,
                 labelId = item.title,
                 selected = selected,
@@ -95,7 +117,7 @@ fun BottomNavBar(page: Int = NAV_MAIN, navController: NavHostController) {
 }
 
 @Composable
-fun RowScope.NavBarItem(
+fun RowScope.AltNavBarItem(
     modifier: Modifier = Modifier,
     icon: ImageVector,
     labelId: Int,
@@ -135,5 +157,45 @@ fun RowScope.NavBarItem(
                 color = MaterialTheme.colorScheme.onSurface,
             )
         }
+    }
+}
+
+@Composable
+fun RowScope.NavBarItem(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    labelId: Int,
+    selected: Boolean,
+    onClick: () -> Unit = {},
+) {
+    Row(
+        modifier = modifier
+            .padding(vertical = 8.dp)
+            .clickable { onClick() }
+            .addIf(selected) {
+                background(
+                    MaterialTheme.colorScheme.surfaceColorAtElevation(12.dp),
+                    MaterialTheme.shapes.extraLarge
+                )
+            }
+            .padding(8.dp)
+            .weight(1f),
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = stringResource(id = labelId),
+            modifier = Modifier.size(24.dp),
+            tint = if (selected) MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.onSurface
+        )
+        if (selected) Text(
+            text = stringResource(id = labelId),
+            style = MaterialTheme.typography.bodyMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colorScheme.primary,
+        )
     }
 }

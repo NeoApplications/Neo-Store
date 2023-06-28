@@ -49,6 +49,7 @@ fun PrefsPersonalPage() {
         Preferences.Key.ShowScreenshots,
         Preferences.Key.ShowTrackers,
         Preferences.Key.ShowCategoriesBar,
+        Preferences.Key.AltNavBarItem,
         Preferences.Key.UpdatedApps,
         Preferences.Key.NewApps,
     )
@@ -117,18 +118,22 @@ fun PrefsPersonalPage() {
                     PREFS_LANGUAGE_DEFAULT        -> LanguagePrefDialogUI(
                         openDialogCustom = openDialog
                     )
+
                     is String                     -> StringInputPrefDialogUI(
                         prefKey = dialogPref as Preferences.Key<String>,
                         openDialogCustom = openDialog
                     )
+
                     is Int                        -> IntInputPrefDialogUI(
                         prefKey = dialogPref as Preferences.Key<Int>,
                         openDialogCustom = openDialog
                     )
+
                     is Preferences.Enumeration<*> -> EnumSelectionPrefDialogUI(
                         prefKey = dialogPref as Preferences.Key<Preferences.Enumeration<*>>,
                         openDialogCustom = openDialog
                     )
+
                     else                          -> {}
                 }
             }
