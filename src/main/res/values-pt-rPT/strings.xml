@@ -332,4 +332,6 @@
     <string name="previous">Anteriores</string>
     <string name="list_apps">Mostrar as aplicações do repositório</string>
     <string name="next">Próximo</string>
+    <string name="alt_navbar_item">Utilizar um item alternativo da barra de navegação</string>
+    <string name="alt_navbar_item_description">Utilizar a disposição alternativa/antiga dos itens da barra de navegação, que mostra a etiqueta dos itens não seleccionados.</string>
 </resources>
