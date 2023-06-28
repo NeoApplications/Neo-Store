@@ -39,8 +39,8 @@ import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.service.worker.ExodusWorker
 import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ActionChip
+import com.machiav3lli.fdroid.ui.components.CheckChip
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
-import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
@@ -123,7 +123,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                 mutableStateOf(false)
             }
 
-            SelectChip(
+            CheckChip(
                 modifier = Modifier.weight(1f),
                 text = stringResource(id = R.string.favorite_applications),
                 icon = Phosphor.HeartStraightFill,
@@ -135,6 +135,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                     iconColor = MaterialTheme.colorScheme.onSurface,
                     labelColor = MaterialTheme.colorScheme.onSurface,
                 ),
+                fullWidth = true,
                 checked = favoriteFilter
             ) {
                 favoriteFilter = !favoriteFilter
@@ -146,6 +147,7 @@ fun ExplorePage(viewModel: ExploreVM) {
             ActionChip(
                 modifier = Modifier.weight(1f),
                 text = stringResource(id = R.string.sort_filter),
+                fullWidth = true,
                 icon = Phosphor.FunnelSimple
             ) {
                 showSortSheet = true

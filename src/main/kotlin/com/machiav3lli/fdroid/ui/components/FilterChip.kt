@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
+import com.machiav3lli.fdroid.ui.compose.utils.addIf
 
 private enum class SelectionState { Unselected, Selected }
 
@@ -98,6 +99,58 @@ fun SelectChip(
         onClick = { onSelected() },
         label = {
             Text(text = text)
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CheckChip(
+    modifier: Modifier = Modifier,
+    text: String,
+    icon: ImageVector = Phosphor.Check,
+    checked: Boolean = false,
+    colors: SelectableChipColors = FilterChipDefaults.filterChipColors(
+        labelColor = MaterialTheme.colorScheme.onBackground,
+        selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+        iconColor = MaterialTheme.colorScheme.onBackground,
+        selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimary,
+        containerColor = Color.Transparent,
+        selectedContainerColor = MaterialTheme.colorScheme.primary
+    ),
+    fullWidth: Boolean,
+    onSelected: () -> Unit = {},
+) {
+    val categoryChipTransitionState = categoryChipTransition(selected = checked)
+
+    FilterChip(
+        modifier = modifier,
+        colors = colors,
+        shape = RoundedCornerShape(categoryChipTransitionState.cornerRadius),
+        selected = checked,
+        leadingIcon = {
+            AnimatedVisibility(
+                visible = checked,
+                enter = scaleIn(),
+                exit = scaleOut(),
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                )
+            }
+        },
+        onClick = { onSelected() },
+        label = {
+            Text(
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .addIf(fullWidth) {
+                        fillMaxWidth()
+                    },
+                text = text,
+                textAlign = TextAlign.Center,
+            )
         }
     )
 }

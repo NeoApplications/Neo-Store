@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.ui.components
 
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Icon
@@ -9,29 +10,39 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.ui.compose.utils.addIf
 
 @Composable
 fun ActionChip(
     modifier: Modifier = Modifier,
     text: String,
-    icon: ImageVector,
+    icon: ImageVector?,
     positive: Boolean = true,
+    fullWidth: Boolean = false,
     onClick: () -> Unit = {},
 ) {
     AssistChip(
         modifier = modifier,
         label = {
-            Text(text = text)
+            Text(
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .addIf(fullWidth) {
+                        fillMaxWidth()
+                    },
+                text = text,
+                textAlign = TextAlign.Center,
+            )
         },
         leadingIcon = {
-            Icon(
-                modifier = Modifier.size(18.dp),
-                imageVector = icon,
-                contentDescription = stringResource(id = R.string.sort_filter)
-            )
+            icon?.let {
+                Icon(
+                    imageVector = it,
+                    contentDescription = text
+                )
+            }
         },
         shape = MaterialTheme.shapes.large,
         colors = AssistChipDefaults.assistChipColors(
