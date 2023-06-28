@@ -1,0 +1,6 @@
+- Mais Material Design 3
+- Correção: Root e instalador padrão
+- Correção: Excluir arquivo em cache após a desinstalação
+- Correção: Falha ao pressionar download quando estiver off-line
+- Atualizado traduções de mais de 17 idiomas
+- Várias pequenas correções e ajustes…
