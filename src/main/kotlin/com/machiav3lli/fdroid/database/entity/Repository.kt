@@ -448,6 +448,60 @@ data class Repository(
             "C00A81E44BFF606530C4C7A2137BAC5F1C03D2FDEF6DB3B84C71386EA9BFD225",
             ""
         )
+        private val INVISV = defaultRepository(
+            "https://fdroid.invisv.com/",
+            "INVISV F-Droid Repo",
+            "The official F-Droid repository for INVISV Android apps.",
+            21,
+            false,
+            "EE79926D09C88A49D6CCE9EE2D79B950AE269FDB19240F8DD6A8AC658BEDF83A",
+            ""
+        )
+        private val MONERUJO = defaultRepository(
+            "https://f-droid.monerujo.io/fdroid/repo",
+            "Official Monerujo F-Droid repo",
+            "The official Monerujo monero wallet F-Droid repo.",
+            21,
+            false,
+            "A82C68E14AF0AA6A2EC20E6B272EFF25E5A038F3F65884316E0F5E0D91E7B713",
+            ""
+        )
+        private val IODE = defaultRepository(
+            "https://raw.githubusercontent.com/iodeOS/fdroid/master/fdroid/repo",
+            "iodéOS F-Droid repo",
+            "The official iodéOS F-Droid repo.",
+            21,
+            false,
+            "EC43610D9ACCA5D2426EB2D5EB74331930014DE79D3C3ACBC17DFE58AA12605F",
+            ""
+        )
+        private val SPIRIT_CROC = defaultRepository(
+            "https://s2.spiritcroc.de/fdroid/repo",
+            "SpiritCroc's F-Droid repository",
+            "While some of my apps are available from the official F-Droid repository, I also maintain my own repository for a small selection of apps. These might be forks of other apps with only minor changes, or apps that are not published on the Play Store for other reasons. In contrast to the official F-Droid repos, these might also include proprietary libraries, e.g. for push notifications.",
+            21,
+            false,
+            "6612ADE7E93174A589CF5BA26ED3AB28231A789640546C8F30375EF045BC9242",
+            ""
+        )
+        private val DIVEST_OS_UNOFFICIAL = defaultRepository(
+            "https://divestos.org/apks/unofficial/fdroid/repo/",
+            "DivestOS Unofficial F-Droid repo",
+            "This repository contains unofficial builds of open source apps that are not included in the other repos.",
+            21,
+            false,
+            "A18CDB92F40EBFBBF778A54FD12DBD74D90F1490CB9EF2CC6C7E682DD556855D",
+            ""
+        )
+        private val FUNKWHALE = defaultRepository(
+            "https://fdroid.funkwhale.audio/fdroid/repo",
+            "Funkwhale F-Droid repo",
+            "This main source to install Funkwhale Android client.",
+            21,
+            false,
+            "103063BC7189C91CE727DBF8266B07662518096E1686B6A088253933A3D0788F",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, F_DROID_ARCHIVE,
@@ -499,6 +553,10 @@ data class Repository(
 
         val addedReposV17 = listOf(
             JAK_LINUX, C_GEO, C_GEO_NIGHTLY,
+        )
+        val addedReposV18 = listOf(
+            INVISV, MONERUJO, IODE, SPIRIT_CROC,
+            DIVEST_OS_UNOFFICIAL, FUNKWHALE,
         )
     }
 }
