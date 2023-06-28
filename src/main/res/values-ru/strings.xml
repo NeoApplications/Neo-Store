@@ -333,4 +333,6 @@
     <string name="list_apps">Показывать репозитории приложений</string>
     <string name="finished">Завершено</string>
     <string name="next">Вперёд</string>
+    <string name="alt_navbar_item_description">Использовать альтернативное/старое расположение элементов панели навигации, когда отображается ярлык невыбранных элементов.</string>
+    <string name="alt_navbar_item">Альтернативный вид панели навигации</string>
 </resources>
