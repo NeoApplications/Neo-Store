@@ -330,4 +330,6 @@
     <string name="finished">已完成</string>
     <string name="previous">上一页</string>
     <string name="error">错误</string>
+    <string name="alt_navbar_item">使用备用导航栏项</string>
+    <string name="alt_navbar_item_description">使用替代/旧导航栏项目布局，该布局显示未选定项目的标签。</string>
 </resources>
