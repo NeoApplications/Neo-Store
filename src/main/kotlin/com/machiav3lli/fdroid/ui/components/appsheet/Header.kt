@@ -133,7 +133,7 @@ fun TopBarHeader(
             }
         )
 
-        AnimatedVisibility(visible = state is DownloadState) {
+        AnimatedVisibility(visible = state?.isActive ?: false) {
             DownloadProgress(
                 modifier = Modifier.padding(horizontal = 4.dp),
                 totalSize = if (state is DownloadState.Downloading) state.total ?: 1L else 1L,
