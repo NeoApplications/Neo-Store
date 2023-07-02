@@ -200,7 +200,7 @@ object Preferences : OnSharedPreferenceChangeListener {
 
         object ImagesCacheRetention : Key<Int>("images_cache_retention", Value.IntValue(14))
 
-        object AutoSyncInterval : Key<Int>("auto_sync_interval", Value.IntValue(60))
+        object AutoSyncInterval : Key<Int>("auto_sync_interval_hours", Value.IntValue(1))
 
         object KeepInstallNotification :
             Key<Boolean>("keep_install_notification", Value.BooleanValue(false))

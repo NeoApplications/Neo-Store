@@ -211,6 +211,7 @@
     <string name="no_updates_available">No versions available</string>
     <string name="dynamic">System dynamic</string>
     <string name="auto_sync_interval">Auto-sync interval (in minutes)</string>
+    <string name="auto_sync_interval_hours">Auto-sync interval (in hours)</string>
     <string name="favorite_applications">Favorites</string>
     <string name="images_cache_retention">Images cache retention</string>
     <string name="releases_cache_retention">Downloaded APK cache retention</string>

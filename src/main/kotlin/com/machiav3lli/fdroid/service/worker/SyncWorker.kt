@@ -125,11 +125,11 @@ class SyncWorker(
 
                         val workRequest = PeriodicWorkRequestBuilder<SyncWorker>(
                             Preferences[Preferences.Key.AutoSyncInterval].toLong(),
-                            TimeUnit.MINUTES,
+                            TimeUnit.HOURS,
                         )
                             .setInitialDelay(
                                 Preferences[Preferences.Key.AutoSyncInterval].toLong(),
-                                TimeUnit.MINUTES,
+                                TimeUnit.HOURS,
                             )
                             .setConstraints(constraints)
                             .setInputData(data)

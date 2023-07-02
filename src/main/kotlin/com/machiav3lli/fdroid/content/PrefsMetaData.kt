@@ -1,9 +1,7 @@
 package com.machiav3lli.fdroid.content
 
-import android.app.job.JobInfo
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.utility.extension.android.Android
-import kotlin.time.Duration.Companion.milliseconds
 
 val BooleanPrefsMeta = mapOf(
     Preferences.Key.ShowScreenshots to Pair(
@@ -67,7 +65,7 @@ val NonBooleanPrefsMeta = mapOf(
     Preferences.Key.UpdatedApps to R.string.prefs_updated_apps,
     Preferences.Key.NewApps to R.string.prefs_new_apps,
     Preferences.Key.AutoSync to R.string.sync_repositories_automatically,
-    Preferences.Key.AutoSyncInterval to R.string.auto_sync_interval,
+    Preferences.Key.AutoSyncInterval to R.string.auto_sync_interval_hours,
     Preferences.Key.Installer to R.string.prefs_installer,
     Preferences.Key.DownloadDirectory to R.string.custom_download_directory,
     Preferences.Key.ReleasesCacheRetention to R.string.releases_cache_retention,
@@ -117,8 +115,7 @@ val PrefsEntries = mapOf(
 val IntPrefsRanges = mapOf(
     Preferences.Key.UpdatedApps to 1..1000,
     Preferences.Key.NewApps to 1..300,
-    Preferences.Key.AutoSyncInterval to
-            JobInfo.getMinPeriodMillis().milliseconds.inWholeMinutes.toInt()..43200,
+    Preferences.Key.AutoSyncInterval to 1..720,
     Preferences.Key.ReleasesCacheRetention to 0..365,
     Preferences.Key.ImagesCacheRetention to 0..365,
     Preferences.Key.ProxyPort to 1..65535,
