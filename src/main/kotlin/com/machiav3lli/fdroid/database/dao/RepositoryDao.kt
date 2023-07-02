@@ -19,6 +19,14 @@ interface RepositoryDao : BaseDao<Repository> {
         }
     }
 
+    suspend fun insertOrUpdate(vararg repos: Repository) {
+        repos.forEach { repository ->
+            val old = all.find { it.address == repository.address }
+            if (old != null) insertReplace(repository.copy(id = old.id))
+            else insert(repository.copy(id = 0L))
+        }
+    }
+
     @Insert
     fun returnInsert(product: Repository): Long
 

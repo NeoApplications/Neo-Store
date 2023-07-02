@@ -108,6 +108,16 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
         }
     }
 
+    fun insertRepos(vararg newValue: Repository) {
+        newValue.let {
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    db.repositoryDao.insertOrUpdate(*newValue)
+                }
+            }
+        }
+    }
+
     class Factory(private val db: DatabaseX) : ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

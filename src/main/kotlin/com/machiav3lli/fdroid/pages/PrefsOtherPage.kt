@@ -24,6 +24,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.content.SAFFile
 import com.machiav3lli.fdroid.database.entity.Extras
+import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.LinkRef
 import com.machiav3lli.fdroid.ui.components.prefs.BasePreference
 import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroup
@@ -67,6 +68,23 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
                 // TODO add notification about success or failure
             }
         }
+    val startExportReposResult =
+        rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(SAFFile.EXTRAS_MIME_TYPE)) { resultUri ->
+            if (resultUri != null) {
+                context.contentResolver.takePersistableUriPermission(
+                    resultUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+
+                SAFFile.write(
+                    context,
+                    resultUri,
+                    viewModel.repositories.value
+                        .joinToString(separator = ">") { it.toJSON() }
+                )
+                // TODO add notification about success or failure
+            }
+        }
     val startImportResult =
         rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { resultUri ->
             if (resultUri != null) {
@@ -82,6 +100,25 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
                         .map { Extras.fromJson(it) }
                         .toTypedArray()
                     viewModel.insertExtras(*extras)
+                }
+                // TODO add notification about success or failure
+            }
+        }
+    val startImportReposResult =
+        rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { resultUri ->
+            if (resultUri != null) {
+                context.contentResolver.takePersistableUriPermission(
+                    resultUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+
+                val content = SAFFile(context, resultUri).read()
+                if (content != null) {
+                    val repos = content
+                        .split(">")
+                        .map { Repository.fromJson(it) }
+                        .toTypedArray()
+                    viewModel.insertRepos(*repos)
                 }
                 // TODO add notification about success or failure
             }
@@ -110,7 +147,7 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
                     BasePreference(
                         titleId = R.string.extras_export,
                         index = 0,
-                        groupSize = 2,
+                        groupSize = 4,
                         onClick = {
                             startExportResult
                                 .launch("NS_$currentTimestamp.${SAFFile.EXTRAS_EXTENSION}")
@@ -120,9 +157,28 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
                     BasePreference(
                         titleId = R.string.extras_import,
                         index = 1,
-                        groupSize = 2,
+                        groupSize = 4,
                         onClick = {
                             startImportResult.launch(SAFFile.EXTRAS_MIME_ARRAY)
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    BasePreference(
+                        titleId = R.string.repos_export,
+                        index = 2,
+                        groupSize = 4,
+                        onClick = {
+                            startExportReposResult
+                                .launch("NS_$currentTimestamp.${SAFFile.REPOS_EXTENSION}")
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    BasePreference(
+                        titleId = R.string.repos_import,
+                        index = 3,
+                        groupSize = 4,
+                        onClick = {
+                            startImportReposResult.launch(SAFFile.REPOS_MIME_ARRAY)
                         }
                     )
                 }
@@ -145,14 +201,17 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
                         prefKey = dialogPref as Preferences.Key<String>,
                         openDialogCustom = openDialog
                     )
+
                     is Int -> IntInputPrefDialogUI(
                         prefKey = dialogPref as Preferences.Key<Int>,
                         openDialogCustom = openDialog
                     )
+
                     is Preferences.Enumeration<*> -> EnumSelectionPrefDialogUI(
                         prefKey = dialogPref as Preferences.Key<Preferences.Enumeration<*>>,
                         openDialogCustom = openDialog
                     )
+
                     else -> {}
                 }
             }
