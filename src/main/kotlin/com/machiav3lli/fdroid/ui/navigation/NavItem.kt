@@ -17,8 +17,20 @@
  */
 package com.machiav3lli.fdroid.ui.navigation
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavHostController
+import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.pages.ExplorePage
+import com.machiav3lli.fdroid.pages.InstalledPage
+import com.machiav3lli.fdroid.pages.LatestPage
+import com.machiav3lli.fdroid.pages.PermissionsPage
+import com.machiav3lli.fdroid.pages.PrefsOtherPage
+import com.machiav3lli.fdroid.pages.PrefsPersonalPage
+import com.machiav3lli.fdroid.pages.PrefsReposPage
+import com.machiav3lli.fdroid.pages.PrefsUpdatesPage
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Compass
@@ -31,6 +43,9 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserGear
 
 sealed class NavItem(var title: Int, var icon: ImageVector, var destination: String) {
+    object Main :
+        NavItem(R.string.explore, Phosphor.House, "main")
+
     object Permissions :
         NavItem(R.string.permissions, Phosphor.ShieldStar, "main_permissions")
 
@@ -57,4 +72,53 @@ sealed class NavItem(var title: Int, var icon: ImageVector, var destination: Str
 
     object OtherPrefs :
         NavItem(R.string.other, Phosphor.DotsThreeOutline, "prefs_other")
+
+    @Composable
+    fun ComposablePage(navController: NavHostController) {
+        when (destination) {
+            Permissions.destination   -> {
+                PermissionsPage {
+                    navController.navigate(Preferences[Preferences.Key.DefaultTab].valueString)
+                }
+            }
+
+            Explore.destination       -> {
+                MainApplication.mainActivity?.exploreViewModel?.let {
+                    ExplorePage(it)
+                }
+            }
+
+            Latest.destination        -> {
+                MainApplication.mainActivity?.latestViewModel?.let {
+                    LatestPage(it)
+                }
+            }
+
+            Installed.destination     -> {
+                MainApplication.mainActivity?.installedViewModel?.let {
+                    InstalledPage(it)
+                }
+            }
+
+            PersonalPrefs.destination -> {
+                PrefsPersonalPage()
+            }
+
+            UpdatesPrefs.destination  -> {
+                PrefsUpdatesPage()
+            }
+
+            OtherPrefs.destination    -> {
+                MainApplication.prefsActivity?.prefsViewModel?.let {
+                    PrefsOtherPage(it)
+                }
+            }
+
+            ReposPrefs.destination    -> {
+                MainApplication.prefsActivity?.prefsViewModel?.let {
+                    PrefsReposPage(it)
+                }
+            }
+        }
+    }
 }
