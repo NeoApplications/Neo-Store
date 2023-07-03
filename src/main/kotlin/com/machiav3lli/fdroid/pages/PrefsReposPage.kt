@@ -15,7 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -41,22 +41,27 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PrefsReposPage(viewModel: PrefsVM, address: String, fingerprint: String) {
+fun PrefsReposPage(viewModel: PrefsVM) {
     val context = LocalContext.current
     val prefsActivityX = context as PrefsActivityX
     val scope = rememberCoroutineScope()
     val repos by viewModel.repositories.collectAsState()
     val sheetData by viewModel.showSheet.collectAsState(initial = null)
     val sheetState = rememberModalBottomSheetState(true)
+    val intentAdress = viewModel.address.collectAsState()
+    val intentFingerprint = viewModel.fingerprint.collectAsState()
 
-    LaunchedEffect(key1 = address) {
-        if (address.isNotEmpty()) {
+    DisposableEffect(key1 = intentAdress.value, key2 = intentFingerprint.value) {
+        if (intentAdress.value.isNotEmpty()) {
             viewModel.showRepositorySheet(
                 editMode = true,
                 addNew = true,
-                address = address,
-                fingerprint = fingerprint
+                address = intentAdress.value,
+                fingerprint = intentFingerprint.value,
             )
+        }
+        onDispose {
+            if (intentAdress.value.isNotEmpty()) viewModel.setIntent("", "")
         }
     }
 

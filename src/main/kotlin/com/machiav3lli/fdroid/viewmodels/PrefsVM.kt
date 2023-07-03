@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
@@ -31,6 +32,11 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
         SharingStarted.Eagerly,
         emptyList()
     )
+
+    private val intentAddress = MutableStateFlow("")
+    val address = intentAddress as StateFlow<String>
+    private val intentFingerprint = MutableStateFlow("")
+    val fingerprint = intentFingerprint as StateFlow<String>
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -53,9 +59,11 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
                     addNew && (address.isEmpty() || repositories.value.none { it.address == address }) -> {
                         SheetNavigationData(addNewRepository(address, fingerprint), editMode)
                     }
+
                     !addNew                                                                            -> {
                         SheetNavigationData(repositoryId, editMode)
                     }
+
                     else                                                                               -> {
                         null
                     }
@@ -67,6 +75,13 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     fun closeRepositorySheet() {
         viewModelScope.launch {
             _showSheet.emit(null)
+        }
+    }
+
+    fun setIntent(address: String?, fingerprint: String?) {
+        viewModelScope.launch {
+            intentAddress.emit(address ?: "")
+            intentFingerprint.emit(fingerprint ?: "")
         }
     }
 
