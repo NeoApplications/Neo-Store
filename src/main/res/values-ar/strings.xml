@@ -337,4 +337,7 @@
     <string name="next">التالي</string>
     <string name="alt_navbar_item">استخدام عنصر شريط التنقل البديل</string>
     <string name="alt_navbar_item_description">استخدم تخطيط عنصر شريط التنقل البديل/القديم، الذي يعرض تسمية العناصر غير المحددة.</string>
+    <string name="repos_import">استيراد المستودعات (تجاوز المستودعات الموجودة بالفعل)</string>
+    <string name="auto_sync_interval_hours">الفاصل الزمني للمزامنة التلقائية (بالساعات)</string>
+    <string name="repos_export">تصدير المستوعات</string>
 </resources>
