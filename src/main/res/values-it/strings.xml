@@ -334,4 +334,7 @@
     <string name="next">Successivo</string>
     <string name="alt_navbar_item">Usa elemento alternativo della barra di navigazione</string>
     <string name="alt_navbar_item_description">Usa la disposizione degli elementi della barra di navigazione alternativa/vecchia, che mostra l\'etichetta degli elementi non selezionati.</string>
+    <string name="auto_sync_interval_hours">Intervallo di sincronizzazione automatica (in ore)</string>
+    <string name="repos_export">Esporta repository</string>
+    <string name="repos_import">Importa repository (sovrascrive quelli già esistenti)</string>
 </resources>
