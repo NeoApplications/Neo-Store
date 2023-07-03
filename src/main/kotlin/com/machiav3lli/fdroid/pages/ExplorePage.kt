@@ -66,8 +66,9 @@ fun ExplorePage(viewModel: ExploreVM) {
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
-    val favorites by mainActivityX.db.extrasDao.favoritesFlow.collectAsState(emptyArray())
-    val categories by RepositoryUpdater.db.categoryDao.allNamesFlow.collectAsState(emptyList())
+    val favorites by mainActivityX.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
+    val categories by RepositoryUpdater.db.getCategoryDao()
+        .getAllNamesFlow().collectAsState(emptyList())
     val selectedCategory = remember(Preferences[Preferences.Key.CategoriesFilterExplore]) {
         mutableStateOf(Preferences[Preferences.Key.CategoriesFilterExplore])
     }

@@ -79,7 +79,7 @@ fun InstalledPage(viewModel: InstalledVM) {
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
-    val favorites by mainActivityX.db.extrasDao.favoritesFlow.collectAsState(emptyArray())
+    val favorites by mainActivityX.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
     val iconDetails by viewModel.iconDetails.collectAsState()
     val downloaded by viewModel.downloaded.collectAsState()
     val downloads = downloaded.filter { it.state is DownloadState.Downloading }

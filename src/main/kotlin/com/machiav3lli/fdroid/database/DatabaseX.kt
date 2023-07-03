@@ -112,17 +112,17 @@ import kotlinx.coroutines.launch
 )
 @TypeConverters(Converters::class)
 abstract class DatabaseX : RoomDatabase() {
-    abstract val repositoryDao: RepositoryDao
-    abstract val productDao: ProductDao
-    abstract val releaseDao: ReleaseDao
-    abstract val productTempDao: ProductTempDao
-    abstract val categoryDao: CategoryDao
-    abstract val categoryTempDao: CategoryTempDao
-    abstract val installedDao: InstalledDao
-    abstract val extrasDao: ExtrasDao
-    abstract val exodusInfoDao: ExodusInfoDao
-    abstract val trackerDao: TrackerDao
-    abstract val downloadedDao: DownloadedDao
+    abstract fun getRepositoryDao(): RepositoryDao
+    abstract fun getProductDao(): ProductDao
+    abstract fun getReleaseDao(): ReleaseDao
+    abstract fun getProductTempDao(): ProductTempDao
+    abstract fun getCategoryDao(): CategoryDao
+    abstract fun getCategoryTempDao(): CategoryTempDao
+    abstract fun getInstalledDao(): InstalledDao
+    abstract fun getExtrasDao(): ExtrasDao
+    abstract fun getExodusInfoDao(): ExodusInfoDao
+    abstract fun getTrackerDao(): TrackerDao
+    abstract fun getDownloadedDao(): DownloadedDao
 
     companion object {
         @Volatile
@@ -141,8 +141,10 @@ abstract class DatabaseX : RoomDatabase() {
                         .build()
                     INSTANCE?.let { instance ->
                         GlobalScope.launch(Dispatchers.IO) {
-                            if (instance.repositoryDao.count == 0) defaultRepositories.forEach {
-                                instance.repositoryDao.put(it)
+                            if (instance.getRepositoryDao()
+                                    .getCount() == 0
+                            ) defaultRepositories.forEach {
+                                instance.getRepositoryDao().put(it)
                             }
                         }
                     }
@@ -219,8 +221,8 @@ abstract class DatabaseX : RoomDatabase() {
             if (from == 17) preRepos.addAll(addedReposV18)
             GlobalScope.launch(Dispatchers.IO) {
                 preRepos.forEach {
-                    INSTANCE?.repositoryDao?.put(it)
-                    if (from == 17) INSTANCE?.downloadedDao?.emptyTable()
+                    INSTANCE?.getRepositoryDao()?.put(it)
+                    if (from == 17) INSTANCE?.getDownloadedDao()?.emptyTable()
                 }
             }
         }
@@ -230,9 +232,9 @@ abstract class DatabaseX : RoomDatabase() {
         runInTransaction {
             pairs.forEach { pair ->
                 val id = pair.first
-                productDao.deleteById(id)
-                categoryDao.deleteById(id)
-                if (pair.second) repositoryDao.deleteById(id)
+                getProductDao().deleteById(id)
+                getCategoryDao().deleteById(id)
+                if (pair.second) getRepositoryDao().deleteById(id)
             }
         }
     }
@@ -242,14 +244,14 @@ abstract class DatabaseX : RoomDatabase() {
     fun finishTemporary(repository: Repository, success: Boolean) {
         runInTransaction {
             if (success) {
-                productDao.deleteById(repository.id)
-                categoryDao.deleteById(repository.id)
-                productDao.insert(*(productTempDao.all))
-                categoryDao.insert(*(categoryTempDao.all))
-                repositoryDao.put(repository)
+                getProductDao().deleteById(repository.id)
+                getCategoryDao().deleteById(repository.id)
+                getProductDao().insert(*(getProductTempDao().getAll()))
+                getCategoryDao().insert(*(getCategoryTempDao().getAll()))
+                getRepositoryDao().put(repository)
             }
-            productTempDao.emptyTable()
-            categoryTempDao.emptyTable()
+            getProductTempDao().emptyTable()
+            getCategoryTempDao().emptyTable()
         }
     }
 }

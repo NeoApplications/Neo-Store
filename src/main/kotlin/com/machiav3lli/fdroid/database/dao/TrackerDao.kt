@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TrackerDao : BaseDao<Tracker> {
-    @get:Query("SELECT * FROM `tracker`")
-    val all: List<Tracker>
+    @Query("SELECT * FROM `tracker`")
+    fun getAll(): List<Tracker>
 
-    @get:Query("SELECT * FROM `tracker`")
-    val allFlow: Flow<List<Tracker>>
+    @Query("SELECT * FROM `tracker`")
+    fun getAllFlow(): Flow<List<Tracker>>
 
     @Query("SELECT * FROM `tracker` WHERE key = :key")
     fun get(key: Int): Tracker?

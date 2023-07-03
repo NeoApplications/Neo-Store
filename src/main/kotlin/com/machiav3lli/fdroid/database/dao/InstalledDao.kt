@@ -12,8 +12,8 @@ interface InstalledDao : BaseDao<Installed> {
         installed.forEach { insertReplace(it) }
     }
 
-    @get:Query("SELECT * FROM memory_installed")
-    val allFlow: Flow<List<Installed>>
+    @Query("SELECT * FROM memory_installed")
+    fun getAllFlow(): Flow<List<Installed>>
 
     @Query("SELECT * FROM memory_installed WHERE packageName = :packageName")
     fun get(packageName: String): Installed?

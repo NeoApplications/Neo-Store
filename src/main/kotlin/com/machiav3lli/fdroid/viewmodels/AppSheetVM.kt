@@ -32,7 +32,7 @@ import kotlinx.coroutines.withContext
 class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val products = db.productDao.getFlow(packageName).mapLatest { it.filterNotNull() }
+    val products = db.getProductDao().getFlow(packageName).mapLatest { it.filterNotNull() }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val developer = products.mapLatest { it.firstOrNull()?.author?.name ?: "" }.stateIn(
@@ -42,17 +42,17 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val exodusInfo = db.exodusInfoDao.getFlow(packageName)
+    val exodusInfo = db.getExodusInfoDao().getFlow(packageName)
         .mapLatest { it.maxByOrNull(ExodusInfo::version_code) }
 
-    val trackers = exodusInfo.combine(db.trackerDao.allFlow) { a, b ->
+    val trackers = exodusInfo.combine(db.getTrackerDao().getAllFlow()) { a, b ->
         b.filter { it.key in (a?.trackers ?: emptyList()) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val repositories = db.repositoryDao.allFlow.mapLatest { it }
+    val repositories = db.getRepositoryDao().getAllFlow().mapLatest { it }
 
-    val installedItem = db.installedDao.getFlow(packageName)
+    val installedItem = db.getInstalledDao().getFlow(packageName)
         .stateIn(
             viewModelScope,
             SharingStarted.Lazily,
@@ -88,7 +88,7 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val downloadingState = db.downloadedDao.getLatestFlow(packageName)
+    val downloadingState = db.getDownloadedDao().getLatestFlow(packageName)
         .mapLatest { it?.state }
         .stateIn(
             viewModelScope,
@@ -97,7 +97,7 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         )
 
 
-    val extras = db.extrasDao.getFlow(packageName)
+    val extras = db.getExtrasDao().getFlow(packageName)
         .stateIn(
             viewModelScope,
             SharingStarted.Lazily,
@@ -105,7 +105,7 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         )
 
     val authorProducts = combineTransform(
-        db.productDao.getAuthorPackagesFlow(developer.value),
+        db.getProductDao().getAuthorPackagesFlow(developer.value),
         developer
     ) { prods, dev ->
         if (dev.isNotEmpty()) emit(
@@ -192,10 +192,10 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
 
     private suspend fun saveIgnoredVersion(packageName: String, versionCode: Long) {
         withContext(Dispatchers.IO) {
-            val oldValue = db.extrasDao[packageName]
-            if (oldValue != null) db.extrasDao
+            val oldValue = db.getExtrasDao()[packageName]
+            if (oldValue != null) db.getExtrasDao()
                 .insertReplace(oldValue.copy(ignoredVersion = versionCode))
-            else db.extrasDao
+            else db.getExtrasDao()
                 .insertReplace(Extras(packageName, ignoredVersion = versionCode))
         }
     }
@@ -209,10 +209,10 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
 
     private suspend fun saveIgnoreUpdates(packageName: String, setBoolean: Boolean) {
         withContext(Dispatchers.IO) {
-            val oldValue = db.extrasDao[packageName]
-            if (oldValue != null) db.extrasDao
+            val oldValue = db.getExtrasDao()[packageName]
+            if (oldValue != null) db.getExtrasDao()
                 .insertReplace(oldValue.copy(ignoreUpdates = setBoolean))
-            else db.extrasDao
+            else db.getExtrasDao()
                 .insertReplace(Extras(packageName, ignoreUpdates = setBoolean))
         }
     }
@@ -225,10 +225,10 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
 
     private suspend fun saveIgnoreVulns(packageName: String, setBoolean: Boolean) {
         withContext(Dispatchers.IO) {
-            val oldValue = db.extrasDao[packageName]
-            if (oldValue != null) db.extrasDao
+            val oldValue = db.getExtrasDao()[packageName]
+            if (oldValue != null) db.getExtrasDao()
                 .insertReplace(oldValue.copy(ignoreVulns = setBoolean))
-            else db.extrasDao
+            else db.getExtrasDao()
                 .insertReplace(Extras(packageName, ignoreVulns = setBoolean))
         }
     }
@@ -241,10 +241,10 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
 
     private suspend fun saveFavorite(packageName: String, setBoolean: Boolean) {
         withContext(Dispatchers.IO) {
-            val oldValue = db.extrasDao[packageName]
-            if (oldValue != null) db.extrasDao
+            val oldValue = db.getExtrasDao()[packageName]
+            if (oldValue != null) db.getExtrasDao()
                 .insertReplace(oldValue.copy(favorite = setBoolean))
-            else db.extrasDao
+            else db.getExtrasDao()
                 .insertReplace(Extras(packageName, favorite = setBoolean))
         }
     }

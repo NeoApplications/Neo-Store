@@ -36,14 +36,14 @@ class PackageChangedReceiver : BroadcastReceiver() {
                     }
                     val launcherActivities = context.packageManager.getLaunchActivities(packageName)
                     GlobalScope.launch(Dispatchers.IO) {
-                        if (packageInfo != null) db.installedDao.insertReplace(
+                        if (packageInfo != null) db.getInstalledDao().insertReplace(
                             packageInfo.toInstalledItem(launcherActivities)
                         )
-                        else db.installedDao.delete(packageName)
+                        else db.getInstalledDao().delete(packageName)
 
                         // Update updates notification
                         if (Preferences[Preferences.Key.UpdateNotify]) context.displayUpdatesNotification(
-                            db.productDao
+                            db.getProductDao()
                                 .queryObject(
                                     installed = true,
                                     updates = true,

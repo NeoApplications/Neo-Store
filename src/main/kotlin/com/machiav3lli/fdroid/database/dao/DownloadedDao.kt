@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DownloadedDao : BaseDao<Downloaded> {
-    @get:Query("SELECT * FROM downloaded")
-    val allFlow: Flow<List<Downloaded>>
+    @Query("SELECT * FROM downloaded")
+    fun getAllFlow(): Flow<List<Downloaded>>
 
     @Query("SELECT * FROM downloaded WHERE packageName = :packageName")
-    fun get(packageName: String): List<Downloaded?>
+    fun get(packageName: String): List<Downloaded>
 
     @Query("SELECT * FROM downloaded WHERE packageName = :packageName")
-    fun getFlow(packageName: String): Flow<List<Downloaded?>>
+    fun getFlow(packageName: String): Flow<List<Downloaded>>
 
     @Query("SELECT * FROM downloaded WHERE packageName = :packageName ORDER BY changed LIMIT 1")
     fun getLatest(packageName: String): Downloaded?

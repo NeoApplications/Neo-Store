@@ -97,7 +97,7 @@ class SyncWorker(
             CoroutineScope(Dispatchers.IO).launch {
                 enqueue(
                     request,
-                    *(MainApplication.db.repositoryDao.all
+                    *(MainApplication.db.getRepositoryDao().getAll()
                         .filter { it.enabled }
                         .map { it.id } + EXODUS_TRACKERS_SYNC).toLongArray()
                 )
@@ -114,7 +114,7 @@ class SyncWorker(
                 .build()
 
             CoroutineScope(Dispatchers.IO).launch {
-                (MainApplication.db.repositoryDao.all
+                (MainApplication.db.getRepositoryDao().getAll()
                     .filter { it.enabled }
                     .map { it.id } + EXODUS_TRACKERS_SYNC)
                     .forEach { repoId ->
@@ -148,7 +148,7 @@ class SyncWorker(
 
         suspend fun enableRepo(repository: Repository, enabled: Boolean): Boolean =
             withContext(Dispatchers.IO) {
-                MainApplication.db.repositoryDao.put(repository.enable(enabled))
+                MainApplication.db.getRepositoryDao().put(repository.enable(enabled))
                 if (enabled) {
                     enqueue(SyncRequest.MANUAL, repository.id)
                 } else {
@@ -159,10 +159,10 @@ class SyncWorker(
             }
 
         suspend fun deleteRepo(repoId: Long): Boolean = withContext(Dispatchers.IO) {
-            val repository = MainApplication.db.repositoryDao.get(repoId)
+            val repository = MainApplication.db.getRepositoryDao().get(repoId)
             repository != null && run {
                 enableRepo(repository, false)
-                MainApplication.db.repositoryDao.deleteById(repoId)
+                MainApplication.db.getRepositoryDao().deleteById(repoId)
                 true
             }
         }
@@ -205,7 +205,7 @@ class SyncWorker(
             setForegroundAsync(foregroundInfo)
         }
         val repository = scope.future {
-            MainApplication.db.repositoryDao.get(task.repositoryId)
+            MainApplication.db.getRepositoryDao().get(task.repositoryId)
         }.join()
 
         Log.i(this::class.java.simpleName, "sync repository: ${task.repositoryId}")

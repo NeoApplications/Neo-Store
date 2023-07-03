@@ -65,7 +65,7 @@ open class MainPageVM(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val installed = db.installedDao.allFlow.mapLatest {
+    val installed = db.getInstalledDao().getAllFlow().mapLatest {
         it.associateBy(Installed::packageName)
     }
 
@@ -85,11 +85,11 @@ open class MainPageVM(
     val primaryProducts: StateFlow<List<Product>?> = combine(
         primaryRequest,
         installed,
-        db.productDao.queryFlowList(primaryRequest.value),
+        db.getProductDao().queryFlowList(primaryRequest.value),
         sortFilter
     ) { a, _, _, _ ->
         withContext(Dispatchers.IO) {
-            db.productDao.queryObject(a)
+            db.getProductDao().queryObject(a)
         }
     }.stateIn(
         scope = viewModelScope,
@@ -114,11 +114,11 @@ open class MainPageVM(
     val secondaryProducts: StateFlow<List<Product>?> = combine(
         secondaryRequest,
         installed,
-        db.productDao.queryFlowList(secondaryRequest.value),
-        db.extrasDao.allFlow
+        db.getProductDao().queryFlowList(secondaryRequest.value),
+        db.getExtrasDao().getAllFlow(),
     ) { a, _, _, _ ->
         withContext(Dispatchers.IO) {
-            db.productDao.queryObject(a)
+            db.getProductDao().queryObject(a)
         }
     }.stateIn(
         scope = viewModelScope,
@@ -127,18 +127,18 @@ open class MainPageVM(
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val repositories = db.repositoryDao.allFlow.mapLatest { it }
+    val repositories = db.getRepositoryDao().getAllFlow().mapLatest { it }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val categories = db.categoryDao.allNamesFlow.mapLatest { it }
+    val categories = db.getCategoryDao().getAllNamesFlow().mapLatest { it }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val licenses = db.productDao.allLicensesFlow.mapLatest {
+    val licenses = db.getProductDao().getAllLicensesFlow().mapLatest {
         it.map(Licenses::licenses).flatten().distinct()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val iconDetails = db.productDao.iconDetailsFlow.mapLatest {
+    val iconDetails = db.getProductDao().getIconDetailsFlow().mapLatest {
         it.associateBy(IconDetails::packageName)
     }.stateIn(
         scope = viewModelScope,
@@ -146,7 +146,7 @@ open class MainPageVM(
         initialValue = emptyMap(),
     )
 
-    val downloaded = db.downloadedDao.allFlow.stateIn(
+    val downloaded = db.getDownloadedDao().getAllFlow().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = emptyList(),
@@ -160,10 +160,10 @@ open class MainPageVM(
 
     private suspend fun saveFavorite(packageName: String, setBoolean: Boolean) {
         withContext(Dispatchers.IO) {
-            val oldValue = db.extrasDao[packageName]
-            if (oldValue != null) db.extrasDao
+            val oldValue = db.getExtrasDao()[packageName]
+            if (oldValue != null) db.getExtrasDao()
                 .insertReplace(oldValue.copy(favorite = setBoolean))
-            else db.extrasDao
+            else db.getExtrasDao()
                 .insertReplace(Extras(packageName, favorite = setBoolean))
         }
     }

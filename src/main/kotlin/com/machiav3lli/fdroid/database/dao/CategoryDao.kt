@@ -8,23 +8,23 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CategoryDao : BaseDao<Category> {
-    @get:Query(
+    @Query(
         """SELECT DISTINCT category.label
         FROM category AS category
         JOIN repository AS repository
         ON category.repositoryId = repository._id
         WHERE repository.enabled != 0"""
     )
-    val allNames: List<String>
+    fun getAllNames(): List<String>
 
-    @get:Query(
+    @Query(
         """SELECT DISTINCT category.label
         FROM category AS category
         JOIN repository AS repository
         ON category.repositoryId = repository._id
         WHERE repository.enabled != 0"""
     )
-    val allNamesFlow: Flow<List<String>>
+    fun getAllNamesFlow(): Flow<List<String>>
 
     @Query("DELETE FROM category WHERE repositoryId = :id")
     fun deleteById(id: Long): Int
@@ -32,8 +32,8 @@ interface CategoryDao : BaseDao<Category> {
 
 @Dao
 interface CategoryTempDao : BaseDao<CategoryTemp> {
-    @get:Query("SELECT * FROM temporary_category")
-    val all: Array<CategoryTemp>
+    @Query("SELECT * FROM temporary_category")
+    fun getAll(): Array<CategoryTemp>
 
     @Query("DELETE FROM temporary_category")
     fun emptyTable()

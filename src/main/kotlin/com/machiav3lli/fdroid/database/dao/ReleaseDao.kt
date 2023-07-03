@@ -8,9 +8,9 @@ import com.machiav3lli.fdroid.database.entity.Release
 interface ReleaseDao : BaseDao<Release> {
     // This one for the mode combining releases of different sources
     @Query("SELECT * FROM `release` WHERE packageName = :packageName")
-    fun get(packageName: String): List<Release?>
+    fun get(packageName: String): List<Release>
 
     // This one for the separating releases of different sources
     @Query("SELECT * FROM `release` WHERE packageName = :packageName AND signature = :signature")
-    fun get(packageName: String, signature: String): List<Release?>
+    fun get(packageName: String, signature: String): List<Release>
 }

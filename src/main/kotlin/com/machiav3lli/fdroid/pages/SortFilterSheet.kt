@@ -62,9 +62,9 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
     val context = LocalContext.current
     val nestedScrollConnection = rememberNestedScrollInteropConnection()
     val dbHandler = MainApplication.db
-    val repos by dbHandler.repositoryDao.allFlow.collectAsState(emptyList())
-    val categories by db.categoryDao.allNamesFlow.collectAsState(emptyList())
-    val licenses by db.productDao.allLicensesFlow.mapLatest {
+    val repos by dbHandler.getRepositoryDao().getAllFlow().collectAsState(emptyList())
+    val categories by db.getCategoryDao().getAllNamesFlow().collectAsState(emptyList())
+    val licenses by db.getProductDao().getAllLicensesFlow().mapLatest {
         it.map(Licenses::licenses).flatten().distinct()
     }
         .collectAsState(emptyList())

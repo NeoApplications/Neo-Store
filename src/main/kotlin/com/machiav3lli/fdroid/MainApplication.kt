@@ -145,8 +145,8 @@ class MainApplication : Application(), ImageLoaderFactory {
             .getInstalledPackages(Android.PackageManager.signaturesFlag)
             .map { it.toInstalledItem(launcherActivitiesMap[it.packageName].orEmpty()) }
         CoroutineScope(Dispatchers.Default).launch {
-            db.installedDao.emptyTable()
-            db.installedDao.put(*installedItems.toTypedArray())
+            db.getInstalledDao().emptyTable()
+            db.getInstalledDao().put(*installedItems.toTypedArray())
         }
     }
 
@@ -261,9 +261,9 @@ class MainApplication : Application(), ImageLoaderFactory {
     }
 
     private fun forceSyncAll() {
-        db.repositoryDao.all.forEach {
+        db.getRepositoryDao().getAll().forEach {
             if (it.lastModified.isNotEmpty() || it.entityTag.isNotEmpty()) {
-                db.repositoryDao.put(it.copy(lastModified = "", entityTag = ""))
+                db.getRepositoryDao().put(it.copy(lastModified = "", entityTag = ""))
             }
         }
         SyncWorker.enqueueAll(SyncRequest.FORCE)

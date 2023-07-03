@@ -79,24 +79,24 @@ interface ProductDao : BaseDao<Product> {
     fun get(packageName: String): List<Product>
 
     @Query("SELECT * FROM product WHERE packageName = :packageName")
-    fun getFlow(packageName: String): Flow<List<Product?>>
+    fun getFlow(packageName: String): Flow<List<Product>>
 
 
-    @get:Query("SELECT packageName, icon, metadataIcon FROM product GROUP BY packageName HAVING 1")
-    val iconDetails: List<IconDetails>
+    @Query("SELECT packageName, icon, metadataIcon FROM product GROUP BY packageName HAVING 1")
+    fun getIconDetails(): List<IconDetails>
 
 
-    @get:Query("SELECT packageName, icon, metadataIcon FROM product GROUP BY packageName HAVING 1")
-    val iconDetailsFlow: Flow<List<IconDetails>>
+    @Query("SELECT packageName, icon, metadataIcon FROM product GROUP BY packageName HAVING 1")
+    fun getIconDetailsFlow(): Flow<List<IconDetails>>
 
     @Query("DELETE FROM product WHERE repositoryId = :id")
     fun deleteById(id: Long): Int
 
-    @get:Query("SELECT DISTINCT licenses FROM product")
-    val allLicenses: List<Licenses>
+    @Query("SELECT DISTINCT licenses FROM product")
+    fun getAllLicenses(): List<Licenses>
 
-    @get:Query("SELECT DISTINCT licenses FROM product")
-    val allLicensesFlow: Flow<List<Licenses>>
+    @Query("SELECT DISTINCT licenses FROM product")
+    fun getAllLicensesFlow(): Flow<List<Licenses>>
 
     @RawQuery
     fun queryObject(query: SupportSQLiteQuery): List<Product>
@@ -285,8 +285,8 @@ private fun generateSelectFields(): String = """SELECT $TABLE_PRODUCT.$ROW_REPOS
 
 @Dao
 interface ProductTempDao : BaseDao<ProductTemp> {
-    @get:Query("SELECT * FROM temporary_product")
-    val all: Array<ProductTemp>
+    @Query("SELECT * FROM temporary_product")
+    fun getAll(): Array<ProductTemp>
 
     @Query("DELETE FROM temporary_product")
     fun emptyTable()
@@ -320,15 +320,15 @@ interface ExtrasDao : BaseDao<Extras> {
     @Query("SELECT * FROM extras WHERE packageName = :packageName")
     fun getFlow(packageName: String): Flow<Extras?>
 
-    @get:Query("SELECT * FROM extras")
-    val all: List<Extras>
+    @Query("SELECT * FROM extras")
+    fun getAll(): List<Extras>
 
-    @get:Query("SELECT * FROM extras")
-    val allFlow: Flow<List<Extras>>
+    @Query("SELECT * FROM extras")
+    fun getAllFlow(): Flow<List<Extras>>
 
-    @get:Query("SELECT packageName FROM extras WHERE favorite != 0")
-    val favorites: Array<String>
+    @Query("SELECT packageName FROM extras WHERE favorite != 0")
+    fun getFavorites(): Array<String>
 
-    @get:Query("SELECT packageName FROM extras WHERE favorite != 0")
-    val favoritesFlow: Flow<Array<String>>
+    @Query("SELECT packageName FROM extras WHERE favorite != 0")
+    fun getFavoritesFlow(): Flow<Array<String>>
 }

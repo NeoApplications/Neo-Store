@@ -27,7 +27,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     private val _repositories = MutableStateFlow<List<Repository>>(emptyList())
     val repositories = _repositories.asStateFlow()
 
-    val extras = db.extrasDao.allFlow.stateIn(
+    val extras = db.getExtrasDao().getAllFlow().stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
         emptyList()
@@ -40,7 +40,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            db.repositoryDao.getAllRepositories().collectLatest {
+            db.getRepositoryDao().getAllRepositories().collectLatest {
                 _repositories.emit(it)
             }
         }
@@ -87,14 +87,14 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
 
     private suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long =
         withContext(Dispatchers.IO) {
-            db.repositoryDao.insert(
+            db.getRepositoryDao().insert(
                 newRepository(
                     fallbackName = "new repository",
                     address = address,
                     fingerprint = fingerprint
                 )
             )
-            db.repositoryDao.latestAddedId()
+            db.getRepositoryDao().latestAddedId()
         }
 
     fun updateRepo(newValue: Repository?) {
@@ -107,7 +107,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
 
     private suspend fun update(newValue: Repository) {
         withContext(Dispatchers.IO) {
-            db.repositoryDao.put(newValue)
+            db.getRepositoryDao().put(newValue)
         }
     }
 
@@ -119,7 +119,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
 
     private suspend fun insert(vararg items: Extras) {
         withContext(Dispatchers.IO) {
-            db.extrasDao.insertReplace(*items)
+            db.getExtrasDao().insertReplace(*items)
         }
     }
 
@@ -127,7 +127,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
         newValue.let {
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
-                    db.repositoryDao.insertOrUpdate(*newValue)
+                    db.getRepositoryDao().insertOrUpdate(*newValue)
                 }
             }
         }

@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RepositoryDao : BaseDao<Repository> {
-    @get:Query("SELECT COUNT(_id) FROM repository")
-    val count: Int
+    @Query("SELECT COUNT(_id) FROM repository")
+    fun getCount(): Int
 
     fun put(repository: Repository): Repository {
         repository.let { item ->
@@ -21,7 +21,7 @@ interface RepositoryDao : BaseDao<Repository> {
 
     suspend fun insertOrUpdate(vararg repos: Repository) {
         repos.forEach { repository ->
-            val old = all.find { it.address == repository.address }
+            val old = getAll().find { it.address == repository.address }
             if (old != null) insertReplace(repository.copy(id = old.id))
             else insert(repository.copy(id = 0L))
         }
@@ -42,20 +42,20 @@ interface RepositoryDao : BaseDao<Repository> {
     @Query("SELECT * FROM repository ORDER BY _id ASC")
     fun getAllRepositories(): Flow<List<Repository>>
 
-    @get:Query("SELECT * FROM repository ORDER BY _id ASC")
-    val all: List<Repository>
+    @Query("SELECT * FROM repository ORDER BY _id ASC")
+    fun getAll(): List<Repository>
 
-    @get:Query("SELECT * FROM repository ORDER BY _id ASC")
-    val allFlow: Flow<List<Repository>>
+    @Query("SELECT * FROM repository ORDER BY _id ASC")
+    fun getAllFlow(): Flow<List<Repository>>
 
-    @get:Query("SELECT * FROM repository ORDER BY _id ASC")
-    val allLive: LiveData<List<Repository>>
+    @Query("SELECT * FROM repository ORDER BY _id ASC")
+    fun getAllLive(): LiveData<List<Repository>>
 
-    @get:Query("SELECT _id FROM repository WHERE enabled != 0 ORDER BY _id ASC")
-    val allEnabledIds: List<Long>
+    @Query("SELECT _id FROM repository WHERE enabled != 0 ORDER BY _id ASC")
+    fun getAllEnabledIds(): List<Long>
 
-    @get:Query("SELECT _id FROM repository WHERE enabled == 0 ORDER BY _id ASC")
-    val allDisabledIds: List<Long>
+    @Query("SELECT _id FROM repository WHERE enabled == 0 ORDER BY _id ASC")
+    fun getAllDisabledIds(): List<Long>
 
     // TODO clean up products and other tables afterwards
     @Query("DELETE FROM repository WHERE _id = :id")

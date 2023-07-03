@@ -86,9 +86,9 @@ fun RepoPage(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val repo by MainApplication.db.repositoryDao.getFlow(repositoryId)
+    val repo by MainApplication.db.getRepositoryDao().getFlow(repositoryId)
         .collectAsState(initial = null)
-    val appsCount by MainApplication.db.productDao.countForRepositoryFlow(repositoryId)
+    val appsCount by MainApplication.db.getProductDao().countForRepositoryFlow(repositoryId)
         .collectAsState(0)
     var editMode by remember { mutableStateOf(initEditMode) }
     val openDeleteDialog = remember { mutableStateOf(false) }

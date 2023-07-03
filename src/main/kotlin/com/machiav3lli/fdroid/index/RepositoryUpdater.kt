@@ -69,7 +69,7 @@ object RepositoryUpdater {
         runBlocking(Dispatchers.IO) {
             launch {
                 val newDisabled = CoroutineUtils.querySingle {
-                    db.repositoryDao.allDisabledIds
+                    db.getRepositoryDao().getAllDisabledIds()
                 }.toSet()
 
                 val disabled = newDisabled - lastDisabled
@@ -194,8 +194,8 @@ object RepositoryUpdater {
                 val jarFile = JarFile(file, true)
                 val indexEntry = jarFile.getEntry(indexType.contentName) as JarEntry
                 val total = indexEntry.size
-                db.productTempDao.emptyTable()
-                db.categoryTempDao.emptyTable()
+                db.getProductTempDao().emptyTable()
+                db.getCategoryTempDao().emptyTable()
                 val features = context.packageManager.systemAvailableFeatures
                     .asSequence().map { it.name }.toSet() + setOf("android.hardware.touchscreen")
 
@@ -228,7 +228,7 @@ object RepositoryUpdater {
                                     }
                                     products += transformProduct(product, features, unstable)
                                     if (products.size >= 50) {
-                                        db.productTempDao.putTemporary(products)
+                                        db.getProductTempDao().putTemporary(products)
                                         products.clear()
                                     }
                                 }
@@ -246,7 +246,7 @@ object RepositoryUpdater {
                             throw InterruptedException()
                         }
                         if (products.isNotEmpty()) {
-                            db.productTempDao.putTemporary(products)
+                            db.getProductTempDao().putTemporary(products)
                             products.clear()
                         }
                         Pair(changedRepository, certificateFromIndex)
@@ -332,7 +332,7 @@ object RepositoryUpdater {
                                             progress.toLong(),
                                             totalCount.toLong()
                                         )
-                                        db.productTempDao.putTemporary(products
+                                        db.getProductTempDao().putTemporary(products
                                             .map { transformProduct(it, features, unstable) })
                                     }
                                 }

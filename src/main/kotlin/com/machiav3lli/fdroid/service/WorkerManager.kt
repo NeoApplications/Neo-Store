@@ -195,13 +195,13 @@ class WorkerManager(appContext: Context) {
             productItems.map { productItem ->
                 Triple(
                     productItem.packageName,
-                    MainApplication.db.installedDao.get(productItem.packageName),
-                    MainApplication.db.repositoryDao.get(productItem.repositoryId)
+                    MainApplication.db.getInstalledDao().get(productItem.packageName),
+                    MainApplication.db.getRepositoryDao().get(productItem.repositoryId)
                 )
             }
                 .filter { (_, installed, repo) -> (enforce || installed != null) && repo != null }
                 .forEach { (packageName, installed, repo) ->
-                    val productRepository = MainApplication.db.productDao.get(packageName)
+                    val productRepository = MainApplication.db.getProductDao().get(packageName)
                         .filter { product -> product.repositoryId == repo!!.id }
                         .map { product -> Pair(product, repo!!) }
                     Utils.startUpdate(
@@ -419,11 +419,11 @@ class WorkerManager(appContext: Context) {
             else CoroutineScope(Dispatchers.Default).launch {
                 MainApplication.wm.notificationManager
                     .cancel(NOTIFICATION_ID_SYNCING)
-                MainApplication.db.repositoryDao.allEnabledIds.forEach {
+                MainApplication.db.getRepositoryDao().getAllEnabledIds().forEach {
                     if (syncsRunning[it] == null) MainApplication.wm.notificationManager
                         .cancel(NOTIFICATION_ID_SYNCING + it.toInt())
                 }
-                MainApplication.db.productDao
+                MainApplication.db.getProductDao()
                     .queryObject(
                         installed = true,
                         updates = true,
@@ -439,7 +439,7 @@ class WorkerManager(appContext: Context) {
                             MainApplication.wm.update(*result.toTypedArray())
                         }
                     }
-                MainApplication.db.productDao
+                MainApplication.db.getProductDao()
                     .queryObject(
                         installed = true,
                         updates = false,
@@ -448,7 +448,7 @@ class WorkerManager(appContext: Context) {
                         ascending = true,
                     ).filter { product ->
                         product.antiFeatures.contains(AntiFeature.KNOWN_VULN.key)
-                                && MainApplication.db.extrasDao[product.packageName]?.ignoreVulns != true
+                                && MainApplication.db.getExtrasDao()[product.packageName]?.ignoreVulns != true
                     }.let { installedWithVulns ->
                         if (installedWithVulns.isNotEmpty())
                             context.displayVulnerabilitiesNotification(
@@ -627,7 +627,7 @@ class WorkerManager(appContext: Context) {
                         }
                     }?.let {
                         CoroutineScope(Dispatchers.Default).launch {
-                            MainApplication.db.downloadedDao.insertReplace(
+                            MainApplication.db.getDownloadedDao().insertReplace(
                                 Downloaded(
                                     it.packageName,
                                     it.version,
