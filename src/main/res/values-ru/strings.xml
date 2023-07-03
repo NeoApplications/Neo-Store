@@ -335,4 +335,7 @@
     <string name="next">Вперёд</string>
     <string name="alt_navbar_item_description">Использовать альтернативное/старое расположение элементов панели навигации, когда отображается ярлык невыбранных элементов.</string>
     <string name="alt_navbar_item">Альтернативный вид панели навигации</string>
+    <string name="repos_export">Экспорт репозиториев</string>
+    <string name="auto_sync_interval_hours">Интервал автосинхронизации (ч.)</string>
+    <string name="repos_import">Импорт репозиториев (с удалением существующих)</string>
 </resources>
