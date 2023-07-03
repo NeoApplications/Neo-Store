@@ -330,4 +330,9 @@
     <string name="finished">Selesai</string>
     <string name="error">Eror</string>
     <string name="next">Berikutnya</string>
+    <string name="repos_export">Ekspor repositori</string>
+    <string name="repos_import">Impor repositori (mengganti yang sudah ada)</string>
+    <string name="alt_navbar_item">Gunakan item bilah navigasi alternatif</string>
+    <string name="auto_sync_interval_hours">Interval sinkronisasi otomatis (dalam jam)</string>
+    <string name="alt_navbar_item_description">Gunakan tata letak item bilah navigasi alternatif/lama, yang menunjukkan label item yang tidak dipilih.</string>
 </resources>
