@@ -11,8 +11,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -36,7 +38,6 @@ import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.EXTRA_INTENT_HANDLED
 import com.machiav3lli.fdroid.MainApplication
-import com.machiav3lli.fdroid.NAV_MAIN
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.installer.AppInstaller
@@ -50,9 +51,9 @@ import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
-import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.MainNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.setCustomTheme
@@ -106,7 +107,7 @@ class MainActivityX : AppCompatActivity() {
 
     @OptIn(
         ExperimentalAnimationApi::class,
-        ExperimentalMaterial3Api::class
+        ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
@@ -129,11 +130,20 @@ class MainActivityX : AppCompatActivity() {
                 }
                 val mScope = rememberCoroutineScope()
                 navController = rememberNavController()
-                var barVisible by remember { mutableStateOf(true) }
+                var barVisible by remember { mutableStateOf(false) }
 
                 navController.addOnDestinationChangedListener { _, destination, _ ->
                     barVisible = destination.route != NavItem.Permissions.destination
                 }
+                val pages = listOf(
+                    NavItem.Latest,
+                    NavItem.Explore,
+                    NavItem.Installed,
+                )
+                val pagerState = rememberPagerState(
+                    pageCount = { pages.size },
+                    initialPage = Preferences[Preferences.Key.DefaultTab].valueString.toInt(),
+                )
                 appSheetPackage = remember { mutableStateOf("") }
                 val appSheetState = rememberModalBottomSheetState(true)
                 val appSheetVM = remember(appSheetPackage.value) {
@@ -152,7 +162,7 @@ class MainActivityX : AppCompatActivity() {
                             enter = slideInVertically { height -> height },
                             exit = slideOutVertically { height -> height },
                         ) {
-                            BottomNavBar(page = NAV_MAIN, navController = navController)
+                            PagerNavBar(pageItems = pages, pagerState = pagerState)
                         }
                     },
                     topBar = {
@@ -198,7 +208,9 @@ class MainActivityX : AppCompatActivity() {
 
                     MainNavHost(
                         modifier = Modifier.padding(paddingValues),
-                        navController = navController
+                        navController = navController,
+                        pagerState = pagerState,
+                        pages = pages,
                     )
 
                     if (appSheetPackage.value.isNotEmpty()) {

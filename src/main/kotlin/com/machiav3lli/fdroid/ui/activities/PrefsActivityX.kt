@@ -9,20 +9,20 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.machiav3lli.fdroid.BuildConfig
@@ -30,20 +30,20 @@ import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.EXTRA_INTENT_HANDLED
 import com.machiav3lli.fdroid.INTENT_ACTION_BINARY_EYE
 import com.machiav3lli.fdroid.MainApplication
-import com.machiav3lli.fdroid.NAV_PREFS
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
-import com.machiav3lli.fdroid.ui.navigation.BottomNavBar
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
 import com.machiav3lli.fdroid.ui.navigation.PrefsNavHost
-import com.machiav3lli.fdroid.utility.destinationToItem
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.setCustomTheme
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PrefsActivityX : AppCompatActivity() {
@@ -61,6 +61,10 @@ class PrefsActivityX : AppCompatActivity() {
     }
 
     private lateinit var navController: NavHostController
+    private val cScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+
+    @OptIn(ExperimentalFoundationApi::class)
+    private lateinit var pagerState: PagerState
 
     val db
         get() = (application as MainApplication).db
@@ -69,7 +73,7 @@ class PrefsActivityX : AppCompatActivity() {
         PrefsVM.Factory(db)
     }
 
-    @OptIn(ExperimentalAnimationApi::class)
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
         setCustomTheme()
@@ -85,20 +89,21 @@ class PrefsActivityX : AppCompatActivity() {
                 }
             ) {
                 navController = rememberNavController()
-                var pageTitle by remember {
-                    mutableStateOf(NavItem.Prefs.title)
-                }
-
-                navController.addOnDestinationChangedListener { _, destination, _ ->
-                    pageTitle = destination.destinationToItem()?.title ?: NavItem.Prefs.title
-                }
+                val pages = listOf(
+                    NavItem.PersonalPrefs,
+                    NavItem.UpdatesPrefs,
+                    NavItem.ReposPrefs,
+                    NavItem.OtherPrefs,
+                )
+                pagerState = rememberPagerState(pageCount = { pages.size })
+                val currentPage by remember(pagerState.currentPage) { mutableStateOf(pages[pagerState.currentPage]) }
 
                 Scaffold(
                     containerColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
-                    bottomBar = { BottomNavBar(page = NAV_PREFS, navController = navController) },
+                    bottomBar = { PagerNavBar(pageItems = pages, pagerState = pagerState) },
                     topBar = {
-                        TopBar(title = stringResource(id = pageTitle))
+                        TopBar(title = stringResource(id = currentPage.title))
                     }
                 ) { paddingValues ->
                     LaunchedEffect(key1 = navController) {
@@ -109,7 +114,9 @@ class PrefsActivityX : AppCompatActivity() {
 
                     PrefsNavHost(
                         modifier = Modifier.padding(paddingValues),
-                        navController = navController
+                        navController = navController,
+                        pagerState = pagerState,
+                        pages = pages,
                     )
                 }
             }
@@ -153,12 +160,18 @@ class PrefsActivityX : AppCompatActivity() {
             }
         }
 
+    @OptIn(ExperimentalFoundationApi::class)
     private fun handleSpecialIntent(specialIntent: SpecialIntent) {
         when (specialIntent) {
             is SpecialIntent.AddRepo -> {
-                val address = specialIntent.address
-                val fingerprint = specialIntent.fingerprint
-                navController.navigate("${NavItem.ReposPrefs.destination}?address=$address?fingerprint=$fingerprint")
+                prefsViewModel.setIntent(
+                    specialIntent.address,
+                    specialIntent.fingerprint,
+                )
+                if (pagerState.currentPage != 2) cScope.launch {
+                    pagerState.scrollToPage(2)
+                }
+                Unit
             }
 
             is SpecialIntent.Updates -> navController.navigate(NavItem.Installed.destination)

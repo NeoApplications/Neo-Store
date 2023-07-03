@@ -339,8 +339,8 @@ object Preferences : OnSharedPreferenceChangeListener {
         )
 
         object DefaultTab : Key<Preferences.DefaultTab>(
-            "default_tab", Value.EnumerationValue(
-                Preferences.DefaultTab.Explore
+            "default_tab_int", Value.EnumerationValue(
+                Preferences.DefaultTab.Latest
             )
         )
 
@@ -451,9 +451,9 @@ object Preferences : OnSharedPreferenceChangeListener {
         override val values: List<DefaultTab>
             get() = listOf(Explore, Latest, Installed)
 
-        object Explore : DefaultTab(NavItem.Explore.destination)
-        object Latest : DefaultTab(NavItem.Latest.destination)
-        object Installed : DefaultTab(NavItem.Installed.destination)
+        object Explore : DefaultTab("1")
+        object Latest : DefaultTab("0")
+        object Installed : DefaultTab("2")
     }
 
     operator fun <T> get(key: Key<T>): T {
