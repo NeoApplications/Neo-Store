@@ -8,7 +8,6 @@ import com.machiav3lli.fdroid.ROW_ID
 import com.machiav3lli.fdroid.TABLE_REPOSITORY
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.net.URL
@@ -522,6 +521,8 @@ data class Repository(
             C_GEO, C_GEO_NIGHTLY, PETER_CXY,
             STACK_WALLET,
             JAK_LINUX,
+            INVISV, MONERUJO, IODE, SPIRIT_CROC,
+            DIVEST_OS_UNOFFICIAL, FUNKWHALE,
         )
 
         val addedReposV9 = listOf(

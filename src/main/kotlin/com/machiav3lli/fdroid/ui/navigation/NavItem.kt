@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.pages.ExplorePage
 import com.machiav3lli.fdroid.pages.InstalledPage
 import com.machiav3lli.fdroid.pages.LatestPage
@@ -78,7 +77,7 @@ sealed class NavItem(var title: Int, var icon: ImageVector, var destination: Str
         when (destination) {
             Permissions.destination   -> {
                 PermissionsPage {
-                    navController.navigate(Preferences[Preferences.Key.DefaultTab].valueString)
+                    navController.navigate(Main.destination)
                 }
             }
 

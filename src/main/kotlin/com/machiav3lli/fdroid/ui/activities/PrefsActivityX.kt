@@ -174,11 +174,11 @@ class PrefsActivityX : AppCompatActivity() {
                 Unit
             }
 
-            is SpecialIntent.Updates -> navController.navigate(NavItem.Installed.destination)
+            is SpecialIntent.Updates -> navController.navigate(NavItem.Installed.destination) // TODO
             is SpecialIntent.Install -> {
                 val packageName = specialIntent.packageName
                 if (!packageName.isNullOrEmpty()) {
-                    lifecycleScope.launch {
+                    cScope.launch {
                         specialIntent.cacheFileName?.let {
                             AppInstaller.getInstance(this@PrefsActivityX)
                                 ?.defaultInstaller?.install(packageName, it)
@@ -194,10 +194,7 @@ class PrefsActivityX : AppCompatActivity() {
         when (intent?.action) {
             Intent.ACTION_VIEW -> {
                 val data = intent.data
-                if (
-                    data?.scheme?.lowercase()?.contains("fdroidrepo") == true &&
-                    !intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)
-                ) {
+                if (data != null && !intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)) {
                     intent.putExtra(EXTRA_INTENT_HANDLED, true)
                     val (addressText, fingerprintText) = try {
                         val uri = data.buildUpon()
