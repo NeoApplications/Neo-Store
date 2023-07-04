@@ -335,4 +335,7 @@
     <string name="next">Наступний</string>
     <string name="alt_navbar_item">Використовувати альтернативний вид панелі навігації</string>
     <string name="alt_navbar_item_description">Використовувати альтернативне/старе розташування елементів панелі навігації, яке показує мітки невибраних елементів.</string>
+    <string name="repos_export">Експорт репозиторіїв</string>
+    <string name="auto_sync_interval_hours">Інтервал автосинхронізації (в годинах)</string>
+    <string name="repos_import">Імпорт репозиторіїв (замінює вже існуючі)</string>
 </resources>
