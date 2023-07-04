@@ -1,23 +1,23 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val accompanistVersion = "0.31.3-beta"
-val composeVersion = "1.5.0-beta02"
-val composeCompilerVersion = "1.4.7"
+val accompanistVersion = "0.31.5-beta"
+val composeVersion = "1.6.0-alpha01"
+val composeCompilerVersion = "1.4.8"
 val koinVersion = "3.4.2"
 val koinKspVersion = "1.2.2"
-val material3Version = "1.2.0-alpha02"
-val navigationVersion = "2.7.0-beta01"
+val material3Version = "1.2.0-alpha03"
+val navigationVersion = "2.7.0-beta02"
 val okhttpVersion = "5.0.0-alpha.11"
 val moshiVersion = "1.15.0"
-val roomVersion = "2.5.1"
-val coroutinesVersion = "1.7.1"
+val roomVersion = "2.6.0-alpha02"
+val coroutinesVersion = "1.7.2"
 
 plugins {
     id("com.android.application") version ("8.0.2")
-    kotlin("android") version ("1.8.21")
-    kotlin("kapt") version ("1.8.21")
-    kotlin("plugin.serialization") version ("1.8.21")
-    id("com.google.devtools.ksp") version ("1.8.21-1.0.11")
+    kotlin("android") version ("1.8.22")
+    kotlin("kapt") version ("1.8.22")
+    kotlin("plugin.serialization") version ("1.8.22")
+    id("com.google.devtools.ksp") version ("1.8.22-1.0.11")
 }
 
 android {
@@ -129,8 +129,8 @@ android {
 dependencies {
 
     // Core
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21")
-    implementation("com.google.devtools.ksp:symbol-processing-api:1.8.21-1.0.11")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22")
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.8.22-1.0.11")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
@@ -148,8 +148,8 @@ dependencies {
     ksp("io.insert-koin:koin-ksp-compiler:$koinKspVersion")
 
     // Ktor
-    implementation("io.ktor:ktor-client-core:2.3.1")
-    implementation("io.ktor:ktor-client-okhttp:2.3.1")
+    implementation("io.ktor:ktor-client-core:2.3.2")
+    implementation("io.ktor:ktor-client-okhttp:2.3.2")
 
     // OkHttps
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
@@ -167,7 +167,7 @@ dependencies {
     implementation("de.charlex.compose:html-text:1.4.1")
 
     // Storage
-    implementation("com.anggrayudi:storage:1.5.4")
+    implementation("com.anggrayudi:storage:1.5.5")
 
     // Coroutines / Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
