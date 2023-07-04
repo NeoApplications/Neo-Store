@@ -15,7 +15,6 @@ val coroutinesVersion = "1.7.2"
 plugins {
     id("com.android.application") version ("8.0.2")
     kotlin("android") version ("1.8.22")
-    kotlin("kapt") version ("1.8.22")
     kotlin("plugin.serialization") version ("1.8.22")
     id("com.google.devtools.ksp") version ("1.8.22-1.0.11")
 }
