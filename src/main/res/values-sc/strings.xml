@@ -302,7 +302,7 @@
     <string name="file_share_text">Documentu de Neo Store</string>
     <string name="show_trackers">Ammustra sos arrastadores</string>
     <string name="show_trackers_description">Otene e cumpartzi sos arrastadores de sas aplicatziones dae Exodus Privacy.</string>
-    <string name="no_trackers_data_available">Perunu datu (galu) a disponimentu subra de sos arrastadores!</string>
+    <string name="no_trackers_data_available">Perunu datu (galu) a disponimentu subra de sos arrastadores.</string>
     <string name="post_notifications_permission_title">Permissu de imbiare notìficas</string>
     <string name="enable_download_directory_summary">Permite de mantènnere sos APK iscarrigados in una cartella isseberada.</string>
     <string name="custom_download_directory">Cartella de iscarrigamentu personalizada</string>
@@ -324,4 +324,16 @@
     <string name="allowed_licenses">Litzèntzias permìtidas</string>
     <string name="cancel_all">Annulla totu</string>
     <string name="disable_download_version_check">Iscàrriga sa verìfica de sa versione de iscarrigamentu</string>
+    <string name="auto_sync_interval_hours">Intervallu de sincronizatzione automàtica (in oras)</string>
+    <string name="finished">Acabadu</string>
+    <string name="canceled">Annulladu</string>
+    <string name="repos_export">Esporta sos depòsitos</string>
+    <string name="repos_import">Importa depòsitos (subraiscrie sos chi esistint giai)</string>
+    <string name="clear_text">Inneta su testu</string>
+    <string name="error">Errore</string>
+    <string name="previous">Antepostu</string>
+    <string name="list_apps">Ammustra sas aplicatziones de su depòsitu</string>
+    <string name="next">Imbeniente</string>
+    <string name="alt_navbar_item">Imprea un\'elementu alternativu de s\'istanga de navigatzione</string>
+    <string name="alt_navbar_item_description">Imprea sa dispositzione de sos elementos de sa barra de navigatzione alternativa/betza, chi mustrat s\'eticheta de sos elementos non seletzionados.</string>
 </resources>
