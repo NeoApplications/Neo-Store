@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-1.0.0 (??.??.2023) 160+ Commits +130 Translations
+1.0.0 (??.??.2023) 180+ Commits +130 Translations
 ------------------
 
 ### Function
@@ -10,10 +10,15 @@ CHANGELOG
 - Add: Preference to disable download version check
 - Add: Julian Andres Klode's repo (credits @ishanarora)
 - Add: Display localized product name and description (credits @BLumia)
+- Add: Export/import the repositories
+- Add: INVISV, Monerujo, iodé, spiritCroc, DivestOS Unofficial, Funkwhale preset repos
+- Add: Room Kotlin KSP code generation
 - Fix: Auto-sync on "Only charging"
 - Fix: The description for PeterCxy's Shelter repo (credits @ishanarora)
 - Fix: c:geo repository (credits @ishanarora)
 - Fix: Updates Product query
+- Fix: Adding repo using scanner
+- Update: Convert auto-sync interval unit to hours
 - Update: Optimize the main products query
 - Update: Migrate download, exodus & sync backend from Sevice- to Worker-based
 - Update: Revamp Downloader
@@ -22,6 +27,7 @@ CHANGELOG
 - Update: Allow parallel sync of repos
 - Update: Revamp the ExodusAPI classes
 - Update: minSDK to 24
+- Update: compileSDK 34
 - Remove: Dependencies of deprecated usage
 
 ### UI
@@ -30,12 +36,14 @@ CHANGELOG
 - Add: Linking database from Application
 - Add: (Products)List, StringInput DialogUIs
 - Add: Block border to sheets & pages
+- Add: New optional BottomNavBar item layout
 - Fix: Switch layout on low-dpi/multi-lines
 - Fix: Screenshots scaling issue after opening once
 - Fix: Pre-mature cutting horizontal products recycler layout
 - Fix: Avoid forgetting expand-state of description text
 - Fix: Content padding of Main pages
 - Fix: Ghost clicking settings when search is expanded
+- Fix: Showing progress bar in AppSheet when not active
 - Update: Revamp all sheets into composable only
 - Update: Revamp Message/Launch-Dialogs into composables
 - Update: Larger layout corners
@@ -47,6 +55,7 @@ CHANGELOG
 - Update: Replace slide animated compose with fade
 - Update: Revamp search bar layout
 - Update: Revamp PermissionItem
+- Update: Resort Main pages
 - Remove: Scrollable top bars
 
 ### UX
@@ -56,6 +65,7 @@ CHANGELOG
 - Add: Preference to keep notification of successfully installed app
 - Add: Slide down to close gesture to screenshots viewer
 - Add: Apps list to RepoSheet
+- Add: Swipe to navigate between pages
 - Fix: Showing updatable label for Product items
 - Fix: Showing right version in AppSheet's header
 - Fix: Showing downloaded version (in downloads log)
