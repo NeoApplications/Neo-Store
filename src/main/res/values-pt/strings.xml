@@ -334,4 +334,7 @@
     <string name="previous">Anteriores</string>
     <string name="alt_navbar_item">Usar item de barra de navegação alternativo</string>
     <string name="alt_navbar_item_description">Use o layout de item da barra de navegação alternativo/antigo, que mostra o rótulo dos itens não selecionados.</string>
+    <string name="auto_sync_interval_hours">Intervalo de sincronização automática (em horas)</string>
+    <string name="repos_export">Exportar repositórios</string>
+    <string name="repos_import">Importar repositórios (substitui os já existentes)</string>
 </resources>
