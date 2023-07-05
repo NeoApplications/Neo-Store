@@ -334,4 +334,7 @@
     <string name="next">Další</string>
     <string name="alt_navbar_item">Použít alternativní položku navigační lišty</string>
     <string name="alt_navbar_item_description">Použijte alternativní/staré rozložení položek navigačního panelu, které zobrazuje popisky nevybraných položek.</string>
+    <string name="auto_sync_interval_hours">Interval automatické synchronizace (v hodinách)</string>
+    <string name="repos_export">Exportovat repozitáře</string>
+    <string name="repos_import">Importovat repozitáře (přepíše již existující)</string>
 </resources>
