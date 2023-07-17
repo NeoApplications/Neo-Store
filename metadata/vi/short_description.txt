@@ -1,1 +1,1 @@
-Ứng dụng thay thế F-Droid với giao diện Material Design.
+Một ứng dụng khách F-Droid hiện đại giàu tính năng.
