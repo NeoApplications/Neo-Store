@@ -1,0 +1,9 @@
+- Thêm: Chủ đề động hệ thống (hay còn gọi là Material You)
+- Thêm: 7 kho cài đặt sẵn mới
+- Thêm: Nhãn kiến trúc trên bản phát hành cho kiến trúc cụ thể
+- Xóa: repo UnifiedPush (đã chết)
+- Khắc phục: Làm phiền thông báo cập nhật 0
+- Khắc phục: Ẩn liên kết trang web của Tác giả khi không khả dụng
+- Khắc phục: Phân tích nội dung của khay nhớ tạm cho URI repo
+- Khắc phục: Liên kết trong cài đặt
+- Khắc phục: Không hiển thị hành động cập nhật
