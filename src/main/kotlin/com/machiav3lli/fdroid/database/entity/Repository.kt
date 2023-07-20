@@ -504,7 +504,7 @@ data class Repository(
         private val SAMOURAI_WALLET = defaultRepository(
             "https://repo.samourai.io/fdroid/repo",
             "Official Samourai Wallet F-Droid Repo",
-            "A bitcoin wallet for the streets - hand forged to keep your transactions private ",
+            "A bitcoin wallet for the streets - hand forged to keep your transactions private.",
             21,
             false,
             "5318AFA280284855CF5D0027AA54517769F461D735980B1FB0854CEAE8E072A5",
