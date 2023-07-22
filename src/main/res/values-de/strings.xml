@@ -331,4 +331,9 @@
     <string name="error">Fehler</string>
     <string name="previous">Vorherige</string>
     <string name="clear_text">Lösche Text</string>
+    <string name="auto_sync_interval_hours">Intervall für Auto-Sync (in Std.)</string>
+    <string name="repos_import">Importiere das Repository (es überschreibt das bereits existierende)</string>
+    <string name="repos_export">Exportiere das Repository</string>
+    <string name="alt_navbar_item">Verwende alternatives Element der Navigationsleiste</string>
+    <string name="alt_navbar_item_description">Verwende die alternative / alte Anordnung der Elemente in der Navigationsleiste, welche die Bezeichnungen nicht selektierter Elemente anzeigt.</string>
 </resources>
