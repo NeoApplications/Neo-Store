@@ -99,13 +99,13 @@
     <string name="incompatible_platforms_DESC_FORMAT">あなたの %1$s プラットフォームはサポートされていません。サポートされているプラットフォーム: %2$s 。</string>
     <string name="incompatible_signature_DESC">このバージョンは，デバイスにインストールされているアプリの証明書とは異なる証明書で署名されています。
 \n先にそちらをアンインストールしてください。</string>
-    <string name="incompatible_versions_summary">デバイスと互換性のないアプリのバージョンを表示</string>
+    <string name="incompatible_versions_summary">デバイスと互換性のないアプリのバージョンを表示します。</string>
     <string name="incompatible_with_FORMAT">%s とは互換性がありません</string>
     <string name="link_copied_to_clipboard">リンクがクリップボードにコピーされました</string>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="other">%d 個のアプリで新バージョンが利用可能です。</item>
     </plurals>
-    <string name="notify_about_updates_summary">新しいバージョンが利用可能なときに通知を表示します</string>
+    <string name="notify_about_updates_summary">新しいバージョンが利用可能なときに通知を表示します。</string>
     <string name="permissions">権限</string>
     <string name="install_types">インストールの種類</string>
     <string name="license_FORMAT">%s ライセンス</string>
@@ -151,7 +151,7 @@
     <string name="share">共有</string>
     <string name="show_more">さらに表示</string>
     <string name="update">アップデート</string>
-    <string name="unstable_updates_summary">不安定なバージョンのインストールを提案する</string>
+    <string name="unstable_updates_summary">不安定なバージョンのインストールを提案します。</string>
     <string name="version">バージョン</string>
     <string name="waiting_to_start_download">ダウンロード中…</string>
     <string name="save">保存</string>
@@ -181,7 +181,7 @@
     <string name="prefs_personalization">個人設定</string>
     <string name="explore">探索</string>
     <string name="install_after_sync">自動アップデート</string>
-    <string name="install_after_sync_summary">新しいアプリをリポジトリから探し、すべての新しいバージョンをインストールします</string>
+    <string name="install_after_sync_summary">新しいアプリをリポジトリから探し、すべての新しいバージョンをインストールします。</string>
     <string name="prefs_new_apps">「新しいアプリ」の下に表示するアプリの数</string>
     <string name="prefs_updated_apps">「最近更新されたアプリ」の下に表示するアプリの数</string>
     <string name="new_repository">新しいリポジトリ</string>
@@ -189,7 +189,7 @@
     <string name="pending">保留中</string>
     <string name="installing">インストール中</string>
     <string name="ignore_battery_optimization_title">バッテリーの最適化</string>
-    <string name="ignore_battery_optimization_message">バッテリーの最適化をオフにすることで、アプリはより良く動作し、Android 12 以降でのクラッシュを防止できます</string>
+    <string name="ignore_battery_optimization_message">バッテリーの最適化をオフにすることで、アプリはより良く動作し、Android 12 以降でのクラッシュを防止できます。</string>
     <string name="root_session_installer_description">セッションインストーラーは、従来のインストーラーよりもパフォーマンスが少し劣りますが、Android 13 以降でインストールされているアプリの問題を回避します。</string>
     <string name="root_session_installer">root セッションのインストーラーを使用する</string>
     <string name="dialog_refuse">オフにしない</string>
