@@ -10,8 +10,8 @@
     <string name="install_types">Telepítési típusok</string>
     <string name="list_animation">Listaanimációk</string>
     <plurals name="new_updates_DESC_FORMAT">
-        <item quantity="one">%d alkalmazásnak van új verziója.</item>
-        <item quantity="other">%d alkalmazásnak van új verziója.</item>
+        <item quantity="one">%d alkalmazásnak új verziója van.</item>
+        <item quantity="other">%d alkalmazásoknak új verziója van.</item>
     </plurals>
     <string name="settings">Beállítások</string>
     <string name="recently_updated">Nemrég frissített</string>
@@ -134,7 +134,7 @@
     <string name="suggested">Javasolt</string>
     <string name="sync_repositories">Tárolók szinkronizálása</string>
     <string name="sync_repositories_automatically">Tárolók automatikus szinkronizálása</string>
-    <string name="syncing">Szinkronizálás</string>
+    <string name="syncing">Szinkronizálás alatt</string>
     <string name="system">Rendszer</string>
     <string name="tap_to_install_DESC">Koppintson a telepítéshez.</string>
     <string name="theme">Téma</string>
@@ -197,7 +197,7 @@
     <string name="favorite_add">Hozzáadás a kedvencekhez</string>
     <string name="open">Megnyitás</string>
     <string name="no_permissions_identified">Nincsenek kért engedélyek azonosítva</string>
-    <string name="installing">Telepítés</string>
+    <string name="installing">Telepítés alatt</string>
     <string name="not_safe_for_work">Cenzúrázható (zavaró tartalmat tartalmazhat)</string>
     <string name="ignore_battery_optimization_title">Akkumulátoroptimalizálás</string>
     <string name="ignore_battery_optimization_message">Az alkalmazás jobban működik az akkumulátoroptimalizálás kikapcsolásakor, és Android 12+ esetén megakadályozza az összeomlást.</string>
@@ -210,14 +210,14 @@
     <string name="auto_sync_interval">Autó-szinkronizálás intervalluma (percben)</string>
     <string name="legacy_installer">Örökölt telepítő (MIUI-val kompatibilis)</string>
     <string name="dynamic">Rendszer (dinamikus)</string>
-    <string name="min_sdk">minSDK</string>
+    <string name="min_sdk">minimumSDK</string>
     <string name="releases">Kiadások</string>
     <string name="system_black">Rendszer (Fekete)</string>
     <string name="group_matrix">A Matrix csoportunk</string>
     <string name="no_updates_available">Nincs elérhető verzió</string>
     <string name="sort_ascending">Növekvő</string>
     <string name="sort_descending">Csökkenő</string>
-    <string name="prefs_sync">Szinkronizálás</string>
+    <string name="prefs_sync">Szinkronizálás alatt</string>
     <string name="favorite_applications">Kedvencek</string>
     <string name="prefs_cache">Gyorsítótár</string>
     <string name="root_installer">Root telepítő</string>
@@ -225,7 +225,7 @@
     <string name="loading_list">Lista betöltése…</string>
     <string name="releases_cache_retention">Letöltött APK gyorsítótárának megtartása</string>
     <string name="categories">Kategóriák</string>
-    <string name="target_sdk">targetSDK</string>
+    <string name="target_sdk">célSDK</string>
     <string name="prefs_installer">Telepítő típusa</string>
     <string name="trackers_identification">Azonosítási követők</string>
     <string name="source_copyright_description">Az alkalmazás szerzői jog által védett tartalmaktól függ, vagy zárt forráskódú hálózatokhoz csatlakozik.</string>
@@ -290,7 +290,7 @@
     <string name="permission_not_granted">Nincs megadva</string>
     <string name="permission_not_present">Nincs jelen a rendszerén</string>
     <string name="vulnerabilities">Sérülékenységek.</string>
-    <string name="vulnerabilities_installed_apps">Ezek a telepített alkalmazások ismert sérülékenységekkel rendelkeznek.</string>
+    <string name="vulnerabilities_installed_apps">Ezek a telepített alkalmazások ismert sérülékenységekkel rendelkeznek!</string>
     <string name="no_vulnerabilities_installed_apps">Egyetlen telepített alkalmazás sem rendelkezik ismert sérülékenységgel.</string>
     <string name="app_installed">Telepítve</string>
     <string name="allowed_anti_features">Engedélyezett előnytelen funkciók</string>
@@ -333,4 +333,7 @@
     <string name="clear_text">Szöveg törlése</string>
     <string name="list_apps">Tároló alkalmazásainak megjelenítése</string>
     <string name="alt_navbar_item_description">A navigációs sáv alternatív/régi elemelrendezésének használata, amely megjeleníti a ki nem választott elemek címkéit.</string>
+    <string name="auto_sync_interval_hours">Autó-szinkronizálás intervalluma (órában)</string>
+    <string name="repos_export">Tárolók exportálása</string>
+    <string name="repos_import">Tárolók importálása (felülírja a már meglévőket)</string>
 </resources>
