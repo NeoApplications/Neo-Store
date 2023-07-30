@@ -1,0 +1,7 @@
+-Hozzáadva: Támogatás az fdroid tároló url-ekhez
+-Hozzáadva: Támogatás market://search? paraméterhez
+-Hozzáadva: Megosztás funkció IzzyOnDroid alkalmazásokhoz
+-Hozzáadva: GitJournal és Revolt az alapértelmezett tárolókhoz
+-Frissítve: Kiadáselemek átalakítása
+-Eltávolítva: Alefvanoon alapértelmezett tároló
+Több információért nézd meg a változásnaplót…

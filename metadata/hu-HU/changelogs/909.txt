@@ -1,0 +1,7 @@
+-Teljesen új felhasználói felület és munkamenet Material You-nak köszönhetően
+-Hozzáadva: Minden frissítése gomb
+-Hozzáadva: Nyelvválasztás funkció
+-Hozzáadva: Kedvencek (további funkciók később jönnek)
+-Javítva: Automatikusan frissüllő telepített/frissítések lista
+-Javítva: Összeomlás android 12 felett (ki kell kapcsolni az akkumulátoroptimalizálást)
+-Javítva: Rendszergazdai telepítő

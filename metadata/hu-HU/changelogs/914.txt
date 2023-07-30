@@ -1,0 +1,5 @@
+Javítva: Frissítés értesítés mutatása akkor is mikor ki van kapcsolva
+Hozzáadva: Threema, Stable Calyx OS és Session tárolók
+Javítva(próbálva): Háttér/néma telepítés
+Hozzáadva: Gyorsítótárazott alkalmazásfájlok és képek megtartása
+Frissített fordítások

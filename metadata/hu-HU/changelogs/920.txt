@@ -1,0 +1,5 @@
+-Hozzáadva: Alkalmazásikon rendszertéma alapján
+-Hozzáadva: Telepítő típus preferencia (beleértve a Legacy módot a buta MIUI-hoz)
+-Javítva: Navigáció a frissítési értesítésből való indítás után
+-Javítva: A letöltési sáv nem tükrözi a valós előrehaladást
+Több információért nézd meg a változásnaplót…

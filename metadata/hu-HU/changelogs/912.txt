@@ -1,0 +1,6 @@
+-Javítva: Beállítások ignorálásakor nem tűnik el a menüből
+-Javítva: Alfabetikus rendezése a telepített alkalmazásoknak
+-Javítva: Beágyazott görgetés az alkalmazáslistán
+-Javítva: A telepítés akció mutatása letöltés alatt
+-Javítva: Állapotsor ikonok láthatósága dinamikus színséma alatt
+-Frissítve: Fordítások

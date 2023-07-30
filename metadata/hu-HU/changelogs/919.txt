@@ -1,0 +1,3 @@
+-Hozzáadva: Tároló Qr kódjának beolvasása BinaryEye-al (ha telepítve van)
+-Javítva: Értesítésekből való indításkor a telepített állapot rögzítése
+-Javítva: A kezelési szándék javítása

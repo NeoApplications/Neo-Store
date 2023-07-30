@@ -1,0 +1,6 @@
+-Frissítve: Material You kinézete
+-Frissítve: Jobb képernyőkép élmény
+-Javítva: Lefagyás rendszergazdai telepítéskor
+-Frissítve: Átalakított téma profilok
+-Hozzáadva: Linkek megosztása (egyenlőre csak a hivatalos F-Droid linkeké)
+-Más kisebb kinézet és felhasznáhatóságbeli javítások
