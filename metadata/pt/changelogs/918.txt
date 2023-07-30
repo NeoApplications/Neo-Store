@@ -1,0 +1,7 @@
+Adicionar: Suporte para fdroidrepo(s) uri
+Adicionar: Suporte para market://search? intents
+Adicionar: Opção de partilha para aplicações IzzyOnDroid
+Adicionar: GitJournal & Revolt aos preset-repos
+Atualizar: Renovar ReleaseItems
+Remover: Alefvanoon preset-repo
+Para mais pormenores, consulte o registo de alterações completo…

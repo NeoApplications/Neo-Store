@@ -1,0 +1,7 @@
+Correção: Não detetar a permissão de raiz
+Correção: Falhas relacionadas com o Sync- & DownloadService
+Atualização: Renovação da página instalada
+Adicionar: Opção para desativar a obtenção/exibição de trackers
+Adicionar: FluffyChat nightly, Anonymous Messenger e BeoCode aos repositórios padrão
+Correção: Não atualização da lista de aplicações instaladas ao (des)instalar aplicações
++ mais de 80 traduções e outras contribuições

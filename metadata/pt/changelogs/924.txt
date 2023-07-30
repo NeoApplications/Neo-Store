@@ -1,0 +1,6 @@
+Adicionar: Avisos sobre aplicações com vulnerabilidades conhecidas
+Correção: Melhorar a sobrecarga de desempenho causada pela pesquisa (créditos @SocratesDz)
+Correção: Instalador com falhas
+Atualização: Renovação da funcionalidade de sincronização automática
+Atualização: Renovar folhas de repositório
++ mais de 60 contribuições de tradução

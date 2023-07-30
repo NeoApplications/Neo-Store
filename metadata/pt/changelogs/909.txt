@@ -1,0 +1,7 @@
+- UI/UX totalmente nova com o Material Design 3
+- Adicionar: Botão Atualizar tudo
+- Adicionar: Preferência de idioma
+- Adicionar: Favorito (outras funcionalidades a serem adicionadas mais tarde)
+- Correção: Atualização automática de listas instaladas/atualizadas
+- Correção: Crash no A12+ (tem de desativar a otimização da bateria)
+- Fix: Instalador raiz

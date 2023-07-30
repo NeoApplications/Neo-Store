@@ -1,0 +1,7 @@
+- Adicionado um ícone para abrir Detalhes
+- As diferenças na barra de aplicações superior tornaram-se mais proeminentes
+- A permissão de raiz só será pedida quando utilizada
+- Correções de visibilidade do interrutor
+- Adicionada tradução para árabe
+- Pressão longa no ícone de origem para copiar o link
+- Substituir o Toast pela Snackbar

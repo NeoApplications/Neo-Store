@@ -1,0 +1,8 @@
+Adicionar: KDE (Estável), C:Geo, Stack Wallet & repositórios Shelter de PeterCxy
+Adicionar: Opção para pasta de download externa
+Adicionar: Página de permissões
+Adicionar: Página de downloads (mudar) para InstalledPage
+Adicionar: Opção para ignorar a notificação sobre vulnerabilidades de segurança
+Correção: Instalador em segundo plano (silencioso)
+Atualização: Melhorar a definição do valor da caixa de diálogo de preferências
++ mais de 40 commits e 30 contribuições de tradução

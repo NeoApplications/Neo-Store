@@ -1,0 +1,4 @@
+- Correção: ícone do marcador de ecrã
+- Correção: Soft crash ao iniciar a AppDetails
+- Fix: Executar apenas uma instância do instalador raiz
+- Fix: Instalador raiz

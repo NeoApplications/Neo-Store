@@ -1,0 +1,3 @@
+Adição: Verificar QrCode do repositório usando BinaryEye (se instalado)
+Correção: Bloqueio em Instalado depois de iniciar a partir da notificação de atualizações
+Correção: Melhorar a intenção de manuseamento
