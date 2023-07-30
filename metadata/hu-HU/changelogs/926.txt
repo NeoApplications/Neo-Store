@@ -1,0 +1,7 @@
+-Javítva: Nem érzékelt a rendszergazdai engedélyt
+-Javítva: Szinkronizálással és letöltési szolgáltatással kapcsolatos összeomlások
+-Frissítve: Átdolgozott telepített lap
+-Hozzáadva: A nyomkövetők megszerzésének/megjelenítésének letiltása
+-Hozzáadva: FluffyChat nightly, Anonymous Messenger és BeoCode az alapértelmezett tárolókhoz
+-Javítva: A telepített alkalmazások listájának nem frissítése alkalmazások telepítése/törlésekor
++ több mint 80 fordítás és egyéb hozzájárulás

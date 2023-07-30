@@ -1,0 +1,5 @@
+-Hozzáadva: Nyelv beállítás
+-Frissítve: Horizontális görgő képernyőkép
+-Javítva: Háttér rendszergazda telepítő
+-Hozzáadva: Csak akkor kérjen rendszergazdai jogosultságot, amikor az van kiválasztva
+-Rengeteg apró felhasználói felület és használhatósági módosítás

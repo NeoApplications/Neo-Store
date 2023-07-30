@@ -1,0 +1,8 @@
+-Hozzáadva: KDE (Stable), C:Geo, Stack Wallet és PeterCxy's Shelter tárolói
+-Hozzáadva: Külső letöltési mappa opciója
+-Hozzáadva: Engedélyek oldal
+-Hozzáadva: Letöltések oldal váltása Telepített oldalra
+-Hozzáadva: Biztonsági résről szóló értesítés figyelmen kívül hagyásának lehetősége
+-Javítva: Háttérben futó (néma) telepítő
+-Frissítve: A beállítási párbeszédpanel értékének beállítása
++ több mint 40 kód és 30 fordítási hozzájárulás

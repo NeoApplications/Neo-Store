@@ -1,0 +1,7 @@
+-Hozzáadott ikon a Részletek megnyitásához
+-Felső menüsáv eltérések kiemelése
+-Rendszergazdai engedély csak akkor lesz kérve, ha használva van
+-Váltás láthatóság javítások
+-Arab fordítás hozzáadása
+-Hosszan nyomva a forrás ikonra másolható a linkje
+-Toast lecserélése Snackbar-ra

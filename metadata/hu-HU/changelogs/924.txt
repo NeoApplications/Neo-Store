@@ -1,0 +1,6 @@
+-Hozzáadva: Figyelmeztetések ismert sebezhetőségekkel rendelkező alkalmazásokon
+-Javítva: A keresés által okozott teljesítmény túlterhelés javítása (köszönet @SocratesDz)
+-Javítva: Összeomló telepítő
+-Frissítve: Automatikus szinkronizálási funkciók átdolgozása
+-Frissítve: Tároló lapok átdolgozása
++ több mint 60 fordítási hozzájárulás

@@ -1,0 +1,3 @@
+-Régi ikonok Material ikonokra cserélése
+-Fenti menüsáv hibák javítása
+-Ikonok hozzáadása a telepítés és a mégse gombokhoz a hozzáférhetőség javításáért

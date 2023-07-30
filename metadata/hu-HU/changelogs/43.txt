@@ -1,0 +1,4 @@
+-Javítva: Helytartó ikon képernyőképeknek
+-Javítva: Gyenge összeomlás mikor megnyitja az alkalmazás információkat
+-Javítva: Egyszerre csak egy rendszergazdai telepítő fusson
+-Javítva: Rendszergazdai telepítő

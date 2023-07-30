@@ -1,0 +1,5 @@
+-Hozzáadva: Amoled téma
+-Hozzáadva: Néma rendszergazdai telepítés
+-Hozzáadva a következő nyelvek:
+	-Portugál
+	-Kínai

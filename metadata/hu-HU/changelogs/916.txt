@@ -1,0 +1,7 @@
+-Hozzáadva: Rendezés/szűrés funkció
+-Hozzáadva: Kedvencek gomb
+-Hozzáadva: célSDK az app információs sávjába
+-Frissítve: Material ikonok Phosphor-ra való cseréje
+-Frissítve: Alsó navigációs sáv, alkalmazáslista és Tárolólista változtatás elrendezése
+-Javítva: Frissítés másodlagos akció mutatása letöltés alatt
+Több információért nézd meg a változásnaplót…

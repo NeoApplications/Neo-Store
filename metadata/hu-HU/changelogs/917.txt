@@ -1,0 +1,7 @@
+-Hozzáadva: Más alkalmazások a fejlesztőtől
+-Hozzáadva: Gördülő felső sáv (TopBar)
+-Javítva: Néhány színezési probléma a dinamikus témával
+-Frissítve: Új képernyőkép megtekintő (kijavít eddigi problémákat és enged nagyítani)
+-Frissítve: Sok elrendezés
+-Frissítve: Alkalmazás téma (kijavít néhány vizuális hibát)
+Több információért nézd meg a változásnaplót…

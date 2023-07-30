@@ -1,0 +1,6 @@
+-Frissítve: Új alkalmazás ikon
+-Frissítve: Alkalmazás lap kinézete
+-Frissítve: Lista animáció opcionálissá tétele
+-Javítva: Alkalmazás tényleges méretének mutatása
+-Javítva: Projekt link a Preferenciákban
+-Javítva: Kezdőkép rendszer témától való függése

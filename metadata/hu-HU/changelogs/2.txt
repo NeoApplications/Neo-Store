@@ -1,0 +1,4 @@
+*Kisebb felhasználói felület változások
+*A teljes kódbázis újraformázása
+*Frissített függőségek
+*Preferenciák Beállításokra való nevezése

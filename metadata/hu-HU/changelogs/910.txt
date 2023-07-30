@@ -1,0 +1,8 @@
+-Hozzáadva: Rendszer dinamikus téma (avagy Material You)
+-Hozzáadva: 7 új választható tároló
+-Hozzáadva: Architektúra felirat specifikus architektúrájú kiadásoknál
+-Eltávolítva: UnifiedPush könyvtár
+-Javítva: Idegesítő 0 frissítés értesítés
+-Javítva: A fejlesztő weboldal linkjének elrejtése, amikor az nem található
+-Javítva: A vágólap elemeinek elemzése tároló URL-ekhez
+-Javítva: Linkek a beállításokban
