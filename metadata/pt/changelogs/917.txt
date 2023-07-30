@@ -1,0 +1,7 @@
+Adicionar: Outras aplicações do programador
+Adicionar: Barra superior com deslocação
+Correção: Alguns problemas de coloração do tema dinâmico
+Atualização: Novo visualizador de capturas de ecrã (corrige problemas anteriores e permite fazer zoom)
+Atualização: Muitos layouts
+Atualização: Renovação do backend de temas (corrige alguns aspetos visuais)
+Para mais pormenores, consulte o registo de alterações completo…

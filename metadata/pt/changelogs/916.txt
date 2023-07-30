@@ -1,0 +1,7 @@
+Adicionar: função Ordenar/Filtrar
+Adicionar: Atalho explícito para favoritos
+Adicionar: TargetSDK aos chips de informação
+Atualizar: Substituir os ícones Material por Phosphor
+Atualização: Layouts da BottomNavBar, AppSheet e EditRepoSheet
+Correção: Mostrar a ação secundária de atualização durante o descarregamento
+Para mais pormenores, consulte o registo de alterações completo…

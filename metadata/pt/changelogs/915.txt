@@ -1,0 +1,7 @@
+Atualização: Renovar a IU do AppSheet
+Atualização: Migrar a navegação totalmente para o Compose
+Atualização: Migrar as preferências para o Compose
+Atualização: Permitir a definição de um número mais elevado para o reciclador de aplicações atualizadas/novas e o intervalo de sincronização
+Adicionar: Links úteis nas Preferências
+Correção: Visibilidade dos ActionButtons
+Correção: Mostrar a descrição do Repo antes da primeira sincronização

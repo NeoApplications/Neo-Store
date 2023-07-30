@@ -1,0 +1,6 @@
+Correção: A definição de ignorar atualizações não oculta as atualizações
+Correção: Ordenação alfabética de Installed
+Fix: Deslocação aninhada da AppSheet
+Correção: Mostrar a ação de instalação enquanto o download está a decorrer
+Correção: Visibilidade dos ícones da barra de estado no tema de cores dinâmicas
+Atualização: Traduções
