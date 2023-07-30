@@ -1,0 +1,6 @@
+- Atualização: Colapso da barra de ferramentas
+- Atualização: Melhorar os instaladores (Root e não-root)
+- Atualização: Novo ícone de aplicação (novamente)
+- Atualização: Design dos blocos de informação de lançamento
+- Atualização: Tratar nomes e ícones de autores em falta
+- Outras correções, ajustes e limpezas

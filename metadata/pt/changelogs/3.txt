@@ -1,0 +1,5 @@
+* Adicionado Tema Amoled
+* Adicionar instalação de raiz silenciosa
+* Adicionados os seguintes idiomas :-.
+    * Português
+    * Chinês

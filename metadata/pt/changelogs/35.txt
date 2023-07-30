@@ -1,0 +1,3 @@
+- Ícones antigos substituídos por ícones de material
+- Problemas na barra de aplicações superior resolvidos
+- Adicionar ícones ao botão Instalar e Cancelar para melhorar a acessibilidade
