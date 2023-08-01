@@ -131,7 +131,7 @@
     <string name="share">साझा करना</string>
     <string name="show_more">और दिखाओ</string>
     <string name="show_older_versions">पुराने संस्करण दिखाओ</string>
-    <string name="signature_FORMAT">हस्ताक्षर</string>
+    <string name="signature_FORMAT">हस्ताक्षर %s</string>
     <string name="size">आकार</string>
     <string name="skip">छोड़ें</string>
     <string name="sorting_order">छँटाई क्रम</string>
@@ -153,7 +153,7 @@
     <string name="favorite_applications">पसंदीदा</string>
     <string name="updates">अपडेटस</string>
     <string name="favorite_remove">पसंदीदा से हटाऐं</string>
-    <string name="unknown_error_DESC">अज्ञात त्रुटि</string>
+    <string name="unknown_error_DESC">अज्ञात त्रुटि।</string>
     <string name="install_after_sync">आटो-अपडेट</string>
     <string name="installing">इंस्टॉल हो रहा है</string>
     <string name="waiting_to_start_download">डाउनलोड हो रहा है…</string>
