@@ -1,0 +1,7 @@
+Tambahan: Aplikasi lain dari pengembang
+Tambahan: Menggulir Bilah Atas
+Perbaikan: Beberapa masalah pewarnaan pada tema dinamis
+Pembaruan: Penampil tangkapan layar baru (memperbaiki masalah sebelumnya dan memungkinkan pembesaran)
+Pembaruan: Banyak tata letak
+Pembaruan: Perombakan backend tema (memperbaiki beberapa visual)
+Untuk lebih jelasnya, lihat changelog lengkapnya…

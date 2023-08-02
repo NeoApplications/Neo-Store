@@ -1,0 +1,3 @@
+Tambahan: Pindai repo QrCode menggunakan BinaryEye (jika terinstal)
+Memperbaiki: Kunci di Terinstal setelah diluncurkan dari pemberitahuan pembaruan
+Perbaiki: Tingkatkan maksud penanganan
