@@ -331,4 +331,8 @@
     <string name="list_apps">Mostrar as aplicacións do repositorio</string>
     <string name="previous">Anterior</string>
     <string name="next">Seguinte</string>
+    <string name="auto_sync_interval_hours">Intervalo de sincronización automática (en horas)</string>
+    <string name="repos_export">Exportar os repositorios</string>
+    <string name="repos_import">Importar os repositorios (sobrescribe os existentes)</string>
+    <string name="alt_navbar_item">Utilizar un elemento alternativo á barra de navegación</string>
 </resources>
