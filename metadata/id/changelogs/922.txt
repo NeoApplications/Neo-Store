@@ -1,0 +1,7 @@
+Tambahan: Pemberitahuan izin (untuk A13)
+Tambahan: Kategori SideNavBar untuk explorer
+Perbaikan: Legacy- & RootInstaller
+Perbaikan: Meningkatkan kinerja pencarian (kredit @pedrox-hs)
+Update: Tata letak aplikasi horisontal
+Memperbarui: Meminta izin akar saat mengatur penginstal akar
++ lebih dari 60 kontribusi terjemahan

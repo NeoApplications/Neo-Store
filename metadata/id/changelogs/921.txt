@@ -1,0 +1,5 @@
+Memperbaiki: Memori kebocoran di Main & Prefs
+Tambahan: Semua Visualisasi Privasi baru (Neo Meter Icons)
+Tambahan: Semua panel privasi baru
+Memperbaiki: Membuka Lembar Repo yang sama berulang kali
++ lebih dari 15 kontribusi terjemahan
