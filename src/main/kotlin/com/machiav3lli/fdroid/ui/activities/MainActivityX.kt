@@ -293,7 +293,7 @@ class MainActivityX : AppCompatActivity() {
         when (specialIntent) {
             is SpecialIntent.Updates -> {
                 // TODO directly update the apps??
-                navController.navigate(NavItem.Installed.destination) // TODO
+                navController.navigate("${NavItem.Main.destination}?page=2")
             }
 
             is SpecialIntent.Install -> {

@@ -174,7 +174,7 @@ class PrefsActivityX : AppCompatActivity() {
                 Unit
             }
 
-            is SpecialIntent.Updates -> navController.navigate(NavItem.Installed.destination) // TODO
+            is SpecialIntent.Updates -> navController.navigate("${NavItem.Main.destination}?page=2")
             is SpecialIntent.Install -> {
                 val packageName = specialIntent.packageName
                 if (!packageName.isNullOrEmpty()) {
