@@ -192,6 +192,12 @@ interface ProductDao : BaseDao<Product> {
             $TABLE_PRODUCT.$ROW_SIGNATURES != ''
             """
 
+        builder += """
+            MAX(($TABLE_PRODUCT.$ROW_COMPATIBLE AND
+            ($TABLE_INSTALLED.$ROW_SIGNATURE IS NULL OR $signatureMatches)) ||
+            PRINTF('%016X', $TABLE_PRODUCT.$ROW_VERSION_CODE))
+        """
+
         builder.addFrom(TABLE_PRODUCT)
 
         // Joining
@@ -239,7 +245,11 @@ interface ProductDao : BaseDao<Product> {
 
         when (updateCategory) {
             UpdateCategory.ALL     -> Unit
-            UpdateCategory.NEW     -> builder.addWhere("$TABLE_PRODUCT.$ROW_ADDED = $TABLE_PRODUCT.$ROW_UPDATED")
+            UpdateCategory.NEW     -> {
+                builder.addWhere("$TABLE_PRODUCT.$ROW_ADDED = $TABLE_PRODUCT.$ROW_UPDATED") // TODO fix for multiple sources
+                builder.addWhere("$TABLE_PRODUCT.$ROW_RELEASES NOT LIKE '%|%'")
+            }
+
             UpdateCategory.UPDATED -> builder.addWhere("$TABLE_PRODUCT.$ROW_ADDED < $TABLE_PRODUCT.$ROW_UPDATED")
         }
 
@@ -274,14 +284,14 @@ interface ProductDao : BaseDao<Product> {
 
 private fun generateSelectFields(): String = """SELECT $TABLE_PRODUCT.$ROW_REPOSITORY_ID,
         $TABLE_PRODUCT.$ROW_PACKAGE_NAME, $TABLE_PRODUCT.$ROW_LABEL,
-        $TABLE_PRODUCT.$ROW_SUMMARY, $TABLE_PRODUCT.$ROW_DESCRIPTION, $TABLE_PRODUCT.$ROW_ADDED,
+        $TABLE_PRODUCT.$ROW_SUMMARY, $TABLE_PRODUCT.$ROW_DESCRIPTION, MIN($TABLE_PRODUCT.$ROW_ADDED),
         $TABLE_PRODUCT.$ROW_UPDATED, $TABLE_PRODUCT.$ROW_ICON, $TABLE_PRODUCT.$ROW_METADATA_ICON,
         $TABLE_PRODUCT.$ROW_RELEASES, $TABLE_PRODUCT.$ROW_CATEGORIES, $TABLE_PRODUCT.$ROW_ANTIFEATURES,
         $TABLE_PRODUCT.$ROW_LICENSES, $TABLE_PRODUCT.$ROW_DONATES, $TABLE_PRODUCT.$ROW_SCREENSHOTS,
         $TABLE_PRODUCT.$ROW_VERSION_CODE, $TABLE_PRODUCT.$ROW_SUGGESTED_VERSION_CODE,
         $TABLE_PRODUCT.$ROW_SIGNATURES, $TABLE_PRODUCT.$ROW_COMPATIBLE,
         $TABLE_PRODUCT.$ROW_AUTHOR, $TABLE_PRODUCT.$ROW_SOURCE, $TABLE_PRODUCT.$ROW_WEB,
-        $TABLE_PRODUCT.$ROW_TRACKER, $TABLE_PRODUCT.$ROW_CHANGELOG, $TABLE_PRODUCT.$ROW_WHATS_NEW"""
+        $TABLE_PRODUCT.$ROW_TRACKER, $TABLE_PRODUCT.$ROW_CHANGELOG, $TABLE_PRODUCT.$ROW_WHATS_NEW,"""
 
 @Dao
 interface ProductTempDao : BaseDao<ProductTemp> {
