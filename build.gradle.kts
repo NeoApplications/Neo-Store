@@ -1,16 +1,16 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val accompanistVersion = "0.31.5-beta"
-val composeVersion = "1.6.0-alpha01"
-val composeCompilerVersion = "1.4.8"
-val koinVersion = "3.4.2"
+val accompanistVersion = "0.33.0-alpha"
+val composeVersion = "1.6.0-alpha02"
+val composeCompilerVersion = "1.5.1"
+val koinVersion = "3.4.3"
 val koinKspVersion = "1.2.2"
-val material3Version = "1.2.0-alpha03"
-val navigationVersion = "2.7.0-beta02"
+val material3Version = "1.2.0-alpha04"
+val navigationVersion = "2.7.0-rc01"
 val okhttpVersion = "5.0.0-alpha.11"
 val moshiVersion = "1.15.0"
 val roomVersion = "2.6.0-alpha02"
-val coroutinesVersion = "1.7.2"
+val coroutinesVersion = "1.7.3"
 
 plugins {
     id("com.android.application") version ("8.0.2")
@@ -148,8 +148,8 @@ dependencies {
     ksp("io.insert-koin:koin-ksp-compiler:$koinKspVersion")
 
     // Ktor
-    implementation("io.ktor:ktor-client-core:2.3.2")
-    implementation("io.ktor:ktor-client-okhttp:2.3.2")
+    implementation("io.ktor:ktor-client-core:2.3.3")
+    implementation("io.ktor:ktor-client-okhttp:2.3.3")
 
     // OkHttps
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
@@ -163,7 +163,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
     // Markdown
-    implementation("org.jetbrains:markdown:0.4.1")
+    implementation("org.jetbrains:markdown:0.5.0")
     implementation("de.charlex.compose:html-text:1.4.1")
 
     // Storage
