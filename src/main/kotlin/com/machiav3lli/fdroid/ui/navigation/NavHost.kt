@@ -21,7 +21,7 @@ import com.machiav3lli.fdroid.pages.PermissionsPage
 import com.machiav3lli.fdroid.pages.PrefsPage
 
 @Composable
-fun MainNavHost(
+fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
 ) =

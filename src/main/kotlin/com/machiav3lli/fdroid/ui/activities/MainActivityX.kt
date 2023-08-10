@@ -5,18 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.KeyEvent
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -24,15 +18,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -41,22 +31,12 @@ import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.EXTRA_INTENT_HANDLED
 import com.machiav3lli.fdroid.INTENT_ACTION_BINARY_EYE
 import com.machiav3lli.fdroid.MainApplication
-import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.pages.AppSheet
-import com.machiav3lli.fdroid.service.worker.SyncRequest
-import com.machiav3lli.fdroid.service.worker.SyncWorker
-import com.machiav3lli.fdroid.ui.components.ExpandableSearchAction
-import com.machiav3lli.fdroid.ui.components.TopBar
-import com.machiav3lli.fdroid.ui.components.TopBarAction
-import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
-import com.machiav3lli.fdroid.ui.navigation.MainNavHost
+import com.machiav3lli.fdroid.ui.navigation.AppNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavItem
-import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import com.machiav3lli.fdroid.utility.isDarkTheme
@@ -93,7 +73,6 @@ class MainActivityX : AppCompatActivity() {
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
-    private lateinit var expanded: MutableState<Boolean>
     private lateinit var appSheetPackage: MutableState<String>
 
     val db
@@ -114,9 +93,7 @@ class MainActivityX : AppCompatActivity() {
         PrefsVM.Factory(db)
     }
 
-    @OptIn(
-        ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class
-    )
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
         currentTheme = Preferences[Preferences.Key.Theme].resId
@@ -132,26 +109,9 @@ class MainActivityX : AppCompatActivity() {
                     else -> isDarkTheme
                 }
             ) {
-                val query by searchQuery.collectAsState(initial = "")
-                expanded = remember {
-                    mutableStateOf(false)
-                }
                 val mScope = rememberCoroutineScope()
                 navController = rememberNavController()
-                var barVisible by remember { mutableStateOf(false) }
 
-                navController.addOnDestinationChangedListener { _, destination, _ ->
-                    barVisible = destination.route != NavItem.Permissions.destination
-                }
-                val pages = listOf(
-                    NavItem.Latest,
-                    NavItem.Explore,
-                    NavItem.Installed,
-                )
-                val pagerState = rememberPagerState(
-                    pageCount = { pages.size },
-                    initialPage = Preferences[Preferences.Key.DefaultTab].valueString.toInt(),
-                )
                 appSheetPackage = remember { mutableStateOf("") }
                 val appSheetState = rememberModalBottomSheetState(true)
                 val appSheetVM = remember(appSheetPackage.value) {
@@ -164,49 +124,6 @@ class MainActivityX : AppCompatActivity() {
                 Scaffold(
                     containerColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
-                    bottomBar = {
-                        AnimatedVisibility(
-                            barVisible,
-                            enter = slideInVertically { height -> height },
-                            exit = slideOutVertically { height -> height },
-                        ) {
-                            PagerNavBar(pageItems = pages, pagerState = pagerState)
-                        }
-                    },
-                    topBar = {
-                        TopBar(title = stringResource(id = R.string.application_name)) {
-                            AnimatedVisibility(barVisible) {
-                                ExpandableSearchAction(
-                                    query = query,
-                                    expanded = expanded,
-                                    onClose = {
-                                        mScope.launch { _searchQuery.emit("") }
-                                    },
-                                    onQueryChanged = { newQuery ->
-                                        if (newQuery != query) {
-                                            mScope.launch { _searchQuery.emit(newQuery) }
-                                        }
-                                    }
-                                )
-                            }
-                            AnimatedVisibility(barVisible && !expanded.value) {
-                                TopBarAction(
-                                    icon = Phosphor.ArrowsClockwise,
-                                    description = stringResource(id = R.string.sync_repositories)
-                                ) {
-                                    SyncWorker.enqueueAll(SyncRequest.MANUAL)
-                                }
-                            }
-                            AnimatedVisibility(barVisible && !expanded.value) {
-                                TopBarAction(
-                                    icon = Phosphor.GearSix,
-                                    description = stringResource(id = R.string.settings)
-                                ) {
-                                    navController.navigate(NavItem.Prefs.destination)
-                                }
-                            }
-                        }
-                    }
                 ) { paddingValues ->
                     LaunchedEffect(key1 = navController) {
                         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
@@ -214,11 +131,9 @@ class MainActivityX : AppCompatActivity() {
                         }
                     }
 
-                    MainNavHost(
+                    AppNavHost(
                         modifier = Modifier.padding(paddingValues),
                         navController = navController,
-                        pagerState = pagerState,
-                        pages = pages,
                     )
 
                     if (appSheetPackage.value.isNotEmpty()) {
@@ -250,19 +165,6 @@ class MainActivityX : AppCompatActivity() {
         super.onResume()
         if (currentTheme != Preferences[Preferences.Key.Theme].resId)
             recreate()
-    }
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        return when {
-            keyCode == KeyEvent.KEYCODE_BACK && expanded.value -> {
-                cScope.launch { _searchQuery.emit("") }
-                expanded.value = false
-                true
-            }
-
-            keyCode == KeyEvent.KEYCODE_BACK                   -> moveTaskToBack(true)
-            else                                               -> super.onKeyDown(keyCode, event)
-        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -403,5 +305,9 @@ class MainActivityX : AppCompatActivity() {
 
     internal fun navigateProduct(packageName: String) {
         appSheetPackage.value = packageName
+    }
+
+    fun setSearchQuery(value: String) {
+        cScope.launch { _searchQuery.emit(value) }
     }
 }
