@@ -94,15 +94,6 @@
                 <data android:pathPattern="/.*/packages/.*" />
             </intent-filter>
 
-        </activity>
-
-        <activity
-            android:name=".ui.activities.PrefsActivityX"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:parentActivityName=".ui.activities.MainActivityX"
-            android:windowSoftInputMode="adjustResize">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -119,7 +110,7 @@
                     tools:ignore="AppLinkUrlError" />
             </intent-filter>
 
-            <intent-filter>
+            <intent-filter> <!--TODO handle opening prefs directly-->
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
