@@ -3,8 +3,8 @@ package com.machiav3lli.fdroid.ui.navigation
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
@@ -89,7 +89,7 @@ fun PrefsNavHost(
         }
     }
 
-fun NavGraphBuilder.slideDownComposable(
+fun NavGraphBuilder.slideInComposable(
     route: String,
     args: List<NamedNavArgument> = emptyList(),
     content: @Composable (AnimatedVisibilityScope.(NavBackStackEntry) -> Unit),
@@ -97,8 +97,8 @@ fun NavGraphBuilder.slideDownComposable(
     composable(
         route,
         args,
-        enterTransition = { slideInVertically { height -> -height } + fadeIn() },
-        exitTransition = { slideOutVertically { height -> height } + fadeOut() }
+        enterTransition = { slideInHorizontally { width -> width } },
+        exitTransition = { slideOutHorizontally { width -> -width } },
     ) {
         content(it)
     }
