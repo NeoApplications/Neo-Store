@@ -28,9 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.backup.ui.compose.icons.phosphor.Plus
 import com.machiav3lli.fdroid.INTENT_ACTION_BINARY_EYE
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.service.worker.SyncWorker
-import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.compose.RepositoriesRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.QrCode
@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PrefsReposPage(viewModel: PrefsVM) {
     val context = LocalContext.current
-    val mActivity = context as MainActivityX
+    val mActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
     val repos by viewModel.repositories.collectAsState()
     val sheetData by viewModel.showSheet.collectAsState(initial = null)

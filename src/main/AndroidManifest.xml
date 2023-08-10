@@ -36,7 +36,7 @@
         </receiver>
 
         <activity
-            android:name=".ui.activities.MainActivityX"
+            android:name=".NeoActivity"
             android:alwaysRetainTaskState="true"
             android:exported="true"
             android:launchMode="singleTask"

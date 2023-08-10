@@ -28,11 +28,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.service.worker.ExodusWorker
-import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
@@ -51,7 +51,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun LatestPage(viewModel: LatestVM) {
     val context = LocalContext.current
-    val mainActivityX = context as MainActivityX
+    val neoActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
     val filteredPrimaryList by viewModel.filteredProducts.collectAsState()
     val secondaryList by viewModel.secondaryProducts.collectAsState(null)
@@ -60,13 +60,13 @@ fun LatestPage(viewModel: LatestVM) {
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
-    val favorites by mainActivityX.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
+    val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
     var showSortSheet by remember { mutableStateOf(false) }
     val sortSheetState = rememberModalBottomSheetState(true)
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
-            mainActivityX.searchQuery.collect { newQuery ->
+            neoActivity.searchQuery.collect { newQuery ->
                 viewModel.setSearchQuery(newQuery)
             }
         }
@@ -125,7 +125,7 @@ fun LatestPage(viewModel: LatestVM) {
                     repositories = repositoriesMap,
                     installedMap = installedList,
                 ) { item ->
-                    mainActivityX.navigateProduct(item.packageName)
+                    neoActivity.navigateProduct(item.packageName)
                 }
             }
         }
@@ -154,7 +154,7 @@ fun LatestPage(viewModel: LatestVM) {
                 isFavorite = favorites.contains(item.packageName),
                 onUserClick = {
                     ExodusWorker.fetchExodusInfo(item.packageName)
-                    mainActivityX.navigateProduct(it.packageName)
+                    neoActivity.navigateProduct(it.packageName)
                 },
                 onFavouriteClick = {
                     viewModel.setFavorite(
@@ -168,7 +168,7 @@ fun LatestPage(viewModel: LatestVM) {
                     if (installed != null && installed.launcherActivities.isNotEmpty())
                         context.onLaunchClick(
                             installed,
-                            mainActivityX.supportFragmentManager
+                            neoActivity.supportFragmentManager
                         )
                     else
                         MainApplication.wm.install(it)

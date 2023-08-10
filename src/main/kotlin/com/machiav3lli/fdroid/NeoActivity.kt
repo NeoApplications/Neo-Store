@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.ui.activities
+package com.machiav3lli.fdroid
 
 import android.app.Activity
 import android.content.Context
@@ -26,11 +26,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.machiav3lli.fdroid.BuildConfig
-import com.machiav3lli.fdroid.ContextWrapperX
-import com.machiav3lli.fdroid.EXTRA_INTENT_HANDLED
-import com.machiav3lli.fdroid.INTENT_ACTION_BINARY_EYE
-import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.pages.AppSheet
@@ -53,7 +48,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
-class MainActivityX : AppCompatActivity() {
+class NeoActivity : AppCompatActivity() {
     companion object {
         const val ACTION_UPDATES = "${BuildConfig.APPLICATION_ID}.intent.action.UPDATES"
         const val ACTION_INSTALL = "${BuildConfig.APPLICATION_ID}.intent.action.INSTALL"
@@ -219,7 +214,7 @@ class MainActivityX : AppCompatActivity() {
                 if (!packageName.isNullOrEmpty()) {
                     lifecycleScope.launch {
                         specialIntent.cacheFileName?.let {
-                            AppInstaller.getInstance(this@MainActivityX)
+                            AppInstaller.getInstance(this@NeoActivity)
                                 ?.defaultInstaller?.install(packageName, it)
                         }
                     }

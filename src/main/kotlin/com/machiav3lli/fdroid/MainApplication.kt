@@ -27,7 +27,6 @@ import com.machiav3lli.fdroid.service.PackageChangedReceiver
 import com.machiav3lli.fdroid.service.WorkerManager
 import com.machiav3lli.fdroid.service.worker.SyncRequest
 import com.machiav3lli.fdroid.service.worker.SyncWorker
-import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.utility.Utils.setLanguage
 import com.machiav3lli.fdroid.utility.Utils.toInstalledItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
@@ -54,8 +53,8 @@ class MainApplication : Application(), ImageLoaderFactory {
         private var appRef: WeakReference<MainApplication> = WeakReference(null)
         private val neo_store: MainApplication get() = appRef.get()!!
 
-        private var mainActivityRef: WeakReference<MainActivityX> = WeakReference(null)
-        var mainActivity: MainActivityX?
+        private var mainActivityRef: WeakReference<NeoActivity> = WeakReference(null)
+        var mainActivity: NeoActivity?
             get() = mainActivityRef.get()
             set(mainActivity) {
                 mainActivityRef = WeakReference(mainActivity)
@@ -173,7 +172,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                         val refresh = Intent.makeRestartActivityTask(
                             ComponentName(
                                 baseContext,
-                                MainActivityX::class.java
+                                NeoActivity::class.java
                             )
                         )
                         applicationContext.startActivity(refresh)

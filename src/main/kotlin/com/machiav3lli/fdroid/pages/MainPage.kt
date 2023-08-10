@@ -18,10 +18,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.service.worker.SyncRequest
 import com.machiav3lli.fdroid.service.worker.SyncWorker
-import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ExpandableSearchAction
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.components.TopBarAction
@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainPage(navController: NavHostController, pageIndex: Int) {
     val context = LocalContext.current
-    val mActivity = context as MainActivityX
+    val mActivity = context as NeoActivity
     val mScope = rememberCoroutineScope()
     val query by mActivity.searchQuery.collectAsState(initial = "")
     val expanded = remember {
