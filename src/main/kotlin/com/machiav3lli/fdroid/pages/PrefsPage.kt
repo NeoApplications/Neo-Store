@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.pages
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
@@ -29,6 +30,10 @@ fun PrefsPage(navController: NavHostController, pageIndex: Int) {
     )
     val pagerState = rememberPagerState(initialPage = pageIndex, pageCount = { pages.size })
     val currentPage by remember(pagerState.currentPage) { mutableStateOf(pages[pagerState.currentPage]) }
+
+    BackHandler {
+        navController.navigateUp()
+    }
 
     Scaffold(
         containerColor = Color.Transparent,
