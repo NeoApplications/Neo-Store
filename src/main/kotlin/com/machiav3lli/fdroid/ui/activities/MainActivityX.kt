@@ -1,10 +1,13 @@
 package com.machiav3lli.fdroid.ui.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedVisibility
@@ -37,6 +40,7 @@ import androidx.navigation.compose.rememberNavController
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.EXTRA_INTENT_HANDLED
+import com.machiav3lli.fdroid.INTENT_ACTION_BINARY_EYE
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
@@ -55,12 +59,14 @@ import com.machiav3lli.fdroid.ui.navigation.MainNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
+import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.setCustomTheme
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import com.machiav3lli.fdroid.viewmodels.ExploreVM
 import com.machiav3lli.fdroid.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.viewmodels.LatestVM
+import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -80,6 +86,7 @@ class MainActivityX : AppCompatActivity() {
     sealed class SpecialIntent {
         object Updates : SpecialIntent()
         class Install(val packageName: String?, val cacheFileName: String?) : SpecialIntent()
+        class AddRepo(val address: String?, val fingerprint: String?) : SpecialIntent()
     }
 
     private lateinit var navController: NavHostController
@@ -103,6 +110,9 @@ class MainActivityX : AppCompatActivity() {
     }
     val installedViewModel: InstalledVM by viewModels {
         InstalledVM.Factory(db)
+    }
+    val prefsViewModel: PrefsVM by viewModels {
+        PrefsVM.Factory(db)
     }
 
     @OptIn(
@@ -296,6 +306,16 @@ class MainActivityX : AppCompatActivity() {
                 navController.navigate("${NavItem.Main.destination}?page=2")
             }
 
+            is SpecialIntent.AddRepo -> {
+                prefsViewModel.setIntent(
+                    specialIntent.address,
+                    specialIntent.fingerprint,
+                )
+                navController.navigate(
+                    "${NavItem.Prefs.destination}?page=2?address=${specialIntent.address}?fingerprint=${specialIntent.fingerprint}"
+                )
+            }
+
             is SpecialIntent.Install -> {
                 val packageName = specialIntent.packageName
                 if (!packageName.isNullOrEmpty()) {
@@ -317,7 +337,27 @@ class MainActivityX : AppCompatActivity() {
 
         when (intent?.action) {
             Intent.ACTION_VIEW -> {
-                if (host == "search") {
+                if (data != null && !intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)) {
+                    intent.putExtra(EXTRA_INTENT_HANDLED, true)
+                    val (addressText, fingerprintText) = try {
+                        val uri = data.buildUpon()
+                            .scheme("https")
+                            .path(data.path?.pathCropped)
+                            .query(null).fragment(null).build().toString()
+                        val fingerprintText =
+                            data.getQueryParameter("fingerprint")?.uppercase()?.nullIfEmpty()
+                                ?: data.getQueryParameter("FINGERPRINT")?.uppercase()?.nullIfEmpty()
+                        Pair(uri, fingerprintText)
+                    } catch (e: Exception) {
+                        Pair(null, null)
+                    }
+                    handleSpecialIntent(
+                        SpecialIntent.AddRepo(
+                            addressText,
+                            fingerprintText
+                        )
+                    )
+                } else if (host == "search") {
                     val query = data.getQueryParameter("q")
                     cScope.launch { _searchQuery.emit(query ?: "") }
                 } else {
@@ -342,6 +382,23 @@ class MainActivityX : AppCompatActivity() {
                 )
             )
         }
+    }
+
+
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val scan = result.data?.getStringExtra("SCAN_RESULT")
+                scan?.replace("fdroidrepo", "http")
+                intent.data = Uri.parse(scan)
+                intent.action = Intent.ACTION_VIEW
+                handleIntent(intent)
+            }
+        }
+
+    fun openScanner() {
+        intent.putExtra(EXTRA_INTENT_HANDLED, false)
+        resultLauncher.launch(Intent(INTENT_ACTION_BINARY_EYE))
     }
 
     override fun attachBaseContext(newBase: Context) {
