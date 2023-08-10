@@ -5,10 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
@@ -19,17 +16,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.pages.MainPage
 import com.machiav3lli.fdroid.pages.PermissionsPage
 import com.machiav3lli.fdroid.pages.PrefsPage
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    pagerState: PagerState,
-    pages: List<NavItem>,
 ) =
     NavHost(
         modifier = modifier,
@@ -41,7 +35,7 @@ fun MainNavHost(
                 navController.navigate(NavItem.Main.destination)
             }
         }
-        fadeComposable(
+        slideInComposable(
             "${NavItem.Main.destination}?page={page}",
             args = listOf(
                 navArgument("page") {
@@ -50,16 +44,11 @@ fun MainNavHost(
                 }
             )
         ) {
-            val scope = rememberCoroutineScope()
             val args = it.arguments!!
             val pi = args.getInt("page")
-            if (pi != Preferences[Preferences.Key.DefaultTab].valueString.toInt()) pagerState.apply {
-                scope.launch { scrollToPage(pi) }
-            }
-            SlidePager(
-                pagerState = pagerState,
-                pageItems = pages,
-                navController = navController
+            MainPage(
+                pageIndex = pi,
+                navController = navController,
             )
         }
         slideInComposable(
@@ -71,12 +60,8 @@ fun MainNavHost(
                 }
             )
         ) {
-            val scope = rememberCoroutineScope()
             val args = it.arguments!!
             val pi = args.getInt("page")
-            if (pi != Preferences[Preferences.Key.DefaultTab].valueString.toInt()) pagerState.apply {
-                scope.launch { scrollToPage(pi) }
-            }
             PrefsPage(
                 pageIndex = pi,
                 navController = navController,
