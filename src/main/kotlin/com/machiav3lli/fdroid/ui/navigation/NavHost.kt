@@ -15,13 +15,12 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
-import androidx.navigation.activity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.pages.PermissionsPage
-import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
+import com.machiav3lli.fdroid.pages.PrefsPage
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -48,7 +47,8 @@ fun MainNavHost(
                 navArgument("page") {
                     type = NavType.IntType
                     defaultValue = Preferences[Preferences.Key.DefaultTab].valueString.toInt()
-                })
+                }
+            )
         ) {
             val scope = rememberCoroutineScope()
             val args = it.arguments!!
@@ -62,29 +62,24 @@ fun MainNavHost(
                 navController = navController
             )
         }
-        activity(NavItem.Prefs.destination) {
-            this.activityClass = PrefsActivityX::class
-        }
-    }
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun PrefsNavHost(
-    modifier: Modifier = Modifier,
-    navController: NavHostController,
-    pagerState: PagerState,
-    pages: List<NavItem>,
-) =
-    NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = NavItem.Prefs.destination
-    ) {
-        fadeComposable(NavItem.Prefs.destination) {
-            SlidePager(
-                pagerState = pagerState,
-                pageItems = pages,
-                navController = navController
+        slideInComposable(
+            "${NavItem.Prefs.destination}?page={page}",
+            args = listOf(
+                navArgument("page") {
+                    type = NavType.IntType
+                    defaultValue = Preferences[Preferences.Key.DefaultTab].valueString.toInt()
+                }
+            )
+        ) {
+            val scope = rememberCoroutineScope()
+            val args = it.arguments!!
+            val pi = args.getInt("page")
+            if (pi != Preferences[Preferences.Key.DefaultTab].valueString.toInt()) pagerState.apply {
+                scope.launch { scrollToPage(pi) }
+            }
+            PrefsPage(
+                pageIndex = pi,
+                navController = navController,
             )
         }
     }

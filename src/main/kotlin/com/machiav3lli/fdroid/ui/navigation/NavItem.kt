@@ -108,13 +108,13 @@ sealed class NavItem(var title: Int, var icon: ImageVector, var destination: Str
             }
 
             OtherPrefs.destination    -> {
-                MainApplication.prefsActivity?.prefsViewModel?.let {
+                MainApplication.mainActivity?.prefsViewModel?.let {
                     PrefsOtherPage(it)
                 }
             }
 
             ReposPrefs.destination    -> {
-                MainApplication.prefsActivity?.prefsViewModel?.let {
+                MainApplication.mainActivity?.prefsViewModel?.let {
                     PrefsReposPage(it)
                 }
             }
