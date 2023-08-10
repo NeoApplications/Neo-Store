@@ -34,6 +34,7 @@ open class MainPageVM(
 ) : ViewModel() {
     // TODO add better sort/filter fields
 
+    private val cc = Dispatchers.IO
     private val sortFilter = MutableStateFlow("")
 
     fun setSortFilter(value: String) {
@@ -88,7 +89,7 @@ open class MainPageVM(
         db.getProductDao().queryFlowList(primaryRequest.value),
         sortFilter
     ) { a, _, _, _ ->
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             db.getProductDao().queryObject(a)
         }
     }.stateIn(
@@ -100,7 +101,7 @@ open class MainPageVM(
     @OptIn(FlowPreview::class)
     val filteredProducts: StateFlow<List<Product>?> =
         combine(primaryProducts, query.debounce(400)) { products, query ->
-            withContext(Dispatchers.IO) {
+            withContext(cc) {
                 products?.matchSearchQuery(query)
             }
         }.stateIn(
@@ -117,7 +118,7 @@ open class MainPageVM(
         db.getProductDao().queryFlowList(secondaryRequest.value),
         db.getExtrasDao().getAllFlow(),
     ) { a, _, _, _ ->
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             db.getProductDao().queryObject(a)
         }
     }.stateIn(
@@ -159,7 +160,7 @@ open class MainPageVM(
     }
 
     private suspend fun saveFavorite(packageName: String, setBoolean: Boolean) {
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             val oldValue = db.getExtrasDao()[packageName]
             if (oldValue != null) db.getExtrasDao()
                 .insertReplace(oldValue.copy(favorite = setBoolean))

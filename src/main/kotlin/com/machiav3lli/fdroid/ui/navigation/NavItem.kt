@@ -42,34 +42,34 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserGear
 
 sealed class NavItem(var title: Int, var icon: ImageVector, var destination: String) {
-    object Main :
+    data object Main :
         NavItem(R.string.explore, Phosphor.House, "main")
 
-    object Permissions :
+    data object Permissions :
         NavItem(R.string.permissions, Phosphor.ShieldStar, "main_permissions")
 
-    object Explore :
+    data object Explore :
         NavItem(R.string.explore, Phosphor.Compass, "main_explore")
 
-    object Latest :
+    data object Latest :
         NavItem(R.string.latest, Phosphor.CircleWavyWarning, "main_latest")
 
-    object Installed :
+    data object Installed :
         NavItem(R.string.installed, Phosphor.House, "main_installed")
 
-    object Prefs :
+    data object Prefs :
         NavItem(R.string.settings, Phosphor.GearSix, "prefs")
 
-    object PersonalPrefs :
+    data object PersonalPrefs :
         NavItem(R.string.prefs_personalization, Phosphor.UserGear, "prefs_personal")
 
-    object UpdatesPrefs :
+    data object UpdatesPrefs :
         NavItem(R.string.updates, Phosphor.Download, "prefs_updates")
 
-    object ReposPrefs :
+    data object ReposPrefs :
         NavItem(R.string.repositories, Phosphor.Graph, "prefs_repos")
 
-    object OtherPrefs :
+    data object OtherPrefs :
         NavItem(R.string.other, Phosphor.DotsThreeOutline, "prefs_other")
 
     @Composable

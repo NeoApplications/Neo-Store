@@ -11,7 +11,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -84,7 +83,7 @@ class MainActivityX : AppCompatActivity() {
     }
 
     sealed class SpecialIntent {
-        object Updates : SpecialIntent()
+        data object Updates : SpecialIntent()
         class Install(val packageName: String?, val cacheFileName: String?) : SpecialIntent()
         class AddRepo(val address: String?, val fingerprint: String?) : SpecialIntent()
     }
@@ -116,7 +115,6 @@ class MainActivityX : AppCompatActivity() {
     }
 
     @OptIn(
-        ExperimentalAnimationApi::class,
         ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class
     )
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -311,9 +309,7 @@ class MainActivityX : AppCompatActivity() {
                     specialIntent.address,
                     specialIntent.fingerprint,
                 )
-                navController.navigate(
-                    "${NavItem.Prefs.destination}?page=2?address=${specialIntent.address}?fingerprint=${specialIntent.fingerprint}"
-                )
+                navController.navigate("${NavItem.Prefs.destination}?page=2")
             }
 
             is SpecialIntent.Install -> {

@@ -31,6 +31,8 @@ import kotlinx.coroutines.withContext
 
 class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
 
+    private val cc = Dispatchers.IO
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val products = db.getProductDao().getFlow(packageName).mapLatest { it.filterNotNull() }
 
@@ -191,7 +193,7 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
     }
 
     private suspend fun saveIgnoredVersion(packageName: String, versionCode: Long) {
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             val oldValue = db.getExtrasDao()[packageName]
             if (oldValue != null) db.getExtrasDao()
                 .insertReplace(oldValue.copy(ignoredVersion = versionCode))
@@ -208,7 +210,7 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
     }
 
     private suspend fun saveIgnoreUpdates(packageName: String, setBoolean: Boolean) {
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             val oldValue = db.getExtrasDao()[packageName]
             if (oldValue != null) db.getExtrasDao()
                 .insertReplace(oldValue.copy(ignoreUpdates = setBoolean))
@@ -224,7 +226,7 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
     }
 
     private suspend fun saveIgnoreVulns(packageName: String, setBoolean: Boolean) {
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             val oldValue = db.getExtrasDao()[packageName]
             if (oldValue != null) db.getExtrasDao()
                 .insertReplace(oldValue.copy(ignoreVulns = setBoolean))
@@ -240,7 +242,7 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
     }
 
     private suspend fun saveFavorite(packageName: String, setBoolean: Boolean) {
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             val oldValue = db.getExtrasDao()[packageName]
             if (oldValue != null) db.getExtrasDao()
                 .insertReplace(oldValue.copy(favorite = setBoolean))

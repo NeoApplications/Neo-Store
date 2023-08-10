@@ -21,6 +21,7 @@ import kotlinx.coroutines.withContext
 
 class PrefsVM(val db: DatabaseX) : ViewModel() {
 
+    private val cc = Dispatchers.IO
     private val _showSheet = MutableSharedFlow<SheetNavigationData?>()
     val showSheet: SharedFlow<SheetNavigationData?> = _showSheet
 
@@ -39,7 +40,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     val fingerprint = intentFingerprint as StateFlow<String>
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(cc) {
             db.getRepositoryDao().getAllRepositories().collectLatest {
                 _repositories.emit(it)
             }
@@ -86,7 +87,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     }
 
     private suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long =
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             db.getRepositoryDao().insert(
                 newRepository(
                     fallbackName = "new repository",
@@ -106,7 +107,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     }
 
     private suspend fun update(newValue: Repository) {
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             db.getRepositoryDao().put(newValue)
         }
     }
@@ -118,7 +119,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     }
 
     private suspend fun insert(vararg items: Extras) {
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             db.getExtrasDao().insertReplace(*items)
         }
     }
@@ -126,7 +127,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     fun insertRepos(vararg newValue: Repository) {
         newValue.let {
             viewModelScope.launch {
-                withContext(Dispatchers.IO) {
+                withContext(cc) {
                     db.getRepositoryDao().insertOrUpdate(*newValue)
                 }
             }

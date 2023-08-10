@@ -137,16 +137,16 @@ sealed class ActionState(
     override val icon: ImageVector = Phosphor.Download,
 ) : ComponentState {
 
-    object Install : ActionState(R.string.install, Phosphor.Download)
-    object Update : ActionState(R.string.update, Phosphor.Download)
-    object Uninstall : ActionState(R.string.uninstall, Phosphor.TrashSimple)
-    object Launch : ActionState(R.string.launch, Phosphor.ArrowSquareOut)
-    object Details : ActionState(R.string.details, Phosphor.SlidersHorizontal)
-    object Share : ActionState(R.string.share, Phosphor.ShareNetwork)
+    data object Install : ActionState(R.string.install, Phosphor.Download)
+    data object Update : ActionState(R.string.update, Phosphor.Download)
+    data object Uninstall : ActionState(R.string.uninstall, Phosphor.TrashSimple)
+    data object Launch : ActionState(R.string.launch, Phosphor.ArrowSquareOut)
+    data object Details : ActionState(R.string.details, Phosphor.SlidersHorizontal)
+    data object Share : ActionState(R.string.share, Phosphor.ShareNetwork)
     class Cancel(@StringRes stateId: Int) : ActionState(stateId, Phosphor.X)
-    object NoAction : ActionState(R.string.no_action_possible, Phosphor.X)
-    object Bookmark : ActionState(R.string.favorite_add, Phosphor.HeartStraight)
-    object Bookmarked : ActionState(R.string.favorite_remove, Phosphor.HeartStraightFill)
+    data object NoAction : ActionState(R.string.no_action_possible, Phosphor.X)
+    data object Bookmark : ActionState(R.string.favorite_add, Phosphor.HeartStraight)
+    data object Bookmarked : ActionState(R.string.favorite_remove, Phosphor.HeartStraightFill)
 }
 
 open class LinkType(

@@ -63,7 +63,7 @@ class SyncWorker(
 
     private var repoId = inputData.getLong(ARG_REPOSITORY_ID, -1L)
     private var request = SyncRequest.values()[
-            inputData.getInt(ARG_SYNC_REQUEST, 0)
+        inputData.getInt(ARG_SYNC_REQUEST, 0)
     ]
 
     companion object {
@@ -170,17 +170,17 @@ class SyncWorker(
         fun getTask(data: Data) = SyncTask(
             data.getLong(ARG_REPOSITORY_ID, -1L),
             SyncRequest.values()[
-                    data.getInt(ARG_SYNC_REQUEST, 0)
+                data.getInt(ARG_SYNC_REQUEST, 0)
             ],
         )
 
         fun getState(data: Data) = SyncState.values()[
-                data.getInt(ARG_STATE, 0)
+            data.getInt(ARG_STATE, 0)
         ]
 
         fun getProgress(data: Data) = Progress(
             RepositoryUpdater.Stage.values()[
-                    data.getInt(ARG_STAGE, 0)
+                data.getInt(ARG_STAGE, 0)
             ],
             data.getLong(ARG_READ, 0L),
             data.getLong(ARG_TOTAL, -1L),
