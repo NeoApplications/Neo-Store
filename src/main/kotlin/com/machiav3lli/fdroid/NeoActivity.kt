@@ -256,6 +256,7 @@ class NeoActivity : AppCompatActivity() {
                     )
                 } else if (host == "search") {
                     val query = data.getQueryParameter("q")
+                    navController.navigate("${NavItem.Main.destination}?page=3")
                     cScope.launch { _searchQuery.emit(query ?: "") }
                 } else {
                     val packageName = intent.packageName
