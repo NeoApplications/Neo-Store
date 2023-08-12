@@ -120,7 +120,8 @@ open class MainPageVM(
         db.getExtrasDao().getAllFlow(),
     ) { a, _, _, _ ->
         withContext(cc) {
-            db.getProductDao().queryObject(a)
+            if (secondarySource != primarySource) db.getProductDao().queryObject(a)
+            else null
         }
     }.stateIn(
         scope = viewModelScope,
