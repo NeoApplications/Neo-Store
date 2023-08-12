@@ -188,9 +188,9 @@ fun ExplorePage(viewModel: ExploreVM) {
                                 !favorites.contains(it.packageName)
                             )
                         },
-                        installed = installedList?.get(item.packageName),
+                        installed = installedList[item.packageName],
                         onActionClick = {
-                            val installed = installedList?.get(it.packageName)
+                            val installed = installedList[it.packageName]
                             if (installed != null && installed.launcherActivities.isNotEmpty())
                                 context.onLaunchClick(
                                     installed,

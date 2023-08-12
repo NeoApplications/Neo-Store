@@ -40,8 +40,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.MainApplication
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Product
@@ -264,9 +264,9 @@ fun InstalledPage(viewModel: InstalledVM) {
                                 !favorites.contains(pi.packageName)
                             )
                         },
-                        installed = installedList?.get(item.packageName),
+                        installed = installedList[item.packageName],
                         onActionClick = {
-                            val installed = installedList?.get(it.packageName)
+                            val installed = installedList[it.packageName]
                             if (installed != null && installed.launcherActivities.isNotEmpty())
                                 context.onLaunchClick(
                                     installed,

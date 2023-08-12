@@ -10,7 +10,6 @@ import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.entity.InstallerType
 import com.machiav3lli.fdroid.entity.Order
-import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +18,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import java.net.Proxy
 
-object Preferences : OnSharedPreferenceChangeListener {
+data object Preferences : OnSharedPreferenceChangeListener {
     private lateinit var preferences: SharedPreferences
 
     private val mutableSubject = MutableSharedFlow<Key<*>>()
@@ -183,180 +182,184 @@ object Preferences : OnSharedPreferenceChangeListener {
     }
 
     sealed class Key<T>(val name: String, val default: Value<T>) {
-        object Null : Key<Int>("", Value.IntValue(0))
+        data object Null : Key<Int>("", Value.IntValue(0))
 
-        object Language : Key<String>(PREFS_LANGUAGE, Value.StringValue(PREFS_LANGUAGE_DEFAULT))
-        object AutoSync : Key<Preferences.AutoSync>(
+        data object Language :
+            Key<String>(PREFS_LANGUAGE, Value.StringValue(PREFS_LANGUAGE_DEFAULT))
+
+        data object AutoSync : Key<Preferences.AutoSync>(
             "auto_sync",
             Value.EnumerationValue(Preferences.AutoSync.Wifi)
         )
 
-        object EnableDownloadDirectory :
+        data object EnableDownloadDirectory :
             Key<Boolean>("download_directory_enable", Value.BooleanValue(false))
 
-        object DownloadDirectory : Key<String>("download_directory_value", Value.StringValue(""))
+        data object DownloadDirectory :
+            Key<String>("download_directory_value", Value.StringValue(""))
 
-        object ReleasesCacheRetention : Key<Int>("releases_cache_retention", Value.IntValue(1))
+        data object ReleasesCacheRetention : Key<Int>("releases_cache_retention", Value.IntValue(1))
 
-        object ImagesCacheRetention : Key<Int>("images_cache_retention", Value.IntValue(14))
+        data object ImagesCacheRetention : Key<Int>("images_cache_retention", Value.IntValue(14))
 
-        object AutoSyncInterval : Key<Int>("auto_sync_interval_hours", Value.IntValue(1))
+        data object AutoSyncInterval : Key<Int>("auto_sync_interval_hours", Value.IntValue(1))
 
-        object KeepInstallNotification :
+        data object KeepInstallNotification :
             Key<Boolean>("keep_install_notification", Value.BooleanValue(false))
 
-        object InstallAfterSync :
+        data object InstallAfterSync :
             Key<Boolean>("auto_sync_install", Value.BooleanValue(Android.sdk(31)))
 
-        object IncompatibleVersions :
+        data object IncompatibleVersions :
             Key<Boolean>("incompatible_versions", Value.BooleanValue(false))
 
-        object DisableDownloadVersionCheck :
+        data object DisableDownloadVersionCheck :
             Key<Boolean>("disable_download_version_check", Value.BooleanValue(false))
 
-        object DisableSignatureCheck :
+        data object DisableSignatureCheck :
             Key<Boolean>("disable_signature_check", Value.BooleanValue(false))
 
-        object ShowScreenshots :
+        data object ShowScreenshots :
             Key<Boolean>("show_screenshots", Value.BooleanValue(true))
 
-        object ShowTrackers : Key<Boolean>("show_trackers", Value.BooleanValue(true))
+        data object ShowTrackers : Key<Boolean>("show_trackers", Value.BooleanValue(true))
 
-        object ShowCategoriesBar : Key<Boolean>("show_categories_bar", Value.BooleanValue(true))
+        data object ShowCategoriesBar :
+            Key<Boolean>("show_categories_bar", Value.BooleanValue(true))
 
-        object AltNavBarItem : Key<Boolean>("alt_navbar_item", Value.BooleanValue(false))
+        data object AltNavBarItem : Key<Boolean>("alt_navbar_item", Value.BooleanValue(false))
 
-        object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(100))
-        object NewApps : Key<Int>("new_apps", Value.IntValue(30))
+        data object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(100))
+        data object NewApps : Key<Int>("new_apps", Value.IntValue(30))
 
-        object ProxyHost : Key<String>("proxy_host", Value.StringValue("localhost"))
-        object ProxyPort : Key<Int>("proxy_port", Value.IntValue(9050))
-        object ProxyType : Key<Preferences.ProxyType>(
+        data object ProxyHost : Key<String>("proxy_host", Value.StringValue("localhost"))
+        data object ProxyPort : Key<Int>("proxy_port", Value.IntValue(9050))
+        data object ProxyType : Key<Preferences.ProxyType>(
             "proxy_type",
             Value.EnumerationValue(Preferences.ProxyType.Direct)
         )
 
-        object Installer : Key<Preferences.Installer>(
+        data object Installer : Key<Preferences.Installer>(
             "installer_type",
             Value.EnumerationValue(Preferences.Installer.Default)
         )
 
-        object RootSessionInstaller :
+        data object RootSessionInstaller :
             Key<Boolean>("root_session_installer", Value.BooleanValue(false))
 
-        object SortOrderExplore : Key<SortOrder>(
+        data object SortOrderExplore : Key<SortOrder>(
             "sort_order_explore",
             Value.EnumerationValue(SortOrder.Update)
         )
 
-        object SortOrderLatest : Key<SortOrder>(
+        data object SortOrderLatest : Key<SortOrder>(
             "sort_order_latest",
             Value.EnumerationValue(SortOrder.Update)
         )
 
-        object SortOrderInstalled : Key<SortOrder>(
+        data object SortOrderInstalled : Key<SortOrder>(
             "sort_order_installed",
             Value.EnumerationValue(SortOrder.Name)
         )
 
-        object SortOrderSearch : Key<SortOrder>(
+        data object SortOrderSearch : Key<SortOrder>(
             "sort_order_search",
             Value.EnumerationValue(SortOrder.Update)
         )
 
-        object SortOrderAscendingExplore :
+        data object SortOrderAscendingExplore :
             Key<Boolean>("sort_order_ascending_explore", Value.BooleanValue(false))
 
-        object SortOrderAscendingLatest :
+        data object SortOrderAscendingLatest :
             Key<Boolean>("sort_order_ascending_latest", Value.BooleanValue(false))
 
-        object SortOrderAscendingInstalled :
+        data object SortOrderAscendingInstalled :
             Key<Boolean>("sort_order_ascending_installed", Value.BooleanValue(true))
 
-        object SortOrderAscendingSearch :
+        data object SortOrderAscendingSearch :
             Key<Boolean>("sort_order_ascending_search", Value.BooleanValue(false))
 
-        object ReposFilterExplore : Key<Set<String>>(
+        data object ReposFilterExplore : Key<Set<String>>(
             "repos_filter_explore",
             Value.StringSetValue(emptySet())
         )
 
-        object ReposFilterLatest : Key<Set<String>>(
+        data object ReposFilterLatest : Key<Set<String>>(
             "repos_filter_latest",
             Value.StringSetValue(emptySet())
         )
 
-        object ReposFilterInstalled : Key<Set<String>>(
+        data object ReposFilterInstalled : Key<Set<String>>(
             "repos_filter_installed",
             Value.StringSetValue(emptySet())
         )
 
-        object ReposFilterSearch : Key<Set<String>>(
+        data object ReposFilterSearch : Key<Set<String>>(
             "repos_filter_search",
             Value.StringSetValue(emptySet())
         )
 
-        object CategoriesFilterExplore : Key<String>(
+        data object CategoriesFilterExplore : Key<String>(
             "category_filter_explore",
-            Value.StringValue(FILTER_CATEGORY_ALL)
+            Value.StringValue("")
         )
 
-        object CategoriesFilterLatest : Key<String>(
+        data object CategoriesFilterLatest : Key<String>(
             "category_filter_latest",
             Value.StringValue(FILTER_CATEGORY_ALL)
         )
 
-        object CategoriesFilterInstalled : Key<String>(
+        data object CategoriesFilterInstalled : Key<String>(
             "category_filter_installed",
             Value.StringValue(FILTER_CATEGORY_ALL)
         )
 
-        object CategoriesFilterSearch : Key<String>(
+        data object CategoriesFilterSearch : Key<String>(
             "category_filter_search",
             Value.StringValue(FILTER_CATEGORY_ALL)
         )
 
-        object AntifeaturesFilterExplore : Key<Set<String>>(
+        data object AntifeaturesFilterExplore : Key<Set<String>>(
             "antifeatures_filter_explore",
             Value.StringSetValue(emptySet())
         )
 
-        object AntifeaturesFilterLatest : Key<Set<String>>(
+        data object AntifeaturesFilterLatest : Key<Set<String>>(
             "antifeatures_filter_latest",
             Value.StringSetValue(emptySet())
         )
 
-        object AntifeaturesFilterInstalled : Key<Set<String>>(
+        data object AntifeaturesFilterInstalled : Key<Set<String>>(
             "antifeatures_filter_installed",
             Value.StringSetValue(emptySet())
         )
 
-        object AntifeaturesFilterSearch : Key<Set<String>>(
+        data object AntifeaturesFilterSearch : Key<Set<String>>(
             "antifeatures_filter_search",
             Value.StringSetValue(emptySet())
         )
 
-        object LicensesFilterExplore : Key<Set<String>>(
+        data object LicensesFilterExplore : Key<Set<String>>(
             "licenses_filter_explore",
             Value.StringSetValue(emptySet())
         )
 
-        object LicensesFilterLatest : Key<Set<String>>(
+        data object LicensesFilterLatest : Key<Set<String>>(
             "licenses_filter_latest",
             Value.StringSetValue(emptySet())
         )
 
-        object LicensesFilterInstalled : Key<Set<String>>(
+        data object LicensesFilterInstalled : Key<Set<String>>(
             "licenses_filter_installed",
             Value.StringSetValue(emptySet())
         )
 
-        object LicensesFilterSearch : Key<Set<String>>(
+        data object LicensesFilterSearch : Key<Set<String>>(
             "licenses_filter_search",
             Value.StringSetValue(emptySet())
         )
 
-        object Theme : Key<Preferences.Theme>(
+        data object Theme : Key<Preferences.Theme>(
             "theme", Value.EnumerationValue(
                 when {
                     Android.sdk(31) -> Preferences.Theme.Dynamic
@@ -366,19 +369,19 @@ object Preferences : OnSharedPreferenceChangeListener {
             )
         )
 
-        object DefaultTab : Key<Preferences.DefaultTab>(
+        data object DefaultTab : Key<Preferences.DefaultTab>(
             "default_tab_int", Value.EnumerationValue(
                 Preferences.DefaultTab.Latest
             )
         )
 
-        object UpdateNotify : Key<Boolean>("update_notify", Value.BooleanValue(true))
-        object UpdateUnstable : Key<Boolean>("update_unstable", Value.BooleanValue(false))
+        data object UpdateNotify : Key<Boolean>("update_notify", Value.BooleanValue(true))
+        data object UpdateUnstable : Key<Boolean>("update_unstable", Value.BooleanValue(false))
 
-        object IgnoreDisableBatteryOptimization :
+        data object IgnoreDisableBatteryOptimization :
             Key<Boolean>("ignore_disable_battery_optimization", Value.BooleanValue(false))
 
-        object IgnoreShowNotifications :
+        data object IgnoreShowNotifications :
             Key<Boolean>("ignore_show_notifications", Value.BooleanValue(false))
     }
 
@@ -386,11 +389,11 @@ object Preferences : OnSharedPreferenceChangeListener {
         override val values: List<AutoSync>
             get() = listOf(Never, Wifi, WifiBattery, Battery, Always)
 
-        object Never : AutoSync("never")
-        object Wifi : AutoSync("wifi")
-        object WifiBattery : AutoSync("wifi-battery")
-        object Battery : AutoSync("battery")
-        object Always : AutoSync("always")
+        data object Never : AutoSync("never")
+        data object Wifi : AutoSync("wifi")
+        data object WifiBattery : AutoSync("wifi-battery")
+        data object Battery : AutoSync("battery")
+        data object Always : AutoSync("always")
     }
 
     sealed class ProxyType(override val valueString: String, val proxyType: Proxy.Type) :
@@ -398,9 +401,9 @@ object Preferences : OnSharedPreferenceChangeListener {
         override val values: List<ProxyType>
             get() = listOf(Direct, Http, Socks)
 
-        object Direct : ProxyType("direct", Proxy.Type.DIRECT)
-        object Http : ProxyType("http", Proxy.Type.HTTP)
-        object Socks : ProxyType("socks", Proxy.Type.SOCKS)
+        data object Direct : ProxyType("direct", Proxy.Type.DIRECT)
+        data object Http : ProxyType("http", Proxy.Type.HTTP)
+        data object Socks : ProxyType("socks", Proxy.Type.SOCKS)
     }
 
     sealed class SortOrder(override val valueString: String, val order: Order) :
@@ -408,9 +411,9 @@ object Preferences : OnSharedPreferenceChangeListener {
         override val values: List<SortOrder>
             get() = listOf(Name, Added, Update)
 
-        object Name : SortOrder("name", Order.NAME)
-        object Added : SortOrder("added", Order.DATE_ADDED)
-        object Update : SortOrder("update", Order.LAST_UPDATE)
+        data object Name : SortOrder("name", Order.NAME)
+        data object Added : SortOrder("added", Order.DATE_ADDED)
+        data object Update : SortOrder("update", Order.LAST_UPDATE)
     }
 
     sealed class Installer(override val valueString: String, val installer: InstallerType) :
@@ -418,9 +421,9 @@ object Preferences : OnSharedPreferenceChangeListener {
         override val values: List<Installer>
             get() = listOf(Default, Root, Legacy)
 
-        object Default : Installer("session", InstallerType.DEFAULT)
-        object Root : Installer("root", InstallerType.ROOT)
-        object Legacy : Installer("legacy", InstallerType.LEGACY)
+        data object Default : Installer("session", InstallerType.DEFAULT)
+        data object Root : Installer("root", InstallerType.ROOT)
+        data object Legacy : Installer("legacy", InstallerType.LEGACY)
     }
 
     sealed class Theme(override val valueString: String) : Enumeration<Theme> {
@@ -432,42 +435,42 @@ object Preferences : OnSharedPreferenceChangeListener {
         abstract val resId: Int
         abstract val nightMode: Int
 
-        object System : Theme("system") {
+        data object System : Theme("system") {
             override val resId: Int
                 get() = R.style.Theme_Main
             override val nightMode: Int
                 get() = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
 
-        object SystemBlack : Theme("system-amoled") {
+        data object SystemBlack : Theme("system-amoled") {
             override val resId: Int
                 get() = R.style.Theme_Main_Amoled
             override val nightMode: Int
                 get() = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
 
-        object Dynamic : Theme("dynamic-system") {
+        data object Dynamic : Theme("dynamic-system") {
             override val resId: Int
                 get() = -1
             override val nightMode: Int
                 get() = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
 
-        object Light : Theme("light") {
+        data object Light : Theme("light") {
             override val resId: Int
                 get() = R.style.Theme_Main
             override val nightMode: Int
                 get() = AppCompatDelegate.MODE_NIGHT_NO
         }
 
-        object Dark : Theme("dark") {
+        data object Dark : Theme("dark") {
             override val resId: Int
                 get() = R.style.Theme_Main
             override val nightMode: Int
                 get() = AppCompatDelegate.MODE_NIGHT_YES
         }
 
-        object Black : Theme("amoled") {
+        data object Black : Theme("amoled") {
             override val resId: Int
                 get() = R.style.Theme_Main_Amoled
             override val nightMode: Int
@@ -479,9 +482,9 @@ object Preferences : OnSharedPreferenceChangeListener {
         override val values: List<DefaultTab>
             get() = listOf(Explore, Latest, Installed)
 
-        object Explore : DefaultTab("1")
-        object Latest : DefaultTab("0")
-        object Installed : DefaultTab("2")
+        data object Explore : DefaultTab("1")
+        data object Latest : DefaultTab("0")
+        data object Installed : DefaultTab("2")
     }
 
     operator fun <T> get(key: Key<T>): T {

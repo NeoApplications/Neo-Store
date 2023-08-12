@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+// TODO split into one for Explore/Search and one for Latest/Installed
 open class MainPageVM(
     val db: DatabaseX,
     primarySource: Source,

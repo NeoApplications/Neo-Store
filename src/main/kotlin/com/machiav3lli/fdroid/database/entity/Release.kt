@@ -7,7 +7,6 @@ import com.machiav3lli.fdroid.ROW_SIGNATURE
 import com.machiav3lli.fdroid.ROW_VERSION_CODE
 import com.machiav3lli.fdroid.TABLE_RELEASE
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -46,13 +45,13 @@ data class Release(
     @Serializable
     sealed class Incompatibility {
         @Serializable
-        object MinSdk : Incompatibility()
+        data object MinSdk : Incompatibility()
 
         @Serializable
-        object MaxSdk : Incompatibility()
+        data object MaxSdk : Incompatibility()
 
         @Serializable
-        object Platform : Incompatibility()
+        data object Platform : Incompatibility()
 
         @Serializable
         data class Feature(val feature: String) : Incompatibility()
