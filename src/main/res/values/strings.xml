@@ -336,4 +336,6 @@
     <string name="alt_navbar_item_description">Use the alternative/old navigation bar item layout, which shows label of unselected items.</string>
     <string name="repos_export">Export repositories</string>
     <string name="repos_import">Import repositories (overrides already existing ones)</string>
+    <string name="installed_export">Export list of installed apps</string>
+    <string name="installed_import">Import and install a list of apps (grabs them from the enabled repositories if existent)</string>
 </resources>

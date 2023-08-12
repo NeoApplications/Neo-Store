@@ -60,10 +60,13 @@ class SAFFile(context: Context, val uri: Uri) {
         const val MAIN_MIME_TYPE = "application/octet-stream"
         const val EXTRAS_EXTENSION = "xts"
         const val REPOS_EXTENSION = "rps"
+        const val APPS_EXTENSION = "aps"
         const val EXTRAS_MIME_TYPE = "application/vnd.neo.store"
         const val REPOS_MIME_TYPE = "application/vnd.neo.store"
+        const val APPS_MIME_TYPE = "application/vnd.neo.store"
         val EXTRAS_MIME_ARRAY = arrayOf(EXTRAS_MIME_TYPE, MAIN_MIME_TYPE)
         val REPOS_MIME_ARRAY = arrayOf(REPOS_MIME_TYPE, MAIN_MIME_TYPE)
+        val APPS_MIME_ARRAY = arrayOf(APPS_MIME_TYPE, MAIN_MIME_TYPE)
 
         @SuppressLint("MissingPermission")
         fun write(context: Context, location: Uri, content: String): Boolean {
