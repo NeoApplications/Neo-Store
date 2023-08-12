@@ -209,3 +209,16 @@ class InstalledVM(db: DatabaseX) : MainPageVM(db, Source.INSTALLED, Source.UPDAT
         }
     }
 }
+
+class SearchVM(db: DatabaseX) : MainPageVM(db, Source.SEARCH, Source.SEARCH) {
+    class Factory(val db: DatabaseX) :
+        ViewModelProvider.Factory {
+        @Suppress("unchecked_cast")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(SearchVM::class.java)) {
+                return SearchVM(db) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
+        }
+    }
+}

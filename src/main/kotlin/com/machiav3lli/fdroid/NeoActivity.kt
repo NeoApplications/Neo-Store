@@ -41,6 +41,7 @@ import com.machiav3lli.fdroid.viewmodels.ExploreVM
 import com.machiav3lli.fdroid.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.viewmodels.LatestVM
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
+import com.machiav3lli.fdroid.viewmodels.SearchVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -83,6 +84,9 @@ class NeoActivity : AppCompatActivity() {
     }
     val installedViewModel: InstalledVM by viewModels {
         InstalledVM.Factory(db)
+    }
+    val searchViewModel: SearchVM by viewModels {
+        SearchVM.Factory(db)
     }
     val prefsViewModel: PrefsVM by viewModels {
         PrefsVM.Factory(db)
