@@ -8,8 +8,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -22,7 +20,6 @@ import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.service.worker.SyncRequest
 import com.machiav3lli.fdroid.service.worker.SyncWorker
-import com.machiav3lli.fdroid.ui.components.ExpandableSearchAction
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -39,7 +36,6 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
     val context = LocalContext.current
     val mActivity = context as NeoActivity
     val mScope = rememberCoroutineScope()
-    val query by mActivity.searchQuery.collectAsState(initial = "")
     val expanded = remember {
         mutableStateOf(false)
     }
@@ -70,18 +66,6 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
         bottomBar = { PagerNavBar(pageItems = pages, pagerState = pagerState) },
         topBar = {
             TopBar(title = stringResource(id = R.string.application_name)) {
-                ExpandableSearchAction(
-                    query = query,
-                    expanded = expanded,
-                    onClose = {
-                        mScope.launch { mActivity.setSearchQuery("") }
-                    },
-                    onQueryChanged = { newQuery ->
-                        if (newQuery != query) {
-                            mScope.launch { mActivity.setSearchQuery(newQuery) }
-                        }
-                    }
-                )
                 AnimatedVisibility(!expanded.value) {
                     TopBarAction(
                         icon = Phosphor.ArrowsClockwise,

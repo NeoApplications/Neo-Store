@@ -87,14 +87,6 @@ fun InstalledPage(viewModel: InstalledVM) {
     val sortSheetState = rememberModalBottomSheetState(true)
 
     LaunchedEffect(Unit) {
-        withContext(Dispatchers.IO) {
-            neoActivity.searchQuery.collect { newQuery ->
-                viewModel.setSearchQuery(newQuery)
-            }
-        }
-    }
-
-    LaunchedEffect(Unit) {
         withContext(Dispatchers.Default) {
             Preferences.subject.collect {
                 when (it) {
