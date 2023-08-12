@@ -225,6 +225,29 @@ sealed class Request {
             get() = Preferences[Preferences.Key.SortOrderAscendingExplore]
     }
 
+    data class ProductsSearch(override val section: Section) : Request() {
+        override val id: Int
+            get() = 1
+        override val installed: Boolean
+            get() = false
+        override val updates: Boolean
+            get() = false
+        override val updateCategory: UpdateCategory
+            get() = UpdateCategory.ALL
+        override val order: Order
+            get() = Preferences[Preferences.Key.SortOrderSearch].order
+        override val filteredOutRepos: Set<String>
+            get() = Preferences[Preferences.Key.ReposFilterSearch]
+        override val category: String
+            get() = Preferences[Preferences.Key.CategoriesFilterSearch]
+        override val filteredAntiFeatures: Set<String>
+            get() = Preferences[Preferences.Key.AntifeaturesFilterSearch]
+        override val filteredLicenses: Set<String>
+            get() = Preferences[Preferences.Key.LicensesFilterSearch]
+        override val ascending: Boolean
+            get() = Preferences[Preferences.Key.SortOrderAscendingSearch]
+    }
+
     data class ProductsInstalled(override val section: Section) : Request() {
         override val id: Int
             get() = 2

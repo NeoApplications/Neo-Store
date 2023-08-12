@@ -40,6 +40,7 @@ enum class InstallState {
 
 enum class Source(val sections: Boolean, val order: Boolean) {
     AVAILABLE(true, true),
+    SEARCH(true, true),
     INSTALLED(false, true),
     UPDATES(false, false),
     UPDATED(false, true),

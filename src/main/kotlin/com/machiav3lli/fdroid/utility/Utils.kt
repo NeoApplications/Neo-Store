@@ -472,6 +472,7 @@ fun NavDestination.destinationToItem(): NavItem? = listOf(
     NavItem.Explore,
     NavItem.Latest,
     NavItem.Installed,
+    NavItem.Search,
     NavItem.Prefs,
     NavItem.PersonalPrefs,
     NavItem.UpdatesPrefs,

@@ -62,6 +62,7 @@ fun BottomNavBar(page: Int = NAV_MAIN, navController: NavHostController) {
             NavItem.Latest,
             NavItem.Explore,
             NavItem.Installed,
+            NavItem.Search,
         )
     }
 

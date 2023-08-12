@@ -38,6 +38,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Graph
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.House
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MagnifyingGlass
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserGear
 
@@ -56,6 +57,9 @@ sealed class NavItem(var title: Int, var icon: ImageVector, var destination: Str
 
     data object Installed :
         NavItem(R.string.installed, Phosphor.House, "main_installed")
+
+    data object Search :
+        NavItem(R.string.search, Phosphor.MagnifyingGlass, "main_search")
 
     data object Prefs :
         NavItem(R.string.settings, Phosphor.GearSix, "prefs")

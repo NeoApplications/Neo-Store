@@ -48,6 +48,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
         NavItem.Latest,
         NavItem.Explore,
         NavItem.Installed,
+        NavItem.Search,
     )
     val pagerState = rememberPagerState(initialPage = pageIndex, pageCount = { pages.size })
 

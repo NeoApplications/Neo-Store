@@ -58,6 +58,7 @@ open class MainPageVM(
         sections.value.let { if (source.sections) mSections = it }
         return when (source) {
             Source.AVAILABLE -> Request.ProductsAll(mSections)
+            Source.SEARCH    -> Request.ProductsSearch(mSections)
             Source.INSTALLED -> Request.ProductsInstalled(mSections)
             Source.UPDATES   -> Request.ProductsUpdates(mSections)
             Source.UPDATED   -> Request.ProductsUpdated(mSections)
