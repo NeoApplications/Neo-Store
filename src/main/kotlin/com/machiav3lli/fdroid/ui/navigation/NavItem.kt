@@ -30,6 +30,7 @@ import com.machiav3lli.fdroid.pages.PrefsOtherPage
 import com.machiav3lli.fdroid.pages.PrefsPersonalPage
 import com.machiav3lli.fdroid.pages.PrefsReposPage
 import com.machiav3lli.fdroid.pages.PrefsUpdatesPage
+import com.machiav3lli.fdroid.pages.SearchPage
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Compass
@@ -100,6 +101,12 @@ sealed class NavItem(var title: Int, var icon: ImageVector, var destination: Str
             Installed.destination     -> {
                 MainApplication.mainActivity?.installedViewModel?.let {
                     InstalledPage(it)
+                }
+            }
+
+            Search.destination        -> {
+                MainApplication.mainActivity?.searchViewModel?.let {
+                    SearchPage(it)
                 }
             }
 
