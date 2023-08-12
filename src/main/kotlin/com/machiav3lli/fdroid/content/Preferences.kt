@@ -259,6 +259,11 @@ object Preferences : OnSharedPreferenceChangeListener {
             Value.EnumerationValue(SortOrder.Name)
         )
 
+        object SortOrderSearch : Key<SortOrder>(
+            "sort_order_search",
+            Value.EnumerationValue(SortOrder.Update)
+        )
+
         object SortOrderAscendingExplore :
             Key<Boolean>("sort_order_ascending_explore", Value.BooleanValue(false))
 
@@ -267,6 +272,9 @@ object Preferences : OnSharedPreferenceChangeListener {
 
         object SortOrderAscendingInstalled :
             Key<Boolean>("sort_order_ascending_installed", Value.BooleanValue(true))
+
+        object SortOrderAscendingSearch :
+            Key<Boolean>("sort_order_ascending_search", Value.BooleanValue(false))
 
         object ReposFilterExplore : Key<Set<String>>(
             "repos_filter_explore",
@@ -280,6 +288,11 @@ object Preferences : OnSharedPreferenceChangeListener {
 
         object ReposFilterInstalled : Key<Set<String>>(
             "repos_filter_installed",
+            Value.StringSetValue(emptySet())
+        )
+
+        object ReposFilterSearch : Key<Set<String>>(
+            "repos_filter_search",
             Value.StringSetValue(emptySet())
         )
 
@@ -298,6 +311,11 @@ object Preferences : OnSharedPreferenceChangeListener {
             Value.StringValue(FILTER_CATEGORY_ALL)
         )
 
+        object CategoriesFilterSearch : Key<String>(
+            "category_filter_search",
+            Value.StringValue(FILTER_CATEGORY_ALL)
+        )
+
         object AntifeaturesFilterExplore : Key<Set<String>>(
             "antifeatures_filter_explore",
             Value.StringSetValue(emptySet())
@@ -313,6 +331,11 @@ object Preferences : OnSharedPreferenceChangeListener {
             Value.StringSetValue(emptySet())
         )
 
+        object AntifeaturesFilterSearch : Key<Set<String>>(
+            "antifeatures_filter_search",
+            Value.StringSetValue(emptySet())
+        )
+
         object LicensesFilterExplore : Key<Set<String>>(
             "licenses_filter_explore",
             Value.StringSetValue(emptySet())
@@ -325,6 +348,11 @@ object Preferences : OnSharedPreferenceChangeListener {
 
         object LicensesFilterInstalled : Key<Set<String>>(
             "licenses_filter_installed",
+            Value.StringSetValue(emptySet())
+        )
+
+        object LicensesFilterSearch : Key<Set<String>>(
+            "licenses_filter_search",
             Value.StringSetValue(emptySet())
         )
 
