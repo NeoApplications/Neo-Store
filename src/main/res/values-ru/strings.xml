@@ -338,4 +338,6 @@
     <string name="repos_export">Экспорт репозиториев</string>
     <string name="auto_sync_interval_hours">Интервал автосинхронизации (ч.)</string>
     <string name="repos_import">Импорт репозиториев (с удалением существующих)</string>
+    <string name="installed_export">Экспорт списка установленных приложений</string>
+    <string name="installed_import">Импорт и установка приложений по списку (при наличии их в подключённых репозиториях)</string>
 </resources>
