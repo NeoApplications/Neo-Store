@@ -337,4 +337,6 @@
     <string name="auto_sync_interval_hours">Intervalo de sincronización automática (en horas)</string>
     <string name="alt_navbar_item">Utilizar un elemento alternativo a la barra de navegación</string>
     <string name="alt_navbar_item_description">Utiliza el diseño alternativo/antiguo de los elementos de la barra de navegación, que muestra la etiqueta de los elementos no seleccionados.</string>
+    <string name="installed_export">Exportar la lista de las aplicaciones instaladas</string>
+    <string name="installed_import">Importa e instala una lista de las aplicaciones (las toma de los repositorios habilitados si existen)</string>
 </resources>
