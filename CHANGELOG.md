@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-1.0.0 (??.??.2023) 180+ Commits +130 Translations
+1.0.0 (??.??.2023) 220+ Commits +180 Translations
 ------------------
 
 ### Function
@@ -11,6 +11,7 @@ CHANGELOG
 - Add: Julian Andres Klode's repo (credits @ishanarora)
 - Add: Display localized product name and description (credits @BLumia)
 - Add: Export/import the repositories
+- Add: Export/import installed apps
 - Add: INVISV, Monerujo, iodé, spiritCroc, DivestOS Unofficial, Funkwhale preset repos
 - Add: Room Kotlin KSP code generation
 - Fix: Auto-sync on "Only charging"
@@ -18,6 +19,8 @@ CHANGELOG
 - Fix: c:geo repository (credits @ishanarora)
 - Fix: Updates Product query
 - Fix: Adding repo using scanner
+- Fix: Detecting updates of multi-repos apps
+- Fix: Clicking updates notification
 - Update: Convert auto-sync interval unit to hours
 - Update: Optimize the main products query
 - Update: Migrate download, exodus & sync backend from Sevice- to Worker-based
@@ -26,6 +29,8 @@ CHANGELOG
 - Update: Allow parallel downloads from different repositories
 - Update: Allow parallel sync of repos
 - Update: Revamp the ExodusAPI classes
+- Update: Ignore secondarySource when it's the same as primarySource
+- Update: Rebase to use one activity
 - Update: minSDK to 24
 - Update: compileSDK 34
 - Remove: Dependencies of deprecated usage
@@ -37,6 +42,7 @@ CHANGELOG
 - Add: (Products)List, StringInput DialogUIs
 - Add: Block border to sheets & pages
 - Add: New optional BottomNavBar item layout
+- Add: Categories app info chips
 - Fix: Switch layout on low-dpi/multi-lines
 - Fix: Screenshots scaling issue after opening once
 - Fix: Pre-mature cutting horizontal products recycler layout
@@ -66,6 +72,9 @@ CHANGELOG
 - Add: Slide down to close gesture to screenshots viewer
 - Add: Apps list to RepoSheet
 - Add: Swipe to navigate between pages
+- Add: Search page
+- Add: Launch search page on receiving search Intent
+- Add: More categories icons
 - Fix: Showing updatable label for Product items
 - Fix: Showing right version in AppSheet's header
 - Fix: Showing downloaded version (in downloads log)
@@ -74,6 +83,9 @@ CHANGELOG
 - Update: Better download state communication
 - Update: Show short description for unexpanded description
 - Update: Revamp download and sync notifications
+- Update: Use categories grouping in Explore page
+- Update: Prefer search results with last update not longer than 1 year ago
+- Remove: Search bar from Main pages
 - Remove: Zooming on screenshots
 
 0.9.15 (01.03.2023) 40+ Commits +30 Translations
