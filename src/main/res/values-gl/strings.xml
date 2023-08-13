@@ -208,7 +208,7 @@
     <string name="releases">Versións</string>
     <string name="images_cache_retention">Retención da caché das imaxes</string>
     <string name="releases_cache_retention">Retención da caché de APK descarregados</string>
-    <string name="share">Cuota</string>
+    <string name="share">Compartillar</string>
     <string name="auto_sync_interval">Intervalo de sincronización automática (en minutos)</string>
     <string name="favorite_applications">Favoritos</string>
     <string name="dynamic">Sistema dinámico</string>
@@ -334,4 +334,6 @@
     <string name="repos_export">Exportar os repositorios</string>
     <string name="repos_import">Importar os repositorios (sobrescribe os existentes)</string>
     <string name="alt_navbar_item">Utilizar un elemento alternativo á barra de navegación</string>
+    <string name="installed_export">Exportar lista de aplicacións instaladas</string>
+    <string name="installed_import">Importar e instalar lista de aplicacións (obteranse dos repositorios remotos, se existiren)</string>
 </resources>
