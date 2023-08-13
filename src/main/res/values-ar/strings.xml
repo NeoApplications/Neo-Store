@@ -340,4 +340,6 @@
     <string name="repos_import">استيراد المستودعات (تجاوز المستودعات الموجودة بالفعل)</string>
     <string name="auto_sync_interval_hours">الفاصل الزمني للمزامنة التلقائية (بالساعات)</string>
     <string name="repos_export">تصدير المستوعات</string>
+    <string name="installed_export">تصدير قائمة بالتطبيقات المثبتة</string>
+    <string name="installed_import">استيراد قائمة بالتطبيقات وتثبيتها (الحصول عليها من المستودعات الممكّنة إن وجدت)</string>
 </resources>
