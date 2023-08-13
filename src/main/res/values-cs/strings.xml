@@ -337,4 +337,6 @@
     <string name="auto_sync_interval_hours">Interval automatické synchronizace (v hodinách)</string>
     <string name="repos_export">Exportovat repozitáře</string>
     <string name="repos_import">Importovat repozitáře (přepíše již existující)</string>
+    <string name="installed_export">Exportovat seznam nainstalovaných aplikací</string>
+    <string name="installed_import">Importovat a nainstalovat seznam aplikací (pokud existují, budou načteny z povolených repozitářů)</string>
 </resources>
