@@ -338,4 +338,6 @@
     <string name="repos_export">Експорт репозиторіїв</string>
     <string name="auto_sync_interval_hours">Інтервал автосинхронізації (в годинах)</string>
     <string name="repos_import">Імпорт репозиторіїв (замінює вже існуючі)</string>
+    <string name="installed_export">Експортувати список встановлених застосунків</string>
+    <string name="installed_import">Імпортувати та встановлювати список застосунків (захоплювати їх із увімкнених репозиторіїв, якщо такі існують)</string>
 </resources>
