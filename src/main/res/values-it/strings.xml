@@ -337,4 +337,6 @@
     <string name="auto_sync_interval_hours">Intervallo di sincronizzazione automatica (in ore)</string>
     <string name="repos_export">Esporta repository</string>
     <string name="repos_import">Importa repository (sovrascrive quelli già esistenti)</string>
+    <string name="installed_export">Esporta elenco delle app installate</string>
+    <string name="installed_import">Importa e installa un elenco di app (scaricale dai repository abilitati se esistenti)</string>
 </resources>
