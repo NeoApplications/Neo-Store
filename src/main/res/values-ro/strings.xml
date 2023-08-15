@@ -325,4 +325,18 @@
     <string name="privacy_panel">Panou de confidențialitate</string>
     <string name="show_categories_bar_description">Se afișează bara laterală a categoriilor în pagina de explorare.</string>
     <string name="show_categories_bar">Afișare bară de categorii</string>
+    <string name="auto_sync_interval_hours">Interval de sincronizare automată (în ore)</string>
+    <string name="clear_text">Text clar</string>
+    <string name="next">Următorul</string>
+    <string name="repos_export">Exportă depozitele</string>
+    <string name="repos_import">Importă depozite (le înlocuiește pe cele deja existente)</string>
+    <string name="finished">Finalizat</string>
+    <string name="canceled">Anulat</string>
+    <string name="previous">Anterior</string>
+    <string name="installed_export">Exportă lista de aplicații instalate</string>
+    <string name="installed_import">Importă și instalează o listă de aplicații (le preia din depozitele activate, dacă există)</string>
+    <string name="error">Eroare</string>
+    <string name="list_apps">Afișează aplicațiile din depozit</string>
+    <string name="alt_navbar_item">Vedere alternativă a barei de navigare</string>
+    <string name="alt_navbar_item_description">Utilizează aspect alternativ/vechi al elementelor din bara de navigare, care arată eticheta elementelor neselectate.</string>
 </resources>
