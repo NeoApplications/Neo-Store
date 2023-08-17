@@ -337,4 +337,6 @@
     <string name="auto_sync_interval_hours">Intervalo de sincronização automática (em horas)</string>
     <string name="repos_export">Exportar repositórios</string>
     <string name="repos_import">Importar repositórios (substitui os já existentes)</string>
+    <string name="installed_export">Exportar lista de aplicações instaladas</string>
+    <string name="installed_import">Importar e instalar uma lista de aplicações (obtém-nas dos repositórios ativados, se existirem)</string>
 </resources>
