@@ -3,12 +3,32 @@
     <string name="action_failed">Accion fallida</string>
     <string name="add_repository">Agregar repositorio</string>
     <string name="address">Direccion</string>
-    <string name="all_applications">Todas las Aplicaciones</string>
-    <string name="all_applications_up_to_date">Todas las aplicaciones are up to date</string>
+    <string name="all_applications">Todas las aplicaciones</string>
+    <string name="all_applications_up_to_date">Todas las aplicaciones están al día</string>
     <string name="already_exists">Ya existe</string>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one"/>
         <item quantity="many"/>
         <item quantity="other"/>
     </plurals>
+    <string name="changelog">Registro de cambios</string>
+    <string name="changes">Cambios</string>
+    <string name="connecting">Conectando…</string>
+    <string name="contains_non_free_media">Contiene contenido no libre</string>
+    <string name="amoled">Negro</string>
+    <string name="credits">Contribuidores</string>
+    <string name="available">Disponible</string>
+    <string name="could_not_sync_FORMAT">No se pudo sincronizar %s</string>
+    <string name="bug_tracker">Registro de bugs</string>
+    <string name="could_not_download_FORMAT">No se pudo descargar %s</string>
+    <string name="always">Siempre</string>
+    <string name="author_email">E-Mail del autor</string>
+    <string name="application_not_found">No se pudo encontrar esa aplicación</string>
+    <string name="application">Aplicación</string>
+    <string name="author_website">Sitio web del autor</string>
+    <string name="cancel">Cancelar</string>
+    <string name="cant_edit_sync_DESC">No se pueden editar repositorios en sincronización…</string>
+    <string name="checking_repository">Verificando repositorio…</string>
+    <string name="confirmation">Confirmación</string>
+    <string name="could_not_validate_FORMAT">No se pudo validar %s</string>
 </resources>
