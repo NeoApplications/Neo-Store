@@ -37,9 +37,10 @@
 
 You can join either our [Telegram](https://t.me/neo_android_store) or [Matrix](https://matrix.to/#/#neo-store:matrix.org) groups to make suggestions, ask questions, receive news, or just chat.
 
-[<img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Join Telegram Channel" width="11%" align="center" />](https://t.me/neo_android_store)
-
-[<img src="https://docs.cloudron.io/img/element-logo.png" alt="Join Matrix Channel" width="11%" align="center" />](https://matrix.to/#/#neo-store:matrix.org)
+<p align="center">
+<a href="https://t.me/neo_android_store"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Join Telegram Channel" width="11%" align="center"></a>
+<a href="https://matrix.to/#/#neo-store:matrix.org"><img src="https://docs.cloudron.io/img/element-logo.png" alt="Join Matrix Channel" width="11%" align="center" /></a>
+</p>
 
 ## Translations :left_speech_bubble: [<img align="right" src="https://hosted.weblate.org/widgets/neo-store/-/287x66-white.png" alt="Übersetzungsstatus" />](https://hosted.weblate.org/engage/neo-store/?utm_source=widget)
 
