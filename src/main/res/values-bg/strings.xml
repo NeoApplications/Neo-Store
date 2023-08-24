@@ -336,4 +336,6 @@
     <string name="action_install_tc">Инсталирай TrackerControl</string>
     <string name="disable_signature_check">Деактивирай проверката на подписа</string>
     <string name="source_dependencies_description">Приложението има някои зависимости, които може да не зачитат поверителността.</string>
+    <string name="installed_export">Експортиране на списък с инсталирани приложения</string>
+    <string name="installed_import">Импортирай и инсталирай списък с приложения (взимат се от активираните хранилища, ако съществуват)</string>
 </resources>
