@@ -578,5 +578,9 @@ data class Repository(
             INVISV, MONERUJO, IODE, SPIRIT_CROC,
             DIVEST_OS_UNOFFICIAL, FUNKWHALE,
         )
+
+        val addedReposV19 = listOf(
+            SAMOURAI_WALLET, DIVOLT,
+        )
     }
 }
