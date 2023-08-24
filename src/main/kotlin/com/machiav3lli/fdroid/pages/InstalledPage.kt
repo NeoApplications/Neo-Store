@@ -41,12 +41,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.MainApplication
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.service.worker.ExodusWorker
-import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
@@ -69,7 +69,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun InstalledPage(viewModel: InstalledVM) {
     val context = LocalContext.current
-    val mainActivityX = context as MainActivityX
+    val neoActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
     val filteredPrimaryList by viewModel.filteredProducts.collectAsState()
     val secondaryList by viewModel.secondaryProducts.collectAsState(null)
@@ -79,20 +79,12 @@ fun InstalledPage(viewModel: InstalledVM) {
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
-    val favorites by mainActivityX.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
+    val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
     val iconDetails by viewModel.iconDetails.collectAsState()
     val downloaded by viewModel.downloaded.collectAsState()
     val downloads = downloaded.filter { it.state is DownloadState.Downloading }
     var showSortSheet by remember { mutableStateOf(false) }
     val sortSheetState = rememberModalBottomSheetState(true)
-
-    LaunchedEffect(Unit) {
-        withContext(Dispatchers.IO) {
-            mainActivityX.searchQuery.collect { newQuery ->
-                viewModel.setSearchQuery(newQuery)
-            }
-        }
-    }
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.Default) {
@@ -217,7 +209,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                             installedMap = installedList,
                             rowsNumber = secondaryList?.size?.coerceIn(1, 2) ?: 1,
                         ) { item ->
-                            mainActivityX.navigateProduct(item.packageName)
+                            neoActivity.navigateProduct(item.packageName)
                         }
                     }
                 }
@@ -236,7 +228,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                         repo = repositoriesMap[item.state.repoId],
                         state = item.state
                     ) {
-                        mainActivityX.navigateProduct(item.packageName)
+                        neoActivity.navigateProduct(item.packageName)
                     }
                 }
                 item {
@@ -264,7 +256,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                         isFavorite = favorites.contains(item.packageName),
                         onUserClick = {
                             ExodusWorker.fetchExodusInfo(item.packageName)
-                            mainActivityX.navigateProduct(it.packageName)
+                            neoActivity.navigateProduct(it.packageName)
                         },
                         onFavouriteClick = { pi ->
                             viewModel.setFavorite(
@@ -272,13 +264,13 @@ fun InstalledPage(viewModel: InstalledVM) {
                                 !favorites.contains(pi.packageName)
                             )
                         },
-                        installed = installedList?.get(item.packageName),
+                        installed = installedList[item.packageName],
                         onActionClick = {
-                            val installed = installedList?.get(it.packageName)
+                            val installed = installedList[it.packageName]
                             if (installed != null && installed.launcherActivities.isNotEmpty())
                                 context.onLaunchClick(
                                     installed,
-                                    mainActivityX.supportFragmentManager
+                                    neoActivity.supportFragmentManager
                                 )
                             else
                                 MainApplication.wm.install(it)
@@ -303,7 +295,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                         repo = repositoriesMap[item.state.repoId],
                         state = item.state
                     ) {
-                        mainActivityX.navigateProduct(item.packageName)
+                        neoActivity.navigateProduct(item.packageName)
                     }
                 }
             }

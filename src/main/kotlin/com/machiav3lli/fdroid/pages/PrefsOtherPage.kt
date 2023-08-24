@@ -11,15 +11,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.BuildConfig
+import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.content.SAFFile
@@ -35,10 +38,13 @@ import com.machiav3lli.fdroid.ui.dialog.IntInputPrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.StringInputPrefDialogUI
 import com.machiav3lli.fdroid.utility.currentTimestamp
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun PrefsOtherPage(viewModel: PrefsVM) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val openDialog = remember { mutableStateOf(false) }
     var dialogPref by remember { mutableStateOf<Preferences.Key<*>?>(null) }
     val onPrefDialog = { pref: Preferences.Key<*> ->
@@ -50,6 +56,7 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
         Preferences.Key.ProxyHost,
         Preferences.Key.ProxyPort,
     )
+    val installed = viewModel.installed.collectAsState(initial = emptyMap())
 
     val startExportResult =
         rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(SAFFile.EXTRAS_MIME_TYPE)) { resultUri ->
@@ -81,6 +88,22 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
                     resultUri,
                     viewModel.repositories.value
                         .joinToString(separator = ">") { it.toJSON() }
+                )
+                // TODO add notification about success or failure
+            }
+        }
+    val startExportInstalledResult =
+        rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(SAFFile.EXTRAS_MIME_TYPE)) { resultUri ->
+            if (resultUri != null) {
+                context.contentResolver.takePersistableUriPermission(
+                    resultUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+
+                SAFFile.write(
+                    context,
+                    resultUri,
+                    installed.value.keys.joinToString(separator = ">")
                 )
                 // TODO add notification about success or failure
             }
@@ -123,6 +146,28 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
                 // TODO add notification about success or failure
             }
         }
+    val startImportInstalledResult =
+        rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { resultUri ->
+            if (resultUri != null) {
+                context.contentResolver.takePersistableUriPermission(
+                    resultUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+
+                SAFFile(context, resultUri).read()
+                    ?.split(">")
+                    ?.filterNot { installed.value.keys.contains(it) }
+                    ?.forEach { packageName ->
+                        scope.launch(Dispatchers.IO) {
+                            MainApplication.db.getProductDao().get(packageName)
+                                .maxByOrNull { it.suggestedVersionCode }?.toItem()?.let {
+                                    MainApplication.wm.install(it)
+                                }
+                        }
+                    }
+                // TODO add notification about success or failure
+            }
+        }
 
     Scaffold(
         modifier = Modifier.fillMaxSize()
@@ -147,7 +192,7 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
                     BasePreference(
                         titleId = R.string.extras_export,
                         index = 0,
-                        groupSize = 4,
+                        groupSize = 6,
                         onClick = {
                             startExportResult
                                 .launch("NS_$currentTimestamp.${SAFFile.EXTRAS_EXTENSION}")
@@ -157,7 +202,7 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
                     BasePreference(
                         titleId = R.string.extras_import,
                         index = 1,
-                        groupSize = 4,
+                        groupSize = 6,
                         onClick = {
                             startImportResult.launch(SAFFile.EXTRAS_MIME_ARRAY)
                         }
@@ -166,7 +211,7 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
                     BasePreference(
                         titleId = R.string.repos_export,
                         index = 2,
-                        groupSize = 4,
+                        groupSize = 6,
                         onClick = {
                             startExportReposResult
                                 .launch("NS_$currentTimestamp.${SAFFile.REPOS_EXTENSION}")
@@ -176,9 +221,28 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
                     BasePreference(
                         titleId = R.string.repos_import,
                         index = 3,
-                        groupSize = 4,
+                        groupSize = 6,
                         onClick = {
                             startImportReposResult.launch(SAFFile.REPOS_MIME_ARRAY)
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    BasePreference(
+                        titleId = R.string.installed_export,
+                        index = 4,
+                        groupSize = 6,
+                        onClick = {
+                            startExportInstalledResult
+                                .launch("NS_$currentTimestamp.${SAFFile.APPS_EXTENSION}")
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    BasePreference(
+                        titleId = R.string.installed_import,
+                        index = 5,
+                        groupSize = 6,
+                        onClick = {
+                            startImportInstalledResult.launch(SAFFile.APPS_MIME_ARRAY)
                         }
                     )
                 }

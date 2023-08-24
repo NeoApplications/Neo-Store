@@ -311,4 +311,27 @@
     <string name="enable_download_directory">Usar pasta de download personalizada</string>
     <string name="downloads">Downloads</string>
     <string name="ignore_vulns">Ignorar vulnerabilidades de segurança reportadas</string>
+    <string name="ignore">Ignorar</string>
+    <string name="warning_disable_battery_optimization">A partir do Android 12, o aplicativo requer otimização da bateria para realizar processos em segundo plano, como sincronização e download. Se você ignorar essa permissão, ficará por conta própria e seus relatórios de falhas serão ignorados.</string>
+    <string name="privacy_panel">Painel de privacidade</string>
+    <string name="show_categories_bar">Mostrar barra de categorias</string>
+    <string name="show_categories_bar_description">Mostrar a barra lateral de categorias na página de exploração.</string>
+    <string name="finished">Concluído</string>
+    <string name="canceled">Cancelado</string>
+    <string name="error">Erro</string>
+    <string name="clear_text">Texto claro</string>
+    <string name="list_apps">Mostrar aplicativos do repositório</string>
+    <string name="previous">Anterior</string>
+    <string name="next">Próximo</string>
+    <string name="disable_download_version_check_summary">Permite baixar versões mais antigas de aplicativos instalados. Pode ser usado em combinação com o patch \"letmedowngrade\" do Magisk.</string>
+    <string name="disable_signature_check_summary">Não verifique se o APK baixado tem a mesma assinatura que o aplicativo instalado.</string>
+    <string name="warning_show_notification">A partir do Android 13, o aplicativo requer essa permissão para notificá-lo em diferentes processos. Se você ignorar essa permissão, não receberá nenhuma notificação.</string>
+    <string name="disable_signature_check">Desativar a verificação de assinatura</string>
+    <string name="keep_install_notification">Manter notificação de instalação</string>
+    <string name="disable_download_version_check">Desativar verificação de versão no download</string>
+    <string name="alt_navbar_item">Usar item de barra de navegação alternativo</string>
+    <string name="allowed_licenses">Licenças permitidas</string>
+    <string name="cancel_all">Cancelar tudo</string>
+    <string name="keep_install_notification_summary">Mantenha a notificação de instalação bem-sucedida de um aplicativo.</string>
+    <string name="alt_navbar_item_description">Use o layout de item da barra de navegação alternativo/antigo, que mostra o rótulo dos itens não selecionados.</string>
 </resources>

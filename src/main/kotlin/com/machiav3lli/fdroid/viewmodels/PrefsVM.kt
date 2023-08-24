@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.Extras
+import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.newRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -15,17 +17,24 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class PrefsVM(val db: DatabaseX) : ViewModel() {
 
+    private val cc = Dispatchers.IO
     private val _showSheet = MutableSharedFlow<SheetNavigationData?>()
     val showSheet: SharedFlow<SheetNavigationData?> = _showSheet
 
     private val _repositories = MutableStateFlow<List<Repository>>(emptyList())
     val repositories = _repositories.asStateFlow()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val installed = db.getInstalledDao().getAllFlow().mapLatest {
+        it.associateBy(Installed::packageName)
+    }
 
     val extras = db.getExtrasDao().getAllFlow().stateIn(
         viewModelScope,
@@ -39,7 +48,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     val fingerprint = intentFingerprint as StateFlow<String>
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(cc) {
             db.getRepositoryDao().getAllRepositories().collectLatest {
                 _repositories.emit(it)
             }
@@ -86,7 +95,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     }
 
     private suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long =
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             db.getRepositoryDao().insert(
                 newRepository(
                     fallbackName = "new repository",
@@ -106,7 +115,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     }
 
     private suspend fun update(newValue: Repository) {
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             db.getRepositoryDao().put(newValue)
         }
     }
@@ -118,7 +127,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     }
 
     private suspend fun insert(vararg items: Extras) {
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             db.getExtrasDao().insertReplace(*items)
         }
     }
@@ -126,7 +135,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     fun insertRepos(vararg newValue: Repository) {
         newValue.let {
             viewModelScope.launch {
-                withContext(Dispatchers.IO) {
+                withContext(cc) {
                     db.getRepositoryDao().insertOrUpdate(*newValue)
                 }
             }

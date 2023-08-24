@@ -17,7 +17,7 @@
     <string name="bug_tracker">Sledování chyb</string>
     <string name="cancel">Zrušit</string>
     <string name="cant_edit_sync_DESC">Nelze upravit synchronizující se repozitáře…</string>
-    <string name="changelog">Co je nového</string>
+    <string name="changelog">Seznam změn</string>
     <string name="changes">Změny</string>
     <string name="checking_repository">Kontrola repozitáře…</string>
     <string name="compiled_for_debugging">Kompilováno pro ladění</string>
@@ -332,4 +332,9 @@
     <string name="clear_text">Vymazat text</string>
     <string name="finished">Dokončeno</string>
     <string name="next">Další</string>
+    <string name="alt_navbar_item">Použít alternativní položku navigační lišty</string>
+    <string name="alt_navbar_item_description">Použijte alternativní/staré rozložení položek navigačního panelu, které zobrazuje popisky nevybraných položek.</string>
+    <string name="auto_sync_interval_hours">Interval automatické synchronizace (v hodinách)</string>
+    <string name="repos_export">Exportovat repozitáře</string>
+    <string name="repos_import">Importovat repozitáře (přepíše již existující)</string>
 </resources>

@@ -1,0 +1,1 @@
+- Corrigir falha na instalação normal

@@ -1,21 +1,22 @@
 package com.machiav3lli.fdroid.pages
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -23,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,21 +34,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.MainApplication
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.Section
+import com.machiav3lli.fdroid.entity.appCategoryIcon
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.service.worker.ExodusWorker
-import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.ui.components.ActionChip
-import com.machiav3lli.fdroid.ui.components.CheckChip
+import com.machiav3lli.fdroid.ui.components.CategoriesList
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
+import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
-import com.machiav3lli.fdroid.ui.navigation.SideNavBar
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.ExploreVM
 import kotlinx.coroutines.Dispatchers
@@ -57,7 +61,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun ExplorePage(viewModel: ExploreVM) {
     val context = LocalContext.current
-    val mainActivityX = context as MainActivityX
+    val neoActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
     val filteredProducts by viewModel.filteredProducts.collectAsState()
@@ -66,22 +70,14 @@ fun ExplorePage(viewModel: ExploreVM) {
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
-    val favorites by mainActivityX.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
+    val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
     val categories by RepositoryUpdater.db.getCategoryDao()
         .getAllNamesFlow().collectAsState(emptyList())
-    val selectedCategory = remember(Preferences[Preferences.Key.CategoriesFilterExplore]) {
-        mutableStateOf(Preferences[Preferences.Key.CategoriesFilterExplore])
+    val selectedCategory = rememberSaveable {
+        mutableStateOf("")
     }
     var showSortSheet by remember { mutableStateOf(false) }
     val sortSheetState = rememberModalBottomSheetState(true)
-
-    LaunchedEffect(Unit) {
-        withContext(Dispatchers.IO) {
-            mainActivityX.searchQuery.collect { newQuery ->
-                viewModel.setSearchQuery(newQuery)
-            }
-        }
-    }
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.Default) {
@@ -116,37 +112,24 @@ fun ExplorePage(viewModel: ExploreVM) {
             .fillMaxSize(),
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 8.dp),
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            var favoriteFilter by remember {
-                mutableStateOf(false)
+            AnimatedVisibility(selectedCategory.value.isNotEmpty()) {
+                TopBarAction(
+                    icon = Phosphor.CirclesFour,
+                    description = stringResource(id = R.string.categories)
+                ) {
+                    Preferences[Preferences.Key.CategoriesFilterExplore] = ""
+                    selectedCategory.value = ""
+                    viewModel.setSections(Section.All)
+                }
             }
-
-            CheckChip(
-                modifier = Modifier.weight(1f),
-                text = stringResource(id = R.string.favorite_applications),
-                icon = Phosphor.HeartStraightFill,
-                colors = FilterChipDefaults.filterChipColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    selectedContainerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(48.dp),
-                    selectedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                    selectedLabelColor = MaterialTheme.colorScheme.primary,
-                    iconColor = MaterialTheme.colorScheme.onSurface,
-                    labelColor = MaterialTheme.colorScheme.onSurface,
-                ),
-                fullWidth = true,
-                checked = favoriteFilter
-            ) {
-                favoriteFilter = !favoriteFilter
-                viewModel.setSections(
-                    if (favoriteFilter) Section.FAVORITE
-                    else Section.All
-                )
-            }
+            Spacer(modifier = Modifier.weight(1f))
             ActionChip(
-                modifier = Modifier.weight(1f),
                 text = stringResource(id = R.string.sort_filter),
                 fullWidth = true,
                 icon = Phosphor.FunnelSimple
@@ -157,12 +140,26 @@ fun ExplorePage(viewModel: ExploreVM) {
         Row(
             modifier = Modifier.blockBorder(),
         ) {
-            if (Preferences[Preferences.Key.ShowCategoriesBar]) SideNavBar(
-                keys = listOf(FILTER_CATEGORY_ALL) + (categories.sorted()),
+            val favString = stringResource(id = R.string.favorite_applications)
+            if (Preferences[Preferences.Key.ShowCategoriesBar]) CategoriesList(
+                items = listOf(
+                    Pair(favString, Phosphor.HeartStraight)
+                ) + (categories.sorted().map { Pair(it, it.appCategoryIcon) }),
                 selectedKey = selectedCategory,
             ) {
-                Preferences[Preferences.Key.CategoriesFilterExplore] = it
-                selectedCategory.value = it
+                when (it) {
+                    favString -> {
+                        Preferences[Preferences.Key.CategoriesFilterExplore] = FILTER_CATEGORY_ALL
+                        selectedCategory.value = favString
+                        viewModel.setSections(Section.FAVORITE)
+                    }
+
+                    else      -> {
+                        Preferences[Preferences.Key.CategoriesFilterExplore] = it
+                        selectedCategory.value = it
+                        viewModel.setSections(Section.All)
+                    }
+                }
                 scope.launch {
                     listState.animateScrollToItem(0)
                 }
@@ -183,7 +180,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                         isFavorite = favorites.contains(item.packageName),
                         onUserClick = {
                             ExodusWorker.fetchExodusInfo(item.packageName)
-                            mainActivityX.navigateProduct(it.packageName)
+                            neoActivity.navigateProduct(it.packageName)
                         },
                         onFavouriteClick = {
                             viewModel.setFavorite(
@@ -191,13 +188,13 @@ fun ExplorePage(viewModel: ExploreVM) {
                                 !favorites.contains(it.packageName)
                             )
                         },
-                        installed = installedList?.get(item.packageName),
+                        installed = installedList[item.packageName],
                         onActionClick = {
-                            val installed = installedList?.get(it.packageName)
+                            val installed = installedList[it.packageName]
                             if (installed != null && installed.launcherActivities.isNotEmpty())
                                 context.onLaunchClick(
                                     installed,
-                                    mainActivityX.supportFragmentManager
+                                    neoActivity.supportFragmentManager
                                 )
                             else
                                 MainApplication.wm.install(it)

@@ -1,0 +1,7 @@
+Tambahan: Dukungan untuk fdroidrepo(s) uri
+Tambahan: Dukungan untuk market://search? intents
+Tambahan: Opsi berbagi untuk aplikasi IzzyOnDroid
+Tambahan: GitJournal & Revolt ke repo yang telah ditetapkan sebelumnya
+Memperbarui: Memperbaiki ReleaseItems
+Hapus: Alefvanoon preset-repo
+Untuk lebih jelasnya, lihat log perubahan lengkapnya…

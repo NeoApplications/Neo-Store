@@ -155,6 +155,57 @@ fun ExpandedSearchView(
 }
 
 @Composable
+fun WideSearchField(
+    modifier: Modifier = Modifier,
+    query: String,
+    onClose: () -> Unit,
+    onQueryChanged: (String) -> Unit,
+) {
+    val focusManager = LocalFocusManager.current
+    val textFieldFocusRequester = remember { FocusRequester() }
+
+    var textFieldValue by remember {
+        mutableStateOf(TextFieldValue(query, TextRange(query.length)))
+    }
+
+    TextField(
+        value = textFieldValue,
+        onValueChange = {
+            textFieldValue = it
+            onQueryChanged(it.text)
+        },
+        modifier = modifier
+            .fillMaxWidth()
+            .focusRequester(textFieldFocusRequester),
+        colors = TextFieldDefaults.colors(
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+        ),
+        shape = MaterialTheme.shapes.extraLarge,
+        leadingIcon = {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                imageVector = Phosphor.MagnifyingGlass,
+                contentDescription = stringResource(id = R.string.search),
+            )
+        },
+        trailingIcon = {
+            TopBarAction(
+                icon = Phosphor.X,
+                description = stringResource(id = R.string.cancel)
+            ) {
+                textFieldValue = TextFieldValue(text = "")
+                onClose()
+            }
+        },
+        singleLine = true,
+        label = { Text(text = stringResource(id = R.string.search)) },
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+    )
+}
+
+@Composable
 fun TopBarAction(
     icon: ImageVector,
     description: String = "",

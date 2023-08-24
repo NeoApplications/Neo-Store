@@ -73,31 +73,37 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
     val sortKey = when (navPage) {
         NavItem.Latest.destination    -> Preferences.Key.SortOrderLatest
         NavItem.Installed.destination -> Preferences.Key.SortOrderInstalled
+        NavItem.Search.destination    -> Preferences.Key.SortOrderSearch
         else                          -> Preferences.Key.SortOrderExplore // NavItem.Explore
     }
     val sortAscendingKey = when (navPage) {
         NavItem.Latest.destination    -> Preferences.Key.SortOrderAscendingLatest
         NavItem.Installed.destination -> Preferences.Key.SortOrderAscendingInstalled
+        NavItem.Search.destination    -> Preferences.Key.SortOrderAscendingSearch
         else                          -> Preferences.Key.SortOrderAscendingExplore // NavItem.Explore
     }
     val reposFilterKey = when (navPage) {
         NavItem.Latest.destination    -> Preferences.Key.ReposFilterLatest
         NavItem.Installed.destination -> Preferences.Key.ReposFilterInstalled
+        NavItem.Search.destination    -> Preferences.Key.ReposFilterSearch
         else                          -> Preferences.Key.ReposFilterExplore // NavItem.Explore
     }
     val categoriesFilterKey = when (navPage) {
         NavItem.Latest.destination    -> Preferences.Key.CategoriesFilterLatest
         NavItem.Installed.destination -> Preferences.Key.CategoriesFilterInstalled
+        NavItem.Search.destination    -> Preferences.Key.CategoriesFilterSearch
         else                          -> Preferences.Key.CategoriesFilterExplore // NavItem.Explore
     }
     val antifeaturesFilterKey = when (navPage) {
         NavItem.Latest.destination    -> Preferences.Key.AntifeaturesFilterLatest
         NavItem.Installed.destination -> Preferences.Key.AntifeaturesFilterInstalled
+        NavItem.Search.destination    -> Preferences.Key.AntifeaturesFilterSearch
         else                          -> Preferences.Key.AntifeaturesFilterExplore // NavItem.Explore
     }
     val licensesFilterKey = when (navPage) {
         NavItem.Latest.destination    -> Preferences.Key.LicensesFilterLatest
         NavItem.Installed.destination -> Preferences.Key.LicensesFilterInstalled
+        NavItem.Search.destination    -> Preferences.Key.LicensesFilterSearch
         else                          -> Preferences.Key.LicensesFilterExplore // NavItem.Explore
     }
 

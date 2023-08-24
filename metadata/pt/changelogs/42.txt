@@ -1,0 +1,6 @@
+- Mais sobre o Material Design 3
+- Correção: Raiz e instalador predefinido
+- Correção: Eliminar ficheiro em cache após desinstalação
+- Fix: Falha ao carregar no download quando offline
+- Atualização das traduções de mais de 17 idiomas
+- Muitas pequenas correções e ajustes…

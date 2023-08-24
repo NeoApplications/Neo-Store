@@ -11,7 +11,12 @@ import com.machiav3lli.fdroid.entity.Author
 import com.machiav3lli.fdroid.entity.Donate
 import com.machiav3lli.fdroid.entity.Screenshot
 import com.machiav3lli.fdroid.utility.extension.android.Android
-import com.machiav3lli.fdroid.utility.extension.json.*
+import com.machiav3lli.fdroid.utility.extension.json.Json
+import com.machiav3lli.fdroid.utility.extension.json.collectDistinctNotEmptyStrings
+import com.machiav3lli.fdroid.utility.extension.json.collectNotNull
+import com.machiav3lli.fdroid.utility.extension.json.forEach
+import com.machiav3lli.fdroid.utility.extension.json.forEachKey
+import com.machiav3lli.fdroid.utility.extension.json.illegal
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import java.io.InputStream
 
@@ -106,7 +111,8 @@ object IndexV1Parser {
         callback: (Localized) -> String,
     ): String {
         // @BLumia: it's possible a key of a certain Localized object is empty, so we still need a fallback
-        return (findLocalized { localized -> callback(localized).trim().nullIfEmpty() } ?: findString(fallback, callback)).trim()
+        return (findLocalized { localized -> callback(localized).trim().nullIfEmpty() }
+            ?: findString(fallback, callback)).trim()
     }
 
     fun parse(repositoryId: Long, inputStream: InputStream, callback: Callback) {
@@ -116,7 +122,7 @@ object IndexV1Parser {
         } else {
             jsonParser.forEachKey { it ->
                 when {
-                    it.dictionary("repo") -> {
+                    it.dictionary("repo")     -> {
                         var address = ""
                         var mirrors = emptyList<String>()
                         var name = ""
@@ -125,23 +131,27 @@ object IndexV1Parser {
                         var timestamp = 0L
                         forEachKey {
                             when {
-                                it.string("address") -> address = valueAsString
-                                it.array("mirrors") -> mirrors = collectDistinctNotEmptyStrings()
-                                it.string("name") -> name = valueAsString
+                                it.string("address")     -> address = valueAsString
+                                it.array("mirrors")      -> mirrors =
+                                    collectDistinctNotEmptyStrings()
+
+                                it.string("name")        -> name = valueAsString
                                 it.string("description") -> description = valueAsString
-                                it.number("version") -> version = valueAsInt
-                                it.number("timestamp") -> timestamp = valueAsLong
-                                else -> skipChildren()
+                                it.number("version")     -> version = valueAsInt
+                                it.number("timestamp")   -> timestamp = valueAsLong
+                                else                     -> skipChildren()
                             }
                         }
                         val realMirrors =
                             ((if (address.isNotEmpty()) listOf(address) else emptyList()) + mirrors).distinct()
                         callback.onRepository(realMirrors, name, description, version, timestamp)
                     }
-                    it.array("apps") -> forEach(JsonToken.START_OBJECT) {
+
+                    it.array("apps")          -> forEach(JsonToken.START_OBJECT) {
                         val product = parseProduct(repositoryId)
                         callback.onProduct(product)
                     }
+
                     it.dictionary("packages") -> forEachKey {
                         if (it.token == JsonToken.START_ARRAY) {
                             val packageName = it.key
@@ -152,7 +162,8 @@ object IndexV1Parser {
                             skipChildren()
                         }
                     }
-                    else -> skipChildren()
+
+                    else                      -> skipChildren()
                 }
             }
         }
@@ -181,34 +192,37 @@ object IndexV1Parser {
         val localizedMap = mutableMapOf<String, Localized>()
         forEachKey { it ->
             when {
-                it.string("packageName") -> packageName = valueAsString
-                it.string("name") -> nameFallback = valueAsString
-                it.string("summary") -> summaryFallback = valueAsString
-                it.string("description") -> descriptionFallback = valueAsString
-                it.string("icon") -> icon = IndexHandler.validateIcon(valueAsString)
-                it.string("authorName") -> authorName = valueAsString
-                it.string("authorEmail") -> authorEmail = valueAsString
-                it.string("authorWebSite") -> authorWeb = valueAsString
-                it.string("sourceCode") -> source = valueAsString
-                it.string("changelog") -> changelog = valueAsString
-                it.string("webSite") -> web = valueAsString
-                it.string("issueTracker") -> tracker = valueAsString
-                it.number("added") -> added = valueAsLong
-                it.number("lastUpdated") -> updated = valueAsLong
+                it.string("packageName")          -> packageName = valueAsString
+                it.string("name")                 -> nameFallback = valueAsString
+                it.string("summary")              -> summaryFallback = valueAsString
+                it.string("description")          -> descriptionFallback = valueAsString
+                it.string("icon")                 -> icon = IndexHandler.validateIcon(valueAsString)
+                it.string("authorName")           -> authorName = valueAsString
+                it.string("authorEmail")          -> authorEmail = valueAsString
+                it.string("authorWebSite")        -> authorWeb = valueAsString
+                it.string("sourceCode")           -> source = valueAsString
+                it.string("changelog")            -> changelog = valueAsString
+                it.string("webSite")              -> web = valueAsString
+                it.string("issueTracker")         -> tracker = valueAsString
+                it.number("added")                -> added = valueAsLong
+                it.number("lastUpdated")          -> updated = valueAsLong
                 it.string("suggestedVersionCode") -> suggestedVersionCode =
                     valueAsString.toLongOrNull() ?: 0L
-                it.array("categories") -> categories = collectDistinctNotEmptyStrings()
-                it.array("antiFeatures") -> antiFeatures = collectDistinctNotEmptyStrings()
-                it.string("license") -> licenses += valueAsString.split(',')
+
+                it.array("categories")            -> categories = collectDistinctNotEmptyStrings()
+                it.array("antiFeatures")          -> antiFeatures = collectDistinctNotEmptyStrings()
+                it.string("license")              -> licenses += valueAsString.split(',')
                     .filter { it.isNotEmpty() }
-                it.string("donate") -> donates += Donate.Regular(valueAsString)
-                it.string("bitcoin") -> donates += Donate.Bitcoin(valueAsString)
-                it.string("flattrID") -> donates += Donate.Flattr(valueAsString)
-                it.string("liberapayID") -> donates += Donate.Liberapay(valueAsString)
-                it.string("openCollective") -> donates += Donate.OpenCollective(
+
+                it.string("donate")               -> donates += Donate.Regular(valueAsString)
+                it.string("bitcoin")              -> donates += Donate.Bitcoin(valueAsString)
+                it.string("flattrID")             -> donates += Donate.Flattr(valueAsString)
+                it.string("liberapayID")          -> donates += Donate.Liberapay(valueAsString)
+                it.string("openCollective")       -> donates += Donate.OpenCollective(
                     valueAsString
                 )
-                it.dictionary("localized") -> forEachKey { keyToken ->
+
+                it.dictionary("localized")        -> forEachKey { keyToken ->
                     if (keyToken.token == JsonToken.START_OBJECT) {
                         val locale = keyToken.key
                         var name = ""
@@ -221,18 +235,21 @@ object IndexV1Parser {
                         var largeTablet = emptyList<String>()
                         forEachKey {
                             when {
-                                it.string("name") -> name = valueAsString
-                                it.string("summary") -> summary = valueAsString
-                                it.string("description") -> description = valueAsString
-                                it.string("whatsNew") -> whatsNew = valueAsString
-                                it.string("icon") -> metadataIcon = valueAsString
-                                it.array("phoneScreenshots") -> phone =
+                                it.string("name")                -> name = valueAsString
+                                it.string("summary")             -> summary = valueAsString
+                                it.string("description")         -> description = valueAsString
+                                it.string("whatsNew")            -> whatsNew = valueAsString
+                                it.string("icon")                -> metadataIcon = valueAsString
+                                it.array("phoneScreenshots")     -> phone =
                                     collectDistinctNotEmptyStrings()
+
                                 it.array("sevenInchScreenshots") -> smallTablet =
                                     collectDistinctNotEmptyStrings()
-                                it.array("tenInchScreenshots") -> largeTablet =
+
+                                it.array("tenInchScreenshots")   -> largeTablet =
                                     collectDistinctNotEmptyStrings()
-                                else -> skipChildren()
+
+                                else                             -> skipChildren()
                             }
                         }
                         val screenshots =
@@ -246,14 +263,19 @@ object IndexV1Parser {
                         skipChildren()
                     }
                 }
-                else -> skipChildren()
+
+                else                              -> skipChildren()
             }
         }
         val name = localizedMap.findLocalizedString(nameFallback) { it.name }
         val summary = localizedMap.findLocalizedString(summaryFallback) { it.summary }
         val description =
-            localizedMap.findLocalizedString(descriptionFallback) { it.description }.replace("\n", "<br/>")
-        val whatsNew = localizedMap.findLocalizedString("") { it.whatsNew }.replace("\n", "<br/>")
+            localizedMap.findLocalizedString(descriptionFallback) { it.description }
+                .removeSurrounding("\n")
+                .replace("\n", "<br/>")
+        val whatsNew = localizedMap.findLocalizedString("") { it.whatsNew }
+            .removeSurrounding("\n")
+            .replace("\n", "<br/>")
         val metadataIcon = localizedMap.findLocalizedString("") { it.metadataIcon }
         val screenshotPairs =
             localizedMap.find { key, localized -> localized.screenshots?.let { Pair(key, it) } }
@@ -315,27 +337,27 @@ object IndexV1Parser {
         var platforms = emptyList<String>()
         forEachKey {
             when {
-                it.string("versionName") -> version = valueAsString
-                it.number("versionCode") -> versionCode = valueAsLong
-                it.number("added") -> added = valueAsLong
-                it.number("size") -> size = valueAsLong
-                it.number("minSdkVersion") -> minSdkVersion = valueAsInt
-                it.number("targetSdkVersion") -> targetSdkVersion = valueAsInt
-                it.number("maxSdkVersion") -> maxSdkVersion = valueAsInt
-                it.string("srcname") -> source = valueAsString
-                it.string("apkName") -> release = valueAsString
-                it.string("hash") -> hash = valueAsString
-                it.string("hashType") -> hashTypeCandidate = valueAsString
-                it.string("sig") -> signature = valueAsString
-                it.string("obbMainFile") -> obbMain = valueAsString
-                it.string("obbMainFileSha256") -> obbMainHash = valueAsString
-                it.string("obbPatchFile") -> obbPatch = valueAsString
-                it.string("obbPatchFileSha256") -> obbPatchHash = valueAsString
-                it.array("uses-permission") -> collectPermissions(permissions, 0)
+                it.string("versionName")           -> version = valueAsString
+                it.number("versionCode")           -> versionCode = valueAsLong
+                it.number("added")                 -> added = valueAsLong
+                it.number("size")                  -> size = valueAsLong
+                it.number("minSdkVersion")         -> minSdkVersion = valueAsInt
+                it.number("targetSdkVersion")      -> targetSdkVersion = valueAsInt
+                it.number("maxSdkVersion")         -> maxSdkVersion = valueAsInt
+                it.string("srcname")               -> source = valueAsString
+                it.string("apkName")               -> release = valueAsString
+                it.string("hash")                  -> hash = valueAsString
+                it.string("hashType")              -> hashTypeCandidate = valueAsString
+                it.string("sig")                   -> signature = valueAsString
+                it.string("obbMainFile")           -> obbMain = valueAsString
+                it.string("obbMainFileSha256")     -> obbMainHash = valueAsString
+                it.string("obbPatchFile")          -> obbPatch = valueAsString
+                it.string("obbPatchFileSha256")    -> obbPatchHash = valueAsString
+                it.array("uses-permission")        -> collectPermissions(permissions, 0)
                 it.array("uses-permission-sdk-23") -> collectPermissions(permissions, 23)
-                it.array("features") -> features = collectDistinctNotEmptyStrings()
-                it.array("nativecode") -> platforms = collectDistinctNotEmptyStrings()
-                else -> skipChildren()
+                it.array("features")               -> features = collectDistinctNotEmptyStrings()
+                it.array("nativecode")             -> platforms = collectDistinctNotEmptyStrings()
+                else                               -> skipChildren()
             }
         }
         val hashType =

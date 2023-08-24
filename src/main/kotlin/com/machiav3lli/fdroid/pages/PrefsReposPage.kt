@@ -25,25 +25,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
 import com.machiav3lli.backup.ui.compose.icons.phosphor.Plus
 import com.machiav3lli.fdroid.INTENT_ACTION_BINARY_EYE
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.service.worker.SyncWorker
-import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
 import com.machiav3lli.fdroid.ui.compose.RepositoriesRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.QrCode
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrefsReposPage(viewModel: PrefsVM) {
     val context = LocalContext.current
-    val prefsActivityX = context as PrefsActivityX
+    val mActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
     val repos by viewModel.repositories.collectAsState()
     val sheetData by viewModel.showSheet.collectAsState(initial = null)
@@ -77,7 +76,7 @@ fun PrefsReposPage(viewModel: PrefsVM) {
                 shadowElevation = 6.dp,
                 shape = MaterialTheme.shapes.medium,
             ) {
-                if (Intent(INTENT_ACTION_BINARY_EYE).resolveActivity(prefsActivityX.packageManager) != null) {
+                if (Intent(INTENT_ACTION_BINARY_EYE).resolveActivity(mActivity.packageManager) != null) {
                     Row(
                         modifier = Modifier.padding(horizontal = 4.dp),
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -99,7 +98,7 @@ fun PrefsReposPage(viewModel: PrefsVM) {
                         FilledTonalButton(
                             shape = MaterialTheme.shapes.medium,
                             colors = fabColors,
-                            onClick = prefsActivityX::openScanner
+                            onClick = mActivity::openScanner
                         ) {
                             Icon(
                                 imageVector = Phosphor.QrCode,
@@ -133,7 +132,7 @@ fun PrefsReposPage(viewModel: PrefsVM) {
                 .padding(paddingValues),
             repositoriesList = sortedRepoList,
             onClick = {
-                CoroutineScope(Dispatchers.Default).launch {
+                viewModel.viewModelScope.launch {
                     SyncWorker.enableRepo(it, !it.enabled)
                 }
             },

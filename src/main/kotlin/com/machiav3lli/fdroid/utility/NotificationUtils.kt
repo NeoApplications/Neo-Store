@@ -20,6 +20,7 @@ import com.machiav3lli.fdroid.NOTIFICATION_ID_INSTALLER
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_ID_VULNS
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Repository
@@ -31,7 +32,6 @@ import com.machiav3lli.fdroid.service.worker.DownloadTask
 import com.machiav3lli.fdroid.service.worker.ErrorType
 import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.worker.ValidationError
-import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.utility.extension.android.notificationManager
 import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
@@ -69,10 +69,10 @@ fun Context.displayUpdatesNotification(
                     PendingIntent.getActivity(
                         this,
                         0,
-                        Intent(this, MainActivityX::class.java)
-                            .setAction(MainActivityX.ACTION_UPDATES)
+                        Intent(this, NeoActivity::class.java)
+                            .setAction(NeoActivity.ACTION_UPDATES)
                             .putExtra(
-                                MainActivityX.EXTRA_UPDATES,
+                                NeoActivity.EXTRA_UPDATES,
                                 productItems.map { it.packageName }.toTypedArray()
                             ),
                         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
@@ -122,10 +122,10 @@ fun Context.displayVulnerabilitiesNotification(
                     PendingIntent.getActivity(
                         this,
                         0,
-                        Intent(this, MainActivityX::class.java)
-                            .setAction(MainActivityX.ACTION_UPDATES)
+                        Intent(this, NeoActivity::class.java)
+                            .setAction(NeoActivity.ACTION_UPDATES)
                             .putExtra(
-                                MainActivityX.EXTRA_UPDATES,
+                                NeoActivity.EXTRA_UPDATES,
                                 productItems.map { it.packageName }.toTypedArray()
                             ),
                         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE

@@ -1,0 +1,11 @@
+Egy modern, funkciógazdag F-Droid kliens:
+
+*Felhasználói élmény előnyben részesítése
+*Nincsenek kártyák és oda nem illő animációk
+*Gyors tároló frissítés
+*Szabvány Android elemek és minimális függőségek
+
+A Foxy-Droid direkt adaptációja/modifikációja
+
+Copyleft libre szoftver, GPLv3+ alatt licenszelve.
+Használd, tanulmányozd, változtasd meg és oszd meg mindenkivel.

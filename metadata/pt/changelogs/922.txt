@@ -1,0 +1,7 @@
+Adicionar: Autorização de notificações (para A13)
+Adicionar: Barra de navegação lateral de categorias no explorador
+Correção: Legacy- & RootInstaller
+Correção: Melhorar o desempenho da pesquisa (créditos @pedrox-hs)
+Atualização: Layout horizontal das aplicações
+Atualização: Pedir permissão de raiz ao definir o instalador de raiz
++ mais de 60 contribuições de tradução

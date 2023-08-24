@@ -40,6 +40,7 @@ enum class InstallState {
 
 enum class Source(val sections: Boolean, val order: Boolean) {
     AVAILABLE(true, true),
+    SEARCH(true, true),
     INSTALLED(false, true),
     UPDATES(false, false),
     UPDATED(false, true),
@@ -48,7 +49,7 @@ enum class Source(val sections: Boolean, val order: Boolean) {
 
 enum class LinkRef(
     @StringRes val titleId: Int,
-    val url: String? = null
+    val url: String? = null,
 ) {
     Sourcecode(
         titleId = R.string.source_code,

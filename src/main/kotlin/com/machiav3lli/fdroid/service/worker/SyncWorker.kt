@@ -30,6 +30,7 @@ import com.machiav3lli.fdroid.EXODUS_TRACKERS_SYNC
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.TAG_SYNC_PERIODIC
@@ -37,7 +38,6 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.service.ActionReceiver
-import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.future.future
@@ -63,7 +63,7 @@ class SyncWorker(
 
     private var repoId = inputData.getLong(ARG_REPOSITORY_ID, -1L)
     private var request = SyncRequest.values()[
-            inputData.getInt(ARG_SYNC_REQUEST, 0)
+        inputData.getInt(ARG_SYNC_REQUEST, 0)
     ]
 
     companion object {
@@ -170,17 +170,17 @@ class SyncWorker(
         fun getTask(data: Data) = SyncTask(
             data.getLong(ARG_REPOSITORY_ID, -1L),
             SyncRequest.values()[
-                    data.getInt(ARG_SYNC_REQUEST, 0)
+                data.getInt(ARG_SYNC_REQUEST, 0)
             ],
         )
 
         fun getState(data: Data) = SyncState.values()[
-                data.getInt(ARG_STATE, 0)
+            data.getInt(ARG_STATE, 0)
         ]
 
         fun getProgress(data: Data) = Progress(
             RepositoryUpdater.Stage.values()[
-                    data.getInt(ARG_STAGE, 0)
+                data.getInt(ARG_STAGE, 0)
             ],
             data.getLong(ARG_READ, 0L),
             data.getLong(ARG_TOTAL, -1L),
@@ -274,7 +274,7 @@ class SyncWorker(
     override fun getForegroundInfo(): ForegroundInfo {
         val contentPendingIntent = PendingIntent.getActivity(
             context, 0,
-            Intent(context, MainActivityX::class.java),
+            Intent(context, NeoActivity::class.java),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 

@@ -1,0 +1,7 @@
+-Hozzáadva: Kedvencek kategória
+-Hozzáadva: Opció szinkronizálás intervallumának beállítására
+-Hozzáadva: Támogatás az automatikusan importálódó fdroid tárolókhoz: tároló címek a vágólapról
+-Javítva: Beágyazott görgetés az alkalmazáslistán
+-Javítva: Tároló alkalmazások száma
+-Javítva: Megengedi az apk fájl megtartását, amíg települ
+-Frissítve: Alkalmazás leírások/változásnaplók kijelölhetőek

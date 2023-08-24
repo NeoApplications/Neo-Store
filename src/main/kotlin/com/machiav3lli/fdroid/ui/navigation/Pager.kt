@@ -18,6 +18,7 @@
 package com.machiav3lli.fdroid.ui.navigation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.machiav3lli.fdroid.content.Preferences
 import kotlinx.coroutines.launch
@@ -51,6 +53,7 @@ fun PagerNavBar(pageItems: List<NavItem>, pagerState: PagerState) {
     val scope = rememberCoroutineScope()
 
     NavigationBar(
+        modifier = Modifier.padding(horizontal = 8.dp),
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onSurface,
     ) {

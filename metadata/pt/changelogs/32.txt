@@ -1,0 +1,6 @@
+- Atualização: Design para MD3
+- Atualização: Melhor experiência de utilização das capturas de ecrã
+- Correção: Congelamento durante a instalação da aplicação com o método de raiz
+- Atualização: Perfis temáticos renovados
+- Adicionar: Partilha de links (apenas F-Droid oficial por agora)
+- Outras pequenas correções UI/UX

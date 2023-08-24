@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+// TODO split into one for Explore/Search and one for Latest/Installed
 open class MainPageVM(
     val db: DatabaseX,
     primarySource: Source,
@@ -34,6 +35,7 @@ open class MainPageVM(
 ) : ViewModel() {
     // TODO add better sort/filter fields
 
+    private val cc = Dispatchers.IO
     private val sortFilter = MutableStateFlow("")
 
     fun setSortFilter(value: String) {
@@ -57,6 +59,7 @@ open class MainPageVM(
         sections.value.let { if (source.sections) mSections = it }
         return when (source) {
             Source.AVAILABLE -> Request.ProductsAll(mSections)
+            Source.SEARCH    -> Request.ProductsSearch(mSections)
             Source.INSTALLED -> Request.ProductsInstalled(mSections)
             Source.UPDATES   -> Request.ProductsUpdates(mSections)
             Source.UPDATED   -> Request.ProductsUpdated(mSections)
@@ -88,7 +91,7 @@ open class MainPageVM(
         db.getProductDao().queryFlowList(primaryRequest.value),
         sortFilter
     ) { a, _, _, _ ->
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             db.getProductDao().queryObject(a)
         }
     }.stateIn(
@@ -100,7 +103,7 @@ open class MainPageVM(
     @OptIn(FlowPreview::class)
     val filteredProducts: StateFlow<List<Product>?> =
         combine(primaryProducts, query.debounce(400)) { products, query ->
-            withContext(Dispatchers.IO) {
+            withContext(cc) {
                 products?.matchSearchQuery(query)
             }
         }.stateIn(
@@ -117,8 +120,9 @@ open class MainPageVM(
         db.getProductDao().queryFlowList(secondaryRequest.value),
         db.getExtrasDao().getAllFlow(),
     ) { a, _, _, _ ->
-        withContext(Dispatchers.IO) {
-            db.getProductDao().queryObject(a)
+        withContext(cc) {
+            if (secondarySource != primarySource) db.getProductDao().queryObject(a)
+            else null
         }
     }.stateIn(
         scope = viewModelScope,
@@ -159,7 +163,7 @@ open class MainPageVM(
     }
 
     private suspend fun saveFavorite(packageName: String, setBoolean: Boolean) {
-        withContext(Dispatchers.IO) {
+        withContext(cc) {
             val oldValue = db.getExtrasDao()[packageName]
             if (oldValue != null) db.getExtrasDao()
                 .insertReplace(oldValue.copy(favorite = setBoolean))
@@ -202,6 +206,19 @@ class InstalledVM(db: DatabaseX) : MainPageVM(db, Source.INSTALLED, Source.UPDAT
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(InstalledVM::class.java)) {
                 return InstalledVM(db) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
+        }
+    }
+}
+
+class SearchVM(db: DatabaseX) : MainPageVM(db, Source.SEARCH, Source.SEARCH) {
+    class Factory(val db: DatabaseX) :
+        ViewModelProvider.Factory {
+        @Suppress("unchecked_cast")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(SearchVM::class.java)) {
+                return SearchVM(db) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

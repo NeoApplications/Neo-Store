@@ -55,6 +55,7 @@ import java.security.cert.CertificateEncodingException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.math.abs
 
 object Utils {
     fun PackageInfo.toInstalledItem(launcherActivities: List<Pair<String, String>> = emptyList()): Installed {
@@ -445,11 +446,18 @@ fun Collection<Product>.matchSearchQuery(searchQuery: String): List<Product> {
                 literal.contains(searchRegex)
             }
     }.sortedByDescending {
-        (if ("${it.label} ${it.packageName}".contains(searchRegex)) 7 else 0) or
-                (if ("${it.summary} ${it.author.name}".contains(searchRegex)) 3 else 0) or
-                (if (it.description.contains(searchRegex)) 1 else 0)
+        (if (isDifferenceMoreThanOneYear(it.updated, System.currentTimeMillis())) 0 else 7) or
+                (if ("${it.label} ${it.packageName}".contains(searchRegex)) 3 else 0) or
+                (if ("${it.summary} ${it.author.name}".contains(searchRegex)) 1 else 0)
     }
 }
+
+fun isDifferenceMoreThanOneYear(time1: Long, time2: Long): Boolean {
+    val difference = abs(time1 - time2)
+    val oneYearInMilliseconds = 365 * 24 * 60 * 60 * 1000L
+    return difference > oneYearInMilliseconds
+}
+
 
 val currentTimestamp: String
     get() {
@@ -464,6 +472,7 @@ fun NavDestination.destinationToItem(): NavItem? = listOf(
     NavItem.Explore,
     NavItem.Latest,
     NavItem.Installed,
+    NavItem.Search,
     NavItem.Prefs,
     NavItem.PersonalPrefs,
     NavItem.UpdatesPrefs,

@@ -1,0 +1,5 @@
+Tambahan: Ikon aplikasi berdasarkan tema sistem
+Tambahan: Preferensi jenis penginstal (termasuk mode Legacy untuk MIUI yang bodoh)
+Perbaikan: Navigasi setelah diluncurkan dari notifikasi pembaruan
+Perbaiki: Bilah unduhan tidak mencerminkan kemajuan yang sebenarnya
+Beberapa lagi di log perubahan lengkap…

@@ -34,6 +34,7 @@ fun AppInfoChips(
         else "v${product.version}",
         product.displayRelease?.size?.formatSize().orEmpty(),
         DateFormat.getDateInstance().format(Date(product.updated)),
+        *product.categories.toTypedArray(),
         if (latestRelease?.minSdkVersion != 0) "${stringResource(id = R.string.min_sdk)} ${latestRelease?.minSdkVersion}"
         else null,
         if (latestRelease?.targetSdkVersion != 0) "${stringResource(id = R.string.target_sdk)} ${latestRelease?.targetSdkVersion}"

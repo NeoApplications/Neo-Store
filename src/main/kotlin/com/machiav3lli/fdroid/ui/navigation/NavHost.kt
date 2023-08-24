@@ -3,29 +3,27 @@ package com.machiav3lli.fdroid.ui.navigation
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.pager.PagerState
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.activity
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.pages.MainPage
 import com.machiav3lli.fdroid.pages.PermissionsPage
-import com.machiav3lli.fdroid.ui.activities.PrefsActivityX
+import com.machiav3lli.fdroid.pages.PrefsPage
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MainNavHost(
+fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    pagerState: PagerState,
-    pages: List<NavItem>,
 ) =
     NavHost(
         modifier = modifier,
@@ -37,41 +35,41 @@ fun MainNavHost(
                 navController.navigate(NavItem.Main.destination)
             }
         }
-        fadeComposable(NavItem.Main.destination) {
-            SlidePager(
-                pagerState = pagerState,
-                pageItems = pages,
-                navController = navController
+        slideInComposable(
+            "${NavItem.Main.destination}?page={page}",
+            args = listOf(
+                navArgument("page") {
+                    type = NavType.IntType
+                    defaultValue = Preferences[Preferences.Key.DefaultTab].valueString.toInt()
+                }
+            )
+        ) {
+            val args = it.arguments!!
+            val pi = args.getInt("page")
+            MainPage(
+                pageIndex = pi,
+                navController = navController,
             )
         }
-        activity(NavItem.Prefs.destination) {
-            this.activityClass = PrefsActivityX::class
+        slideInComposable(
+            "${NavItem.Prefs.destination}?page={page}",
+            args = listOf(
+                navArgument("page") {
+                    type = NavType.IntType
+                    defaultValue = Preferences[Preferences.Key.DefaultTab].valueString.toInt()
+                }
+            )
+        ) {
+            val args = it.arguments!!
+            val pi = args.getInt("page")
+            PrefsPage(
+                pageIndex = pi,
+                navController = navController,
+            )
         }
     }
 
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun PrefsNavHost(
-    modifier: Modifier = Modifier,
-    navController: NavHostController,
-    pagerState: PagerState,
-    pages: List<NavItem>,
-) =
-    NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = NavItem.Prefs.destination
-    ) {
-        fadeComposable(NavItem.Prefs.destination) {
-            SlidePager(
-                pagerState = pagerState,
-                pageItems = pages,
-                navController = navController
-            )
-        }
-    }
-
-fun NavGraphBuilder.slideDownComposable(
+fun NavGraphBuilder.slideInComposable(
     route: String,
     args: List<NamedNavArgument> = emptyList(),
     content: @Composable (AnimatedVisibilityScope.(NavBackStackEntry) -> Unit),
@@ -79,8 +77,10 @@ fun NavGraphBuilder.slideDownComposable(
     composable(
         route,
         args,
-        enterTransition = { slideInVertically { height -> -height } + fadeIn() },
-        exitTransition = { slideOutVertically { height -> height } + fadeOut() }
+        enterTransition = { slideInHorizontally { width -> width } },
+        exitTransition = { slideOutHorizontally { width -> -width } },
+        popEnterTransition = { slideInHorizontally { width -> -width } },
+        popExitTransition = { slideOutHorizontally { width -> width } },
     ) {
         content(it)
     }

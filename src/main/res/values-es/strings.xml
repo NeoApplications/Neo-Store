@@ -332,4 +332,9 @@
     <string name="list_apps">Mostrar las aplicaciones del repositorio</string>
     <string name="previous">Anterior</string>
     <string name="next">Siguiente</string>
+    <string name="repos_export">Exportar los repositorios</string>
+    <string name="repos_import">Importar los repositorios (anula los ya existentes)</string>
+    <string name="auto_sync_interval_hours">Intervalo de sincronización automática (en horas)</string>
+    <string name="alt_navbar_item">Utilizar un elemento alternativo a la barra de navegación</string>
+    <string name="alt_navbar_item_description">Utiliza el diseño alternativo/antiguo de los elementos de la barra de navegación, que muestra la etiqueta de los elementos no seleccionados.</string>
 </resources>

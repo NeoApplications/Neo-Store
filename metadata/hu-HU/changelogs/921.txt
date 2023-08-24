@@ -1,0 +1,5 @@
+-Hozzáadva: A teljesen új Adatvédelmi vizualizáció (Neo Meter ikonok)
+-Hozzáadva: A teljesen új Adatvédelmi panel
+-Javítva: Memóriaszivárgás a a főlapon és beállításokban
+-Javítva: Ugyanazon tárolólap ismételt megnyitása
++ több mint 15 fordítási hozzájárulás

@@ -289,7 +289,7 @@
     <string name="trackers_bug_description">Трекери, які використовуються для повідомлення о технічних проблемах, які можуть виникнути у застосунку.</string>
     <string name="source_proprietary_description">Вихідний код застосунку не є загальнодоступним.</string>
     <string name="source_copyright_description">Застосунок залежить від компонентів, захищених авторським правом, або підключається до пропрієтарних мереж.</string>
-    <string name="source_copyleft">Авторське право</string>
+    <string name="source_copyleft">Copyleft</string>
     <string name="source_copyleft_description">Надання спільного доступу до програми вимагає внесення до неї змін.</string>
     <string name="app_installed">Встановлено</string>
     <string name="vulnerabilities_installed_apps">Ці встановлені додатки мають відомі вразливості!</string>
@@ -333,4 +333,9 @@
     <string name="clear_text">Очистити текст</string>
     <string name="list_apps">Показати застосунки репозиторію</string>
     <string name="next">Наступний</string>
+    <string name="alt_navbar_item">Використовувати альтернативний вид панелі навігації</string>
+    <string name="alt_navbar_item_description">Використовувати альтернативне/старе розташування елементів панелі навігації, яке показує мітки невибраних елементів.</string>
+    <string name="repos_export">Експорт репозиторіїв</string>
+    <string name="auto_sync_interval_hours">Інтервал автосинхронізації (в годинах)</string>
+    <string name="repos_import">Імпорт репозиторіїв (замінює вже існуючі)</string>
 </resources>

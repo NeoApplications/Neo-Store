@@ -9,8 +9,8 @@ import android.content.pm.PackageInstaller
 import android.net.Uri
 import android.os.IBinder
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_INSTALLER
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.ui.activities.MainActivityX
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.android.notificationManager
@@ -88,8 +88,8 @@ class InstallerService : Service() {
         return PendingIntent.getActivity(
             this,
             0,
-            Intent(this, MainActivityX::class.java)
-                .setAction(MainActivityX.ACTION_INSTALL)
+            Intent(this, NeoActivity::class.java)
+                .setAction(NeoActivity.ACTION_INSTALL)
                 .setData(Uri.parse("package:$name"))
                 .putExtra(Intent.EXTRA_INTENT, promptIntent)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),

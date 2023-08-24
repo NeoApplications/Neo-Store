@@ -1,0 +1,6 @@
+-Frissítve: Összezáródó eszköztár
+-Frissítve: Javított telepítők (rendszergazdai & nem-rendszergazdai)
+-Frissítve: Új appikon (újra)
+-Frissítve: Kiadás információ blokkolja a felületet
+-Frissítve: HIányzó fejlesztő nevek és képek kezeleése
+-Egyéb javítások, módosítások és kód karbantartás

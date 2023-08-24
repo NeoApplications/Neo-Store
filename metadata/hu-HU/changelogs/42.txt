@@ -1,0 +1,6 @@
+-Mégtöbb Material You
+-Javítva: Rendszergazdai és alapérttelmezett telepítő
+-Javítva: Gyorssítótárazott fájlok törlése alkalmazás törlése után
+-Javítva: Összeomlás letöltés gombra nyomva offline
+-Frissítet fordítások több mint 17 nylevben
+-Sok apró javítás és módosítás…

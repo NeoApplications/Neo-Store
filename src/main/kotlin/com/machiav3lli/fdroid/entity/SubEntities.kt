@@ -6,6 +6,7 @@ import android.content.pm.PermissionInfo
 import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.machiav3lli.backup.ui.compose.icons.phosphor.Plus
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
@@ -22,6 +23,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Barbell
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.BookBookmark
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Books
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Brain
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Calendar
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Chat
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
@@ -34,11 +36,13 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CurrencyDollarSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GameController
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Globe
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GlobeSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Graph
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Key
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Leaf
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Microphone
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Nut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.PaintBrush
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.PenNib
@@ -46,11 +50,13 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Phone
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Pizza
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.PlayCircle
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Robot
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.RssSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShareNetwork
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SlidersHorizontal
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Swatches
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TrashSimple
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Wrench
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -137,16 +143,16 @@ sealed class ActionState(
     override val icon: ImageVector = Phosphor.Download,
 ) : ComponentState {
 
-    object Install : ActionState(R.string.install, Phosphor.Download)
-    object Update : ActionState(R.string.update, Phosphor.Download)
-    object Uninstall : ActionState(R.string.uninstall, Phosphor.TrashSimple)
-    object Launch : ActionState(R.string.launch, Phosphor.ArrowSquareOut)
-    object Details : ActionState(R.string.details, Phosphor.SlidersHorizontal)
-    object Share : ActionState(R.string.share, Phosphor.ShareNetwork)
+    data object Install : ActionState(R.string.install, Phosphor.Download)
+    data object Update : ActionState(R.string.update, Phosphor.Download)
+    data object Uninstall : ActionState(R.string.uninstall, Phosphor.TrashSimple)
+    data object Launch : ActionState(R.string.launch, Phosphor.ArrowSquareOut)
+    data object Details : ActionState(R.string.details, Phosphor.SlidersHorizontal)
+    data object Share : ActionState(R.string.share, Phosphor.ShareNetwork)
     class Cancel(@StringRes stateId: Int) : ActionState(stateId, Phosphor.X)
-    object NoAction : ActionState(R.string.no_action_possible, Phosphor.X)
-    object Bookmark : ActionState(R.string.favorite_add, Phosphor.HeartStraight)
-    object Bookmarked : ActionState(R.string.favorite_remove, Phosphor.HeartStraightFill)
+    data object NoAction : ActionState(R.string.no_action_possible, Phosphor.X)
+    data object Bookmark : ActionState(R.string.favorite_add, Phosphor.HeartStraight)
+    data object Bookmarked : ActionState(R.string.favorite_remove, Phosphor.HeartStraightFill)
 }
 
 open class LinkType(
@@ -217,6 +223,29 @@ sealed class Request {
             get() = Preferences[Preferences.Key.LicensesFilterExplore]
         override val ascending: Boolean
             get() = Preferences[Preferences.Key.SortOrderAscendingExplore]
+    }
+
+    data class ProductsSearch(override val section: Section) : Request() {
+        override val id: Int
+            get() = 1
+        override val installed: Boolean
+            get() = false
+        override val updates: Boolean
+            get() = false
+        override val updateCategory: UpdateCategory
+            get() = UpdateCategory.ALL
+        override val order: Order
+            get() = Preferences[Preferences.Key.SortOrderSearch].order
+        override val filteredOutRepos: Set<String>
+            get() = Preferences[Preferences.Key.ReposFilterSearch]
+        override val category: String
+            get() = Preferences[Preferences.Key.CategoriesFilterSearch]
+        override val filteredAntiFeatures: Set<String>
+            get() = Preferences[Preferences.Key.AntifeaturesFilterSearch]
+        override val filteredLicenses: Set<String>
+            get() = Preferences[Preferences.Key.LicensesFilterSearch]
+        override val ascending: Boolean
+            get() = Preferences[Preferences.Key.SortOrderAscendingSearch]
     }
 
     data class ProductsInstalled(override val section: Section) : Request() {
@@ -365,27 +394,48 @@ class PermissionsType(
 val String.appCategoryIcon: ImageVector
     get() = when (this.lowercase()) {
         FILTER_CATEGORY_ALL.lowercase() -> Phosphor.CirclesFour
+        "audio"                         -> Phosphor.Microphone
+        "audiovideo"                    -> Phosphor.PlayCircle
         "automation"                    -> Phosphor.Robot
         "connectivity"                  -> Phosphor.Graph
+        "communication"                 -> Phosphor.Chat
+        "calendar"                      -> Phosphor.Calendar
         "development"                   -> Phosphor.Code
+        "education"                     -> Phosphor.Brain
+        "fedilab"                       -> Phosphor.ShieldStar
+        "fdroid"                        -> Phosphor.Asterisk
+        "feed"                          -> Phosphor.RssSimple
         "food"                          -> Phosphor.Pizza
+        "game"                          -> Phosphor.GameController
         "games"                         -> Phosphor.GameController
         "graphics"                      -> Phosphor.PaintBrush
+        "guardian project"              -> Phosphor.ShieldStar
         "internet"                      -> Phosphor.Globe
+        "kde"                           -> Phosphor.Code
+        "kidsgame"                      -> Phosphor.GameController
+        "math"                          -> Phosphor.Plus
         "messaging"                     -> Phosphor.Chat
         "money"                         -> Phosphor.CurrencyDollarSimple
         "multimedia"                    -> Phosphor.PlayCircle
         "navigation"                    -> Phosphor.Compass
+        "network"                       -> Phosphor.GlobeSimple
         "office"                        -> Phosphor.Books
+        "offline"                       -> Phosphor.Leaf
+        "osmand"                        -> Phosphor.Compass
         "phone & sms"                   -> Phosphor.Phone
+        "productivity"                  -> Phosphor.Compass
+        "qt"                            -> Phosphor.Books
         "reading"                       -> Phosphor.BookBookmark
+        "recorder"                      -> Phosphor.Microphone
         "religion"                      -> Phosphor.Command
+        "science"                       -> Phosphor.Brain
         "science & education"           -> Phosphor.Brain
         "security"                      -> Phosphor.Key
         "sports & health"               -> Phosphor.Barbell
         "system"                        -> Phosphor.Nut
         "theming"                       -> Phosphor.Swatches
         "time"                          -> Phosphor.Clock
+        "utility"                       -> Phosphor.Wrench
         "writing"                       -> Phosphor.PenNib
         "xposed"                        -> Phosphor.ShieldStar
         else                            -> Phosphor.Asterisk

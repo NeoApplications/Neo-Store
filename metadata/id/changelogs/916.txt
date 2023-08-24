@@ -1,0 +1,7 @@
+Tambahan: Fungsi Urutkan/Filter 
+Tambahan: Pintasan favorit eksplisit
+Tambahan: TargetSDK ke info chip 
+Pembaruan: Ganti ikon Material dengan Phosphor 
+Pembaruan: Perbaikan tata letak BottomNavBar, AppSheet, dan EditRepoSheet: 
+Menampilkan tindakan sekunder pembaruan saat mengunduh 
+Untuk lebih jelasnya, periksa log perubahan lengkap…

@@ -219,7 +219,7 @@
     <string name="favorite_add">Adicionar aos favoritos</string>
     <string name="open">Abrir</string>
     <string name="loading_list">A carregar lista…</string>
-    <string name="releases">Versões</string>
+    <string name="releases">Lançamentos</string>
     <string name="no_updates_available">Nenhuma versão disponível</string>
     <string name="dynamic">Sistema Dinâmico</string>
     <string name="auto_sync_interval">Intervalo de Sincronização Automática (Em minutos)</string>
@@ -332,4 +332,9 @@
     <string name="list_apps">Mostrar as aplicações do repositório</string>
     <string name="next">Próximo</string>
     <string name="previous">Anteriores</string>
+    <string name="alt_navbar_item">Usar item de barra de navegação alternativo</string>
+    <string name="alt_navbar_item_description">Use o layout de item da barra de navegação alternativo/antigo, que mostra o rótulo dos itens não selecionados.</string>
+    <string name="auto_sync_interval_hours">Intervalo de sincronização automática (em horas)</string>
+    <string name="repos_export">Exportar repositórios</string>
+    <string name="repos_import">Importar repositórios (substitui os já existentes)</string>
 </resources>

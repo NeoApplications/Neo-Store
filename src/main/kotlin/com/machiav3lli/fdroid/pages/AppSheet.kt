@@ -80,7 +80,7 @@ import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.network.createIconUri
 import com.machiav3lli.fdroid.service.ActionReceiver
 import com.machiav3lli.fdroid.service.worker.DownloadWorker
-import com.machiav3lli.fdroid.ui.activities.MainActivityX
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.ui.components.ExpandableBlock
 import com.machiav3lli.fdroid.ui.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.components.SwitchPreference
@@ -130,7 +130,7 @@ fun AppSheet(
     onDismiss: () -> Unit,
 ) { // TODO break it down
     val context = LocalContext.current
-    val mainActivityX = context as MainActivityX
+    val neoActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
     val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
     val showScreenshots = remember { mutableStateOf(false) }
@@ -325,7 +325,7 @@ fun AppSheet(
                     this.action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD
                     putExtra(ARG_PACKAGE_NAME, packageName)
                 }
-                mainActivityX.sendBroadcast(cancelIntent)
+                neoActivity.sendBroadcast(cancelIntent)
             }
 
             ActionState.Share     -> {
@@ -562,7 +562,7 @@ fun AppSheet(
                                             ?: emptyMap(),
                                         rowsNumber = 1,
                                     ) { item ->
-                                        mainActivityX.navigateProduct(item.packageName)
+                                        neoActivity.navigateProduct(item.packageName)
                                     }
                                 }
                             }
@@ -777,7 +777,7 @@ fun AppSheet(
                                                     Uri.parse("market://search?q=$TC_PACKAGENAME")
                                                 )
                                             )
-                                            mainActivityX.latestViewModel.setSections(Section.All)
+                                            neoActivity.latestViewModel.setSections(Section.All)
                                             onDismiss()
                                         } else context.startActivity(
                                             tcIntent.putExtra(

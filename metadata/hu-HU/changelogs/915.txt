@@ -1,0 +1,7 @@
+-Frissítve: Újragondolt alkalmazáslista
+-Frissítve: Navigáció teljes migrálása Compose-ra
+-Frissítve: Preferenciák migrálása Compose-ra
+-Frissítve: Magasabb érték beállítása frissített/új alkalmazások újrahasználására és szinkronizálási intervallumára
+-Hozzáadva: Hasznos linkek a beállításokban
+-Javítva: Akciógombok láthatósága
+-Javítva: Tároló leírás mutatása első szinkronizálás előtt

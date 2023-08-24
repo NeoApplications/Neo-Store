@@ -1,20 +1,16 @@
-package com.machiav3lli.fdroid.ui.activities
+package com.machiav3lli.fdroid
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.view.KeyEvent
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -22,45 +18,30 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.machiav3lli.fdroid.BuildConfig
-import com.machiav3lli.fdroid.ContextWrapperX
-import com.machiav3lli.fdroid.EXTRA_INTENT_HANDLED
-import com.machiav3lli.fdroid.MainApplication
-import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.pages.AppSheet
-import com.machiav3lli.fdroid.service.worker.SyncRequest
-import com.machiav3lli.fdroid.service.worker.SyncWorker
-import com.machiav3lli.fdroid.ui.components.ExpandableSearchAction
-import com.machiav3lli.fdroid.ui.components.TopBar
-import com.machiav3lli.fdroid.ui.components.TopBarAction
-import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
-import com.machiav3lli.fdroid.ui.navigation.MainNavHost
+import com.machiav3lli.fdroid.ui.navigation.AppNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavItem
-import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
+import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.utility.setCustomTheme
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import com.machiav3lli.fdroid.viewmodels.ExploreVM
 import com.machiav3lli.fdroid.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.viewmodels.LatestVM
+import com.machiav3lli.fdroid.viewmodels.PrefsVM
+import com.machiav3lli.fdroid.viewmodels.SearchVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -68,7 +49,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
-class MainActivityX : AppCompatActivity() {
+class NeoActivity : AppCompatActivity() {
     companion object {
         const val ACTION_UPDATES = "${BuildConfig.APPLICATION_ID}.intent.action.UPDATES"
         const val ACTION_INSTALL = "${BuildConfig.APPLICATION_ID}.intent.action.INSTALL"
@@ -78,8 +59,9 @@ class MainActivityX : AppCompatActivity() {
     }
 
     sealed class SpecialIntent {
-        object Updates : SpecialIntent()
+        data object Updates : SpecialIntent()
         class Install(val packageName: String?, val cacheFileName: String?) : SpecialIntent()
+        class AddRepo(val address: String?, val fingerprint: String?) : SpecialIntent()
     }
 
     private lateinit var navController: NavHostController
@@ -87,7 +69,6 @@ class MainActivityX : AppCompatActivity() {
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
-    private lateinit var expanded: MutableState<Boolean>
     private lateinit var appSheetPackage: MutableState<String>
 
     val db
@@ -104,11 +85,14 @@ class MainActivityX : AppCompatActivity() {
     val installedViewModel: InstalledVM by viewModels {
         InstalledVM.Factory(db)
     }
+    val searchViewModel: SearchVM by viewModels {
+        SearchVM.Factory(db)
+    }
+    val prefsViewModel: PrefsVM by viewModels {
+        PrefsVM.Factory(db)
+    }
 
-    @OptIn(
-        ExperimentalAnimationApi::class,
-        ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class
-    )
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
         currentTheme = Preferences[Preferences.Key.Theme].resId
@@ -124,26 +108,9 @@ class MainActivityX : AppCompatActivity() {
                     else -> isDarkTheme
                 }
             ) {
-                val query by searchQuery.collectAsState(initial = "")
-                expanded = remember {
-                    mutableStateOf(false)
-                }
                 val mScope = rememberCoroutineScope()
                 navController = rememberNavController()
-                var barVisible by remember { mutableStateOf(false) }
 
-                navController.addOnDestinationChangedListener { _, destination, _ ->
-                    barVisible = destination.route != NavItem.Permissions.destination
-                }
-                val pages = listOf(
-                    NavItem.Latest,
-                    NavItem.Explore,
-                    NavItem.Installed,
-                )
-                val pagerState = rememberPagerState(
-                    pageCount = { pages.size },
-                    initialPage = Preferences[Preferences.Key.DefaultTab].valueString.toInt(),
-                )
                 appSheetPackage = remember { mutableStateOf("") }
                 val appSheetState = rememberModalBottomSheetState(true)
                 val appSheetVM = remember(appSheetPackage.value) {
@@ -156,49 +123,6 @@ class MainActivityX : AppCompatActivity() {
                 Scaffold(
                     containerColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
-                    bottomBar = {
-                        AnimatedVisibility(
-                            barVisible,
-                            enter = slideInVertically { height -> height },
-                            exit = slideOutVertically { height -> height },
-                        ) {
-                            PagerNavBar(pageItems = pages, pagerState = pagerState)
-                        }
-                    },
-                    topBar = {
-                        TopBar(title = stringResource(id = R.string.application_name)) {
-                            AnimatedVisibility(barVisible) {
-                                ExpandableSearchAction(
-                                    query = query,
-                                    expanded = expanded,
-                                    onClose = {
-                                        mScope.launch { _searchQuery.emit("") }
-                                    },
-                                    onQueryChanged = { newQuery ->
-                                        if (newQuery != query) {
-                                            mScope.launch { _searchQuery.emit(newQuery) }
-                                        }
-                                    }
-                                )
-                            }
-                            AnimatedVisibility(barVisible && !expanded.value) {
-                                TopBarAction(
-                                    icon = Phosphor.ArrowsClockwise,
-                                    description = stringResource(id = R.string.sync_repositories)
-                                ) {
-                                    SyncWorker.enqueueAll(SyncRequest.MANUAL)
-                                }
-                            }
-                            AnimatedVisibility(barVisible && !expanded.value) {
-                                TopBarAction(
-                                    icon = Phosphor.GearSix,
-                                    description = stringResource(id = R.string.settings)
-                                ) {
-                                    navController.navigate(NavItem.Prefs.destination)
-                                }
-                            }
-                        }
-                    }
                 ) { paddingValues ->
                     LaunchedEffect(key1 = navController) {
                         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
@@ -206,11 +130,9 @@ class MainActivityX : AppCompatActivity() {
                         }
                     }
 
-                    MainNavHost(
+                    AppNavHost(
                         modifier = Modifier.padding(paddingValues),
                         navController = navController,
-                        pagerState = pagerState,
-                        pages = pages,
                     )
 
                     if (appSheetPackage.value.isNotEmpty()) {
@@ -242,19 +164,6 @@ class MainActivityX : AppCompatActivity() {
         super.onResume()
         if (currentTheme != Preferences[Preferences.Key.Theme].resId)
             recreate()
-    }
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        return when {
-            keyCode == KeyEvent.KEYCODE_BACK && expanded.value -> {
-                cScope.launch { _searchQuery.emit("") }
-                expanded.value = false
-                true
-            }
-
-            keyCode == KeyEvent.KEYCODE_BACK                   -> moveTaskToBack(true)
-            else                                               -> super.onKeyDown(keyCode, event)
-        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -293,7 +202,15 @@ class MainActivityX : AppCompatActivity() {
         when (specialIntent) {
             is SpecialIntent.Updates -> {
                 // TODO directly update the apps??
-                navController.navigate(NavItem.Installed.destination) // TODO
+                navController.navigate("${NavItem.Main.destination}?page=2")
+            }
+
+            is SpecialIntent.AddRepo -> {
+                prefsViewModel.setIntent(
+                    specialIntent.address,
+                    specialIntent.fingerprint,
+                )
+                navController.navigate("${NavItem.Prefs.destination}?page=2")
             }
 
             is SpecialIntent.Install -> {
@@ -301,7 +218,7 @@ class MainActivityX : AppCompatActivity() {
                 if (!packageName.isNullOrEmpty()) {
                     lifecycleScope.launch {
                         specialIntent.cacheFileName?.let {
-                            AppInstaller.getInstance(this@MainActivityX)
+                            AppInstaller.getInstance(this@NeoActivity)
                                 ?.defaultInstaller?.install(packageName, it)
                         }
                     }
@@ -317,8 +234,29 @@ class MainActivityX : AppCompatActivity() {
 
         when (intent?.action) {
             Intent.ACTION_VIEW -> {
-                if (host == "search") {
+                if (data != null && !intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)) {
+                    intent.putExtra(EXTRA_INTENT_HANDLED, true)
+                    val (addressText, fingerprintText) = try {
+                        val uri = data.buildUpon()
+                            .scheme("https")
+                            .path(data.path?.pathCropped)
+                            .query(null).fragment(null).build().toString()
+                        val fingerprintText =
+                            data.getQueryParameter("fingerprint")?.uppercase()?.nullIfEmpty()
+                                ?: data.getQueryParameter("FINGERPRINT")?.uppercase()?.nullIfEmpty()
+                        Pair(uri, fingerprintText)
+                    } catch (e: Exception) {
+                        Pair(null, null)
+                    }
+                    handleSpecialIntent(
+                        SpecialIntent.AddRepo(
+                            addressText,
+                            fingerprintText
+                        )
+                    )
+                } else if (host == "search") {
                     val query = data.getQueryParameter("q")
+                    navController.navigate("${NavItem.Main.destination}?page=3")
                     cScope.launch { _searchQuery.emit(query ?: "") }
                 } else {
                     val packageName = intent.packageName
@@ -344,11 +282,32 @@ class MainActivityX : AppCompatActivity() {
         }
     }
 
+
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val scan = result.data?.getStringExtra("SCAN_RESULT")
+                scan?.replace("fdroidrepo", "http")
+                intent.data = Uri.parse(scan)
+                intent.action = Intent.ACTION_VIEW
+                handleIntent(intent)
+            }
+        }
+
+    fun openScanner() {
+        intent.putExtra(EXTRA_INTENT_HANDLED, false)
+        resultLauncher.launch(Intent(INTENT_ACTION_BINARY_EYE))
+    }
+
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(ContextWrapperX.wrap(newBase))
     }
 
     internal fun navigateProduct(packageName: String) {
         appSheetPackage.value = packageName
+    }
+
+    fun setSearchQuery(value: String) {
+        cScope.launch { _searchQuery.emit(value) }
     }
 }

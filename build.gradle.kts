@@ -1,22 +1,22 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val accompanistVersion = "0.31.5-beta"
-val composeVersion = "1.6.0-alpha01"
-val composeCompilerVersion = "1.4.8"
-val koinVersion = "3.4.2"
+val accompanistVersion = "0.33.0-alpha"
+val composeVersion = "1.6.0-alpha02"
+val composeCompilerVersion = "1.5.1"
+val koinVersion = "3.4.3"
 val koinKspVersion = "1.2.2"
-val material3Version = "1.2.0-alpha03"
-val navigationVersion = "2.7.0-beta02"
+val material3Version = "1.2.0-alpha04"
+val navigationVersion = "2.7.0-rc01"
 val okhttpVersion = "5.0.0-alpha.11"
 val moshiVersion = "1.15.0"
 val roomVersion = "2.6.0-alpha02"
-val coroutinesVersion = "1.7.2"
+val coroutinesVersion = "1.7.3"
 
 plugins {
-    id("com.android.application") version ("8.0.2")
-    kotlin("android") version ("1.8.22")
-    kotlin("plugin.serialization") version ("1.8.22")
-    id("com.google.devtools.ksp") version ("1.8.22-1.0.11")
+    id("com.android.application") version ("8.1.0")
+    kotlin("android") version ("1.9.0")
+    kotlin("plugin.serialization") version ("1.9.0")
+    id("com.google.devtools.ksp") version ("1.9.0-1.0.11")
 }
 
 android {
@@ -27,8 +27,8 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1004
-        versionName = "1.0.0-alpha05"
+        versionCode = 1005
+        versionName = "1.0.0-alpha06"
         buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
 
         javaCompileOptions {
@@ -55,9 +55,8 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = compileOptions.sourceCompatibility.toString()
-        freeCompilerArgs = listOf("-Xjvm-default=compatibility")
-        //freeCompilerArgs = listOf("-Xjvm-default=all|all-compatibility")
+        jvmTarget = JavaVersion.VERSION_17.toString()
+        freeCompilerArgs = listOf("-Xjvm-default=all-compatibility")
     }
 
     buildFeatures {
@@ -129,8 +128,8 @@ android {
 dependencies {
 
     // Core
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22")
-    implementation("com.google.devtools.ksp:symbol-processing-api:1.8.22-1.0.11")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.0")
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.9.0-1.0.11")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
@@ -148,8 +147,8 @@ dependencies {
     ksp("io.insert-koin:koin-ksp-compiler:$koinKspVersion")
 
     // Ktor
-    implementation("io.ktor:ktor-client-core:2.3.2")
-    implementation("io.ktor:ktor-client-okhttp:2.3.2")
+    implementation("io.ktor:ktor-client-core:2.3.3")
+    implementation("io.ktor:ktor-client-okhttp:2.3.3")
 
     // OkHttps
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
@@ -163,7 +162,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
     // Markdown
-    implementation("org.jetbrains:markdown:0.4.1")
+    implementation("org.jetbrains:markdown:0.5.0")
     implementation("de.charlex.compose:html-text:1.4.1")
 
     // Storage

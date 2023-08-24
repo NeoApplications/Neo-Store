@@ -1,0 +1,5 @@
+Adicionar: Ícone de aplicação baseado no tema do sistema
+Adicionar: Preferência do tipo de instalador (incluindo o modo Legacy para MIUI burro)
+Correção: Navegação após o lançamento da notificação de atualizações
+Correção: A barra de download não reflete o progresso real
+Mais algumas coisas no registo de alterações completo…

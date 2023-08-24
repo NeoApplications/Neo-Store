@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="address">ਪਤਾ</string>
+    <string name="anti_features">ਵਿਰੋਧੀ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ</string>
+    <string name="action_failed">ਕਾਰਵਾਈ ਅਸਫਲ ਰਹੀ</string>
+    <string name="all_applications">ਸਭ ਐਪਾਂ</string>
+    <string name="author_email">ਲੇਖਕ ਦੀ ਈ-ਮੇਲ</string>
+    <string name="always">ਹਮੇਸ਼ਾਂ</string>
+    <string name="all_applications_up_to_date">ਸਾਰੀਆਂ ਐਪਾਂ ਨਵੀਨਤਮ ਹਨ</string>
+    <string name="amoled">ਕਾਲ੍ਹਾ</string>
+    <string name="add_repository">ਰਿਪੋਜ਼ਟਰੀ ਸ਼ਾਮਿਲ ਕਰੋ</string>
+    <string name="application">ਐਪ</string>
+    <string name="application_not_found">ਉਹ ਐਪ ਨਹੀਂ ਲੱਭ ਸਕਿਆ</string>
+    <string name="already_exists">ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ</string>
+    <string name="author_website">ਲੇਖਕ ਦੀ ਵੈੱਬਸਾਈਟ</string>
+    <string name="available">ਉਪਲੱਬਧ</string>
+</resources>

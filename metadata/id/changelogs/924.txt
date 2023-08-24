@@ -1,0 +1,6 @@
+Tambahan: Peringatan pada aplikasi dengan kerentanan yang diketahui
+Perbaikan: Meningkatkan kelebihan beban kinerja yang disebabkan oleh pencarian (kredit @ SocratesDz)
+Perbaikan: Penyembuhan penginstal
+Memperbarui: Fungsi sinkronisasi otomatis Revamp
+Memperbarui: lembar repo Revamp
++ lebih dari 60 kontribusi terjemahan

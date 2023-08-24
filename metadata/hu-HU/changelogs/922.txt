@@ -1,0 +1,7 @@
+-Hozzáadva: Értesítési engedély (android 13 esetében)
+-Hozzáadva: Kategóriák az oldalnavigációs sávhoz a felfedezőhöz
+-Javítva: Legacy és rendszergazdai telepítő
+-Javítva: A keresési teljesítmény javítása (köszönet @pedrox-hs)
+-Frissítve: Vízszintes alkalmazások elrendezése
+-Frissítve: Rendszergazdai engedély kérése rendszergazdai telepítő beállításakor
++ több mint 60 fordítási hozzájárulás
