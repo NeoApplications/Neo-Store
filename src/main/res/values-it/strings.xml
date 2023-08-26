@@ -127,7 +127,7 @@
     <string name="root_permission_description">Usa root per installazioni senza interazione</string>
     <string name="save">Salva</string>
     <string name="saving_details">Salvataggio dettagli…</string>
-    <string name="screenshots">Schermate</string>
+    <string name="screenshots">Screenshot</string>
     <string name="search">Cerca</string>
     <string name="select_mirror">Seleziona alternativa</string>
     <string name="share">Condividi</string>
@@ -200,8 +200,8 @@
     <string name="no_permissions_identified">Nessuna autorizzazione richiesta identificata</string>
     <string name="not_safe_for_work">Censurabile (potrebbe contenere contenuti sensibili)</string>
     <string name="no_action_possible">Nessuna azione possibile</string>
-    <string name="show_screenshots">Mostra schermate</string>
-    <string name="show_screenshots_description">Mostra schermate nella pagina dell\'app.</string>
+    <string name="show_screenshots">Mostra screenshot</string>
+    <string name="show_screenshots_description">Mostra screenshot nella pagina dell\'app.</string>
     <string name="open">Apri</string>
     <string name="favorite_remove">Rimuovi dalle preferite</string>
     <string name="favorite_add">Aggiungi alle preferite</string>
