@@ -13,7 +13,7 @@ val roomVersion = "2.6.0-alpha02"
 val coroutinesVersion = "1.7.3"
 
 plugins {
-    id("com.android.application") version ("8.1.0")
+    id("com.android.application") version ("8.1.1")
     kotlin("android") version ("1.9.0")
     kotlin("plugin.serialization") version ("1.9.0")
     id("com.google.devtools.ksp") version ("1.9.0-1.0.11")
