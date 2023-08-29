@@ -1,22 +1,34 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val accompanistVersion = "0.33.0-alpha"
-val composeVersion = "1.6.0-alpha02"
+val coilVersion = "2.4.0"
 val composeCompilerVersion = "1.5.1"
+val composeVersion = "1.6.0-alpha04"
+val composeAccompanistVersion = "0.33.1-alpha"
+val composeHtmlVersion = "1.4.1"
+val composeMaterial3Version = "1.2.0-alpha06"
+val jacksonVersion = "2.15.2"
 val koinVersion = "3.4.3"
 val koinKspVersion = "1.2.2"
-val material3Version = "1.2.0-alpha04"
-val navigationVersion = "2.7.0-rc01"
+val kotlinVersion = "1.9.0"
+val kSerializationVersion = "1.6.0"
+val kspVersion = "1.0.13"
+val ktorVersion = "2.3.3"
+val libsuVersion = "5.0.5"
+val lifecycleVersion = "2.6.1"
+val materialVersion = "1.9.0"
+val navigationVersion = "2.7.1"
 val okhttpVersion = "5.0.0-alpha.11"
+val markdownVersion = "0.5.0"
 val moshiVersion = "1.15.0"
-val roomVersion = "2.6.0-alpha02"
+val roomVersion = "2.6.0-beta01"
+val simpleStorageVersion = "1.5.5"
 val coroutinesVersion = "1.7.3"
 
 plugins {
     id("com.android.application") version ("8.1.1")
     kotlin("android") version ("1.9.0")
     kotlin("plugin.serialization") version ("1.9.0")
-    id("com.google.devtools.ksp") version ("1.9.0-1.0.11")
+    id("com.google.devtools.ksp") version ("1.9.0-1.0.13")
 }
 
 android {
@@ -128,17 +140,17 @@ android {
 dependencies {
 
     // Core
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.0")
-    implementation("com.google.devtools.ksp:symbol-processing-api:1.9.0-1.0.11")
-    implementation("androidx.preference:preference-ktx:1.2.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
+    implementation("com.google.devtools.ksp:symbol-processing-api:$kotlinVersion-$kspVersion")
+    implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     // Material3
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:$materialVersion")
 
     // Coil
-    implementation("io.coil-kt:coil:2.4.0")
-    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("io.coil-kt:coil:$coilVersion")
+    implementation("io.coil-kt:coil-compose:$coilVersion")
 
     // Koin
     implementation("io.insert-koin:koin-android:$koinVersion")
@@ -147,29 +159,29 @@ dependencies {
     ksp("io.insert-koin:koin-ksp-compiler:$koinKspVersion")
 
     // Ktor
-    implementation("io.ktor:ktor-client-core:2.3.3")
-    implementation("io.ktor:ktor-client-okhttp:2.3.3")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
 
     // OkHttps
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
 
     // LibSu
-    implementation("com.github.topjohnwu.libsu:core:5.0.5")
+    implementation("com.github.topjohnwu.libsu:core:$libsuVersion")
 
     // JSON
-    implementation("com.fasterxml.jackson.core:jackson-core:2.15.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kSerializationVersion")
 
     // Markdown
-    implementation("org.jetbrains:markdown:0.5.0")
-    implementation("de.charlex.compose:html-text:1.4.1")
+    implementation("org.jetbrains:markdown:$markdownVersion")
+    implementation("de.charlex.compose:html-text:$composeHtmlVersion")
 
     // Storage
-    implementation("com.anggrayudi:storage:1.5.5")
+    implementation("com.anggrayudi:storage:$simpleStorageVersion")
 
     // Coroutines / Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
@@ -183,10 +195,10 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.material3:material3:$material3Version")
+    implementation("androidx.compose.material3:material3:$composeMaterial3Version")
     implementation("androidx.compose.animation:animation:$composeVersion")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
-    implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-permissions:$composeAccompanistVersion")
 
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
