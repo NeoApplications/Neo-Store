@@ -335,4 +335,6 @@
     <string name="auto_sync_interval_hours">自动同步间隔（小时）</string>
     <string name="repos_export">导出存储库</string>
     <string name="repos_import">导入存储库（覆盖已经存在的）</string>
+    <string name="installed_export">导出已安装应用程序的列表</string>
+    <string name="installed_import">导入并安装应用程序列表（如果存在，则从启用的存储库中获取它们）</string>
 </resources>
