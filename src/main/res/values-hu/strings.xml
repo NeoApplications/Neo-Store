@@ -335,4 +335,6 @@
     <string name="auto_sync_interval_hours">Autó-szinkronizálás intervalluma (órában)</string>
     <string name="repos_export">Tárolók exportálása</string>
     <string name="repos_import">Tárolók importálása (felülírja a már meglévőket)</string>
+    <string name="installed_export">A telepített alkalmazások listájának exportálása</string>
+    <string name="installed_import">Egy listányi alkalmazás importálása és telepítése (letölti őket a bekapcsolt tárolókból ha ott megtalálhatóak)</string>
 </resources>
