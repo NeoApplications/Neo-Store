@@ -336,4 +336,5 @@
     <string name="repos_export">Exportiere das Repository</string>
     <string name="alt_navbar_item">Verwende alternatives Element der Navigationsleiste</string>
     <string name="alt_navbar_item_description">Verwende die alternative / alte Anordnung der Elemente in der Navigationsleiste, welche die Bezeichnungen nicht selektierter Elemente anzeigt.</string>
+    <string name="installed_export">Liste der installierten Apps exportieren</string>
 </resources>
