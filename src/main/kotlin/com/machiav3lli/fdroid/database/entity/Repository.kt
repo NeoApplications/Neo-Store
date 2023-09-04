@@ -510,6 +510,15 @@ data class Repository(
             "5318AFA280284855CF5D0027AA54517769F461D735980B1FB0854CEAE8E072A5",
             ""
         )
+        private val DIVOLT = defaultRepository(
+            "https://fdroid.ggtyler.dev/",
+            "Divolt F-Droid repo",
+            "Repository of the fork of Revolt's Android TWA for Divolt, a self-hosted instance of Revolt",
+            21,
+            false,
+            "12D4F647710DBB0FAFDE0FBE9C2127ECB53CFE0E8B1CB2DE56B704FCE330A0F8",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, F_DROID_ARCHIVE,
@@ -532,7 +541,7 @@ data class Repository(
             JAK_LINUX,
             INVISV, MONERUJO, IODE, SPIRIT_CROC,
             DIVEST_OS_UNOFFICIAL, FUNKWHALE,
-            SAMOURAI_WALLET,
+            SAMOURAI_WALLET, DIVOLT,
         )
 
         val addedReposV9 = listOf(
@@ -568,6 +577,10 @@ data class Repository(
         val addedReposV18 = listOf(
             INVISV, MONERUJO, IODE, SPIRIT_CROC,
             DIVEST_OS_UNOFFICIAL, FUNKWHALE,
+        )
+
+        val addedReposV19 = listOf(
+            SAMOURAI_WALLET, DIVOLT,
         )
     }
 }
