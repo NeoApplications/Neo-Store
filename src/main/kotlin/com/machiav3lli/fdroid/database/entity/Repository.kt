@@ -519,13 +519,22 @@ data class Repository(
             "12D4F647710DBB0FAFDE0FBE9C2127ECB53CFE0E8B1CB2DE56B704FCE330A0F8",
             ""
         )
+        private val CROMITE = defaultRepository(
+            "https://uazo.codeberg.page/cromite-static/@pages/fdroid/repo",
+            "Cromite Browser",
+            "Repository of the fork of Bromite, the privacy focused Chromium fork.",
+            21,
+            false,
+            "49F37E74DEE483DCA2B991334FB5A0200787430D0B5F9A783DD5F13695E9517B",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, F_DROID_ARCHIVE,
             GUARDIAN, GUARDIAN_ARCHIVE,
             IZZY,
             MICRO_G,
-            BROMITE, UNGOOGLED_CHROMIUM,
+            BROMITE, UNGOOGLED_CHROMIUM,  CROMITE,
             NEWPIPE, LIBRETRO, BITWARDEN, GITJOURNAL,
             CALYX_OS, CALYX_OS_TEST, DIVEST_OS, KDE_RELEASE, KDE_NIGHTLY,
             NANODROID, NETSYMS, FEDILAB, NETHUNTER, BEOCODE,
@@ -580,7 +589,7 @@ data class Repository(
         )
 
         val addedReposV19 = listOf(
-            SAMOURAI_WALLET, DIVOLT,
+            SAMOURAI_WALLET, DIVOLT, CROMITE,
         )
     }
 }
