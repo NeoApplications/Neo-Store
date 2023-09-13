@@ -346,20 +346,10 @@ fun AppSheet(
                                 else Phosphor.GlobeSimple,
                                 description = stringResource(id = R.string.source_code),
                                 onClick = {
-                                    product.source.let { link ->
-                                        if (link.isNotEmpty()) {
-                                            context.startActivity(
-                                                Intent(Intent.ACTION_VIEW, link.toUri())
-                                            )
-                                        } else if (product.web.isNotEmpty()) {
-                                            context.startActivity(
-                                                Intent(
-                                                    Intent.ACTION_VIEW,
-                                                    product.web.toUri()
-                                                )
-                                            )
-                                        }
-                                    }
+                                    onUriClick(
+                                        Uri.parse(product.source.nullIfEmpty() ?: product.web),
+                                        true
+                                    )
                                 },
                                 onLongClick = {
                                     product.source.let { link ->
