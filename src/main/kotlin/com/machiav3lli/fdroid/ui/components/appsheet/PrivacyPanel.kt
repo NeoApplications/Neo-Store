@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.afollestad.materialdialogs.ModalDialog
+import com.machiav3lli.fdroid.ANTIFEATURES_WEBSITE
 import com.machiav3lli.fdroid.EXODUS_TRACKER_WEBSITE
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
@@ -37,7 +39,6 @@ import com.machiav3lli.fdroid.entity.PrivacyNote
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.SourceInfo
 import com.machiav3lli.fdroid.entity.TrackersGroup.Companion.getTrackersGroup
-import com.machiav3lli.fdroid.entity.toAntiFeature
 import com.machiav3lli.fdroid.ui.components.privacy.PrivacyCard
 import com.machiav3lli.fdroid.ui.components.privacy.PrivacyItemBlock
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -373,21 +374,27 @@ fun PrivacyPanel(
                 }
             }
         }
-        if (product.otherAntiFeatures.isNotEmpty()) {
+        if (privacyData.antiFeatures.isNotEmpty()) { // TODO allow custom AFs after indexV2
             item {
                 PrivacyCard(
                     heading = stringResource(id = R.string.anti_features),
                     preExpanded = false
                 ) {
-                    Text(
-                        modifier = Modifier.padding(8.dp),
-                        text = product.otherAntiFeatures.map { af ->
-                            val titleId = af.toAntiFeature()?.titleResId
-                            if (titleId != null) stringResource(id = titleId)
-                            else stringResource(id = R.string.unknown_FORMAT, af)
+                    Column(modifier = Modifier.padding(horizontal = 8.dp)) {
+                        privacyData.antiFeatures.forEach {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        onUriClick(
+                                            Uri.parse("$ANTIFEATURES_WEBSITE${it.key}"),
+                                            true
+                                        )
+                                    },
+                                text = "\u2023 ${stringResource(id = it.titleResId)}"
+                            )
                         }
-                            .joinToString(separator = "\n") { "\u2023 $it" }
-                    )
+                    }
                 }
             }
         }
