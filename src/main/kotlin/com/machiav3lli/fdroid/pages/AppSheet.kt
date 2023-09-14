@@ -103,7 +103,7 @@ import com.machiav3lli.fdroid.utility.shareReleaseIntent
 import com.machiav3lli.fdroid.utility.startLauncherActivity
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import kotlinx.coroutines.launch
-import kotlin.math.floor
+import kotlin.math.truncate
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -367,9 +367,9 @@ fun AppSheet(
                     )
                     MeterIconsBar(
                         modifier = Modifier.fillMaxWidth(),
-                        selectedTrackers = if (exodusInfo != null) floor(privacyNote.trackersNote / 20f).toInt()
+                        selectedTrackers = if (exodusInfo != null) truncate((privacyNote.trackersNote - 1) / 20f).toInt()
                         else null,
-                        selectedPermissions = floor(privacyNote.permissionsNote / 20f).toInt(),
+                        selectedPermissions = truncate((privacyNote.permissionsNote - 1) / 20f).toInt(),
                         pagerState,
                     ) {
                         scope.launch {
