@@ -339,4 +339,9 @@
     <string name="repos_import">Importa repository (sovrascrive quelli già esistenti)</string>
     <string name="installed_export">Esporta elenco delle app installate</string>
     <string name="installed_import">Importa e installa un elenco di app (scaricale dai repository abilitati se esistenti)</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d punto privacy)</item>
+        <item quantity="many">(-%d punti privacy)</item>
+        <item quantity="other">(-%d punti privacy)</item>
+    </plurals>
 </resources>
