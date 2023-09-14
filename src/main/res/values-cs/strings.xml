@@ -339,4 +339,9 @@
     <string name="repos_import">Importovat repozitáře (přepíše již existující)</string>
     <string name="installed_export">Exportovat seznam nainstalovaných aplikací</string>
     <string name="installed_import">Importovat a nainstalovat seznam aplikací (pokud existují, budou načteny z povolených repozitářů)</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d bod soukromí)</item>
+        <item quantity="few">(-%d body soukromí)</item>
+        <item quantity="other">(-%d bodů soukromí)</item>
+    </plurals>
 </resources>
