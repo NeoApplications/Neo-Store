@@ -273,7 +273,7 @@
     <string name="action_install_tc">Установить TrackerControl</string>
     <string name="action_open_website">Открыть сайт</string>
     <string name="action_open_code">Смотреть код</string>
-    <string name="trackers_none">Нет известных трекеров</string>
+    <string name="trackers_none">Нет трекеров</string>
     <string name="trackers_in">Трекеры в %s</string>
     <string name="trackers_note_0">Это приложение или шпион\?</string>
     <string name="trackers_note_1">Включает множество трекеров ваших конфиденциальных данных</string>
@@ -340,4 +340,10 @@
     <string name="repos_import">Импорт репозиториев (с удалением существующих)</string>
     <string name="installed_export">Экспорт списка установленных приложений</string>
     <string name="installed_import">Импорт и установка приложений по списку (при наличии их в подключённых репозиториях)</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d точка конфиденциальности)</item>
+        <item quantity="few">(-%d точки конфиденциальности)</item>
+        <item quantity="many">(-%d точек конфиденциальности)</item>
+        <item quantity="other">(-%d точек конфиденциальности)</item>
+    </plurals>
 </resources>
