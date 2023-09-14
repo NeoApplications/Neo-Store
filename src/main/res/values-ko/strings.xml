@@ -311,7 +311,7 @@
     <string name="action_open_tc">TrackerControl 열기</string>
     <string name="action_install_tc">TrackerControl 설치</string>
     <string name="action_open_website">웹사이트 열기</string>
-    <string name="trackers_none">표시할 트래커 없음</string>
+    <string name="trackers_none">트래커 없음</string>
     <string name="trackers_in">%s의 트래커</string>
     <string name="trackers_note_0">앱인가요, 스파이웨어인가요\?</string>
     <string name="trackers_note_3">몇 가지의 트래커가 있음</string>

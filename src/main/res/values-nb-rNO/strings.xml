@@ -247,7 +247,7 @@
     <string name="source_proprietary">Proprietært</string>
     <string name="action_open_code">Vis kildekoden</string>
     <string name="action_open_website">Åpne nettsiden</string>
-    <string name="trackers_none">Ingen sporere å vise</string>
+    <string name="trackers_none">Ingen sporere</string>
     <string name="trackers_in">Sporere i %s</string>
     <string name="permission_not_granted">Ikke innvilget</string>
     <string name="trackers_ads">Reklamesporere</string>

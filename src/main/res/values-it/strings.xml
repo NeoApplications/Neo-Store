@@ -263,7 +263,7 @@
     <string name="action_install_tc">Installa TrackerControl</string>
     <string name="action_open_code">Vedi il codice</string>
     <string name="action_open_website">Apri il sito</string>
-    <string name="trackers_none">Nessun tracciatore da mostrare</string>
+    <string name="trackers_none">Nessun tracciatore</string>
     <string name="trackers_in">Tracciatori in %s</string>
     <string name="trackers_note_1">Include molti tracciatori dei tuoi dati sensibili</string>
     <string name="trackers_note_2">Perché ha bisogno di questi tracciatori\?</string>

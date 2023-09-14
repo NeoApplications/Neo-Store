@@ -279,7 +279,7 @@
     <string name="unverified">Não verificada</string>
     <string name="prefs_language_title">Idioma</string>
     <string name="action_open_website">Abrir o sítio web</string>
-    <string name="trackers_none">Sem rastreadores para mostrar</string>
+    <string name="trackers_none">Sem rastreadores</string>
     <string name="trackers_in">Rastreadores em %s</string>
     <string name="trackers_note_0">É uma aplicação ou um spyware\?</string>
     <string name="trackers_note_1">Inclui muitos rastreadores de seus dados confidenciais</string>

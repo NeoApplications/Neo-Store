@@ -270,7 +270,6 @@
     <string name="source_copyright_description">A aplicación depende de contidos baixo dereitos de autor ou conecta con redes propietarias.</string>
     <string name="action_change_permissions">Cambiar permisos</string>
     <string name="action_install_tc">Instalar TrackerControl</string>
-    <string name="trackers_none">Sen rastrexadores coñecidos</string>
     <string name="source_dependencies">Dependencias</string>
     <string name="source_dependencies_description">A aplicación ten algunhas dependencias que poden non respectar a súa privacidade.</string>
     <string name="trackers_note_1">Inclúe varios rastrexadores dos seus datos sensíbeis</string>

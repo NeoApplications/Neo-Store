@@ -277,7 +277,7 @@
     <string name="action_open_tc">Ouvrir TrackerControl</string>
     <string name="action_install_tc">Installer TrackerControl</string>
     <string name="action_open_website">Visiter le site web</string>
-    <string name="trackers_none">Aucun traceur à afficher</string>
+    <string name="trackers_none">Pas de traceurs</string>
     <string name="trackers_in">Traceurs dans %s</string>
     <string name="trackers_note_0">Est-ce une application ou un logiciel espion \?</string>
     <string name="trackers_note_1">Comprend de nombreux traceurs de vos données sensibles</string>

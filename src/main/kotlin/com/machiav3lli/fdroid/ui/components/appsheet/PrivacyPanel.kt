@@ -321,7 +321,13 @@ fun PrivacyPanel(
                                 .padding(8.dp),
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            Text(text = stringResource(id = R.string.trackers_none))
+                            Text(
+                                text = stringResource(
+                                    id =
+                                    if (exodusInfo != null) R.string.trackers_none
+                                    else R.string.no_trackers_data_available
+                                )
+                            )
                         }
                     }
                 }

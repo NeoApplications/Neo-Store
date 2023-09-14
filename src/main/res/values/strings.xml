@@ -276,7 +276,7 @@
     <string name="action_install_tc">Install TrackerControl</string>
     <string name="action_open_code">See code</string>
     <string name="action_open_website">Open website</string>
-    <string name="trackers_none">No trackers to show</string>
+    <string name="trackers_none">No trackers</string>
     <string name="trackers_in">Trackers in  %s</string>
     <string name="trackers_note_0">Is it an app or a spyware?</string>
     <string name="trackers_note_1">Includes many trackers of your sensitive data</string>

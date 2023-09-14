@@ -272,7 +272,7 @@
     <string name="action_open_tc">Abrir TrackerControl</string>
     <string name="action_open_code">Ver código</string>
     <string name="action_open_website">Abrir site</string>
-    <string name="trackers_none">Sem rastreadores para mostrar</string>
+    <string name="trackers_none">Sem rastreadores</string>
     <string name="trackers_in">Rastreadores em %s</string>
     <string name="trackers_note_0">Isso é um aplicativo ou um spyware\?</string>
     <string name="trackers_note_1">Inclui muitos rastreadores de seus dados sensíveis</string>

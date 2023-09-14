@@ -268,7 +268,7 @@
     <string name="action_change_permissions">تغيير الأذونات</string>
     <string name="action_open_code">رؤية الكود</string>
     <string name="action_open_website">أفتح الموقع</string>
-    <string name="trackers_none">لا يوجد متتبعات لإظهارها</string>
+    <string name="trackers_none">لا يوجد متتبعات</string>
     <string name="trackers_note_0">هل هو تطبيق ام برنامج تجسس ؟</string>
     <string name="permission_contacts">جهات الاتصال</string>
     <string name="permission_camera">الكاميرا</string>

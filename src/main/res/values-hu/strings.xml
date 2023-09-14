@@ -229,7 +229,6 @@
     <string name="prefs_installer">Telepítő típusa</string>
     <string name="trackers_identification">Azonosítási követők</string>
     <string name="source_copyright_description">Az alkalmazás szerzői jog által védett tartalmaktól függ, vagy zárt forráskódú hálózatokhoz csatlakozik.</string>
-    <string name="trackers_none">Nincsenek megjelenítenő követők</string>
     <string name="action_apply">Alkalmaz</string>
     <string name="action_reset">Visszaállítás</string>
     <string name="date_added">Hozzáadás dátuma</string>

@@ -233,7 +233,7 @@
     <string name="action_open_code">Виж програмния код</string>
     <string name="action_open_website">Отвори уебстраница</string>
     <string name="trackers_in">Тракери в %s</string>
-    <string name="trackers_none">Няма тракери за показване</string>
+    <string name="trackers_none">Няма тракери</string>
     <string name="no_vulnerabilities_installed_apps">Няма инсталирани приложения с известни уязвимости.</string>
     <string name="vulnerabilities">Уязвимости.</string>
     <string name="only_on_battery">Само при зареждане</string>

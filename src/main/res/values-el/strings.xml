@@ -276,7 +276,6 @@
     <string name="action_install_tc">Εγκατάσταση του TrackerControl</string>
     <string name="action_open_code">Προβολή κωδικού</string>
     <string name="action_open_website">Άνοιγμα ιστοτόπου</string>
-    <string name="trackers_none">Δεν υπάρχουν ιχνηλάτες</string>
     <string name="trackers_note_0">Είναι εφαρμογή ή λογισμικό κατασκοπείας;</string>
     <string name="trackers_note_2">Γιατί χρειάζεται αυτούς τους ιχνηλάτες;</string>
     <string name="trackers_note_3">Έχει μερικούς ιχνηλάτες</string>

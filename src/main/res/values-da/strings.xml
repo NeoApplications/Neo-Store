@@ -288,7 +288,7 @@
     <string name="source_proprietary">Proprietær</string>
     <string name="source_proprietary_description">Appens kildekode er ikke offentligt tilgængelig.</string>
     <string name="source_copyright_description">Appen afhænger af kopibeskyttet indhold eller opretter forbindelse til proprietære netværk.</string>
-    <string name="trackers_none">Ingen sporing at vise</string>
+    <string name="trackers_none">Ingen sporing</string>
     <string name="source_dependencies_description">Appen har nogle afhængigheder, som måske ikke respekterer privatlivets fred.</string>
     <string name="action_open_code">Se kode</string>
     <string name="source_dependencies">Afhængigheder</string>
