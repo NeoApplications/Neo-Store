@@ -21,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.afollestad.materialdialogs.ModalDialog
@@ -47,6 +48,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.utility.extension.grantedPermissions
 import com.machiav3lli.fdroid.utility.getLabelsAndDescriptions
 import com.machiav3lli.fdroid.utility.openPermissionPage
+import com.machiav3lli.fdroid.utility.privacyPoints
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import kotlinx.coroutines.Job
 
@@ -81,8 +83,15 @@ fun PrivacyPanel(
 
         item {
             privacyData.physicalDataPermissions.let { list ->
+                val privacyPoints = list.privacyPoints
                 PrivacyCard(
-                    heading = stringResource(id = R.string.permission_physical_data),
+                    heading = stringResource(id = R.string.permission_physical_data) + if (list.isNotEmpty()) " ${
+                        pluralStringResource(
+                            id = R.plurals.privacy_points_FORMAT,
+                            privacyPoints,
+                            privacyPoints
+                        )
+                    }" else "",
                     preExpanded = true,
                     actionText = if (installed != null && list.isNotEmpty())
                         stringResource(id = R.string.action_change_permissions)
@@ -131,8 +140,15 @@ fun PrivacyPanel(
         }
         item {
             privacyData.identificationDataPermissions.let { list ->
+                val privacyPoints = list.privacyPoints
                 PrivacyCard(
-                    heading = stringResource(id = R.string.permission_identification_data),
+                    heading = stringResource(id = R.string.permission_identification_data) + if (list.isNotEmpty()) " ${
+                        pluralStringResource(
+                            id = R.plurals.privacy_points_FORMAT,
+                            privacyPoints,
+                            privacyPoints
+                        )
+                    }" else "",
                     preExpanded = true,
                     actionText = if (installed != null && list.isNotEmpty())
                         stringResource(id = R.string.action_change_permissions)
@@ -182,8 +198,15 @@ fun PrivacyPanel(
         if (privacyData.otherPermissions.isNotEmpty()) {
             item {
                 privacyData.otherPermissions.let { list ->
+                    val privacyPoints = list.privacyPoints
                     PrivacyCard(
-                        heading = stringResource(id = R.string.permission_other),
+                        heading = stringResource(id = R.string.permission_other) + if (list.isNotEmpty()) " ${
+                            pluralStringResource(
+                                id = R.plurals.privacy_points_FORMAT,
+                                privacyPoints,
+                                privacyPoints
+                            )
+                        }" else "",
                         preExpanded = false,
                     ) {
                         list[PermissionGroup.Other]?.let { ps ->
@@ -217,11 +240,18 @@ fun PrivacyPanel(
                     .getLaunchIntentForPackage(TC_PACKAGENAME)
                     ?: context.packageManager
                         .getLaunchIntentForPackage(TC_PACKAGENAME_FDROID)
+                val privacyPoints = trackers.privacyPoints
                 PrivacyCard(
                     heading = stringResource(
                         id = R.string.trackers_in,
                         exodusInfo?.version_name.orEmpty()
-                    ),
+                    ) + if (trackers.isNotEmpty()) " ${
+                        pluralStringResource(
+                            id = R.plurals.privacy_points_FORMAT,
+                            privacyPoints,
+                            privacyPoints
+                        )
+                    }" else "",
                     preExpanded = true,
                     actionText = if (installed != null) stringResource(
                         id = if (tcIntent == null) R.string.action_install_tc

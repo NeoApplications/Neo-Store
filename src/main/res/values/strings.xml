@@ -338,4 +338,8 @@
     <string name="repos_import">Import repositories (overrides already existing ones)</string>
     <string name="installed_export">Export list of installed apps</string>
     <string name="installed_import">Import and install a list of apps (grabs them from the enabled repositories if existent)</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d privacy point)</item>
+        <item quantity="other">(-%d privacy points)</item>
+    </plurals>
 </resources>
