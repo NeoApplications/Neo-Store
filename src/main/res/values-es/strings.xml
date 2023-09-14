@@ -339,4 +339,9 @@
     <string name="alt_navbar_item_description">Utiliza el diseño alternativo/antiguo de los elementos de la barra de navegación, que muestra la etiqueta de los elementos no seleccionados.</string>
     <string name="installed_export">Exportar la lista de las aplicaciones instaladas</string>
     <string name="installed_import">Importa e instala una lista de las aplicaciones (las toma de los repositorios habilitados si existen)</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(punto de privacidad -%d)</item>
+        <item quantity="many">(puntos de privacidad -%d)</item>
+        <item quantity="other">(puntos de privacidad -%d)</item>
+    </plurals>
 </resources>
