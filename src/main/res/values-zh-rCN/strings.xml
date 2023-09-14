@@ -337,4 +337,7 @@
     <string name="repos_import">导入存储库（覆盖已经存在的）</string>
     <string name="installed_export">导出已安装应用程序的列表</string>
     <string name="installed_import">导入并安装应用程序列表（如果存在，则从启用的存储库中获取它们）</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="other">(-%d 隐私点数)</item>
+    </plurals>
 </resources>
