@@ -337,4 +337,11 @@
     <string name="auto_sync_interval_hours">Intervalo de sincronização automática (em horas)</string>
     <string name="repos_export">Exportar repositórios</string>
     <string name="repos_import">Importar repositórios (substitui os já existentes)</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d ponto de privacidade)</item>
+        <item quantity="many">(-%d pontos de privacidade)</item>
+        <item quantity="other">(-%d pontos de privacidade)</item>
+    </plurals>
+    <string name="installed_import">Importar e instalar uma lista de aplicações (obtém-nas dos repositórios activados, se existirem)</string>
+    <string name="installed_export">Exportar lista de aplicações instaladas</string>
 </resources>
