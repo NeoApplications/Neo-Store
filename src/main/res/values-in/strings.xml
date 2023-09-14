@@ -337,4 +337,7 @@
     <string name="alt_navbar_item_description">Gunakan tata letak item bilah navigasi alternatif/lama, yang menunjukkan label item yang tidak dipilih.</string>
     <string name="installed_export">Ekspor daftar aplikasi terpasang</string>
     <string name="installed_import">Impor dan pasang daftar aplikasi (mengambil dari repositori yang diaktifkan jika ada)</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="other">(-%d nilai privasi)</item>
+    </plurals>
 </resources>
