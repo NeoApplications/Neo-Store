@@ -337,4 +337,8 @@
     <string name="alt_navbar_item">Verwende alternatives Element der Navigationsleiste</string>
     <string name="alt_navbar_item_description">Verwende die alternative / alte Anordnung der Elemente in der Navigationsleiste, welche die Bezeichnungen nicht selektierter Elemente anzeigt.</string>
     <string name="installed_export">Liste der installierten Apps exportieren</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d Datenschutzpunkt)</item>
+        <item quantity="other">(-%d Datenschutzpunkte)</item>
+    </plurals>
 </resources>
