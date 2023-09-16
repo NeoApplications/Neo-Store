@@ -342,4 +342,12 @@
     <string name="repos_export">تصدير المستوعات</string>
     <string name="installed_export">تصدير قائمة بالتطبيقات المثبتة</string>
     <string name="installed_import">استيراد قائمة بالتطبيقات وتثبيتها (الحصول عليها من المستودعات الممكّنة إن وجدت)</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="zero">(%d) نقطة الخصوصية</item>
+        <item quantity="one">(%d) نقاط الخصوصية</item>
+        <item quantity="two">(%d) نقاط الخصوصية</item>
+        <item quantity="few">(%d) نقاط الخصوصية</item>
+        <item quantity="many">(%d) نقاط الخصوصية</item>
+        <item quantity="other">(%d) نقاط الخصوصية</item>
+    </plurals>
 </resources>
