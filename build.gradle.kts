@@ -9,7 +9,7 @@ val composeMaterial3Version = "1.2.0-alpha06"
 val jacksonVersion = "2.15.2"
 val koinVersion = "3.4.3"
 val koinKspVersion = "1.2.2"
-val kotlinVersion = "1.9.0"
+val kotlinVersion = "1.9.10"
 val kSerializationVersion = "1.6.0"
 val kspVersion = "1.0.13"
 val ktorVersion = "2.3.3"
@@ -26,9 +26,9 @@ val coroutinesVersion = "1.7.3"
 
 plugins {
     id("com.android.application") version ("8.1.1")
-    kotlin("android") version ("1.9.0")
-    kotlin("plugin.serialization") version ("1.9.0")
-    id("com.google.devtools.ksp") version ("1.9.0-1.0.13")
+    kotlin("android") version ("1.9.10")
+    kotlin("plugin.serialization") version ("1.9.10")
+    id("com.google.devtools.ksp") version ("1.9.10-1.0.13")
 }
 
 android {
