@@ -284,7 +284,7 @@
     <string name="permission_not_granted">Не надано</string>
     <string name="permission_not_present">Відсутній у вашій системі</string>
     <string name="trackers_analytics_description">Трекери, які використовуються для збору статистики про використання вами застосунків, наприклад, натискань та жестів.</string>
-    <string name="trackers_none">Немає відомих трекерів</string>
+    <string name="trackers_none">Немає трекерів</string>
     <string name="trackers_profiling">Профілюючі трекери</string>
     <string name="trackers_bug_description">Трекери, які використовуються для повідомлення о технічних проблемах, які можуть виникнути у застосунку.</string>
     <string name="source_proprietary_description">Вихідний код застосунку не є загальнодоступним.</string>
@@ -340,4 +340,10 @@
     <string name="repos_import">Імпорт репозиторіїв (замінює вже існуючі)</string>
     <string name="installed_export">Експортувати список встановлених застосунків</string>
     <string name="installed_import">Імпортувати та встановлювати список застосунків (захоплювати їх із увімкнених репозиторіїв, якщо такі існують)</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d точка приватності)</item>
+        <item quantity="few">(-%d точки приватності)</item>
+        <item quantity="many">(-%d точок приватності)</item>
+        <item quantity="other">(-%d точок приватності)</item>
+    </plurals>
 </resources>
