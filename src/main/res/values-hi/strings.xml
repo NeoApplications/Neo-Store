@@ -237,4 +237,17 @@
     <string name="releases">ऐप्स की रिलीज़ें</string>
     <string name="dynamic">सिस्टम डायनामिक</string>
     <string name="images_cache_retention">छवियाँ कैश रिटेंशन</string>
+    <string name="list_apps">रिपॉजिटरी के ऐप्स दिखाएं</string>
+    <string name="repos_export">रिपॉजिटरीआं निर्यात करें</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d गोपनीयता बिंदु)</item>
+        <item quantity="other">(-%d गोपनीयता बिंदु)</item>
+    </plurals>
+    <string name="next">अगला</string>
+    <string name="alt_navbar_item">वैकल्पिक नेविगेशन बार आइटम का उपयोग करें</string>
+    <string name="installed_import">ऐप्स की एक सूची आयात और इंस्टॉल करें (उन्हें सक्षम रिपॉजिटरी (यदि मौजूद है) से प्राप्त किया जाता है)</string>
+    <string name="previous">पिछला</string>
+    <string name="installed_export">इंस्टॉल किए गए ऐप्स की सूची निर्यात करें</string>
+    <string name="alt_navbar_item_description">वैकल्पिक/पुराने नेविगेशन बार आइटम लेआउट का उपयोग करें, जो अचयनित आइटमों का लेबल दिखाता है।</string>
+    <string name="repos_import">रिपॉजिटरीआं आयात करें (पहले से मौजूद रिपॉजिटरीओं को ओवरराइड करता है)</string>
 </resources>
