@@ -11,7 +11,6 @@ import com.machiav3lli.fdroid.network.Downloader
 import com.machiav3lli.fdroid.utility.CoroutineUtils
 import com.machiav3lli.fdroid.utility.ProgressInputStream
 import com.machiav3lli.fdroid.utility.Utils
-import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.unhex
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -226,7 +225,10 @@ object RepositoryUpdater {
                                     if (Thread.interrupted()) {
                                         throw InterruptedException()
                                     }
-                                    products += transformProduct(product, features, unstable)
+                                    products += product.apply {
+                                        refreshReleases(features, unstable)
+                                        refreshVariables()
+                                    }
                                     if (products.size >= 50) {
                                         db.getProductTempDao().putTemporary(products)
                                         products.clear()
@@ -333,7 +335,12 @@ object RepositoryUpdater {
                                             totalCount.toLong()
                                         )
                                         db.getProductTempDao().putTemporary(products
-                                            .map { transformProduct(it, features, unstable) })
+                                            .map {
+                                                it.apply {
+                                                    refreshReleases(features, unstable)
+                                                    refreshVariables()
+                                                }
+                                            })
                                     }
                                 }
                             }
@@ -428,53 +435,6 @@ object RepositoryUpdater {
                     db.finishTemporary(repository, false)
                 }
             }
-        }
-    }
-
-    private fun transformProduct(
-        product: Product,
-        features: Set<String>,
-        unstable: Boolean,
-    ): Product {
-        val releasePairs =
-            product.releases.distinctBy { it.identifier }.sortedByDescending { it.versionCode }
-                .map { it ->
-                    val incompatibilities = mutableListOf<Release.Incompatibility>()
-                    if (it.minSdkVersion > 0 && Android.sdk < it.minSdkVersion) {
-                        incompatibilities += Release.Incompatibility.MinSdk
-                    }
-                    if (it.maxSdkVersion > 0 && Android.sdk > it.maxSdkVersion) {
-                        incompatibilities += Release.Incompatibility.MaxSdk
-                    }
-                    if (it.platforms.isNotEmpty() && it.platforms.intersect(Android.platforms)
-                            .isEmpty()
-                    ) {
-                        incompatibilities += Release.Incompatibility.Platform
-                    }
-                    incompatibilities += (it.features - features).sorted()
-                        .map { Release.Incompatibility.Feature(it) }
-                    Pair(it, incompatibilities as List<Release.Incompatibility>)
-                }.toMutableList()
-
-        val predicate: (Release) -> Boolean = {
-            unstable || product.suggestedVersionCode <= 0 ||
-                    it.versionCode <= product.suggestedVersionCode
-        }
-        val firstCompatibleReleaseIndex =
-            releasePairs.indexOfFirst { it.second.isEmpty() && predicate(it.first) }
-        val firstReleaseIndex =
-            if (firstCompatibleReleaseIndex >= 0) firstCompatibleReleaseIndex else
-                releasePairs.indexOfFirst { predicate(it.first) }
-        val firstSelected = if (firstReleaseIndex >= 0) releasePairs[firstReleaseIndex] else null
-
-        val releases = releasePairs.map { (release, incompatibilities) ->
-            release
-                .copy(incompatibilities = incompatibilities, selected = firstSelected
-                    ?.let { it.first.versionCode == release.versionCode && it.second == incompatibilities } == true)
-        }
-        return product.apply {
-            this.releases = releases
-            refreshVariables()
         }
     }
 }

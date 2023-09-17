@@ -11,6 +11,7 @@ import com.machiav3lli.fdroid.entity.Author
 import com.machiav3lli.fdroid.entity.Donate
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Screenshot
+import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -138,6 +139,48 @@ open class Product(
             compatible &&
             versionCode > installed.versionCode &&
             (installed.signature in signatures || Preferences[Preferences.Key.DisableSignatureCheck])
+
+    fun refreshReleases(
+        features: Set<String>,
+        unstable: Boolean,
+    ) {
+        val releasePairs = releases.distinctBy { it.identifier }
+            .sortedByDescending { it.versionCode }
+            .map { release ->
+                val incompatibilities = mutableListOf<Release.Incompatibility>()
+                if (release.minSdkVersion > 0 && Android.sdk < release.minSdkVersion) {
+                    incompatibilities += Release.Incompatibility.MinSdk
+                }
+                if (release.maxSdkVersion > 0 && Android.sdk > release.maxSdkVersion) {
+                    incompatibilities += Release.Incompatibility.MaxSdk
+                }
+                if (release.platforms.isNotEmpty() && release.platforms.intersect(Android.platforms)
+                        .isEmpty()
+                ) {
+                    incompatibilities += Release.Incompatibility.Platform
+                }
+                incompatibilities += (release.features - features).sorted()
+                    .map { Release.Incompatibility.Feature(it) }
+                Pair(release, incompatibilities as List<Release.Incompatibility>)
+            }.toMutableList()
+
+        val predicate: (Release) -> Boolean = {
+            unstable || suggestedVersionCode <= 0 ||
+                    it.versionCode <= suggestedVersionCode
+        }
+        val firstCompatibleReleaseIndex =
+            releasePairs.indexOfFirst { it.second.isEmpty() && predicate(it.first) }
+        val firstReleaseIndex =
+            if (firstCompatibleReleaseIndex >= 0) firstCompatibleReleaseIndex else
+                releasePairs.indexOfFirst { predicate(it.first) }
+        val firstSelected = if (firstReleaseIndex >= 0) releasePairs[firstReleaseIndex] else null
+
+        releases = releasePairs.map { (release, incompatibilities) ->
+            release
+                .copy(incompatibilities = incompatibilities, selected = firstSelected
+                    ?.let { it.first.versionCode == release.versionCode && it.second == incompatibilities } == true)
+        }
+    }
 
     fun refreshVariables() {
         this.versionCode = selectedReleases.firstOrNull()?.versionCode ?: 0L
