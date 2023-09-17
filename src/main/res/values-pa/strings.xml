@@ -206,7 +206,7 @@
     <string name="action_install_tc">ਟਰੈਕਰ ਕੰਟਰੋਲ ਇੰਸਟਾਲ ਕਰੋ</string>
     <string name="action_open_code">ਕੋਡ ਵੇਖੋ</string>
     <string name="action_open_website">ਵੈੱਬਸਾਈਟ ਖੋਲ੍ਹੋ</string>
-    <string name="trackers_none">ਵਿਖਾਉਣ ਲਈ ਕੋਈ ਟਰੈਕਰ ਨਹੀਂ</string>
+    <string name="trackers_none">ਕੋਈ ਟਰੈਕਰ ਨਹੀਂ</string>
     <string name="trackers_in">%s ਵਿੱਚ ਟਰੈਕਰ</string>
     <string name="trackers_note_0">ਕੀ ਇਹ ਇੱਕ ਐਪ ਜਾਂ ਸਪਾਈਵੇਅਰ ਹੈ\?</string>
     <string name="trackers_note_1">ਤੁਹਾਡੇ ਸੰਵੇਦਨਸ਼ੀਲ ਡਾਟਾ ਦੇ ਬਹੁਤ ਸਾਰੇ ਟਰੈਕਰ ਸ਼ਾਮਿਲ ਹਨ</string>
@@ -338,4 +338,8 @@
     <string name="group_telegram">ਸਾਡਾ ਟੈਲੀਗ੍ਰਾਮ ਗਰੁੱਪ</string>
     <string name="group_matrix">ਸਾਡਾ ਮੈਟ੍ਰਿਕਸ ਗਰੁੱਪ</string>
     <string name="min_sdk">ਘੱਟੋ-ਘੱਟ SDK</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d ਗੋਪਨੀਯਤਾ ਅੰਕ)</item>
+        <item quantity="other">(-%d ਗੋਪਨੀਯਤਾ ਅੰਕ)</item>
+    </plurals>
 </resources>
