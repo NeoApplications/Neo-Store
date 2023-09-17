@@ -562,7 +562,10 @@ fun AppSheet(
                         }
                         item {
                             Text(
-                                text = stringResource(id = R.string.releases),
+                                text = stringResource(
+                                    id = if (releaseItems.isEmpty()) R.string.no_releases
+                                    else R.string.releases
+                                ),
                                 style = MaterialTheme.typography.titleMedium,
                                 modifier = Modifier.padding(start = 14.dp)
                             )

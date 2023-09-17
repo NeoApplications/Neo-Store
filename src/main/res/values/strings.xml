@@ -343,4 +343,5 @@
         <item quantity="other">(-%d privacy points)</item>
     </plurals>
     <string name="allow_unstable_updates">Allow showing unstable updates</string>
+    <string name="no_releases">No compatible releases to show</string>
 </resources>
