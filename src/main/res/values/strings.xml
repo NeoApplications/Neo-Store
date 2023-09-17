@@ -342,4 +342,5 @@
         <item quantity="one">(-%d privacy point)</item>
         <item quantity="other">(-%d privacy points)</item>
     </plurals>
+    <string name="allow_unstable_updates">Allow showing unstable updates</string>
 </resources>

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.MainApplication
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.database.entity.Extras
@@ -232,6 +233,35 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
                 .insertReplace(oldValue.copy(ignoreVulns = setBoolean))
             else db.getExtrasDao()
                 .insertReplace(Extras(packageName, ignoreVulns = setBoolean))
+        }
+    }
+
+    fun setAllowUnstableUpdates(packageName: String, setBoolean: Boolean) {
+        viewModelScope.launch {
+            saveAllowUnstableUpdates(packageName, setBoolean)
+        }
+    }
+
+    private suspend fun saveAllowUnstableUpdates(packageName: String, setBoolean: Boolean) {
+        withContext(cc) {
+            val oldValue = db.getExtrasDao()[packageName]
+            if (oldValue != null) db.getExtrasDao()
+                .insertReplace(oldValue.copy(allowUnstable = setBoolean))
+            else db.getExtrasDao()
+                .insertReplace(Extras(packageName, allowUnstable = setBoolean))
+            val features = MainApplication.context.packageManager.systemAvailableFeatures
+                .asSequence().map { it.name }.toSet() + setOf("android.hardware.touchscreen")
+            productRepos.value.forEach {
+                db.getProductDao().insertReplace(
+                    it.first.apply {
+                        refreshReleases(
+                            features,
+                            setBoolean || Preferences[Preferences.Key.UpdateUnstable]
+                        )
+                        refreshVariables()
+                    }
+                )
+            }
         }
     }
 

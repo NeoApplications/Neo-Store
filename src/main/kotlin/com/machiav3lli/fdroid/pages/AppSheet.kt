@@ -451,6 +451,17 @@ fun AppSheet(
                                 )
                             }
                         }
+                        item {
+                            AnimatedVisibility(visible = installed != null) {
+                                SwitchPreference(
+                                    text = stringResource(id = R.string.allow_unstable_updates),
+                                    initSelected = { extras?.allowUnstable == true },
+                                    onCheckedChanged = {
+                                        viewModel.setAllowUnstableUpdates(product.packageName, it)
+                                    }
+                                )
+                            }
+                        }
                         if (Preferences[Preferences.Key.ShowScreenshots]) {
                             item {
                                 ScreenshotList(screenShots = suggestedProductRepo.first.screenshots.map {

@@ -18,6 +18,8 @@ data class Extras(
     var ignoredVersion: Long = 0L,
     @ColumnInfo(defaultValue = "0")
     var ignoreVulns: Boolean = false,
+    @ColumnInfo(defaultValue = "0")
+    var allowUnstable: Boolean = false,
 ) {
     fun toJSON() = Json.encodeToString(this)
 
