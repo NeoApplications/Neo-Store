@@ -344,4 +344,6 @@
         <item quantity="many">(puntos de privacidad -%d)</item>
         <item quantity="other">(puntos de privacidad -%d)</item>
     </plurals>
+    <string name="no_releases">No hay versiones compatibles para mostrar</string>
+    <string name="allow_unstable_updates">Permitir mostrar las actualizaciones inestables</string>
 </resources>
