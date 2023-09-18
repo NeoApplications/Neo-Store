@@ -340,4 +340,6 @@
     <plurals name="privacy_points_FORMAT">
         <item quantity="other">(-%d nilai privasi)</item>
     </plurals>
+    <string name="no_releases">Tidak ada rilis kompatibel untuk ditampilkan</string>
+    <string name="allow_unstable_updates">Perbolehkan menampilkan pembaruan tidak stabil</string>
 </resources>
