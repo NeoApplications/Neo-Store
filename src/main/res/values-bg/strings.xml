@@ -338,4 +338,10 @@
     <string name="source_dependencies_description">Приложението има някои зависимости, които може да не зачитат поверителността.</string>
     <string name="installed_export">Експортиране на списък с инсталирани приложения</string>
     <string name="installed_import">Импортирай и инсталирай списък с приложения (взимат се от активираните хранилища, ако съществуват)</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d точка за поверителност)</item>
+        <item quantity="other">(-%d точки за поверителност)</item>
+    </plurals>
+    <string name="no_releases">Няма съвместими версии за показване</string>
+    <string name="allow_unstable_updates">Разреши показването на нестабилни актуализации</string>
 </resources>
