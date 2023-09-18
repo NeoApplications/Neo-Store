@@ -36,7 +36,7 @@
     <string name="donate">Dona</string>
     <string name="downloaded_FORMAT">Scaricato %s</string>
     <string name="downloading">Scaricamento in corso</string>
-    <string name="downloading_FORMAT">Scaricamento %s…</string>
+    <string name="downloading_FORMAT">Scaricamento di %s…</string>
     <string name="edit_repository">Modifica repository</string>
     <string name="file_format_error_DESC">Il file è in un formato non valido.</string>
     <string name="fingerprint">Impronta</string>
@@ -344,4 +344,6 @@
         <item quantity="many">(-%d punti privacy)</item>
         <item quantity="other">(-%d punti privacy)</item>
     </plurals>
+    <string name="no_releases">Nessuna versione compatibile da mostrare</string>
+    <string name="allow_unstable_updates">Mostra anche aggiornamenti instabili</string>
 </resources>
