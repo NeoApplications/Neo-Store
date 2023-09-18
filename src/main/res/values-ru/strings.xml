@@ -346,4 +346,6 @@
         <item quantity="many">(-%d точек конфиденциальности)</item>
         <item quantity="other">(-%d точек конфиденциальности)</item>
     </plurals>
+    <string name="no_releases">Нет совместимых выпусков</string>
+    <string name="allow_unstable_updates">Показывать нестабильные обновления</string>
 </resources>
