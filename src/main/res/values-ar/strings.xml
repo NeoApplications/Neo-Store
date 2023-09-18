@@ -350,4 +350,6 @@
         <item quantity="many">(%d) نقاط الخصوصية</item>
         <item quantity="other">(%d) نقاط الخصوصية</item>
     </plurals>
+    <string name="no_releases">لاتوجد إصدارات متوافقة لعرضها</string>
+    <string name="allow_unstable_updates">السماح بعرض التحديثات غير المستقرة</string>
 </resources>
