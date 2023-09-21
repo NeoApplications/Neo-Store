@@ -1,5 +1,6 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
+val activityVersion = "1.8.0-rc01"
 val coilVersion = "2.4.0"
 val composeCompilerVersion = "1.5.3"
 val composeVersion = "1.5.1"
@@ -143,6 +144,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("com.google.devtools.ksp:symbol-processing-api:$kotlinVersion-$kspVersion")
     implementation("androidx.preference:preference-ktx:1.2.1")
+    implementation("androidx.activity:activity-compose:$activityVersion")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     // Material3

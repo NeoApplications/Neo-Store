@@ -5,7 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -97,10 +100,25 @@ class NeoActivity : AppCompatActivity() {
         (application as MainApplication).mActivity = this
         currentTheme = Preferences[Preferences.Key.Theme].resId
         setCustomTheme()
+        enableEdgeToEdge()
         MainApplication.mainActivity = this
         super.onCreate(savedInstanceState)
 
         setContent {
+            DisposableEffect(Preferences[Preferences.Key.Theme]) {
+                enableEdgeToEdge(
+                    statusBarStyle = SystemBarStyle.auto(
+                        android.graphics.Color.TRANSPARENT,
+                        android.graphics.Color.TRANSPARENT,
+                    ) { isDarkTheme },
+                    navigationBarStyle = SystemBarStyle.auto(
+                        android.graphics.Color.TRANSPARENT,
+                        android.graphics.Color.TRANSPARENT,
+                    ) { isDarkTheme },
+                )
+                onDispose {}
+            }
+
             AppTheme(
                 darkTheme = when (Preferences[Preferences.Key.Theme]) {
                     is Preferences.Theme.System -> isSystemInDarkTheme()
