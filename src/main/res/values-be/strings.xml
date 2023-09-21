@@ -1,2 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="fingerprint">Адбітак пальца</string>
+    <string name="could_not_download_FORMAT">Спампаваць немагчыма %s</string>
+    <string name="downloading">Спампуецца</string>
+    <string name="all_applications_up_to_date">Усе праграмы абноўлены</string>
+    <string name="changelog">Журнал змяненняў</string>
+    <string name="could_not_sync_FORMAT">Сінхранізаваць немагчыма %s</string>
+    <string name="connecting">Падлучэнне…</string>
+    <string name="description">Апісанне</string>
+    <string name="all_applications">Усе Праграмы</string>
+    <string name="delete">Выдаліць</string>
+    <string name="downloaded_FORMAT">Спампавана %s</string>
+    <string name="already_exists">Ужо існуе</string>
+    <string name="author_website">Вэб-сайт аўтара</string>
+    <string name="details">Дэталі</string>
+    <string name="edit_repository">Рэдагаваць рэпазіторый</string>
+    <string name="application">Праграма</string>
+    <string name="always">Заўсёды</string>
+    <string name="address">Адрас</string>
+    <string name="has_advertising">Мае рэкламу</string>
+    <string name="dark">Цёмны</string>
+    <string name="cancel">Скасаваць</string>
+    <string name="bug_tracker">Адсочванне памылак</string>
+    <string name="amoled">Чорны</string>
+    <string name="file_format_error_DESC">Памылковы фармат файла.</string>
+    <string name="delete_repository_DESC">Выдаліць гэты рэпазіторый\?</string>
+    <string name="donate">Падтрымаць</string>
+    <string name="add_repository">Дадаць рэпазіторый</string>
+    <string name="could_not_validate_FORMAT">Пацвярдзіць немагчыма %s</string>
+    <string name="available">Даступна</string>
+    <string name="author_email">Электронная пошта аўтара</string>
+    <string name="confirmation">Пацверджанне</string>
+    <string name="changes">Змянення</string>
+    <string name="downloading_FORMAT">Спампуецца %s…</string>
+    <string name="application_not_found">Праграма не існуе!</string>
+    <string name="credits">Удзельнікі</string>
+</resources>
