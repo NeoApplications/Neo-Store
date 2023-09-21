@@ -342,4 +342,6 @@
         <item quantity="one">(-%d ਗੋਪਨੀਯਤਾ ਅੰਕ)</item>
         <item quantity="other">(-%d ਗੋਪਨੀਯਤਾ ਅੰਕ)</item>
     </plurals>
+    <string name="no_releases">ਵਿਖਾਉਣ ਲਈ ਕੋਈ ਅਨੁਕੂਲ ਰਿਲੀਜ਼ ਨਹੀਂ</string>
+    <string name="allow_unstable_updates">ਅਸਥਿਰ ਅੱਪਡੇਟਾਂ ਨੂੰ ਵਿਖਾਉਣ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ</string>
 </resources>
