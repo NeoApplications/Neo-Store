@@ -250,4 +250,6 @@
     <string name="installed_export">इंस्टॉल किए गए ऐप्स की सूची निर्यात करें</string>
     <string name="alt_navbar_item_description">वैकल्पिक/पुराने नेविगेशन बार आइटम लेआउट का उपयोग करें, जो अचयनित आइटमों का लेबल दिखाता है।</string>
     <string name="repos_import">रिपॉजिटरीआं आयात करें (पहले से मौजूद रिपॉजिटरीओं को ओवरराइड करता है)</string>
+    <string name="no_releases">दिखाने के लिए कोई संगत रिलीज़ नहीं</string>
+    <string name="allow_unstable_updates">अस्थिर अपडेट दिखाने की अनुमति दें</string>
 </resources>
