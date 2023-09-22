@@ -85,8 +85,12 @@ val PrefsEntries = mapOf(
             put(Preferences.Theme.System, R.string.system)
             put(Preferences.Theme.SystemBlack, R.string.system_black)
         }
-        if (Android.sdk(31))
+        if (Android.sdk(31)) {
             put(Preferences.Theme.Dynamic, R.string.dynamic)
+            put(Preferences.Theme.DynamicLight, R.string.dynamic_light)
+            put(Preferences.Theme.DynamicDark, R.string.dynamic_dark)
+            put(Preferences.Theme.DynamicBlack, R.string.dynamic_black)
+        }
     },
     Preferences.Key.DefaultTab to mapOf(
         Preferences.DefaultTab.Explore to R.string.explore,

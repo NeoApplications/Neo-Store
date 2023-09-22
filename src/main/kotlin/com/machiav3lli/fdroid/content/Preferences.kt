@@ -428,9 +428,17 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
     sealed class Theme(override val valueString: String) : Enumeration<Theme> {
         override val values: List<Theme>
-            get() = if (Android.sdk(31)) listOf(Dynamic, System, SystemBlack, Light, Dark, Black)
-            else if (Android.sdk(29)) listOf(System, SystemBlack, Light, Dark, Black)
-            else listOf(Light, Dark, Black)
+            get() = mutableListOf(Light, Dark, Black).apply {
+                if (Android.sdk(31)) addAll(
+                    listOf(
+                        Dynamic,
+                        DynamicLight,
+                        DynamicDark,
+                        DynamicBlack
+                    )
+                )
+                if (Android.sdk(29)) addAll(listOf(System, SystemBlack))
+            }
 
         abstract val resId: Int
         abstract val nightMode: Int
@@ -454,6 +462,27 @@ data object Preferences : OnSharedPreferenceChangeListener {
                 get() = -1
             override val nightMode: Int
                 get() = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
+
+        data object DynamicLight : Theme("dynamic-light") {
+            override val resId: Int
+                get() = -1
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_NO
+        }
+
+        data object DynamicDark : Theme("dynamic-dark") {
+            override val resId: Int
+                get() = -1
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_YES
+        }
+
+        data object DynamicBlack : Theme("dynamic-black") {
+            override val resId: Int
+                get() = -1
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_YES
         }
 
         data object Light : Theme("light") {

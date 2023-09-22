@@ -344,4 +344,7 @@
     </plurals>
     <string name="allow_unstable_updates">Allow showing unstable updates</string>
     <string name="no_releases">No compatible releases to show</string>
+    <string name="dynamic_light">Light with dynamic colors</string>
+    <string name="dynamic_dark">Dark with dynamic colors</string>
+    <string name="dynamic_black">Black with dynamic colors</string>
 </resources>
