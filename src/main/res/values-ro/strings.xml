@@ -280,7 +280,7 @@
     <string name="action_install_tc">Instalați TrackerControl</string>
     <string name="action_open_code">Vizualizare cod</string>
     <string name="action_open_website">Deschideți site-ul web</string>
-    <string name="trackers_none">Nu există urmăritori de afișat</string>
+    <string name="trackers_none">Nu există urmăritori</string>
     <string name="permissions_note_0">Solicită multe permisiuni periculoase</string>
     <string name="permissions_note_1">Necesită o cantitate bună de permisiuni</string>
     <string name="permissions_note_2">Nu necesită multe permisiuni</string>
@@ -339,4 +339,14 @@
     <string name="list_apps">Afișează aplicațiile din depozit</string>
     <string name="alt_navbar_item">Vedere alternativă a barei de navigare</string>
     <string name="alt_navbar_item_description">Utilizează aspect alternativ/vechi al elementelor din bara de navigare, care arată eticheta elementelor neselectate.</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d punct de confidențialitate)</item>
+        <item quantity="few">(-%d puncte de confidențialitate)</item>
+        <item quantity="other">(-%d puncte de confidențialitate)</item>
+    </plurals>
+    <string name="dynamic_dark">Întunecată cu culori dinamice</string>
+    <string name="dynamic_light">Luminoasă cu culori dinamice</string>
+    <string name="dynamic_black">Întunecată cu culori dinamice</string>
+    <string name="no_releases">Nu există versiuni compatibile de afișat</string>
+    <string name="allow_unstable_updates">Permite afișarea actualizărilor instabile</string>
 </resources>
