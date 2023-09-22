@@ -344,4 +344,9 @@
         <item quantity="many">(-%d pontos de privacidade)</item>
         <item quantity="other">(-%d pontos de privacidade)</item>
     </plurals>
+    <string name="dynamic_dark">Escuro com cores dinâmicas</string>
+    <string name="dynamic_light">Luz com cores dinâmicas</string>
+    <string name="dynamic_black">Preto com cores dinâmicas</string>
+    <string name="no_releases">Nenhuma versão compatível para mostrar</string>
+    <string name="allow_unstable_updates">Permitir mostrar atualizações instáveis</string>
 </resources>
