@@ -108,7 +108,7 @@ fun ExplorePage(viewModel: ExploreVM) {
 
     Column(
         Modifier
-            .background(MaterialTheme.colorScheme.background)
+            .background(Color.Transparent)
             .fillMaxSize(),
     ) {
         Row(
@@ -138,7 +138,9 @@ fun ExplorePage(viewModel: ExploreVM) {
             }
         }
         Row(
-            modifier = Modifier.blockBorder(),
+            modifier = Modifier
+                .blockBorder()
+                .background(MaterialTheme.colorScheme.background),
         ) {
             val favString = stringResource(id = R.string.favorite_applications)
             if (Preferences[Preferences.Key.ShowCategoriesBar]) CategoriesList(
@@ -211,10 +213,11 @@ fun ExplorePage(viewModel: ExploreVM) {
             sheetState = sortSheetState,
             containerColor = MaterialTheme.colorScheme.background,
             scrimColor = Color.Transparent,
+            dragHandle = null,
             onDismissRequest = {
                 scope.launch { sortSheetState.hide() }
                 showSortSheet = false
-            }
+            },
         ) {
             SortFilterSheet(NavItem.Explore.destination) {
                 scope.launch { sortSheetState.hide() }

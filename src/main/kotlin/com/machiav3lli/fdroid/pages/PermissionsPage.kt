@@ -14,8 +14,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
@@ -49,7 +49,7 @@ fun PermissionsPage(navigateToMain: () -> Unit) {
     val permissionStatePostNotifications = if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) {
         rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
     } else null
-    val ignored by remember { mutableStateOf(0) }
+    val ignored by remember { mutableIntStateOf(0) }
     val permissionsList = remember {
         mutableStateListOf<Pair<Permission, () -> Unit>>()
     }

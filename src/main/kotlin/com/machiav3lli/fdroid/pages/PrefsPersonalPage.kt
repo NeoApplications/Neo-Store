@@ -5,13 +5,14 @@ import android.content.Intent
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -80,62 +81,58 @@ fun PrefsPersonalPage() {
             }
         }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize()
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .blockBorder()
-                .fillMaxSize()
-                .padding(horizontal = 8.dp),
-            contentPadding = paddingValues,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            item {
-                PreferenceGroup(
-                    heading = stringResource(id = R.string.prefs_personalization),
-                    keys = personalPrefs,
-                    onPrefDialog = onPrefDialog
-                )
-            }
-            item {
-                PreferenceGroup(
-                    heading = stringResource(id = R.string.prefs_cache),
-                    keys = cachePrefs,
-                    onPrefDialog = onPrefDialog
-                )
-            }
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+    LazyColumn(
+        modifier = Modifier
+            .blockBorder()
+            .background(MaterialTheme.colorScheme.background)
+            .fillMaxSize()
+            .padding(horizontal = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        item {
+            PreferenceGroup(
+                heading = stringResource(id = R.string.prefs_personalization),
+                keys = personalPrefs,
+                onPrefDialog = onPrefDialog
+            )
         }
+        item {
+            PreferenceGroup(
+                heading = stringResource(id = R.string.prefs_cache),
+                keys = cachePrefs,
+                onPrefDialog = onPrefDialog
+            )
+        }
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
 
-        if (openDialog.value) {
-            if (dialogPref == Preferences.Key.DownloadDirectory) {
-                downloadDirectoryLauncher.launch(DOWNLOAD_DIRECTORY_INTENT)
-            } else BaseDialog(openDialogCustom = openDialog) {
-                when (dialogPref?.default?.value) {
-                    PREFS_LANGUAGE_DEFAULT        -> LanguagePrefDialogUI(
-                        openDialogCustom = openDialog
-                    )
+    if (openDialog.value) {
+        if (dialogPref == Preferences.Key.DownloadDirectory) {
+            downloadDirectoryLauncher.launch(DOWNLOAD_DIRECTORY_INTENT)
+        } else BaseDialog(openDialogCustom = openDialog) {
+            when (dialogPref?.default?.value) {
+                PREFS_LANGUAGE_DEFAULT        -> LanguagePrefDialogUI(
+                    openDialogCustom = openDialog
+                )
 
-                    is String                     -> StringInputPrefDialogUI(
-                        prefKey = dialogPref as Preferences.Key<String>,
-                        openDialogCustom = openDialog
-                    )
+                is String                     -> StringInputPrefDialogUI(
+                    prefKey = dialogPref as Preferences.Key<String>,
+                    openDialogCustom = openDialog
+                )
 
-                    is Int                        -> IntInputPrefDialogUI(
-                        prefKey = dialogPref as Preferences.Key<Int>,
-                        openDialogCustom = openDialog
-                    )
+                is Int                        -> IntInputPrefDialogUI(
+                    prefKey = dialogPref as Preferences.Key<Int>,
+                    openDialogCustom = openDialog
+                )
 
-                    is Preferences.Enumeration<*> -> EnumSelectionPrefDialogUI(
-                        prefKey = dialogPref as Preferences.Key<Preferences.Enumeration<*>>,
-                        openDialogCustom = openDialog
-                    )
+                is Preferences.Enumeration<*> -> EnumSelectionPrefDialogUI(
+                    prefKey = dialogPref as Preferences.Key<Preferences.Enumeration<*>>,
+                    openDialogCustom = openDialog
+                )
 
-                    else                          -> {}
-                }
+                else                          -> {}
             }
         }
     }

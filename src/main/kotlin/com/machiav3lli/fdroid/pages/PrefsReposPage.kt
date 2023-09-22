@@ -1,6 +1,8 @@
 package com.machiav3lli.fdroid.pages
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,6 +40,7 @@ import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrefsReposPage(viewModel: PrefsVM) {
@@ -66,6 +69,7 @@ fun PrefsReposPage(viewModel: PrefsVM) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        containerColor = Color.Transparent,
         floatingActionButton = {
             val fabColors = ButtonDefaults.filledTonalButtonColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -129,7 +133,7 @@ fun PrefsReposPage(viewModel: PrefsVM) {
         RepositoriesRecycler(
             modifier = Modifier
                 .blockBorder()
-                .padding(paddingValues),
+                .background(MaterialTheme.colorScheme.background),
             repositoriesList = sortedRepoList,
             onClick = {
                 viewModel.viewModelScope.launch {
@@ -144,6 +148,7 @@ fun PrefsReposPage(viewModel: PrefsVM) {
                 sheetState = sheetState,
                 containerColor = MaterialTheme.colorScheme.background,
                 scrimColor = Color.Transparent,
+                dragHandle = null,
                 onDismissRequest = {
                     viewModel.closeRepositorySheet()
                     scope.launch { sheetState.hide() }

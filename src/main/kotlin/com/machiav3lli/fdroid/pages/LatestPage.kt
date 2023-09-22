@@ -174,10 +174,11 @@ fun LatestPage(viewModel: LatestVM) {
             sheetState = sortSheetState,
             containerColor = MaterialTheme.colorScheme.background,
             scrimColor = Color.Transparent,
+            dragHandle = null,
             onDismissRequest = {
                 scope.launch { sortSheetState.hide() }
                 showSortSheet = false
-            }
+            },
         ) {
             SortFilterSheet(NavItem.Latest.destination) {
                 scope.launch { sortSheetState.hide() }

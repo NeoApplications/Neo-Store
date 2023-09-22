@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -12,7 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -95,6 +95,7 @@ class NeoActivity : AppCompatActivity() {
         PrefsVM.Factory(db)
     }
 
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
@@ -139,7 +140,7 @@ class NeoActivity : AppCompatActivity() {
                 }
 
                 Scaffold(
-                    containerColor = Color.Transparent,
+                    containerColor = MaterialTheme.colorScheme.background,
                     contentColor = MaterialTheme.colorScheme.onBackground,
                 ) { paddingValues ->
                     LaunchedEffect(key1 = navController) {
@@ -149,7 +150,7 @@ class NeoActivity : AppCompatActivity() {
                     }
 
                     AppNavHost(
-                        modifier = Modifier.padding(paddingValues),
+                        modifier = Modifier,
                         navController = navController,
                     )
 
@@ -158,10 +159,11 @@ class NeoActivity : AppCompatActivity() {
                             sheetState = appSheetState,
                             containerColor = MaterialTheme.colorScheme.background,
                             scrimColor = Color.Transparent,
+                            dragHandle = null,
                             onDismissRequest = {
                                 mScope.launch { appSheetState.hide() }
                                 appSheetPackage.value = ""
-                            }
+                            },
                         ) {
 
                             AppSheet(

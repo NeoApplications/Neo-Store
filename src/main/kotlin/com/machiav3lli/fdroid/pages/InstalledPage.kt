@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.pages
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -65,6 +66,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstalledPage(viewModel: InstalledVM) {
@@ -157,9 +159,7 @@ fun InstalledPage(viewModel: InstalledVM) {
             exit = slideOutVertically { height -> -height } + fadeOut(),
         ) {
             LazyColumn(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(vertical = 8.dp),
             ) {
                 item {
@@ -306,10 +306,11 @@ fun InstalledPage(viewModel: InstalledVM) {
                 sheetState = sortSheetState,
                 containerColor = MaterialTheme.colorScheme.background,
                 scrimColor = Color.Transparent,
+                dragHandle = null,
                 onDismissRequest = {
                     scope.launch { sortSheetState.hide() }
                     showSortSheet = false
-                }
+                },
             ) {
                 SortFilterSheet(NavItem.Installed.destination) {
                     scope.launch { sortSheetState.hide() }

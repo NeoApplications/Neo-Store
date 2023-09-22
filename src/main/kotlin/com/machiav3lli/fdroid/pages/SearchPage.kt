@@ -179,10 +179,11 @@ fun SearchPage(viewModel: SearchVM) {
             sheetState = sortSheetState,
             containerColor = MaterialTheme.colorScheme.background,
             scrimColor = Color.Transparent,
+            dragHandle = null,
             onDismissRequest = {
                 scope.launch { sortSheetState.hide() }
                 showSortSheet = false
-            }
+            },
         ) {
             SortFilterSheet(NavItem.Search.destination) {
                 scope.launch { sortSheetState.hide() }

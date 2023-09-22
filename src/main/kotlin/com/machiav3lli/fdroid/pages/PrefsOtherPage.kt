@@ -3,13 +3,14 @@ package com.machiav3lli.fdroid.pages
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -169,115 +170,111 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
             }
         }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize()
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .blockBorder()
-                .fillMaxSize()
-                .padding(horizontal = 8.dp),
-            contentPadding = paddingValues,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            item {
-                PreferenceGroup(
-                    heading = stringResource(id = R.string.proxy),
-                    keys = proxyPrefs,
-                    onPrefDialog = onPrefDialog
+    LazyColumn(
+        modifier = Modifier
+            .blockBorder()
+            .background(MaterialTheme.colorScheme.background)
+            .fillMaxSize()
+            .padding(horizontal = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        item {
+            PreferenceGroup(
+                heading = stringResource(id = R.string.proxy),
+                keys = proxyPrefs,
+                onPrefDialog = onPrefDialog
+            )
+        }
+        item {
+            PreferenceGroup(heading = stringResource(id = R.string.tools)) {
+                BasePreference(
+                    titleId = R.string.extras_export,
+                    index = 0,
+                    groupSize = 6,
+                    onClick = {
+                        startExportResult
+                            .launch("NS_$currentTimestamp.${SAFFile.EXTRAS_EXTENSION}")
+                    }
                 )
-            }
-            item {
-                PreferenceGroup(heading = stringResource(id = R.string.tools)) {
-                    BasePreference(
-                        titleId = R.string.extras_export,
-                        index = 0,
-                        groupSize = 6,
-                        onClick = {
-                            startExportResult
-                                .launch("NS_$currentTimestamp.${SAFFile.EXTRAS_EXTENSION}")
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    BasePreference(
-                        titleId = R.string.extras_import,
-                        index = 1,
-                        groupSize = 6,
-                        onClick = {
-                            startImportResult.launch(SAFFile.EXTRAS_MIME_ARRAY)
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    BasePreference(
-                        titleId = R.string.repos_export,
-                        index = 2,
-                        groupSize = 6,
-                        onClick = {
-                            startExportReposResult
-                                .launch("NS_$currentTimestamp.${SAFFile.REPOS_EXTENSION}")
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    BasePreference(
-                        titleId = R.string.repos_import,
-                        index = 3,
-                        groupSize = 6,
-                        onClick = {
-                            startImportReposResult.launch(SAFFile.REPOS_MIME_ARRAY)
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    BasePreference(
-                        titleId = R.string.installed_export,
-                        index = 4,
-                        groupSize = 6,
-                        onClick = {
-                            startExportInstalledResult
-                                .launch("NS_$currentTimestamp.${SAFFile.APPS_EXTENSION}")
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    BasePreference(
-                        titleId = R.string.installed_import,
-                        index = 5,
-                        groupSize = 6,
-                        onClick = {
-                            startImportInstalledResult.launch(SAFFile.APPS_MIME_ARRAY)
-                        }
-                    )
-                }
-            }
-            item {
-                PreferenceGroup(
-                    heading = "${stringResource(id = R.string.application_name)} ${BuildConfig.VERSION_NAME}",
-                    links = LinkRef.values().toList(),
+                Spacer(modifier = Modifier.height(4.dp))
+                BasePreference(
+                    titleId = R.string.extras_import,
+                    index = 1,
+                    groupSize = 6,
+                    onClick = {
+                        startImportResult.launch(SAFFile.EXTRAS_MIME_ARRAY)
+                    }
                 )
-            }
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(4.dp))
+                BasePreference(
+                    titleId = R.string.repos_export,
+                    index = 2,
+                    groupSize = 6,
+                    onClick = {
+                        startExportReposResult
+                            .launch("NS_$currentTimestamp.${SAFFile.REPOS_EXTENSION}")
+                    }
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                BasePreference(
+                    titleId = R.string.repos_import,
+                    index = 3,
+                    groupSize = 6,
+                    onClick = {
+                        startImportReposResult.launch(SAFFile.REPOS_MIME_ARRAY)
+                    }
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                BasePreference(
+                    titleId = R.string.installed_export,
+                    index = 4,
+                    groupSize = 6,
+                    onClick = {
+                        startExportInstalledResult
+                            .launch("NS_$currentTimestamp.${SAFFile.APPS_EXTENSION}")
+                    }
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                BasePreference(
+                    titleId = R.string.installed_import,
+                    index = 5,
+                    groupSize = 6,
+                    onClick = {
+                        startImportInstalledResult.launch(SAFFile.APPS_MIME_ARRAY)
+                    }
+                )
             }
         }
+        item {
+            PreferenceGroup(
+                heading = "${stringResource(id = R.string.application_name)} ${BuildConfig.VERSION_NAME}",
+                links = LinkRef.values().toList(),
+            )
+        }
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
 
-        if (openDialog.value) {
-            BaseDialog(openDialogCustom = openDialog) {
-                when (dialogPref?.default?.value) {
-                    is String -> StringInputPrefDialogUI(
-                        prefKey = dialogPref as Preferences.Key<String>,
-                        openDialogCustom = openDialog
-                    )
+    if (openDialog.value) {
+        BaseDialog(openDialogCustom = openDialog) {
+            when (dialogPref?.default?.value) {
+                is String -> StringInputPrefDialogUI(
+                    prefKey = dialogPref as Preferences.Key<String>,
+                    openDialogCustom = openDialog
+                )
 
-                    is Int -> IntInputPrefDialogUI(
-                        prefKey = dialogPref as Preferences.Key<Int>,
-                        openDialogCustom = openDialog
-                    )
+                is Int -> IntInputPrefDialogUI(
+                    prefKey = dialogPref as Preferences.Key<Int>,
+                    openDialogCustom = openDialog
+                )
 
-                    is Preferences.Enumeration<*> -> EnumSelectionPrefDialogUI(
-                        prefKey = dialogPref as Preferences.Key<Preferences.Enumeration<*>>,
-                        openDialogCustom = openDialog
-                    )
+                is Preferences.Enumeration<*> -> EnumSelectionPrefDialogUI(
+                    prefKey = dialogPref as Preferences.Key<Preferences.Enumeration<*>>,
+                    openDialogCustom = openDialog
+                )
 
-                    else -> {}
-                }
+                else -> {}
             }
         }
     }
