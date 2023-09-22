@@ -342,4 +342,7 @@
     </plurals>
     <string name="no_releases">Tidak ada rilis kompatibel untuk ditampilkan</string>
     <string name="allow_unstable_updates">Perbolehkan menampilkan pembaruan tidak stabil</string>
+    <string name="dynamic_dark">Gelap dengan warna dinamis</string>
+    <string name="dynamic_light">Terang dengan warna dinamis</string>
+    <string name="dynamic_black">Hitam dengan warna dinamis</string>
 </resources>
