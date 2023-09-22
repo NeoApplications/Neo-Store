@@ -352,4 +352,7 @@
     </plurals>
     <string name="no_releases">لاتوجد إصدارات متوافقة لعرضها</string>
     <string name="allow_unstable_updates">السماح بعرض التحديثات غير المستقرة</string>
+    <string name="dynamic_dark">داكن بالألوان الدينامية</string>
+    <string name="dynamic_light">مضيء بالألوان الدينامية</string>
+    <string name="dynamic_black">أسود بالألوان الدينامية</string>
 </resources>
