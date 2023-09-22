@@ -346,4 +346,7 @@
     </plurals>
     <string name="no_releases">No hay versiones compatibles para mostrar</string>
     <string name="allow_unstable_updates">Permitir mostrar las actualizaciones inestables</string>
+    <string name="dynamic_dark">Oscuro con colores dinámicos</string>
+    <string name="dynamic_light">Claro con colores dinámicos</string>
+    <string name="dynamic_black">Negro con colores dinámicos</string>
 </resources>
