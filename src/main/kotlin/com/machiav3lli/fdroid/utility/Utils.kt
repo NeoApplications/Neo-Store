@@ -216,25 +216,40 @@ fun <T> findSuggestedProduct(
     )
 }
 
-val isDarkTheme: Boolean
+val Context.isDarkTheme: Boolean
     get() = when (Preferences[Preferences.Key.Theme]) {
-        is Preferences.Theme.Light -> false
-        is Preferences.Theme.Dark  -> true
-        is Preferences.Theme.Black -> true
-        else                       -> false
+        is Preferences.Theme.Light,
+        is Preferences.Theme.DynamicLight,
+             -> false
+
+        is Preferences.Theme.Dark,
+        is Preferences.Theme.Black,
+        is Preferences.Theme.DynamicDark,
+        is Preferences.Theme.DynamicBlack,
+             -> true
+
+        else -> resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
     }
 
 val isBlackTheme: Boolean
     get() = when (Preferences[Preferences.Key.Theme]) {
-        is Preferences.Theme.Black       -> true
-        is Preferences.Theme.SystemBlack -> true
-        else                             -> false
+        is Preferences.Theme.Black,
+        is Preferences.Theme.SystemBlack,
+        is Preferences.Theme.DynamicBlack,
+             -> true
+
+        else -> false
     }
 
 val isDynamicColorsTheme: Boolean
     get() = when (Preferences[Preferences.Key.Theme]) {
-        is Preferences.Theme.Dynamic -> true
-        else                         -> false
+        is Preferences.Theme.Dynamic,
+        is Preferences.Theme.DynamicLight,
+        is Preferences.Theme.DynamicDark,
+        is Preferences.Theme.DynamicBlack,
+             -> true
+
+        else -> false
     }
 
 fun Context.showBatteryOptimizationDialog() {

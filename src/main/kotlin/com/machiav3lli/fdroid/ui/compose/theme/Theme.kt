@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.ui.compose.theme
 
+import android.content.Context
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -7,6 +8,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.machiav3lli.fdroid.utility.isBlackTheme
 import com.machiav3lli.fdroid.utility.isDynamicColorsTheme
@@ -15,19 +17,34 @@ import com.machiav3lli.fdroid.utility.isDynamicColorsTheme
 fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     blackTheme: Boolean = isBlackTheme,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     MaterialTheme(
         colorScheme = when {
-            isDynamicColorsTheme && isSystemInDarkTheme() -> dynamicDarkColorScheme(LocalContext.current)
-            isDynamicColorsTheme -> dynamicLightColorScheme(LocalContext.current)
-            darkTheme && blackTheme -> BlackColors
-            darkTheme -> DarkColors
+            isDynamicColorsTheme && isSystemInDarkTheme() && blackTheme
+                 -> dynamicBlackColorScheme(LocalContext.current)
+
+            isDynamicColorsTheme && isSystemInDarkTheme()
+                 -> dynamicDarkColorScheme(LocalContext.current)
+
+            isDynamicColorsTheme
+                 -> dynamicLightColorScheme(LocalContext.current)
+
+            darkTheme && blackTheme
+                 -> BlackColors
+
+            darkTheme
+                 -> DarkColors
+
             else -> LightColors
         },
         content = content
     )
 }
+
+fun dynamicBlackColorScheme(context: Context) = dynamicDarkColorScheme(context).copy(
+    background = Color.Black,
+)
 
 private val LightColors = lightColorScheme(
     primary = md_theme_light_primary,
