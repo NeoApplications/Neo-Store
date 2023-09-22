@@ -71,12 +71,20 @@ object Downloader {
             if (range != null) header("Range", range)
         }
 
-    private fun createClient(proxy: Proxy?, cache: Cache?): OkHttpClient = OkHttpClient.Builder()
+    private fun createClient(
+        connectionPool: ConnectionPool,
+        proxy: Proxy?,
+        cache: Cache?,
+    ): OkHttpClient = OkHttpClient.Builder()
+        .connectionPool(connectionPool)
         .connectTimeout(CLIENT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
         .readTimeout(CLIENT_READ_TIMEOUT, TimeUnit.SECONDS)
         .writeTimeout(CLIENT_WRITE_TIMEOUT, TimeUnit.SECONDS)
         .proxy(proxy)
         .cache(cache)
+        .followRedirects(true)
+        .followSslRedirects(true)
+        .retryOnConnectionFailure(true)
         .build()
 
     fun createCall(request: Request.Builder, authentication: String, cache: Cache?): Call {
@@ -93,7 +101,14 @@ object Downloader {
         return synchronized(clients) {
             clients.getOrPut(hostUrl) {
                 val isOnion = hostUrl.endsWith(".onion")
-                createClient(getProxy(isOnion), cache)
+                val connectionPool = connectionPools.getOrPut(hostUrl) {
+                    ConnectionPool(
+                        POOL_DEFAULT_MAX_IDLE_CONNECTIONS,
+                        POOL_DEFAULT_KEEP_ALIVE_DURATION_MS,
+                        TimeUnit.MILLISECONDS
+                    )
+                }
+                createClient(connectionPool, getProxy(isOnion), cache)
             }
         }
     }
