@@ -348,4 +348,7 @@
     </plurals>
     <string name="no_releases">Нет совместимых выпусков</string>
     <string name="allow_unstable_updates">Показывать нестабильные обновления</string>
+    <string name="dynamic_dark">Тёмная с динамическими цветами</string>
+    <string name="dynamic_light">Светлая с динамическими цветами</string>
+    <string name="dynamic_black">Чёрная с динамическими цветами</string>
 </resources>
