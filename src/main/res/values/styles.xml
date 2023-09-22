@@ -25,22 +25,8 @@
         <item name="colorOnSurfaceInverse">@color/md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_light_primaryInverse</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="bottomSheetDialogTheme">@style/Theme.Design.BottomSheetDialog</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
     </style>
 
     <style name="Theme.Main.Amoled" parent="Theme.Main" />
-
-    <style name="Theme.Design.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/Sheet.Bottom.Style</item>
-    </style>
-
-    <style name="Sheet.Bottom.Style" parent="Widget.Material3.BottomSheet.Modal">
-        <item name="backgroundTint">?backgroundColor</item>
-        <item name="enableEdgeToEdge">true</item>
-        <item name="behavior_fitToContents">true</item>
-    </style>
 </resources>
