@@ -204,11 +204,13 @@ class WorkerManager(appContext: Context) {
                     val productRepository = MainApplication.db.getProductDao().get(packageName)
                         .filter { product -> product.repositoryId == repo!!.id }
                         .map { product -> Pair(product, repo!!) }
-                    Utils.startUpdate(
-                        packageName,
-                        installed,
-                        productRepository
-                    )
+                    scope.launch {
+                        Utils.startUpdate(
+                            packageName,
+                            installed,
+                            productRepository
+                        )
+                    }
                 }
 
         }
