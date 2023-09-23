@@ -344,4 +344,9 @@
         <item quantity="few">(-%d body soukromí)</item>
         <item quantity="other">(-%d bodů soukromí)</item>
     </plurals>
+    <string name="dynamic_dark">Tmavý s dynamickými barvami</string>
+    <string name="dynamic_light">Světlý s dynamickými barvami</string>
+    <string name="dynamic_black">Černý s dynamickými barvami</string>
+    <string name="no_releases">Žádná kompatibilní vydání k zobrazení</string>
+    <string name="allow_unstable_updates">Povolit zobrazování nestabilních aktualizací</string>
 </resources>
