@@ -346,4 +346,9 @@
         <item quantity="many">(-%d точок приватності)</item>
         <item quantity="other">(-%d точок приватності)</item>
     </plurals>
+    <string name="dynamic_dark">Темний з динамічними кольорами</string>
+    <string name="dynamic_light">Світлий з динамічними кольорами</string>
+    <string name="dynamic_black">Чорний з динамічними кольорами</string>
+    <string name="no_releases">Немає сумісних релізів для показу</string>
+    <string name="allow_unstable_updates">Дозволити показ нестабільних оновлень</string>
 </resources>
