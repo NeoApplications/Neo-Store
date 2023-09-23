@@ -80,18 +80,10 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
             )
     }
 
-    override suspend fun install(cacheFileName: String) {
-        val cacheFile = Cache.getReleaseFile(context, cacheFileName)
-        mRootInstaller(cacheFile)
-    }
-
     override suspend fun install(packageName: String, cacheFileName: String) {
         val cacheFile = Cache.getReleaseFile(context, cacheFileName)
         mRootInstaller(cacheFile)
     }
-
-    override suspend fun install(packageName: String, cacheFile: File) =
-        mRootInstaller(cacheFile)
 
     override suspend fun uninstall(packageName: String) = mRootUninstaller(packageName)
 

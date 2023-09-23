@@ -13,18 +13,11 @@ import java.io.File
 
 // TODO: Use this for MIUI device instead of guiding new users
 class LegacyInstaller(context: Context) : BaseInstaller(context) {
-    override suspend fun install(cacheFileName: String) {
-        val cacheFile = Cache.getReleaseFile(context, cacheFileName)
-        mOldDefaultInstaller(cacheFile)
-    }
 
     override suspend fun install(packageName: String, cacheFileName: String) {
         val cacheFile = Cache.getReleaseFile(context, cacheFileName)
         mOldDefaultInstaller(cacheFile)
     }
-
-    override suspend fun install(packageName: String, cacheFile: File) =
-        mOldDefaultInstaller(cacheFile)
 
     override suspend fun uninstall(packageName: String) = mOldDefaultUninstaller(packageName)
 

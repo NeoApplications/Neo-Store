@@ -31,20 +31,10 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
         }
     }
 
-    override suspend fun install(cacheFileName: String) {
-        val cacheFile = Cache.getReleaseFile(context, cacheFileName)
-        mDefaultInstaller(cacheFile)
-    }
-
-    override suspend fun install(packageName: String, cacheFileName: String) {
+    override suspend fun install(appName: String, cacheFileName: String) {
         val cacheFile = Cache.getReleaseFile(context, cacheFileName)
         // using packageName to store the app's name for the notification later down the line
-        intent.putExtra(InstallerService.KEY_APP_NAME, packageName)
-        mDefaultInstaller(cacheFile)
-    }
-
-    override suspend fun install(packageName: String, cacheFile: File) {
-        intent.putExtra(InstallerService.KEY_APP_NAME, packageName)
+        intent.putExtra(InstallerService.KEY_APP_NAME, appName)
         mDefaultInstaller(cacheFile)
     }
 
