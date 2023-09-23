@@ -641,8 +641,6 @@ class WorkerManager(appContext: Context) {
                         }
                     }
 
-                    manager.prune()
-
                     if (cancelNotification)
                         MainApplication.wm.notificationManager.cancel(task.key.hashCode())
                     else if (ActivityCompat.checkSelfPermission(
@@ -657,6 +655,7 @@ class WorkerManager(appContext: Context) {
                 }
             }
 
+            manager.prune()
             downloadNotificationBuilder
                 .setProgress(allCount, allProcessed, false)
                 .setContentText("$allProcessed / $allCount")
