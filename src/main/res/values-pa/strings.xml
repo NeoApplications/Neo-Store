@@ -53,7 +53,7 @@
     <string name="incompatible_features_DESC">ਖੁੰਝੀਆਂ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ।</string>
     <string name="incompatible_older_DESC">ਇਹ ਸੰਸਕਰਣ ਤੁਹਾਡੀ ਡਿਵਾਈਸ \'ਤੇ ਇੰਸਟਾਲ ਕੀਤੇ ਗਏ ਸੰਸਕਰਣ ਤੋਂ ਪੁਰਾਣਾ ਹੈ। ਪਹਿਲਾਂ ਇਸਨੂੰ ਅਣਇੰਸਟਾਲ ਕਰੋ।</string>
     <string name="license_FORMAT">%s ਲਾਈਸੈਂਸ</string>
-    <string name="light">ਪ੍ਰਕਾਸ਼</string>
+    <string name="light">ਸਫ਼ੈਦ</string>
     <string name="proxy_host">ਹੋਸਟ</string>
     <string name="proxy_port">ਪੋਰਟ</string>
     <string name="proxy_type">ਪ੍ਰਕਾਰ</string>
@@ -285,7 +285,7 @@
     <string name="trackers_identification">ਪਛਾਣ ਟਰੈਕਰ</string>
     <string name="permission_identification_data">ਪਛਾਣ ਡੇਟਾ ਲਈ ਪਰਮਿਸ਼ਨਾਂ</string>
     <string name="trackers">ਟਰੈਕਰ</string>
-    <string name="trackers_analytics_description">ਤੁਹਾਡੇ ਐਪਸ ਦੀ ਵਰਤੋਂ \'ਤੇ ਅੰਕੜੇ ਇਕੱਠੇ ਕਰਨ ਲਈ ਵਰਤੇ ਜਾਂਦੇ ਟਰੈਕਰ ਜਿਵੇਂ ਕਿ ਟੈਪ ਅਤੇ ਕਲਿੱਕ।</string>
+    <string name="trackers_analytics_description">ਤੁਹਾਡੇ ਐਪਸ ਦੀ ਵਰਤੋਂ ਜਿਵੇਂ ਕਿ ਟੈਪ ਅਤੇ ਕਲਿੱਕ \'ਤੇ ਅੰਕੜੇ ਇਕੱਠੇ ਕਰਨ ਲਈ ਵਰਤੇ ਜਾਂਦੇ ਟਰੈਕਰ।</string>
     <string name="trackers_ads_description">ਟਰੈਕਰ ਇਸ਼ਤਿਹਾਰਾਂ ਵਿਖਾਉਣ ਅਤੇ ਇਹਨਾਂ ਨਾਲ ਤੁਹਾਡੀ ਇੰਟਰੈਕਸ਼ਨ ਨੂੰ ਟਰੈਕ ਕਰਨ ਲਈ ਵਰਤੇ ਜਾਂਦੇ ਹਨ।</string>
     <string name="trackers_profiling">ਪ੍ਰੋਫਾਈਲਿੰਗ ਟਰੈਕਰ</string>
     <string name="trackers_profiling_description">ਉਹ ਟਰੈਕਰ ਜੋ ਇਕੱਠੇ ਕੀਤੇ ਡੇਟਾ ਦੇ ਅਧਾਰ ਤੇ ਤੁਹਾਡੀ ਇੱਕ ਪ੍ਰੋਫਾਈਲ ਬਣਾਉਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰਦੇ ਹਨ।</string>
@@ -344,4 +344,7 @@
     </plurals>
     <string name="no_releases">ਵਿਖਾਉਣ ਲਈ ਕੋਈ ਅਨੁਕੂਲ ਰਿਲੀਜ਼ ਨਹੀਂ</string>
     <string name="allow_unstable_updates">ਅਸਥਿਰ ਅੱਪਡੇਟਾਂ ਨੂੰ ਵਿਖਾਉਣ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ</string>
+    <string name="dynamic_dark">ਗਤੀਸ਼ੀਲ ਰੰਗਾਂ ਨਾਲ ਗਹਿਰਾ</string>
+    <string name="dynamic_light">ਗਤੀਸ਼ੀਲ ਰੰਗਾਂ ਨਾਲ ਸਫ਼ੈਦ</string>
+    <string name="dynamic_black">ਗਤੀਸ਼ੀਲ ਰੰਗਾਂ ਨਾਲ ਕਾਲ਼ਾ</string>
 </resources>
