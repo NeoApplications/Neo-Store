@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.Installed
@@ -124,13 +125,14 @@ fun ProductsCarousel(
 fun CarouselIndicators(
     modifier: Modifier,
     size: Int = 1,
+    dimension: Dp = 8.dp,
     state: PagerState,
 ) {
     val scope = rememberCoroutineScope()
 
     LazyRow(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.spacedBy(dimension/4, Alignment.CenterHorizontally),
     ) {
         items(size) { i ->
             val color by animateColorAsState(
@@ -139,12 +141,12 @@ fun CarouselIndicators(
                 label = "indicatorColor"
             )
             val width by animateDpAsState(
-                targetValue = if (state.currentPage == i) 16.dp else 8.dp,
+                targetValue = if (state.currentPage == i) dimension.times(2) else dimension,
                 label = "indicatorWidth"
             )
             Box(
                 modifier = Modifier
-                    .size(height = 8.dp, width = width)
+                    .size(height = dimension, width = width)
                     .clip(CircleShape)
                     .background(color = color)
                     .clickable { scope.launch { state.animateScrollToPage(i) } }
