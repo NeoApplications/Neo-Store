@@ -44,6 +44,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
@@ -238,7 +239,7 @@ fun AppSheet(
             else                                                                 -> {
                 val productRepository =
                     viewModel.productRepos.value.asSequence()
-                        .filter { it -> it.first.releases.any { it === release } }
+                        .filter { it.first.releases.any { rel -> rel === release } }
                         .firstOrNull()
                 if (productRepository != null) {
                     DownloadWorker.enqueue(
@@ -340,10 +341,12 @@ fun AppSheet(
                         state = downloadState,
                         actions = {
                             CardButton(
-                                icon = if (privacyNote.sourceType.isFree) Phosphor.Copyleft
-                                else if (privacyNote.sourceType.isOpenSource) Icon.Opensource
-                                else if (privacyNote.sourceType.isSourceAvailable) Phosphor.Copyright
-                                else Phosphor.GlobeSimple,
+                                icon = when {
+                                    privacyNote.sourceType.isFree            -> Phosphor.Copyleft
+                                    privacyNote.sourceType.isOpenSource      -> Icon.Opensource
+                                    privacyNote.sourceType.isSourceAvailable -> Phosphor.Copyright
+                                    else                                     -> Phosphor.GlobeSimple
+                                },
                                 description = stringResource(id = R.string.source_code),
                                 onClick = {
                                     onUriClick(
@@ -613,6 +616,7 @@ fun AppSheet(
                         scope.launch { screenshotsPageState.hide() }
                         showScreenshots.value = false
                     },
+                    shape = RectangleShape,
                 ) {
                     ScreenshotsPage(
                         screenshots = suggestedProductRepo.first.screenshots.map {
