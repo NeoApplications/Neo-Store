@@ -1,19 +1,19 @@
 CHANGELOG
 =========
 
-1.0.0 (??.??.2023) 220+ Commits +180 Translations
+1.0.0 (??.??.2023) 270+ Commits +250 Translations
 ------------------
 
 ### Function
 
 - Add: Preference to disable signature check for updates/installs
 - Add: Preference to disable download version check
-- Add: Julian Andres Klode's repo (credits @ishanarora)
 - Add: Display localized product name and description (credits @BLumia)
 - Add: Export/import the repositories
 - Add: Export/import installed apps
-- Add: INVISV, Monerujo, iodé, spiritCroc, DivestOS Unofficial, Funkwhale preset repos
 - Add: Room Kotlin KSP code generation
+- Add: ConnectionPool, redirections to Coil calls
+- Add Repos: INVISV, Monerujo, iodé, spiritCroc, DivestOS Unofficial, Funkwhale, Julian Andres Klode's repo (credits @ishanarora), Cromite, Divolt Repo (credits @GitGitro), Samourai Wallet Repo (credits @RequestPrivacy)
 - Fix: Auto-sync on "Only charging"
 - Fix: The description for PeterCxy's Shelter repo (credits @ishanarora)
 - Fix: c:geo repository (credits @ishanarora)
@@ -21,6 +21,8 @@ CHANGELOG
 - Fix: Adding repo using scanner
 - Fix: Detecting updates of multi-repos apps
 - Fix: Clicking updates notification
+- Fix: Launching parallel updates
+- Fix: Updating apps in the background
 - Update: Convert auto-sync interval unit to hours
 - Update: Optimize the main products query
 - Update: Migrate download, exodus & sync backend from Sevice- to Worker-based
@@ -31,6 +33,9 @@ CHANGELOG
 - Update: Revamp the ExodusAPI classes
 - Update: Ignore secondarySource when it's the same as primarySource
 - Update: Rebase to use one activity
+- Update: Replace appsToBeInstalled list usage with InstallWorker
+- Update: Convert InstallerService to BroadcastReceiver
+- Update: Allow pre-composing all pages
 - Update: minSDK to 24
 - Update: compileSDK 34
 - Remove: Dependencies of deprecated usage
@@ -43,6 +48,9 @@ CHANGELOG
 - Add: Block border to sheets & pages
 - Add: New optional BottomNavBar item layout
 - Add: Categories app info chips
+- Add: New apps carousel layout
+- Add: Option for alt new apps layout
+- Add: Dynamic theme variants
 - Fix: Switch layout on low-dpi/multi-lines
 - Fix: Screenshots scaling issue after opening once
 - Fix: Pre-mature cutting horizontal products recycler layout
@@ -75,6 +83,10 @@ CHANGELOG
 - Add: Search page
 - Add: Launch search page on receiving search Intent
 - Add: More categories icons
+- Add: Erase button to items in downloads log
+- Add: Option to allow unstable updates to each app
+- Add: PrivacyPoints to PrivacyPanel cards
+- Add: All Anti-features in PrivacyPanel
 - Fix: Showing updatable label for Product items
 - Fix: Showing right version in AppSheet's header
 - Fix: Showing downloaded version (in downloads log)
@@ -85,6 +97,9 @@ CHANGELOG
 - Update: Revamp download and sync notifications
 - Update: Use categories grouping in Explore page
 - Update: Prefer search results with last update not longer than 1 year ago
+- Update: Text to show when no compatible releases exist
+- Update: Differentiate between having no trackers and lacking exodus data
+- Update: Show dialog before opening source code
 - Remove: Search bar from Main pages
 - Remove: Zooming on screenshots
 
