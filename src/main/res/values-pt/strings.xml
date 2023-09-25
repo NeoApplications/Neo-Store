@@ -349,4 +349,6 @@
     <string name="dynamic_black">Preto com cores dinâmicas</string>
     <string name="no_releases">Nenhuma versão compatível para mostrar</string>
     <string name="allow_unstable_updates">Permitir mostrar atualizações instáveis</string>
+    <string name="alt_new_apps_description">Utilize o esquema alternativo/antigo de novas aplicações, que mostra pequenos cartões de aplicações.</string>
+    <string name="alt_new_apps">Utilizar o esquema alternativo das novas aplicações</string>
 </resources>
