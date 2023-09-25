@@ -228,6 +228,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
             Key<Boolean>("show_categories_bar", Value.BooleanValue(true))
 
         data object AltNavBarItem : Key<Boolean>("alt_navbar_item", Value.BooleanValue(false))
+        data object AltNewApps : Key<Boolean>("alt_new_apps_layout", Value.BooleanValue(false))
 
         data object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(100))
         data object NewApps : Key<Int>("new_apps", Value.IntValue(30))

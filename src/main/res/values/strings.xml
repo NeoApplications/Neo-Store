@@ -347,4 +347,6 @@
     <string name="dynamic_light">Light with dynamic colors</string>
     <string name="dynamic_dark">Dark with dynamic colors</string>
     <string name="dynamic_black">Black with dynamic colors</string>
+    <string name="alt_new_apps">Use alternative new apps layout</string>
+    <string name="alt_new_apps_description">Use the alternative/old new apps layout, which shows small app cards.</string>
 </resources>

@@ -20,6 +20,10 @@ val BooleanPrefsMeta = mapOf(
         R.string.alt_navbar_item,
         R.string.alt_navbar_item_description
     ),
+    Preferences.Key.AltNewApps to Pair(
+        R.string.alt_new_apps,
+        R.string.alt_new_apps_description
+    ),
     Preferences.Key.InstallAfterSync to Pair(
         R.string.install_after_sync,
         R.string.install_after_sync_summary
