@@ -181,36 +181,44 @@ fun DownloadProgress(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        if (isIndeterminate) {
-            LinearProgressIndicator(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(ShapeDefaults.Large),
-            )
-        } else if (totalSize < 1L) {
-            Text(
-                text = stringResource(
-                    id = if (totalSize == 0L) R.string.canceled
-                    else R.string.error
-                ),
-                style = MaterialTheme.typography.bodySmall,
-            )
-        } else if (downloaded == totalSize && totalSize == 1L) {
-            Text(
-                text = "${stringResource(id = R.string.finished)} ${finishedTime.formatDateTime()}",
-                style = MaterialTheme.typography.bodySmall,
-            )
-        } else {
-            Text(
-                text = "${downloaded?.formatSize()}/${totalSize.formatSize()}",
-                style = MaterialTheme.typography.bodySmall,
-            )
-            LinearProgressIndicator(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(ShapeDefaults.Large),
-                progress = downloaded?.toFloat()?.div(totalSize) ?: 1f
-            )
+        when {
+            isIndeterminate -> {
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(ShapeDefaults.Large),
+                )
+            }
+
+            totalSize < 1L -> {
+                Text(
+                    text = stringResource(
+                        id = if (totalSize == 0L) R.string.canceled
+                        else R.string.error
+                    ),
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+
+            downloaded == totalSize && totalSize == 1L -> {
+                Text(
+                    text = "${stringResource(id = R.string.finished)} ${finishedTime.formatDateTime()}",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+
+            else -> {
+                Text(
+                    text = "${downloaded?.formatSize()}/${totalSize.formatSize()}",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(ShapeDefaults.Large),
+                    progress = downloaded?.toFloat()?.div(totalSize) ?: 1f
+                )
+            }
         }
     }
 }

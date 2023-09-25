@@ -39,8 +39,8 @@ fun ExpandableBlock(
 ) {
     var expanded by rememberSaveable { mutableStateOf(preExpanded) }
     val tonalElevation by animateDpAsState(
-        targetValue = if (expanded) 8.dp
-        else 0.dp
+        targetValue = if (expanded) 8.dp else 0.dp,
+        label = "elevation"
     )
 
     Surface(

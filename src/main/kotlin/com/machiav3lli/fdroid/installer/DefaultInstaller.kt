@@ -74,12 +74,7 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
             try {
                 val sessionOutputStream = activeSession.openWrite(packageName, 0, -1)
                 val packageInputStream = cacheFile.inputStream()
-                val buffer = ByteArray(4096)
-
-                var n: Int?
-                while (packageInputStream.read(buffer).also { n = it } > 0) {
-                    sessionOutputStream.write(buffer, 0, n ?: 0)
-                }
+                packageInputStream.copyTo(sessionOutputStream)
 
                 packageInputStream.close()
                 sessionOutputStream.flush()

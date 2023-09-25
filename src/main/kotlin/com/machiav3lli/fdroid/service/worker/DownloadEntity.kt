@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.service.worker
 
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.database.entity.InstallTask
 import com.machiav3lli.fdroid.database.entity.Release
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -18,6 +19,17 @@ class DownloadTask(
 ) {
     val key: String
         get() = "$packageName-$repoId-${release.version}"
+
+    fun toInstallTask() = InstallTask(
+        packageName = packageName,
+        repositoryId = repoId,
+        versionCode = release.versionCode,
+        versionName = release.version,
+        label = name,
+        cacheFileName = release.cacheFileName,
+        added = System.currentTimeMillis(),
+        requireUser = false,
+    )
 
     fun toJSON() = Json.encodeToString(this)
 
@@ -116,7 +128,7 @@ sealed class DownloadState {
 enum class ValidationError { NONE, INTEGRITY, FORMAT, METADATA, SIGNATURE, PERMISSIONS }
 
 sealed class ErrorType {
-    object Network : ErrorType()
-    object Http : ErrorType()
+    data object Network : ErrorType()
+    data object Http : ErrorType()
     class Validation(val validateError: ValidationError) : ErrorType()
 }

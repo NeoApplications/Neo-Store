@@ -36,7 +36,8 @@ fun RepositoryItem(
     }
     val backgroundColor by animateColorAsState(
         targetValue = if (isEnabled) MaterialTheme.colorScheme.surfaceColorAtElevation(32.dp)
-        else MaterialTheme.colorScheme.background
+        else MaterialTheme.colorScheme.background,
+        label = "backgroundColor",
     )
 
     ListItem(

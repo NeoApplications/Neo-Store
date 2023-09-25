@@ -47,7 +47,6 @@ import com.machiav3lli.fdroid.ui.components.ProductCarouselItem
 import com.machiav3lli.fdroid.ui.components.RepositoryItem
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductsHorizontalRecycler(
     modifier: Modifier = Modifier,
@@ -178,7 +177,7 @@ fun RepositoriesRecycler(
 
 @Composable
 fun <T> VerticalItemList(
-    modifier: Modifier = Modifier.fillMaxSize(),
+    modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
     list: List<T>?,
     itemKey: ((T) -> Any)? = null,

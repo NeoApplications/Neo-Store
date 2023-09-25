@@ -26,6 +26,7 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -67,12 +68,12 @@ fun ReleaseItem(
     val container by animateColorAsState(
         targetValue = if (isSuggested or isInstalled)
             MaterialTheme.colorScheme.surfaceColorAtElevation(48.dp)
-        else MaterialTheme.colorScheme.surfaceVariant
+        else MaterialTheme.colorScheme.surfaceVariant, label = "containerColor"
     )
     val border by animateColorAsState(
         targetValue = if (isSuggested or isInstalled)
             MaterialTheme.colorScheme.primary
-        else Color.Transparent
+        else Color.Transparent, label = "borderColor"
     )
 
     ListItem(
@@ -102,14 +103,14 @@ fun ReleaseItem(
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
-                    val badgeText = remember { mutableStateOf(R.string.suggested) }
+                    val badgeText = remember { mutableIntStateOf(R.string.suggested) }
                     LaunchedEffect(isInstalled, isSuggested) {
-                        badgeText.value =
+                        badgeText.intValue =
                             if (isInstalled) R.string.app_installed else R.string.suggested
                     }
                     ReleaseBadge(
                         modifier = Modifier.padding(top = 8.dp),
-                        text = stringResource(id = badgeText.value)
+                        text = stringResource(id = badgeText.intValue)
                     )
                 }
             }

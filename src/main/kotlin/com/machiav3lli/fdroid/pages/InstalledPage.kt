@@ -286,7 +286,6 @@ fun InstalledPage(viewModel: InstalledVM) {
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = paddingValues,
             ) {
                 items(items = downloaded.sortedByDescending { it.changed }) { item ->
                     DownloadedItem(

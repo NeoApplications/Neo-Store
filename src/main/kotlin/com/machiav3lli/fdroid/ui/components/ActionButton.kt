@@ -136,7 +136,8 @@ fun MainActionButton(
                             slideOutVertically { height -> height } + fadeOut()))
                 }
                     .using(SizeTransform(clip = false))
-            }
+            },
+            label = "actionState",
         ) {
             Row(
                 Modifier.defaultMinSize(minHeight = ButtonDefaults.MinHeight),
