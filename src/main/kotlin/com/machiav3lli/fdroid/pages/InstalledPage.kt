@@ -226,7 +226,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                         item = item,
                         iconDetails = iconDetails[item.packageName],
                         repo = repositoriesMap[item.state.repoId],
-                        state = item.state
+                        state = item.state,
                     ) {
                         neoActivity.navigateProduct(item.packageName)
                     }
@@ -292,10 +292,10 @@ fun InstalledPage(viewModel: InstalledVM) {
                         item = item,
                         iconDetails = iconDetails[item.packageName],
                         repo = repositoriesMap[item.state.repoId],
-                        state = item.state
-                    ) {
-                        neoActivity.navigateProduct(item.packageName)
-                    }
+                        state = item.state,
+                        onUserClick = { neoActivity.navigateProduct(item.packageName) },
+                        onEraseClick = { viewModel.eraseDownloaded(item) },
+                    )
                 }
             }
         }

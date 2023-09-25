@@ -4,6 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -15,7 +17,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.Downloaded
 import com.machiav3lli.fdroid.database.entity.IconDetails
 import com.machiav3lli.fdroid.database.entity.Installed
@@ -24,6 +28,8 @@ import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.network.createIconUri
 import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.ui.components.appsheet.DownloadProgress
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Eraser
 
 @Composable
 fun DownloadsListItem(
@@ -99,6 +105,7 @@ fun DownloadedItem(
     iconDetails: IconDetails?,
     repo: Repository? = null,
     state: DownloadState,
+    onEraseClick: (() -> Unit)? = null,
     onUserClick: (Downloaded) -> Unit = {},
 ) {
     val download by remember(item) { mutableStateOf(item) }
@@ -165,6 +172,16 @@ fun DownloadedItem(
                 },
                 finishedTime = download.changed,
             )
+        },
+        trailingContent = {
+            if (onEraseClick != null) IconButton(onClick = {
+                onEraseClick()
+            }) {
+                Icon(
+                    imageVector = Phosphor.Eraser,
+                    contentDescription = stringResource(id = R.string.delete),
+                )
+            }
         }
     )
 }
