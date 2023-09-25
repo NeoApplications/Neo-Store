@@ -349,4 +349,6 @@
     <string name="dynamic_dark">Oscuro con colores dinámicos</string>
     <string name="dynamic_light">Claro con colores dinámicos</string>
     <string name="dynamic_black">Negro con colores dinámicos</string>
+    <string name="alt_new_apps_description">Utiliza el diseño de las aplicaciones nuevas/antiguas, que muestra pequeñas tarjetas de las aplicaciones.</string>
+    <string name="alt_new_apps">Utilizar el nuevo diseño alternativo de las aplicaciones</string>
 </resources>
