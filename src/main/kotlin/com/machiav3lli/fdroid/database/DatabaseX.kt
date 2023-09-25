@@ -13,6 +13,7 @@ import com.machiav3lli.fdroid.database.dao.CategoryTempDao
 import com.machiav3lli.fdroid.database.dao.DownloadedDao
 import com.machiav3lli.fdroid.database.dao.ExodusInfoDao
 import com.machiav3lli.fdroid.database.dao.ExtrasDao
+import com.machiav3lli.fdroid.database.dao.InstallTaskDao
 import com.machiav3lli.fdroid.database.dao.InstalledDao
 import com.machiav3lli.fdroid.database.dao.ProductDao
 import com.machiav3lli.fdroid.database.dao.ProductTempDao
@@ -24,6 +25,7 @@ import com.machiav3lli.fdroid.database.entity.CategoryTemp
 import com.machiav3lli.fdroid.database.entity.Downloaded
 import com.machiav3lli.fdroid.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.database.entity.Extras
+import com.machiav3lli.fdroid.database.entity.InstallTask
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.ProductTemp
@@ -57,8 +59,9 @@ import kotlinx.coroutines.launch
         ExodusInfo::class,
         Tracker::class,
         Downloaded::class,
+        InstallTask::class,
     ],
-    version = 19,
+    version = 20,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -114,6 +117,10 @@ import kotlinx.coroutines.launch
             to = 19,
             spec = DatabaseX.Companion.MigrationSpec18to19::class
         ),
+        AutoMigration(
+            from = 19,
+            to = 20,
+        ),
     ]
 )
 @TypeConverters(Converters::class)
@@ -129,6 +136,7 @@ abstract class DatabaseX : RoomDatabase() {
     abstract fun getExodusInfoDao(): ExodusInfoDao
     abstract fun getTrackerDao(): TrackerDao
     abstract fun getDownloadedDao(): DownloadedDao
+    abstract fun getInstallTaskDao(): InstallTaskDao
 
     companion object {
         @Volatile
