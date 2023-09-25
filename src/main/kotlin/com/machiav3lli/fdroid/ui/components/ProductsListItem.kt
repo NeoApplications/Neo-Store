@@ -1,9 +1,11 @@
 package com.machiav3lli.fdroid.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -20,10 +22,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.MainApplication
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Repository
@@ -34,6 +40,7 @@ import com.machiav3lli.fdroid.ui.components.appsheet.ReleaseBadge
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
+import com.machiav3lli.fdroid.utility.onLaunchClick
 
 @Composable
 fun ProductsListItem(
@@ -134,6 +141,107 @@ fun ProductItemContent(
                 maxLines = if (isExpanded.value) Int.MAX_VALUE else 2,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+        },
+    )
+}
+
+@Composable
+fun ProductCarouselItem(
+    product: ProductItem,
+    repo: Repository? = null,
+    installed: Installed? = null,
+    onUserClick: (ProductItem) -> Unit = {},
+) {
+    val context = LocalContext.current
+    val neoActivity = context as NeoActivity
+    val imageData by remember(product, repo) {
+        mutableStateOf(
+            createIconUri(
+                product.packageName,
+                product.icon,
+                product.metadataIcon,
+                repo?.address,
+                repo?.authentication
+            ).toString()
+        )
+    }
+
+    ListItem(
+        modifier = Modifier
+            .clip(MaterialTheme.shapes.large)
+            .clickable { onUserClick(product) }
+            .fillMaxSize(),
+        colors = ListItemDefaults.colors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        ),
+        leadingContent = {
+            NetworkImage(
+                modifier = Modifier.size(PRODUCT_CARD_ICON),
+                data = imageData
+            )
+        },
+        headlineContent = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = product.name,
+                    modifier = Modifier
+                        .weight(1f),
+                    softWrap = true,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.titleSmall
+                )
+                if (product.canUpdate) ReleaseBadge(
+                    text = "${product.installedVersion} → ${product.version}",
+                )
+                else Text(
+                    text = installed?.version ?: product.version,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+        },
+        supportingContent = {
+            Row {
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = product.summary,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                val action = when {
+                    installed == null -> ActionState.Install
+                    installed.launcherActivities.isNotEmpty() -> ActionState.Launch
+                    else -> null
+                }
+                action?.let {
+                    IconButton(onClick = {
+                        when (action) {
+                            is ActionState.Install -> MainApplication.wm.install(product)
+                            is ActionState.Launch  -> installed?.let {
+                                context.onLaunchClick(
+                                    it,
+                                    neoActivity.supportFragmentManager
+                                )
+                            }
+
+                            else                   -> {}
+                        }
+                    }) {
+                        Icon(
+                            imageVector = action.icon,
+                            contentDescription = stringResource(id = action.textId)
+                        )
+                    }
+                }
+            }
         },
     )
 }
