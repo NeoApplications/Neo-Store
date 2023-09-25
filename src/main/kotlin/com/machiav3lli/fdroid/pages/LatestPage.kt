@@ -35,6 +35,7 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.service.worker.ExodusWorker
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
+import com.machiav3lli.fdroid.ui.compose.ProductsCarousel
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
@@ -111,13 +112,25 @@ fun LatestPage(viewModel: LatestVM) {
                         .rotate(-90f)
                         .padding(8.dp),
                 )
-                ProductsHorizontalRecycler(
-                    modifier = Modifier.weight(1f),
-                    productsList = secondaryList,
-                    repositories = repositoriesMap,
-                    installedMap = installedList,
-                ) { item ->
-                    neoActivity.navigateProduct(item.packageName)
+                if (Preferences[Preferences.Key.AltNewApps]) {
+                    ProductsHorizontalRecycler(
+                        modifier = Modifier.weight(1f),
+                        productsList = secondaryList,
+                        repositories = repositoriesMap,
+                        installedMap = installedList,
+                    ) { item ->
+                        neoActivity.navigateProduct(item.packageName)
+                    }
+                } else {
+                    ProductsCarousel(
+                        modifier = Modifier.weight(1f),
+                        productsList = secondaryList,
+                        repositories = repositoriesMap,
+                        installedMap = installedList,
+                        onUserClick = { item ->
+                            neoActivity.navigateProduct(item.packageName)
+                        },
+                    )
                 }
             }
         }
