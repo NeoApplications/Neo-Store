@@ -11,13 +11,10 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.snapshotFlow
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.lifecycle.withResumed
 import androidx.work.Data
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
@@ -41,13 +38,10 @@ import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.Order
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Section
-import com.machiav3lli.fdroid.installer.AppInstaller
-import com.machiav3lli.fdroid.installer.InstallerService
-import com.machiav3lli.fdroid.installer.LegacyInstaller
 import com.machiav3lli.fdroid.service.worker.DownloadState
-import com.machiav3lli.fdroid.service.worker.DownloadTask
 import com.machiav3lli.fdroid.service.worker.DownloadWorker
 import com.machiav3lli.fdroid.service.worker.ErrorType
+import com.machiav3lli.fdroid.service.worker.InstallWorker
 import com.machiav3lli.fdroid.service.worker.SyncState
 import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.worker.ValidationError
@@ -63,10 +57,7 @@ import com.machiav3lli.fdroid.utility.updateWithError
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 
 class WorkerManager(appContext: Context) {
 
@@ -76,12 +67,6 @@ class WorkerManager(appContext: Context) {
     val notificationManager: NotificationManagerCompat
     private val scope = CoroutineScope(Dispatchers.Default)
     private val ioScope = CoroutineScope(Dispatchers.IO)
-
-    private val appsToBeInstalled = SnapshotStateList<DownloadTask>()
-
-    fun enqueueToBeInstalled(task: DownloadTask) {
-        appsToBeInstalled.add(task)
-    }
 
     init {
         workManager = WorkManager.getInstance(context)
@@ -102,44 +87,6 @@ class WorkerManager(appContext: Context) {
             DownloadWorker::class.qualifiedName!!
         ).observeForever {
             onDownloadProgress(this, it)
-        }
-
-        ioScope.launch {
-            snapshotFlow { appsToBeInstalled.toList() }.collectLatest {
-                val lock = Mutex()
-
-                lock.withLock { // TODO improve handling to-be-installed logic
-                    appsToBeInstalled.firstOrNull()?.let { task ->
-                        val installer = suspend {
-                            val installerInstance = AppInstaller.getInstance(context)
-                            installerInstance?.defaultInstaller?.install(
-                                task.name,
-                                task.release.cacheFileName
-                            )
-                            appsToBeInstalled.remove(task)
-                        }
-
-                        if (MainApplication.mainActivity != null &&
-                            AppInstaller.getInstance(context)?.defaultInstaller is LegacyInstaller
-                        ) {
-                            scope.launch {
-                                Log.i(
-                                    this::javaClass.name,
-                                    "Waiting activity to install: ${task.packageName}"
-                                )
-                                MainApplication.mainActivity?.withResumed {
-                                    ioScope.launch {
-                                        installer()
-                                    }
-                                }
-                            }
-                        } else {
-                            Log.i(this::javaClass.name, "Installing downloaded: ${task.url}")
-                            ioScope.launch { installer() }
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -486,7 +433,7 @@ class WorkerManager(appContext: Context) {
                     val progress = DownloadWorker.getProgress(data)
                     val resultCode = data.getInt(ARG_RESULT_CODE, 0)
                     val validationError = ValidationError.values()[
-                            data.getInt(ARG_VALIDATION_ERROR, 0)
+                        data.getInt(ARG_VALIDATION_ERROR, 0)
                     ]
 
                     val notificationBuilder = appContext.downloadNotificationBuilder()
@@ -567,7 +514,7 @@ class WorkerManager(appContext: Context) {
                                         )
                                     )
                                     .setContentText(appContext.getString(R.string.canceled))
-                                    .setTimeoutAfter(InstallerService.INSTALLED_NOTIFICATION_TIMEOUT)
+                                    .setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
                                 cancelNotification = true
                                 DownloadState.Cancel(
                                     packageName = task.packageName,
@@ -587,9 +534,13 @@ class WorkerManager(appContext: Context) {
                                             task.name
                                         )
                                     )
-                                MainApplication.wm.enqueueToBeInstalled(task)
+                                // TODO add to InstallTask & Launch InstallerWork
+                                CoroutineScope(Dispatchers.Default).launch {
+                                    MainApplication.db.getInstallTaskDao().put(task.toInstallTask())
+                                    InstallWorker.launch()
+                                }
                                 if (!Preferences[Preferences.Key.KeepInstallNotification]) {
-                                    notificationBuilder.setTimeoutAfter(InstallerService.INSTALLED_NOTIFICATION_TIMEOUT)
+                                    notificationBuilder.setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
                                     cancelNotification = true
                                 }
                                 DownloadState.Success(
@@ -616,6 +567,10 @@ class WorkerManager(appContext: Context) {
                                     -> ErrorType.Network
                                 }
                                 notificationBuilder.updateWithError(appContext, task, errorType)
+                                Log.i(
+                                    this::javaClass.name,
+                                    "download error for package: ${task.packageName}"
+                                )
                                 DownloadState.Error(
                                     task.packageName,
                                     task.name,
@@ -662,7 +617,7 @@ class WorkerManager(appContext: Context) {
                 .apply { // TODO fix pinned notification
                     setOngoing(allCount > allProcessed)
                     if (allProcessed == allCount)
-                        setTimeoutAfter(InstallerService.INSTALLED_NOTIFICATION_TIMEOUT)
+                        setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
 
                     if (ActivityCompat.checkSelfPermission(
                             appContext,
