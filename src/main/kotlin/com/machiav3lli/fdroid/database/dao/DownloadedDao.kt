@@ -23,7 +23,10 @@ interface DownloadedDao : BaseDao<Downloaded> {
     fun getLatestFlow(packageName: String): Flow<Downloaded?>
 
     @Query("DELETE FROM downloaded WHERE packageName = :packageName")
-    fun delete(packageName: String)
+    fun deleteAll(packageName: String)
+
+    @Query("DELETE FROM downloaded WHERE packageName = :packageName AND version = :version AND cacheFileName = :cacheFileName")
+    fun delete(packageName: String, version: String, cacheFileName: String)
 
     @Query("DELETE FROM downloaded")
     fun emptyTable()
