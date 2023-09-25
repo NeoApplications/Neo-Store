@@ -116,10 +116,9 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".installer.InstallerService"
-            android:exported="false"
-            android:foregroundServiceType="dataSync" />
+        <receiver
+            android:name=".service.InstallerReceiver"
+            android:exported="true" />
 
         <provider
             android:name=".content.Cache$Provider"

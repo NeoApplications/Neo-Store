@@ -9,6 +9,7 @@ import android.os.Build
 import android.util.Log
 import com.machiav3lli.fdroid.content.Cache
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.service.InstallerReceiver
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,10 +21,12 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
 
     private val packageManager = context.packageManager
     private val sessionInstaller = packageManager.packageInstaller
-    private val intent = Intent(context, InstallerService::class.java)
+    private val intent = Intent(context, InstallerReceiver::class.java)
 
     companion object {
-        val flags = if (Android.sdk(31)) PendingIntent.FLAG_MUTABLE else 0
+        val flags =
+            if (Android.sdk(31)) PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            else PendingIntent.FLAG_UPDATE_CURRENT
         val sessionParams = SessionParams(SessionParams.MODE_FULL_INSTALL).apply {
             if (Android.sdk(31)) {
                 setRequireUserAction(SessionParams.USER_ACTION_NOT_REQUIRED)
@@ -34,7 +37,7 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
     override suspend fun install(appName: String, cacheFileName: String) {
         val cacheFile = Cache.getReleaseFile(context, cacheFileName)
         // using packageName to store the app's name for the notification later down the line
-        intent.putExtra(InstallerService.KEY_APP_NAME, appName)
+        intent.putExtra(InstallerReceiver.KEY_APP_NAME, appName)
         mDefaultInstaller(cacheFile)
     }
 
@@ -101,15 +104,15 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
         }
 
         if (!hasErrors) {
-            session.commit(PendingIntent.getService(context, id, intent, flags).intentSender)
+            session.commit(PendingIntent.getBroadcast(context, id, intent, flags).intentSender)
             if (Preferences[Preferences.Key.ReleasesCacheRetention] == 0) cacheFile.delete()
         }
     }
 
     private suspend fun mDefaultUninstaller(packageName: String) {
-        intent.putExtra(InstallerService.KEY_ACTION, InstallerService.ACTION_UNINSTALL)
+        intent.putExtra(InstallerReceiver.KEY_ACTION, InstallerReceiver.ACTION_UNINSTALL)
 
-        val pendingIntent = PendingIntent.getService(context, -1, intent, flags)
+        val pendingIntent = PendingIntent.getBroadcast(context, -1, intent, flags)
 
         withContext(Dispatchers.Default) {
             sessionInstaller.uninstall(packageName, pendingIntent.intentSender)
