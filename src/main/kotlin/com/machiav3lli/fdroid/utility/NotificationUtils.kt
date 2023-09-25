@@ -1,5 +1,7 @@
 package com.machiav3lli.fdroid.utility
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -26,15 +28,20 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.index.RepositoryUpdater
-import com.machiav3lli.fdroid.installer.InstallerService
+import com.machiav3lli.fdroid.service.InstallerReceiver
+import com.machiav3lli.fdroid.service.installIntent
 import com.machiav3lli.fdroid.service.ActionReceiver
 import com.machiav3lli.fdroid.service.worker.DownloadTask
 import com.machiav3lli.fdroid.service.worker.ErrorType
 import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.worker.ValidationError
+import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.android.notificationManager
 import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * Displays summary of available updates.
@@ -311,25 +318,35 @@ fun NotificationCompat.Builder.updateWithError(
  *
  * @param intent provided by PackageInstaller to the callback service/activity.
  */
-fun InstallerService.notifyStatus(intent: Intent?) {
+fun notifyStatus(context: Context, intent: Intent?) {
+
+    if (Android.sdk(26)) {
+        NotificationChannel(
+            NOTIFICATION_CHANNEL_INSTALLER,
+            context.getString(R.string.syncing), NotificationManager.IMPORTANCE_LOW
+        )
+            .let(context.notificationManager::createNotificationChannel)
+    }
+
+    val scope = CoroutineScope(Dispatchers.Default)
     // unpack from intent
     val status = intent?.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
     val sessionId = intent?.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, -1) ?: 0
 
     // get package information from session
-    val sessionInstaller = this.packageManager.packageInstaller
+    val sessionInstaller = context.packageManager.packageInstaller
     val session = if (sessionId > 0) sessionInstaller.getSessionInfo(sessionId) else null
 
     val name =
         session?.appPackageName ?: intent?.getStringExtra(PackageInstaller.EXTRA_PACKAGE_NAME)
     val message = intent?.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE)
-    val installerAction = intent?.getStringExtra(InstallerService.KEY_ACTION)
+    val installerAction = intent?.getStringExtra(InstallerReceiver.KEY_ACTION)
 
     // get application name for notifications
-    val appLabel = session?.appLabel ?: intent?.getStringExtra(InstallerService.KEY_APP_NAME)
+    val appLabel = session?.appLabel ?: intent?.getStringExtra(InstallerReceiver.KEY_APP_NAME)
     ?: try {
-        if (name != null) packageManager.getApplicationLabel(
-            packageManager.getApplicationInfo(
+        if (name != null) context.packageManager.getApplicationLabel(
+            context.packageManager.getApplicationInfo(
                 name,
                 PackageManager.GET_META_DATA
             )
@@ -338,45 +355,46 @@ fun InstallerService.notifyStatus(intent: Intent?) {
         null
     }
 
-    val notificationTag = "${InstallerService.NOTIFICATION_TAG_PREFIX}$name"
+    val notificationTag = "${InstallerReceiver.NOTIFICATION_TAG_PREFIX}$name"
 
     // start building
     val builder = NotificationCompat
-        .Builder(this, NOTIFICATION_CHANNEL_INSTALLER)
+        .Builder(context, NOTIFICATION_CHANNEL_INSTALLER)
         .setAutoCancel(true)
         .setColor(
-            ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
+            ContextThemeWrapper(context, R.style.Theme_Main_Amoled)
                 .getColorFromAttr(androidx.appcompat.R.attr.colorPrimary).defaultColor
         )
 
     when (status) {
         PackageInstaller.STATUS_PENDING_USER_ACTION -> {
             // request user action with "downloaded" notification that triggers a working prompt
-            notificationManager.notify(
+            context.notificationManager.notify(
                 notificationTag, NOTIFICATION_ID_INSTALLER, builder
                     .setSmallIcon(android.R.drawable.stat_sys_download_done)
-                    .setContentIntent(installIntent(intent))
-                    .setContentTitle(getString(R.string.downloaded_FORMAT, appLabel))
-                    .setContentText(getString(R.string.tap_to_install_DESC))
+                    .setContentIntent(installIntent(context, intent))
+                    .setContentTitle(context.getString(R.string.downloaded_FORMAT, appLabel))
+                    .setContentText(context.getString(R.string.tap_to_install_DESC))
                     .build()
             )
         }
 
         PackageInstaller.STATUS_SUCCESS             -> {
-            if (installerAction == InstallerService.ACTION_UNINSTALL)
+            if (installerAction == InstallerReceiver.ACTION_UNINSTALL)
             // remove any notification for this app
-                notificationManager.cancel(notificationTag, NOTIFICATION_ID_INSTALLER)
+                context.notificationManager.cancel(notificationTag, NOTIFICATION_ID_INSTALLER)
             else {
+                name?.let { scope.launch { MainApplication.db.getInstallTaskDao().delete(it) } }
                 val notification = builder
                     .setSmallIcon(android.R.drawable.stat_sys_download_done)
-                    .setContentTitle(getString(R.string.installed))
+                    .setContentTitle(context.getString(R.string.installed))
                     .setContentText(appLabel)
                     .apply {
                         if (!Preferences[Preferences.Key.KeepInstallNotification])
-                            setTimeoutAfter(InstallerService.INSTALLED_NOTIFICATION_TIMEOUT)
+                            setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
                     }
                     .build()
-                notificationManager.notify(
+                context.notificationManager.notify(
                     notificationTag,
                     NOTIFICATION_ID_INSTALLER,
                     notification
@@ -386,17 +404,19 @@ fun InstallerService.notifyStatus(intent: Intent?) {
 
         PackageInstaller.STATUS_FAILURE_ABORTED     -> {
             // do nothing if user cancels
+            name?.let { scope.launch { MainApplication.db.getInstallTaskDao().delete(it) } }
         }
 
         else                                        -> {
             // problem occurred when installing/uninstalling package
             // STATUS_FAILURE, STATUS_FAILURE_STORAGE ,STATUS_FAILURE_BLOCKED, STATUS_FAILURE_INCOMPATIBLE, STATUS_FAILURE_CONFLICT, STATUS_FAILURE_INVALID
+            name?.let { scope.launch { MainApplication.db.getInstallTaskDao().delete(it) } }
             val notification = builder
                 .setSmallIcon(android.R.drawable.stat_notify_error)
-                .setContentTitle(getString(R.string.unknown_error_DESC))
+                .setContentTitle(context.getString(R.string.unknown_error_DESC))
                 .setContentText(message)
                 .build()
-            notificationManager.notify(
+            context.notificationManager.notify(
                 notificationTag,
                 NOTIFICATION_ID_INSTALLER,
                 notification
