@@ -208,6 +208,8 @@ class NeoActivity : AppCompatActivity() {
                     val host = uri.host.orEmpty()
                     if (host == "f-droid.org" || host.endsWith(".f-droid.org")) {
                         uri.lastPathSegment?.nullIfEmpty()
+                    } else if (host == "apt.izzysoft.de") {
+                        uri.lastPathSegment?.nullIfEmpty()
                     } else {
                         null
                     }
