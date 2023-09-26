@@ -89,9 +89,11 @@
                 <data android:host="f-droid.org" />
                 <data android:host="www.f-droid.org" />
                 <data android:host="staging.f-droid.org" />
+                <data android:host="apt.izzysoft.de" />
                 <data android:pathPattern="/app/.*" />
                 <data android:pathPattern="/packages/.*" />
                 <data android:pathPattern="/.*/packages/.*" />
+                <data android:pathPattern="/fdroid/index/apk/.*" />
             </intent-filter>
 
             <intent-filter>
