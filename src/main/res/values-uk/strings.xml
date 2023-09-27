@@ -351,4 +351,6 @@
     <string name="dynamic_black">Чорний з динамічними кольорами</string>
     <string name="no_releases">Немає сумісних релізів для показу</string>
     <string name="allow_unstable_updates">Дозволити показ нестабільних оновлень</string>
+    <string name="alt_new_apps_description">Використовуйте альтернативний/старий макет нових застосунків, який показує невеликі картки.</string>
+    <string name="alt_new_apps">Використовуйте альтернативний макет нових застосунків</string>
 </resources>
