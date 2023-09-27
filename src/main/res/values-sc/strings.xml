@@ -275,7 +275,7 @@
     <string name="action_install_tc">Installa TrackerControl (controllu de sos arrastadores)</string>
     <string name="action_open_code">Pòmpia su còdighe</string>
     <string name="action_open_website">Aberi su situ web</string>
-    <string name="trackers_none">Perunu arrastadore de ammustrare</string>
+    <string name="trackers_none">Perunu arrastadore</string>
     <string name="trackers_in">Arrastadores in %s</string>
     <string name="trackers_note_0">Est un\'aplicatzione o unu programma ispia (spyware)\?</string>
     <string name="trackers_note_1">Includet medas arrastadores de sos datos sensìbiles tuos</string>
@@ -336,4 +336,17 @@
     <string name="next">Imbeniente</string>
     <string name="alt_navbar_item">Imprea un\'elementu alternativu de s\'istanga de navigatzione</string>
     <string name="alt_navbar_item_description">Imprea sa dispositzione de sos elementos de sa barra de navigatzione alternativa/betza, chi mustrat s\'eticheta de sos elementos non seletzionados.</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d puntu de riservadesa)</item>
+        <item quantity="other">(-%d puntos de riservadesa)</item>
+    </plurals>
+    <string name="alt_new_apps_description">Imprea s\'ischema alternativu/betzu pro sas aplicatziones, chi ammustrat ischedas minores de sas aplicatziones.</string>
+    <string name="installed_import">Importa e installa una lista de aplicatziones (piga·las dae sos depòsitos abilitados, si esistent)</string>
+    <string name="dynamic_dark">Iscuru cun colores dinàmicos</string>
+    <string name="dynamic_light">Craru cun colores dinàmicos</string>
+    <string name="installed_export">Esporta sa lista de sas aplicatziones installadas</string>
+    <string name="dynamic_black">Nieddu cun colores dinàmicos</string>
+    <string name="no_releases">Peruna versione cumpatìbile de ammustrare</string>
+    <string name="allow_unstable_updates">Permite de mustrare agiornamentos no istàbiles</string>
+    <string name="alt_new_apps">Imprea s\'ischema alternativu nou pro sas aplicatziones</string>
 </resources>
