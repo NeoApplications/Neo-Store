@@ -344,4 +344,9 @@
     </plurals>
     <string name="no_releases">Няма съвместими версии за показване</string>
     <string name="allow_unstable_updates">Разреши показването на нестабилни актуализации</string>
+    <string name="alt_new_apps_description">Използвай алтернативното/старо оформление за нови приложения, което показва малки карти с приложения.</string>
+    <string name="dynamic_dark">Тъмна с динамични цветове</string>
+    <string name="dynamic_light">Светла с динамични цветове</string>
+    <string name="dynamic_black">Черна с динамични цветове</string>
+    <string name="alt_new_apps">Използвай алтернативно оформление за нови приложения</string>
 </resources>
