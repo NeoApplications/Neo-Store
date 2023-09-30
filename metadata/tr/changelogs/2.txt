@@ -1,0 +1,4 @@
+* Çeşitli arayüz değişiklikleri
+* Tüm kod tabanı yeniden formatlandı
+* Bağımlılıklar güncellendi
+* Seçenekler, Ayarlar olarak yeniden adlandırıldı

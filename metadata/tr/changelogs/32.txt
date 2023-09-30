@@ -1,0 +1,6 @@
+- Güncellleme: Tasarım MD3'e güncellendi
+- Güncelleme: Kullanıcı deneyimi için ekran görüntüleri iyileştirildi
+- Düzeltme: Kök metodu ile indirirken uygulamanın donması
+- Güncelleme: Tema profilleri yenilendi
+- Ekleme: Link paylaşımı (şimdilik sadece resmi F-Droid)
+- Başka ufak Arayüz/Kullanıcı Deneyimi düzeltmeleri
