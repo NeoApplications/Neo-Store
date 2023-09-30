@@ -341,4 +341,8 @@
         <item quantity="one">(-%d Datenschutzpunkt)</item>
         <item quantity="other">(-%d Datenschutzpunkte)</item>
     </plurals>
+    <string name="dynamic_dark">Dunkel, mit dynamischen Farben</string>
+    <string name="dynamic_light">Hell, mit dynamischen Farben</string>
+    <string name="dynamic_black">Schwarz, mit dynamischen Farben</string>
+    <string name="alt_new_apps">Alternatives neues Apps-Layout verwenden</string>
 </resources>
