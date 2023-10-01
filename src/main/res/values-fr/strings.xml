@@ -332,4 +332,23 @@
     <string name="disable_download_version_check">Désactiver la vérification de version de téléchargement</string>
     <string name="disable_download_version_check_summary">Permet de télécharger d\'anciennes versions d\'applications installées. Peut être utilisé en combinaison avec le patch \"letmedowngrade\" de Magisk.</string>
     <string name="warning_disable_battery_optimization">À partir d\'Android 12, l\'appli nécessite l\'optimisation de la batterie pour effectuer des tâches en arrière-plan comme synchroniser et télécharger. Si vous ignorez cette permission vous serez livré à vous-même et vos rapports de crash seront ignorés.</string>
+    <string name="repos_export">Exporter les dépôts</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d point de confidentialité)</item>
+        <item quantity="many">(-%d points de confidentialité)</item>
+        <item quantity="other">(-%d points de confidentialité)</item>
+    </plurals>
+    <string name="alt_new_apps_description">Utiliser la disposition alternative des nouvelles applications, qui affiche de petites cartes d\'application.</string>
+    <string name="alt_navbar_item">Utiliser la barre de navigation alternative</string>
+    <string name="installed_import">Importer et installer une liste d\'applications (les récupère dans les dépôts activés s\'ils existent)</string>
+    <string name="auto_sync_interval_hours">Intervalle de synchronisation automatique (en heures)</string>
+    <string name="dynamic_dark">Sombre avec couleurs dynamiques</string>
+    <string name="dynamic_light">Clair avec couleurs dynamiques</string>
+    <string name="installed_export">Exporter la liste des applications installées</string>
+    <string name="dynamic_black">Noir avec couleurs dynamiques</string>
+    <string name="alt_navbar_item_description">Utiliser la disposition alternative des éléments de la barre de navigation, qui affiche l\'étiquette des éléments non sélectionnés.</string>
+    <string name="no_releases">Aucune version compatible à afficher</string>
+    <string name="allow_unstable_updates">Autoriser l\'affichage des mises à jour instables</string>
+    <string name="repos_import">Importer des dépôts (remplace ceux déjà existants)</string>
+    <string name="alt_new_apps">Utiliser une disposition alternative des nouvelles applications</string>
 </resources>
