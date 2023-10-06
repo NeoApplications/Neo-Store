@@ -273,7 +273,7 @@
     <string name="action_install_tc">安装跟踪器控制</string>
     <string name="action_open_code">查看代码</string>
     <string name="action_open_website">打开网站</string>
-    <string name="trackers_none">没有可显示的跟踪器</string>
+    <string name="trackers_none">没有跟踪器</string>
     <string name="trackers_note_0">它是应用程序还是间谍软件？</string>
     <string name="trackers_in">%s 中的追踪器</string>
     <string name="trackers_note_1">包括您的敏感数据的许多跟踪器</string>
@@ -340,4 +340,11 @@
     <plurals name="privacy_points_FORMAT">
         <item quantity="other">(-%d 隐私点数)</item>
     </plurals>
+    <string name="alt_new_apps_description">使用替代/旧的新应用布局，显示小应用卡片。</string>
+    <string name="dynamic_dark">动态暗色</string>
+    <string name="dynamic_light">动态亮色</string>
+    <string name="dynamic_black">动态黑色</string>
+    <string name="no_releases">没有兼容的更新可显示</string>
+    <string name="allow_unstable_updates">显示不稳定更新</string>
+    <string name="alt_new_apps">使用替代新应用布局</string>
 </resources>
