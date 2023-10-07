@@ -337,4 +337,16 @@
     <string name="repos_import">Tárolók importálása (felülírja a már meglévőket)</string>
     <string name="installed_export">A telepített alkalmazások listájának exportálása</string>
     <string name="installed_import">Egy listányi alkalmazás importálása és telepítése (letölti őket a bekapcsolt tárolókból ha ott megtalálhatóak)</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d adatvédelmi pont)</item>
+        <item quantity="other">(-%d adatvédelmi pont)</item>
+    </plurals>
+    <string name="alt_new_apps_description">Az alternatív/régi „új alkalmazások” elrendezés, amely kis alkalmazáskártyákat.</string>
+    <string name="trackers_none">Nincsenek követők</string>
+    <string name="dynamic_dark">Sötét, dinamikus színekkel</string>
+    <string name="dynamic_light">Világos, dinamikus színekkel</string>
+    <string name="dynamic_black">Fekete, dinamikus színekkel</string>
+    <string name="no_releases">Nincsenek megjeleníthető kiadások</string>
+    <string name="allow_unstable_updates">Nem stabil frissítések megjelenítésének engedélyezése</string>
+    <string name="alt_new_apps">Alternatív új alkalmazás-elrendezés használata</string>
 </resources>
