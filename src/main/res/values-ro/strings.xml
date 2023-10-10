@@ -349,4 +349,6 @@
     <string name="dynamic_black">Întunecată cu culori dinamice</string>
     <string name="no_releases">Nu există versiuni compatibile de afișat</string>
     <string name="allow_unstable_updates">Permite afișarea actualizărilor instabile</string>
+    <string name="alt_new_apps_description">Utilizează aspectul alternativ/vechi al aplicațiilor noi, care arată carduri mici ale aplicațiilor.</string>
+    <string name="alt_new_apps">Utilizează un aspect alternativ al aplicațiilor noi</string>
 </resources>
