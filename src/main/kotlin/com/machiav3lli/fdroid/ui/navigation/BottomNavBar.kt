@@ -17,6 +17,12 @@
  */
 package com.machiav3lli.fdroid.ui.navigation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -46,7 +52,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.machiav3lli.fdroid.NAV_MAIN
 import com.machiav3lli.fdroid.NAV_PREFS
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.ui.compose.utils.addIf
 
 @Composable
 fun BottomNavBar(page: Int = NAV_MAIN, navController: NavHostController) {
@@ -125,6 +130,21 @@ fun RowScope.AltNavBarItem(
     selected: Boolean,
     onClick: () -> Unit = {},
 ) {
+    val backgroundColor by animateColorAsState(
+        targetValue = if (selected) MaterialTheme.colorScheme.surfaceColorAtElevation(12.dp)
+        else Color.Transparent,
+        label = "backgroundColor",
+    )
+    val iconSize by animateDpAsState(
+        targetValue = if (selected) 32.dp else 24.dp,
+        label = "iconSize",
+    )
+    val iconColor by animateColorAsState(
+        targetValue = if (selected) MaterialTheme.colorScheme.primary
+        else MaterialTheme.colorScheme.onSurface,
+        label = "iconColor",
+    )
+
     Row(
         modifier = Modifier
             .clickable { onClick() }
@@ -140,23 +160,23 @@ fun RowScope.AltNavBarItem(
                 imageVector = icon,
                 contentDescription = stringResource(id = labelId),
                 modifier = Modifier
-                    .background(
-                        if (selected) MaterialTheme.colorScheme.surfaceColorAtElevation(48.dp)
-                        else Color.Transparent,
-                        CircleShape
-                    )
+                    .background(backgroundColor, CircleShape)
                     .padding(8.dp)
-                    .size(if (selected) 32.dp else 24.dp),
-                tint = if (selected) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.onSurface
+                    .size(iconSize),
+                tint = iconColor,
             )
-            if (!selected) Text(
-                text = stringResource(id = labelId),
-                style = MaterialTheme.typography.bodyMedium,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
+            AnimatedVisibility(
+                visible = !selected,
+                enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
+            ) {
+                Text(
+                    text = stringResource(id = labelId),
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+            }
         }
     }
 }
@@ -169,16 +189,24 @@ fun RowScope.NavBarItem(
     selected: Boolean,
     onClick: () -> Unit = {},
 ) {
+    val background by animateColorAsState(
+        targetValue = if (selected) MaterialTheme.colorScheme.surfaceColorAtElevation(12.dp)
+        else Color.Transparent, label = "backgroundColor"
+    )
+    val iconColor by animateColorAsState(
+        targetValue = if (selected) MaterialTheme.colorScheme.primary
+        else MaterialTheme.colorScheme.onSurface,
+        label = "iconColor",
+    )
+
     Row(
         modifier = modifier
             .padding(vertical = 8.dp)
             .clickable { onClick() }
-            .addIf(selected) {
-                background(
-                    MaterialTheme.colorScheme.surfaceColorAtElevation(12.dp),
-                    MaterialTheme.shapes.extraLarge
-                )
-            }
+            .background(
+                background,
+                MaterialTheme.shapes.extraLarge
+            )
             .padding(8.dp)
             .weight(1f),
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
@@ -188,15 +216,19 @@ fun RowScope.NavBarItem(
             imageVector = icon,
             contentDescription = stringResource(id = labelId),
             modifier = Modifier.size(24.dp),
-            tint = if (selected) MaterialTheme.colorScheme.primary
-            else MaterialTheme.colorScheme.onSurface
+            tint = iconColor,
         )
-        if (selected) Text(
-            text = stringResource(id = labelId),
-            style = MaterialTheme.typography.bodyMedium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.primary,
-        )
+        AnimatedVisibility(
+            visible = selected,
+            enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
+        ) {
+            Text(
+                text = stringResource(id = labelId),
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        }
     }
 }
