@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.ui.components.privacy
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -96,11 +97,18 @@ fun PrivacyItemBlock(
     var expanded by rememberSaveable { mutableStateOf(preExpanded) }
     val surfaceColor by animateColorAsState(
         targetValue = if (expanded) MaterialTheme.colorScheme.surfaceColorAtElevation(128.dp)
-        else Color.Transparent
+        else Color.Transparent,
+        label = "surfaceColor"
+    )
+    val expandedPadding by animateDpAsState(
+        targetValue = if (expanded) 2.dp else 0.dp,
+        label = "expandedPadding"
     )
 
     Surface(
-        modifier = Modifier.animateContentSize(),
+        modifier = Modifier
+            .animateContentSize()
+            .padding(vertical = expandedPadding),
         shape = MaterialTheme.shapes.large,
         onClick = { expanded = !expanded },
         color = surfaceColor
