@@ -220,7 +220,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                     )
                 }
                 if (downloads.isNotEmpty()) items(items = downloads
-                    .sortedByDescending { it.changed }
+                    .sortedBy { it.state.name }
                 ) { item ->
                     DownloadedItem(
                         item = item,
