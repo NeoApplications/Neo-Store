@@ -1,12 +1,8 @@
 package com.machiav3lli.fdroid.pages
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,14 +12,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -51,6 +49,8 @@ import com.machiav3lli.fdroid.service.worker.ExodusWorker
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
+import com.machiav3lli.fdroid.ui.components.TabButton
+import com.machiav3lli.fdroid.ui.components.TabIndicator
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
@@ -67,7 +67,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun InstalledPage(viewModel: InstalledVM) {
     val context = LocalContext.current
@@ -77,7 +77,7 @@ fun InstalledPage(viewModel: InstalledVM) {
     val secondaryList by viewModel.secondaryProducts.collectAsState(null)
     val installedList by viewModel.installed.collectAsState(emptyMap())
     val repositories by viewModel.repositories.collectAsState(null)
-    var showDownloadsPage by remember { mutableStateOf(false) }
+    val pagerState = rememberPagerState { 2 }
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
@@ -122,180 +122,176 @@ fun InstalledPage(viewModel: InstalledVM) {
             .blockBorder()
             .fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
-        floatingActionButton = {
-            val fabColors = ButtonDefaults.filledTonalButtonColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.primary,
-            )
-            FilledTonalButton(
-                modifier = Modifier.padding(4.dp),
-                shape = MaterialTheme.shapes.large,
-                colors = fabColors,
-                onClick = { showDownloadsPage = !showDownloadsPage }
-            ) {
-                Row(
-                    modifier = Modifier.padding(4.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        imageVector = if (showDownloadsPage) Phosphor.ArrowSquareOut else Phosphor.Download,
-                        contentDescription = stringResource(
-                            id = if (showDownloadsPage) R.string.installed else R.string.downloads
-                        )
-                    )
-                    Text(
-                        text = stringResource(
-                            id = if (showDownloadsPage) R.string.installed else R.string.downloads
-                        )
-                    )
-                }
-            }
-        }
     ) { paddingValues ->
-        AnimatedVisibility(
-            visible = !showDownloadsPage,
-            enter = slideInVertically { height -> height } + fadeIn(),
-            exit = slideOutVertically { height -> -height } + fadeOut(),
-        ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(vertical = 8.dp),
+        Column {
+            TabRow(selectedTabIndex = pagerState.currentPage,
+                indicator = { tabPositions ->
+                    TabIndicator(tabPositions[pagerState.currentPage])
+                }
             ) {
-                item {
-                    if (secondaryList.orEmpty().isNotEmpty()) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                TabButton(
+                    text = stringResource(id = R.string.installed),
+                    icon = Phosphor.ArrowSquareOut,
+                    onClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(0)
+                        }
+                    }
+                )
+                TabButton(
+                    text = stringResource(id = R.string.downloads),
+                    icon = Phosphor.Download,
+                    onClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(1)
+                        }
+                    }
+                )
+            }
+            HorizontalPager(state = pagerState, userScrollEnabled = false) { index ->
+                when (index) {
+                    0 -> {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(vertical = 8.dp),
                         ) {
-                            ElevatedButton(
-                                colors = ButtonDefaults.elevatedButtonColors(
-                                    contentColor = MaterialTheme.colorScheme.primary
-                                ),
-                                onClick = { updatesVisible = !updatesVisible }
-                            ) {
-                                Text(
-                                    modifier = Modifier.padding(start = 4.dp),
-                                    text = stringResource(id = R.string.updates),
-                                    textAlign = TextAlign.Center,
-                                    style = MaterialTheme.typography.titleSmall
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Icon(
-                                    modifier = Modifier.size(18.dp),
-                                    imageVector = if (updatesVisible) Phosphor.CaretUp else Phosphor.CaretDown,
-                                    contentDescription = stringResource(id = R.string.updates)
-                                )
-                            }
-                            Spacer(modifier = Modifier.weight(1f))
-                            ActionChip(
-                                text = stringResource(id = R.string.update_all),
-                                icon = Phosphor.Download,
-                            ) {
-                                secondaryList?.let {
-                                    MainApplication.wm.update(
-                                        *it.map(Product::toItem).toTypedArray()
-                                    )
+                            item {
+                                if (secondaryList.orEmpty().isNotEmpty()) {
+                                    Row(
+                                        modifier = Modifier.padding(
+                                            horizontal = 8.dp,
+                                            vertical = 4.dp
+                                        ),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        ElevatedButton(
+                                            colors = ButtonDefaults.elevatedButtonColors(
+                                                contentColor = MaterialTheme.colorScheme.primary
+                                            ),
+                                            onClick = { updatesVisible = !updatesVisible }
+                                        ) {
+                                            Text(
+                                                modifier = Modifier.padding(start = 4.dp),
+                                                text = stringResource(id = R.string.updates),
+                                                textAlign = TextAlign.Center,
+                                                style = MaterialTheme.typography.titleSmall
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Icon(
+                                                modifier = Modifier.size(18.dp),
+                                                imageVector = if (updatesVisible) Phosphor.CaretUp else Phosphor.CaretDown,
+                                                contentDescription = stringResource(id = R.string.updates)
+                                            )
+                                        }
+                                        Spacer(modifier = Modifier.weight(1f))
+                                        ActionChip(
+                                            text = stringResource(id = R.string.update_all),
+                                            icon = Phosphor.Download,
+                                        ) {
+                                            secondaryList?.let {
+                                                MainApplication.wm.update(
+                                                    *it.map(Product::toItem).toTypedArray()
+                                                )
+                                            }
+                                        }
+                                    }
                                 }
                             }
-                        }
-                    }
-                }
-                item {
-                    if (updatesVisible && secondaryList.orEmpty().isNotEmpty()) {
-                        ProductsHorizontalRecycler(
-                            productsList = secondaryList,
-                            repositories = repositoriesMap,
-                            installedMap = installedList,
-                            rowsNumber = secondaryList?.size?.coerceIn(1, 2) ?: 1,
-                        ) { item ->
-                            neoActivity.navigateProduct(item.packageName)
-                        }
-                    }
-                }
-                if (downloads.isNotEmpty()) item {
-                    Text(
-                        modifier = Modifier.padding(8.dp),
-                        text = stringResource(id = R.string.downloading)
-                    )
-                }
-                if (downloads.isNotEmpty()) items(items = downloads
-                    .sortedBy { it.state.name }
-                ) { item ->
-                    DownloadedItem(
-                        item = item,
-                        iconDetails = iconDetails[item.packageName],
-                        repo = repositoriesMap[item.state.repoId],
-                        state = item.state,
-                    ) {
-                        neoActivity.navigateProduct(item.packageName)
-                    }
-                }
-                item {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.installed_applications),
-                            modifier = Modifier.weight(1f),
-                        )
-                        ActionChip(
-                            text = stringResource(id = R.string.sort_filter),
-                            icon = Phosphor.FunnelSimple
-                        ) { showSortSheet = true }
-                    }
-                }
-                items(
-                    filteredPrimaryList?.map { it.toItem(installedList[it.packageName]) }
-                        ?: emptyList()
-                ) { item ->
-                    ProductsListItem(
-                        item = item,
-                        repo = repositoriesMap[item.repositoryId],
-                        isFavorite = favorites.contains(item.packageName),
-                        onUserClick = {
-                            ExodusWorker.fetchExodusInfo(item.packageName)
-                            neoActivity.navigateProduct(it.packageName)
-                        },
-                        onFavouriteClick = { pi ->
-                            viewModel.setFavorite(
-                                pi.packageName,
-                                !favorites.contains(pi.packageName)
-                            )
-                        },
-                        installed = installedList[item.packageName],
-                        onActionClick = {
-                            val installed = installedList[it.packageName]
-                            if (installed != null && installed.launcherActivities.isNotEmpty())
-                                context.onLaunchClick(
-                                    installed,
-                                    neoActivity.supportFragmentManager
+                            item {
+                                if (updatesVisible && secondaryList.orEmpty().isNotEmpty()) {
+                                    ProductsHorizontalRecycler(
+                                        productsList = secondaryList,
+                                        repositories = repositoriesMap,
+                                        installedMap = installedList,
+                                        rowsNumber = secondaryList?.size?.coerceIn(1, 2) ?: 1,
+                                    ) { item ->
+                                        neoActivity.navigateProduct(item.packageName)
+                                    }
+                                }
+                            }
+                            if (downloads.isNotEmpty()) item {
+                                Text(
+                                    modifier = Modifier.padding(8.dp),
+                                    text = stringResource(id = R.string.downloading)
                                 )
-                            else
-                                MainApplication.wm.install(it)
+                            }
+                            if (downloads.isNotEmpty()) items(items = downloads
+                                .sortedBy { it.state.name }
+                            ) { item ->
+                                DownloadedItem(
+                                    item = item,
+                                    iconDetails = iconDetails[item.packageName],
+                                    repo = repositoriesMap[item.state.repoId],
+                                    state = item.state,
+                                ) {
+                                    neoActivity.navigateProduct(item.packageName)
+                                }
+                            }
+                            item {
+                                Row(
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = stringResource(id = R.string.installed_applications),
+                                        modifier = Modifier.weight(1f),
+                                    )
+                                    ActionChip(
+                                        text = stringResource(id = R.string.sort_filter),
+                                        icon = Phosphor.FunnelSimple
+                                    ) { showSortSheet = true }
+                                }
+                            }
+                            items(
+                                filteredPrimaryList?.map { it.toItem(installedList[it.packageName]) }
+                                    ?: emptyList()
+                            ) { item ->
+                                ProductsListItem(
+                                    item = item,
+                                    repo = repositoriesMap[item.repositoryId],
+                                    isFavorite = favorites.contains(item.packageName),
+                                    onUserClick = {
+                                        ExodusWorker.fetchExodusInfo(item.packageName)
+                                        neoActivity.navigateProduct(it.packageName)
+                                    },
+                                    onFavouriteClick = { pi ->
+                                        viewModel.setFavorite(
+                                            pi.packageName,
+                                            !favorites.contains(pi.packageName)
+                                        )
+                                    },
+                                    installed = installedList[item.packageName],
+                                    onActionClick = {
+                                        val installed = installedList[it.packageName]
+                                        if (installed != null && installed.launcherActivities.isNotEmpty())
+                                            context.onLaunchClick(
+                                                installed,
+                                                neoActivity.supportFragmentManager
+                                            )
+                                        else
+                                            MainApplication.wm.install(it)
+                                    }
+                                )
+                            }
                         }
-                    )
-                }
-            }
-        }
-        AnimatedVisibility(
-            visible = showDownloadsPage,
-            enter = slideInVertically { height -> -height } + fadeIn(),
-            exit = slideOutVertically { height -> height } + fadeOut(),
-        ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                items(items = downloaded.sortedByDescending { it.changed }) { item ->
-                    DownloadedItem(
-                        item = item,
-                        iconDetails = iconDetails[item.packageName],
-                        repo = repositoriesMap[item.state.repoId],
-                        state = item.state,
-                        onUserClick = { neoActivity.navigateProduct(item.packageName) },
-                        onEraseClick = { viewModel.eraseDownloaded(item) },
-                    )
+                    }
+
+                    1 -> {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                        ) {
+                            items(items = downloaded.sortedByDescending { it.changed }) { item ->
+                                DownloadedItem(
+                                    item = item,
+                                    iconDetails = iconDetails[item.packageName],
+                                    repo = repositoriesMap[item.state.repoId],
+                                    state = item.state,
+                                    onUserClick = { neoActivity.navigateProduct(item.packageName) },
+                                    onEraseClick = { viewModel.eraseDownloaded(item) },
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
