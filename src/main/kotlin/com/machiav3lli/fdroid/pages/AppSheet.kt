@@ -38,6 +38,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -70,7 +71,6 @@ import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.network.createIconUri
 import com.machiav3lli.fdroid.service.ActionReceiver
 import com.machiav3lli.fdroid.service.worker.DownloadWorker
-import com.machiav3lli.fdroid.ui.components.ExpandableBlock
 import com.machiav3lli.fdroid.ui.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.components.SwitchPreference
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoChips
@@ -83,6 +83,8 @@ import com.machiav3lli.fdroid.ui.components.appsheet.ReleaseItem
 import com.machiav3lli.fdroid.ui.components.appsheet.TopBarHeader
 import com.machiav3lli.fdroid.ui.components.appsheet.WarningCard
 import com.machiav3lli.fdroid.ui.components.privacy.MeterIconsBar
+import com.machiav3lli.fdroid.ui.components.privacy.PrivacyCard
+import com.machiav3lli.fdroid.ui.components.privacy.PrivacyItemBlock
 import com.machiav3lli.fdroid.ui.components.toScreenshotItem
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Icon
@@ -121,9 +123,12 @@ fun AppSheet(
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
     val pagerState = rememberPagerState(pageCount = { 2 })
-    var screenshotPage by remember { mutableStateOf(0) }
+    var screenshotPage by remember { mutableIntStateOf(0) }
     val screenshotsPageState = rememberModalBottomSheetState(true)
     val installed by viewModel.installedItem.collectAsState(null)
+    val isInstalled by remember(installed) {
+        mutableStateOf(installed != null)
+    }
     val products by viewModel.products.collectAsState(null)
     val exodusInfo by viewModel.exodusInfo.collectAsState(null)
     val privacyNote by viewModel.privacyNote.collectAsState(PrivacyNote())
@@ -431,9 +436,7 @@ fun AppSheet(
                                     }
                                 )
                             }
-                        }
-                        item {
-                            AnimatedVisibility(visible = installed != null) {
+                            AnimatedVisibility(visible = isInstalled) {
                                 SwitchPreference(
                                     text = stringResource(id = R.string.ignore_all_updates),
                                     initSelected = { extras?.ignoreUpdates == true },
@@ -442,9 +445,7 @@ fun AppSheet(
                                     }
                                 )
                             }
-                        }
-                        item {
-                            AnimatedVisibility(visible = installed != null) {
+                            AnimatedVisibility(visible = isInstalled) {
                                 SwitchPreference(
                                     text = stringResource(id = R.string.ignore_vulns),
                                     initSelected = { extras?.ignoreVulns == true },
@@ -453,9 +454,7 @@ fun AppSheet(
                                     }
                                 )
                             }
-                        }
-                        item {
-                            AnimatedVisibility(visible = installed != null) {
+                            AnimatedVisibility(visible = isInstalled) {
                                 SwitchPreference(
                                     text = stringResource(id = R.string.allow_unstable_updates),
                                     initSelected = { extras?.allowUnstable == true },
@@ -465,7 +464,7 @@ fun AppSheet(
                                 )
                             }
                         }
-                        if (Preferences[Preferences.Key.ShowScreenshots]) {
+                        if (Preferences[Preferences.Key.ShowScreenshots]) { // TODO add optional screenshots button
                             item {
                                 ScreenshotList(screenShots = suggestedProductRepo.first.screenshots.map {
                                     it.toScreenshotItem(
@@ -485,81 +484,69 @@ fun AppSheet(
                             )
                         }
                         val links = product.generateLinks(context)
-                        if (links.isNotEmpty()) {
-                            item {
-                                ExpandableBlock(
-                                    heading = stringResource(id = R.string.links),
-                                    positive = true,
-                                    preExpanded = true
-                                ) {
-                                    links.forEach { item ->
-                                        LinkItem(
-                                            linkType = item,
-                                            onClick = { link ->
-                                                link?.let { onUriClick(it, true) }
-                                            },
-                                            onLongClick = { link ->
-                                                copyLinkToClipboard(link.toString())
-                                            }
+                        item {
+                            if ((links + product.donates + product.whatsNew + authorProducts).isNotEmpty()) PrivacyCard(
+                                preExpanded = true,
+                            ) {
+                                if (links.isNotEmpty()) {
+                                    PrivacyItemBlock(heading = stringResource(id = R.string.links)) {
+                                        links.forEach { item ->
+                                            LinkItem(
+                                                linkType = item,
+                                                onClick = { link ->
+                                                    link?.let { onUriClick(it, true) }
+                                                },
+                                                onLongClick = { link ->
+                                                    copyLinkToClipboard(link.toString())
+                                                }
+                                            )
+                                        }
+                                    }
+                                }
+                                if (product.donates.isNotEmpty()) {
+                                    PrivacyItemBlock(heading = stringResource(id = R.string.donate)) {
+                                        product.donates.forEach { item ->
+                                            LinkItem(
+                                                linkType = DonateType(item, context),
+                                                onClick = { link ->
+                                                    link?.let { onUriClick(it, true) }
+                                                },
+                                                onLongClick = { link ->
+                                                    copyLinkToClipboard(link.toString())
+                                                }
+                                            )
+                                        }
+                                    }
+                                }
+                                if (!authorProducts.isNullOrEmpty()) {
+                                    PrivacyItemBlock(
+                                        heading = stringResource(
+                                            id = R.string.other_apps_by,
+                                            product.author.name
+                                        ),
+                                    ) {
+                                        Log.i(
+                                            "author products",
+                                            authorProducts?.map { it.author }?.joinToString()
+                                                .orEmpty()
                                         )
+                                        ProductsHorizontalRecycler(
+                                            productsList = authorProducts,
+                                            repositories = repos?.associateBy { repo -> repo.id }
+                                                ?: emptyMap(),
+                                            rowsNumber = 1,
+                                        ) { item ->
+                                            neoActivity.navigateProduct(item.packageName)
+                                        }
                                     }
                                 }
-                            }
-                        }
-                        if (product.donates.isNotEmpty()) {
-                            item {
-                                ExpandableBlock(
-                                    heading = stringResource(id = R.string.donate),
-                                    positive = true,
-                                    preExpanded = false
-                                ) {
-                                    product.donates.forEach { item ->
-                                        LinkItem(
-                                            linkType = DonateType(item, context),
-                                            onClick = { link ->
-                                                link?.let { onUriClick(it, true) }
-                                            },
-                                            onLongClick = { link ->
-                                                copyLinkToClipboard(link.toString())
-                                            }
-                                        )
+                                if (product.whatsNew.isNotEmpty()) {
+                                    PrivacyItemBlock(
+                                        heading = stringResource(id = R.string.changes),
+                                        preExpanded = true,
+                                    ) {
+                                        HtmlTextBlock(shortText = product.whatsNew)
                                     }
-                                }
-                            }
-                        }
-                        if (!authorProducts.isNullOrEmpty()) {
-                            item {
-                                ExpandableBlock(
-                                    heading = stringResource(
-                                        id = R.string.other_apps_by,
-                                        product.author.name
-                                    ),
-                                    positive = true,
-                                    preExpanded = false
-                                ) {
-                                    Log.i(
-                                        "author products",
-                                        authorProducts?.map { it.author }?.joinToString().orEmpty()
-                                    )
-                                    ProductsHorizontalRecycler(
-                                        productsList = authorProducts,
-                                        repositories = repos?.associateBy { repo -> repo.id }
-                                            ?: emptyMap(),
-                                        rowsNumber = 1,
-                                    ) { item ->
-                                        neoActivity.navigateProduct(item.packageName)
-                                    }
-                                }
-                            }
-                        }
-                        if (product.whatsNew.isNotEmpty()) {
-                            item {
-                                ExpandableBlock(
-                                    heading = stringResource(id = R.string.changes),
-                                    positive = true,
-                                    preExpanded = true
-                                ) {
-                                    HtmlTextBlock(shortText = product.whatsNew)
                                 }
                             }
                         }

@@ -90,7 +90,7 @@ fun PrivacyItem(
 fun PrivacyItemBlock(
     modifier: Modifier = Modifier,
     heading: String? = null,
-    icon: ImageVector,
+    icon: ImageVector? = null,
     preExpanded: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -133,7 +133,7 @@ fun PrivacyItemBlock(
 @Composable
 fun PrivacyItemHeader(
     heading: String? = null,
-    icon: ImageVector,
+    icon: ImageVector? = null,
     withIcon: Boolean = true,
 ) {
     var spacerHeight = 0
@@ -147,10 +147,12 @@ fun PrivacyItemHeader(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = heading
-            )
+            icon?.let {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = heading
+                )
+            }
             Text(
                 modifier = Modifier.weight(1f),
                 text = heading,
