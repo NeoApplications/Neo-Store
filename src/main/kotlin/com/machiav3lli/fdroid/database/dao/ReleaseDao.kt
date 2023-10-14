@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.database.dao
 import androidx.room.Dao
 import androidx.room.Query
 import com.machiav3lli.fdroid.database.entity.Release
+import com.machiav3lli.fdroid.database.entity.ReleaseTemp
 
 @Dao
 interface ReleaseDao : BaseDao<Release> {
@@ -13,4 +14,13 @@ interface ReleaseDao : BaseDao<Release> {
     // This one for the separating releases of different sources
     @Query("SELECT * FROM `release` WHERE packageName = :packageName AND signature = :signature")
     fun get(packageName: String, signature: String): List<Release>
+}
+
+@Dao
+interface ReleaseTempDao : BaseDao<ReleaseTemp> {
+    @Query("SELECT * FROM temporary_release")
+    fun getAll(): Array<ReleaseTemp>
+
+    @Query("DELETE FROM temporary_release")
+    fun emptyTable()
 }

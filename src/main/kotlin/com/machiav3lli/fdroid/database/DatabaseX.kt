@@ -18,6 +18,7 @@ import com.machiav3lli.fdroid.database.dao.InstalledDao
 import com.machiav3lli.fdroid.database.dao.ProductDao
 import com.machiav3lli.fdroid.database.dao.ProductTempDao
 import com.machiav3lli.fdroid.database.dao.ReleaseDao
+import com.machiav3lli.fdroid.database.dao.ReleaseTempDao
 import com.machiav3lli.fdroid.database.dao.RepositoryDao
 import com.machiav3lli.fdroid.database.dao.TrackerDao
 import com.machiav3lli.fdroid.database.entity.Category
@@ -30,6 +31,7 @@ import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.ProductTemp
 import com.machiav3lli.fdroid.database.entity.Release
+import com.machiav3lli.fdroid.database.entity.ReleaseTemp
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV10
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV11
@@ -51,6 +53,7 @@ import kotlinx.coroutines.launch
         Repository::class,
         Product::class,
         Release::class,
+        ReleaseTemp::class,
         ProductTemp::class,
         Category::class,
         CategoryTemp::class,
@@ -128,6 +131,7 @@ abstract class DatabaseX : RoomDatabase() {
     abstract fun getRepositoryDao(): RepositoryDao
     abstract fun getProductDao(): ProductDao
     abstract fun getReleaseDao(): ReleaseDao
+    abstract fun getReleaseTempDao(): ReleaseTempDao
     abstract fun getProductTempDao(): ProductTempDao
     abstract fun getCategoryDao(): CategoryDao
     abstract fun getCategoryTempDao(): CategoryTempDao
