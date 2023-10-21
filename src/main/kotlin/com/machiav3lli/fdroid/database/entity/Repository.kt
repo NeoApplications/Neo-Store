@@ -528,9 +528,9 @@ data class Repository(
             "49F37E74DEE483DCA2B991334FB5A0200787430D0B5F9A783DD5F13695E9517B",
             ""
         )
-        private val ANYOMI = defaultRepository(
+        private val ANIYOMI = defaultRepository(
             "https://fdroid.aniyomi.org/",
-            "Anyomi",
+            "Aniyomi",
             "Fork of Tachiyomi for anime",
             21,
             false,
@@ -697,7 +697,7 @@ data class Repository(
         )
 
         val addedReposV19 = listOf(
-            SAMOURAI_WALLET, DIVOLT, CROMITE, ANYOMI,
+            SAMOURAI_WALLET, DIVOLT, CROMITE, ANIYOMI,
             JULIAN_KLODE, KOYU, KUSCHKU, KVAESITSO,
             LTHEINRICH, METATRANS_APPS, GADGETBRIDGE,
             GROBOX, JULIAN, SPIRIT_CROCS_TEST, ZIMBELSTERN
