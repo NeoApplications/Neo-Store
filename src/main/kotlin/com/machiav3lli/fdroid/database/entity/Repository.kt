@@ -528,6 +528,114 @@ data class Repository(
             "49F37E74DEE483DCA2B991334FB5A0200787430D0B5F9A783DD5F13695E9517B",
             ""
         )
+        private val ANYOMI = defaultRepository(
+            "https://fdroid.aniyomi.org/",
+            "Anyomi",
+            "Fork of Tachiyomi for anime",
+            21,
+            false,
+            "2A01E80EBB8B50B5D4C0BF7DF45F12479C475F34B3F3F5AA57975C7E1BC0B9C3",
+            ""
+        )
+        private val JULIAN_KLODE = defaultRepository(
+            "https://jak-linux.org/fdroid/repo/",
+            "DNS66",
+            "Repository of the app DNS66",
+            21,
+            false,
+            "C00A81E44BFF606530C4C7A2137BAC5F1C03D2FDEF6DB3B84C71386EA9BFD225",
+            ""
+        )
+        private val KOYU = defaultRepository(
+            "https://fdroid.koyu.space/fdroid/repo/",
+            "Koyu Space",
+            "FOSS apps of the koyu.space global network",
+            21,
+            false,
+            "0ACF19C0ACEA755934E00676D52EB2F9D68F300C052A565B459FE2F5E98D237E",
+            ""
+        )
+        private val KUSCHKU = defaultRepository(
+            "https://jak-linux.org/fdroid/repo/",
+            "Kuschku",
+            "Official Repository for all kuschku.de applications, including Quasseldroid",
+            21,
+            false,
+            "A0CBC2C29E38ED9542F86A1188412A60C5A756FC4D7A31C4C622242D7AD021F2",
+            ""
+        )
+        private val KVAESITSO = defaultRepository(
+            "https://fdroid.mm20.de/repo",
+            "Kvaesitso Launcher",
+            "Apps developed and distributed by MM20",
+            21,
+            false,
+            "156FBAB952F6996415F198F3F29628D24B30E725B0F07A2B49C3A9B5161EEE1A",
+            ""
+        )
+        private val LTHEINRICH = defaultRepository(
+            "https://ltheinrich.de/fdroid/repo",
+            "Etopa(OTP app)",
+            "Time-based one-time password authenticator",
+            21,
+            false,
+            "B90FC7691EC5BE977DCBBCB18C3984C794CCAFA5BB8712ED2D64F9FD8703B636",
+            ""
+        )
+        private val METATRANS_APPS = defaultRepository(
+            "https://fdroid.metatransapps.com/fdroid/repo",
+            "Metatrans Apps",
+            "Chess & Educational Games",
+            21,
+            false,
+            "214027CD55300B837A93B43717B190DD4867CDB20FAABD8853DEF55BD0FF6A0B",
+            ""
+        )
+        private val GADGETBRIDGE = defaultRepository(
+            "https://freeyourgadget.codeberg.page/fdroid/repo",
+            "Gadgetbridge nightly apps",
+            "Gadgetbridge repository of nightly releases",
+            21,
+            false,
+            "CD381ECCC465AB324E21BCC335895615E07E70EE11E9FD1DF3C020C5194F00B2",
+            ""
+        )
+        private val GROBOX = defaultRepository(
+            "https://grobox.de/fdroid/repo",
+            "Grobox Testing Repo ",
+            " F-Droid Maintainer Torsten Grote‘s Testing repo",
+            21,
+            false,
+            "28E14FB3B280BCE8FF1E0F8E82726FF46923662CECFF2A0689108CE19E8B347C",
+            ""
+        )
+        private val JULIAN = defaultRepository(
+            "https://julianfairfax.gitlab.io/fdroid-repo/fdroid/repo",
+            "Julian's F-Droid Repo",
+            "Repository for installing apps more easily (Proton, GrapheneOS).",
+            21,
+            false,
+            "83ABB548CAA6F311CE3591DDCA466B65213FD0541352502702B1908F0C84206D",
+            ""
+        )
+        private val SPIRIT_CROCS_TEST = defaultRepository(
+            "https://s2.spiritcroc.de/testing/fdroid/repo",
+            "SpiritCroc.de Test",
+            "SpiritCroc.de Test Builds",
+            21,
+            false,
+            "52d03f2fab785573bb295c7ab270695e3a1bdd2adc6a6de8713250b33f231225",
+            ""
+        )
+        private val ZIMBELSTERN = defaultRepository(
+            "https://zimbelstern.eu/fdroid/repo",
+            "Zimbelstern's F-Droid repository",
+            "This is the official repository of apps from zimbelstern.eu",
+            21,
+            false,
+            "285158DECEF37CB8DE7C5AF14818ACBF4A9B1FBE63116758EFC267F971CA23AA",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, F_DROID_ARCHIVE,
@@ -589,7 +697,10 @@ data class Repository(
         )
 
         val addedReposV19 = listOf(
-            SAMOURAI_WALLET, DIVOLT, CROMITE,
+            SAMOURAI_WALLET, DIVOLT, CROMITE, ANYOMI,
+            JULIAN_KLODE, KOYU, KUSCHKU, KVAESITSO,
+            LTHEINRICH, METATRANS_APPS, GADGETBRIDGE,
+            GROBOX, JULIAN, SPIRIT_CROCS_TEST, ZIMBELSTERN
         )
     }
 }
