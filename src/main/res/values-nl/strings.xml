@@ -329,4 +329,5 @@
     <string name="permissions_note_2">Heeft niet zo veel toestemmingen nodig</string>
     <string name="source_proprietary">Niet open source</string>
     <string name="permission_granted">Toegekend</string>
+    <string name="warning_disable_battery_optimization">Sinds Android 12 moet de app toestemming hebben voor batterij-optimalisatie om achtergrondprocessen uit te voeren zoals synchronisatie en downloaden. Als je deze toestemming negeert, ben je op jezelf aangewezen en worden crashrapporten genegeerd.</string>
 </resources>
