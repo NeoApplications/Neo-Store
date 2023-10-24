@@ -636,6 +636,15 @@ data class Repository(
             "285158DECEF37CB8DE7C5AF14818ACBF4A9B1FBE63116758EFC267F971CA23AA",
             ""
         )
+        private val FUTO = defaultRepository(
+            "https://app.futo.org/fdroid/repo",
+            "FUTO F-Droid Repo",
+            "Software created by FUTO",
+            21,
+            false,
+            "39D47869D29CBFCE4691D9F7E6946A7B6D7E6FF4883497E6E675744ECDFA6D6D",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, F_DROID_ARCHIVE,
@@ -700,7 +709,8 @@ data class Repository(
             SAMOURAI_WALLET, DIVOLT, CROMITE, ANIYOMI,
             JULIAN_KLODE, KOYU, KUSCHKU, KVAESITSO,
             LTHEINRICH, METATRANS_APPS, GADGETBRIDGE,
-            GROBOX, JULIAN, SPIRIT_CROCS_TEST, ZIMBELSTERN
+            GROBOX, JULIAN, SPIRIT_CROCS_TEST, ZIMBELSTERN,
+            FUTO,
         )
     }
 }
