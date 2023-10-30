@@ -187,11 +187,6 @@ data class Repository(
             "Bromite is a Chromium plus ad blocking and enhanced privacy; take back your browser.",
             21, false, "E1EE5CD076D7B0DC84CB2B45FB78B86DF2EB39A3B6C56BA3DC292A5E0C3B9504", ""
         )
-        private val UNGOOGLED_CHROMIUM = defaultRepository(
-            "https://www.droidware.info/fdroid/repo", "Ungoogled Chromium",
-            "Chromium sans dependency on Google web services. It also features some enhancments to privacy, control & transparency",
-            21, false, "2144449AB1DD270EC31B6087409B5D0EA39A75A9F290DA62AC1B238A0EAAF851", ""
-        )
         private val NEWPIPE = defaultRepository(
             "https://archive.newpipe.net/fdroid/repo", "NewPipe",
             "NewPipe's official independent repository.",
@@ -262,16 +257,6 @@ data class Repository(
             "The official repository for Bitwarden.",
             21, false, "BC54EA6FD1CD5175BCCCC47C561C5726E1C3ED7E686B6DB4B18BAC843A3EFE6C", ""
         )
-        private val FLUFFY_CHAT = defaultRepository(
-            "https://fluffychat.im/repo/stable/repo/", "FluffyChat",
-            "A repository to easily distribute the cute matrix messanger client.",
-            21, false, "5EDB5C4395B2F2D9BA682F6A1D275170CCE5365A6FA27D2220EA8D52A6D95F07", ""
-        )
-        private val FLUFFY_CHAT_NIGHTLY = defaultRepository(
-            "https://fluffychat.im/repo/nightly/repo/", "FluffyChat Nightly",
-            "A repository to easily distribute the nightlies of the cute matrix messanger client.",
-            21, false, "21A469657300576478B623DF99D8EB889A80BCD939ACA60A4074741BEAEC397D", ""
-        )
         private val MOLLY = defaultRepository(
             "https://molly.im/fdroid/foss/fdroid/repo", "Molly",
             "Molly is a fork of Signal focused on security.",
@@ -292,10 +277,10 @@ data class Repository(
             "Official repository for Anonymous Messenger, a peer to peer private anonymous and secure messenger that works over TOR.",
             21, false, "E065F74B35C920C7713012F45A0C8AD4758DD2776CFF6214F7D8064B285C044B", ""
         )
-        private val I2P = defaultRepository(
-            "https://f-droid.i2p.io/repo/", "i2p",
+        private val PI2P = defaultRepository(
+            "https://fdroid.i2pd.xyz/fdroid/repo", "PurpleI2P",
             "A repository of I2P apps.",
-            21, false, "22658CC69F48D63F63C3D64E2041C81714E2749F3F6E5445C825297A00DDC5B6", ""
+            21, false, "2B9564B0895EEAC039E854C6B065291B01E6A9CA02939CEDD0D35CF44BEE78E0", ""
         )
         private val UNOFFICIAL_FIREFOX = defaultRepository(
             "https://rfc2822.gitlab.io/fdroid-firefox/fdroid/repo", "Unofficial Firefox",
@@ -483,6 +468,15 @@ data class Repository(
             "6612ADE7E93174A589CF5BA26ED3AB28231A789640546C8F30375EF045BC9242",
             ""
         )
+        private val SPIRIT_CROC_TEST = defaultRepository(
+            "https://s2.spiritcroc.de/testing/fdroid/repo",
+            "SpiritCroc's Test F-Droid repository",
+            "SpiritCroc.de Test Builds",
+            21,
+            false,
+            "52D03F2FAB785573BB295C7AB270695E3A1BDD2ADC6A6DE8713250B33F231225",
+            ""
+        )
         private val DIVEST_OS_UNOFFICIAL = defaultRepository(
             "https://divestos.org/apks/unofficial/fdroid/repo/",
             "DivestOS Unofficial F-Droid repo",
@@ -529,7 +523,7 @@ data class Repository(
             ""
         )
         private val ANIYOMI = defaultRepository(
-            "https://fdroid.aniyomi.org/",
+            "https://fdroid.aniyomi.org",
             "Aniyomi",
             "Fork of Tachiyomi for anime",
             21,
@@ -537,17 +531,8 @@ data class Repository(
             "2A01E80EBB8B50B5D4C0BF7DF45F12479C475F34B3F3F5AA57975C7E1BC0B9C3",
             ""
         )
-        private val JULIAN_KLODE = defaultRepository(
-            "https://jak-linux.org/fdroid/repo/",
-            "DNS66",
-            "Repository of the app DNS66",
-            21,
-            false,
-            "C00A81E44BFF606530C4C7A2137BAC5F1C03D2FDEF6DB3B84C71386EA9BFD225",
-            ""
-        )
         private val KOYU = defaultRepository(
-            "https://fdroid.koyu.space/fdroid/repo/",
+            "https://fdroid.koyu.space/fdroid/repo",
             "Koyu Space",
             "FOSS apps of the koyu.space global network",
             21,
@@ -556,7 +541,7 @@ data class Repository(
             ""
         )
         private val KUSCHKU = defaultRepository(
-            "https://jak-linux.org/fdroid/repo/",
+            "https://repo.kuschku.de/fdroid/repo",
             "Kuschku",
             "Official Repository for all kuschku.de applications, including Quasseldroid",
             21,
@@ -573,7 +558,7 @@ data class Repository(
             "156FBAB952F6996415F198F3F29628D24B30E725B0F07A2B49C3A9B5161EEE1A",
             ""
         )
-        private val LTHEINRICH = defaultRepository(
+        private val ETOPA = defaultRepository(
             "https://ltheinrich.de/fdroid/repo",
             "Etopa(OTP app)",
             "Time-based one-time password authenticator",
@@ -609,22 +594,13 @@ data class Repository(
             "28E14FB3B280BCE8FF1E0F8E82726FF46923662CECFF2A0689108CE19E8B347C",
             ""
         )
-        private val JULIAN = defaultRepository(
+        private val FAIRFAX = defaultRepository(
             "https://julianfairfax.gitlab.io/fdroid-repo/fdroid/repo",
-            "Julian's F-Droid Repo",
+            "Julian Fairfax's F-Droid Repo",
             "Repository for installing apps more easily (Proton, GrapheneOS).",
             21,
             false,
             "83ABB548CAA6F311CE3591DDCA466B65213FD0541352502702B1908F0C84206D",
-            ""
-        )
-        private val SPIRIT_CROCS_TEST = defaultRepository(
-            "https://s2.spiritcroc.de/testing/fdroid/repo",
-            "SpiritCroc.de Test",
-            "SpiritCroc.de Test Builds",
-            21,
-            false,
-            "52d03f2fab785573bb295c7ab270695e3a1bdd2adc6a6de8713250b33f231225",
             ""
         )
         private val ZIMBELSTERN = defaultRepository(
@@ -651,27 +627,30 @@ data class Repository(
             GUARDIAN, GUARDIAN_ARCHIVE,
             IZZY,
             MICRO_G,
-            BROMITE, UNGOOGLED_CHROMIUM,  CROMITE,
+            BROMITE, CROMITE,
             NEWPIPE, LIBRETRO, BITWARDEN, GITJOURNAL,
             CALYX_OS, CALYX_OS_TEST, DIVEST_OS, KDE_RELEASE, KDE_NIGHTLY,
             NANODROID, NETSYMS, FEDILAB, NETHUNTER, BEOCODE,
             THREEMA, SESSION, MOLLY, BRIAR, ANONYMOUS_MESSENGER,
-            FLUFFY_CHAT, FLUFFY_CHAT_NIGHTLY, SIMPLEX_CHAT, REVOLT,
-            I2P, COLLABORA,
+            SIMPLEX_CHAT, REVOLT,
+            PI2P, COLLABORA,
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
             FROSTNERD, FROSTNERD_ARCHIVE,
             UNOFFICIAL_FIREFOX, PATCHED, WIND, UMBRELLA,
             CRYPTOMATOR, TWIN_HELIX,
             C_GEO, C_GEO_NIGHTLY, PETER_CXY,
             STACK_WALLET,
-            JAK_LINUX,
-            INVISV, MONERUJO, IODE, SPIRIT_CROC,
+            JAK_LINUX, GADGETBRIDGE,
+            INVISV, MONERUJO, IODE, SPIRIT_CROC, SPIRIT_CROC_TEST,
             DIVEST_OS_UNOFFICIAL, FUNKWHALE,
             SAMOURAI_WALLET, DIVOLT,
+            ANIYOMI, KOYU, KUSCHKU, KVAESITSO,
+            ETOPA, METATRANS_APPS, FUTO,
+            GROBOX, FAIRFAX, ZIMBELSTERN,
         )
 
         val addedReposV9 = listOf(
-            FLUFFY_CHAT, SIMPLEX_CHAT, I2P,
+            SIMPLEX_CHAT,
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
             FROSTNERD, FROSTNERD_ARCHIVE
         )
@@ -689,7 +668,7 @@ data class Repository(
         )
 
         val addedReposV14 = listOf(
-            FLUFFY_CHAT, FLUFFY_CHAT_NIGHTLY, BEOCODE, ANONYMOUS_MESSENGER
+            BEOCODE, ANONYMOUS_MESSENGER
         )
 
         val addedReposV15 = listOf(
@@ -706,11 +685,13 @@ data class Repository(
         )
 
         val addedReposV19 = listOf(
-            SAMOURAI_WALLET, DIVOLT, CROMITE, ANIYOMI,
-            JULIAN_KLODE, KOYU, KUSCHKU, KVAESITSO,
-            LTHEINRICH, METATRANS_APPS, GADGETBRIDGE,
-            GROBOX, JULIAN, SPIRIT_CROCS_TEST, ZIMBELSTERN,
-            FUTO,
+            SAMOURAI_WALLET, DIVOLT, CROMITE,
+        )
+
+        val addedReposV20 = listOf(
+            SPIRIT_CROC_TEST, ANIYOMI, KOYU, KUSCHKU, KVAESITSO,
+            ETOPA, METATRANS_APPS, GADGETBRIDGE, FUTO,
+            GROBOX, FAIRFAX, ZIMBELSTERN, PI2P,
         )
     }
 }

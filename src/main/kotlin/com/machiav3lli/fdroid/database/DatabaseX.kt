@@ -41,6 +41,7 @@ import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV15
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV17
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV18
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV19
+import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV20
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV9
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.defaultRepositories
 import com.machiav3lli.fdroid.database.entity.Tracker
@@ -123,6 +124,7 @@ import kotlinx.coroutines.launch
         AutoMigration(
             from = 19,
             to = 20,
+            spec = DatabaseX.Companion.MigrationSpec19to20::class
         ),
     ]
 )
@@ -234,6 +236,13 @@ abstract class DatabaseX : RoomDatabase() {
             }
         }
 
+        class MigrationSpec19to20 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(19)
+            }
+        }
+
         fun onPostMigrate(from: Int) {
             val preRepos = mutableListOf<Repository>()
             if (from == 8) preRepos.addAll(addedReposV9)
@@ -245,6 +254,7 @@ abstract class DatabaseX : RoomDatabase() {
             if (from == 16) preRepos.addAll(addedReposV17)
             if (from == 17) preRepos.addAll(addedReposV18)
             if (from == 18) preRepos.addAll(addedReposV19)
+            if (from == 19) preRepos.addAll(addedReposV20)
             GlobalScope.launch(Dispatchers.IO) {
                 preRepos.forEach {
                     INSTANCE?.getRepositoryDao()?.put(it)
