@@ -94,8 +94,8 @@ const val EXODUS_TRACKERS_SYNC = -22L
 const val POOL_DEFAULT_MAX_IDLE_CONNECTIONS = 5 // TODO make configurable
 const val POOL_DEFAULT_KEEP_ALIVE_DURATION_MS = 5_000L
 const val CLIENT_CONNECT_TIMEOUT = 30L
-const val CLIENT_READ_TIMEOUT = 15L
-const val CLIENT_WRITE_TIMEOUT = 15L
+const val CLIENT_READ_TIMEOUT = 30L
+const val CLIENT_WRITE_TIMEOUT = 30L
 
 const val HOST_ICON = "icon"
 const val HOST_SCREENSHOT = "screenshot"
