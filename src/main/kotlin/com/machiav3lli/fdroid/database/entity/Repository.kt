@@ -18,48 +18,50 @@ import java.nio.charset.Charset
 data class Repository(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = ROW_ID)
-    var id: Long = 0,
+    val id: Long = 0,
     var address: String = "",
-    var mirrors: List<String> = emptyList(),
-    var name: String = "",
-    var description: String = "",
-    var version: Int = 21,
-    var enabled: Boolean = false,
+    val mirrors: List<String> = emptyList(),
+    val name: String = "",
+    val description: String = "",
+    val version: Int = 21,
+    val enabled: Boolean = false,
     var fingerprint: String = "",
-    var lastModified: String = "",
-    var entityTag: String = "",
-    var updated: Long = 0L,
-    var timestamp: Long = 0L,
+    val lastModified: String = "",
+    val entityTag: String = "",
+    val updated: Long = 0L,
+    val timestamp: Long = 0L,
     var authentication: String = "",
 ) {
-    fun edit(address: String, fingerprint: String, authentication: String): Repository = apply {
+    fun edit(address: String, fingerprint: String, authentication: String): Repository = let {
         val changed = this.address != address || this.fingerprint != fingerprint
-        this.lastModified = if (changed) "" else lastModified
-        this.entityTag = if (changed) "" else entityTag
-        this.address = address
-        this.fingerprint = fingerprint
-        this.authentication = authentication
+        copy(
+            lastModified = if (changed) "" else lastModified,
+            entityTag = if (changed) "" else entityTag,
+            address = address,
+            fingerprint = fingerprint,
+            authentication = authentication,
+        )
     }
 
     fun update(
         mirrors: List<String>, name: String, description: String, version: Int,
         lastModified: String, entityTag: String, timestamp: Long,
-    ): Repository = apply {
-        this.mirrors = mirrors
-        this.name = name
-        this.description = description
-        this.version = if (version >= 0) version else this.version
-        this.lastModified = lastModified
-        this.entityTag = entityTag
-        this.updated = System.currentTimeMillis()
-        this.timestamp = timestamp
-    }
+    ): Repository = copy(
+        mirrors = mirrors,
+        name = name,
+        description = description,
+        version = if (version >= 0) version else this.version,
+        lastModified = lastModified,
+        entityTag = entityTag,
+        updated = System.currentTimeMillis(),
+        timestamp = timestamp,
+    )
 
-    fun enable(enabled: Boolean): Repository = apply {
-        this.enabled = enabled
-        this.lastModified = ""
-        this.entityTag = ""
-    }
+    fun enable(enabled: Boolean): Repository = copy(
+        enabled = enabled,
+        lastModified = "",
+        entityTag = "",
+    )
 
     fun setAuthentication(username: String?, password: String?) {
         this.authentication = username?.let { u ->
