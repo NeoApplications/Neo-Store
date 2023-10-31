@@ -351,4 +351,6 @@
     <string name="allow_unstable_updates">Povolit zobrazování nestabilních aktualizací</string>
     <string name="alt_new_apps_description">Použít alternativní/staré rozvržení nových aplikací, které zobrazuje malé karty s aplikacemi.</string>
     <string name="alt_new_apps">Použít alternativní rozvržení nových aplikací</string>
+    <string name="enabled">Zapnuto</string>
+    <string name="disabled">Vypnuto</string>
 </resources>
