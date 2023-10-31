@@ -351,4 +351,6 @@
     <string name="dynamic_black">Nero con colori dinamici</string>
     <string name="alt_new_apps_description">Usa la disposizione alternativa/vecchia delle nuove app, che mostra piccole schede delle app.</string>
     <string name="alt_new_apps">Usa disposizione alternativa per nuove app</string>
+    <string name="enabled">Abilitato</string>
+    <string name="disabled">Disabilitato</string>
 </resources>
