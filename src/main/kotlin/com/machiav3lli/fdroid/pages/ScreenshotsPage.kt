@@ -66,6 +66,6 @@ fun ScreenshotsPage(
     }
 
     LaunchedEffect(page) {
-        pagerState.scrollToPage(page)
+        pagerState.animateScrollToPage(page)
     }
 }
