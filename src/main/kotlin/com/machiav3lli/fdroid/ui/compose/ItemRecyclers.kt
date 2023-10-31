@@ -28,6 +28,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +48,7 @@ import com.machiav3lli.fdroid.ui.components.PRODUCT_CAROUSEL_HEIGHT
 import com.machiav3lli.fdroid.ui.components.ProductCard
 import com.machiav3lli.fdroid.ui.components.ProductCarouselItem
 import com.machiav3lli.fdroid.ui.components.RepositoryItem
+import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroupHeading
 import kotlinx.coroutines.launch
 
 @Composable
@@ -132,7 +135,7 @@ fun CarouselIndicators(
 
     LazyRow(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(dimension/4, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.spacedBy(dimension / 4, Alignment.CenterHorizontally),
     ) {
         items(size) { i ->
             val color by animateColorAsState(
@@ -159,21 +162,41 @@ fun CarouselIndicators(
 @Composable
 fun RepositoriesRecycler(
     modifier: Modifier = Modifier,
-    repositoriesList: List<Repository>?,
+    repositoriesList: List<Repository>,
     onClick: (Repository) -> Unit = {},
     onLongClick: (Repository) -> Unit = {},
 ) {
-    VerticalItemList(
+    val partedRrepos by remember(repositoriesList) {
+        mutableStateOf(repositoriesList.partition { it.enabled })
+    }
+
+    LazyColumn(
         modifier = modifier,
-        list = repositoriesList,
-        itemKey = { it.id }
+        contentPadding = PaddingValues(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        RepositoryItem(
-            modifier = Modifier.animateItemPlacement(),
-            repository = it,
-            onClick = onClick,
-            onLongClick = onLongClick
-        )
+        item {
+            PreferenceGroupHeading(heading = stringResource(id = R.string.enabled))
+        }
+        items(items = partedRrepos.first, key = { it.id }) {
+            RepositoryItem(
+                modifier = Modifier.animateItemPlacement(),
+                repository = it,
+                onClick = onClick,
+                onLongClick = onLongClick
+            )
+        }
+        item {
+            PreferenceGroupHeading(heading = stringResource(id = R.string.disabled))
+        }
+        items(items = partedRrepos.second, key = { it.id }) {
+            RepositoryItem(
+                modifier = Modifier.animateItemPlacement(),
+                repository = it,
+                onClick = onClick,
+                onLongClick = onLongClick
+            )
+        }
     }
 }
 
