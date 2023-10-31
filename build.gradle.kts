@@ -26,7 +26,7 @@ val simpleStorageVersion = "1.5.5"
 val coroutinesVersion = "1.7.3"
 
 plugins {
-    id("com.android.application") version ("8.1.1")
+    id("com.android.application") version ("8.1.2")
     kotlin("android") version ("1.9.10")
     kotlin("plugin.serialization") version ("1.9.10")
     id("com.google.devtools.ksp") version ("1.9.10-1.0.13")
