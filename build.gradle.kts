@@ -1,29 +1,29 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val activityVersion = "1.8.0-rc01"
-val coilVersion = "2.4.0"
-val composeCompilerVersion = "1.5.3"
-val composeVersion = "1.5.1"
-val composeAccompanistVersion = "0.32.0"
-val composeHtmlVersion = "1.5.0"
-val composeMaterial3Version = "1.1.2"
-val jacksonVersion = "2.15.2"
-val koinVersion = "3.5.0"
-val koinKspVersion = "1.3.0"
-val kotlinVersion = "1.9.10"
-val kSerializationVersion = "1.6.0"
-val kspVersion = "1.0.13"
-val ktorVersion = "2.3.4"
-val libsuVersion = "5.2.1"
-val lifecycleVersion = "2.6.2"
-val materialVersion = "1.9.0"
-val navigationVersion = "2.7.3"
-val okhttpVersion = "5.0.0-alpha.11"
-val markdownVersion = "0.5.1"
-val moshiVersion = "1.15.0"
-val roomVersion = "2.6.0-rc01"
-val simpleStorageVersion = "1.5.5"
-val coroutinesVersion = "1.7.3"
+val vActivity = "1.8.0"
+val vCoil = "2.4.0"
+val vComposeCompiler = "1.5.3"
+val vCompose = "1.5.4"
+val vComposeAccompanist = "0.32.0"
+val vComposeHtml = "1.5.0"
+val vComposeMaterial3 = "1.1.2"
+val vCoroutines = "1.7.3"
+val vJackson = "2.15.2"
+val vKoin = "3.5.0"
+val vKoinKsp = "1.3.0"
+val vKotlin = "1.9.10"
+val vKSP = "1.0.13"
+val vKtor = "2.3.5"
+val vLibsu = "5.2.1"
+val vLifecycle = "2.6.2"
+val vMarkdown = "0.5.2"
+val vMaterial = "1.10.0"
+val vMoshi = "1.15.0"
+val vNavigation = "2.7.4"
+val vOkhttp = "5.0.0-alpha.11"
+val vRoom = "2.6.0"
+val vSerialization = "1.6.0"
+val vSimpleStorage = "1.5.5"
 
 plugins {
     id("com.android.application") version ("8.1.2")
@@ -78,7 +78,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = composeCompilerVersion
+        kotlinCompilerExtensionVersion = vComposeCompiler
     }
 
     applicationVariants.all { variant ->
@@ -141,69 +141,69 @@ android {
 dependencies {
 
     // Core
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-    implementation("com.google.devtools.ksp:symbol-processing-api:$kotlinVersion-$kspVersion")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$vKotlin")
+    implementation("com.google.devtools.ksp:symbol-processing-api:$vKotlin-$vKSP")
     implementation("androidx.preference:preference-ktx:1.2.1")
-    implementation("androidx.activity:activity-compose:$activityVersion")
+    implementation("androidx.activity:activity-compose:$vActivity")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     // Material3
-    implementation("com.google.android.material:material:$materialVersion")
+    implementation("com.google.android.material:material:$vMaterial")
 
     // Coil
-    implementation("io.coil-kt:coil:$coilVersion")
-    implementation("io.coil-kt:coil-compose:$coilVersion")
+    implementation("io.coil-kt:coil:$vCoil")
+    implementation("io.coil-kt:coil-compose:$vCoil")
 
     // Koin
-    implementation("io.insert-koin:koin-android:$koinVersion")
-    implementation("io.insert-koin:koin-androidx-workmanager:$koinVersion")
-    implementation("io.insert-koin:koin-annotations:$koinKspVersion")
-    ksp("io.insert-koin:koin-ksp-compiler:$koinKspVersion")
+    implementation("io.insert-koin:koin-android:$vKoin")
+    implementation("io.insert-koin:koin-androidx-workmanager:$vKoin")
+    implementation("io.insert-koin:koin-annotations:$vKoinKsp")
+    ksp("io.insert-koin:koin-ksp-compiler:$vKoinKsp")
 
     // Ktor
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+    implementation("io.ktor:ktor-client-core:$vKtor")
+    implementation("io.ktor:ktor-client-okhttp:$vKtor")
 
     // OkHttps
-    implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
-    implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
+    implementation("com.squareup.okhttp3:okhttp:$vOkhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor:$vOkhttp")
 
     // LibSu
-    implementation("com.github.topjohnwu.libsu:core:$libsuVersion")
+    implementation("com.github.topjohnwu.libsu:core:$vLibsu")
 
     // JSON
-    implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kSerializationVersion")
+    implementation("com.fasterxml.jackson.core:jackson-core:$vJackson")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$vSerialization")
 
     // Markdown
-    implementation("org.jetbrains:markdown:$markdownVersion")
-    implementation("de.charlex.compose:html-text:$composeHtmlVersion")
+    implementation("org.jetbrains:markdown:$vMarkdown")
+    implementation("de.charlex.compose:html-text:$vComposeHtml")
 
     // Storage
-    implementation("com.anggrayudi:storage:$simpleStorageVersion")
+    implementation("com.anggrayudi:storage:$vSimpleStorage")
 
     // Coroutines / Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$vLifecycle")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$vCoroutines")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$vCoroutines")
 
     // Room
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-runtime:$vRoom")
+    implementation("androidx.room:room-ktx:$vRoom")
+    ksp("androidx.room:room-compiler:$vRoom")
 
     // Compose
-    implementation("androidx.compose.runtime:runtime:$composeVersion")
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.foundation:foundation:$composeVersion")
-    implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.material3:material3:$composeMaterial3Version")
-    implementation("androidx.compose.animation:animation:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:$navigationVersion")
-    implementation("com.google.accompanist:accompanist-permissions:$composeAccompanistVersion")
+    implementation("androidx.compose.runtime:runtime:$vCompose")
+    implementation("androidx.compose.ui:ui:$vCompose")
+    implementation("androidx.compose.foundation:foundation:$vCompose")
+    implementation("androidx.compose.runtime:runtime-livedata:$vCompose")
+    implementation("androidx.compose.material3:material3:$vComposeMaterial3")
+    implementation("androidx.compose.animation:animation:$vCompose")
+    implementation("androidx.navigation:navigation-compose:$vNavigation")
+    implementation("com.google.accompanist:accompanist-permissions:$vComposeAccompanist")
 
-    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-tooling:$vCompose")
+    debugImplementation("androidx.compose.ui:ui-tooling-preview:$vCompose")
 }
 
 // using a task as a preBuild dependency instead of a function that takes some time insures that it runs
