@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
@@ -25,7 +24,6 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +32,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -195,42 +192,6 @@ fun RepositoriesRecycler(
                 repository = it,
                 onClick = onClick,
                 onLongClick = onLongClick
-            )
-        }
-    }
-}
-
-@Composable
-fun <T> VerticalItemList(
-    modifier: Modifier = Modifier,
-    backgroundColor: Color = MaterialTheme.colorScheme.background,
-    list: List<T>?,
-    itemKey: ((T) -> Any)? = null,
-    itemContent: @Composable LazyItemScope.(T) -> Unit,
-) {
-    Box(
-        modifier = modifier
-            .background(backgroundColor),
-        contentAlignment = if (list.isNullOrEmpty()) Alignment.Center else Alignment.TopStart
-    ) {
-        when {
-            list == null -> Text(
-                text = stringResource(id = R.string.loading_list),
-                color = MaterialTheme.colorScheme.onBackground
-            )
-
-            list.isNotEmpty() -> {
-                LazyColumn(
-                    contentPadding = PaddingValues(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    items(items = list, key = itemKey, itemContent = itemContent)
-                }
-            }
-
-            else -> Text(
-                text = stringResource(id = R.string.no_applications_available),
-                color = MaterialTheme.colorScheme.onBackground
             )
         }
     }

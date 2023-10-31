@@ -88,6 +88,7 @@ class WorkerManager(appContext: Context) {
         ).observeForever {
             onDownloadProgress(this, it)
         }
+        // TODO add observer for InstallWorker
     }
 
     fun release(): WorkerManager? {
@@ -161,6 +162,10 @@ class WorkerManager(appContext: Context) {
                 }
 
         }
+    }
+
+    fun launchInstaller(packageName: String) = scope.launch {
+        InstallWorker.launch(packageName)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -535,9 +540,9 @@ class WorkerManager(appContext: Context) {
                                         )
                                     )
                                 // TODO add to InstallTask & Launch InstallerWork
-                                CoroutineScope(Dispatchers.Default).launch {
+                                CoroutineScope(Dispatchers.IO).launch {
                                     MainApplication.db.getInstallTaskDao().put(task.toInstallTask())
-                                    InstallWorker.launch()
+                                    MainApplication.wm.launchInstaller(task.packageName)
                                 }
                                 if (!Preferences[Preferences.Key.KeepInstallNotification]) {
                                     notificationBuilder.setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)

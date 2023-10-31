@@ -122,7 +122,7 @@ fun InstalledPage(viewModel: InstalledVM) {
             .blockBorder()
             .fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
-    ) { paddingValues ->
+    ) { _ ->
         Column {
             TabRow(selectedTabIndex = pagerState.currentPage,
                 indicator = { tabPositions ->

@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -128,13 +127,12 @@ fun PrefsReposPage(viewModel: PrefsVM) {
                 }
             }
         }
-    ) { paddingValues ->
-        val sortedRepoList = remember(repos) { repos.sortedBy { !it.enabled } }
+    ) { _ ->
         RepositoriesRecycler(
             modifier = Modifier
                 .blockBorder()
                 .background(MaterialTheme.colorScheme.background),
-            repositoriesList = sortedRepoList,
+            repositoriesList = repos,
             onClick = {
                 viewModel.viewModelScope.launch {
                     SyncWorker.enableRepo(it, !it.enabled)

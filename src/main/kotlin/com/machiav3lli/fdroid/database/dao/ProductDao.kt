@@ -98,11 +98,11 @@ interface ProductDao : BaseDao<Product> {
     @Query("SELECT DISTINCT licenses FROM product")
     fun getAllLicensesFlow(): Flow<List<Licenses>>
 
-    @RawQuery
-    fun queryObject(query: SupportSQLiteQuery): List<Product>
-
     @Query("SELECT * FROM product WHERE author LIKE '%' || :author || '%' ")
     fun getAuthorPackagesFlow(author: String): Flow<List<Product>>
+
+    @RawQuery
+    fun queryObject(query: SupportSQLiteQuery): List<Product>
 
     fun queryObject(request: Request): List<Product> = queryObject(
         buildProductQuery(
@@ -242,6 +242,7 @@ interface ProductDao : BaseDao<Product> {
         if (section == Section.FAVORITE) {
             builder.addWhere("COALESCE($TABLE_EXTRAS.$ROW_FAVORITE, 0) != 0")
         }
+        builder.addWhere("$TABLE_PRODUCT.$ROW_REPOSITORY_ID NOT LIKE '%[^0-9]%'")
 
         when (updateCategory) {
             UpdateCategory.ALL     -> Unit

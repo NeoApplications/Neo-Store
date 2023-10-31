@@ -91,10 +91,8 @@ open class MainPageVM(
         installed,
         db.getProductDao().queryFlowList(primaryRequest.value),
         sortFilter
-    ) { a, _, _, _ ->
-        withContext(cc) {
-            db.getProductDao().queryObject(a)
-        }
+    ) { a, _, list, _ ->
+        list
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
@@ -120,9 +118,9 @@ open class MainPageVM(
         installed,
         db.getProductDao().queryFlowList(secondaryRequest.value),
         db.getExtrasDao().getAllFlow(),
-    ) { a, _, _, _ ->
+    ) { a, _, list, _ ->
         withContext(cc) {
-            if (secondarySource != primarySource) db.getProductDao().queryObject(a)
+            if (secondarySource != primarySource) list
             else null
         }
     }.stateIn(

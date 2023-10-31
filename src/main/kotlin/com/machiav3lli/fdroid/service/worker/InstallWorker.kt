@@ -31,9 +31,9 @@ class InstallWorker(
     params: WorkerParameters,
 ) : CoroutineWorker(context, params) {
     companion object {
-        fun launch() {
+        fun launch(packageName: String) {
             val downloadRequest = OneTimeWorkRequestBuilder<InstallWorker>()
-                .addTag("installer_${System.currentTimeMillis()}")
+                .addTag("installer_$packageName")
                 .build()
 
             MainApplication.wm.workManager
