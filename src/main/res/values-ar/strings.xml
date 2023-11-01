@@ -357,4 +357,6 @@
     <string name="dynamic_black">أسود بالألوان الدينامية</string>
     <string name="alt_new_apps_description">استخدم تخطيط التطبيقات الجديدة البديلة/القديمة، والذي يعرض بطاقات التطبيقات الصغيرة.</string>
     <string name="alt_new_apps">استخدم التخطيط البديل لتطبيقات الجديدة</string>
+    <string name="enabled">مفعل</string>
+    <string name="disabled">معطل</string>
 </resources>
