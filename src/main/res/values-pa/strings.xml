@@ -349,4 +349,6 @@
     <string name="dynamic_black">ਗਤੀਸ਼ੀਲ ਰੰਗਾਂ ਨਾਲ ਕਾਲ਼ਾ</string>
     <string name="alt_new_apps_description">ਵਿਕਲਪਕ/ਪੁਰਾਣੇ ਨਵੇਂ ਐਪਸ ਲੇਆਊਟ ਦੀ ਵਰਤੋਂ ਕਰੋ, ਜੋ ਕਿ ਛੋਟੇ ਐਪ ਕਾਰਡ ਦਿਖਾਉਂਦੇ ਹਨ।</string>
     <string name="alt_new_apps">ਵਿਕਲਪਕ ਨਵੇਂ ਐਪਸ ਲੇਆਊਟ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
+    <string name="enabled">ਇਨੇਬਲ ਕੀਤੇ</string>
+    <string name="disabled">ਡਿਸੇਬਲ ਕੀਤੇ</string>
 </resources>
