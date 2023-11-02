@@ -349,4 +349,6 @@
     <string name="show_categories_bar_description">एक्सप्लोर पेज में श्रेणियों की साइड बार दिखाएं।</string>
     <string name="only_on_battery">केवल चार्ज करते समय</string>
     <string name="alt_new_apps">वैकल्पिक नए ऐप्स लेआउट का उपयोग करें</string>
+    <string name="enabled">सक्षम</string>
+    <string name="disabled">अक्षम</string>
 </resources>
