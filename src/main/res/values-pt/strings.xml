@@ -351,4 +351,6 @@
     <string name="allow_unstable_updates">Permitir mostrar atualizações instáveis</string>
     <string name="alt_new_apps_description">Utilize o esquema alternativo/antigo de novas aplicações, que mostra pequenos cartões de aplicações.</string>
     <string name="alt_new_apps">Utilizar o esquema alternativo das novas aplicações</string>
+    <string name="enabled">Ativado</string>
+    <string name="disabled">Desativado</string>
 </resources>
