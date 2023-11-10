@@ -43,7 +43,6 @@ object Downloader {
 
     private val clients = ConcurrentHashMap<String, OkHttpClient>()
     private val connectionPools = ConcurrentHashMap<String, ConnectionPool>()
-    private val onionProxy = Proxy(Proxy.Type.SOCKS, InetSocketAddress("127.0.0.1", 9050))
     var proxy: Proxy? = null
         set(value) {
             if (field != value) {
@@ -54,7 +53,9 @@ object Downloader {
             }
         }
 
-    private fun getProxy(onion: Boolean) = if (onion) onionProxy else proxy
+    private fun getProxy(onion: Boolean) =
+        if (onion) Proxy(Proxy.Type.SOCKS, InetSocketAddress("localhost", 9050))
+        else proxy
 
     private fun buildRequest(
         url: String,
