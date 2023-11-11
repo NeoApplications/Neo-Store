@@ -566,7 +566,7 @@ class WorkerManager(appContext: Context) {
                                     -> ErrorType.Validation(validationError)
 
                                     resultCode != HttpStatusCode.GatewayTimeout.value
-                                    -> ErrorType.Http
+                                    -> ErrorType.Http(resultCode)
 
                                     else
                                     -> ErrorType.Network

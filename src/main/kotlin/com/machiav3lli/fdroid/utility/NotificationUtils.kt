@@ -39,6 +39,7 @@ import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.android.notificationManager
 import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -285,7 +286,13 @@ fun NotificationCompat.Builder.updateWithError(
                         task.name
                     )
                 )
-                setContentText(context.getString(R.string.http_error_DESC))
+                setContentText(
+                    "${
+                        context.getString(R.string.http_error_DESC)
+                    } ${
+                        HttpStatusCode.fromValue(errorType.code)
+                    }"
+                )
             }
 
             is ErrorType.Validation -> {

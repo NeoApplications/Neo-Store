@@ -129,6 +129,6 @@ enum class ValidationError { NONE, INTEGRITY, FORMAT, METADATA, SIGNATURE, PERMI
 
 sealed class ErrorType {
     data object Network : ErrorType()
-    data object Http : ErrorType()
+    class Http(val code: Int) : ErrorType()
     class Validation(val validateError: ValidationError) : ErrorType()
 }
