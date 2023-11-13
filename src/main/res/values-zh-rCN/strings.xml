@@ -347,4 +347,6 @@
     <string name="no_releases">没有兼容的更新可显示</string>
     <string name="allow_unstable_updates">显示不稳定更新</string>
     <string name="alt_new_apps">使用替代新应用布局</string>
+    <string name="enabled">已启用</string>
+    <string name="disabled">已禁用</string>
 </resources>
