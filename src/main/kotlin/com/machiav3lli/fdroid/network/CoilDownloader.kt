@@ -1,8 +1,13 @@
 package com.machiav3lli.fdroid.network
 
 import android.net.Uri
+import com.machiav3lli.fdroid.CLIENT_CONNECT_TIMEOUT
+import com.machiav3lli.fdroid.CLIENT_READ_TIMEOUT
+import com.machiav3lli.fdroid.CLIENT_WRITE_TIMEOUT
 import com.machiav3lli.fdroid.HOST_ICON
 import com.machiav3lli.fdroid.HOST_SCREENSHOT
+import com.machiav3lli.fdroid.POOL_DEFAULT_KEEP_ALIVE_DURATION_M
+import com.machiav3lli.fdroid.POOL_DEFAULT_MAX_IDLE_CONNECTIONS
 import com.machiav3lli.fdroid.QUERY_ADDRESS
 import com.machiav3lli.fdroid.QUERY_AUTHENTICATION
 import com.machiav3lli.fdroid.QUERY_DEVICE
@@ -17,12 +22,74 @@ import com.machiav3lli.fdroid.entity.Screenshot
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import okhttp3.Cache
 import okhttp3.Call
+import okhttp3.ConnectionPool
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
+import java.net.InetSocketAddress
+import java.net.Proxy
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.TimeUnit
 
 
 object CoilDownloader {
+
+    private val clients = ConcurrentHashMap<String, OkHttpClient>()
+    private val connectionPools = ConcurrentHashMap<String, ConnectionPool>()
+    var proxy: Proxy? = null
+        set(value) {
+            if (field != value) {
+                field = value
+                clients.keys.removeAll { !it.endsWith(".onion") }
+            }
+        }
+
+    private fun getProxy(onion: Boolean) =
+        if (onion) Proxy(Proxy.Type.SOCKS, InetSocketAddress("localhost", 9050))
+        else proxy
+
+    private fun createClient(
+        connectionPool: ConnectionPool,
+        proxy: Proxy?,
+        cache: Cache?,
+    ): OkHttpClient = OkHttpClient.Builder()
+        .connectionPool(connectionPool)
+        .connectTimeout(CLIENT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
+        .readTimeout(CLIENT_READ_TIMEOUT, TimeUnit.SECONDS)
+        .writeTimeout(CLIENT_WRITE_TIMEOUT, TimeUnit.SECONDS)
+        .proxy(proxy)
+        .cache(cache)
+        .followRedirects(true)
+        .followSslRedirects(true)
+        .retryOnConnectionFailure(true)
+        .build()
+
+    private fun updateClient(hostUrl: String, cache: Cache?): OkHttpClient {
+        return synchronized(clients) {
+            clients.getOrPut(hostUrl) {
+                val isOnion = hostUrl.endsWith(".onion")
+                val connectionPool = connectionPools.getOrPut(hostUrl) {
+                    ConnectionPool(
+                        POOL_DEFAULT_MAX_IDLE_CONNECTIONS,
+                        POOL_DEFAULT_KEEP_ALIVE_DURATION_M,
+                        TimeUnit.MINUTES
+                    )
+                }
+                createClient(connectionPool, getProxy(isOnion), cache)
+            }
+        }
+    }
+
+    fun createCall(request: Request.Builder, authentication: String, cache: Cache?): Call {
+        val newRequest = if (authentication.isNotEmpty()) {
+            request.addHeader("Authorization", authentication).build()
+        } else {
+            request.build()
+        }
+        val client = updateClient(newRequest.url.host, cache)
+        return client.newCall(newRequest)
+    }
 
     class Factory(cacheDir: File) : Call.Factory {
         private val cache = Cache(cacheDir, 50_000_000L)
@@ -50,9 +117,9 @@ object CoilDownloader {
                         }
                     }
                     if (address == null || path == null) {
-                        Downloader.createCall(Request.Builder(), "", null)
+                        createCall(Request.Builder(), "", null)
                     } else {
-                        Downloader.createCall(
+                        createCall(
                             request.newBuilder().url(
                                 address.toHttpUrl()
                                     .newBuilder()
@@ -71,9 +138,9 @@ object CoilDownloader {
                     val device = request.url.queryParameter(QUERY_DEVICE)
                     val screenshot = request.url.queryParameter(QUERY_SCREENSHOT)
                     if (screenshot.isNullOrEmpty() || address.isNullOrEmpty()) {
-                        Downloader.createCall(Request.Builder(), "", null)
+                        createCall(Request.Builder(), "", null)
                     } else {
-                        Downloader.createCall(
+                        createCall(
                             request.newBuilder().url(
                                 address.toHttpUrl()
                                     .newBuilder()
@@ -88,7 +155,7 @@ object CoilDownloader {
                 }
 
                 else            -> {
-                    Downloader.createCall(request.newBuilder(), "", null)
+                    createCall(request.newBuilder(), "", null)
                 }
             }
         }
