@@ -93,15 +93,18 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
                 Shell.cmd(cacheFile.session_install_create)
                     .submit {
                         val sessionIdPattern = Pattern.compile("(\\d+)")
-                        val sessionIdMatcher = sessionIdPattern.matcher(it.out[0])
-                        val found = sessionIdMatcher.find()
+                        val sessionIdMatcher =
+                            if (it.out.isNotEmpty()) sessionIdPattern.matcher(it.out[0])
+                            else null
+                        val found = sessionIdMatcher?.find() ?: false
 
                         if (found) {
                             val sessionId = sessionIdMatcher?.group(1)?.toInt() ?: -1
                             Shell.cmd(cacheFile.sessionInstallWrite(sessionId))
-                                .submit {
+                                .submit { result ->
                                     Shell.cmd(sessionInstallCommit(sessionId)).exec()
-                                    if (it.isSuccess) Shell.cmd(cacheFile.deletePackage).submit()
+                                    if (result.isSuccess) Shell.cmd(cacheFile.deletePackage)
+                                        .submit()
                                 }
                         }
                     }
