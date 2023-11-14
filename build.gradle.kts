@@ -39,7 +39,7 @@ android {
     defaultConfig {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1006
         versionName = "1.0.0-alpha07"
         buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
