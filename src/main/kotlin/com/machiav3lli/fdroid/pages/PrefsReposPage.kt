@@ -7,14 +7,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -70,60 +69,55 @@ fun PrefsReposPage(viewModel: PrefsVM) {
         modifier = Modifier.fillMaxSize(),
         containerColor = Color.Transparent,
         floatingActionButton = {
-            val fabColors = ButtonDefaults.filledTonalButtonColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.primary,
-            )
-            Surface(
-                tonalElevation = 8.dp,
-                shadowElevation = 6.dp,
-                shape = MaterialTheme.shapes.medium,
-            ) {
-                if (Intent(INTENT_ACTION_BINARY_EYE).resolveActivity(mActivity.packageManager) != null) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 4.dp),
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        FilledTonalButton(
-                            shape = MaterialTheme.shapes.medium,
-                            colors = fabColors,
-                            onClick = {
-                                viewModel.showRepositorySheet(
-                                    editMode = true,
-                                    addNew = true
-                                )
-                            }) {
-                            Icon(
-                                imageVector = Phosphor.Plus,
-                                contentDescription = stringResource(id = R.string.add_repository)
-                            )
-                        }
-                        FilledTonalButton(
-                            shape = MaterialTheme.shapes.medium,
-                            colors = fabColors,
-                            onClick = mActivity::openScanner
-                        ) {
-                            Icon(
-                                imageVector = Phosphor.QrCode,
-                                contentDescription = stringResource(id = R.string.scan_qr_code)
-                            )
-                        }
-                    }
-                } else {
-                    FilledTonalButton(
-                        shape = MaterialTheme.shapes.medium,
-                        colors = fabColors,
+            if (Intent(INTENT_ACTION_BINARY_EYE).resolveActivity(mActivity.packageManager) != null) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    FloatingActionButton(
+                        shape = MaterialTheme.shapes.extraLarge,
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.primary,
                         onClick = {
                             viewModel.showRepositorySheet(
                                 editMode = true,
                                 addNew = true
                             )
-                        }) {
+                        }
+                    ) {
                         Icon(
                             imageVector = Phosphor.Plus,
                             contentDescription = stringResource(id = R.string.add_repository)
                         )
                     }
+                    FloatingActionButton(
+                        shape = MaterialTheme.shapes.extraLarge,
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.primary,
+                        onClick = mActivity::openScanner
+                    ) {
+                        Icon(
+                            imageVector = Phosphor.QrCode,
+                            contentDescription = stringResource(id = R.string.scan_qr_code)
+                        )
+                    }
+                }
+            } else {
+                ExtendedFloatingActionButton(
+                    shape = MaterialTheme.shapes.extraLarge,
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.primary,
+                    onClick = {
+                        viewModel.showRepositorySheet(
+                            editMode = true,
+                            addNew = true
+                        )
+                    }
+                ) {
+                    Icon(
+                        imageVector = Phosphor.Plus,
+                        contentDescription = stringResource(id = R.string.add_repository)
+                    )
                 }
             }
         }
