@@ -3,6 +3,8 @@ package com.machiav3lli.fdroid.service.worker
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
+import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.Constraints
@@ -38,6 +40,7 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.service.ActionReceiver
+import com.machiav3lli.fdroid.utility.extension.android.Android
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.future.future
@@ -304,7 +307,12 @@ class SyncWorker(
                 cancelAllPendingIntent
             )
             .build()
-        return ForegroundInfo(NOTIFICATION_ID_SYNCING, notification)
+        return ForegroundInfo(
+            NOTIFICATION_ID_SYNCING,
+            notification,
+            if (Android.sdk(Build.VERSION_CODES.Q)) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+            else 0
+        )
     }
 
     override fun setProgressAsync(data: Data): ListenableFuture<Void> {

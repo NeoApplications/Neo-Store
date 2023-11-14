@@ -2,6 +2,8 @@ package com.machiav3lli.fdroid.service.worker
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.pm.ServiceInfo
+import android.os.Build
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +40,7 @@ import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.network.Downloader
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.downloadNotificationBuilder
+import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.android.notificationManager
 import com.machiav3lli.fdroid.utility.extension.android.singleSignature
 import com.machiav3lli.fdroid.utility.extension.android.versionCodeCompat
@@ -187,7 +190,9 @@ class DownloadWorker(
     override suspend fun getForegroundInfo(): ForegroundInfo {
         return ForegroundInfo(
             task.key.hashCode(),
-            stateNotificationBuilder.build()
+            stateNotificationBuilder.build(),
+            if (Android.sdk(Build.VERSION_CODES.Q)) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+            else 0
         )
     }
 

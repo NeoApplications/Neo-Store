@@ -1,6 +1,8 @@
 package com.machiav3lli.fdroid.service.worker
 
 import android.content.Context
+import android.content.pm.ServiceInfo
+import android.os.Build
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -19,6 +21,7 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.database.entity.InstallTask
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.installer.LegacyInstaller
+import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.downloadNotificationBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -91,7 +94,9 @@ class InstallWorker(
     override suspend fun getForegroundInfo(): ForegroundInfo {
         return ForegroundInfo(
             currentTask.key.hashCode(),
-            stateNotificationBuilder.build()
+            stateNotificationBuilder.build(),
+            if (Android.sdk(Build.VERSION_CODES.Q)) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+            else 0
         )
     }
 
