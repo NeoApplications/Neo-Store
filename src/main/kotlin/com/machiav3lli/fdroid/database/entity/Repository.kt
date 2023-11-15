@@ -32,6 +32,9 @@ data class Repository(
     val timestamp: Long = 0L,
     var authentication: String = "",
 ) {
+    val intentAddress: String
+        get() = "${address.trimEnd('/')}?fingerprint=$fingerprint"
+
     fun edit(address: String, fingerprint: String, authentication: String): Repository = let {
         val changed = this.address != address || this.fingerprint != fingerprint
         copy(

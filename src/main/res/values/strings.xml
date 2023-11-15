@@ -351,4 +351,5 @@
     <string name="alt_new_apps_description">Use the alternative/old new apps layout, which shows small app cards.</string>
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
+    <string name="repo_qr_code">Repository\'s QR Code</string>
 </resources>
