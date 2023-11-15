@@ -24,6 +24,7 @@ val vOkhttp = "5.0.0-alpha.11"
 val vRoom = "2.6.0"
 val vSerialization = "1.6.0"
 val vSimpleStorage = "1.5.5"
+val vZXing = "3.5.2"
 
 plugins {
     id("com.android.application") version ("8.1.2")
@@ -153,6 +154,9 @@ dependencies {
     // Coil
     implementation("io.coil-kt:coil:$vCoil")
     implementation("io.coil-kt:coil-compose:$vCoil")
+
+    // ZXing
+    implementation("com.google.zxing:core:$vZXing")
 
     // Koin
     implementation("io.insert-koin:koin-android:$vKoin")
