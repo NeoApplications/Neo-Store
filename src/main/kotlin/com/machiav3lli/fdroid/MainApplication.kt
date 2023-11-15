@@ -30,6 +30,8 @@ import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.utility.Utils.setLanguage
 import com.machiav3lli.fdroid.utility.Utils.toInstalledItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
+import io.ktor.client.engine.ProxyBuilder
+import io.ktor.http.Url
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,7 +39,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import java.lang.ref.WeakReference
-import java.net.InetSocketAddress
 import java.net.Proxy
 import java.util.*
 
@@ -234,22 +235,33 @@ class MainApplication : Application(), ImageLoaderFactory {
         val type = Preferences[Preferences.Key.ProxyType].proxyType
         val host = Preferences[Preferences.Key.ProxyHost]
         val port = Preferences[Preferences.Key.ProxyPort]
-        val socketAddress = when (type) {
-            Proxy.Type.DIRECT                 -> {
+        val proxy = when (type) {
+            Proxy.Type.DIRECT -> {
                 null
             }
 
-            Proxy.Type.HTTP, Proxy.Type.SOCKS -> {
+            Proxy.Type.HTTP   -> {
                 try {
-                    InetSocketAddress.createUnresolved(host, port)
+                    ProxyBuilder.http(Url(host))
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    null
+                }
+            }
+
+            Proxy.Type.SOCKS  -> {
+                try {
+                    ProxyBuilder.socks(host, port)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     null
                 }
             }
         }
-        val proxy = socketAddress?.let { Proxy(type, it) }
-        Downloader.proxy = proxy
+        proxy?.let {
+            Downloader.proxy = it
+            CoilDownloader.proxy = it
+        }
     }
 
     private fun forceSyncAll() {
