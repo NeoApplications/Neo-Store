@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.ui.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -15,12 +16,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -104,24 +107,28 @@ fun MainActionButton(
     actionState: ActionState,
     onClick: () -> Unit,
 ) {
+    val containerColor by animateColorAsState(
+        targetValue = when (actionState) {
+            is ActionState.Cancel   -> MaterialTheme.colorScheme.tertiary
+            is ActionState.NoAction -> MaterialTheme.colorScheme.inverseSurface
+            else                    -> MaterialTheme.colorScheme.primaryContainer
+        }, label = "containerColor"
+    )
+    val contentColor by animateColorAsState(
+        targetValue = when (actionState) {
+            is ActionState.Cancel   -> MaterialTheme.colorScheme.onTertiary
+            is ActionState.NoAction -> MaterialTheme.colorScheme.inverseOnSurface
+            else                    -> MaterialTheme.colorScheme.onPrimaryContainer
+        }, label = "contentColor"
+    )
 
-    ElevatedButton(
+    FloatingActionButton(
         modifier = modifier,
-        onClick = {
-            onClick()
-        },
-        colors = ButtonDefaults.elevatedButtonColors(
-            containerColor = when (actionState) {
-                is ActionState.Cancel   -> MaterialTheme.colorScheme.tertiaryContainer
-                is ActionState.NoAction -> MaterialTheme.colorScheme.inverseSurface
-                else                    -> MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
-            },
-            contentColor = when (actionState) {
-                is ActionState.Cancel   -> MaterialTheme.colorScheme.onTertiaryContainer
-                is ActionState.NoAction -> MaterialTheme.colorScheme.inverseOnSurface
-                else                    -> MaterialTheme.colorScheme.primary
-            },
-        )
+        shape = MaterialTheme.shapes.extraLarge,
+        containerColor = containerColor,
+        contentColor = contentColor,
+        elevation = FloatingActionButtonDefaults.elevation(0.dp),
+        onClick = onClick
     ) {
         AnimatedContent(
             targetState = actionState,
@@ -175,20 +182,17 @@ fun SecondaryActionButton(
     description: String,
     onClick: () -> Unit,
 ) {
-    ElevatedButton(
+    FloatingActionButton(
         modifier = modifier,
-        colors = ButtonDefaults.elevatedButtonColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp),
-            contentColor = MaterialTheme.colorScheme.primary
-        ),
-        onClick = { onClick() }
+        shape = MaterialTheme.shapes.extraLarge,
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        elevation = FloatingActionButtonDefaults.elevation(0.dp),
+        onClick = onClick
     ) {
-        Row(
-            Modifier.defaultMinSize(minHeight = ButtonDefaults.MinHeight),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(imageVector = icon, contentDescription = description)
-        }
+        Icon(
+            imageVector = icon,
+            contentDescription = description
+        )
     }
 }
