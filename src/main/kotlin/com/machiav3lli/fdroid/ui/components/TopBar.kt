@@ -163,6 +163,7 @@ fun WideSearchField(
 ) {
     val focusManager = LocalFocusManager.current
     val textFieldFocusRequester = remember { FocusRequester() }
+    LaunchedEffect(textFieldFocusRequester) { textFieldFocusRequester.requestFocus() }
 
     var textFieldValue by remember {
         mutableStateOf(TextFieldValue(query, TextRange(query.length)))
