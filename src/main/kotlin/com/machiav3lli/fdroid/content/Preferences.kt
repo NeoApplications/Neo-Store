@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.content
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.PREFS_LANGUAGE
@@ -246,7 +247,10 @@ data object Preferences : OnSharedPreferenceChangeListener {
         )
 
         data object RootSessionInstaller :
-            Key<Boolean>("root_session_installer", Value.BooleanValue(false))
+            Key<Boolean>(
+                "root_session_installer",
+                Value.BooleanValue(Android.sdk(Build.VERSION_CODES.TIRAMISU))
+            )
 
         data object SortOrderExplore : Key<SortOrder>(
             "sort_order_explore",
