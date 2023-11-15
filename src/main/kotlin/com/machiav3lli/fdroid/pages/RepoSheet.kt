@@ -48,6 +48,7 @@ import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.BlockText
+import com.machiav3lli.fdroid.ui.components.QrCodeImage
 import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.TitleText
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -379,6 +380,25 @@ fun RepoPage(
                                 .joinToString(separator = " ") { it.uppercase(Locale.US) + " " }
                             )
                         }
+                    }
+                }
+            }
+            if (!editMode) {
+                item {
+                    TitleText(
+                        modifier = Modifier,
+                        text = stringResource(id = R.string.repo_qr_code),
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        QrCodeImage(
+                            content = repo?.intentAddress ?: "Neo Store",
+                            modifier = Modifier.fillMaxWidth(0.5f),
+                            contentDescription = stringResource(id = R.string.repo_qr_code)
+                        )
                     }
                 }
             }
