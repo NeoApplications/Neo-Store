@@ -1,7 +1,7 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
 val vActivity = "1.8.0"
-val vCoil = "2.4.0"
+val vCoil = "2.5.0"
 val vComposeCompiler = "1.5.3"
 val vCompose = "1.5.4"
 val vComposeAccompanist = "0.32.0"
@@ -13,17 +13,19 @@ val vKoin = "3.5.0"
 val vKoinKsp = "1.3.0"
 val vKotlin = "1.9.10"
 val vKSP = "1.0.13"
-val vKtor = "2.3.5"
+val vKtor = "2.3.6"
 val vLibsu = "5.2.1"
 val vLifecycle = "2.6.2"
 val vMarkdown = "0.5.2"
 val vMaterial = "1.10.0"
 val vMoshi = "1.15.0"
-val vNavigation = "2.7.4"
+val vNavigation = "2.7.5"
 val vOkhttp = "5.0.0-alpha.11"
+val vPreference = "1.2.1"
 val vRoom = "2.6.0"
 val vSerialization = "1.6.0"
 val vSimpleStorage = "1.5.5"
+val vWork = "2.9.0-rc01"
 val vZXing = "3.5.2"
 
 plugins {
@@ -144,9 +146,9 @@ dependencies {
     // Core
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$vKotlin")
     implementation("com.google.devtools.ksp:symbol-processing-api:$vKotlin-$vKSP")
-    implementation("androidx.preference:preference-ktx:1.2.1")
+    implementation("androidx.preference:preference-ktx:$vPreference")
     implementation("androidx.activity:activity-compose:$vActivity")
-    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation("androidx.work:work-runtime:$vWork")
 
     // Material3
     implementation("com.google.android.material:material:$vMaterial")
