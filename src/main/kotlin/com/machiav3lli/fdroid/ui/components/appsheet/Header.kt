@@ -47,51 +47,47 @@ fun AppInfoHeader(
     possibleActions: Set<ActionState>,
     onAction: (ActionState?) -> Unit = { },
 ) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.extraLarge,
-        tonalElevation = 8.dp
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if (mainAction != ActionState.Bookmark || mainAction != ActionState.Bookmarked) {
-                    val secondAction =
-                        possibleActions.find { it == ActionState.Bookmark || it == ActionState.Bookmarked }
-                    SecondaryActionButton(packageState = secondAction) {
-                        onAction(secondAction)
-                    }
+            if (mainAction != ActionState.Bookmark || mainAction != ActionState.Bookmarked) {
+                val secondAction =
+                    possibleActions.find { it == ActionState.Bookmark || it == ActionState.Bookmarked }
+                SecondaryActionButton(packageState = secondAction) {
+                    onAction(secondAction)
                 }
-                MainActionButton(
-                    modifier = Modifier.weight(1f),
-                    actionState = mainAction ?: ActionState.Install,
-                    onClick = {
-                        onAction(mainAction)
-                    }
-                )
             }
-            val secondaryActions = possibleActions
-                .minus(ActionState.Bookmark)
-                .minus(ActionState.Bookmarked)
-            AnimatedVisibility(visible = secondaryActions.isNotEmpty()) {
-                FlowRow(
-                    modifier = modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(
-                        8.dp,
-                        Alignment.CenterHorizontally
-                    ),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    secondaryActions.forEach {
-                        SecondaryActionButton(packageState = it) {
-                            onAction(it)
-                        }
+            MainActionButton(
+                modifier = Modifier.weight(1f),
+                actionState = mainAction ?: ActionState.Install,
+                onClick = {
+                    onAction(mainAction)
+                }
+            )
+        }
+        val secondaryActions = possibleActions
+            .minus(ActionState.Bookmark)
+            .minus(ActionState.Bookmarked)
+        AnimatedVisibility(visible = secondaryActions.isNotEmpty()) {
+            FlowRow(
+                modifier = modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(
+                    8.dp,
+                    Alignment.CenterHorizontally
+                ),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                secondaryActions.forEach {
+                    SecondaryActionButton(packageState = it) {
+                        onAction(it)
                     }
                 }
             }
