@@ -8,10 +8,12 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.ForegroundInfo
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
@@ -70,21 +72,25 @@ class DownloadWorker(
     companion object {
         fun enqueue(
             packageName: String,
-            name: String,
+            label: String,
             repository: Repository,
             release: Release,
         ) {
             val data = workDataOf(
                 ARG_STARTED to System.currentTimeMillis(),
                 ARG_PACKAGE_NAME to packageName,
-                ARG_NAME to name,
+                ARG_NAME to label,
                 ARG_RELEASE to release.toJSON(),
                 ARG_URL to release.getDownloadUrl(repository),
                 ARG_REPOSITORY_ID to repository.id,
                 ARG_AUTHENTICATION to repository.authentication,
             )
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
             val downloadRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
                 .setInputData(data)
+                .setConstraints(constraints)
                 .addTag("download_$packageName")
                 .build()
 
@@ -93,7 +99,8 @@ class DownloadWorker(
                     "$packageName-${repository.id}-${release.version}",
                     ExistingWorkPolicy.KEEP,
                     downloadRequest,
-                ).enqueue()
+                )
+                .enqueue()
         }
 
         fun getTask(data: Data) = DownloadTask(
