@@ -32,10 +32,9 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.ifNoneMatch
 import io.ktor.http.isSuccess
-import io.ktor.util.cio.writeChannel
 import io.ktor.util.network.hostname
 import io.ktor.util.network.port
-import io.ktor.utils.io.copyAndClose
+import io.ktor.utils.io.jvm.javaio.toInputStream
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -45,6 +44,7 @@ import okhttp3.ConnectionSpec
 import org.koin.dsl.module
 import org.koin.mp.KoinPlatform.getKoin
 import java.io.File
+import java.io.FileOutputStream
 import java.net.Proxy
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
@@ -139,9 +139,16 @@ object Downloader {
                         }
 
                         response.status.isSuccess()                                                                          -> {
-                            val outputStream = target.writeChannel()
-                            val channel = response.bodyAsChannel()
-                            channel.copyAndClose(outputStream)
+                            val append = start != null && response.headers["Content-Range"] != null
+                            val channel = response.bodyAsChannel().toInputStream()
+
+                            channel.use { input ->
+                                val outputStream = FileOutputStream(target, append)
+                                outputStream.use { output ->
+                                    input.copyTo(output)
+                                    output.fd.sync()
+                                }
+                            }
 
                             retries.remove(url)
                             Result(response)
