@@ -352,4 +352,5 @@
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
     <string name="repo_qr_code">Repository\'s QR Code</string>
+    <string name="proxy_url">Url</string>
 </resources>

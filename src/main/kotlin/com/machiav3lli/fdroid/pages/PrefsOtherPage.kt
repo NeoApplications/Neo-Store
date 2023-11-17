@@ -54,6 +54,7 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
     }
     val proxyPrefs = listOf(
         Preferences.Key.ProxyType,
+        Preferences.Key.ProxyUrl,
         Preferences.Key.ProxyHost,
         Preferences.Key.ProxyPort,
     )

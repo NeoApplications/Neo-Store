@@ -75,6 +75,7 @@ val NonBooleanPrefsMeta = mapOf(
     Preferences.Key.ReleasesCacheRetention to R.string.releases_cache_retention,
     Preferences.Key.ImagesCacheRetention to R.string.images_cache_retention,
     Preferences.Key.ProxyType to R.string.proxy_type,
+    Preferences.Key.ProxyUrl to R.string.proxy_url,
     Preferences.Key.ProxyHost to R.string.proxy_host,
     Preferences.Key.ProxyPort to R.string.proxy_port,
 )
@@ -138,12 +139,16 @@ val PrefsDependencies = mapOf(
         Preferences.Key.EnableDownloadDirectory,
         listOf(true)
     ),
+    Preferences.Key.ProxyUrl to Pair(
+        Preferences.Key.ProxyType,
+        listOf(Preferences.ProxyType.Http)
+    ),
     Preferences.Key.ProxyHost to Pair(
         Preferences.Key.ProxyType,
-        listOf(Preferences.ProxyType.Http, Preferences.ProxyType.Socks)
+        listOf(Preferences.ProxyType.Socks)
     ),
     Preferences.Key.ProxyPort to Pair(
         Preferences.Key.ProxyType,
-        listOf(Preferences.ProxyType.Http, Preferences.ProxyType.Socks)
+        listOf(Preferences.ProxyType.Socks)
     ),
 )

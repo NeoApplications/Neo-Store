@@ -149,6 +149,7 @@ class MainApplication : Application(), ImageLoaderFactory {
             Preferences.subject.collect {
                 when (it) {
                     Preferences.Key.ProxyType,
+                    Preferences.Key.ProxyUrl,
                     Preferences.Key.ProxyHost,
                     Preferences.Key.ProxyPort,
                                                    -> {
@@ -233,6 +234,7 @@ class MainApplication : Application(), ImageLoaderFactory {
 
     private fun updateProxy() {
         val type = Preferences[Preferences.Key.ProxyType].proxyType
+        val url = Preferences[Preferences.Key.ProxyUrl]
         val host = Preferences[Preferences.Key.ProxyHost]
         val port = Preferences[Preferences.Key.ProxyPort]
         val proxy = when (type) {
@@ -242,7 +244,7 @@ class MainApplication : Application(), ImageLoaderFactory {
 
             Proxy.Type.HTTP   -> {
                 try {
-                    ProxyBuilder.http(Url(host))
+                    ProxyBuilder.http(Url(url))
                 } catch (e: Exception) {
                     e.printStackTrace()
                     null

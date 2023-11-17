@@ -42,6 +42,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.AltNavBarItem,
         Key.UpdatedApps,
         Key.NewApps,
+        Key.ProxyUrl,
         Key.ProxyHost,
         Key.ProxyPort,
         Key.ProxyType,
@@ -234,6 +235,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(100))
         data object NewApps : Key<Int>("new_apps", Value.IntValue(30))
 
+        data object ProxyUrl : Key<String>("proxy_url", Value.StringValue(""))
         data object ProxyHost : Key<String>("proxy_host", Value.StringValue("localhost"))
         data object ProxyPort : Key<Int>("proxy_port", Value.IntValue(9050))
         data object ProxyType : Key<Preferences.ProxyType>(
