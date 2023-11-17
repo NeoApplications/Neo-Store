@@ -12,29 +12,18 @@ import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.entity.Request
 import com.machiav3lli.fdroid.entity.Section
-import com.machiav3lli.fdroid.entity.Source
-import com.machiav3lli.fdroid.utility.matchSearchQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.combineTransform
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-// TODO split into one for Explore/Search and one for Latest/Installed
-open class MainPageVM(
-    val db: DatabaseX,
-    primarySource: Source,
-    secondarySource: Source,
-) : ViewModel() {
-    // TODO add better sort/filter fields
+open class InstalledVM(val db: DatabaseX) : ViewModel() {
 
     private val cc = Dispatchers.IO
     private val sortFilter = MutableStateFlow("")
@@ -43,55 +32,29 @@ open class MainPageVM(
         viewModelScope.launch { sortFilter.emit(value) }
     }
 
-    private val query = MutableStateFlow("")
-
-    fun setSearchQuery(value: String) {
-        viewModelScope.launch { query.emit(value) }
-    }
-
-    private val sections = MutableStateFlow<Section>(Section.All)
-
-    fun setSections(value: Section) {
-        viewModelScope.launch { sections.emit(value) }
-    }
-
-    fun request(source: Source): Request {
-        var mSections: Section = Section.All
-        sections.value.let { if (source.sections) mSections = it }
-        return when (source) {
-            Source.AVAILABLE -> Request.ProductsAll(mSections)
-            Source.SEARCH    -> Request.ProductsSearch(mSections)
-            Source.INSTALLED -> Request.ProductsInstalled(mSections)
-            Source.UPDATES   -> Request.ProductsUpdates(mSections)
-            Source.UPDATED   -> Request.ProductsUpdated(mSections)
-            Source.NEW       -> Request.ProductsNew(mSections)
-        }
-    }
-
     @OptIn(ExperimentalCoroutinesApi::class)
     val installed = db.getInstalledDao().getAllFlow().mapLatest {
         it.associateBy(Installed::packageName)
     }
 
-    private var primaryRequest: StateFlow<Request> = combineTransform(
+    private var primaryRequest: StateFlow<Request> = combine(
         sortFilter,
-        sections,
         installed
-    ) { _, _, _ ->
-        val newRequest = request(primarySource)
-        emit(newRequest)
+    ) { _, _ ->
+        Request.ProductsInstalled(Section.All)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = request(primarySource)
+        initialValue = Request.ProductsInstalled(Section.All)
     )
 
-    val primaryProducts: StateFlow<List<Product>?> = combine(
+    val installedProducts: StateFlow<List<Product>?> = combine(
         primaryRequest,
         installed,
         db.getProductDao().queryFlowList(primaryRequest.value),
-        sortFilter
-    ) { _, _, list, _ ->
+        sortFilter,
+        db.getExtrasDao().getAllFlow(),
+    ) { _, _, list, _, _ ->
         list
     }.stateIn(
         scope = viewModelScope,
@@ -99,28 +62,12 @@ open class MainPageVM(
         initialValue = null
     )
 
-    @OptIn(FlowPreview::class)
-    val filteredProducts: StateFlow<List<Product>?> =
-        combine(primaryProducts, query.debounce(400)) { products, query ->
-            withContext(cc) {
-                products?.matchSearchQuery(query)
-            }
-        }.stateIn(
-            viewModelScope,
-            SharingStarted.Lazily,
-            null
-        )
-
-    private var secondaryRequest = MutableStateFlow(request(secondarySource))
-
-    val secondaryProducts: StateFlow<List<Product>?> = combine(
-        secondaryRequest,
+    val updates: StateFlow<List<Product>?> = combine(
         installed,
-        db.getProductDao().queryFlowList(secondaryRequest.value),
+        db.getProductDao().queryFlowList(Request.ProductsUpdates(Section.All)),
         db.getExtrasDao().getAllFlow(),
-    ) { a, _, list, _ ->
-        if (secondarySource != primarySource) list
-        else null
+    ) { _, list, _ ->
+        list
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
@@ -181,41 +128,13 @@ open class MainPageVM(
                 .insertReplace(Extras(packageName, favorite = setBoolean))
         }
     }
-}
 
-class ExploreVM(db: DatabaseX) : MainPageVM(db, Source.AVAILABLE, Source.AVAILABLE) {
     class Factory(val db: DatabaseX) :
         ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(ExploreVM::class.java)) {
-                return ExploreVM(db) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class")
-        }
-    }
-}
-
-class LatestVM(db: DatabaseX) : MainPageVM(db, Source.UPDATED, Source.NEW) {
-    class Factory(val db: DatabaseX) :
-        ViewModelProvider.Factory {
-        @Suppress("unchecked_cast")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(LatestVM::class.java)) {
-                return LatestVM(db) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class")
-        }
-    }
-}
-
-class SearchVM(db: DatabaseX) : MainPageVM(db, Source.SEARCH, Source.SEARCH) {
-    class Factory(val db: DatabaseX) :
-        ViewModelProvider.Factory {
-        @Suppress("unchecked_cast")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(SearchVM::class.java)) {
-                return SearchVM(db) as T
+            if (modelClass.isAssignableFrom(InstalledVM::class.java)) {
+                return InstalledVM(db) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
