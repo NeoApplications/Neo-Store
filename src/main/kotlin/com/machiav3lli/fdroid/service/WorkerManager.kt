@@ -225,8 +225,8 @@ class WorkerManager(appContext: Context) {
     }
 
     companion object {
-        val syncsRunning = SnapshotStateMap<Long, SyncState>()
-        val downloadsRunning = SnapshotStateMap<String, DownloadState>()
+        private val syncsRunning = SnapshotStateMap<Long, SyncState>()
+        private val downloadsRunning = SnapshotStateMap<String, DownloadState>()
 
         private val syncNotificationBuilder by lazy {
             NotificationCompat
@@ -547,7 +547,7 @@ class WorkerManager(appContext: Context) {
                                             "${task.name} (${task.release.version})"
                                         )
                                     )
-                                    .setContentText(appContext.getString(R.string.canceled))
+                                    .setContentText("${appContext.getString(R.string.canceled)}. stopReason: ${wi.stopReason}") // TODO add stopReason string
                                     .setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
                                 cancelNotification = true
                                 DownloadState.Cancel(
@@ -571,7 +571,6 @@ class WorkerManager(appContext: Context) {
                                 // TODO add to InstallTask & Launch InstallerWork
                                 CoroutineScope(Dispatchers.IO).launch {
                                     MainApplication.db.getInstallTaskDao().put(task.toInstallTask())
-                                    //MainApplication.wm.launchInstaller(task.packageName)
                                 }
                                 if (!Preferences[Preferences.Key.KeepInstallNotification]) {
                                     notificationBuilder.setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
@@ -602,8 +601,8 @@ class WorkerManager(appContext: Context) {
                                 }
                                 notificationBuilder.updateWithError(appContext, task, errorType)
                                 Log.i(
-                                    this::javaClass.name,
-                                    "download error for package: ${task.packageName}"
+                                    this::class.java.name,
+                                    "download error for package: ${task.packageName}. stopReason: ${wi.stopReason}"
                                 )
                                 DownloadState.Error(
                                     task.packageName,
@@ -629,6 +628,11 @@ class WorkerManager(appContext: Context) {
                             )
                         }
                     }
+                    val stopped = wi.stopReason != WorkInfo.STOP_REASON_NOT_STOPPED
+                    if (stopped) Log.i(
+                        this::class.java.name,
+                        "stopReason: ${wi.stopReason} for download task: ${task.packageName}"
+                    )
 
                     if (cancelNotification)
                         MainApplication.wm.notificationManager.cancel(task.key.hashCode())

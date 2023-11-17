@@ -57,7 +57,7 @@ fun ProductCard(
                 max = PRODUCT_CARD_WIDTH,
             ),
         colors = ListItemDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ),
         leadingContent = {
             NetworkImage(

@@ -28,9 +28,9 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.index.RepositoryUpdater
+import com.machiav3lli.fdroid.service.ActionReceiver
 import com.machiav3lli.fdroid.service.InstallerReceiver
 import com.machiav3lli.fdroid.service.installIntent
-import com.machiav3lli.fdroid.service.ActionReceiver
 import com.machiav3lli.fdroid.service.worker.DownloadTask
 import com.machiav3lli.fdroid.service.worker.ErrorType
 import com.machiav3lli.fdroid.service.worker.SyncWorker
@@ -396,10 +396,10 @@ fun notifyStatus(context: Context, intent: Intent?) {
         }
 
         PackageInstaller.STATUS_SUCCESS             -> {
-            if (installerAction == InstallerReceiver.ACTION_UNINSTALL)
-            // remove any notification for this app
+            if (installerAction == InstallerReceiver.ACTION_UNINSTALL) {
+                // remove any notification for this app
                 context.notificationManager.cancel(notificationTag, NOTIFICATION_ID_INSTALLER)
-            else {
+            } else {
                 name?.let { scope.launch { MainApplication.db.getInstallTaskDao().delete(it) } }
                 val notification = builder
                     .setSmallIcon(android.R.drawable.stat_sys_download_done)

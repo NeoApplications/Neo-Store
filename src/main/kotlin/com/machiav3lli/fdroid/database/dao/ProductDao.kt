@@ -81,6 +81,12 @@ interface ProductDao : BaseDao<Product> {
     @Query("SELECT * FROM product WHERE packageName = :packageName")
     fun getFlow(packageName: String): Flow<List<Product>>
 
+    @Query("SELECT * FROM product WHERE packageName = :packageName AND repositoryId = :repoId")
+    fun get(packageName: String, repoId: Long): Product?
+
+    @Query("SELECT * FROM product WHERE packageName = :packageName AND repositoryId = :repoId")
+    fun getFlow(packageName: String, repoId: Long): Flow<Product?>
+
 
     @Query("SELECT packageName, icon, metadataIcon FROM product GROUP BY packageName HAVING 1")
     fun getIconDetails(): List<IconDetails>
@@ -305,6 +311,9 @@ interface ProductTempDao : BaseDao<ProductTemp> {
     @Insert
     fun insertCategory(vararg product: CategoryTemp)
 
+    //@Insert
+    //fun insertRelease(vararg product: ReleaseTemp)
+
     @Transaction
     fun putTemporary(products: List<Product>) {
         products.forEach {
@@ -316,6 +325,9 @@ interface ProductTempDao : BaseDao<ProductTemp> {
                     label = category
                 })
             }
+            /*it.releases.forEach { rel ->
+                insertRelease(rel.asReleaseTemp())
+            }*/
         }
     }
 }

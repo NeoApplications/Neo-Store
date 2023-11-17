@@ -67,7 +67,7 @@ class ExodusWorker(
 
     override suspend fun doWork(): Result {
         val type = WorkType.values()[
-                inputData.getInt(ARG_WORK_TYPE, 0)
+            inputData.getInt(ARG_WORK_TYPE, 0)
         ]
 
         when (type) {

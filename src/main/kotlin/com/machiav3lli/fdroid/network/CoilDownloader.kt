@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.network
 
 import android.net.Uri
+import android.util.Log
 import com.machiav3lli.fdroid.CLIENT_CONNECT_TIMEOUT
 import com.machiav3lli.fdroid.CLIENT_READ_TIMEOUT
 import com.machiav3lli.fdroid.CLIENT_WRITE_TIMEOUT
@@ -39,6 +40,7 @@ object CoilDownloader {
     private val connectionPools = ConcurrentHashMap<String, ConnectionPool>()
     var proxy: Proxy? = null
         set(value) {
+            Log.i(this.javaClass.name, "updating coil proxies.")
             if (field != value) {
                 field = value
                 clients.keys.removeAll { !it.endsWith(".onion") }

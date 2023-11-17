@@ -286,7 +286,7 @@ class MainApplication : Application(), ImageLoaderFactory {
 
     override fun newImageLoader(): ImageLoader {
         return ImageLoader.Builder(this)
-            .callFactory(CoilDownloader.Factory(Cache.getImagesDir(this)))
+            .callFactory(CoilDownloader.Factory(Cache.getImagesDir(this))) // TODO migrate to Ktor on Coil 3.X
             .crossfade(true)
             .build()
     }

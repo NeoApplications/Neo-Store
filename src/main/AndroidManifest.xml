@@ -20,10 +20,10 @@
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application_name"
+        android:networkSecurityConfig="@xml/network_security_policy"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Main.Amoled"
-        android:networkSecurityConfig="@xml/network_security_policy"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="33">
 
@@ -122,7 +122,7 @@
 
         <receiver
             android:name=".service.InstallerReceiver"
-            android:exported="true" />
+            android:exported="false" />
 
         <provider
             android:name=".content.Cache$Provider"
@@ -132,7 +132,7 @@
 
         <receiver
             android:name=".service.ActionReceiver"
-            android:exported="true" />
+            android:exported="false" />
 
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"

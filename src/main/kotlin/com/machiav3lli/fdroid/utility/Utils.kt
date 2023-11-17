@@ -20,7 +20,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.NavDestination
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
@@ -40,7 +39,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyleft
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GlobeSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.User
 import com.machiav3lli.fdroid.ui.dialog.LaunchDialog
-import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.android.singleSignature
 import com.machiav3lli.fdroid.utility.extension.android.versionCodeCompat
@@ -482,18 +480,6 @@ val currentTimestamp: String
 
 val shellIsRoot: Boolean
     get() = Shell.getCachedShell()?.isRoot ?: Shell.getShell().isRoot
-
-fun NavDestination.destinationToItem(): NavItem? = listOf(
-    NavItem.Explore,
-    NavItem.Latest,
-    NavItem.Installed,
-    NavItem.Search,
-    NavItem.Prefs,
-    NavItem.PersonalPrefs,
-    NavItem.UpdatesPrefs,
-    NavItem.ReposPrefs,
-    NavItem.OtherPrefs
-).find { this.route == it.destination }
 
 fun getBaseUrl(fullUrl: String): String {
     val url = URL(fullUrl)
