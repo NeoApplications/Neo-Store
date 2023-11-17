@@ -21,7 +21,7 @@ import com.machiav3lli.fdroid.utility.notifyStatus
 class InstallerReceiver : BroadcastReceiver() {
     companion object {
         const val KEY_ACTION = "installerAction"
-        const val KEY_APP_NAME = "appName"
+        const val KEY_PACKAGE_LABEL = "packageLabel"
         const val ACTION_UNINSTALL = "uninstall"
         const val INSTALLED_NOTIFICATION_TIMEOUT: Long = 5000
         const val NOTIFICATION_TAG_PREFIX = "install-"

@@ -57,6 +57,9 @@ import com.machiav3lli.fdroid.utility.updateWithError
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class WorkerManager(appContext: Context) {
@@ -78,17 +81,43 @@ class WorkerManager(appContext: Context) {
         if (Android.sdk(Build.VERSION_CODES.O)) createNotificationChannels()
 
         workManager.pruneWork()
-        workManager.getWorkInfosByTagLiveData(
-            SyncWorker::class.qualifiedName!!
-        ).observeForever {
-            onSyncProgress(this, it)
+        scope.launch {
+            workManager.getWorkInfosByTagFlow(
+                SyncWorker::class.qualifiedName!!
+            ).stateIn(
+                scope,
+                SharingStarted.Eagerly,
+                mutableListOf()
+            ).collectLatest {
+                onSyncProgress(this@WorkerManager, it)
+            }
         }
-        workManager.getWorkInfosByTagLiveData(
-            DownloadWorker::class.qualifiedName!!
-        ).observeForever {
-            onDownloadProgress(this, it)
+        scope.launch {
+            workManager.getWorkInfosByTagFlow(
+                DownloadWorker::class.qualifiedName!!
+            ).stateIn(
+                scope,
+                SharingStarted.Eagerly,
+                mutableListOf()
+            ).collectLatest {
+                onDownloadProgress(this@WorkerManager, it)
+            }
         }
-        // TODO add observer for InstallWorker
+        scope.launch {
+            MainApplication.db.getInstallTaskDao()
+                .getAllFlow() // Add similar table for DownloadTasks
+                .stateIn(
+                    scope,
+                    SharingStarted.Eagerly,
+                    mutableListOf()
+                )
+                .collectLatest {
+                    if (it.isNotEmpty()) {
+                        prune()
+                        launchInstaller()
+                    }
+                }
+        }
     }
 
     fun release(): WorkerManager? {
@@ -164,8 +193,8 @@ class WorkerManager(appContext: Context) {
         }
     }
 
-    fun launchInstaller(packageName: String) = scope.launch {
-        InstallWorker.launch(packageName)
+    fun launchInstaller() = ioScope.launch {
+        InstallWorker.launch()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -542,7 +571,7 @@ class WorkerManager(appContext: Context) {
                                 // TODO add to InstallTask & Launch InstallerWork
                                 CoroutineScope(Dispatchers.IO).launch {
                                     MainApplication.db.getInstallTaskDao().put(task.toInstallTask())
-                                    MainApplication.wm.launchInstaller(task.packageName)
+                                    //MainApplication.wm.launchInstaller(task.packageName)
                                 }
                                 if (!Preferences[Preferences.Key.KeepInstallNotification]) {
                                     notificationBuilder.setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)

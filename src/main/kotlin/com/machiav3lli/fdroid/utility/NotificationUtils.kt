@@ -214,6 +214,15 @@ fun Context.downloadNotificationBuilder() = NotificationCompat
     .setCategory(NotificationCompat.CATEGORY_PROGRESS)
     .setProgress(0, 0, true)
 
+fun Context.installNotificationBuilder() = NotificationCompat
+    .Builder(this, NOTIFICATION_CHANNEL_INSTALLER)
+    .setSmallIcon(android.R.drawable.stat_sys_download_done)
+    .setGroup(NOTIFICATION_CHANNEL_INSTALLER)
+    .setOngoing(true)
+    .setSilent(true)
+    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+    .setCategory(NotificationCompat.CATEGORY_STATUS)
+
 fun NotificationCompat.Builder.updateProgress(
     context: Context,
     progress: SyncWorker.Progress,
@@ -330,7 +339,7 @@ fun notifyStatus(context: Context, intent: Intent?) {
     if (Android.sdk(26)) {
         NotificationChannel(
             NOTIFICATION_CHANNEL_INSTALLER,
-            context.getString(R.string.syncing), NotificationManager.IMPORTANCE_LOW
+            context.getString(R.string.install), NotificationManager.IMPORTANCE_LOW
         )
             .let(context.notificationManager::createNotificationChannel)
     }
@@ -350,7 +359,7 @@ fun notifyStatus(context: Context, intent: Intent?) {
     val installerAction = intent?.getStringExtra(InstallerReceiver.KEY_ACTION)
 
     // get application name for notifications
-    val appLabel = session?.appLabel ?: intent?.getStringExtra(InstallerReceiver.KEY_APP_NAME)
+    val appLabel = session?.appLabel ?: intent?.getStringExtra(InstallerReceiver.KEY_PACKAGE_LABEL)
     ?: try {
         if (name != null) context.packageManager.getApplicationLabel(
             context.packageManager.getApplicationInfo(

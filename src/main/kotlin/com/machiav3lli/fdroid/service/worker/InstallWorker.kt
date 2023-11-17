@@ -22,7 +22,7 @@ import com.machiav3lli.fdroid.database.entity.InstallTask
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.installer.LegacyInstaller
 import com.machiav3lli.fdroid.utility.extension.android.Android
-import com.machiav3lli.fdroid.utility.downloadNotificationBuilder
+import com.machiav3lli.fdroid.utility.installNotificationBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -34,16 +34,16 @@ class InstallWorker(
     params: WorkerParameters,
 ) : CoroutineWorker(context, params) {
     companion object {
-        fun launch(packageName: String) {
-            val downloadRequest = OneTimeWorkRequestBuilder<InstallWorker>()
-                .addTag("installer_$packageName")
+        fun launch() {
+            val installerRequest = OneTimeWorkRequestBuilder<InstallWorker>()
+                .addTag("installer")
                 .build()
 
             MainApplication.wm.workManager
                 .beginUniqueWork(
                     "Installer",
                     ExistingWorkPolicy.APPEND,
-                    downloadRequest,
+                    installerRequest,
                 ).enqueue()
         }
     }
@@ -87,7 +87,6 @@ class InstallWorker(
                 tasks = MainApplication.db.getInstallTaskDao().getAll()
             }
         }
-
         return Result.success()
     }
 
@@ -112,6 +111,6 @@ class InstallWorker(
     }
 
     private var stateNotificationBuilder by mutableStateOf(
-        applicationContext.downloadNotificationBuilder()
+        applicationContext.installNotificationBuilder()
     )
 }

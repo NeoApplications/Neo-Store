@@ -37,7 +37,7 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
     override suspend fun install(appName: String, cacheFileName: String) {
         val cacheFile = Cache.getReleaseFile(context, cacheFileName)
         // using packageName to store the app's name for the notification later down the line
-        intent.putExtra(InstallerReceiver.KEY_APP_NAME, appName)
+        intent.putExtra(InstallerReceiver.KEY_PACKAGE_LABEL, appName)
         mDefaultInstaller(cacheFile)
     }
 
@@ -100,12 +100,14 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
                     "Failed to perform cache to package copy due to a bad pipe.\n${e.message}"
                 )
                 hasErrors = true
+            } finally {
+                if (!hasErrors) {
+                    session.commit(
+                        PendingIntent.getBroadcast(context, id, intent, flags).intentSender
+                    )
+                    if (Preferences[Preferences.Key.ReleasesCacheRetention] == 0) cacheFile.delete()
+                }
             }
-        }
-
-        if (!hasErrors) {
-            session.commit(PendingIntent.getBroadcast(context, id, intent, flags).intentSender)
-            if (Preferences[Preferences.Key.ReleasesCacheRetention] == 0) cacheFile.delete()
         }
     }
 
