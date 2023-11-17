@@ -1,4 +1,5 @@
 -dontobfuscate
+-dontwarn org.slf4j.impl.StaticLoggerBinder
 
 # Disable ServiceLoader reproducibility-breaking optimizations
 -keep class kotlinx.coroutines.CoroutineExceptionHandler
