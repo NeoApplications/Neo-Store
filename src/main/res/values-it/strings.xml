@@ -353,4 +353,6 @@
     <string name="alt_new_apps">Usa disposizione alternativa per nuove app</string>
     <string name="enabled">Abilitato</string>
     <string name="disabled">Disabilitato</string>
+    <string name="proxy_url">Url</string>
+    <string name="repo_qr_code">Codice QR del repository</string>
 </resources>
