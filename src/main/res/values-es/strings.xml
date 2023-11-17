@@ -353,4 +353,6 @@
     <string name="alt_new_apps">Utilizar el nuevo diseño alternativo de las aplicaciones</string>
     <string name="enabled">Activado</string>
     <string name="disabled">Desactivado</string>
+    <string name="proxy_url">Dirección url</string>
+    <string name="repo_qr_code">Código QR del repositorio</string>
 </resources>
