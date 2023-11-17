@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-1.0.0 (??.??.2023) 270+ Commits +250 Translations
+1.0.0 (??.??.2023) 320+ Commits +280 Translations
 ------------------
 
 ### Function
@@ -13,7 +13,17 @@ CHANGELOG
 - Add: Export/import installed apps
 - Add: Room Kotlin KSP code generation
 - Add: ConnectionPool, redirections to Coil calls
-- Add Repos: INVISV, Monerujo, iodé, spiritCroc, DivestOS Unofficial, Funkwhale, Julian Andres Klode's repo (credits @ishanarora), Cromite, Divolt Repo (credits @GitGitro), Samourai Wallet Repo (credits @RequestPrivacy)
+- Add: Opening IzzyOnDroid links (credits @GitGitro)
+- Add: Network constraint to Download works
+- Add: Own client & connectionPools for CoilDownloader
+- Add: ForegroundServiceType for works (Required on A14)
+- Add Repos: Aniyomi, Koyu, Kuschku, Kvaestiso, Etopa, Metatrans Apps, Gadgetbridge, FUTO, Grobox, Julian Fairfax, spiritCroc Test, Zimbelstern, Cromite, Divolt Repo (credits @GitGitro)
+- Add Repos: Samourai Wallet Repo (credits @RequestPrivacy)
+- Add Repos: Julian Andres Klode's repo (credits @ishanarora)
+- Add Repos: PurpleI2p, INVISV, Monerujo, iodé, spiritCroc, DivestOS Unofficial, Funkwhale
+- Remove Repos: Fluffy Chat (stable and nightly), Ungoogled Chromium, i2p
+- Fix: Calling Tor addresses
+- Fix: Make RootInstaller null-safer
 - Fix: Auto-sync on "Only charging"
 - Fix: The description for PeterCxy's Shelter repo (credits @ishanarora)
 - Fix: c:geo repository (credits @ishanarora)
@@ -23,10 +33,17 @@ CHANGELOG
 - Fix: Clicking updates notification
 - Fix: Launching parallel updates
 - Fix: Updating apps in the background
+- Update: Replace OkHttp with Ktor (except for Coil)
+- Update: More open network security policy
+- Update: Make root session installer default ture if A13+
+- Update: Make product queries observe all relevant entities
+- Update: Revamp Installer works
+- Update: Revamp Downloader
+- Update: Revamp proxy handling
+- Update: Revamp Repository data class
 - Update: Convert auto-sync interval unit to hours
 - Update: Optimize the main products query
 - Update: Migrate download, exodus & sync backend from Sevice- to Worker-based
-- Update: Revamp Downloader
 - Update: Replace RxJava usage with Coroutines
 - Update: Allow parallel downloads from different repositories
 - Update: Allow parallel sync of repos
@@ -38,6 +55,7 @@ CHANGELOG
 - Update: Allow pre-composing all pages
 - Update: minSDK to 24
 - Update: compileSDK 34
+- Update: targetSDK 34
 - Remove: Dependencies of deprecated usage
 
 ### UI
@@ -51,6 +69,7 @@ CHANGELOG
 - Add: New apps carousel layout
 - Add: Option for alt new apps layout
 - Add: Dynamic theme variants
+- Add: Explicit field for HTTP proxy address
 - Fix: Switch layout on low-dpi/multi-lines
 - Fix: Screenshots scaling issue after opening once
 - Fix: Pre-mature cutting horizontal products recycler layout
@@ -58,6 +77,11 @@ CHANGELOG
 - Fix: Content padding of Main pages
 - Fix: Ghost clicking settings when search is expanded
 - Fix: Showing progress bar in AppSheet when not active
+- Update: Revamp Carrousel item layout
+- Update: Split Installed page to two tabs
+- Update: Revamp AppSheet
+- Update: Revamp repositories page
+- Update: Make pagers animate scrolling
 - Update: Revamp all sheets into composable only
 - Update: Revamp Message/Launch-Dialogs into composables
 - Update: Larger layout corners
@@ -87,9 +111,14 @@ CHANGELOG
 - Add: Option to allow unstable updates to each app
 - Add: PrivacyPoints to PrivacyPanel cards
 - Add: All Anti-features in PrivacyPanel
+- Add: Qr Code to repo sheet
 - Fix: Showing updatable label for Product items
 - Fix: Showing right version in AppSheet's header
 - Fix: Showing downloaded version (in downloads log)
+- Update: Alphabetically sort current downloads in Installed page
+- Update: Replace SearchPage with independent SearchSheet
+- Update: Hide irrelevant sort/filter options
+- Update: Communicate status on download errors
 - Update: Using pager in App Sheet for Privacy Panel
 - Update: Bind short description lines limit to extended state
 - Update: Better download state communication
