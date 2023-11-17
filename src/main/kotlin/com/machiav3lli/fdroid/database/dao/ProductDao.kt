@@ -48,12 +48,15 @@ import com.machiav3lli.fdroid.TABLE_PRODUCT
 import com.machiav3lli.fdroid.TABLE_REPOSITORY
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.QueryBuilder
+import com.machiav3lli.fdroid.database.entity.Category
 import com.machiav3lli.fdroid.database.entity.CategoryTemp
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.IconDetails
+import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.ProductTemp
+import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.database.entity.asProductTemp
 import com.machiav3lli.fdroid.entity.Order
 import com.machiav3lli.fdroid.entity.Request
@@ -152,7 +155,7 @@ interface ProductDao : BaseDao<Product> {
         )
     )
 
-    @RawQuery(observedEntities = [Product::class])
+    @RawQuery(observedEntities = [Product::class, Installed::class, Extras::class, Repository::class, Category::class])
     fun queryFlowList(query: SupportSQLiteQuery): Flow<List<Product>>
 
     fun queryFlowList(request: Request): Flow<List<Product>> = queryFlowList(
