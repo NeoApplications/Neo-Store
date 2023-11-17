@@ -260,7 +260,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         )
 
         data object SortOrderLatest : Key<SortOrder>(
-            "sort_order_latest",
+            "sort_order_latest_fix",
             Value.EnumerationValue(SortOrder.Update)
         )
 
@@ -307,7 +307,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         )
 
         data object CategoriesFilterExplore : Key<String>(
-            "category_filter_explore",
+            "category_filter_explore_fix",
             Value.StringValue("")
         )
 

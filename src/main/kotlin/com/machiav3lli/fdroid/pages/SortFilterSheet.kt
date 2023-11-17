@@ -185,7 +185,7 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(8.dp)
         ) {
-            item {
+            if (sortKey != Preferences.Key.SortOrderLatest) item {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(id = R.string.sorting_order),
@@ -193,7 +193,7 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                     style = MaterialTheme.typography.titleLarge
                 )
             }
-            item {
+            if (sortKey != Preferences.Key.SortOrderLatest) item {
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -253,7 +253,7 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                     }
                 }
             }
-            item {
+            if (categoriesFilterKey != Preferences.Key.CategoriesFilterExplore) item {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(id = R.string.categories),
@@ -261,7 +261,7 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                     style = MaterialTheme.typography.titleLarge
                 )
             }
-            item {
+            if (categoriesFilterKey != Preferences.Key.CategoriesFilterExplore) item {
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
