@@ -169,6 +169,7 @@ dependencies {
     // Ktor
     implementation("io.ktor:ktor-client-core:$vKtor")
     implementation("io.ktor:ktor-client-okhttp:$vKtor")
+    implementation("io.ktor:ktor-client-logging:$vKtor")
 
     // OkHttps
     implementation("com.squareup.okhttp3:okhttp:$vOkhttp")

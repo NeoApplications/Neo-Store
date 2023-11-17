@@ -167,7 +167,7 @@ class DownloadWorker(
             if (!isStopped) setProgress(progress)
         }.let { result ->
             if (!result.success) {
-                Log.i(this::javaClass.name, "Worker failure by error ${result.code}")
+                Log.i(this::javaClass.name, "Worker failure by error ${result.statusCode}")
                 return@coroutineScope Result.failure(getWorkData(task, result))
             }
 
@@ -237,7 +237,7 @@ class DownloadWorker(
         ARG_URL to task.url,
         ARG_REPOSITORY_ID to task.repoId,
         ARG_AUTHENTICATION to task.authentication,
-        ARG_RESULT_CODE to result.code,
+        ARG_RESULT_CODE to result.statusCode.value,
         ARG_VALIDATION_ERROR to validationError?.ordinal,
     )
 

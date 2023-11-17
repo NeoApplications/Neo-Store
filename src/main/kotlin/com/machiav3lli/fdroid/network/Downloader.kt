@@ -1,118 +1,87 @@
 package com.machiav3lli.fdroid.network
 
 import android.util.Log
-import com.machiav3lli.fdroid.CLIENT_CONNECT_TIMEOUT
-import com.machiav3lli.fdroid.CLIENT_READ_TIMEOUT
-import com.machiav3lli.fdroid.CLIENT_WRITE_TIMEOUT
-import com.machiav3lli.fdroid.POOL_DEFAULT_KEEP_ALIVE_DURATION_MS
+import com.machiav3lli.fdroid.BuildConfig
+import com.machiav3lli.fdroid.CLIENT_CONNECT_TIMEOUT_MS
+import com.machiav3lli.fdroid.POOL_DEFAULT_KEEP_ALIVE_DURATION_M
 import com.machiav3lli.fdroid.POOL_DEFAULT_MAX_IDLE_CONNECTIONS
-import com.machiav3lli.fdroid.utility.ProgressInputStream
-import com.machiav3lli.fdroid.utility.getBaseUrl
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.ProxyBuilder
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.engine.resolveAddress
+import io.ktor.client.plugins.BodyProgress
+import io.ktor.client.plugins.HttpRequestRetry
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.UserAgent
+import io.ktor.client.plugins.logging.ANDROID
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.onDownload
+import io.ktor.client.plugins.retry
+import io.ktor.client.request.header
+import io.ktor.client.request.headers
+import io.ktor.client.request.host
+import io.ktor.client.request.port
+import io.ktor.client.request.prepareGet
+import io.ktor.client.request.url
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsChannel
+import io.ktor.http.CacheControl
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.ifNoneMatch
+import io.ktor.http.isSuccess
+import io.ktor.util.cio.writeChannel
+import io.ktor.util.network.hostname
+import io.ktor.util.network.port
+import io.ktor.utils.io.copyAndClose
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.Cache
-import okhttp3.CacheControl
-import okhttp3.Call
 import okhttp3.ConnectionPool
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
+import okhttp3.ConnectionSpec
+import org.koin.dsl.module
+import org.koin.mp.KoinPlatform.getKoin
 import java.io.File
-import java.io.FileOutputStream
-import java.net.InetSocketAddress
 import java.net.Proxy
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
+import kotlin.math.pow
 
 object Downloader {
-    class Result(val code: Int, val lastModified: String, val entityTag: String) {
+
+    private val client: HttpClient by getKoin().inject()
+
+    private val retries = mutableMapOf<String, AtomicInteger>()
+
+    var proxy: Proxy? = null
+        set(value) {
+            Log.i(this.javaClass.name, "updating main proxy to $value")
+            if (field != value) {
+                field = value
+            }
+        }
+
+    class Result(val statusCode: HttpStatusCode, val lastModified: String, val entityTag: String) {
         val success: Boolean
-            get() = code == 200 || code == 206
+            get() = statusCode.isSuccess()
 
         val isNotChanged: Boolean
-            get() = code == 304
+            get() = statusCode == HttpStatusCode.NotModified
 
-        constructor(response: Response) : this(
-            response.code,
+        constructor(response: HttpResponse) : this(
+            response.status,
             response.headers["Last-Modified"].orEmpty(),
             response.headers["ETag"].orEmpty()
         )
     }
 
-    private val clients = ConcurrentHashMap<String, OkHttpClient>()
-    private val connectionPools = ConcurrentHashMap<String, ConnectionPool>()
-    var proxy: Proxy? = null
-        set(value) {
-            if (field != value) {
-                synchronized(clients) {
-                    field = value
-                    clients.keys.removeAll { !it.endsWith(".onion") }
-                }
-            }
-        }
-
     private fun getProxy(onion: Boolean) =
-        if (onion) Proxy(Proxy.Type.SOCKS, InetSocketAddress("localhost", 9050))
+        if (onion) ProxyBuilder.socks("localhost", 9050)
         else proxy
 
-    private fun buildRequest(
-        url: String,
-        lastModified: String,
-        entityTag: String,
-        authentication: String,
-        range: String?,
-    ): Request.Builder = Request.Builder()
-        .url(url)
-        .header("If-Modified-Since", lastModified)
-        .header("If-None-Match", entityTag)
-        .header("Authorization", authentication)
-        .apply {
-            if (range != null) header("Range", range)
-        }
-
-    private fun createClient(
-        connectionPool: ConnectionPool,
-        proxy: Proxy?,
-        cache: Cache?,
-    ): OkHttpClient = OkHttpClient.Builder()
-        .connectionPool(connectionPool)
-        .connectTimeout(CLIENT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
-        .readTimeout(CLIENT_READ_TIMEOUT, TimeUnit.SECONDS)
-        .writeTimeout(CLIENT_WRITE_TIMEOUT, TimeUnit.SECONDS)
-        .proxy(proxy)
-        .cache(cache)
-        .followRedirects(true)
-        .followSslRedirects(true)
-        .retryOnConnectionFailure(true)
-        .build()
-
-    fun createCall(request: Request.Builder, authentication: String, cache: Cache?): Call {
-        val newRequest = if (authentication.isNotEmpty()) {
-            request.addHeader("Authorization", authentication).build()
-        } else {
-            request.build()
-        }
-        val client = updateClient(newRequest.url.host, cache)
-        return client.newCall(newRequest)
-    }
-
-    private fun updateClient(hostUrl: String, cache: Cache?): OkHttpClient {
-        return synchronized(clients) {
-            clients.getOrPut(hostUrl) {
-                val isOnion = hostUrl.endsWith(".onion")
-                val connectionPool = connectionPools.getOrPut(hostUrl) {
-                    ConnectionPool(
-                        POOL_DEFAULT_MAX_IDLE_CONNECTIONS,
-                        POOL_DEFAULT_KEEP_ALIVE_DURATION_MS,
-                        TimeUnit.MILLISECONDS
-                    )
-                }
-                createClient(connectionPool, getProxy(isOnion), cache)
-            }
-        }
-    }
 
     suspend fun download(
         url: String,
@@ -122,94 +91,138 @@ object Downloader {
         authentication: String,
         callback: (suspend (read: Long, total: Long?) -> Unit)?,
     ): Result {
-        return withContext(Dispatchers.IO) {
-            val start = if (target.exists()) target.length().coerceAtLeast(0L)
+        return coroutineScope {
+            var start = if (target.exists()) target.length().coerceAtLeast(0L)
             else null
             Log.i(this.javaClass.name, "download start byte = $start")
-            val rangeHeader = start?.let { "bytes=$it-" }
-            val baseUrl = getBaseUrl(url)
 
-            val connectionPool = connectionPools.getOrPut(baseUrl) {
-                ConnectionPool(
-                    POOL_DEFAULT_MAX_IDLE_CONNECTIONS,
-                    POOL_DEFAULT_KEEP_ALIVE_DURATION_MS,
-                    TimeUnit.MILLISECONDS
-                )
-            }
-
-            val request: Request = buildRequest(
-                url,
-                lastModified,
-                entityTag,
-                authentication,
-                rangeHeader,
-            ).apply {
-                val cacheControl = CacheControl.Builder()
-                    .maxAge(1, TimeUnit.MINUTES)
-                    .build()
-                cacheControl(cacheControl)
-                header("Accept-Encoding", "gzip, deflate")
-            }.build()
-
-            val client = clients.getOrPut(baseUrl) {
-                OkHttpClient.Builder()
-                    .connectionPool(connectionPool)
-                    .connectTimeout(CLIENT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
-                    .readTimeout(CLIENT_READ_TIMEOUT, TimeUnit.SECONDS)
-                    .writeTimeout(CLIENT_WRITE_TIMEOUT, TimeUnit.SECONDS)
-                    .followRedirects(true)
-                    .followSslRedirects(true)
-                    .retryOnConnectionFailure(true)
-                    .build()
-            }
-
-            val call = client.newCall(request)
-            val response = call.execute()
-
-            val result = response.body.use { responseBody ->
-                if (response.code == 304) {
-                    Result(response.code, lastModified, entityTag)
-                } else if (response.isSuccessful) {
-                    val append = start != null && response.headers["Content-Range"] != null
-                    val progressStart = if (append && start != null) start else 0L
-                    val contentLength = responseBody.contentLength().coerceAtLeast(0L)
-                    val progressTotal = if (append) progressStart + contentLength
-                    else contentLength
-
-                    withContext(Dispatchers.IO) {
-                        val inputStream = ProgressInputStream(responseBody.byteStream()) {
-                            if (Thread.interrupted()) {
-                                throw InterruptedException()
-                            }
-                            CoroutineScope(Dispatchers.IO).launch {
-                                callback?.invoke(progressStart + it, progressTotal)
-                            }
-                        }
-
-                        inputStream.use { input ->
-                            val outputStream = FileOutputStream(target, append)
-                            outputStream.use { output ->
-                                input.copyTo(output)
-                                output.fd.sync()
-                            }
+            try {
+                client.prepareGet {
+                    url(url)
+                    getProxy(url.endsWith(".onion"))?.resolveAddress()?.let {
+                        this.host = it.hostname
+                        this.port = it.port
+                    }
+                    headers {
+                        append(HttpHeaders.IfModifiedSince, lastModified)
+                        append(HttpHeaders.Authorization, authentication)
+                        append(HttpHeaders.AcceptEncoding, "gzip, deflate")
+                        append(HttpHeaders.CacheControl, CacheControl.MaxAge(60).toString())
+                    }
+                    ifNoneMatch(entityTag)
+                    if (start != null) header(HttpHeaders.Range, start?.let { "bytes=$it-" })
+                    retry {
+                        modifyRequest {
+                            start = if (target.exists()) target.length().coerceAtLeast(0L)
+                            else null
+                            if (start != null) header(
+                                HttpHeaders.Range,
+                                start?.let { "bytes=$it-" })
                         }
                     }
+                    this.onDownload { read, total ->
+                        val progressStart = start ?: 0L
+                        val progressTotal = progressStart + total
 
-                    Result(response)
-                } else if (response.code == 416) {
-                    // Error code 416 means the requested range is invalid → retry from start
-                    Log.w(
-                        this.javaClass.name,
-                        "Failed to download file ($url) with Range $rangeHeader."
-                    )
-                    target.delete()
-                    download(url, target, lastModified, entityTag, authentication, callback)
-                } else {
-                    throw Exception("Failed to download file. Response code ${response.code}:${response.message}")
+                        if (Thread.interrupted()) {
+                            throw InterruptedException()
+                        }
+                        CoroutineScope(Dispatchers.IO).launch {
+                            callback?.invoke(progressStart + read, progressTotal)
+                        }
+                    }
+                }.execute { response ->
+                    when {
+                        response.status == HttpStatusCode.NotModified                                                        -> {
+                            retries.remove(url)
+                            Result(response.status, lastModified, entityTag)
+                        }
+
+                        response.status.isSuccess()                                                                          -> {
+                            val outputStream = target.writeChannel()
+                            val channel = response.bodyAsChannel()
+                            channel.copyAndClose(outputStream)
+
+                            retries.remove(url)
+                            Result(response)
+                        }
+
+                        response.status == HttpStatusCode.RequestedRangeNotSatisfiable                                       -> {
+                            Log.w(
+                                this.javaClass.name,
+                                "Failed to download file ($url) with Range: ${start?.let { "bytes=$it-" }}."
+                            )
+                            target.delete()
+                            download(url, target, lastModified, entityTag, authentication, callback)
+                        }
+
+                        response.status == HttpStatusCode.GatewayTimeout || response.status == HttpStatusCode.RequestTimeout -> {
+                            download(url, target, lastModified, entityTag, authentication, callback)
+                        }
+
+                        else                                                                                                 -> {
+                            Log.w(
+                                this.javaClass.name,
+                                "Failed to download file ($url). Response code ${response.status.value}:${response.status.description}."
+                            )
+                            throw Exception("Failed to download file. Response code ${response.status.value}:${response.status.description}")
+                        }
+                    }
                 }
+            } catch (e: Exception) {
+                val leftRetries = retries.getOrPut(url) { AtomicInteger(5) }
+                if (leftRetries.decrementAndGet() > 0) {
+                    retries[url] = leftRetries
+                    download(url, target, lastModified, entityTag, authentication, callback)
+                } else throw e
             }
-
-            result
         }
     }
+}
+
+private fun initDownloadClient(): HttpClient = HttpClient(OkHttp) {
+    engine {
+        pipelining = true
+        config {
+            connectionPool(
+                ConnectionPool(
+                    POOL_DEFAULT_MAX_IDLE_CONNECTIONS,
+                    POOL_DEFAULT_KEEP_ALIVE_DURATION_M,
+                    TimeUnit.MINUTES
+                )
+            )
+            retryOnConnectionFailure(true)
+            followRedirects(true)
+            followSslRedirects(true)
+            connectionSpecs(
+                listOf(
+                    ConnectionSpec.RESTRICTED_TLS,
+                    ConnectionSpec.MODERN_TLS,
+                    ConnectionSpec.CLEARTEXT
+                )
+            )
+        }
+    }
+    install(Logging) {
+        logger = Logger.ANDROID
+        level = LogLevel.ALL
+    }
+    install(UserAgent) {
+        agent = "${BuildConfig.APPLICATION_ID}-${BuildConfig.VERSION_CODE}"
+    }
+    install(HttpTimeout) {
+        connectTimeoutMillis = CLIENT_CONNECT_TIMEOUT_MS
+        socketTimeoutMillis = CLIENT_CONNECT_TIMEOUT_MS
+        requestTimeoutMillis = CLIENT_CONNECT_TIMEOUT_MS
+    }
+    install(BodyProgress)
+    install(HttpRequestRetry) {
+        maxRetries = 5
+        delayMillis { retryNr -> (2.0.pow(retryNr) * 1000).toLong() }
+        retryOnException(5, true)
+    }
+}
+
+val downloadClientModule = module {
+    single { initDownloadClient() }
 }

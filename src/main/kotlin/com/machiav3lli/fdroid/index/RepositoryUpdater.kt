@@ -12,6 +12,7 @@ import com.machiav3lli.fdroid.utility.CoroutineUtils
 import com.machiav3lli.fdroid.utility.ProgressInputStream
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.extension.text.unhex
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -120,7 +121,7 @@ object RepositoryUpdater {
 
                 !result.success     -> {
                     file.delete()
-                    if (result.code == 404 && indexTypes.isNotEmpty()) {
+                    if (result.statusCode == HttpStatusCode.NotFound && indexTypes.isNotEmpty()) {
                         update(
                             context,
                             repository,
@@ -131,7 +132,7 @@ object RepositoryUpdater {
                     } else {
                         throw UpdateException(
                             ErrorType.HTTP,
-                            "Invalid response: HTTP ${result.code}"
+                            "Invalid response: HTTP ${result.statusCode}"
                         )
                     }
                 }

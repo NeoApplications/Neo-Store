@@ -22,6 +22,7 @@ import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.network.CoilDownloader
 import com.machiav3lli.fdroid.network.Downloader
+import com.machiav3lli.fdroid.network.downloadClientModule
 import com.machiav3lli.fdroid.network.exodusModule
 import com.machiav3lli.fdroid.service.PackageChangedReceiver
 import com.machiav3lli.fdroid.service.WorkerManager
@@ -89,7 +90,10 @@ class MainApplication : Application(), ImageLoaderFactory {
         startKoin {
             androidLogger()
             androidContext(this@MainApplication)
-            modules(exodusModule)
+            modules(
+                exodusModule,
+                downloadClientModule,
+            )
         }
 
         db = DatabaseX.getInstance(applicationContext)
