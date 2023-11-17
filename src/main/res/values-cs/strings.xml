@@ -353,4 +353,6 @@
     <string name="alt_new_apps">Použít alternativní rozvržení nových aplikací</string>
     <string name="enabled">Zapnuto</string>
     <string name="disabled">Vypnuto</string>
+    <string name="proxy_url">URL</string>
+    <string name="repo_qr_code">QR kód repozitáře</string>
 </resources>
