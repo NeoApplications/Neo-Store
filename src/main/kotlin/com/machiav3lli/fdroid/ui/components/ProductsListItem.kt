@@ -4,12 +4,15 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -150,6 +153,8 @@ fun ProductCarouselItem(
     product: ProductItem,
     repo: Repository? = null,
     installed: Installed? = null,
+    favourite: Boolean = false,
+    onFavourite: (ProductItem) -> Unit = {},
     onUserClick: (ProductItem) -> Unit = {},
 ) {
     val context = LocalContext.current
@@ -166,6 +171,12 @@ fun ProductCarouselItem(
         )
     }
 
+    val action = when {
+        installed == null -> ActionState.Install
+        installed.launcherActivities.isNotEmpty() -> ActionState.Launch
+        else -> null
+    }
+
     ListItem(
         modifier = Modifier
             .clip(MaterialTheme.shapes.large)
@@ -175,10 +186,15 @@ fun ProductCarouselItem(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ),
         leadingContent = {
-            NetworkImage(
-                modifier = Modifier.size(PRODUCT_CARD_ICON),
-                data = imageData
-            )
+            Column(
+                modifier = Modifier.fillMaxHeight(1f),
+                verticalArrangement = Arrangement.Center,
+            ) {
+                NetworkImage(
+                    modifier = Modifier.size(PRODUCT_CARD_ICON),
+                    data = imageData
+                )
+            }
         },
         headlineContent = {
             Row(
@@ -196,8 +212,7 @@ fun ProductCarouselItem(
                 )
                 if (product.canUpdate) ReleaseBadge(
                     text = "${product.installedVersion} → ${product.version}",
-                )
-                else Text(
+                ) else Text(
                     text = installed?.version ?: product.version,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
@@ -215,34 +230,49 @@ fun ProductCarouselItem(
                     overflow = TextOverflow.Ellipsis,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-
-                val action = when {
-                    installed == null -> ActionState.Install
-                    installed.launcherActivities.isNotEmpty() -> ActionState.Launch
-                    else -> null
+            }
+        },
+        trailingContent = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                IconButton(
+                    onClick = { onFavourite(product) }
+                ) {
+                    Icon(
+                        imageVector = if (favourite) Phosphor.HeartStraightFill else Phosphor.HeartStraight,
+                        contentDescription = stringResource(id = if (favourite) R.string.favorite_remove else R.string.favorite_add),
+                        tint = if (favourite) Color.Red else MaterialTheme.colorScheme.outline
+                    )
                 }
-                action?.let {
-                    IconButton(onClick = {
-                        when (action) {
-                            is ActionState.Install -> MainApplication.wm.install(product)
-                            is ActionState.Launch  -> installed?.let {
-                                context.onLaunchClick(
-                                    it,
-                                    neoActivity.supportFragmentManager
-                                )
-                            }
 
-                            else                   -> {}
-                        }
-                    }) {
+                action?.let {
+                    IconButton(
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        ),
+                        onClick = {
+                            when (action) {
+                                is ActionState.Install -> MainApplication.wm.install(product)
+                                is ActionState.Launch  -> installed?.let {
+                                    context.onLaunchClick(
+                                        it,
+                                        neoActivity.supportFragmentManager
+                                    )
+                                }
+
+                                else                   -> {}
+                            }
+                        }) {
                         Icon(
                             imageVector = action.icon,
-                            contentDescription = stringResource(id = action.textId)
+                            contentDescription = stringResource(id = action.textId),
                         )
                     }
                 }
             }
-        },
+        }
     )
 }
 

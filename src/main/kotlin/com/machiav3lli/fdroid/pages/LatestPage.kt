@@ -127,6 +127,13 @@ fun LatestPage(viewModel: LatestVM) {
                         productsList = secondaryList,
                         repositories = repositoriesMap,
                         installedMap = installedList,
+                        favorites = favorites,
+                        onFavouriteClick = {
+                            viewModel.setFavorite(
+                                it.packageName,
+                                !favorites.contains(it.packageName)
+                            )
+                        },
                         onUserClick = { item ->
                             neoActivity.navigateProduct(item.packageName)
                         },

@@ -81,6 +81,8 @@ fun ProductsCarousel(
     productsList: List<Product>?,
     repositories: Map<Long, Repository>,
     installedMap: Map<String, Installed> = emptyMap(),
+    favorites: Array<String>,
+    onFavouriteClick: (ProductItem) -> Unit,
     onUserClick: (ProductItem) -> Unit = {},
 ) {
     val state = rememberPagerState { productsList?.size ?: 0 }
@@ -105,6 +107,8 @@ fun ProductsCarousel(
                         item,
                         repositories[item.repositoryId],
                         installedMap[product.packageName],
+                        favorites.contains(item.packageName),
+                        onFavouriteClick,
                         onUserClick,
                     )
                 }
