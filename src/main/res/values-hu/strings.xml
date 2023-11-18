@@ -39,12 +39,12 @@
     <string name="cant_edit_sync_DESC">A tárolók szinkronizálás közben nem szerkeszthetők…</string>
     <string name="changelog">Változásnapló</string>
     <string name="changes">Változások</string>
-    <string name="compiled_for_debugging">Hibakereséshez fordítva</string>
+    <string name="compiled_for_debugging">Hibakereséshez építve</string>
     <string name="confirmation">Megerősítés</string>
     <string name="contains_non_free_media">Nem szabad médiát tartalmaz</string>
-    <string name="could_not_download_FORMAT">Nem tölthető le: %s</string>
-    <string name="could_not_sync_FORMAT">Nem szinkronizálható: %s</string>
-    <string name="could_not_validate_FORMAT">Nem ellenőrizhető: %s</string>
+    <string name="could_not_download_FORMAT">Nem tölthető le %s</string>
+    <string name="could_not_sync_FORMAT">Nem szinkronizálható %s</string>
+    <string name="could_not_validate_FORMAT">Nem érvényesíthető %s</string>
     <string name="dark">Sötét</string>
     <string name="delete">Törlés</string>
     <string name="delete_repository_DESC">Biztos, hogy törli a tárolót\?</string>
@@ -349,4 +349,8 @@
     <string name="no_releases">Nincsenek megjeleníthető kiadások</string>
     <string name="allow_unstable_updates">Nem stabil frissítések megjelenítésének engedélyezése</string>
     <string name="alt_new_apps">Alternatív új alkalmazás-elrendezés használata</string>
+    <string name="proxy_url">Url</string>
+    <string name="enabled">Engedélyezve</string>
+    <string name="disabled">Letiltott</string>
+    <string name="repo_qr_code">A tároló QR kódja</string>
 </resources>
