@@ -359,4 +359,6 @@
     <string name="alt_new_apps">استخدم التخطيط البديل لتطبيقات الجديدة</string>
     <string name="enabled">مفعل</string>
     <string name="disabled">معطل</string>
+    <string name="proxy_url">العنوان</string>
+    <string name="repo_qr_code">رمز الاستجابة السريعة للمستودع</string>
 </resources>
