@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.ui.components
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -29,7 +30,9 @@ fun QrCodeImage(
     val bitmapMatrix = remember(content) { qrEncoder.encode(content) }
 
     Canvas(
-        modifier = modifier.background(backgroundColor),
+        modifier = modifier
+            .aspectRatio(1f)
+            .background(backgroundColor),
         contentDescription = contentDescription,
     ) {
 
