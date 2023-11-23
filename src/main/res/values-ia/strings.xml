@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="action_failed">Falleva le action</string>
+    <string name="all_applications_up_to_date">Tote le applicationes es actualisate</string>
+    <string name="all_applications">Tote le applicationes</string>
+    <string name="already_exists">Jam existe</string>
+    <string name="application">Application</string>
+    <string name="always">Sempre</string>
+    <string name="address">Adresse</string>
+    <string name="amoled">Nigre</string>
+    <string name="add_repository">Adder repositorio</string>
+    <string name="available">Disponibile</string>
+</resources>
