@@ -349,4 +349,6 @@
     <string name="alt_new_apps">使用替代新应用布局</string>
     <string name="enabled">已启用</string>
     <string name="disabled">已禁用</string>
+    <string name="proxy_url">链接</string>
+    <string name="repo_qr_code">存储库的二维码</string>
 </resources>
