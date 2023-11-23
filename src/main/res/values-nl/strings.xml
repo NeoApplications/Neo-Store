@@ -211,8 +211,8 @@
     <string name="system_black">Systeem (Zwart)</string>
     <string name="cancel_all">Alles annuleren</string>
     <string name="prefs_personal">Persoonlijk</string>
-    <string name="list_apps">Laat apps van repository zien</string>
-    <string name="repos_export">Exporteer repositories</string>
+    <string name="list_apps">Laat apps van archief zien</string>
+    <string name="repos_export">Exporteer archieven</string>
     <string name="allowed_licenses">Toegestane licenties</string>
     <string name="trackers_analytics_description">Trackers die worden gebruikt om statistieken te verzamelen over jouw gebruik van apps zoals tikken en klikken.</string>
     <string name="action_open_tc">TrackerControl openen</string>
@@ -232,7 +232,7 @@
     <string name="trackers_none">Geen trackers</string>
     <string name="ignore">Negeer</string>
     <string name="trackers_profiling">Profilerende trackers</string>
-    <string name="installed_import">Importeer en installeer een lijst van apps (haalt ze op vanuit de ingeschakelde repositories indien ze bestaan)</string>
+    <string name="installed_import">Importeer en installeer een lijst van apps (haalt ze op vanuit de ingeschakelde archieven indien ze bestaan)</string>
     <string name="trackers_bug_description">Trackers die worden gebruikt om technische fouten te rapporteren die in de app kunnen optreden.</string>
     <string name="allowed_anti_features">Toegestane Anti-functionaliteiten</string>
     <string name="previous">Vorige</string>
@@ -258,7 +258,7 @@
     <string name="show_trackers">Laat trackers zien</string>
     <string name="disable_signature_check">Schakel controle van handtekeningen uit</string>
     <string name="clear_text">Tekst wissen</string>
-    <string name="repos_import">Importeer repositories (overschrijft de huidige)</string>
+    <string name="repos_import">Importeer archieven (overschrijft de huidige)</string>
     <string name="no_trackers_data_available">(Nog) geen informatie over trackers beschikaar.</string>
     <string name="only_on_battery">Alleen tijdens het opladen</string>
     <string name="sort_ascending">Oplopend</string>
@@ -349,4 +349,8 @@
     <string name="allow_unstable_updates">Sta tonen van niet-stabiele updates toe</string>
     <string name="show_categories_bar_description">Toon zijlade met categorieën op de ontdekpagina.</string>
     <string name="alt_new_apps">Gebruik alternatieve indeling voor nieuwe apps</string>
+    <string name="proxy_url">Url</string>
+    <string name="enabled">Ingeschakeld</string>
+    <string name="disabled">Uitgeschakeld</string>
+    <string name="repo_qr_code">Archief QR-code</string>
 </resources>
