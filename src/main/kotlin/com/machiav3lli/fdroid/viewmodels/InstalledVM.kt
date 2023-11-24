@@ -11,7 +11,6 @@ import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.entity.Request
-import com.machiav3lli.fdroid.entity.Section
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,27 +34,21 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
     @OptIn(ExperimentalCoroutinesApi::class)
     val installed = db.getInstalledDao().getAllFlow().mapLatest {
         it.associateBy(Installed::packageName)
-    }
-
-    private var primaryRequest: StateFlow<Request> = combine(
-        sortFilter,
-        installed
-    ) { _, _ ->
-        Request.ProductsInstalled(Section.All)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = Request.ProductsInstalled(Section.All)
+        initialValue = emptyMap(),
     )
 
     val installedProducts: StateFlow<List<Product>?> = combine(
-        primaryRequest,
-        installed,
-        db.getProductDao().queryFlowList(primaryRequest.value),
         sortFilter,
+        installed,
+        db.getProductDao().queryFlowList(Request.productsInstalled()),
         db.getExtrasDao().getAllFlow(),
-    ) { _, _, list, _, _ ->
-        list
+    ) { _, _, _, _ ->
+        withContext(cc) {
+            db.getProductDao().queryObject(Request.productsInstalled())
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
@@ -64,10 +57,12 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
 
     val updates: StateFlow<List<Product>?> = combine(
         installed,
-        db.getProductDao().queryFlowList(Request.ProductsUpdates(Section.All)),
+        db.getProductDao().queryFlowList(Request.productsUpdates()),
         db.getExtrasDao().getAllFlow(),
-    ) { _, list, _ ->
-        list
+    ) { _, _, _ ->
+        withContext(cc) {
+            db.getProductDao().queryObject(Request.productsUpdates())
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,

@@ -71,7 +71,11 @@ open class MainPageVM(
     @OptIn(ExperimentalCoroutinesApi::class)
     val installed = db.getInstalledDao().getAllFlow().mapLatest {
         it.associateBy(Installed::packageName)
-    }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = emptyMap()
+    )
 
     private var primaryRequest: StateFlow<Request> = combineTransform(
         sortFilter,
@@ -90,9 +94,11 @@ open class MainPageVM(
         primaryRequest,
         installed,
         db.getProductDao().queryFlowList(primaryRequest.value),
-        sortFilter
-    ) { _, _, list, _ ->
-        list
+        db.getExtrasDao().getAllFlow(),
+    ) { req, _, _, _ ->
+        withContext(cc) {
+            db.getProductDao().queryObject(req)
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
@@ -102,9 +108,7 @@ open class MainPageVM(
     @OptIn(FlowPreview::class)
     val filteredProducts: StateFlow<List<Product>?> =
         combine(primaryProducts, query.debounce(400)) { products, query ->
-            withContext(cc) {
-                products?.matchSearchQuery(query)
-            }
+            products?.matchSearchQuery(query)
         }.stateIn(
             viewModelScope,
             SharingStarted.Lazily,
@@ -118,8 +122,10 @@ open class MainPageVM(
         installed,
         db.getProductDao().queryFlowList(secondaryRequest.value),
         db.getExtrasDao().getAllFlow(),
-    ) { a, _, list, _ ->
-        if (secondarySource != primarySource) list
+    ) { req, _, _, _ ->
+        if (secondarySource != primarySource) withContext(cc) {
+            db.getProductDao().queryObject(req)
+        }
         else null
     }.stateIn(
         scope = viewModelScope,
