@@ -118,9 +118,9 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
         withContext(cc) {
             val oldValue = db.getExtrasDao()[packageName]
             if (oldValue != null) db.getExtrasDao()
-                .insertReplace(oldValue.copy(favorite = setBoolean))
+                .upsert(oldValue.copy(favorite = setBoolean))
             else db.getExtrasDao()
-                .insertReplace(Extras(packageName, favorite = setBoolean))
+                .upsert(Extras(packageName, favorite = setBoolean))
         }
     }
 

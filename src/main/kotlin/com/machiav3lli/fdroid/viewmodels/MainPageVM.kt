@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.database.DatabaseX
-import com.machiav3lli.fdroid.database.entity.Downloaded
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.IconDetails
 import com.machiav3lli.fdroid.database.entity.Installed
@@ -153,25 +152,6 @@ open class MainPageVM(
         initialValue = emptyMap(),
     )
 
-    val downloaded = db.getDownloadedDao().getAllFlow().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Lazily,
-        initialValue = emptyList(),
-    )
-
-    fun eraseDownloaded(downloaded: Downloaded) {
-        viewModelScope.launch {
-            deleteDownloaded(downloaded)
-        }
-    }
-
-    private suspend fun deleteDownloaded(downloaded: Downloaded) {
-        withContext(cc) {
-            db.getDownloadedDao()
-                .delete(downloaded.packageName, downloaded.version, downloaded.cacheFileName)
-        }
-    }
-
     fun setFavorite(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
             saveFavorite(packageName, setBoolean)
@@ -182,9 +162,9 @@ open class MainPageVM(
         withContext(cc) {
             val oldValue = db.getExtrasDao()[packageName]
             if (oldValue != null) db.getExtrasDao()
-                .insertReplace(oldValue.copy(favorite = setBoolean))
+                .upsert(oldValue.copy(favorite = setBoolean))
             else db.getExtrasDao()
-                .insertReplace(Extras(packageName, favorite = setBoolean))
+                .upsert(Extras(packageName, favorite = setBoolean))
         }
     }
 }

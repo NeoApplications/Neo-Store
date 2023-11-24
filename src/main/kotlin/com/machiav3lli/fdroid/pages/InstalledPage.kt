@@ -260,7 +260,8 @@ fun InstalledPage(viewModel: InstalledVM) {
                             }
                         }
                         items(
-                            installedProducts?.map { it.toItem(installedList[it.packageName]) }
+                            installedProducts
+                                ?.map { it.toItem(installedList[it.packageName]) }
                                 ?: emptyList()
                         ) { item ->
                             ProductsListItem(

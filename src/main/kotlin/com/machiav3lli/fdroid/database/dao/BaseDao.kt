@@ -1,13 +1,17 @@
 package com.machiav3lli.fdroid.database.dao
 
-import androidx.room.*
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Update
+import androidx.room.Upsert
 
 interface BaseDao<T> {
     @Insert
     fun insert(vararg product: T)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertReplace(vararg product: T)
+    @Upsert
+    fun upsert(vararg product: T)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(vararg obj: T): Int

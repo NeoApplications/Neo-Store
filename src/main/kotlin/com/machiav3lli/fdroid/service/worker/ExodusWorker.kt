@@ -85,7 +85,7 @@ class ExodusWorker(
                 try {
                     val trackerList = repoExodusAPI.getTrackers()
                     // TODO **conditionally** update DB with the trackers
-                    MainApplication.db.getTrackerDao().insertReplace(
+                    MainApplication.db.getTrackerDao().upsert(
                         *trackerList.trackers
                             .map { (key, value) ->
                                 Tracker(
@@ -117,7 +117,7 @@ class ExodusWorker(
 
                     val exodusInfo = latestExodusApp.toExodusInfo(packageName)
                     Log.e(this::javaClass.name, exodusInfo.toString())
-                    MainApplication.db.getExodusInfoDao().insertReplace(exodusInfo)
+                    MainApplication.db.getExodusInfoDao().upsert(exodusInfo)
                 } catch (e: Exception) {
                     Log.e(this::javaClass.name, "Failed fetching exodus info", e)
                 }

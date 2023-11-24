@@ -67,7 +67,7 @@ class MainApplication : Application(), ImageLoaderFactory {
         val wm: WorkerManager get() = neo_store.wm!!
         val db: DatabaseX get() = neo_store.db
 
-        val progress = mutableStateOf(Pair(false, 0f))
+        private val progress = mutableStateOf(Pair(false, 0f))
 
         fun setProgress(now: Int = 0, max: Int = 0) {
             if (max <= 0)

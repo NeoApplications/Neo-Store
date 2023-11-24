@@ -36,7 +36,7 @@ class PackageChangedReceiver : BroadcastReceiver() {
                     }
                     val launcherActivities = context.packageManager.getLaunchActivities(packageName)
                     CoroutineScope(Dispatchers.IO).launch {
-                        if (packageInfo != null) MainApplication.db.getInstalledDao().insertReplace(
+                        if (packageInfo != null) MainApplication.db.getInstalledDao().upsert(
                             packageInfo.toInstalledItem(launcherActivities)
                         )
                         else MainApplication.db.getInstalledDao().delete(packageName)

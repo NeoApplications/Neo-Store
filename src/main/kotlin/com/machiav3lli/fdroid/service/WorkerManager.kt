@@ -617,7 +617,7 @@ class WorkerManager(appContext: Context) {
                         }
                     }?.let {
                         CoroutineScope(Dispatchers.Default).launch {
-                            MainApplication.db.getDownloadedDao().insertReplace(
+                            MainApplication.db.getDownloadedDao().upsert(
                                 Downloaded(
                                     it.packageName,
                                     it.version,

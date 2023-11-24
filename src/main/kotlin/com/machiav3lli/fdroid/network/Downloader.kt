@@ -178,6 +178,10 @@ object Downloader {
                 }
             } catch (e: Exception) {
                 val leftRetries = retries.getOrPut(url) { AtomicInteger(5) }
+                Log.w(
+                    this.javaClass.name,
+                    "Download ($url) faced exception. Tries left: $leftRetries. Exception: ${e.message}.\nStack trace: ${e.stackTrace}."
+                )
                 if (leftRetries.decrementAndGet() > 0) {
                     retries[url] = leftRetries
                     download(url, target, lastModified, entityTag, authentication, callback)

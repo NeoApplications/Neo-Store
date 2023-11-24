@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface InstallTaskDao : BaseDao<InstallTask> {
     suspend fun put(vararg tasks: InstallTask) {
-        tasks.forEach { insertReplace(it) }
+        tasks.forEach { upsert(it) }
     }
 
     @Query("SELECT * FROM `installtask` ORDER BY added ASC")

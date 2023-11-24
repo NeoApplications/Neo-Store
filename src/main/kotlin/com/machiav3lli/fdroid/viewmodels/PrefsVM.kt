@@ -128,7 +128,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
 
     private suspend fun insert(vararg items: Extras) {
         withContext(cc) {
-            db.getExtrasDao().insertReplace(*items)
+            db.getExtrasDao().upsert(*items)
         }
     }
 

@@ -22,7 +22,7 @@ interface RepositoryDao : BaseDao<Repository> {
     suspend fun insertOrUpdate(vararg repos: Repository) {
         repos.forEach { repository ->
             val old = getAll().find { it.address == repository.address }
-            if (old != null) insertReplace(repository.copy(id = old.id))
+            if (old != null) upsert(repository.copy(id = old.id))
             else insert(repository.copy(id = 0L))
         }
     }

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface InstalledDao : BaseDao<Installed> {
     fun put(vararg installed: Installed) {
-        installed.forEach { insertReplace(it) }
+        installed.forEach { upsert(it) }
     }
 
     @Query("SELECT * FROM memory_installed")

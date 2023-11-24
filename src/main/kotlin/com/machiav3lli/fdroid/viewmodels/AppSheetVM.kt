@@ -197,9 +197,9 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         withContext(cc) {
             val oldValue = db.getExtrasDao()[packageName]
             if (oldValue != null) db.getExtrasDao()
-                .insertReplace(oldValue.copy(ignoredVersion = versionCode))
+                .upsert(oldValue.copy(ignoredVersion = versionCode))
             else db.getExtrasDao()
-                .insertReplace(Extras(packageName, ignoredVersion = versionCode))
+                .upsert(Extras(packageName, ignoredVersion = versionCode))
         }
     }
 
@@ -214,9 +214,9 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         withContext(cc) {
             val oldValue = db.getExtrasDao()[packageName]
             if (oldValue != null) db.getExtrasDao()
-                .insertReplace(oldValue.copy(ignoreUpdates = setBoolean))
+                .upsert(oldValue.copy(ignoreUpdates = setBoolean))
             else db.getExtrasDao()
-                .insertReplace(Extras(packageName, ignoreUpdates = setBoolean))
+                .upsert(Extras(packageName, ignoreUpdates = setBoolean))
         }
     }
 
@@ -230,9 +230,9 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         withContext(cc) {
             val oldValue = db.getExtrasDao()[packageName]
             if (oldValue != null) db.getExtrasDao()
-                .insertReplace(oldValue.copy(ignoreVulns = setBoolean))
+                .upsert(oldValue.copy(ignoreVulns = setBoolean))
             else db.getExtrasDao()
-                .insertReplace(Extras(packageName, ignoreVulns = setBoolean))
+                .upsert(Extras(packageName, ignoreVulns = setBoolean))
         }
     }
 
@@ -246,13 +246,13 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         withContext(cc) {
             val oldValue = db.getExtrasDao()[packageName]
             if (oldValue != null) db.getExtrasDao()
-                .insertReplace(oldValue.copy(allowUnstable = setBoolean))
+                .upsert(oldValue.copy(allowUnstable = setBoolean))
             else db.getExtrasDao()
-                .insertReplace(Extras(packageName, allowUnstable = setBoolean))
+                .upsert(Extras(packageName, allowUnstable = setBoolean))
             val features = MainApplication.context.packageManager.systemAvailableFeatures
                 .asSequence().map { it.name }.toSet() + setOf("android.hardware.touchscreen")
             productRepos.value.forEach {
-                db.getProductDao().insertReplace(
+                db.getProductDao().upsert(
                     it.first.apply {
                         refreshReleases(
                             features,
@@ -275,9 +275,9 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         withContext(cc) {
             val oldValue = db.getExtrasDao()[packageName]
             if (oldValue != null) db.getExtrasDao()
-                .insertReplace(oldValue.copy(favorite = setBoolean))
+                .upsert(oldValue.copy(favorite = setBoolean))
             else db.getExtrasDao()
-                .insertReplace(Extras(packageName, favorite = setBoolean))
+                .upsert(Extras(packageName, favorite = setBoolean))
         }
     }
 
