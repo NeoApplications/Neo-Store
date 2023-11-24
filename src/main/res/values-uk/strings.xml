@@ -355,4 +355,6 @@
     <string name="alt_new_apps">Використовуйте альтернативний макет нових застосунків</string>
     <string name="enabled">Ввімкнено</string>
     <string name="disabled">Вимкнено</string>
+    <string name="proxy_url">Посилання</string>
+    <string name="repo_qr_code">QR-код репозиторія</string>
 </resources>
