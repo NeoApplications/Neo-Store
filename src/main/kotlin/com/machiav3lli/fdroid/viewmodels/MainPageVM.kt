@@ -59,12 +59,12 @@ open class MainPageVM(
         var mSections: Section = Section.All
         sections.value.let { if (source.sections) mSections = it }
         return when (source) {
-            Source.AVAILABLE -> Request.ProductsAll(mSections)
-            Source.SEARCH    -> Request.ProductsSearch(mSections)
-            Source.INSTALLED -> Request.ProductsInstalled(mSections)
-            Source.UPDATES   -> Request.ProductsUpdates(mSections)
-            Source.UPDATED   -> Request.ProductsUpdated(mSections)
-            Source.NEW       -> Request.ProductsNew(mSections)
+            Source.AVAILABLE -> Request.productsAll(mSections)
+            Source.SEARCH    -> Request.productsSearch()
+            Source.INSTALLED -> Request.productsInstalled()
+            Source.UPDATES   -> Request.productsUpdates()
+            Source.UPDATED   -> Request.productsUpdated()
+            Source.NEW       -> Request.productsNew()
         }
     }
 

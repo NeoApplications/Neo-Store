@@ -188,160 +188,106 @@ class DonateType(donate: Donate, context: Context) : LinkType(
     }
 )
 
-sealed class Request {
-    internal abstract val id: Int
-    internal abstract val installed: Boolean
-    internal abstract val updates: Boolean
-    internal abstract val filteredOutRepos: Set<String>
-    internal abstract val category: String
-    internal abstract val filteredAntiFeatures: Set<String>
-    internal abstract val filteredLicenses: Set<String>
-    internal abstract val section: Section
-    internal abstract val order: Order
-    internal abstract val ascending: Boolean
-    internal abstract val updateCategory: UpdateCategory
-    internal open val numberOfItems: Int = 0
+data class Request(
+    val id: Int,
+    val installed: Boolean,
+    val updates: Boolean,
+    val updateCategory: UpdateCategory,
+    val section: Section,
+    val order: Order,
+    val ascending: Boolean,
+    val category: String,
+    val filteredOutRepos: Set<String>,
+    val filteredAntiFeatures: Set<String>,
+    val filteredLicenses: Set<String>,
+    val numberOfItems: Int = 0,
+) {
+    companion object {
+        fun productsAll(section: Section) = Request(
+            id = 1,
+            installed = false,
+            updates = false,
+            updateCategory = UpdateCategory.ALL,
+            section = section,
+            order = Preferences[Preferences.Key.SortOrderExplore].order,
+            ascending = Preferences[Preferences.Key.SortOrderAscendingExplore],
+            category = Preferences[Preferences.Key.CategoriesFilterExplore],
+            filteredOutRepos = Preferences[Preferences.Key.ReposFilterExplore],
+            filteredAntiFeatures = Preferences[Preferences.Key.AntifeaturesFilterExplore],
+            filteredLicenses = Preferences[Preferences.Key.LicensesFilterExplore],
+        )
 
-    data class ProductsAll(override val section: Section) : Request() {
-        override val id: Int
-            get() = 1
-        override val installed: Boolean
-            get() = false
-        override val updates: Boolean
-            get() = false
-        override val updateCategory: UpdateCategory
-            get() = UpdateCategory.ALL
-        override val order: Order
-            get() = Preferences[Preferences.Key.SortOrderExplore].order
-        override val filteredOutRepos: Set<String>
-            get() = Preferences[Preferences.Key.ReposFilterExplore]
-        override val category: String
-            get() = Preferences[Preferences.Key.CategoriesFilterExplore]
-        override val filteredAntiFeatures: Set<String>
-            get() = Preferences[Preferences.Key.AntifeaturesFilterExplore]
-        override val filteredLicenses: Set<String>
-            get() = Preferences[Preferences.Key.LicensesFilterExplore]
-        override val ascending: Boolean
-            get() = Preferences[Preferences.Key.SortOrderAscendingExplore]
-    }
+        fun productsSearch() = Request(
+            id = 6,
+            installed = false,
+            updates = false,
+            updateCategory = UpdateCategory.ALL,
+            section = Section.All,
+            order = Preferences[Preferences.Key.SortOrderSearch].order,
+            ascending = Preferences[Preferences.Key.SortOrderAscendingSearch],
+            category = Preferences[Preferences.Key.CategoriesFilterSearch],
+            filteredOutRepos = Preferences[Preferences.Key.ReposFilterSearch],
+            filteredAntiFeatures = Preferences[Preferences.Key.AntifeaturesFilterSearch],
+            filteredLicenses = Preferences[Preferences.Key.LicensesFilterSearch],
+        )
 
-    data class ProductsSearch(override val section: Section) : Request() {
-        override val id: Int
-            get() = 1
-        override val installed: Boolean
-            get() = false
-        override val updates: Boolean
-            get() = false
-        override val updateCategory: UpdateCategory
-            get() = UpdateCategory.ALL
-        override val order: Order
-            get() = Preferences[Preferences.Key.SortOrderSearch].order
-        override val filteredOutRepos: Set<String>
-            get() = Preferences[Preferences.Key.ReposFilterSearch]
-        override val category: String
-            get() = Preferences[Preferences.Key.CategoriesFilterSearch]
-        override val filteredAntiFeatures: Set<String>
-            get() = Preferences[Preferences.Key.AntifeaturesFilterSearch]
-        override val filteredLicenses: Set<String>
-            get() = Preferences[Preferences.Key.LicensesFilterSearch]
-        override val ascending: Boolean
-            get() = Preferences[Preferences.Key.SortOrderAscendingSearch]
-    }
+        fun productsInstalled() = Request(
+            id = 2,
+            installed = true,
+            updates = false,
+            updateCategory = UpdateCategory.ALL,
+            section = Section.All,
+            order = Preferences[Preferences.Key.SortOrderInstalled].order,
+            ascending = Preferences[Preferences.Key.SortOrderAscendingInstalled],
+            category = Preferences[Preferences.Key.CategoriesFilterInstalled],
+            filteredOutRepos = Preferences[Preferences.Key.ReposFilterInstalled],
+            filteredAntiFeatures = Preferences[Preferences.Key.AntifeaturesFilterInstalled],
+            filteredLicenses = Preferences[Preferences.Key.LicensesFilterInstalled],
+        )
 
-    data class ProductsInstalled(override val section: Section) : Request() {
-        override val id: Int
-            get() = 2
-        override val installed: Boolean
-            get() = true
-        override val updates: Boolean
-            get() = false
-        override val updateCategory: UpdateCategory
-            get() = UpdateCategory.ALL
-        override val order: Order
-            get() = Preferences[Preferences.Key.SortOrderInstalled].order
-        override val filteredOutRepos: Set<String>
-            get() = Preferences[Preferences.Key.ReposFilterInstalled]
-        override val category: String
-            get() = Preferences[Preferences.Key.CategoriesFilterInstalled]
-        override val filteredAntiFeatures: Set<String>
-            get() = Preferences[Preferences.Key.AntifeaturesFilterInstalled]
-        override val filteredLicenses: Set<String>
-            get() = Preferences[Preferences.Key.LicensesFilterInstalled]
-        override val ascending: Boolean
-            get() = Preferences[Preferences.Key.SortOrderAscendingInstalled]
-    }
+        fun productsUpdates() = Request(
+            id = 3,
+            installed = true,
+            updates = true,
+            updateCategory = UpdateCategory.ALL,
+            section = Section.All,
+            order = Order.NAME,
+            ascending = true,
+            category = FILTER_CATEGORY_ALL,
+            filteredOutRepos = emptySet(),
+            filteredAntiFeatures = emptySet(),
+            filteredLicenses = emptySet(),
+        )
 
-    data class ProductsUpdates(override val section: Section) : Request() {
-        override val id: Int
-            get() = 3
-        override val installed: Boolean
-            get() = true
-        override val updates: Boolean
-            get() = true
-        override val updateCategory: UpdateCategory
-            get() = UpdateCategory.ALL
-        override val filteredOutRepos: Set<String>
-            get() = emptySet()
-        override val category: String
-            get() = FILTER_CATEGORY_ALL
-        override val filteredAntiFeatures: Set<String>
-            get() = emptySet()
-        override val filteredLicenses: Set<String>
-            get() = emptySet()
-        override val order: Order
-            get() = Order.NAME
-        override val ascending: Boolean
-            get() = true
-    }
+        fun productsUpdated() = Request(
+            id = 4,
+            installed = false,
+            updates = false,
+            updateCategory = UpdateCategory.UPDATED,
+            section = Section.All,
+            order = Preferences[Preferences.Key.SortOrderLatest].order,
+            ascending = Preferences[Preferences.Key.SortOrderAscendingLatest],
+            category = Preferences[Preferences.Key.CategoriesFilterLatest],
+            filteredOutRepos = Preferences[Preferences.Key.ReposFilterLatest],
+            filteredAntiFeatures = Preferences[Preferences.Key.AntifeaturesFilterLatest],
+            filteredLicenses = Preferences[Preferences.Key.LicensesFilterLatest],
+            numberOfItems = Preferences[Preferences.Key.UpdatedApps],
+        )
 
-    data class ProductsUpdated(override val section: Section) : Request() {
-        override val id: Int
-            get() = 4
-        override val installed: Boolean
-            get() = false
-        override val updates: Boolean
-            get() = false
-        override val updateCategory: UpdateCategory
-            get() = UpdateCategory.UPDATED
-        override val filteredOutRepos: Set<String>
-            get() = Preferences[Preferences.Key.ReposFilterLatest]
-        override val category: String
-            get() = Preferences[Preferences.Key.CategoriesFilterLatest]
-        override val filteredAntiFeatures: Set<String>
-            get() = Preferences[Preferences.Key.AntifeaturesFilterLatest]
-        override val filteredLicenses: Set<String>
-            get() = Preferences[Preferences.Key.LicensesFilterLatest]
-        override val order: Order
-            get() = Preferences[Preferences.Key.SortOrderLatest].order
-        override val ascending: Boolean
-            get() = Preferences[Preferences.Key.SortOrderAscendingLatest]
-        override val numberOfItems: Int
-            get() = Preferences[Preferences.Key.UpdatedApps]
-    }
-
-    data class ProductsNew(override val section: Section) : Request() {
-        override val id: Int
-            get() = 5
-        override val installed: Boolean
-            get() = false
-        override val updates: Boolean
-            get() = false
-        override val updateCategory: UpdateCategory
-            get() = UpdateCategory.NEW
-        override val filteredOutRepos: Set<String>
-            get() = emptySet()
-        override val category: String
-            get() = FILTER_CATEGORY_ALL
-        override val filteredAntiFeatures: Set<String>
-            get() = emptySet()
-        override val filteredLicenses: Set<String>
-            get() = emptySet()
-        override val order: Order
-            get() = Order.DATE_ADDED
-        override val ascending: Boolean
-            get() = false
-        override val numberOfItems: Int
-            get() = Preferences[Preferences.Key.NewApps]
+        fun productsNew() = Request(
+            id = 5,
+            installed = false,
+            updates = false,
+            updateCategory = UpdateCategory.NEW,
+            section = Section.All,
+            order = Order.DATE_ADDED,
+            ascending = false,
+            category = FILTER_CATEGORY_ALL,
+            filteredOutRepos = emptySet(),
+            filteredAntiFeatures = emptySet(),
+            filteredLicenses = emptySet(),
+            numberOfItems = Preferences[Preferences.Key.NewApps],
+        )
     }
 }
 
