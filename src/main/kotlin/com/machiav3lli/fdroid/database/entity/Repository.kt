@@ -626,6 +626,24 @@ data class Repository(
             "39D47869D29CBFCE4691D9F7E6946A7B6D7E6FF4883497E6E675744ECDFA6D6D",
             ""
         )
+        private val CAKE_WALLET = defaultRepository(
+            "https://fdroid.cakelabs.com",
+            "Cake Wallet F-Droid Repo",
+            "Official F-Droid repository for Cake Labs applications",
+            21,
+            false,
+            "EA44EFAEE0B641EE7A032D397D5D976F9C4E5E1ED26E11C75702D064E55F8755",
+            ""
+        )
+        private val RBOARD = defaultRepository(
+            "https://raw.githubusercontent.com/GboardThemes/Repo/master/repo",
+            "Rboard Theme Manager repository",
+            "Download themes and enables hidden Gboard features",
+            21,
+            false,
+            "F6910227B3A8294F9F0739D9FC1A6A2EB27A041276DD0A1CA531318D680B6915",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, F_DROID_ARCHIVE,
@@ -697,6 +715,10 @@ data class Repository(
             SPIRIT_CROC_TEST, ANIYOMI, KOYU, KUSCHKU, KVAESITSO,
             ETOPA, METATRANS_APPS, GADGETBRIDGE, FUTO,
             GROBOX, FAIRFAX, ZIMBELSTERN, PI2P,
+        )
+
+        val addedReposV21 = listOf(
+            CAKE_WALLET, RBOARD,
         )
     }
 }
