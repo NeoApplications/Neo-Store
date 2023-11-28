@@ -351,4 +351,8 @@
     <string name="allow_unstable_updates">Permite afișarea actualizărilor instabile</string>
     <string name="alt_new_apps_description">Utilizează aspectul alternativ/vechi al aplicațiilor noi, care arată carduri mici ale aplicațiilor.</string>
     <string name="alt_new_apps">Utilizează un aspect alternativ al aplicațiilor noi</string>
+    <string name="proxy_url">Url</string>
+    <string name="enabled">Activat</string>
+    <string name="disabled">Dezactivat</string>
+    <string name="repo_qr_code">Codul QR al depozitului</string>
 </resources>
