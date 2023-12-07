@@ -309,7 +309,7 @@
     <string name="ignore">無視</string>
     <string name="allowed_anti_features">許可された\"好ましくない機能\"</string>
     <string name="keep_install_notification_summary">アプリのインストールの成功の通知を通知履歴にキープします。</string>
-    <string name="post_notifications_permission_message">Android 13 のアプリの通知には、この権限が必要です。</string>
+    <string name="post_notifications_permission_message">Android 13 から、アプリの通知にはこの権限が必要です。</string>
     <string name="file_share_text">Neo Store からのファイル</string>
     <string name="custom_download_directory">カスタムダウンロードフォルダー</string>
     <string name="warning_disable_battery_optimization">Android 12 から、同期やアプリのダウンロードのようなバックグラウンドでの動作に、バッテリー最適化が要求されます。この権限を無効にすると、クラッシュリポートが無視されます（自己責任です）。</string>
@@ -319,4 +319,7 @@
     <string name="extras_export">データをエクスポート（お気に入り、無視するアップデートなど）</string>
     <string name="post_notifications_permission_title">通知の権限</string>
     <string name="no_trackers_data_available">利用可能なトラッカーのデータが(まだ)ありません。</string>
+    <string name="disable_download_version_check_summary">インストールされたアプリの古いバージョンをダウンロードすることを許可する。Magisk の \"letmedowngrade\" パッチと組み合わせて使うことができます。</string>
+    <string name="privacy_panel">プライバシーパネル</string>
+    <string name="disable_download_version_check">ダウンロードバージョンのチェックを無効化</string>
 </resources>
