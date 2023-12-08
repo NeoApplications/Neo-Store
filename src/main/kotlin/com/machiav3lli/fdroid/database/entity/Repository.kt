@@ -627,7 +627,7 @@ data class Repository(
             ""
         )
         private val CAKE_WALLET = defaultRepository(
-            "https://fdroid.cakelabs.com",
+            "https://fdroid.cakelabs.com/fdroid/repo",
             "Cake Wallet F-Droid Repo",
             "Official F-Droid repository for Cake Labs applications",
             21,
@@ -638,7 +638,7 @@ data class Repository(
         private val RBOARD = defaultRepository(
             "https://raw.githubusercontent.com/GboardThemes/Repo/master/repo",
             "Rboard Theme Manager repository",
-            "Download themes and enables hidden Gboard features",
+            "Download themes and enable hidden Gboard features",
             21,
             false,
             "F6910227B3A8294F9F0739D9FC1A6A2EB27A041276DD0A1CA531318D680B6915",
