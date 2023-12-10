@@ -10,4 +10,9 @@
     <string name="amoled">Nigre</string>
     <string name="add_repository">Adder repositorio</string>
     <string name="available">Disponibile</string>
+    <string name="anti_features">Anti-functionalitates</string>
+    <string name="author_website">Sito web del autor</string>
+    <string name="cancel">Cancellar</string>
+    <string name="disabled">Disactivate</string>
+    <string name="author_email">e-mail del autor</string>
 </resources>
