@@ -30,7 +30,7 @@
     <string name="already_exists">Już istnieje</string>
     <string name="unknown">Nieznane</string>
     <string name="themes">Motywy</string>
-    <string name="tap_to_install_DESC">Stuknij , aby zainstalować.</string>
+    <string name="tap_to_install_DESC">Stuknij, aby zainstalować.</string>
     <string name="sync_repositories_automatically">Automatyczna synchronizacja repozytoriów</string>
     <string name="syncing">Synchronizacja</string>
     <string name="syncing_FORMAT">Synchronizacja %s…</string>
@@ -90,7 +90,7 @@
     <string name="signed_using_unsafe_algorithm">Sygnatura stworzona z użyciem słabego algorytmu</string>
     <string name="application">Aplikacja</string>
     <string name="cant_edit_sync_DESC">Nie można edytować repozytorium będącego w trakcie synchronizacji…</string>
-    <string name="changelog">Zmiany</string>
+    <string name="changelog">Dziennik zmian</string>
     <string name="dark">Ciemny</string>
     <string name="incompatible_features_DESC">Brakujące funkcje.</string>
     <string name="incompatible_older_DESC">Wybrana wersja jest starsza niż ta zainstalowana na Twoim urządzeniu. Najpierw odinstaluj tę wersję.</string>
@@ -223,7 +223,7 @@
     <string name="prefs_installer">Typ instalatora</string>
     <string name="default_installer">Instalator sesji (domyślny)</string>
     <string name="root_installer">Instalator root</string>
-    <string name="system_black">System (czarny)</string>
+    <string name="system_black">System (Czarny)</string>
     <string name="group_matrix">Matrix</string>
     <string name="dynamic">System (dynamiczne)</string>
     <string name="legacy_installer">Starszy instalator (kompatybilny z MIUI)</string>
@@ -326,4 +326,12 @@
     <string name="ignore_vulns">Ignoruj zgłoszone błędy w zabezpieczeniach</string>
     <string name="keep_install_notification_summary">Pokazuj powiadomienie po zainstalowaniu aplikacji.</string>
     <string name="warning_disable_battery_optimization">Począwszy od Androida 12, aplikacja wymaga optymalizacji baterii, aby wykonać procesy w tle, takie jak synchronizacja i pobieranie. Jeśli zignorujesz to pozwolenie, jesteś pozostawiony sam sobie, a twoje raporty o awariach zostaną zignorowane.</string>
+    <string name="repos_export">Wyeksportuj repozytoria</string>
+    <string name="proxy_url">Adres URL</string>
+    <string name="enabled">Włączone</string>
+    <string name="alt_navbar_item">Użyj alternatywnego elementu paska nawigacji</string>
+    <string name="alt_navbar_item_description">Użyj alternatywnego/starego układu elementów paska nawigacyjnego, który pokazuje etykiety niewybranych elementów.</string>
+    <string name="disabled">Wyłączone</string>
+    <string name="repo_qr_code">Kod QR Repozytorium</string>
+    <string name="repos_import">Zaimportuj repozytoria (zastępuje już istniejące)</string>
 </resources>
