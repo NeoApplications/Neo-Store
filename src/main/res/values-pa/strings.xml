@@ -351,4 +351,6 @@
     <string name="alt_new_apps">ਵਿਕਲਪਕ ਨਵੇਂ ਐਪਸ ਲੇਆਊਟ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
     <string name="enabled">ਇਨੇਬਲ ਕੀਤੇ</string>
     <string name="disabled">ਡਿਸੇਬਲ ਕੀਤੇ</string>
+    <string name="proxy_url">Url</string>
+    <string name="repo_qr_code">ਰਿਪੋਜ਼ਟਰੀ ਦਾ QR ਕੋਡ</string>
 </resources>
