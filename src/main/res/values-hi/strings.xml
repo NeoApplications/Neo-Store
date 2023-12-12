@@ -351,4 +351,6 @@
     <string name="alt_new_apps">वैकल्पिक नए ऐप्स लेआउट का उपयोग करें</string>
     <string name="enabled">सक्षम</string>
     <string name="disabled">अक्षम</string>
+    <string name="proxy_url">Url</string>
+    <string name="repo_qr_code">रिपॉजिटरी का क्यूआर कोड</string>
 </resources>
