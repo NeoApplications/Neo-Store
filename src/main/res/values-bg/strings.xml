@@ -349,4 +349,8 @@
     <string name="dynamic_light">Светла с динамични цветове</string>
     <string name="dynamic_black">Черна с динамични цветове</string>
     <string name="alt_new_apps">Използвай алтернативно оформление за нови приложения</string>
+    <string name="proxy_url">Url адрес</string>
+    <string name="enabled">Активирано</string>
+    <string name="disabled">Деактивирано</string>
+    <string name="repo_qr_code">QR код на хранилището</string>
 </resources>
