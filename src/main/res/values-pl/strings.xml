@@ -334,4 +334,25 @@
     <string name="disabled">Wyłączone</string>
     <string name="repo_qr_code">Kod QR Repozytorium</string>
     <string name="repos_import">Zaimportuj repozytoria (zastępuje już istniejące)</string>
+    <string name="list_apps">Pokaż aplikacje repozytorium</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d punkt prywatności)</item>
+        <item quantity="few">(-%d punktów prywatności)</item>
+        <item quantity="many">(-%d punktów prywatności)</item>
+        <item quantity="other">(-%d punktów prywatności)</item>
+    </plurals>
+    <string name="next">Następny</string>
+    <string name="alt_new_apps_description">Użyj alternatywnego/starego układu nowych aplikacji, który wyświetla małe karty aplikacji.</string>
+    <string name="installed_import">Zaimportuj i instaluj listę aplikacji (pobierz je z włączonych repozytoriów, jeśli istnieją)</string>
+    <string name="dynamic_dark">Ciemny z dynamicznymi kolorami</string>
+    <string name="previous">Poprzedni</string>
+    <string name="dynamic_light">Jasny z dynamicznymi kolorami</string>
+    <string name="installed_export">Wyeksportuj listę zainstalowanych aplikacji</string>
+    <string name="dynamic_black">Czarny z dynamicznymi kolorami</string>
+    <string name="canceled">Anulowano</string>
+    <string name="finished">Zakończono</string>
+    <string name="error">Błąd</string>
+    <string name="no_releases">Brak kompatybilnych wydań do pokazania</string>
+    <string name="allow_unstable_updates">Zezwalaj na wyświetlanie niestabilnych aktualizacji</string>
+    <string name="alt_new_apps">Użyj alternatywnego układu nowych aplikacji</string>
 </resources>
