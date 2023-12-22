@@ -329,6 +329,12 @@ data class Permission(
             R.string.warning_show_notification,
             Preferences.Key.IgnoreShowNotifications,
         )
+        val InstallPackages = Permission(
+            R.string.install_packages_permission_title,
+            Phosphor.Download,
+            R.string.install_packages_permission_message,
+            R.string.warning_show_notification,
+        )
     }
 }
 

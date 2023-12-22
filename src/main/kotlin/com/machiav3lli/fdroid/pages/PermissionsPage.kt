@@ -1,9 +1,13 @@
 package com.machiav3lli.fdroid.pages
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
+import android.provider.Settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -115,6 +120,14 @@ fun SnapshotStateList<Pair<Permission, () -> Unit>>.refresh(
         ) add(Pair(Permission.PostNotifications) {
             permissionStatePostNotifications.launchPermissionRequest()
         })
+        if (Android.sdk(Build.VERSION_CODES.O) && !context.packageManager.canRequestPackageInstalls())
+            add(Pair(Permission.InstallPackages) {
+                val intent = Intent(
+                    Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                    Uri.parse("package:" + context.packageName)
+                )
+                startActivityForResult(context as Activity, intent, 71662, null)
+            })
     })
     if (isEmpty()) navigateToMain()
 }
