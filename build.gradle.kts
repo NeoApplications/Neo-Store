@@ -1,38 +1,38 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val vActivity = "1.8.1"
+val vActivity = "1.8.2"
 val vCoil = "2.5.0"
-val vComposeCompiler = "1.5.4"
+val vComposeCompiler = "1.5.6"
 val vCompose = "1.5.4"
 val vComposeAccompanist = "0.32.0"
-val vComposeHtml = "1.5.0"
+val vComposeHtml = "1.6.0"
 val vComposeMaterial3 = "1.1.2"
 val vCoroutines = "1.7.3"
 val vJackson = "2.16.0"
-val vKoin = "3.5.2-RC1"
+val vKoin = "3.5.3"
 val vKoinKsp = "1.3.0"
-val vKotlin = "1.9.20"
-val vKSP = "1.0.14"
-val vKtor = "2.3.6"
+val vKotlin = "1.9.21"
+val vKSP = "1.0.16"
+val vKtor = "2.3.7"
 val vLibsu = "5.2.1"
 val vLifecycle = "2.6.2"
-val vMarkdown = "0.5.2"
-val vMaterial = "1.10.0"
+val vMarkdown = "0.6.1"
+val vMaterial = "1.11.0"
 val vMoshi = "1.15.0"
-val vNavigation = "2.7.5"
-val vOkhttp = "5.0.0-alpha.11"
+val vNavigation = "2.7.6"
+val vOkhttp = "5.0.0-alpha.12"
 val vPreference = "1.2.1"
-val vRoom = "2.6.0"
-val vSerialization = "1.6.1"
+val vRoom = "2.6.1"
+val vSerialization = "1.6.2"
 val vSimpleStorage = "1.5.5"
-val vWork = "2.9.0-rc01"
+val vWork = "2.9.0"
 val vZXing = "3.5.2"
 
 plugins {
     id("com.android.application") version ("8.1.3")
-    kotlin("android") version ("1.9.20")
-    kotlin("plugin.serialization") version ("1.9.20")
-    id("com.google.devtools.ksp") version ("1.9.20-1.0.14")
+    kotlin("android") version ("1.9.21")
+    kotlin("plugin.serialization") version ("1.9.21")
+    id("com.google.devtools.ksp") version ("1.9.21-1.0.16")
 }
 
 android {
