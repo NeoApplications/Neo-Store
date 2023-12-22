@@ -40,6 +40,7 @@ fun PrefsUpdatesPage() {
         Preferences.Key.AutoSyncInterval,
     )
     val updatesPrefs = listOf(
+        Preferences.Key.DownloadManager,
         Preferences.Key.InstallAfterSync,
         Preferences.Key.UpdateNotify,
         Preferences.Key.KeepInstallNotification,

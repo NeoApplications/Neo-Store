@@ -353,4 +353,6 @@
     <string name="disabled">Disabled</string>
     <string name="repo_qr_code">Repository\'s QR Code</string>
     <string name="proxy_url">Url</string>
+    <string name="download_manager">System\'s download manager</string>
+    <string name="download_manager_summary">Use system\'s download manager to download the apps more reliably. This option doesn\'t support TOR or the custom proxy, it uses the system settings.</string>
 </resources>

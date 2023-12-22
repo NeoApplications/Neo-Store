@@ -31,6 +31,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.AutoSyncInterval,
         Key.ReleasesCacheRetention,
         Key.DownloadDirectory,
+        Key.DownloadManager,
         Key.EnableDownloadDirectory,
         Key.ImagesCacheRetention,
         Key.InstallAfterSync,
@@ -203,6 +204,8 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object EnableDownloadDirectory :
             Key<Boolean>("download_directory_enable", Value.BooleanValue(false))
 
+        data object DownloadManager :
+            Key<Boolean>("download_manager", Value.BooleanValue(false))
         data object DownloadDirectory :
             Key<String>("download_directory_value", Value.StringValue(""))
 
