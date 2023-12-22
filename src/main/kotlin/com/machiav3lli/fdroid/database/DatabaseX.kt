@@ -48,6 +48,8 @@ import com.machiav3lli.fdroid.database.entity.Tracker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.module
 
 @Database(
     entities = [
@@ -290,4 +292,21 @@ abstract class DatabaseX : RoomDatabase() {
             getCategoryTempDao().emptyTable()
         }
     }
+}
+
+val databaseModule = module {
+    single { DatabaseX.getInstance(androidContext()) }
+    factory { get<DatabaseX>().getRepositoryDao() }
+    factory { get<DatabaseX>().getProductDao() }
+    factory { get<DatabaseX>().getReleaseDao() }
+    factory { get<DatabaseX>().getReleaseTempDao() }
+    factory { get<DatabaseX>().getProductTempDao() }
+    factory { get<DatabaseX>().getCategoryDao() }
+    factory { get<DatabaseX>().getCategoryTempDao() }
+    factory { get<DatabaseX>().getInstalledDao() }
+    factory { get<DatabaseX>().getExtrasDao() }
+    factory { get<DatabaseX>().getExodusInfoDao() }
+    factory { get<DatabaseX>().getTrackerDao() }
+    factory { get<DatabaseX>().getDownloadedDao() }
+    factory { get<DatabaseX>().getInstallTaskDao() }
 }

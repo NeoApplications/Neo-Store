@@ -19,6 +19,7 @@ import com.google.android.material.color.DynamicColorsOptions
 import com.machiav3lli.fdroid.content.Cache
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
+import com.machiav3lli.fdroid.database.databaseModule
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.network.CoilDownloader
 import com.machiav3lli.fdroid.network.Downloader
@@ -26,6 +27,7 @@ import com.machiav3lli.fdroid.network.downloadClientModule
 import com.machiav3lli.fdroid.network.exodusModule
 import com.machiav3lli.fdroid.service.PackageChangedReceiver
 import com.machiav3lli.fdroid.service.WorkerManager
+import com.machiav3lli.fdroid.service.workmanagerModule
 import com.machiav3lli.fdroid.service.worker.SyncRequest
 import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.utility.Utils.setLanguage
@@ -36,6 +38,7 @@ import io.ktor.http.Url
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -47,9 +50,9 @@ import java.util.*
 @Suppress("unused")
 class MainApplication : Application(), ImageLoaderFactory {
 
-    lateinit var db: DatabaseX
+    val db: DatabaseX by inject()
     lateinit var mActivity: AppCompatActivity
-    var wm: WorkerManager? = null
+    val wm: WorkerManager by inject()
 
     companion object {
         private var appRef: WeakReference<MainApplication> = WeakReference(null)
@@ -64,7 +67,7 @@ class MainApplication : Application(), ImageLoaderFactory {
 
         val context: Context get() = neo_store.applicationContext
 
-        val wm: WorkerManager get() = neo_store.wm!!
+        val wm: WorkerManager get() = neo_store.wm
         val db: DatabaseX get() = neo_store.db
 
         private val progress = mutableStateOf(Pair(false, 0f))
@@ -93,17 +96,17 @@ class MainApplication : Application(), ImageLoaderFactory {
             modules(
                 exodusModule,
                 downloadClientModule,
+                workmanagerModule,
+                databaseModule,
             )
         }
 
-        db = DatabaseX.getInstance(applicationContext)
         Preferences.init(this)
         RepositoryUpdater.init(this)
         listenApplications()
         listenPreferences()
 
-        wm = WorkerManager(applicationContext)
-        wm?.prune()
+        wm.prune()
         Cache.cleanup(this)
         updateSyncJob(false)
     }

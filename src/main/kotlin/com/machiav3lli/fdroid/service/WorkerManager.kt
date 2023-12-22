@@ -61,6 +61,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.koin.dsl.module
 
 class WorkerManager(appContext: Context) {
 
@@ -669,4 +670,8 @@ class WorkerManager(appContext: Context) {
                 }
         }
     }
+}
+
+val workmanagerModule = module {
+    single { WorkerManager(get()) }
 }
