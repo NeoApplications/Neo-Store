@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.service.worker
 
+import android.app.DownloadManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
@@ -8,6 +9,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.ContextCompat
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.Data
@@ -157,7 +159,7 @@ class DownloadWorker(
         val partialRelease =
             Cache.getPartialReleaseFile(applicationContext, task.release.cacheFileName)
 
-        val callback: suspend (read: Long, total: Long?) -> Unit = { read, total ->
+        val callback: suspend (read: Long, total: Long?, downloadID: Long) -> Unit = { read, total, downloadID ->
             val progress = if (total != null) {
                 workDataOf(
                     ARG_PROGRESS to (100f * read / total).roundToInt(),
@@ -172,6 +174,10 @@ class DownloadWorker(
                 )
             }
             if (!isStopped) setProgress(progress)
+            else if (downloadID != -1L) {
+                ContextCompat.getSystemService(context, DownloadManager::class.java)
+                    ?.remove(downloadID)
+            }
         }
 
         (if (Preferences[Preferences.Key.DownloadManager])

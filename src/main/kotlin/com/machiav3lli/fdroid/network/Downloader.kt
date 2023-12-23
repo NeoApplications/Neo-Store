@@ -99,7 +99,7 @@ object Downloader {
         lastModified: String,
         entityTag: String,
         authentication: String,
-        callback: (suspend (read: Long, total: Long?) -> Unit)?,
+        callback: suspend (read: Long, total: Long?, downloadID: Long) -> Unit,
     ): Result {
         return coroutineScope {
             var start = if (target.exists()) target.length().coerceAtLeast(0L)
@@ -138,7 +138,7 @@ object Downloader {
                             throw InterruptedException()
                         }
                         CoroutineScope(Dispatchers.IO).launch {
-                            callback?.invoke(progressStart + read, progressTotal)
+                            callback.invoke(progressStart + read, progressTotal, -1L)
                         }
                     }
                 }.execute { response ->
@@ -204,7 +204,7 @@ object Downloader {
         context: Context,
         task: DownloadTask,
         target: File,
-        callback: (suspend (read: Long, total: Long?) -> Unit)?,
+        callback: suspend (read: Long, total: Long?, downloadID: Long) -> Unit,
     ): Result = coroutineScope {
         val start = if (target.exists()) target.length().coerceAtLeast(0L)
         else null
@@ -255,7 +255,7 @@ object Downloader {
             response = responseStatus?.dmReasonToHttpResponse() ?: HttpStatusCode.OK
 
             CoroutineScope(Dispatchers.IO).launch {
-                callback?.invoke(progressStart + progressRead, progressTotal)
+                callback.invoke(progressStart + progressRead, progressTotal, downloadID)
             }
 
             when (downloadStatus) {
