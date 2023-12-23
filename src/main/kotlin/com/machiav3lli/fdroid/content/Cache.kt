@@ -30,6 +30,13 @@ object Cache {
         ).apply { isDirectory || mkdirs() || throw RuntimeException() }
     }
 
+    private fun ensureExtCacheDir(context: Context, name: String): File {
+        return File(
+            context.externalCacheDir,
+            name
+        ).apply { isDirectory || mkdirs() || throw RuntimeException() }
+    }
+
     private fun applyOrMode(file: File, mode: Int) {
         val oldMode = Os.stat(file.path).st_mode and 0b111111111111
         val newMode = oldMode or mode
@@ -43,11 +50,11 @@ object Cache {
     }
 
     fun getPartialReleaseFile(context: Context, cacheFileName: String): File {
-        return File(ensureCacheDir(context, "partial"), cacheFileName)
+        return File(ensureExtCacheDir(context, "partial"), cacheFileName)
     }
 
     fun getReleaseFile(context: Context, cacheFileName: String): File {
-        return File(ensureCacheDir(context, "releases"), cacheFileName)
+        return File(ensureExtCacheDir(context, "releases"), cacheFileName)
     }
 
     fun File.getReleaseFileUri(context: Context): Uri {
@@ -78,18 +85,23 @@ object Cache {
         thread {
             cleanup(
                 context,
+                context.cacheDir,
                 Pair("images", Preferences[Preferences.Key.ImagesCacheRetention] * 24),
+                Pair("temporary", 1)
+            )
+            cleanup(
+                context,
+                context.externalCacheDir,
                 Pair("partial", 24),
                 Pair("releases", Preferences[Preferences.Key.ReleasesCacheRetention] * 24),
-                Pair("temporary", 1)
             )
         }
     }
 
-    private fun cleanup(context: Context, vararg dirHours: Pair<String, Int>) {
-        val knownNames = dirHours.asSequence().map { it.first }.toSet()
-        val files = context.cacheDir.listFiles().orEmpty()
-        files.asSequence().filter { it.name !in knownNames }.forEach {
+    private fun cleanup(context: Context, dir: File?, vararg dirHours: Pair<String, Int>) {
+        val knownNames = dirHours.map { it.first }.toSet()
+        val files = dir?.listFiles().orEmpty()
+        files.filter { it.name !in knownNames }.forEach {
             if (it.isDirectory) {
                 cleanupDir(it, 0)
                 it.delete()
@@ -99,7 +111,7 @@ object Cache {
         }
         dirHours.forEach { (name, hours) ->
             if (hours > 0) {
-                val file = File(context.cacheDir, name)
+                val file = File(dir, name)
                 if (file.exists()) {
                     if (file.isDirectory) {
                         cleanupDir(file, hours)
