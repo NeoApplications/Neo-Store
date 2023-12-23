@@ -1,10 +1,20 @@
 package com.machiav3lli.fdroid.network
 
+import android.app.DownloadManager
+import android.content.Context
+import android.database.Cursor
 import android.util.Log
+import androidx.core.content.ContextCompat
+import androidx.core.database.getIntOrNull
+import androidx.core.database.getLongOrNull
+import androidx.core.net.toUri
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.CLIENT_CONNECT_TIMEOUT_MS
 import com.machiav3lli.fdroid.POOL_DEFAULT_KEEP_ALIVE_DURATION_M
 import com.machiav3lli.fdroid.POOL_DEFAULT_MAX_IDLE_CONNECTIONS
+import com.machiav3lli.fdroid.service.worker.DownloadTask
+import com.machiav3lli.fdroid.utility.dmReasonToHttpResponse
+import com.machiav3lli.fdroid.utility.extension.text.formatDateTime
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.ProxyBuilder
 import io.ktor.client.engine.okhttp.OkHttp
@@ -188,6 +198,75 @@ object Downloader {
                 } else throw e
             }
         }
+    }
+
+    suspend fun dmDownload(
+        context: Context,
+        task: DownloadTask,
+        target: File,
+        callback: (suspend (read: Long, total: Long?) -> Unit)?,
+    ): Result = coroutineScope {
+        val start = if (target.exists()) target.length().coerceAtLeast(0L)
+        else null
+        val progressStart = start ?: 0L
+
+        val request = DownloadManager.Request(task.url.toUri())
+            .setTitle("${task.name} (${task.release.version})")
+            .setDescription(task.packageName)
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
+            .setDestinationUri(target.toUri())
+            .apply {
+                addRequestHeader(HttpHeaders.Authorization, task.authentication)
+                addRequestHeader(HttpHeaders.AcceptEncoding, "gzip, deflate")
+            }
+        val downloadManager =
+            ContextCompat.getSystemService(context, DownloadManager::class.java)
+        val downloadID = downloadManager?.enqueue(request) ?: -1L
+
+        var isDownloading = true
+        var downloadStatus: Int
+        var progressRead: Long
+        var progressTotal: Long?
+        var response: HttpStatusCode
+        var lastModified: Long?
+        var cursor: Cursor
+
+        do {
+            val downloadQuery = DownloadManager.Query()
+            downloadQuery.setFilterById(downloadID)
+            cursor = downloadManager!!.query(downloadQuery)
+            cursor.moveToFirst()
+            progressRead = cursor.getIntOrNull(
+                cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR)
+            )?.toLong() ?: 0L
+            progressTotal = cursor.getIntOrNull(
+                cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES)
+            )?.toLong()
+            lastModified = cursor.getLongOrNull(
+                cursor.getColumnIndex(DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP)
+            )
+            val responseStatus = cursor.getIntOrNull(
+                cursor.getColumnIndex(DownloadManager.COLUMN_REASON)
+            )
+            downloadStatus =
+                cursor.getIntOrNull(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
+                    ?: DownloadManager.STATUS_PENDING
+
+            response = responseStatus?.dmReasonToHttpResponse() ?: HttpStatusCode.OK
+
+            CoroutineScope(Dispatchers.IO).launch {
+                callback?.invoke(progressStart + progressRead, progressTotal)
+            }
+
+            when (downloadStatus) {
+                DownloadManager.STATUS_SUCCESSFUL,
+                DownloadManager.STATUS_FAILED,
+                -> isDownloading = false
+            }
+
+            cursor.close()
+        } while (isDownloading)
+        Result(response, lastModified?.formatDateTime() ?: "", "")
     }
 }
 

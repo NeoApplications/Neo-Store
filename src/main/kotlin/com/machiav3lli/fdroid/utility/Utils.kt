@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.ActivityManager
 import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
 import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE
+import android.app.DownloadManager
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
@@ -45,6 +46,7 @@ import com.machiav3lli.fdroid.utility.extension.android.versionCodeCompat
 import com.machiav3lli.fdroid.utility.extension.text.hex
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.topjohnwu.superuser.Shell
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.net.URL
 import java.security.MessageDigest
@@ -342,6 +344,18 @@ fun Context.shareReleaseIntent(appName: String, address: String) {
     startActivity(Intent.createChooser(shareIntent, "Where to share?"))
 }
 
+fun Int.dmReasonToHttpResponse() = when (this) {
+    DownloadManager.ERROR_UNKNOWN             -> HttpStatusCode.NotImplemented
+    DownloadManager.ERROR_FILE_ERROR          -> HttpStatusCode.Conflict
+    DownloadManager.ERROR_UNHANDLED_HTTP_CODE -> HttpStatusCode.NotImplemented
+    DownloadManager.ERROR_HTTP_DATA_ERROR     -> HttpStatusCode.BadRequest
+    DownloadManager.ERROR_TOO_MANY_REDIRECTS  -> HttpStatusCode.GatewayTimeout
+    DownloadManager.ERROR_INSUFFICIENT_SPACE  -> HttpStatusCode.InsufficientStorage
+    DownloadManager.ERROR_DEVICE_NOT_FOUND    -> HttpStatusCode.NotFound
+    DownloadManager.ERROR_CANNOT_RESUME       -> HttpStatusCode.RequestedRangeNotSatisfiable
+    DownloadManager.ERROR_FILE_ALREADY_EXISTS -> HttpStatusCode.NotModified
+    else                                      -> HttpStatusCode.OK
+}
 
 fun Context.openPermissionPage(packageName: String) {
     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(

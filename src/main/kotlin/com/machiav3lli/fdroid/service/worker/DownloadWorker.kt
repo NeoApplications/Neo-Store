@@ -157,7 +157,7 @@ class DownloadWorker(
         val partialRelease =
             Cache.getPartialReleaseFile(applicationContext, task.release.cacheFileName)
 
-        Downloader.download(task.url, partialRelease, "", "", task.authentication) { read, total ->
+        val callback: suspend (read: Long, total: Long?) -> Unit = { read, total ->
             val progress = if (total != null) {
                 workDataOf(
                     ARG_PROGRESS to (100f * read / total).roundToInt(),
@@ -172,26 +172,34 @@ class DownloadWorker(
                 )
             }
             if (!isStopped) setProgress(progress)
-        }.let { result ->
-            if (!result.success) {
-                Log.i(this::javaClass.name, "Worker failure by error ${result.statusCode}")
-                return@coroutineScope Result.failure(getWorkData(task, result))
-            }
-
-            val validationError = validatePackage(task, partialRelease)
-            return@coroutineScope if (validationError == ValidationError.NONE) {
-                val releaseFile =
-                    Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
-                partialRelease.renameTo(releaseFile)
-                Log.i(this::javaClass.name, "Worker success with result: $result")
-                finalize(task)
-                Result.success(getWorkData(task, result))
-            } else {
-                partialRelease.delete()
-                Log.i(this::javaClass.name, "Worker failure by validation error: $validationError")
-                Result.failure(getWorkData(task, result, validationError))
-            }
         }
+
+        (if (Preferences[Preferences.Key.DownloadManager])
+            Downloader.dmDownload(context, task, partialRelease, callback)
+        else Downloader.download(task.url, partialRelease, "", "", task.authentication, callback))
+            .let { result ->
+                if (!result.success) {
+                    Log.i(this::javaClass.name, "Worker failure by error ${result.statusCode}")
+                    return@coroutineScope Result.failure(getWorkData(task, result))
+                }
+
+                val validationError = validatePackage(task, partialRelease)
+                return@coroutineScope if (validationError == ValidationError.NONE) {
+                    val releaseFile =
+                        Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
+                    partialRelease.renameTo(releaseFile)
+                    Log.i(this::javaClass.name, "Worker success with result: $result")
+                    finalize(task)
+                    Result.success(getWorkData(task, result))
+                } else {
+                    partialRelease.delete()
+                    Log.i(
+                        this::javaClass.name,
+                        "Worker failure by validation error: $validationError"
+                    )
+                    Result.failure(getWorkData(task, result, validationError))
+                }
+            }
     }
 
     override suspend fun getForegroundInfo(): ForegroundInfo {

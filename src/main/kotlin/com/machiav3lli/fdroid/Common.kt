@@ -78,6 +78,7 @@ const val ARG_PROGRESS = "PROGRESS"
 const val ARG_READ = "READ"
 const val ARG_TOTAL = "TOTAL"
 const val ARG_WORK_TYPE = "WORK_TYPE"
+const val ARG_DOWNLOAD_ID = "DOWNLOAD_ID"
 
 const val FIELD_CACHEFILENAME = "cacheFileName"
 const val FIELD_VERSION = "version"
