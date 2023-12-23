@@ -168,7 +168,7 @@ object RepositoryUpdater {
                     repository.lastModified,
                     repository.entityTag,
                     repository.authentication
-                ) { read, total -> callback(Stage.DOWNLOAD, read, total) }
+                ) { read, total, _ -> callback(Stage.DOWNLOAD, read, total) }
                 Pair(result, file)
             } catch (e: Exception) {
                 // onErrorResumeNext replacement?
