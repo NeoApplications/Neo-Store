@@ -355,4 +355,8 @@
     <string name="disabled">Vypnuto</string>
     <string name="proxy_url">URL</string>
     <string name="repo_qr_code">QR kód repozitáře</string>
+    <string name="download_manager">Systémový správce stahování</string>
+    <string name="install_packages_permission_message">Počínaje systémem Android 8 vyžadují aplikace toto oprávnění, aby mohly instalovat balíčky.</string>
+    <string name="install_packages_permission_title">Oprávnění k instalaci balíčků</string>
+    <string name="download_manager_summary">Použít systémový správce stahování pro spolehlivější stahování aplikací. Tato možnost nepodporuje Tor ani vlastní proxy, používá nastavení systému.</string>
 </resources>
