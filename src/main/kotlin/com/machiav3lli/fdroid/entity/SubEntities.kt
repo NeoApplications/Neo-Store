@@ -333,7 +333,7 @@ data class Permission(
             R.string.install_packages_permission_title,
             Phosphor.Download,
             R.string.install_packages_permission_message,
-            R.string.warning_show_notification,
+            -1,
         )
     }
 }
