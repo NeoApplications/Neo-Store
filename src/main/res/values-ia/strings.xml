@@ -15,4 +15,6 @@
     <string name="cancel">Cancellar</string>
     <string name="disabled">Disactivate</string>
     <string name="author_email">e-mail del autor</string>
+    <string name="donate">Facer un donation</string>
+    <string name="downloading_FORMAT">Discargante %s…</string>
 </resources>
