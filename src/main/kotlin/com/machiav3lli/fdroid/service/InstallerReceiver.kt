@@ -63,6 +63,7 @@ fun installIntent(context: Context, intent: Intent): PendingIntent {
     // prepare prompt intent
     val promptIntent: Intent? = intent.getParcelableExtra(Intent.EXTRA_INTENT)
     val name = intent.getStringExtra(PackageInstaller.EXTRA_PACKAGE_NAME)
+    val cacheFileName = intent.getStringExtra(NeoActivity.EXTRA_CACHE_FILE_NAME)
 
     return PendingIntent.getActivity(
         context,
@@ -71,6 +72,7 @@ fun installIntent(context: Context, intent: Intent): PendingIntent {
             .setAction(NeoActivity.ACTION_INSTALL)
             .setData(Uri.parse("package:$name"))
             .putExtra(Intent.EXTRA_INTENT, promptIntent)
+            .putExtra(NeoActivity.EXTRA_CACHE_FILE_NAME, cacheFileName)
             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )

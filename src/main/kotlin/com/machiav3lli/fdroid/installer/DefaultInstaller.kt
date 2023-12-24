@@ -7,6 +7,7 @@ import android.content.pm.PackageInstaller.SessionParams
 import android.content.pm.PackageManager.PackageInfoFlags
 import android.os.Build
 import android.util.Log
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.content.Cache
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.service.InstallerReceiver
@@ -38,6 +39,7 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
         val cacheFile = Cache.getReleaseFile(context, cacheFileName)
         // using packageName to store the app's name for the notification later down the line
         intent.putExtra(InstallerReceiver.KEY_PACKAGE_LABEL, appName)
+        intent.putExtra(NeoActivity.EXTRA_CACHE_FILE_NAME, cacheFileName)
         mDefaultInstaller(cacheFile)
     }
 
