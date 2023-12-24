@@ -351,4 +351,8 @@
     <string name="disabled">已禁用</string>
     <string name="proxy_url">链接</string>
     <string name="repo_qr_code">存储库的二维码</string>
+    <string name="download_manager">系统下载管理器</string>
+    <string name="install_packages_permission_message">自 Android 8 开始，应用程序需要获得此权限才能安装软件包。</string>
+    <string name="install_packages_permission_title">安装软件包的权限</string>
+    <string name="download_manager_summary">使用系统下载管理器以更可靠地下载应用程序。此选项不支持 TOR 或自定义代理，而是使用系统设置。</string>
 </resources>
