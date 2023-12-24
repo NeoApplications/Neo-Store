@@ -162,6 +162,7 @@ class WorkerManager(appContext: Context) {
                 if (packageName != null) "download_$packageName"
                 else it
             )
+            // TODO upsert Error to DB.Downloaded
         }
     }
 
@@ -490,7 +491,7 @@ class WorkerManager(appContext: Context) {
 
                     downloadsRunning.compute(task.key) { _, _ ->
                         when (wi.state) {
-                            WorkInfo.State.ENQUEUED, WorkInfo.State.BLOCKED -> {
+                            WorkInfo.State.ENQUEUED  -> {
                                 notificationBuilder
                                     .setContentTitle(
                                         appContext.getString(
@@ -515,7 +516,7 @@ class WorkerManager(appContext: Context) {
                                 )
                             }
 
-                            WorkInfo.State.RUNNING                          -> {
+                            WorkInfo.State.RUNNING   -> {
                                 notificationBuilder
                                     .setContentTitle(
                                         appContext.getString(
@@ -541,7 +542,7 @@ class WorkerManager(appContext: Context) {
                                 )
                             }
 
-                            WorkInfo.State.CANCELLED                        -> {
+                            WorkInfo.State.CANCELLED -> {
                                 allCount -= 1
                                 notificationBuilder
                                     .setOngoing(false)
@@ -563,7 +564,7 @@ class WorkerManager(appContext: Context) {
                                 )
                             }
 
-                            WorkInfo.State.SUCCEEDED                        -> {
+                            WorkInfo.State.SUCCEEDED -> {
                                 allProcessed += 1
                                 notificationBuilder.setOngoing(false)
                                     .setContentTitle(
@@ -590,7 +591,7 @@ class WorkerManager(appContext: Context) {
                                 )
                             }
 
-                            WorkInfo.State.FAILED                           -> {
+                            WorkInfo.State.FAILED    -> {
                                 allProcessed += 1
                                 allFailed += 1
                                 val errorType = when {
@@ -618,9 +619,11 @@ class WorkerManager(appContext: Context) {
                                     validationError,
                                 )
                             }
+
+                            WorkInfo.State.BLOCKED   -> null
                         }
                     }?.let {
-                        CoroutineScope(Dispatchers.Default).launch {
+                        CoroutineScope(Dispatchers.Default).launch { // TODO manage abrupt breaks
                             MainApplication.db.getDownloadedDao().upsert(
                                 Downloaded(
                                     it.packageName,

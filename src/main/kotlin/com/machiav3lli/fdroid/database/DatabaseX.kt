@@ -151,27 +151,26 @@ abstract class DatabaseX : RoomDatabase() {
         private var INSTANCE: DatabaseX? = null
 
         fun getInstance(context: Context): DatabaseX {
-            synchronized(this) {
-                if (INSTANCE == null) {
-                    INSTANCE = Room
-                        .databaseBuilder(
-                            context.applicationContext,
-                            DatabaseX::class.java,
-                            "main_database.db"
-                        )
-                        .fallbackToDestructiveMigration()
-                        .build()
-                    INSTANCE?.let { instance ->
-                        GlobalScope.launch(Dispatchers.IO) {
-                            if (instance.getRepositoryDao()
-                                    .getCount() == 0
-                            ) defaultRepositories.forEach {
-                                instance.getRepositoryDao().put(it)
-                            }
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room
+                    .databaseBuilder(
+                        context.applicationContext,
+                        DatabaseX::class.java,
+                        "main_database.db"
+                    )
+                    .fallbackToDestructiveMigration()
+                    .build()
+                instance.let { instance ->
+                    GlobalScope.launch(Dispatchers.IO) {
+                        if (instance.getRepositoryDao()
+                                .getCount() == 0
+                        ) defaultRepositories.forEach {
+                            instance.getRepositoryDao().put(it)
                         }
                     }
                 }
-                return INSTANCE!!
+                INSTANCE = instance
+                instance
             }
         }
 
@@ -286,10 +285,12 @@ abstract class DatabaseX : RoomDatabase() {
                 getCategoryDao().deleteById(repository.id)
                 getProductDao().insert(*(getProductTempDao().getAll()))
                 getCategoryDao().insert(*(getCategoryTempDao().getAll()))
+                //getReleaseDao().insert(*(getReleaseTempDao().getAll()))
                 getRepositoryDao().put(repository)
             }
             getProductTempDao().emptyTable()
             getCategoryTempDao().emptyTable()
+            //getReleaseTempDao().emptyTable()
         }
     }
 }

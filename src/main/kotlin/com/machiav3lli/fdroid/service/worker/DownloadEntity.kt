@@ -112,6 +112,7 @@ sealed class DownloadState {
             is Connecting  -> R.string.connecting
             is Downloading -> R.string.downloading
             is Success     -> R.string.installing
+            is Error       -> R.string.error
             else           -> R.string.cancel
         }
 
