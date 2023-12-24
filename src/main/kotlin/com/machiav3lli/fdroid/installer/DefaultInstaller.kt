@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.installer
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInstaller
 import android.content.pm.PackageInstaller.SessionParams
 import android.content.pm.PackageManager.PackageInfoFlags
 import android.os.Build
@@ -31,6 +32,9 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
         val sessionParams = SessionParams(SessionParams.MODE_FULL_INSTALL).apply {
             if (Android.sdk(31)) {
                 setRequireUserAction(SessionParams.USER_ACTION_NOT_REQUIRED)
+            }
+            if (Android.sdk(33)) {
+                setPackageSource(PackageInstaller.PACKAGE_SOURCE_STORE)
             }
         }
     }
