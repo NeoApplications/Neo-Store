@@ -33,6 +33,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Downloaded
+import com.machiav3lli.fdroid.database.entity.InstallTask
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.Order
@@ -115,7 +116,7 @@ class WorkerManager(appContext: Context) {
                 .collectLatest {
                     if (it.isNotEmpty()) {
                         prune()
-                        launchInstaller()
+                        launchInstaller(it)
                     }
                 }
         }
@@ -194,8 +195,10 @@ class WorkerManager(appContext: Context) {
         }
     }
 
-    fun launchInstaller() = ioScope.launch {
-        InstallWorker.launch()
+    fun launchInstaller(installTasks: List<InstallTask>) = ioScope.launch {
+        installTasks.forEach {
+            InstallWorker.enqueue(it.packageName, it.label, it.cacheFileName)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

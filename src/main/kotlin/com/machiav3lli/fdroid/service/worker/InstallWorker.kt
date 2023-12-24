@@ -13,7 +13,9 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.ForegroundInfo
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
+import androidx.work.workDataOf
 import com.google.common.util.concurrent.ListenableFuture
+import com.machiav3lli.fdroid.ARG_FILE_NAME
 import com.machiav3lli.fdroid.ARG_NAME
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
@@ -34,15 +36,21 @@ class InstallWorker(
     params: WorkerParameters,
 ) : CoroutineWorker(context, params) {
     companion object {
-        fun launch() {
+        fun enqueue(packageName: String, label: String, fileName: String) {
+            val data = workDataOf(
+                ARG_NAME to label,
+                ARG_FILE_NAME to fileName,
+            )
+
             val installerRequest = OneTimeWorkRequestBuilder<InstallWorker>()
+                .setInputData(data)
                 .addTag("installer")
                 .build()
 
             MainApplication.wm.workManager
                 .beginUniqueWork(
-                    "Installer",
-                    ExistingWorkPolicy.APPEND,
+                    "Installer_$packageName",
+                    ExistingWorkPolicy.KEEP,
                     installerRequest,
                 ).enqueue()
         }
@@ -54,38 +62,39 @@ class InstallWorker(
 
     override suspend fun doWork(): Result {
         val lock = Mutex()
-        var tasks = MainApplication.db.getInstallTaskDao().getAll()
-        var currentTask: InstallTask? = null
+        val label = inputData.getString(ARG_NAME) ?: ""
+        val fileName = inputData.getString(ARG_FILE_NAME) ?: ""
+        var task = MainApplication.db.getInstallTaskDao().get(fileName)
+        val installerInstance = AppInstaller.getInstance(context)
 
-        while (tasks.isNotEmpty()) {
-            tasks.first().also { task ->
-                if (task != currentTask && !lock.isLocked) {
+        try {
+            while (task != null) {
+                if (!lock.isLocked) {
                     currentTask = task
                     val installer = suspend { // TODO add sort of notification
-                        val installerInstance = AppInstaller.getInstance(context)
                         installerInstance?.defaultInstaller?.install(
-                            task.label,
-                            task.cacheFileName
+                            label,
+                            fileName
                         )
                         lock.unlock()
                     }
                     lock.lock()
-                    if (MainApplication.mainActivity != null &&
-                        AppInstaller.getInstance(context)?.defaultInstaller is LegacyInstaller
-                    ) {
-                        scope.launch {
+                    try {
+                        if (MainApplication.mainActivity != null && installerInstance?.defaultInstaller is LegacyInstaller) {
                             MainApplication.mainActivity?.withResumed {
-                                scope.launch {
-                                    installer()
-                                }
+                                scope.launch { installer() }
                             }
+                        } else {
+                            scope.launch { installer() }
                         }
-                    } else {
-                        scope.launch { installer() }
+                    } catch (e: Exception) {
+                        return Result.failure()
                     }
-                } else delay(200)
-                tasks = MainApplication.db.getInstallTaskDao().getAll()
+                } else delay(5000)
+                task = MainApplication.db.getInstallTaskDao().get(fileName)
             }
+        } catch (e: Exception) {
+            return Result.failure()
         }
         return Result.success()
     }

@@ -21,6 +21,9 @@ interface InstallTaskDao : BaseDao<InstallTask> {
     @Query("SELECT * FROM `installtask` WHERE packageName = :packageName AND versionCode = :versionCode")
     fun get(packageName: String, versionCode: Long): InstallTask?
 
+    @Query("SELECT * FROM `installtask` WHERE cacheFileName = :fileName ORDER BY added ASC")
+    fun get(fileName : String): InstallTask?
+
     @Query("SELECT * FROM `installtask` WHERE packageName = :packageName AND versionCode = :versionCode")
     fun getFlow(packageName: String, versionCode: Long): Flow<InstallTask?>
 
