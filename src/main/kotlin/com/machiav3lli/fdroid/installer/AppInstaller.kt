@@ -25,7 +25,7 @@ abstract class AppInstaller {
                                         installer == InstallerType.LEGACY              ->
                                             LegacyInstaller(it)
                                         else                                           ->
-                                            DefaultInstaller(it)
+                                            SessionInstaller(it)
                                     }
                                 }
                         }

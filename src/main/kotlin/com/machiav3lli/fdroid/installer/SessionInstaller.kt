@@ -19,7 +19,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 
-class DefaultInstaller(context: Context) : BaseInstaller(context) {
+class SessionInstaller(context: Context) : BaseInstaller(context) {
 
     private val packageManager = context.packageManager
     private val sessionInstaller = packageManager.packageInstaller
@@ -58,7 +58,7 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
                     sessionInstaller.abandonSession(session.sessionId)
                 } catch (_: SecurityException) {
                     Log.w(
-                        "DefaultInstaller",
+                        "SessionInstaller",
                         "Attempted to abandon a session we do not own."
                     )
                 }
@@ -90,19 +90,19 @@ class DefaultInstaller(context: Context) : BaseInstaller(context) {
                 sessionOutputStream.close()
             } catch (e: FileNotFoundException) {
                 Log.w(
-                    "DefaultInstaller",
+                    "SessionInstaller",
                     "Cache file does not seem to exist.\n${e.message}"
                 )
                 hasErrors = true
             } catch (e: SecurityException) {
                 Log.w(
-                    "DefaultInstaller",
+                    "SessionInstaller",
                     "Attempted to use a destroyed or sealed session when installing.\n${e.message}"
                 )
                 hasErrors = true
             } catch (e: IOException) {
                 Log.w(
-                    "DefaultInstaller",
+                    "SessionInstaller",
                     "Failed to perform cache to package copy due to a bad pipe.\n${e.message}"
                 )
                 hasErrors = true
