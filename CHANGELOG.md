@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-1.0.0 (??.??.2023) 320+ Commits +280 Translations
+1.0.0 (??.??.2023) 350+ Commits +300 Translations
 ------------------
 
 ### Function
@@ -17,7 +17,9 @@ CHANGELOG
 - Add: Network constraint to Download works
 - Add: Own client & connectionPools for CoilDownloader
 - Add: ForegroundServiceType for works (Required on A14)
-- Add Repos: Aniyomi, Koyu, Kuschku, Kvaestiso, Etopa, Metatrans Apps, Gadgetbridge, FUTO, Grobox, Julian Fairfax, spiritCroc Test, Zimbelstern, Cromite, Divolt Repo (credits @GitGitro)
+- Add: Package source to session installer (SDK33+)
+- Add: Option to use DownloadManager API
+- Add Repos: Aniyomi, Koyu, Kuschku, Kvaestiso, Etopa, Metatrans Apps, Gadgetbridge, FUTO, Grobox, Julian Fairfax, spiritCroc Test, Zimbelstern, Cromite, Divolt Repo, Rboard, Cake Wallet (credits @GitGitro)
 - Add Repos: Samourai Wallet Repo (credits @RequestPrivacy)
 - Add Repos: Julian Andres Klode's repo (credits @ishanarora)
 - Add Repos: PurpleI2p, INVISV, Monerujo, iodé, spiritCroc, DivestOS Unofficial, Funkwhale
@@ -33,6 +35,8 @@ CHANGELOG
 - Fix: Clicking updates notification
 - Fix: Launching parallel updates
 - Fix: Updating apps in the background
+- Fix: Install notification
+- Update: Cache apks in external cache
 - Update: Replace OkHttp with Ktor (except for Coil)
 - Update: More open network security policy
 - Update: Make root session installer default ture if A13+
@@ -77,6 +81,8 @@ CHANGELOG
 - Fix: Content padding of Main pages
 - Fix: Ghost clicking settings when search is expanded
 - Fix: Showing progress bar in AppSheet when not active
+- Update: App's icon
+- Update: Theme colors
 - Update: Revamp Carrousel item layout
 - Update: Split Installed page to two tabs
 - Update: Revamp AppSheet
@@ -112,6 +118,9 @@ CHANGELOG
 - Add: PrivacyPoints to PrivacyPanel cards
 - Add: All Anti-features in PrivacyPanel
 - Add: Qr Code to repo sheet
+- Add: Permission to install packages
+- Fix: Applying sort/filter options directly
+- Fix: Scrolling along qr-code in RepoSheet
 - Fix: Showing updatable label for Product items
 - Fix: Showing right version in AppSheet's header
 - Fix: Showing downloaded version (in downloads log)

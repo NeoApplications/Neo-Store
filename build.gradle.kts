@@ -43,8 +43,8 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1007
-        versionName = "1.0.0-beta01"
+        versionCode = 1008
+        versionName = "1.0.0-beta02"
         buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
 
         javaCompileOptions {
@@ -149,6 +149,7 @@ dependencies {
     implementation("com.google.devtools.ksp:symbol-processing-api:$vKotlin-$vKSP")
     implementation("androidx.preference:preference-ktx:$vPreference")
     implementation("androidx.activity:activity-compose:$vActivity")
+    // use the new WorkInfo.stopReason (report stopReason), setNextScheduleTimeOverride (Precise scheduling), Configuration.Builder.setContentUriTriggerWorkersLimit (limit for content uri workers)
     implementation("androidx.work:work-runtime:$vWork")
 
     // Material3
