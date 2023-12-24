@@ -73,6 +73,8 @@ All of these packages can be installed using the Android package manager.
 
 To [Iamlooker](https://github.com/Iamlooker), who worked with me on maintaining the project, until he had to step away and fork out out of career-related reasons. Best of luck!
 
+To [Donno](https://github.com/Donnnno) for the new app icon base.
+
 ## Copylefted Libre License :scroll:
 
 Licensed with: [GPLv3+](/COPYING). \
