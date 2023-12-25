@@ -355,4 +355,8 @@
     <string name="disabled">Desactivado</string>
     <string name="proxy_url">Dirección url</string>
     <string name="repo_qr_code">Código QR del repositorio</string>
+    <string name="download_manager">Gestor de descargas del sistema</string>
+    <string name="install_packages_permission_message">Las aplicaciones de Android 8 requieren este permiso para poder instalar paquetes.</string>
+    <string name="install_packages_permission_title">Permiso para instalar paquetes</string>
+    <string name="download_manager_summary">Utiliza el gestor de descargas del sistema para descargar las aplicaciones de forma más fiable. Esta opción no es compatible con TOR o el proxy personalizado, utiliza la configuración del sistema.</string>
 </resources>
