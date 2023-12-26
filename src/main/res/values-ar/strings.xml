@@ -361,4 +361,8 @@
     <string name="disabled">معطل</string>
     <string name="proxy_url">العنوان</string>
     <string name="repo_qr_code">رمز الاستجابة السريعة للمستودع</string>
+    <string name="download_manager">مدير تحميل النظام</string>
+    <string name="install_packages_permission_message">يتطلب بدء تشغيل تطبيقات اندرويد 8 هذا الإذن لتتمكن من تثبيت الحزم.</string>
+    <string name="install_packages_permission_title">الإذن بتركيب الحزم</string>
+    <string name="download_manager_summary">استخدم مدير تنزيل النظام لتنزيل التطبيقات بشكل أكثر موثوقية. لا يدعم هذا الخيار تور أو الوكيل المخصص، فهو يستخدم إعدادات النظام.</string>
 </resources>
