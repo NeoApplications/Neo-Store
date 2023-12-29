@@ -353,4 +353,8 @@
     <string name="disabled">अक्षम</string>
     <string name="proxy_url">Url</string>
     <string name="repo_qr_code">रिपॉजिटरी का क्यूआर कोड</string>
+    <string name="download_manager">सिस्टम का डाउनलोड मैनेजर</string>
+    <string name="install_packages_permission_message">एंड्रॉइड 8 से ऐप्स के लिए पैकेज इंस्टॉल करने में सक्षम होने के लिए इस अनुमति की आवश्यकता होती है।</string>
+    <string name="install_packages_permission_title">पैकेज इंस्टॉल करने की अनुमति</string>
+    <string name="download_manager_summary">ऐप्स को अधिक विश्वसनीय रूप से डाउनलोड करने के लिए सिस्टम के डाउनलोड मैनेजर का उपयोग करें। यह विकल्प TOR या कस्टम प्रॉक्सी का समर्थन नहीं करता है, यह सिस्टम सेटिंग्स का उपयोग करता है।</string>
 </resources>
