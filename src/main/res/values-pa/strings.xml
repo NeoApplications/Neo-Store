@@ -353,4 +353,8 @@
     <string name="disabled">ਡਿਸੇਬਲ ਕੀਤੇ</string>
     <string name="proxy_url">Url</string>
     <string name="repo_qr_code">ਰਿਪੋਜ਼ਟਰੀ ਦਾ QR ਕੋਡ</string>
+    <string name="download_manager">ਸਿਸਟਮ ਦਾ ਡਾਊਨਲੋਡ ਮੈਨੇਜਰ</string>
+    <string name="install_packages_permission_message">ਐਂਡਰੌਇਡ 8 ਤੋਂ ਐਪਾਂ ਲਈ ਪੈਕੇਜਾਂ ਨੂੰ ਇੰਸਟਾਲ ਕਰਨ ਦੇ ਯੋਗ ਹੋਣ ਲਈ ਇਸ ਅਨੁਮਤੀ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।</string>
+    <string name="install_packages_permission_title">ਪੈਕੇਜ ਇੰਸਟਾਲ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ</string>
+    <string name="download_manager_summary">ਐਪਸ ਨੂੰ ਵਧੇਰੇ ਭਰੋਸੇਯੋਗਤਾ ਨਾਲ ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ ਸਿਸਟਮ ਦੇ ਡਾਊਨਲੋਡ ਮੈਨੇਜਰ ਦੀ ਵਰਤੋਂ ਕਰੋ। ਇਹ ਵਿਕਲਪ TOR ਜਾਂ ਕਸਟਮ ਪ੍ਰੌਕਸੀ ਦਾ ਸਮਰਥਨ ਨਹੀਂ ਕਰਦਾ, ਇਹ ਸਿਸਟਮ ਸੈਟਿੰਗਾਂ ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ।</string>
 </resources>
