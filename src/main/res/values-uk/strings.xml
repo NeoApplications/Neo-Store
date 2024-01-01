@@ -357,4 +357,8 @@
     <string name="disabled">Вимкнено</string>
     <string name="proxy_url">Посилання</string>
     <string name="repo_qr_code">QR-код репозиторія</string>
+    <string name="download_manager">Системний менеджер завантажень</string>
+    <string name="install_packages_permission_message">Починаючи з Android 8, застосунки потребують цього дозволу для встановлення пакетів.</string>
+    <string name="install_packages_permission_title">Дозвіл на встановлення пакетів</string>
+    <string name="download_manager_summary">Використовувати системний менеджер завантажень для надійнішого завантаження застосунків. Ця опція не підтримує TOR або користувацький проксі, оскільки використовує системні параметри.</string>
 </resources>
