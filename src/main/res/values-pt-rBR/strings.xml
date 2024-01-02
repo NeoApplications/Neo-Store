@@ -337,4 +337,18 @@
     <string name="auto_sync_interval_hours">Intervalo de sincronização automática (em horas)</string>
     <string name="repos_export">Exportar repositórios</string>
     <string name="installed_export">Exportar lista de aplicativos instalados</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(-%d ponto de privacidade)</item>
+        <item quantity="many">(-%d pontos de privacidade)</item>
+        <item quantity="other">(-%d pontos de privacidade)</item>
+    </plurals>
+    <string name="proxy_url">URL</string>
+    <string name="enabled">Habilitado</string>
+    <string name="installed_import">Importar e instalar a lista de apps (obtê-los dos repositórios habilitados, caso existam)</string>
+    <string name="download_manager">Gerenciador de downloads do sistema</string>
+    <string name="disabled">Desabilitado</string>
+    <string name="install_packages_permission_title">Permissão para instalar pacotes</string>
+    <string name="no_releases">Nenhuma versão compatível para mostrar</string>
+    <string name="allow_unstable_updates">Permitir a exibição de atualizações instáveis</string>
+    <string name="repos_import">Importar repositórios (sobrecresver os já existentes)</string>
 </resources>
