@@ -8,6 +8,7 @@ import com.machiav3lli.fdroid.HELP_MATRIX
 import com.machiav3lli.fdroid.HELP_SOURCECODE
 import com.machiav3lli.fdroid.HELP_TELEGRAM
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CalendarPlus
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CalendarX
@@ -18,6 +19,30 @@ enum class InstallerType(@StringRes val titleResId: Int) {
     ROOT(R.string.root_installer),
     LEGACY(R.string.legacy_installer),
     AM(R.string.am_installer),
+}
+
+enum class Contrast(val themes: List<Preferences.Theme>) {
+    NORMAL(
+        listOf(
+            Preferences.Theme.Light,
+            Preferences.Theme.Dark,
+            Preferences.Theme.Black
+        )
+    ),
+    MEDIUM(
+        listOf(
+            Preferences.Theme.LightMediumContrast,
+            Preferences.Theme.DarkMediumContrast,
+            Preferences.Theme.BlackMediumContrast
+        )
+    ),
+    HIGH(
+        listOf(
+            Preferences.Theme.LightHighContrast,
+            Preferences.Theme.DarkHighContrast,
+            Preferences.Theme.BlackHighContrast
+        )
+    )
 }
 
 enum class Order(@StringRes val titleResId: Int, val icon: ImageVector) {

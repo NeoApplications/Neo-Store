@@ -31,6 +31,7 @@ import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.entity.Contrast
 import com.machiav3lli.fdroid.entity.LinkType
 import com.machiav3lli.fdroid.entity.PermissionGroup
 import com.machiav3lli.fdroid.service.worker.DownloadWorker
@@ -221,11 +222,17 @@ fun <T> findSuggestedProduct(
 val Context.isDarkTheme: Boolean
     get() = when (Preferences[Preferences.Key.Theme]) {
         is Preferences.Theme.Light,
+        is Preferences.Theme.LightMediumContrast,
+        is Preferences.Theme.LightHighContrast,
         is Preferences.Theme.DynamicLight,
              -> false
 
         is Preferences.Theme.Dark,
+        is Preferences.Theme.DarkMediumContrast,
+        is Preferences.Theme.DarkHighContrast,
         is Preferences.Theme.Black,
+        is Preferences.Theme.BlackMediumContrast,
+        is Preferences.Theme.BlackHighContrast,
         is Preferences.Theme.DynamicDark,
         is Preferences.Theme.DynamicBlack,
              -> true
@@ -236,12 +243,28 @@ val Context.isDarkTheme: Boolean
 val isBlackTheme: Boolean
     get() = when (Preferences[Preferences.Key.Theme]) {
         is Preferences.Theme.Black,
+        is Preferences.Theme.BlackMediumContrast,
+        is Preferences.Theme.BlackHighContrast,
         is Preferences.Theme.SystemBlack,
         is Preferences.Theme.DynamicBlack,
              -> true
 
         else -> false
     }
+
+fun getGetThemeContrast(): Contrast = when (Preferences[Preferences.Key.Theme]) {
+    is Preferences.Theme.LightMediumContrast,
+    is Preferences.Theme.DarkMediumContrast,
+    is Preferences.Theme.BlackMediumContrast,
+         -> Contrast.MEDIUM
+
+    is Preferences.Theme.LightHighContrast,
+    is Preferences.Theme.DarkHighContrast,
+    is Preferences.Theme.BlackHighContrast,
+         -> Contrast.HIGH
+
+    else -> Contrast.NORMAL
+}
 
 val isDynamicColorsTheme: Boolean
     get() = when (Preferences[Preferences.Key.Theme]) {

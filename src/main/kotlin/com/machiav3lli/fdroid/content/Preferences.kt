@@ -446,7 +446,17 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
     sealed class Theme(override val valueString: String) : Enumeration<Theme> {
         override val values: List<Theme>
-            get() = mutableListOf(Light, Dark, Black).apply {
+            get() = mutableListOf(
+                Light,
+                Dark,
+                Black,
+                LightMediumContrast,
+                DarkMediumContrast,
+                BlackMediumContrast,
+                LightHighContrast,
+                DarkHighContrast,
+                BlackHighContrast,
+            ).apply {
                 if (Android.sdk(31)) addAll(
                     listOf(
                         Dynamic,
@@ -510,6 +520,20 @@ data object Preferences : OnSharedPreferenceChangeListener {
                 get() = AppCompatDelegate.MODE_NIGHT_NO
         }
 
+        data object LightMediumContrast : Theme("light_medium_contrast") {
+            override val resId: Int
+                get() = R.style.Theme_Main
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_NO
+        }
+
+        data object LightHighContrast : Theme("light_high_contrast") {
+            override val resId: Int
+                get() = R.style.Theme_Main
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_NO
+        }
+
         data object Dark : Theme("dark") {
             override val resId: Int
                 get() = R.style.Theme_Main
@@ -517,7 +541,35 @@ data object Preferences : OnSharedPreferenceChangeListener {
                 get() = AppCompatDelegate.MODE_NIGHT_YES
         }
 
+        data object DarkMediumContrast : Theme("dark_medium_contrast") {
+            override val resId: Int
+                get() = R.style.Theme_Main
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_YES
+        }
+
+        data object DarkHighContrast : Theme("dark_high_contrast") {
+            override val resId: Int
+                get() = R.style.Theme_Main
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_YES
+        }
+
         data object Black : Theme("amoled") {
+            override val resId: Int
+                get() = R.style.Theme_Main_Amoled
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_YES
+        }
+
+        data object BlackMediumContrast : Theme("black_medium_contrast") {
+            override val resId: Int
+                get() = R.style.Theme_Main_Amoled
+            override val nightMode: Int
+                get() = AppCompatDelegate.MODE_NIGHT_YES
+        }
+
+        data object BlackHighContrast : Theme("black_high_contrast") {
             override val resId: Int
                 get() = R.style.Theme_Main_Amoled
             override val nightMode: Int

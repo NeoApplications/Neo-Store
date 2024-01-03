@@ -88,7 +88,13 @@ val PrefsEntries = mapOf(
     Preferences.Key.Theme to mutableMapOf(
         Preferences.Theme.Light to R.string.light,
         Preferences.Theme.Dark to R.string.dark,
-        Preferences.Theme.Black to R.string.amoled
+        Preferences.Theme.Black to R.string.amoled,
+        Preferences.Theme.LightMediumContrast to R.string.light_medium_contrast,
+        Preferences.Theme.DarkMediumContrast to R.string.dark_medium_contrast,
+        Preferences.Theme.BlackMediumContrast to R.string.black_medium_contrast,
+        Preferences.Theme.LightHighContrast to R.string.light_high_contrast,
+        Preferences.Theme.DarkHighContrast to R.string.dark_high_contrast,
+        Preferences.Theme.BlackHighContrast to R.string.black_high_contrast,
     ).apply {
         if (Android.sdk(29)) {
             put(Preferences.Theme.System, R.string.system)

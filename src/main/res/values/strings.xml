@@ -358,4 +358,10 @@
     <string name="install_packages_permission_title">Permission to install packages</string>
     <string name="install_packages_permission_message">Starting Android 8 apps require this permission to be able to install packages.</string>
     <string name="am_installer">App Manager installer</string>
+    <string name="light_medium_contrast">Light (medium contrast)</string>
+    <string name="light_high_contrast">Light (high contrast)</string>
+    <string name="dark_medium_contrast">Dark (medium contrast)</string>
+    <string name="dark_high_contrast">Dark (high contrast)</string>
+    <string name="black_medium_contrast">Black (medium contrast)</string>
+    <string name="black_high_contrast">Black (high contrast)</string>
 </resources>
