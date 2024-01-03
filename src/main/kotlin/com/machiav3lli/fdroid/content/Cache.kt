@@ -2,8 +2,8 @@ package com.machiav3lli.fdroid.content
 
 import android.content.ContentValues
 import android.content.Context
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.content.pm.PackageManager.GET_PROVIDERS
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
@@ -58,24 +58,14 @@ object Cache {
     }
 
     fun File.getReleaseFileUri(context: Context): Uri {
-        val pi = if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) {
-            context.packageManager.getPackageInfo(
-                context.packageName,
-                PackageManager.PackageInfoFlags.of(GET_PROVIDERS.toLong())
-            )
-        } else {
-            context.packageManager.getPackageInfo(
-                context.packageName,
-                GET_PROVIDERS
-            )
-        }
-        val authority = pi.providers.find { it.name == Provider::class.java.name }?.authority
-        return Uri.Builder()
-            .scheme("content")
-            .authority(authority)
-            .encodedPath(this.path.drop(context.cacheDir.path.length))
-            .build()
+        val authority = context.applicationContext.packageName + ".provider.files"
+        return FileProvider.getUriForFile(context, authority, this)
     }
+
+    fun Context.getPackageArchiveInfo(file: File): PackageInfo? =
+        if (Android.sdk(Build.VERSION_CODES.TIRAMISU))
+            packageManager.getPackageArchiveInfo(file.absolutePath, PackageManager.PackageInfoFlags.of(0))
+        else packageManager.getPackageArchiveInfo(file.absolutePath, 0)
 
     fun getTemporaryFile(context: Context): File {
         return File(ensureCacheDir(context, "temporary"), UUID.randomUUID().toString())

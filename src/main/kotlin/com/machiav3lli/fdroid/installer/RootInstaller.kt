@@ -2,7 +2,9 @@ package com.machiav3lli.fdroid.installer
 
 import android.content.Context
 import com.machiav3lli.fdroid.BuildConfig
+import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Cache
+import com.machiav3lli.fdroid.content.Cache.getPackageArchiveInfo
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.topjohnwu.superuser.Shell
@@ -80,15 +82,19 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
             )
     }
 
-    override suspend fun install(packageName: String, cacheFileName: String) {
+    override suspend fun install(packageLabel: String, cacheFileName: String) {
         val cacheFile = Cache.getReleaseFile(context, cacheFileName)
-        mRootInstaller(cacheFile)
+        val packageInfo = context.getPackageArchiveInfo(cacheFile)
+        val packageName = packageInfo?.packageName ?: "unknown-package"
+
+        mRootInstaller(packageName, cacheFile)
     }
 
     override suspend fun uninstall(packageName: String) = mRootUninstaller(packageName)
 
-    private suspend fun mRootInstaller(cacheFile: File) {
+    private suspend fun mRootInstaller(packageName: String, cacheFile: File) =
         withContext(Dispatchers.Default) {
+            MainApplication.enqueuedInstalls.add(packageName)
             if (Preferences[Preferences.Key.RootSessionInstaller]) {
                 Shell.cmd(cacheFile.session_install_create)
                     .submit {
@@ -116,12 +122,11 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
                             Shell.cmd(cacheFile.deletePackage).submit()
                     }
             }
+            MainApplication.db.getInstallTaskDao().delete(packageName)
+            MainApplication.enqueuedInstalls.remove(packageName)
         }
-    }
 
-    private suspend fun mRootUninstaller(packageName: String) {
-        withContext(Dispatchers.Default) {
-            Shell.cmd(packageName.uninstall).submit()
-        }
+    private suspend fun mRootUninstaller(packageName: String) = withContext(Dispatchers.Default) {
+        Shell.cmd(packageName.uninstall).submit()
     }
 }

@@ -55,6 +55,8 @@ class MainApplication : Application(), ImageLoaderFactory {
     val wm: WorkerManager by inject()
 
     companion object {
+        val enqueuedInstalls: MutableSet<String> = mutableSetOf()
+
         private var appRef: WeakReference<MainApplication> = WeakReference(null)
         private val neo_store: MainApplication get() = appRef.get()!!
 

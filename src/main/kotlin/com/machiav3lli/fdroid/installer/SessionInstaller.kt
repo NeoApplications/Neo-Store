@@ -5,11 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageInstaller.SessionParams
-import android.content.pm.PackageManager.PackageInfoFlags
-import android.os.Build
 import android.util.Log
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.content.Cache
+import com.machiav3lli.fdroid.content.Cache.getPackageArchiveInfo
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.service.InstallerReceiver
 import com.machiav3lli.fdroid.utility.extension.android.Android
@@ -39,10 +38,10 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
         }
     }
 
-    override suspend fun install(appName: String, cacheFileName: String) {
+    override suspend fun install(packageLabel: String, cacheFileName: String) {
         val cacheFile = Cache.getReleaseFile(context, cacheFileName)
         // using packageName to store the app's name for the notification later down the line
-        intent.putExtra(InstallerReceiver.KEY_PACKAGE_LABEL, appName)
+        intent.putExtra(InstallerReceiver.KEY_PACKAGE_LABEL, packageLabel)
         intent.putExtra(NeoActivity.EXTRA_CACHE_FILE_NAME, cacheFileName)
         mDefaultInstaller(cacheFile)
     }
@@ -69,11 +68,7 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
         val session = sessionInstaller.openSession(id)
 
         // get package name
-        val packageInfo =
-            if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) packageManager.getPackageArchiveInfo(
-                cacheFile.absolutePath,
-                PackageInfoFlags.of(0)
-            ) else packageManager.getPackageArchiveInfo(cacheFile.absolutePath, 0)
+        val packageInfo = context.getPackageArchiveInfo(cacheFile)
         val packageName = packageInfo?.packageName ?: "unknown-package"
 
         // error flags
