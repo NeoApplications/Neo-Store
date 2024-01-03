@@ -69,7 +69,7 @@ class InstallWorker(
 
         try {
             while (task != null) {
-                if (!lock.isLocked) {
+                if (!lock.isLocked && installerInstance?.defaultInstaller?.isInstalling(task.packageName) != true) {
                     currentTask = task
                     val installer = suspend { // TODO add sort of notification
                         installerInstance?.defaultInstaller?.install(
@@ -78,6 +78,7 @@ class InstallWorker(
                         )
                         lock.unlock()
                     }
+
                     lock.lock()
                     try {
                         if (MainApplication.mainActivity != null && installerInstance?.defaultInstaller is LegacyInstaller) {

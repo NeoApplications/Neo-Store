@@ -46,6 +46,9 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
         mDefaultInstaller(cacheFile)
     }
 
+    override suspend fun isInstalling(packageName: String): Boolean =
+        sessionInstaller.mySessions.any { (!Android.sdk(29) || it.isStaged) && it.appPackageName == packageName }
+
     override suspend fun uninstall(packageName: String) = mDefaultUninstaller(packageName)
 
     private fun mDefaultInstaller(cacheFile: File) {

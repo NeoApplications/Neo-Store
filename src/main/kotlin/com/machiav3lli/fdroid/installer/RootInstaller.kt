@@ -90,6 +90,9 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
         mRootInstaller(packageName, cacheFile)
     }
 
+    override suspend fun isInstalling(packageName: String): Boolean =
+        MainApplication.enqueuedInstalls.contains(packageName)
+
     override suspend fun uninstall(packageName: String) = mRootUninstaller(packageName)
 
     private suspend fun mRootInstaller(packageName: String, cacheFile: File) =

@@ -24,6 +24,9 @@ class LegacyInstaller(context: Context) : BaseInstaller(context) {
         mOldDefaultInstaller(packageName, cacheFile)
     }
 
+    override suspend fun isInstalling(packageName: String): Boolean =
+        MainApplication.enqueuedInstalls.contains(packageName)
+
     override suspend fun uninstall(packageName: String) = mOldDefaultUninstaller(packageName)
 
     private suspend fun mOldDefaultInstaller(packageName: String, cacheFile: File) =
