@@ -133,6 +133,8 @@ const val PERMISSION_READ_CELL_BROADCASTS = "android.permission.READ_CELL_BROADC
 const val EXODUS_TRACKER_WEBSITE = "https://reports.exodus-privacy.eu.org/de/trackers/"
 const val ANTIFEATURES_WEBSITE = "https://f-droid.org/de/docs/Anti-Features/#"
 
+const val AM_PACKAGENAME = "io.github.muntashirakon.AppManager"
+const val AM_PACKAGENAME_DEBUG = "io.github.muntashirakon.AppManager.debug"
 const val TC_PACKAGENAME = "net.kollnig.missioncontrol"
 const val TC_PACKAGENAME_FDROID = "net.kollnig.missioncontrol.fdroid"
 const val TC_INTENT_EXTRA_SEARCH = "Search"

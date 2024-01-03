@@ -17,6 +17,7 @@ enum class InstallerType(@StringRes val titleResId: Int) {
     DEFAULT(R.string.default_installer),
     ROOT(R.string.root_installer),
     LEGACY(R.string.legacy_installer),
+    AM(R.string.am_installer),
 }
 
 enum class Order(@StringRes val titleResId: Int, val icon: ImageVector) {

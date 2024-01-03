@@ -357,4 +357,5 @@
     <string name="download_manager_summary">Use system\'s download manager to download the apps more reliably. This option doesn\'t support TOR or the custom proxy, it uses the system settings.</string>
     <string name="install_packages_permission_title">Permission to install packages</string>
     <string name="install_packages_permission_message">Starting Android 8 apps require this permission to be able to install packages.</string>
+    <string name="am_installer">App Manager installer</string>
 </resources>

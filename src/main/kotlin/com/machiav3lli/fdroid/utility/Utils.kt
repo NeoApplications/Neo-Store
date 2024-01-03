@@ -21,6 +21,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentManager
+import com.machiav3lli.fdroid.AM_PACKAGENAME
+import com.machiav3lli.fdroid.AM_PACKAGENAME_DEBUG
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
@@ -494,6 +496,10 @@ val currentTimestamp: String
 
 val shellIsRoot: Boolean
     get() = Shell.getCachedShell()?.isRoot ?: Shell.getShell().isRoot
+
+val Context.amInstalled: Boolean
+    get() = (packageManager.getLaunchIntentForPackage(AM_PACKAGENAME)
+        ?: packageManager.getLaunchIntentForPackage(AM_PACKAGENAME_DEBUG)) != null
 
 fun getBaseUrl(fullUrl: String): String {
     val url = URL(fullUrl)

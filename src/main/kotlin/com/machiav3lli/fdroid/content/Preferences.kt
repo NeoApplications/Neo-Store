@@ -206,6 +206,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object DownloadManager :
             Key<Boolean>("download_manager", Value.BooleanValue(false))
+
         data object DownloadDirectory :
             Key<String>("download_directory_value", Value.StringValue(""))
 
@@ -435,10 +436,11 @@ data object Preferences : OnSharedPreferenceChangeListener {
     sealed class Installer(override val valueString: String, val installer: InstallerType) :
         Enumeration<Installer> {
         override val values: List<Installer>
-            get() = listOf(Default, Root, Legacy)
+            get() = listOf(Default, Root, AM, Legacy)
 
         data object Default : Installer("session", InstallerType.DEFAULT)
         data object Root : Installer("root", InstallerType.ROOT)
+        data object AM : Installer("app_manager", InstallerType.AM)
         data object Legacy : Installer("legacy", InstallerType.LEGACY)
     }
 

@@ -110,6 +110,7 @@ val PrefsEntries = mapOf(
         Preferences.Installer.Default to R.string.default_installer,
         Preferences.Installer.Root to R.string.root_installer,
         Preferences.Installer.Legacy to R.string.legacy_installer,
+        Preferences.Installer.AM to R.string.am_installer,
     ),
     Preferences.Key.AutoSync to mapOf(
         Preferences.AutoSync.Wifi to R.string.only_on_wifi,
