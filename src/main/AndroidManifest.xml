@@ -131,6 +131,16 @@
             android:exported="false"
             android:grantUriPermissions="true" />
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider.files"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/files_provider" />
+        </provider>
+
         <receiver
             android:name=".service.ActionReceiver"
             android:exported="false" />
