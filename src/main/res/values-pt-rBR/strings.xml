@@ -351,4 +351,10 @@
     <string name="no_releases">Nenhuma versão compatível para mostrar</string>
     <string name="allow_unstable_updates">Permitir a exibição de atualizações instáveis</string>
     <string name="repos_import">Importar repositórios (sobrecresver os já existentes)</string>
+    <string name="alt_new_apps_description">Usar o layout akternativo/antigo para Novos Apps, que mostra pequenos carda de apps.</string>
+    <string name="dynamic_dark">Escuro com cores dinâmicas</string>
+    <string name="dynamic_light">Claro com cores dinâmicas</string>
+    <string name="dynamic_black">Preto com cores dinâmicas</string>
+    <string name="repo_qr_code">QR-Code do repositório</string>
+    <string name="alt_new_apps">Usar layout alternativo para Novos Apps</string>
 </resources>
