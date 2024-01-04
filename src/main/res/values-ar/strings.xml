@@ -365,4 +365,11 @@
     <string name="install_packages_permission_message">يتطلب بدء تشغيل تطبيقات اندرويد 8 هذا الإذن لتتمكن من تثبيت الحزم.</string>
     <string name="install_packages_permission_title">الإذن بتركيب الحزم</string>
     <string name="download_manager_summary">استخدم مدير تنزيل النظام لتنزيل التطبيقات بشكل أكثر موثوقية. لا يدعم هذا الخيار تور أو الوكيل المخصص، فهو يستخدم إعدادات النظام.</string>
+    <string name="dark_high_contrast">داكن (عال التباين)</string>
+    <string name="light_high_contrast">الضوء (عال التباين)</string>
+    <string name="am_installer">مثبت مدير التطبيقات</string>
+    <string name="black_medium_contrast">أسود (تباين متوسط)</string>
+    <string name="black_high_contrast">أسود (تباين عال)</string>
+    <string name="dark_medium_contrast">داكن (متوسط التباين)</string>
+    <string name="light_medium_contrast">الضوء (متوسط التباين)</string>
 </resources>
