@@ -359,4 +359,11 @@
     <string name="install_packages_permission_message">Las aplicaciones de Android 8 requieren este permiso para poder instalar paquetes.</string>
     <string name="install_packages_permission_title">Permiso para instalar paquetes</string>
     <string name="download_manager_summary">Utiliza el gestor de descargas del sistema para descargar las aplicaciones de forma más fiable. Esta opción no es compatible con TOR o el proxy personalizado, utiliza la configuración del sistema.</string>
+    <string name="dark_high_contrast">Oscuro (alto contraste)</string>
+    <string name="light_high_contrast">Luz (alto contraste)</string>
+    <string name="am_installer">Instalador del administrador de aplicaciones</string>
+    <string name="black_medium_contrast">Negro (contraste medio)</string>
+    <string name="black_high_contrast">Negro (alto contraste)</string>
+    <string name="dark_medium_contrast">Oscuro (contraste medio)</string>
+    <string name="light_medium_contrast">Claro (contraste medio)</string>
 </resources>
