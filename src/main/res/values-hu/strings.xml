@@ -353,4 +353,15 @@
     <string name="enabled">Engedélyezve</string>
     <string name="disabled">Letiltott</string>
     <string name="repo_qr_code">A tároló QR kódja</string>
+    <string name="dark_high_contrast">Sötét (magas kontraszt)</string>
+    <string name="light_high_contrast">Világos (magas kontraszt)</string>
+    <string name="am_installer">Alkalmazás kezelő telepítő</string>
+    <string name="black_medium_contrast">Fekete (közepes kontraszt)</string>
+    <string name="black_high_contrast">Fekete (magas kontraszt)</string>
+    <string name="download_manager">A rendszer letöltéskezelője</string>
+    <string name="install_packages_permission_message">Android 8-tól kezdődően az alkalmazásoknak szükségük van erre az engedélyre, hogy csomagokat telepíthessenek.</string>
+    <string name="dark_medium_contrast">Sötét (közepes kontraszt)</string>
+    <string name="install_packages_permission_title">Csomagok telepítésének engedélyezése</string>
+    <string name="light_medium_contrast">Vilásgos (közepes kontraszt)</string>
+    <string name="download_manager_summary">Használja a rendszer letöltéskezelőjét, hogy az alkalmazásokat megbízhatóbban töltse le. Ez az opció nem támogatja a TOR-t vagy az egyedi proxy-t, a rendszer beállításait használja.</string>
 </resources>
