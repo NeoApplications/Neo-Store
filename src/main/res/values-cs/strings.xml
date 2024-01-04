@@ -359,4 +359,11 @@
     <string name="install_packages_permission_message">Počínaje systémem Android 8 vyžadují aplikace toto oprávnění, aby mohly instalovat balíčky.</string>
     <string name="install_packages_permission_title">Oprávnění k instalaci balíčků</string>
     <string name="download_manager_summary">Použít systémový správce stahování pro spolehlivější stahování aplikací. Tato možnost nepodporuje Tor ani vlastní proxy, používá nastavení systému.</string>
+    <string name="dark_high_contrast">Tmavý (vysoký kontrast)</string>
+    <string name="light_high_contrast">Světlý (vysoký kontrast)</string>
+    <string name="am_installer">Instalátor App Manager</string>
+    <string name="black_medium_contrast">Černý (střední kontrast)</string>
+    <string name="black_high_contrast">Černý (vysoký kontrastú</string>
+    <string name="dark_medium_contrast">Tmavý (střední kontrast)</string>
+    <string name="light_medium_contrast">Světlý (střední kontrast)</string>
 </resources>
