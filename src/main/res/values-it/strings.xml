@@ -359,4 +359,11 @@
     <string name="install_packages_permission_message">A partire da Android 8 le app richiedono questa autorizzazione per poter installare pacchetti.</string>
     <string name="install_packages_permission_title">Autorizzazione ad installare pacchetti</string>
     <string name="download_manager_summary">Usa il download manager del sistema per scaricare le app in modo più affidabile. Questa opzione non supporta TOR o il proxy personalizzato, utilizza le impostazioni di sistema.</string>
+    <string name="dark_high_contrast">Scuro (contrasto elevato)</string>
+    <string name="light_high_contrast">Chiaro (contrasto elevato)</string>
+    <string name="am_installer">Installer di Gestione app</string>
+    <string name="black_medium_contrast">Nero (contrasto medio)</string>
+    <string name="black_high_contrast">Nero (contrasto elevato)</string>
+    <string name="dark_medium_contrast">Scuro (contrasto medio)</string>
+    <string name="light_medium_contrast">Chiaro (contrasto medio)</string>
 </resources>
