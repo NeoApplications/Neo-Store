@@ -29,7 +29,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -37,7 +36,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -131,7 +129,7 @@ fun RowScope.AltNavBarItem(
     onClick: () -> Unit = {},
 ) {
     val backgroundColor by animateColorAsState(
-        targetValue = if (selected) MaterialTheme.colorScheme.surfaceColorAtElevation(12.dp)
+        targetValue = if (selected) MaterialTheme.colorScheme.surfaceContainer
         else Color.Transparent,
         label = "backgroundColor",
     )
@@ -141,7 +139,7 @@ fun RowScope.AltNavBarItem(
     )
     val iconColor by animateColorAsState(
         targetValue = if (selected) MaterialTheme.colorScheme.primary
-        else MaterialTheme.colorScheme.onSurface,
+        else MaterialTheme.colorScheme.onBackground,
         label = "iconColor",
     )
 
@@ -152,7 +150,6 @@ fun RowScope.AltNavBarItem(
         horizontalArrangement = Arrangement.Center,
     ) {
         Column(
-            modifier = modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -174,7 +171,7 @@ fun RowScope.AltNavBarItem(
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = iconColor,
                 )
             }
         }
@@ -190,12 +187,12 @@ fun RowScope.NavBarItem(
     onClick: () -> Unit = {},
 ) {
     val background by animateColorAsState(
-        targetValue = if (selected) MaterialTheme.colorScheme.surfaceColorAtElevation(12.dp)
+        targetValue = if (selected) MaterialTheme.colorScheme.surfaceContainer
         else Color.Transparent, label = "backgroundColor"
     )
     val iconColor by animateColorAsState(
         targetValue = if (selected) MaterialTheme.colorScheme.primary
-        else MaterialTheme.colorScheme.onSurface,
+        else MaterialTheme.colorScheme.onBackground,
         label = "iconColor",
     )
 
@@ -228,7 +225,7 @@ fun RowScope.NavBarItem(
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.primary,
+                color = iconColor,
             )
         }
     }
