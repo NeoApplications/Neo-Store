@@ -358,7 +358,14 @@
     <string name="proxy_url">Ссылка</string>
     <string name="repo_qr_code">QR-код репозитория</string>
     <string name="download_manager">Системный загрузчик</string>
-    <string name="install_packages_permission_message">Начиная с Android 8, приложениям требуется это разрешение, чтобы иметь возможность устанавливать пакеты.</string>
+    <string name="install_packages_permission_message">Начиная с Android 8, приложениям требуется это разрешение, чтобы устанавливать пакеты приложений.</string>
     <string name="install_packages_permission_title">Разрешение на установку пакетов</string>
     <string name="download_manager_summary">Использовать системный менеджер загрузок для стабильной загрузки приложений. Не работает с TOR или пользовательским прокси, т.к. использует настройки системы.</string>
+    <string name="am_installer">Установщик через Менеджер приложений</string>
+    <string name="light_medium_contrast">Светлая (средняя контрастность)</string>
+    <string name="light_high_contrast">Светлая (высокая контрастность)</string>
+    <string name="dark_medium_contrast">Тёмная (средняя контрастность)</string>
+    <string name="dark_high_contrast">Тёмная (высокая контрастность)</string>
+    <string name="black_medium_contrast">Чёрная (средняя контрастность)</string>
+    <string name="black_high_contrast">Чёрная (высокая контрастность)</string>
 </resources>
