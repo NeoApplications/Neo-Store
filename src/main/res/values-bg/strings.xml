@@ -353,4 +353,15 @@
     <string name="enabled">Активирано</string>
     <string name="disabled">Деактивирано</string>
     <string name="repo_qr_code">QR код на хранилището</string>
+    <string name="am_installer">Инсталатор мендиджър приложениея</string>
+    <string name="light_medium_contrast">Светла (среден контраст)</string>
+    <string name="download_manager_summary">Използвайте системния мениджър за изтегляне, за да изтеглите приложенията по-надеждно. Тази опция не поддържа TOR или персонализирано прокси, тя използва системните настройки.</string>
+    <string name="light_high_contrast">Светла (висок контраст)</string>
+    <string name="dark_high_contrast">Тъмна (висок контраст)</string>
+    <string name="dark_medium_contrast">Тъмна (среден контраст)</string>
+    <string name="black_medium_contrast">Черна (среден контраст)</string>
+    <string name="black_high_contrast">Черна (висок контраст)</string>
+    <string name="download_manager">Системен мениджър за изтегляне</string>
+    <string name="install_packages_permission_title">Разрешение за инсталиране на пакети</string>
+    <string name="install_packages_permission_message">Стартирането на приложения за Android 8 изисква това разрешение, за да можете да инсталирате пакети.</string>
 </resources>
