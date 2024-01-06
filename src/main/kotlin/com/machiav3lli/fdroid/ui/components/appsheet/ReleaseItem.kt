@@ -22,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -67,19 +66,19 @@ fun ReleaseItem(
     val isSuggested = releaseState == RELEASE_STATE_SUGGESTED
     val container by animateColorAsState(
         targetValue = if (isSuggested or isInstalled)
-            MaterialTheme.colorScheme.surfaceColorAtElevation(48.dp)
-        else MaterialTheme.colorScheme.surfaceVariant, label = "containerColor"
+            MaterialTheme.colorScheme.surfaceContainerHighest
+        else MaterialTheme.colorScheme.surfaceContainerLowest, label = "containerColor"
     )
     val border by animateColorAsState(
         targetValue = if (isSuggested or isInstalled)
-            MaterialTheme.colorScheme.primary
+            MaterialTheme.colorScheme.surfaceContainerHighest
         else Color.Transparent, label = "borderColor"
     )
 
     ListItem(
         modifier = modifier
             .fillMaxWidth()
-            .border(2.dp, border, MaterialTheme.shapes.large)
+            .border(1.dp, border, MaterialTheme.shapes.large)
             .clip(MaterialTheme.shapes.large),
         colors = ListItemDefaults.colors(
             containerColor = container,
