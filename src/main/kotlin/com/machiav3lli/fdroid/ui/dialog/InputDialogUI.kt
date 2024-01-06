@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -78,7 +77,7 @@ fun IntInputPrefDialogUI(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -90,16 +89,19 @@ fun IntInputPrefDialogUI(
             Text(
                 text = "${nnRange.first}-${nnRange.last}",
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
             )
             TextField(
                 modifier = Modifier
+                    .padding(vertical = 8.dp)
                     .fillMaxWidth()
                     .focusRequester(textFieldFocusRequester),
                 value = if (savedValue != -1) savedValue.toString()
                 else "",
                 colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                 ),
@@ -123,7 +125,9 @@ fun IntInputPrefDialogUI(
             )
 
             Row(
-                Modifier.fillMaxWidth()
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
             ) {
                 DialogNegativeButton(
                     onClick = { openDialogCustom.value = false }
@@ -166,7 +170,7 @@ fun StringInputPrefDialogUI(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -176,10 +180,13 @@ fun StringInputPrefDialogUI(
             )
             TextField(
                 modifier = Modifier
+                    .padding(vertical = 8.dp)
                     .fillMaxWidth()
                     .focusRequester(textFieldFocusRequester),
                 value = savedValue,
                 colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                 ),
@@ -194,7 +201,9 @@ fun StringInputPrefDialogUI(
             )
 
             Row(
-                Modifier.fillMaxWidth()
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
             ) {
                 DialogNegativeButton(
                     onClick = { openDialogCustom.value = false }
@@ -240,19 +249,20 @@ fun StringInputDialogUI(
     SideEffect { mainFocusRequester.requestFocus() }
 
     Card(
-        shape = RoundedCornerShape(8.dp),
+        shape = MaterialTheme.shapes.large,
         modifier = Modifier.padding(8.dp),
         elevation = CardDefaults.elevatedCardElevation(8.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(text = titleText, style = MaterialTheme.typography.titleLarge)
             Column(
                 modifier = Modifier
+                    .padding(vertical = 8.dp)
                     .verticalScroll(scrollState)
                     .fillMaxWidth()
                     .weight(1f, false)
@@ -263,13 +273,13 @@ fun StringInputDialogUI(
                         .focusRequester(mainFocusRequester),
                     value = savedValue,
                     colors = TextFieldDefaults.colors(
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
-                        focusedTextColor = MaterialTheme.colorScheme.onBackground,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
                     ),
                     shape = MaterialTheme.shapes.large,
-                    singleLine = true,
+                    singleLine = false,
                     onValueChange = {
                         isEdited = true
                         if (it.text.contains(RE_finishChars)) submit()
@@ -295,7 +305,9 @@ fun StringInputDialogUI(
             }
 
             Row(
-                Modifier.fillMaxWidth()
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
             ) {
                 DialogNegativeButton(textId = R.string.cancel) {
                     openDialogCustom.value = false

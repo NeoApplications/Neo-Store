@@ -33,6 +33,7 @@ import com.machiav3lli.fdroid.ui.components.DialogNegativeButton
 import com.machiav3lli.fdroid.ui.components.DialogPositiveButton
 import com.machiav3lli.fdroid.ui.components.FlatActionButton
 import com.machiav3lli.fdroid.ui.components.SingleSelectionListItem
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.Utils.getLocaleOfCode
 
@@ -53,7 +54,7 @@ fun LanguagePrefDialogUI(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -65,8 +66,12 @@ fun LanguagePrefDialogUI(
                 modifier = Modifier
                     .padding(top = 16.dp, bottom = 8.dp)
                     .weight(1f, false)
+                    .blockBorder()
             ) {
-                items(items = entryPairs) {
+                items(
+                    items = entryPairs,
+                    key = { it.first },
+                ) {
                     val isSelected = rememberSaveable(selected) {
                         mutableStateOf(selected == it.first)
                     }
@@ -80,7 +85,9 @@ fun LanguagePrefDialogUI(
             }
 
             Row(
-                Modifier.fillMaxWidth()
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
             ) {
                 DialogNegativeButton(
                     onClick = { openDialogCustom.value = false }
@@ -115,7 +122,7 @@ fun EnumSelectionPrefDialogUI(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -125,10 +132,14 @@ fun EnumSelectionPrefDialogUI(
             )
             LazyColumn(
                 modifier = Modifier
-                    .padding(top = 16.dp, bottom = 8.dp)
+                    .padding(vertical = 8.dp)
                     .weight(1f, false)
+                    .blockBorder()
             ) {
-                items(items = entryPairs) {
+                items(
+                    items = entryPairs,
+                    key = { it.key.toString() },
+                ) {
                     val isSelected = rememberSaveable(selected) {
                         mutableStateOf(selected == it.key)
                     }
@@ -142,7 +153,9 @@ fun EnumSelectionPrefDialogUI(
             }
 
             Row(
-                Modifier.fillMaxWidth()
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
             ) {
                 DialogNegativeButton(
                     onClick = { openDialogCustom.value = false }
@@ -176,7 +189,7 @@ fun <T> ActionSelectionDialogUI(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -186,22 +199,28 @@ fun <T> ActionSelectionDialogUI(
             )
             LazyColumn(
                 modifier = Modifier
-                    .padding(top = 16.dp, bottom = 8.dp)
-                    .fillMaxWidth(),
+                    .padding(vertical = 8.dp)
+                    .fillMaxWidth()
+                    .blockBorder(),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                items(items = options.keys.toList()) {
+                items(
+                    items = options.entries.toList(),
+                    key = { it.key.toString() },
+                ) {
                     ActionButton(
                         modifier = Modifier.fillMaxWidth(),
-                        text = options[it] ?: stringResource(id = R.string.unknown),
+                        text = it.value ?: stringResource(id = R.string.unknown),
                     ) {
-                        onAction(it)
+                        onAction(it.key)
                     }
                 }
             }
 
             Row(
-                Modifier.fillMaxWidth()
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
             ) {
                 FlatActionButton(
                     modifier = Modifier.weight(1f),
