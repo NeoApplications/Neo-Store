@@ -1,0 +1,5 @@
+Correção: Exibição da notificação de atualizações mesmo quando desativada
+Adicionado: Threema, Stable Calyx OS e Session aos repositórios predefinidos
+Correção(tentativa): Instalador em segundo plano
+Adicionado: Opções de retenção de cache de apks e imagens de lançamento
+Atualização da tradução

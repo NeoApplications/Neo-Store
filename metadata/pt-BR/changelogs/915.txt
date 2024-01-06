@@ -1,0 +1,7 @@
+Atualização: Renovar a interface do usuário do AppSheet
+Atualização: Migrar a navegação totalmente para o Compose
+Atualização: Migrar as preferências para o Compose
+Atualização: Permitir a definição de um número maior para o reciclador de aplicativos atualizados/novos e o intervalo de sincronização
+Adicionado: Links úteis nas preferências
+Correção: visibilidade dos ActionButtons
+Correção: Mostrar a descrição do Repo antes da primeira sincronização

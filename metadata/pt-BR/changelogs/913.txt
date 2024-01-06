@@ -1,0 +1,7 @@
+Adicionado: Categoria Favoritos
+Adicionado: Opção para definir o intervalo de sincronização
+Adicionado: Suporte à importação automática de fdroidrepos: endereços de repositório da área de transferência
+Correção: rolagem aninhada do AppSheet
+Correção: Contagem de aplicativos do repositório
+Correção: permitir a retenção do apk até ser "consumido"
+Atualização: tornar selecionável o texto da descrição do aplicativo/do registro de alterações
