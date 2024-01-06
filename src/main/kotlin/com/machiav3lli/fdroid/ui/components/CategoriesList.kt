@@ -35,7 +35,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SelectableChipColors
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -100,7 +99,6 @@ fun CategoriesList(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryItem(
     modifier: Modifier = Modifier,
@@ -110,13 +108,12 @@ fun CategoryItem(
     selected: Boolean = true,
     colors: SelectableChipColors = FilterChipDefaults.filterChipColors(
         containerColor = Color.Transparent,
-        selectedContainerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(48.dp),
+        selectedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
         selectedLeadingIconColor = MaterialTheme.colorScheme.primary,
         selectedLabelColor = MaterialTheme.colorScheme.primary,
         iconColor = MaterialTheme.colorScheme.onSurface,
         labelColor = MaterialTheme.colorScheme.onSurface,
     ),
-    alwaysShowIcon: Boolean = false,
     onClick: () -> Unit,
 ) {
     FilterChip(
@@ -128,12 +125,16 @@ fun CategoryItem(
         selected = selected,
         label = {
             Text(
+                modifier = Modifier
+                    .addIf(!expanded) {
+                        padding(vertical = 12.dp)
+                    },
                 text = label,
                 maxLines = 1,
             )
         },
         leadingIcon = {
-            AnimatedVisibility(visible = selected || alwaysShowIcon || !expanded) {
+            AnimatedVisibility(visible = selected || !expanded) {
                 Icon(
                     modifier = Modifier
                         .addIf(!expanded) {
