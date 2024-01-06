@@ -2,7 +2,6 @@ package com.machiav3lli.fdroid.pages
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,7 +33,6 @@ import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.ui.compose.RepositoriesRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.QrCode
-import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.launch
 
@@ -68,6 +66,7 @@ fun PrefsReposPage(viewModel: PrefsVM) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = Color.Transparent,
+        contentColor = MaterialTheme.colorScheme.onBackground,
         floatingActionButton = {
             if (Intent(INTENT_ACTION_BINARY_EYE).resolveActivity(mActivity.packageManager) != null) {
                 Row(
@@ -123,9 +122,6 @@ fun PrefsReposPage(viewModel: PrefsVM) {
         }
     ) { _ ->
         RepositoriesRecycler(
-            modifier = Modifier
-                .blockBorder()
-                .background(MaterialTheme.colorScheme.background),
             repositoriesList = repos,
             onClick = {
                 viewModel.viewModelScope.launch {
@@ -138,7 +134,7 @@ fun PrefsReposPage(viewModel: PrefsVM) {
         if (sheetData != null) {
             ModalBottomSheet(
                 sheetState = sheetState,
-                containerColor = MaterialTheme.colorScheme.background,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                 scrimColor = Color.Transparent,
                 dragHandle = null,
                 onDismissRequest = {

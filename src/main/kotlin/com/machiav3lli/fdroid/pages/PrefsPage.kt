@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.pages
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.machiav3lli.fdroid.ui.components.TopBar
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
 import com.machiav3lli.fdroid.ui.navigation.SlidePager
@@ -44,7 +46,10 @@ fun PrefsPage(navController: NavHostController, pageIndex: Int) {
         }
     ) { paddingValues ->
         SlidePager(
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier
+                .padding(paddingValues)
+                .blockBorder()
+                .fillMaxSize(),
             pagerState = pagerState,
             pageItems = pages,
             navController = navController
