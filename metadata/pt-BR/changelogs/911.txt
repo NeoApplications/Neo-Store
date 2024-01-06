@@ -1,0 +1,9 @@
+- Adicionado: Tema dinâmico do sistema (também conhecido como Material You)
+- Adicionado: 7 novos repositórios de predefinições
+- Adicionado: Rótulo de arquitetura em versões para arquitetura específica
+- Removido: Repositório UnifiedPush (morto)
+- Correção: Notificação irritante de 0 atualizações
+- Correção: Ocultar o link do site do autor quando não estiver disponível
+- Correção: Análise do conteúdo da área de transferência para o URI do repositório
+- Correção: Links nas configurações
+- Correção: Não mostra a ação de atualização

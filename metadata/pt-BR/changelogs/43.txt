@@ -1,0 +1,4 @@
+- Correção: ícone de espaço reservado para captura de tela
+- Correção: Falha leve ao iniciar o AppDetails
+- Correção: Executar apenas uma instância do instalador root
+- Correção: Instalador root
