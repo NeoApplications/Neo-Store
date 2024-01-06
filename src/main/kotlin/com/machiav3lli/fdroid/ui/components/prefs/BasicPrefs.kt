@@ -5,14 +5,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -74,7 +72,7 @@ fun BasePreference(
                 alpha(0.3f)
             },
         colors = ListItemDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation((rank * 24).dp)
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
         ),
         leadingContent = startWidget,
         headlineContent = {
@@ -92,7 +90,7 @@ fun BasePreference(
                 if (summaryId != -1 || summary != null) {
                     Text(
                         text = summary ?: stringResource(id = summaryId),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 }
@@ -146,8 +144,6 @@ fun SwitchPreference(
         },
         endWidget = {
             Switch(
-                modifier = Modifier
-                    .height(24.dp),
                 checked = checked,
                 onCheckedChange = {
                     onCheckedChange(it)
