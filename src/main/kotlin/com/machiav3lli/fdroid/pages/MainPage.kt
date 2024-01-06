@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.pages
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,6 +35,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MagnifyingGlass
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
 import com.machiav3lli.fdroid.ui.navigation.SlidePager
@@ -111,7 +113,10 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
         }
     ) { paddingValues ->
         SlidePager(
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier
+                .padding(paddingValues)
+                .blockBorder()
+                .fillMaxSize(),
             pagerState = pagerState,
             pageItems = pages,
             navController = navController
@@ -120,7 +125,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
         if (showSearchSheet) {
             ModalBottomSheet(
                 sheetState = searchSheetState,
-                containerColor = MaterialTheme.colorScheme.background,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                 scrimColor = Color.Transparent,
                 dragHandle = null,
                 onDismissRequest = {

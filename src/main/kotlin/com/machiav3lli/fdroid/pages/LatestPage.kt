@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.pages
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,7 +38,6 @@ import com.machiav3lli.fdroid.ui.compose.ProductsCarousel
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
-import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.compose.utils.vertical
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
@@ -93,10 +91,7 @@ fun LatestPage(viewModel: LatestVM) {
     }
 
     LazyColumn(
-        Modifier
-            .blockBorder()
-            .background(MaterialTheme.colorScheme.background)
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(vertical = 8.dp),
     ) {
         item {
@@ -192,7 +187,7 @@ fun LatestPage(viewModel: LatestVM) {
     if (showSortSheet) {
         ModalBottomSheet(
             sheetState = sortSheetState,
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
             scrimColor = Color.Transparent,
             dragHandle = null,
             onDismissRequest = {

@@ -49,7 +49,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
-import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.ExploreVM
@@ -137,11 +136,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                 showSortSheet = true
             }
         }
-        Row(
-            modifier = Modifier
-                .blockBorder()
-                .background(MaterialTheme.colorScheme.background),
-        ) {
+        Row {
             val favString = stringResource(id = R.string.favorite_applications)
             if (Preferences[Preferences.Key.ShowCategoriesBar]) CategoriesList(
                 items = listOf(
@@ -166,6 +161,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                     listState.animateScrollToItem(0)
                 }
             }
+
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -211,7 +207,7 @@ fun ExplorePage(viewModel: ExploreVM) {
     if (showSortSheet) {
         ModalBottomSheet(
             sheetState = sortSheetState,
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
             scrimColor = Color.Transparent,
             dragHandle = null,
             onDismissRequest = {

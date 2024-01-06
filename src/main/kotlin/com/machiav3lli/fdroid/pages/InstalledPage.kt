@@ -59,7 +59,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUp
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
-import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.InstalledVM
@@ -118,12 +117,11 @@ fun InstalledPage(viewModel: InstalledVM) {
         }
     }
 
-    Column(
-        modifier = Modifier
-            .blockBorder()
-            .fillMaxSize(),
-    ) {
-        TabRow(selectedTabIndex = pagerState.currentPage,
+    Column {
+        TabRow(
+            containerColor = Color.Transparent,
+            selectedTabIndex = pagerState.currentPage,
+            divider = {},
             indicator = { tabPositions ->
                 TabIndicator(tabPositions[pagerState.currentPage])
             }
@@ -158,8 +156,8 @@ fun InstalledPage(viewModel: InstalledVM) {
                         if (updates.orEmpty().isNotEmpty()) {
                             item {
                                 val cardColor by animateColorAsState(
-                                    targetValue = if (updatesVisible) MaterialTheme.colorScheme.surfaceVariant
-                                    else MaterialTheme.colorScheme.background,
+                                    targetValue = if (updatesVisible) MaterialTheme.colorScheme.surfaceContainerHighest
+                                    else Color.Transparent,
                                     label = "cardColor"
                                 )
 
@@ -316,7 +314,7 @@ fun InstalledPage(viewModel: InstalledVM) {
         if (showSortSheet) {
             ModalBottomSheet(
                 sheetState = sortSheetState,
-                containerColor = MaterialTheme.colorScheme.background,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                 scrimColor = Color.Transparent,
                 dragHandle = null,
                 onDismissRequest = {
