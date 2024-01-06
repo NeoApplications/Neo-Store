@@ -103,6 +103,20 @@ fun SearchSheet(viewModel: SearchVM) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                WideSearchField(
+                    modifier = Modifier.weight(1f),
+                    query = query,
+                    onClose = {
+                        neoActivity.setSearchQuery("")
+                        viewModel.setSearchQuery("")
+                    },
+                    onQueryChanged = { newQuery ->
+                        if (newQuery != query) {
+                            neoActivity.setSearchQuery(newQuery)
+                            viewModel.setSearchQuery(newQuery)
+                        }
+                    }
+                )
                 FloatingActionButton(
                     shape = MaterialTheme.shapes.extraLarge,
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -117,19 +131,6 @@ fun SearchSheet(viewModel: SearchVM) {
                         contentDescription = stringResource(id = R.string.sort_filter)
                     )
                 }
-                WideSearchField(
-                    query = query,
-                    onClose = {
-                        neoActivity.setSearchQuery("")
-                        viewModel.setSearchQuery("")
-                    },
-                    onQueryChanged = { newQuery ->
-                        if (newQuery != query) {
-                            neoActivity.setSearchQuery(newQuery)
-                            viewModel.setSearchQuery(newQuery)
-                        }
-                    }
-                )
             }
         },
     ) { paddingValues ->
@@ -182,7 +183,7 @@ fun SearchSheet(viewModel: SearchVM) {
     if (showSortSheet) {
         ModalBottomSheet(
             sheetState = sortSheetState,
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
             scrimColor = Color.Transparent,
             dragHandle = null,
             onDismissRequest = {
