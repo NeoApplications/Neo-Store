@@ -357,4 +357,13 @@
     <string name="dynamic_black">Preto com cores dinâmicas</string>
     <string name="repo_qr_code">QR-Code do repositório</string>
     <string name="alt_new_apps">Usar layout alternativo para Novos Apps</string>
+    <string name="am_installer">Instalador Gerenciador de App</string>
+    <string name="light_medium_contrast">Claro (contraste médio)</string>
+    <string name="dark_medium_contrast">Escuro (médio contraste)</string>
+    <string name="black_high_contrast">Preto (alto contraste)</string>
+    <string name="dark_high_contrast">Escuro (alto contraste)</string>
+    <string name="light_high_contrast">Claro (alto contraste)</string>
+    <string name="black_medium_contrast">Preto (contraste médio)</string>
+    <string name="download_manager_summary">Use o gerenciador de downloads do sistema para baixar os aplicativos de forma mais confiável. Essa opção não é compatível com o TOR nem com o proxy personalizado, ela usa as configurações do sistema.</string>
+    <string name="install_packages_permission_message">A partir do Android 8, os aplicativos exigem essa permissão para poder instalar pacotes.</string>
 </resources>
