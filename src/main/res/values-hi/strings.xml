@@ -357,4 +357,11 @@
     <string name="install_packages_permission_message">एंड्रॉइड 8 से ऐप्स के लिए पैकेज इंस्टॉल करने में सक्षम होने के लिए इस अनुमति की आवश्यकता होती है।</string>
     <string name="install_packages_permission_title">पैकेज इंस्टॉल करने की अनुमति</string>
     <string name="download_manager_summary">ऐप्स को अधिक विश्वसनीय रूप से डाउनलोड करने के लिए सिस्टम के डाउनलोड मैनेजर का उपयोग करें। यह विकल्प TOR या कस्टम प्रॉक्सी का समर्थन नहीं करता है, यह सिस्टम सेटिंग्स का उपयोग करता है।</string>
+    <string name="am_installer">ऐप मैनेजर इंस्टॉलर</string>
+    <string name="light_medium_contrast">प्रकाश (मध्यम कंट्रास्ट)</string>
+    <string name="light_high_contrast">प्रकाश (उच्च कंट्रास्ट)</string>
+    <string name="dark_medium_contrast">गहरा (मध्यम कंट्रास्ट)</string>
+    <string name="dark_high_contrast">गहरा (उच्च कंट्रास्ट)</string>
+    <string name="black_medium_contrast">काला (मध्यम कंट्रास्ट)</string>
+    <string name="black_high_contrast">काला (उच्च कंट्रास्ट)</string>
 </resources>
