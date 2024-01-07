@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,7 +28,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
@@ -42,6 +40,7 @@ import com.machiav3lli.fdroid.index.RepositoryUpdater.db
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ChipsSwitch
 import com.machiav3lli.fdroid.ui.components.SelectChip
+import com.machiav3lli.fdroid.ui.components.privacy.ExpandableItemsBlock
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowUUpLeft
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
@@ -127,6 +126,8 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
     }
 
     Scaffold(
+        containerColor = Color.Transparent,
+        contentColor = MaterialTheme.colorScheme.onBackground,
         bottomBar = {
             Column(
                 modifier = Modifier.padding(horizontal = 8.dp)
@@ -169,8 +170,6 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                 }
             }
         },
-        containerColor = Color.Transparent,
-        contentColor = MaterialTheme.colorScheme.onBackground,
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
@@ -186,159 +185,145 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
             contentPadding = PaddingValues(8.dp)
         ) {
             if (sortKey != Preferences.Key.SortOrderLatest) item {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.sorting_order),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-            if (sortKey != Preferences.Key.SortOrderLatest) item {
-                FlowRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ExpandableItemsBlock(
+                    heading = stringResource(id = R.string.sorting_order),
+                    preExpanded = true,
                 ) {
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        sortKey.default.value.values.forEach {
+                            SelectChip(
+                                text = stringResource(id = it.order.titleResId),
+                                checked = it == sortOption,
+                                alwaysShowIcon = false,
+                            ) {
+                                sortOption = it
+                            }
+                        }
+                    }
 
-                    sortKey.default.value.values.forEach {
-                        SelectChip(
-                            text = stringResource(id = it.order.titleResId),
-                            checked = it == sortOption
-                        ) {
-                            sortOption = it
+                    ChipsSwitch(
+                        firstTextId = R.string.sort_ascending,
+                        firstIcon = Phosphor.SortAscending,
+                        secondTextId = R.string.sort_descending,
+                        secondIcon = Phosphor.SortDescending,
+                        firstSelected = sortAscending,
+                        onCheckedChange = { checked ->
+                            sortAscending = checked
                         }
-                    }
-                }
-
-                ChipsSwitch(
-                    firstTextId = R.string.sort_ascending,
-                    firstIcon = Phosphor.SortAscending,
-                    secondTextId = R.string.sort_descending,
-                    secondIcon = Phosphor.SortDescending,
-                    firstSelected = sortAscending,
-                    onCheckedChange = { checked ->
-                        sortAscending = checked
-                    }
-                )
-            }
-            item {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.repositories),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-            item {
-                FlowRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    activeRepos.sortedBy { it.name }.forEach {
-                        var checked by remember {
-                            mutableStateOf(
-                                !filteredOutRepos.contains(it.id.toString())
-                            )
-                        }
-
-                        SelectChip(
-                            text = it.name,
-                            checked = checked,
-                        ) {
-                            checked = !checked
-                            if (checked)
-                                filteredOutRepos.remove(it.id.toString())
-                            else
-                                filteredOutRepos.add(it.id.toString())
-                        }
-                    }
-                }
-            }
-            if (categoriesFilterKey != Preferences.Key.CategoriesFilterExplore) item {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.categories),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-            if (categoriesFilterKey != Preferences.Key.CategoriesFilterExplore) item {
-                FlowRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    (listOf(FILTER_CATEGORY_ALL) + categories.sorted()).forEach {
-                        SelectChip(
-                            text = it,
-                            checked = it == filterCategory
-                        ) {
-                            filterCategory = it
-                        }
-                    }
+                    )
                 }
             }
             item {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.allowed_anti_features),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-            item {
-                FlowRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ExpandableItemsBlock(
+                    heading = stringResource(id = R.string.repositories),
+                    preExpanded = filteredOutRepos.isNotEmpty(),
                 ) {
-                    AntiFeature.values().sortedBy { context.getString(it.titleResId) }
-                        .forEach {
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        activeRepos.sortedBy { it.name }.forEach {
                             var checked by remember {
                                 mutableStateOf(
-                                    !filteredAntifeatures.contains(it.key)
+                                    !filteredOutRepos.contains(it.id.toString())
                                 )
                             }
 
                             SelectChip(
-                                text = stringResource(id = it.titleResId),
+                                text = it.name,
+                                checked = checked,
+                            ) {
+                                checked = !checked
+                                if (checked)
+                                    filteredOutRepos.remove(it.id.toString())
+                                else
+                                    filteredOutRepos.add(it.id.toString())
+                            }
+                        }
+                    }
+                }
+            }
+            if (categoriesFilterKey != Preferences.Key.CategoriesFilterExplore) item {
+                ExpandableItemsBlock(
+                    heading = stringResource(id = R.string.categories),
+                    preExpanded = filterCategory != FILTER_CATEGORY_ALL,
+                ) {
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        (listOf(FILTER_CATEGORY_ALL) + categories.sorted()).forEach {
+                            SelectChip(
+                                text = it,
+                                checked = it == filterCategory,
+                                alwaysShowIcon = false,
+                            ) {
+                                filterCategory = it
+                            }
+                        }
+                    }
+                }
+            }
+            item {
+                ExpandableItemsBlock(
+                    heading = stringResource(id = R.string.allowed_anti_features),
+                    preExpanded = filteredAntifeatures.isNotEmpty(),
+                ) {
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        AntiFeature.entries.sortedBy { context.getString(it.titleResId) }
+                            .forEach {
+                                var checked by remember {
+                                    mutableStateOf(
+                                        !filteredAntifeatures.contains(it.key)
+                                    )
+                                }
+
+                                SelectChip(
+                                    text = stringResource(id = it.titleResId),
+                                    checked = checked
+                                ) {
+                                    checked = !checked
+                                    if (checked)
+                                        filteredAntifeatures.remove(it.key)
+                                    else
+                                        filteredAntifeatures.add(it.key)
+                                }
+                            }
+                    }
+                }
+            }
+            item {
+                ExpandableItemsBlock(
+                    heading = stringResource(id = R.string.allowed_licenses),
+                    preExpanded = filteredLicenses.isNotEmpty(),
+                ) {
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        licenses.sorted().forEach {
+                            var checked by remember {
+                                mutableStateOf(
+                                    !filteredLicenses.contains(it)
+                                )
+                            }
+
+                            SelectChip(
+                                text = it,
                                 checked = checked
                             ) {
                                 checked = !checked
                                 if (checked)
-                                    filteredAntifeatures.remove(it.key)
+                                    filteredLicenses.remove(it)
                                 else
-                                    filteredAntifeatures.add(it.key)
+                                    filteredLicenses.add(it)
                             }
-                        }
-                }
-            }
-            item {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.allowed_licenses),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-            item {
-                FlowRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    licenses.sorted().forEach {
-                        var checked by remember {
-                            mutableStateOf(
-                                !filteredLicenses.contains(it)
-                            )
-                        }
-
-                        SelectChip(
-                            text = it,
-                            checked = checked
-                        ) {
-                            checked = !checked
-                            if (checked)
-                                filteredLicenses.remove(it)
-                            else
-                                filteredLicenses.add(it)
                         }
                     }
                 }
