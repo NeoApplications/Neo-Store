@@ -2,7 +2,6 @@ package com.machiav3lli.fdroid.ui.components.privacy
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -14,7 +13,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,12 +50,7 @@ fun MeterIconsBar(
     ) {
         Row(
             modifier = Modifier
-                .weight(1f)
-                .background(
-                    MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
-                    MaterialTheme.shapes.medium,
-                )
-                .padding(8.dp),
+                .weight(1f),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -116,7 +109,7 @@ fun MeterIcon(
             Surface(
                 modifier = Modifier
                     .weight(1f)
-                    .height(24.dp),
+                    .height(28.dp),
                 color = if (isSelected) color else color.copy(alpha = 0.3f),
                 shape = RoundedCornerShape(
                     topStart = if (index == 0) 8.dp else if (isSelected) 2.dp else 0.dp,
@@ -126,7 +119,8 @@ fun MeterIcon(
                 ),
                 border = BorderStroke(
                     if (isSelected) 2.dp else 0.dp,
-                    if (isSelected) MaterialTheme.colorScheme.onSurface else Color.Transparent,
+                    if (isSelected) MaterialTheme.colorScheme.onBackground
+                    else Color.Transparent,
                 ),
                 content = {
                     if (index == 2 && selected == null) Icon(

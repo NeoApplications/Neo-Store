@@ -40,8 +40,8 @@ import com.machiav3lli.fdroid.entity.PrivacyNote
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.SourceInfo
 import com.machiav3lli.fdroid.entity.TrackersGroup.Companion.getTrackersGroup
+import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
 import com.machiav3lli.fdroid.ui.components.privacy.PrivacyCard
-import com.machiav3lli.fdroid.ui.components.privacy.PrivacyItemBlock
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
@@ -100,7 +100,7 @@ fun PrivacyPanel(
                 ) {
                     if (list.isNotEmpty()) {
                         list.forEach { (group, ps) ->
-                            PrivacyItemBlock(
+                            ExpandableItemsBlock(
                                 heading = stringResource(id = group.labelId),
                                 icon = group.icon,
                             ) {
@@ -157,7 +157,7 @@ fun PrivacyPanel(
                 ) {
                     if (list.isNotEmpty()) {
                         list.forEach { (group, ps) ->
-                            PrivacyItemBlock(
+                            ExpandableItemsBlock(
                                 heading = stringResource(id = group.labelId),
                                 icon = group.icon,
                             ) {
@@ -285,7 +285,7 @@ fun PrivacyPanel(
                             .associateWith { group -> trackers.filter { group in it.categories } }
                             .forEach { (group, groupTrackers) ->
                                 val groupItem = group.getTrackersGroup()
-                                PrivacyItemBlock(
+                                ExpandableItemsBlock(
                                     heading = stringResource(groupItem.labelId),
                                     icon = groupItem.icon,
                                 ) {
@@ -339,7 +339,7 @@ fun PrivacyPanel(
                 preExpanded = true,
             ) {
                 (if (privacyNote.sourceType.open) SourceInfo.Open else SourceInfo.Proprietary).let {
-                    PrivacyItemBlock(
+                    ExpandableItemsBlock(
                         heading = stringResource(id = it.labelId),
                         icon = it.icon,
                     ) {
@@ -351,7 +351,7 @@ fun PrivacyPanel(
                     }
                 }
                 if (privacyNote.sourceType.free) SourceInfo.Copyleft.let {
-                    PrivacyItemBlock(
+                    ExpandableItemsBlock(
                         heading = stringResource(id = it.labelId),
                         icon = it.icon,
                     ) {
@@ -363,7 +363,7 @@ fun PrivacyPanel(
                     }
                 }
                 else SourceInfo.Copyright.let { si ->
-                    PrivacyItemBlock(
+                    ExpandableItemsBlock(
                         heading = stringResource(id = si.labelId),
                         icon = si.icon,
                     ) {
@@ -386,7 +386,7 @@ fun PrivacyPanel(
                     }
                 }
                 if (!privacyNote.sourceType.independent) SourceInfo.Dependency.let { si ->
-                    PrivacyItemBlock(
+                    ExpandableItemsBlock(
                         heading = stringResource(id = si.labelId),
                         icon = si.icon,
                     ) {

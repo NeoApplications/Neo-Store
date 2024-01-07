@@ -71,6 +71,8 @@ import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.network.createIconUri
 import com.machiav3lli.fdroid.service.ActionReceiver
 import com.machiav3lli.fdroid.service.worker.DownloadWorker
+import com.machiav3lli.fdroid.ui.components.BlockCard
+import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
 import com.machiav3lli.fdroid.ui.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.components.SwitchPreference
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoChips
@@ -83,8 +85,6 @@ import com.machiav3lli.fdroid.ui.components.appsheet.ReleaseItem
 import com.machiav3lli.fdroid.ui.components.appsheet.TopBarHeader
 import com.machiav3lli.fdroid.ui.components.appsheet.WarningCard
 import com.machiav3lli.fdroid.ui.components.privacy.MeterIconsBar
-import com.machiav3lli.fdroid.ui.components.privacy.PrivacyCard
-import com.machiav3lli.fdroid.ui.components.privacy.PrivacyItemBlock
 import com.machiav3lli.fdroid.ui.components.toScreenshotItem
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Icon
@@ -335,6 +335,8 @@ fun AppSheet(
 
     suggestedProductRepo?.let { (product, repo) ->
         Scaffold(
+            containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onBackground,
             topBar = {
                 Column(
                     modifier = Modifier.padding(bottom = 8.dp),
@@ -389,8 +391,6 @@ fun AppSheet(
                     }
                 }
             },
-            containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.onBackground,
             snackbarHost = { SnackbarHost(snackbarHostState) },
         ) { paddingValues ->
             HorizontalPager(
@@ -485,11 +485,9 @@ fun AppSheet(
                         }
                         val links = product.generateLinks(context)
                         item {
-                            if ((links + product.donates + product.whatsNew + authorProducts).isNotEmpty()) PrivacyCard(
-                                preExpanded = true,
-                            ) {
+                            if ((links + product.donates + product.whatsNew + authorProducts).isNotEmpty()) BlockCard {
                                 if (links.isNotEmpty()) {
-                                    PrivacyItemBlock(heading = stringResource(id = R.string.links)) {
+                                    ExpandableItemsBlock(heading = stringResource(id = R.string.links)) {
                                         links.forEach { item ->
                                             LinkItem(
                                                 linkType = item,
@@ -504,7 +502,7 @@ fun AppSheet(
                                     }
                                 }
                                 if (product.donates.isNotEmpty()) {
-                                    PrivacyItemBlock(heading = stringResource(id = R.string.donate)) {
+                                    ExpandableItemsBlock(heading = stringResource(id = R.string.donate)) {
                                         product.donates.forEach { item ->
                                             LinkItem(
                                                 linkType = DonateType(item, context),
@@ -519,7 +517,7 @@ fun AppSheet(
                                     }
                                 }
                                 if (!authorProducts.isNullOrEmpty()) {
-                                    PrivacyItemBlock(
+                                    ExpandableItemsBlock(
                                         heading = stringResource(
                                             id = R.string.other_apps_by,
                                             product.author.name
@@ -541,7 +539,7 @@ fun AppSheet(
                                     }
                                 }
                                 if (product.whatsNew.isNotEmpty()) {
-                                    PrivacyItemBlock(
+                                    ExpandableItemsBlock(
                                         heading = stringResource(id = R.string.changes),
                                         preExpanded = true,
                                     ) {
@@ -597,7 +595,7 @@ fun AppSheet(
             if (showScreenshots.value) {
                 ModalBottomSheet(
                     sheetState = screenshotsPageState,
-                    containerColor = Color.Transparent,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                     dragHandle = null,
                     onDismissRequest = {
                         scope.launch { screenshotsPageState.hide() }
