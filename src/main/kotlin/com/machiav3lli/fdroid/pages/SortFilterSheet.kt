@@ -39,8 +39,8 @@ import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.index.RepositoryUpdater.db
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ChipsSwitch
+import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
 import com.machiav3lli.fdroid.ui.components.SelectChip
-import com.machiav3lli.fdroid.ui.components.privacy.ExpandableItemsBlock
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowUUpLeft
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
