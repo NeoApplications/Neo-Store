@@ -37,7 +37,7 @@ fun PermissionItem(
             .clip(MaterialTheme.shapes.large)
             .clickable(onClick = onClick),
         colors = ListItemDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
         ),
         headlineContent = {
             Row(modifier = Modifier.wrapContentHeight()) {
