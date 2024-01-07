@@ -254,19 +254,23 @@ class NeoActivity : AppCompatActivity() {
     private fun handleIntent(intent: Intent?) {
         val data = intent?.data
         val host = data?.host
+        val fingerprintText =
+            data?.getQueryParameter("fingerprint")?.uppercase()?.nullIfEmpty()
+                ?: data?.getQueryParameter("FINGERPRINT")?.uppercase()?.nullIfEmpty()
 
         when (intent?.action) {
             Intent.ACTION_VIEW -> {
-                if (data != null && !intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)) {
+                if (
+                    data != null
+                    && fingerprintText != null
+                    && !intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)
+                ) {
                     intent.putExtra(EXTRA_INTENT_HANDLED, true)
                     val (addressText, fingerprintText) = try {
                         val uri = data.buildUpon()
                             .scheme("https")
                             .path(data.path?.pathCropped)
                             .query(null).fragment(null).build().toString()
-                        val fingerprintText =
-                            data.getQueryParameter("fingerprint")?.uppercase()?.nullIfEmpty()
-                                ?: data.getQueryParameter("FINGERPRINT")?.uppercase()?.nullIfEmpty()
                         Pair(uri, fingerprintText)
                     } catch (e: Exception) {
                         Pair(null, null)
