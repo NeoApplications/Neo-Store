@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -32,6 +31,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -78,7 +78,6 @@ const val DIALOG_USERNAME = 3
 const val DIALOG_PASSWORD = 4
 const val DIALOG_PRODUCTS = 5
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RepoPage(
     repositoryId: Long,
@@ -96,7 +95,7 @@ fun RepoPage(
     val openDeleteDialog = remember { mutableStateOf(false) }
     val openDialog = remember { mutableStateOf(false) }
     val dialogProps = remember {
-        mutableStateOf(DIALOG_NONE)
+        mutableIntStateOf(DIALOG_NONE)
     }
 
     var addressFieldValue by remember(repo) {
@@ -332,6 +331,7 @@ fun RepoPage(
                                 SelectChip(
                                     text = text,
                                     checked = text == addressFieldValue,
+                                    alwaysShowIcon = false,
                                 ) {
                                     addressFieldValue = text
                                     invalidateAddress(addressValidity, addressFieldValue)

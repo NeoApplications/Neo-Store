@@ -25,7 +25,7 @@ fun TitleText(
 fun BlockText(
     modifier: Modifier = Modifier,
     text: String?,
-    color: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    color: Color = MaterialTheme.colorScheme.onSurface,
     monospace: Boolean = false,
 ) = Text(
     text = text.orEmpty(),

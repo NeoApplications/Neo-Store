@@ -1,7 +1,6 @@
 package com.machiav3lli.fdroid.ui.components
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material3.MaterialTheme
@@ -17,14 +16,13 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.google.zxing.qrcode.encoder.ByteMatrix
 import com.google.zxing.qrcode.encoder.Encoder
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun QrCodeImage(
     modifier: Modifier = Modifier,
     content: String,
     contentDescription: String,
-    foregroundColor: Color = MaterialTheme.colorScheme.onBackground,
-    backgroundColor: Color = MaterialTheme.colorScheme.background,
+    foregroundColor: Color = MaterialTheme.colorScheme.onSurface,
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainer,
 ) {
     val qrEncoder = ZxingQrEncoder()
     val bitmapMatrix = remember(content) { qrEncoder.encode(content) }

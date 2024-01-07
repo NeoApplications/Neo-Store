@@ -142,7 +142,7 @@ fun ProductItemContent(
                 style = MaterialTheme.typography.bodySmall,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = if (isExpanded.value) Int.MAX_VALUE else 2,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurface,
             )
         },
     )
@@ -183,7 +183,7 @@ fun ProductCarouselItem(
             .clickable { onUserClick(product) }
             .fillMaxSize(),
         colors = ListItemDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
         ),
         leadingContent = {
             Column(
@@ -228,7 +228,7 @@ fun ProductCarouselItem(
                     style = MaterialTheme.typography.bodySmall,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
         },

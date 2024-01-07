@@ -141,7 +141,6 @@ fun SelectChip(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CheckChip(
     modifier: Modifier = Modifier,
@@ -193,7 +192,6 @@ fun CheckChip(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChipsSwitch(
     firstTextId: Int,

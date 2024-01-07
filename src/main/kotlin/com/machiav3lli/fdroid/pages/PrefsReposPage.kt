@@ -76,7 +76,7 @@ fun PrefsReposPage(viewModel: PrefsVM) {
                     FloatingActionButton(
                         shape = MaterialTheme.shapes.extraLarge,
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         onClick = {
                             viewModel.showRepositorySheet(
                                 editMode = true,
@@ -92,7 +92,7 @@ fun PrefsReposPage(viewModel: PrefsVM) {
                     FloatingActionButton(
                         shape = MaterialTheme.shapes.extraLarge,
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         onClick = mActivity::openScanner
                     ) {
                         Icon(
@@ -105,7 +105,7 @@ fun PrefsReposPage(viewModel: PrefsVM) {
                 ExtendedFloatingActionButton(
                     shape = MaterialTheme.shapes.extraLarge,
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     onClick = {
                         viewModel.showRepositorySheet(
                             editMode = true,

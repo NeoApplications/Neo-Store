@@ -80,7 +80,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
             ExtendedFloatingActionButton(
                 shape = MaterialTheme.shapes.extraLarge,
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 onClick = {
                     showSearchSheet = true
                 }

@@ -141,7 +141,7 @@ class NeoActivity : AppCompatActivity() {
                 }
 
                 Scaffold(
-                    containerColor = MaterialTheme.colorScheme.background,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                     contentColor = MaterialTheme.colorScheme.onBackground,
                 ) { paddingValues ->
                     LaunchedEffect(key1 = navController) {
@@ -158,7 +158,7 @@ class NeoActivity : AppCompatActivity() {
                     if (appSheetPackage.value.isNotEmpty()) {
                         ModalBottomSheet(
                             sheetState = appSheetState,
-                            containerColor = MaterialTheme.colorScheme.background,
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                             scrimColor = Color.Transparent,
                             dragHandle = null,
                             onDismissRequest = {
