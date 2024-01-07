@@ -78,6 +78,9 @@ interface ProductDao : BaseDao<Product> {
     @Query("SELECT * FROM product WHERE repositoryId = :repoId ORDER BY label")
     fun productsForRepositoryFlow(repoId: Long): Flow<List<Product>>
 
+    @Query("SELECT EXISTS(SELECT 1 FROM product WHERE packageName = :packageName)")
+    fun exists(packageName: String): Boolean
+
     @Query("SELECT * FROM product WHERE packageName = :packageName")
     fun get(packageName: String): List<Product>
 
