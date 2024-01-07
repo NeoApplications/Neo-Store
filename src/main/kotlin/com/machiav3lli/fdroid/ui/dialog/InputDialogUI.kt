@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -28,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -71,10 +71,9 @@ fun IntInputPrefDialogUI(
     }
 
     Card(
-        shape = MaterialTheme.shapes.large,
+        shape = MaterialTheme.shapes.extraLarge,
         modifier = Modifier.padding(8.dp),
-        elevation = CardDefaults.elevatedCardElevation(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
     ) {
         Column(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
@@ -95,6 +94,7 @@ fun IntInputPrefDialogUI(
             TextField(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
+                    .shadow(1.dp, MaterialTheme.shapes.large)
                     .fillMaxWidth()
                     .focusRequester(textFieldFocusRequester),
                 value = if (savedValue != -1) savedValue.toString()
@@ -105,7 +105,7 @@ fun IntInputPrefDialogUI(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                 ),
-                shape = MaterialTheme.shapes.medium,
+                shape = MaterialTheme.shapes.large,
                 singleLine = true,
                 placeholder = {
                     Text(text = "${nnRange.first}-${nnRange.last}")
@@ -164,10 +164,9 @@ fun StringInputPrefDialogUI(
     }
 
     Card(
-        shape = MaterialTheme.shapes.large,
+        shape = MaterialTheme.shapes.extraLarge,
         modifier = Modifier.padding(8.dp),
-        elevation = CardDefaults.elevatedCardElevation(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
     ) {
         Column(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
@@ -181,6 +180,7 @@ fun StringInputPrefDialogUI(
             TextField(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
+                    .shadow(1.dp, MaterialTheme.shapes.large)
                     .fillMaxWidth()
                     .focusRequester(textFieldFocusRequester),
                 value = savedValue,
@@ -190,7 +190,7 @@ fun StringInputPrefDialogUI(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                 ),
-                shape = MaterialTheme.shapes.medium,
+                shape = MaterialTheme.shapes.large,
                 singleLine = true,
                 onValueChange = { savedValue = it },
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -249,10 +249,9 @@ fun StringInputDialogUI(
     SideEffect { mainFocusRequester.requestFocus() }
 
     Card(
-        shape = MaterialTheme.shapes.large,
+        shape = MaterialTheme.shapes.extraLarge,
         modifier = Modifier.padding(8.dp),
-        elevation = CardDefaults.elevatedCardElevation(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
     ) {
         Column(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
@@ -260,49 +259,43 @@ fun StringInputDialogUI(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(text = titleText, style = MaterialTheme.typography.titleLarge)
-            Column(
+            TextField(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
-                    .verticalScroll(scrollState)
+                    .shadow(1.dp, MaterialTheme.shapes.large)
                     .fillMaxWidth()
-                    .weight(1f, false)
-            ) {
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .focusRequester(mainFocusRequester),
-                    value = savedValue,
-                    colors = TextFieldDefaults.colors(
-                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                    ),
-                    shape = MaterialTheme.shapes.large,
-                    singleLine = false,
-                    onValueChange = {
-                        isEdited = true
-                        if (it.text.contains(RE_finishChars)) submit()
-                        else savedValue = it         // only save when no control char
-                    },
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Done,
-                        keyboardType = KeyboardType.Text,
-                    ),
-                    keyboardActions = KeyboardActions(onDone = { submit() }),
-                    trailingIcon = {
-                        Row {
-                            IconButton(onClick = { savedValue = TextFieldValue("") }) {
-                                Icon(
-                                    imageVector = Phosphor.X,
-                                    contentDescription = stringResource(id = R.string.clear_text),
-                                    tint = MaterialTheme.colorScheme.onSurface,
-                                )
-                            }
+                    .focusRequester(mainFocusRequester),
+                value = savedValue,
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                ),
+                shape = MaterialTheme.shapes.large,
+                singleLine = false,
+                onValueChange = {
+                    isEdited = true
+                    if (it.text.contains(RE_finishChars)) submit()
+                    else savedValue = it         // only save when no control char
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done,
+                    keyboardType = KeyboardType.Text,
+                ),
+                keyboardActions = KeyboardActions(onDone = { submit() }),
+                trailingIcon = {
+                    Row {
+                        IconButton(onClick = { savedValue = TextFieldValue("") }) {
+                            Icon(
+                                imageVector = Phosphor.X,
+                                contentDescription = stringResource(id = R.string.clear_text),
+                                tint = MaterialTheme.colorScheme.onSurface,
+                            )
                         }
-                    },
-                )
-            }
+                    }
+                },
+            )
 
             Row(
                 Modifier

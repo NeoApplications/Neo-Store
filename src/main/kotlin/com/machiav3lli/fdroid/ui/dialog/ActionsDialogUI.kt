@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -21,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.Release
@@ -44,13 +44,12 @@ fun ActionsDialogUI(
     val scrollState = rememberScrollState()
 
     Card(
-        shape = RoundedCornerShape(8.dp),
+        shape = MaterialTheme.shapes.extraLarge,
         modifier = Modifier.padding(8.dp),
-        elevation = CardDefaults.elevatedCardElevation(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -61,7 +60,12 @@ fun ActionsDialogUI(
                     .fillMaxWidth()
                     .weight(1f, false)
             ) {
-                Text(text = messageText, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = messageText,
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                )
             }
 
             Row(
@@ -108,6 +112,7 @@ fun KeyDialogUI(
             is DialogKey.ReleaseIncompatible,
             is DialogKey.ReleaseIssue,
                               -> stringResource(id = R.string.incompatible_version)
+
             is DialogKey.Link -> stringResource(id = R.string.confirmation)
             else              -> ""
         }.toString(),
@@ -117,6 +122,7 @@ fun KeyDialogUI(
                 id = R.string.open_DESC_FORMAT,
                 key.uri
             )
+
             is DialogKey.ReleaseIncompatible -> {
                 val builder = StringBuilder()
                 val minSdkVersion = if (Release.Incompatibility.MinSdk in key.incompatibilities)
@@ -165,6 +171,7 @@ fun KeyDialogUI(
                 }
                 builder.toString()
             }
+
             else                             -> ""
         }.toString(),
         openDialogCustom = openDialog,
@@ -173,6 +180,7 @@ fun KeyDialogUI(
             is DialogKey.ReleaseIncompatible,
             is DialogKey.Link,
                  -> stringResource(id = R.string.ok)
+
             else -> ""
         },
         primaryAction = primaryAction,

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.ui.components.ProductItemContent
+import com.machiav3lli.fdroid.ui.compose.utils.blockShadow
 
 @Composable
 fun <T> ListDialogUI(
@@ -30,33 +31,33 @@ fun <T> ListDialogUI(
     itemContent: @Composable (T) -> Unit,
 ) {
     Card(
+        shape = MaterialTheme.shapes.extraLarge,
         modifier = Modifier.padding(8.dp),
-        elevation = CardDefaults.elevatedCardElevation(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(text = titleText, style = MaterialTheme.typography.titleLarge)
 
             Box(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .blockShadow(),
                 contentAlignment = if (items.isNullOrEmpty()) Alignment.Center
                 else Alignment.TopStart
             ) {
                 when {
                     items == null      -> Text(
                         text = stringResource(id = R.string.loading_list),
-                        color = MaterialTheme.colorScheme.onBackground
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
                     items.isNotEmpty() -> {
                         LazyColumn(
-                            modifier = Modifier
-                                .wrapContentHeight()
-                                .padding(top = 16.dp, bottom = 8.dp)
+                            modifier = Modifier.wrapContentHeight(),
                         ) {
                             items(items = items) { itemContent(it) }
                         }
@@ -64,7 +65,7 @@ fun <T> ListDialogUI(
 
                     else               -> Text(
                         text = stringResource(id = R.string.no_applications_available),
-                        color = MaterialTheme.colorScheme.onBackground
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }

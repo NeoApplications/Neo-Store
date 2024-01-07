@@ -33,7 +33,7 @@ import com.machiav3lli.fdroid.ui.components.DialogNegativeButton
 import com.machiav3lli.fdroid.ui.components.DialogPositiveButton
 import com.machiav3lli.fdroid.ui.components.FlatActionButton
 import com.machiav3lli.fdroid.ui.components.SingleSelectionListItem
-import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
+import com.machiav3lli.fdroid.ui.compose.utils.blockShadow
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.Utils.getLocaleOfCode
 
@@ -48,10 +48,9 @@ fun LanguagePrefDialogUI(
         .associateWith { Utils.translateLocale(context.getLocaleOfCode(it)) }.toList()
 
     Card(
-        shape = MaterialTheme.shapes.large,
+        shape = MaterialTheme.shapes.extraLarge,
         modifier = Modifier.padding(8.dp),
-        elevation = CardDefaults.elevatedCardElevation(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
     ) {
         Column(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
@@ -66,7 +65,7 @@ fun LanguagePrefDialogUI(
                 modifier = Modifier
                     .padding(top = 16.dp, bottom = 8.dp)
                     .weight(1f, false)
-                    .blockBorder()
+                    .blockShadow()
             ) {
                 items(
                     items = entryPairs,
@@ -116,10 +115,9 @@ fun EnumSelectionPrefDialogUI(
     val entryPairs = PrefsEntries[prefKey]?.entries?.toList() ?: emptyList()
 
     Card(
-        shape = MaterialTheme.shapes.large,
+        shape = MaterialTheme.shapes.extraLarge,
         modifier = Modifier.padding(8.dp),
-        elevation = CardDefaults.elevatedCardElevation(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
     ) {
         Column(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
@@ -134,7 +132,7 @@ fun EnumSelectionPrefDialogUI(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
                     .weight(1f, false)
-                    .blockBorder()
+                    .blockShadow()
             ) {
                 items(
                     items = entryPairs,
@@ -183,10 +181,9 @@ fun <T> ActionSelectionDialogUI(
     val context = LocalContext.current
 
     Card(
-        shape = MaterialTheme.shapes.large,
+        shape = MaterialTheme.shapes.extraLarge,
         modifier = Modifier.padding(8.dp),
-        elevation = CardDefaults.elevatedCardElevation(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
     ) {
         Column(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
@@ -201,7 +198,7 @@ fun <T> ActionSelectionDialogUI(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
                     .fillMaxWidth()
-                    .blockBorder(),
+                    .blockShadow(),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 items(

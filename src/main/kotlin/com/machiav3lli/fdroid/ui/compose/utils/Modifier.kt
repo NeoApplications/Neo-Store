@@ -6,7 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.unit.dp
 
 @Composable
 inline fun Modifier.addIf(
@@ -29,5 +31,11 @@ fun Modifier.vertical() =
 fun Modifier.blockBorder() = composed {
     this
         .clip(MaterialTheme.shapes.extraLarge)
+        .background(MaterialTheme.colorScheme.surfaceContainer)
+}
+
+fun Modifier.blockShadow() = composed {
+    this
+        .shadow(elevation = 1.dp, shape = MaterialTheme.shapes.extraLarge)
         .background(MaterialTheme.colorScheme.surfaceContainer)
 }
