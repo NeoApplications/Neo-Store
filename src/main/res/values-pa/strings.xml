@@ -357,4 +357,11 @@
     <string name="install_packages_permission_message">ਐਂਡਰੌਇਡ 8 ਤੋਂ ਐਪਾਂ ਲਈ ਪੈਕੇਜਾਂ ਨੂੰ ਇੰਸਟਾਲ ਕਰਨ ਦੇ ਯੋਗ ਹੋਣ ਲਈ ਇਸ ਅਨੁਮਤੀ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।</string>
     <string name="install_packages_permission_title">ਪੈਕੇਜ ਇੰਸਟਾਲ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ</string>
     <string name="download_manager_summary">ਐਪਸ ਨੂੰ ਵਧੇਰੇ ਭਰੋਸੇਯੋਗਤਾ ਨਾਲ ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ ਸਿਸਟਮ ਦੇ ਡਾਊਨਲੋਡ ਮੈਨੇਜਰ ਦੀ ਵਰਤੋਂ ਕਰੋ। ਇਹ ਵਿਕਲਪ TOR ਜਾਂ ਕਸਟਮ ਪ੍ਰੌਕਸੀ ਦਾ ਸਮਰਥਨ ਨਹੀਂ ਕਰਦਾ, ਇਹ ਸਿਸਟਮ ਸੈਟਿੰਗਾਂ ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ।</string>
+    <string name="dark_medium_contrast">ਗੂੜ੍ਹਾ (ਮੱਧਮ ਕੰਟ੍ਰਾਸਟ)</string>
+    <string name="dark_high_contrast">ਗੂੜ੍ਹਾ (ਉੱਚ ਕੰਟ੍ਰਾਸਟ)</string>
+    <string name="am_installer">ਐਪ ਮੈਨੇਜਰ ਇੰਸਟਾਲਰ</string>
+    <string name="black_medium_contrast">ਕਾਲ਼ਾ (ਮੱਧਮ ਕੰਟ੍ਰਾਸਟ)</string>
+    <string name="light_medium_contrast">ਸਫ਼ੈਦ (ਮੱਧਮ ਕੰਟ੍ਰਾਸਟ)</string>
+    <string name="black_high_contrast">ਕਾਲ਼ਾ (ਉੱਚ ਕੰਟ੍ਰਾਸਟ)</string>
+    <string name="light_high_contrast">ਸਫ਼ੈਦ (ਉੱਚ ਕੰਟ੍ਰਾਸਟ)</string>
 </resources>
