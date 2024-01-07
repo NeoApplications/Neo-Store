@@ -14,11 +14,11 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -50,7 +50,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
     val expanded = remember {
         mutableStateOf(false)
     }
-    var showSearchSheet by remember { mutableStateOf(false) }
+    val showSearchSheet by mActivity.showSearchSheet.collectAsState()
     val searchSheetState = rememberModalBottomSheetState(true)
 
     val pages = listOf(
@@ -82,7 +82,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 onClick = {
-                    showSearchSheet = true
+                    mActivity.showSearchSheet(true)
                 }
             ) {
                 Icon(
@@ -130,7 +130,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
                 dragHandle = null,
                 onDismissRequest = {
                     mScope.launch { searchSheetState.hide() }
-                    showSearchSheet = false
+                    mActivity.showSearchSheet(false)
                 },
             ) {
                 MainApplication.mainActivity?.let {

@@ -94,6 +94,10 @@ fun SearchSheet(viewModel: SearchVM) {
         }
     }
 
+    LaunchedEffect(key1 = query) {
+        viewModel.setSearchQuery(query)
+    }
+
     Scaffold(
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground,
@@ -108,13 +112,9 @@ fun SearchSheet(viewModel: SearchVM) {
                     query = query,
                     onClose = {
                         neoActivity.setSearchQuery("")
-                        viewModel.setSearchQuery("")
                     },
                     onQueryChanged = { newQuery ->
-                        if (newQuery != query) {
-                            neoActivity.setSearchQuery(newQuery)
-                            viewModel.setSearchQuery(newQuery)
-                        }
+                        if (newQuery != query) neoActivity.setSearchQuery(newQuery)
                     }
                 )
                 FloatingActionButton(

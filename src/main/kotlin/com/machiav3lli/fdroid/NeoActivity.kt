@@ -73,6 +73,8 @@ class NeoActivity : AppCompatActivity() {
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
+    private val _showSearchSheet = MutableStateFlow(false)
+    val showSearchSheet: StateFlow<Boolean> = _showSearchSheet
     private lateinit var appSheetPackage: MutableState<String>
 
     val db
@@ -283,12 +285,14 @@ class NeoActivity : AppCompatActivity() {
                     )
                 } else if (host == "search") {
                     val query = data.getQueryParameter("q")
-                    navController.navigate("${NavItem.Main.destination}?page=3")
-                    cScope.launch { _searchQuery.emit(query ?: "") }
+                    cScope.launch { showSearchSheet(true, query ?: "") }
                 } else {
                     val packageName = intent.packageName
-                    if (!packageName.isNullOrEmpty()) {
-                        navigateProduct(packageName)
+                    cScope.launch {
+                        if (!packageName.isNullOrEmpty()
+                            && db.getProductDao().exists(packageName)
+                        ) navigateProduct(packageName)
+                        else showSearchSheet(true, packageName)
                     }
                 }
             }
@@ -336,5 +340,12 @@ class NeoActivity : AppCompatActivity() {
 
     fun setSearchQuery(value: String) {
         cScope.launch { _searchQuery.emit(value) }
+    }
+
+    fun showSearchSheet(value: Boolean, query: String? = null) {
+        cScope.launch {
+            _showSearchSheet.emit(value)
+            query?.let { _searchQuery.emit(it) }
+        }
     }
 }
