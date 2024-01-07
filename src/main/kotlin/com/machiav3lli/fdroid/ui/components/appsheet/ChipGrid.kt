@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -14,12 +13,11 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
-import com.machiav3lli.fdroid.ui.components.SelectChip
+import com.machiav3lli.fdroid.ui.components.InfoChip
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
 import java.text.DateFormat
 import java.util.Date
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppInfoChips(
     modifier: Modifier = Modifier,
@@ -50,9 +48,8 @@ fun AppInfoChips(
         contentPadding = PaddingValues(8.dp)
     ) {
         items(list) { text ->
-            SelectChip(
+            InfoChip(
                 text = text,
-                checked = false,
             )
         }
     }

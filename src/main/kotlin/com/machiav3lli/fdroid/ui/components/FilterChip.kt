@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CheckCircle
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Circle
 import com.machiav3lli.fdroid.ui.compose.utils.addIf
 
 private enum class SelectionState { Unselected, Selected }
@@ -59,24 +61,56 @@ private fun categoryChipTransition(selected: Boolean): CategoryChipTransition {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectChip(
+fun InfoChip(
     modifier: Modifier = Modifier,
     text: String,
-    icon: ImageVector = Phosphor.Check,
-    checked: Boolean = false,
     colors: SelectableChipColors = FilterChipDefaults.filterChipColors(
-        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        labelColor = MaterialTheme.colorScheme.onSurface,
+        iconColor = MaterialTheme.colorScheme.onSurface,
         selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-        labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
         selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
         selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
     ),
     onSelected: () -> Unit = {},
 ) {
+    FilterChip(
+        modifier = modifier,
+        colors = colors,
+        shape = MaterialTheme.shapes.small,
+        border = null,
+        selected = false,
+        onClick = { onSelected() },
+        label = {
+            Text(text = text)
+        }
+    )
+}
+
+@Composable
+fun SelectChip(
+    modifier: Modifier = Modifier,
+    text: String,
+    checked: Boolean = false,
+    colors: SelectableChipColors = FilterChipDefaults.filterChipColors(
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+        labelColor = MaterialTheme.colorScheme.onSurface,
+        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        iconColor = MaterialTheme.colorScheme.onSurface,
+        selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+    ),
+    alwaysShowIcon: Boolean = true,
+    onSelected: () -> Unit = {},
+) {
     val categoryChipTransitionState = categoryChipTransition(selected = checked)
+    val icon by remember(checked) {
+        mutableStateOf(
+            if (checked) Phosphor.CheckCircle
+            else Phosphor.Circle
+        )
+    }
 
     FilterChip(
         modifier = modifier,
@@ -85,7 +119,11 @@ fun SelectChip(
         border = null,
         selected = checked,
         leadingIcon = {
-            AnimatedVisibility(
+            if (alwaysShowIcon) Icon(
+                imageVector = icon,
+                contentDescription = null,
+            )
+            else AnimatedVisibility(
                 visible = checked,
                 enter = scaleIn(),
                 exit = scaleOut(),
@@ -165,17 +203,20 @@ fun ChipsSwitch(
     firstSelected: Boolean = true,
     colors: SelectableChipColors = FilterChipDefaults.filterChipColors(
         containerColor = Color.Transparent,
+        labelColor = MaterialTheme.colorScheme.onSurface,
+        iconColor = MaterialTheme.colorScheme.onSurface,
         selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-        labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
         selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
         selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
     ),
     onCheckedChange: (Boolean) -> Unit,
 ) {
     Row(
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.shapes.medium)
+            .background(
+                MaterialTheme.colorScheme.surfaceContainerLowest,
+                MaterialTheme.shapes.medium
+            )
             .padding(horizontal = 6.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
