@@ -51,6 +51,7 @@ fun AppTheme(
 @RequiresApi(Build.VERSION_CODES.S)
 fun dynamicBlackColorScheme(context: Context) = dynamicDarkColorScheme(context).copy(
     background = Color.Black,
+    surfaceContainerLowest = Color.Black,
 )
 
 // LIGHT THEMES
@@ -307,10 +308,13 @@ fun getBlackColors(contrast: Contrast) = when (contrast) {
 
 private val BlackColors = DarkColors.copy(
     background = Color.Black,
+    surfaceContainerLowest = Color.Black,
 )
 private val MediumContrastBlackColors = MediumContrastDarkColors.copy(
     background = Color.Black,
+    surfaceContainerLowest = Color.Black,
 )
 private val HighContrastBlackColors = HighContrastDarkColors.copy(
     background = Color.Black,
+    surfaceContainerLowest = Color.Black,
 )

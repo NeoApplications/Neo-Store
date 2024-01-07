@@ -50,4 +50,9 @@
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
     </style>
+
+    <style name="Theme.Main.Amoled" parent="Theme.Main">
+        <item name="android:colorBackground">@color/pitch_black</item>
+        <item name="colorSurfaceContainerLowest">@color/pitch_black</item>
+    </style>
 </resources>
