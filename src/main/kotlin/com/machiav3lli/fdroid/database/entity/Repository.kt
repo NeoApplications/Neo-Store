@@ -519,7 +519,7 @@ data class Repository(
             ""
         )
         private val CROMITE = defaultRepository(
-            "https://uazo.codeberg.page/cromite-static/@pages/fdroid/repo",
+            "https://www.cromite.org/fdroid/repo/",
             "Cromite Browser",
             "Repository of the fork of Bromite, the privacy focused Chromium fork.",
             21,
