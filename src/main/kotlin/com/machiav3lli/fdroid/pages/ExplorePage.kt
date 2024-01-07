@@ -46,9 +46,9 @@ import com.machiav3lli.fdroid.ui.components.CategoriesList
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ListBullets
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.ExploreVM
@@ -119,7 +119,7 @@ fun ExplorePage(viewModel: ExploreVM) {
         ) {
             AnimatedVisibility(selectedCategory.value.isNotEmpty()) {
                 TopBarAction(
-                    icon = Phosphor.CirclesFour,
+                    icon = Phosphor.ListBullets,
                     description = stringResource(id = R.string.categories)
                 ) {
                     Preferences[Preferences.Key.CategoriesFilterExplore] = ""
