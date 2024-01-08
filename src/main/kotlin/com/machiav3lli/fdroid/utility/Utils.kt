@@ -198,6 +198,9 @@ object Utils {
         return ((importance == IMPORTANCE_FOREGROUND) or (importance == IMPORTANCE_VISIBLE))
     }
 
+    val charactersToBeEscaped = Regex("""[\\${'$'}"`]""")
+
+    fun quotePath(parameter: String): String = "\"${parameter.replace(charactersToBeEscaped) { "\\${it.value}" }}\""
 }
 
 fun <T> findSuggestedProduct(

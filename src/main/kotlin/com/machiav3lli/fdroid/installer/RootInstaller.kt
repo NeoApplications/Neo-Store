@@ -6,6 +6,7 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Cache
 import com.machiav3lli.fdroid.content.Cache.getPackageArchiveInfo
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.utility.Utils.quotePath
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.Dispatchers
@@ -37,49 +38,51 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
                 return ""
             }
 
-        val File.install
-            get() = String.format(
-                ROOT_INSTALL_PACKAGE,
-                absolutePath,
-                BuildConfig.APPLICATION_ID,
-                getCurrentUserState,
-                length()
-            )
+        fun File.legacyInstall() = listOfNotNull(
+            "cat", quotePath(absolutePath),
+            "|",
+            "pm", "install",
+            "-i", BuildConfig.APPLICATION_ID,
+            "--user", getCurrentUserState,
+            "-t",
+            "-r",
+            "-S", length(),
+        ).joinToString(" ")
 
-        val File.session_install_create
-            get() = String.format(
-                ROOT_INSTALL_PACKAGE_SESSION_CREATE,
-                BuildConfig.APPLICATION_ID,
-                getCurrentUserState,
-                length()
-            )
+        fun File.sessionInstallCreate(): String = listOfNotNull(
+            "pm", "install-create",
+            "-i", BuildConfig.APPLICATION_ID,
+            "--user", getCurrentUserState,
+            "-t",
+            "-r",
+            "-S", length(),
+        ).joinToString(" ")
 
-        fun File.sessionInstallWrite(session_id: Int) = String.format(
-            ROOT_INSTALL_PACKAGE_SESSION_WRITE,
-            absolutePath,
-            length(),
-            session_id,
-            name
-        )
+        fun File.sessionInstallWrite(sessionId: Int) = listOfNotNull(
+            "cat", quotePath(absolutePath),
+            "|",
+            "pm", "install-write",
+            "-S", length(),
+            sessionId,
+            name,
+        ).joinToString(" ")
 
-        fun sessionInstallCommit(session_id: Int) = String.format(
-            ROOT_INSTALL_PACKAGE_SESSION_COMMIT,
-            session_id
-        )
+        fun sessionInstallCommit(sessionId: Int) = listOfNotNull(
+            "pm", "install-commit", sessionId
+        ).joinToString(" ")
 
         val String.uninstall
-            get() = String.format(
-                ROOT_UNINSTALL_PACKAGE,
-                getCurrentUserState,
+            get() = listOfNotNull(
+                "pm", "uninstall",
+                "--user", getCurrentUserState,
                 this
-            )
+            ).joinToString(" ")
 
-        val File.deletePackage
-            get() = String.format(
-                DELETE_PACKAGE,
-                getUtilBoxPath,
-                absolutePath.quote
-            )
+        fun File.deletePackage(): String = listOfNotNull(
+            getUtilBoxPath,
+            "rm",
+            absolutePath.quote
+        ).joinToString(" ")
     }
 
     override suspend fun install(packageLabel: String, cacheFileName: String) {
@@ -99,7 +102,7 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
         withContext(Dispatchers.Default) {
             MainApplication.enqueuedInstalls.add(packageName)
             if (Preferences[Preferences.Key.RootSessionInstaller]) {
-                Shell.cmd(cacheFile.session_install_create)
+                Shell.cmd(cacheFile.sessionInstallCreate())
                     .submit {
                         val sessionIdPattern = Pattern.compile("(\\d+)")
                         val sessionIdMatcher =
@@ -112,17 +115,17 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
                             Shell.cmd(cacheFile.sessionInstallWrite(sessionId))
                                 .submit { result ->
                                     Shell.cmd(sessionInstallCommit(sessionId)).exec()
-                                    if (result.isSuccess) Shell.cmd(cacheFile.deletePackage)
+                                    if (result.isSuccess) Shell.cmd(cacheFile.deletePackage())
                                         .submit()
                                 }
                         }
                     }
 
             } else {
-                Shell.cmd(cacheFile.install)
+                Shell.cmd(cacheFile.legacyInstall())
                     .submit {
                         if (it.isSuccess && Preferences[Preferences.Key.ReleasesCacheRetention] == 0)
-                            Shell.cmd(cacheFile.deletePackage).submit()
+                            Shell.cmd(cacheFile.deletePackage()).submit()
                     }
             }
             MainApplication.db.getInstallTaskDao().delete(packageName)
