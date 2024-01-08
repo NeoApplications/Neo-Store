@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-1.0.0 (??.??.2023) 350+ Commits +300 Translations
+1.0.0 (??.??.2024) 380+ Commits +300 Translations
 ------------------
 
 ### Function
@@ -18,7 +18,10 @@ CHANGELOG
 - Add: Own client & connectionPools for CoilDownloader
 - Add: ForegroundServiceType for works (Required on A14)
 - Add: Package source to session installer (SDK33+)
+- Add: Explicit field for HTTP proxy address
 - Add: Option to use DownloadManager API
+- Add: AppManager installer
+- Add: Options to allow downgrades (debuggable) and installing pre-A6 apps (starting Android 14)
 - Add Repos: Aniyomi, Koyu, Kuschku, Kvaestiso, Etopa, Metatrans Apps, Gadgetbridge, FUTO, Grobox, Julian Fairfax, spiritCroc Test, Zimbelstern, Cromite, Divolt Repo, Rboard, Cake Wallet (credits @GitGitro)
 - Add Repos: Samourai Wallet Repo (credits @RequestPrivacy)
 - Add Repos: Julian Andres Klode's repo (credits @ishanarora)
@@ -36,6 +39,9 @@ CHANGELOG
 - Fix: Launching parallel updates
 - Fix: Updating apps in the background
 - Fix: Install notification
+- Fix: Cromite address
+- Fix: External search calls
+- Fix: Opening an app from repo url
 - Update: Cache apks in external cache
 - Update: Replace OkHttp with Ktor (except for Coil)
 - Update: More open network security policy
@@ -45,6 +51,7 @@ CHANGELOG
 - Update: Revamp Downloader
 - Update: Revamp proxy handling
 - Update: Revamp Repository data class
+- Update: Revamp all installers
 - Update: Convert auto-sync interval unit to hours
 - Update: Optimize the main products query
 - Update: Migrate download, exodus & sync backend from Sevice- to Worker-based
@@ -73,7 +80,7 @@ CHANGELOG
 - Add: New apps carousel layout
 - Add: Option for alt new apps layout
 - Add: Dynamic theme variants
-- Add: Explicit field for HTTP proxy address
+- Add: Medium and high contrast themes
 - Fix: Switch layout on low-dpi/multi-lines
 - Fix: Screenshots scaling issue after opening once
 - Fix: Pre-mature cutting horizontal products recycler layout
@@ -82,15 +89,15 @@ CHANGELOG
 - Fix: Ghost clicking settings when search is expanded
 - Fix: Showing progress bar in AppSheet when not active
 - Update: App's icon
-- Update: Theme colors
+- Update: Theme colors (MD3 v2/tonals)
+- Update: Revamp all layouts
 - Update: Revamp Carrousel item layout
 - Update: Split Installed page to two tabs
-- Update: Revamp AppSheet
 - Update: Revamp repositories page
 - Update: Make pagers animate scrolling
-- Update: Revamp all sheets into composable only
-- Update: Revamp Message/Launch-Dialogs into composables
 - Update: Larger layout corners
+- Update: Revamp all sheets (now composables)
+- Update: Revamp all dialogs (now composables)
 - Update: Revamp all sheets
 - Update: Revamp all chips
 - Update: Revamp all items using ItemList
@@ -119,6 +126,7 @@ CHANGELOG
 - Add: All Anti-features in PrivacyPanel
 - Add: Qr Code to repo sheet
 - Add: Permission to install packages
+- Add: Search when to-be-opened package doesn't exist
 - Fix: Applying sort/filter options directly
 - Fix: Scrolling along qr-code in RepoSheet
 - Fix: Showing updatable label for Product items
