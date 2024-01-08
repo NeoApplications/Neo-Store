@@ -366,4 +366,8 @@
     <string name="black_high_contrast">Černý (vysoký kontrastú</string>
     <string name="dark_medium_contrast">Tmavý (střední kontrast)</string>
     <string name="light_medium_contrast">Světlý (střední kontrast)</string>
+    <string name="root_allow_downgrades">Umožnit downgrade aplikací</string>
+    <string name="root_allow_downgrades_description">Umožnit snížení verzí aplikací pomocí root instalátoru (platí pouze pro laditelné verze aplikací). Nejlépe funguje v kombinaci se zapnutou volbou „Zakázat kontrolu verze ke stažení“.</string>
+    <string name="root_allow_installing_old_apps">Umožnit instalaci starších aplikací</string>
+    <string name="root_allow_installing_old_apps_description">Počínaje Androidem 14 již není možné instalovat aplikace, které cílí na mnohem starší verze systému (Android 5.1 nebo starší). Tato možnost umožňuje přepsat toto chování.</string>
 </resources>
