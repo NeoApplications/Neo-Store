@@ -368,4 +368,8 @@
     <string name="dark_high_contrast">Тёмная (высокая контрастность)</string>
     <string name="black_medium_contrast">Чёрная (средняя контрастность)</string>
     <string name="black_high_contrast">Чёрная (высокая контрастность)</string>
+    <string name="root_allow_downgrades_description">Разрешить понижение версии приложений с помощью root-установщика (применяется только к отладочным версиям приложений). Рекомендуется использовать в сочетании с \"Не проверять версию при загрузке\".</string>
+    <string name="root_allow_downgrades">Разрешить понижение приложений</string>
+    <string name="root_allow_installing_old_apps_description">Начиная с Android 14, устанавливать приложения, нацеленные на старые версии Android (Ниже Android 5.1) больше не возможно. Этот параметр позволит обойти это ограничение.</string>
+    <string name="root_allow_installing_old_apps">Разрешить установку старых приложений</string>
 </resources>
