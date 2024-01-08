@@ -56,6 +56,14 @@ val BooleanPrefsMeta = mapOf(
         R.string.root_session_installer,
         R.string.root_session_installer_description
     ),
+    Preferences.Key.RootAllowDowngrades to Pair(
+        R.string.root_allow_downgrades,
+        R.string.root_allow_downgrades_description
+    ),
+    Preferences.Key.RootAllowInstallingOldApps to Pair(
+        R.string.root_allow_installing_old_apps,
+        R.string.root_allow_installing_old_apps_description
+    ),
     Preferences.Key.EnableDownloadDirectory to Pair(
         R.string.enable_download_directory,
         R.string.enable_download_directory_summary
@@ -143,6 +151,14 @@ val IntPrefsRanges = mapOf(
 
 val PrefsDependencies = mapOf(
     Preferences.Key.RootSessionInstaller to Pair(
+        Preferences.Key.Installer,
+        listOf(Preferences.Installer.Root)
+    ),
+    Preferences.Key.RootAllowDowngrades to Pair(
+        Preferences.Key.Installer,
+        listOf(Preferences.Installer.Root)
+    ),
+    Preferences.Key.RootAllowInstallingOldApps to Pair(
         Preferences.Key.Installer,
         listOf(Preferences.Installer.Root)
     ),

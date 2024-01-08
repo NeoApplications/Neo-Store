@@ -49,6 +49,8 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.ProxyType,
         Key.Installer,
         Key.RootSessionInstaller,
+        Key.RootAllowDowngrades,
+        Key.RootAllowInstallingOldApps,
         Key.SortOrderExplore,
         Key.SortOrderLatest,
         Key.SortOrderInstalled,
@@ -262,6 +264,18 @@ data object Preferences : OnSharedPreferenceChangeListener {
             Key<Boolean>(
                 "root_session_installer",
                 Value.BooleanValue(Android.sdk(Build.VERSION_CODES.TIRAMISU))
+            )
+
+        data object RootAllowDowngrades :
+            Key<Boolean>(
+                "root_allow_downgrades",
+                Value.BooleanValue(false)
+            )
+
+        data object RootAllowInstallingOldApps :
+            Key<Boolean>(
+                "root_allow_low_target_sdk",
+                Value.BooleanValue(false)
             )
 
         data object SortOrderExplore : Key<SortOrder>(

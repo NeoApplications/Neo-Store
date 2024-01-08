@@ -42,6 +42,8 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
             "cat", quotePath(absolutePath),
             "|",
             "pm", "install",
+            if (Preferences[Preferences.Key.RootAllowDowngrades]) "-d" else null,
+            if (Preferences[Preferences.Key.RootAllowInstallingOldApps]) "--bypass-low-target-sdk-block" else null,
             "-i", BuildConfig.APPLICATION_ID,
             "--user", getCurrentUserState,
             "-t",
@@ -51,6 +53,8 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
 
         fun File.sessionInstallCreate(): String = listOfNotNull(
             "pm", "install-create",
+            if (Preferences[Preferences.Key.RootAllowDowngrades]) "-d" else null,
+            if (Preferences[Preferences.Key.RootAllowInstallingOldApps]) "--bypass-low-target-sdk-block" else null,
             "-i", BuildConfig.APPLICATION_ID,
             "--user", getCurrentUserState,
             "-t",

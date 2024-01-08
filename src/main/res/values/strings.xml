@@ -364,4 +364,8 @@
     <string name="dark_high_contrast">Dark (high contrast)</string>
     <string name="black_medium_contrast">Black (medium contrast)</string>
     <string name="black_high_contrast">Black (high contrast)</string>
+    <string name="root_allow_downgrades">Allow downgrading apps</string>
+    <string name="root_allow_downgrades_description">Allow downgrading applications using the root installer (only applies to debuggable application versions). Better used in combination with \"Disable download version check\".</string>
+    <string name="root_allow_installing_old_apps">Allow installing older apps</string>
+    <string name="root_allow_installing_old_apps_description">Starting with Android 14, it\'s no longer possible to install applications targeting much older Android versions (Android 5.1 or earlier). This option allows you to override this behavior.</string>
 </resources>

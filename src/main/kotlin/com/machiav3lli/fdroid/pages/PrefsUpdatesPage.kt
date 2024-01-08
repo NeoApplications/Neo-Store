@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.pages
 
+import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,7 @@ import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.EnumSelectionPrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.IntInputPrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.StringInputPrefDialogUI
+import com.machiav3lli.fdroid.utility.extension.android.Android
 
 @Composable
 fun PrefsUpdatesPage() {
@@ -46,9 +48,12 @@ fun PrefsUpdatesPage() {
         Preferences.Key.DisableDownloadVersionCheck,
         Preferences.Key.DisableSignatureCheck,
     )
-    val installPrefs = listOf(
+    val installPrefs = listOfNotNull(
         Preferences.Key.Installer,
         Preferences.Key.RootSessionInstaller,
+        Preferences.Key.RootAllowDowngrades,
+        if (Android.sdk(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)) Preferences.Key.RootAllowInstallingOldApps
+        else null,
     )
 
     LazyColumn(
