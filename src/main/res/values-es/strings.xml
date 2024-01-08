@@ -366,4 +366,8 @@
     <string name="black_high_contrast">Negro (alto contraste)</string>
     <string name="dark_medium_contrast">Oscuro (contraste medio)</string>
     <string name="light_medium_contrast">Claro (contraste medio)</string>
+    <string name="root_allow_installing_old_apps_description">A partir de Android 14, ya no es posible instalar aplicaciones dirigidas a versiones de Android mucho más antiguas (Android 5.1 o anteriores). Esta opción le permite anular este comportamiento.</string>
+    <string name="root_allow_downgrades">Permitir el downgrade de aplicaciones</string>
+    <string name="root_allow_downgrades_description">Permitir el downgrade de aplicaciones utilizando el instalador raíz (sólo se aplica a versiones de aplicaciones depurables). Se utiliza mejor en combinación con \"Desactivar comprobación de versión de descarga\".</string>
+    <string name="root_allow_installing_old_apps">Permitir la instalación de aplicaciones antiguas</string>
 </resources>
