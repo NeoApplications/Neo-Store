@@ -200,7 +200,7 @@
     <string name="root_session_installer_description">Wolniejszy, ale pozwala uniknąć problemów z zainstalowanymi aplikacjami na Androidzie 13+.</string>
     <string name="not_safe_for_work">NSFW (może zawierać niepokojące treści)</string>
     <string name="releases">Wydania</string>
-    <string name="auto_sync_interval">Interwał automatycznej synchronizacji (w minutach)</string>
+    <string name="auto_sync_interval">Przedział auto-synchronizacji (w minutach)</string>
     <string name="favorite_applications">Ulubione</string>
     <string name="no_updates_available">Brak dostępnych wersji</string>
     <string name="no_permissions_identified">Nie określono wymaganych uprawnień</string>
@@ -356,4 +356,5 @@
     <string name="allow_unstable_updates">Zezwalaj na wyświetlanie niestabilnych aktualizacji</string>
     <string name="alt_new_apps">Użyj alternatywnego układu nowych aplikacji</string>
     <string name="download_manager_summary">Użyj systemowego menedżera pobierania, aby pobierać aplikacje bardziej niezawodnie. Ta opcja nie obsługuje TOR ani niestandardowego proxy.</string>
+    <string name="auto_sync_interval_hours">Przedział auto-synchronizacji (w godzinach)</string>
 </resources>
