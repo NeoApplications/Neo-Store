@@ -355,4 +355,15 @@
     <string name="install_packages_permission_message">自 Android 8 开始，应用程序需要获得此权限才能安装软件包。</string>
     <string name="install_packages_permission_title">安装软件包的权限</string>
     <string name="download_manager_summary">使用系统下载管理器以更可靠地下载应用程序。此选项不支持 TOR 或自定义代理，而是使用系统设置。</string>
+    <string name="light_medium_contrast">浅色（中等对比度）</string>
+    <string name="light_high_contrast">浅色（高对比度）</string>
+    <string name="dark_medium_contrast">深色（中等对比度）</string>
+    <string name="dark_high_contrast">深色（高对比度）</string>
+    <string name="black_medium_contrast">黑色（中等对比度）</string>
+    <string name="root_allow_downgrades">允许降级应用程序</string>
+    <string name="root_allow_downgrades_description">允许使用 Root 安装程序降级应用程序（仅适用于可调试应用程序版本）。 与“禁用下载版本检查”结合使用效果更好。</string>
+    <string name="root_allow_installing_old_apps">允许安装较旧的应用程序</string>
+    <string name="root_allow_installing_old_apps_description">从 Android 14 开始，无法再安装目标 Android 版本太旧（Android 5.1 或更早版本）的应用程序。 此选项允许您无视此特性。</string>
+    <string name="am_installer">应用管理器安装程序</string>
+    <string name="black_high_contrast">黑色（高对比度）</string>
 </resources>
