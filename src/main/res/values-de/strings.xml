@@ -345,4 +345,27 @@
     <string name="dynamic_light">Hell, mit dynamischen Farben</string>
     <string name="dynamic_black">Schwarz, mit dynamischen Farben</string>
     <string name="alt_new_apps">Alternatives neues Apps-Layout verwenden</string>
+    <string name="enabled">Aktiviert</string>
+    <string name="disabled">Deaktiviert</string>
+    <string name="am_installer">App Manager Installationsprogramm</string>
+    <string name="light_medium_contrast">Hell (mittlerer Kontrast)</string>
+    <string name="light_high_contrast">Hell (hoher Kontrast)</string>
+    <string name="dark_medium_contrast">Dunkel (mittlerer Kontrast)</string>
+    <string name="dark_high_contrast">Dunkel (hoher Kontrast)</string>
+    <string name="black_medium_contrast">Schwarz (mittlerer Kontrast)</string>
+    <string name="installed_import">Importiere und installiere eine Liste von Apps (wird von aktivierten Repositorien bezogen, wenn vorhanden)</string>
+    <string name="root_allow_downgrades">Erlaube Downgraden von Anwendungen</string>
+    <string name="root_allow_downgrades_description">Erlaubt Downgrade von Anwendungen mithilfe des Root-Installers (gilt nur für debuggbare Anwendungsversionen). Besser in Kombination mit \"Versionsprüfung beim Herunterladen deaktivieren\" verwenden.</string>
+    <string name="root_allow_installing_old_apps_description">Ab Android 14 ist es nicht mehr möglich, Anwendungen zu installieren, die auf viel ältere Android-Versionen (Android 5.1 oder früher) abzielen. Diese Option ermöglicht es Ihnen, dieses Verhalten zu umgehen.</string>
+    <string name="repo_qr_code">Paketquellen QR-Code</string>
+    <string name="proxy_url">URL</string>
+    <string name="no_releases">Keine kompatiblen Veröffentlichungen vorhanden</string>
+    <string name="alt_new_apps_description">Verwende alte/alternative neue App Ansicht, welche kleine App Karten zeigt.</string>
+    <string name="allow_unstable_updates">Anzeige instabiler Updates zulassen</string>
+    <string name="black_high_contrast">Schwarz (hoher Kontrast)</string>
+    <string name="root_allow_installing_old_apps">Installation älterer Anwendungen zulassen</string>
+    <string name="download_manager">System-Downloadmanager</string>
+    <string name="download_manager_summary">Verwende System-Downloadmanager, um Apps zuverlässiger herunterzuladen. Diese Option unterstützt weder TOR noch benutzerdefinierte Proxys, sie verwendet die Systemeinstellungen.</string>
+    <string name="install_packages_permission_title">Berechtigung zur Installation von Paketen</string>
+    <string name="install_packages_permission_message">Apps, die mit Android 8 starten, benötigen diese Berechtigung, um Pakete installieren zu können.</string>
 </resources>
