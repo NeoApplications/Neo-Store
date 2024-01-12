@@ -277,7 +277,7 @@
     <string name="action_install_tc">TrackerControl をインストール</string>
     <string name="date_updated">新しくアップデートされた順</string>
     <string name="scan_qr_code">QR コードをスキャン</string>
-    <string name="trackers_identification_description">Facebook のような特定のログインサービスをアプリが使用することを許可したトラッカー。</string>
+    <string name="trackers_identification_description">Facebook のような特定のログインサービスをアプリが使用できるようにするトラッカー。</string>
     <string name="permission_camera">カメラ</string>
     <string name="trackers_ads">広告トラッカー</string>
     <string name="action_open_code">ソースコードを見る</string>
