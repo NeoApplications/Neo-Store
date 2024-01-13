@@ -355,4 +355,16 @@
     <string name="disabled">Desativado</string>
     <string name="proxy_url">Endereço</string>
     <string name="repo_qr_code">Código QR do repositório</string>
+    <string name="light_medium_contrast">Claro (contraste médio)</string>
+    <string name="light_high_contrast">Contraste (contraste elevado)</string>
+    <string name="dark_high_contrast">Escuro (contraste elevado)</string>
+    <string name="black_medium_contrast">Preto (contraste médio)</string>
+    <string name="root_allow_downgrades">Permitir \'downgrade\' de aplicações</string>
+    <string name="download_manager">Gestor de descargas do sistema</string>
+    <string name="download_manager_summary">Utilizar gestor do sistema pode ser mais fiável. Está opção não permite descarregar via rede TOR ou proxy personalizado.</string>
+    <string name="install_packages_permission_title">Permissão para instalar pacotes</string>
+    <string name="install_packages_permission_message">Esta permissão é necessária para versões Android 8+.</string>
+    <string name="am_installer">Instalador do gestor de aplicações</string>
+    <string name="dark_medium_contrast">Escuro (contraste médio)</string>
+    <string name="black_high_contrast">Preto (contraste elevado)</string>
 </resources>
