@@ -118,7 +118,7 @@
     <string name="recently_updated">Aggiornate di recente</string>
     <string name="repositories">Repository</string>
     <string name="repository">Repository</string>
-    <string name="repository_not_used_DESC">Questo repository non è stato ancora utilizzato.
+    <string name="repository_not_used_DESC">Questo repository non è stato ancora usato.
 \nConnettiti ad esso per visualizzare le app in esso contenute.</string>
     <string name="repository_unsigned_DESC">Impossibile verificare l\'elenco delle app non firmate.
 \nFai attenzione a scaricare app da repository non firmati.</string>
@@ -321,7 +321,7 @@
     <string name="cancel_all">Annulla tutto</string>
     <string name="disable_download_version_check">Disabilita controllo versione di download</string>
     <string name="disable_signature_check_summary">Non controllare se l\'APK scaricato ha la stessa firma dell\'app installata.</string>
-    <string name="disable_download_version_check_summary">Consente di scaricare versioni precedenti delle app installate. Può essere utilizzato in combinazione con la patch \"letmedowngrade\" di Magisk.</string>
+    <string name="disable_download_version_check_summary">Consente di scaricare versioni precedenti delle app installate. Può essere usato in combinazione con la patch \"letmedowngrade\" di Magisk.</string>
     <string name="show_categories_bar">Mostra barra categorie</string>
     <string name="show_categories_bar_description">Mostra barra laterale categorie nella pagina esplora.</string>
     <string name="privacy_panel">Pannello privacy</string>
@@ -358,7 +358,7 @@
     <string name="download_manager">Gestore download del sistema</string>
     <string name="install_packages_permission_message">A partire da Android 8 le app richiedono questa autorizzazione per poter installare pacchetti.</string>
     <string name="install_packages_permission_title">Autorizzazione ad installare pacchetti</string>
-    <string name="download_manager_summary">Usa il download manager del sistema per scaricare le app in modo più affidabile. Questa opzione non supporta TOR o il proxy personalizzato, utilizza le impostazioni di sistema.</string>
+    <string name="download_manager_summary">Usa il download manager del sistema per scaricare le app in modo più affidabile. Questa opzione non supporta TOR o il proxy personalizzato, usa le impostazioni di sistema.</string>
     <string name="dark_high_contrast">Scuro (contrasto elevato)</string>
     <string name="light_high_contrast">Chiaro (contrasto elevato)</string>
     <string name="am_installer">Installer di Gestione app</string>
@@ -368,6 +368,6 @@
     <string name="light_medium_contrast">Chiaro (contrasto medio)</string>
     <string name="root_allow_installing_old_apps">Consenti installazione app meno recenti</string>
     <string name="root_allow_downgrades">Consenti downgrade delle app</string>
-    <string name="root_allow_downgrades_description">Consenti il downgrade delle applicazioni usando il programma di installazione root (si applica solo alle versioni delle applicazioni di cui è possibile eseguire il debug). È meglio utilizzarlo in combinazione con \"Disattiva controllo versione di download\".</string>
+    <string name="root_allow_downgrades_description">Consenti il downgrade delle applicazioni usando il programma di installazione root (si applica solo alle versioni delle applicazioni di cui è possibile eseguire il debug). È meglio usarlo in combinazione con \"Disattiva controllo versione di download\".</string>
     <string name="root_allow_installing_old_apps_description">A partire da Android 14, non è più possibile installare applicazioni destinate a versioni Android molto precedenti (Android 5.1 o precedenti). Questa opzione ti consente di ignorare questo comportamento.</string>
 </resources>
