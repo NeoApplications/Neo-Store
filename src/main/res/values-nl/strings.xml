@@ -35,7 +35,7 @@
     <string name="details">Details</string>
     <string name="donate">Doneer</string>
     <string name="downloaded_FORMAT">%s is gedownload</string>
-    <string name="downloading">Downloading...</string>
+    <string name="downloading">Downloaden</string>
     <string name="downloading_FORMAT">Downloaden %s…</string>
     <string name="edit_repository">Verander archief</string>
     <string name="file_format_error_DESC">Bestandsformaat klopt niet.</string>
@@ -265,7 +265,8 @@
     <string name="extras_import">Importeer extra\'s (Favorieten, Updates negeren, etc.)</string>
     <string name="images_cache_retention">Cache-behoud afbeeldingen</string>
     <string name="categories">Categorieën</string>
-    <string name="incompatible_signature_DESC">Deze versie is ondertekend met een ander certificaat dan het certificaat dat geïnstalleerd is op je apparaat. Deïnstalleer deze eerst.</string>
+    <string name="incompatible_signature_DESC">Deze versie is ondertekend met een ander certificaat dan het certificaat dat geïnstalleerd is op je apparaat. 
+\nDeïnstalleer deze eerst.</string>
     <string name="group_matrix">Onze Matrix-groep</string>
     <string name="action_reset">Terugzetten</string>
     <string name="permission_internet">Internet</string>
