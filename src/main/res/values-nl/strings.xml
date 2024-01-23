@@ -62,9 +62,9 @@
     <string name="invalid_address">Adres klopt niet</string>
     <string name="invalid_fingerprint_format">Vingerafdruk-indeling klopt niet</string>
     <string name="invalid_metadata_error_DESC">Metadata klopt niet.</string>
-    <string name="invalid_permissions_error_DESC">Toestemmingen kloppen niet.</string>
-    <string name="invalid_signature_error_DESC">Handtekening klopt niet.</string>
-    <string name="invalid_username_format">Gebruikersnaam-indeling klopt niet</string>
+    <string name="invalid_permissions_error_DESC">Ongeldige machtigingen.</string>
+    <string name="invalid_signature_error_DESC">Ongeldige handtekening.</string>
+    <string name="invalid_username_format">Ongeldig gebruikersnaamformaat</string>
     <string name="launch">Open</string>
     <string name="license">Licentie</string>
     <string name="license_FORMAT">%s licentie</string>
@@ -144,7 +144,7 @@
     <string name="target">Doel</string>
     <string name="theme">Thema</string>
     <string name="themes">Thema\'s</string>
-    <string name="tracks_or_reports_your_activity">Volgt of rapporteerd uw activiteit</string>
+    <string name="tracks_or_reports_your_activity">Volgt of rapporteerd je activiteit</string>
     <string name="uninstall">Verwijder</string>
     <string name="unknown">Onbekend</string>
     <string name="unknown_error_DESC">Onbekende fout.</string>
@@ -185,7 +185,7 @@
     <string name="installing">Installeren</string>
     <string name="ignore_battery_optimization_title">Batterij Optimisatie</string>
     <string name="ignore_battery_optimization_message">De app werkt beter zonder batterij optimisatie, en voorkomt crashing op Android 12+.</string>
-    <string name="ignore_battery_optimization_not_supported">Batterij optimalisatie niet mogelijk op uw Android installatie.</string>
+    <string name="ignore_battery_optimization_not_supported">Batterij optimalisatie niet mogelijk op je Android installatie.</string>
     <string name="dialog_refuse">Bewaar</string>
     <string name="dialog_approve">Zet uit</string>
     <string name="root_session_installer">Gebruik root-sessie installatie</string>
@@ -199,13 +199,13 @@
     <string name="loading_list">Lijst laden…</string>
     <string name="releases">Publicaties</string>
     <string name="no_updates_available">Geen versies beschikbaar</string>
-    <string name="dynamic">Systeem-dynamisch (Gebruik je achtergrond voor kleurschema)</string>
+    <string name="dynamic">Systeemdynamisch (Gebruik je achtergrond voor kleurschema)</string>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one">%d app heeft een nieuwe versie.</item>
         <item quantity="other">%d apps met nieuwe versies.</item>
     </plurals>
-    <string name="incompatible_older_DESC">Deze versie is ouder dan degene die op uw apparaat is geïnstalleerd. Verwijder die eerst.</string>
-    <string name="incompatible_platforms_DESC_FORMAT">Het %1$s platform wordt niet ondersteund. Ondersteunde platforms: %2$s.</string>
+    <string name="incompatible_older_DESC">Deze versie is ouder dan die op je apparaat is geïnstalleerd. Verwijder die eerst.</string>
+    <string name="incompatible_platforms_DESC_FORMAT">Je %1$s platform wordt niet ondersteund. Ondersteunde platforms: %2$s.</string>
     <string name="app_installed">Geïnstalleerd</string>
     <string name="prefs_cache">Cache</string>
     <string name="system_black">Systeem (Zwart)</string>
@@ -288,7 +288,7 @@
     <string name="releases_cache_retention">Cache-behoud gedownloade APK\'s</string>
     <string name="trackers_note_0">Is het een app of is het spyware\?</string>
     <string name="source_open">Vrije software</string>
-    <string name="other_apps_by">Andere apps door %s</string>
+    <string name="other_apps_by">Andere apps van %s</string>
     <string name="target_sdk">targetSDK</string>
     <string name="min_sdk">minSDK</string>
     <string name="source_copyleft_description">De app bestaat uit volledig vrije onderdelen.</string>
@@ -305,7 +305,7 @@
     <string name="trackers_bug">Trackers voor het rapporteren van fouten</string>
     <string name="source_copyright_description">De app is afhankelijk van niet-vrije inhoud of gepatenteerde netwerken.</string>
     <string name="default_installer">Standaardsessie-installatie</string>
-    <string name="trackers_identification">Indentificatietrackers</string>
+    <string name="trackers_identification">Identificatietrackers</string>
     <string name="permission_microphone">Microfoon</string>
     <string name="permissions_note_3">Klein aantal toestemmingen nodig</string>
     <string name="legacy_installer">Verouderde installatie (compatibel met MIUI)</string>
@@ -323,7 +323,7 @@
     <string name="permission_not_granted">Niet toegekend</string>
     <string name="source_copyright">Copyright</string>
     <string name="sort_descending">Aflopend</string>
-    <string name="permission_calendar">Kalender</string>
+    <string name="permission_calendar">Agenda</string>
     <string name="extras_export">Exporteer extra\'s (Favorieten, Updates negeren, etc.)</string>
     <string name="post_notifications_permission_title">Toestemming om meldingen te plaatsen</string>
     <string name="permissions_note_2">Heeft niet zo veel toestemmingen nodig</string>
@@ -353,5 +353,19 @@
     <string name="enabled">Ingeschakeld</string>
     <string name="disabled">Uitgeschakeld</string>
     <string name="repo_qr_code">Archief QR-code</string>
-    <string name="download_manager">Systeem-downloadbeheer</string>
+    <string name="download_manager">Systeemdownloadbeheer</string>
+    <string name="am_installer">Appbeheer-installatie</string>
+    <string name="light_high_contrast">Licht (hoog contrast)</string>
+    <string name="dark_high_contrast">Donker (hoog contrast)</string>
+    <string name="black_high_contrast">Zwart (hoog contrast)</string>
+    <string name="dark_medium_contrast">Donker (gemiddeld contrast)</string>
+    <string name="light_medium_contrast">Licht (gemiddeld contrast)</string>
+    <string name="black_medium_contrast">Zwart (gemiddeld contrast)</string>
+    <string name="root_allow_downgrades">Sta downgraden van apps toe</string>
+    <string name="root_allow_downgrades_description">Sta downgraden van apps toe door root-installatie te gebruiken (alleen van toepassing op debugbare appversies). Werkt het best in combinatie met \"Schakel versie-controle van download uit\".</string>
+    <string name="root_allow_installing_old_apps">Sta toe oudere apps te installeren</string>
+    <string name="root_allow_installing_old_apps_description">Vanaf Android 14 is het niet langer mogelijk om apps te installeren die zijn gemaakt voor veel oudere Androidversies (Android 5.1 of ouder). Deze functie staat toe om dit gedrag te negeren.</string>
+    <string name="download_manager_summary">Gebruik het systeemdownloadbeheer om apps betrouwbaarder te downloaden. TOR of de aangepaste proxy wordt niet ondersteund, deze functie gebruikt systeeminstellingen.</string>
+    <string name="install_packages_permission_title">Toestemming om pakketten te installeren</string>
+    <string name="install_packages_permission_message">Vanaf Android 8 vereisen apps deze toestemming om pakketten te installeren.</string>
 </resources>
