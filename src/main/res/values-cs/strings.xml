@@ -43,7 +43,7 @@
     <string name="has_non_free_dependencies">Obsahuje nesvobodné závislosti</string>
     <string name="has_security_vulnerabilities">Obsahuje bezpečnostní slabiny</string>
     <string name="http_error_DESC">Neplatná odpověď serveru.</string>
-    <string name="http_proxy">HTTP proxy</string>
+    <string name="http_proxy">Proxy HTTP</string>
     <string name="ignore_all_updates">Ignorovat všechny nové verze</string>
     <string name="ignore_this_update">Ignorovat tuto verzi</string>
     <string name="incompatible_api_max_DESC_FORMAT">Maximální verze API je %d.</string>
@@ -146,7 +146,7 @@
     <string name="update_all">Nainstalovat vše</string>
     <string name="installed_applications">Nainstalováno</string>
     <string name="no_applications_available">Žádné dostupné aplikace</string>
-    <string name="no_proxy">Žádný proxy</string>
+    <string name="no_proxy">Žádná proxy</string>
     <string name="notify_about_updates_summary">Zobrazit oznámení o dostupnosti nových verzí.</string>
     <string name="only_compatible_with_FORMAT">Kompatibilní pouze s %s</string>
     <string name="only_on_wifi">Pouze na síti Wi-Fi</string>
@@ -165,11 +165,11 @@
     <string name="show_more">Zobrazit více</string>
     <string name="size">Velikost</string>
     <string name="syncing_FORMAT">Synchronizace %s…</string>
-    <string name="system">Systém</string>
-    <string name="theme">Téma</string>
+    <string name="system">Systémový</string>
+    <string name="theme">Motiv</string>
     <string name="tap_to_install_DESC">Klepnutím nainstalujte.</string>
     <string name="target">Cíl</string>
-    <string name="themes">Témata</string>
+    <string name="themes">Motivy</string>
     <string name="username_missing">Chybí uživatelské jméno</string>
     <string name="validation_index_error_DESC">Nepodařilo se ověřit index.</string>
     <string name="new_applications">Nové aplikace</string>
@@ -213,7 +213,7 @@
     <string name="favorite_applications">Oblíbené</string>
     <string name="images_cache_retention">Uchovávání obrázků v mezipaměti</string>
     <string name="releases_cache_retention">Uchovávání staženého APK v mezipaměti</string>
-    <string name="system_black">Systém (černý)</string>
+    <string name="system_black">Systémový (černý)</string>
     <string name="prefs_personal">Osobní</string>
     <string name="prefs_cache">Mezipaměť</string>
     <string name="prefs_sync">Synchronizace</string>
