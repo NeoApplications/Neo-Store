@@ -255,7 +255,7 @@
     <string name="prefs_installer">インストーラーの種類</string>
     <string name="permission_nearby_devices">付近のデバイス</string>
     <string name="permission_other">その他の権限</string>
-    <string name="permission_physical_data">物理データへの権限</string>
+    <string name="permission_physical_data">物理的なデータへの権限</string>
     <string name="permission_sms">SMS/MMS</string>
     <string name="source_dependencies_description">プライバシーを尊重しない可能性のある依存関係を含みます。</string>
     <string name="date_added">新規追加された順</string>
@@ -272,7 +272,7 @@
     <string name="permissions_note_3">最低限の権限の数</string>
     <string name="legacy_installer">レガシーインストーラー (MIUI と互換性があります)</string>
     <string name="trackers_note_4">最小限からゼロのトラッカー</string>
-    <string name="permission_identification_data">身元情報への権限</string>
+    <string name="permission_identification_data">個人情報への権限</string>
     <string name="tools">ツール</string>
     <string name="action_install_tc">TrackerControl をインストール</string>
     <string name="date_updated">新しくアップデートされた順</string>
