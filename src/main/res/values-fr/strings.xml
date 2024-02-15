@@ -351,4 +351,23 @@
     <string name="allow_unstable_updates">Autoriser l\'affichage des mises à jour instables</string>
     <string name="repos_import">Importer des dépôts (remplace ceux déjà existants)</string>
     <string name="alt_new_apps">Utiliser une disposition alternative des nouvelles applications</string>
+    <string name="enabled">Activé</string>
+    <string name="disabled">Désactivé</string>
+    <string name="proxy_url">Url</string>
+    <string name="black_medium_contrast">Noir (moyen contraste)</string>
+    <string name="root_allow_downgrades_description">Permettre la rétrogradation de version des applications à l\'aide de l\'installateur racine (s\'applique seulement aux versions d\'applications débogables). Optimalement utilisé en combinaison avec \"Disable download version check\".</string>
+    <string name="am_installer">Installateur du Gestionnaire d\'applications</string>
+    <string name="light_medium_contrast">Clair (moyen contraste)</string>
+    <string name="light_high_contrast">Clair (fort contraste)</string>
+    <string name="dark_medium_contrast">Sombre (moyen contraste)</string>
+    <string name="dark_high_contrast">Sombre (haut contraste)</string>
+    <string name="black_high_contrast">Noir (haut contraste)</string>
+    <string name="root_allow_downgrades">Permettre la rétrogradation de version des applications</string>
+    <string name="root_allow_installing_old_apps">Permettre l\'installation d\'applications plus anciennes</string>
+    <string name="root_allow_installing_old_apps_description">À partir d\'Android 14, il n\'est plus possible d\'installer des applications ciblant des versions d\'Android beaucoup plus anciennes (Android 5.1 ou précédentes). Cette option vous permet d\'annuler ce comportement.</string>
+    <string name="repo_qr_code">Code QR du dépôt</string>
+    <string name="download_manager">Gestionnaire de téléchargement du système</string>
+    <string name="download_manager_summary">Utilisez le gestionnaire de téléchargement du système pour télécharger les applications de manière plus fiable. Cette option ne supporte pas le TOR ou le proxy personnalisé, elle utilise les paramètres du système.</string>
+    <string name="install_packages_permission_title">Permission d\'installer des paquets</string>
+    <string name="install_packages_permission_message">Démarrer les applications Android 8 nécessite cette autorisation pour pouvoir installer des paquets.</string>
 </resources>
