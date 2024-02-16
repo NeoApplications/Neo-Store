@@ -33,8 +33,4 @@
     <string name="description">Kirjeldus</string>
     <string name="fingerprint">Sõrmejälg</string>
     <string name="has_advertising">Sisaldab reklaami</string>
-    <plurals name="new_updates_DESC_FORMAT">
-        <item quantity="one"/>
-        <item quantity="other"/>
-    </plurals>
 </resources>

@@ -6,11 +6,6 @@
     <string name="all_applications">Todas las aplicaciones</string>
     <string name="all_applications_up_to_date">Todas las aplicaciones están al día</string>
     <string name="already_exists">Ya existe</string>
-    <plurals name="new_updates_DESC_FORMAT">
-        <item quantity="one"/>
-        <item quantity="many"/>
-        <item quantity="other"/>
-    </plurals>
     <string name="changelog">Registro de cambios</string>
     <string name="changes">Cambios</string>
     <string name="connecting">Conectando…</string>

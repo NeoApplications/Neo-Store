@@ -9,8 +9,4 @@
     <string name="cancel">අවලංගු</string>
     <string name="all_applications_up_to_date">සියළුම යෙදුම් යාවත්කාලීනයි</string>
     <string name="application">යෙදුම</string>
-    <plurals name="new_updates_DESC_FORMAT">
-        <item quantity="one"/>
-        <item quantity="other"/>
-    </plurals>
 </resources>

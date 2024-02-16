@@ -16,8 +16,4 @@
     <string name="available">Mövcuddur</string>
     <string name="bug_tracker">Səhv izləyici</string>
     <string name="cancel">Ləğv et</string>
-    <plurals name="new_updates_DESC_FORMAT">
-        <item quantity="one"/>
-        <item quantity="other"/>
-    </plurals>
 </resources>
