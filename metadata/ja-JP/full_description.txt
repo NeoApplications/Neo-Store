@@ -7,5 +7,5 @@
 
 Neo Store は Foxy-Droid の直接の改変版です
 
-Neo Store は Copyleft (コピーレフト)の自由ソフトウェアであり、GPLv3+ でライセンスされています。つまり―
+Neo Store は Copyleft (コピーレフト)かつ自由ソフトウェアであり、GPLv3+ でライセンスされています。つまり―
 すべての人が、使用、研究、変更、共有できます。
