@@ -3,11 +3,10 @@ package com.machiav3lli.fdroid.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.machiav3lli.fdroid.database.DatabaseX
+import com.machiav3lli.fdroid.database.RealmRepo
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.IconDetails
 import com.machiav3lli.fdroid.database.entity.Installed
-import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.entity.Request
 import com.machiav3lli.fdroid.entity.Section
@@ -28,8 +27,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 // TODO split into one for Explore/Search and one for Latest/Installed
+@OptIn(ExperimentalCoroutinesApi::class)
 open class MainPageVM(
-    val db: DatabaseX,
+    val db: RealmRepo,
     primarySource: Source,
     secondarySource: Source,
 ) : ViewModel() {
@@ -59,16 +59,15 @@ open class MainPageVM(
         sections.value.let { if (source.sections) mSections = it }
         return when (source) {
             Source.AVAILABLE -> Request.productsAll(mSections)
-            Source.SEARCH    -> Request.productsSearch()
+            Source.SEARCH -> Request.productsSearch()
             Source.INSTALLED -> Request.productsInstalled()
-            Source.UPDATES   -> Request.productsUpdates()
-            Source.UPDATED   -> Request.productsUpdated()
-            Source.NEW       -> Request.productsNew()
+            Source.UPDATES -> Request.productsUpdates()
+            Source.UPDATED -> Request.productsUpdated()
+            Source.NEW -> Request.productsNew()
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val installed = db.getInstalledDao().getAllFlow().mapLatest {
+    val installed = db.installedDao.allFlow.mapLatest {
         it.associateBy(Installed::packageName)
     }.stateIn(
         scope = viewModelScope,
@@ -92,11 +91,11 @@ open class MainPageVM(
     val primaryProducts: StateFlow<List<Product>?> = combine(
         primaryRequest,
         installed,
-        db.getProductDao().queryFlowList(primaryRequest.value),
-        db.getExtrasDao().getAllFlow(),
+        db.productDao.queryFlowList(primaryRequest.value),
+        db.extrasDao.allFlow,
     ) { req, _, _, _ ->
         withContext(cc) {
-            db.getProductDao().queryObject(req)
+            db.productDao.queryObject(req)
         }
     }.stateIn(
         scope = viewModelScope,
@@ -119,11 +118,11 @@ open class MainPageVM(
     val secondaryProducts: StateFlow<List<Product>?> = combine(
         secondaryRequest,
         installed,
-        db.getProductDao().queryFlowList(secondaryRequest.value),
-        db.getExtrasDao().getAllFlow(),
+        db.productDao.queryFlowList(secondaryRequest.value),
+        db.extrasDao.allFlow,
     ) { req, _, _, _ ->
         if (secondarySource != primarySource) withContext(cc) {
-            db.getProductDao().queryObject(req)
+            db.productDao.queryObject(req)
         }
         else null
     }.stateIn(
@@ -132,19 +131,13 @@ open class MainPageVM(
         initialValue = null
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val repositories = db.getRepositoryDao().getAllFlow().mapLatest { it }
+    val repositories = db.repositoryDao.allFlow.mapLatest { it }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val categories = db.getCategoryDao().getAllNamesFlow().mapLatest { it }
+    val categories = db.categoryDao.allNamesFlow.mapLatest { it }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val licenses = db.getProductDao().getAllLicensesFlow().mapLatest {
-        it.map(Licenses::licenses).flatten().distinct()
-    }
+    val licenses = db.productDao.getAllLicensesFlow()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val iconDetails = db.getProductDao().getIconDetailsFlow().mapLatest {
+    val iconDetails = db.productDao.getIconDetailsFlow().mapLatest {
         it.associateBy(IconDetails::packageName)
     }.stateIn(
         scope = viewModelScope,
@@ -160,17 +153,16 @@ open class MainPageVM(
 
     private suspend fun saveFavorite(packageName: String, setBoolean: Boolean) {
         withContext(cc) {
-            val oldValue = db.getExtrasDao()[packageName]
-            if (oldValue != null) db.getExtrasDao()
-                .upsert(oldValue.copy(favorite = setBoolean))
-            else db.getExtrasDao()
-                .upsert(Extras(packageName, favorite = setBoolean))
+            val exstVal = db.extrasDao[packageName]
+                ?: Extras(packageName)
+            db.extrasDao
+                .upsert(exstVal.apply { favorite = setBoolean })
         }
     }
 }
 
-class ExploreVM(db: DatabaseX) : MainPageVM(db, Source.AVAILABLE, Source.AVAILABLE) {
-    class Factory(val db: DatabaseX) :
+class ExploreVM(db: RealmRepo) : MainPageVM(db, Source.AVAILABLE, Source.AVAILABLE) {
+    class Factory(val db: RealmRepo) :
         ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -182,8 +174,8 @@ class ExploreVM(db: DatabaseX) : MainPageVM(db, Source.AVAILABLE, Source.AVAILAB
     }
 }
 
-class LatestVM(db: DatabaseX) : MainPageVM(db, Source.UPDATED, Source.NEW) {
-    class Factory(val db: DatabaseX) :
+class LatestVM(db: RealmRepo) : MainPageVM(db, Source.UPDATED, Source.NEW) {
+    class Factory(val db: RealmRepo) :
         ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -195,8 +187,8 @@ class LatestVM(db: DatabaseX) : MainPageVM(db, Source.UPDATED, Source.NEW) {
     }
 }
 
-class SearchVM(db: DatabaseX) : MainPageVM(db, Source.SEARCH, Source.SEARCH) {
-    class Factory(val db: DatabaseX) :
+class SearchVM(db: RealmRepo) : MainPageVM(db, Source.SEARCH, Source.SEARCH) {
+    class Factory(val db: RealmRepo) :
         ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

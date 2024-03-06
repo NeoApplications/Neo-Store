@@ -69,9 +69,10 @@ fun ExplorePage(viewModel: ExploreVM) {
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
-    val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
-    val categories by RepositoryUpdater.db.getCategoryDao()
-        .getAllNamesFlow().collectAsState(emptyList())
+    val favorites by neoActivity.db.extrasDao.favoritesFlow
+        .collectAsState(emptyList())
+    val categories by RepositoryUpdater.db.categoryDao.allNamesFlow
+        .collectAsState(emptyList())
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }

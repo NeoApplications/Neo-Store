@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.database.entity.Release
+import com.machiav3lli.fdroid.database.entity.Incompatibility
 import com.machiav3lli.fdroid.entity.DialogKey
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.FlatActionButton
@@ -125,9 +125,9 @@ fun KeyDialogUI(
 
             is DialogKey.ReleaseIncompatible -> {
                 val builder = StringBuilder()
-                val minSdkVersion = if (Release.Incompatibility.MinSdk in key.incompatibilities)
+                val minSdkVersion = if (Incompatibility.MinSdk in key.incompatibilities)
                     key.minSdkVersion else null
-                val maxSdkVersion = if (Release.Incompatibility.MaxSdk in key.incompatibilities)
+                val maxSdkVersion = if (Incompatibility.MaxSdk in key.incompatibilities)
                     key.maxSdkVersion else null
                 if (minSdkVersion != null || maxSdkVersion != null) {
                     val versionMessage = minSdkVersion?.let {
@@ -148,7 +148,7 @@ fun KeyDialogUI(
                         )
                     ).append("\n\n")
                 }
-                if (Release.Incompatibility.Platform in key.incompatibilities) {
+                if (Incompatibility.Platform in key.incompatibilities) {
                     builder.append(
                         stringResource(
                             R.string.incompatible_platforms_DESC_FORMAT,
@@ -158,7 +158,7 @@ fun KeyDialogUI(
                     ).append("\n\n")
                 }
                 val features = key.incompatibilities
-                    .mapNotNull { it as? Release.Incompatibility.Feature }
+                    .mapNotNull { it as? Incompatibility.Feature }
                 if (features.isNotEmpty()) {
                     builder.append(stringResource(R.string.incompatible_features_DESC))
                     for (feature in features) {

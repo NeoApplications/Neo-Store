@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.database.entity.Category
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
@@ -32,7 +33,7 @@ fun AppInfoChips(
         else "v${product.version}",
         product.displayRelease?.size?.formatSize().orEmpty(),
         DateFormat.getDateInstance().format(Date(product.updated)),
-        *product.categories.toTypedArray(),
+        *product.categories.map(Category::label).toTypedArray(),
         if (latestRelease?.minSdkVersion != 0) "${stringResource(id = R.string.min_sdk)} ${latestRelease?.minSdkVersion}"
         else null,
         if (latestRelease?.targetSdkVersion != 0) "${stringResource(id = R.string.target_sdk)} ${latestRelease?.targetSdkVersion}"

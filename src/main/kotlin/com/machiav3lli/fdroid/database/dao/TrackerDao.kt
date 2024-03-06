@@ -1,21 +1,25 @@
 package com.machiav3lli.fdroid.database.dao
 
-import androidx.room.Dao
-import androidx.room.Query
 import com.machiav3lli.fdroid.database.entity.Tracker
+import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.query
+import io.realm.kotlin.query.RealmResults
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-@Dao
-interface TrackerDao : BaseDao<Tracker> {
-    @Query("SELECT * FROM `tracker`")
-    fun getAll(): List<Tracker>
+class TrackerDao(private val realm: Realm) : BaseDao<Tracker>(realm) {
 
-    @Query("SELECT * FROM `tracker`")
-    fun getAllFlow(): Flow<List<Tracker>>
+    val allFlow: Flow<RealmResults<Tracker>>
+        get() = realm.query<Tracker>()
+            .asFlow()
+            .map { it.list }
 
-    @Query("SELECT * FROM `tracker` WHERE key = :key")
-    fun get(key: Int): Tracker?
+    val all: RealmResults<Tracker>
+        get() = realm.query<Tracker>().find()
 
-    @Query("SELECT * FROM `tracker` WHERE key = :key")
-    fun getFlow(key: Int): Flow<Tracker?>
+    fun get(key: Int): Tracker? = realm.query<Tracker>("key = $0", key).first().find()
+
+    fun getFlow(key: Int): Flow<Tracker?> = realm.query<Tracker>("key = $0", key)
+        .asFlow()
+        .map { it.list.first() }
 }

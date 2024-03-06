@@ -1,10 +1,5 @@
 package com.machiav3lli.fdroid.database.entity
 
-import androidx.room.Entity
-import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
-import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
-import com.machiav3lli.fdroid.TABLE_PRODUCT
-import com.machiav3lli.fdroid.TABLE_PRODUCT_TEMP
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.Author
@@ -13,17 +8,29 @@ import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Screenshot
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
+import io.realm.kotlin.ext.realmListOf
+import io.realm.kotlin.ext.toRealmList
+import io.realm.kotlin.serializers.RealmListKSerializer
+import io.realm.kotlin.types.RealmList
+import io.realm.kotlin.types.RealmObject
+import io.realm.kotlin.types.annotations.PrimaryKey
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-// TODO Add Product Extras to handle favorite lists etc..
-@Entity(tableName = TABLE_PRODUCT, primaryKeys = [ROW_REPOSITORY_ID, ROW_PACKAGE_NAME])
 @Serializable
 open class Product(
-    var repositoryId: Long,
-    var packageName: String,
-) {
+) : RealmObject {
+    var repositoryId: Long = -1
+    var packageName: String = ""
+
+    @PrimaryKey
+    private var primaryKey: String = ""
+
+    @Serializable(RealmListKSerializer::class)
+    var releases: RealmList<Release> = realmListOf()
+
     var label: String = ""
     var summary: String = ""
     var description: String = ""
@@ -31,22 +38,27 @@ open class Product(
     var updated: Long = 0L
     var icon: String = ""
     var metadataIcon: String = ""
-    var releases: List<Release> = emptyList()
-    var categories: List<String> = emptyList()
-    var antiFeatures: List<String> = emptyList()
-    var licenses: List<String> = emptyList()
-    var donates: List<Donate> = emptyList()
-    var screenshots: List<Screenshot> = emptyList()
-    var versionCode: Long = 0L
+    @Serializable(RealmListKSerializer::class)
+    var categories: RealmList<Category> = realmListOf()
+    @Serializable(RealmListKSerializer::class)
+    var antiFeatures: RealmList<String> = realmListOf()
+    @Serializable(RealmListKSerializer::class)
+    var licenses: RealmList<String> = realmListOf()
+    @Serializable(RealmListKSerializer::class)
+    var donates: RealmList<Donate> = realmListOf()
+    @Serializable(RealmListKSerializer::class)
+    var screenshots: RealmList<Screenshot> = realmListOf()
     var suggestedVersionCode: Long = 0L
-    var signatures: List<String> = emptyList()
-    var compatible: Boolean = false
     var author: Author = Author()
     var source: String = ""
     var web: String = ""
     var tracker: String = ""
     var changelog: String = ""
     var whatsNew: String = ""
+
+    init {
+        primaryKey = "$repositoryId/$packageName"
+    }
 
     constructor(
         repositoryId: Long,
@@ -71,7 +83,9 @@ open class Product(
         tracker: String = "",
         changelog: String = "",
         whatsNew: String = "",
-    ) : this(repositoryId, packageName) {
+    ) : this() {
+        this.repositoryId = repositoryId
+        this.packageName = packageName
         this.label = label
         this.summary = summary
         this.description = description
@@ -79,22 +93,20 @@ open class Product(
         this.updated = updated
         this.icon = icon
         this.metadataIcon = metadataIcon
-        this.releases = releases
-        this.categories = categories
-        this.antiFeatures = antiFeatures
-        this.licenses = licenses
-        this.donates = donates
-        this.screenshots = screenshots
-        this.versionCode = selectedReleases.firstOrNull()?.versionCode ?: 0L
+        this.releases = releases.toRealmList()
+        this.categories = categories.map(::Category).toRealmList()
+        this.antiFeatures = antiFeatures.toRealmList()
+        this.licenses = licenses.toRealmList()
+        this.donates = donates.toRealmList()
+        this.screenshots = screenshots.toRealmList()
         this.suggestedVersionCode = suggestedVersionCode
-        this.signatures = selectedReleases.mapNotNull { it.signature.nullIfEmpty() }.distinct()
-        this.compatible = selectedReleases.firstOrNull()?.incompatibilities?.isEmpty() == true
         this.author = author
         this.source = source
         this.web = web
         this.tracker = tracker
         this.changelog = changelog
         this.whatsNew = whatsNew
+        primaryKey = "$repositoryId/$packageName"
     }
 
     val selectedReleases: List<Release>
@@ -106,6 +118,14 @@ open class Product(
     val version: String
         get() = displayRelease?.version.orEmpty()
 
+    val versionCode: Long
+        get() = selectedReleases.firstOrNull()?.versionCode ?: 0L
+
+    val signatures: List<String>
+        get() = selectedReleases.mapNotNull { it.signature.nullIfEmpty() }.distinct()
+
+    val compatible: Boolean
+        get() = selectedReleases.firstOrNull()?.incompatibilities?.isEmpty() == true
     val otherAntiFeatures: List<String>
         get() = antiFeatures
             .filterNot {
@@ -147,21 +167,21 @@ open class Product(
         val releasePairs = releases.distinctBy { it.identifier }
             .sortedByDescending { it.versionCode }
             .map { release ->
-                val incompatibilities = mutableListOf<Release.Incompatibility>()
+                val incompatibilities = mutableListOf<Incompatibility>()
                 if (release.minSdkVersion > 0 && Android.sdk < release.minSdkVersion) {
-                    incompatibilities += Release.Incompatibility.MinSdk
+                    incompatibilities += Incompatibility.MinSdk
                 }
                 if (release.maxSdkVersion > 0 && Android.sdk > release.maxSdkVersion) {
-                    incompatibilities += Release.Incompatibility.MaxSdk
+                    incompatibilities += Incompatibility.MaxSdk
                 }
                 if (release.platforms.isNotEmpty() && release.platforms.intersect(Android.platforms)
                         .isEmpty()
                 ) {
-                    incompatibilities += Release.Incompatibility.Platform
+                    incompatibilities += Incompatibility.Platform
                 }
                 incompatibilities += (release.features - features).sorted()
-                    .map { Release.Incompatibility.Feature(it) }
-                Pair(release, incompatibilities as List<Release.Incompatibility>)
+                    .map { Incompatibility.Feature(it) }
+                Pair(release, incompatibilities as List<Incompatibility>)
             }.toMutableList()
 
         val predicate: (Release) -> Boolean = {
@@ -179,13 +199,7 @@ open class Product(
             release
                 .copy(incompatibilities = incompatibilities, selected = firstSelected
                     ?.let { it.first.versionCode == release.versionCode && it.second == incompatibilities } == true)
-        }
-    }
-
-    fun refreshVariables() {
-        this.versionCode = selectedReleases.firstOrNull()?.versionCode ?: 0L
-        this.signatures = selectedReleases.mapNotNull { it.signature.nullIfEmpty() }.distinct()
-        this.compatible = selectedReleases.firstOrNull()?.incompatibilities?.isEmpty() == true
+        }.toRealmList()
     }
 
     fun toJSON() = Json.encodeToString(this)
@@ -195,7 +209,6 @@ open class Product(
     }
 }
 
-@Entity(tableName = TABLE_PRODUCT_TEMP)
 class ProductTemp(
     repositoryId: Long,
     packageName: String,
@@ -255,7 +268,7 @@ fun Product.asProductTemp(): ProductTemp = ProductTemp(
     icon = icon,
     metadataIcon = metadataIcon,
     releases = releases,
-    categories = categories,
+    categories = categories.map { it.label },
     antiFeatures = antiFeatures,
     licenses = licenses,
     donates = donates,

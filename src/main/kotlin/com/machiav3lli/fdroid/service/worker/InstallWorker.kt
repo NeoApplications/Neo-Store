@@ -64,7 +64,7 @@ class InstallWorker(
         val lock = Mutex()
         val label = inputData.getString(ARG_NAME) ?: ""
         val fileName = inputData.getString(ARG_FILE_NAME) ?: ""
-        var task = MainApplication.db.getInstallTaskDao().get(fileName)
+        var task = MainApplication.db.installTaskDao.get(fileName)
         val installerInstance = AppInstaller.getInstance(context)
 
         try {
@@ -92,7 +92,7 @@ class InstallWorker(
                         return Result.failure()
                     }
                 } else delay(5000)
-                task = MainApplication.db.getInstallTaskDao().get(fileName)
+                task = MainApplication.db.installTaskDao.get(fileName)
             }
         } catch (e: Exception) {
             return Result.failure()

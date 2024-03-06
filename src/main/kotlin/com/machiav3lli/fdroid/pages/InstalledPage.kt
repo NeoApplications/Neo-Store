@@ -80,8 +80,8 @@ fun InstalledPage(viewModel: InstalledVM) {
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
-    val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow()
-        .collectAsState(emptyArray())
+    val favorites by neoActivity.db.extrasDao.favoritesFlow
+        .collectAsState(emptyList())
     val iconDetails by viewModel.iconDetails.collectAsState()
     val downloaded by viewModel.downloaded.collectAsState()
     val downloads = downloaded.filter { it.state is DownloadState.Downloading }
@@ -231,12 +231,12 @@ fun InstalledPage(viewModel: InstalledVM) {
                             )
                         }
                         if (downloads.isNotEmpty()) items(items = downloads
-                            .sortedBy { it.state.name }
+                            .sortedBy { it.state?.name }
                         ) { item ->
                             DownloadedItem(
                                 item = item,
                                 iconDetails = iconDetails[item.packageName],
-                                repo = repositoriesMap[item.state.repoId],
+                                repo = repositoriesMap[item.state?.repoId],
                                 state = item.state,
                             ) {
                                 neoActivity.navigateProduct(item.packageName)
@@ -300,7 +300,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                             DownloadedItem(
                                 item = item,
                                 iconDetails = iconDetails[item.packageName],
-                                repo = repositoriesMap[item.state.repoId],
+                                repo = repositoriesMap[item.state?.repoId],
                                 state = item.state,
                                 onUserClick = { neoActivity.navigateProduct(item.packageName) },
                                 onEraseClick = { viewModel.eraseDownloaded(item) },

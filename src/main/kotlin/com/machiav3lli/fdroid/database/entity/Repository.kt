@@ -1,70 +1,100 @@
 package com.machiav3lli.fdroid.database.entity
 
 import android.util.Base64
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.machiav3lli.fdroid.ROW_ID
-import com.machiav3lli.fdroid.TABLE_REPOSITORY
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
+import io.realm.kotlin.ext.realmListOf
+import io.realm.kotlin.ext.toRealmList
+import io.realm.kotlin.serializers.RealmListKSerializer
+import io.realm.kotlin.types.RealmList
+import io.realm.kotlin.types.RealmObject
+import io.realm.kotlin.types.annotations.PrimaryKey
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.mongodb.kbson.ObjectId
 import java.net.URL
 import java.nio.charset.Charset
 
-@Entity(tableName = TABLE_REPOSITORY)
 @Serializable
-data class Repository(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = ROW_ID)
-    val id: Long = 0,
-    var address: String = "",
-    val mirrors: List<String> = emptyList(),
-    val name: String = "",
-    val description: String = "",
-    val version: Int = 21,
-    val enabled: Boolean = false,
-    var fingerprint: String = "",
-    val lastModified: String = "",
-    val entityTag: String = "",
-    val updated: Long = 0L,
-    val timestamp: Long = 0L,
-    var authentication: String = "",
-) {
+class Repository() : RealmObject {
+    var address: String = ""
+    @Serializable(RealmListKSerializer::class)
+    var mirrors: RealmList<String> = realmListOf()
+    var name: String = ""
+    var description: String = ""
+    var version: Int = 21
+    var enabled: Boolean = false
+    var fingerprint: String = ""
+    var lastModified: String = ""
+    var entityTag: String = ""
+    var updated: Long = 0L
+    var timestamp: Long = 0L
+    var authentication: String = ""
+
+    @PrimaryKey
+    var key: ObjectId = ObjectId()
+
+    var id: Long = key.asInt64().value
+
     val intentAddress: String
         get() = "${address.trimEnd('/')}?fingerprint=$fingerprint"
 
-    fun edit(address: String, fingerprint: String, authentication: String): Repository = let {
+    constructor(
+        address: String = "",
+        mirrors: List<String> = emptyList(),
+        name: String = "",
+        description: String = "",
+        version: Int = 21,
+        enabled: Boolean = false,
+        fingerprint: String = "",
+        lastModified: String = "",
+        entityTag: String = "",
+        updated: Long = 0L,
+        timestamp: Long = 0L,
+        authentication: String = "",
+    ) : this() {
+        this.address = address
+        this.mirrors = mirrors.toRealmList()
+        this.name = name
+        this.description = description
+        this.version = version
+        this.enabled = enabled
+        this.fingerprint = fingerprint
+        this.lastModified = lastModified
+        this.entityTag = entityTag
+        this.updated = updated
+        this.timestamp = timestamp
+        this.authentication = authentication
+    }
+
+    fun edit(address: String, fingerprint: String, authentication: String): Repository = apply {
         val changed = this.address != address || this.fingerprint != fingerprint
-        copy(
-            lastModified = if (changed) "" else lastModified,
-            entityTag = if (changed) "" else entityTag,
-            address = address,
-            fingerprint = fingerprint,
-            authentication = authentication,
-        )
+        this.lastModified = if (changed) "" else lastModified
+        this.entityTag = if (changed) "" else entityTag
+        this.address = address
+        this.fingerprint = fingerprint
+        this.authentication = authentication
     }
 
     fun update(
         mirrors: List<String>, name: String, description: String, version: Int,
         lastModified: String, entityTag: String, timestamp: Long,
-    ): Repository = copy(
-        mirrors = mirrors,
-        name = name,
-        description = description,
-        version = if (version >= 0) version else this.version,
-        lastModified = lastModified,
-        entityTag = entityTag,
-        updated = System.currentTimeMillis(),
-        timestamp = timestamp,
-    )
+    ): Repository = apply {
+        this.mirrors = mirrors.toRealmList()
+        this.name = name
+        this.description = description
+        this.version = if (version >= 0) version else this.version
+        this.lastModified = lastModified
+        this.entityTag = entityTag
+        this.updated = System.currentTimeMillis()
+        this.timestamp = timestamp
+    }
 
-    fun enable(enabled: Boolean): Repository = copy(
-        enabled = enabled,
-        lastModified = "",
-        entityTag = "",
-    )
+    fun enable(enabled: Boolean): Repository = apply {
+        this.enabled = enabled
+        this.lastModified = ""
+        this.entityTag = ""
+    }
 
     fun setAuthentication(username: String?, password: String?) {
         this.authentication = username?.let { u ->
@@ -127,7 +157,7 @@ data class Repository(
             address: String, name: String, description: String,
             version: Int, enabled: Boolean, fingerprint: String, authentication: String,
         ): Repository = Repository(
-            0, address, emptyList(), name, description, version, enabled,
+            address, emptyList(), name, description, version, enabled,
             fingerprint, "", "", 0L, 0L, authentication
         )
 

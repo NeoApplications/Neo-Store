@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.service.worker
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.InstallTask
 import com.machiav3lli.fdroid.database.entity.Release
+import io.realm.kotlin.types.EmbeddedRealmObject
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -24,12 +25,13 @@ class DownloadTask(
         packageName = packageName,
         repositoryId = repoId,
         versionCode = release.versionCode,
-        versionName = release.version,
-        label = name,
-        cacheFileName = release.cacheFileName,
-        added = System.currentTimeMillis(),
-        requireUser = false,
-    )
+        versionName = release.version
+    ).apply {
+        this.label = name
+        this.cacheFileName = release.cacheFileName
+        this.added = System.currentTimeMillis()
+        this.requireUser = false
+    }
 
     fun toJSON() = Json.encodeToString(this)
 
@@ -39,7 +41,7 @@ class DownloadTask(
 }
 
 @Serializable
-sealed class DownloadState {
+sealed class DownloadState : EmbeddedRealmObject {
     abstract val packageName: String
     abstract val name: String
     abstract val version: String

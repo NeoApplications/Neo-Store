@@ -1,66 +1,68 @@
 package com.machiav3lli.fdroid.database.dao
 
-import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
 import com.machiav3lli.fdroid.database.entity.Repository
+import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.query
+import io.realm.kotlin.query.RealmResults
+import io.realm.kotlin.query.Sort
+import io.realm.kotlin.query.find
+import io.realm.kotlin.query.max
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.mapLatest
+import org.mongodb.kbson.ObjectId
 
-@Dao
-interface RepositoryDao : BaseDao<Repository> {
-    @Query("SELECT COUNT(_id) FROM repository")
-    fun getCount(): Int
+@OptIn(ExperimentalCoroutinesApi::class)
+class RepositoryDao(private val realm: Realm) : BaseDao<Repository>(realm) {
 
-    fun put(repository: Repository): Repository {
-        repository.let { item ->
-            val newId = if (item.id > 0L) update(item).toLong() else returnInsert(item)
-            return if (newId != repository.id) repository.copy(id = newId) else repository
-        }
+    fun getCount(): Long = realm.query<Repository>()
+        .count()
+        .find()
+
+    fun insertPatch(vararg repos: Repository): List<Repository> = repos.map { repo ->
+        val old = all.find { it.address == repo.address || it.mirrors == repo.mirrors }
+        if (old != null) upsert(repo.apply { key = old.key })
+        else insert(repo.apply { key = ObjectId() })
     }
 
-    suspend fun insertOrUpdate(vararg repos: Repository) {
-        repos.forEach { repository ->
-            val old = getAll().find { it.address == repository.address }
-            if (old != null) upsert(repository.copy(id = old.id))
-            else insert(repository.copy(id = 0L))
-        }
+    fun get(id: Long): Repository? =
+        realm.query<Repository>("id = $0", id)
+            .first()
+            .find()
+
+    fun getFlow(id: Long): Flow<Repository?> =
+        realm.query<Repository>("id = $0", id)
+            .first()
+            .asFlow()
+            .mapLatest { it.obj }
+
+    val all: RealmResults<Repository>
+        get() = realm.query<Repository>()
+            .sort("id", Sort.ASCENDING)
+            .find()
+
+    val allFlow: Flow<RealmResults<Repository>>
+        get() = realm.query<Repository>()
+            .sort("id", Sort.ASCENDING)
+            .asFlow()
+            .mapLatest { it.list }
+
+    val allEnabledIds: List<Long>
+        get() = realm.query<Repository>("enabled = $0", true)
+            .sort("id", Sort.ASCENDING)
+            .find { it.map(Repository::id) }
+
+    val allDisabledIds: List<Long>
+        get() = realm.query<Repository>("enabled = $0", false)
+            .sort("id", Sort.ASCENDING)
+            .find { it.map(Repository::id) }
+
+    fun deleteById(id: Long) = realm.writeBlocking {
+        delete(query<Repository>("id = $0", id))
     }
 
-    @Insert
-    fun returnInsert(product: Repository): Long
-
-    @Query("SELECT * FROM repository WHERE _id = :id")
-    fun get(id: Long): Repository?
-
-    @Query("SELECT * FROM repository WHERE _id = :id")
-    fun getLive(id: Long): LiveData<Repository?>
-
-    @Query("SELECT * FROM repository WHERE _id = :id")
-    fun getFlow(id: Long): Flow<Repository?>
-
-    @Query("SELECT * FROM repository ORDER BY _id ASC")
-    fun getAllRepositories(): Flow<List<Repository>>
-
-    @Query("SELECT * FROM repository ORDER BY _id ASC")
-    fun getAll(): List<Repository>
-
-    @Query("SELECT * FROM repository ORDER BY _id ASC")
-    fun getAllFlow(): Flow<List<Repository>>
-
-    @Query("SELECT * FROM repository ORDER BY _id ASC")
-    fun getAllLive(): LiveData<List<Repository>>
-
-    @Query("SELECT _id FROM repository WHERE enabled != 0 ORDER BY _id ASC")
-    fun getAllEnabledIds(): List<Long>
-
-    @Query("SELECT _id FROM repository WHERE enabled == 0 ORDER BY _id ASC")
-    fun getAllDisabledIds(): List<Long>
-
-    // TODO clean up products and other tables afterwards
-    @Query("DELETE FROM repository WHERE _id = :id")
-    fun deleteById(id: Long)
-
-    @Query("SELECT MAX(_id) FROM repository")
-    fun latestAddedId(): Long
+    val latestAddedId: Long
+        get() = realm.query<Repository>()
+            .max<Long>("id")
+            .find() ?: 0
 }

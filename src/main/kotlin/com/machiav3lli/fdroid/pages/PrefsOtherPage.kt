@@ -158,7 +158,7 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
                     ?.filterNot { installed.value.keys.contains(it) }
                     ?.forEach { packageName ->
                         scope.launch(Dispatchers.IO) {
-                            MainApplication.db.getProductDao().get(packageName)
+                            MainApplication.db.productDao.get(packageName)
                                 .maxByOrNull { it.suggestedVersionCode }?.toItem()?.let {
                                     MainApplication.wm.install(it)
                                 }

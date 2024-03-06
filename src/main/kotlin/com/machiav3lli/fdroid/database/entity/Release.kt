@@ -1,67 +1,109 @@
 package com.machiav3lli.fdroid.database.entity
 
 import android.net.Uri
-import androidx.room.Entity
-import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
-import com.machiav3lli.fdroid.ROW_SIGNATURE
-import com.machiav3lli.fdroid.ROW_VERSION_CODE
-import com.machiav3lli.fdroid.TABLE_RELEASE
-import com.machiav3lli.fdroid.TABLE_RELEASE_TEMP
+import io.realm.kotlin.ext.backlinks
+import io.realm.kotlin.ext.realmListOf
+import io.realm.kotlin.ext.toRealmList
+import io.realm.kotlin.query.RealmResults
+import io.realm.kotlin.serializers.RealmListKSerializer
+import io.realm.kotlin.types.RealmList
+import io.realm.kotlin.types.RealmObject
+import io.realm.kotlin.types.annotations.PrimaryKey
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-// TODO make a Room entity
-@Entity(
-    tableName = TABLE_RELEASE,
-    primaryKeys = [ROW_PACKAGE_NAME, ROW_VERSION_CODE, ROW_SIGNATURE]
-)
 @Serializable
-open class Release(
-    val packageName: String,
-    val selected: Boolean,
-    val version: String,
-    val versionCode: Long,
-    val added: Long,
-    val size: Long,
-    val minSdkVersion: Int,
-    val targetSdkVersion: Int,
-    val maxSdkVersion: Int,
-    val source: String,
-    val release: String,
-    val hash: String,
-    val hashType: String,
-    val signature: String,
-    val obbMain: String,
-    val obbMainHash: String,
-    val obbMainHashType: String,
-    val obbPatch: String,
-    val obbPatchHash: String,
-    val obbPatchHashType: String,
-    val permissions: List<String>,
-    val features: List<String>,
-    val platforms: List<String>,
-    val incompatibilities: List<Incompatibility>,
-) {
-    @Serializable
-    sealed class Incompatibility {
-        @Serializable
-        data object MinSdk : Incompatibility()
+open class Release() : RealmObject {
+    var packageName: String = ""
+    var selected: Boolean = false
+    var version: String = ""
+    var versionCode: Long = -1L
+    var added: Long = -1L
+    var size: Long = -1L
+    var minSdkVersion: Int = -1
+    var targetSdkVersion: Int = -1
+    var maxSdkVersion: Int = -1
+    var source: String = ""
+    var release: String = ""
+    var hash: String = ""
+    var hashType: String = ""
+    var signature: String = ""
+    var obbMain: String = ""
+    var obbMainHash: String = ""
+    var obbMainHashType: String = ""
+    var obbPatch: String = ""
+    var obbPatchHash: String = ""
+    var obbPatchHashType: String = ""
+    @Serializable(RealmListKSerializer::class)
+    var permissions: RealmList<String> = realmListOf()
+    @Serializable(RealmListKSerializer::class)
+    var features: RealmList<String> = realmListOf()
+    @Serializable(RealmListKSerializer::class)
+    var platforms: RealmList<String> = realmListOf()
+    @Serializable(RealmListKSerializer::class)
+    var incompatibilities: RealmList<Incompatibility> = realmListOf()
 
-        @Serializable
-        data object MaxSdk : Incompatibility()
+    @PrimaryKey
+    private var primaryKey: String = ""
 
-        @Serializable
-        data object Platform : Incompatibility()
+    val product: RealmResults<Product> by backlinks(Product::releases)
 
-        @Serializable
-        data class Feature(val feature: String) : Incompatibility()
+    init {
+        primaryKey = "$packageName/$versionCode/$signature"
+    }
 
-        fun toJSON() = Json.encodeToString(this)
-
-        companion object {
-            fun fromJson(json: String) = Json.decodeFromString<Incompatibility>(json)
-        }
+    constructor(
+        packageName: String,
+        selected: Boolean,
+        version: String,
+        versionCode: Long,
+        added: Long,
+        size: Long,
+        minSdkVersion: Int,
+        targetSdkVersion: Int,
+        maxSdkVersion: Int,
+        source: String,
+        release: String,
+        hash: String,
+        hashType: String,
+        signature: String,
+        obbMain: String,
+        obbMainHash: String,
+        obbMainHashType: String,
+        obbPatch: String,
+        obbPatchHash: String,
+        obbPatchHashType: String,
+        permissions: List<String>,
+        features: List<String>,
+        platforms: List<String>,
+        incompatibilities: List<Incompatibility>,
+    ) : this() {
+        this.packageName = packageName
+        this.selected = selected
+        this.version = version
+        this.versionCode = versionCode
+        this.added = added
+        this.size = size
+        this.minSdkVersion = minSdkVersion
+        this.targetSdkVersion = targetSdkVersion
+        this.maxSdkVersion = maxSdkVersion
+        this.source = source
+        this.release = release
+        this.hash = hash
+        this.hashType = hashType
+        this.signature = signature
+        this.obbMain = obbMain
+        this.obbMainHash = obbMainHash
+        this.obbMainHashType = obbMainHashType
+        this.obbPatch = obbPatch
+        this.obbPatchHash = obbPatchHash
+        this.obbPatchHashType = obbPatchHashType
+        this.permissions = permissions.toRealmList()
+        this.features = features.toRealmList()
+        this.platforms = platforms.toRealmList()
+        this.incompatibilities = incompatibilities.toRealmList()
+        primaryKey = "$packageName/$versionCode/$signature"
     }
 
     val identifier: String
@@ -111,7 +153,6 @@ open class Release(
     )
 }
 
-@Entity(tableName = TABLE_RELEASE_TEMP)
 class ReleaseTemp(
     packageName: String,
     selected: Boolean,

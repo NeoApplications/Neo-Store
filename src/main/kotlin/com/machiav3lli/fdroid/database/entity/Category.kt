@@ -1,17 +1,19 @@
 package com.machiav3lli.fdroid.database.entity
 
-import androidx.room.Entity
-import com.machiav3lli.fdroid.*
+import io.realm.kotlin.ext.parent
+import io.realm.kotlin.types.EmbeddedRealmObject
+import kotlinx.serialization.Serializable
 
-@Entity(
-    tableName = TABLE_CATEGORY,
-    primaryKeys = [ROW_REPOSITORY_ID, ROW_PACKAGE_NAME, ROW_LABEL]
-)
-open class Category {
-    var repositoryId: Long = 0
-    var packageName = ""
+@Serializable
+open class Category() : EmbeddedRealmObject {
     var label = ""
-}
 
-@Entity(tableName = TABLE_CATEGORY_TEMP)
-class CategoryTemp : Category()
+    constructor(label: String) : this() {
+        this.label = label
+    }
+
+    val repositoryId: Long
+        get() = parent<Product>().repositoryId
+    val packageName
+        get() = parent<Product>().packageName
+}

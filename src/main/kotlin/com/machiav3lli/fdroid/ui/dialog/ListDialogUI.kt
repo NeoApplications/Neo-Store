@@ -79,9 +79,9 @@ fun ProductsListDialogUI(
     repositoryId: Long,
     title: String,
 ) {
-    val apps by MainApplication.db.getProductDao().productsForRepositoryFlow(repositoryId)
+    val apps by MainApplication.db.productDao.productsForRepositoryFlow(repositoryId)
         .collectAsState(initial = null)
-    val repo by MainApplication.db.getRepositoryDao().getFlow(repositoryId)
+    val repo by MainApplication.db.repositoryDao.getFlow(repositoryId)
         .collectAsState(initial = null)
 
     ListDialogUI(

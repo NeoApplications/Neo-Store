@@ -81,7 +81,7 @@ fun ProductsCarousel(
     productsList: List<Product>?,
     repositories: Map<Long, Repository>,
     installedMap: Map<String, Installed> = emptyMap(),
-    favorites: Array<String>,
+    favorites: List<String>,
     onFavouriteClick: (ProductItem) -> Unit,
     onUserClick: (ProductItem) -> Unit = {},
 ) {

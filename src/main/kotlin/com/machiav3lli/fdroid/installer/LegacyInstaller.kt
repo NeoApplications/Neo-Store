@@ -51,7 +51,7 @@ class LegacyInstaller(context: Context) : BaseInstaller(context) {
                         .setFlags(flags or Intent.FLAG_ACTIVITY_NEW_TASK)
                 )
             }
-            MainApplication.db.getInstallTaskDao().delete(packageName)
+            MainApplication.db.installTaskDao.delete(packageName)
             MainApplication.enqueuedInstalls.remove(packageName)
         }
 

@@ -144,7 +144,7 @@ fun PrefsReposPage(viewModel: PrefsVM) {
             ) {
                 sheetData?.let {
                     RepoPage(
-                        repositoryId = it.repositoryId,
+                        repoId = it.repoId,
                         initEditMode = it.editMode,
                         onDismiss = {
                             viewModel.closeRepositorySheet()

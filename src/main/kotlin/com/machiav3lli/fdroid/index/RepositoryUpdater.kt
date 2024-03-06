@@ -2,8 +2,9 @@ package com.machiav3lli.fdroid.index
 
 import android.content.Context
 import android.net.Uri
+import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Cache
-import com.machiav3lli.fdroid.database.DatabaseX
+import com.machiav3lli.fdroid.database.RealmRepo
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
@@ -60,16 +61,15 @@ object RepositoryUpdater {
 
     private val updaterLock = Any()
     private val cleanupLock = Any()
-    lateinit var db: DatabaseX
+    val db: RealmRepo = MainApplication.db
 
     fun init(context: Context) {
-        db = DatabaseX.getInstance(context)
         var lastDisabled = setOf<Long>()
 
         runBlocking(Dispatchers.IO) {
             launch {
                 val newDisabled = CoroutineUtils.querySingle {
-                    db.getRepositoryDao().getAllDisabledIds()
+                    db.repositoryDao.allDisabledIds
                 }.toSet()
 
                 val disabled = newDisabled - lastDisabled
@@ -92,21 +92,21 @@ object RepositoryUpdater {
 
     suspend fun update(
         context: Context,
-        repository: Repository, unstable: Boolean,
+        repository: Repository, allowUnstable: Boolean,
         callback: (Stage, Long, Long?) -> Unit,
     ): Boolean {
         return update(
             context,
             repository,
             listOf(IndexType.INDEX_V1, IndexType.INDEX),
-            unstable,
+            allowUnstable,
             callback
         )
     }
 
     private suspend fun update(
         context: Context,
-        repository: Repository, indexTypes: List<IndexType>, unstable: Boolean,
+        repository: Repository, indexTypes: List<IndexType>, allowUnstable: Boolean,
         callback: (Stage, Long, Long?) -> Unit,
     ): Boolean {
         val indexType = indexTypes[0]
@@ -126,7 +126,7 @@ object RepositoryUpdater {
                             context,
                             repository,
                             indexTypes.subList(1, indexTypes.size),
-                            unstable,
+                            allowUnstable,
                             callback
                         )
                     } else {
@@ -142,7 +142,7 @@ object RepositoryUpdater {
                         CoroutineUtils.managedSingle {
                             processFile(
                                 context,
-                                repository, indexType, unstable,
+                                repository, indexType, allowUnstable,
                                 file, result.lastModified, result.entityTag, callback
                             )
                         }
@@ -184,18 +184,17 @@ object RepositoryUpdater {
 
     private fun processFile(
         context: Context,
-        repository: Repository, indexType: IndexType, unstable: Boolean,
+        repository: Repository, indexType: IndexType, allowUnstable: Boolean,
         file: File, lastModified: String, entityTag: String, callback: (Stage, Long, Long?) -> Unit,
     ): Boolean {
         var rollback = true
-        val db = DatabaseX.getInstance(context)
+        val db = MainApplication.db
         return synchronized(updaterLock) {
             try {
                 val jarFile = JarFile(file, true)
                 val indexEntry = jarFile.getEntry(indexType.contentName) as JarEntry
                 val total = indexEntry.size
-                db.getProductTempDao().emptyTable()
-                db.getCategoryTempDao().emptyTable()
+                db.productTempDao.emptyTable()
                 val features = context.packageManager.systemAvailableFeatures
                     .asSequence().map { it.name }.toSet() + setOf("android.hardware.touchscreen")
 
@@ -227,11 +226,10 @@ object RepositoryUpdater {
                                         throw InterruptedException()
                                     }
                                     products += product.apply {
-                                        refreshReleases(features, unstable)
-                                        refreshVariables()
+                                        refreshReleases(features, allowUnstable)
                                     }
                                     if (products.size >= 50) {
-                                        db.getProductTempDao().putTemporary(products)
+                                        db.productTempDao.putTemporary(products)
                                         products.clear()
                                     }
                                 }
@@ -249,7 +247,7 @@ object RepositoryUpdater {
                             throw InterruptedException()
                         }
                         if (products.isNotEmpty()) {
-                            db.getProductTempDao().putTemporary(products)
+                            db.productTempDao.putTemporary(products)
                             products.clear()
                         }
                         Pair(changedRepository, certificateFromIndex)
@@ -325,21 +323,23 @@ object RepositoryUpdater {
                                         unmergedReleases.clear()
                                     }
                                     var progress = 0
-                                    indexMerger.forEach(repository.id, 50) { products, totalCount ->
+                                    indexMerger.forEach(
+                                        repository.id,
+                                        50
+                                    ) { productReleases, totalCount ->
                                         if (Thread.interrupted()) {
                                             throw InterruptedException()
                                         }
-                                        progress += products.size
+                                        progress += productReleases.size
                                         callback(
                                             Stage.MERGE,
                                             progress.toLong(),
                                             totalCount.toLong()
                                         )
-                                        db.getProductTempDao().putTemporary(products
+                                        db.productTempDao.putTemporary(productReleases
                                             .map {
                                                 it.apply {
-                                                    refreshReleases(features, unstable)
-                                                    refreshVariables()
+                                                    refreshReleases(features, allowUnstable)
                                                 }
                                             })
                                     }
@@ -398,7 +398,7 @@ object RepositoryUpdater {
 
                     val commitRepository = if (workRepository.fingerprint != fingerprint) {
                         if (workRepository.fingerprint.isEmpty()) {
-                            workRepository.copy(fingerprint = fingerprint)
+                            workRepository.apply { this.fingerprint = fingerprint }
                         } else {
                             throw UpdateException(
                                 ErrorType.VALIDATION,

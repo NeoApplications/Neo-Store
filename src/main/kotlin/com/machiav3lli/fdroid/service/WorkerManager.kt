@@ -106,8 +106,8 @@ class WorkerManager(appContext: Context) {
             }
         }
         scope.launch {
-            MainApplication.db.getInstallTaskDao()
-                .getAllFlow() // Add similar table for DownloadTasks
+            MainApplication.db.installTaskDao
+                .allFlow // Add similar table for DownloadTasks
                 .stateIn(
                     scope,
                     SharingStarted.Eagerly,
@@ -175,13 +175,13 @@ class WorkerManager(appContext: Context) {
             productItems.map { productItem ->
                 Triple(
                     productItem.packageName,
-                    MainApplication.db.getInstalledDao().get(productItem.packageName),
-                    MainApplication.db.getRepositoryDao().get(productItem.repositoryId)
+                    MainApplication.db.installedDao.get(productItem.packageName),
+                    MainApplication.db.repositoryDao.get(productItem.repositoryId)
                 )
             }
                 .filter { (_, installed, repo) -> (enforce || installed != null) && repo != null }
                 .forEach { (packageName, installed, repo) ->
-                    val productRepository = MainApplication.db.getProductDao().get(packageName)
+                    val productRepository = MainApplication.db.productDao.get(packageName)
                         .filter { product -> product.repositoryId == repo!!.id }
                         .map { product -> Pair(product, repo!!) }
                     scope.launch {
@@ -407,11 +407,11 @@ class WorkerManager(appContext: Context) {
             else CoroutineScope(Dispatchers.Default).launch {
                 MainApplication.wm.notificationManager
                     .cancel(NOTIFICATION_ID_SYNCING)
-                MainApplication.db.getRepositoryDao().getAllEnabledIds().forEach {
+                MainApplication.db.repositoryDao.allEnabledIds.forEach {
                     if (syncsRunning[it] == null) MainApplication.wm.notificationManager
                         .cancel(NOTIFICATION_ID_SYNCING + it.toInt())
                 }
-                MainApplication.db.getProductDao()
+                MainApplication.db.productDao
                     .queryObject(
                         installed = true,
                         updates = true,
@@ -427,7 +427,7 @@ class WorkerManager(appContext: Context) {
                             MainApplication.wm.update(*result.toTypedArray())
                         }
                     }
-                MainApplication.db.getProductDao()
+                MainApplication.db.productDao
                     .queryObject(
                         installed = true,
                         updates = false,
@@ -436,7 +436,7 @@ class WorkerManager(appContext: Context) {
                         ascending = true,
                     ).filter { product ->
                         product.antiFeatures.contains(AntiFeature.KNOWN_VULN.key)
-                                && MainApplication.db.getExtrasDao()[product.packageName]?.ignoreVulns != true
+                                && MainApplication.db.extrasDao[product.packageName]?.ignoreVulns != true
                     }.let { installedWithVulns ->
                         if (installedWithVulns.isNotEmpty())
                             context.displayVulnerabilitiesNotification(
@@ -491,7 +491,7 @@ class WorkerManager(appContext: Context) {
 
                     downloadsRunning.compute(task.key) { _, _ ->
                         when (wi.state) {
-                            WorkInfo.State.ENQUEUED  -> {
+                            WorkInfo.State.ENQUEUED -> {
                                 notificationBuilder
                                     .setContentTitle(
                                         appContext.getString(
@@ -516,7 +516,7 @@ class WorkerManager(appContext: Context) {
                                 )
                             }
 
-                            WorkInfo.State.RUNNING   -> {
+                            WorkInfo.State.RUNNING -> {
                                 notificationBuilder
                                     .setContentTitle(
                                         appContext.getString(
@@ -575,7 +575,7 @@ class WorkerManager(appContext: Context) {
                                     )
                                 // TODO add to InstallTask & Launch InstallerWork
                                 CoroutineScope(Dispatchers.IO).launch {
-                                    MainApplication.db.getInstallTaskDao().put(task.toInstallTask())
+                                    MainApplication.db.installTaskDao.upsert(task.toInstallTask())
                                 }
                                 if (!Preferences[Preferences.Key.KeepInstallNotification]) {
                                     notificationBuilder.setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
@@ -591,7 +591,7 @@ class WorkerManager(appContext: Context) {
                                 )
                             }
 
-                            WorkInfo.State.FAILED    -> {
+                            WorkInfo.State.FAILED -> {
                                 allProcessed += 1
                                 allFailed += 1
                                 val errorType = when {
@@ -620,18 +620,19 @@ class WorkerManager(appContext: Context) {
                                 )
                             }
 
-                            WorkInfo.State.BLOCKED   -> null
+                            WorkInfo.State.BLOCKED -> null
                         }
                     }?.let {
                         CoroutineScope(Dispatchers.Default).launch { // TODO manage abrupt breaks
-                            MainApplication.db.getDownloadedDao().upsert(
+                            MainApplication.db.downloadedDao.upsert(
                                 Downloaded(
                                     it.packageName,
                                     it.version,
-                                    it.cacheFileName,
-                                    System.currentTimeMillis(),
-                                    it
-                                )
+                                    it.cacheFileName
+                                ).apply {
+                                    changed = System.currentTimeMillis()
+                                    state = it
+                                }
                             )
                         }
                     }

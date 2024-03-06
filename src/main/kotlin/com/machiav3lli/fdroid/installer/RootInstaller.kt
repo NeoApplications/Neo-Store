@@ -132,7 +132,7 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
                             Shell.cmd(cacheFile.deletePackage()).submit()
                     }
             }
-            MainApplication.db.getInstallTaskDao().delete(packageName)
+            MainApplication.db.installTaskDao.delete(packageName)
             MainApplication.enqueuedInstalls.remove(packageName)
         }
 

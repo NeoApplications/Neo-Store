@@ -27,11 +27,13 @@ import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.database.entity.Incompatibility
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.Contrast
+import com.machiav3lli.fdroid.entity.LauncherActivity
 import com.machiav3lli.fdroid.entity.LinkType
 import com.machiav3lli.fdroid.entity.PermissionGroup
 import com.machiav3lli.fdroid.service.worker.DownloadWorker
@@ -61,7 +63,7 @@ import java.util.Locale
 import kotlin.math.abs
 
 object Utils {
-    fun PackageInfo.toInstalledItem(launcherActivities: List<Pair<String, String>> = emptyList()): Installed {
+    fun PackageInfo.toInstalledItem(launcherActivities: List<LauncherActivity> = emptyList()): Installed {
         val signatureString = singleSignature?.let(Utils::calculateHash).orEmpty()
         return Installed(
             packageName,
@@ -200,7 +202,8 @@ object Utils {
 
     val charactersToBeEscaped = Regex("""[\\${'$'}"`]""")
 
-    fun quotePath(parameter: String): String = "\"${parameter.replace(charactersToBeEscaped) { "\\${it.value}" }}\""
+    fun quotePath(parameter: String): String =
+        "\"${parameter.replace(charactersToBeEscaped) { "\\${it.value}" }}\""
 }
 
 fun <T> findSuggestedProduct(
@@ -220,6 +223,58 @@ fun <T> findSuggestedProduct(
             { extract(it).versionCode },
         )
     )
+}
+
+fun List<LauncherActivity>.getMap() =
+    associate { it.activityName to it.label }
+
+fun List<Pair<String, String>>.toLauncherActivities() =
+    mapNotNull { LauncherActivity(it.first, it.second) }
+
+fun MutableList<Release>.refresh(
+    product: Product,
+    features: Set<String>,
+    unstable: Boolean,
+) {
+    val releasePairs = this
+        .filter { it.packageName == product.packageName }
+        .distinctBy { it.identifier }
+        .associateWith { release ->
+            val incompatibilities = mutableListOf<Incompatibility>()
+            if (release.minSdkVersion > 0 && Android.sdk < release.minSdkVersion) {
+                incompatibilities += Incompatibility.MinSdk
+            }
+            if (release.maxSdkVersion > 0 && Android.sdk > release.maxSdkVersion) {
+                incompatibilities += Incompatibility.MaxSdk
+            }
+            if (release.platforms.isNotEmpty() && release.platforms.intersect(Android.platforms)
+                    .isEmpty()
+            ) {
+                incompatibilities += Incompatibility.Platform
+            }
+            incompatibilities += (release.features - features).sorted()
+                .map { Incompatibility.Feature(it) }
+            incompatibilities.toList()
+        }
+
+    val predicate: (Release) -> Boolean = {
+        unstable || product.suggestedVersionCode <= 0 ||
+                it.versionCode <= product.suggestedVersionCode
+    }
+    val firstRelease =
+        releasePairs.entries
+            .sortedByDescending { it.key.versionCode }
+            .firstOrNull { it.value.isEmpty() && predicate(it.key) }
+            ?: releasePairs.entries.firstOrNull { predicate(it.key) }
+
+    replaceAll { rel ->
+        if (rel.packageName == product.packageName) {
+            releasePairs[rel]?.let { incompatibilities ->
+                rel.copy(incompatibilities = incompatibilities, selected = firstRelease
+                    ?.let { it.key.versionCode == rel.versionCode && it.value == rel.incompatibilities } == true)
+            } ?: rel
+        } else rel
+    }
 }
 
 val Context.isDarkTheme: Boolean
@@ -301,7 +356,7 @@ fun Context.showBatteryOptimizationDialog() {
         .show()
 }
 
-fun PackageManager.getLaunchActivities(packageName: String): List<Pair<String, String>> =
+fun PackageManager.getLaunchActivities(packageName: String): List<LauncherActivity> =
     queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER), 0)
         .mapNotNull { resolveInfo -> resolveInfo.activityInfo }
         .filter { activityInfo -> activityInfo.packageName == packageName }
@@ -313,7 +368,7 @@ fun PackageManager.getLaunchActivities(packageName: String): List<Pair<String, S
                 null
             }
             label?.let { labelName ->
-                Pair(
+                LauncherActivity(
                     activityInfo.name,
                     labelName
                 )
@@ -327,7 +382,7 @@ fun Context.onLaunchClick(installed: Installed, fragmentManager: FragmentManager
             .show(fragmentManager, LaunchDialog::class.java.name)
     } else {
         installed.launcherActivities.firstOrNull()
-            ?.let { startLauncherActivity(installed.packageName, it.first) }
+            ?.let { startLauncherActivity(installed.packageName, it.activityName) }
     }
 }
 

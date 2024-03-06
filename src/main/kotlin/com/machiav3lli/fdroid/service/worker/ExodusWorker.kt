@@ -11,7 +11,7 @@ import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.ARG_WORK_TYPE
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.database.entity.ExodusInfo
+import com.machiav3lli.fdroid.database.entity.ExodusData
 import com.machiav3lli.fdroid.database.entity.Tracker
 import com.machiav3lli.fdroid.network.RExodusAPI
 import kotlinx.coroutines.CoroutineScope
@@ -85,7 +85,7 @@ class ExodusWorker(
                 try {
                     val trackerList = repoExodusAPI.getTrackers()
                     // TODO **conditionally** update DB with the trackers
-                    MainApplication.db.getTrackerDao().upsert(
+                    MainApplication.db.trackerDao.upsert(
                         *trackerList.trackers
                             .map { (key, value) ->
                                 Tracker(
@@ -96,7 +96,8 @@ class ExodusWorker(
                                     value.creation_date,
                                     value.website,
                                     value.description,
-                                    value.categories
+                                    value.categories,
+                                    value.documentation,
                                 )
                             }.toTypedArray()
                     )
@@ -113,11 +114,11 @@ class ExodusWorker(
                 try {
                     val exodusDataList = repoExodusAPI.getExodusInfo(packageName)
                     val latestExodusApp = exodusDataList.maxByOrNull { it.version_code.toLong() }
-                        ?: ExodusInfo()
+                        ?: ExodusData()
 
                     val exodusInfo = latestExodusApp.toExodusInfo(packageName)
                     Log.e(this::javaClass.name, exodusInfo.toString())
-                    MainApplication.db.getExodusInfoDao().upsert(exodusInfo)
+                    MainApplication.db.exodusInfoDao.upsert(exodusInfo)
                 } catch (e: Exception) {
                     Log.e(this::javaClass.name, "Failed fetching exodus info", e)
                 }

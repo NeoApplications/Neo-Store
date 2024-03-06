@@ -1,20 +1,32 @@
 package com.machiav3lli.fdroid.database.entity
 
-import androidx.room.Entity
-import com.machiav3lli.fdroid.FIELD_CACHEFILENAME
-import com.machiav3lli.fdroid.FIELD_VERSION
-import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
-import com.machiav3lli.fdroid.TABLE_DOWNLOADED
 import com.machiav3lli.fdroid.service.worker.DownloadState
+import io.realm.kotlin.types.RealmObject
+import io.realm.kotlin.types.annotations.PrimaryKey
 
-@Entity(
-    tableName = TABLE_DOWNLOADED,
-    primaryKeys = [ROW_PACKAGE_NAME, FIELD_VERSION, FIELD_CACHEFILENAME]
-)
-data class Downloaded(
-    var packageName: String = "",
-    var version: String = "",
-    var cacheFileName: String = "",
-    var changed: Long = 0L,
-    var state: DownloadState,
-)
+class Downloaded() : RealmObject {
+    var packageName: String = ""
+    var version: String = ""
+    var cacheFileName: String = ""
+
+    @PrimaryKey
+    private var primaryKey: String = ""
+
+    var changed: Long = 0L
+    var state: DownloadState? = null
+
+    init {
+        primaryKey = "$packageName/$version/$cacheFileName"
+    }
+
+    constructor(
+        packageName: String = "",
+        version: String = "",
+        cacheFileName: String = "",
+    ) : this() {
+        this.packageName = packageName
+        this.version = version
+        this.cacheFileName = cacheFileName
+        primaryKey = "$packageName/$version/$cacheFileName"
+    }
+}

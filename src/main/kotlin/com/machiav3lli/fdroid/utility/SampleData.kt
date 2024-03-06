@@ -31,7 +31,6 @@ object SampleData {
         incompatibilities = listOf()
     )
     val demoRepository = Repository(
-        0,
         "https://f-droid.org/repo",
         emptyList(),
         "F-Droid",

@@ -1,21 +1,35 @@
 package com.machiav3lli.fdroid.database.dao
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Update
-import androidx.room.Upsert
+import io.realm.kotlin.Realm
+import io.realm.kotlin.UpdatePolicy
+import io.realm.kotlin.types.RealmObject
 
-interface BaseDao<T> {
-    @Insert
-    fun insert(vararg product: T)
+open class BaseDao<T : RealmObject>(private val realm: Realm) {
+    fun insert(obj: T) = realm.writeBlocking {
+        copyToRealm(obj, updatePolicy = UpdatePolicy.ERROR)
+    }
 
-    @Upsert
-    fun upsert(vararg product: T)
+    fun insert(vararg objs: T) = realm.writeBlocking {
+        objs.forEach { obj ->
+            copyToRealm(obj, updatePolicy = UpdatePolicy.ERROR)
+        }
+    }
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(vararg obj: T): Int
+    fun upsert(obj: T) = realm.writeBlocking {
+        copyToRealm(obj, updatePolicy = UpdatePolicy.ALL)
+    }
 
-    @Delete
-    fun delete(obj: T)
+    fun upsert(vararg objs: T) = realm.writeBlocking {
+        objs.forEach { obj ->
+            copyToRealm(obj, updatePolicy = UpdatePolicy.ALL)
+        }
+    }
+
+    fun delete(obj: T) = realm.writeBlocking {
+        delete(obj)
+    }
+
+    fun emptyTable() = realm.writeBlocking {
+        deleteAll()
+    }
 }

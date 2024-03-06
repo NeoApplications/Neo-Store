@@ -18,8 +18,25 @@ import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import com.machiav3lli.fdroid.content.Cache
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.database.DatabaseX
-import com.machiav3lli.fdroid.database.databaseModule
+import com.machiav3lli.fdroid.database.RealmRepo
+import com.machiav3lli.fdroid.database.entity.Category
+import com.machiav3lli.fdroid.database.entity.Downloaded
+import com.machiav3lli.fdroid.database.entity.ExodusInfo
+import com.machiav3lli.fdroid.database.entity.Extras
+import com.machiav3lli.fdroid.database.entity.Incompatibility
+import com.machiav3lli.fdroid.database.entity.InstallTask
+import com.machiav3lli.fdroid.database.entity.Installed
+import com.machiav3lli.fdroid.database.entity.Product
+import com.machiav3lli.fdroid.database.entity.ProductTemp
+import com.machiav3lli.fdroid.database.entity.Release
+import com.machiav3lli.fdroid.database.entity.ReleaseTemp
+import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.database.entity.Tracker
+import com.machiav3lli.fdroid.database.realmRepoModule
+import com.machiav3lli.fdroid.entity.Author
+import com.machiav3lli.fdroid.entity.Donate
+import com.machiav3lli.fdroid.entity.LauncherActivity
+import com.machiav3lli.fdroid.entity.Screenshot
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.network.CoilDownloader
 import com.machiav3lli.fdroid.network.Downloader
@@ -27,14 +44,18 @@ import com.machiav3lli.fdroid.network.downloadClientModule
 import com.machiav3lli.fdroid.network.exodusModule
 import com.machiav3lli.fdroid.service.PackageChangedReceiver
 import com.machiav3lli.fdroid.service.WorkerManager
-import com.machiav3lli.fdroid.service.workmanagerModule
+import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.service.worker.SyncRequest
 import com.machiav3lli.fdroid.service.worker.SyncWorker
+import com.machiav3lli.fdroid.service.workmanagerModule
 import com.machiav3lli.fdroid.utility.Utils.setLanguage
 import com.machiav3lli.fdroid.utility.Utils.toInstalledItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
+import com.machiav3lli.fdroid.utility.toLauncherActivities
 import io.ktor.client.engine.ProxyBuilder
 import io.ktor.http.Url
+import io.realm.kotlin.Realm
+import io.realm.kotlin.RealmConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -50,7 +71,7 @@ import java.util.*
 @Suppress("unused")
 class MainApplication : Application(), ImageLoaderFactory {
 
-    val db: DatabaseX by inject()
+    val db: RealmRepo by inject()
     lateinit var mActivity: AppCompatActivity
     val wm: WorkerManager by inject()
 
@@ -68,9 +89,10 @@ class MainApplication : Application(), ImageLoaderFactory {
             }
 
         val context: Context get() = neo_store.applicationContext
+        lateinit var realm: Realm
 
         val wm: WorkerManager get() = neo_store.wm
-        val db: DatabaseX get() = neo_store.db
+        val db: RealmRepo get() = neo_store.db
 
         private val progress = mutableStateOf(Pair(false, 0f))
 
@@ -92,6 +114,32 @@ class MainApplication : Application(), ImageLoaderFactory {
         )
         appRef = WeakReference(this)
 
+        realm = Realm.open(
+            configuration = RealmConfiguration.create(
+                schema = setOf(
+                    Product::class,
+                    ProductTemp::class,
+                    Release::class,
+                    Repository::class,
+                    ReleaseTemp::class,
+                    Installed::class,
+                    Extras::class,
+                    ExodusInfo::class,
+                    Tracker::class,
+                    Downloaded::class,
+                    InstallTask::class,
+                    // Subentities
+                    Category::class,
+                    Donate::class,
+                    Screenshot::class,
+                    Author::class,
+                    LauncherActivity::class,
+                    Incompatibility::class,
+                    DownloadState::class,
+                )
+            )
+        )
+
         startKoin {
             androidLogger()
             androidContext(this@MainApplication)
@@ -99,7 +147,8 @@ class MainApplication : Application(), ImageLoaderFactory {
                 exodusModule,
                 downloadClientModule,
                 workmanagerModule,
-                databaseModule,
+                //databaseModule,
+                realmRepoModule,
             )
         }
 
@@ -145,10 +194,14 @@ class MainApplication : Application(), ImageLoaderFactory {
                 }.toMap()
         val installedItems = packageManager
             .getInstalledPackages(Android.PackageManager.signaturesFlag)
-            .map { it.toInstalledItem(launcherActivitiesMap[it.packageName].orEmpty()) }
+            .map {
+                it.toInstalledItem(
+                    launcherActivitiesMap[it.packageName]?.toLauncherActivities().orEmpty()
+                )
+            }
         CoroutineScope(Dispatchers.Default).launch {
-            db.getInstalledDao().emptyTable()
-            db.getInstalledDao().put(*installedItems.toTypedArray())
+            db.installedDao.emptyTable()
+            db.installedDao.upsert(*installedItems.toTypedArray())
         }
     }
 
@@ -276,9 +329,9 @@ class MainApplication : Application(), ImageLoaderFactory {
     }
 
     private fun forceSyncAll() {
-        db.getRepositoryDao().getAll().forEach {
+        db.repositoryDao.all.forEach {
             if (it.lastModified.isNotEmpty() || it.entityTag.isNotEmpty()) {
-                db.getRepositoryDao().put(it.copy(lastModified = "", entityTag = ""))
+                db.repositoryDao.upsert(it.apply { lastModified = ""; entityTag = "" })
             }
         }
         SyncWorker.enqueueAll(SyncRequest.FORCE)

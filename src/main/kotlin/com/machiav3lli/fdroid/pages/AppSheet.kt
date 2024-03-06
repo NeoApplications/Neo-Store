@@ -101,6 +101,7 @@ import com.machiav3lli.fdroid.utility.Utils.startUpdate
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.findSuggestedProduct
 import com.machiav3lli.fdroid.utility.generateLinks
+import com.machiav3lli.fdroid.utility.getMap
 import com.machiav3lli.fdroid.utility.shareIntent
 import com.machiav3lli.fdroid.utility.shareReleaseIntent
 import com.machiav3lli.fdroid.utility.startLauncherActivity
@@ -138,11 +139,7 @@ fun AppSheet(
     val mainAction by viewModel.mainAction.collectAsState()
     val actions by viewModel.subActions.collectAsState()
     val extras by viewModel.extras.collectAsState()
-    val productRepos = products?.mapNotNull { product ->
-        repos?.firstOrNull { it.id == product.repositoryId }
-            ?.let { Pair(product, it) }
-    } ?: emptyList()
-    viewModel.updateProductRepos(productRepos)
+    val productRepos by viewModel.productRepos.collectAsState()
     val suggestedProductRepo = findSuggestedProduct(productRepos, installed) { it.first }
     val compatibleReleasePairs = productRepos.asSequence()
         .flatMap { (product, repository) ->
@@ -242,10 +239,9 @@ fun AppSheet(
             }
 
             else                                                                 -> {
-                val productRepository =
-                    viewModel.productRepos.value.asSequence()
-                        .filter { it.first.releases.any { rel -> rel === release } }
-                        .firstOrNull()
+                val productRepository = productRepos.asSequence()
+                    .filter { it.first.releases.any { rel -> rel === release } }
+                    .firstOrNull()
                 if (productRepository != null) {
                     DownloadWorker.enqueue(
                         packageName,
@@ -259,7 +255,6 @@ fun AppSheet(
     }
 
     val onActionClick = { action: ActionState? ->
-        val productRepos = viewModel.productRepos.value
         when (action) {
             ActionState.Install,
             ActionState.Update,
@@ -285,7 +280,12 @@ fun AppSheet(
                         openDialog.value = true
                     } else {
                         installed.launcherActivities.firstOrNull()
-                            ?.let { context.startLauncherActivity(installed.packageName, it.first) }
+                            ?.let {
+                                context.startLauncherActivity(
+                                    installed.packageName,
+                                    it.activityName
+                                )
+                            }
                     }
                 }
 
@@ -466,7 +466,7 @@ fun AppSheet(
                         }
                         if (Preferences[Preferences.Key.ShowScreenshots]) { // TODO add optional screenshots button
                             item {
-                                ScreenshotList(screenShots = suggestedProductRepo.first.screenshots.map {
+                                ScreenshotList(screenShots = product.screenshots.map {
                                     it.toScreenshotItem(
                                         repository = repo,
                                         packageName = product.packageName
@@ -604,7 +604,7 @@ fun AppSheet(
                     shape = RectangleShape,
                 ) {
                     ScreenshotsPage(
-                        screenshots = suggestedProductRepo.first.screenshots.map {
+                        screenshots = product.screenshots.map {
                             it.toScreenshotItem(
                                 repository = repo,
                                 packageName = product.packageName
@@ -621,7 +621,7 @@ fun AppSheet(
                         is DialogKey.Launch -> ActionSelectionDialogUI(
                             titleId = R.string.launch,
                             options = (dialogKey.value as DialogKey.Launch)
-                                .launcherActivities.toMap(),
+                                .launcherActivities.getMap(),
                             openDialogCustom = openDialog,
                             onAction = { key ->
                                 context.startLauncherActivity(

@@ -290,7 +290,7 @@ class NeoActivity : AppCompatActivity() {
                     val packageName = intent.packageName
                     cScope.launch {
                         if (!packageName.isNullOrEmpty()
-                            && db.getProductDao().exists(packageName)
+                            && db.productDao.exists(packageName)
                         ) navigateProduct(packageName)
                         else showSearchSheet(true, packageName)
                     }

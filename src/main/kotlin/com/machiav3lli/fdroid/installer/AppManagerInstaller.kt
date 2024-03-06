@@ -42,7 +42,7 @@ class AppManagerInstaller(context: Context) : BaseInstaller(context) {
                     .setDataAndType(uri, "application/octet-stream")
                     .setFlags(flags)
             )
-            MainApplication.db.getInstallTaskDao().delete(packageName)
+            MainApplication.db.installTaskDao.delete(packageName)
             MainApplication.enqueuedInstalls.remove(packageName)
         }
 

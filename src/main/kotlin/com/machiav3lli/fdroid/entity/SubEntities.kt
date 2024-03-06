@@ -10,7 +10,7 @@ import com.machiav3lli.backup.ui.compose.icons.phosphor.Plus
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.database.entity.Release
+import com.machiav3lli.fdroid.database.entity.Incompatibility
 import com.machiav3lli.fdroid.ui.compose.icons.Icon
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.icon.IcDonateFlattr
@@ -58,12 +58,28 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Swatches
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TrashSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Wrench
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
+import io.realm.kotlin.types.EmbeddedRealmObject
+import io.realm.kotlin.types.annotations.Ignore
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @Serializable
-data class Author(val name: String = "", val email: String = "", val web: String = "") {
+class Author() : EmbeddedRealmObject {
+    var name: String = ""
+    var email: String = ""
+    var web: String = ""
+
+    constructor(
+        name: String = "",
+        email: String = "",
+        web: String = ""
+    ) : this() {
+        this.name = name
+        this.email = email
+        this.web = web
+    }
+
     fun toJSON() = Json.encodeToString(this)
 
     companion object {
@@ -72,24 +88,24 @@ data class Author(val name: String = "", val email: String = "", val web: String
 }
 
 @Serializable
-sealed class Donate {
+sealed class Donate() : EmbeddedRealmObject {
     @Serializable
-    data class Regular(val url: String) : Donate()
+    data class Regular(var url: String) : Donate()
 
     @Serializable
-    data class Bitcoin(val address: String) : Donate()
+    data class Bitcoin(var address: String) : Donate()
 
     @Serializable
-    data class Litecoin(val address: String) : Donate()
+    data class Litecoin(var address: String) : Donate()
 
     @Serializable
-    data class Flattr(val id: String) : Donate()
+    data class Flattr(var id: String) : Donate()
 
     @Serializable
-    data class Liberapay(val id: String) : Donate()
+    data class Liberapay(var id: String) : Donate()
 
     @Serializable
-    data class OpenCollective(val id: String) : Donate()
+    data class OpenCollective(var id: String) : Donate()
 
     fun toJSON() = Json.encodeToString(this)
 
@@ -99,15 +115,49 @@ sealed class Donate {
 }
 
 @Serializable
-class Screenshot(val locale: String, val type: Type, val path: String) {
-    enum class Type(val jsonName: String) {
-        PHONE("phone"),
-        SMALL_TABLET("smallTablet"),
-        LARGE_TABLET("largeTablet")
+class LauncherActivity() : EmbeddedRealmObject {
+    var activityName: String = ""
+    var label: String = ""
+
+    constructor(
+        activityName: String,
+        label: String
+    ) : this() {
+        this.activityName = activityName
+        this.label = label
     }
+}
+
+enum class ScreenshotType(val jsonName: String) {
+    PHONE("phone"),
+    SMALL_TABLET("smallTablet"),
+    LARGE_TABLET("largeTablet")
+}
+
+@Serializable
+class Screenshot() : EmbeddedRealmObject {
+    var locale: String = ""
+    private var typeName: String = ScreenshotType.PHONE.jsonName
+    var path: String = ""
+
+    var type: ScreenshotType
+        get() = ScreenshotType.valueOf(typeName)
+        set(value) {
+            typeName = value.jsonName
+        }
 
     val identifier: String
         get() = "$locale.${type.name}.$path"
+
+    constructor(
+        locale: String,
+        type: ScreenshotType,
+        path: String
+    ) : this() {
+        this.locale = locale
+        this.type = type
+        this.path = path
+    }
 
     fun toJSON() = Json.encodeToString(this)
 
@@ -131,7 +181,7 @@ enum class AntiFeature(val key: String, @StringRes val titleResId: Int) {
     NSFW("NSFW", R.string.not_safe_for_work)
 }
 
-fun String.toAntiFeature(): AntiFeature? = AntiFeature.values().find { it.key == this }
+fun String.toAntiFeature(): AntiFeature? = AntiFeature.entries.find { it.key == this }
 
 sealed interface ComponentState {
     val icon: ImageVector
@@ -294,7 +344,7 @@ data class Request(
 sealed class DialogKey {
     data class Link(val uri: Uri) : DialogKey()
     data class ReleaseIncompatible(
-        val incompatibilities: List<Release.Incompatibility>,
+        val incompatibilities: List<Incompatibility>,
         val platforms: List<String>,
         val minSdkVersion: Int,
         val maxSdkVersion: Int,
@@ -303,7 +353,7 @@ sealed class DialogKey {
     data class ReleaseIssue(val resId: Int) : DialogKey()
     data class Launch(
         val packageName: String,
-        val launcherActivities: List<Pair<String, String>>,
+        val launcherActivities: List<LauncherActivity>,
     ) : DialogKey()
 }
 

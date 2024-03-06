@@ -33,7 +33,6 @@ import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.index.RepositoryUpdater.db
 import com.machiav3lli.fdroid.ui.components.ActionButton
@@ -48,7 +47,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SortDescending
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.mapLatest
 
 @SuppressLint("FlowOperatorInvokedInComposition")
 @OptIn(
@@ -60,12 +58,9 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
     val context = LocalContext.current
     val nestedScrollConnection = rememberNestedScrollInteropConnection()
     val dbHandler = MainApplication.db
-    val repos by dbHandler.getRepositoryDao().getAllFlow().collectAsState(emptyList())
-    val categories by db.getCategoryDao().getAllNamesFlow().collectAsState(emptyList())
-    val licenses by db.getProductDao().getAllLicensesFlow().mapLatest {
-        it.map(Licenses::licenses).flatten().distinct()
-    }
-        .collectAsState(emptyList())
+    val repos by dbHandler.repositoryDao.allFlow.collectAsState(emptyList())
+    val categories by db.categoryDao.allNamesFlow.collectAsState(emptyList())
+    val licenses by db.productDao.getAllLicensesFlow().collectAsState(emptyList())
     val activeRepos by remember(repos) { mutableStateOf(repos.filter { it.enabled }) }
 
     val sortKey = when (navPage) {

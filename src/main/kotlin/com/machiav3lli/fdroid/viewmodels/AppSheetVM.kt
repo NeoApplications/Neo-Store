@@ -5,21 +5,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.database.DatabaseX
-import com.machiav3lli.fdroid.database.entity.ExodusInfo
+import com.machiav3lli.fdroid.database.RealmRepo
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Product
-import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.PrivacyData
 import com.machiav3lli.fdroid.entity.toAntiFeature
 import com.machiav3lli.fdroid.utility.findSuggestedProduct
 import com.machiav3lli.fdroid.utility.generatePermissionGroups
+import com.machiav3lli.fdroid.utility.refresh
 import com.machiav3lli.fdroid.utility.toPrivacyNote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -30,45 +28,46 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
+
+@OptIn(ExperimentalCoroutinesApi::class)
+class AppSheetVM(val db: RealmRepo, val packageName: String) : ViewModel() {
 
     private val cc = Dispatchers.IO
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val products = db.getProductDao().getFlow(packageName).mapLatest { it.filterNotNull() }
+    val products = db.productDao.getFlow(packageName).mapLatest { it.filterNotNull() }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private val developer = products.mapLatest { it.firstOrNull()?.author?.name ?: "" }.stateIn(
-        viewModelScope,
-        SharingStarted.Lazily,
-        ""
-    )
+    private val developer =
+        products.mapLatest { it.firstOrNull()?.author?.name ?: "" }.stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            ""
+        )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val exodusInfo = db.getExodusInfoDao().getFlow(packageName)
-        .mapLatest { it.maxByOrNull(ExodusInfo::version_code) }
+    val exodusInfo = db.exodusInfoDao.getFlow(packageName)
 
-    val trackers = exodusInfo.combine(db.getTrackerDao().getAllFlow()) { a, b ->
+    val trackers = exodusInfo.combine(db.trackerDao.allFlow) { a, b ->
         b.filter { it.key in (a?.trackers ?: emptyList()) }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val repositories = db.getRepositoryDao().getAllFlow().mapLatest { it }
+    val repositories = db.repositoryDao.allFlow.mapLatest { it }
 
-    val installedItem = db.getInstalledDao().getFlow(packageName)
+    val installedItem = db.installedDao.getFlow(packageName)
         .stateIn(
             viewModelScope,
             SharingStarted.Lazily,
             null
         )
 
-    private val _productRepos = MutableStateFlow<List<Pair<Product, Repository>>>(emptyList())
-    val productRepos: StateFlow<List<Pair<Product, Repository>>> = _productRepos
-    fun updateProductRepos(repos: List<Pair<Product, Repository>>) {
-        viewModelScope.launch {
-            _productRepos.emit(repos)
+    val productRepos = combine(products, repositories) { products, repos ->
+        products.mapNotNull { app ->
+            repos.firstOrNull { it.id == app.repositoryId }
+                ?.let { Pair(app, it) }
         }
-    }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        emptyList()
+    )
 
     val privacyData = combine(installedItem, trackers, productRepos) { ins, trs, prs ->
         val suggestedProduct = findSuggestedProduct(prs, ins) { it.first }
@@ -85,13 +84,11 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         PrivacyData(emptyMap(), emptyList(), emptyList())
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val privacyNote = privacyData.mapLatest {
         it.toPrivacyNote()
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val downloadingState = db.getDownloadedDao().getLatestFlow(packageName)
+    val downloadingState = db.downloadedDao.getLatestFlow(packageName)
         .mapLatest { it?.state }
         .stateIn(
             viewModelScope,
@@ -100,7 +97,7 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         )
 
 
-    val extras = db.getExtrasDao().getFlow(packageName)
+    val extras = db.extrasDao.getFlow(packageName)
         .stateIn(
             viewModelScope,
             SharingStarted.Lazily,
@@ -108,7 +105,7 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         )
 
     val authorProducts = combineTransform(
-        db.getProductDao().getAuthorPackagesFlow(developer.value),
+        db.productDao.getAuthorPackagesFlow(developer.value),
         developer
     ) { prods, dev ->
         if (dev.isNotEmpty()) emit(
@@ -168,7 +165,6 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
             old.second == new.second && matchCancel
         }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val mainAction: StateFlow<ActionState?> = actions.mapLatest { it.first }
         .stateIn(
             viewModelScope,
@@ -176,7 +172,6 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
             null
         )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val subActions: StateFlow<Set<ActionState>> = actions.mapLatest { it.second }
         .stateIn(
             viewModelScope,
@@ -195,11 +190,10 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
 
     private suspend fun saveIgnoredVersion(packageName: String, versionCode: Long) {
         withContext(cc) {
-            val oldValue = db.getExtrasDao()[packageName]
-            if (oldValue != null) db.getExtrasDao()
-                .upsert(oldValue.copy(ignoredVersion = versionCode))
-            else db.getExtrasDao()
-                .upsert(Extras(packageName, ignoredVersion = versionCode))
+            val exstVal = db.extrasDao[packageName]
+                ?: Extras(packageName)
+            db.extrasDao
+                .upsert(exstVal.apply { ignoredVersion = versionCode })
         }
     }
 
@@ -212,11 +206,10 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
 
     private suspend fun saveIgnoreUpdates(packageName: String, setBoolean: Boolean) {
         withContext(cc) {
-            val oldValue = db.getExtrasDao()[packageName]
-            if (oldValue != null) db.getExtrasDao()
-                .upsert(oldValue.copy(ignoreUpdates = setBoolean))
-            else db.getExtrasDao()
-                .upsert(Extras(packageName, ignoreUpdates = setBoolean))
+            val exstVal = db.extrasDao[packageName]
+                ?: Extras(packageName)
+            db.extrasDao
+                .upsert(exstVal.apply { ignoreUpdates = setBoolean })
         }
     }
 
@@ -228,11 +221,10 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
 
     private suspend fun saveIgnoreVulns(packageName: String, setBoolean: Boolean) {
         withContext(cc) {
-            val oldValue = db.getExtrasDao()[packageName]
-            if (oldValue != null) db.getExtrasDao()
-                .upsert(oldValue.copy(ignoreVulns = setBoolean))
-            else db.getExtrasDao()
-                .upsert(Extras(packageName, ignoreVulns = setBoolean))
+            val exstVal = db.extrasDao[packageName]
+                ?: Extras(packageName)
+            db.extrasDao
+                .upsert(exstVal.apply { ignoreVulns = setBoolean })
         }
     }
 
@@ -244,22 +236,22 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
 
     private suspend fun saveAllowUnstableUpdates(packageName: String, setBoolean: Boolean) {
         withContext(cc) {
-            val oldValue = db.getExtrasDao()[packageName]
-            if (oldValue != null) db.getExtrasDao()
-                .upsert(oldValue.copy(allowUnstable = setBoolean))
-            else db.getExtrasDao()
-                .upsert(Extras(packageName, allowUnstable = setBoolean))
+            val exstVal = db.extrasDao[packageName]
+                ?: Extras(packageName)
+            db.extrasDao
+                .upsert(exstVal.apply { allowUnstable = setBoolean })
             val features = MainApplication.context.packageManager.systemAvailableFeatures
                 .asSequence().map { it.name }.toSet() + setOf("android.hardware.touchscreen")
-            productRepos.value.forEach {
-                db.getProductDao().upsert(
-                    it.first.apply {
-                        refreshReleases(
-                            features,
-                            setBoolean || Preferences[Preferences.Key.UpdateUnstable]
-                        )
-                        refreshVariables()
-                    }
+            productRepos.value.forEach { (product, _) ->
+                db.releaseDao.upsert(
+                    *product.releases.toMutableList()
+                        .apply {
+                            refresh(
+                                product,
+                                features,
+                                setBoolean || Preferences[Preferences.Key.UpdateUnstable]
+                            )
+                        }.toTypedArray()
                 )
             }
         }
@@ -273,15 +265,14 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
 
     private suspend fun saveFavorite(packageName: String, setBoolean: Boolean) {
         withContext(cc) {
-            val oldValue = db.getExtrasDao()[packageName]
-            if (oldValue != null) db.getExtrasDao()
-                .upsert(oldValue.copy(favorite = setBoolean))
-            else db.getExtrasDao()
-                .upsert(Extras(packageName, favorite = setBoolean))
+            val exstVal = db.extrasDao[packageName]
+                ?: Extras(packageName)
+            db.extrasDao
+                .upsert(exstVal.apply { favorite = setBoolean })
         }
     }
 
-    class Factory(val db: DatabaseX, val packageName: String) :
+    class Factory(val db: RealmRepo, val packageName: String) :
         ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

@@ -22,6 +22,7 @@ val vMoshi = "1.15.0"
 val vNavigation = "2.7.6"
 val vOkhttp = "5.0.0-alpha.12"
 val vPreference = "1.2.1"
+val vRealm = "1.13.0"
 val vRoom = "2.6.1"
 val vSerialization = "1.6.2"
 val vSimpleStorage = "1.5.5"
@@ -33,6 +34,7 @@ plugins {
     kotlin("android") version ("1.9.21")
     kotlin("plugin.serialization") version ("1.9.21")
     id("com.google.devtools.ksp") version ("1.9.21-1.0.16")
+    id("io.realm.kotlin") version ("1.13.0")
 }
 
 android {
@@ -46,16 +48,6 @@ android {
         versionCode = 1009
         versionName = "1.0.0-beta03"
         buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                ksp {
-                    arg("room.schemaLocation", "$projectDir/schemas")
-                    arg("room.incremental", "true")
-                    arg("room.generateKotlin", "true")
-                }
-            }
-        }
     }
 
     sourceSets.forEach { source ->
@@ -197,9 +189,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$vCoroutines")
 
     // Room
-    implementation("androidx.room:room-runtime:$vRoom")
-    implementation("androidx.room:room-ktx:$vRoom")
-    ksp("androidx.room:room-compiler:$vRoom")
+    //implementation("androidx.room:room-runtime:$vRoom")
+    //implementation("androidx.room:room-ktx:$vRoom")
+    //ksp("androidx.room:room-compiler:$vRoom")
+    implementation("io.realm.kotlin:library-base:$vRealm")
 
     // Compose
     implementation("androidx.compose.runtime:runtime:$vCompose")

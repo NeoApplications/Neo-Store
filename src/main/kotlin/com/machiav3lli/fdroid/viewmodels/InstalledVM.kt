@@ -3,12 +3,11 @@ package com.machiav3lli.fdroid.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.machiav3lli.fdroid.database.DatabaseX
+import com.machiav3lli.fdroid.database.RealmRepo
 import com.machiav3lli.fdroid.database.entity.Downloaded
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.IconDetails
 import com.machiav3lli.fdroid.database.entity.Installed
-import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.entity.Request
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +21,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-open class InstalledVM(val db: DatabaseX) : ViewModel() {
+@OptIn(ExperimentalCoroutinesApi::class)
+open class InstalledVM(val db: RealmRepo) : ViewModel() {
 
     private val cc = Dispatchers.IO
     private val sortFilter = MutableStateFlow("")
@@ -31,8 +31,7 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
         viewModelScope.launch { sortFilter.emit(value) }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val installed = db.getInstalledDao().getAllFlow().mapLatest {
+    val installed = db.installedDao.allFlow.mapLatest {
         it.associateBy(Installed::packageName)
     }.stateIn(
         scope = viewModelScope,
@@ -43,11 +42,11 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
     val installedProducts: StateFlow<List<Product>?> = combine(
         sortFilter,
         installed,
-        db.getProductDao().queryFlowList(Request.productsInstalled()),
-        db.getExtrasDao().getAllFlow(),
+        db.productDao.queryFlowList(Request.productsInstalled()),
+        db.extrasDao.allFlow,
     ) { _, _, _, _ ->
         withContext(cc) {
-            db.getProductDao().queryObject(Request.productsInstalled())
+            db.productDao.queryObject(Request.productsInstalled())
         }
     }.stateIn(
         scope = viewModelScope,
@@ -57,11 +56,11 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
 
     val updates: StateFlow<List<Product>?> = combine(
         installed,
-        db.getProductDao().queryFlowList(Request.productsUpdates()),
-        db.getExtrasDao().getAllFlow(),
+        db.productDao.queryFlowList(Request.productsUpdates()),
+        db.extrasDao.allFlow,
     ) { _, _, _ ->
         withContext(cc) {
-            db.getProductDao().queryObject(Request.productsUpdates())
+            db.productDao.queryObject(Request.productsUpdates())
         }
     }.stateIn(
         scope = viewModelScope,
@@ -69,19 +68,13 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
         initialValue = null
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val repositories = db.getRepositoryDao().getAllFlow().mapLatest { it }
+    val repositories = db.repositoryDao.allFlow.mapLatest { it }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val categories = db.getCategoryDao().getAllNamesFlow().mapLatest { it }
+    val categories = db.categoryDao.allNamesFlow.mapLatest { it }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val licenses = db.getProductDao().getAllLicensesFlow().mapLatest {
-        it.map(Licenses::licenses).flatten().distinct()
-    }
+    val licenses = db.productDao.getAllLicensesFlow()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val iconDetails = db.getProductDao().getIconDetailsFlow().mapLatest {
+    val iconDetails = db.productDao.getIconDetailsFlow().mapLatest {
         it.associateBy(IconDetails::packageName)
     }.stateIn(
         scope = viewModelScope,
@@ -89,7 +82,7 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
         initialValue = emptyMap(),
     )
 
-    val downloaded = db.getDownloadedDao().getAllFlow().stateIn(
+    val downloaded = db.downloadedDao.allFlow.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = emptyList(),
@@ -103,7 +96,7 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
 
     private suspend fun deleteDownloaded(downloaded: Downloaded) {
         withContext(cc) {
-            db.getDownloadedDao()
+            db.downloadedDao
                 .delete(downloaded.packageName, downloaded.version, downloaded.cacheFileName)
         }
     }
@@ -116,15 +109,14 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
 
     private suspend fun saveFavorite(packageName: String, setBoolean: Boolean) {
         withContext(cc) {
-            val oldValue = db.getExtrasDao()[packageName]
-            if (oldValue != null) db.getExtrasDao()
-                .upsert(oldValue.copy(favorite = setBoolean))
-            else db.getExtrasDao()
-                .upsert(Extras(packageName, favorite = setBoolean))
+            val exstVal = db.extrasDao[packageName]
+                ?: Extras(packageName)
+            db.extrasDao
+                .upsert(exstVal.apply { favorite = setBoolean })
         }
     }
 
-    class Factory(val db: DatabaseX) :
+    class Factory(val db: RealmRepo) :
         ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

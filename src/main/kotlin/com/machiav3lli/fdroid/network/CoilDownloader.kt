@@ -20,6 +20,7 @@ import com.machiav3lli.fdroid.QUERY_PACKAGE_NAME
 import com.machiav3lli.fdroid.QUERY_SCREENSHOT
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.Screenshot
+import com.machiav3lli.fdroid.entity.ScreenshotType
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import okhttp3.Cache
 import okhttp3.Call
@@ -176,9 +177,9 @@ fun createScreenshotUri(
         .appendQueryParameter(QUERY_LOCALE, screenshot.locale)
         .appendQueryParameter(
             QUERY_DEVICE, when (screenshot.type) {
-                Screenshot.Type.PHONE        -> "phoneScreenshots"
-                Screenshot.Type.SMALL_TABLET -> "sevenInchScreenshots"
-                Screenshot.Type.LARGE_TABLET -> "tenInchScreenshots"
+                ScreenshotType.PHONE        -> "phoneScreenshots"
+                ScreenshotType.SMALL_TABLET -> "sevenInchScreenshots"
+                ScreenshotType.LARGE_TABLET -> "tenInchScreenshots"
             }
         )
         .appendQueryParameter(QUERY_SCREENSHOT, screenshot.path)

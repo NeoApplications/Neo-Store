@@ -1,14 +1,5 @@
 package com.machiav3lli.fdroid.database.dao
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.RawQuery
-import androidx.room.Transaction
-import androidx.sqlite.db.SimpleSQLiteQuery
-import androidx.sqlite.db.SupportSQLiteQuery
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.ROW_ADDED
 import com.machiav3lli.fdroid.ROW_ANTIFEATURES
@@ -18,12 +9,7 @@ import com.machiav3lli.fdroid.ROW_CHANGELOG
 import com.machiav3lli.fdroid.ROW_COMPATIBLE
 import com.machiav3lli.fdroid.ROW_DESCRIPTION
 import com.machiav3lli.fdroid.ROW_DONATES
-import com.machiav3lli.fdroid.ROW_ENABLED
-import com.machiav3lli.fdroid.ROW_FAVORITE
 import com.machiav3lli.fdroid.ROW_ICON
-import com.machiav3lli.fdroid.ROW_ID
-import com.machiav3lli.fdroid.ROW_IGNORED_VERSION
-import com.machiav3lli.fdroid.ROW_IGNORE_UPDATES
 import com.machiav3lli.fdroid.ROW_LABEL
 import com.machiav3lli.fdroid.ROW_LICENSES
 import com.machiav3lli.fdroid.ROW_METADATA_ICON
@@ -31,7 +17,6 @@ import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_RELEASES
 import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
 import com.machiav3lli.fdroid.ROW_SCREENSHOTS
-import com.machiav3lli.fdroid.ROW_SIGNATURE
 import com.machiav3lli.fdroid.ROW_SIGNATURES
 import com.machiav3lli.fdroid.ROW_SOURCE
 import com.machiav3lli.fdroid.ROW_SUGGESTED_VERSION_CODE
@@ -41,147 +26,159 @@ import com.machiav3lli.fdroid.ROW_UPDATED
 import com.machiav3lli.fdroid.ROW_VERSION_CODE
 import com.machiav3lli.fdroid.ROW_WEB
 import com.machiav3lli.fdroid.ROW_WHATS_NEW
-import com.machiav3lli.fdroid.TABLE_CATEGORY
-import com.machiav3lli.fdroid.TABLE_EXTRAS
-import com.machiav3lli.fdroid.TABLE_INSTALLED
 import com.machiav3lli.fdroid.TABLE_PRODUCT
-import com.machiav3lli.fdroid.TABLE_REPOSITORY
-import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.database.QueryBuilder
-import com.machiav3lli.fdroid.database.entity.Category
-import com.machiav3lli.fdroid.database.entity.CategoryTemp
-import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.IconDetails
 import com.machiav3lli.fdroid.database.entity.Installed
-import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.ProductTemp
-import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.database.entity.ReleaseTemp
 import com.machiav3lli.fdroid.database.entity.asProductTemp
 import com.machiav3lli.fdroid.entity.Order
 import com.machiav3lli.fdroid.entity.Request
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.UpdateCategory
+import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.query
+import io.realm.kotlin.query.RealmQuery
+import io.realm.kotlin.query.RealmResults
+import io.realm.kotlin.query.Sort
+import io.realm.kotlin.query.find
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 
-@Dao
-interface ProductDao : BaseDao<Product> {
-    @Query("SELECT COUNT(*) FROM product WHERE repositoryId = :id")
-    fun countForRepository(id: Long): Long
+@OptIn(ExperimentalCoroutinesApi::class)
+class ProductDao(private val realm: Realm) : BaseDao<Product>(realm) {
 
-    @Query("SELECT COUNT(*) FROM product WHERE repositoryId = :id")
-    fun countForRepositoryLive(id: Long): LiveData<Long>
+    fun countForRepository(repoId: Long): Long =
+        realm.query<Product>("repositoryId = $0", repoId)
+            .count()
+            .find()
 
-    @Query("SELECT COUNT(*) FROM product WHERE repositoryId = :id")
-    fun countForRepositoryFlow(id: Long): Flow<Long>
+    fun countForRepositoryFlow(repoId: Long): Flow<Long> =
+        realm.query<Product>("repositoryId = $0", repoId)
+            .count()
+            .asFlow()
 
-    @Query("SELECT * FROM product WHERE repositoryId = :repoId ORDER BY label")
-    fun productsForRepositoryFlow(repoId: Long): Flow<List<Product>>
+    fun productsForRepositoryFlow(repoId: Long): Flow<List<Product>> =
+        realm.query<Product>("repositoryId = $0", repoId)
+            .sort("label", Sort.ASCENDING)
+            .asFlow()
+            .map { it.list }
 
-    @Query("SELECT EXISTS(SELECT 1 FROM product WHERE packageName = :packageName)")
-    fun exists(packageName: String): Boolean
+    fun exists(packageName: String): Boolean =
+        realm.query<Product>("packageName = $0", packageName)
+            .find()
+            .isNotEmpty()
 
-    @Query("SELECT * FROM product WHERE packageName = :packageName")
-    fun get(packageName: String): List<Product>
+    fun get(packageName: String): List<Product> =
+        realm.query<Product>("packageName = $0", packageName)
+            .find()
 
-    @Query("SELECT * FROM product WHERE packageName = :packageName")
-    fun getFlow(packageName: String): Flow<List<Product>>
+    fun getFlow(packageName: String): Flow<List<Product>> =
+        realm.query<Product>("packageName = $0", packageName)
+            .asFlow()
+            .mapLatest { it.list }
 
-    @Query("SELECT * FROM product WHERE packageName = :packageName AND repositoryId = :repoId")
-    fun get(packageName: String, repoId: Long): Product?
+    fun get(packageName: String, repoId: Long): Product? =
+        realm.query<Product>("packageName = $0 AND repositoryId = $1", packageName, repoId)
+            .first()
+            .find()
 
-    @Query("SELECT * FROM product WHERE packageName = :packageName AND repositoryId = :repoId")
-    fun getFlow(packageName: String, repoId: Long): Flow<Product?>
+    fun getFlow(packageName: String, repoId: Long): Flow<Product?> =
+        realm.query<Product>("packageName = $0 AND repositoryId = $1", packageName, repoId)
+            .first()
+            .asFlow()
+            .mapLatest { it.obj }
+
+    fun getIconDetails(): List<IconDetails> = realm.query<Product>()
+        .distinct("packageName")
+        .find { it.map { pr -> IconDetails(pr.packageName, pr.icon, pr.metadataIcon) } }
 
 
-    @Query("SELECT packageName, icon, metadataIcon FROM product GROUP BY packageName HAVING 1")
-    fun getIconDetails(): List<IconDetails>
+    fun getIconDetailsFlow(): Flow<List<IconDetails>> = realm.query<Product>()
+        .distinct("packageName")
+        .asFlow()
+        .map { it.list.map { pr -> IconDetails(pr.packageName, pr.icon, pr.metadataIcon) } }
 
+    fun deleteById(repoId: Long) = realm.writeBlocking {
+        delete(query<Product>("repositoryId = $0", repoId))
+    }
 
-    @Query("SELECT packageName, icon, metadataIcon FROM product GROUP BY packageName HAVING 1")
-    fun getIconDetailsFlow(): Flow<List<IconDetails>>
+    fun getAllLicenses(): List<String> = realm.query<Product>()
+        .distinct("licenses")
+        .find { it.flatMap { pr -> pr.licenses }.distinct() }
 
-    @Query("DELETE FROM product WHERE repositoryId = :id")
-    fun deleteById(id: Long): Int
+    fun getAllLicensesFlow(): Flow<List<String>> = realm.query<Product>()
+        .distinct("licenses")
+        .asFlow()
+        .map { it.list.flatMap { pr -> pr.licenses }.distinct() }
 
-    @Query("SELECT DISTINCT licenses FROM product")
-    fun getAllLicenses(): List<Licenses>
+    fun getAuthorPackagesFlow(authorName: String): Flow<List<Product>> =
+        realm.query<Product>("author.name = $0", authorName)
+            .asFlow()
+            .mapLatest { it.list }
 
-    @Query("SELECT DISTINCT licenses FROM product")
-    fun getAllLicensesFlow(): Flow<List<Licenses>>
-
-    @Query("SELECT * FROM product WHERE author LIKE '%' || :author || '%' ")
-    fun getAuthorPackagesFlow(author: String): Flow<List<Product>>
-
-    @RawQuery
-    fun queryObject(query: SupportSQLiteQuery): List<Product>
-
-    fun queryObject(request: Request): List<Product> = queryObject(
-        buildProductQuery(
-            installed = request.installed,
-            updates = request.updates,
-            section = request.section,
-            filteredOutRepos = request.filteredOutRepos,
-            category = request.category,
-            filteredAntiFeatures = request.filteredAntiFeatures,
-            filteredLicenses = request.filteredLicenses,
-            order = request.order,
-            ascending = request.ascending,
-            numberOfItems = request.numberOfItems,
-            updateCategory = request.updateCategory
-        )
-    )
-
-    @Transaction
+    // TODO create micro queries replacing some of these calls
+    //@Transaction
     fun queryObject(
         installed: Boolean, updates: Boolean,
-        section: Section, filteredOutRepos: Set<String> = emptySet(),
+        section: Section, filteredOutRepos: Set<Long> = emptySet(),
         category: String = FILTER_CATEGORY_ALL, filteredAntiFeatures: Set<String> = emptySet(),
         filteredLicenses: Set<String> = emptySet(),
         order: Order, ascending: Boolean, numberOfItems: Int = 0,
         updateCategory: UpdateCategory = UpdateCategory.ALL,
         author: String = "",
-    ): List<Product> = queryObject(
-        buildProductQuery(
-            installed = installed,
-            updates = updates,
-            section = section,
-            filteredOutRepos = filteredOutRepos,
-            category = category,
-            filteredAntiFeatures = filteredAntiFeatures,
-            filteredLicenses = filteredLicenses,
-            order = order,
-            ascending = ascending,
-            numberOfItems = numberOfItems,
-            updateCategory = updateCategory,
-            author = author,
-        )
-    )
+    ): List<Product> = buildProductQuery(
+        installed = installed,
+        updates = updates,
+        section = section,
+        filteredOutRepos = filteredOutRepos,
+        category = category,
+        filteredAntiFeatures = filteredAntiFeatures,
+        filteredLicenses = filteredLicenses,
+        order = order,
+        ascending = ascending,
+        numberOfItems = numberOfItems,
+        updateCategory = updateCategory,
+        author = author,
+    ).find()
 
-    @RawQuery(observedEntities = [Product::class, Installed::class, Extras::class, Repository::class, Category::class])
-    fun queryFlowList(query: SupportSQLiteQuery): Flow<List<Product>>
+    fun queryObject(request: Request): List<Product> = buildProductQuery(
+        installed = request.installed,
+        updates = request.updates,
+        section = request.section,
+        filteredOutRepos = request.filteredOutRepos.map { it.toLong() }.toSet(),
+        category = request.category,
+        filteredAntiFeatures = request.filteredAntiFeatures,
+        filteredLicenses = request.filteredLicenses,
+        order = request.order,
+        ascending = request.ascending,
+        numberOfItems = request.numberOfItems,
+        updateCategory = request.updateCategory,
+    ).find()
 
-    fun queryFlowList(request: Request): Flow<List<Product>> = queryFlowList(
-        buildProductQuery(
-            installed = request.installed,
-            updates = request.updates,
-            section = request.section,
-            filteredOutRepos = request.filteredOutRepos,
-            category = request.category,
-            filteredAntiFeatures = request.filteredAntiFeatures,
-            filteredLicenses = request.filteredLicenses,
-            order = request.order,
-            ascending = request.ascending,
-            numberOfItems = request.numberOfItems,
-            updateCategory = request.updateCategory,
-        )
-    )
+    fun queryFlowList(request: Request): Flow<List<Product>> = buildProductQuery(
+        installed = request.installed,
+        updates = request.updates,
+        section = request.section,
+        filteredOutRepos = request.filteredOutRepos.map { it.toLong() }.toSet(),
+        category = request.category,
+        filteredAntiFeatures = request.filteredAntiFeatures,
+        filteredLicenses = request.filteredLicenses,
+        order = request.order,
+        ascending = request.ascending,
+        numberOfItems = request.numberOfItems,
+        updateCategory = request.updateCategory,
+    ).asFlow()
+        .map { it.list }
 
     fun buildProductQuery(
         installed: Boolean,
         updates: Boolean,
         section: Section,
-        filteredOutRepos: Set<String> = emptySet(),
+        filteredOutRepos: Set<Long> = emptySet(),
         category: String = FILTER_CATEGORY_ALL,
         filteredAntiFeatures: Set<String> = emptySet(),
         filteredLicenses: Set<String> = emptySet(),
@@ -190,6 +187,77 @@ interface ProductDao : BaseDao<Product> {
         numberOfItems: Int = 0,
         updateCategory: UpdateCategory = UpdateCategory.ALL,
         author: String = "",
+    ): RealmQuery<Product> {
+        val query = realm.query<Product>()
+            .sort("updated", Sort.ASCENDING)
+
+        // Filtering
+        //builder.addWhere("$TABLE_REPOSITORY.$ROW_ENABLED = 1")
+        if (author.isNotEmpty()) {
+            query.query("author.name = $0", author)
+        }
+        if (filteredOutRepos.isNotEmpty()) {
+            query.query("repositoryId NOT IN $0", filteredOutRepos)
+        }
+        if (category != FILTER_CATEGORY_ALL) {
+            query.query("$0 in categories", category)
+        }
+        if (filteredAntiFeatures.isNotEmpty())
+            query.query("ANY antiFeatures NOT IN $0", filteredAntiFeatures)
+        if (filteredLicenses.isNotEmpty())
+            query.query("ANY licenses NOT IN $0", filteredLicenses)
+        if (section == Section.FAVORITE) {
+            query.query("extras.favorite", true) // TODO add Extras to Product
+        }
+
+        if (installed) {
+            val installeds = realm.query<Installed>()
+                .distinct("packageName")
+                .find { it.map(Installed::packageName) }
+            query.query("packageName in $0", installeds)
+        }
+
+        when (updateCategory) {
+            UpdateCategory.ALL     -> Unit
+            UpdateCategory.NEW     -> query.query("added = updated AND releases.@size > 0")
+            UpdateCategory.UPDATED -> query.query("added < updated AND releases.@size > 0")
+        }
+
+        //query.distinct("packageName")
+
+        if (updates) {
+            // TODO
+            query.query(
+                "versionCode NOT IN extras.ignoredVersion AND extras.ignoredUpdates = $0 AND versionCode > installed.versionCode",
+                false
+            )
+            /*builder.addWhere(
+                """
+                (COALESCE($TABLE_EXTRAS.$ROW_IGNORED_VERSION, -1) != $TABLE_PRODUCT.$ROW_VERSION_CODE AND
+                COALESCE($TABLE_EXTRAS.$ROW_IGNORE_UPDATES, 0) = 0 AND $TABLE_PRODUCT.$ROW_COMPATIBLE != 0 AND
+                $TABLE_PRODUCT.$ROW_VERSION_CODE > COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff) AND
+                $signatureMatches)
+                """
+            )*/
+        }
+
+        val asc = if (ascending) Sort.ASCENDING
+        else Sort.DESCENDING
+        when (order) {
+            Order.NAME        -> query.sort(Pair("label", asc))
+            Order.DATE_ADDED  -> query.sort(Pair("added", asc), Pair("label", Sort.ASCENDING))
+            Order.LAST_UPDATE -> query.sort(Pair("updated", asc), Pair("label", Sort.ASCENDING))
+        }
+
+        if (numberOfItems > 0)
+            query.limit(numberOfItems)
+
+        return query
+    }
+
+    /*fun buildProductQuery(
+        installed: Boolean,
+        updates: Boolean,
     ): SupportSQLiteQuery {
         val builder = QueryBuilder()
 
@@ -234,65 +302,9 @@ interface ProductDao : BaseDao<Product> {
             "$TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_CATEGORY.$ROW_PACKAGE_NAME",
         )
 
-        // Filtering
-        builder.addWhere("$TABLE_REPOSITORY.$ROW_ENABLED = 1")
-        if (author.isNotEmpty()) {
-            builder.addWhere("$TABLE_PRODUCT.$ROW_AUTHOR = ?").addArgument(author)
-        }
-        if (filteredOutRepos.isNotEmpty()) {
-            builder.addWhere("$TABLE_PRODUCT.$ROW_REPOSITORY_ID NOT IN (${filteredOutRepos.joinToString { it }})")
-        }
-        if (category != FILTER_CATEGORY_ALL) {
-            builder.addWhere("$TABLE_CATEGORY.$ROW_LABEL = ?").addArgument(category)
-        }
-        filteredAntiFeatures.forEach {
-            builder.addWhere("$TABLE_PRODUCT.$ROW_ANTIFEATURES NOT LIKE '%$it%'")
-        }
-        filteredLicenses.forEach {
-            builder.addWhere("$TABLE_PRODUCT.$ROW_LICENSES NOT LIKE '%$it%'")
-        }
-        if (section == Section.FAVORITE) {
-            builder.addWhere("COALESCE($TABLE_EXTRAS.$ROW_FAVORITE, 0) != 0")
-        }
-        builder.addWhere("$TABLE_PRODUCT.$ROW_REPOSITORY_ID NOT LIKE '%[^0-9]%'")
-
-        when (updateCategory) {
-            UpdateCategory.ALL     -> Unit
-            UpdateCategory.NEW     -> {
-                builder.addWhere("$TABLE_PRODUCT.$ROW_ADDED = $TABLE_PRODUCT.$ROW_UPDATED") // TODO fix for multiple sources
-                builder.addWhere("$TABLE_PRODUCT.$ROW_RELEASES NOT LIKE '%|%'")
-            }
-
-            UpdateCategory.UPDATED -> builder.addWhere("$TABLE_PRODUCT.$ROW_ADDED < $TABLE_PRODUCT.$ROW_UPDATED")
-        }
-
-        builder.addGroupBy("$TABLE_PRODUCT.$ROW_PACKAGE_NAME")
-
-        if (updates) {
-            builder.addWhere(
-                """
-                (COALESCE($TABLE_EXTRAS.$ROW_IGNORED_VERSION, -1) != $TABLE_PRODUCT.$ROW_VERSION_CODE AND
-                COALESCE($TABLE_EXTRAS.$ROW_IGNORE_UPDATES, 0) = 0 AND $TABLE_PRODUCT.$ROW_COMPATIBLE != 0 AND
-                $TABLE_PRODUCT.$ROW_VERSION_CODE > COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff) AND
-                $signatureMatches)
-                """
-            )
-        }
-
-        // Ordering
-        builder.addOrderBy(
-            when (order) {
-                Order.NAME        -> "$TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ${if (!ascending) "DESC" else "ASC"}"
-                Order.DATE_ADDED  -> "$TABLE_PRODUCT.$ROW_ADDED ${if (ascending) "ASC" else "DESC"}, $TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ASC"
-                Order.LAST_UPDATE -> "$TABLE_PRODUCT.$ROW_UPDATED ${if (ascending) "ASC" else "DESC"}, $TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ASC"
-            }.let {
-                "$it ${if (numberOfItems > 0) " LIMIT $numberOfItems" else ""}"
-            }
-        )
-
         Log.v(this::class.simpleName, builder.build())
         return SimpleSQLiteQuery(builder.build(), builder.arguments.toTypedArray())
-    }
+    }*/
 }
 
 private fun generateSelectFields(): String = """SELECT $TABLE_PRODUCT.$ROW_REPOSITORY_ID,
@@ -306,58 +318,28 @@ private fun generateSelectFields(): String = """SELECT $TABLE_PRODUCT.$ROW_REPOS
         $TABLE_PRODUCT.$ROW_AUTHOR, $TABLE_PRODUCT.$ROW_SOURCE, $TABLE_PRODUCT.$ROW_WEB,
         $TABLE_PRODUCT.$ROW_TRACKER, $TABLE_PRODUCT.$ROW_CHANGELOG, $TABLE_PRODUCT.$ROW_WHATS_NEW,"""
 
-@Dao
-interface ProductTempDao : BaseDao<ProductTemp> {
-    @Query("SELECT * FROM temporary_product")
-    fun getAll(): Array<ProductTemp>
+@OptIn(ExperimentalCoroutinesApi::class)
+class ProductTempDao(private val realm: Realm) : BaseDao<ProductTemp>(realm) {
 
-    @Query("DELETE FROM temporary_product")
-    fun emptyTable()
+    val all: RealmResults<ProductTemp>
+        get() = realm.query<ProductTemp>()
+            .find()
 
-    @Insert
-    fun insertCategory(vararg product: CategoryTemp)
+    val allFlow: Flow<RealmResults<ProductTemp>>
+        get() = realm.query<ProductTemp>()
+            .asFlow()
+            .mapLatest { it.list }
 
-    //@Insert
-    //fun insertRelease(vararg product: ReleaseTemp)
+    private fun insertRelease(vararg product: ReleaseTemp) = realm.writeBlocking {
+        product.forEach(::copyToRealm)
+    }
 
-    @Transaction
     fun putTemporary(products: List<Product>) {
         products.forEach {
             insert(it.asProductTemp())
-            it.categories.forEach { category ->
-                insertCategory(CategoryTemp().apply {
-                    repositoryId = it.repositoryId
-                    packageName = it.packageName
-                    label = category
-                })
-            }
-            /*it.releases.forEach { rel ->
-                insertRelease(rel.asReleaseTemp())
-            }*/
         }
+        /*releases.forEach { rel ->
+            insertRelease(rel.asReleaseTemp())
+        }*/
     }
-}
-
-@Dao
-interface ExtrasDao : BaseDao<Extras> {
-    @Query("DELETE FROM extras WHERE packageName = :packageName")
-    fun delete(packageName: String)
-
-    @Query("SELECT * FROM extras WHERE packageName = :packageName")
-    operator fun get(packageName: String): Extras?
-
-    @Query("SELECT * FROM extras WHERE packageName = :packageName")
-    fun getFlow(packageName: String): Flow<Extras?>
-
-    @Query("SELECT * FROM extras")
-    fun getAll(): List<Extras>
-
-    @Query("SELECT * FROM extras")
-    fun getAllFlow(): Flow<List<Extras>>
-
-    @Query("SELECT packageName FROM extras WHERE favorite != 0")
-    fun getFavorites(): Array<String>
-
-    @Query("SELECT packageName FROM extras WHERE favorite != 0")
-    fun getFavoritesFlow(): Flow<Array<String>>
 }

@@ -104,7 +104,7 @@ fun DownloadedItem(
     item: Downloaded,
     iconDetails: IconDetails?,
     repo: Repository? = null,
-    state: DownloadState,
+    state: DownloadState?,
     onEraseClick: (() -> Unit)? = null,
     onUserClick: (Downloaded) -> Unit = {},
 ) {
@@ -121,67 +121,69 @@ fun DownloadedItem(
         )
     }
 
-    ListItem(
-        modifier = Modifier
-            .clip(MaterialTheme.shapes.large)
-            .clickable { onUserClick(download) }
-            .fillMaxWidth(),
-        colors = ListItemDefaults.colors(
-            containerColor = Color.Transparent,
-        ),
-        leadingContent = {
-            NetworkImage(
-                modifier = Modifier.size(PRODUCT_CARD_ICON),
-                data = imageData
-            )
-        },
-        headlineContent = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(
-                    text = download.state.name,
-                    modifier = Modifier
-                        .weight(1f),
-                    softWrap = true,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.titleSmall
+    state?.let {
+        ListItem(
+            modifier = Modifier
+                .clip(MaterialTheme.shapes.large)
+                .clickable { onUserClick(download) }
+                .fillMaxWidth(),
+            colors = ListItemDefaults.colors(
+                containerColor = Color.Transparent,
+            ),
+            leadingContent = {
+                NetworkImage(
+                    modifier = Modifier.size(PRODUCT_CARD_ICON),
+                    data = imageData
                 )
-                Text(
-                    text = state.version,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.labelSmall,
+            },
+            headlineContent = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(
+                        text = download.state?.name ?: "",
+                        modifier = Modifier
+                            .weight(1f),
+                        softWrap = true,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    Text(
+                        text = state.version,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        style = MaterialTheme.typography.labelSmall,
+                    )
+                }
+            },
+            supportingContent = {
+                DownloadProgress(
+                    totalSize = when (state) {
+                        is DownloadState.Downloading -> state.total ?: 1L
+                        is DownloadState.Cancel      -> 0L
+                        is DownloadState.Error       -> -1L
+                        else                         -> 1L
+                    },
+                    isIndeterminate = state is DownloadState.Pending || state is DownloadState.Connecting,
+                    downloaded = when (state) {
+                        is DownloadState.Downloading -> state.read
+                        is DownloadState.Success     -> 1L
+                        else                         -> 0L
+                    },
+                    finishedTime = download.changed,
                 )
+            },
+            trailingContent = {
+                if (onEraseClick != null) IconButton(onClick = {
+                    onEraseClick()
+                }) {
+                    Icon(
+                        imageVector = Phosphor.Eraser,
+                        contentDescription = stringResource(id = R.string.delete),
+                    )
+                }
             }
-        },
-        supportingContent = {
-            DownloadProgress(
-                totalSize = when (state) {
-                    is DownloadState.Downloading -> state.total ?: 1L
-                    is DownloadState.Cancel      -> 0L
-                    is DownloadState.Error       -> -1L
-                    else                         -> 1L
-                },
-                isIndeterminate = state is DownloadState.Pending || state is DownloadState.Connecting,
-                downloaded = when (state) {
-                    is DownloadState.Downloading -> state.read
-                    is DownloadState.Success     -> 1L
-                    else                         -> 0L
-                },
-                finishedTime = download.changed,
-            )
-        },
-        trailingContent = {
-            if (onEraseClick != null) IconButton(onClick = {
-                onEraseClick()
-            }) {
-                Icon(
-                    imageVector = Phosphor.Eraser,
-                    contentDescription = stringResource(id = R.string.delete),
-                )
-            }
-        }
-    )
+        )
+    }
 }

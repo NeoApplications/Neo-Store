@@ -1,15 +1,22 @@
 package com.machiav3lli.fdroid.database.dao
 
-import androidx.room.Dao
-import androidx.room.Query
 import com.machiav3lli.fdroid.database.entity.ExodusInfo
+import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.query
+import io.realm.kotlin.query.max
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 
-@Dao
-interface ExodusInfoDao : BaseDao<ExodusInfo> {
-    @Query("SELECT * FROM `exodusinfo` WHERE packageName = :packageName")
-    fun get(packageName: String): List<ExodusInfo>
+class ExodusInfoDao(private val realm: Realm) : BaseDao<ExodusInfo>(realm) {
 
-    @Query("SELECT * FROM `exodusinfo` WHERE packageName = :packageName")
-    fun getFlow(packageName: String): Flow<List<ExodusInfo>>
+    fun get(packageName: String): ExodusInfo? =
+        realm.query<ExodusInfo>("packageName = $0", packageName)
+            .max<ExodusInfo>("version_code")
+            .find()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getFlow(packageName: String): Flow<ExodusInfo?> =
+        realm.query<ExodusInfo>("packageName = $0", packageName)
+            .max<ExodusInfo>("version_code")
+            .asFlow()
 }

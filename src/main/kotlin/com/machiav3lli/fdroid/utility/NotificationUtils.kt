@@ -400,7 +400,7 @@ fun notifyStatus(context: Context, intent: Intent?) {
                 // remove any notification for this app
                 context.notificationManager.cancel(notificationTag, NOTIFICATION_ID_INSTALLER)
             } else {
-                name?.let { scope.launch { MainApplication.db.getInstallTaskDao().delete(it) } }
+                name?.let { scope.launch { MainApplication.db.installTaskDao.delete(it) } }
                 val notification = builder
                     .setSmallIcon(android.R.drawable.stat_sys_download_done)
                     .setContentTitle(context.getString(R.string.installed))
@@ -420,13 +420,13 @@ fun notifyStatus(context: Context, intent: Intent?) {
 
         PackageInstaller.STATUS_FAILURE_ABORTED     -> {
             // do nothing if user cancels
-            name?.let { scope.launch { MainApplication.db.getInstallTaskDao().delete(it) } }
+            name?.let { scope.launch { MainApplication.db.installTaskDao.delete(it) } }
         }
 
         else                                        -> {
             // problem occurred when installing/uninstalling package
             // STATUS_FAILURE, STATUS_FAILURE_STORAGE ,STATUS_FAILURE_BLOCKED, STATUS_FAILURE_INCOMPATIBLE, STATUS_FAILURE_CONFLICT, STATUS_FAILURE_INVALID
-            name?.let { scope.launch { MainApplication.db.getInstallTaskDao().delete(it) } }
+            name?.let { scope.launch { MainApplication.db.installTaskDao.delete(it) } }
             val notification = builder
                 .setSmallIcon(android.R.drawable.stat_notify_error)
                 .setContentTitle(context.getString(R.string.unknown_error_DESC))

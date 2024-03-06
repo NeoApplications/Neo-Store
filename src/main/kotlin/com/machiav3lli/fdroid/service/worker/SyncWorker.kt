@@ -100,7 +100,7 @@ class SyncWorker(
             CoroutineScope(Dispatchers.IO).launch {
                 enqueue(
                     request,
-                    *(MainApplication.db.getRepositoryDao().getAll()
+                    *(MainApplication.db.repositoryDao.all
                         .filter { it.enabled }
                         .map { it.id } + EXODUS_TRACKERS_SYNC).toLongArray()
                 )
@@ -117,7 +117,7 @@ class SyncWorker(
                 .build()
 
             CoroutineScope(Dispatchers.IO).launch {
-                (MainApplication.db.getRepositoryDao().getAll()
+                (MainApplication.db.repositoryDao.all
                     .filter { it.enabled }
                     .map { it.id } + EXODUS_TRACKERS_SYNC)
                     .forEach { repoId ->
@@ -151,7 +151,7 @@ class SyncWorker(
 
         suspend fun enableRepo(repository: Repository, enabled: Boolean): Boolean =
             withContext(Dispatchers.IO) {
-                MainApplication.db.getRepositoryDao().put(repository.enable(enabled))
+                MainApplication.db.repositoryDao.upsert(repository.enable(enabled))
                 if (enabled) {
                     enqueue(SyncRequest.MANUAL, repository.id)
                 } else {
@@ -162,10 +162,10 @@ class SyncWorker(
             }
 
         suspend fun deleteRepo(repoId: Long): Boolean = withContext(Dispatchers.IO) {
-            val repository = MainApplication.db.getRepositoryDao().get(repoId)
+            val repository = MainApplication.db.repositoryDao.get(repoId)
             repository != null && run {
                 enableRepo(repository, false)
-                MainApplication.db.getRepositoryDao().deleteById(repoId)
+                MainApplication.db.repositoryDao.deleteById(repoId)
                 true
             }
         }
@@ -208,7 +208,7 @@ class SyncWorker(
             setForegroundAsync(foregroundInfo)
         }
         val repository = scope.future {
-            MainApplication.db.getRepositoryDao().get(task.repositoryId)
+            MainApplication.db.repositoryDao.get(task.repositoryId)
         }.join()
 
         Log.i(this::class.java.simpleName, "sync repository: ${task.repositoryId}")
@@ -219,14 +219,14 @@ class SyncWorker(
                     ARG_REPOSITORY_NAME to repository.name,
                 )
             )
-            val unstable = Preferences[Preferences.Key.UpdateUnstable]
+            val allowUnstable = Preferences[Preferences.Key.UpdateUnstable]
 
             try {
                 val changed = scope.future {
                     RepositoryUpdater.update(
                         context,
                         repository,
-                        unstable
+                        allowUnstable
                     ) { stage, progress, total ->
                         setProgressAsync(
                             workDataOf(

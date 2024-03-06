@@ -3,7 +3,7 @@ package com.machiav3lli.fdroid.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.machiav3lli.fdroid.database.DatabaseX
+import com.machiav3lli.fdroid.database.RealmRepo
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Repository
@@ -22,7 +22,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PrefsVM(val db: DatabaseX) : ViewModel() {
+@OptIn(ExperimentalCoroutinesApi::class)
+class PrefsVM(val db: RealmRepo) : ViewModel() {
 
     private val cc = Dispatchers.IO
     private val _showSheet = MutableSharedFlow<SheetNavigationData?>()
@@ -31,12 +32,11 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     private val _repositories = MutableStateFlow<List<Repository>>(emptyList())
     val repositories = _repositories.asStateFlow()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val installed = db.getInstalledDao().getAllFlow().mapLatest {
+    val installed = db.installedDao.allFlow.mapLatest {
         it.associateBy(Installed::packageName)
     }
 
-    val extras = db.getExtrasDao().getAllFlow().stateIn(
+    val extras = db.extrasDao.allFlow.stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
         emptyList()
@@ -49,7 +49,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
 
     init {
         viewModelScope.launch(cc) {
-            db.getRepositoryDao().getAllRepositories().collectLatest {
+            db.repositoryDao.allFlow.collectLatest {
                 _repositories.emit(it)
             }
         }
@@ -96,14 +96,14 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
 
     private suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long =
         withContext(cc) {
-            db.getRepositoryDao().insert(
+            db.repositoryDao.insert(
                 newRepository(
                     fallbackName = "new repository",
                     address = address,
                     fingerprint = fingerprint
                 )
             )
-            db.getRepositoryDao().latestAddedId()
+            db.repositoryDao.latestAddedId
         }
 
     fun updateRepo(newValue: Repository?) {
@@ -116,7 +116,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
 
     private suspend fun update(newValue: Repository) {
         withContext(cc) {
-            db.getRepositoryDao().put(newValue)
+            db.repositoryDao.upsert(newValue)
         }
     }
 
@@ -128,21 +128,19 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
 
     private suspend fun insert(vararg items: Extras) {
         withContext(cc) {
-            db.getExtrasDao().upsert(*items)
+            db.extrasDao.upsert(*items)
         }
     }
 
     fun insertRepos(vararg newValue: Repository) {
-        newValue.let {
-            viewModelScope.launch {
-                withContext(cc) {
-                    db.getRepositoryDao().insertOrUpdate(*newValue)
-                }
+        viewModelScope.launch {
+            withContext(cc) {
+                db.repositoryDao.insertPatch(*newValue)
             }
         }
     }
 
-    class Factory(private val db: DatabaseX) : ViewModelProvider.Factory {
+    class Factory(private val db: RealmRepo) : ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(PrefsVM::class.java)) {
@@ -154,6 +152,6 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
 }
 
 data class SheetNavigationData(
-    val repositoryId: Long = 0L,
+    val repoId: Long = 0L,
     val editMode: Boolean = false,
 )

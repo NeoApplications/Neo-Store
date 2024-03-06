@@ -1,74 +1,9 @@
 package com.machiav3lli.fdroid.database
 
-import android.content.Context
-import androidx.room.AutoMigration
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import androidx.room.migration.AutoMigrationSpec
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.machiav3lli.fdroid.database.dao.CategoryDao
-import com.machiav3lli.fdroid.database.dao.CategoryTempDao
-import com.machiav3lli.fdroid.database.dao.DownloadedDao
-import com.machiav3lli.fdroid.database.dao.ExodusInfoDao
-import com.machiav3lli.fdroid.database.dao.ExtrasDao
-import com.machiav3lli.fdroid.database.dao.InstallTaskDao
-import com.machiav3lli.fdroid.database.dao.InstalledDao
-import com.machiav3lli.fdroid.database.dao.ProductDao
-import com.machiav3lli.fdroid.database.dao.ProductTempDao
-import com.machiav3lli.fdroid.database.dao.ReleaseDao
-import com.machiav3lli.fdroid.database.dao.ReleaseTempDao
-import com.machiav3lli.fdroid.database.dao.RepositoryDao
-import com.machiav3lli.fdroid.database.dao.TrackerDao
-import com.machiav3lli.fdroid.database.entity.Category
-import com.machiav3lli.fdroid.database.entity.CategoryTemp
-import com.machiav3lli.fdroid.database.entity.Downloaded
-import com.machiav3lli.fdroid.database.entity.ExodusInfo
-import com.machiav3lli.fdroid.database.entity.Extras
-import com.machiav3lli.fdroid.database.entity.InstallTask
-import com.machiav3lli.fdroid.database.entity.Installed
-import com.machiav3lli.fdroid.database.entity.Product
-import com.machiav3lli.fdroid.database.entity.ProductTemp
-import com.machiav3lli.fdroid.database.entity.Release
-import com.machiav3lli.fdroid.database.entity.ReleaseTemp
-import com.machiav3lli.fdroid.database.entity.Repository
-import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV10
-import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV11
-import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV12
-import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV14
-import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV15
-import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV17
-import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV18
-import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV19
-import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV20
-import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV21
-import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV9
-import com.machiav3lli.fdroid.database.entity.Repository.Companion.defaultRepositories
-import com.machiav3lli.fdroid.database.entity.Tracker
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module
-
-@Database(
+/*@Database(
     entities = [
-        Repository::class,
-        Product::class,
-        Release::class,
-        ReleaseTemp::class,
-        ProductTemp::class,
-        Category::class,
-        CategoryTemp::class,
-        Installed::class,
-        Extras::class,
-        ExodusInfo::class,
-        Tracker::class,
-        Downloaded::class,
-        InstallTask::class,
     ],
-    version = 21,
+    version = 22,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -134,6 +69,11 @@ import org.koin.dsl.module
             to = 21,
             spec = DatabaseX.Companion.MigrationSpec20to21::class
         ),
+        AutoMigration(
+            from = 21,
+            to = 22,
+            spec = DatabaseX.Companion.MigrationSpec21to22::class
+        ),
     ]
 )
 @TypeConverters(Converters::class)
@@ -169,7 +109,7 @@ abstract class DatabaseX : RoomDatabase() {
                 instance.let { instance ->
                     GlobalScope.launch(Dispatchers.IO) {
                         if (instance.getRepositoryDao()
-                                .getCount() == 0
+                                .getCount() == 0L
                         ) defaultRepositories.forEach {
                             instance.getRepositoryDao().put(it)
                         }
@@ -257,6 +197,12 @@ abstract class DatabaseX : RoomDatabase() {
             }
         }
 
+        @DeleteColumn(tableName = TABLE_PRODUCT, columnName = ROW_RELEASES)
+        @DeleteColumn(tableName = TABLE_PRODUCT, columnName = ROW_VERSION_CODE)
+        @DeleteColumn(tableName = TABLE_PRODUCT, columnName = ROW_SIGNATURES)
+        @DeleteColumn(tableName = TABLE_PRODUCT, columnName = ROW_COMPATIBLE)
+        class MigrationSpec21to22 : AutoMigrationSpec
+
         fun onPostMigrate(from: Int) {
             val preRepos = mutableListOf<Repository>()
             if (from == 8) preRepos.addAll(addedReposV9)
@@ -297,14 +243,14 @@ abstract class DatabaseX : RoomDatabase() {
             if (success) {
                 getProductDao().deleteById(repository.id)
                 getCategoryDao().deleteById(repository.id)
-                getProductDao().insert(*(getProductTempDao().getAll()))
-                getCategoryDao().insert(*(getCategoryTempDao().getAll()))
-                //getReleaseDao().insert(*(getReleaseTempDao().getAll()))
+                getProductDao().insert(*(getProductTempDao().all))
+                getCategoryDao().insert(*(getCategoryTempDao().all))
+                getReleaseDao().insert(*(getReleaseTempDao().all))
                 getRepositoryDao().put(repository)
             }
             getProductTempDao().emptyTable()
             getCategoryTempDao().emptyTable()
-            //getReleaseTempDao().emptyTable()
+            getReleaseTempDao().emptyTable()
         }
     }
 }
@@ -325,3 +271,4 @@ val databaseModule = module {
     factory { get<DatabaseX>().getDownloadedDao() }
     factory { get<DatabaseX>().getInstallTaskDao() }
 }
+*/

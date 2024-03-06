@@ -1,6 +1,6 @@
 package com.machiav3lli.fdroid.database
 
-import androidx.room.TypeConverter
+import com.machiav3lli.fdroid.database.entity.Incompatibility
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.entity.Author
 import com.machiav3lli.fdroid.entity.Donate
@@ -8,7 +8,7 @@ import com.machiav3lli.fdroid.entity.Screenshot
 import com.machiav3lli.fdroid.service.worker.DownloadState
 
 object Converters {
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toIntList(byteArray: ByteArray): List<Int> {
         val string = String(byteArray)
@@ -20,11 +20,11 @@ object Converters {
     }
 
     @JvmName("intListToByteArray")
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toByteArray(list: List<Int>): ByteArray = list.toString().toByteArray()
 
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toStringList(byteArray: ByteArray): List<String> {
         val string = String(byteArray)
@@ -33,11 +33,11 @@ object Converters {
     }
 
     @JvmName("stringListToByteArray")
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toByteArray(list: List<String>): ByteArray = list.toString().toByteArray()
 
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toPairStringList(byteArray: ByteArray): List<Pair<String, String>> {
         val string = String(byteArray)
@@ -50,75 +50,75 @@ object Converters {
     }
 
     @JvmName("pairStringListToByteArray")
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toByteArray(list: List<Pair<String, String>>): ByteArray =
         list.map { it.toList().joinToString("|") }.toString().toByteArray()
 
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toAuthor(byteArray: ByteArray) = Author.fromJson(String(byteArray))
 
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toByteArray(author: Author) = author.toJSON().toByteArray()
 
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toDownloadState(byteArray: ByteArray) = DownloadState.fromJson(String(byteArray))
 
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toByteArray(state: DownloadState) = state.toJSON().toByteArray()
 
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toReleases(byteArray: ByteArray): List<Release> =
         if (String(byteArray) == "") emptyList()
         else String(byteArray).split("|").map { Release.fromJson(it) }
 
     @JvmName("releasesToByteArray")
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toByteArray(releases: List<Release>) =
         if (releases.isNotEmpty()) releases.joinToString("|") { it.toJSON() }.toByteArray()
         else "".toByteArray()
 
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
-    fun toIncompatibilities(byteArray: ByteArray): List<Release.Incompatibility> =
+    fun toIncompatibilities(byteArray: ByteArray): List<Incompatibility> =
         if (String(byteArray) == "") emptyList()
-        else String(byteArray).split("|").map { Release.Incompatibility.fromJson(it) }
+        else String(byteArray).split("|").map { Incompatibility.fromJson(it) }
 
     @JvmName("incompatibilitiesToByteArray")
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
-    fun toByteArray(incompatibilities: List<Release.Incompatibility>) =
+    fun toByteArray(incompatibilities: List<Incompatibility>) =
         if (incompatibilities.isNotEmpty())
             incompatibilities.joinToString("|") { it.toJSON() }.toByteArray()
         else "".toByteArray()
 
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toScreenshots(byteArray: ByteArray): List<Screenshot> =
         if (String(byteArray) == "") emptyList()
         else String(byteArray).split("|").map { Screenshot.fromJson(it) }
 
     @JvmName("screenshotsToByteArray")
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toByteArray(screenshots: List<Screenshot>) =
         if (screenshots.isNotEmpty()) screenshots.joinToString("|") { it.toJSON() }.toByteArray()
         else "".toByteArray()
 
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toDonates(byteArray: ByteArray): List<Donate> =
         if (String(byteArray) == "") emptyList()
         else String(byteArray).split("|").map { Donate.fromJson(it) }
 
     @JvmName("donatesToByteArray")
-    @TypeConverter
+    //@TypeConverter
     @JvmStatic
     fun toByteArray(donates: List<Donate>) =
         if (donates.isNotEmpty()) donates.joinToString("|") { it.toJSON() }.toByteArray()

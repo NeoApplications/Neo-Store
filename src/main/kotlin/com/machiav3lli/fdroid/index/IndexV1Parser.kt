@@ -10,6 +10,7 @@ import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.entity.Author
 import com.machiav3lli.fdroid.entity.Donate
 import com.machiav3lli.fdroid.entity.Screenshot
+import com.machiav3lli.fdroid.entity.ScreenshotType
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.json.Json
 import com.machiav3lli.fdroid.utility.extension.json.collectDistinctNotEmptyStrings
@@ -282,11 +283,11 @@ object IndexV1Parser {
         val screenshots = screenshotPairs
             ?.let { (key, screenshots) ->
                 screenshots.phone.asSequence()
-                    .map { Screenshot(key, Screenshot.Type.PHONE, it) } +
+                    .map { Screenshot(key, ScreenshotType.PHONE, it) } +
                         screenshots.smallTablet.asSequence()
-                            .map { Screenshot(key, Screenshot.Type.SMALL_TABLET, it) } +
+                            .map { Screenshot(key, ScreenshotType.SMALL_TABLET, it) } +
                         screenshots.largeTablet.asSequence()
-                            .map { Screenshot(key, Screenshot.Type.LARGE_TABLET, it) }
+                            .map { Screenshot(key, ScreenshotType.LARGE_TABLET, it) }
             }
             .orEmpty().toList()
         return Product(

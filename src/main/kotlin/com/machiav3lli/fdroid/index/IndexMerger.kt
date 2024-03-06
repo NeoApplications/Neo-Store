@@ -8,6 +8,7 @@ import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.utility.extension.android.asSequence
 import com.machiav3lli.fdroid.utility.extension.android.execWithResult
+import io.realm.kotlin.ext.toRealmList
 import java.io.ByteArrayOutputStream
 import java.io.Closeable
 import java.io.File
@@ -69,8 +70,7 @@ class IndexMerger(file: File) : Closeable {
                     }
                     val releases = it.getBlob(2)?.let(::toReleases).orEmpty()
                     product.apply {
-                        this.releases = releases
-                        refreshVariables()
+                        this.releases = releases.toRealmList()
                     }
                 }.windowed(windowSize, windowSize, true)
                     .forEach { products -> callback(products, it.count) }

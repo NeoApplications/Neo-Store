@@ -62,7 +62,8 @@ fun SearchSheet(viewModel: SearchVM) {
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
     }
-    val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
+    val favorites by neoActivity.db.extrasDao.favoritesFlow
+        .collectAsState(emptyList())
     val query by neoActivity.searchQuery.collectAsState()
     var showSortSheet by remember { mutableStateOf(false) }
     val sortSheetState = rememberModalBottomSheetState(true)

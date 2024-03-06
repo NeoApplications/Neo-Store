@@ -80,16 +80,16 @@ const val DIALOG_PRODUCTS = 5
 
 @Composable
 fun RepoPage(
-    repositoryId: Long,
+    repoId: Long,
     initEditMode: Boolean,
     onDismiss: () -> Unit,
     updateRepo: (Repository?) -> Unit,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val repo by MainApplication.db.getRepositoryDao().getFlow(repositoryId)
+    val repo by MainApplication.db.repositoryDao.getFlow(repoId)
         .collectAsState(initial = null)
-    val appsCount by MainApplication.db.getProductDao().countForRepositoryFlow(repositoryId)
+    val appsCount by MainApplication.db.productDao.countForRepositoryFlow(repoId)
         .collectAsState(0)
     var editMode by remember { mutableStateOf(initEditMode) }
     val openDeleteDialog = remember { mutableStateOf(false) }
@@ -471,7 +471,7 @@ fun RepoPage(
                 primaryIcon = Phosphor.TrashSimple,
                 primaryAction = {
                     scope.launch {
-                        SyncWorker.deleteRepo(repositoryId)
+                        SyncWorker.deleteRepo(repoId)
                         onDismiss()
                     }
                 },
@@ -535,7 +535,7 @@ fun RepoPage(
                 }
 
                 DIALOG_PRODUCTS -> ProductsListDialogUI(
-                    repositoryId = repositoryId,
+                    repositoryId = repoId,
                     title = repo?.name.orEmpty(),
                 )
             }
