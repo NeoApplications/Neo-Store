@@ -16,7 +16,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.DisposableEffect
@@ -33,6 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.pages.AppSheet
+import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.AppNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavItem
@@ -158,17 +158,13 @@ class NeoActivity : AppCompatActivity() {
                     )
 
                     if (appSheetPackage.value.isNotEmpty()) {
-                        ModalBottomSheet(
+                        BottomSheet(
                             sheetState = appSheetState,
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                            scrimColor = Color.Transparent,
-                            dragHandle = null,
-                            onDismissRequest = {
+                            onDismiss = {
                                 mScope.launch { appSheetState.hide() }
                                 appSheetPackage.value = ""
                             },
                         ) {
-
                             AppSheet(
                                 appSheetVM,
                                 appSheetPackage.value,

@@ -20,7 +20,6 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -52,6 +51,7 @@ import com.machiav3lli.fdroid.ui.components.DownloadedItem
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.TabButton
 import com.machiav3lli.fdroid.ui.components.TabIndicator
+import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
@@ -312,12 +312,9 @@ fun InstalledPage(viewModel: InstalledVM) {
         }
 
         if (showSortSheet) {
-            ModalBottomSheet(
+            BottomSheet(
                 sheetState = sortSheetState,
-                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                scrimColor = Color.Transparent,
-                dragHandle = null,
-                onDismissRequest = {
+                onDismiss = {
                     scope.launch { sortSheetState.hide() }
                     showSortSheet = false
                 },

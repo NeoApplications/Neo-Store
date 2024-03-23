@@ -11,7 +11,6 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -30,6 +29,7 @@ import com.machiav3lli.fdroid.INTENT_ACTION_BINARY_EYE
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.service.worker.SyncWorker
+import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.compose.RepositoriesRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.QrCode
@@ -132,12 +132,9 @@ fun PrefsReposPage(viewModel: PrefsVM) {
         )
 
         if (sheetData != null) {
-            ModalBottomSheet(
+            BottomSheet(
                 sheetState = sheetState,
-                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                scrimColor = Color.Transparent,
-                dragHandle = null,
-                onDismissRequest = {
+                onDismiss = {
                     viewModel.closeRepositorySheet()
                     scope.launch { sheetState.hide() }
                 }

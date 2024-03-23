@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -34,6 +32,7 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.service.worker.ExodusWorker
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
+import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.compose.ProductsCarousel
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -185,12 +184,9 @@ fun LatestPage(viewModel: LatestVM) {
     }
 
     if (showSortSheet) {
-        ModalBottomSheet(
+        BottomSheet(
             sheetState = sortSheetState,
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-            scrimColor = Color.Transparent,
-            dragHandle = null,
-            onDismissRequest = {
+            onDismiss = {
                 scope.launch { sortSheetState.hide() }
                 showSortSheet = false
             },

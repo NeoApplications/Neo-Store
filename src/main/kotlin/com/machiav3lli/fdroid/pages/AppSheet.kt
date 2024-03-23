@@ -26,7 +26,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -84,6 +83,7 @@ import com.machiav3lli.fdroid.ui.components.appsheet.PrivacyPanel
 import com.machiav3lli.fdroid.ui.components.appsheet.ReleaseItem
 import com.machiav3lli.fdroid.ui.components.appsheet.TopBarHeader
 import com.machiav3lli.fdroid.ui.components.appsheet.WarningCard
+import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.components.privacy.MeterIconsBar
 import com.machiav3lli.fdroid.ui.components.toScreenshotItem
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
@@ -593,15 +593,13 @@ fun AppSheet(
             }
 
             if (showScreenshots.value) {
-                ModalBottomSheet(
+                BottomSheet(
                     sheetState = screenshotsPageState,
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                    dragHandle = null,
-                    onDismissRequest = {
+                    shape = RectangleShape,
+                    onDismiss = {
                         scope.launch { screenshotsPageState.hide() }
                         showScreenshots.value = false
                     },
-                    shape = RectangleShape,
                 ) {
                     ScreenshotsPage(
                         screenshots = suggestedProductRepo.first.screenshots.map {
