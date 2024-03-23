@@ -33,7 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.Installed
@@ -156,6 +155,7 @@ fun ProductCarouselItem(
     installed: Installed? = null,
     favourite: Boolean = false,
     onFavourite: (ProductItem) -> Unit = {},
+    onActionClick: (ProductItem) -> Unit = {},
     onUserClick: (ProductItem) -> Unit = {},
 ) {
     val context = LocalContext.current
@@ -258,7 +258,7 @@ fun ProductCarouselItem(
                         ),
                         onClick = {
                             when (action) {
-                                is ActionState.Install -> MainApplication.wm.install(product)
+                                is ActionState.Install -> onActionClick.invoke(product)
                                 is ActionState.Launch  -> installed?.let {
                                     context.onLaunchClick(
                                         it,

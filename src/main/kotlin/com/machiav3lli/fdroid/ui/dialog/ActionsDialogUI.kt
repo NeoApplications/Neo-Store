@@ -111,16 +111,24 @@ fun KeyDialogUI(
         titleText = when (key) {
             is DialogKey.ReleaseIncompatible,
             is DialogKey.ReleaseIssue,
-                              -> stringResource(id = R.string.incompatible_version)
+                 -> stringResource(id = R.string.incompatible_version)
 
-            is DialogKey.Link -> stringResource(id = R.string.confirmation)
-            else              -> ""
+            is DialogKey.Download,
+            is DialogKey.Link,
+                 -> stringResource(id = R.string.confirmation)
+
+            else -> ""
         }.toString(),
         messageText = when (key) {
             is DialogKey.ReleaseIssue        -> stringResource(id = key.resId)
             is DialogKey.Link                -> stringResource(
                 id = R.string.open_DESC_FORMAT,
                 key.uri
+            )
+
+            is DialogKey.Download            -> stringResource(
+                id = R.string.confirm_download_DESC_FORMAT,
+                key.label
             )
 
             is DialogKey.ReleaseIncompatible -> {
@@ -179,6 +187,7 @@ fun KeyDialogUI(
             is DialogKey.ReleaseIssue,
             is DialogKey.ReleaseIncompatible,
             is DialogKey.Link,
+            is DialogKey.Download,
                  -> stringResource(id = R.string.ok)
 
             else -> ""

@@ -293,6 +293,11 @@ data class Request(
 
 sealed class DialogKey {
     data class Link(val uri: Uri) : DialogKey()
+    data class Download(
+        val label: String,
+        val action: () -> Unit
+    ) : DialogKey()
+
     data class ReleaseIncompatible(
         val incompatibilities: List<Release.Incompatibility>,
         val platforms: List<String>,

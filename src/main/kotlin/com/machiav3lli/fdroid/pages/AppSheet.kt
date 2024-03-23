@@ -246,12 +246,18 @@ fun AppSheet(
                         .filter { it.first.releases.any { rel -> rel === release } }
                         .firstOrNull()
                 if (productRepository != null) {
-                    DownloadWorker.enqueue(
-                        packageName,
-                        productRepository.first.label,
-                        productRepository.second,
-                        release
-                    )
+                    val action = {
+                        DownloadWorker.enqueue(
+                            packageName,
+                            productRepository.first.label,
+                            productRepository.second,
+                            release
+                        )
+                    }
+                    if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                        dialogKey.value = DialogKey.Download(productRepository.first.label, action)
+                        openDialog.value = true
+                    } else action()
                 }
             }
         }
@@ -264,13 +270,25 @@ fun AppSheet(
             ActionState.Update,
                                   -> {
                 val installedItem = viewModel.installedItem.value
-                scope.launch {
-                    startUpdate(
-                        packageName,
-                        installedItem,
-                        productRepos
-                    )
+                val actionJob: () -> Unit = {
+                    scope.launch {
+                        startUpdate(
+                            packageName,
+                            installedItem,
+                            productRepos
+                        )
+                    }
                 }
+                if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                    val productRepository =
+                        findSuggestedProduct(productRepos, installed) { it.first }
+                    dialogKey.value =
+                        DialogKey.Download(
+                            productRepository?.first?.label ?: packageName,
+                            actionJob
+                        )
+                    openDialog.value = true
+                } else actionJob()
                 Unit
             }
 
@@ -639,7 +657,7 @@ fun AppSheet(
                             openDialog = openDialog,
                             primaryAction = {
                                 when (dialogKey.value) {
-                                    is DialogKey.Link -> {
+                                    is DialogKey.Link     -> {
                                         try {
                                             context.startActivity(
                                                 Intent(
@@ -652,7 +670,12 @@ fun AppSheet(
                                         }
                                     }
 
-                                    else              -> {
+                                    is DialogKey.Download -> {
+                                        (dialogKey.value as DialogKey.Download).action()
+                                        openDialog.value = false
+                                    }
+
+                                    else                  -> {
                                         dialogKey.value = null
                                         openDialog.value = false
                                     }

@@ -32,6 +32,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.ReleasesCacheRetention,
         Key.DownloadDirectory,
         Key.DownloadManager,
+        Key.DownloadShowDialog,
         Key.EnableDownloadDirectory,
         Key.ImagesCacheRetention,
         Key.InstallAfterSync,

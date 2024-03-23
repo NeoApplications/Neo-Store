@@ -72,6 +72,10 @@ val BooleanPrefsMeta = mapOf(
         R.string.download_manager,
         R.string.download_manager_summary
     ),
+    Preferences.Key.DownloadShowDialog to Pair(
+        R.string.download_show_dialog,
+        R.string.download_show_dialog_summary
+    ),
 )
 
 val NonBooleanPrefsMeta = mapOf(

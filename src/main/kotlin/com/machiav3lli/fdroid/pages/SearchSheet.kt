@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +36,7 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.entity.DialogKey
 import com.machiav3lli.fdroid.service.worker.ExodusWorker
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.WideSearchField
@@ -42,6 +44,8 @@ import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
+import com.machiav3lli.fdroid.ui.dialog.BaseDialog
+import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.SearchVM
@@ -66,6 +70,8 @@ fun SearchSheet(viewModel: SearchVM) {
     val query by neoActivity.searchQuery.collectAsState()
     var showSortSheet by remember { mutableStateOf(false) }
     val sortSheetState = rememberModalBottomSheetState(true)
+    val openDialog = remember { mutableStateOf(false) }
+    val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.Default) {
@@ -167,13 +173,16 @@ fun SearchSheet(viewModel: SearchVM) {
                     installed = installedList[item.packageName],
                     onActionClick = {
                         val installed = installedList[it.packageName]
+                        val action = { MainApplication.wm.install(it) }
                         if (installed != null && installed.launcherActivities.isNotEmpty())
                             context.onLaunchClick(
                                 installed,
                                 neoActivity.supportFragmentManager
                             )
-                        else
-                            MainApplication.wm.install(it)
+                        else if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                            dialogKey.value = DialogKey.Download(it.name, action)
+                            openDialog.value = true
+                        } else action()
                     }
                 )
             }
@@ -191,6 +200,27 @@ fun SearchSheet(viewModel: SearchVM) {
             SortFilterSheet(NavItem.Search.destination) {
                 scope.launch { sortSheetState.hide() }
                 showSortSheet = false
+            }
+        }
+    }
+
+    if (openDialog.value) {
+        BaseDialog(openDialogCustom = openDialog) {
+            when (dialogKey.value) {
+                is DialogKey.Download -> KeyDialogUI(
+                    key = dialogKey.value,
+                    openDialog = openDialog,
+                    primaryAction = {
+                        (dialogKey.value as DialogKey.Download).action()
+                        openDialog.value = false
+                    },
+                    onDismiss = {
+                        dialogKey.value = null
+                        openDialog.value = false
+                    }
+                )
+
+                else                  -> {}
             }
         }
     }

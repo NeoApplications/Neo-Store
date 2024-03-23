@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +45,7 @@ import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Product
+import com.machiav3lli.fdroid.entity.DialogKey
 import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.service.worker.ExodusWorker
 import com.machiav3lli.fdroid.ui.components.ActionChip
@@ -59,6 +61,8 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUp
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
+import com.machiav3lli.fdroid.ui.dialog.BaseDialog
+import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.InstalledVM
@@ -89,6 +93,8 @@ fun InstalledPage(viewModel: InstalledVM) {
     var updatesVisible by remember(updates) { mutableStateOf(true) }
     var showSortSheet by remember { mutableStateOf(false) }
     val sortSheetState = rememberModalBottomSheetState(true)
+    val openDialog = remember { mutableStateOf(false) }
+    val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.Default) {
@@ -279,13 +285,16 @@ fun InstalledPage(viewModel: InstalledVM) {
                                 installed = installedList[item.packageName],
                                 onActionClick = {
                                     val installed = installedList[it.packageName]
+                                    val action = { MainApplication.wm.install(it) }
                                     if (installed != null && installed.launcherActivities.isNotEmpty())
                                         context.onLaunchClick(
                                             installed,
                                             neoActivity.supportFragmentManager
                                         )
-                                    else
-                                        MainApplication.wm.install(it)
+                                    else if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                        dialogKey.value = DialogKey.Download(it.name, action)
+                                        openDialog.value = true
+                                    } else action()
                                 }
                             )
                         }
@@ -322,6 +331,28 @@ fun InstalledPage(viewModel: InstalledVM) {
                 SortFilterSheet(NavItem.Installed.destination) {
                     scope.launch { sortSheetState.hide() }
                     showSortSheet = false
+                }
+            }
+        }
+
+        if (openDialog.value) {
+            BaseDialog(openDialogCustom = openDialog) {
+                when (dialogKey.value) {
+                    is DialogKey.Download -> KeyDialogUI(
+                        key = dialogKey.value,
+                        openDialog = openDialog,
+                        primaryAction = {
+                            (dialogKey.value as DialogKey.Download).action()
+                            openDialog.value = false
+
+                        },
+                        onDismiss = {
+                            dialogKey.value = null
+                            openDialog.value = false
+                        }
+                    )
+
+                    else                  -> {}
                 }
             }
         }

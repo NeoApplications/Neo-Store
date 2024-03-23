@@ -370,4 +370,7 @@
     <string name="root_allow_installing_old_apps_description">Starting with Android 14, it\'s no longer possible to install applications targeting much older Android versions (Android 5.1 or earlier). This option allows you to override this behavior.</string>
     <string name="alt_block_layout">Use alternative layout for page blocks</string>
     <string name="alt_block_layout_summary">Use an alternative/old layout for page blocks with borders instead of colored surfaces.</string>
+    <string name="confirm_download_DESC_FORMAT">Are you sure you want to download %s?</string>
+    <string name="download_show_dialog">Show download dialog</string>
+    <string name="download_show_dialog_summary">Show a dialog asking if you\'re sure you want to download an app (previous to starting download).</string>
 </resources>
