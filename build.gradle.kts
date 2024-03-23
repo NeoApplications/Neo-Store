@@ -29,7 +29,7 @@ val vWork = "2.9.0"
 val vZXing = "3.5.3"
 
 plugins {
-    id("com.android.application") version ("8.2.1")
+    id("com.android.application") version ("8.3.1")
     kotlin("android") version ("1.9.23")
     kotlin("plugin.serialization") version ("1.9.23")
     id("com.google.devtools.ksp") version ("1.9.23-1.0.19")
