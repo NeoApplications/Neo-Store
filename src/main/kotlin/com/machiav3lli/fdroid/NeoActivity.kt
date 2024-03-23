@@ -25,7 +25,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -39,7 +38,6 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import com.machiav3lli.fdroid.utility.isDarkTheme
-import com.machiav3lli.fdroid.utility.setCustomTheme
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import com.machiav3lli.fdroid.viewmodels.ExploreVM
 import com.machiav3lli.fdroid.viewmodels.InstalledVM
@@ -103,8 +101,6 @@ class NeoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
         currentTheme = Preferences[Preferences.Key.Theme].resId
-        setCustomTheme()
-        enableEdgeToEdge()
         MainApplication.mainActivity = this
         super.onCreate(savedInstanceState)
 

@@ -8,7 +8,8 @@ import com.machiav3lli.fdroid.utility.extension.android.Android
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
+import java.util.TimeZone
 
 class IndexHandler(private val repositoryId: Long, private val callback: Callback) :
     DefaultHandler() {
@@ -54,7 +55,7 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
             return when {
                 index1 >= 0 && index2 == -1 -> -1
                 index2 >= 0 && index1 == -1 -> 1
-                else -> index1.compareTo(index2)
+                else                        -> index1.compareTo(index2)
             }
         }
     }
@@ -193,7 +194,7 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
         contentBuilder.setLength(0)
 
         when {
-            localName == "repo" -> {
+            localName == "repo"                                                                                    -> {
                 if (repositoryBuilder != null) {
                     repositoryBuilder.address = attributes.get("url").cleanWhiteSpace()
                     repositoryBuilder.name = attributes.get("name").cleanWhiteSpace()
@@ -204,15 +205,19 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
                         (attributes.get("timestamp").toLongOrNull() ?: 0L) * 1000L
                 }
             }
-            localName == "application" && productBuilder == null -> {
+
+            localName == "application" && productBuilder == null                                                   -> {
                 this.productBuilder = ProductBuilder(repositoryId, attributes.get("id"))
             }
-            localName == "package" && productBuilder != null && releaseBuilder == null -> {
+
+            localName == "package" && productBuilder != null && releaseBuilder == null                             -> {
                 this.releaseBuilder = ReleaseBuilder()
             }
-            localName == "hash" && releaseBuilder != null -> {
+
+            localName == "hash" && releaseBuilder != null                                                          -> {
                 releaseBuilder.hashType = attributes.get("type")
             }
+
             (localName == "uses-permission" || localName.startsWith("uses-permission-")) && releaseBuilder != null -> {
                 val minSdkVersion = if (localName != "uses-permission") {
                     "uses-permission-sdk-(\\d+)".toRegex().matchEntire(localName)
@@ -239,7 +244,7 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
         val content = contentBuilder.toString()
 
         when {
-            localName == "repo" -> {
+            localName == "repo"                                                        -> {
                 if (repositoryBuilder != null) {
                     val mirrors = (listOf(repositoryBuilder.address) + repositoryBuilder.mirrors)
                         .filter { it.isNotEmpty() }.distinct()
@@ -254,75 +259,93 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
                     this.repositoryBuilder = null
                 }
             }
-            localName == "application" && productBuilder != null -> {
+
+            localName == "application" && productBuilder != null                       -> {
                 val product = productBuilder.build()
                 this.productBuilder = null
                 callback.onProduct(product)
             }
+
             localName == "package" && productBuilder != null && releaseBuilder != null -> {
                 productBuilder.releases.add(releaseBuilder.build())
                 this.releaseBuilder = null
             }
-            repositoryBuilder != null -> {
+
+            repositoryBuilder != null                                                  -> {
                 when (localName) {
                     "description" -> repositoryBuilder.description = content.cleanWhiteSpace()
-                    "mirror" -> repositoryBuilder.mirrors += content
+                    "mirror"      -> repositoryBuilder.mirrors += content
                 }
             }
-            productBuilder != null && releaseBuilder != null -> {
+
+            productBuilder != null && releaseBuilder != null                           -> {
                 when (localName) {
-                    "version" -> releaseBuilder.version = content
-                    "versioncode" -> releaseBuilder.versionCode = content.toLongOrNull() ?: 0L
-                    "added" -> releaseBuilder.added = content.parseDate()
-                    "size" -> releaseBuilder.size = content.toLongOrNull() ?: 0
-                    "sdkver" -> releaseBuilder.minSdkVersion = content.toIntOrNull() ?: 0
-                    "targetSdkVersion" -> releaseBuilder.targetSdkVersion =
-                        content.toIntOrNull() ?: 0
-                    "maxsdkver" -> releaseBuilder.maxSdkVersion = content.toIntOrNull() ?: 0
-                    "srcname" -> releaseBuilder.source = content
-                    "apkname" -> releaseBuilder.release = content
-                    "hash" -> releaseBuilder.hash = content
-                    "sig" -> releaseBuilder.signature = content
-                    "obbMainFile" -> releaseBuilder.obbMain = content
-                    "obbMainFileSha256" -> releaseBuilder.obbMainHash = content
-                    "obbPatchFile" -> releaseBuilder.obbPatch = content
-                    "obbPatchFileSha256" -> releaseBuilder.obbPatchHash = content
-                    "permissions" -> releaseBuilder.permissions += content.split(',')
-                        .filter { it.isNotEmpty() }
-                    "features" -> releaseBuilder.features += content.split(',')
-                        .filter { it.isNotEmpty() }
-                    "nativecode" -> releaseBuilder.platforms += content.split(',')
-                        .filter { it.isNotEmpty() }
-                }
-            }
-            productBuilder != null -> {
-                when (localName) {
-                    "name" -> productBuilder.name = content
-                    "summary" -> productBuilder.summary = content
-                    "description" -> productBuilder.description = "<p>$content</p>"
-                    "desc" -> productBuilder.description = content.replace("\n", "<br/>")
-                    "icon" -> productBuilder.icon = validateIcon(content)
-                    "author" -> productBuilder.authorName = content
-                    "email" -> productBuilder.authorEmail = content
-                    "source" -> productBuilder.source = content
-                    "changelog" -> productBuilder.changelog = content
-                    "web" -> productBuilder.web = content
-                    "tracker" -> productBuilder.tracker = content
-                    "added" -> productBuilder.added = content.parseDate()
-                    "lastupdated" -> productBuilder.updated = content.parseDate()
-                    "marketvercode" -> productBuilder.suggestedVersionCode =
+                    "version"            -> releaseBuilder.version = content
+                    "versioncode"        -> releaseBuilder.versionCode =
                         content.toLongOrNull() ?: 0L
-                    "categories" -> productBuilder.categories += content.split(',')
+
+                    "added"              -> releaseBuilder.added = content.parseDate()
+                    "size"               -> releaseBuilder.size = content.toLongOrNull() ?: 0
+                    "sdkver"             -> releaseBuilder.minSdkVersion =
+                        content.toIntOrNull() ?: 0
+
+                    "targetSdkVersion"   -> releaseBuilder.targetSdkVersion =
+                        content.toIntOrNull() ?: 0
+
+                    "maxsdkver"          -> releaseBuilder.maxSdkVersion =
+                        content.toIntOrNull() ?: 0
+
+                    "srcname"            -> releaseBuilder.source = content
+                    "apkname"            -> releaseBuilder.release = content
+                    "hash"               -> releaseBuilder.hash = content
+                    "sig"                -> releaseBuilder.signature = content
+                    "obbMainFile"        -> releaseBuilder.obbMain = content
+                    "obbMainFileSha256"  -> releaseBuilder.obbMainHash = content
+                    "obbPatchFile"       -> releaseBuilder.obbPatch = content
+                    "obbPatchFileSha256" -> releaseBuilder.obbPatchHash = content
+                    "permissions"        -> releaseBuilder.permissions += content.split(',')
                         .filter { it.isNotEmpty() }
-                    "antifeatures" -> productBuilder.antiFeatures += content.split(',')
+
+                    "features"           -> releaseBuilder.features += content.split(',')
                         .filter { it.isNotEmpty() }
-                    "license" -> productBuilder.licenses += content.split(',')
+
+                    "nativecode"         -> releaseBuilder.platforms += content.split(',')
                         .filter { it.isNotEmpty() }
-                    "donate" -> productBuilder.donates += Donate.Regular(content)
-                    "bitcoin" -> productBuilder.donates += Donate.Bitcoin(content)
-                    "litecoin" -> productBuilder.donates += Donate.Litecoin(content)
-                    "flattr" -> productBuilder.donates += Donate.Flattr(content)
-                    "liberapay" -> productBuilder.donates += Donate.Liberapay(content)
+                }
+            }
+
+            productBuilder != null                                                     -> {
+                when (localName) {
+                    "name"           -> productBuilder.name = content
+                    "summary"        -> productBuilder.summary = content
+                    "description"    -> productBuilder.description = "<p>$content</p>"
+                    "desc"           -> productBuilder.description = content.replace("\n", "<br/>")
+                    "icon"           -> productBuilder.icon = validateIcon(content)
+                    "author"         -> productBuilder.authorName = content
+                    "email"          -> productBuilder.authorEmail = content
+                    "source"         -> productBuilder.source = content
+                    "changelog"      -> productBuilder.changelog = content
+                    "web"            -> productBuilder.web = content
+                    "tracker"        -> productBuilder.tracker = content
+                    "added"          -> productBuilder.added = content.parseDate()
+                    "lastupdated"    -> productBuilder.updated = content.parseDate()
+                    "marketvercode"  -> productBuilder.suggestedVersionCode =
+                        content.toLongOrNull() ?: 0L
+
+                    "categories"     -> productBuilder.categories += content.split(',')
+                        .filter { it.isNotEmpty() }
+
+                    "antifeatures"   -> productBuilder.antiFeatures += content.split(',')
+                        .filter { it.isNotEmpty() }
+
+                    "license"        -> productBuilder.licenses += content.split(',')
+                        .filter { it.isNotEmpty() }
+
+                    "donate"         -> productBuilder.donates += Donate.Regular(content)
+                    "bitcoin"        -> productBuilder.donates += Donate.Bitcoin(content)
+                    "litecoin"       -> productBuilder.donates += Donate.Litecoin(content)
+                    "flattr"         -> productBuilder.donates += Donate.Flattr(content)
+                    "liberapay"      -> productBuilder.donates += Donate.Liberapay(content)
                     "openCollective" -> productBuilder.donates += Donate.OpenCollective(
                         content
                     )

@@ -25,7 +25,7 @@ fun AppTheme(
     themeContrast: Contrast = getGetThemeContrast(),
     content: @Composable () -> Unit,
 ) {
-    MaterialTheme( // TODO add contrasts
+    MaterialTheme(
         colorScheme = when {
             isDynamicColorsTheme && darkTheme && blackTheme && Android.sdk(Build.VERSION_CODES.S)
                  -> dynamicBlackColorScheme(LocalContext.current)
