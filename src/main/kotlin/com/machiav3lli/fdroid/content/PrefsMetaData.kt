@@ -76,6 +76,18 @@ val BooleanPrefsMeta = mapOf(
         R.string.download_show_dialog,
         R.string.download_show_dialog_summary
     ),
+    Preferences.Key.DeviceLockDialog to Pair(
+        R.string.download_install_lock,
+        R.string.download_install_lock_summary
+    ),
+    Preferences.Key.BottomSearchBar to Pair(
+        R.string.bottom_search_bar,
+        R.string.bottom_search_bar_summary
+    ),
+    Preferences.Key.KidsMode to Pair(
+        R.string.kids_mode,
+        R.string.kids_mode_summary
+    ),
 )
 
 val NonBooleanPrefsMeta = mapOf(

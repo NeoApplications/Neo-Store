@@ -100,6 +100,39 @@ fun SearchSheet(viewModel: SearchVM) {
         }
     }
 
+    val searchBar: @Composable (() -> Unit) = {
+        Row(
+            modifier = Modifier.padding(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            WideSearchField(
+                modifier = Modifier.weight(1f),
+                query = query,
+                onClose = {
+                    neoActivity.setSearchQuery("")
+                },
+                onQueryChanged = { newQuery ->
+                    if (newQuery != query) neoActivity.setSearchQuery(newQuery)
+                }
+            )
+            FloatingActionButton(
+                shape = MaterialTheme.shapes.extraLarge,
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.primary,
+                elevation = FloatingActionButtonDefaults.elevation(0.dp),
+                onClick = {
+                    showSortSheet = true
+                }
+            ) {
+                Icon(
+                    imageVector = Phosphor.FunnelSimple,
+                    contentDescription = stringResource(id = R.string.sort_filter)
+                )
+            }
+        }
+    }
+
     LaunchedEffect(key1 = query) {
         viewModel.setSearchQuery(query)
     }
@@ -107,42 +140,13 @@ fun SearchSheet(viewModel: SearchVM) {
     Scaffold(
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground,
-        bottomBar = {
-            Row(
-                modifier = Modifier.padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                WideSearchField(
-                    modifier = Modifier.weight(1f),
-                    query = query,
-                    onClose = {
-                        neoActivity.setSearchQuery("")
-                    },
-                    onQueryChanged = { newQuery ->
-                        if (newQuery != query) neoActivity.setSearchQuery(newQuery)
-                    }
-                )
-                FloatingActionButton(
-                    shape = MaterialTheme.shapes.extraLarge,
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.primary,
-                    elevation = FloatingActionButtonDefaults.elevation(0.dp),
-                    onClick = {
-                        showSortSheet = true
-                    }
-                ) {
-                    Icon(
-                        imageVector = Phosphor.FunnelSimple,
-                        contentDescription = stringResource(id = R.string.sort_filter)
-                    )
-                }
-            }
-        },
+        topBar = { if (!Preferences[Preferences.Key.BottomSearchBar]) searchBar() },
+        bottomBar = { if (Preferences[Preferences.Key.BottomSearchBar]) searchBar() },
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .padding(
+                    top = paddingValues.calculateTopPadding(),
                     bottom = paddingValues.calculateBottomPadding(),
                     start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
                     end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),

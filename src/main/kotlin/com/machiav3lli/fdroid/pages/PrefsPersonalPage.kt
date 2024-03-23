@@ -49,6 +49,7 @@ fun PrefsPersonalPage() {
         Preferences.Key.AltNavBarItem,
         Preferences.Key.AltNewApps,
         Preferences.Key.AltBlockLayout,
+        Preferences.Key.BottomSearchBar,
         Preferences.Key.UpdatedApps,
         Preferences.Key.NewApps,
     )
