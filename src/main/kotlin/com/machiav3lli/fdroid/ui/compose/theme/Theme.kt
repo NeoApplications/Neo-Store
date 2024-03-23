@@ -27,10 +27,10 @@ fun AppTheme(
 ) {
     MaterialTheme( // TODO add contrasts
         colorScheme = when {
-            isDynamicColorsTheme && isSystemInDarkTheme() && blackTheme && Android.sdk(Build.VERSION_CODES.S)
+            isDynamicColorsTheme && darkTheme && blackTheme && Android.sdk(Build.VERSION_CODES.S)
                  -> dynamicBlackColorScheme(LocalContext.current)
 
-            isDynamicColorsTheme && isSystemInDarkTheme() && Android.sdk(Build.VERSION_CODES.S)
+            isDynamicColorsTheme && darkTheme && Android.sdk(Build.VERSION_CODES.S)
                  -> dynamicDarkColorScheme(LocalContext.current)
 
             isDynamicColorsTheme && Android.sdk(Build.VERSION_CODES.S)
