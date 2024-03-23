@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -29,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.MainApplication
@@ -112,8 +114,8 @@ fun ProductItemContent(
         },
         headlineContent = {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
                     text = product.name,
@@ -122,7 +124,7 @@ fun ProductItemContent(
                     softWrap = true,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    style = MaterialTheme.typography.titleSmall
+                    style = MaterialTheme.typography.titleMedium
                 )
                 if (product.canUpdate) ReleaseBadge(
                     text = "${product.installedVersion} → ${product.version}",
@@ -130,19 +132,18 @@ fun ProductItemContent(
                 else Text(
                     text = installed?.version ?: product.version,
                     overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.End,
                     maxLines = 1,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.labelMedium,
                 )
             }
         },
         supportingContent = {
             Text(
-                modifier = Modifier.fillMaxWidth(),
                 text = product.summary,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = if (isExpanded.value) Int.MAX_VALUE else 2,
-                color = MaterialTheme.colorScheme.onSurface,
             )
         },
     )
@@ -199,42 +200,45 @@ fun ProductCarouselItem(
         headlineContent = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
                     text = product.name,
-                    modifier = Modifier
-                        .weight(1f),
                     softWrap = true,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    style = MaterialTheme.typography.titleSmall
+                    style = MaterialTheme.typography.titleMedium
                 )
                 if (product.canUpdate) ReleaseBadge(
                     text = "${product.installedVersion} → ${product.version}",
                 ) else Text(
                     text = installed?.version ?: product.version,
+                    modifier = Modifier
+                        .widthIn(max = 60.dp),
+                    textAlign = TextAlign.End,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.labelMedium,
                 )
             }
         },
         supportingContent = {
-            Row {
+            Column(
+                modifier = Modifier.fillMaxHeight(1f),
+            ) {
                 Text(
-                    modifier = Modifier.weight(1f),
                     text = product.summary,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
         },
         trailingContent = {
             Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.End,
             ) {
                 IconButton(
                     onClick = { onFavourite(product) }

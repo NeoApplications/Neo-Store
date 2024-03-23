@@ -67,18 +67,18 @@ fun ReleaseItem(
     val container by animateColorAsState(
         targetValue = if (isSuggested or isInstalled)
             MaterialTheme.colorScheme.surfaceContainerHighest
-        else MaterialTheme.colorScheme.surfaceContainerLowest, label = "containerColor"
+        else MaterialTheme.colorScheme.surfaceContainerLow, label = "containerColor"
     )
     val border by animateColorAsState(
         targetValue = if (isSuggested or isInstalled)
-            MaterialTheme.colorScheme.surfaceContainerHighest
+            MaterialTheme.colorScheme.primaryContainer
         else Color.Transparent, label = "borderColor"
     )
 
     ListItem(
         modifier = modifier
             .fillMaxWidth()
-            .border(1.dp, border, MaterialTheme.shapes.large)
+            .border(2.dp, border, MaterialTheme.shapes.large)
             .clip(MaterialTheme.shapes.large),
         colors = ListItemDefaults.colors(
             containerColor = container,
@@ -134,7 +134,7 @@ fun ReleaseItem(
                 ) {
                     Text(
                         text = currentRelease.size.formatSize(),
-                        style = MaterialTheme.typography.labelLarge
+                        style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = { onShareClick(currentRelease) }) {
@@ -187,10 +187,10 @@ fun ReleaseItemBottomText(
         Text(
             modifier = modifier.weight(1f),
             text = stringResource(id = R.string.provided_by_FORMAT, repository),
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.bodyMedium,
             maxLines = 2,
         )
-        Text(text = date, style = MaterialTheme.typography.labelSmall)
+        Text(text = date, style = MaterialTheme.typography.bodyMedium)
     }
 }
 

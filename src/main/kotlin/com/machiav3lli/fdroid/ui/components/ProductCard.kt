@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ProductItem
@@ -23,7 +24,7 @@ import com.machiav3lli.fdroid.network.createIconUri
 
 val PRODUCT_CARD_ICON = 48.dp
 val PRODUCT_CARD_HEIGHT = 64.dp
-val PRODUCT_CAROUSEL_HEIGHT = 132.dp
+val PRODUCT_CAROUSEL_HEIGHT = 136.dp
 val PRODUCT_CARD_WIDTH = 220.dp
 
 @Composable
@@ -67,25 +68,23 @@ fun ProductCard(
         headlineContent = {
             Text(
                 text = product.name,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.titleMedium,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
-                color = MaterialTheme.colorScheme.onSurface
             )
         },
         supportingContent = {
             Text(
                 text = product.version,
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.bodyMedium,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
-                color = MaterialTheme.colorScheme.onSurface,
             )
         },
     )
 }
 
-//@Preview
+@Preview
 @Composable
 fun ProductCardPreview() {
     ProductCard(ProductItem())

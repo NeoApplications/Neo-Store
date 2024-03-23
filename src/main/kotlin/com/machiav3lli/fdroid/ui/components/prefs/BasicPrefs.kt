@@ -59,10 +59,14 @@ fun BasePreference(
             .fillMaxWidth()
             .clip(
                 RoundedCornerShape(
-                    topStart = if (base == 0f) 16.dp else 6.dp,
-                    topEnd = if (base == 0f) 16.dp else 6.dp,
-                    bottomStart = if (rank == 1f) 16.dp else 6.dp,
-                    bottomEnd = if (rank == 1f) 16.dp else 6.dp
+                    topStart = if (base == 0f) MaterialTheme.shapes.large.topStart
+                    else MaterialTheme.shapes.extraSmall.topStart,
+                    topEnd = if (base == 0f) MaterialTheme.shapes.large.topEnd
+                    else MaterialTheme.shapes.extraSmall.topEnd,
+                    bottomStart = if (rank == 1f) MaterialTheme.shapes.large.bottomStart
+                    else MaterialTheme.shapes.extraSmall.bottomStart,
+                    bottomEnd = if (rank == 1f) MaterialTheme.shapes.large.bottomEnd
+                    else MaterialTheme.shapes.extraSmall.bottomEnd
                 )
             )
             .addIf(onClick != null) {

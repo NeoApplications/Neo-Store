@@ -34,7 +34,7 @@ fun RepositoryItem(
     }
     val backgroundColor by animateColorAsState(
         targetValue = if (isEnabled) MaterialTheme.colorScheme.surfaceContainerHighest
-        else MaterialTheme.colorScheme.surfaceContainerLowest,
+        else MaterialTheme.colorScheme.surfaceContainerLow,
         label = "backgroundColor",
     )
 
@@ -65,9 +65,8 @@ fun RepositoryItem(
             repository.description.trim().let {
                 Text(
                     text = it,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.labelMedium,
                     overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1
                 )
             }
