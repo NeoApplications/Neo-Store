@@ -70,7 +70,6 @@ import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.network.createIconUri
 import com.machiav3lli.fdroid.service.ActionReceiver
 import com.machiav3lli.fdroid.service.worker.DownloadWorker
-import com.machiav3lli.fdroid.ui.components.BlockCard
 import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
 import com.machiav3lli.fdroid.ui.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.components.SwitchPreference
@@ -485,68 +484,73 @@ fun AppSheet(
                         }
                         val links = product.generateLinks(context)
                         item {
-                            if ((links + product.donates + product.whatsNew + authorProducts).isNotEmpty()) BlockCard {
-                                if (links.isNotEmpty()) {
-                                    ExpandableItemsBlock(heading = stringResource(id = R.string.links)) {
-                                        links.forEach { item ->
-                                            LinkItem(
-                                                linkType = item,
-                                                onClick = { link ->
-                                                    link?.let { onUriClick(it, true) }
-                                                },
-                                                onLongClick = { link ->
-                                                    copyLinkToClipboard(link.toString())
-                                                }
-                                            )
-                                        }
-                                    }
-                                }
-                                if (product.donates.isNotEmpty()) {
-                                    ExpandableItemsBlock(heading = stringResource(id = R.string.donate)) {
-                                        product.donates.forEach { item ->
-                                            LinkItem(
-                                                linkType = DonateType(item, context),
-                                                onClick = { link ->
-                                                    link?.let { onUriClick(it, true) }
-                                                },
-                                                onLongClick = { link ->
-                                                    copyLinkToClipboard(link.toString())
-                                                }
-                                            )
-                                        }
-                                    }
-                                }
-                                if (!authorProducts.isNullOrEmpty()) {
-                                    ExpandableItemsBlock(
-                                        heading = stringResource(
-                                            id = R.string.other_apps_by,
-                                            product.author.name
-                                        ),
-                                    ) {
-                                        Log.i(
-                                            "author products",
-                                            authorProducts?.map { it.author }?.joinToString()
-                                                .orEmpty()
+                            if (links.isNotEmpty()) {
+                                ExpandableItemsBlock(heading = stringResource(id = R.string.links)) {
+                                    links.forEach { item ->
+                                        LinkItem(
+                                            linkType = item,
+                                            onClick = { link ->
+                                                link?.let { onUriClick(it, true) }
+                                            },
+                                            onLongClick = { link ->
+                                                copyLinkToClipboard(link.toString())
+                                            }
                                         )
-                                        ProductsHorizontalRecycler(
-                                            productsList = authorProducts,
-                                            repositories = repos?.associateBy { repo -> repo.id }
-                                                ?: emptyMap(),
-                                            rowsNumber = 1,
-                                        ) { item ->
-                                            neoActivity.navigateProduct(item.packageName)
-                                        }
-                                    }
-                                }
-                                if (product.whatsNew.isNotEmpty()) {
-                                    ExpandableItemsBlock(
-                                        heading = stringResource(id = R.string.changes),
-                                        preExpanded = true,
-                                    ) {
-                                        HtmlTextBlock(shortText = product.whatsNew)
                                     }
                                 }
                             }
+                        }
+                        item {
+                            if (product.donates.isNotEmpty()) {
+                                ExpandableItemsBlock(heading = stringResource(id = R.string.donate)) {
+                                    product.donates.forEach { item ->
+                                        LinkItem(
+                                            linkType = DonateType(item, context),
+                                            onClick = { link ->
+                                                link?.let { onUriClick(it, true) }
+                                            },
+                                            onLongClick = { link ->
+                                                copyLinkToClipboard(link.toString())
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        item {
+                            if (!authorProducts.isNullOrEmpty()) {
+                                ExpandableItemsBlock(
+                                    heading = stringResource(
+                                        id = R.string.other_apps_by,
+                                        product.author.name
+                                    ),
+                                ) {
+                                    Log.i(
+                                        "author products",
+                                        authorProducts?.map { it.author }?.joinToString()
+                                            .orEmpty()
+                                    )
+                                    ProductsHorizontalRecycler(
+                                        productsList = authorProducts,
+                                        repositories = repos?.associateBy { repo -> repo.id }
+                                            ?: emptyMap(),
+                                        rowsNumber = 1,
+                                    ) { item ->
+                                        neoActivity.navigateProduct(item.packageName)
+                                    }
+                                }
+                            }
+                        }
+                        item {
+                            if (product.whatsNew.isNotEmpty()) {
+                                ExpandableItemsBlock(
+                                    heading = stringResource(id = R.string.changes),
+                                    preExpanded = true,
+                                ) {
+                                    HtmlTextBlock(shortText = product.whatsNew)
+                                }
+                            }
+
                         }
                         item {
                             Text(

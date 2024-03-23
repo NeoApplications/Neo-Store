@@ -26,7 +26,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -70,7 +70,7 @@ fun CategoriesList(
         contentPadding = PaddingValues(vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        items(items) { item ->
+        itemsIndexed(items) { index, item ->
             CategoryItem(
                 modifier = Modifier
                     .addIf(condition = expanded) {
@@ -88,8 +88,10 @@ fun CategoriesList(
                 onClick = {
                     selectedKey.value = item.first
                     onClick(item.first)
-                    scope.launch {
-                        scrollState.animateScrollToItem(items.indexOf(item))
+                    scrollState.layoutInfo.visibleItemsInfo.none { it.index == index }.let {
+                        scope.launch {
+                            scrollState.animateScrollToItem((index - 2).coerceAtLeast(0))
+                        }
                     }
                 }
             )

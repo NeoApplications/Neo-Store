@@ -19,11 +19,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NeoActivity
@@ -37,7 +34,6 @@ import com.machiav3lli.fdroid.ui.compose.ProductsCarousel
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
-import com.machiav3lli.fdroid.ui.compose.utils.vertical
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.LatestVM
@@ -95,17 +91,19 @@ fun LatestPage(viewModel: LatestVM) {
     ) {
         item {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = stringResource(id = R.string.new_applications),
-                    textAlign = TextAlign.Center,
-                    maxLines = 2,
-                    modifier = Modifier
-                        .vertical()
-                        .rotate(-90f)
-                        .padding(8.dp),
+                    modifier = Modifier.weight(1f),
                 )
+            }
+        }
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 if (Preferences[Preferences.Key.AltNewApps]) {
                     ProductsHorizontalRecycler(
                         modifier = Modifier.weight(1f),
