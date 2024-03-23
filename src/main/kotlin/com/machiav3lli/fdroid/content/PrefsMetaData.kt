@@ -12,10 +12,6 @@ val BooleanPrefsMeta = mapOf(
         R.string.show_trackers,
         R.string.show_trackers_description
     ),
-    Preferences.Key.ShowCategoriesBar to Pair(
-        R.string.show_categories_bar,
-        R.string.show_categories_bar_description
-    ),
     Preferences.Key.AltNavBarItem to Pair(
         R.string.alt_navbar_item,
         R.string.alt_navbar_item_description

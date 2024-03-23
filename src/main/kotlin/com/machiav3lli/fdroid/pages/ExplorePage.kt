@@ -137,7 +137,7 @@ fun ExplorePage(viewModel: ExploreVM) {
         }
         Row {
             val favString = stringResource(id = R.string.favorite_applications)
-            if (Preferences[Preferences.Key.ShowCategoriesBar]) CategoriesList(
+            CategoriesList(
                 items = listOf(
                     Pair(favString, Phosphor.HeartStraight)
                 ) + (categories.sorted().map { Pair(it, it.appCategoryIcon) }),

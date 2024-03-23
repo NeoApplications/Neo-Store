@@ -39,7 +39,6 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.DisableSignatureCheck,
         Key.ShowScreenshots,
         Key.ShowTrackers,
-        Key.ShowCategoriesBar,
         Key.AltNavBarItem,
         Key.AltBlockLayout,
         Key.UpdatedApps,
@@ -238,9 +237,6 @@ data object Preferences : OnSharedPreferenceChangeListener {
             Key<Boolean>("show_screenshots", Value.BooleanValue(true))
 
         data object ShowTrackers : Key<Boolean>("show_trackers", Value.BooleanValue(true))
-
-        data object ShowCategoriesBar :
-            Key<Boolean>("show_categories_bar", Value.BooleanValue(true))
 
         data object AltNavBarItem : Key<Boolean>("alt_navbar_item", Value.BooleanValue(false))
         data object AltNewApps : Key<Boolean>("alt_new_apps_layout", Value.BooleanValue(false))
