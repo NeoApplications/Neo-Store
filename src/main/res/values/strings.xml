@@ -375,4 +375,6 @@
     <string name="download_show_dialog_summary">Show a dialog asking if you\'re sure you want to download an app (previous to starting download).</string>
     <string name="bottom_search_bar">Bottom search bar</string>
     <string name="bottom_search_bar_summary">Place search bar at the bottom of the page.</string>
+    <string name="select_all">Select all</string>
+    <string name="deselect_all">Deselect all</string>
 </resources>

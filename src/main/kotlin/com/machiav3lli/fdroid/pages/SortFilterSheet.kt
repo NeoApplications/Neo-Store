@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.pages
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -17,7 +16,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -38,6 +39,7 @@ import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.index.RepositoryUpdater.db
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ChipsSwitch
+import com.machiav3lli.fdroid.ui.components.DeSelectAll
 import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
 import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -50,7 +52,6 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.mapLatest
 
-@SuppressLint("FlowOperatorInvokedInComposition")
 @OptIn(
     ExperimentalCoroutinesApi::class,
     ExperimentalLayoutApi::class
@@ -111,17 +112,17 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
     var sortAscending by remember(Preferences[sortAscendingKey]) {
         mutableStateOf(Preferences[sortAscendingKey])
     }
-    val filteredOutRepos by remember(Preferences[reposFilterKey]) {
-        mutableStateOf(Preferences[reposFilterKey].toMutableSet())
+    val filteredOutRepos = remember(Preferences[reposFilterKey]) {
+        mutableStateListOf(*Preferences[reposFilterKey].toTypedArray())
     }
     var filterCategory by remember(Preferences[categoriesFilterKey]) {
         mutableStateOf(Preferences[categoriesFilterKey])
     }
-    val filteredAntifeatures by remember(Preferences[antifeaturesFilterKey]) {
-        mutableStateOf(Preferences[antifeaturesFilterKey].toMutableSet())
+    val filteredAntifeatures = remember(Preferences[antifeaturesFilterKey]) {
+        mutableStateListOf(*Preferences[antifeaturesFilterKey].toTypedArray())
     }
-    val filteredLicenses by remember(Preferences[licensesFilterKey]) {
-        mutableStateOf(Preferences[licensesFilterKey].toMutableSet())
+    val filteredLicenses = remember(Preferences[licensesFilterKey]) {
+        mutableStateListOf(*Preferences[licensesFilterKey].toTypedArray())
     }
 
     Scaffold(
@@ -159,10 +160,10 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                         onClick = {
                             Preferences[sortKey] = sortOption
                             Preferences[sortAscendingKey] = sortAscending
-                            Preferences[reposFilterKey] = filteredOutRepos
+                            Preferences[reposFilterKey] = filteredOutRepos.toSet()
                             Preferences[categoriesFilterKey] = filterCategory
-                            Preferences[antifeaturesFilterKey] = filteredAntifeatures
-                            Preferences[licensesFilterKey] = filteredLicenses
+                            Preferences[antifeaturesFilterKey] = filteredAntifeatures.toSet()
+                            Preferences[licensesFilterKey] = filteredLicenses.toSet()
                             onDismiss()
                         }
                     )
@@ -220,26 +221,22 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                     heading = stringResource(id = R.string.repositories),
                     preExpanded = filteredOutRepos.isNotEmpty(),
                 ) {
+                    DeSelectAll(activeRepos.map { it.id.toString() }, filteredOutRepos)
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         activeRepos.sortedBy { it.name }.forEach {
-                            var checked by remember {
-                                mutableStateOf(
-                                    !filteredOutRepos.contains(it.id.toString())
-                                )
+                            val checked by derivedStateOf {
+                                !filteredOutRepos.contains(it.id.toString())
                             }
 
                             SelectChip(
                                 text = it.name,
                                 checked = checked,
                             ) {
-                                checked = !checked
-                                if (checked)
-                                    filteredOutRepos.remove(it.id.toString())
-                                else
-                                    filteredOutRepos.add(it.id.toString())
+                                if (checked) filteredOutRepos.add(it.id.toString())
+                                else filteredOutRepos.remove(it.id.toString())
                             }
                         }
                     }
@@ -271,27 +268,23 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                     heading = stringResource(id = R.string.allowed_anti_features),
                     preExpanded = filteredAntifeatures.isNotEmpty(),
                 ) {
+                    DeSelectAll(AntiFeature.entries.map(AntiFeature::key), filteredAntifeatures)
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         AntiFeature.entries.sortedBy { context.getString(it.titleResId) }
                             .forEach {
-                                var checked by remember {
-                                    mutableStateOf(
-                                        !filteredAntifeatures.contains(it.key)
-                                    )
+                                val checked by derivedStateOf {
+                                    !filteredAntifeatures.contains(it.key)
                                 }
 
                                 SelectChip(
                                     text = stringResource(id = it.titleResId),
                                     checked = checked
                                 ) {
-                                    checked = !checked
-                                    if (checked)
-                                        filteredAntifeatures.remove(it.key)
-                                    else
-                                        filteredAntifeatures.add(it.key)
+                                    if (checked) filteredAntifeatures.add(it.key)
+                                    else filteredAntifeatures.remove(it.key)
                                 }
                             }
                     }
@@ -302,26 +295,22 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                     heading = stringResource(id = R.string.allowed_licenses),
                     preExpanded = filteredLicenses.isNotEmpty(),
                 ) {
+                    DeSelectAll(licenses, filteredLicenses)
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         licenses.sorted().forEach {
-                            var checked by remember {
-                                mutableStateOf(
-                                    !filteredLicenses.contains(it)
-                                )
+                            val checked by derivedStateOf {
+                                !filteredLicenses.contains(it)
                             }
 
                             SelectChip(
                                 text = it,
                                 checked = checked
                             ) {
-                                checked = !checked
-                                if (checked)
-                                    filteredLicenses.remove(it)
-                                else
-                                    filteredLicenses.add(it)
+                                if (checked) filteredLicenses.add(it)
+                                else filteredLicenses.remove(it)
                             }
                         }
                     }
