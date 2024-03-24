@@ -353,7 +353,7 @@ fun notifyStatus(context: Context, intent: Intent?) {
     val sessionInstaller = context.packageManager.packageInstaller
     val session = if (sessionId > 0) sessionInstaller.getSessionInfo(sessionId) else null
 
-    val name =
+    val packageName =
         session?.appPackageName ?: intent?.getStringExtra(PackageInstaller.EXTRA_PACKAGE_NAME)
     val message = intent?.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE)
     val installerAction = intent?.getStringExtra(InstallerReceiver.KEY_ACTION)
@@ -361,9 +361,9 @@ fun notifyStatus(context: Context, intent: Intent?) {
     // get application name for notifications
     val appLabel = session?.appLabel ?: intent?.getStringExtra(InstallerReceiver.KEY_PACKAGE_LABEL)
     ?: try {
-        if (name != null) context.packageManager.getApplicationLabel(
+        if (packageName != null) context.packageManager.getApplicationLabel(
             context.packageManager.getApplicationInfo(
-                name,
+                packageName,
                 PackageManager.GET_META_DATA
             )
         ) else null
@@ -371,7 +371,7 @@ fun notifyStatus(context: Context, intent: Intent?) {
         null
     }
 
-    val notificationTag = "${InstallerReceiver.NOTIFICATION_TAG_PREFIX}$name"
+    val notificationTag = "${InstallerReceiver.NOTIFICATION_TAG_PREFIX}$packageName"
 
     // start building
     val builder = NotificationCompat
@@ -400,7 +400,11 @@ fun notifyStatus(context: Context, intent: Intent?) {
                 // remove any notification for this app
                 context.notificationManager.cancel(notificationTag, NOTIFICATION_ID_INSTALLER)
             } else {
-                name?.let { scope.launch { MainApplication.db.getInstallTaskDao().delete(it) } }
+                packageName?.let {
+                    scope.launch {
+                        MainApplication.db.getInstallTaskDao().delete(it)
+                    }
+                }
                 val notification = builder
                     .setSmallIcon(android.R.drawable.stat_sys_download_done)
                     .setContentTitle(context.getString(R.string.installed))
@@ -420,13 +424,13 @@ fun notifyStatus(context: Context, intent: Intent?) {
 
         PackageInstaller.STATUS_FAILURE_ABORTED     -> {
             // do nothing if user cancels
-            name?.let { scope.launch { MainApplication.db.getInstallTaskDao().delete(it) } }
+            packageName?.let { scope.launch { MainApplication.db.getInstallTaskDao().delete(it) } }
         }
 
         else                                        -> {
             // problem occurred when installing/uninstalling package
             // STATUS_FAILURE, STATUS_FAILURE_STORAGE ,STATUS_FAILURE_BLOCKED, STATUS_FAILURE_INCOMPATIBLE, STATUS_FAILURE_CONFLICT, STATUS_FAILURE_INVALID
-            name?.let { scope.launch { MainApplication.db.getInstallTaskDao().delete(it) } }
+            packageName?.let { scope.launch { MainApplication.db.getInstallTaskDao().delete(it) } }
             val notification = builder
                 .setSmallIcon(android.R.drawable.stat_notify_error)
                 .setContentTitle(context.getString(R.string.unknown_error_DESC))

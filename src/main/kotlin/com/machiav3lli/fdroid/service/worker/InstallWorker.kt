@@ -36,7 +36,12 @@ class InstallWorker(
     params: WorkerParameters,
 ) : CoroutineWorker(context, params) {
     companion object {
-        fun enqueue(packageName: String, label: String, fileName: String) {
+        fun enqueue(
+            packageName: String,
+            label: String,
+            fileName: String,
+            enforce: Boolean = false,
+        ) {
             val data = workDataOf(
                 ARG_NAME to label,
                 ARG_FILE_NAME to fileName,
@@ -50,7 +55,8 @@ class InstallWorker(
             MainApplication.wm.workManager
                 .beginUniqueWork(
                     "Installer_$packageName",
-                    ExistingWorkPolicy.KEEP,
+                    if (enforce) ExistingWorkPolicy.REPLACE
+                    else ExistingWorkPolicy.KEEP,
                     installerRequest,
                 ).enqueue()
         }

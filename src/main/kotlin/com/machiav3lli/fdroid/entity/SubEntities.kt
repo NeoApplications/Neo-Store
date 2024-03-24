@@ -298,6 +298,11 @@ sealed class DialogKey {
         val action: () -> Unit
     ) : DialogKey()
 
+    data class BatchDownload( // TODO add respective dialogs
+        val labels: List<String>,
+        val action: () -> Unit
+    ) : DialogKey()
+
     data class ReleaseIncompatible(
         val incompatibilities: List<Release.Incompatibility>,
         val platforms: List<String>,

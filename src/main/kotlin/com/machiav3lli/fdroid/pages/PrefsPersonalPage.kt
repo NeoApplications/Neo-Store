@@ -40,7 +40,7 @@ fun PrefsPersonalPage() {
         dialogPref = pref
         openDialog.value = true
     }
-    val personalPrefs = listOf(
+    val personalPrefs = listOf( // TODO break down into two groups
         Preferences.Key.Language,
         Preferences.Key.Theme,
         Preferences.Key.DefaultTab,

@@ -214,6 +214,9 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object DownloadDirectory :
             Key<String>("download_directory_value", Value.StringValue(""))
 
+        data object DownloadShowDialog :
+            Key<Boolean>("download_show_dialog", Value.BooleanValue(false))
+
         data object ReleasesCacheRetention : Key<Int>("releases_cache_retention", Value.IntValue(1))
 
         data object ImagesCacheRetention : Key<Int>("images_cache_retention", Value.IntValue(14))
