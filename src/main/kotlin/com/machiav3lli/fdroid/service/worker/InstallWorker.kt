@@ -75,8 +75,9 @@ class InstallWorker(
                         installerInstance?.defaultInstaller?.install(
                             label,
                             fileName
-                        )
-                        lock.unlock()
+                        ) {
+                            lock.unlock()
+                        }
                     }
 
                     lock.lock()

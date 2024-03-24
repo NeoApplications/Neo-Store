@@ -16,12 +16,16 @@ import java.io.File
 // TODO: Use this for MIUI device instead of guiding new users
 class LegacyInstaller(context: Context) : BaseInstaller(context) {
 
-    override suspend fun install(packageLabel: String, cacheFileName: String) {
+    override suspend fun install(
+        packageLabel: String,
+        cacheFileName: String,
+        postInstall: () -> Unit
+    ) {
         val cacheFile = Cache.getReleaseFile(context, cacheFileName)
         val packageInfo = context.getPackageArchiveInfo(cacheFile)
         val packageName = packageInfo?.packageName ?: "unknown-package"
 
-        mOldDefaultInstaller(packageName, cacheFile)
+        mOldDefaultInstaller(packageName, cacheFile, postInstall)
     }
 
     override suspend fun isInstalling(packageName: String): Boolean =
@@ -29,7 +33,11 @@ class LegacyInstaller(context: Context) : BaseInstaller(context) {
 
     override suspend fun uninstall(packageName: String) = mOldDefaultUninstaller(packageName)
 
-    private suspend fun mOldDefaultInstaller(packageName: String, cacheFile: File) =
+    private suspend fun mOldDefaultInstaller(
+        packageName: String,
+        cacheFile: File,
+        postInstall: () -> Unit
+    ) =
         withContext(Dispatchers.IO) {
             MainApplication.enqueuedInstalls.add(packageName)
             val (uri, flags) = Pair(
@@ -53,6 +61,7 @@ class LegacyInstaller(context: Context) : BaseInstaller(context) {
             }
             MainApplication.db.getInstallTaskDao().delete(packageName)
             MainApplication.enqueuedInstalls.remove(packageName)
+            postInstall()
         }
 
     private suspend fun mOldDefaultUninstaller(packageName: String) = withContext(Dispatchers.IO) {

@@ -92,12 +92,16 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
         ).joinToString(" ")
     }
 
-    override suspend fun install(packageLabel: String, cacheFileName: String) {
+    override suspend fun install(
+        packageLabel: String,
+        cacheFileName: String,
+        postInstall: () -> Unit
+    ) {
         val cacheFile = Cache.getReleaseFile(context, cacheFileName)
         val packageInfo = context.getPackageArchiveInfo(cacheFile)
         val packageName = packageInfo?.packageName ?: "unknown-package"
 
-        mRootInstaller(packageName, cacheFile)
+        mRootInstaller(packageName, cacheFile, postInstall)
     }
 
     override suspend fun isInstalling(packageName: String): Boolean =
@@ -105,7 +109,11 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
 
     override suspend fun uninstall(packageName: String) = mRootUninstaller(packageName)
 
-    private suspend fun mRootInstaller(packageName: String, cacheFile: File) =
+    private suspend fun mRootInstaller(
+        packageName: String,
+        cacheFile: File,
+        postInstall: () -> Unit
+    ) =
         withContext(Dispatchers.Default) {
             MainApplication.enqueuedInstalls.add(packageName)
             if (Preferences[Preferences.Key.RootSessionInstaller]) {
@@ -129,19 +137,21 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
                                         MainApplication.enqueuedInstalls.remove(packageName)
                                         notifyFinishedInstall(context, packageName)
                                     }
+                                    postInstall()
                                 }
                         }
                     }
             } else {
                 Shell.cmd(cacheFile.legacyInstall())
-                    .submit {
-                        if (it.isSuccess && Preferences[Preferences.Key.ReleasesCacheRetention] == 0)
+                    .submit { result ->
+                        if (result.isSuccess && Preferences[Preferences.Key.ReleasesCacheRetention] == 0)
                             Shell.cmd(cacheFile.deletePackage()).submit()
                         CoroutineScope(Dispatchers.Default).launch {
                             MainApplication.db.getInstallTaskDao().delete(packageName)
                             MainApplication.enqueuedInstalls.remove(packageName)
                             notifyFinishedInstall(context, packageName)
                         }
+                        postInstall()
                     }
             }
         }

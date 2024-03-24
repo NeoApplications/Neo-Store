@@ -15,12 +15,16 @@ import java.io.File
 
 class AppManagerInstaller(context: Context) : BaseInstaller(context) {
 
-    override suspend fun install(packageLabel: String, cacheFileName: String) {
+    override suspend fun install(
+        packageLabel: String,
+        cacheFileName: String,
+        postInstall: () -> Unit
+    ) {
         val cacheFile = Cache.getReleaseFile(context, cacheFileName)
         val packageInfo = context.getPackageArchiveInfo(cacheFile)
         val packageName = packageInfo?.packageName ?: "unknown-package"
 
-        mAppManagerInstaller(packageName, cacheFile)
+        mAppManagerInstaller(packageName, cacheFile, postInstall)
     }
 
     override suspend fun isInstalling(packageName: String): Boolean =
@@ -28,7 +32,11 @@ class AppManagerInstaller(context: Context) : BaseInstaller(context) {
 
     override suspend fun uninstall(packageName: String) = mDefaultUninstaller(packageName)
 
-    private suspend fun mAppManagerInstaller(packageName: String, cacheFile: File) =
+    private suspend fun mAppManagerInstaller(
+        packageName: String,
+        cacheFile: File,
+        postInstall: () -> Unit
+    ) =
         withContext(Dispatchers.IO) {
             MainApplication.enqueuedInstalls.add(packageName)
             val (uri, flags) = Pair(
@@ -44,6 +52,7 @@ class AppManagerInstaller(context: Context) : BaseInstaller(context) {
             )
             MainApplication.db.getInstallTaskDao().delete(packageName)
             MainApplication.enqueuedInstalls.remove(packageName)
+            postInstall()
         }
 
     private suspend fun mDefaultUninstaller(packageName: String) = withContext(Dispatchers.IO) {

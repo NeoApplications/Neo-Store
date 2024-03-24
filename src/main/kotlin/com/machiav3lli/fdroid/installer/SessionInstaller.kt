@@ -38,12 +38,16 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
         }
     }
 
-    override suspend fun install(packageLabel: String, cacheFileName: String) {
+    override suspend fun install(
+        packageLabel: String,
+        cacheFileName: String,
+        postInstall: () -> Unit
+    ) {
         val cacheFile = Cache.getReleaseFile(context, cacheFileName)
         // using packageName to store the app's name for the notification later down the line
         intent.putExtra(InstallerReceiver.KEY_PACKAGE_LABEL, packageLabel)
         intent.putExtra(NeoActivity.EXTRA_CACHE_FILE_NAME, cacheFileName)
-        mDefaultInstaller(cacheFile)
+        mDefaultInstaller(cacheFile, postInstall)
     }
 
     override suspend fun isInstalling(packageName: String): Boolean =
@@ -51,7 +55,7 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
 
     override suspend fun uninstall(packageName: String) = mDefaultUninstaller(packageName)
 
-    private fun mDefaultInstaller(cacheFile: File) {
+    private fun mDefaultInstaller(cacheFile: File, postInstall: () -> Unit) {
         // clean up inactive sessions
         sessionInstaller.mySessions
             .filter { session -> !session.isActive }
@@ -110,6 +114,7 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
                         PendingIntent.getBroadcast(context, id, intent, flags).intentSender
                     )
                     if (Preferences[Preferences.Key.ReleasesCacheRetention] == 0) cacheFile.delete()
+                    postInstall()
                 }
             }
         }
