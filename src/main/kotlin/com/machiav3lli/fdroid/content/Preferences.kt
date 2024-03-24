@@ -291,7 +291,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object SortOrderInstalled : Key<SortOrder>(
             "sort_order_installed",
-            Value.EnumerationValue(SortOrder.Name)
+            Value.EnumerationValue(SortOrder.Update)
         )
 
         data object SortOrderSearch : Key<SortOrder>(
@@ -306,7 +306,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
             Key<Boolean>("sort_order_ascending_latest", Value.BooleanValue(false))
 
         data object SortOrderAscendingInstalled :
-            Key<Boolean>("sort_order_ascending_installed", Value.BooleanValue(true))
+            Key<Boolean>("sort_order_ascending_installed", Value.BooleanValue(false))
 
         data object SortOrderAscendingSearch :
             Key<Boolean>("sort_order_ascending_search", Value.BooleanValue(false))
