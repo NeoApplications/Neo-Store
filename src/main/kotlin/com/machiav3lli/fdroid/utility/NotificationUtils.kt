@@ -440,3 +440,37 @@ fun notifyStatus(context: Context, intent: Intent?) {
         }
     }
 }
+
+fun notifyFinishedInstall(context: Context, packageName: String) {
+    val notificationTag = "${InstallerReceiver.NOTIFICATION_TAG_PREFIX}$packageName"
+
+    val notification = NotificationCompat
+        .Builder(context, NOTIFICATION_CHANNEL_INSTALLER)
+        .setAutoCancel(true)
+        .setColor(
+            ContextThemeWrapper(context, R.style.Theme_Main_Amoled)
+                .getColorFromAttr(androidx.appcompat.R.attr.colorPrimary).defaultColor
+        )
+        .setSmallIcon(android.R.drawable.stat_sys_download_done)
+        .setContentTitle(context.getString(R.string.installed))
+        .setContentText(try {
+            context.packageManager.getApplicationLabel(
+                context.packageManager.getApplicationInfo(
+                    packageName,
+                    PackageManager.GET_META_DATA
+                )
+            )
+        } catch (_: Exception) {
+            null
+        })
+        .apply {
+            if (!Preferences[Preferences.Key.KeepInstallNotification])
+                setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
+        }
+        .build()
+    context.notificationManager.notify(
+        notificationTag,
+        NOTIFICATION_ID_INSTALLER,
+        notification
+    )
+}

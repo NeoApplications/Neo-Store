@@ -8,8 +8,11 @@ import com.machiav3lli.fdroid.content.Cache.getPackageArchiveInfo
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.utility.Utils.quotePath
 import com.machiav3lli.fdroid.utility.extension.android.Android
+import com.machiav3lli.fdroid.utility.notifyFinishedInstall
 import com.topjohnwu.superuser.Shell
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.regex.Pattern
@@ -119,21 +122,28 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
                             Shell.cmd(cacheFile.sessionInstallWrite(sessionId))
                                 .submit { result ->
                                     Shell.cmd(sessionInstallCommit(sessionId)).exec()
-                                    if (result.isSuccess) Shell.cmd(cacheFile.deletePackage())
-                                        .submit()
+                                    if (result.isSuccess)
+                                        Shell.cmd(cacheFile.deletePackage()).submit()
+                                    CoroutineScope(Dispatchers.Default).launch {
+                                        MainApplication.db.getInstallTaskDao().delete(packageName)
+                                        MainApplication.enqueuedInstalls.remove(packageName)
+                                        notifyFinishedInstall(context, packageName)
+                                    }
                                 }
                         }
                     }
-
             } else {
                 Shell.cmd(cacheFile.legacyInstall())
                     .submit {
                         if (it.isSuccess && Preferences[Preferences.Key.ReleasesCacheRetention] == 0)
                             Shell.cmd(cacheFile.deletePackage()).submit()
+                        CoroutineScope(Dispatchers.Default).launch {
+                            MainApplication.db.getInstallTaskDao().delete(packageName)
+                            MainApplication.enqueuedInstalls.remove(packageName)
+                            notifyFinishedInstall(context, packageName)
+                        }
                     }
             }
-            MainApplication.db.getInstallTaskDao().delete(packageName)
-            MainApplication.enqueuedInstalls.remove(packageName)
         }
 
     private suspend fun mRootUninstaller(packageName: String) = withContext(Dispatchers.Default) {
