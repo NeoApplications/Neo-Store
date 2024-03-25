@@ -114,6 +114,7 @@ fun KeyDialogUI(
                  -> stringResource(id = R.string.incompatible_version)
 
             is DialogKey.Download,
+            is DialogKey.BatchDownload,
             is DialogKey.Link,
                  -> stringResource(id = R.string.confirmation)
 
@@ -129,6 +130,11 @@ fun KeyDialogUI(
             is DialogKey.Download            -> stringResource(
                 id = R.string.confirm_download_DESC_FORMAT,
                 key.label
+            )
+
+            is DialogKey.BatchDownload       -> stringResource(
+                id = R.string.confirm_download_DESC_FORMAT,
+                key.labels.joinToString()
             )
 
             is DialogKey.ReleaseIncompatible -> {
@@ -188,6 +194,7 @@ fun KeyDialogUI(
             is DialogKey.ReleaseIncompatible,
             is DialogKey.Link,
             is DialogKey.Download,
+            is DialogKey.BatchDownload,
                  -> stringResource(id = R.string.ok)
 
             else -> ""

@@ -207,10 +207,19 @@ fun InstalledPage(viewModel: InstalledVM) {
                                                     icon = Phosphor.Download,
                                                 ) {
                                                     updates?.let {
-                                                        MainApplication.wm.update(
-                                                            *it.map(Product::toItem)
-                                                                .toTypedArray()
-                                                        )
+                                                        val action = {
+                                                            MainApplication.wm.update(
+                                                                *it.map(Product::toItem)
+                                                                    .toTypedArray()
+                                                            )
+                                                        }
+                                                        if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                                            dialogKey.value =
+                                                                DialogKey.BatchDownload(
+                                                                    it.map(Product::label), action
+                                                                )
+                                                            openDialog.value = true
+                                                        } else action()
                                                     }
                                                 }
                                             }
@@ -344,7 +353,19 @@ fun InstalledPage(viewModel: InstalledVM) {
                         primaryAction = {
                             (dialogKey.value as DialogKey.Download).action()
                             openDialog.value = false
+                        },
+                        onDismiss = {
+                            dialogKey.value = null
+                            openDialog.value = false
+                        }
+                    )
 
+                    is DialogKey.BatchDownload -> KeyDialogUI(
+                        key = dialogKey.value,
+                        openDialog = openDialog,
+                        primaryAction = {
+                            (dialogKey.value as DialogKey.BatchDownload).action()
+                            openDialog.value = false
                         },
                         onDismiss = {
                             dialogKey.value = null

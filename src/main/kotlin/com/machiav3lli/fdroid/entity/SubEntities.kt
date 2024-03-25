@@ -298,7 +298,7 @@ sealed class DialogKey {
         val action: () -> Unit
     ) : DialogKey()
 
-    data class BatchDownload( // TODO add respective dialogs
+    data class BatchDownload(
         val labels: List<String>,
         val action: () -> Unit
     ) : DialogKey()
