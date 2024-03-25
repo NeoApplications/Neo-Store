@@ -42,6 +42,7 @@ fun PrefsUpdatesPage() {
         Preferences.Key.DownloadManager,
         Preferences.Key.InstallAfterSync,
         Preferences.Key.DownloadShowDialog,
+        Preferences.Key.ActionLockDialog,
         Preferences.Key.UpdateNotify,
         Preferences.Key.KeepInstallNotification,
         Preferences.Key.UpdateUnstable,

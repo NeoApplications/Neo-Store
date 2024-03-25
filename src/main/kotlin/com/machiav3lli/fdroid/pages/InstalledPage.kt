@@ -351,8 +351,15 @@ fun InstalledPage(viewModel: InstalledVM) {
                         key = dialogKey.value,
                         openDialog = openDialog,
                         primaryAction = {
-                            (dialogKey.value as DialogKey.Download).action()
-                            openDialog.value = false
+                            if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None)
+                                neoActivity.launchLockPrompt {
+                                    (dialogKey.value as DialogKey.Download).action()
+                                    openDialog.value = false
+                                }
+                            else {
+                                (dialogKey.value as DialogKey.Download).action()
+                                openDialog.value = false
+                            }
                         },
                         onDismiss = {
                             dialogKey.value = null
@@ -364,8 +371,15 @@ fun InstalledPage(viewModel: InstalledVM) {
                         key = dialogKey.value,
                         openDialog = openDialog,
                         primaryAction = {
-                            (dialogKey.value as DialogKey.BatchDownload).action()
-                            openDialog.value = false
+                            if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None)
+                                neoActivity.launchLockPrompt {
+                                    (dialogKey.value as DialogKey.BatchDownload).action()
+                                    openDialog.value = false
+                                }
+                            else {
+                                (dialogKey.value as DialogKey.BatchDownload).action()
+                                openDialog.value = false
+                            }
                         },
                         onDismiss = {
                             dialogKey.value = null

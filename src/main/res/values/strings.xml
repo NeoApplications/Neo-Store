@@ -377,4 +377,8 @@
     <string name="bottom_search_bar_summary">Place search bar at the bottom of the page.</string>
     <string name="select_all">Select all</string>
     <string name="deselect_all">Deselect all</string>
+    <string name="action_lock_dialog">Show action lock dialog</string>
+    <string name="action_lock_none">No lock</string>
+    <string name="action_lock_device">Device lock</string>
+    <string name="action_lock_biometric">Biometric lock</string>
 </resources>

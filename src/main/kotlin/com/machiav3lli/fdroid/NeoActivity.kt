@@ -12,6 +12,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -37,6 +40,7 @@ import com.machiav3lli.fdroid.ui.navigation.AppNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
+import com.machiav3lli.fdroid.utility.isBiometricLockEnabled
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import com.machiav3lli.fdroid.viewmodels.ExploreVM
@@ -339,5 +343,35 @@ class NeoActivity : AppCompatActivity() {
             _showSearchSheet.emit(value)
             query?.let { _searchQuery.emit(it) }
         }
+    }
+
+    fun launchLockPrompt(action: () -> Unit) {
+        try {
+            val biometricPrompt = createBiometricPrompt(action)
+            val promptInfo = BiometricPrompt.PromptInfo.Builder()
+                .setTitle(getString(R.string.action_lock_device))
+                .setConfirmationRequired(true)
+                .setAllowedAuthenticators(
+                    BiometricManager.Authenticators.DEVICE_CREDENTIAL or (
+                            if (MainApplication.context.isBiometricLockEnabled()) BiometricManager.Authenticators.BIOMETRIC_WEAK
+                            else 0
+                            )
+                )
+                .build()
+            biometricPrompt.authenticate(promptInfo)
+        } catch (e: Throwable) {
+            action()
+        }
+    }
+
+    private fun createBiometricPrompt(action: () -> Unit): BiometricPrompt {
+        return BiometricPrompt(this,
+            ContextCompat.getMainExecutor(this),
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+                    action()
+                }
+            })
     }
 }

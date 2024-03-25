@@ -671,8 +671,15 @@ fun AppSheet(
                                     }
 
                                     is DialogKey.Download -> {
-                                        (dialogKey.value as DialogKey.Download).action()
-                                        openDialog.value = false
+                                        if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None)
+                                            neoActivity.launchLockPrompt {
+                                                (dialogKey.value as DialogKey.Download).action()
+                                                openDialog.value = false
+                                            }
+                                        else {
+                                            (dialogKey.value as DialogKey.Download).action()
+                                            openDialog.value = false
+                                        }
                                     }
 
                                     else                  -> {

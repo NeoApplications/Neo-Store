@@ -6,12 +6,14 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
+import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.PREFS_LANGUAGE
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.entity.InstallerType
 import com.machiav3lli.fdroid.entity.Order
 import com.machiav3lli.fdroid.utility.extension.android.Android
+import com.machiav3lli.fdroid.utility.isBiometricLockAvailable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -33,6 +35,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.DownloadDirectory,
         Key.DownloadManager,
         Key.DownloadShowDialog,
+        Key.ActionLockDialog,
         Key.EnableDownloadDirectory,
         Key.ImagesCacheRetention,
         Key.InstallAfterSync,
@@ -216,6 +219,9 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object DownloadShowDialog :
             Key<Boolean>("download_show_dialog", Value.BooleanValue(false))
+
+        data object ActionLockDialog :
+            Key<ActionLock>("action_lock", Value.EnumerationValue(ActionLock.None))
 
         data object ReleasesCacheRetention : Key<Int>("releases_cache_retention", Value.IntValue(1))
 
@@ -460,6 +466,19 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object Root : Installer("root", InstallerType.ROOT)
         data object AM : Installer("app_manager", InstallerType.AM)
         data object Legacy : Installer("legacy", InstallerType.LEGACY)
+    }
+
+    sealed class ActionLock(override val valueString: String, val order: Order) :
+        Enumeration<ActionLock> {
+        override val values: List<ActionLock>
+            get() = mutableListOf(None, Device).apply {
+                if (MainApplication.context.isBiometricLockAvailable())
+                    add(Biometric)
+            }
+
+        data object None : ActionLock("none", Order.NAME)
+        data object Device : ActionLock("device", Order.DATE_ADDED)
+        data object Biometric : ActionLock("biometric", Order.LAST_UPDATE)
     }
 
     sealed class Theme(override val valueString: String) : Enumeration<Theme> {

@@ -20,6 +20,7 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.biometric.BiometricManager
 import androidx.fragment.app.FragmentManager
 import com.machiav3lli.fdroid.AM_PACKAGENAME
 import com.machiav3lli.fdroid.AM_PACKAGENAME_DEBUG
@@ -525,6 +526,14 @@ val shellIsRoot: Boolean
 val Context.amInstalled: Boolean
     get() = (packageManager.getLaunchIntentForPackage(AM_PACKAGENAME)
         ?: packageManager.getLaunchIntentForPackage(AM_PACKAGENAME_DEBUG)) != null
+
+fun Context.isBiometricLockAvailable(): Boolean =
+    BiometricManager.from(this).canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK) ==
+            BiometricManager.BIOMETRIC_SUCCESS
+
+fun Context.isBiometricLockEnabled(): Boolean =
+    isBiometricLockAvailable() &&
+            Preferences[Preferences.Key.ActionLockDialog] == Preferences.ActionLock.Biometric
 
 fun getBaseUrl(fullUrl: String): String {
     val url = URL(fullUrl)

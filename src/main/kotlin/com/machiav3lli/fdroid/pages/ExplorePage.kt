@@ -234,9 +234,15 @@ fun ExplorePage(viewModel: ExploreVM) {
                     key = dialogKey.value,
                     openDialog = openDialog,
                     primaryAction = {
-                        (dialogKey.value as DialogKey.Download).action()
-                        openDialog.value = false
-
+                        if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None)
+                            neoActivity.launchLockPrompt {
+                                (dialogKey.value as DialogKey.Download).action()
+                                openDialog.value = false
+                            }
+                        else {
+                            (dialogKey.value as DialogKey.Download).action()
+                            openDialog.value = false
+                        }
                     },
                     onDismiss = {
                         dialogKey.value = null

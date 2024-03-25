@@ -76,10 +76,6 @@ val BooleanPrefsMeta = mapOf(
         R.string.download_show_dialog,
         R.string.download_show_dialog_summary
     ),
-    Preferences.Key.DeviceLockDialog to Pair(
-        R.string.download_install_lock,
-        R.string.download_install_lock_summary
-    ),
     Preferences.Key.BottomSearchBar to Pair(
         R.string.bottom_search_bar,
         R.string.bottom_search_bar_summary
@@ -99,6 +95,7 @@ val NonBooleanPrefsMeta = mapOf(
     Preferences.Key.AutoSync to R.string.sync_repositories_automatically,
     Preferences.Key.AutoSyncInterval to R.string.auto_sync_interval_hours,
     Preferences.Key.Installer to R.string.prefs_installer,
+    Preferences.Key.ActionLockDialog to R.string.action_lock_dialog,
     Preferences.Key.DownloadDirectory to R.string.custom_download_directory,
     Preferences.Key.ReleasesCacheRetention to R.string.releases_cache_retention,
     Preferences.Key.ImagesCacheRetention to R.string.images_cache_retention,
@@ -135,6 +132,11 @@ val PrefsEntries = mapOf(
         Preferences.DefaultTab.Explore to R.string.explore,
         Preferences.DefaultTab.Latest to R.string.latest,
         Preferences.DefaultTab.Installed to R.string.installed,
+    ),
+    Preferences.Key.ActionLockDialog to mapOf(
+        Preferences.ActionLock.None to R.string.action_lock_none,
+        Preferences.ActionLock.Device to R.string.action_lock_device,
+        Preferences.ActionLock.Biometric to R.string.action_lock_biometric,
     ),
     Preferences.Key.Installer to mapOf(
         Preferences.Installer.Default to R.string.default_installer,
@@ -193,5 +195,9 @@ val PrefsDependencies = mapOf(
     Preferences.Key.ProxyPort to Pair(
         Preferences.Key.ProxyType,
         listOf(Preferences.ProxyType.Socks)
+    ),
+    Preferences.Key.ActionLockDialog to Pair(
+        Preferences.Key.DownloadShowDialog,
+        listOf(true)
     ),
 )
