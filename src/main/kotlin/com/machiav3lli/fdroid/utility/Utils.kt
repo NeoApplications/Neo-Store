@@ -494,16 +494,15 @@ fun List<PermissionInfo>.getLabelsAndDescriptions(context: Context): List<String
 
 fun Collection<Product>.matchSearchQuery(searchQuery: String): List<Product> {
     if (searchQuery.isBlank()) return toList()
-    val searchRegex = Regex(searchQuery, RegexOption.IGNORE_CASE)
     return filter {
         listOf(it.label, it.packageName, it.author.name, it.summary, it.description)
             .any { literal ->
-                literal.contains(searchRegex)
+                literal.contains(searchQuery, true)
             }
     }.sortedByDescending {
         (if (isDifferenceMoreThanOneYear(it.updated, System.currentTimeMillis())) 0 else 7) or
-                (if ("${it.label} ${it.packageName}".contains(searchRegex)) 3 else 0) or
-                (if ("${it.summary} ${it.author.name}".contains(searchRegex)) 1 else 0)
+                (if ("${it.label} ${it.packageName}".contains(searchQuery, true)) 3 else 0) or
+                (if ("${it.summary} ${it.author.name}".contains(searchQuery, true)) 1 else 0)
     }
 }
 
