@@ -1,6 +1,7 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
 val vActivity = "1.8.2"
+val vBiometric = "1.2.0-alpha05"
 val vCoil = "2.6.0"
 val vComposeCompiler = "1.5.11"
 val vCompose = "1.6.4"
@@ -151,6 +152,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:$vActivity")
     // use the new WorkInfo.stopReason (report stopReason), setNextScheduleTimeOverride (Precise scheduling), Configuration.Builder.setContentUriTriggerWorkersLimit (limit for content uri workers)
     implementation("androidx.work:work-runtime:$vWork")
+    implementation("androidx.biometric:biometric:$vBiometric")
 
     // Material3
     implementation("com.google.android.material:material:$vMaterial")
