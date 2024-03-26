@@ -119,7 +119,7 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         )
     }
 
-    private val actions: Flow<Pair<ActionState?, Set<ActionState>>> =
+    private val actions: Flow<Pair<ActionState, Set<ActionState>>> =
         combine(productRepos, downloadingState, installedItem, extras) { prs, ds, ins, ex ->
             val product = findSuggestedProduct(prs, ins) { it.first }?.first
             val compatible = product != null && product.selectedReleases.firstOrNull()
@@ -169,11 +169,11 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val mainAction: StateFlow<ActionState?> = actions.mapLatest { it.first }
+    val mainAction: StateFlow<ActionState> = actions.mapLatest { it.first }
         .stateIn(
             viewModelScope,
             SharingStarted.Lazily,
-            null
+            ActionState.Bookmark
         )
 
     @OptIn(ExperimentalCoroutinesApi::class)

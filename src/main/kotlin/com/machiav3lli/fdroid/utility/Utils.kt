@@ -201,7 +201,8 @@ object Utils {
 
     val charactersToBeEscaped = Regex("""[\\${'$'}"`]""")
 
-    fun quotePath(parameter: String): String = "\"${parameter.replace(charactersToBeEscaped) { "\\${it.value}" }}\""
+    fun quotePath(parameter: String): String =
+        "\"${parameter.replace(charactersToBeEscaped) { "\\${it.value}" }}\""
 }
 
 fun <T> findSuggestedProduct(

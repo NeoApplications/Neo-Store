@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Icon
@@ -35,6 +36,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ActionState
@@ -188,7 +190,7 @@ fun ProductCarouselItem(
         ),
         leadingContent = {
             Column(
-                modifier = Modifier.fillMaxHeight(1f),
+                modifier = Modifier.padding(vertical = 24.dp),
                 verticalArrangement = Arrangement.Center,
             ) {
                 NetworkImage(
@@ -237,7 +239,8 @@ fun ProductCarouselItem(
         },
         trailingContent = {
             Column(
-                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxHeight(1f),
+                verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.End,
             ) {
                 IconButton(

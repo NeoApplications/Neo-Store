@@ -106,7 +106,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                     Preferences.Key.LicensesFilterInstalled,
                     Preferences.Key.SortOrderInstalled,
                     Preferences.Key.SortOrderAscendingInstalled,
-                    -> viewModel.setSortFilter(
+                         -> viewModel.setSortFilter(
                         listOf(
                             Preferences[Preferences.Key.ReposFilterInstalled],
                             Preferences[Preferences.Key.CategoriesFilterInstalled],
@@ -347,7 +347,7 @@ fun InstalledPage(viewModel: InstalledVM) {
         if (openDialog.value) {
             BaseDialog(openDialogCustom = openDialog) {
                 when (dialogKey.value) {
-                    is DialogKey.Download -> KeyDialogUI(
+                    is DialogKey.Download      -> KeyDialogUI(
                         key = dialogKey.value,
                         openDialog = openDialog,
                         primaryAction = {
@@ -387,7 +387,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                         }
                     )
 
-                    else                  -> {}
+                    else                       -> {}
                 }
             }
         }

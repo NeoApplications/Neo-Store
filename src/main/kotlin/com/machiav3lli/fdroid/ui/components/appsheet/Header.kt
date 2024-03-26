@@ -43,7 +43,7 @@ import com.machiav3lli.fdroid.utility.extension.text.formatSize
 @Composable
 fun AppInfoHeader(
     modifier: Modifier = Modifier,
-    mainAction: ActionState?,
+    mainAction: ActionState,
     possibleActions: Set<ActionState>,
     onAction: (ActionState?) -> Unit = { },
 ) {
@@ -67,7 +67,7 @@ fun AppInfoHeader(
             }
             MainActionButton(
                 modifier = Modifier.weight(1f),
-                actionState = mainAction ?: ActionState.Install,
+                actionState = mainAction,
                 onClick = {
                     onAction(mainAction)
                 }
