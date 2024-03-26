@@ -65,9 +65,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:host="details"
-                    android:scheme="market" />
+                <data android:scheme="market" />
+                <data android:host="details" />
             </intent-filter>
 
             <intent-filter>
@@ -76,12 +75,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:host="search"
-                    android:scheme="market" />
+                <data android:scheme="market" />
+                <data android:host="search" />
             </intent-filter>
 
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -89,30 +87,30 @@
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:host="f-droid.org" />
-                <data android:host="www.f-droid.org" />
-                <data android:host="staging.f-droid.org" />
                 <data android:host="apt.izzysoft.de" />
-                <data android:pathPattern="/app/.*" />
-                <data android:pathPattern="/packages/.*" />
+                <data android:host="f-droid.org" />
+                <data android:host="staging.f-droid.org" />
+                <data android:host="www.f-droid.org" />
                 <data android:pathPattern="/.*/packages/.*" />
+                <data android:pathPattern="/app/.*" />
                 <data android:pathPattern="/fdroid/index/apk/.*" />
+                <data android:pathPattern="/packages/.*" />
             </intent-filter>
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="fdroidrepo" />
                 <data
                     android:scheme="FDROIDREPO"
                     tools:ignore="AppLinkUrlError" />
-                <data android:scheme="fdroidrepos" />
                 <data
                     android:scheme="FDROIDREPOS"
                     tools:ignore="AppLinkUrlError" />
+                <data android:scheme="fdroidrepo" />
+                <data android:scheme="fdroidrepos" />
             </intent-filter>
 
             <intent-filter> <!--TODO handle opening prefs directly-->
