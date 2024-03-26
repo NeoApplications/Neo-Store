@@ -46,6 +46,7 @@ import com.machiav3lli.fdroid.service.worker.InstallWorker
 import com.machiav3lli.fdroid.service.worker.SyncState
 import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.worker.ValidationError
+import com.machiav3lli.fdroid.service.worker.isRunning
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.displayUpdatesNotification
 import com.machiav3lli.fdroid.utility.displayVulnerabilitiesNotification
@@ -399,7 +400,7 @@ class WorkerManager(appContext: Context) {
                 }
             }
 
-            if (syncsRunning.values.any { it != SyncState.FAILED })
+            if (syncsRunning.values.any { it.isRunning })
                 MainApplication.wm.notificationManager.notify(
                     NOTIFICATION_ID_SYNCING,
                     syncNotificationBuilder.build()
