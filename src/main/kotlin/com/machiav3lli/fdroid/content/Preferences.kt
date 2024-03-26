@@ -86,6 +86,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.KeepInstallNotification,
         Key.DisableDownloadVersionCheck,
         Key.UpdateUnstable,
+        Key.KidsMode,
         // invisible values
         Key.IgnoreDisableBatteryOptimization,
         Key.IgnoreShowNotifications,
@@ -418,6 +419,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object UpdateNotify : Key<Boolean>("update_notify", Value.BooleanValue(true))
         data object UpdateUnstable : Key<Boolean>("update_unstable", Value.BooleanValue(false))
+        data object KidsMode : Key<Boolean>("kids_mode", Value.BooleanValue(false))
 
         data object IgnoreDisableBatteryOptimization :
             Key<Boolean>("ignore_disable_battery_optimization", Value.BooleanValue(false))

@@ -173,9 +173,9 @@ fun ProductCarouselItem(
     }
 
     val action = when {
-        installed == null -> ActionState.Install
-        installed.launcherActivities.isNotEmpty() -> ActionState.Launch
-        else -> null
+        installed == null && !Preferences[Preferences.Key.KidsMode] -> ActionState.Install
+        !installed?.launcherActivities.isNullOrEmpty()              -> ActionState.Launch
+        else                                                        -> null
     }
 
     ListItem(
@@ -302,7 +302,7 @@ fun ExpandedItemContent(
                     tint = if (favourite) Color.Red else MaterialTheme.colorScheme.outline
                 )
             }
-            AnimatedVisibility(visible = installed == null || installed.launcherActivities.isNotEmpty()) {
+            AnimatedVisibility(visible = (installed == null && !Preferences[Preferences.Key.KidsMode]) || !installed?.launcherActivities.isNullOrEmpty()) {
                 val action = when {
                     installed != null -> ActionState.Launch
                     else              -> ActionState.Install

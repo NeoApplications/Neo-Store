@@ -139,7 +139,7 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
             val actions = mutableSetOf<ActionState>()
             synchronized(actions) {
                 if (canUpdate) actions += ActionState.Update
-                else if (canInstall) actions += ActionState.Install
+                else if (canInstall && !Preferences[Preferences.Key.KidsMode]) actions += ActionState.Install
                 if (canLaunch) actions += ActionState.Launch
                 if (ins != null) actions += ActionState.Details
                 if (canUninstall) actions += ActionState.Uninstall
@@ -150,7 +150,7 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
             val primaryAction = when {
                 canUpdate -> ActionState.Update
                 canLaunch -> ActionState.Launch
-                canInstall -> ActionState.Install
+                canInstall && !Preferences[Preferences.Key.KidsMode] -> ActionState.Install
                 canShare -> ActionState.Share
                 bookmarked -> ActionState.Bookmarked
                 else -> ActionState.Bookmark

@@ -82,7 +82,8 @@ val BooleanPrefsMeta = mapOf(
     ),
     Preferences.Key.KidsMode to Pair(
         R.string.kids_mode,
-        R.string.kids_mode_summary
+        if (Preferences[Preferences.Key.KidsMode]) R.string.kids_mode_summary
+        else R.string.kids_mode_summary_full
     ),
 )
 
@@ -199,5 +200,9 @@ val PrefsDependencies = mapOf(
     Preferences.Key.ActionLockDialog to Pair(
         Preferences.Key.DownloadShowDialog,
         listOf(true)
+    ),
+    Preferences.Key.KidsMode to Pair(
+        Preferences.Key.KidsMode,
+        listOf(false)
     ),
 )

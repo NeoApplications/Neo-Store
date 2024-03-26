@@ -24,10 +24,11 @@ import com.machiav3lli.fdroid.entity.LinkRef
 @Composable
 fun PreferenceGroup(
     modifier: Modifier = Modifier,
+    titleModifier: Modifier = Modifier,
     heading: String? = null,
     content: @Composable () -> Unit
 ) {
-    PreferenceGroupHeading(heading)
+    PreferenceGroupHeading(heading = heading, modifier = titleModifier)
     CompositionLocalProvider(
         LocalContentColor provides MaterialTheme.colorScheme.primary
     ) {
@@ -42,6 +43,7 @@ fun PreferenceGroup(
 @Composable
 fun PreferenceGroup(
     modifier: Modifier = Modifier,
+    titleModifier: Modifier = Modifier,
     heading: String? = null,
     keys: List<Preferences.Key<*>>,
     onPrefDialog: (Preferences.Key<*>) -> Unit,
@@ -50,6 +52,7 @@ fun PreferenceGroup(
 
     PreferenceGroup(
         modifier = modifier,
+        titleModifier = titleModifier,
         heading = heading
     ) {
         keys.forEachIndexed { index, item ->
@@ -67,6 +70,7 @@ fun PreferenceGroup(
 @Composable
 fun PreferenceGroup(
     modifier: Modifier = Modifier,
+    titleModifier: Modifier = Modifier,
     heading: String? = null,
     links: List<LinkRef>
 ) {
@@ -74,6 +78,7 @@ fun PreferenceGroup(
 
     PreferenceGroup(
         modifier = modifier,
+        titleModifier = titleModifier,
         heading = heading
     ) {
         links.forEachIndexed { index, item ->
@@ -89,11 +94,12 @@ fun PreferenceGroup(
 
 @Composable
 fun PreferenceGroupHeading(
+    modifier: Modifier = Modifier,
     heading: String? = null
 ) = if (heading != null) {
     Column(
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier
+        modifier = modifier
             .height(48.dp)
             .padding(horizontal = 32.dp)
             .fillMaxWidth(),
@@ -106,4 +112,4 @@ fun PreferenceGroupHeading(
             color = MaterialTheme.colorScheme.onBackground
         )
     }
-} else Spacer(modifier = Modifier.requiredHeight(8.dp))
+} else Spacer(modifier = modifier.requiredHeight(8.dp))

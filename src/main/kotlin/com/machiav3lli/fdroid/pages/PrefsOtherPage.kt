@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.pages
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,9 +13,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -49,6 +52,7 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
         dialogPref = pref
         openDialog.value = true
     }
+    val hidingCounter = rememberSaveable { mutableIntStateOf(0) }
     val proxyPrefs = listOf(
         Preferences.Key.ProxyType,
         Preferences.Key.ProxyUrl,
@@ -244,7 +248,15 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
         item {
             PreferenceGroup(
                 heading = "${stringResource(id = R.string.application_name)} ${BuildConfig.VERSION_NAME}",
-                links = LinkRef.values().toList(),
+                links = LinkRef.entries,
+                titleModifier = Modifier.clickable {
+                    if (Preferences[Preferences.Key.KidsMode])
+                        hidingCounter.intValue += 1
+                    if (hidingCounter.intValue >= 6) {
+                        Preferences[Preferences.Key.KidsMode] = false
+                        hidingCounter.intValue = 0
+                    }
+                }
             )
         }
         item {
