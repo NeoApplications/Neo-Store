@@ -314,7 +314,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                     ) {
-                        items(items = downloaded.sortedByDescending { it.changed }) { item ->
+                        items(items = downloaded.sortedByDescending { it.changed / 60_000L }) { item ->
                             DownloadedItem(
                                 item = item,
                                 iconDetails = iconDetails[item.packageName],
