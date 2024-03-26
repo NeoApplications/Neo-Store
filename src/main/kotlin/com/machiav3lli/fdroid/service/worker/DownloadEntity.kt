@@ -45,6 +45,7 @@ sealed class DownloadState {
     abstract val version: String
     abstract val cacheFileName: String
     abstract val repoId: Long
+    abstract val changed: Long
 
     @Serializable
     class Pending(
@@ -54,7 +55,9 @@ sealed class DownloadState {
         override val cacheFileName: String,
         override val repoId: Long,
         val blocked: Boolean,
-    ) : DownloadState()
+    ) : DownloadState() {
+        override val changed: Long = System.currentTimeMillis()
+    }
 
     @Serializable
     class Connecting(
@@ -63,7 +66,9 @@ sealed class DownloadState {
         override val version: String,
         override val cacheFileName: String,
         override val repoId: Long,
-    ) : DownloadState()
+    ) : DownloadState() {
+        override val changed: Long = System.currentTimeMillis()
+    }
 
     @Serializable
     class Downloading(
@@ -74,7 +79,9 @@ sealed class DownloadState {
         override val repoId: Long,
         val read: Long,
         val total: Long?,
-    ) : DownloadState()
+    ) : DownloadState() {
+        override val changed: Long = System.currentTimeMillis()
+    }
 
     @Serializable
     class Success(
@@ -84,7 +91,9 @@ sealed class DownloadState {
         override val cacheFileName: String,
         override val repoId: Long,
         val release: Release,
-    ) : DownloadState()
+    ) : DownloadState() {
+        override val changed: Long = System.currentTimeMillis()
+    }
 
     @Serializable
     class Error(
@@ -95,7 +104,9 @@ sealed class DownloadState {
         override val repoId: Long,
         val resultCode: Int,
         val validationError: ValidationError,
-    ) : DownloadState()
+    ) : DownloadState() {
+        override val changed: Long = System.currentTimeMillis()
+    }
 
     @Serializable
     class Cancel(
@@ -104,7 +115,9 @@ sealed class DownloadState {
         override val version: String,
         override val cacheFileName: String,
         override val repoId: Long,
-    ) : DownloadState()
+    ) : DownloadState() {
+        override val changed: Long = System.currentTimeMillis()
+    }
 
     val description: Int
         get() = when (this) {
@@ -117,7 +130,7 @@ sealed class DownloadState {
         }
 
     val isActive: Boolean
-        get() = this is Connecting || this is Downloading || this is Pending
+        get() = (this is Connecting || this is Downloading || this is Pending) && System.currentTimeMillis() - this.changed < 60_000L
 
     fun toJSON() = Json.encodeToString(this)
 
