@@ -38,6 +38,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.RELEASE_STATE_INSTALLED
 import com.machiav3lli.fdroid.RELEASE_STATE_NONE
 import com.machiav3lli.fdroid.RELEASE_STATE_SUGGESTED
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.ui.components.ActionButton
@@ -143,12 +144,14 @@ fun ReleaseItem(
                             contentDescription = stringResource(id = R.string.share),
                         )
                     }
-                    ActionButton(
-                        text = stringResource(id = R.string.install),
-                        icon = Phosphor.Download,
-                        positive = true,
-                        onClick = { onDownloadClick(currentRelease) }
-                    )
+                    if (!Preferences[Preferences.Key.KidsMode]) {
+                        ActionButton(
+                            text = stringResource(id = R.string.install),
+                            icon = Phosphor.Download,
+                            positive = true,
+                            onClick = { onDownloadClick(currentRelease) }
+                        )
+                    }
                 }
             }
         }
