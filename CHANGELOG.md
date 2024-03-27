@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-1.0.0 (??.??.2024) 380+ Commits +300 Translations
+1.0.0 (??.??.2024) 410+ Commits +350 Translations
 ------------------
 
 ### Function
@@ -42,6 +42,7 @@ CHANGELOG
 - Fix: Cromite address
 - Fix: External search calls
 - Fix: Opening an app from repo url
+- Fix: Crash on searching special chars
 - Update: Cache apks in external cache
 - Update: Replace OkHttp with Ktor (except for Coil)
 - Update: More open network security policy
@@ -88,6 +89,7 @@ CHANGELOG
 - Fix: Content padding of Main pages
 - Fix: Ghost clicking settings when search is expanded
 - Fix: Showing progress bar in AppSheet when not active
+- Fix: Hectic sorting of downloads in downloads list
 - Update: App's icon
 - Update: Theme colors (MD3 v2/tonals)
 - Update: Revamp all layouts
@@ -96,18 +98,15 @@ CHANGELOG
 - Update: Revamp repositories page
 - Update: Make pagers animate scrolling
 - Update: Larger layout corners
+- Update: Revamp all pages
 - Update: Revamp all sheets (now composables)
 - Update: Revamp all dialogs (now composables)
-- Update: Revamp all sheets
-- Update: Revamp all chips
-- Update: Revamp all items using ItemList
-- Update: Revamp screenshots layouts
-- Update: Revamp ExplorePage
-- Update: Replace slide animated compose with fade
-- Update: Revamp search bar layout
-- Update: Revamp PermissionItem
+- Update: Revamp all items (using ItemList)
+- Update: Revamp all components
+- Update: Revamp screenshots layout
 - Update: Resort Main pages
 - Remove: Scrollable top bars
+- Remove: Option to hide categories bar
 
 ### UX
 
@@ -127,11 +126,17 @@ CHANGELOG
 - Add: Qr Code to repo sheet
 - Add: Permission to install packages
 - Add: Search when to-be-opened package doesn't exist
+- Add: (De)select all buttons to multi-selection filters
+- Add: Option to confirm before downloading an app
+- Add: Device or biomteric lock options on download dialogs
+- Add: Kids mode
 - Fix: Applying sort/filter options directly
 - Fix: Scrolling along qr-code in RepoSheet
 - Fix: Showing updatable label for Product items
 - Fix: Showing right version in AppSheet's header
 - Fix: Showing downloaded version (in downloads log)
+- Fix: Blocking cancel download on inactive downloads
+- Fix: Keeping install notification in RootInstaller
 - Update: Alphabetically sort current downloads in Installed page
 - Update: Replace SearchPage with independent SearchSheet
 - Update: Hide irrelevant sort/filter options

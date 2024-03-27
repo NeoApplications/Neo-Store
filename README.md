@@ -1,4 +1,4 @@
-# Neo Store <img title="" src="src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" align="left" width="64">
+# Neo Store <img title="" src="src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" align="left" width="64" style="padding: 12px;">
 
 ### The modern and feature-rich F-Droid client for everyone!
 
