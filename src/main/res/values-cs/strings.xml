@@ -370,4 +370,20 @@
     <string name="root_allow_downgrades_description">Umožnit snížení verzí aplikací pomocí root instalátoru (platí pouze pro laditelné verze aplikací). Nejlépe funguje v kombinaci se zapnutou volbou „Zakázat kontrolu verze ke stažení“.</string>
     <string name="root_allow_installing_old_apps">Umožnit instalaci starších aplikací</string>
     <string name="root_allow_installing_old_apps_description">Počínaje Androidem 14 již není možné instalovat aplikace, které cílí na mnohem starší verze systému (Android 5.1 nebo starší). Tato možnost umožňuje přepsat toto chování.</string>
+    <string name="download_show_dialog">Zobrazit stahovací dialog</string>
+    <string name="download_show_dialog_summary">Zobrazit dialog s otázkou, zda opravdu chcete stáhnout aplikaci (před spuštěním stahování).</string>
+    <string name="bottom_search_bar">Vyhledávací lišta dole</string>
+    <string name="bottom_search_bar_summary">Umístit vyhledávací lištu na spodní část stránky.</string>
+    <string name="select_all">Vybrat vše</string>
+    <string name="deselect_all">Zrušit výběr všeho</string>
+    <string name="action_lock_dialog">Zobrazit dialog uzamčení akce</string>
+    <string name="action_lock_none">Bez zámku</string>
+    <string name="action_lock_device">Zámek zařízení</string>
+    <string name="action_lock_biometric">Biometrický zámek</string>
+    <string name="kids_mode">Dětský režim</string>
+    <string name="kids_mode_summary">Povolit dětský režim. Zakáže instalaci nových aplikací.</string>
+    <string name="kids_mode_summary_full">Povolit dětský režim, který zakáže instalaci aplikací. Pro jeho zrušení klepněte šestkrát na verzi aplikaci na předchozí stránce. Tato nápověda bude skryta po restartu aplikace.</string>
+    <string name="alt_block_layout">Použít alternativní rozvržení pro bloky stránek</string>
+    <string name="alt_block_layout_summary">Použít alternativní/staré rozložení pro bloky stránek s okraji namísto barevných povrchů.</string>
+    <string name="confirm_download_DESC_FORMAT">Opravdu chcete stáhnout aplikaci %s?</string>
 </resources>
