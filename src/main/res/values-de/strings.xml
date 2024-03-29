@@ -368,4 +368,20 @@
     <string name="download_manager_summary">Verwende System-Downloadmanager, um Apps zuverlässiger herunterzuladen. Diese Option unterstützt weder TOR noch benutzerdefinierte Proxys, sie verwendet die Systemeinstellungen.</string>
     <string name="install_packages_permission_title">Berechtigung zur Installation von Paketen</string>
     <string name="install_packages_permission_message">Apps, die mit Android 8 starten, benötigen diese Berechtigung, um Pakete installieren zu können.</string>
+    <string name="alt_block_layout">Alternative Darstellung für Seitenelemente verwenden</string>
+    <string name="download_show_dialog">Download-Dialog anzeigen</string>
+    <string name="download_show_dialog_summary">Einen Dialog anzeigen, der erfragt, ob man sich sicher über den App-Download ist (vorm Start des Downloads).</string>
+    <string name="bottom_search_bar">Suchleiste unten</string>
+    <string name="bottom_search_bar_summary">Suchleiste am unteren Seitenrand platzieren.</string>
+    <string name="action_lock_dialog">Dialog für gesperrte Aktionen anzeigen</string>
+    <string name="action_lock_none">Keine Sperre</string>
+    <string name="action_lock_device">Gerätesperre</string>
+    <string name="kids_mode">Kinder-Modus</string>
+    <string name="kids_mode_summary">Kinder-Modus aktivieren, der die Installation neuer Apps verhindert.</string>
+    <string name="select_all">Alles auswählen</string>
+    <string name="alt_block_layout_summary">Eine alternative/alte Darstellung mit Rahmen statt farbiger Flächen für Seitenelemente verwenden.</string>
+    <string name="confirm_download_DESC_FORMAT">Bist Du sicher, dass Du %s herunterladen möchtest?</string>
+    <string name="action_lock_biometric">Biometrische Sperre</string>
+    <string name="deselect_all">Alle abwählen</string>
+    <string name="kids_mode_summary_full">Kinder-Modus aktivieren, der die Installation neuer Apps verhindert. Zum Deaktivieren auf der anderen Einstellungsseite sechsmal antippen. Dieser Hinweis verschwindet nach Neustart der App.</string>
 </resources>
