@@ -376,4 +376,20 @@
     <string name="root_allow_downgrades">السماح بالرجوع لإصدار سابق من التطبيقات</string>
     <string name="root_allow_installing_old_apps_description">بدءًا من Android 14، لم يعد من الممكن تثبيت التطبيقات التي تستهدف إصدارات Android الأقدم من (Android 5.1 أو ما دونها). يتيح لك هذا الخيار تجاوز هذا السلوك.</string>
     <string name="root_allow_downgrades_description">السماح بالرجوع لإصدار سابق من التطبيقات باستخدام المثبت الجذري (ينطبق فقط على إصدارات التطبيقات القابلة للتصحيح). من الأفضل استخدامه مع \"تعطيل التحقق من إصدار التنزيل\".</string>
+    <string name="action_lock_none">لا يوجد قفل</string>
+    <string name="action_lock_device">قفل الجهاز</string>
+    <string name="action_lock_biometric">القفل الحيوي</string>
+    <string name="kids_mode">سعة الأطفال</string>
+    <string name="kids_mode_summary">تمكين وضع الأطفال، وتعطيل تثبيت التطبيقات الجديدة.</string>
+    <string name="kids_mode_summary_full">‬تمكين وضع الأطفال، وتعطيل تثبيت التطبيقات الجديدة. للتعطيل، اضغط على إصدار التطبيق في الصفحة الأخرى ست مرات. يتم إخفاء هذا التلميح عند إعادة تشغيل التطبيق.</string>
+    <string name="bottom_search_bar">شريط البحث السفلي</string>
+    <string name="bottom_search_bar_summary">ضع شريط البحث في أسفل الصفحة.</string>
+    <string name="select_all">حدد الكل</string>
+    <string name="deselect_all">الغاء تحديد الكل</string>
+    <string name="action_lock_dialog">عرض مربع حوار إجراء القفل</string>
+    <string name="alt_block_layout">استخدم تخطيطًا بديلاً لكتل الصفحات</string>
+    <string name="alt_block_layout_summary">استخدم تخطيطًا بديلاً/قديمًا لكتل الصفحات ذات الحدود بدلاً من الأسطح الملونة.</string>
+    <string name="confirm_download_DESC_FORMAT">هل أنت متأكد من أنك تريد تحميل %s؟?</string>
+    <string name="download_show_dialog">عرض مربع حوار التنزيل</string>
+    <string name="download_show_dialog_summary">قم بعرض مربع حوار يسألك عما إذا كنت متأكدًا من رغبتك في تنزيل تطبيق ما (قبل بدء التنزيل).</string>
 </resources>
