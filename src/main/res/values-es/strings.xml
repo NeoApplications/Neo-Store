@@ -370,4 +370,20 @@
     <string name="root_allow_downgrades">Permitir el downgrade de aplicaciones</string>
     <string name="root_allow_downgrades_description">Permitir el downgrade de aplicaciones utilizando el instalador raíz (sólo se aplica a versiones de aplicaciones depurables). Se utiliza mejor en combinación con \"Desactivar comprobación de versión de descarga\".</string>
     <string name="root_allow_installing_old_apps">Permitir la instalación de aplicaciones antiguas</string>
+    <string name="confirm_download_DESC_FORMAT">¿Estás seguro de que quieres descargar %s?</string>
+    <string name="download_show_dialog">Mostrar el diálogo de descarga</string>
+    <string name="download_show_dialog_summary">Mostrar un cuadro de diálogo preguntando si estás seguro de querer descargar una aplicación (antes de iniciar la descarga).</string>
+    <string name="bottom_search_bar">Barra de búsqueda inferior</string>
+    <string name="select_all">Seleccionar todo</string>
+    <string name="deselect_all">Desmarcar todo</string>
+    <string name="action_lock_dialog">Mostrar diálogo para acciones bloqueadas</string>
+    <string name="action_lock_device">Bloqueo del dispositivo</string>
+    <string name="action_lock_biometric">Bloqueo biométrico</string>
+    <string name="kids_mode">Modo para niños</string>
+    <string name="alt_block_layout">Utilizar un diseño alternativo para los bloques de página</string>
+    <string name="alt_block_layout_summary">Utilice un diseño alternativo/antiguo para bloques de páginas con bordes en lugar de superficies coloreadas.</string>
+    <string name="bottom_search_bar_summary">Coloque la barra de búsqueda en la parte inferior de la página.</string>
+    <string name="action_lock_none">Sin bloquear</string>
+    <string name="kids_mode_summary">Activa el modo niños, desactivando la instalación de nuevas aplicaciones.</string>
+    <string name="kids_mode_summary_full">Activa el modo niños, desactivando la instalación de nuevas aplicaciones. Para desactivarlo, pulse seis veces sobre la versión de la aplicación en la otra página. Esta sugerencia se oculta al reiniciar la aplicación.</string>
 </resources>
