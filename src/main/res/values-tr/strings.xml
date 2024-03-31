@@ -310,4 +310,5 @@
     <string name="app_installed">Yüklenen</string>
     <string name="target_sdk">hedefSDK</string>
     <string name="permissions_note_1">Fazla miktarda izin gerektirir</string>
+    <string name="system_installer">System installer</string>
 </resources>

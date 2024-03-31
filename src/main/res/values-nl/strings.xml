@@ -368,4 +368,5 @@
     <string name="download_manager_summary">Gebruik het systeemdownloadbeheer om apps betrouwbaarder te downloaden. TOR of de aangepaste proxy wordt niet ondersteund, deze functie gebruikt systeeminstellingen.</string>
     <string name="install_packages_permission_title">Toestemming om pakketten te installeren</string>
     <string name="install_packages_permission_message">Vanaf Android 8 vereisen apps deze toestemming om pakketten te installeren.</string>
+    <string name="system_installer">System installer</string>
 </resources>

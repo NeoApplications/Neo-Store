@@ -376,4 +376,5 @@
     <string name="root_allow_downgrades">السماح بالرجوع لإصدار سابق من التطبيقات</string>
     <string name="root_allow_installing_old_apps_description">بدءًا من Android 14، لم يعد من الممكن تثبيت التطبيقات التي تستهدف إصدارات Android الأقدم من (Android 5.1 أو ما دونها). يتيح لك هذا الخيار تجاوز هذا السلوك.</string>
     <string name="root_allow_downgrades_description">السماح بالرجوع لإصدار سابق من التطبيقات باستخدام المثبت الجذري (ينطبق فقط على إصدارات التطبيقات القابلة للتصحيح). من الأفضل استخدامه مع \"تعطيل التحقق من إصدار التنزيل\".</string>
+    <string name="system_installer">System installer</string>
 </resources>

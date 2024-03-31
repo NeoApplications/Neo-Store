@@ -368,4 +368,5 @@
     <string name="dynamic_dark">Mørk med dynamiske farver</string>
     <string name="alt_new_apps_description">Brug det alternative/gamle nye apps layout, som viser små appkort.</string>
     <string name="root_allow_installing_old_apps_description">Fra Android 14 er det ikke længere muligt at installere applikationer målrettet mod meget ældre Android-versioner (Android 5,1 eller tidligere). Denne indstilling giver dig muligheden for at tilsidesætte denne adfærd.</string>
+    <string name="system_installer">System installer</string>
 </resources>

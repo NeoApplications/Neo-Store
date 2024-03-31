@@ -210,4 +210,5 @@
     <string name="permission_nearby_devices">מכשירים בקרבת מקום</string>
     <string name="permission_physical_data">הרשאה לנתונים פיזיים</string>
     <string name="permission_identification_data">הרשאה לנתוני זיהוי</string>
+    <string name="system_installer">System installer</string>
 </resources>

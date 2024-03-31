@@ -136,4 +136,5 @@
     <string name="system">सिस्टम</string>
     <string name="target">लक्ष्य</string>
     <string name="unknown">अज्ञात</string>
+    <string name="system_installer">System installer</string>
 </resources>

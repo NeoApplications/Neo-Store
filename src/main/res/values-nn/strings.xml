@@ -11,4 +11,5 @@
     <string name="confirmation">Stadfesting</string>
     <string name="contains_non_free_media">Inneheld ufri media</string>
     <string name="application_not_found">Fann ikkje den appen</string>
+    <string name="system_installer">System installer</string>
 </resources>

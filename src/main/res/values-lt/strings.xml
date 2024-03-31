@@ -234,4 +234,5 @@
     <string name="root_installer">Šakninė diegimo programa</string>
     <string name="legacy_installer">Senoji diegimo programa (suderinama su MIUI)</string>
     <string name="default_installer">Numatytoji seanso diegimo programa</string>
+    <string name="system_installer">System installer</string>
 </resources>

@@ -33,4 +33,5 @@
     <string name="description">Kirjeldus</string>
     <string name="fingerprint">Sõrmejälg</string>
     <string name="has_advertising">Sisaldab reklaami</string>
+    <string name="system_installer">System installer</string>
 </resources>

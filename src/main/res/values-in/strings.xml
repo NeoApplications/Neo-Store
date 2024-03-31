@@ -347,4 +347,5 @@
     <string name="dynamic_black">Hitam dengan warna dinamis</string>
     <string name="alt_new_apps_description">Gunakan tata letak aplikasi baru alternatif/lama, yang menampilkan kartu kecil aplikasi.</string>
     <string name="alt_new_apps">Gunakan tata letak aplikasi alternatif baru</string>
+    <string name="system_installer">System installer</string>
 </resources>

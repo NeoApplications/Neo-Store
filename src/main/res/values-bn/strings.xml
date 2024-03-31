@@ -267,4 +267,5 @@
     <string name="source_dependencies">নির্ভরতা</string>
     <string name="action_open_website">মুক্ত ওয়েবসাইট</string>
     <string name="trackers_in">ট্র্যাকার আছে %s</string>
+    <string name="system_installer">System installer</string>
 </resources>

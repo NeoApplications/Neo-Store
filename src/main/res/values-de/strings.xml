@@ -368,4 +368,5 @@
     <string name="download_manager_summary">Verwende System-Downloadmanager, um Apps zuverlässiger herunterzuladen. Diese Option unterstützt weder TOR noch benutzerdefinierte Proxys, sie verwendet die Systemeinstellungen.</string>
     <string name="install_packages_permission_title">Berechtigung zur Installation von Paketen</string>
     <string name="install_packages_permission_message">Apps, die mit Android 8 starten, benötigen diese Berechtigung, um Pakete installieren zu können.</string>
+    <string name="system_installer">System installer</string>
 </resources>

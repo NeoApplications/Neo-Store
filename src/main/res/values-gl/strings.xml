@@ -336,4 +336,5 @@
     <string name="alt_navbar_item">Utilizar un elemento alternativo á barra de navegación</string>
     <string name="installed_export">Exportar lista de aplicacións instaladas</string>
     <string name="installed_import">Importar e instalar lista de aplicacións (obteranse dos repositorios remotos, se existiren)</string>
+    <string name="system_installer">System installer</string>
 </resources>
