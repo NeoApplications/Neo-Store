@@ -250,4 +250,5 @@
     <string name="permissions_note_2">Kräver inga behörigheter</string>
     <string name="permissions_note_3">Ett fåtal behörigheter</string>
     <string name="permissions_note_4">Kräver nästan inga behörigheter</string>
+    <string name="system_installer">System installer</string>
 </resources>

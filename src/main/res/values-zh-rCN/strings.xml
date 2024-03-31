@@ -366,4 +366,5 @@
     <string name="root_allow_installing_old_apps_description">从 Android 14 开始，无法再安装目标 Android 版本太旧（Android 5.1 或更早版本）的应用程序。 此选项允许您无视此特性。</string>
     <string name="am_installer">应用管理器安装程序</string>
     <string name="black_high_contrast">黑色（高对比度）</string>
+    <string name="system_installer">System installer</string>
 </resources>

@@ -357,4 +357,5 @@
     <string name="alt_new_apps">Użyj alternatywnego układu nowych aplikacji</string>
     <string name="download_manager_summary">Użyj systemowego menedżera pobierania, aby pobierać aplikacje bardziej niezawodnie. Ta opcja nie obsługuje TOR ani niestandardowego proxy.</string>
     <string name="auto_sync_interval_hours">Przedział auto-synchronizacji (w godzinach)</string>
+    <string name="system_installer">System installer</string>
 </resources>

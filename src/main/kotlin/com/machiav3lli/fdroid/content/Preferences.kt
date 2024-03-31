@@ -468,6 +468,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object Root : Installer("root", InstallerType.ROOT)
         data object AM : Installer("app_manager", InstallerType.AM)
         data object Legacy : Installer("legacy", InstallerType.LEGACY)
+        data object System : Installer("system", InstallerType.SYSTEM)
     }
 
     sealed class ActionLock(override val valueString: String, val order: Order) :

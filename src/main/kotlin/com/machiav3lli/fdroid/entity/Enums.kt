@@ -19,6 +19,7 @@ enum class InstallerType(@StringRes val titleResId: Int) {
     ROOT(R.string.root_installer),
     LEGACY(R.string.legacy_installer),
     AM(R.string.am_installer),
+    SYSTEM(R.string.system_installer),
 }
 
 enum class Contrast(val themes: List<Preferences.Theme>) {

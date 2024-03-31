@@ -372,4 +372,5 @@
     <string name="root_allow_installing_old_apps">Дозволити встановлювати старі застосунки</string>
     <string name="root_allow_installing_old_apps_description">Починаючи з Android 14, більше неможливо встановлювати застосунки, орієнтовані на набагато старіші версії Android (Android 5.1 або раніше). Ця опція дозволяє обійти це обмеження.</string>
     <string name="root_allow_downgrades_description">Дозволити пониження версії застосунків за допомогою кореневого встановлювача (стосується лише версій застосунків з можливістю налагодження). Краще використовувати в поєднанні з «Вимкнути перевірку версії завантаження».</string>
+    <string name="system_installer">System installer</string>
 </resources>

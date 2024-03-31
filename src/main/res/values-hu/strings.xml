@@ -364,4 +364,5 @@
     <string name="install_packages_permission_title">Csomagok telepítésének engedélyezése</string>
     <string name="light_medium_contrast">Vilásgos (közepes kontraszt)</string>
     <string name="download_manager_summary">Használja a rendszer letöltéskezelőjét, hogy az alkalmazásokat megbízhatóbban töltse le. Ez az opció nem támogatja a TOR-t vagy az egyedi proxy-t, a rendszer beállításait használja.</string>
+    <string name="system_installer">System installer</string>
 </resources>

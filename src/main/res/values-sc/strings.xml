@@ -349,4 +349,5 @@
     <string name="no_releases">Peruna versione cumpatìbile de ammustrare</string>
     <string name="allow_unstable_updates">Permite de mustrare agiornamentos no istàbiles</string>
     <string name="alt_new_apps">Imprea s\'ischema alternativu nou pro sas aplicatziones</string>
+    <string name="system_installer">System installer</string>
 </resources>
