@@ -25,7 +25,7 @@ abstract class AppInstaller {
                             get() {
                                 val installer = Preferences[Preferences.Key.Installer].installer
                                 return when {
-                                    hasSystemInstallPermission ->
+                                    installer == InstallerType.SYSTEM && hasSystemInstallPermission ->
                                         SystemInstaller(context)
 
                                     installer == InstallerType.ROOT && shellIsRoot       ->
