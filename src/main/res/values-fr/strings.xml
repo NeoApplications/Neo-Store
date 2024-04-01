@@ -370,5 +370,4 @@
     <string name="download_manager_summary">Utilisez le gestionnaire de téléchargement du système pour télécharger les applications de manière plus fiable. Cette option ne supporte pas le TOR ou le proxy personnalisé, elle utilise les paramètres du système.</string>
     <string name="install_packages_permission_title">Permission d\'installer des paquets</string>
     <string name="install_packages_permission_message">Démarrer les applications Android 8 nécessite cette autorisation pour pouvoir installer des paquets.</string>
-    <string name="system_installer">System installer</string>
 </resources>

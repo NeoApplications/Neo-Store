@@ -368,5 +368,4 @@
     <string name="root_allow_installing_old_apps">Позволи инсталиране на по-стари приложения</string>
     <string name="root_allow_installing_old_apps_description">Започвайки с Android 14, вече не е възможно да инсталирате приложения, насочени към много по-стари версии на Android (Android 5.1 или по-стари). Тази опция ви позволява да отмените това поведение.</string>
     <string name="root_allow_downgrades_description">Позволи понижаване на версията на приложенията с помощта на руут инсталатор (отнася се само за версии на приложения с възможност за отстраняване на грешки). По-добре да се използва в комбинация с \"Деактивиране на проверката на версията за изтегляне\".</string>
-    <string name="system_installer">System installer</string>
 </resources>

@@ -366,5 +366,4 @@
     <string name="black_medium_contrast">Preto (contraste médio)</string>
     <string name="download_manager_summary">Use o gerenciador de downloads do sistema para baixar os aplicativos de forma mais confiável. Essa opção não é compatível com o TOR nem com o proxy personalizado, ela usa as configurações do sistema.</string>
     <string name="install_packages_permission_message">A partir do Android 8, os aplicativos exigem essa permissão para poder instalar pacotes.</string>
-    <string name="system_installer">System installer</string>
 </resources>

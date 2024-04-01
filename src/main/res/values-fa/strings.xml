@@ -268,5 +268,4 @@
     <string name="disable_signature_check">از کار انداختن بررسی امضا</string>
     <string name="cancel_all">لغو همه</string>
     <string name="source_dependencies">وابستگی‌ها</string>
-    <string name="system_installer">System installer</string>
 </resources>

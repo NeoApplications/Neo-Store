@@ -344,5 +344,4 @@
     </plurals>
     <string name="installed_import">Importar e instalar uma lista de aplicações (obtém-nas dos repositórios activados, se existirem)</string>
     <string name="installed_export">Exportar lista de aplicações instaladas</string>
-    <string name="system_installer">System installer</string>
 </resources>

@@ -302,5 +302,4 @@
     <string name="show_trackers">Εμφάνιση ιχνηλατών</string>
     <string name="show_trackers_description">Λήψη και εμφάνιση ιχνηλατών των εφαρμογών από το Exodus Privacy.</string>
     <string name="no_trackers_data_available">Δεν υπάρχουν διαθέσιμα δεδομένα για ιχνηλάτες (ακόμα)!</string>
-    <string name="system_installer">System installer</string>
 </resources>

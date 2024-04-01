@@ -160,5 +160,4 @@
     <string name="screenshots">Ảnh chụp màn hình</string>
     <string name="root_permission_description">Sử dụng root để cài đặt mà không cần tương tác</string>
     <string name="socks_proxy">SOCKS proxy</string>
-    <string name="system_installer">System installer</string>
 </resources>

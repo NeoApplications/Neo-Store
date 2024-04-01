@@ -317,5 +317,4 @@
     <string name="keep_install_notification">Panatilihin ang notipikasyon ng pag-install</string>
     <string name="keep_install_notification_summary">Panatilihin ang notipikasyon ng matagumpay na pag-install ng app.</string>
     <string name="allowed_licenses">Mga pinapayagang lisensya</string>
-    <string name="system_installer">System installer</string>
 </resources>

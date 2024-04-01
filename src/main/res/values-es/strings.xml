@@ -370,5 +370,4 @@
     <string name="root_allow_downgrades">Permitir el downgrade de aplicaciones</string>
     <string name="root_allow_downgrades_description">Permitir el downgrade de aplicaciones utilizando el instalador raíz (sólo se aplica a versiones de aplicaciones depurables). Se utiliza mejor en combinación con \"Desactivar comprobación de versión de descarga\".</string>
     <string name="root_allow_installing_old_apps">Permitir la instalación de aplicaciones antiguas</string>
-    <string name="system_installer">System installer</string>
 </resources>

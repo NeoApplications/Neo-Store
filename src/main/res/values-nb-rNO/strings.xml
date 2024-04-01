@@ -327,5 +327,4 @@
     <string name="repos_export">Eksporter pakkebrønner</string>
     <string name="installed_export">Eksporter liste over installerte programmer</string>
     <string name="dynamic_black">Svart med dynamiske farger</string>
-    <string name="system_installer">System installer</string>
 </resources>
