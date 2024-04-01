@@ -330,5 +330,4 @@
     <string name="canceled">已取消</string>
     <string name="finished">已完成</string>
     <string name="list_apps">顯示存儲庫的應用程式</string>
-    <string name="system_installer">System installer</string>
 </resources>

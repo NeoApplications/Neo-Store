@@ -355,5 +355,4 @@
     <string name="enabled">Activat</string>
     <string name="disabled">Dezactivat</string>
     <string name="repo_qr_code">Codul QR al depozitului</string>
-    <string name="system_installer">System installer</string>
 </resources>

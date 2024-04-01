@@ -368,5 +368,4 @@
     <string name="root_allow_installing_old_apps">ਪੁਰਾਣੀਆਂ ਐਪਾਂ ਨੂੰ ਇੰਸਟਾਲ ਕਰਨ ਦਿਓ</string>
     <string name="root_allow_downgrades_description">ਰੂਟ ਇੰਸਟਾਲਰ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ ਐਪਲੀਕੇਸ਼ਨਾਂ ਨੂੰ ਡਾਊਨਗ੍ਰੇਡ ਕਰਨ ਦਿਓ (ਸਿਰਫ਼ ਡੀਬੱਗ ਕਰਨ ਯੋਗ ਐਪਲੀਕੇਸ਼ਨ ਸੰਸਕਰਣਾਂ \'ਤੇ ਲਾਗੂ ਹੁੰਦਾ ਹੈ)। \"ਡਾਊਨਲੋਡ ਸੰਸਕਰਣ ਜਾਂਚ ਨੂੰ ਅਸਮਰੱਥ ਕਰੋ\" ਦੇ ਸੁਮੇਲ ਵਿੱਚ ਬਿਹਤਰ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।</string>
     <string name="root_allow_installing_old_apps_description">ਐਂਡਰੌਇਡ 14 ਤੋਂ ਸ਼ੁਰੂ ਹੋਕੇ, ਬਹੁਤ ਪੁਰਾਣੇ ਐਂਡਰੌਇਡ ਸੰਸਕਰਣਾਂ (ਐਂਡਰਾਇਡ 5.1 ਜਾਂ ਇਸ ਤੋਂ ਪਹਿਲਾਂ) ਨੂੰ ਨਿਸ਼ਾਨਾ ਬਣਾਉਣ ਵਾਲੀਆਂ ਐਪਲੀਕੇਸ਼ਨਾਂ ਨੂੰ ਸਥਾਪਿਤ ਕਰਨਾ ਹੁਣ ਸੰਭਵ ਨਹੀਂ ਹੈ। ਇਹ ਵਿਕਲਪ ਤੁਹਾਨੂੰ ਇਸ ਵਿਵਹਾਰ ਨੂੰ ਓਵਰਰਾਈਡ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿੰਦਾ ਹੈ।</string>
-    <string name="system_installer">System installer</string>
 </resources>

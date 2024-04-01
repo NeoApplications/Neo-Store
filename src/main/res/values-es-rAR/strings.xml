@@ -26,5 +26,4 @@
     <string name="checking_repository">Verificando repositorio…</string>
     <string name="confirmation">Confirmación</string>
     <string name="could_not_validate_FORMAT">No se pudo validar %s</string>
-    <string name="system_installer">System installer</string>
 </resources>

@@ -288,5 +288,4 @@
     <string name="images_cache_retention">ചിത്രത്തിന്റെ കല്ലറ നിലനിർത്തൽ</string>
     <string name="legacy_installer">പാരമ്പര്യ സ്ഥാപകൻ (മിയുഐ-യുമായി പൊരുത്തപ്പെടുന്നു)</string>
     <string name="source_dependencies_description">പ്രയോഗത്തിനു സ്വകാര്യതയെ മാനിക്കാത്ത ചില ആശ്രിതത്വങ്ങൾ ഉണ്ട്.</string>
-    <string name="system_installer">System installer</string>
 </resources>

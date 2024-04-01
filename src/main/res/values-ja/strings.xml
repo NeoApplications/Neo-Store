@@ -331,5 +331,4 @@
     <string name="error">エラー</string>
     <string name="clear_text">テキストを消去</string>
     <string name="show_categories_bar_description">\"探索\"のページにカテゴリーサイドバーを表示します。</string>
-    <string name="system_installer">System installer</string>
 </resources>

@@ -323,5 +323,4 @@
     <string name="permissions_note_4">권한을 거의 요구하지 않음</string>
     <string name="permission_granted">허가됨</string>
     <string name="permission_not_present">이 시스템에 존재하지 않음</string>
-    <string name="system_installer">System installer</string>
 </resources>
