@@ -364,4 +364,21 @@
     <string name="install_packages_permission_title">Csomagok telepítésének engedélyezése</string>
     <string name="light_medium_contrast">Vilásgos (közepes kontraszt)</string>
     <string name="download_manager_summary">Használja a rendszer letöltéskezelőjét, hogy az alkalmazásokat megbízhatóbban töltse le. Ez az opció nem támogatja a TOR-t vagy az egyedi proxy-t, a rendszer beállításait használja.</string>
+    <string name="root_allow_installing_old_apps">Régebbi alkalmazások telepítésének engedélyezése</string>
+    <string name="root_allow_installing_old_apps_description">Az Android 14-től kezdve már nem lehet sokkal régebbi Android-verziókat (Android 5.1 vagy korábbi) célzó alkalmazásokat telepíteni. Ezzel a beállítással felülírhatja ezt a viselkedést.</string>
+    <string name="alt_block_layout">Használjon alternatív elrendezést az oldalblokkokhoz</string>
+    <string name="download_show_dialog_summary">Egy párbeszédpanel megjelenítése, amely megkérdezi, hogy biztosan le akar-e tölteni egy alkalmazást (a letöltés megkezdése előtt).</string>
+    <string name="action_lock_biometric">Biometrikus zár</string>
+    <string name="kids_mode_summary_full">Engedélyezze a gyerek módot, letiltja az új alkalmazások telepítését. A letiltáshoz érintse meg hatszor az alkalmazás verzióját a másik oldalon. Ez a tipp elrejtődik az alkalmazás újraindításakor.</string>
+    <string name="confirm_download_DESC_FORMAT">Biztos, hogy letölti a következőt %s?</string>
+    <string name="download_show_dialog">Letöltési párbeszédpanel megjelenítése</string>
+    <string name="bottom_search_bar">Alsó keresősáv</string>
+    <string name="bottom_search_bar_summary">Helyezze el a keresősávot az oldal aljára.</string>
+    <string name="select_all">Összes kijelölése</string>
+    <string name="deselect_all">Az összes kijelölés megszüntetése</string>
+    <string name="action_lock_dialog">Műveletzár párbeszédpanel megjelenítése</string>
+    <string name="action_lock_none">Nincs zár</string>
+    <string name="action_lock_device">Eszközzár</string>
+    <string name="kids_mode">Gyerek mód</string>
+    <string name="kids_mode_summary">Engedélyezze a gyerek módot, letiltja az új alkalmazások telepítését.</string>
 </resources>
