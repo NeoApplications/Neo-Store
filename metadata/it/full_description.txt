@@ -1,6 +1,6 @@
 Un rapido client F-Droid ricco di funzionalità:
 
-* UX incentrato sul potenziamento degli utenti
+* UX incentrata sul potenziamento degli utenti
 * Nessuna carta o animazione inappropriata
 * Sincronizzazione veloce del repository
 * Componenti Android standard e dipendenze minime
