@@ -386,4 +386,5 @@
     <string name="kids_mode_summary">Abilita la modalità bambini, disabilitando l\'installazione di nuove app.</string>
     <string name="kids_mode_summary_full">Abilita la modalità bambini, disabilitando l\'installazione di nuove app. Per disabilitare toccare sei volte la versione dell\'app nell\'altra pagina. Questo suggerimento viene nascosto al riavvio dell\'app.</string>
     <string name="kids_mode">Modalità bambini</string>
+    <string name="system_installer">Installer di sistema</string>
 </resources>
