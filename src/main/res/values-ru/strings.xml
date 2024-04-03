@@ -372,4 +372,21 @@
     <string name="root_allow_downgrades">Разрешить понижение версий</string>
     <string name="root_allow_installing_old_apps_description">Начиная с Android 14, устанавливать приложения, созданные для старых версий Android (5.1 и ниже), больше невозможно. Этот параметр позволит обойти это ограничение.</string>
     <string name="root_allow_installing_old_apps">Разрешить установку старых приложений</string>
+    <string name="alt_block_layout">Альтернативный вид блоков страниц</string>
+    <string name="download_show_dialog">Подтверждать скачивание</string>
+    <string name="bottom_search_bar_summary">Разместить панель поиска в нижней части экрана.</string>
+    <string name="bottom_search_bar">Панель поиска внизу</string>
+    <string name="select_all">Выбрать все</string>
+    <string name="deselect_all">Снять весь выбор</string>
+    <string name="kids_mode">Детский режим</string>
+    <string name="action_lock_dialog">Запрос блокировки действий</string>
+    <string name="action_lock_none">Нет блокировки</string>
+    <string name="action_lock_biometric">Биометрическая блокировка</string>
+    <string name="confirm_download_DESC_FORMAT">Вы уверены, что хотите скачать %s?</string>
+    <string name="alt_block_layout_summary">Использовать альтернативный/старый вид блоков страниц с границами вместо цветных поверхностей.</string>
+    <string name="download_show_dialog_summary">Показывать диалоговое окно с запросом подтверждения на скачивание приложения (перед началом загрузки).</string>
+    <string name="action_lock_device">Блокировка устройства</string>
+    <string name="kids_mode_summary">Использовать детский режим, отключающий установку новых приложений.</string>
+    <string name="system_installer">Системный установщик</string>
+    <string name="kids_mode_summary_full">Включён детский режим, отключающий установку новых приложений. Для отключения этого режима нажмите на версию приложения (на другом экране) шесть раз. Данная подсказка будет скрыта после перезапуска приложения.</string>
 </resources>
