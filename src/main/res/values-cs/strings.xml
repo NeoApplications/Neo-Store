@@ -386,4 +386,5 @@
     <string name="alt_block_layout">Použít alternativní rozvržení pro bloky stránek</string>
     <string name="alt_block_layout_summary">Použít alternativní/staré rozložení pro bloky stránek s okraji namísto barevných povrchů.</string>
     <string name="confirm_download_DESC_FORMAT">Opravdu chcete stáhnout aplikaci %s?</string>
+    <string name="system_installer">Systémový instalátor</string>
 </resources>
