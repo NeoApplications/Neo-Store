@@ -382,4 +382,5 @@
     <string name="light_high_contrast">Terang (kontras tinggi)</string>
     <string name="dark_high_contrast">Gelap (kontras tinggi)</string>
     <string name="root_allow_installing_old_apps_description">Mulai dari Android 14, sudah tidak memungkinkan lagi untuk memasand aplikasi menargetkan versi Android yang lawas (Android 5.1 atau lebih awal). Opsi ini memungkinkan Anda untuk menimpa perilaku ini.</string>
+    <string name="system_installer">Pemasang sistem</string>
 </resources>
