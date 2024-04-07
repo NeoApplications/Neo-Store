@@ -366,4 +366,21 @@
     <string name="root_allow_installing_old_apps_description">从 Android 14 开始，无法再安装目标 Android 版本太旧（Android 5.1 或更早版本）的应用程序。 此选项允许您无视此特性。</string>
     <string name="am_installer">应用管理器安装程序</string>
     <string name="black_high_contrast">黑色（高对比度）</string>
+    <string name="alt_block_layout">使用其他页面块布局</string>
+    <string name="alt_block_layout_summary">使用带边框的页面块替代/旧版式而非彩色界面。</string>
+    <string name="confirm_download_DESC_FORMAT">您确定要下载 %s 吗？</string>
+    <string name="download_show_dialog">显示下载对话框</string>
+    <string name="download_show_dialog_summary">显示对话框，询问是否确定要下载 App（在开始下载之前）。</string>
+    <string name="bottom_search_bar">底部搜索栏</string>
+    <string name="bottom_search_bar_summary">在页面底部放置搜索栏。</string>
+    <string name="select_all">全选</string>
+    <string name="deselect_all">全不选</string>
+    <string name="action_lock_dialog">显示操作锁定对话框</string>
+    <string name="action_lock_none">无锁</string>
+    <string name="action_lock_device">设备锁</string>
+    <string name="action_lock_biometric">生物识别锁</string>
+    <string name="kids_mode">儿童模式</string>
+    <string name="kids_mode_summary">启用儿童模式，禁止安装新 App。</string>
+    <string name="kids_mode_summary_full">启用儿童模式，禁止安装新 App。要禁用此功能，请在另一页面上点击应用程序版本六次。此提示会在应用重启后隐藏。</string>
+    <string name="system_installer">系统安装器</string>
 </resources>
