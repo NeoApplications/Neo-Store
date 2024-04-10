@@ -368,4 +368,21 @@
     <string name="download_manager_summary">Gebruik het systeemdownloadbeheer om apps betrouwbaarder te downloaden. TOR of de aangepaste proxy wordt niet ondersteund, deze functie gebruikt systeeminstellingen.</string>
     <string name="install_packages_permission_title">Toestemming om pakketten te installeren</string>
     <string name="install_packages_permission_message">Vanaf Android 8 vereisen apps deze toestemming om pakketten te installeren.</string>
+    <string name="alt_block_layout">Gebruik alternatieve lay-out voor paginablokken</string>
+    <string name="alt_block_layout_summary">Gebruik alternatieve/oude lay-out voor paginablokken, met randen in plaats van gekleurde vlakken.</string>
+    <string name="download_show_dialog_summary">Geef een venster weer waarin je wordt gevraagd of je de app echt wilt downloaden (voordat het downloaden begint).</string>
+    <string name="select_all">Alles selecteren</string>
+    <string name="bottom_search_bar_summary">Plaats de zoekbalk onderaan de pagina.</string>
+    <string name="deselect_all">Alles deselecteren</string>
+    <string name="action_lock_dialog">Dialoogvenster actievergrendeling weergeven</string>
+    <string name="action_lock_none">Geen vergrendeling</string>
+    <string name="action_lock_device">Apparaatvergrendeling</string>
+    <string name="action_lock_biometric">Biometrische vergrendeling</string>
+    <string name="kids_mode">Kindvriendelijke modus</string>
+    <string name="kids_mode_summary">Schakel kindvriendelijke modus in en schakel de installatie van nieuwe apps uit.</string>
+    <string name="kids_mode_summary_full">Schakel kindvriendelijke modus in en schakel de installatie van nieuwe apps uit. Om uit te schakelen, tik zes keer op de versie van de app op de andere pagina. Deze hint verdwijnt bij het opnieuw opstarten van de app.</string>
+    <string name="system_installer">Systeeminstallatie</string>
+    <string name="confirm_download_DESC_FORMAT">Weet je zeker dat je %s wilt downloaden?</string>
+    <string name="download_show_dialog">Downloaddialoogvenster weergeven</string>
+    <string name="bottom_search_bar">Zoekbalk onderaan</string>
 </resources>
