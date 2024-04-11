@@ -2,12 +2,14 @@ package com.machiav3lli.fdroid.service.worker
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.ui.util.fastFilter
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
+import com.machiav3lli.fdroid.ARG_VERSION_CODE
 import com.machiav3lli.fdroid.ARG_WORK_TYPE
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Preferences
@@ -48,10 +50,11 @@ class ExodusWorker(
             )
         }
 
-        fun fetchExodusInfo(packageName: String) {
+        fun fetchExodusInfo(packageName: String, versionCode: Long) {
             val data = workDataOf(
                 ARG_WORK_TYPE to WorkType.DATA.ordinal,
-                ARG_PACKAGE_NAME to packageName
+                ARG_PACKAGE_NAME to packageName,
+                ARG_VERSION_CODE to versionCode,
             )
 
             MainApplication.wm.workManager.enqueueUniqueWork(
@@ -72,7 +75,10 @@ class ExodusWorker(
 
         when (type) {
             WorkType.TRACKERS -> fetchTrackers()
-            WorkType.DATA     -> fetchExodusData(inputData.getString(ARG_PACKAGE_NAME)!!)
+            WorkType.DATA     -> fetchExodusData(
+                inputData.getString(ARG_PACKAGE_NAME)!!,
+                inputData.getLong(ARG_VERSION_CODE, -1)
+            )
         }
 
         return Result.success()
@@ -107,12 +113,18 @@ class ExodusWorker(
         }
     }
 
-    private fun fetchExodusData(packageName: String) {
+    private fun fetchExodusData(packageName: String, versionCode: Long) {
         if (Preferences[Preferences.Key.ShowTrackers]) {
             scope.launch {
                 try {
-                    val exodusDataList = repoExodusAPI.getExodusInfo(packageName)
-                    val latestExodusApp = exodusDataList.maxByOrNull { it.version_code.toLong() }
+                    val sourceFiltered = repoExodusAPI.getExodusInfo(packageName).let {
+                        it.fastFilter { info -> info.source == "fdroid" }
+                            .ifEmpty { it }
+                    }
+                    val latestExodusApp = sourceFiltered
+                        .fastFilter { it.version_code.toLong() == versionCode }
+                        .firstOrNull()
+                        ?: sourceFiltered.maxByOrNull { it.version_code.toLong() }
                         ?: ExodusInfo()
 
                     val exodusInfo = latestExodusApp.toExodusInfo(packageName)
