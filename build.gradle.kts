@@ -4,20 +4,20 @@ val vActivity = "1.8.2"
 val vBiometric = "1.2.0-alpha05"
 val vCoil = "2.6.0"
 val vComposeCompiler = "1.5.11"
-val vCompose = "1.6.4"
+val vCompose = "1.6.5"
 val vComposeAccompanist = "0.34.0"
 val vComposeHtml = "1.6.0"
 val vComposeMaterial3 = "1.2.1"
 val vCoroutines = "1.8.0"
 val vJackson = "2.17.0"
-val vKoin = "3.5.3"
+val vKoin = "3.5.6"
 val vKoinKsp = "1.3.1"
 val vKotlin = "1.9.23"
-val vKSP = "1.0.19"
-val vKtor = "2.3.9"
+val vKSP = "1.0.20"
+val vKtor = "2.3.10"
 val vLibsu = "5.2.2"
 val vLifecycle = "2.7.0"
-val vMarkdown = "0.6.1"
+val vMarkdown = "0.7.0"
 val vMaterial = "1.11.0"
 val vMoshi = "1.15.0"
 val vNavigation = "2.7.7"
@@ -33,7 +33,7 @@ plugins {
     id("com.android.application") version ("8.3.2")
     kotlin("android") version ("1.9.23")
     kotlin("plugin.serialization") version ("1.9.23")
-    id("com.google.devtools.ksp") version ("1.9.23-1.0.19")
+    id("com.google.devtools.ksp") version ("1.9.23-1.0.20")
 }
 
 android {
