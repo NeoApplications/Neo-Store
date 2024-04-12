@@ -9,7 +9,6 @@ import androidx.documentfile.provider.DocumentFile
 import com.machiav3lli.fdroid.R
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.util.*
 
 class SAFFile(context: Context, val uri: Uri) {
 
@@ -61,9 +60,9 @@ class SAFFile(context: Context, val uri: Uri) {
         const val EXTRAS_EXTENSION = "xts"
         const val REPOS_EXTENSION = "rps"
         const val APPS_EXTENSION = "aps"
-        const val EXTRAS_MIME_TYPE = "application/vnd.neo.store"
-        const val REPOS_MIME_TYPE = "application/vnd.neo.store"
-        const val APPS_MIME_TYPE = "application/vnd.neo.store"
+        const val EXTRAS_MIME_TYPE = "application/vnd.neostore.xts"
+        const val REPOS_MIME_TYPE = "application/vnd.neostore.rps"
+        const val APPS_MIME_TYPE = "application/vnd.neostore.aps"
         val EXTRAS_MIME_ARRAY = arrayOf(EXTRAS_MIME_TYPE, MAIN_MIME_TYPE)
         val REPOS_MIME_ARRAY = arrayOf(REPOS_MIME_TYPE, MAIN_MIME_TYPE)
         val APPS_MIME_ARRAY = arrayOf(APPS_MIME_TYPE, MAIN_MIME_TYPE)

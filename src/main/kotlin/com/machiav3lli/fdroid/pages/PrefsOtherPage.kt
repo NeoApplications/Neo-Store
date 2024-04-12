@@ -79,7 +79,7 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
             }
         }
     val startExportReposResult =
-        rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(SAFFile.EXTRAS_MIME_TYPE)) { resultUri ->
+        rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(SAFFile.REPOS_MIME_TYPE)) { resultUri ->
             if (resultUri != null) {
                 context.contentResolver.takePersistableUriPermission(
                     resultUri,
@@ -96,7 +96,7 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
             }
         }
     val startExportInstalledResult =
-        rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(SAFFile.EXTRAS_MIME_TYPE)) { resultUri ->
+        rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(SAFFile.APPS_MIME_TYPE)) { resultUri ->
             if (resultUri != null) {
                 context.contentResolver.takePersistableUriPermission(
                     resultUri,

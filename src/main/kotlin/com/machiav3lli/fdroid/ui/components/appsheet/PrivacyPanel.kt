@@ -267,7 +267,6 @@ fun PrivacyPanel(
                                     Uri.parse("market://search?q=$TC_PACKAGENAME")
                                 )
                             )
-                            neoActivity.latestViewModel.setSections(Section.All)
                             ModalDialog.onDismiss()
                         } else context.startActivity(
                             tcIntent.putExtra(
