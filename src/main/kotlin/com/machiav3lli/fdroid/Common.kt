@@ -60,6 +60,7 @@ const val ROW_FAVORITE = "favorite"
 
 const val ARG_STARTED = "STARTED"
 const val ARG_PACKAGE_NAME = "PACKAGE_NAME"
+const val ARG_VERSION_CODE = "VERSION_CODE"
 const val ARG_NAME = "NAME"
 const val ARG_RELEASE = "RELEASE"
 const val ARG_URL = "URL"

@@ -37,7 +37,6 @@ import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.DialogKey
-import com.machiav3lli.fdroid.service.worker.ExodusWorker
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.WideSearchField
 import com.machiav3lli.fdroid.ui.components.common.BottomSheet
@@ -165,7 +164,6 @@ fun SearchSheet(viewModel: SearchVM) {
                     repo = repositoriesMap[item.repositoryId],
                     isFavorite = favorites.contains(item.packageName),
                     onUserClick = {
-                        ExodusWorker.fetchExodusInfo(item.packageName)
                         neoActivity.navigateProduct(it.packageName)
                     },
                     onFavouriteClick = {

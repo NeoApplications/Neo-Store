@@ -40,7 +40,6 @@ import com.machiav3lli.fdroid.entity.DialogKey
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.appCategoryIcon
 import com.machiav3lli.fdroid.index.RepositoryUpdater
-import com.machiav3lli.fdroid.service.worker.ExodusWorker
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.CategoriesList
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
@@ -182,7 +181,6 @@ fun ExplorePage(viewModel: ExploreVM) {
                         repo = repositoriesMap[item.repositoryId],
                         isFavorite = favorites.contains(item.packageName),
                         onUserClick = {
-                            ExodusWorker.fetchExodusInfo(item.packageName)
                             neoActivity.navigateProduct(it.packageName)
                         },
                         onFavouriteClick = {

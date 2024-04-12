@@ -47,7 +47,6 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.entity.DialogKey
 import com.machiav3lli.fdroid.service.worker.DownloadState
-import com.machiav3lli.fdroid.service.worker.ExodusWorker
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
@@ -282,7 +281,6 @@ fun InstalledPage(viewModel: InstalledVM) {
                                 repo = repositoriesMap[item.repositoryId],
                                 isFavorite = favorites.contains(item.packageName),
                                 onUserClick = {
-                                    ExodusWorker.fetchExodusInfo(item.packageName)
                                     neoActivity.navigateProduct(it.packageName)
                                 },
                                 onFavouriteClick = { pi ->
