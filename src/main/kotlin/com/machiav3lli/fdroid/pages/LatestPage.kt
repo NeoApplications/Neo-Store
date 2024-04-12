@@ -50,7 +50,7 @@ fun LatestPage(viewModel: LatestVM) {
     val context = LocalContext.current
     val neoActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
-    val filteredPrimaryList by viewModel.filteredProducts.collectAsState()
+    val primaryList by viewModel.primaryProducts.collectAsState()
     val secondaryList by viewModel.secondaryProducts.collectAsState(null)
     val installedList by viewModel.installed.collectAsState(emptyMap())
     val repositories by viewModel.repositories.collectAsState(null)
@@ -167,7 +167,7 @@ fun LatestPage(viewModel: LatestVM) {
             }
         }
         items(
-            items = filteredPrimaryList?.map { it.toItem(installedList[it.packageName]) }
+            items = primaryList?.map { it.toItem(installedList[it.packageName]) }
                 ?: emptyList(),
         ) { item ->
             ProductsListItem(
