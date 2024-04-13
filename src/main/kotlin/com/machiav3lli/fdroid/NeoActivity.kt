@@ -340,6 +340,7 @@ class NeoActivity : AppCompatActivity() {
 
     fun showSearchSheet(value: Boolean, query: String? = null) {
         cScope.launch {
+            appSheetPackage.value = ""
             _showSearchSheet.emit(value)
             query?.let { _searchQuery.emit(it) }
         }
