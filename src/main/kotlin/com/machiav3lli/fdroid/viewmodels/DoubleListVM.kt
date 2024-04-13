@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Installed
@@ -17,12 +18,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.combineTransform
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@OptIn(ExperimentalCoroutinesApi::class)
 open class DoubleListVM(
     val db: DatabaseX,
     primarySource: Source,
@@ -46,7 +48,6 @@ open class DoubleListVM(
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val installed = db.getInstalledDao().getAllFlow().mapLatest {
         it.associateBy(Installed::packageName)
     }.stateIn(
@@ -55,13 +56,12 @@ open class DoubleListVM(
         initialValue = emptyMap()
     )
 
-    private var primaryRequest: StateFlow<Request> = combineTransform(
+    private var primaryRequest: StateFlow<Request> = combine(
         sortFilter,
         Preferences.subject.map { Preferences[Preferences.Key.HideNewApps] },
         installed
-        val newRequest = request(primarySource)
-        emit(newRequest)
     ) { _, _, _ ->
+        request(primarySource)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
@@ -101,13 +101,10 @@ open class DoubleListVM(
         initialValue = null
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val repositories = db.getRepositoryDao().getAllFlow().mapLatest { it }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val categories = db.getCategoryDao().getAllNamesFlow().mapLatest { it }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val licenses = db.getProductDao().getAllLicensesFlow().mapLatest {
         it.map(Licenses::licenses).flatten().distinct()
     }

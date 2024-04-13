@@ -55,7 +55,7 @@ enum class Order(@StringRes val titleResId: Int, val icon: ImageVector) {
 enum class UpdateCategory(val id: Int) {
     ALL(0),
     UPDATED(1),
-    NEW(2)
+    NEW(2),
 }
 
 enum class InstallState {

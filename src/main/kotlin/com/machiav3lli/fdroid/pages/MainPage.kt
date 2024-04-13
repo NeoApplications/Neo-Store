@@ -1,7 +1,6 @@
 package com.machiav3lli.fdroid.pages
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,8 +14,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,9 +44,6 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
     val context = LocalContext.current
     val mActivity = context as NeoActivity
     val mScope = rememberCoroutineScope()
-    val expanded = remember {
-        mutableStateOf(false)
-    }
     val showSearchSheet by mActivity.showSearchSheet.collectAsState()
     val searchSheetState = rememberModalBottomSheetState(true)
 
@@ -62,12 +56,15 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
 
     BackHandler {
         when {
-            expanded.value -> {
-                mScope.launch { mActivity.setSearchQuery("") }
-                expanded.value = false
+            showSearchSheet -> {
+                mScope.launch {
+                    mActivity.setSearchQuery("")
+                    searchSheetState.hide()
+                }
+                mActivity.showSearchSheet(false)
             }
 
-            else           ->
+            else            ->
                 mActivity.moveTaskToBack(true)
         }
     }
@@ -93,21 +90,17 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
         },
         topBar = {
             TopBar(title = stringResource(id = R.string.application_name)) {
-                AnimatedVisibility(!expanded.value) {
-                    TopBarAction(
-                        icon = Phosphor.ArrowsClockwise,
-                        description = stringResource(id = R.string.sync_repositories)
-                    ) {
-                        SyncWorker.enqueueAll(SyncRequest.MANUAL)
-                    }
+                TopBarAction(
+                    icon = Phosphor.ArrowsClockwise,
+                    description = stringResource(id = R.string.sync_repositories)
+                ) {
+                    SyncWorker.enqueueAll(SyncRequest.MANUAL)
                 }
-                AnimatedVisibility(!expanded.value) {
-                    TopBarAction(
-                        icon = Phosphor.GearSix,
-                        description = stringResource(id = R.string.settings)
-                    ) {
-                        navController.navigate(NavItem.Prefs.destination)
-                    }
+                TopBarAction(
+                    icon = Phosphor.GearSix,
+                    description = stringResource(id = R.string.settings)
+                ) {
+                    navController.navigate(NavItem.Prefs.destination)
                 }
             }
         }
