@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -37,7 +38,6 @@ import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.PermissionGroup
 import com.machiav3lli.fdroid.entity.PrivacyNote
-import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.SourceInfo
 import com.machiav3lli.fdroid.entity.TrackersGroup.Companion.getTrackersGroup
 import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
@@ -65,7 +65,7 @@ fun PrivacyPanel(
     val context = LocalContext.current
     val neoActivity = context as NeoActivity
     val trackers by viewModel.trackers.collectAsState(emptyList())
-    val installed by viewModel.installedItem.collectAsState(null)
+    val installed = viewModel.installedItem.collectAsState(null)
     val exodusInfo by viewModel.exodusInfo.collectAsState(null)
     val privacyData by viewModel.privacyData.collectAsState()
     val privacyNote by viewModel.privacyNote.collectAsState(PrivacyNote())
@@ -75,11 +75,16 @@ fun PrivacyPanel(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 12.dp),
     ) {
-        val requestedPermissions =
-            if (installed != null) context.packageManager.getPackageInfo(
-                packageName,
-                PackageManager.GET_PERMISSIONS
-            ).grantedPermissions else emptyMap()
+        val requestedPermissions by derivedStateOf {
+            try {
+                if (installed.value != null) context.packageManager.getPackageInfo(
+                    packageName,
+                    PackageManager.GET_PERMISSIONS
+                ).grantedPermissions else emptyMap()
+            } catch (_: PackageManager.NameNotFoundException) {
+                emptyMap()
+            }
+        }
 
         item {
             privacyData.physicalDataPermissions.let { list ->
@@ -93,7 +98,7 @@ fun PrivacyPanel(
                         )
                     }" else "",
                     preExpanded = true,
-                    actionText = if (installed != null && list.isNotEmpty())
+                    actionText = if (installed.value != null && list.isNotEmpty())
                         stringResource(id = R.string.action_change_permissions)
                     else "",
                     onAction = { context.openPermissionPage(product.packageName) }
@@ -111,7 +116,7 @@ fun PrivacyPanel(
                                         text = ps
                                             .mapIndexed { index, perm ->
                                                 "\u2023 ${
-                                                    if (installed != null) "(${
+                                                    if (installed.value != null) "(${
                                                         stringResource(
                                                             if (requestedPermissions[perm.name] == true) R.string.permission_granted
                                                             else if (perm.name !in requestedPermissions.keys) R.string.permission_not_present
@@ -150,7 +155,7 @@ fun PrivacyPanel(
                         )
                     }" else "",
                     preExpanded = true,
-                    actionText = if (installed != null && list.isNotEmpty())
+                    actionText = if (installed.value != null && list.isNotEmpty())
                         stringResource(id = R.string.action_change_permissions)
                     else "",
                     onAction = { context.openPermissionPage(product.packageName) }
@@ -168,7 +173,7 @@ fun PrivacyPanel(
                                         text = ps
                                             .mapIndexed { index, perm ->
                                                 "\u2023 ${
-                                                    if (installed != null) "(${
+                                                    if (installed.value != null) "(${
                                                         stringResource(
                                                             if (requestedPermissions[perm.name] == true) R.string.permission_granted
                                                             else if (perm.name !in requestedPermissions.keys) R.string.permission_not_present
@@ -216,7 +221,7 @@ fun PrivacyPanel(
                                     text = ps
                                         .mapIndexed { index, perm ->
                                             "\u2023 ${
-                                                if (installed != null) "(${
+                                                if (installed.value != null) "(${
                                                     stringResource(
                                                         if (requestedPermissions[perm.name] == true) R.string.permission_granted
                                                         else if (perm.name !in requestedPermissions.keys) R.string.permission_not_present
@@ -253,7 +258,7 @@ fun PrivacyPanel(
                         )
                     }" else "",
                     preExpanded = true,
-                    actionText = if (installed != null) stringResource(
+                    actionText = if (installed.value != null) stringResource(
                         id = if (tcIntent == null) R.string.action_install_tc
                         else R.string.action_open_tc
                     ) else "",
