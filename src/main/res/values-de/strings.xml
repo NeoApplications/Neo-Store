@@ -16,7 +16,7 @@
     <string name="bug_tracker">Fehlerverwaltung</string>
     <string name="changelog">Änderungsliste</string>
     <string name="cant_edit_sync_DESC">Die Paketquelle kann nicht bearbeitet werden, da sie gerade synchronisiert wird …</string>
-    <string name="checking_repository">Paketquelle wird abgefragt …</string>
+    <string name="checking_repository">Paketquelle wird geprüft…</string>
     <string name="compiled_for_debugging">Kompiliert für die Fehlersuche</string>
     <string name="connecting">Verbinden …</string>
     <string name="confirmation">Bestätigung</string>
@@ -111,7 +111,7 @@
     <string name="sync_repositories">Paketquellen synchronisieren</string>
     <string name="sync_repositories_automatically">Paketquellen automatisch synchronisieren</string>
     <string name="repository_not_used_DESC">Diese Paketquelle wurde noch nicht verwendet.
-\nVerbinde dich damit um die darin enthaltenen Anwendungen anzuzeigen.</string>
+\nVerbinde dich damit, um die enthaltenen Apps anzuzeigen.</string>
     <string name="signature_FORMAT">Signatur %s</string>
     <string name="has_non_free_dependencies">Hat unfreie Abhängigkeiten</string>
     <string name="incompatible_version">Inkompatible Version</string>
@@ -325,15 +325,15 @@
     <string name="disable_download_version_check_summary">Ermöglicht das Herunterladen älterer Versionen installierter Anwendungen. Kann in Kombination mit dem \"letmedowngrade\"-Patch von Magisk verwendet werden.</string>
     <string name="disable_signature_check_summary">Nicht überprüfen, wenn die heruntergeladene APK dieselbe Signatur wie die bereits installierte App hat.</string>
     <string name="canceled">Abgebrochen</string>
-    <string name="list_apps">Apps des Repositorys anzeigen</string>
+    <string name="list_apps">Apps in der Paketquelle anzeigen</string>
     <string name="finished">Erledigt</string>
     <string name="next">Nächste</string>
     <string name="error">Fehler</string>
     <string name="previous">Vorherige</string>
     <string name="clear_text">Lösche Text</string>
     <string name="auto_sync_interval_hours">Intervall für Auto-Sync (in Std.)</string>
-    <string name="repos_import">Importiere das Repository (es überschreibt das bereits existierende)</string>
-    <string name="repos_export">Exportiere das Repository</string>
+    <string name="repos_import">Importiere Paketquellen (überschreibt bereits existierende)</string>
+    <string name="repos_export">Exportiere Paketquellen</string>
     <string name="alt_navbar_item">Verwende alternatives Element der Navigationsleiste</string>
     <string name="alt_navbar_item_description">Verwende in der Navigationsleiste die alternative/alte Anordnung, welche ebenfalls die Bezeichnungen von „nicht selektierten Elementen“ zeigt.</string>
     <string name="installed_export">Liste der installierten Apps exportieren</string>
@@ -357,7 +357,7 @@
     <string name="root_allow_downgrades">Erlaube Downgraden von Anwendungen</string>
     <string name="root_allow_downgrades_description">Erlaubt Downgrade von Anwendungen mithilfe des Root-Installers (gilt nur für debuggbare Anwendungsversionen). Besser in Kombination mit \"Versionsprüfung beim Herunterladen deaktivieren\" verwenden.</string>
     <string name="root_allow_installing_old_apps_description">Ab Android 14 ist es nicht mehr möglich, Anwendungen zu installieren, die auf viel ältere Android-Versionen (Android 5.1 oder früher) abzielen. Diese Option ermöglicht es Ihnen, dieses Verhalten zu umgehen.</string>
-    <string name="repo_qr_code">Paketquellen QR-Code</string>
+    <string name="repo_qr_code">QR-Code der Paketquelle</string>
     <string name="proxy_url">URL (link)</string>
     <string name="no_releases">Keine kompatiblen Veröffentlichungen vorhanden</string>
     <string name="alt_new_apps_description">Verwende alte/alternative neue App Ansicht, welche kleine App Karten zeigt.</string>
@@ -383,5 +383,6 @@
     <string name="confirm_download_DESC_FORMAT">Bist Du sicher, dass Du %s herunterladen möchtest?</string>
     <string name="action_lock_biometric">Biometrische Sperre</string>
     <string name="deselect_all">Alle abwählen</string>
-    <string name="kids_mode_summary_full">Kinder-Modus aktivieren, der die Installation neuer Apps verhindert. Zum Deaktivieren auf der anderen Einstellungsseite sechsmal antippen. Dieser Hinweis verschwindet nach Neustart der App.</string>
+    <string name="kids_mode_summary_full">Kinder-Modus aktivieren, der die Installation neuer Apps verhindert. Zum Deaktivieren auf der Seite \"Andere\" sechsmal die App-Version antippen. Dieser Hinweis verschwindet nach Neustart der App.</string>
+    <string name="system_installer">System-Installer</string>
 </resources>
