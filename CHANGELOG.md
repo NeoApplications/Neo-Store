@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-1.0.0 (??.??.2024) 410+ Commits +350 Translations
+1.0.0 (??.??.2024) 430+ Commits +370 Translations
 ------------------
 
 ### Function
@@ -21,6 +21,7 @@ CHANGELOG
 - Add: Explicit field for HTTP proxy address
 - Add: Option to use DownloadManager API
 - Add: AppManager installer
+- Add: System installer (credits @0x50f13)
 - Add: Options to allow downgrades (debuggable) and installing pre-A6 apps (starting Android 14)
 - Add Repos: Aniyomi, Koyu, Kuschku, Kvaestiso, Etopa, Metatrans Apps, Gadgetbridge, FUTO, Grobox, Julian Fairfax, spiritCroc Test, Zimbelstern, Cromite, Divolt Repo, Rboard, Cake Wallet (credits @GitGitro)
 - Add Repos: Samourai Wallet Repo (credits @RequestPrivacy)
@@ -43,6 +44,9 @@ CHANGELOG
 - Fix: External search calls
 - Fix: Opening an app from repo url
 - Fix: Crash on searching special chars
+- Fix: Crash on launching uninstalled app from another sheet
+- Update: Respect version code and source ("fdroid") when fetching ExodusInfo
+- Update: Move ExodusInfo fetching into AppSheet
 - Update: Cache apks in external cache
 - Update: Replace OkHttp with Ktor (except for Coil)
 - Update: More open network security policy
@@ -130,6 +134,7 @@ CHANGELOG
 - Add: Option to confirm before downloading an app
 - Add: Device or biomteric lock options on download dialogs
 - Add: Kids mode
+- Add: Option to hide the new apps bar
 - Fix: Applying sort/filter options directly
 - Fix: Scrolling along qr-code in RepoSheet
 - Fix: Showing updatable label for Product items
