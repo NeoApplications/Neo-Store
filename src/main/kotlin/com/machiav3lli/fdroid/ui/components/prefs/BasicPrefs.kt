@@ -1,7 +1,5 @@
 package com.machiav3lli.fdroid.ui.components.prefs
 
-import android.Manifest
-import android.content.pm.PackageManager
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +24,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.machiav3lli.fdroid.MainApplication.Companion.context
 import com.machiav3lli.fdroid.content.BooleanPrefsMeta
 import com.machiav3lli.fdroid.content.NonBooleanPrefsMeta
 import com.machiav3lli.fdroid.content.Preferences
@@ -35,7 +32,6 @@ import com.machiav3lli.fdroid.content.PrefsEntries
 import com.machiav3lli.fdroid.ui.compose.utils.addIf
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.Utils.getLocaleOfCode
-import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -261,21 +257,14 @@ fun EnumPreference(
     var prefValue by remember {
         mutableStateOf(Preferences[prefKey])
     }
-    var result = true;
     SideEffect {
         CoroutineScope(Dispatchers.Default).launch {
             Preferences.subject.collect {
-                result = true;
                 when (it) {
                     Preferences.Key.Installer -> {
                         prefValue = Preferences[prefKey]
                         if (Preferences[prefKey] == Preferences.Installer.Root && Shell.isAppGrantedRoot() != true) {
                             Shell.getShell().isRoot
-                        } else if (Preferences[prefKey] == Preferences.Installer.System){
-                            result = context.packageManager.checkPermission(
-                                Manifest.permission.INSTALL_PACKAGES,
-                                context.packageName) == PackageManager.PERMISSION_GRANTED;
-
                         }
                     }
 
@@ -293,7 +282,7 @@ fun EnumPreference(
         summary = stringResource(id = PrefsEntries[prefKey]?.get(prefValue) ?: -1),
         index = index,
         groupSize = groupSize,
-        isEnabled = isEnabled && result,
+        isEnabled = isEnabled,
         onClick = onClick
     )
 }

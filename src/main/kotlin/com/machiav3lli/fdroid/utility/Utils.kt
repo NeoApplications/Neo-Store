@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.utility
 
+import android.Manifest
 import android.app.Activity
 import android.app.ActivityManager
 import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
@@ -21,6 +22,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.biometric.BiometricManager
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentManager
 import com.machiav3lli.fdroid.AM_PACKAGENAME
 import com.machiav3lli.fdroid.AM_PACKAGENAME_DEBUG
@@ -527,6 +529,10 @@ val shellIsRoot: Boolean
 val Context.amInstalled: Boolean
     get() = (packageManager.getLaunchIntentForPackage(AM_PACKAGENAME)
         ?: packageManager.getLaunchIntentForPackage(AM_PACKAGENAME_DEBUG)) != null
+
+fun Context.getHasSystemInstallPermission(): Boolean =
+    ActivityCompat.checkSelfPermission(this, Manifest.permission.INSTALL_PACKAGES) ==
+            PackageManager.PERMISSION_GRANTED
 
 fun Context.isBiometricLockAvailable(): Boolean =
     BiometricManager.from(this).canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK) ==

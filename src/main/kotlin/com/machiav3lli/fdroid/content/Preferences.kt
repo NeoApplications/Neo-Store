@@ -13,6 +13,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.entity.InstallerType
 import com.machiav3lli.fdroid.entity.Order
 import com.machiav3lli.fdroid.utility.extension.android.Android
+import com.machiav3lli.fdroid.utility.getHasSystemInstallPermission
 import com.machiav3lli.fdroid.utility.isBiometricLockAvailable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -465,7 +466,10 @@ data object Preferences : OnSharedPreferenceChangeListener {
     sealed class Installer(override val valueString: String, val installer: InstallerType) :
         Enumeration<Installer> {
         override val values: List<Installer>
-            get() = listOf(Default, Root, AM, Legacy)
+            get() = mutableListOf(Default, Root, AM, Legacy).apply {
+                if (MainApplication.context.getHasSystemInstallPermission())
+                    add(System)
+            }
 
         data object Default : Installer("session", InstallerType.DEFAULT)
         data object Root : Installer("root", InstallerType.ROOT)
