@@ -49,6 +49,7 @@ fun PrefsPersonalPage() {
         Preferences.Key.KidsMode,
         Preferences.Key.AltNavBarItem,
         Preferences.Key.AltNewApps,
+        Preferences.Key.HideNewApps,
         Preferences.Key.AltBlockLayout,
         Preferences.Key.BottomSearchBar,
         Preferences.Key.UpdatedApps,

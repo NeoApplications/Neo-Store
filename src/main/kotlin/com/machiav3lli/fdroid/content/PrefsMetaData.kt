@@ -20,6 +20,10 @@ val BooleanPrefsMeta = mapOf(
         R.string.alt_new_apps,
         R.string.alt_new_apps_description
     ),
+    Preferences.Key.HideNewApps to Pair(
+        R.string.hide_new_apps,
+        R.string.hide_new_apps_description
+    ),
     Preferences.Key.AltBlockLayout to Pair(
         R.string.alt_block_layout,
         R.string.alt_block_layout_summary

@@ -263,7 +263,8 @@ data class Request(
             id = 4,
             installed = false,
             updates = false,
-            updateCategory = UpdateCategory.UPDATED,
+            updateCategory = if (Preferences[Preferences.Key.HideNewApps]) UpdateCategory.ALL
+            else UpdateCategory.UPDATED,
             section = Section.All,
             order = Preferences[Preferences.Key.SortOrderLatest].order,
             ascending = Preferences[Preferences.Key.SortOrderAscendingLatest],

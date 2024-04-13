@@ -44,6 +44,8 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.ShowScreenshots,
         Key.ShowTrackers,
         Key.AltNavBarItem,
+        Key.AltNewApps,
+        Key.HideNewApps,
         Key.AltBlockLayout,
         Key.BottomSearchBar,
         Key.UpdatedApps,
@@ -252,6 +254,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object AltNavBarItem : Key<Boolean>("alt_navbar_item", Value.BooleanValue(false))
         data object AltNewApps : Key<Boolean>("alt_new_apps_layout", Value.BooleanValue(false))
+        data object HideNewApps : Key<Boolean>("hide_new_apps", Value.BooleanValue(false))
         data object AltBlockLayout : Key<Boolean>("alt_block_layout", Value.BooleanValue(false))
         data object BottomSearchBar : Key<Boolean>("bottom_search_bar", Value.BooleanValue(false))
 

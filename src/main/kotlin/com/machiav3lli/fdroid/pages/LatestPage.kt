@@ -94,7 +94,7 @@ fun LatestPage(viewModel: LatestVM) {
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(vertical = 8.dp),
     ) {
-        item {
+        if (!Preferences[Preferences.Key.HideNewApps]) item {
             Row(
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -105,7 +105,7 @@ fun LatestPage(viewModel: LatestVM) {
                 )
             }
         }
-        item {
+        if (!Preferences[Preferences.Key.HideNewApps]) item {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {

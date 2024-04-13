@@ -57,10 +57,11 @@ open class DoubleListVM(
 
     private var primaryRequest: StateFlow<Request> = combineTransform(
         sortFilter,
+        Preferences.subject.map { Preferences[Preferences.Key.HideNewApps] },
         installed
-    ) { _, _ ->
         val newRequest = request(primarySource)
         emit(newRequest)
+    ) { _, _, _ ->
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,

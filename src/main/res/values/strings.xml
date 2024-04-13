@@ -385,4 +385,6 @@
     <string name="kids_mode_summary">Enable kids mode, disabling the install of new apps.</string>
     <string name="kids_mode_summary_full">Enable kids mode, disabling the install of new apps. To disable tap the app\'s version in the other page six times. This hint gets hidden on app restart.</string>
     <string name="system_installer">System installer</string>
+    <string name="hide_new_apps">Hide new apps bar</string>
+    <string name="hide_new_apps_description">Combine both new and recently updated apps in the latest page\'s vertical list.</string>
 </resources>
