@@ -1,5 +1,6 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
+val vAppsearch = "1.1.0-alpha03"
 val vActivity = "1.8.2"
 val vBiometric = "1.2.0-alpha05"
 val vCoil = "2.6.0"
@@ -198,10 +199,13 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$vCoroutines")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$vCoroutines")
 
-    // Room
+    // Databases
     implementation("androidx.room:room-runtime:$vRoom")
     implementation("androidx.room:room-ktx:$vRoom")
     ksp("androidx.room:room-compiler:$vRoom")
+    implementation("androidx.appsearch:appsearch:$vAppsearch")
+    ksp("androidx.appsearch:appsearch-compiler:$vAppsearch")
+    implementation("androidx.appsearch:appsearch-local-storage:$vAppsearch")
 
     // Compose
     implementation("androidx.compose.runtime:runtime:$vCompose")
