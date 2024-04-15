@@ -129,30 +129,36 @@ class DownloadWorker(
     private lateinit var task: DownloadTask
 
     override suspend fun doWork(): Result {
-        task = getTask(inputData)
+        try {
+            task = getTask(inputData)
 
-        if (Cache.getReleaseFile(applicationContext, task.release.cacheFileName).exists()) {
-            Log.i(this::javaClass.name, "Running publish success from fun enqueue")
-            finalize(task)
-            return Result.success(getWorkData(task, null))
-        }
+            if (Cache.getReleaseFile(applicationContext, task.release.cacheFileName).exists()) {
+                Log.i(this::javaClass.name, "Running publish success from fun enqueue")
+                finalize(task)
+                return Result.success(getWorkData(task, null))
+            }
 
-        stateNotificationBuilder.setContentTitle(
-            context.getString(
-                R.string.downloading_FORMAT,
-                "${task.name} (${task.release.version})"
+            stateNotificationBuilder.setContentTitle(
+                context.getString(
+                    R.string.downloading_FORMAT,
+                    "${task.name} (${task.release.version})"
+                )
             )
-        )
-            .setWhen(System.currentTimeMillis())
-            .setSortKey(System.currentTimeMillis().toString())
-            .setProgress(1, 0, true)
+                .setWhen(System.currentTimeMillis())
+                .setSortKey(System.currentTimeMillis().toString())
+                .setProgress(1, 0, true)
 
-        notificationManager.notify(
-            task.key.hashCode(),
-            stateNotificationBuilder.build(),
-        )
+            notificationManager.notify(
+                task.key.hashCode(),
+                stateNotificationBuilder.build(),
+            )
 
-        return handleDownload(this.task)
+            return handleDownload(this.task)
+
+        } catch (e: Exception) {
+            Log.i(this::javaClass.name, e.message ?: "download failed")
+            return Result.failure()
+        }
     }
 
     private suspend fun handleDownload(task: DownloadTask): Result = coroutineScope {
