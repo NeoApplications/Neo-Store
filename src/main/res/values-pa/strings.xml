@@ -368,4 +368,23 @@
     <string name="root_allow_installing_old_apps">ਪੁਰਾਣੀਆਂ ਐਪਾਂ ਨੂੰ ਇੰਸਟਾਲ ਕਰਨ ਦਿਓ</string>
     <string name="root_allow_downgrades_description">ਰੂਟ ਇੰਸਟਾਲਰ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ ਐਪਲੀਕੇਸ਼ਨਾਂ ਨੂੰ ਡਾਊਨਗ੍ਰੇਡ ਕਰਨ ਦਿਓ (ਸਿਰਫ਼ ਡੀਬੱਗ ਕਰਨ ਯੋਗ ਐਪਲੀਕੇਸ਼ਨ ਸੰਸਕਰਣਾਂ \'ਤੇ ਲਾਗੂ ਹੁੰਦਾ ਹੈ)। \"ਡਾਊਨਲੋਡ ਸੰਸਕਰਣ ਜਾਂਚ ਨੂੰ ਅਸਮਰੱਥ ਕਰੋ\" ਦੇ ਸੁਮੇਲ ਵਿੱਚ ਬਿਹਤਰ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।</string>
     <string name="root_allow_installing_old_apps_description">ਐਂਡਰੌਇਡ 14 ਤੋਂ ਸ਼ੁਰੂ ਹੋਕੇ, ਬਹੁਤ ਪੁਰਾਣੇ ਐਂਡਰੌਇਡ ਸੰਸਕਰਣਾਂ (ਐਂਡਰਾਇਡ 5.1 ਜਾਂ ਇਸ ਤੋਂ ਪਹਿਲਾਂ) ਨੂੰ ਨਿਸ਼ਾਨਾ ਬਣਾਉਣ ਵਾਲੀਆਂ ਐਪਲੀਕੇਸ਼ਨਾਂ ਨੂੰ ਸਥਾਪਿਤ ਕਰਨਾ ਹੁਣ ਸੰਭਵ ਨਹੀਂ ਹੈ। ਇਹ ਵਿਕਲਪ ਤੁਹਾਨੂੰ ਇਸ ਵਿਵਹਾਰ ਨੂੰ ਓਵਰਰਾਈਡ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿੰਦਾ ਹੈ।</string>
+    <string name="system_installer">ਸਿਸਟਮ ਇੰਸਟਾਲਰ</string>
+    <string name="confirm_download_DESC_FORMAT">ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ \'ਤੇ %s ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
+    <string name="download_show_dialog_summary">ਇਹ ਪੁੱਛਣ ਵਾਲਾ ਇੱਕ ਡਾਇਲਾਗ ਵਿਖਾਓ ਕਿ ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਹੋ ਕਿ ਤੁਸੀਂ ਇੱਕ ਐਪ ਡਾਊਨਲੋਡ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ (ਡਾਊਨਲੋਡ ਸ਼ੁਰੂ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ)।</string>
+    <string name="bottom_search_bar">ਹੇਠਲੀ ਖੋਜ ਪੱਟੀ</string>
+    <string name="select_all">ਸਭ ਨੂੰ ਚੁਣੋ</string>
+    <string name="deselect_all">ਸਭ ਨੂੰ ਅਣਚੁਣਿਆ ਕਰੋ</string>
+    <string name="action_lock_dialog">ਐਕਸ਼ਨ ਲੌਕ ਡਾਇਲਾਗ ਵਿਖਾਓ</string>
+    <string name="action_lock_none">ਕੋਈ ਲੌਕ ਨਹੀਂ</string>
+    <string name="kids_mode">ਕਿਡਜ਼ ਮੋਡ</string>
+    <string name="kids_mode_summary">ਬੱਚਿਆਂ ਦੇ ਮੋਡ ਨੂੰ ਚਾਲੂ ਕਰੋ, ਨਵੀਆਂ ਐਪਾਂ ਦੇ ਇੰਸਟਾਲ ਨੂੰ ਅਸਮਰੱਥ ਬਣਾਓ।</string>
+    <string name="alt_block_layout">ਪੇਜ ਬਲਾਕਾਂ ਲਈ ਵਿਕਲਪਕ ਲੇਆਊਟ ਵਰਤੋ</string>
+    <string name="alt_block_layout_summary">ਰੰਗਦਾਰ ਸਤਹਾਂ ਦੀ ਬਜਾਏ ਕਿਨਾਰਿਆਂ ਵਾਲੇ ਪੇਜ ਬਲਾਕਾਂ ਲਈ ਇੱਕ ਵਿਕਲਪਿਕ/ਪੁਰਾਣਾ ਲੇਆਊਟ ਵਰਤੋ।</string>
+    <string name="download_show_dialog">ਡਾਊਨਲੋਡ ਡਾਇਲਾਗ ਵਿਖਾਓ</string>
+    <string name="bottom_search_bar_summary">ਖੋਜ ਪੱਟੀ ਪੰਨੇ ਦੇ ਹੇਠਾਂ ਰੱਖੋ।</string>
+    <string name="action_lock_device">ਡਿਵਾਈਸ ਲੌਕ</string>
+    <string name="action_lock_biometric">ਬਾਇਓਮੈਟ੍ਰਿਕ ਲੌਕ</string>
+    <string name="kids_mode_summary_full">ਬੱਚਿਆਂ ਦੇ ਮੋਡ ਨੂੰ ਚਾਲੂ ਕਰੋ, ਨਵੀਆਂ ਐਪਾਂ ਦੇ ਇੰਸਟਾਲ ਨੂੰ ਅਸਮਰੱਥ ਬਣਾਓ। ਅਯੋਗ ਕਰਨ ਲਈ ਦੂਜੇ ਪੰਨੇ ਵਿੱਚ ਐਪ ਦੇ ਸੰਸਕਰਣ ਨੂੰ ਛੇ ਵਾਰ ਟੈਪ ਕਰੋ। ਐਪ ਰੀਸਟਾਰਟ \'ਤੇ ਇਹ ਸੰਕੇਤ ਲੁਕ ਜਾਂਦਾ ਹੈ।</string>
+    <string name="hide_new_apps">ਨਵੀਂ ਐਪਸ ਬਾਰ ਨੂੰ ਲੁਕਾਓ</string>
+    <string name="hide_new_apps_description">ਨਵੀਨਤਮ ਪੰਨੇ ਦੀ ਲੰਬਕਾਰੀ ਸੂਚੀ ਵਿੱਚ ਨਵੇਂ ਅਤੇ ਹਾਲ ਹੀ ਵਿੱਚ ਅੱਪਡੇਟ ਕੀਤੇ ਐਪਸ ਨੂੰ ਜੋੜੋ।</string>
 </resources>
