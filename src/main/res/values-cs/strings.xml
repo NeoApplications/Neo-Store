@@ -387,4 +387,6 @@
     <string name="alt_block_layout_summary">Použít alternativní/staré rozložení pro bloky stránek s okraji namísto barevných povrchů.</string>
     <string name="confirm_download_DESC_FORMAT">Opravdu chcete stáhnout aplikaci %s?</string>
     <string name="system_installer">Systémový instalátor</string>
+    <string name="hide_new_apps">Skrýt novou lištu aplikací</string>
+    <string name="hide_new_apps_description">Zkombinovat nové a nedávno aktualizované aplikace ve vertikálním seznamu stránky s nedávnými.</string>
 </resources>
