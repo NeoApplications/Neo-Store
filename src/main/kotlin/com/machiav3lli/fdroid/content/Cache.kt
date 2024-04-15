@@ -34,7 +34,7 @@ object Cache {
         return File(
             context.externalCacheDir,
             name
-        ).apply { isDirectory || mkdirs() || throw RuntimeException() }
+        ).apply { isDirectory || mkdirs() || return ensureCacheDir(context, name) }
     }
 
     private fun applyOrMode(file: File, mode: Int) {
@@ -77,7 +77,10 @@ object Cache {
                 context,
                 context.cacheDir,
                 Pair("images", Preferences[Preferences.Key.ImagesCacheRetention] * 24),
-                Pair("temporary", 1)
+                Pair("temporary", 1),
+                // in case the external cache was unavailable (maybe only temporary)
+                Pair("partial", 24),
+                Pair("releases", Preferences[Preferences.Key.ReleasesCacheRetention] * 24),
             )
             cleanup(
                 context,
