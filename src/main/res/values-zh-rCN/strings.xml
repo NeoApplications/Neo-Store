@@ -383,4 +383,6 @@
     <string name="kids_mode_summary">启用儿童模式，禁止安装新 App。</string>
     <string name="kids_mode_summary_full">启用儿童模式，禁止安装新 App。要禁用此功能，请在另一页面上点击应用程序版本六次。此提示会在应用重启后隐藏。</string>
     <string name="system_installer">系统安装器</string>
+    <string name="hide_new_apps">隐藏新 App 栏</string>
+    <string name="hide_new_apps_description">将新的和最近更新的应用合并显示在最新页的垂直列表。</string>
 </resources>
