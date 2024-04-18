@@ -385,4 +385,6 @@
     <string name="confirm_download_DESC_FORMAT">Weet je zeker dat je %s wilt downloaden?</string>
     <string name="download_show_dialog">Downloaddialoogvenster weergeven</string>
     <string name="bottom_search_bar">Zoekbalk onderaan</string>
+    <string name="hide_new_apps">Verberg balk met nieuwe apps</string>
+    <string name="hide_new_apps_description">Combineer nieuwe en onlangs bijgewerkte apps in de verticale lijst op de pagina Nieuwste.</string>
 </resources>
