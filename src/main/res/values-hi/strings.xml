@@ -368,4 +368,23 @@
     <string name="root_allow_installing_old_apps">पुराने ऐप्स इंस्टॉल करने की अनुमति दें</string>
     <string name="root_allow_downgrades_description">रूट इंस्टॉलर का उपयोग करके एप्लिकेशन को डाउनग्रेड करने की अनुमति दें (केवल डिबग करने योग्य एप्लिकेशन संस्करणों पर लागू होता है)। \"डाउनलोड संस्करण जांच अक्षम करें\" के साथ संयोजन में बेहतर उपयोग किया जाता है।</string>
     <string name="root_allow_installing_old_apps_description">एंड्रॉइड 14 से शुरू होकर, अधिक पुराने एंड्रॉइड संस्करणों (एंड्रॉइड 5.1 या इससे पहले) को लक्षित करने वाले एप्लिकेशन इंस्टॉल करना अब संभव नहीं है। यह विकल्प आपको इस व्यवहार को ओवरराइड करने की अनुमति देता है।</string>
+    <string name="alt_block_layout">पेज ब्लॉक के लिए वैकल्पिक लेआउट का उपयोग करें</string>
+    <string name="alt_block_layout_summary">रंगीन सतहों के बजाय बॉर्डर वाले पेज ब्लॉक के लिए वैकल्पिक/पुराने लेआउट का उपयोग करें।</string>
+    <string name="confirm_download_DESC_FORMAT">क्या आप वाकई %s डाउनलोड करना चाहते हैं?</string>
+    <string name="action_lock_biometric">बायोमेट्रिक लॉक</string>
+    <string name="kids_mode">किड्स मोड</string>
+    <string name="kids_mode_summary">नए ऐप्स के इंस्टॉल को अक्षम करते हुए किड्स मोड सक्षम करें।</string>
+    <string name="kids_mode_summary_full">नए ऐप्स के इंस्टॉल को अक्षम करते हुए किड्स मोड सक्षम करें। अक्षम करने के लिए दूसरे पेज में ऐप के संस्करण पर छह बार टैप करें। ऐप रीस्टार्ट करने पर यह संकेत छिप जाता है।</string>
+    <string name="system_installer">सिस्टम इंस्टालर</string>
+    <string name="download_show_dialog">डाउनलोड संवाद दिखाएँ</string>
+    <string name="download_show_dialog_summary">एक संवाद दिखाएँ जिसमें पूछा जाए कि क्या आप सुनिश्चित हैं कि आप एक ऐप डाउनलोड करना चाहते हैं (डाउनलोड शुरू करने से पहले)।</string>
+    <string name="bottom_search_bar">निचला खोज बार</string>
+    <string name="bottom_search_bar_summary">खोज बार को पृष्ठ के नीचे रखें।</string>
+    <string name="select_all">सभी चुनें</string>
+    <string name="deselect_all">सबको अचयनित करो</string>
+    <string name="action_lock_dialog">एक्शन लॉक संवाद दिखाएँ</string>
+    <string name="action_lock_none">कोई लॉक नहीं</string>
+    <string name="action_lock_device">डिवाइस लॉक</string>
+    <string name="hide_new_apps">नया ऐप्स बार छुपाएं</string>
+    <string name="hide_new_apps_description">नवीनतम पेज की वर्टिकल सूची में नए और हाल ही में अपडेट किए गए दोनों ऐप्स को मिलाएं।</string>
 </resources>
