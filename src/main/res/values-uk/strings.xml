@@ -372,4 +372,23 @@
     <string name="root_allow_installing_old_apps">Дозволити встановлювати старі застосунки</string>
     <string name="root_allow_installing_old_apps_description">Починаючи з Android 14, більше неможливо встановлювати застосунки, орієнтовані на набагато старіші версії Android (Android 5.1 або раніше). Ця опція дозволяє обійти це обмеження.</string>
     <string name="root_allow_downgrades_description">Дозволити пониження версії застосунків за допомогою кореневого встановлювача (стосується лише версій застосунків з можливістю налагодження). Краще використовувати в поєднанні з «Вимкнути перевірку версії завантаження».</string>
+    <string name="alt_block_layout">Використовувати альтернативний макет для блоків сторінок</string>
+    <string name="alt_block_layout_summary">Використовувати альтернативний/старий макет для блоків сторінок з рамками замість кольорових поверхонь.</string>
+    <string name="download_show_dialog_summary">Показати діалогове вікно із запитом, чи ви впевнені, що хочете завантажити застосунок (перед початком завантаження).</string>
+    <string name="deselect_all">Зняти всі виділення</string>
+    <string name="confirm_download_DESC_FORMAT">Ви дійсно хочете завантажити %s?</string>
+    <string name="action_lock_dialog">Показати діалогове вікно блокування дій</string>
+    <string name="kids_mode_summary_full">Ввімкнути дитячий режим, вимкнувши встановлення нових застосунків. Щоб вимкнути, торкніться версії застосунку на іншій сторінці шість разів. Ця підказка ховається після перезапуску застосунку.</string>
+    <string name="system_installer">Системний встановлювач</string>
+    <string name="download_show_dialog">Показати вікно завантаження</string>
+    <string name="bottom_search_bar">Нижня панель пошуку</string>
+    <string name="bottom_search_bar_summary">Розмістити рядок пошуку внизу сторінки.</string>
+    <string name="select_all">Вибрати все</string>
+    <string name="action_lock_none">Без блокування</string>
+    <string name="action_lock_device">Блокування пристрою</string>
+    <string name="action_lock_biometric">Біометричне блокування</string>
+    <string name="kids_mode">Дитячий режим</string>
+    <string name="kids_mode_summary">Ввімкнути дитячий режим, заборонивши встановлення нових застосунків.</string>
+    <string name="hide_new_apps">Сховати панель нових застосунків</string>
+    <string name="hide_new_apps_description">Об\'єднати нові та нещодавно оновлені застосунки у вертикальному списку на останній сторінці.</string>
 </resources>
