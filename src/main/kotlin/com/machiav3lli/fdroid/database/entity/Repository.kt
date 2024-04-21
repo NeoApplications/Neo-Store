@@ -644,32 +644,288 @@ data class Repository(
             "F6910227B3A8294F9F0739D9FC1A6A2EB27A041276DD0A1CA531318D680B6915",
             ""
         )
+        private val INVIZBOX = defaultRepository(
+            "https://update.invizbox.com/fdroid/repo",
+            "InvizBox F-Droid Repository",
+            "This is a repository of InvizBox apps to be used with F-Droid. Applications in this repository are official binaries built by the original application developers.",
+            21,
+            false,
+            "FFA1A810B48608135EEFD7C692F2306172FB578549C4111A70266374A119D189",
+            ""
+        )
+        private val LAGRANGE = defaultRepository(
+            "https://skyjake.github.io/fdroid/repo",
+            "Lagrange Pre-Release",
+            "Testing alpha/beta builds of the Lagrange Gemini Browser.",
+            21,
+            false,
+            "46AEA2F2D86047AD65DA955126C6532F79B05AF2BFEFFC5CF1B467A79E686F86",
+            ""
+        )
+        private val ROHIT = defaultRepository(
+            "https://thedoc.eu.org/fdroid/repo",
+            "Rohit's F-Droid Repository",
+            "This is a repository for personal apps built by Rohit.",
+            21,
+            false,
+            "B1358F5B942E5676B2935B83F39E3BAA363F3FDA9E53DB62113551D14B09A173",
+            ""
+        )
+        private val TAGESSCHAU = defaultRepository(
+            "https://fdroid.tagesschau.de/repo",
+            "Tagesschau F-Droid Repository",
+            "Die F-Droid Repository für die Tagesschau.",
+            21,
+            false,
+            "D7E4043234FCB5EAACB1F4D43759A0BF2ED412DC718B8FBB07444078C6E0070C",
+            ""
+        )
+        private val SAUNAREPO = defaultRepository(
+            "https://repo.the-sauna.icu/repo",
+            "The sauna F-Droid Repository",
+            "Minimal F-Droid repo for the sauna & other (beta, unreleased / lost) apps.",
+            21,
+            false,
+            "4420FFD2354D0E08ACB2F1F478E06A4200B3CFF5F55515B08E8308DBD2B6EFCE",
+            ""
+        )
+        private val LIBRECHURCH = defaultRepository(
+            "https://repo.librechurch.org/fdroid/repo",
+            "F-Droid Repo LUKi e.V.",
+            "Ein Projekt zur Verstärkung digitaler Freiheit im digitalen Kontext.",
+            21,
+            false,
+            "281049CDA52EAE483EE3E3137DA232ED48B14EFFD6ED6D331D522293CC0E67C5",
+            ""
+        )
+        private val MOBILSICHER = defaultRepository(
+            "https://repo.mobilsicher.de/fdroid/repo",
+            "mobilsicher Apps Repo",
+            "Dies ist das mobilsicher F-Droid Repo der Ethischen Apps, die durch das ITUJ e.V. veröffentlicht wurden. Die Apps in dem Repo wurden von den App-Betreibern zur Verfügung gestellt, um sie der Öffentlichkeit zugänglich zu machen.",
+            21,
+            false,
+            "D8EE660B3812AA2DF68D8A9740C02B8C5315C3BB0911E3C223A527A3C7A97495",
+            ""
+        )
+        private val LUBL = defaultRepository(
+            "https://f.lubl.de/repo",
+            "lubl fdroid repo",
+            "This is a repository of apps to be used with F-Droid. Applications in this repository are official binaries built by the original application developers.",
+            21,
+            false,
+            "C77FF604CD54E84A3ABDDFF17301E5753451BA8476EEDF438FF25554D2D6A0BE",
+            ""
+        )
+        private val PIXELFED = defaultRepository(
+            "https://fdroid.pixelfed.net/fdroid/repo",
+            "Pixelfed F-Droid Repo",
+            "This is a repository of official Pixelfed apps.",
+            21,
+            false,
+            "FAE6C2292348F0BF910397A08916CCF4B2601B010327768B314951CD300DCA6E",
+            ""
+        )
+        private val VIDELIBRI = defaultRepository(
+            "https://fdroid.videlibri.de/repo",
+            "VideLibri F-Droid Repo",
+            "An app to access library catalogs and OPACs from your local device, e.g. for (automatic) renewing of all lend books or searching for other books available in the library.",
+            21,
+            false,
+            "388988E3A53B6F91D1AE39784EA4B5F1A12B22D34F8E3363E5C7F70A1C57A6F4",
+            ""
+        )
+        private val WOZ = defaultRepository(
+            "https://fdroid.woz.ch/fdroid/repo",
+            "WOZ App auf F‑Droid",
+            "The F-droid repository for the swiss newspaper, WOZ.",
+            21,
+            false,
+            "F19BB95E4DD3B74906E2EF0BA41EA6F34AB82C44F78E1B9505FE207DD5E60CC2",
+            ""
+        )
+        private val NAILYK = defaultRepository(
+            "https://releases.nailyk.fr/repo",
+            "nailyk's repository",
+            "This repository is managed by nailyk to keep some app up to date, provide upgrade on some unmaintained official fdroid repo.",
+            21,
+            false,
+            "05F26958DE412482FC8681B4B34EECA37FC064DF98B8EFDC98ECEBAB8584F078",
+            ""
+        )
+        private val OBFUSK = defaultRepository(
+            "https://obfusk.dev/fdroid/repo",
+            "Fay's f-droid repo",
+            "Fay Stegerman's repository with her apps.",
+            21,
+            false,
+            "2A21B7FFC93B878724B1991C05DAE113C72B93A556C193F49B5D3342884798B7",
+            ""
+        )
+        private val MAXXIS = defaultRepository(
+            "https://pili.qi0.de/fdroid/repo",
+            "Maxxis F-Droid Repo",
+            "This is the F-Droid Repo for maxxis apps.",
+            21,
+            false,
+            "83161D8D5EC84BA32666ECE62E40D578342CAD3B03EAEECA2E75E396125FDAA0",
+            ""
+        )
+        private val TWOBR = defaultRepository(
+            "https://raw.githubusercontent.com/2br-2b/Fdroid-repo/master/fdroid/repo",
+            "2BR's F-Droid Repo",
+            "An Fdroid repository for the various apps 2BR make.",
+            21,
+            false,
+            "90B5B0DDE20A84FB42CB960F41D279B0D3BB86578A42E773364A5534C0E8D27A",
+            ""
+        )
+        private val NUCLEUS = defaultRepository(
+            "https://raw.githubusercontent.com/nucleus-ffm/Nucleus-F-Droid-Repo/master/fdroid/repo",
+            "Nucleus' F-Droid Repo",
+            "An Fdroid repository for the various apps Nucleus make.",
+            21,
+            false,
+            "A32DE9127A6961C5BEBF412C2128312CDFE70F2D7AD444091538432694B776FF",
+            ""
+        )
+        private val XARANTOLUS = defaultRepository(
+            "https://raw.githubusercontent.com/xarantolus/fdroid/main/fdroid/repo",
+            "xarantolus' F-Droid Repo",
+            "This repository hosts an F-Droid repo for xarantolus apps.",
+            21,
+            false,
+            "080898AE4309AECEB58915E43A4B7C4A3E2CDA40C91738E2C02F58339AB2FBD7",
+            ""
+        )
+        private val ONIONSHARE_NIGHTLY = defaultRepository(
+            "https://raw.githubusercontent.com/onionshare/onionshare-android-nightly/master/fdroid/repo",
+            "OnionShare Nightly F-Droid Repo",
+            "Onionshare insecure nightly builds (for testing only!) are available in this F-Droid repository.",
+            21,
+            false,
+            "7E04F902940A2AEDAC30E491A5CE7ADCC74A3F73B43459E4448222F3EEE629EF",
+            ""
+        )
+        private val OBERNBERGER = defaultRepository(
+            "https://codeberg.org/florian-obernberger/fdroid-repo/raw/branch/main/repo",
+            "Florian Obernberger's F-Droid Repo",
+            "This is Florian's personal F-Droid repository.",
+            21,
+            false,
+            "5E9181C818BD1D28E8642821971C569438DF632E671505FD6E9DB6940722B56F",
+            ""
+        )
+        private val SYLKEVICIOUS = defaultRepository(
+            "https://codeberg.org/silkevicious/apkrepo/raw/branch/master/fdroid/repo",
+            "Sylke Vicious's F-Droid Repo",
+            "This is silkevicious's personal F-Droid repository.",
+            21,
+            false,
+            "DFDB0A58E78704CAEB609389B81AB2BE6A090662F860635D760E76ACBC700AF8",
+            ""
+        )
+        private val INSPORATION = defaultRepository(
+            "https://jhass.github.io/insporation/fdroid/repo",
+            "insporation* Repository",
+            "Repository for builds of the insporation* Android client for diaspora*.",
+            21,
+            false,
+            "EC792A58B39DF9FBB466FB100E30E3842F229FDBC6E28D32C417F6A5B30ECCAE",
+            ""
+        )
+        private val RWTH = defaultRepository(
+            "https://app.rwth-aachen.de/fdroid/repo",
+            "RWTH Aachen University Repository",
+            "The FDroid repository for apps of RWTH Aachen University.",
+            21,
+            false,
+            "ACD7C554DED6B9A80BF43F7D766EE75C07DEBB89E83AB55799B94234AC05044C",
+            ""
+        )
+        private val F_DROID_CLASSIC = defaultRepository(
+            "https://bubu1.eu/fdroidclassic/fdroid/repo",
+            "F-Droid Classic Repository",
+            "The FDroid Classic beta versions repository.",
+            21,
+            false,
+            "5187CFD99F084FFAB2AD60D9D10B39203B89A46DD4862397FE1B1A4F3D46627A",
+            ""
+        )
+        private val OFFICIAL_I2P = defaultRepository(
+            "https://eyedeekay.github.io/fdroid/repo",
+            "I2P F-Droid Repo",
+            "This is a repository of official I2P apps.",
+            21,
+            false,
+            "22658CC69F48D63F63C3D64E2041C81714E2749F3F6E5445C825297A00DDC5B6",
+            ""
+        )
+        private val JUWELERKASSA = defaultRepository(
+            "https://juwelierkassa.at/fdroid/repo",
+            "Juwelierkassa F-Droid Repo",
+            "This is a repository for Juwelierkassa apps.",
+            21,
+            false,
+            "930270248A02202D517518474D0C0215070A537DE3681D8721D84A9B1693915E",
+            ""
+        )
+        private val KAFFEEMITKOFFEIN = defaultRepository(
+            "https://kaffeemitkoffein.de/fdroid/repo",
+            "kaffeemitkoffein.de F-Droid Repo",
+            "This is a repository of apps to be used with F-Droid.",
+            21,
+            false,
+            "2F275CB83735FE7975449CE800CA8407B5019D5F7B6ABCB30F3651C520A37261",
+            ""
+        )
+        private val LTTRS = defaultRepository(
+            "https://ltt.rs/fdroid/repo",
+            "Ltt.rs F-Droid Repo",
+            "This repository contains the latest version of Ltt.rs for Android build directly by the developer.",
+            21,
+            false,
+            "9C2E57C85C279E5E1A427F6E87927FC1E2278F62D61D7FCEFDE9346E568CCF86",
+            ""
+        )
+        private val LUBLIN = defaultRepository(
+            "https://lublin.se/fdroid/repo",
+            "Lublin's F-Droid Repo",
+            "This repository is primarily used for distributing frequent releases of apps that Lublin maintains.",
+            21,
+            false,
+            "4FE75AB58C310E9778FBA716A0D1D66E8F49F697737BC0EE2437AEAE278CF64C",
+            ""
+        )
 
         val defaultRepositories = listOf(
-            F_DROID, F_DROID_ARCHIVE,
-            GUARDIAN, GUARDIAN_ARCHIVE,
-            IZZY,
-            MICRO_G,
+            F_DROID, F_DROID_ARCHIVE, IZZY,
+            GUARDIAN, GUARDIAN_ARCHIVE, ONIONSHARE_NIGHTLY, MICRO_G,
             BROMITE, CROMITE,
             NEWPIPE, LIBRETRO, BITWARDEN, GITJOURNAL,
-            CALYX_OS, CALYX_OS_TEST, DIVEST_OS, KDE_RELEASE, KDE_NIGHTLY,
-            NANODROID, NETSYMS, FEDILAB, NETHUNTER, BEOCODE,
+            CALYX_OS, CALYX_OS_TEST, DIVEST_OS, DIVEST_OS_UNOFFICIAL,
+            KDE_RELEASE, KDE_NIGHTLY, NANODROID, NETSYMS,
+            FEDILAB, NETHUNTER, BEOCODE, INSPORATION,
+            PIXELFED, VIDELIBRI, GADGETBRIDGE,
             THREEMA, SESSION, MOLLY, BRIAR, ANONYMOUS_MESSENGER,
-            SIMPLEX_CHAT, REVOLT,
-            PI2P, COLLABORA,
+            SIMPLEX_CHAT, REVOLT, TWIN_HELIX,
+            PI2P, OFFICIAL_I2P, COLLABORA,
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
-            FROSTNERD, FROSTNERD_ARCHIVE,
-            UNOFFICIAL_FIREFOX, PATCHED, WIND, UMBRELLA,
-            CRYPTOMATOR, TWIN_HELIX,
+            FROSTNERD, FROSTNERD_ARCHIVE, F_DROID_CLASSIC,
+            ETOPA, METATRANS_APPS, FUTO, KVAESITSO,
+            LTTRS, KAFFEEMITKOFFEIN,
+            MOBILSICHER, SAUNAREPO, UNOFFICIAL_FIREFOX, PATCHED,
+            WIND, UMBRELLA, CRYPTOMATOR,
+            RWTH, TAGESSCHAU, WOZ,
             C_GEO, C_GEO_NIGHTLY, PETER_CXY,
-            STACK_WALLET,
-            JAK_LINUX, GADGETBRIDGE,
-            INVISV, MONERUJO, IODE, SPIRIT_CROC, SPIRIT_CROC_TEST,
-            DIVEST_OS_UNOFFICIAL, FUNKWHALE,
-            SAMOURAI_WALLET, DIVOLT,
-            ANIYOMI, KOYU, KUSCHKU, KVAESITSO,
-            ETOPA, METATRANS_APPS, FUTO,
+            LAGRANGE, ROHIT, LUBLIN, NAILYK, LUBL,
+            SYLKEVICIOUS, OBERNBERGER, NUCLEUS,
+            XARANTOLUS, TWOBR, OBFUSK, MAXXIS,
+            JAK_LINUX, INVISV, MONERUJO,
+            IODE, SPIRIT_CROC, SPIRIT_CROC_TEST,
+            FUNKWHALE, ANIYOMI, KOYU, KUSCHKU,
+            SAMOURAI_WALLET, DIVOLT, STACK_WALLET,
             GROBOX, FAIRFAX, ZIMBELSTERN,
+            LIBRECHURCH, JUWELERKASSA, INVIZBOX
         )
 
         val addedReposV9 = listOf(
@@ -719,6 +975,16 @@ data class Repository(
 
         val addedReposV21 = listOf(
             CAKE_WALLET, RBOARD,
+        )
+
+        val addedReposV22 = listOf(
+            LAGRANGE, ROHIT, TAGESSCHAU, LUBLIN,
+            LTTRS, KAFFEEMITKOFFEIN, OFFICIAL_I2P, F_DROID_CLASSIC,
+            RWTH, INSPORATION, SYLKEVICIOUS, OBERNBERGER,
+            NUCLEUS, ONIONSHARE_NIGHTLY, XARANTOLUS, TWOBR,
+            OBFUSK, MAXXIS, NAILYK, WOZ,
+            VIDELIBRI, PIXELFED, LUBL, MOBILSICHER,
+            SAUNAREPO, INVIZBOX, LIBRECHURCH, JUWELERKASSA,
         )
     }
 }

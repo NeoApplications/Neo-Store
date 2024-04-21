@@ -43,6 +43,7 @@ import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV18
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV19
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV20
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV21
+import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV22
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV9
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.defaultRepositories
 import com.machiav3lli.fdroid.database.entity.Tracker
@@ -68,7 +69,7 @@ import org.koin.dsl.module
         Downloaded::class,
         InstallTask::class,
     ],
-    version = 21,
+    version = 22,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -133,6 +134,11 @@ import org.koin.dsl.module
             from = 20,
             to = 21,
             spec = DatabaseX.Companion.MigrationSpec20to21::class
+        ),
+        AutoMigration(
+            from = 21,
+            to = 22,
+            spec = DatabaseX.Companion.MigrationSpec21to22::class
         ),
     ]
 )
@@ -257,6 +263,13 @@ abstract class DatabaseX : RoomDatabase() {
             }
         }
 
+        class MigrationSpec21to22 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(21)
+            }
+        }
+
         fun onPostMigrate(from: Int) {
             val preRepos = mutableListOf<Repository>()
             if (from == 8) preRepos.addAll(addedReposV9)
@@ -270,6 +283,7 @@ abstract class DatabaseX : RoomDatabase() {
             if (from == 18) preRepos.addAll(addedReposV19)
             if (from == 19) preRepos.addAll(addedReposV20)
             if (from == 20) preRepos.addAll(addedReposV21)
+            if (from == 21) preRepos.addAll(addedReposV22)
             GlobalScope.launch(Dispatchers.IO) {
                 preRepos.forEach {
                     INSTANCE?.getRepositoryDao()?.put(it)
