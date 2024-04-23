@@ -1,8 +1,10 @@
 package com.machiav3lli.fdroid.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
@@ -64,8 +66,12 @@ fun DeSelectAll(
     ) {
         AnimatedVisibility(
             visible = selectedList.isNotEmpty(),
-            enter = fadeIn() + slideInHorizontally { w -> -w },
-            exit = fadeOut() + slideOutHorizontally { w -> -w },
+            enter = fadeIn()
+                    + slideInHorizontally { w -> -w }
+                    + expandHorizontally(expandFrom = Alignment.Start, clip = false),
+            exit = fadeOut()
+                    + slideOutHorizontally { w -> -w }
+                    + shrinkHorizontally(shrinkTowards = Alignment.Start, clip = false),
         ) {
             FilledTonalButton(onClick = { selectedList.clear() }) {
                 Text(text = stringResource(id = R.string.select_all))
@@ -73,8 +79,12 @@ fun DeSelectAll(
         }
         AnimatedVisibility(
             visible = selectedList.size != completeList.size,
-            enter = fadeIn() + slideInHorizontally { w -> w },
-            exit = fadeOut() + slideOutHorizontally { w -> w },
+            enter = fadeIn()
+                    + slideInHorizontally { w -> w }
+                    + expandHorizontally(expandFrom = Alignment.End, clip = false),
+            exit = fadeOut()
+                    + slideOutHorizontally { w -> w }
+                    + shrinkHorizontally(shrinkTowards = Alignment.End, clip = false),
         ) {
             FilledTonalButton(onClick = { selectedList.addAll(completeList - selectedList) }) {
                 Text(text = stringResource(id = R.string.deselect_all))
