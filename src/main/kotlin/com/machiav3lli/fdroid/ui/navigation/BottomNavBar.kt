@@ -23,6 +23,9 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -165,6 +168,7 @@ fun RowScope.AltNavBarItem(
             AnimatedVisibility(
                 visible = !selected,
                 enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
+                exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Top),
             ) {
                 Text(
                     text = stringResource(id = labelId),
@@ -219,6 +223,7 @@ fun RowScope.NavBarItem(
         AnimatedVisibility(
             visible = selected,
             enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
+            exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start),
         ) {
             Text(
                 text = stringResource(id = labelId),
