@@ -1,0 +1,8 @@
+Add: Parallel download and sync
+Add: Export/import of installed apps and repositories
+Add: +50 new repos
+Add: Kids mode
+Fix: Calling Tor addresses
+Update: Revamp the whole UI
+Update: Improve preference dialog value setting
++ far more in more than 440 commits & 380 translation contributions

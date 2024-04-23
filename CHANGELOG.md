@@ -1,18 +1,19 @@
 CHANGELOG
 =========
 
-1.0.0 (??.??.2024) 430+ Commits +370 Translations
+1.0.0 (23.04.2024) 440+ Commits +380 Translations
 ------------------
 
 ### Function
 
 - Add: Preference to disable signature check for updates/installs
 - Add: Preference to disable download version check
+- Add: Preference to allow downgrades (debuggable) and installing pre-A6 apps (starting Android 14)
 - Add: Display localized product name and description (credits @BLumia)
 - Add: Export/import the repositories
-- Add: Export/import installed apps
+- Add: Export/import list of installed apps
 - Add: Room Kotlin KSP code generation
-- Add: ConnectionPool, redirections to Coil calls
+- Add: ConnectionPool & redirections to Coil calls
 - Add: Opening IzzyOnDroid links (credits @GitGitro)
 - Add: Network constraint to Download works
 - Add: Own client & connectionPools for CoilDownloader
@@ -22,82 +23,74 @@ CHANGELOG
 - Add: Option to use DownloadManager API
 - Add: AppManager installer
 - Add: System installer (credits @0x50f13)
-- Add: Options to allow downgrades (debuggable) and installing pre-A6 apps (starting Android 14)
-- Add Repos: Aniyomi, Koyu, Kuschku, Kvaestiso, Etopa, Metatrans Apps, Gadgetbridge, FUTO, Grobox, Julian Fairfax, spiritCroc Test, Zimbelstern, Cromite, Divolt Repo, Rboard, Cake Wallet (credits @GitGitro)
-- Add Repos: Samourai Wallet Repo (credits @RequestPrivacy)
-- Add Repos: Julian Andres Klode's repo (credits @ishanarora)
-- Add Repos: PurpleI2p, INVISV, Monerujo, iodé, spiritCroc, DivestOS Unofficial, Funkwhale
-- Remove Repos: Fluffy Chat (stable and nightly), Ungoogled Chromium, i2p
+- Add: Linking database from Application
 - Fix: Calling Tor addresses
-- Fix: Make RootInstaller null-safer
+- Fix: Make RootInstaller null-safe
 - Fix: Auto-sync on "Only charging"
-- Fix: The description for PeterCxy's Shelter repo (credits @ishanarora)
-- Fix: c:geo repository (credits @ishanarora)
-- Fix: Updates Product query
 - Fix: Adding repo using scanner
 - Fix: Detecting updates of multi-repos apps
 - Fix: Clicking updates notification
 - Fix: Launching parallel updates
 - Fix: Updating apps in the background
 - Fix: Install notification
-- Fix: Cromite address
 - Fix: External search calls
 - Fix: Opening an app from repo url
 - Fix: Crash on searching special chars
-- Fix: Crash on launching uninstalled app from another sheet
+- Update: Rebase to use one activity
+- Update: Replace RxJava usage with Coroutines
+- Update: Replace OkHttp with Ktor (except for Coil)
+- Update: Migrate download, exodus & sync backend from Sevice- to Worker-based
+- Update: Convert InstallerService to BroadcastReceiver
+- Update: Revamp the ExodusAPI classes
 - Update: Respect version code and source ("fdroid") when fetching ExodusInfo
 - Update: Move ExodusInfo fetching into AppSheet
+- Update: Allow parallel downloads from different repositories
+- Update: Allow parallel sync of repos
 - Update: Cache apks in external cache
-- Update: Replace OkHttp with Ktor (except for Coil)
 - Update: More open network security policy
-- Update: Make root session installer default ture if A13+
+- Update: Make root session installer default if A13+
 - Update: Make product queries observe all relevant entities
+- Update: Optimize the main products query
+- Update: Revamp all installers
 - Update: Revamp Installer works
 - Update: Revamp Downloader
 - Update: Revamp proxy handling
 - Update: Revamp Repository data class
-- Update: Revamp all installers
-- Update: Convert auto-sync interval unit to hours
-- Update: Optimize the main products query
-- Update: Migrate download, exodus & sync backend from Sevice- to Worker-based
-- Update: Replace RxJava usage with Coroutines
-- Update: Allow parallel downloads from different repositories
-- Update: Allow parallel sync of repos
-- Update: Revamp the ExodusAPI classes
-- Update: Ignore secondarySource when it's the same as primarySource
-- Update: Rebase to use one activity
+- Update: Differentiate between double and single list VMs
 - Update: Replace appsToBeInstalled list usage with InstallWorker
-- Update: Convert InstallerService to BroadcastReceiver
 - Update: Allow pre-composing all pages
 - Update: minSDK to 24
-- Update: compileSDK 34
-- Update: targetSDK 34
+- Update: targetSDK & compileSDK 34
 - Remove: Dependencies of deprecated usage
+- Add Repos: Aniyomi, Koyu, Kuschku, Kvaestiso, Etopa, Metatrans Apps, Gadgetbridge, FUTO, Grobox, Julian Fairfax, spiritCroc Test, Zimbelstern, Cromite, Divolt Repo, Rboard, Cake Wallet (credits @GitGitro)
+- Add Repos: Samourai Wallet Repo (credits @RequestPrivacy)
+- Add Repos: Julian Andres Klode's repo (credits @ishanarora)
+- Add Repos: PurpleI2p, INVISV, Monerujo, iodé, spiritCroc, DivestOS Unofficial, Funkwhale… +28 other
+- Fix Repos: The description for PeterCxy's Shelter repo (credits @ishanarora)
+- Fix Repos: c:geo repository (credits @ishanarora)
+- Fix Repos: Cromite repository address
+- Remove Repos: Fluffy Chat (stable and nightly), Ungoogled Chromium, i2p
 
 ### UI
 
 - Add: Preference to show/hide categories bar
-- Add: Linking database from Application
 - Add: (Products)List, StringInput DialogUIs
 - Add: Block border to sheets & pages
-- Add: New optional BottomNavBar item layout
 - Add: Categories app info chips
 - Add: New apps carousel layout
-- Add: Option for alt new apps layout
+- Add: Optional alternative BottomNavBar item layout
+- Add: Optional alternative new apps layout
 - Add: Dynamic theme variants
 - Add: Medium and high contrast themes
+- Add: Option to hide the new apps bar
 - Fix: Switch layout on low-dpi/multi-lines
 - Fix: Screenshots scaling issue after opening once
 - Fix: Pre-mature cutting horizontal products recycler layout
 - Fix: Avoid forgetting expand-state of description text
-- Fix: Content padding of Main pages
 - Fix: Ghost clicking settings when search is expanded
-- Fix: Showing progress bar in AppSheet when not active
 - Fix: Hectic sorting of downloads in downloads list
 - Update: App's icon
 - Update: Theme colors (MD3 v2/tonals)
-- Update: Revamp all layouts
-- Update: Revamp Carrousel item layout
 - Update: Split Installed page to two tabs
 - Update: Revamp repositories page
 - Update: Make pagers animate scrolling
@@ -114,47 +107,42 @@ CHANGELOG
 
 ### UX
 
-- Add: Licenses filters
 - Add: Permission ignore button
+- Add: Kids mode
+- Add: Apps list to Repository info
+- Add: Qr Code to repo sheet
+- Add: PrivacyPoints to PrivacyPanel cards
+- Add: Licenses filters
 - Add: Preference to keep notification of successfully installed app
-- Add: Slide down to close gesture to screenshots viewer
-- Add: Apps list to RepoSheet
+- Add: Swipe down to close gesture to screenshots viewer
 - Add: Swipe to navigate between pages
-- Add: Search page
+- Add: Singular search page
+- Add: (De)select all buttons to multi-selection filters
 - Add: Launch search page on receiving search Intent
 - Add: More categories icons
 - Add: Erase button to items in downloads log
-- Add: Option to allow unstable updates to each app
-- Add: PrivacyPoints to PrivacyPanel cards
+- Add: Preference to allow unstable updates to each app
 - Add: All Anti-features in PrivacyPanel
-- Add: Qr Code to repo sheet
 - Add: Permission to install packages
 - Add: Search when to-be-opened package doesn't exist
-- Add: (De)select all buttons to multi-selection filters
 - Add: Option to confirm before downloading an app
 - Add: Device or biomteric lock options on download dialogs
-- Add: Kids mode
-- Add: Option to hide the new apps bar
-- Fix: Applying sort/filter options directly
-- Fix: Scrolling along qr-code in RepoSheet
 - Fix: Showing updatable label for Product items
 - Fix: Showing right version in AppSheet's header
 - Fix: Showing downloaded version (in downloads log)
-- Fix: Blocking cancel download on inactive downloads
-- Fix: Keeping install notification in RootInstaller
+- Update: Differentiate between having no trackers and lacking exodus data
+- Update: Convert auto-sync interval unit to hours
 - Update: Alphabetically sort current downloads in Installed page
-- Update: Replace SearchPage with independent SearchSheet
-- Update: Hide irrelevant sort/filter options
+- Update: Hide inactive sort/filter options
 - Update: Communicate status on download errors
-- Update: Using pager in App Sheet for Privacy Panel
 - Update: Bind short description lines limit to extended state
-- Update: Better download state communication
 - Update: Show short description for unexpanded description
+- Update: Using pager in App Sheet for Privacy Panel
+- Update: Better download state communication
 - Update: Revamp download and sync notifications
 - Update: Use categories grouping in Explore page
 - Update: Prefer search results with last update not longer than 1 year ago
 - Update: Text to show when no compatible releases exist
-- Update: Differentiate between having no trackers and lacking exodus data
 - Update: Show dialog before opening source code
 - Remove: Search bar from Main pages
 - Remove: Zooming on screenshots
