@@ -56,8 +56,6 @@ fun RepositoryItem(
             Text(
                 text = repository.name.trim(),
                 style = MaterialTheme.typography.titleMedium,
-                color = if (isEnabled) MaterialTheme.colorScheme.onPrimaryContainer
-                else MaterialTheme.colorScheme.onSurface,
                 maxLines = 1
             )
         },
