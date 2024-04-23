@@ -23,14 +23,14 @@
 
 ## Screenshots :framed_picture:
 
-### Beautiful light :sun_with_face: and dark :new_moon_with_face: themes
+### Beautiful light :sun_with_face: and dark :new_moon_with_face: themes. Also with higher contrast…
 
-| <img title="" src="metadata/en-US/images/phoneScreenshots/light.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/dark.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/amoled.png" alt="" width="330" align="center"> |
+| <img title="" src="metadata/en-US/images/phoneScreenshots/light.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/dark.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/black.png" alt="" width="330" align="center"> |
 |:-------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------:|
 
-### Complete app details, latest apps & built-in repos :toolbox:
+### Privacy panel, rich filters & around 100 built-in repos :toolbox:
 
-| <img title="" src="metadata/en-US/images/phoneScreenshots/app.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/latest.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/repos.png" alt="" width="330" align="center"> |
+| <img title="" src="metadata/en-US/images/phoneScreenshots/privacy_panel.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/filters.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/repos.png" alt="" width="330" align="center"> |
 |:-----------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------:| -------------------------------------------------------------------------------------------------------:|
 
 ## Community :speech_balloon:
