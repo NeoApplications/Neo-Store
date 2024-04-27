@@ -896,6 +896,24 @@ data class Repository(
             "4FE75AB58C310E9778FBA716A0D1D66E8F49F697737BC0EE2437AEAE278CF64C",
             ""
         )
+        private val CLOUDBURST = defaultRepository(
+            "https://c10udburst.github.io/fdroid/repo",
+            "Cloudburst's F-Droid Repo",
+            "This is Cloudburst's personal F-Droid repository.",
+            21,
+            false,
+            "0E2D249AB2545EC52DCF67AB43464FB2F7B11EEC71F6D8891108FDD8034A58A5",
+            ""
+        )
+        private val HUIZENGEK = defaultRepository(
+            "https://repo.vitune.app/fdroid/repo/",
+            "Huizengek's F-Droid Repo",
+            "This is Huizengek's personal F-Droid repository.",
+            21,
+            false,
+            "A9F4730F35858B40CD7ED86E46030644120FB5DFBC1B3366D05CE38A7BDB5C79",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, F_DROID_ARCHIVE, IZZY,
@@ -985,6 +1003,10 @@ data class Repository(
             OBFUSK, MAXXIS, NAILYK, WOZ,
             VIDELIBRI, PIXELFED, LUBL, MOBILSICHER,
             SAUNAREPO, INVIZBOX, LIBRECHURCH, JUWELERKASSA,
+        )
+
+        val addedReposV23 = listOf(
+            CLOUDBURST, HUIZENGEK,
         )
     }
 }
