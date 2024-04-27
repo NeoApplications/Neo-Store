@@ -934,7 +934,8 @@ data class Repository(
             FUNKWHALE, ANIYOMI, KOYU, KUSCHKU,
             DIVOLT, STACK_WALLET,
             GROBOX, FAIRFAX, ZIMBELSTERN,
-            LIBRECHURCH, JUWELERKASSA, INVIZBOX
+            LIBRECHURCH, JUWELERKASSA, INVIZBOX,
+            CLOUDBURST, HUIZENGEK,
         )
 
         val addedReposV9 = listOf(
