@@ -500,15 +500,6 @@ data class Repository(
             "103063BC7189C91CE727DBF8266B07662518096E1686B6A088253933A3D0788F",
             ""
         )
-        private val SAMOURAI_WALLET = defaultRepository(
-            "https://repo.samourai.io/fdroid/repo",
-            "Official Samourai Wallet F-Droid Repo",
-            "A bitcoin wallet for the streets - hand forged to keep your transactions private.",
-            21,
-            false,
-            "5318AFA280284855CF5D0027AA54517769F461D735980B1FB0854CEAE8E072A5",
-            ""
-        )
         private val DIVOLT = defaultRepository(
             "https://fdroid.ggtyler.dev/",
             "Divolt F-Droid repo",
@@ -941,7 +932,7 @@ data class Repository(
             JAK_LINUX, INVISV, MONERUJO,
             IODE, SPIRIT_CROC, SPIRIT_CROC_TEST,
             FUNKWHALE, ANIYOMI, KOYU, KUSCHKU,
-            SAMOURAI_WALLET, DIVOLT, STACK_WALLET,
+            DIVOLT, STACK_WALLET,
             GROBOX, FAIRFAX, ZIMBELSTERN,
             LIBRECHURCH, JUWELERKASSA, INVIZBOX
         )
@@ -982,7 +973,7 @@ data class Repository(
         )
 
         val addedReposV19 = listOf(
-            SAMOURAI_WALLET, DIVOLT, CROMITE,
+            DIVOLT, CROMITE,
         )
 
         val addedReposV20 = listOf(
