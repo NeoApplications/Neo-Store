@@ -141,6 +141,12 @@ android {
         disable += "InvalidVectorPath"
         warning += "InvalidPackage"
     }
+
+    dependenciesInfo {
+        // Avoid Google-signed dependency metadata in builds
+        includeInApk = false
+        includeInBundle = false
+    }
 }
 
 dependencies {
