@@ -368,4 +368,23 @@
     <string name="root_allow_installing_old_apps">Позволи инсталиране на по-стари приложения</string>
     <string name="root_allow_installing_old_apps_description">Започвайки с Android 14, вече не е възможно да инсталирате приложения, насочени към много по-стари версии на Android (Android 5.1 или по-стари). Тази опция ви позволява да отмените това поведение.</string>
     <string name="root_allow_downgrades_description">Позволи понижаване на версията на приложенията с помощта на руут инсталатор (отнася се само за версии на приложения с възможност за отстраняване на грешки). По-добре да се използва в комбинация с \"Деактивиране на проверката на версията за изтегляне\".</string>
+    <string name="system_installer">Системен инсталатор</string>
+    <string name="alt_block_layout">Използвайте алтернативно оформление за блокове на страниците</string>
+    <string name="alt_block_layout_summary">Използвайте алтернативното/старото оформление за блокове на страници с граници вместо цветни повърхности.</string>
+    <string name="confirm_download_DESC_FORMAT">Сигурни ли сте, че искате да изтеглите %s?</string>
+    <string name="download_show_dialog">Показване на диалоговия прозорец за изтегляне</string>
+    <string name="bottom_search_bar">Долна лента за търсене</string>
+    <string name="bottom_search_bar_summary">Поставете лентата за търсене в долната част на страницата.</string>
+    <string name="select_all">Избери всички</string>
+    <string name="deselect_all">Демаркирай всички</string>
+    <string name="action_lock_dialog">Показване на диалогов прозорец за заключване</string>
+    <string name="action_lock_none">Без заключване</string>
+    <string name="action_lock_device">Заключване на устройството</string>
+    <string name="action_lock_biometric">Биометрично заключване</string>
+    <string name="kids_mode">Детски режим</string>
+    <string name="kids_mode_summary">Активирайте режима за деца, който деактивира инсталирането на нови приложения.</string>
+    <string name="hide_new_apps">Скриване на лентата с нови приложения</string>
+    <string name="hide_new_apps_description">Комбинирайте както нови, така и наскоро актуализирани приложения във вертикалния списък на последната страница.</string>
+    <string name="download_show_dialog_summary">Показване на диалогов прозорец с въпрос дали сте сигурни, че искате да изтеглите приложение (преди започване на изтеглянето).</string>
+    <string name="kids_mode_summary_full">Активирайте режима за деца, което деактивира инсталирането на нови приложения. За да деактивирате, докоснете версията на приложението на другата страница шест пъти. Тази подсказка се скрива при рестартиране на приложението.</string>
 </resources>
