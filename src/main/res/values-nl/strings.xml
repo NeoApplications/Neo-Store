@@ -151,7 +151,7 @@
     <string name="unknown_FORMAT">Onbekend: %s</string>
     <string name="unsigned">Niet ondertekend</string>
     <string name="unstable_updates">Onstabiele versie\'s</string>
-    <string name="unstable_updates_summary">Oppert installalatie van onstabiele versies.</string>
+    <string name="unstable_updates_summary">Installatie van onstabiele versies voorstellen.</string>
     <string name="unverified">Ongeverifiëerd</string>
     <string name="update">Werk bij</string>
     <string name="updates">Nieuwe versies</string>
@@ -281,7 +281,7 @@
     <string name="permission_contacts">Contacten</string>
     <string name="action_apply">Toepassen</string>
     <string name="permissions_note_4">Heeft bijna geen toestemmingen nodig</string>
-    <string name="show_trackers_description">Verkrijg en laat trackers van deze app zien van Exodus Privacy.</string>
+    <string name="show_trackers_description">Verkrijg en laat trackers zien op Exodus Privacy.</string>
     <string name="permission_not_present">Niet gevonden op je apparaat</string>
     <string name="trackers_analytics">Trackers voor analytische doeleinden</string>
     <string name="permission_storage">Opslag en media</string>
@@ -380,11 +380,11 @@
     <string name="action_lock_biometric">Biometrische vergrendeling</string>
     <string name="kids_mode">Kindvriendelijke modus</string>
     <string name="kids_mode_summary">Schakel kindvriendelijke modus in en schakel de installatie van nieuwe apps uit.</string>
-    <string name="kids_mode_summary_full">Schakel kindvriendelijke modus in en schakel de installatie van nieuwe apps uit. Om uit te schakelen, tik zes keer op de versie van de app op de andere pagina. Deze hint verdwijnt bij het opnieuw opstarten van de app.</string>
+    <string name="kids_mode_summary_full">Schakel kindvriendelijke modus in en schakel de installatie van nieuwe apps uit. Om uit te schakelen, tik zes keer op de appversie op de pagina \'Andere\'. Deze hint verdwijnt bij het opnieuw opstarten van de app.</string>
     <string name="system_installer">Systeeminstallatie</string>
     <string name="confirm_download_DESC_FORMAT">Weet je zeker dat je %s wilt downloaden?</string>
     <string name="download_show_dialog">Downloaddialoogvenster weergeven</string>
     <string name="bottom_search_bar">Zoekbalk onderaan</string>
     <string name="hide_new_apps">Verberg balk met nieuwe apps</string>
-    <string name="hide_new_apps_description">Combineer nieuwe en onlangs bijgewerkte apps in de verticale lijst op de pagina Nieuwste.</string>
+    <string name="hide_new_apps_description">Combineer nieuwe en recent bijgewerkte apps in de verticale \'Nieuwste\' lijst.</string>
 </resources>
