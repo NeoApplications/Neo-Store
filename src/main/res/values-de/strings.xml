@@ -290,7 +290,7 @@
     <string name="show_trackers_description">Beziehe Tracker von Exodus Privacy und zeige diese an.</string>
     <string name="only_on_battery">Nur beim Laden</string>
     <string name="edit">Bearbeiten</string>
-    <string name="allowed_anti_features">Erlaubte \"Anti-Features\"</string>
+    <string name="allowed_anti_features">Erlaubte „Anti-Features“</string>
     <string name="no_trackers_data_available">Keine Daten bezüglich Tracker verfügbar (noch nicht).</string>
     <string name="ignore_vulns">Ignoriere bekannte Sicherheitsprobleme</string>
     <string name="downloads">Downloads</string>
@@ -322,7 +322,7 @@
     <string name="disable_download_version_check">Überprüfung der Download-Version deaktivieren</string>
     <string name="warning_disable_battery_optimization">Ab Android 12 benötigt die App eine Ausnahme der Akku-Optimierung, um Hintergrundprozesse wie das Synchronisieren und Herunterladen durchzuführen. Wird dies nicht erteilt, sind Sie auf sich allein gestellt und Ihre Absturzberichte werden ignoriert.</string>
     <string name="warning_show_notification">Ab Android 13 benötigt die App diese Berechtigung, um Sie über verschiedene Prozesse zu benachrichtigen. Wenn Sie diese Erlaubnis ignorieren, werden Sie keine Benachrichtigungen erhalten.</string>
-    <string name="disable_download_version_check_summary">Ermöglicht das Herunterladen älterer Versionen installierter Anwendungen. Kann in Kombination mit dem \"letmedowngrade\"-Patch von Magisk verwendet werden.</string>
+    <string name="disable_download_version_check_summary">Ermöglicht das Herunterladen älterer Versionen installierter Anwendungen. Kann in Kombination mit dem „letmedowngrade“-Patch von Magisk verwendet werden.</string>
     <string name="disable_signature_check_summary">Nicht überprüfen, wenn die heruntergeladene APK dieselbe Signatur wie die bereits installierte App hat.</string>
     <string name="canceled">Abgebrochen</string>
     <string name="list_apps">Apps in der Paketquelle anzeigen</string>
@@ -335,7 +335,7 @@
     <string name="repos_import">Importiere Paketquellen (überschreibt bereits existierende)</string>
     <string name="repos_export">Exportiere Paketquellen</string>
     <string name="alt_navbar_item">Verwende alternatives Element der Navigationsleiste</string>
-    <string name="alt_navbar_item_description">Verwende in der Navigationsleiste die alternative/alte Anordnung, welche ebenfalls die Bezeichnungen von „nicht selektierten Elementen“ zeigt.</string>
+    <string name="alt_navbar_item_description">Verwende alternatives/altes Navigationsleisten-Layout, das die Beschriftung nicht ausgewählter Elemente anzeigt.</string>
     <string name="installed_export">Liste der installierten Apps exportieren</string>
     <plurals name="privacy_points_FORMAT">
         <item quantity="one">(-%d Datenschutzpunkt)</item>
@@ -344,7 +344,7 @@
     <string name="dynamic_dark">Dunkel, mit dynamischen Farben</string>
     <string name="dynamic_light">Hell, mit dynamischen Farben</string>
     <string name="dynamic_black">Schwarz, mit dynamischen Farben</string>
-    <string name="alt_new_apps">Alternatives neues Apps-Layout verwenden</string>
+    <string name="alt_new_apps">Alternatives Neue Apps-Layout verwenden</string>
     <string name="enabled">Aktiviert</string>
     <string name="disabled">Deaktiviert</string>
     <string name="am_installer">App Manager Installationsprogramm</string>
@@ -355,12 +355,12 @@
     <string name="black_medium_contrast">Schwarz (mittlerer Kontrast)</string>
     <string name="installed_import">Importiere und installiere eine Liste von Apps (wird von aktivierten Repositorien bezogen, wenn vorhanden)</string>
     <string name="root_allow_downgrades">Erlaube Downgraden von Anwendungen</string>
-    <string name="root_allow_downgrades_description">Erlaubt Downgrade von Anwendungen mithilfe des Root-Installers (gilt nur für debuggbare Anwendungsversionen). Besser in Kombination mit \"Versionsprüfung beim Herunterladen deaktivieren\" verwenden.</string>
+    <string name="root_allow_downgrades_description">Erlaubt Downgrade von Anwendungen mithilfe des Root-Installers (gilt nur für debuggbare Anwendungsversionen). Besser in Kombination mit „Versionsprüfung beim Herunterladen deaktivieren“ verwenden.</string>
     <string name="root_allow_installing_old_apps_description">Ab Android 14 ist es nicht mehr möglich, Anwendungen zu installieren, die auf viel ältere Android-Versionen (Android 5.1 oder früher) abzielen. Diese Option ermöglicht es Ihnen, dieses Verhalten zu umgehen.</string>
     <string name="repo_qr_code">QR-Code der Paketquelle</string>
     <string name="proxy_url">URL (link)</string>
     <string name="no_releases">Keine kompatiblen Veröffentlichungen vorhanden</string>
-    <string name="alt_new_apps_description">Verwende alte/alternative neue App Ansicht, welche kleine App Karten zeigt.</string>
+    <string name="alt_new_apps_description">Verwende alternatives/altes Neue Apps-Ansicht, das kleine App-Karten zeigt.</string>
     <string name="allow_unstable_updates">Anzeige instabiler Updates zulassen</string>
     <string name="black_high_contrast">Schwarz (hoher Kontrast)</string>
     <string name="root_allow_installing_old_apps">Installation älterer Anwendungen zulassen</string>
@@ -383,6 +383,8 @@
     <string name="confirm_download_DESC_FORMAT">Bist Du sicher, dass Du %s herunterladen möchtest?</string>
     <string name="action_lock_biometric">Biometrische Sperre</string>
     <string name="deselect_all">Alle abwählen</string>
-    <string name="kids_mode_summary_full">Kinder-Modus aktivieren, der die Installation neuer Apps verhindert. Zum Deaktivieren auf der Seite \"Andere\" sechsmal die App-Version antippen. Dieser Hinweis verschwindet nach Neustart der App.</string>
+    <string name="kids_mode_summary_full">Kinder-Modus aktivieren, der die Installation neuer Apps verhindert. Zum Deaktivieren auf der Seite „Andere“ sechsmal die App-Version antippen. Dieser Hinweis verschwindet nach Neustart der App.</string>
     <string name="system_installer">System-Installer</string>
+    <string name="hide_new_apps">Neue App-Leiste verbergen</string>
+    <string name="hide_new_apps_description">Neue und kürzlich aktualisierte Apps in der vertikalen Neueste-Liste kombinieren.</string>
 </resources>
