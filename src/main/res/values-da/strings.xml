@@ -3,7 +3,7 @@
     <string name="address">Adresse</string>
     <string name="all_applications">Alle Apps</string>
     <string name="already_exists">Findes allerede</string>
-    <string name="anti_features">Antifunktioner</string>
+    <string name="anti_features">Anti-funktioner</string>
     <string name="application">App</string>
     <string name="author_email">Forfatters e-post</string>
     <string name="available">Tilgængelig</string>
@@ -202,9 +202,9 @@
     <string name="show_trackers_description">Få og vis apps sporinger fra Exodus Privacy.</string>
     <string name="enable_download_directory">Brug tilpasset overførselsmappe</string>
     <string name="custom_download_directory">Brugerdefineret overførselsmappe</string>
-    <string name="add_repository">Tilføj depot</string>
-    <string name="action_failed">Handling slog fejl</string>
-    <string name="all_applications_up_to_date">Alle apps er ajour</string>
+    <string name="add_repository">Tilføj repository</string>
+    <string name="action_failed">Handling mislykkedes</string>
+    <string name="all_applications_up_to_date">Alle apps er opdaterede</string>
     <string name="always">Altid</string>
     <string name="amoled">Sort</string>
     <string name="application_not_found">Kunne ikke finde den app</string>
