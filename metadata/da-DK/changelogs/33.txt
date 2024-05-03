@@ -1,6 +1,6 @@
 - Opdatering: Nyt app-ikon
-- Opdatering: Brugerflade i app-siden
-- Opdatering: Gør liste-animation valgfri
-- Fejlrettelse: Vise réel størrelse af apk
+- Opdatering: Brugerfladen på appsiden
+- Opdatering: Gør listeanimation valgfri
+- Fejlrettelse: Vis apk'ens reelle størrelse
 - Fejlrettelse: Projektlink i præferencer
 - Fejlrettelse: Splash screen afhængig af systemtema

@@ -1,8 +1,8 @@
 En funktionsrig, hurtig F-Droid-klient:
 
-* UX fokuseret på at give brugere kontrol
+* UX fokuseret på at styrke brugerne
 * Ingen kort eller upassende animationer
-* Hurtig synkronisering af depoter
+* Hurtig synkronisering af repositories
 * Standard Android-komponenter og minimale afhængigheder
 
 En direkte adaptering/modifikation af Foxy-Droid
