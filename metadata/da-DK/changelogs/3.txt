@@ -1,5 +1,5 @@
-* Tilføjede AMOLED-Tema
-* Tilføjede Stille Rod-Installation
+* Tilføjet AMOLED-tema
+* Tilføjet Stille Rod-Installation
 * Tilføjede Følgende Sprog:-
     * Portugisisk
     * Kinesisk
