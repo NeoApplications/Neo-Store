@@ -230,7 +230,7 @@ interface ProductDao : BaseDao<Product> {
         )
         builder.addJoin(
             TABLE_CATEGORY,
-            false,
+            true,
             "$TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_CATEGORY.$ROW_PACKAGE_NAME",
         )
 
