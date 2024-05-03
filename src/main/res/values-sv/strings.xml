@@ -208,7 +208,7 @@
     <string name="favorite_add">Lägg till i favoriter</string>
     <string name="open">Öppna</string>
     <string name="loading_list">Laddar lista…</string>
-    <string name="auto_sync_interval">Automatisk-Synk intervall (i minuter)</string>
+    <string name="auto_sync_interval">Auto-synk intervall (i minuter)</string>
     <string name="favorite_applications">Favoriter</string>
     <string name="sort_descending">Fallande</string>
     <string name="categories">Kategorier</string>
@@ -250,4 +250,24 @@
     <string name="permissions_note_2">Kräver inga behörigheter</string>
     <string name="permissions_note_3">Ett fåtal behörigheter</string>
     <string name="permissions_note_4">Kräver nästan inga behörigheter</string>
+    <string name="images_cache_retention">Bild cache behållande</string>
+    <string name="releases_cache_retention">Nerladdad APK cache behållande</string>
+    <string name="trackers">Spårare</string>
+    <string name="trackers_identification">Identifikations spårare</string>
+    <string name="trackers_identification_description">Spårare tillåter appar att använda inloggnings tjänsterna av specifika tjänster t.ex. Facebook.</string>
+    <string name="trackers_analytics">Analytiska spårare</string>
+    <string name="prefs_cache">Cache</string>
+    <string name="prefs_personal">Personligt</string>
+    <string name="other_apps_by">Andra appar efter %s</string>
+    <string name="auto_sync_interval_hours">Auto-synk intervall (i timmar)</string>
+    <string name="target_sdk">targetSDK</string>
+    <string name="permission_physical_data">Behörigheter för fysisk data</string>
+    <string name="permission_identification_data">Behörigheter för identifierande data</string>
+    <string name="app_installed">Installerad</string>
+    <string name="min_sdk">minSDK</string>
+    <string name="action_apply">Verkställ</string>
+    <string name="prefs_installer">Installerar typ</string>
+    <string name="default_installer">Standard sessions installerare</string>
+    <string name="root_installer">Root installerare</string>
+    <string name="legacy_installer">Äldre installerare (kompatibel med MIUI)</string>
 </resources>
