@@ -260,7 +260,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object AltBlockLayout : Key<Boolean>("alt_block_layout", Value.BooleanValue(false))
         data object BottomSearchBar : Key<Boolean>("bottom_search_bar", Value.BooleanValue(false))
 
-        data object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(100))
+        data object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(150))
         data object SearchApps : Key<Int>("search_apps", Value.IntValue(1000))
         data object NewApps : Key<Int>("new_apps", Value.IntValue(30))
 
