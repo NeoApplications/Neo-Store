@@ -389,4 +389,5 @@
     <string name="system_installer">Systémový instalátor</string>
     <string name="hide_new_apps">Skrýt novou lištu aplikací</string>
     <string name="hide_new_apps_description">Zkombinovat nové a nedávno aktualizované aplikace ve vertikálním seznamu stránky s nedávnými.</string>
+    <string name="prefs_search_apps">Maximální počet aplikací, který vyhledávat.</string>
 </resources>
