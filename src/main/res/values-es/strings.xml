@@ -389,4 +389,5 @@
     <string name="system_installer">Instalador del sistema</string>
     <string name="hide_new_apps">Ocultar la barra de nuevas aplicaciones</string>
     <string name="hide_new_apps_description">Combina las aplicaciones nuevas y las actualizadas recientemente en la lista vertical de la última página.</string>
+    <string name="prefs_search_apps">Número máximo de aplicaciones para consultar los resultados de la búsqueda.</string>
 </resources>
