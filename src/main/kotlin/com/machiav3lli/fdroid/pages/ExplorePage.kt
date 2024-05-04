@@ -46,6 +46,7 @@ import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ListBullets
@@ -141,10 +142,12 @@ fun ExplorePage(viewModel: ExploreVM) {
             }
         }
         Row {
+            val allString = stringResource(id = R.string.all_applications)
             val favString = stringResource(id = R.string.favorite_applications)
             CategoriesList(
                 items = listOf(
-                    Pair(favString, Phosphor.HeartStraight)
+                    Pair(allString, Phosphor.CirclesFour),
+                    Pair(favString, Phosphor.HeartStraight),
                 ) + (categories.sorted().map { Pair(it, it.appCategoryIcon) }),
                 selectedKey = selectedCategory,
             ) {
@@ -156,7 +159,9 @@ fun ExplorePage(viewModel: ExploreVM) {
                     }
 
                     else      -> {
-                        Preferences[Preferences.Key.CategoriesFilterExplore] = it
+                        Preferences[Preferences.Key.CategoriesFilterExplore] =
+                            if (it != allString) it
+                            else FILTER_CATEGORY_ALL
                         selectedCategory.value = it
                         viewModel.setSections(Section.All)
                     }
