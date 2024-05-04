@@ -49,6 +49,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.HideNewApps,
         Key.AltBlockLayout,
         Key.BottomSearchBar,
+        Key.SearchApps,
         Key.UpdatedApps,
         Key.NewApps,
         Key.ProxyUrl,
@@ -260,6 +261,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object BottomSearchBar : Key<Boolean>("bottom_search_bar", Value.BooleanValue(false))
 
         data object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(100))
+        data object SearchApps : Key<Int>("search_apps", Value.IntValue(1000))
         data object NewApps : Key<Int>("new_apps", Value.IntValue(30))
 
         data object ProxyUrl : Key<String>("proxy_url", Value.StringValue(""))

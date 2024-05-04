@@ -229,6 +229,7 @@ data class Request(
             filteredOutRepos = Preferences[Preferences.Key.ReposFilterSearch],
             filteredAntiFeatures = Preferences[Preferences.Key.AntifeaturesFilterSearch],
             filteredLicenses = Preferences[Preferences.Key.LicensesFilterSearch],
+            numberOfItems = Preferences[Preferences.Key.SearchApps],
         )
 
         fun productsInstalled() = Request(
