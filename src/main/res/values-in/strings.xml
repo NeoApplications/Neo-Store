@@ -385,4 +385,5 @@
     <string name="system_installer">Pemasang sistem</string>
     <string name="hide_new_apps_description">Gabungkan aplikasi baru dan terakhir diperbarui dalam daftar vertikal halaman terkini.</string>
     <string name="hide_new_apps">Sembunyikan bilah aplikasi baru</string>
+    <string name="prefs_search_apps">Jumlah aplikasi maksimum untuk dikueri untuk hasil pencarian.</string>
 </resources>
