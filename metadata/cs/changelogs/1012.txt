@@ -1,0 +1,8 @@
+Přidáno: Paralelní stahování a synchronizace
+Přidáno: Export/import nainstalovaných aplikací a repozitářů
+Přidáno: +50 nových repozitářů
+Přidáno: Dětský režim
+Opraveno: Volání adres Tor
+Změněno: Přepracováno celé rozhraní
+Změněno: Vylepšeno nastavení hodnot dialogu předvoleb
++ spousta dalšího ve více než 440 commitech a 380 příspěvcích k překladu
