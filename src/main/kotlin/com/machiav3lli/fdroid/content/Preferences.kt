@@ -152,6 +152,20 @@ data object Preferences : OnSharedPreferenceChangeListener {
             }
         }
 
+        class LongValue(override val value: Long) : Value<Long>() {
+            override fun get(
+                preferences: SharedPreferences,
+                key: String,
+                defaultValue: Value<Long>,
+            ): Long {
+                return preferences.getLong(key, defaultValue.value)
+            }
+
+            override fun set(preferences: SharedPreferences, key: String, value: Long) {
+                preferences.edit().putLong(key, value).apply()
+            }
+        }
+
         class StringSetValue(override val value: Set<String>) : Value<Set<String>>() {
             override fun get(
                 preferences: SharedPreferences,
