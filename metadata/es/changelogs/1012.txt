@@ -1,0 +1,8 @@
+Agregar: descarga y sincronización paralelas
+Agregar: Exportación/importación de aplicaciones y repositorios instalados
+Agregar: +50 nuevos repositorios
+Agregar: modo niños
+Solución: direcciones Tor
+Actualización: renovar toda la interfaz de usuario
+Actualización: mejorar la configuración del valor del diálogo de preferencias
++ mucho más en más de 440 confirmaciones y 380 contribuciones de traducción
