@@ -85,7 +85,7 @@ class SyncWorker(
 
                     MainApplication.wm.workManager.enqueueUniqueWork(
                         "sync_$repoId",
-                        ExistingWorkPolicy.REPLACE,
+                        ExistingWorkPolicy.KEEP,
                         OneTimeWorkRequestBuilder<SyncWorker>()
                             .setInputData(data)
                             .addTag(TAG_SYNC_ONETIME)
@@ -152,7 +152,12 @@ class SyncWorker(
         suspend fun enableRepo(repository: Repository, enabled: Boolean): Boolean =
             withContext(Dispatchers.IO) {
                 MainApplication.db.getRepositoryDao().put(repository.enable(enabled))
-                if (enabled) {
+                val isEnabled = !repository.enabled && repository.lastModified.isEmpty()
+                val cooldownedSync = System.currentTimeMillis() -
+                        MainApplication.latestSyncs.getOrDefault(repository.id, 0L) >=
+                        10_000L
+                if (enabled && isEnabled && cooldownedSync) {
+                    MainApplication.latestSyncs[repository.id] = System.currentTimeMillis()
                     enqueue(SyncRequest.MANUAL, repository.id)
                 } else {
                     MainApplication.wm.cancelSync(repository.id)

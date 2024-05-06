@@ -27,9 +27,9 @@ import com.machiav3lli.fdroid.network.downloadClientModule
 import com.machiav3lli.fdroid.network.exodusModule
 import com.machiav3lli.fdroid.service.PackageChangedReceiver
 import com.machiav3lli.fdroid.service.WorkerManager
-import com.machiav3lli.fdroid.service.workmanagerModule
 import com.machiav3lli.fdroid.service.worker.SyncRequest
 import com.machiav3lli.fdroid.service.worker.SyncWorker
+import com.machiav3lli.fdroid.service.workmanagerModule
 import com.machiav3lli.fdroid.utility.Utils.setLanguage
 import com.machiav3lli.fdroid.utility.Utils.toInstalledItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
@@ -44,7 +44,6 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import java.lang.ref.WeakReference
 import java.net.Proxy
-import java.util.*
 
 
 @Suppress("unused")
@@ -56,6 +55,7 @@ class MainApplication : Application(), ImageLoaderFactory {
 
     companion object {
         val enqueuedInstalls: MutableSet<String> = mutableSetOf()
+        val latestSyncs: MutableMap<Long, Long> = mutableMapOf()
 
         private var appRef: WeakReference<MainApplication> = WeakReference(null)
         private val neo_store: MainApplication get() = appRef.get()!!
