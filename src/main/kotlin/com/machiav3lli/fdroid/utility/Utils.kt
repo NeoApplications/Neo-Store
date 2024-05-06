@@ -178,14 +178,14 @@ object Utils {
 
         localeCode.contains("-r")
              -> Locale(
-            localeCode.substring(0, 2),
-            localeCode.substring(4)
+            localeCode.substringBefore("-r"),
+            localeCode.substringAfter("-r")
         )
 
         localeCode.contains("_")
              -> Locale(
-            localeCode.substring(0, 2),
-            localeCode.substring(3)
+            localeCode.substringBefore("_"),
+            localeCode.substringAfter("_")
         )
 
         else -> Locale(localeCode)
