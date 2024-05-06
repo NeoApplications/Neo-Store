@@ -446,6 +446,9 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object IgnoreShowNotifications :
             Key<Boolean>("ignore_show_notifications", Value.BooleanValue(false))
+
+        data object LastManualSyncTime :
+            Key<Long>("last_manual_sync_time", Value.LongValue(0L))
     }
 
     sealed class AutoSync(override val valueString: String) : Enumeration<AutoSync> {

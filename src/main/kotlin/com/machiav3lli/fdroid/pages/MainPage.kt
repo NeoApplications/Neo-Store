@@ -14,6 +14,8 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,8 +25,10 @@ import androidx.navigation.NavHostController
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.service.worker.SyncRequest
 import com.machiav3lli.fdroid.service.worker.SyncWorker
+import com.machiav3lli.fdroid.ui.components.Tooltip
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.components.common.BottomSheet
@@ -46,6 +50,8 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
     val mScope = rememberCoroutineScope()
     val showSearchSheet by mActivity.showSearchSheet.collectAsState()
     val searchSheetState = rememberModalBottomSheetState(true)
+
+    val showPopup = remember { mutableStateOf(false) }
 
     val pages = listOf(
         NavItem.Latest,
@@ -94,13 +100,22 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
                     icon = Phosphor.ArrowsClockwise,
                     description = stringResource(id = R.string.sync_repositories)
                 ) {
-                    SyncWorker.enqueueAll(SyncRequest.MANUAL)
+                    if (System.currentTimeMillis() - Preferences[Preferences.Key.LastManualSyncTime] >= 10_000L) {
+                        Preferences[Preferences.Key.LastManualSyncTime] = System.currentTimeMillis()
+                        SyncWorker.enqueueAll(SyncRequest.MANUAL)
+                    } else {
+                        showPopup.value = true
+                    }
                 }
                 TopBarAction(
                     icon = Phosphor.GearSix,
                     description = stringResource(id = R.string.settings)
                 ) {
                     navController.navigate(NavItem.Prefs.destination)
+                }
+
+                if (showPopup.value) {
+                    Tooltip(stringResource(id = R.string.wait_to_sync), showPopup)
                 }
             }
         }
