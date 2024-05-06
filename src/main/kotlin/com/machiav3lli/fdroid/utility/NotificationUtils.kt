@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
@@ -412,6 +413,17 @@ fun notifyStatus(context: Context, intent: Intent?) {
                     .apply {
                         if (!Preferences[Preferences.Key.KeepInstallNotification])
                             setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
+                        else
+                            setContentIntent(
+                                PendingIntent.getActivity(
+                                    context,
+                                    0,
+                                    Intent(context, NeoActivity::class.java)
+                                        .setAction(Intent.ACTION_VIEW)
+                                        .setData(Uri.parse("market://details?id=$packageName")),
+                                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                                )
+                            )
                     }
                     .build()
                 context.notificationManager.notify(
@@ -457,16 +469,18 @@ fun notifyFinishedInstall(context: Context, packageName: String) {
         )
         .setSmallIcon(android.R.drawable.stat_sys_download_done)
         .setContentTitle(context.getString(R.string.installed))
-        .setContentText(try {
-            context.packageManager.getApplicationLabel(
-                context.packageManager.getApplicationInfo(
-                    packageName,
-                    PackageManager.GET_META_DATA
+        .setContentText(
+            try {
+                context.packageManager.getApplicationLabel(
+                    context.packageManager.getApplicationInfo(
+                        packageName,
+                        PackageManager.GET_META_DATA
+                    )
                 )
-            )
-        } catch (_: Exception) {
-            null
-        })
+            } catch (_: Exception) {
+                null
+            }
+        )
         .apply {
             if (!Preferences[Preferences.Key.KeepInstallNotification])
                 setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
