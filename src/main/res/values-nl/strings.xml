@@ -387,4 +387,5 @@
     <string name="bottom_search_bar">Zoekbalk onderaan</string>
     <string name="hide_new_apps">Verberg balk met nieuwe apps</string>
     <string name="hide_new_apps_description">Combineer nieuwe en recent bijgewerkte apps in de verticale \'Nieuwste\' lijst.</string>
+    <string name="prefs_search_apps">Miximum aantal apps om te doorzoeken voor zoekresultaten.</string>
 </resources>
