@@ -391,4 +391,5 @@
     <string name="kids_mode_summary">Ввімкнути дитячий режим, заборонивши встановлення нових застосунків.</string>
     <string name="hide_new_apps">Сховати панель нових застосунків</string>
     <string name="hide_new_apps_description">Об\'єднати нові та нещодавно оновлені застосунки у вертикальному списку на останній сторінці.</string>
+    <string name="prefs_search_apps">Максимальна кількість застосунків при пошуку.</string>
 </resources>
