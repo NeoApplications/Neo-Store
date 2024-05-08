@@ -78,7 +78,7 @@ fun ExplorePage(viewModel: ExploreVM) {
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }
-    var showSortSheet by remember { mutableStateOf(false) }
+    var showSortSheet by rememberSaveable { mutableStateOf(false) }
     val sortSheetState = rememberModalBottomSheetState(true)
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
