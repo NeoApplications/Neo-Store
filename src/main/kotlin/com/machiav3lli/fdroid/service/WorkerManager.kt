@@ -106,11 +106,11 @@ class WorkerManager(appContext: Context) {
                 onDownloadProgress(this@WorkerManager, it)
             }
         }
-        scope.launch {
+        ioScope.launch {
             MainApplication.db.getInstallTaskDao()
                 .getAllFlow() // Add similar table for DownloadTasks
                 .stateIn(
-                    scope,
+                    ioScope,
                     SharingStarted.Eagerly,
                     mutableListOf()
                 )
@@ -172,7 +172,7 @@ class WorkerManager(appContext: Context) {
     fun update(vararg product: ProductItem) = batchUpdate(product.toList(), false)
 
     private fun batchUpdate(productItems: List<ProductItem>, enforce: Boolean = false) {
-        scope.launch {
+        ioScope.launch {
             productItems.map { productItem ->
                 Triple(
                     productItem.packageName,
@@ -185,7 +185,7 @@ class WorkerManager(appContext: Context) {
                     val productRepository = MainApplication.db.getProductDao().get(packageName)
                         .filter { product -> product.repositoryId == repo!!.id }
                         .map { product -> Pair(product, repo!!) }
-                    scope.launch {
+                    ioScope.launch {
                         Utils.startUpdate(
                             packageName,
                             installed,
@@ -405,7 +405,7 @@ class WorkerManager(appContext: Context) {
                     NOTIFICATION_ID_SYNCING,
                     syncNotificationBuilder.build()
                 )
-            else CoroutineScope(Dispatchers.Default).launch {
+            else CoroutineScope(Dispatchers.IO).launch {
                 MainApplication.wm.notificationManager
                     .cancel(NOTIFICATION_ID_SYNCING)
                 MainApplication.db.getRepositoryDao().getAllEnabledIds().forEach {
@@ -624,7 +624,7 @@ class WorkerManager(appContext: Context) {
                             WorkInfo.State.BLOCKED   -> null
                         }
                     }?.let {
-                        CoroutineScope(Dispatchers.Default).launch { // TODO manage abrupt breaks
+                        CoroutineScope(Dispatchers.IO).launch { // TODO manage abrupt breaks
                             MainApplication.db.getDownloadedDao().upsert(
                                 Downloaded(
                                     it.packageName,

@@ -53,7 +53,7 @@ class SyncWorker(
     private val context: Context,
     workerParams: WorkerParameters,
 ) : Worker(context, workerParams) {
-    private val scope = CoroutineScope(Dispatchers.Default)
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     data class Progress(
         val stage: RepositoryUpdater.Stage,

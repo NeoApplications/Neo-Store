@@ -405,7 +405,7 @@ fun AppSheet(
 
 
         LaunchedEffect(product) {
-            withContext(Dispatchers.Default) {
+            withContext(Dispatchers.IO) {
                 ExodusWorker.fetchExodusInfo(product.packageName, product.versionCode)
             }
         }

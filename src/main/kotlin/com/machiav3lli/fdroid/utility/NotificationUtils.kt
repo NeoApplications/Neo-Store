@@ -345,7 +345,7 @@ fun notifyStatus(context: Context, intent: Intent?) {
             .let(context.notificationManager::createNotificationChannel)
     }
 
-    val scope = CoroutineScope(Dispatchers.Default)
+    val scope = CoroutineScope(Dispatchers.IO)
     // unpack from intent
     val status = intent?.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
     val sessionId = intent?.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, -1) ?: 0

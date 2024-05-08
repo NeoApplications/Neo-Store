@@ -28,7 +28,7 @@ class ExodusWorker(
     params: WorkerParameters,
 ) : CoroutineWorker(context, params), KoinComponent {
 
-    val scope = CoroutineScope(Dispatchers.Default)
+    val scope = CoroutineScope(Dispatchers.IO)
     private val repoExodusAPI: RExodusAPI by getKoin().inject()
 
     enum class WorkType { TRACKERS, DATA }

@@ -122,7 +122,7 @@ class DownloadWorker(
         )
     }
 
-    private val scope = CoroutineScope(Dispatchers.Default)
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     private val notificationManager = context.notificationManager
     private val packageManager = context.packageManager

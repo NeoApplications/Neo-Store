@@ -62,7 +62,7 @@ class InstallWorker(
         }
     }
 
-    private val scope = CoroutineScope(Dispatchers.Default)
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     private lateinit var currentTask: InstallTask
 
