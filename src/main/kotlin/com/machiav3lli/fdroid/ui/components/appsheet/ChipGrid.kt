@@ -15,6 +15,9 @@ import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.ui.components.InfoChip
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import java.text.DateFormat
 import java.util.Date
 
@@ -25,7 +28,7 @@ fun AppInfoChips(
     latestRelease: Release?,
     installed: Installed?,
 ) {
-    val list = listOfNotNull(
+    val list : ImmutableList<String> = listOfNotNull(
         if (product.canUpdate(installed) && installed != null)
             "v${installed.version} → v${product.version}"
         else if (installed != null) "v${installed.version}"
@@ -40,7 +43,7 @@ fun AppInfoChips(
         if (product.antiFeatures.isNotEmpty()) stringResource(id = R.string.anti_features)
         else null,
         *product.licenses.toTypedArray(),
-    )
+    ).toImmutableList()
 
     LazyRow(
         modifier = modifier.height(54.dp),

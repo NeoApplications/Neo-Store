@@ -37,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -77,23 +78,17 @@ import com.machiav3lli.fdroid.ui.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.components.SwitchPreference
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoChips
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoHeader
-import com.machiav3lli.fdroid.ui.components.appsheet.CardButton
 import com.machiav3lli.fdroid.ui.components.appsheet.HtmlTextBlock
 import com.machiav3lli.fdroid.ui.components.appsheet.LinkItem
 import com.machiav3lli.fdroid.ui.components.appsheet.PrivacyPanel
 import com.machiav3lli.fdroid.ui.components.appsheet.ReleaseItem
+import com.machiav3lli.fdroid.ui.components.appsheet.SourceCodeButton
 import com.machiav3lli.fdroid.ui.components.appsheet.TopBarHeader
 import com.machiav3lli.fdroid.ui.components.appsheet.WarningCard
 import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.components.privacy.MeterIconsBar
 import com.machiav3lli.fdroid.ui.components.toScreenshotItem
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
-import com.machiav3lli.fdroid.ui.compose.icons.Icon
-import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
-import com.machiav3lli.fdroid.ui.compose.icons.icon.Opensource
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyleft
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyright
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GlobeSimple
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.dialog.ActionSelectionDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
@@ -126,51 +121,77 @@ fun AppSheet(
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
     val pagerState = rememberPagerState(pageCount = { 2 })
+    val currentPage by remember { derivedStateOf { pagerState.currentPage } }
     var screenshotPage by remember { mutableIntStateOf(0) }
     val screenshotsPageState = rememberModalBottomSheetState(true)
     val installed by viewModel.installedItem.collectAsState(null)
     val isInstalled by remember(installed) {
         mutableStateOf(installed != null)
     }
-    val products by viewModel.products.collectAsState(null)
+    val products = viewModel.products.collectAsState(null)
     val exodusInfo by viewModel.exodusInfo.collectAsState(null)
     val privacyNote by viewModel.privacyNote.collectAsState(PrivacyNote())
+    val sourceType by remember { derivedStateOf { privacyNote.sourceType } }
     val authorProducts by viewModel.authorProducts.collectAsState(null)
     val repos by viewModel.repositories.collectAsState(null)
     val downloadState by viewModel.downloadingState.collectAsState()
     val mainAction by viewModel.mainAction.collectAsState()
     val actions by viewModel.subActions.collectAsState()
     val extras by viewModel.extras.collectAsState()
-    val productRepos = products?.mapNotNull { product ->
-        repos?.firstOrNull { it.id == product.repositoryId }
-            ?.let { Pair(product, it) }
-    } ?: emptyList()
-    viewModel.updateProductRepos(productRepos)
-    val suggestedProductRepo = findSuggestedProduct(productRepos, installed) { it.first }
-    val compatibleReleasePairs = productRepos.asSequence()
-        .flatMap { (product, repository) ->
-            product.releases.asSequence()
-                .filter { includeIncompatible || it.incompatibilities.isEmpty() }
-                .map { Pair(it, repository) }
-        }
-        .toList()
-    val releaseItems = compatibleReleasePairs.asSequence()
-        .map { (release, repository) ->
-            Triple(
-                release,
-                repository,
-                when {
-                    installed?.versionCode == release.versionCode && installed?.signature == release.signature                               -> RELEASE_STATE_INSTALLED
-                    release.incompatibilities.firstOrNull() == null && release.selected && repository.id == suggestedProductRepo?.second?.id -> RELEASE_STATE_SUGGESTED
-                    else                                                                                                                     -> RELEASE_STATE_NONE
-                }
-            )
-        }
-        .sortedByDescending { it.first.versionCode }
-        .toList()
 
-    val imageData by remember(suggestedProductRepo) {
-        mutableStateOf(
+    val productRepos = remember {
+        derivedStateOf {
+            products.value?.mapNotNull { product ->
+                repos?.firstOrNull { it.id == product.repositoryId }
+                    ?.let { Pair(product, it) }
+            } ?: emptyList()
+        }
+    }
+
+    viewModel.updateProductRepos(productRepos.value)
+    val suggestedProductRepo by remember {
+        derivedStateOf {
+            findSuggestedProduct(productRepos.value, installed) { it.first }
+        }
+    }
+    val compatibleReleasePairs = remember {
+        derivedStateOf {
+            productRepos.value
+                .flatMap { (product, repository) ->
+                    product.releases.asSequence()
+                        .filter { includeIncompatible || it.incompatibilities.isEmpty() }
+                        .map { Pair(it, repository) }
+                }
+                .toList()
+        }
+    }
+    val releaseItems by remember {
+        derivedStateOf {
+            compatibleReleasePairs.value.asSequence()
+                .map { (release, repository) ->
+                    Triple(
+                        release,
+                        repository,
+                        when {
+                            installed?.versionCode == release.versionCode && installed?.signature == release.signature                               -> RELEASE_STATE_INSTALLED
+                            release.incompatibilities.firstOrNull() == null && release.selected && repository.id == suggestedProductRepo?.second?.id -> RELEASE_STATE_SUGGESTED
+                            else                                                                                                                     -> RELEASE_STATE_NONE
+                        }
+                    )
+                }
+                .sortedByDescending { it.first.versionCode }
+                .toList()
+        }
+    }
+
+    val enableScreenshots by remember(Preferences[Preferences.Key.ShowScreenshots]) {
+        derivedStateOf {
+            Preferences[Preferences.Key.ShowScreenshots]
+        }
+    }
+
+    val imageData by remember {
+        derivedStateOf {
             suggestedProductRepo?.let {
                 createIconUri(
                     it.first.packageName,
@@ -180,7 +201,7 @@ fun AppSheet(
                     it.second.authentication
                 ).toString()
             }
-        )
+        }
     }
     val snackbarHostState = remember { SnackbarHostState() }
     val nestedScrollConnection = rememberNestedScrollInteropConnection()
@@ -355,6 +376,34 @@ fun AppSheet(
     }
 
     suggestedProductRepo?.let { (product, repo) ->
+        val screenshots by remember(product) {
+            derivedStateOf {
+                product.screenshots.map {
+                    it.toScreenshotItem(
+                        repository = repo,
+                        packageName = product.packageName
+                    )
+                }
+            }
+        }
+
+        val displayRelease by remember {
+            derivedStateOf { product.displayRelease }
+        }
+
+        val trackersRank by remember {
+            derivedStateOf {
+                if (exodusInfo != null) truncate((privacyNote.trackersNote - 1) / 20f).toInt()
+                else null
+            }
+        }
+        val permissionsRank by remember {
+            derivedStateOf {
+                truncate((privacyNote.permissionsNote - 1) / 20f).toInt()
+            }
+        }
+
+
         LaunchedEffect(product) {
             withContext(Dispatchers.Default) {
                 ExodusWorker.fetchExodusInfo(product.packageName, product.versionCode)
@@ -374,14 +423,8 @@ fun AppSheet(
                         icon = imageData,
                         state = downloadState,
                         actions = {
-                            CardButton(
-                                icon = when {
-                                    privacyNote.sourceType.isFree            -> Phosphor.Copyleft
-                                    privacyNote.sourceType.isOpenSource      -> Icon.Opensource
-                                    privacyNote.sourceType.isSourceAvailable -> Phosphor.Copyright
-                                    else                                     -> Phosphor.GlobeSimple
-                                },
-                                description = stringResource(id = R.string.source_code),
+                            SourceCodeButton(
+                                sourceType = sourceType,
                                 onClick = {
                                     onUriClick(
                                         Uri.parse(product.source.nullIfEmpty() ?: product.web),
@@ -399,19 +442,18 @@ fun AppSheet(
                     )
                     AppInfoChips(
                         product = product,
-                        latestRelease = product.displayRelease,
+                        latestRelease = displayRelease,
                         installed = installed,
                     )
                     MeterIconsBar(
                         modifier = Modifier.fillMaxWidth(),
-                        selectedTrackers = if (exodusInfo != null) truncate((privacyNote.trackersNote - 1) / 20f).toInt()
-                        else null,
-                        selectedPermissions = truncate((privacyNote.permissionsNote - 1) / 20f).toInt(),
-                        pagerState,
+                        selectedTrackers = trackersRank,
+                        selectedPermissions = permissionsRank,
+                        currentPage = currentPage,
                     ) {
                         scope.launch {
                             pagerState.animateScrollToPage(
-                                if (pagerState.currentPage == 0) 1
+                                if (currentPage == 0) 1
                                 else 0
                             )
                         }
@@ -491,14 +533,9 @@ fun AppSheet(
                                 )
                             }
                         }
-                        if (Preferences[Preferences.Key.ShowScreenshots]) { // TODO add optional screenshots button
+                        if (enableScreenshots) { // TODO add optional screenshots button
                             item {
-                                ScreenshotList(screenShots = suggestedProductRepo.first.screenshots.map {
-                                    it.toScreenshotItem(
-                                        repository = repo,
-                                        packageName = product.packageName
-                                    )
-                                }) { index ->
+                                ScreenshotList(screenShots = screenshots) { index ->
                                     screenshotPage = index
                                     showScreenshots.value = true
                                 }
@@ -634,12 +671,7 @@ fun AppSheet(
                     },
                 ) {
                     ScreenshotsPage(
-                        screenshots = suggestedProductRepo.first.screenshots.map {
-                            it.toScreenshotItem(
-                                repository = repo,
-                                packageName = product.packageName
-                            )
-                        },
+                        screenshots = screenshots,
                         page = screenshotPage
                     )
                 }

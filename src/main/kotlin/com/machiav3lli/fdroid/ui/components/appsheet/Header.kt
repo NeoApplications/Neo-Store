@@ -20,6 +20,9 @@ import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,13 +32,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.entity.ActionState
+import com.machiav3lli.fdroid.entity.SourceType
 import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.ui.components.MainActionButton
 import com.machiav3lli.fdroid.ui.components.NetworkImage
 import com.machiav3lli.fdroid.ui.components.PRODUCT_CARD_ICON
 import com.machiav3lli.fdroid.ui.components.SecondaryActionButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.icon.Opensource
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyleft
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyright
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GlobeSimple
 import com.machiav3lli.fdroid.utility.extension.text.formatDateTime
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
 
@@ -165,6 +173,36 @@ fun CardButton(
 }
 
 @Composable
+fun SourceCodeButton(
+    sourceType: SourceType,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
+) {
+    val isFree by remember {
+        derivedStateOf { sourceType.isFree }
+    }
+    val isOpenSource by remember {
+        derivedStateOf { sourceType.isOpenSource }
+    }
+    val isSourceAvailable by remember {
+        derivedStateOf { sourceType.isSourceAvailable }
+    }
+
+    CardButton(
+        icon = when {
+            isFree            -> Phosphor.Copyleft
+            isOpenSource      -> com.machiav3lli.fdroid.ui.compose.icons.Icon.Opensource
+            isSourceAvailable -> Phosphor.Copyright
+            else              -> Phosphor.GlobeSimple
+        },
+        description = stringResource(id = R.string.source_code),
+        onClick = onClick,
+        onLongClick = onLongClick
+    )
+
+}
+
+@Composable
 fun DownloadProgress(
     modifier: Modifier = Modifier,
     totalSize: Long,
@@ -178,7 +216,7 @@ fun DownloadProgress(
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         when {
-            isIndeterminate -> {
+            isIndeterminate                            -> {
                 LinearProgressIndicator(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -186,7 +224,7 @@ fun DownloadProgress(
                 )
             }
 
-            totalSize < 1L -> {
+            totalSize < 1L                             -> {
                 Text(
                     text = stringResource(
                         id = if (totalSize == 0L) R.string.canceled
@@ -203,7 +241,7 @@ fun DownloadProgress(
                 )
             }
 
-            else -> {
+            else                                       -> {
                 Text(
                     text = "${downloaded?.formatSize()}/${totalSize.formatSize()}",
                     style = MaterialTheme.typography.bodySmall,

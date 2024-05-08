@@ -5,15 +5,17 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,6 +35,8 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CrosshairSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
 import com.machiav3lli.fdroid.ui.compose.theme.LightGreen
 import com.machiav3lli.fdroid.ui.compose.theme.Orange
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -40,11 +44,23 @@ fun MeterIconsBar(
     modifier: Modifier = Modifier,
     selectedTrackers: Int? = null,
     selectedPermissions: Int? = null,
-    pagerState: PagerState,
+    currentPage: Int,
     onClick: () -> Unit = {},
 ) {
+    val showTrackers by remember {
+        derivedStateOf { Preferences[Preferences.Key.ShowTrackers] }
+    }
+    val trackersRank by remember(selectedTrackers) {
+        derivedStateOf { selectedTrackers?.coerceIn(0, 4) }
+    }
+    val permissionsRank by remember(selectedPermissions) {
+        derivedStateOf { selectedPermissions?.coerceIn(0, 4) }
+    }
+
     Row(
-        modifier = modifier.padding(horizontal = 8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -54,19 +70,15 @@ fun MeterIconsBar(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (Preferences[Preferences.Key.ShowTrackers]) {
+            if (showTrackers) {
                 Icon(
                     imageVector = Phosphor.CrosshairSimple,
                     contentDescription = stringResource(id = R.string.trackers)
                 )
                 MeterIcon(
                     modifier = Modifier.weight(1f),
-                    selected = selectedTrackers?.coerceIn(0, 4),
-                    tooltips = (0..4).map {
-                        stringResource(
-                            getTrackersTooltip(it)
-                        )
-                    }
+                    selected = trackersRank,
+                    tooltips = trackersTooltips,
                 )
             }
             Icon(
@@ -75,13 +87,13 @@ fun MeterIconsBar(
             )
             MeterIcon(
                 modifier = Modifier.weight(1f),
-                selected = selectedPermissions?.coerceIn(0, 4),
-                tooltips = (0..4).map { stringResource(getPermissionsTooltip(it)) }
+                selected = permissionsRank,
+                tooltips = permissionsTooltips
             )
         }
         IconButton(onClick = onClick) {
             Icon(
-                imageVector = if (pagerState.currentPage == 0) Phosphor.ArrowCircleRight
+                imageVector = if (currentPage == 0) Phosphor.ArrowCircleRight
                 else Phosphor.ArrowCircleLeft,
                 tint = MaterialTheme.colorScheme.primary,
                 contentDescription = stringResource(id = R.string.privacy_panel)
@@ -94,9 +106,9 @@ fun MeterIconsBar(
 fun MeterIcon(
     modifier: Modifier = Modifier,
     selected: Int? = 0,
-    tooltips: List<String> = listOf("", "", "", "", ""),
+    tooltips: ImmutableList<Int> = persistentListOf(0, 0, 0, 0, 0),
 ) {
-    val colors = listOf(Color.Red, Orange, Color.Yellow, LightGreen, Color.Green)
+    val colors = persistentListOf(Color.Red, Orange, Color.Yellow, LightGreen, Color.Green)
     val openPopup = remember { mutableStateOf(false) }
 
     Row(
@@ -105,7 +117,8 @@ fun MeterIcon(
             .clickable { openPopup.value = true },
     ) {
         colors.forEachIndexed { index, color ->
-            val isSelected = selected == index
+            val isSelected by remember(selected) { derivedStateOf { selected == index } }
+
             Surface(
                 modifier = Modifier
                     .weight(1f)
@@ -131,7 +144,7 @@ fun MeterIcon(
             )
 
             if (isSelected && openPopup.value) {
-                Tooltip(tooltips[index], openPopup)
+                Tooltip(stringResource(id = tooltips[index]), openPopup)
             } else if (index == 2 && selected == null && openPopup.value) {
                 Tooltip(stringResource(id = R.string.no_trackers_data_available), openPopup)
             }
@@ -139,18 +152,18 @@ fun MeterIcon(
     }
 }
 
-fun getTrackersTooltip(note: Int) = when (note) {
-    1    -> R.string.trackers_note_1
-    2    -> R.string.trackers_note_2
-    3    -> R.string.trackers_note_3
-    4    -> R.string.trackers_note_4
-    else -> R.string.trackers_note_0
-}
+val trackersTooltips: ImmutableList<Int> = persistentListOf(
+    R.string.trackers_note_0,
+    R.string.trackers_note_1,
+    R.string.trackers_note_2,
+    R.string.trackers_note_3,
+    R.string.trackers_note_4,
+)
 
-fun getPermissionsTooltip(note: Int) = when (note) {
-    1    -> R.string.permissions_note_1
-    2    -> R.string.permissions_note_2
-    3    -> R.string.permissions_note_3
-    4    -> R.string.permissions_note_4
-    else -> R.string.permissions_note_0
-}
+val permissionsTooltips: ImmutableList<Int> = persistentListOf(
+    R.string.permissions_note_0,
+    R.string.permissions_note_1,
+    R.string.permissions_note_2,
+    R.string.permissions_note_3,
+    R.string.permissions_note_4,
+)
