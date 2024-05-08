@@ -9,6 +9,7 @@ val vComposeAccompanist = "0.34.0"
 val vComposeHtml = "1.6.0"
 val vComposeMaterial3 = "1.2.1"
 val vCoroutines = "1.8.0"
+val vImmutables = "0.3.7"
 val vJackson = "2.17.0"
 val vKoin = "3.5.6"
 val vKoinKsp = "1.3.1"
@@ -159,6 +160,7 @@ dependencies {
     // use the new WorkInfo.stopReason (report stopReason), setNextScheduleTimeOverride (Precise scheduling), Configuration.Builder.setContentUriTriggerWorkersLimit (limit for content uri workers)
     implementation("androidx.work:work-runtime:$vWork")
     implementation("androidx.biometric:biometric:$vBiometric")
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:$vImmutables")
 
     // Material3
     implementation("com.google.android.material:material:$vMaterial")
