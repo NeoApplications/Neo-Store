@@ -31,9 +31,7 @@ fun AppNavHost(
         startDestination = NavItem.Permissions.destination,
     ) {
         fadeComposable(NavItem.Permissions.destination) {
-            PermissionsPage {
-                navController.navigate(NavItem.Main.destination)
-            }
+            PermissionsPage(navController)
         }
         slideInComposable(
             "${NavItem.Main.destination}?page={page}",

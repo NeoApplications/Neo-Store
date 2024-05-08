@@ -42,21 +42,40 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MagnifyingGlass
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserGear
 
-sealed class NavItem(var title: Int, var icon: ImageVector, var destination: String) {
+sealed class NavItem(
+    val title: Int,
+    val icon: ImageVector,
+    val destination: String,
+    val content: @Composable (NavHostController) -> Unit = {}
+) {
     data object Main :
         NavItem(R.string.explore, Phosphor.House, "main")
 
     data object Permissions :
-        NavItem(R.string.permissions, Phosphor.ShieldStar, "main_permissions")
+        NavItem(R.string.permissions, Phosphor.ShieldStar, "main_permissions", {
+            PermissionsPage(it)
+        })
 
     data object Explore :
-        NavItem(R.string.explore, Phosphor.Compass, "main_explore")
+        NavItem(R.string.explore, Phosphor.Compass, "main_explore", {
+            MainApplication.mainActivity?.exploreViewModel?.let {
+                ExplorePage(it)
+            }
+        })
 
     data object Latest :
-        NavItem(R.string.latest, Phosphor.CircleWavyWarning, "main_latest")
+        NavItem(R.string.latest, Phosphor.CircleWavyWarning, "main_latest", {
+            MainApplication.mainActivity?.latestViewModel?.let {
+                LatestPage(it)
+            }
+        })
 
     data object Installed :
-        NavItem(R.string.installed, Phosphor.House, "main_installed")
+        NavItem(R.string.installed, Phosphor.House, "main_installed", {
+            MainApplication.mainActivity?.installedViewModel?.let {
+                InstalledPage(it)
+            }
+        })
 
     data object Search :
         NavItem(R.string.search, Phosphor.MagnifyingGlass, "main_search")
@@ -65,63 +84,26 @@ sealed class NavItem(var title: Int, var icon: ImageVector, var destination: Str
         NavItem(R.string.settings, Phosphor.GearSix, "prefs")
 
     data object PersonalPrefs :
-        NavItem(R.string.prefs_personalization, Phosphor.UserGear, "prefs_personal")
+        NavItem(R.string.prefs_personalization, Phosphor.UserGear, "prefs_personal", {
+            PrefsPersonalPage()
+        })
 
     data object UpdatesPrefs :
-        NavItem(R.string.updates, Phosphor.Download, "prefs_updates")
+        NavItem(R.string.updates, Phosphor.Download, "prefs_updates", {
+            PrefsUpdatesPage()
+        })
 
     data object ReposPrefs :
-        NavItem(R.string.repositories, Phosphor.Graph, "prefs_repos")
+        NavItem(R.string.repositories, Phosphor.Graph, "prefs_repos", {
+            MainApplication.mainActivity?.prefsViewModel?.let {
+                PrefsReposPage(it)
+            }
+        })
 
     data object OtherPrefs :
-        NavItem(R.string.other, Phosphor.DotsThreeOutline, "prefs_other")
-
-    @Composable
-    fun ComposablePage(navController: NavHostController) {
-        when (destination) {
-            Permissions.destination   -> {
-                PermissionsPage {
-                    navController.navigate(Main.destination)
-                }
+        NavItem(R.string.other, Phosphor.DotsThreeOutline, "prefs_other", {
+            MainApplication.mainActivity?.prefsViewModel?.let {
+                PrefsOtherPage(it)
             }
-
-            Explore.destination       -> {
-                MainApplication.mainActivity?.exploreViewModel?.let {
-                    ExplorePage(it)
-                }
-            }
-
-            Latest.destination        -> {
-                MainApplication.mainActivity?.latestViewModel?.let {
-                    LatestPage(it)
-                }
-            }
-
-            Installed.destination     -> {
-                MainApplication.mainActivity?.installedViewModel?.let {
-                    InstalledPage(it)
-                }
-            }
-
-            PersonalPrefs.destination -> {
-                PrefsPersonalPage()
-            }
-
-            UpdatesPrefs.destination  -> {
-                PrefsUpdatesPage()
-            }
-
-            OtherPrefs.destination    -> {
-                MainApplication.mainActivity?.prefsViewModel?.let {
-                    PrefsOtherPage(it)
-                }
-            }
-
-            ReposPrefs.destination    -> {
-                MainApplication.mainActivity?.prefsViewModel?.let {
-                    PrefsReposPage(it)
-                }
-            }
-        }
-    }
+        })
 }

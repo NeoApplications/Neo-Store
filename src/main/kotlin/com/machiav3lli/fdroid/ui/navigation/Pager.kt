@@ -45,9 +45,7 @@ fun SlidePager(
     navController: NavHostController,
 ) {
     HorizontalPager(modifier = modifier, state = pagerState, beyondBoundsPageCount = 3) { page ->
-        pageItems[page].ComposablePage(
-            navController = navController,
-        )
+        pageItems[page].content(navController)
     }
 }
 

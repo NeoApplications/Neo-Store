@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
@@ -39,6 +40,7 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.Permission
 import com.machiav3lli.fdroid.ui.components.PermissionItem
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
+import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.showBatteryOptimizationDialog
 import kotlinx.coroutines.CoroutineScope
@@ -47,7 +49,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun PermissionsPage(navigateToMain: () -> Unit) {
+fun PermissionsPage(navController: NavHostController) {
     val context = LocalContext.current
     val powerManager =
         MainApplication.mainActivity?.getSystemService(Context.POWER_SERVICE) as PowerManager
@@ -68,8 +70,9 @@ fun PermissionsPage(navigateToMain: () -> Unit) {
                     context,
                     powerManager,
                     permissionStatePostNotifications,
-                    navigateToMain,
-                )
+                ) {
+                    navController.navigate(NavItem.Main.destination)
+                }
             }
         }
 
@@ -96,8 +99,9 @@ fun PermissionsPage(navigateToMain: () -> Unit) {
                             context,
                             powerManager,
                             permissionStatePostNotifications,
-                            navigateToMain,
-                        )
+                        ) {
+                            navController.navigate(NavItem.Main.destination)
+                        }
                     }
                 }
             }
