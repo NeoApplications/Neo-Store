@@ -23,6 +23,8 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -77,7 +79,7 @@ class NeoActivity : AppCompatActivity() {
     val searchQuery: StateFlow<String> = _searchQuery
     private val _showSearchSheet = MutableStateFlow(false)
     val showSearchSheet: StateFlow<Boolean> = _showSearchSheet
-    private lateinit var appSheetPackage: MutableState<String>
+    private val appSheetPackage: MutableState<String> = mutableStateOf("")
 
     val db
         get() = (application as MainApplication).db
@@ -133,12 +135,14 @@ class NeoActivity : AppCompatActivity() {
                 val mScope = rememberCoroutineScope()
                 navController = rememberNavController()
 
-                appSheetPackage = remember { mutableStateOf("") }
+                val showAppSheet by remember {
+                    derivedStateOf { appSheetPackage.value.isNotEmpty() }
+                }
                 val appSheetState = rememberModalBottomSheetState(true)
                 val appSheetVM = remember(appSheetPackage.value) {
                     AppSheetVM(
                         MainApplication.db,
-                        appSheetPackage.value, // TODO fix possible crash
+                        appSheetPackage.value,
                     )
                 }
 
@@ -157,7 +161,7 @@ class NeoActivity : AppCompatActivity() {
                         navController = navController,
                     )
 
-                    if (appSheetPackage.value.isNotEmpty()) {
+                    if (showAppSheet) {
                         BottomSheet(
                             sheetState = appSheetState,
                             onDismiss = {

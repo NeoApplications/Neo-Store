@@ -132,7 +132,7 @@ android {
                 "/kotlin/**.kotlin_metadata",
                 "/META-INF/**.kotlin_module",
                 "/META-INF/**.pro",
-                "/META-INF/**.version",
+                "/META-INF/**.version", // comment out to enable layout inspector
                 "/okhttp3/internal/publicsuffix/*"
             )
         }

@@ -21,10 +21,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -90,16 +92,16 @@ fun ProductItemContent(
     installed: Installed? = null,
     isExpanded: MutableState<Boolean> = mutableStateOf(false),
 ) {
-    val imageData by remember(product, repo) {
-        mutableStateOf(
-            createIconUri(
-                product.packageName,
-                product.icon,
-                product.metadataIcon,
-                repo?.address,
-                repo?.authentication
-            ).toString()
-        )
+    var imageData by remember { mutableStateOf<String?>(null) }
+
+    SideEffect {
+        imageData = createIconUri(
+            product.packageName,
+            product.icon,
+            product.metadataIcon,
+            repo?.address,
+            repo?.authentication
+        ).toString()
     }
 
     ListItem(
@@ -162,16 +164,16 @@ fun ProductCarouselItem(
 ) {
     val context = LocalContext.current
     val neoActivity = context as NeoActivity
-    val imageData by remember(product, repo) {
-        mutableStateOf(
-            createIconUri(
-                product.packageName,
-                product.icon,
-                product.metadataIcon,
-                repo?.address,
-                repo?.authentication
-            ).toString()
-        )
+    var imageData by remember { mutableStateOf<String?>(null) }
+
+    SideEffect {
+        imageData = createIconUri(
+            product.packageName,
+            product.icon,
+            product.metadataIcon,
+            repo?.address,
+            repo?.authentication
+        ).toString()
     }
 
     val action = when {

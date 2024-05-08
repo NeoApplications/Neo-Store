@@ -10,9 +10,11 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
@@ -34,16 +36,16 @@ fun ProductCard(
 ) {
 
     val product by remember(item) { mutableStateOf(item) }
-    val imageData by remember(product, repo) {
-        mutableStateOf(
-            createIconUri(
-                product.packageName,
-                product.icon,
-                product.metadataIcon,
-                repo?.address,
-                repo?.authentication
-            ).toString()
-        )
+    var imageData by remember { mutableStateOf<String?>(null) }
+
+    SideEffect {
+        imageData = createIconUri(
+            product.packageName,
+            product.icon,
+            product.metadataIcon,
+            repo?.address,
+            repo?.authentication
+        ).toString()
     }
 
     ListItem(

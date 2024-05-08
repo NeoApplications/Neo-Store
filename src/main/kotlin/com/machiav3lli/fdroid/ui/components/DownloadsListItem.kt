@@ -11,9 +11,11 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -40,16 +42,16 @@ fun DownloadsListItem(
     onUserClick: (ProductItem) -> Unit = {},
 ) {
     val product by remember(item) { mutableStateOf(item) }
-    val imageData by remember(product, repo) {
-        mutableStateOf(
-            createIconUri(
-                product.packageName,
-                product.icon,
-                product.metadataIcon,
-                repo?.address,
-                repo?.authentication
-            ).toString()
-        )
+    var imageData by remember { mutableStateOf<String?>(null) }
+
+    SideEffect {
+        imageData = createIconUri(
+            product.packageName,
+            product.icon,
+            product.metadataIcon,
+            repo?.address,
+            repo?.authentication
+        ).toString()
     }
 
     ListItem(
@@ -109,16 +111,17 @@ fun DownloadedItem(
     onUserClick: (Downloaded) -> Unit = {},
 ) {
     val download by remember(item) { mutableStateOf(item) }
-    val imageData by remember(download, repo) {
-        mutableStateOf(
-            createIconUri(
-                download.packageName,
-                iconDetails?.icon ?: "",
-                iconDetails?.metadataIcon ?: "",
-                repo?.address,
-                repo?.authentication
-            ).toString()
-        )
+
+    var imageData by remember { mutableStateOf<String?>(null) }
+
+    SideEffect {
+        imageData = createIconUri(
+            download.packageName,
+            iconDetails?.icon ?: "",
+            iconDetails?.metadataIcon ?: "",
+            repo?.address,
+            repo?.authentication
+        ).toString()
     }
 
     ListItem(
@@ -174,13 +177,13 @@ fun DownloadedItem(
             )
         },
         trailingContent = {
-            if (onEraseClick != null) IconButton(onClick = {
-                onEraseClick()
-            }) {
-                Icon(
-                    imageVector = Phosphor.Eraser,
-                    contentDescription = stringResource(id = R.string.delete),
-                )
+            onEraseClick?.let {
+                IconButton(onClick = onEraseClick) {
+                    Icon(
+                        imageVector = Phosphor.Eraser,
+                        contentDescription = stringResource(id = R.string.delete),
+                    )
+                }
             }
         }
     )
