@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
-import de.charlex.compose.HtmlText
+import de.charlex.compose.material3.HtmlText
 
 @Composable
 fun HtmlTextBlock(
