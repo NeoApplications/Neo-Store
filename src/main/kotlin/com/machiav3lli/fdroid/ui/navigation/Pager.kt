@@ -24,19 +24,23 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.machiav3lli.fdroid.content.Preferences
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SlidePager(
     modifier: Modifier = Modifier,
-    pageItems: List<NavItem>,
+    pageItems: ImmutableList<NavItem>,
     pagerState: PagerState,
     navController: NavHostController,
 ) {
@@ -51,6 +55,7 @@ fun SlidePager(
 @Composable
 fun PagerNavBar(pageItems: List<NavItem>, pagerState: PagerState) {
     val scope = rememberCoroutineScope()
+    val currentPage by remember { derivedStateOf { pagerState.currentPage } }
 
     NavigationBar(
         modifier = Modifier.padding(horizontal = 8.dp),
@@ -58,7 +63,7 @@ fun PagerNavBar(pageItems: List<NavItem>, pagerState: PagerState) {
         contentColor = MaterialTheme.colorScheme.onSurface,
     ) {
         pageItems.forEachIndexed { index, item ->
-            val selected = pagerState.currentPage == index
+            val selected by derivedStateOf { currentPage == index }
 
             if (Preferences[Preferences.Key.AltNavBarItem])
                 AltNavBarItem(

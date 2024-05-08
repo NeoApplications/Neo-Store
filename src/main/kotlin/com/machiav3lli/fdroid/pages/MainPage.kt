@@ -40,6 +40,7 @@ import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
 import com.machiav3lli.fdroid.ui.navigation.SlidePager
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -53,7 +54,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
 
     val showPopup = remember { mutableStateOf(false) }
 
-    val pages = listOf(
+    val pages = persistentListOf(
         NavItem.Latest,
         NavItem.Explore,
         NavItem.Installed,
