@@ -37,12 +37,11 @@ fun ScreenshotList(
     screenShots: List<ScreenshotItem>,
     onScreenShotClick: (Int) -> Unit,
 ) {
-    val screenShotList by remember { mutableStateOf(screenShots) }
     LazyRow(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        itemsIndexed(screenShotList) { index, it ->
+        itemsIndexed(screenShots) { index, it ->
 
             var image by remember { mutableStateOf<String?>(null) }
 
