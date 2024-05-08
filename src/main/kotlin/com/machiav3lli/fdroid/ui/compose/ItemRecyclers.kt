@@ -25,6 +25,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -87,6 +88,9 @@ fun ProductsCarousel(
     onUserClick: (ProductItem) -> Unit = {},
 ) {
     val state = rememberPagerState { productsList?.size ?: 0 }
+    val size by remember(productsList?.size) {
+        derivedStateOf { productsList?.size ?: 1 }
+    }
 
     Box(
         modifier = modifier
@@ -120,7 +124,7 @@ fun ProductsCarousel(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth(),
-            size = productsList?.size ?: 1,
+            size = size,
             state = state,
         )
     }
@@ -135,21 +139,28 @@ fun CarouselIndicators(
     state: PagerState,
 ) {
     val scope = rememberCoroutineScope()
+    val currentPage by remember { derivedStateOf { state.currentPage } }
 
     LazyRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(dimension / 4, Alignment.CenterHorizontally),
     ) {
         items(size) { i ->
+            val isSelected by remember {
+                derivedStateOf {
+                    currentPage == i
+                }
+            }
             val color by animateColorAsState(
-                targetValue = if (state.currentPage == i) MaterialTheme.colorScheme.primary
+                targetValue = if (isSelected) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.primaryContainer,
                 label = "indicatorColor"
             )
             val width by animateDpAsState(
-                targetValue = if (state.currentPage == i) dimension.times(2) else dimension,
+                targetValue = if (isSelected) dimension.times(2) else dimension,
                 label = "indicatorWidth"
             )
+
             Box(
                 modifier = Modifier
                     .size(height = dimension, width = width)
