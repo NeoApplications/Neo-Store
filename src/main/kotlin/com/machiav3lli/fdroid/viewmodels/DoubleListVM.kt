@@ -31,10 +31,11 @@ open class DoubleListVM(
     secondarySource: Source,
 ) : ViewModel() {
     private val cc = Dispatchers.IO
-    private val sortFilter = MutableStateFlow("")
+    private val _sortFilter = MutableStateFlow("")
+    val sortFilter: StateFlow<String> = _sortFilter
 
     fun setSortFilter(value: String) {
-        viewModelScope.launch { sortFilter.emit(value) }
+        viewModelScope.launch { _sortFilter.emit(value) }
     }
 
     fun request(source: Source): Request {
@@ -57,7 +58,7 @@ open class DoubleListVM(
     )
 
     private var primaryRequest: StateFlow<Request> = combine(
-        sortFilter,
+        _sortFilter,
         Preferences.subject.map { Preferences[Preferences.Key.HideNewApps] },
         installed
     ) { _, _, _ ->

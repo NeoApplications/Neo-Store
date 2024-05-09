@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,14 +41,13 @@ import com.machiav3lli.fdroid.entity.DialogKey
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.appCategoryIcon
 import com.machiav3lli.fdroid.index.RepositoryUpdater
-import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.CategoriesList
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
+import com.machiav3lli.fdroid.ui.components.SortFilterChip
 import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FunnelSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ListBullets
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
@@ -82,6 +82,17 @@ fun ExplorePage(viewModel: ExploreVM) {
     val sortSheetState = rememberModalBottomSheetState(true)
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
+
+    val sortFilter by viewModel.sortFilter.collectAsState()
+    val notModifiedSortFilter by remember(sortFilter) {
+        derivedStateOf {
+            Preferences[Preferences.Key.SortOrderExplore] == Preferences.Key.SortOrderExplore.default.value &&
+                    Preferences[Preferences.Key.SortOrderAscendingExplore] == Preferences.Key.SortOrderAscendingExplore.default.value &&
+                    Preferences[Preferences.Key.ReposFilterExplore] == Preferences.Key.ReposFilterExplore.default.value &&
+                    Preferences[Preferences.Key.LicensesFilterExplore] == Preferences.Key.LicensesFilterExplore.default.value &&
+                    Preferences[Preferences.Key.AntifeaturesFilterExplore] == Preferences.Key.AntifeaturesFilterExplore.default.value
+        }
+    }
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.Default) {
@@ -133,10 +144,9 @@ fun ExplorePage(viewModel: ExploreVM) {
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
-            ActionChip(
-                text = stringResource(id = R.string.sort_filter),
+            SortFilterChip(
+                notModified = notModifiedSortFilter,
                 fullWidth = true,
-                icon = Phosphor.FunnelSimple
             ) {
                 showSortSheet = true
             }

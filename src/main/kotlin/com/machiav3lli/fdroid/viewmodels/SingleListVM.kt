@@ -31,10 +31,11 @@ open class SingleListVM(
     source: Source,
 ) : ViewModel() {
     private val cc = Dispatchers.IO
-    private val sortFilter = MutableStateFlow("")
+    private val _sortFilter = MutableStateFlow("")
+    val sortFilter: StateFlow<String> = _sortFilter
 
     fun setSortFilter(value: String) {
-        viewModelScope.launch { sortFilter.emit(value) }
+        viewModelScope.launch { _sortFilter.emit(value) }
     }
 
     private val query = MutableStateFlow("")
@@ -72,7 +73,7 @@ open class SingleListVM(
     )
 
     private var request: StateFlow<Request> = combineTransform(
-        sortFilter,
+        _sortFilter,
         sections,
         installed
     ) { _, _, _ ->

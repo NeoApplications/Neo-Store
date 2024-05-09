@@ -25,10 +25,11 @@ import kotlinx.coroutines.withContext
 open class InstalledVM(val db: DatabaseX) : ViewModel() {
 
     private val cc = Dispatchers.IO
-    private val sortFilter = MutableStateFlow("")
+    private val _sortFilter = MutableStateFlow("")
+    val sortFilter: StateFlow<String> = _sortFilter
 
     fun setSortFilter(value: String) {
-        viewModelScope.launch { sortFilter.emit(value) }
+        viewModelScope.launch { _sortFilter.emit(value) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -41,7 +42,7 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
     )
 
     val installedProducts: StateFlow<List<Product>?> = combine(
-        sortFilter,
+        _sortFilter,
         installed,
         db.getProductDao().queryFlowList(Request.productsInstalled()),
         db.getExtrasDao().getAllFlow(),
