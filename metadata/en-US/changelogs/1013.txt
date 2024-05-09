@@ -1,0 +1,8 @@
+Add: Safeguard to avoid spamming sync
+Add: Option for limiting loaded apps for search
+Add: Support of reproducible builds
+Add: Indicator if a custom sort/filter is applied
+Fix: Loading apps without categories (e.g. Total Commander Android)
+Fix: Constant recomposition of most UI (reduce Jitter/Lag)
+Fix: Handling locales with three letters as language code
++ more in more than 30 commits & 20 translation contributions

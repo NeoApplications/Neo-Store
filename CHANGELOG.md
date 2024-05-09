@@ -1,6 +1,36 @@
 CHANGELOG
 =========
 
+
+1.0.1 (09.05.2024) 0+ Commits +20 Translations
+------------------
+
+### Function
+
+- Add: Safeguard to avoid spamming sync
+- Add: Option for limiting loaded apps for search
+- Add: Support of reproducible builds (credits @obfusk & @iamlooker)
+- Fix: Loading apps without categories
+- Fix: Disable Google-signed dependency metadata (credits @IzzySoft)
+- Update: Revamp usage of CoroutineDispatchers
+- Update: Increase default auto-sync interval
+- Add Repos: Cloudburst & Huizengek (credits @GitGitro)
+- Remove Repo: Samourai Wallet (credits @GitGitro)
+
+### UI
+
+- Add: Indicator if a custom sort/filter is applied
+- Add: All apps category
+- Fix: Constant recomposition of most UI (reduce Jitter/Lag)
+
+### UX
+
+- Add: Launch AppSheet when tapping installed notification
+- Fix: Screenshots not updating when changing app of same dev
+- Fix: Handling locales with three letters as language code
+- Update: Improve consistency of sheets' visibility across rotation
+- Update: Increase default recently updated apps to show
+
 1.0.0 (23.04.2024) 440+ Commits +380 Translations
 ------------------
 
