@@ -389,4 +389,5 @@
     <string name="hide_new_apps_description">Combine both new and recently updated apps in the latest page\'s vertical list.</string>
     <string name="prefs_search_apps">Maximum number of applications to query for search results.</string>
     <string name="wait_to_sync">Wait couple of seconds before retrying to sync.</string>
+    <string name="prefs_search_apps_description">Maximum number of applications to include in search results (set to 0 to include all apps).</string>
 </resources>

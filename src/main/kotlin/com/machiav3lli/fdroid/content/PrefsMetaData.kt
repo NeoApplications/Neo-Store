@@ -95,7 +95,7 @@ val NonBooleanPrefsMeta = mapOf(
     Preferences.Key.Language to R.string.prefs_language_title,
     Preferences.Key.Theme to R.string.theme,
     Preferences.Key.DefaultTab to R.string.default_tab,
-    Preferences.Key.SearchApps to R.string.prefs_search_apps,
+    Preferences.Key.SearchApps to R.string.prefs_search_apps_description,
     Preferences.Key.UpdatedApps to R.string.prefs_updated_apps,
     Preferences.Key.NewApps to R.string.prefs_new_apps,
     Preferences.Key.AutoSync to R.string.sync_repositories_automatically,
@@ -165,7 +165,7 @@ val PrefsEntries = mapOf(
 )
 
 val IntPrefsRanges = mapOf(
-    Preferences.Key.SearchApps to 100..10000,
+    Preferences.Key.SearchApps to 0..10000,
     Preferences.Key.UpdatedApps to 1..1000,
     Preferences.Key.NewApps to 1..300,
     Preferences.Key.AutoSyncInterval to 1..720,
