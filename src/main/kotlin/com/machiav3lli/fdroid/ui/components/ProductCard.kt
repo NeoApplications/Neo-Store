@@ -10,11 +10,9 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
@@ -30,22 +28,20 @@ val PRODUCT_CARD_WIDTH = 220.dp
 
 @Composable
 fun ProductCard(
-    item: ProductItem,
+    product: ProductItem,
     repo: Repository? = null,
     onUserClick: (ProductItem) -> Unit = {},
 ) {
-
-    val product by remember(item) { mutableStateOf(item) }
-    var imageData by remember { mutableStateOf<String?>(null) }
-
-    SideEffect {
-        imageData = createIconUri(
-            product.packageName,
-            product.icon,
-            product.metadataIcon,
-            repo?.address,
-            repo?.authentication
-        ).toString()
+    val imageData by remember(product) {
+        derivedStateOf {
+            createIconUri(
+                product.packageName,
+                product.icon,
+                product.metadataIcon,
+                repo?.address,
+                repo?.authentication
+            ).toString()
+        }
     }
 
     ListItem(

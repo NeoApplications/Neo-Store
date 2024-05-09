@@ -190,20 +190,6 @@ fun AppSheet(
             Preferences[Preferences.Key.ShowScreenshots]
         }
     }
-
-    val imageData by remember {
-        derivedStateOf {
-            suggestedProductRepo?.let {
-                createIconUri(
-                    it.first.packageName,
-                    it.first.icon,
-                    it.first.metadataIcon,
-                    it.second.address,
-                    it.second.authentication
-                ).toString()
-            }
-        }
-    }
     val snackbarHostState = remember { SnackbarHostState() }
     val nestedScrollConnection = rememberNestedScrollInteropConnection()
     val coroutineScope = rememberCoroutineScope()
@@ -377,6 +363,18 @@ fun AppSheet(
     }
 
     suggestedProductRepo?.let { (product, repo) ->
+        val imageData by remember(product) {
+            derivedStateOf {
+                createIconUri(
+                    product.packageName,
+                    product.icon,
+                    product.metadataIcon,
+                    repo.address,
+                    repo.authentication
+                ).toString()
+            }
+        }
+
         val screenshots by remember(product) {
             derivedStateOf {
                 product.screenshots.map {

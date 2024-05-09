@@ -9,11 +9,9 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -38,14 +36,14 @@ fun ScreenshotsPage(
     ) {
         HorizontalPager(state = pagerState, beyondBoundsPageCount = 3) { page ->
             val screenshot = screenshots[page]
-            var image by remember { mutableStateOf<String?>(null) }
-
-            SideEffect {
-                image = createScreenshotUri(
-                    screenshot.repository,
-                    screenshot.packageName,
-                    screenshot.screenShot
-                ).toString()
+            val image by remember(screenshot) {
+                derivedStateOf {
+                    createScreenshotUri(
+                        screenshot.repository,
+                        screenshot.packageName,
+                        screenshot.screenShot
+                    ).toString()
+                }
             }
 
             NetworkImage(
