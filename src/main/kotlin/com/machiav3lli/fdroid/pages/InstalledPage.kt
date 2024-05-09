@@ -22,6 +22,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -85,7 +86,6 @@ fun InstalledPage(viewModel: InstalledVM) {
     val pagerState = rememberPagerState { pages.size }
     val currentPage by remember { derivedStateOf { pagerState.currentPage } }
 
-
     LaunchedEffect(Unit) {
         withContext(Dispatchers.Default) {
             Preferences.subject.collect {
@@ -113,37 +113,42 @@ fun InstalledPage(viewModel: InstalledVM) {
         }
     }
 
-    Column(
-        Modifier
+    Scaffold(
+        modifier = Modifier
             .background(Color.Transparent)
             .fillMaxSize(),
-    ) {
-        PrimaryTabRow(
-            containerColor = Color.Transparent,
-            selectedTabIndex = currentPage,
-            divider = {},
-        ) {
-            TabButton(
-                text = stringResource(id = R.string.installed),
-                icon = Phosphor.ArrowSquareOut,
-                onClick = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(0)
+        containerColor = Color.Transparent,
+        topBar = {
+            PrimaryTabRow(
+                containerColor = Color.Transparent,
+                selectedTabIndex = currentPage,
+            ) {
+                TabButton(
+                    text = stringResource(id = R.string.installed),
+                    icon = Phosphor.ArrowSquareOut,
+                    onClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(0)
+                        }
                     }
-                }
-            )
-            TabButton(
-                text = stringResource(id = R.string.downloads),
-                icon = Phosphor.Download,
-                onClick = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(1)
+                )
+                TabButton(
+                    text = stringResource(id = R.string.downloads),
+                    icon = Phosphor.Download,
+                    onClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(1)
+                        }
                     }
-                }
-            )
+                )
+            }
         }
-
-        HorizontalPager(state = pagerState, beyondBoundsPageCount = 1) { index ->
+    ) { paddingValues ->
+        HorizontalPager(
+            modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
+            state = pagerState,
+            beyondBoundsPageCount = 1
+        ) { index ->
             pages[index].invoke()
         }
     }
@@ -307,7 +312,7 @@ fun InstallsPage(viewModel: InstalledVM) {
         }
         if (downloadsRunning) items(sortedDownloads) { item ->
             DownloadedItem(
-                item = item,
+                download = item,
                 iconDetails = iconDetails[item.packageName],
                 repo = repositoriesMap[item.state.repoId],
                 state = item.state,
@@ -448,12 +453,12 @@ fun DownloadedPage(viewModel: InstalledVM) {
         modifier = Modifier.fillMaxSize(),
     ) {
         items(sortedDownloaded) { item ->
-            val state by remember {
+            val state by remember(item) {
                 derivedStateOf { item.state }
             }
 
             DownloadedItem(
-                item = item,
+                download = item,
                 iconDetails = iconDetails[item.packageName],
                 repo = repositoriesMap[state.repoId],
                 state = state,
