@@ -106,7 +106,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             applicationIdSuffix = ".neo"
-            resValue("string", "application_name", "Neo Store - Test")
+            resValue("string", "application_name", "Neo Store")
         }
         named("release") {
             isMinifyEnabled = true
