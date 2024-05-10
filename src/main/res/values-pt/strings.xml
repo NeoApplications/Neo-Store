@@ -380,4 +380,10 @@
     <string name="kids_mode">Modo infantil</string>
     <string name="kids_mode_summary">Ativa o modo infantil e desativa a instalação de aplicações.</string>
     <string name="hide_new_apps">Ocultar barra de novas aplicações</string>
+    <string name="alt_block_layout">Utilizar esquema alternativo para os blocos de páginas</string>
+    <string name="alt_block_layout_summary">Utilizar modo alternativo/antigo para os blocos de páginas em vez de superfícies coloridas.</string>
+    <string name="download_show_dialog_summary">Mostrar diálogo antes de descarregar uma aplicação.</string>
+    <string name="action_lock_dialog">Mostrar diálogo para bloqueio de ações</string>
+    <string name="action_lock_none">Sem bloqueio</string>
+    <string name="kids_mode_summary_full">Ativa o modo infantil e desativar a instalação de aplicações. Para desativar, toque na versão da aplicação seis vezes. Este dica desaparece após reiniciar a aplicação.</string>
 </resources>
