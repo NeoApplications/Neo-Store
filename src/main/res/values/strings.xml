@@ -4,7 +4,7 @@
     <string name="add_repository">Add repository</string>
     <string name="address">Address</string>
     <string name="all_applications">All Apps</string>
-    <string name="all_applications_up_to_date">All apps are up to date</string>
+    <string name="all_applications_up_to_date">All apps are up-to-date</string>
     <string name="already_exists">Already exists</string>
     <string name="always">Always</string>
     <string name="amoled">Black</string>
@@ -195,14 +195,14 @@
     <string name="installing">Installing</string>
     <string name="ignore_battery_optimization_title">Battery Optimization</string>
     <string name="ignore_battery_optimization_message">The app behaves better without battery optimization, and prevents crashing on Android 12+.</string>
-    <string name="ignore_battery_optimization_not_supported">Your Android installation does not support turning off battery optimization.</string>
+    <string name="ignore_battery_optimization_not_supported">Your Android installation does not support disabling battery optimization.</string>
     <string name="dialog_refuse">Keep</string>
     <string name="dialog_approve">Turn off</string>
     <string name="root_session_installer">Use root session installer</string>
     <string name="root_session_installer_description">Slower, but avoids issues with installed apps on Android 13+.</string>
     <string name="no_action_possible">No Action Possible</string>
     <string name="show_screenshots">Show screenshots</string>
-    <string name="show_screenshots_description">Display screenshots in the app page.</string>
+    <string name="show_screenshots_description">Display screenshots on the app page.</string>
     <string name="favorite_remove">Remove from favorites</string>
     <string name="favorite_add">Add to favorites</string>
     <string name="open">Open</string>
@@ -383,7 +383,7 @@
     <string name="action_lock_biometric">Biometric lock</string>
     <string name="kids_mode">Kids mode</string>
     <string name="kids_mode_summary">Enable kids mode, disabling the install of new apps.</string>
-    <string name="kids_mode_summary_full">Enable kids mode, disabling the install of new apps. To disable tap the app\'s version in the other page six times. This hint gets hidden on app restart.</string>
+    <string name="kids_mode_summary_full">Enable kids mode, disabling new app installs. To disable, tap the app\'s version six times on the other page. Upon app restart, this hint is hidden.</string>
     <string name="system_installer">System installer</string>
     <string name="hide_new_apps">Hide new apps bar</string>
     <string name="hide_new_apps_description">Combine both new and recently updated apps in the latest page\'s vertical list.</string>
