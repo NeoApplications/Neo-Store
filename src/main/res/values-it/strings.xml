@@ -4,7 +4,7 @@
     <string name="add_repository">Aggiungi repository</string>
     <string name="address">Indirizzo</string>
     <string name="all_applications">Tutte le app</string>
-    <string name="all_applications_up_to_date">Tutte le tue app sono aggiornate</string>
+    <string name="all_applications_up_to_date">Tutte le app sono aggiornate</string>
     <string name="already_exists">Già esistente</string>
     <string name="always">Sempre</string>
     <string name="amoled">Nero</string>
@@ -190,7 +190,7 @@
     <string name="default_tab">Scheda predefinita</string>
     <string name="pending">In attesa</string>
     <string name="installing">Installando</string>
-    <string name="ignore_battery_optimization_not_supported">La tua installazione di Android non supporta la disattivazione dell\'ottimizzazione della batteria.</string>
+    <string name="ignore_battery_optimization_not_supported">L\'installazione di Android non supporta la disattivazione dell\'ottimizzazione della batteria.</string>
     <string name="dialog_approve">Spegni</string>
     <string name="ignore_battery_optimization_title">Ottimizzazione della batteria</string>
     <string name="ignore_battery_optimization_message">L\'app si comporta meglio senza ottimizzazione della batteria e previene arresti anomali su Android 12+.</string>
@@ -211,7 +211,7 @@
     <string name="dynamic">Dinamico di sistema</string>
     <string name="auto_sync_interval">Intervallo di sincronizzazione automatica (in minuti)</string>
     <string name="favorite_applications">Preferiti</string>
-    <string name="images_cache_retention">Conservazione cache immagini</string>
+    <string name="images_cache_retention">Conservazione cache immagine</string>
     <string name="releases_cache_retention">Conservazione cache APK scaricati</string>
     <string name="prefs_cache">Cache</string>
     <string name="prefs_sync">Sincronizzazione</string>
@@ -384,7 +384,7 @@
     <string name="action_lock_biometric">Blocco biometrico</string>
     <string name="action_lock_dialog">Mostra finestra del blocco delle azioni</string>
     <string name="kids_mode_summary">Abilita la modalità bambini, disabilitando l\'installazione di nuove app.</string>
-    <string name="kids_mode_summary_full">Abilita la modalità bambini, disabilitando l\'installazione di nuove app. Per disabilitare toccare sei volte la versione dell\'app nell\'altra pagina. Questo suggerimento viene nascosto al riavvio dell\'app.</string>
+    <string name="kids_mode_summary_full">Abilita la modalità bambini, disabilitando le nuove installazioni di app. Per disabilitarlo, tocca sei volte la versione dell\'app nell\'altra pagina. Al riavvio dell\'app, questo suggerimento viene nascosto.</string>
     <string name="kids_mode">Modalità bambini</string>
     <string name="system_installer">Installer di sistema</string>
     <string name="hide_new_apps">Nascondi nuova barra delle app</string>
