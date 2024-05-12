@@ -192,7 +192,7 @@
     <string name="pending">Čekající</string>
     <string name="ignore_battery_optimization_title">Optimalizace baterie</string>
     <string name="ignore_battery_optimization_message">Vypnutí optimalizace baterie pro tuto aplikaci jí umožňuje fungovat lépe a zabraňuje pádům na Android 12+.</string>
-    <string name="ignore_battery_optimization_not_supported">Vaše instalace systému Android nepodporuje vypnutí optimalizace baterie.</string>
+    <string name="ignore_battery_optimization_not_supported">Vaše instalace systému Android nepodporuje zakázání optimalizace baterie.</string>
     <string name="dialog_refuse">Ponechat</string>
     <string name="dialog_approve">Vypnout</string>
     <string name="root_session_installer">Použít root instalátor relace</string>
@@ -382,7 +382,7 @@
     <string name="action_lock_biometric">Biometrický zámek</string>
     <string name="kids_mode">Dětský režim</string>
     <string name="kids_mode_summary">Povolit dětský režim. Zakáže instalaci nových aplikací.</string>
-    <string name="kids_mode_summary_full">Povolit dětský režim, který zakáže instalaci aplikací. Pro jeho zrušení klepněte šestkrát na verzi aplikaci na předchozí stránce. Tato nápověda bude skryta po restartu aplikace.</string>
+    <string name="kids_mode_summary_full">Povolit dětský režim, který zakáže instalaci nových aplikací. Pro jeho zrušení klepněte šestkrát na verzi aplikaci na předchozí stránce. Po restartu aplikace bude tato nápověda skryta.</string>
     <string name="alt_block_layout">Použít alternativní rozvržení pro bloky stránek</string>
     <string name="alt_block_layout_summary">Použít alternativní/staré rozložení pro bloky stránek s okraji namísto barevných povrchů.</string>
     <string name="confirm_download_DESC_FORMAT">Opravdu chcete stáhnout aplikaci %s?</string>
