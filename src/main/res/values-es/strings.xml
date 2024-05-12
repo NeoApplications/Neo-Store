@@ -385,7 +385,7 @@
     <string name="bottom_search_bar_summary">Coloque la barra de búsqueda en la parte inferior de la página.</string>
     <string name="action_lock_none">Sin bloquear</string>
     <string name="kids_mode_summary">Activa el modo niños, desactivando la instalación de nuevas aplicaciones.</string>
-    <string name="kids_mode_summary_full">Activa el modo niños, desactivando la instalación de nuevas aplicaciones. Para desactivarlo, pulse seis veces sobre la versión de la aplicación en la otra página. Esta sugerencia se oculta al reiniciar la aplicación.</string>
+    <string name="kids_mode_summary_full">Activa el modo niños y desactiva la instalación de nuevas aplicaciones. Para desactivarlo, toca seis veces la versión de la aplicación en la otra página. Al reiniciar la aplicación, esta sugerencia se oculta.</string>
     <string name="system_installer">Instalador del sistema</string>
     <string name="hide_new_apps">Ocultar la barra de nuevas aplicaciones</string>
     <string name="hide_new_apps_description">Combina las aplicaciones nuevas y las actualizadas recientemente en la lista vertical de la última página.</string>
