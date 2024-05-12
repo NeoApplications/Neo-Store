@@ -385,4 +385,5 @@
     <string name="system_installer">系统安装器</string>
     <string name="hide_new_apps">隐藏新 App 栏</string>
     <string name="hide_new_apps_description">将新的和最近更新的应用合并显示在最新页的垂直列表。</string>
+    <string name="prefs_search_apps">搜索结果中显示应用的最大数目。</string>
 </resources>
