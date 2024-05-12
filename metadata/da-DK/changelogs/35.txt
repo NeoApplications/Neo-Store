@@ -1,3 +1,3 @@
 - Gamle Ikoner Udskiftet med Material-ikoner
-- Rettede Problemer med den Øverste App-bar
+- Fejl Rettet i den Øverste App-linje
 - Føjede Ikoner til Installations- og Annulleringsknappen for at Forbedre Tilgængeligheden

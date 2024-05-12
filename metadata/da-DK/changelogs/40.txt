@@ -1,5 +1,5 @@
 - Tilføjet: Sprogpræference
-- Opdatering: Horisontal rulning af skærmbilleder
-- Fejlrettelse: Baggrunds-rodinstallatør
-- Tilføjet: Beder kun om rodadgang, når det er valgt
-- Tonsvis af justeringer i brugerflade
+- Opdateret: Vandret rulning af skærmbilleder
+- Fejlrettelse: Root-installatør i baggrunden
+- Tilføjet: Spørg kun efter root, når det er valgt
+- Masser af UI/UX-justeringer

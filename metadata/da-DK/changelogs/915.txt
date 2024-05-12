@@ -1,7 +1,7 @@
-Opdatering: Fornyet AppSheet-brugerflade
-Opdatering: Fuldt ud migreret navigation til Skriv
-Opdatering: Migreret præferencer til Skriv
-Opdatering: Tillad indstilling af højere antal for opdaterede/nye apps' renbruger og synkroniseringsinterval
-Tilføjet: Nyttige link i Præferencer
-Fejlrettelse: Handlingsknappers synlighed
-Fejlrettelse: Vis Depot-beskrivelse før første synkronisering
+Opdateret: Fornyet AppSheets UI
+Opdateret: Migrér navigation helt til Compose
+Opdateret: Migrér præferencer til Compose
+Opdateret: Tillad at indstille højere tal for opdaterede/nye apps' genbrugs- og synkroniseringsinterval
+Tilføjet: Nyttige links i Præferencer
+Fejlrettelse: Handlingsknapper synlighed
+Fejlrettelse: Vis Repo-beskrivelse før første synkronisering
