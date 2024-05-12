@@ -190,7 +190,7 @@
     <string name="installing">安装</string>
     <string name="ignore_battery_optimization_title">电池优化</string>
     <string name="ignore_battery_optimization_message">在没有电池优化的情况下该应用程序表现更好，并且可以防止在 Android 12+上崩溃。</string>
-    <string name="ignore_battery_optimization_not_supported">您的 Android 不支持关闭电池优化。</string>
+    <string name="ignore_battery_optimization_not_supported">您的 Android 不支持禁用电池优化。</string>
     <string name="dialog_refuse">不变</string>
     <string name="dialog_approve">关闭</string>
     <string name="root_session_installer_description">会话安装程序的性能比默认安装程序稍差，但避免了在 Android 13+ 中安装应用程序时出现问题。</string>
@@ -381,7 +381,7 @@
     <string name="action_lock_biometric">生物识别锁</string>
     <string name="kids_mode">儿童模式</string>
     <string name="kids_mode_summary">启用儿童模式，禁止安装新 App。</string>
-    <string name="kids_mode_summary_full">启用儿童模式，禁止安装新 App。要禁用此功能，请在另一页面上点击应用程序版本六次。此提示会在应用重启后隐藏。</string>
+    <string name="kids_mode_summary_full">启用儿童模式，禁止安装新 App。要禁用此功能，请在另一页面上点击应用程序版本六次。在应用重启后，此提示将隐藏。</string>
     <string name="system_installer">系统安装器</string>
     <string name="hide_new_apps">隐藏新 App 栏</string>
     <string name="hide_new_apps_description">将新的和最近更新的应用合并显示在最新页的垂直列表。</string>
