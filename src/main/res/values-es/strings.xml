@@ -4,7 +4,7 @@
     <string name="add_repository">Añadir repositorio</string>
     <string name="address">Dirección</string>
     <string name="all_applications">Todas las aplicaciones</string>
-    <string name="all_applications_up_to_date">Todas las aplicaciones están al día</string>
+    <string name="all_applications_up_to_date">Todas las aplicaciones están actualizadas</string>
     <string name="already_exists">Ya existe</string>
     <string name="always">Siempre</string>
     <string name="amoled">Negro</string>
@@ -193,7 +193,7 @@
     <string name="not_safe_for_work">Censurable (puede contener contenido perturbador)</string>
     <string name="ignore_battery_optimization_title">Optimización de Batería</string>
     <string name="ignore_battery_optimization_message">La aplicación funciona mejor sin optimización de batería, y previene cierres inesperados en Android 12+.</string>
-    <string name="ignore_battery_optimization_not_supported">Tu instalación de Android no soporta desactivar la optimización de batería.</string>
+    <string name="ignore_battery_optimization_not_supported">Tu instalación de Android no admite la desactivación de la optimización de la batería.</string>
     <string name="dialog_approve">Desactivar</string>
     <string name="root_session_installer">Usar el instalador de sesión de root</string>
     <string name="root_session_installer_description">Más lento, pero evita problemas con las aplicaciones instaladas en Android 13+.</string>
