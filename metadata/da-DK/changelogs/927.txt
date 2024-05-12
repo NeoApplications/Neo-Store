@@ -1,8 +1,8 @@
-Tilføjet: KDE (Stable), C:Geo, Stack Wallet & PeterCxy's Shelter depoter
+Tilføjet: KDE (Stable), C:Geo, Stack Wallet & PeterCxy's Shelter repos
 Tilføjet: Mulighed for ekstern overførselsmappe
 Tilføjet: Tilladelser-side
 Tilføjet: Overførsler-side (skift) til InstalleretSide
-Tilføjet: Mulighed for at ignorere notifikation om sikkerhedsbrister
-Fejlrettelse: Baggrunds (stille) installatør
+Tilføjet: Mulighed for at ignorere notifikationer om sikkerhedsrisici
+Fejlrettelse: Baggrundsinstallation (stille)
 Opdatering: Forbedret indstilling af præferencedialog-værdi
-+ flere end 40 forpligtelser & 30 oversættelsesbidrag
++ flere end 40 commits & 30 oversættelsesbidrag

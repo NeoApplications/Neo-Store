@@ -1,7 +1,7 @@
-Tilføjet: Kategorien Favoritter
-Tilføjet: Valgmulighed til at indstille synkroniseringsinterval
-Tilføjet: Understøttelse af autoimport af fdroidrepos: depotadresser fra udklipsholder
-Fejlrettelse: Indpakket rulning af AppSheet
-Fejlrettelse: Depotapps antal
-Fejlrettelse: Tillad bevaring af apk indtil den er "forbrugt"
-Opdatering: Gør app-beskrivelse/-ændringslogtekst valgbar
+Tilføjet: Favoritter-kategori
+Tilføjet: Valg af synkroniseringsinterval
+Tilføjet: Understøttelse af auto-import af fdroidrepos: repo-adresser fra udklipsholderen
+Fejlrettelse: Indlejret rulning af AppSheet
+Fejlrettelse: Antal apps i repository
+Fejlrettelse: Tillad opbevaring af apk indtil "forbrugt"
+Opdateret: Gør app-beskrivelse/ændringslog-tekst markerbar

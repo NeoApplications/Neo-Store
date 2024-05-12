@@ -1,7 +1,7 @@
-Tilføjet: Understøttelse af fdroidrepo(er)-URL
-Tilføjet: Understøttelse af market://search? Hensigter
-Tilføjet: Delingsmuligheder for IzzyOnDroid-apps
-Tilføjet: GitJournal & Revolt til de forudindstillede depoter
-Opdatering: Fornyet ReleaseItems
-Fjernet: Alefvanoon forudindstillet depot
-For flere oplysninger, kontrollér den fulde ændringslog…
+Tilføjet: Understøttelse af fdroidrepo(s) uri
+Tilføjet: Understøttelse af market://search? intents
+Tilføjet: Delingsmulighed for IzzyOnDroid-apps
+Tilføjet: GitJournal & Revolt til de forudindstillede repos
+Opdateret: Fornyet ReleaseItems
+Fjernet: Alefvanoon forudindstillet repo
+Se den fulde ændringslog for flere detaljer…

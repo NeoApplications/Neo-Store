@@ -1,7 +1,7 @@
-Fejlrettelse: Opfanger ikke rod-tilladelse
-Fejlrettelse: Nedbrud relateret til Synkroniserings- & OverførselsTjeneste
-Opdatering: Fornyet InstalleretSide
-Tilføjet: Mulighed for at deaktivere få/vis trackere
-Tilføjet: FluffyChat nightly, Anonymous Messenger og BeoCode til standard-depoter
-Fejlrettelse: Opdaterer ikke liste over installerede apps ved (af)installation af apps
-+ flere end 80 oversættelser og andre bidrag
+Fejlrettelse: Registrerer ikke root-tilladelse
+Fejlrettelse: Synkroniserings- og downloadtjeneste-relaterede nedbrud
+Opdateret: Fornyet InstalleretSide
+Tilføjet: Mulighed for at deaktivere få/vis sporing
+Tilføjet: FluffyChat nightly, Anonymous Messenger og BeoCode til standard repos
+Fejlrettelse: Opdaterer ikke listen over installerede apps ved (af)installation af apps
++ mere end 80 oversættelser og andre bidrag

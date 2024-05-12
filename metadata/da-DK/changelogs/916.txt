@@ -1,7 +1,7 @@
-Tilføjet: Sorterings-/Filterfunktion
-Tilføjet: Eksplicit favoritter-genvej
+Tilføjet: Sortér/filter-funktion
+Tilføjet: Eksplicit genvej til favoritter
 Tilføjet: TargetSDK til infochips
-Opdatering: Erstattet Materielle ikoner med Fosfor
-Opdatering: BottomNavBar, AppSheet's og EditRepoSheet's opsætninger
-Tilføjet: Viser opdatér sekundær handling under overførsel
-For flere oplysninger, kontrollér den fulde ændringslog…
+Opdateret: Erstat Material-ikoner med Phosphor
+Opdateret: BottomNavBar, AppSheet's og EditRepoSheet's layouts
+Fejlrettelse: Viser opdatering af sekundær handling under hentning
+Se den fulde ændringslog for flere detaljer…

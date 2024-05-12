@@ -1,9 +1,9 @@
-- Tilføjet: System dynamisk tema (også kaldet Materielt Dig)
-- Tilføjet: 7 nye forudindstillede depoter
-- Tilføjet: Arkitekturmærker på udgivelser for specifikke arkitekturer
-- Fjernet: UnifiedPush-depot (dødt)
+- Tilføjet: Systemdynamisk tema (også kaldet Material You)
+- Tilføjet: 7 nye forudindstillede repositories
+- Tilføjet: Arkitekturmærke på udgivelser til specifik arkitektur
+- Fjernet: UnifiedPush repo (død)
 - Fejlrettelse: Irriterende notifikation om 0 opdateringer
-- Fejlrettelse: Skjul Forfatters hjemmesidelink, når utilgængeligt
-- Fejlrettelse: Indlæsning af udklipsholders indhold til depot-URL
-- Fejlrettelse: Link i indstillinger
+- Fejlrettelse: Skjul skaberens hjemmesidelink, når utilgængeligt
+- Fejlrettelse: Læsning af udklipsholderens indhold for repo-URI
+- Fejlrettelse: Links i indstillinger
 - Fejlrettelse: Viser ikke opdateringshandling

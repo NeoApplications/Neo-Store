@@ -1,4 +1,4 @@
 - Fejlrettelse: Skærmbillede pladsholder-ikon
-- Fejlrettelse: Blødt nedbrud ved start af AppOplysninger
-- Fejlrettelse: Kør kun én instans af rodinstallatør
-- Fejlrettelse: Rodinstallatør
+- Fejlrettelse: Blødt nedbrud ved start af AppDetaljer
+- Fejlrettelse: Kør kun én instans af rootinstallatør
+- Fejlrettelse: Root-installatør
