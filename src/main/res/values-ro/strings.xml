@@ -242,7 +242,7 @@
     <string name="trackers_note_2">De ce are nevoie de acești urmăritori\?</string>
     <string name="trackers_in">Urmăritori în %s</string>
     <string name="trackers_note_3">Are câțiva urmăritori</string>
-    <string name="trackers_note_0">Este o aplicație sau un spyware\?</string>
+    <string name="trackers_note_0">Este o aplicație sau un spyware?</string>
     <string name="trackers_note_1">Include multe instrumente de urmărire a datelor dvs. sensibile</string>
     <string name="trackers_note_4">Minim sau fără urmăritori</string>
     <string name="app_installed">Instalat</string>
