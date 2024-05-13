@@ -276,7 +276,7 @@
     <string name="trackers_note_3">Tem par de rastreadores</string>
     <string name="trackers_note_4">Mínimo a nenhum rastreador</string>
     <string name="permissions_note_0">Solicita muitas permissões perigosas</string>
-    <string name="trackers_note_0">É uma aplicação ou um spyware\?</string>
+    <string name="trackers_note_0">É uma aplicação ou um spyware?</string>
     <string name="trackers_note_1">Inclui muitos rastreadores de seus dados confidenciais</string>
     <string name="permissions_note_1">Requer uma boa quantidade de permissões</string>
     <string name="permissions_note_2">Não necessita de muitas permissões</string>
