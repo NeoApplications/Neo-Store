@@ -275,7 +275,7 @@
     <string name="action_open_code">Смотреть код</string>
     <string name="trackers_none">Нет трекеров</string>
     <string name="trackers_in">Трекеры в %s</string>
-    <string name="trackers_note_0">Это приложение или шпион\?</string>
+    <string name="trackers_note_0">Это приложение или шпион?</string>
     <string name="trackers_note_1">Включает множество трекеров ваших конфиденциальных данных</string>
     <string name="trackers_note_2">Зачем ему эти трекеры\?</string>
     <string name="trackers_note_3">Есть пара трекеров</string>
