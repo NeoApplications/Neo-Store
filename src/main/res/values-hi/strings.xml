@@ -298,7 +298,7 @@
     <string name="trackers_profiling_description">ट्रैकर्स जो एकत्र किए गए डेटा के आधार पर आपकी प्रोफ़ाइल बनाने का प्रयास करते हैं।</string>
     <string name="edit">संपादित करें</string>
     <string name="enable_download_directory_summary">डाउनलोड किए गए APK को चुने हुए फ़ोल्डर में रखने की अनुमति देता है।</string>
-    <string name="trackers_note_0">क्या यह कोई ऐप है या स्पाइवेयर\?</string>
+    <string name="trackers_note_0">क्या यह कोई ऐप है या स्पाइवेयर?</string>
     <string name="warning_show_notification">एंड्रॉइड 13 से शुरू होकर, ऐप को विभिन्न प्रक्रियाओं पर आपको सूचित करने के लिए इस अनुमति की आवश्यकता होती है। यदि आप इस अनुमति को अनदेखा करते हैं, तो आपको कोई सूचना नहीं मिलेगी।</string>
     <string name="downloads">डाउनलोड्स</string>
     <string name="source_open">लिबर सॉफ्टवेयर</string>
