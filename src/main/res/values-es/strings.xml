@@ -288,7 +288,7 @@
     <string name="source_proprietary_description">El código fuente de la aplicación no es de acceso público.</string>
     <string name="trackers_note_3">Tiene un par de rastreadores</string>
     <string name="source_copyright_description">La aplicación depende de contenidos protegidos por derechos de autor o se conecta a redes propietarias.</string>
-    <string name="trackers_note_0">¿Es una aplicación o un software espía\?</string>
+    <string name="trackers_note_0">¿Es una aplicación o un software espía?</string>
     <string name="permissions_note_3">Permisos mínimos</string>
     <string name="app_installed">Instalado</string>
     <string name="vulnerabilities">Vulnerabilidades.</string>
