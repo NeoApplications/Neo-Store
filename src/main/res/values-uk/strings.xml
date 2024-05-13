@@ -270,7 +270,7 @@
     <string name="action_open_code">Переглянути код</string>
     <string name="action_open_website">Відкрити веб-сайт</string>
     <string name="trackers_in">Трекери у %s</string>
-    <string name="trackers_note_0">Це застосунок чи шпигун\?</string>
+    <string name="trackers_note_0">Це застосунок чи шпигун?</string>
     <string name="trackers_note_1">Включає безліч трекерів ваших конфіденційних даних</string>
     <string name="trackers_note_2">Навіщо йому ці трекери\?</string>
     <string name="trackers_note_3">Має пару трекерів</string>
