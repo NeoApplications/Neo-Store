@@ -272,7 +272,7 @@
     <string name="action_open_code">Kodu görüntüle</string>
     <string name="action_open_website">Web sitesini aç</string>
     <string name="trackers_none">Gösterilecek izleyici yok</string>
-    <string name="trackers_note_0">Bu bir uygulama mı yoksa casus yazılım mı\?</string>
+    <string name="trackers_note_0">Bu bir uygulama mı yoksa casus yazılım mı?</string>
     <string name="trackers_note_2">Neden bu izleyicilere ihtiyaç duyuluyor\?</string>
     <string name="trackers_identification">Kimlik tanımlama izleyicileri</string>
     <string name="permissions_note_2">Çok fazla izin gerektirmez</string>
