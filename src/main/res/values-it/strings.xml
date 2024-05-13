@@ -288,7 +288,7 @@
     <string name="permissions_note_3">Quantità minima di autorizzazioni</string>
     <string name="source_open_description">Il codice sorgente dell\'app può essere visionato, modificato e condiviso.</string>
     <string name="source_dependencies">Dipendenze</string>
-    <string name="trackers_note_0">È un\'app o uno spyware\?</string>
+    <string name="trackers_note_0">È un\'app o uno spyware?</string>
     <string name="permission_not_present">Non presente nel tuo sistema</string>
     <string name="app_installed">Installata</string>
     <string name="vulnerabilities_installed_apps">Queste app installate hanno vulnerabilità note!</string>
