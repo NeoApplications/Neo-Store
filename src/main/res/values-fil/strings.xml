@@ -276,7 +276,7 @@
     <string name="action_open_code">Tingnan ang code</string>
     <string name="action_open_website">Bisitahin ang website</string>
     <string name="trackers_in">Mga tracker sa %s</string>
-    <string name="trackers_note_0">Isa ba itong app o spyware\?</string>
+    <string name="trackers_note_0">Isa ba itong app o spyware?</string>
     <string name="trackers_note_1">Maraming itong mga tracker na sinusubaybayan ang sensitibo mong datos</string>
     <string name="trackers_note_2">Bakit kailangan nito ang mga tracker na ito\?</string>
     <string name="trackers_note_3">May ilang mga tracker</string>
