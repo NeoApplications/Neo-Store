@@ -286,7 +286,7 @@
     <string name="trackers_analytics">Trackers voor analytische doeleinden</string>
     <string name="permission_storage">Opslag en media</string>
     <string name="releases_cache_retention">Cache-behoud gedownloade APK\'s</string>
-    <string name="trackers_note_0">Is het een app of is het spyware\?</string>
+    <string name="trackers_note_0">Is het een app of is het spyware?</string>
     <string name="source_open">Vrije software</string>
     <string name="other_apps_by">Andere apps van %s</string>
     <string name="target_sdk">targetSDK</string>
