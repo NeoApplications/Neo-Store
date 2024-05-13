@@ -275,7 +275,7 @@
     <string name="action_open_code">Kód megtekintése</string>
     <string name="action_open_website">Weboldal megnyitása</string>
     <string name="trackers_in">Követők ebben: %s</string>
-    <string name="trackers_note_0">Ez egy alkalmazás vagy egy kémprogram\?</string>
+    <string name="trackers_note_0">Ez egy alkalmazás vagy egy kémprogram?</string>
     <string name="trackers_note_1">Számos követőt tartalmaz, amelyek érzékeny adatokat érinthetnek</string>
     <string name="trackers_note_4">Egyáltalán nem, vagy nagyon kevés követőt tartalmaz</string>
     <string name="trackers_note_2">Miért van szüksége ezekre a követőkre\?</string>
