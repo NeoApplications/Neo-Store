@@ -1,0 +1,8 @@
+Přidáno: ochrana před spamováním synchronizace
+Přidáno: možnost omezení počtu načtených aplikací při vyhledávání
+Přidáno: podpora reprodukovatelných sestavení
+Přidáno: indikátor při použití vlastního řazení/filtru
+Opraveno: načítání aplikací bez kategorií (např. Total Commander Android)
+Opraveno: celková přestavba většiny rozhraní (snížení záseků)
+Opraveno: zpracování třípísmenných jazykových kódů
++ další ve více než 30 commitech a 20 příspěvcích k překladu
