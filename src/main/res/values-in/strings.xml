@@ -275,7 +275,7 @@
     <string name="action_open_website">Buka situs web</string>
     <string name="trackers_none">Tidak ada pelacak</string>
     <string name="trackers_in">Pelacak dalam %s</string>
-    <string name="trackers_note_0">Apakah aplikasi atau perangkat lunak pelacak\?</string>
+    <string name="trackers_note_0">Apakah aplikasi atau perangkat lunak pelacak?</string>
     <string name="trackers_note_1">Berisi banyak pelacak pada data sensitif Anda</string>
     <string name="trackers_note_2">Kenapa itu membutuhkan pelacak ini\?</string>
     <string name="trackers_note_3">Memiliki beberapa pelacak</string>
