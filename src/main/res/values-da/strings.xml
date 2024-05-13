@@ -333,7 +333,7 @@
     <string name="show_categories_bar_description">Vis kategori-sidelinje på udforsk-side.</string>
     <string name="auto_sync_interval_hours">Auto-synkroniseringsinterval (i timer)</string>
     <string name="repos_export">Eksportér repositories</string>
-    <string name="repos_import">Importér repositories (overskriver allerede eksisterende repositories)</string>
+    <string name="repos_import">Importér repositories (overskriver eksisterende repositories)</string>
     <string name="alt_navbar_item">Brug alternativt element i navigationslinje</string>
     <string name="dynamic_light">Lys med dynamiske farver</string>
     <string name="alt_new_apps">Brug alternativ nye apps-layout</string>
@@ -385,7 +385,7 @@
     <string name="kids_mode">Børnetilstand</string>
     <string name="kids_mode_summary">Aktivér børnetilstand, der deaktiverer installation af nye apps.</string>
     <string name="download_show_dialog_summary">Vis en dialogboks, der spørger, om du er sikker på, at du vil hente en app (før du starter hentningen).</string>
-    <string name="kids_mode_summary_full">Aktivér børnetilstand, der deaktiverer installation af nye apps. For at deaktivere skal du trykke seks gange på appversionen på den anden side. Dette hint skjules, når appen genstartes.</string>
+    <string name="kids_mode_summary_full">Aktivér børnetilstand, der deaktiverer nye app-installationer. For at deaktivere skal du trykke seks gange på appens version på den anden side. Når appen genstartes, skjules dette hint.</string>
     <string name="hide_new_apps">Skjul linjen for nye apps</string>
     <string name="hide_new_apps_description">Kombinér både nye og nyligt opdaterede apps i den seneste sides lodrette liste.</string>
 </resources>
