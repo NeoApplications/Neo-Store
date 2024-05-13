@@ -304,7 +304,7 @@
     <string name="show_trackers">Zobrazit sledovací prvky</string>
     <string name="show_trackers_description">Získat a zobrazit sledovací prvky aplikací ze systému Exodus Privacy.</string>
     <string name="no_trackers_data_available">Údaje o sledovacích prvcích (zatím) nejsou k dispozici.</string>
-    <string name="post_notifications_permission_message">Od Androidu 13 vyžadují aplikace toto oprávnění, aby mohly odesílat oznámení.</string>
+    <string name="post_notifications_permission_message">Počínaje Androidem 13 vyžadují aplikace toto oprávnění, aby mohly odesílat oznámení.</string>
     <string name="custom_download_directory">Vlastní složka pro stažené</string>
     <string name="enable_download_directory">Použít vlastní složku pro stahování</string>
     <string name="enable_download_directory_summary">Umožňuje uchovávat stažené soubory APK ve zvolené složce.</string>
@@ -312,7 +312,7 @@
     <string name="downloads">Stahování</string>
     <string name="ignore_vulns">Ignorovat nahlášené zranitelnosti v zabezpečení</string>
     <string name="ignore">Ignorovat</string>
-    <string name="warning_disable_battery_optimization">Od systému Android 12 vyžaduje aplikace optimalizaci baterie pro procesy na pozadí, jako je synchronizace a stahování. Pokud toto oprávnění ignorujete, jste odkázáni sami na sebe a vaše hlášení o pádu budou ignorována.</string>
+    <string name="warning_disable_battery_optimization">Počínaje systémem Android 12 vyžaduje aplikace optimalizaci baterie pro procesy na pozadí, jako je synchronizace a stahování. Pokud toto oprávnění ignorujete, jste odkázáni sami na sebe a vaše hlášení o pádech budou ignorována.</string>
     <string name="warning_show_notification">Od systému Android 13 aplikace vyžaduje toto oprávnění, aby vás mohla upozorňovat na různé procesy. Pokud toto oprávnění ignorujete, nebudete dostávat žádná oznámení.</string>
     <string name="disable_signature_check">Zakázat kontrolu podpisu</string>
     <string name="keep_install_notification">Ponechat oznámení o instalaci</string>
@@ -336,7 +336,7 @@
     <string name="alt_navbar_item_description">Použijte alternativní/staré rozložení položek navigačního panelu, které zobrazuje popisky nevybraných položek.</string>
     <string name="auto_sync_interval_hours">Interval automatické synchronizace (v hodinách)</string>
     <string name="repos_export">Exportovat repozitáře</string>
-    <string name="repos_import">Importovat repozitáře (přepíše již existující)</string>
+    <string name="repos_import">Importovat repozitáře (přepíše existující)</string>
     <string name="installed_export">Exportovat seznam nainstalovaných aplikací</string>
     <string name="installed_import">Importovat a nainstalovat seznam aplikací (pokud existují, budou načteny z povolených repozitářů)</string>
     <plurals name="privacy_points_FORMAT">
@@ -390,4 +390,7 @@
     <string name="hide_new_apps">Skrýt novou lištu aplikací</string>
     <string name="hide_new_apps_description">Zkombinovat nové a nedávno aktualizované aplikace ve vertikálním seznamu stránky s nedávnými.</string>
     <string name="prefs_search_apps">Maximální počet aplikací, který vyhledávat.</string>
+    <string name="wait_to_sync">Počkejte několik sekund před opětovným pokusem o synchronizaci.</string>
+    <string name="prefs_search_apps_description">Maximální počet aplikací zahrnutých ve výsledcích vyhledávání (nastavte na 0 pro zahrnutí všech aplikací).</string>
+    <string name="state_modified">Upraveno</string>
 </resources>
