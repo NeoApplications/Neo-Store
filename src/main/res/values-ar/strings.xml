@@ -214,7 +214,7 @@
     <string name="favorite_applications">المفضلات</string>
     <string name="releases">إصدارات</string>
     <string name="loading_list">جاري تحميل القائمة…</string>
-    <string name="images_cache_retention">الاحتفاظ بذاكرة التخزين المؤقت للصور</string>
+    <string name="images_cache_retention">مدة الاحتفاظ بذاكرة التخزين المؤقت للصور</string>
     <string name="releases_cache_retention">الاحتفاظ بذاكرة التخزين المؤقت لملف APK الذي تم تنزيله</string>
     <string name="system_black">النظام (أسود)</string>
     <string name="prefs_personal">شخصي</string>
@@ -381,7 +381,7 @@
     <string name="action_lock_biometric">القفل الحيوي</string>
     <string name="kids_mode">سعة الأطفال</string>
     <string name="kids_mode_summary">تمكين وضع الأطفال، وتعطيل تثبيت التطبيقات الجديدة.</string>
-    <string name="kids_mode_summary_full">‬تمكين وضع الأطفال، وتعطيل تثبيت التطبيقات الجديدة. للتعطيل، اضغط على إصدار التطبيق في الصفحة الأخرى ست مرات. يتم إخفاء هذا التلميح عند إعادة تشغيل التطبيق.</string>
+    <string name="kids_mode_summary_full">تمكين وضع الأطفال، وتعطيل عمليات تثبيت التطبيقات الجديدة. للتعطيل، اضغط على إصدار التطبيق ست مرات في الصفحة الأخرى. عند إعادة تشغيل التطبيق، يتم إخفاء هذا التلميح.</string>
     <string name="bottom_search_bar">شريط البحث السفلي</string>
     <string name="bottom_search_bar_summary">ضع شريط البحث في أسفل الصفحة.</string>
     <string name="select_all">حدد الكل</string>
@@ -396,4 +396,7 @@
     <string name="hide_new_apps">إخفاء شريط التطبيقات الجديد</string>
     <string name="hide_new_apps_description">قم بدمج كل من التطبيقات الجديدة والمحدثة مؤخرًا في القائمة العمودية للصفحة الأخيرة.</string>
     <string name="prefs_search_apps">أقصى عدد من التطبيقات للاستعلام عن نتائج البحث.</string>
+    <string name="wait_to_sync">انتظر بضع ثوانٍ قبل إعادة محاولة المزامنة.</string>
+    <string name="prefs_search_apps_description">الحد الأقصى لعدد التطبيقات المراد تضمينها في نتائج البحث (اضبط على 0 لتضمين جميع التطبيقات).</string>
+    <string name="state_modified">تم تعديله</string>
 </resources>
