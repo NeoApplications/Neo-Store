@@ -266,7 +266,7 @@
     <string name="action_open_website">Otevřít webové stránky</string>
     <string name="trackers_none">Žádné sledovače</string>
     <string name="trackers_in">Sledovače v %s</string>
-    <string name="trackers_note_0">Je to aplikace nebo spyware\?</string>
+    <string name="trackers_note_0">Je to aplikace nebo spyware?</string>
     <string name="trackers_note_1">Obsahuje mnoho sledovačů citlivých dat</string>
     <string name="trackers_note_3">Má několik sledovačů</string>
     <string name="trackers_note_4">Minimální až žádné sledovače</string>
