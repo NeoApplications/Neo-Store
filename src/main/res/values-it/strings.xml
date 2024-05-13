@@ -312,7 +312,7 @@
     <string name="downloads">Scaricate</string>
     <string name="ignore_vulns">Ignora vulnerabilità di sicurezza segnalate</string>
     <string name="ignore">Ignora</string>
-    <string name="warning_disable_battery_optimization">A partire da Android 12, l\'app richiede l\'ottimizzazione della batteria per processi in secondo piano come la sincronizzazione e il download. Se ignori questa autorizzazione, te la sbrigherai da solo e le tue segnalazioni di errore verranno ignorate.</string>
+    <string name="warning_disable_battery_optimization">A partire da Android 12, l\'app richiede l\'ottimizzazione della batteria per processi in secondo piano come la sincronizzazione e il download. Se ignori questa autorizzazione, te la dovrai sbrigare da solo e le tue segnalazioni di errore verranno ignorate.</string>
     <string name="warning_show_notification">A partire da Android 13, l\'app richiede questa autorizzazione per ricevere notifiche sui diversi processi. Se ignori questa autorizzazione, non riceverai alcuna notifica.</string>
     <string name="disable_signature_check">Disabilita controllo firma</string>
     <string name="keep_install_notification">Mantieni notifica installazione</string>
@@ -353,7 +353,7 @@
     <string name="alt_new_apps">Usa disposizione alternativa per nuove app</string>
     <string name="enabled">Abilitato</string>
     <string name="disabled">Disabilitato</string>
-    <string name="proxy_url">Url</string>
+    <string name="proxy_url">URL</string>
     <string name="repo_qr_code">Codice QR del repository</string>
     <string name="download_manager">Gestore download del sistema</string>
     <string name="install_packages_permission_message">A partire da Android 8 le app richiedono questa autorizzazione per poter installare pacchetti.</string>
@@ -390,4 +390,7 @@
     <string name="hide_new_apps">Nascondi nuova barra delle app</string>
     <string name="hide_new_apps_description">Combina le app nuove e quelle aggiornate di recente nell\'elenco verticale della pagina più recente.</string>
     <string name="prefs_search_apps">Numero massimo di applicazioni per cui eseguire la query per i risultati della ricerca.</string>
+    <string name="wait_to_sync">Attendi un paio di secondi prima di riprovare a sincronizzare.</string>
+    <string name="prefs_search_apps_description">Numero massimo di applicazioni da includere nei risultati di ricerca (imposta su 0 per includere tutte le app).</string>
+    <string name="state_modified">Modificato</string>
 </resources>
