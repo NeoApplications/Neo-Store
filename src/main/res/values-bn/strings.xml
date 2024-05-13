@@ -231,7 +231,7 @@
     <string name="prefs_installer">স্থাপনা সমুহ</string>
     <string name="root_installer">মূল স্থাপনা</string>
     <string name="action_open_code">কোড দেখুন</string>
-    <string name="trackers_note_0">এটি কি অ্যাপ বা স্পাইওয়্যার\?</string>
+    <string name="trackers_note_0">এটি কি অ্যাপ বা স্পাইওয়্যার?</string>
     <string name="action_change_permissions">অনুমতি পরিবর্তন করুন</string>
     <string name="default_installer">ডিফল্ট বৈঠক স্থাপন</string>
     <string name="permission_contacts">পরিচিতি</string>
