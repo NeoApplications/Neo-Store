@@ -277,7 +277,7 @@
     <string name="action_open_website">Aberi su situ web</string>
     <string name="trackers_none">Perunu arrastadore</string>
     <string name="trackers_in">Arrastadores in %s</string>
-    <string name="trackers_note_0">Est un\'aplicatzione o unu programma ispia (spyware)\?</string>
+    <string name="trackers_note_0">Est un\'aplicatzione o unu programma ispia (spyware)?</string>
     <string name="trackers_note_1">Includet medas arrastadores de sos datos sensìbiles tuos</string>
     <string name="trackers_note_2">Proite tenet bisòngiu de custos arrastadores\?</string>
     <string name="trackers_note_3">Tenet una paja de arrastadores</string>
