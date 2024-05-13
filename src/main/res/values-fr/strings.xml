@@ -279,7 +279,7 @@
     <string name="action_open_website">Visiter le site web</string>
     <string name="trackers_none">Pas de traceurs</string>
     <string name="trackers_in">Traceurs dans %s</string>
-    <string name="trackers_note_0">Est-ce une application ou un logiciel espion \?</string>
+    <string name="trackers_note_0">Est-ce une application ou un logiciel espion ?</string>
     <string name="trackers_note_1">Comprend de nombreux traceurs de vos données sensibles</string>
     <string name="trackers_note_2">Pourquoi ces traceurs sont-ils nécessaires \?</string>
     <string name="permissions_note_1">Requiert un nombre significatif de permissions</string>
