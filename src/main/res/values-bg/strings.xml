@@ -315,7 +315,7 @@
     <string name="trackers_identification_description">Тракерите позволяват на приложенията да използват услугите за влизане на конкретни услуги, напр. Facebook.</string>
     <string name="trackers_note_3">Има няколко тракера</string>
     <string name="trackers_note_4">Минимум до никакви тракери</string>
-    <string name="trackers_note_0">Това приложение ли е или шпионски софтуер\?</string>
+    <string name="trackers_note_0">Това приложение ли е или шпионски софтуер?</string>
     <string name="permissions_note_2">Не изисква много разрешения</string>
     <string name="permissions_note_3">Минимален брой разрешения</string>
     <string name="permissions_note_4">Не изисква почти никакви разрешения</string>
