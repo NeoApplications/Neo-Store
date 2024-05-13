@@ -278,7 +278,7 @@
     <string name="action_open_website">Otwórz stronę internetową</string>
     <string name="trackers_none">Brak elementów śledzących</string>
     <string name="trackers_in">Elementy śledzące w %s</string>
-    <string name="trackers_note_0">Czy to jest aplikacja czy spyware\?</string>
+    <string name="trackers_note_0">Czy to jest aplikacja czy spyware?</string>
     <string name="trackers_note_1">Zawiera wiele elementów śledzących Twoich wrażliwych danych</string>
     <string name="trackers_note_2">Po co jej są potrzebne te elementy śledzące\?</string>
     <string name="trackers_note_3">Ma ich trochę</string>
