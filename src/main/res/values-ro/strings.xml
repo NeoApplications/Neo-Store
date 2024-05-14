@@ -242,7 +242,7 @@
     <string name="trackers_note_2">De ce are nevoie de acești urmăritori\?</string>
     <string name="trackers_in">Urmăritori în %s</string>
     <string name="trackers_note_3">Are câțiva urmăritori</string>
-    <string name="trackers_note_0">Este o aplicație sau un spyware?</string>
+    <string name="trackers_note_0">Este o aplicație sau spyware?</string>
     <string name="trackers_note_1">Include multe instrumente de urmărire a datelor dvs. sensibile</string>
     <string name="trackers_note_4">Minim sau fără urmăritori</string>
     <string name="app_installed">Instalat</string>
@@ -329,7 +329,7 @@
     <string name="clear_text">Text clar</string>
     <string name="next">Următorul</string>
     <string name="repos_export">Exportă depozitele</string>
-    <string name="repos_import">Importă depozite (le înlocuiește pe cele deja existente)</string>
+    <string name="repos_import">Importă depozite (le înlocuiește pe cele existente)</string>
     <string name="finished">Finalizat</string>
     <string name="canceled">Anulat</string>
     <string name="previous">Anterior</string>
@@ -351,7 +351,7 @@
     <string name="allow_unstable_updates">Permite afișarea actualizărilor instabile</string>
     <string name="alt_new_apps_description">Utilizează aspectul alternativ/vechi al aplicațiilor noi, care arată carduri mici ale aplicațiilor.</string>
     <string name="alt_new_apps">Utilizează un aspect alternativ al aplicațiilor noi</string>
-    <string name="proxy_url">Url</string>
+    <string name="proxy_url">URL</string>
     <string name="enabled">Activat</string>
     <string name="disabled">Dezactivat</string>
     <string name="repo_qr_code">Codul QR al depozitului</string>
@@ -383,11 +383,14 @@
     <string name="action_lock_biometric">Blocare biometrică</string>
     <string name="kids_mode">Modul copii</string>
     <string name="kids_mode_summary">Activează modul pentru copii, dezactivând instalarea de aplicații noi.</string>
-    <string name="kids_mode_summary_full">Activează modul pentru copii, dezactivând instalarea de aplicații noi. Pentru a dezactiva, atinge versiunea aplicației în cealaltă pagină de șase ori. Acest indiciu este ascuns la repornirea aplicației.</string>
+    <string name="kids_mode_summary_full">Activează modul pentru copii, dezactivând noile instalări de aplicații. Pentru a dezactiva, atinge versiunea aplicației de șase ori pe cealaltă pagină. La repornirea aplicației, acest indiciu este ascuns.</string>
     <string name="hide_new_apps">Ascunde bara de aplicații noi</string>
     <string name="hide_new_apps_description">Combină aplicațiile noi și actualizate recent într-o listă verticală de pe ultima pagină.</string>
     <string name="download_manager">Managerul de descărcare al sistemului</string>
     <string name="download_manager_summary">Utilizează managerul de descărcare al sistemului pentru a descărca aplicațiile mai fiabil. Această opțiune nu acceptă TOR sau proxy-ul personalizat, folosește setările de sistem.</string>
     <string name="install_packages_permission_title">Permisiunea de a instala pachete</string>
-    <string name="install_packages_permission_message">Începând cu Android 8 aplicațiile necesită această permisiune pentru a putea instala pachete.</string>
+    <string name="install_packages_permission_message">Începând cu Android 8, aplicațiile necesită această permisiune pentru a putea instala pachete.</string>
+    <string name="wait_to_sync">Așteaptă câteva secunde înainte de a încerca din nou sincronizarea.</string>
+    <string name="prefs_search_apps_description">Numărul maxim de aplicații de inclus în rezultatele căutării (setat la 0 pentru a include toate aplicațiile).</string>
+    <string name="state_modified">Modificat</string>
 </resources>
