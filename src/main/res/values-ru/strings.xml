@@ -4,7 +4,7 @@
     <string name="add_repository">Добавить репозиторий</string>
     <string name="address">URL-адрес</string>
     <string name="all_applications">Все приложения</string>
-    <string name="all_applications_up_to_date">Все приложения в актуальном состоянии</string>
+    <string name="all_applications_up_to_date">Все приложения обновлены</string>
     <string name="already_exists">Уже существует</string>
     <string name="always">Всегда</string>
     <string name="amoled">Чёрная</string>
@@ -191,7 +191,7 @@
     <string name="default_tab">Вкладка по умолчанию</string>
     <string name="installing">Установка</string>
     <string name="pending">Ожидание</string>
-    <string name="ignore_battery_optimization_not_supported">Ваша версия Android не поддерживает отключение экономии заряда батареи.</string>
+    <string name="ignore_battery_optimization_not_supported">Ваша версия Android не поддерживает отключение оптимизации расхода батареи.</string>
     <string name="dialog_refuse">Оставить</string>
     <string name="dialog_approve">Выключить</string>
     <string name="ignore_battery_optimization_title">Экономия заряда батареи</string>
@@ -388,8 +388,11 @@
     <string name="action_lock_device">Блокировка устройства</string>
     <string name="kids_mode_summary">Использовать детский режим, отключающий установку новых приложений.</string>
     <string name="system_installer">Системный установщик</string>
-    <string name="kids_mode_summary_full">Включён детский режим, отключающий установку новых приложений. Для отключения этого режима нажмите на версию приложения (на другом экране) шесть раз. Данная подсказка будет скрыта после перезапуска приложения.</string>
+    <string name="kids_mode_summary_full">Включить режим для детей, отключающий установку новых приложений. Для отключения нажмите на версию приложения шесть раз (на другом экране). Эта подсказка будет скрыта после перезапуска.</string>
     <string name="hide_new_apps_description">Объединить новые и недавно обновлённые приложения в вертикальном списке на последней странице.</string>
     <string name="hide_new_apps">Скрыть панель новых приложений</string>
     <string name="prefs_search_apps">Максимальное количество результатов при поиске приложений.</string>
+    <string name="wait_to_sync">Подождать пару секунд перед повторением попытки синхронизации.</string>
+    <string name="prefs_search_apps_description">Максимальное количество приложений в результатах поиска (0 для снятия ограничения).</string>
+    <string name="state_modified">Изменено</string>
 </resources>
