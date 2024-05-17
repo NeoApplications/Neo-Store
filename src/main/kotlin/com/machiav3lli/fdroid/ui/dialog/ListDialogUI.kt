@@ -23,6 +23,8 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.ui.components.ProductItemContent
 import com.machiav3lli.fdroid.ui.compose.utils.blockShadow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.mapLatest
 
 @Composable
 fun <T> ListDialogUI(
@@ -74,12 +76,14 @@ fun <T> ListDialogUI(
     }
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun ProductsListDialogUI(
     repositoryId: Long,
     title: String,
 ) {
     val apps by MainApplication.db.getProductDao().productsForRepositoryFlow(repositoryId)
+        .mapLatest { prod -> prod.map { it.toItem() } }
         .collectAsState(initial = null)
     val repo by MainApplication.db.getRepositoryDao().getFlow(repositoryId)
         .collectAsState(initial = null)
@@ -89,7 +93,7 @@ fun ProductsListDialogUI(
         items = apps,
     ) {
         ProductItemContent(
-            product = it.toItem(),
+            product = it,
             repo = repo,
         )
     }
