@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -103,11 +102,16 @@ import com.machiav3lli.fdroid.utility.shareReleaseIntent
 import com.machiav3lli.fdroid.utility.startLauncherActivity
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.truncate
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalCoroutinesApi::class
+)
 @Composable
 fun AppSheet(
     viewModel: AppSheetVM,
@@ -131,9 +135,11 @@ fun AppSheet(
     }
     val products = viewModel.products.collectAsState(null)
     val exodusInfo by viewModel.exodusInfo.collectAsState(null)
-    val privacyNote by viewModel.privacyNote.collectAsState(PrivacyNote())
-    val sourceType by remember { derivedStateOf { privacyNote.sourceType } }
-    val authorProducts by viewModel.authorProducts.collectAsState(null)
+    val privacyNote = viewModel.privacyNote.collectAsState(PrivacyNote())
+    val sourceType by remember { derivedStateOf { privacyNote.value.sourceType } }
+    val authorProducts by viewModel.authorProducts
+        .mapLatest { list -> list.map { it.toItem() } }
+        .collectAsState(emptyList())
     val repos by viewModel.repositories.collectAsState(null)
     val downloadState by viewModel.downloadingState.collectAsState()
     val mainAction by viewModel.mainAction.collectAsState()
@@ -174,9 +180,13 @@ fun AppSheet(
                         release,
                         repository,
                         when {
-                            installed?.versionCode == release.versionCode && installed?.signature == release.signature                               -> RELEASE_STATE_INSTALLED
-                            release.incompatibilities.firstOrNull() == null && release.selected && repository.id == suggestedProductRepo?.second?.id -> RELEASE_STATE_SUGGESTED
-                            else                                                                                                                     -> RELEASE_STATE_NONE
+                            installed?.versionCode == release.versionCode && installed?.signature == release.signature
+                                 -> RELEASE_STATE_INSTALLED
+
+                            release.incompatibilities.firstOrNull() == null && release.selected && repository.id == suggestedProductRepo?.second?.id
+                                 -> RELEASE_STATE_SUGGESTED
+
+                            else -> RELEASE_STATE_NONE
                         }
                     )
                 }
@@ -392,13 +402,13 @@ fun AppSheet(
 
         val trackersRank by remember {
             derivedStateOf {
-                if (exodusInfo != null) truncate((privacyNote.trackersNote - 1) / 20f).toInt()
+                if (exodusInfo != null) truncate((privacyNote.value.trackersNote - 1) / 20f).toInt()
                 else null
             }
         }
         val permissionsRank by remember {
             derivedStateOf {
-                truncate((privacyNote.permissionsNote - 1) / 20f).toInt()
+                truncate((privacyNote.value.permissionsNote - 1) / 20f).toInt()
             }
         }
 
@@ -582,18 +592,13 @@ fun AppSheet(
                             }
                         }
                         item {
-                            if (!authorProducts.isNullOrEmpty()) {
+                            if (authorProducts.isNotEmpty()) {
                                 ExpandableItemsBlock(
                                     heading = stringResource(
                                         id = R.string.other_apps_by,
                                         product.author.name
                                     ),
                                 ) {
-                                    Log.i(
-                                        "author products",
-                                        authorProducts?.map { it.author }?.joinToString()
-                                            .orEmpty()
-                                    )
                                     ProductsHorizontalRecycler(
                                         productsList = authorProducts,
                                         repositories = repos?.associateBy { repo -> repo.id }
@@ -626,7 +631,10 @@ fun AppSheet(
                                 modifier = Modifier.padding(start = 14.dp)
                             )
                         }
-                        items(items = releaseItems) { item ->
+                        items(
+                            items = releaseItems,
+                            key = { "${it.first.versionCode}#${it.second.id}" },
+                        ) { item ->
                             ReleaseItem(
                                 release = item.first,
                                 repository = item.second,

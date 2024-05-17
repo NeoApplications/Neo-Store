@@ -85,7 +85,7 @@ open class SingleListVM(
         initialValue = request(source)
     )
 
-    private val products: StateFlow<List<Product>?> = combine(
+    private val products: StateFlow<List<Product>> = combine(
         request,
         installed,
         db.getProductDao().queryFlowList(request.value),
@@ -97,17 +97,17 @@ open class SingleListVM(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = null
+        initialValue = emptyList()
     )
 
     @OptIn(FlowPreview::class)
-    val filteredProducts: StateFlow<List<Product>?> =
+    val filteredProducts: StateFlow<List<Product>> =
         combine(products, query.debounce(400)) { products, query ->
-            products?.matchSearchQuery(query)
+            products.matchSearchQuery(query)
         }.stateIn(
             viewModelScope,
             SharingStarted.Lazily,
-            null
+            emptyList()
         )
 
     @OptIn(ExperimentalCoroutinesApi::class)

@@ -56,18 +56,23 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.ExploreVM
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun ExplorePage(viewModel: ExploreVM) {
     val context = LocalContext.current
     val neoActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
-    val filteredProducts by viewModel.filteredProducts.collectAsState()
+
     val installedList by viewModel.installed.collectAsState(emptyMap())
+    val filteredProducts by viewModel.filteredProducts
+        .mapLatest { list -> list.map { it.toItem(installedList[it.packageName]) } }
+        .collectAsState(emptyList())
     val repositories by viewModel.repositories.collectAsState(null)
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
@@ -187,10 +192,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                 state = listState,
                 contentPadding = PaddingValues(vertical = 8.dp),
             ) {
-                items(
-                    items = filteredProducts?.map { it.toItem(installedList[it.packageName]) }
-                        ?: emptyList(),
-                ) { item ->
+                items(items = filteredProducts, key = { it.packageName }) { item ->
                     ProductsListItem(
                         item = item,
                         repo = repositoriesMap[item.repositoryId],

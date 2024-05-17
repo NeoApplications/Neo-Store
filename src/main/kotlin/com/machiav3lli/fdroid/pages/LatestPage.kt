@@ -29,6 +29,7 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.DialogKey
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
@@ -41,18 +42,25 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.LatestVM
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun LatestPage(viewModel: LatestVM) {
     val context = LocalContext.current
     val neoActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
-    val primaryList by viewModel.primaryProducts.collectAsState()
-    val secondaryList by viewModel.secondaryProducts.collectAsState(null)
+
     val installedList by viewModel.installed.collectAsState(emptyMap())
+    val secondaryList by viewModel.secondaryProducts
+        .mapLatest { list -> list.map { it.toItem(installedList[it.packageName]) } }
+        .collectAsState(emptyList())
+    val primaryList by viewModel.primaryProducts
+        .mapLatest { list -> list.map { it.toItem(installedList[it.packageName]) } }
+        .collectAsState(emptyList())
     val repositories by viewModel.repositories.collectAsState(null)
     val repositoriesMap by remember(repositories) {
         mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
@@ -124,7 +132,6 @@ fun LatestPage(viewModel: LatestVM) {
                         modifier = Modifier.weight(1f),
                         productsList = secondaryList,
                         repositories = repositoriesMap,
-                        installedMap = installedList,
                     ) { item ->
                         neoActivity.navigateProduct(item.packageName)
                     }
@@ -133,7 +140,6 @@ fun LatestPage(viewModel: LatestVM) {
                         modifier = Modifier.weight(1f),
                         productsList = secondaryList,
                         repositories = repositoriesMap,
-                        installedMap = installedList,
                         favorites = favorites,
                         onFavouriteClick = {
                             viewModel.setFavorite(
@@ -141,18 +147,27 @@ fun LatestPage(viewModel: LatestVM) {
                                 !favorites.contains(it.packageName)
                             )
                         },
-                        onActionClick = {
-                            val installed = installedList[it.packageName]
-                            val action = { MainApplication.wm.install(it) }
-                            if (installed != null && installed.launcherActivities.isNotEmpty())
-                                context.onLaunchClick(
-                                    installed,
-                                    neoActivity.supportFragmentManager
-                                )
-                            else if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                                dialogKey.value = DialogKey.Download(it.name, action)
-                                openDialog.value = true
-                            } else action()
+                        onActionClick = { item, action ->
+                            val installed = installedList[item.packageName]
+                            val installFun = { MainApplication.wm.install(item) }
+
+                            when (action) {
+                                is ActionState.Install -> {
+                                    if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                        dialogKey.value = DialogKey.Download(item.name, installFun)
+                                        openDialog.value = true
+                                    } else installFun()
+                                }
+
+                                is ActionState.Launch  -> installed?.let {
+                                    context.onLaunchClick(
+                                        it,
+                                        neoActivity.supportFragmentManager
+                                    )
+                                }
+
+                                else                   -> {}
+                            }
                         },
                         onUserClick = { item ->
                             neoActivity.navigateProduct(item.packageName)
@@ -176,8 +191,7 @@ fun LatestPage(viewModel: LatestVM) {
             }
         }
         items(
-            items = primaryList?.map { it.toItem(installedList[it.packageName]) }
-                ?: emptyList(),
+            items = primaryList,
         ) { item ->
             ProductsListItem(
                 item = item,

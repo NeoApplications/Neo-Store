@@ -69,7 +69,7 @@ open class DoubleListVM(
         initialValue = request(primarySource)
     )
 
-    val primaryProducts: StateFlow<List<Product>?> = combine(
+    val primaryProducts: StateFlow<List<Product>> = combine(
         primaryRequest,
         installed,
         db.getProductDao().queryFlowList(primaryRequest.value),
@@ -81,25 +81,24 @@ open class DoubleListVM(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = null
+        initialValue = emptyList()
     )
 
     private var secondaryRequest = MutableStateFlow(request(secondarySource))
 
-    val secondaryProducts: StateFlow<List<Product>?> = combine(
+    val secondaryProducts: StateFlow<List<Product>> = combine(
         secondaryRequest,
         installed,
         db.getProductDao().queryFlowList(secondaryRequest.value),
         db.getExtrasDao().getAllFlow(),
     ) { req, _, _, _ ->
-        if (secondarySource != primarySource) withContext(cc) {
+        withContext(cc) {
             db.getProductDao().queryObject(req)
         }
-        else null
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = null
+        initialValue = emptyList()
     )
 
     val repositories = db.getRepositoryDao().getAllFlow().mapLatest { it }

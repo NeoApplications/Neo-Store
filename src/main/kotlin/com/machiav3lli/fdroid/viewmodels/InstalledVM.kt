@@ -41,7 +41,7 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
         initialValue = emptyMap(),
     )
 
-    val installedProducts: StateFlow<List<Product>?> = combine(
+    val installedProducts: StateFlow<List<Product>> = combine(
         _sortFilter,
         installed,
         db.getProductDao().queryFlowList(Request.productsInstalled()),
@@ -53,10 +53,10 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = null
+        initialValue = emptyList()
     )
 
-    val updates: StateFlow<List<Product>?> = combine(
+    val updates: StateFlow<List<Product>> = combine(
         installed,
         db.getProductDao().queryFlowList(Request.productsUpdates()),
         db.getExtrasDao().getAllFlow(),
@@ -67,7 +67,7 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = null
+        initialValue = emptyList()
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)

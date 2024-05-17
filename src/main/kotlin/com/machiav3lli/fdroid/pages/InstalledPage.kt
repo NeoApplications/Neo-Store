@@ -48,8 +48,8 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.entity.DialogKey
+import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
@@ -71,6 +71,8 @@ import com.machiav3lli.fdroid.viewmodels.InstalledVM
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -154,16 +156,20 @@ fun InstalledPage(viewModel: InstalledVM) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun InstallsPage(viewModel: InstalledVM) {
     val context = LocalContext.current
     val neoActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
 
-    val installedProducts by viewModel.installedProducts.collectAsState(null)
-    val updates by viewModel.updates.collectAsState(emptyList())
     val installedList by viewModel.installed.collectAsState(emptyMap())
+    val updates by viewModel.updates
+        .mapLatest { list -> list.map { it.toItem(installedList[it.packageName]) } }
+        .collectAsState(emptyList())
+    val installedItems by viewModel.installedProducts
+        .mapLatest { list -> list.map { it.toItem(installedList[it.packageName]) } }
+        .collectAsState(emptyList())
     val repositories by viewModel.repositories.collectAsState(null)
 
     val repositoriesMap by remember(repositories) {
@@ -175,7 +181,7 @@ fun InstallsPage(viewModel: InstalledVM) {
 
     val updatesAvailable by remember {
         derivedStateOf {
-            updates.orEmpty().isNotEmpty()
+            updates.isNotEmpty()
         }
     }
 
@@ -193,13 +199,6 @@ fun InstallsPage(viewModel: InstalledVM) {
         derivedStateOf { downloads.sortedBy { it.state.name } }
     }
 
-    val installedItems by remember {
-        derivedStateOf {
-            installedProducts
-                ?.map { it.toItem(installedList[it.packageName]) }
-                ?: emptyList()
-        }
-    }
 
     var updatesVisible by remember { mutableStateOf(true) }
 
@@ -271,21 +270,18 @@ fun InstallsPage(viewModel: InstalledVM) {
                                     text = stringResource(id = R.string.update_all),
                                     icon = Phosphor.Download,
                                 ) {
-                                    updates?.let {
-                                        val action = {
-                                            MainApplication.wm.update(
-                                                *it.map(Product::toItem)
-                                                    .toTypedArray()
-                                            )
-                                        }
-                                        if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                                            dialogKey.value =
-                                                DialogKey.BatchDownload(
-                                                    it.map(Product::label), action
-                                                )
-                                            openDialog.value = true
-                                        } else action()
+                                    val action = {
+                                        MainApplication.wm.update(
+                                            *updates.toTypedArray()
+                                        )
                                     }
+                                    if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                        dialogKey.value =
+                                            DialogKey.BatchDownload(
+                                                updates.map(ProductItem::name), action
+                                            )
+                                        openDialog.value = true
+                                    } else action()
                                 }
                             }
                         }
@@ -293,9 +289,7 @@ fun InstallsPage(viewModel: InstalledVM) {
                             ProductsHorizontalRecycler(
                                 productsList = updates,
                                 repositories = repositoriesMap,
-                                installedMap = installedList,
-                                rowsNumber = updates?.size?.coerceIn(1, 2)
-                                    ?: 1,
+                                rowsNumber = updates.size.coerceIn(1, 2),
                             ) { item ->
                                 neoActivity.navigateProduct(item.packageName)
                             }
@@ -310,7 +304,7 @@ fun InstallsPage(viewModel: InstalledVM) {
                 text = stringResource(id = R.string.downloading)
             )
         }
-        if (downloadsRunning) items(sortedDownloads) { item ->
+        if (downloadsRunning) items(sortedDownloads, key = { it.cacheFileName }) { item ->
             DownloadedItem(
                 download = item,
                 iconDetails = iconDetails[item.packageName],
@@ -334,7 +328,7 @@ fun InstallsPage(viewModel: InstalledVM) {
                 }
             }
         }
-        items(installedItems) { item ->
+        items(installedItems, key = { it.packageName }) { item ->
             ProductsListItem(
                 item = item,
                 repo = repositoriesMap[item.repositoryId],
@@ -452,7 +446,7 @@ fun DownloadedPage(viewModel: InstalledVM) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
     ) {
-        items(sortedDownloaded) { item ->
+        items(sortedDownloaded, key = { it.cacheFileName }) { item ->
             val state by remember(item) {
                 derivedStateOf { item.state }
             }

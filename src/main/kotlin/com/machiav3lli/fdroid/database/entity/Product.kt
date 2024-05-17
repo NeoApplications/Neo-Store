@@ -132,6 +132,7 @@ open class Product(
             installedVersion = installed?.version ?: "",
             compatible = compatible,
             canUpdate = canUpdate(installed),
+            launchable = !installed?.launcherActivities.isNullOrEmpty(),
             matchRank = 0
         )
 

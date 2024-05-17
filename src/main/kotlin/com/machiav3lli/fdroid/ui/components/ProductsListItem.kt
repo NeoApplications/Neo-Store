@@ -30,12 +30,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Installed
@@ -47,7 +45,7 @@ import com.machiav3lli.fdroid.ui.components.appsheet.ReleaseBadge
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
-import com.machiav3lli.fdroid.utility.onLaunchClick
+import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 
 @Composable
 fun ProductsListItem(
@@ -59,15 +57,14 @@ fun ProductsListItem(
     installed: Installed? = null,
     onActionClick: (ProductItem) -> Unit = {},
 ) {
-    val product by remember(item) { mutableStateOf(item) }
     val isExpanded = rememberSaveable { mutableStateOf(false) }
 
     ExpandableCard(
         isExpanded = isExpanded,
-        onClick = { onUserClick(product) },
+        onClick = { onUserClick(item) },
         expandedContent = {
             ExpandedItemContent(
-                item = product,
+                item = item,
                 installed = installed,
                 favourite = isFavorite,
                 onFavourite = onFavouriteClick,
@@ -76,7 +73,7 @@ fun ProductsListItem(
         }
     ) {
         ProductItemContent(
-            product = product,
+            product = item,
             repo = repo,
             installed = installed,
             isExpanded = isExpanded,
@@ -155,14 +152,11 @@ fun ProductItemContent(
 fun ProductCarouselItem(
     product: ProductItem,
     repo: Repository? = null,
-    installed: Installed? = null,
     favourite: Boolean = false,
     onFavourite: (ProductItem) -> Unit = {},
-    onActionClick: (ProductItem) -> Unit = {},
+    onActionClick: (ProductItem, ActionState) -> Unit = { _, _ -> },
     onUserClick: (ProductItem) -> Unit = {},
 ) {
-    val context = LocalContext.current
-    val neoActivity = context as NeoActivity
     val imageData by remember(product) {
         derivedStateOf {
             createIconUri(
@@ -176,9 +170,13 @@ fun ProductCarouselItem(
     }
 
     val action = when {
-        installed == null && !Preferences[Preferences.Key.KidsMode] -> ActionState.Install
-        !installed?.launcherActivities.isNullOrEmpty()              -> ActionState.Launch
-        else                                                        -> null
+        product.installedVersion.isEmpty() && !Preferences[Preferences.Key.KidsMode]
+        -> ActionState.Install
+
+        product.launchable
+        -> ActionState.Launch
+
+        else -> null
     }
 
     ListItem(
@@ -216,7 +214,7 @@ fun ProductCarouselItem(
                 if (product.canUpdate) ReleaseBadge(
                     text = "${product.installedVersion} → ${product.version}",
                 ) else Text(
-                    text = installed?.version ?: product.version,
+                    text = product.installedVersion.nullIfEmpty() ?: product.version,
                     modifier = Modifier
                         .widthIn(max = 60.dp),
                     textAlign = TextAlign.End,
@@ -260,19 +258,8 @@ fun ProductCarouselItem(
                             containerColor = MaterialTheme.colorScheme.primaryContainer,
                             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         ),
-                        onClick = {
-                            when (action) {
-                                is ActionState.Install -> onActionClick.invoke(product)
-                                is ActionState.Launch  -> installed?.let {
-                                    context.onLaunchClick(
-                                        it,
-                                        neoActivity.supportFragmentManager
-                                    )
-                                }
-
-                                else                   -> {}
-                            }
-                        }) {
+                        onClick = { onActionClick(product, action) },
+                    ) {
                         Icon(
                             imageVector = action.icon,
                             contentDescription = stringResource(id = action.textId),

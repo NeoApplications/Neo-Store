@@ -12,5 +12,6 @@ data class ProductItem(
     var installedVersion: String = "69",
     var compatible: Boolean = false,
     var canUpdate: Boolean = false,
+    var launchable: Boolean = false,
     var matchRank: Int = 0,
 )

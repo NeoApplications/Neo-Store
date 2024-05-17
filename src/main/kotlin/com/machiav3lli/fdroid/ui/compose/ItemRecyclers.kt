@@ -37,9 +37,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.database.entity.Installed
-import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.ui.components.PRODUCT_CARD_HEIGHT
 import com.machiav3lli.fdroid.ui.components.PRODUCT_CAROUSEL_HEIGHT
@@ -52,9 +51,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProductsHorizontalRecycler(
     modifier: Modifier = Modifier,
-    productsList: List<Product>?,
+    productsList: List<ProductItem>,
     repositories: Map<Long, Repository>,
-    installedMap: Map<String, Installed> = emptyMap(),
     rowsNumber: Int = 2,
     onUserClick: (ProductItem) -> Unit = {},
 ) {
@@ -67,10 +65,8 @@ fun ProductsHorizontalRecycler(
         horizontalItemSpacing = 8.dp,
         contentPadding = PaddingValues(horizontal = 8.dp),
     ) {
-        items(productsList ?: emptyList()) { product ->
-            product.toItem(installedMap[product.packageName]).let { item ->
-                ProductCard(item, repositories[item.repositoryId], onUserClick)
-            }
+        items(productsList, key = { it.packageName }) { item ->
+            ProductCard(item, repositories[item.repositoryId], onUserClick)
         }
     }
 }
@@ -79,17 +75,16 @@ fun ProductsHorizontalRecycler(
 @Composable
 fun ProductsCarousel(
     modifier: Modifier = Modifier,
-    productsList: List<Product>?,
+    productsList: List<ProductItem>,
     repositories: Map<Long, Repository>,
-    installedMap: Map<String, Installed> = emptyMap(),
     favorites: Array<String>,
     onFavouriteClick: (ProductItem) -> Unit,
-    onActionClick: (ProductItem) -> Unit = {},
+    onActionClick: (ProductItem, ActionState) -> Unit = { _, _ -> },
     onUserClick: (ProductItem) -> Unit = {},
 ) {
-    val state = rememberPagerState { productsList?.size ?: 0 }
-    val size by remember(productsList?.size) {
-        derivedStateOf { productsList?.size ?: 1 }
+    val state = rememberPagerState { productsList.size }
+    val size by remember(productsList) {
+        derivedStateOf { productsList.size }
     }
 
     Box(
@@ -106,18 +101,15 @@ fun ProductsCarousel(
             pageSpacing = 8.dp,
             beyondBoundsPageCount = 3,
         ) {
-            productsList?.get(it)?.let { product ->
-                product.toItem(installedMap[product.packageName]).let { item ->
-                    ProductCarouselItem(
-                        item,
-                        repositories[item.repositoryId],
-                        installedMap[product.packageName],
-                        favorites.contains(item.packageName),
-                        onFavouriteClick,
-                        onActionClick,
-                        onUserClick,
-                    )
-                }
+            productsList.getOrNull(it)?.let { item ->
+                ProductCarouselItem(
+                    item,
+                    repositories[item.repositoryId],
+                    favorites.contains(item.packageName),
+                    onFavouriteClick,
+                    onActionClick,
+                    onUserClick,
+                )
             }
         }
         CarouselIndicators(
