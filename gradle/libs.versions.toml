@@ -6,7 +6,7 @@ coil = "2.6.0"
 compose-compiler = "1.5.14"
 compose-bom = "2024.05.00"
 compose-accompanist = "0.34.0"
-compose-html = "1.6.0"
+compose-markdown = "0.5.0"
 coroutines = "1.8.1"
 immutables = "0.3.7"
 jackson = "2.17.1"
@@ -76,7 +76,7 @@ compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "compose-accompanist" }
-compose-html = { module = "de.charlex.compose:html-text", version.ref = "compose-html" }
+compose-markdown = { module = "com.github.jeziellago:compose-markdown", version.ref = "compose-markdown" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

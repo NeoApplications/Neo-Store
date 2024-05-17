@@ -157,7 +157,7 @@ dependencies {
     implementation(libs.jackson.core)
     implementation(libs.serialization.json)
     implementation(libs.markdown)
-    implementation(libs.compose.html)
+    implementation(libs.compose.markdown)
 
     // Storage
     implementation(libs.simple.storage)
