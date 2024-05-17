@@ -1,40 +1,12 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
-val vActivity = "1.9.0"
-val vBiometric = "1.2.0-alpha05"
-val vCoil = "2.6.0"
-val vComposeCompiler = "1.5.13"
-val vCompose = "1.6.7"
-val vComposeAccompanist = "0.34.0"
-val vComposeHtml = "1.6.0"
-val vComposeMaterial3 = "1.2.1"
-val vCoroutines = "1.8.0"
-val vImmutables = "0.3.7"
-val vJackson = "2.17.0"
-val vKoin = "3.5.6"
-val vKoinKsp = "1.3.1"
-val vKotlin = "1.9.23"
-val vKSP = "1.0.20"
-val vKtor = "2.3.10"
-val vLibsu = "5.2.2"
-val vLifecycle = "2.7.0"
-val vMarkdown = "0.7.0"
-val vMaterial = "1.11.0"
-val vMoshi = "1.15.0"
-val vNavigation = "2.7.7"
-val vOkhttp = "5.0.0-alpha.14"
-val vPreference = "1.2.1"
-val vRoom = "2.6.1"
-val vSerialization = "1.6.3"
-val vSimpleStorage = "1.5.5"
-val vWork = "2.9.0"
-val vZXing = "3.5.3"
+val vComposeCompiler = "1.5.14"
 
 plugins {
-    id("com.android.application") version ("8.4.0")
-    kotlin("android") version ("1.9.23")
-    kotlin("plugin.serialization") version ("1.9.23")
-    id("com.google.devtools.ksp") version ("1.9.23-1.0.20")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -153,75 +125,64 @@ android {
 dependencies {
 
     // Core
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:$vKotlin")
-    implementation("com.google.devtools.ksp:symbol-processing-api:$vKotlin-$vKSP")
-    implementation("androidx.preference:preference-ktx:$vPreference")
-    implementation("androidx.activity:activity-compose:$vActivity")
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.ksp)
+    implementation(libs.preference)
+    implementation(libs.activity.compose)
+    implementation(libs.collections.immutable)
+
     // use the new WorkInfo.stopReason (report stopReason), setNextScheduleTimeOverride (Precise scheduling), Configuration.Builder.setContentUriTriggerWorkersLimit (limit for content uri workers)
-    implementation("androidx.work:work-runtime:$vWork")
-    implementation("androidx.biometric:biometric:$vBiometric")
-    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:$vImmutables")
+    implementation(libs.work.runtime)
+    implementation(libs.biometric)
+    implementation(libs.material)
 
-    // Material3
-    implementation("com.google.android.material:material:$vMaterial")
-
-    // Coil
-    implementation("io.coil-kt:coil:$vCoil")
-    implementation("io.coil-kt:coil-compose:$vCoil")
-
-    // ZXing
-    implementation("com.google.zxing:core:$vZXing")
+    // Coil, Ktor, Okhttp, Zxing
+    implementation(libs.coil)
+    implementation(libs.coil.compose)
+    implementation(libs.zxing.core)
+    implementation(libs.ktor.core)
+    implementation(libs.ktor.okhttp)
+    implementation(libs.ktor.logging)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
 
     // Koin
-    implementation("io.insert-koin:koin-android:$vKoin")
-    implementation("io.insert-koin:koin-androidx-workmanager:$vKoin")
-    implementation("io.insert-koin:koin-annotations:$vKoinKsp")
-    ksp("io.insert-koin:koin-ksp-compiler:$vKoinKsp")
+    implementation(libs.koin.android)
+    implementation(libs.koin.workmanager)
+    implementation(libs.koin.annotations)
+    ksp(libs.koin.compiler)
 
-    // Ktor
-    implementation("io.ktor:ktor-client-core:$vKtor")
-    implementation("io.ktor:ktor-client-okhttp:$vKtor")
-    implementation("io.ktor:ktor-client-logging:$vKtor")
-
-    // OkHttps
-    implementation("com.squareup.okhttp3:okhttp:$vOkhttp")
-    implementation("com.squareup.okhttp3:logging-interceptor:$vOkhttp")
-
-    // LibSu
-    implementation("com.github.topjohnwu.libsu:core:$vLibsu")
-
-    // JSON
-    implementation("com.fasterxml.jackson.core:jackson-core:$vJackson")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$vSerialization")
-
-    // Markdown
-    implementation("org.jetbrains:markdown:$vMarkdown")
-    implementation("de.charlex.compose:html-text:$vComposeHtml")
+    // JSON, Markdown, LibSu
+    implementation(libs.libsu.core)
+    implementation(libs.jackson.core)
+    implementation(libs.serialization.json)
+    implementation(libs.markdown)
+    implementation(libs.compose.html)
 
     // Storage
-    implementation("com.anggrayudi:storage:$vSimpleStorage")
+    implementation(libs.simple.storage)
 
     // Coroutines / Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$vLifecycle")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$vCoroutines")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$vCoroutines")
+    implementation(libs.lifecycle)
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
 
     // Room
-    implementation("androidx.room:room-runtime:$vRoom")
-    implementation("androidx.room:room-ktx:$vRoom")
-    ksp("androidx.room:room-compiler:$vRoom")
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
     // Compose
-    implementation("androidx.compose.runtime:runtime:$vCompose")
-    implementation("androidx.compose.ui:ui:$vCompose")
-    implementation("androidx.compose.foundation:foundation:$vCompose")
-    implementation("androidx.compose.material3:material3:$vComposeMaterial3")
-    implementation("androidx.compose.animation:animation:$vCompose")
-    implementation("androidx.navigation:navigation-compose:$vNavigation")
-    implementation("com.google.accompanist:accompanist-permissions:$vComposeAccompanist")
-
-    debugImplementation("androidx.compose.ui:ui-tooling:$vCompose")
-    debugImplementation("androidx.compose.ui:ui-tooling-preview:$vCompose")
+    api(platform(libs.compose.bom))
+    implementation(libs.compose.runtime)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.animation)
+    implementation(libs.compose.navigation)
+    implementation(libs.accompanist.permissions)
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.tooling.preview)
 }
 
 // using a task as a preBuild dependency instead of a function that takes some time insures that it runs
