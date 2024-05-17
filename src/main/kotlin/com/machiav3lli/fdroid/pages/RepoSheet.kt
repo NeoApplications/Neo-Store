@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -49,11 +50,13 @@ import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.BlockText
+import com.machiav3lli.fdroid.ui.components.CheckChip
 import com.machiav3lli.fdroid.ui.components.QrCodeImage
 import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.TitleText
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TrashSimple
@@ -87,8 +90,13 @@ fun RepoPage(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val repo by MainApplication.db.getRepositoryDao().getFlow(repositoryId)
+    val repoState = MainApplication.db.getRepositoryDao().getFlow(repositoryId)
         .collectAsState(initial = null)
+    val repo by remember {
+        derivedStateOf {
+            repoState.value
+        }
+    }
     val appsCount by MainApplication.db.getProductDao().countForRepositoryFlow(repositoryId)
         .collectAsState(0)
     var editMode by remember { mutableStateOf(initEditMode) }
@@ -157,162 +165,257 @@ fun RepoPage(
         )
     }
 
-    Scaffold(
-        containerColor = Color.Transparent,
-        contentColor = MaterialTheme.colorScheme.onBackground,
-        bottomBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                ActionButton(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(
-                        id = if (!editMode) R.string.delete
-                        else R.string.cancel
-                    ),
-                    icon = if (!editMode) Phosphor.TrashSimple
-                    else Phosphor.X,
-                    positive = false
-                ) {
-                    if (!editMode)
-                        openDeleteDialog.value = true
-                    else {
-                        editMode = false
-                        addressFieldValue = repo?.address.orEmpty()
-                        fingerprintFieldValue = repo?.fingerprint.orEmpty()
-                        usernameFieldValue = repo?.authenticationPair?.first.orEmpty()
-                        passwordFieldValue = repo?.authenticationPair?.second.orEmpty()
-                    }
-                }
-                ActionButton(
-                    text = stringResource(
-                        id = if (!editMode) R.string.edit
-                        else R.string.save
-                    ),
-                    icon = if (!editMode) Phosphor.GearSix
-                    else Phosphor.Check,
-                    modifier = Modifier.weight(1f),
-                    positive = true,
-                    enabled = !editMode || validations.all { it.value },
-                    onClick = {
-                        if (!editMode) editMode = true
-                        else {
-                            // TODO show readable error
-                            updateRepo(repo?.apply {
-                                address = addressFieldValue
-                                fingerprint = fingerprintFieldValue.uppercase()
-                                setAuthentication(
-                                    usernameFieldValue,
-                                    passwordFieldValue,
-                                )
-                            })
-                            // TODO sync a new when is already active
-                            editMode = false
-                        }
-                    }
-                )
+    repo?.let { repo ->
+        val enabled by remember {
+            derivedStateOf {
+                repoState.value?.enabled ?: false
             }
         }
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(
-                    bottom = paddingValues.calculateBottomPadding(),
-                    start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
-                    end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
-                )
-                .blockBorder()
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(16.dp)
-        ) {
-            if ((repo?.updated ?: -1) > 0L && !editMode) {
-                item {
-                    TitleText(
+
+        Scaffold(
+            containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onBackground,
+            bottomBar = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    if (!editMode) Row(
                         modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.name),
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    BlockText(text = repo?.name)
-                }
-            }
-            if (!editMode) {
-                item {
-                    TitleText(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.description),
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    BlockText(text = repo?.description?.replace("\n", " "))
-                }
-            }
-            if ((repo?.updated ?: -1) > 0L && !editMode) {
-                item {
-                    TitleText(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.recently_updated),
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    BlockText(
-                        text = if (repo != null && repo?.updated != null) {
-                            val date = Date(repo?.updated ?: 0)
-                            val format =
-                                if (DateUtils.isToday(date.time)) DateUtils.FORMAT_SHOW_TIME else
-                                    DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE
-                            DateUtils.formatDateTime(context, date.time, format)
-                        } else stringResource(R.string.unknown)
-                    )
-                }
-            }
-            if (!editMode && repo?.enabled == true &&
-                (repo?.lastModified.orEmpty().isNotEmpty() ||
-                        repo?.entityTag.orEmpty().isNotEmpty())
-            ) {
-                item {
-                    TitleText(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.number_of_applications),
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                dialogProps.value = DIALOG_PRODUCTS
-                                openDialog.value = true
-                            },
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        BlockText(
-                            text = appsCount.toString()
-                        )
-                        Icon(
-                            imageVector = Phosphor.ArrowSquareOut,
-                            contentDescription = stringResource(id = R.string.list_apps)
+                        CheckChip(
+                            checked = enabled,
+                            text = stringResource(
+                                id = if (enabled) R.string.enabled
+                                else R.string.enable
+                            ),
+                            fullWidth = false,
+                        ) {
+                            scope.launch {
+                                SyncWorker.enableRepo(repo, !enabled)
+                            }
+                        }
+                        ActionButton(
+                            text = stringResource(id = R.string.delete),
+                            icon = Phosphor.TrashSimple,
+                            positive = false
+                        ) {
+                            openDeleteDialog.value = true
+                        }
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        ActionButton(
+                            modifier = Modifier.weight(1f),
+                            text = stringResource(
+                                id = if (!editMode) R.string.dismiss
+                                else R.string.cancel
+                            ),
+                            icon = if (!editMode) Phosphor.CaretDown
+                            else Phosphor.X,
+                            positive = false
+                        ) {
+                            if (!editMode)
+                                onDismiss()
+                            else {
+                                editMode = false
+                                addressFieldValue = repo.address
+                                fingerprintFieldValue = repo.fingerprint
+                                usernameFieldValue = repo.authenticationPair.first.orEmpty()
+                                passwordFieldValue = repo.authenticationPair.second.orEmpty()
+                            }
+                        }
+                        ActionButton(
+                            text = stringResource(
+                                id = if (!editMode) R.string.edit
+                                else R.string.save
+                            ),
+                            icon = if (!editMode) Phosphor.GearSix
+                            else Phosphor.Check,
+                            modifier = Modifier.weight(1f),
+                            positive = true,
+                            enabled = !editMode || validations.all { it.value },
+                            onClick = {
+                                if (!editMode) editMode = true
+                                else {
+                                    // TODO show readable error
+                                    updateRepo(repo.apply {
+                                        address = addressFieldValue
+                                        fingerprint = fingerprintFieldValue.uppercase()
+                                        setAuthentication(
+                                            usernameFieldValue,
+                                            passwordFieldValue,
+                                        )
+                                    })
+                                    // TODO sync a new when is already active
+                                    editMode = false
+                                }
+                            }
                         )
                     }
                 }
             }
-            item {
-                TitleText(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.address),
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                AnimatedVisibility(visible = !editMode) {
-                    BlockText(text = repo?.address)
+        ) { paddingValues ->
+            LazyColumn(
+                modifier = Modifier
+                    .padding(
+                        bottom = paddingValues.calculateBottomPadding(),
+                        start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
+                        end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
+                    )
+                    .blockBorder()
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                if ((repo.updated) > 0L && !editMode) {
+                    item {
+                        TitleText(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(id = R.string.name),
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        BlockText(text = repo.name)
+                    }
                 }
-                AnimatedVisibility(visible = editMode) {
-                    Column {
+                if (!editMode) {
+                    item {
+                        TitleText(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(id = R.string.description),
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        BlockText(text = repo.description.replace("\n", " "))
+                    }
+                }
+                if ((repo.updated) > 0L && !editMode) {
+                    item {
+                        TitleText(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(id = R.string.recently_updated),
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        BlockText(
+                            text = run {
+                                val date = Date(repo.updated)
+                                val format =
+                                    if (DateUtils.isToday(date.time)) DateUtils.FORMAT_SHOW_TIME else
+                                        DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE
+                                DateUtils.formatDateTime(context, date.time, format)
+                            }
+                        )
+                    }
+                }
+                if (!editMode && enabled &&
+                    (repo.lastModified.isNotEmpty() ||
+                            repo.entityTag.isNotEmpty())
+                ) {
+                    item {
+                        TitleText(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(id = R.string.number_of_applications),
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    dialogProps.intValue = DIALOG_PRODUCTS
+                                    openDialog.value = true
+                                },
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            BlockText(
+                                text = appsCount.toString()
+                            )
+                            Icon(
+                                imageVector = Phosphor.ArrowSquareOut,
+                                contentDescription = stringResource(id = R.string.list_apps)
+                            )
+                        }
+                    }
+                }
+                item {
+                    TitleText(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.address),
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    AnimatedVisibility(visible = !editMode) {
+                        BlockText(text = repo.address)
+                    }
+                    AnimatedVisibility(visible = editMode) {
+                        Column {
+                            OutlinedCard(
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = MaterialTheme.shapes.large,
+                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                                onClick = {
+                                    dialogProps.intValue = DIALOG_ADDRESS
+                                    openDialog.value = true
+                                }
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(
+                                        horizontal = 12.dp,
+                                        vertical = 16.dp
+                                    ),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    Text(text = addressFieldValue)
+                                }
+                            }
+                            if (repo.mirrors.isNotEmpty()) LazyRow(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            ) {
+                                items(repo.mirrors) { text ->
+                                    SelectChip(
+                                        text = text,
+                                        checked = text == addressFieldValue,
+                                        alwaysShowIcon = false,
+                                    ) {
+                                        addressFieldValue = text
+                                        invalidateAddress(addressValidity, addressFieldValue)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                item {
+                    TitleText(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.fingerprint),
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    AnimatedVisibility(visible = !editMode) {
+                        BlockText(
+                            text = if (
+                                repo.updated > 0L
+                                && repo.fingerprint.isEmpty()
+                            ) stringResource(id = R.string.repository_unsigned_DESC)
+                            else repo.fingerprint
+                                .windowed(2, 2, false)
+                                .joinToString(separator = " ") { it.uppercase(Locale.US) + " " },
+                            color = if (repo.updated > 0L && repo.fingerprint.isEmpty())
+                                MaterialTheme.colorScheme.error
+                            else MaterialTheme.colorScheme.onSurface,
+                            monospace = true,
+                        )
+                    }
+                    AnimatedVisibility(visible = editMode) {
                         OutlinedCard(
                             modifier = Modifier.fillMaxWidth(),
                             shape = MaterialTheme.shapes.large,
                             border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
                             onClick = {
-                                dialogProps.value = DIALOG_ADDRESS
+                                dialogProps.intValue = DIALOG_FINGERPRINT
                                 openDialog.value = true
                             }
                         ) {
@@ -320,146 +423,90 @@ fun RepoPage(
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
-                                Text(text = addressFieldValue)
-                            }
-                        }
-                        if (repo?.mirrors?.isNotEmpty() == true) LazyRow(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        ) {
-                            items(repo?.mirrors ?: emptyList()) { text ->
-                                SelectChip(
-                                    text = text,
-                                    checked = text == addressFieldValue,
-                                    alwaysShowIcon = false,
-                                ) {
-                                    addressFieldValue = text
-                                    invalidateAddress(addressValidity, addressFieldValue)
-                                }
+                                Text(text = fingerprintFieldValue
+                                    .windowed(2, 2, false)
+                                    .joinToString(separator = " ") { it.uppercase(Locale.US) + " " }
+                                )
                             }
                         }
                     }
                 }
-            }
-            item {
-                TitleText(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.fingerprint),
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                AnimatedVisibility(visible = !editMode) {
-                    BlockText(
-                        text = if (
-                            (repo?.updated ?: -1) > 0L
-                            && repo?.fingerprint.isNullOrEmpty()
-                        ) stringResource(id = R.string.repository_unsigned_DESC)
-                        else repo?.fingerprint
-                            ?.windowed(2, 2, false)
-                            ?.joinToString(separator = " ") { it.uppercase(Locale.US) + " " },
-                        color = if (
-                            (repo?.updated ?: -1) > 0L
-                            && repo?.fingerprint?.isEmpty() == true
-                        ) MaterialTheme.colorScheme.error
-                        else MaterialTheme.colorScheme.onSurface,
-                        monospace = true,
-                    )
-                }
-                AnimatedVisibility(visible = editMode) {
-                    OutlinedCard(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = MaterialTheme.shapes.large,
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
-                        onClick = {
-                            dialogProps.value = DIALOG_FINGERPRINT
-                            openDialog.value = true
-                        }
-                    ) {
+                if (!editMode) {
+                    item {
+                        TitleText(
+                            modifier = Modifier,
+                            text = stringResource(id = R.string.repo_qr_code),
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
                         Row(
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center,
                         ) {
-                            Text(text = fingerprintFieldValue
-                                .windowed(2, 2, false)
-                                .joinToString(separator = " ") { it.uppercase(Locale.US) + " " }
+                            QrCodeImage(
+                                content = repo.intentAddress,
+                                modifier = Modifier.fillMaxWidth(0.5f),
+                                contentDescription = stringResource(id = R.string.repo_qr_code)
                             )
                         }
                     }
                 }
-            }
-            if (!editMode) {
-                item {
-                    TitleText(
-                        modifier = Modifier,
-                        text = stringResource(id = R.string.repo_qr_code),
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                    ) {
-                        QrCodeImage(
-                            content = repo?.intentAddress ?: "Neo Store",
-                            modifier = Modifier.fillMaxWidth(0.5f),
-                            contentDescription = stringResource(id = R.string.repo_qr_code)
+                if (editMode) {
+                    item {
+                        TitleText(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(id = R.string.username),
                         )
-                    }
-                }
-            }
-            if (editMode) {
-                item {
-                    TitleText(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.username),
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedCard(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = MaterialTheme.shapes.large,
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
-                        onClick = {
-                            dialogProps.value = DIALOG_USERNAME
-                            openDialog.value = true
-                        }
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Text(text = usernameFieldValue)
-                        }
-                    }
-                }
-                item {
-                    TitleText(
-                        modifier = Modifier
-                            .clickable {
-                                dialogProps.value = DIALOG_PASSWORD
+                        Spacer(modifier = Modifier.height(8.dp))
+                        OutlinedCard(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = MaterialTheme.shapes.large,
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                            onClick = {
+                                dialogProps.intValue = DIALOG_USERNAME
                                 openDialog.value = true
                             }
-                            .fillMaxWidth(),
-                        text = stringResource(id = R.string.password),
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedCard(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = MaterialTheme.shapes.large,
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
-                        onClick = {
-                            dialogProps.value = DIALOG_PASSWORD
-                            openDialog.value = true
-                        }
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            Text(text = passwordFieldValue)
+                            Row(
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Text(text = usernameFieldValue)
+                            }
+                        }
+                    }
+                    item {
+                        TitleText(
+                            modifier = Modifier
+                                .clickable {
+                                    dialogProps.intValue = DIALOG_PASSWORD
+                                    openDialog.value = true
+                                }
+                                .fillMaxWidth(),
+                            text = stringResource(id = R.string.password),
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        OutlinedCard(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = MaterialTheme.shapes.large,
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                            onClick = {
+                                dialogProps.intValue = DIALOG_PASSWORD
+                                openDialog.value = true
+                            }
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Text(text = passwordFieldValue)
+                            }
                         }
                     }
                 }
             }
         }
     }
+
 
     if (openDeleteDialog.value) {
         BaseDialog(openDialogCustom = openDeleteDialog) {
@@ -480,7 +527,7 @@ fun RepoPage(
     }
 
     if (openDialog.value) BaseDialog(openDialogCustom = openDialog) {
-        dialogProps.value.let { dialogMode ->
+        dialogProps.intValue.let { dialogMode ->
             when (dialogMode) {
                 DIALOG_ADDRESS -> {
                     StringInputDialogUI(

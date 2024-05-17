@@ -391,4 +391,6 @@
     <string name="wait_to_sync">Wait couple of seconds before retrying to sync.</string>
     <string name="prefs_search_apps_description">Maximum number of applications to include in search results (set to 0 to include all apps).</string>
     <string name="state_modified">Modified</string>
+    <string name="enable">Enable</string>
+    <string name="dismiss">Dismiss</string>
 </resources>
