@@ -554,7 +554,9 @@ fun AppSheet(
                             if ((product.description + product.summary).isNotEmpty()) HtmlTextBlock(
                                 shortText = product.summary,
                                 longText = product.description
-                            )
+                            ) {
+                                onUriClick(Uri.parse(it), true)
+                            }
                         }
                         val links = product.generateLinks(context)
                         item {

@@ -25,6 +25,7 @@ fun HtmlTextBlock(
     modifier: Modifier = Modifier,
     shortText: String,
     longText: String = "",
+    onUriClick: (String) -> Unit = {},
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -43,6 +44,7 @@ fun HtmlTextBlock(
             else shortText,
             linkColor = MaterialTheme.colorScheme.secondary,
             isTextSelectable = true,
+            onLinkClicked = onUriClick
         )
         if (longText.isNotEmpty()) {
             FilledTonalButton(onClick = { isExpanded = !isExpanded }) {
