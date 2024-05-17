@@ -42,7 +42,7 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
     )
 
     val installedProducts: StateFlow<List<Product>> = combine(
-        _sortFilter,
+        sortFilter,
         installed,
         db.getProductDao().queryFlowList(Request.productsInstalled()),
         db.getExtrasDao().getAllFlow(),

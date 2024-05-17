@@ -178,28 +178,23 @@ fun SourceCodeButton(
     onClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
-    val isFree by remember {
-        derivedStateOf { sourceType.isFree }
-    }
-    val isOpenSource by remember {
-        derivedStateOf { sourceType.isOpenSource }
-    }
-    val isSourceAvailable by remember {
-        derivedStateOf { sourceType.isSourceAvailable }
+    val img by remember(sourceType) {
+        derivedStateOf {
+            when {
+                sourceType.isFree            -> Phosphor.Copyleft
+                sourceType.isOpenSource      -> com.machiav3lli.fdroid.ui.compose.icons.Icon.Opensource
+                sourceType.isSourceAvailable -> Phosphor.Copyright
+                else                         -> Phosphor.GlobeSimple
+            }
+        }
     }
 
     CardButton(
-        icon = when {
-            isFree            -> Phosphor.Copyleft
-            isOpenSource      -> com.machiav3lli.fdroid.ui.compose.icons.Icon.Opensource
-            isSourceAvailable -> Phosphor.Copyright
-            else              -> Phosphor.GlobeSimple
-        },
+        icon = img,
         description = stringResource(id = R.string.source_code),
         onClick = onClick,
         onLongClick = onLongClick
     )
-
 }
 
 @Composable

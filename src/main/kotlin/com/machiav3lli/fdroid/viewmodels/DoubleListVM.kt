@@ -58,7 +58,7 @@ open class DoubleListVM(
     )
 
     private var primaryRequest: StateFlow<Request> = combine(
-        _sortFilter,
+        sortFilter,
         Preferences.subject.map { Preferences[Preferences.Key.HideNewApps] },
         installed
     ) { _, _, _ ->

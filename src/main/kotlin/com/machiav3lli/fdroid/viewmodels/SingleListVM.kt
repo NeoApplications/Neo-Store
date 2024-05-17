@@ -73,7 +73,7 @@ open class SingleListVM(
     )
 
     private var request: StateFlow<Request> = combineTransform(
-        _sortFilter,
+        sortFilter,
         sections,
         installed
     ) { _, _, _ ->
