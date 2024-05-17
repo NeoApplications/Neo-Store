@@ -303,7 +303,7 @@
     <string name="show_trackers_description">从 Exodus Privacy 获取并显示应用程序的跟踪器。</string>
     <string name="no_trackers_data_available">没有关于跟踪器的数据（尚未）。</string>
     <string name="post_notifications_permission_title">允许发布通知</string>
-    <string name="post_notifications_permission_message">启动 Android 13 应用需要此权限才能发布通知。</string>
+    <string name="post_notifications_permission_message">从 Android 13 开始，应用需要此权限才能发布通知。</string>
     <string name="enable_download_directory">使用自定义下载文件夹</string>
     <string name="enable_download_directory_summary">允许将下载的 APK 保存在选定的文件夹中。</string>
     <string name="custom_download_directory">自定义下载文件夹</string>
@@ -386,4 +386,7 @@
     <string name="hide_new_apps">隐藏新 App 栏</string>
     <string name="hide_new_apps_description">将新的和最近更新的应用合并显示在最新页的垂直列表。</string>
     <string name="prefs_search_apps">搜索结果中显示应用的最大数目。</string>
+    <string name="wait_to_sync">在重新尝试同步之前等待几秒钟。</string>
+    <string name="prefs_search_apps_description">在搜索结果中包含的最大应用数量（设为 0 来包含所有应用）。</string>
+    <string name="state_modified">已修改</string>
 </resources>
