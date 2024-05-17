@@ -109,6 +109,7 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
                 )
                 hasErrors = true
             } finally {
+                intent.putExtra(PackageInstaller.EXTRA_PACKAGE_NAME, packageName)
                 if (!hasErrors) {
                     session.commit(
                         PendingIntent.getBroadcast(context, id, intent, flags).intentSender

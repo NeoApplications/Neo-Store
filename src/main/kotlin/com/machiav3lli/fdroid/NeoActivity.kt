@@ -256,9 +256,9 @@ class NeoActivity : AppCompatActivity() {
     private fun handleIntent(intent: Intent?) {
         val data = intent?.data
         val host = data?.host
-        val fingerprintText =
-            data?.getQueryParameter("fingerprint")?.uppercase()?.nullIfEmpty()
-                ?: data?.getQueryParameter("FINGERPRINT")?.uppercase()?.nullIfEmpty()
+        val fingerprintText = if (data?.isOpaque == true) null
+        else data?.getQueryParameter("fingerprint")?.uppercase()?.nullIfEmpty()
+            ?: data?.getQueryParameter("FINGERPRINT")?.uppercase()?.nullIfEmpty()
 
         when (intent?.action) {
             Intent.ACTION_VIEW -> {
