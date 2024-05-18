@@ -308,7 +308,7 @@
     <string name="enable_download_directory_summary">Permite guardar los APKs descargados en una carpeta elegida.</string>
     <string name="custom_download_directory">Carpeta personalizada de descargas</string>
     <string name="post_notifications_permission_title">Permiso para enviar notificaciones</string>
-    <string name="post_notifications_permission_message">A partir de Android 13 las aplicaciones requieren este permiso para poder publicar notificaciones.</string>
+    <string name="post_notifications_permission_message">A partir de Android 13, las aplicaciones requieren este permiso para poder publicar notificaciones.</string>
     <string name="downloads">Descargas</string>
     <string name="ignore_vulns">Ignorar las vulnerabilidades de seguridad notificadas</string>
     <string name="disable_download_version_check_summary">Permite descargar versiones anteriores de aplicaciones instaladas. Se puede usar en combinación con el parche \"letmedowngrade\" de Magisk.</string>
@@ -333,7 +333,7 @@
     <string name="previous">Anterior</string>
     <string name="next">Siguiente</string>
     <string name="repos_export">Exportar los repositorios</string>
-    <string name="repos_import">Importar los repositorios (anula los ya existentes)</string>
+    <string name="repos_import">Importar los repositorios (anula los existentes)</string>
     <string name="auto_sync_interval_hours">Intervalo de sincronización automática (en horas)</string>
     <string name="alt_navbar_item">Utilizar un elemento alternativo a la barra de navegación</string>
     <string name="alt_navbar_item_description">Utiliza el diseño alternativo/antiguo de los elementos de la barra de navegación, que muestra la etiqueta de los elementos no seleccionados.</string>
@@ -353,10 +353,10 @@
     <string name="alt_new_apps">Utilizar el nuevo diseño alternativo de las aplicaciones</string>
     <string name="enabled">Activado</string>
     <string name="disabled">Desactivado</string>
-    <string name="proxy_url">Dirección url</string>
+    <string name="proxy_url">URL</string>
     <string name="repo_qr_code">Código QR del repositorio</string>
     <string name="download_manager">Gestor de descargas del sistema</string>
-    <string name="install_packages_permission_message">Las aplicaciones de Android 8 requieren este permiso para poder instalar paquetes.</string>
+    <string name="install_packages_permission_message">Las aplicaciones de Android 8, requieren este permiso para poder instalar paquetes.</string>
     <string name="install_packages_permission_title">Permiso para instalar paquetes</string>
     <string name="download_manager_summary">Utiliza el gestor de descargas del sistema para descargar las aplicaciones de forma más fiable. Esta opción no es compatible con TOR o el proxy personalizado, utiliza la configuración del sistema.</string>
     <string name="dark_high_contrast">Oscuro (alto contraste)</string>
@@ -390,4 +390,7 @@
     <string name="hide_new_apps">Ocultar la barra de nuevas aplicaciones</string>
     <string name="hide_new_apps_description">Combina las aplicaciones nuevas y las actualizadas recientemente en la lista vertical de la última página.</string>
     <string name="prefs_search_apps">Número máximo de aplicaciones para consultar los resultados de la búsqueda.</string>
+    <string name="wait_to_sync">Espere un par de segundos antes de volver a intentar la sincronización.</string>
+    <string name="prefs_search_apps_description">Número máximo de aplicaciones para incluir en los resultados de búsqueda (establecido en 0 para incluir todas las aplicaciones).</string>
+    <string name="state_modified">Modificado</string>
 </resources>
