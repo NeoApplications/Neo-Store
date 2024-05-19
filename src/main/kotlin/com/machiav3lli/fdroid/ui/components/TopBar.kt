@@ -158,12 +158,13 @@ fun ExpandedSearchView(
 fun WideSearchField(
     modifier: Modifier = Modifier,
     query: String,
+    focusOnCompose: Boolean = true,
     onClose: () -> Unit,
     onQueryChanged: (String) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     val textFieldFocusRequester = remember { FocusRequester() }
-    LaunchedEffect(textFieldFocusRequester) { textFieldFocusRequester.requestFocus() }
+    LaunchedEffect(textFieldFocusRequester) { if (focusOnCompose) textFieldFocusRequester.requestFocus() }
 
     var textFieldValue by remember {
         mutableStateOf(TextFieldValue(query, TextRange(query.length)))
