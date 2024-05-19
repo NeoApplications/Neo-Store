@@ -202,7 +202,7 @@
     <string name="no_action_possible">Дії неможливі</string>
     <string name="no_permissions_identified">Запитувані дозволи не виявлено</string>
     <string name="show_screenshots">Показувати знімки екрана</string>
-    <string name="show_screenshots_description">Відображати знімки екрана на сторінці застосунку.</string>
+    <string name="show_screenshots_description">Показувати знімки екрана на сторінці застосунку.</string>
     <string name="releases">Випуски</string>
     <string name="no_updates_available">Нема доступних версій</string>
     <string name="dynamic">Динамічна системна</string>
@@ -210,7 +210,7 @@
     <string name="favorite_add">Додати до вибраних</string>
     <string name="open">Відкрити</string>
     <string name="loading_list">Завантажується список…</string>
-    <string name="images_cache_retention">Зберігання кешу зображень</string>
+    <string name="images_cache_retention">Зберігання кеша зображень</string>
     <string name="auto_sync_interval">Інтервал авто-синхронізації (у хвилинах)</string>
     <string name="releases_cache_retention">Зберігання кешу завантажених APK</string>
     <string name="prefs_cache">Кеш</string>
@@ -378,7 +378,7 @@
     <string name="deselect_all">Зняти всі виділення</string>
     <string name="confirm_download_DESC_FORMAT">Ви дійсно хочете завантажити %s?</string>
     <string name="action_lock_dialog">Показати діалогове вікно блокування дій</string>
-    <string name="kids_mode_summary_full">Ввімкнути дитячий режим, вимкнувши встановлення нових застосунків. Щоб вимкнути, торкніться версії застосунку на іншій сторінці шість разів. Ця підказка ховається після перезапуску застосунку.</string>
+    <string name="kids_mode_summary_full">Увімкніть дитячий режим, вимкнувши встановлення нових застосунків. Щоб вимкнути, торкніться версії застосунку шість разів на іншій сторінці. Після перезапуску ця підказка буде прихована.</string>
     <string name="system_installer">Системний встановлювач</string>
     <string name="download_show_dialog">Показати вікно завантаження</string>
     <string name="bottom_search_bar">Нижня панель пошуку</string>
@@ -392,4 +392,7 @@
     <string name="hide_new_apps">Сховати панель нових застосунків</string>
     <string name="hide_new_apps_description">Об\'єднати нові та нещодавно оновлені застосунки у вертикальному списку на останній сторінці.</string>
     <string name="prefs_search_apps">Максимальна кількість застосунків при пошуку.</string>
+    <string name="wait_to_sync">Зачекайте кілька секунд, перш ніж повторити спробу синхронізації.</string>
+    <string name="prefs_search_apps_description">Максимальна кількість застосунків у результатах пошуку (встановіть 0, щоб бачити всі).</string>
+    <string name="state_modified">Змінено</string>
 </resources>
