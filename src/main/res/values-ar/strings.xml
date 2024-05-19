@@ -399,4 +399,10 @@
     <string name="wait_to_sync">انتظر بضع ثوانٍ قبل إعادة محاولة المزامنة.</string>
     <string name="prefs_search_apps_description">الحد الأقصى لعدد التطبيقات المراد تضمينها في نتائج البحث (اضبط على 0 لتضمين جميع التطبيقات).</string>
     <string name="state_modified">تم تعديله</string>
+    <string name="dismiss">رفض</string>
+    <string name="target_android">الاندرويد المستهدف</string>
+    <string name="android_instead_of_sdk">إظهار إصدار Android بدلاً من SDK</string>
+    <string name="enable">تمكين</string>
+    <string name="android_instead_of_sdk_summary">إظهار اسم إصدار Android بدلاً من إظهار رقم SDK لـ minSDK وtargetSDK.</string>
+    <string name="min_android">الحد الأدنى للأندرويد</string>
 </resources>
