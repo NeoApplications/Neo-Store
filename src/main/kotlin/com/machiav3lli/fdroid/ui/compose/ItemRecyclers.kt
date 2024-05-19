@@ -13,9 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -27,16 +25,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.ProductItem
@@ -44,8 +39,6 @@ import com.machiav3lli.fdroid.ui.components.PRODUCT_CARD_HEIGHT
 import com.machiav3lli.fdroid.ui.components.PRODUCT_CAROUSEL_HEIGHT
 import com.machiav3lli.fdroid.ui.components.ProductCard
 import com.machiav3lli.fdroid.ui.components.ProductCarouselItem
-import com.machiav3lli.fdroid.ui.components.RepositoryItem
-import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroupHeading
 import kotlinx.coroutines.launch
 
 @Composable
@@ -159,48 +152,6 @@ fun CarouselIndicators(
                     .clip(CircleShape)
                     .background(color = color)
                     .clickable { scope.launch { state.animateScrollToPage(i) } }
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun RepositoriesRecycler(
-    modifier: Modifier = Modifier,
-    repositoriesList: List<Repository>,
-    onClick: (Repository) -> Unit = {},
-    onLongClick: (Repository) -> Unit = {},
-) {
-    val partedRrepos by remember(repositoriesList) {
-        mutableStateOf(repositoriesList.partition { it.enabled })
-    }
-
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        item {
-            PreferenceGroupHeading(heading = stringResource(id = R.string.enabled))
-        }
-        items(items = partedRrepos.first, key = { it.id }) {
-            RepositoryItem(
-                modifier = Modifier.animateItemPlacement(),
-                repository = it,
-                onClick = onClick,
-                onLongClick = onLongClick
-            )
-        }
-        item {
-            PreferenceGroupHeading(heading = stringResource(id = R.string.disabled))
-        }
-        items(items = partedRrepos.second, key = { it.id }) {
-            RepositoryItem(
-                modifier = Modifier.animateItemPlacement(),
-                repository = it,
-                onClick = onClick,
-                onLongClick = onLongClick
             )
         }
     }
