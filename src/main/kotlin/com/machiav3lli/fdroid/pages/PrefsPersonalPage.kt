@@ -40,7 +40,8 @@ fun PrefsPersonalPage() {
         dialogPref = pref
         openDialog.value = true
     }
-    val personalPrefs = listOf( // TODO break down into two groups
+    val personalPrefs = listOf(
+        // TODO break down into two groups
         Preferences.Key.Language,
         Preferences.Key.Theme,
         Preferences.Key.DefaultTab,
@@ -52,6 +53,7 @@ fun PrefsPersonalPage() {
         Preferences.Key.HideNewApps,
         Preferences.Key.AltBlockLayout,
         Preferences.Key.BottomSearchBar,
+        Preferences.Key.AndroidInsteadOfSDK,
         Preferences.Key.SearchApps,
         Preferences.Key.UpdatedApps,
         Preferences.Key.NewApps,

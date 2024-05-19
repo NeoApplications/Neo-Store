@@ -28,6 +28,10 @@ val BooleanPrefsMeta = mapOf(
         R.string.alt_block_layout,
         R.string.alt_block_layout_summary
     ),
+    Preferences.Key.AndroidInsteadOfSDK to Pair(
+        R.string.android_instead_of_sdk,
+        R.string.android_instead_of_sdk_summary
+    ),
     Preferences.Key.InstallAfterSync to Pair(
         R.string.install_after_sync,
         R.string.install_after_sync_summary

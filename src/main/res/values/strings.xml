@@ -393,4 +393,8 @@
     <string name="state_modified">Modified</string>
     <string name="enable">Enable</string>
     <string name="dismiss">Dismiss</string>
+    <string name="min_android">Minimum Android</string>
+    <string name="target_android">Target Android</string>
+    <string name="android_instead_of_sdk">Show Android version instead of SDK</string>
+    <string name="android_instead_of_sdk_summary">Show the Android version name instead of showing the SDK number for minSDK and targetSDK.</string>
 </resources>

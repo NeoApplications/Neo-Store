@@ -48,6 +48,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.AltNewApps,
         Key.HideNewApps,
         Key.AltBlockLayout,
+        Key.AndroidInsteadOfSDK,
         Key.BottomSearchBar,
         Key.SearchApps,
         Key.UpdatedApps,
@@ -272,6 +273,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object AltNewApps : Key<Boolean>("alt_new_apps_layout", Value.BooleanValue(false))
         data object HideNewApps : Key<Boolean>("hide_new_apps", Value.BooleanValue(false))
         data object AltBlockLayout : Key<Boolean>("alt_block_layout", Value.BooleanValue(false))
+        data object AndroidInsteadOfSDK : Key<Boolean>("android_instead_of_sdk", Value.BooleanValue(true))
         data object BottomSearchBar : Key<Boolean>("bottom_search_bar", Value.BooleanValue(false))
 
         data object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(150))
