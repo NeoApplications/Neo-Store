@@ -8,6 +8,7 @@ import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.newRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,8 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -25,11 +25,30 @@ import kotlinx.coroutines.withContext
 class PrefsVM(val db: DatabaseX) : ViewModel() {
 
     private val cc = Dispatchers.IO
+    private val cScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
     private val _showSheet = MutableSharedFlow<SheetNavigationData?>()
     val showSheet: SharedFlow<SheetNavigationData?> = _showSheet
 
-    private val _repositories = MutableStateFlow<List<Repository>>(emptyList())
-    val repositories = _repositories.asStateFlow()
+    val repositories = db.getRepositoryDao().getAllRepositories()
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            emptyList()
+        )
+
+    private val _reposSearchQuery = MutableStateFlow("")
+    val reposSearchQuery: StateFlow<String> = _reposSearchQuery
+
+    val filteredRepositories = repositories.combine(reposSearchQuery) { repos, query ->
+        repos.filter {
+            "${it.address} ${it.name} ${it.description}".contains(query, ignoreCase = true)
+        }
+    }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            emptyList()
+        )
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val installed = db.getInstalledDao().getAllFlow().mapLatest {
@@ -47,12 +66,8 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     private val intentFingerprint = MutableStateFlow("")
     val fingerprint = intentFingerprint as StateFlow<String>
 
-    init {
-        viewModelScope.launch(cc) {
-            db.getRepositoryDao().getAllRepositories().collectLatest {
-                _repositories.emit(it)
-            }
-        }
+    fun setSearchQuery(value: String) {
+        cScope.launch { _reposSearchQuery.emit(value) }
     }
 
     fun showRepositorySheet(
