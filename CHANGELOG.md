@@ -1,8 +1,27 @@
 CHANGELOG
 =========
 
+1.0.2 (19.05.2024) 10+ Commits +50 Translations
+------------------
 
-1.0.1 (09.05.2024) 0+ Commits +20 Translations
+### Function
+
+- Fix: Crash on tapping install notification of session installer
+- Fix: Excessive recomposition on Repo apps list
+- Update: Increase default search apps to 2000
+
+### UI
+
+- Add: Option to show Android version name instead of SDK (enbaled by default)
+- Update: Add enable and dismiss buttons to RepoSheet
+
+### UX
+
+- Add: Dialog on clicking links from app descriptions or changelogs
+- Add: Parsing markdown links in descriptions or changelogs
+- Add: Search bar to repos page
+
+1.0.1 (09.05.2024) 30+ Commits +20 Translations
 ------------------
 
 ### Function

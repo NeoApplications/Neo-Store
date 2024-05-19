@@ -1,0 +1,6 @@
+Add: Search bar to repos page
+Add: Option to show Android version name instead of SDK (enbaled by default)
+Add: Dialog on clicking links from app descriptions or changelogs
+Fix: Crash on tapping install notification of session installer
+Update: Add enable and dismiss buttons to RepoSheet
++ more in more than 10 commits & 50 translation contributions
