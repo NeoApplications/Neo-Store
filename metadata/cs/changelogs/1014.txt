@@ -1,0 +1,6 @@
+Přidáno: vyhledávací lišta ke stránce repozitářů
+Přidáno: možnost zobrazit název verze Android namísto SDK (povoleno ve výchozím nastavení)
+Přidáno: dialog při kliknutí na odkaz z popisu nebo seznamu změn aplikace
+Opraveno: pád při klepnutí na oznámení o instalaci relačního instalátoru
+Aktualizace: přidána tlačítka povolení a zakázání do RepoSheet
++ další ve více než 10 commitech a 50 příspěvcích k překladu
