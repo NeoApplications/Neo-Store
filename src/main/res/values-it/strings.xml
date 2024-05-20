@@ -148,7 +148,7 @@
     <string name="syncing_FORMAT">Sincronizzando %s…</string>
     <string name="system">Sistema</string>
     <string name="tap_to_install_DESC">Tocca per installare.</string>
-    <string name="target">Obiettivo</string>
+    <string name="target">Destinazione</string>
     <string name="theme">Tema</string>
     <string name="themes">Temi</string>
     <string name="tracks_or_reports_your_activity">Tiene traccia o segnala la tua attività</string>
@@ -393,4 +393,10 @@
     <string name="wait_to_sync">Attendi un paio di secondi prima di riprovare a sincronizzare.</string>
     <string name="prefs_search_apps_description">Numero massimo di applicazioni da includere nei risultati di ricerca (imposta su 0 per includere tutte le app).</string>
     <string name="state_modified">Modificato</string>
+    <string name="min_android">Android minimo</string>
+    <string name="dismiss">Respingi</string>
+    <string name="enable">Abilita</string>
+    <string name="target_android">Android di destinazione</string>
+    <string name="android_instead_of_sdk_summary">Mostra il nome della versione Android invece di mostrare il numero SDK per minSDK e targetSDK.</string>
+    <string name="android_instead_of_sdk">Mostra la versione di Android anziché l\'SDK</string>
 </resources>
