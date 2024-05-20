@@ -179,7 +179,7 @@
     <string name="update_all">安装全部</string>
     <string name="new_applications">新应用</string>
     <string name="installed_applications">已安装</string>
-    <string name="only_on_wifi_and_battery">仅在使用 Wi-Fi 且同时充电的情况下</string>
+    <string name="only_on_wifi_and_battery">仅在连接 Wi-Fi 且充电时</string>
     <string name="install_after_sync">自动更新</string>
     <string name="install_after_sync_summary">在浏览新的应用程序存储库后，安装所有新的版本。</string>
     <string name="prefs_updated_apps">在“最近更新”下显示的应用数量</string>
@@ -208,7 +208,7 @@
     <string name="open">打开</string>
     <string name="loading_list">正在加载列表…</string>
     <string name="images_cache_retention">图片缓存保留</string>
-    <string name="releases_cache_retention">下载的APK缓存保留</string>
+    <string name="releases_cache_retention">下载的 APK 缓存保留</string>
     <string name="auto_sync_interval">自动同步间隔（分钟）</string>
     <string name="favorite_applications">收藏</string>
     <string name="prefs_personal">个人</string>
@@ -216,7 +216,7 @@
     <string name="prefs_sync">同步</string>
     <string name="group_telegram">我们的 Telegram 群组</string>
     <string name="group_matrix">我们的 Matrix 群组</string>
-    <string name="min_sdk">最低SDK版本</string>
+    <string name="min_sdk">最低 SDK 版本</string>
     <string name="system_black">系统(黑色)</string>
     <string name="categories">类别</string>
     <string name="sort_descending">下降</string>
@@ -225,7 +225,7 @@
     <string name="action_reset">重置</string>
     <string name="date_added">添加日期</string>
     <string name="date_updated">更新日期</string>
-    <string name="target_sdk">当前SDK版本</string>
+    <string name="target_sdk">目标 SDK 版本</string>
     <string name="other_apps_by">%s 开发的其他应用</string>
     <string name="scan_qr_code">扫描二维码</string>
     <string name="prefs_installer">安装程序类型</string>
@@ -363,7 +363,7 @@
     <string name="root_allow_downgrades">允许降级应用程序</string>
     <string name="root_allow_downgrades_description">允许使用 Root 安装程序降级应用程序（仅适用于可调试应用程序版本）。 与“禁用下载版本检查”结合使用效果更好。</string>
     <string name="root_allow_installing_old_apps">允许安装较旧的应用程序</string>
-    <string name="root_allow_installing_old_apps_description">从 Android 14 开始，无法再安装目标 Android 版本太旧（Android 5.1 或更早版本）的应用程序。 此选项允许您无视此特性。</string>
+    <string name="root_allow_installing_old_apps_description">从 Android 14 开始，无法再安装目标 Android 版本太低（Android 5.1 或更早版本）的应用程序。 此选项允许您无视此特性。</string>
     <string name="am_installer">应用管理器安装程序</string>
     <string name="black_high_contrast">黑色（高对比度）</string>
     <string name="alt_block_layout">使用其他页面块布局</string>
@@ -389,4 +389,10 @@
     <string name="wait_to_sync">在重新尝试同步之前等待几秒钟。</string>
     <string name="prefs_search_apps_description">在搜索结果中包含的最大应用数量（设为 0 来包含所有应用）。</string>
     <string name="state_modified">已修改</string>
+    <string name="dismiss">忽略</string>
+    <string name="min_android">最低 Android 版本</string>
+    <string name="target_android">目标 Android 版本</string>
+    <string name="android_instead_of_sdk_summary">对于最低 SDK 版本和目标 SDK 版本，显示 Android 版本名称而不是 SDK 数字。</string>
+    <string name="android_instead_of_sdk">显示 Android 版本而不是 SDK 版本</string>
+    <string name="enable">启用</string>
 </resources>
