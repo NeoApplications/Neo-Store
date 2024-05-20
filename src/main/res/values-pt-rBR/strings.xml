@@ -389,4 +389,14 @@
     <string name="kids_mode_summary">Habilita o modo infantil, desabilitando a instalação de novos aplicativos.</string>
     <string name="hide_new_apps">Ocultar nova barra de aplicativos</string>
     <string name="hide_new_apps_description">Combine aplicativos novos e atualizados recentemente na lista vertical da página mais recente.</string>
+    <string name="enable">Habilitar</string>
+    <string name="dismiss">Dispensar</string>
+    <string name="min_android">Android mínimo</string>
+    <string name="target_android">Android alvo</string>
+    <string name="android_instead_of_sdk">Mostrar versão do Android em vez de SDK</string>
+    <string name="prefs_search_apps">Número máximo de aplicativos para consultar nos resultados de pesquisa.</string>
+    <string name="android_instead_of_sdk_summary">Mostrar o nome da versão do Android em vez de ficar mostrando número SDK para minSDK e targetSDK.</string>
+    <string name="wait_to_sync">Aguarde alguns segundos antes de tentar sincronizar novamente.</string>
+    <string name="prefs_search_apps_description">Número máximo de aplicativos para incluir nos resultados da pesquisa (definido como 0 para incluir todos os aplicativos).</string>
+    <string name="state_modified">Modificado</string>
 </resources>
