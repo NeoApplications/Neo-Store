@@ -17,7 +17,7 @@
     <string name="bug_tracker">Publieke lijst met foutreportages</string>
     <string name="cancel">Annuleer</string>
     <string name="cant_edit_sync_DESC">Kan synchroniserende archieven niet bewerken…</string>
-    <string name="changelog">Wijzigings-lijst</string>
+    <string name="changelog">Lijst met wijzigingen</string>
     <string name="changes">Wijzigingen</string>
     <string name="checking_repository">Archief nakijken…</string>
     <string name="compiled_for_debugging">Gecompileerd voor foutopsporing</string>
@@ -60,7 +60,7 @@
     <string name="installed">Geïnstalleerd</string>
     <string name="integrity_check_error_DESC">Kan integriteit niet nakijken.</string>
     <string name="invalid_address">Adres klopt niet</string>
-    <string name="invalid_fingerprint_format">Vingerafdruk-indeling klopt niet</string>
+    <string name="invalid_fingerprint_format">Ongeldig vingerafdrukformaat</string>
     <string name="invalid_metadata_error_DESC">Metadata klopt niet.</string>
     <string name="invalid_permissions_error_DESC">Ongeldige machtigingen.</string>
     <string name="invalid_signature_error_DESC">Ongeldige handtekening.</string>
@@ -69,7 +69,7 @@
     <string name="license">Licentie</string>
     <string name="license_FORMAT">%s licentie</string>
     <string name="light">Licht</string>
-    <string name="link_copied_to_clipboard">Link gekopiëerd naar klembord</string>
+    <string name="link_copied_to_clipboard">Link gekopieerd naar klembord</string>
     <string name="links">Links</string>
     <string name="list_animation">Lijst-animaties</string>
     <string name="list_animation_description">Animeer de lijst op de hoofdpagina</string>
@@ -164,7 +164,7 @@
     <string name="version_FORMAT">Versie %s</string>
     <string name="versions">Versies</string>
     <string name="waiting_to_start_download">Downloaden…</string>
-    <string name="whats_new">Wat is nieuw</string>
+    <string name="whats_new">Wat is er nieuw</string>
     <string name="website">Website</string>
     <string name="prefs_language_title">Taal</string>
     <string name="prefs_personalization">Personalisatie</string>
@@ -177,22 +177,22 @@
     <string name="new_applications">Nieuwe apps</string>
     <string name="install_after_sync">Automatisch-bijwerken</string>
     <string name="install_after_sync_summary">Installeer alle nieuwe versies na het laden van archieven.</string>
-    <string name="prefs_updated_apps">Toon aantal apps in \"Recently updated</string>
-    <string name="prefs_new_apps">Toon aantal apps in \"New apps</string>
+    <string name="prefs_updated_apps">Aantal apps in \'recentelijk bijgewerkt\'</string>
+    <string name="prefs_new_apps">Aantal apps in \'nieuwe apps\'</string>
     <string name="new_repository">Nieuw archief</string>
     <string name="default_tab">Standaard tabblad</string>
     <string name="pending">Bezig</string>
     <string name="installing">Installeren</string>
     <string name="ignore_battery_optimization_title">Batterij Optimisatie</string>
     <string name="ignore_battery_optimization_message">De app werkt beter zonder batterij optimisatie, en voorkomt crashing op Android 12+.</string>
-    <string name="ignore_battery_optimization_not_supported">Batterij optimalisatie niet mogelijk op je Android installatie.</string>
+    <string name="ignore_battery_optimization_not_supported">Jouw Android-installatie ondersteund het uitschakelen van de batterijoptimalisatie niet.</string>
     <string name="dialog_refuse">Bewaar</string>
     <string name="dialog_approve">Zet uit</string>
     <string name="root_session_installer">Gebruik root-sessie installatie</string>
     <string name="root_session_installer_description">Langzamer, maar voorkomt problemen met geïnstalleerde apps in Android 13+.</string>
     <string name="no_action_possible">Geen actie mogelijk</string>
     <string name="show_screenshots">Toon schermafbeeldingen</string>
-    <string name="show_screenshots_description">Toon schermafbeeldingen in de app-pagina.</string>
+    <string name="show_screenshots_description">Toon schermafbeeldingen op de app-pagina.</string>
     <string name="favorite_remove">Verwijder uit favorieten</string>
     <string name="favorite_add">Voeg toe aan favorieten</string>
     <string name="open">Open</string>
@@ -202,9 +202,9 @@
     <string name="dynamic">Systeemdynamisch (Gebruik je achtergrond voor kleurschema)</string>
     <plurals name="new_updates_DESC_FORMAT">
         <item quantity="one">%d app heeft een nieuwe versie.</item>
-        <item quantity="other">%d apps met nieuwe versies.</item>
+        <item quantity="other">%d apps hebben een nieuwe versie.</item>
     </plurals>
-    <string name="incompatible_older_DESC">Deze versie is ouder dan die op je apparaat is geïnstalleerd. Verwijder die eerst.</string>
+    <string name="incompatible_older_DESC">Deze versie is ouder dan de versie die op je apparaat is geïnstalleerd. Verwijder deze eerst.</string>
     <string name="incompatible_platforms_DESC_FORMAT">Je %1$s platform wordt niet ondersteund. Ondersteunde platforms: %2$s.</string>
     <string name="app_installed">Geïnstalleerd</string>
     <string name="prefs_cache">Cache</string>
@@ -258,14 +258,14 @@
     <string name="show_trackers">Laat trackers zien</string>
     <string name="disable_signature_check">Schakel controle van handtekeningen uit</string>
     <string name="clear_text">Tekst wissen</string>
-    <string name="repos_import">Importeer archieven (overschrijft de huidige)</string>
+    <string name="repos_import">Importeer archieven (overschrijft bestaande)</string>
     <string name="no_trackers_data_available">(Nog) geen informatie over trackers beschikaar.</string>
     <string name="only_on_battery">Alleen tijdens het opladen</string>
     <string name="sort_ascending">Oplopend</string>
     <string name="extras_import">Importeer extra\'s (Favorieten, Updates negeren, etc.)</string>
-    <string name="images_cache_retention">Cache-behoud afbeeldingen</string>
+    <string name="images_cache_retention">Afbeeldingen in cache opslaan</string>
     <string name="categories">Categorieën</string>
-    <string name="incompatible_signature_DESC">Deze versie is ondertekend met een ander certificaat dan het certificaat dat geïnstalleerd is op je apparaat. 
+    <string name="incompatible_signature_DESC">Deze versie is ondertekend met een ander certificaat dan die is geïnstalleerd op je apparaat.
 \nDeïnstalleer deze eerst.</string>
     <string name="group_matrix">Onze Matrix-groep</string>
     <string name="action_reset">Terugzetten</string>
@@ -286,7 +286,7 @@
     <string name="trackers_analytics">Trackers voor analytische doeleinden</string>
     <string name="permission_storage">Opslag en media</string>
     <string name="releases_cache_retention">Cache-behoud gedownloade APK\'s</string>
-    <string name="trackers_note_0">Is het een app of is het spyware?</string>
+    <string name="trackers_note_0">Is het een app of spyware?</string>
     <string name="source_open">Vrije software</string>
     <string name="other_apps_by">Andere apps van %s</string>
     <string name="target_sdk">targetSDK</string>
@@ -310,8 +310,8 @@
     <string name="permissions_note_3">Klein aantal toestemmingen nodig</string>
     <string name="legacy_installer">Verouderde installatie (compatibel met MIUI)</string>
     <string name="permission_identification_data">Toestemming voor identificatiedata</string>
-    <string name="date_updated">Datum geüpdatet</string>
-    <string name="scan_qr_code">Scan een QR-code</string>
+    <string name="date_updated">Datum bijgewerkt</string>
+    <string name="scan_qr_code">Scan QR-code</string>
     <string name="trackers_identification_description">Trackers geven apps de mogelijkheid om inlogservices te gebruiken van specifieke services zoals Facebook.</string>
     <string name="permission_camera">Camera</string>
     <string name="action_open_code">Bekijk de code</string>
@@ -349,7 +349,7 @@
     <string name="allow_unstable_updates">Sta tonen van niet-stabiele updates toe</string>
     <string name="show_categories_bar_description">Toon zijlade met categorieën op de ontdekpagina.</string>
     <string name="alt_new_apps">Gebruik alternatieve indeling voor nieuwe apps</string>
-    <string name="proxy_url">Url</string>
+    <string name="proxy_url">URL</string>
     <string name="enabled">Ingeschakeld</string>
     <string name="disabled">Uitgeschakeld</string>
     <string name="repo_qr_code">Archief QR-code</string>
@@ -380,12 +380,21 @@
     <string name="action_lock_biometric">Biometrische vergrendeling</string>
     <string name="kids_mode">Kindvriendelijke modus</string>
     <string name="kids_mode_summary">Schakel kindvriendelijke modus in en schakel de installatie van nieuwe apps uit.</string>
-    <string name="kids_mode_summary_full">Schakel kindvriendelijke modus in en schakel de installatie van nieuwe apps uit. Om uit te schakelen, tik zes keer op de appversie op de pagina \'Andere\'. Deze hint verdwijnt bij het opnieuw opstarten van de app.</string>
+    <string name="kids_mode_summary_full">Schakel kindvriendelijke modus in, schakelt de installatie van nieuwe apps uit. Om uit te schakelen, tik zes keer op de appversie op de pagina \'andere\'. Deze hint verdwijnt als de app opnieuw opstart.</string>
     <string name="system_installer">Systeeminstallatie</string>
     <string name="confirm_download_DESC_FORMAT">Weet je zeker dat je %s wilt downloaden?</string>
     <string name="download_show_dialog">Downloaddialoogvenster weergeven</string>
     <string name="bottom_search_bar">Zoekbalk onderaan</string>
     <string name="hide_new_apps">Verberg balk met nieuwe apps</string>
-    <string name="hide_new_apps_description">Combineer nieuwe en recent bijgewerkte apps in de verticale \'Nieuwste\' lijst.</string>
+    <string name="hide_new_apps_description">Combineer nieuwe en recent bijgewerkte apps in de verticale \'nieuwste\' lijst.</string>
     <string name="prefs_search_apps">Miximum aantal apps om te doorzoeken voor zoekresultaten.</string>
+    <string name="enable">Inschakelen</string>
+    <string name="dismiss">Weigeren</string>
+    <string name="min_android">Min. Androidversie</string>
+    <string name="target_android">Android doelversie</string>
+    <string name="android_instead_of_sdk">Toon Androidversie in plaats van SDK</string>
+    <string name="android_instead_of_sdk_summary">Toon de naam van de Androidversie in plaats van het SDK-nummer voor minSDK en targetSDK.</string>
+    <string name="wait_to_sync">Wacht een paar seconden voordat je opnieuw probeert te synchroniseren.</string>
+    <string name="prefs_search_apps_description">Maximum aantal apps dat in de zoekresultaten moet worden opgenomen (zet op 0 om alle apps op te nemen).</string>
+    <string name="state_modified">Aangepast</string>
 </resources>
