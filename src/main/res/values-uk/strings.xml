@@ -395,4 +395,10 @@
     <string name="wait_to_sync">Зачекайте кілька секунд, перш ніж повторити спробу синхронізації.</string>
     <string name="prefs_search_apps_description">Максимальна кількість застосунків у результатах пошуку (встановіть 0, щоб бачити всі).</string>
     <string name="state_modified">Змінено</string>
+    <string name="enable">Ввімкнути</string>
+    <string name="target_android">Цільовий Android</string>
+    <string name="dismiss">Відхилити</string>
+    <string name="min_android">Мінімальний Android</string>
+    <string name="android_instead_of_sdk">Показувати версію Android замість SDK</string>
+    <string name="android_instead_of_sdk_summary">Показувати назву версії Android замість номеру SDK для minSDK і targetSDK.</string>
 </resources>
