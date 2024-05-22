@@ -393,4 +393,10 @@
     <string name="wait_to_sync">Espere un par de segundos antes de volver a intentar la sincronización.</string>
     <string name="prefs_search_apps_description">Número máximo de aplicaciones para incluir en los resultados de búsqueda (establecido en 0 para incluir todas las aplicaciones).</string>
     <string name="state_modified">Modificado</string>
+    <string name="enable">Permitir</string>
+    <string name="dismiss">No permitir</string>
+    <string name="min_android">Android mínimo</string>
+    <string name="target_android">Versión de destino de Android</string>
+    <string name="android_instead_of_sdk">Mostrar la versión de Android en lugar del SDK</string>
+    <string name="android_instead_of_sdk_summary">Muestre el nombre de la versión de Android en lugar de mostrar el número de SDK para minSDK y targetSDK.</string>
 </resources>
