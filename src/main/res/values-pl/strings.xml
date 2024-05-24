@@ -357,4 +357,17 @@
     <string name="alt_new_apps">Użyj alternatywnego układu nowych aplikacji</string>
     <string name="download_manager_summary">Użyj systemowego menedżera pobierania, aby pobierać aplikacje bardziej niezawodnie. Ta opcja nie obsługuje TOR ani niestandardowego proxy.</string>
     <string name="auto_sync_interval_hours">Przedział auto-synchronizacji (w godzinach)</string>
+    <string name="clear_text">Czysty tekst</string>
+    <string name="system_installer">Instalator systemowy</string>
+    <string name="enable">Włącz</string>
+    <string name="dismiss">Odmów</string>
+    <string name="download_manager">Systemowy menedżer pobierania</string>
+    <string name="action_lock_device">Blokada urządzenia</string>
+    <string name="action_lock_biometric">Blokada biometryczna</string>
+    <string name="select_all">Zaznacz wszystko</string>
+    <string name="deselect_all">Odznacz wszystko</string>
+    <string name="action_lock_none">Brak blokady</string>
+    <string name="min_android">Minimalna wersja Androida</string>
+    <string name="target_android">Docelowa wersja Androida</string>
+    <string name="state_modified">Zmodyfikowane</string>
 </resources>
