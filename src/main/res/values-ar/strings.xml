@@ -391,7 +391,7 @@
     <string name="alt_block_layout_summary">استخدم تخطيطًا بديلاً/قديمًا لكتل الصفحات ذات الحدود بدلاً من الأسطح الملونة.</string>
     <string name="confirm_download_DESC_FORMAT">هل أنت متأكد من أنك تريد تحميل %s؟?</string>
     <string name="download_show_dialog">عرض مربع حوار التنزيل</string>
-    <string name="download_show_dialog_summary">قم بعرض مربع حوار يسألك عما إذا كنت متأكدًا من رغبتك في تنزيل تطبيق ما (قبل بدء التنزيل).</string>
+    <string name="download_show_dialog_summary">اعرض مربع حوار يسألك عما إذا كنت متأكدًا من رغبتك في تنزيل تطبيق ما (قبل بدء التنزيل).</string>
     <string name="system_installer">مثبت النظام</string>
     <string name="hide_new_apps">إخفاء شريط التطبيقات الجديد</string>
     <string name="hide_new_apps_description">قم بدمج كل من التطبيقات الجديدة والمحدثة مؤخرًا في القائمة العمودية للصفحة الأخيرة.</string>
