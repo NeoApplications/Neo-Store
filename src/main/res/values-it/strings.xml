@@ -374,7 +374,7 @@
     <string name="alt_block_layout_summary">Usa disposizione alternativa/vecchia per i blocchi di pagina con bordi anziché superfici colorate.</string>
     <string name="confirm_download_DESC_FORMAT">Sei sicuro di voler scaricare %s?</string>
     <string name="download_show_dialog">Mostra finestra download</string>
-    <string name="download_show_dialog_summary">Mostra una finestra di dialogo che ti chiede se sei sicuro di voler scaricare un\'app (prima di avviare il download).</string>
+    <string name="download_show_dialog_summary">Mostra una finestra di dialogo che ti chiede se sei sicuro di voler scaricare un\'app (prima di iniziare il download).</string>
     <string name="bottom_search_bar">Barra ricerca in basso</string>
     <string name="bottom_search_bar_summary">Posiziona la barra di ricerca nella parte inferiore della pagina.</string>
     <string name="select_all">Seleziona tutto</string>
