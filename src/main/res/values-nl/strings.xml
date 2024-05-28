@@ -370,7 +370,7 @@
     <string name="install_packages_permission_message">Vanaf Android 8 vereisen apps deze toestemming om pakketten te installeren.</string>
     <string name="alt_block_layout">Gebruik alternatieve lay-out voor paginablokken</string>
     <string name="alt_block_layout_summary">Gebruik alternatieve/oude lay-out voor paginablokken, met randen in plaats van gekleurde vlakken.</string>
-    <string name="download_show_dialog_summary">Geef een venster weer waarin je wordt gevraagd of je de app echt wilt downloaden (voordat het downloaden begint).</string>
+    <string name="download_show_dialog_summary">Venster weergeven waarin je wordt gevraagd of je de app echt wilt downloaden (voordat het downloaden begint).</string>
     <string name="select_all">Alles selecteren</string>
     <string name="bottom_search_bar_summary">Plaats de zoekbalk onderaan de pagina.</string>
     <string name="deselect_all">Alles deselecteren</string>
