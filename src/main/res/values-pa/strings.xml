@@ -6,7 +6,7 @@
     <string name="all_applications">ਸਭ ਐਪਾਂ</string>
     <string name="author_email">ਲੇਖਕ ਦੀ ਈ-ਮੇਲ</string>
     <string name="always">ਹਮੇਸ਼ਾਂ</string>
-    <string name="all_applications_up_to_date">ਸਾਰੀਆਂ ਐਪਾਂ ਨਵੀਨਤਮ ਹਨ</string>
+    <string name="all_applications_up_to_date">ਸਾਰੀਆਂ ਐਪਾਂ ਅੱਪ ਟੂ ਡੇਟ ਹਨ</string>
     <string name="amoled">ਕਾਲ੍ਹਾ</string>
     <string name="add_repository">ਰਿਪੋਜ਼ਟਰੀ ਸ਼ਾਮਿਲ ਕਰੋ</string>
     <string name="application">ਐਪ</string>
@@ -195,7 +195,7 @@
     <string name="installed_applications">ਇੰਸਟਾਲ ਹੈ</string>
     <string name="sort_filter">ਕ੍ਰਮਬੱਧ ਅਤੇ ਫਿਲਟਰ</string>
     <string name="ignore_battery_optimization_message">ਐਪ ਬੈਟਰੀ ਆਪਟੀਮਾਈਜੇਸ਼ਨ ਤੋਂ ਬਿਨਾਂ ਬਿਹਤਰ ਵਿਵਹਾਰ ਕਰਦੀ ਹੈ, ਅਤੇ Android 12+ \'ਤੇ ਕ੍ਰੈਸ਼ ਹੋਣ ਦੀ ਸਮੱਸਿਆ ਤੋਂ ਰੋਕਦੀ ਹੈ।</string>
-    <string name="ignore_battery_optimization_not_supported">ਤੁਹਾਡੀ ਐਂਡਰੌਇਡ ਇੰਸਟਾਲੇਸ਼ਨ ਬੈਟਰੀ ਆਪਟੀਮਾਈਜੇਸ਼ਨ ਨੂੰ ਬੰਦ ਕਰਨ ਦਾ ਸਮਰਥਨ ਨਹੀਂ ਕਰਦੀ ਹੈ।</string>
+    <string name="ignore_battery_optimization_not_supported">ਤੁਹਾਡੀ ਐਂਡਰੌਇਡ ਇੰਸਟਾਲੇਸ਼ਨ ਬੈਟਰੀ ਆਪਟੀਮਾਈਜੇਸ਼ਨ ਨੂੰ ਅਯੋਗ ਕਰਨ ਦਾ ਸਮਰਥਨ ਨਹੀਂ ਕਰਦੀ ਹੈ।</string>
     <string name="dialog_refuse">ਰੱਖੋ</string>
     <string name="dialog_approve">ਬੰਦ ਕਰੋ</string>
     <string name="trackers_bug_description">ਟਰੈਕਰ ਉਹਨਾਂ ਤਕਨੀਕੀ ਸਮੱਸਿਆਵਾਂ ਦੀ ਰਿਪੋਰਟ ਕਰਨ ਲਈ ਵਰਤੇ ਜਾਂਦੇ ਹਨ ਜਿਹਨਾਂ ਦਾ ਐਪ ਨੂੰ ਸਾਹਮਣਾ ਹੁੰਦਾ ਹੈ।</string>
@@ -261,7 +261,7 @@
     <string name="target_sdk">ਟਾਰਗਿਟ SDK</string>
     <string name="alt_navbar_item_description">ਵਿਕਲਪਕ/ਪੁਰਾਣੀ ਨੈਵੀਗੇਸ਼ਨ ਬਾਰ ਆਈਟਮ ਲੇਆਊਟ ਦੀ ਵਰਤੋਂ ਕਰੋ, ਜੋ ਕਿ ਅਣਚੁਣੀਆਂ ਆਈਟਮਾਂ ਦਾ ਲੇਬਲ ਵਿਖਾਉਂਦਾ ਹੈ।</string>
     <string name="repos_export">ਰਿਪੋਜ਼ਟਰੀਆਂ ਨੂੰ ਐਕਸਪੋਰਟ ਕਰੋ</string>
-    <string name="repos_import">ਰਿਪੋਜ਼ਟਰੀਆਂ ਨੂੰ ਇੰਪੋਰਟ ਕਰੋ (ਪਹਿਲਾਂ ਤੋਂ ਮੌਜੂਦ ਨੂੰ ਓਵਰਰਾਈਡ ਕਰਦਾ ਹੈ)</string>
+    <string name="repos_import">ਰਿਪੋਜ਼ਟਰੀਆਂ ਨੂੰ ਇੰਪੋਰਟ ਕਰੋ (ਮੌਜੂਦਾ ਨੂੰ ਓਵਰਰਾਈਡ ਕਰਦਾ ਹੈ)</string>
     <string name="action_apply">ਲਾਗੂ ਕਰੋ</string>
     <string name="action_reset">ਰੀਸੈੱਟ ਕਰੋ</string>
     <string name="date_added">ਜੋੜਨ ਦੀ ਮਿਤੀ</string>
@@ -351,7 +351,7 @@
     <string name="alt_new_apps">ਵਿਕਲਪਕ ਨਵੇਂ ਐਪਸ ਲੇਆਊਟ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
     <string name="enabled">ਇਨੇਬਲ ਕੀਤੇ</string>
     <string name="disabled">ਡਿਸੇਬਲ ਕੀਤੇ</string>
-    <string name="proxy_url">Url</string>
+    <string name="proxy_url">URL</string>
     <string name="repo_qr_code">ਰਿਪੋਜ਼ਟਰੀ ਦਾ QR ਕੋਡ</string>
     <string name="download_manager">ਸਿਸਟਮ ਦਾ ਡਾਊਨਲੋਡ ਮੈਨੇਜਰ</string>
     <string name="install_packages_permission_message">ਐਂਡਰੌਇਡ 8 ਤੋਂ ਐਪਾਂ ਲਈ ਪੈਕੇਜਾਂ ਨੂੰ ਇੰਸਟਾਲ ਕਰਨ ਦੇ ਯੋਗ ਹੋਣ ਲਈ ਇਸ ਅਨੁਮਤੀ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।</string>
@@ -384,7 +384,17 @@
     <string name="bottom_search_bar_summary">ਖੋਜ ਪੱਟੀ ਪੰਨੇ ਦੇ ਹੇਠਾਂ ਰੱਖੋ।</string>
     <string name="action_lock_device">ਡਿਵਾਈਸ ਲੌਕ</string>
     <string name="action_lock_biometric">ਬਾਇਓਮੈਟ੍ਰਿਕ ਲੌਕ</string>
-    <string name="kids_mode_summary_full">ਬੱਚਿਆਂ ਦੇ ਮੋਡ ਨੂੰ ਚਾਲੂ ਕਰੋ, ਨਵੀਆਂ ਐਪਾਂ ਦੇ ਇੰਸਟਾਲ ਨੂੰ ਅਸਮਰੱਥ ਬਣਾਓ। ਅਯੋਗ ਕਰਨ ਲਈ ਦੂਜੇ ਪੰਨੇ ਵਿੱਚ ਐਪ ਦੇ ਸੰਸਕਰਣ ਨੂੰ ਛੇ ਵਾਰ ਟੈਪ ਕਰੋ। ਐਪ ਰੀਸਟਾਰਟ \'ਤੇ ਇਹ ਸੰਕੇਤ ਲੁਕ ਜਾਂਦਾ ਹੈ।</string>
+    <string name="kids_mode_summary_full">ਬੱਚਿਆਂ ਦੇ ਮੋਡ ਨੂੰ ਚਾਲੂ ਕਰੋ, ਨਵੀਆਂ ਐਪਾਂ ਦੇ ਇੰਸਟਾਲ ਨੂੰ ਅਸਮਰੱਥ ਬਣਾਓ। ਅਯੋਗ ਕਰਨ ਲਈ ਦੂਜੇ ਪੰਨੇ \'ਤੇ ਐਪ ਦੇ ਸੰਸਕਰਣ ਨੂੰ ਛੇ ਵਾਰ ਟੈਪ ਕਰੋ। ਐਪ ਰੀਸਟਾਰਟ \'ਤੇ ਇਹ ਸੰਕੇਤ ਲੁਕ ਜਾਂਦਾ ਹੈ।</string>
     <string name="hide_new_apps">ਨਵੀਂ ਐਪਸ ਬਾਰ ਨੂੰ ਲੁਕਾਓ</string>
     <string name="hide_new_apps_description">ਨਵੀਨਤਮ ਪੰਨੇ ਦੀ ਲੰਬਕਾਰੀ ਸੂਚੀ ਵਿੱਚ ਨਵੇਂ ਅਤੇ ਹਾਲ ਹੀ ਵਿੱਚ ਅੱਪਡੇਟ ਕੀਤੇ ਐਪਸ ਨੂੰ ਜੋੜੋ।</string>
+    <string name="prefs_search_apps">ਖੋਜ ਨਤੀਜਿਆਂ ਲਈ ਪੁੱਛਗਿੱਛ ਲਈ ਐਪਲੀਕੇਸ਼ਨਾਂ ਦੀ ਅਧਿਕਤਮ ਸੰਖਿਆ।</string>
+    <string name="dismiss">ਖਾਰਿਜ ਕਰੋ</string>
+    <string name="enable">ਇਨੇਬਲ ਕਰੋ</string>
+    <string name="min_android">ਨਿਊਨਤਮ ਐਂਡਰਾਇਡ</string>
+    <string name="android_instead_of_sdk_summary">minSDK ਅਤੇ targetSDK ਲਈ SDK ਨੰਬਰ ਦਿਖਾਉਣ ਦੀ ਬਜਾਏ ਐਂਡਰਾਇਡ ਸੰਸਕਰਣ ਦਾ ਨਾਮ ਵਿਖਾਓ।</string>
+    <string name="target_android">ਟਾਰਗੇਟ ਐਂਡਰਾਇਡ</string>
+    <string name="android_instead_of_sdk">SDK ਦੀ ਬਜਾਏ ਐਂਡਰਾਇਡ ਸੰਸਕਰਣ ਵਿਖਾਓ</string>
+    <string name="prefs_search_apps_description">ਖੋਜ ਨਤੀਜਿਆਂ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰਨ ਲਈ ਐਪਲੀਕੇਸ਼ਨਾਂ ਦੀ ਅਧਿਕਤਮ ਸੰਖਿਆ (ਸਾਰੇ ਐਪਾਂ ਨੂੰ ਸ਼ਾਮਲ ਕਰਨ ਲਈ 0 \'ਤੇ ਸੈੱਟ ਕਰੋ)।</string>
+    <string name="wait_to_sync">ਸਿੰਕ ਕਰਨ ਦੀ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਕੁਝ ਸਕਿੰਟ ਉਡੀਕ ਕਰੋ।</string>
+    <string name="state_modified">ਸੋਧਿਆ ਹੋਇਆ</string>
 </resources>
