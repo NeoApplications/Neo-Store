@@ -1,0 +1,6 @@
+Agregar: barra de búsqueda a la página de repositorios
+Agregar: Opción para mostrar el nombre de la versión de Android en lugar del SDK (habilitado de forma predeterminada)
+Agregar: cuadro de diálogo al hacer clic en enlaces de descripciones de aplicaciones o registros de cambios
+Solución: falla al tocar la notificación de instalación del instalador de sesión
+Actualización: agregue botones habilitar y descartar a RepoSheet
++ más en más de 10 confirmaciones y 50 contribuciones de traducción
