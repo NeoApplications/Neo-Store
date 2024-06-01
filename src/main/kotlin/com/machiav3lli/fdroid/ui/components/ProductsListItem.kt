@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -127,6 +126,11 @@ fun ProductItemContent(
                 )
                 if (product.canUpdate) ReleaseBadge(
                     text = "${product.installedVersion} → ${product.version}",
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    onColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+                else if (product.installedVersion.isNotEmpty()) ReleaseBadge(
+                    text = product.installedVersion,
                 )
                 else Text(
                     text = installed?.version ?: product.version,
@@ -213,6 +217,11 @@ fun ProductCarouselItem(
                 )
                 if (product.canUpdate) ReleaseBadge(
                     text = "${product.installedVersion} → ${product.version}",
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    onColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+                else if (product.installedVersion.isNotEmpty()) ReleaseBadge(
+                    text = product.installedVersion,
                 ) else Text(
                     text = product.installedVersion.nullIfEmpty() ?: product.version,
                     modifier = Modifier
@@ -293,7 +302,7 @@ fun ExpandedItemContent(
                     tint = if (favourite) Color.Red else MaterialTheme.colorScheme.outline
                 )
             }
-            AnimatedVisibility(visible = (installed == null && !Preferences[Preferences.Key.KidsMode]) || !installed?.launcherActivities.isNullOrEmpty()) {
+            if ((installed == null && !Preferences[Preferences.Key.KidsMode]) || !installed?.launcherActivities.isNullOrEmpty()) {
                 val action = when {
                     installed != null -> ActionState.Launch
                     else              -> ActionState.Install
