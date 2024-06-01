@@ -635,7 +635,7 @@ fun AppSheet(
                         }
                         items(
                             items = releaseItems,
-                            key = { "${it.first.versionCode}#${it.second.id}" },
+                            key = { "${it.first.identifier}#${it.second.id}" },
                         ) { item ->
                             ReleaseItem(
                                 release = item.first,
