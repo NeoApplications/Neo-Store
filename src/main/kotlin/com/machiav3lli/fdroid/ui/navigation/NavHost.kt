@@ -54,7 +54,7 @@ fun AppNavHost(
             args = listOf(
                 navArgument("page") {
                     type = NavType.IntType
-                    defaultValue = Preferences[Preferences.Key.DefaultTab].valueString.toInt()
+                    defaultValue = 0
                 }
             )
         ) {
