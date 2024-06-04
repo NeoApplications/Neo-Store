@@ -73,9 +73,9 @@ fun ExplorePage(viewModel: ExploreVM) {
     val filteredProducts by viewModel.filteredProducts
         .mapLatest { list -> list.map { it.toItem(installedList[it.packageName]) } }
         .collectAsState(emptyList())
-    val repositories by viewModel.repositories.collectAsState(null)
-    val repositoriesMap by remember(repositories) {
-        mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
+    val repositories by viewModel.repositories.collectAsState(emptyList())
+    val repositoriesMap = remember(repositories) {
+        mutableMapOf(*repositories.map { repo -> Pair(repo.id, repo) }.toTypedArray())
     }
     val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
     val categories by RepositoryUpdater.db.getCategoryDao()

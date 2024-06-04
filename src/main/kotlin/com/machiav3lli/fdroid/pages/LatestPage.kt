@@ -61,9 +61,9 @@ fun LatestPage(viewModel: LatestVM) {
     val primaryList by viewModel.primaryProducts
         .mapLatest { list -> list.map { it.toItem(installedList[it.packageName]) } }
         .collectAsState(emptyList())
-    val repositories by viewModel.repositories.collectAsState(null)
-    val repositoriesMap by remember(repositories) {
-        mutableStateOf(repositories?.associateBy { repo -> repo.id } ?: emptyMap())
+    val repositories by viewModel.repositories.collectAsState(emptyList())
+    val repositoriesMap = remember(repositories) {
+        mutableMapOf(*repositories.map { repo -> Pair(repo.id, repo) }.toTypedArray())
     }
     val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
     var showSortSheet by rememberSaveable { mutableStateOf(false) }
