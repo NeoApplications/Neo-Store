@@ -472,6 +472,7 @@ fun AppSheet(
                 modifier = Modifier
                     .padding(paddingValues)
                     .blockBorder(),
+                beyondBoundsPageCount = 1,
             ) { pageIndex ->
                 if (pageIndex == 0) {
                     LazyColumn(

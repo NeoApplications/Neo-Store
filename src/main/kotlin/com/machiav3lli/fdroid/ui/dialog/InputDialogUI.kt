@@ -22,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,10 +35,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
@@ -62,7 +61,7 @@ fun IntInputPrefDialogUI(
     val nnRange = range ?: 0..1000000
     val textFieldFocusRequester = remember { FocusRequester() }
     var savedValue by remember {
-        mutableStateOf(Preferences[prefKey])
+        mutableIntStateOf(Preferences[prefKey])
     }
 
     LaunchedEffect(textFieldFocusRequester) {
@@ -110,9 +109,9 @@ fun IntInputPrefDialogUI(
                 placeholder = {
                     Text(text = "${nnRange.first}-${nnRange.last}")
                 },
-                onValueChange = {
-                    savedValue = if (it.isNotEmpty())
-                        it.filter { it.isDigit() }
+                onValueChange = { input ->
+                    savedValue = if (input.isNotEmpty())
+                        input.filter { it.isDigit() }
                             .toIntOrNull()
                             ?: prefKey.default.value
                     else -1
@@ -235,14 +234,14 @@ fun StringInputDialogUI(
     val mainFocusRequester = remember { FocusRequester() }
 
     var savedValue by remember {
-        mutableStateOf(TextFieldValue(initValue, TextRange(initValue.length)))
+        mutableStateOf(initValue)
     }
     var isEdited by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
     fun submit() {
         focusManager.clearFocus()
-        onSave(savedValue.text)
+        onSave(savedValue)
         openDialogCustom.value = false
     }
 
@@ -276,7 +275,7 @@ fun StringInputDialogUI(
                 singleLine = false,
                 onValueChange = {
                     isEdited = true
-                    if (it.text.contains(RE_finishChars)) submit()
+                    if (it.contains(RE_finishChars)) submit()
                     else savedValue = it         // only save when no control char
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -286,7 +285,7 @@ fun StringInputDialogUI(
                 keyboardActions = KeyboardActions(onDone = { submit() }),
                 trailingIcon = {
                     Row {
-                        IconButton(onClick = { savedValue = TextFieldValue("") }) {
+                        IconButton(onClick = { savedValue = "" }) {
                             Icon(
                                 imageVector = Phosphor.X,
                                 contentDescription = stringResource(id = R.string.clear_text),

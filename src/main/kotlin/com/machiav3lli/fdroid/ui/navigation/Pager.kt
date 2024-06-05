@@ -31,7 +31,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.machiav3lli.fdroid.content.Preferences
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
@@ -42,10 +41,9 @@ fun SlidePager(
     modifier: Modifier = Modifier,
     pageItems: ImmutableList<NavItem>,
     pagerState: PagerState,
-    navController: NavHostController,
 ) {
     HorizontalPager(modifier = modifier, state = pagerState, beyondBoundsPageCount = 3) { page ->
-        pageItems[page].content(navController)
+        pageItems[page].content()
     }
 }
 

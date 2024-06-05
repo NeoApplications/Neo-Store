@@ -28,9 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -112,14 +110,14 @@ fun ExpandedSearchView(
     LaunchedEffect(textFieldFocusRequester) { textFieldFocusRequester.requestFocus() }
 
     var textFieldValue by remember {
-        mutableStateOf(TextFieldValue(query, TextRange(query.length)))
+        mutableStateOf(query)
     }
 
     TextField(
         value = textFieldValue,
         onValueChange = {
             textFieldValue = it
-            onQueryChanged(it.text)
+            onQueryChanged(it)
         },
         modifier = modifier
             .fillMaxWidth()
@@ -141,7 +139,7 @@ fun ExpandedSearchView(
                 icon = Phosphor.X,
                 description = stringResource(id = R.string.cancel)
             ) {
-                textFieldValue = TextFieldValue(text = "")
+                textFieldValue = ""
                 focusManager.clearFocus()
                 onExpanded(false)
                 onClose()
@@ -167,14 +165,14 @@ fun WideSearchField(
     LaunchedEffect(textFieldFocusRequester) { if (focusOnCompose) textFieldFocusRequester.requestFocus() }
 
     var textFieldValue by remember {
-        mutableStateOf(TextFieldValue(query, TextRange(query.length)))
+        mutableStateOf(query)
     }
 
     TextField(
         value = textFieldValue,
         onValueChange = {
             textFieldValue = it
-            onQueryChanged(it.text)
+            onQueryChanged(it)
         },
         modifier = modifier
             .focusRequester(textFieldFocusRequester),
@@ -197,7 +195,7 @@ fun WideSearchField(
                 icon = Phosphor.X,
                 description = stringResource(id = R.string.cancel)
             ) {
-                textFieldValue = TextFieldValue(text = "")
+                textFieldValue = ""
                 onClose()
             }
         },

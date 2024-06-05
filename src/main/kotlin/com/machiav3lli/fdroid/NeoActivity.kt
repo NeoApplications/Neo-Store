@@ -34,7 +34,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.pages.AppSheet
 import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
@@ -74,11 +73,10 @@ class NeoActivity : AppCompatActivity() {
 
     private lateinit var navController: NavHostController
     private val cScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+    private val mScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
-    private val _showSearchSheet = MutableStateFlow(false)
-    val showSearchSheet: StateFlow<Boolean> = _showSearchSheet
     private val appSheetPackage: MutableState<String> = mutableStateOf("")
 
     val db
@@ -172,10 +170,7 @@ class NeoActivity : AppCompatActivity() {
                             AppSheet(
                                 appSheetVM,
                                 appSheetPackage.value,
-                            ) {
-                                mScope.launch { appSheetState.hide() }
-                                appSheetPackage.value = ""
-                            }
+                            )
                         }
                     }
                 }
@@ -227,7 +222,7 @@ class NeoActivity : AppCompatActivity() {
         when (specialIntent) {
             is SpecialIntent.Updates -> {
                 // TODO directly update the apps??
-                navController.navigate("${NavItem.Main.destination}?page=2")
+                navController.navigate("${NavItem.Main.destination}?page=${Preferences.DefaultTab.Installed.index}")
             }
 
             is SpecialIntent.AddRepo -> {
@@ -243,8 +238,7 @@ class NeoActivity : AppCompatActivity() {
                 if (!packageName.isNullOrEmpty()) {
                     lifecycleScope.launch {
                         specialIntent.cacheFileName?.let {
-                            AppInstaller.getInstance(this@NeoActivity)
-                                ?.defaultInstaller?.install(packageName, it)
+                            MainApplication.installer.install(packageName, it)
                         }
                     }
                 }
@@ -285,14 +279,14 @@ class NeoActivity : AppCompatActivity() {
                     )
                 } else if (host == "search") {
                     val query = data.getQueryParameter("q")
-                    cScope.launch { showSearchSheet(true, query ?: "") }
+                    cScope.launch { showSearchPage(query ?: "") }
                 } else {
                     val packageName = intent.packageName
                     cScope.launch {
                         if (!packageName.isNullOrEmpty()
                             && db.getProductDao().exists(packageName)
                         ) navigateProduct(packageName)
-                        else showSearchSheet(true, packageName)
+                        else showSearchPage(packageName)
                     }
                 }
             }
@@ -342,10 +336,12 @@ class NeoActivity : AppCompatActivity() {
         cScope.launch { _searchQuery.emit(value) }
     }
 
-    fun showSearchSheet(value: Boolean, query: String? = null) {
+    private fun showSearchPage(query: String? = null) {
+        mScope.launch {
+            navController.navigate("${NavItem.Main.destination}?page=${Preferences.DefaultTab.Search.index}")
+        }
         cScope.launch {
             appSheetPackage.value = ""
-            _showSearchSheet.emit(value)
             query?.let { _searchQuery.emit(it) }
         }
     }

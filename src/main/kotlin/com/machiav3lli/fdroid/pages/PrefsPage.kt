@@ -53,7 +53,6 @@ fun PrefsPage(navController: NavHostController, pageIndex: Int) {
                 .fillMaxSize(),
             pagerState = pagerState,
             pageItems = pages,
-            navController = navController
         )
     }
 }

@@ -19,17 +19,16 @@ package com.machiav3lli.fdroid.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavHostController
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.pages.ExplorePage
 import com.machiav3lli.fdroid.pages.InstalledPage
 import com.machiav3lli.fdroid.pages.LatestPage
-import com.machiav3lli.fdroid.pages.PermissionsPage
 import com.machiav3lli.fdroid.pages.PrefsOtherPage
 import com.machiav3lli.fdroid.pages.PrefsPersonalPage
 import com.machiav3lli.fdroid.pages.PrefsReposPage
 import com.machiav3lli.fdroid.pages.PrefsUpdatesPage
+import com.machiav3lli.fdroid.pages.SearchPage
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Compass
@@ -46,15 +45,13 @@ sealed class NavItem(
     val title: Int,
     val icon: ImageVector,
     val destination: String,
-    val content: @Composable (NavHostController) -> Unit = {}
+    val content: @Composable () -> Unit = {}
 ) {
     data object Main :
         NavItem(R.string.explore, Phosphor.House, "main")
 
     data object Permissions :
-        NavItem(R.string.permissions, Phosphor.ShieldStar, "main_permissions", {
-            PermissionsPage(it)
-        })
+        NavItem(R.string.permissions, Phosphor.ShieldStar, "main_permissions")
 
     data object Explore :
         NavItem(R.string.explore, Phosphor.Compass, "main_explore", {
@@ -78,7 +75,11 @@ sealed class NavItem(
         })
 
     data object Search :
-        NavItem(R.string.search, Phosphor.MagnifyingGlass, "main_search")
+        NavItem(R.string.search, Phosphor.MagnifyingGlass, "main_search", {
+            MainApplication.mainActivity?.let {
+                SearchPage(it.searchViewModel)
+            }
+        })
 
     data object Prefs :
         NavItem(R.string.settings, Phosphor.GearSix, "prefs")
