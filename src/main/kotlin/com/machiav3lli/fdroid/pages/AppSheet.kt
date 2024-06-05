@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -51,7 +49,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
@@ -116,7 +113,6 @@ import kotlin.math.truncate
 fun AppSheet(
     viewModel: AppSheetVM,
     packageName: String,
-    onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
     val neoActivity = context as NeoActivity
@@ -474,11 +470,7 @@ fun AppSheet(
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier
-                    .padding(
-                        top = paddingValues.calculateTopPadding() - 4.dp,
-                        start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
-                        end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
-                    )
+                    .padding(paddingValues)
                     .blockBorder(),
             ) { pageIndex ->
                 if (pageIndex == 0) {
