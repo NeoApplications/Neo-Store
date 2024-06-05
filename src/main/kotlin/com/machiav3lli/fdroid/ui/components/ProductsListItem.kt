@@ -125,14 +125,17 @@ fun ProductItemContent(
                     style = MaterialTheme.typography.titleMedium
                 )
                 if (product.canUpdate) ReleaseBadge(
+                    modifier = Modifier.widthIn(max = 200.dp),
                     text = "${product.installedVersion} → ${product.version}",
                     color = MaterialTheme.colorScheme.primaryContainer,
                     onColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
                 else if (product.installedVersion.isNotEmpty()) ReleaseBadge(
+                    modifier = Modifier.widthIn(max = 200.dp),
                     text = product.installedVersion,
                 )
                 else Text(
+                    modifier = Modifier.widthIn(max = 200.dp),
                     text = installed?.version ?: product.version,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.End,
@@ -193,7 +196,7 @@ fun ProductCarouselItem(
         ),
         leadingContent = {
             Column(
-                modifier = Modifier.padding(vertical = 24.dp),
+                modifier = Modifier.fillMaxHeight(),
                 verticalArrangement = Arrangement.Center,
             ) {
                 NetworkImage(
@@ -216,16 +219,17 @@ fun ProductCarouselItem(
                     style = MaterialTheme.typography.titleMedium
                 )
                 if (product.canUpdate) ReleaseBadge(
+                    modifier = Modifier.widthIn(max = 200.dp),
                     text = "${product.installedVersion} → ${product.version}",
                     color = MaterialTheme.colorScheme.primaryContainer,
                     onColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
                 else if (product.installedVersion.isNotEmpty()) ReleaseBadge(
+                    modifier = Modifier.widthIn(max = 200.dp),
                     text = product.installedVersion,
                 ) else Text(
                     text = product.installedVersion.nullIfEmpty() ?: product.version,
-                    modifier = Modifier
-                        .widthIn(max = 60.dp),
+                    modifier = Modifier.widthIn(max = 200.dp),
                     textAlign = TextAlign.End,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
@@ -236,47 +240,47 @@ fun ProductCarouselItem(
         supportingContent = {
             Column(
                 modifier = Modifier.fillMaxHeight(1f),
+                verticalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
+                    modifier = Modifier.weight(1f),
                     text = product.summary,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
                 )
-            }
-        },
-        trailingContent = {
-            Column(
-                modifier = Modifier.fillMaxHeight(1f),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.End,
-            ) {
-                IconButton(
-                    onClick = { onFavourite(product) }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End,
                 ) {
-                    Icon(
-                        imageVector = if (favourite) Phosphor.HeartStraightFill else Phosphor.HeartStraight,
-                        contentDescription = stringResource(id = if (favourite) R.string.favorite_remove else R.string.favorite_add),
-                        tint = if (favourite) Color.Red else MaterialTheme.colorScheme.outline
-                    )
-                }
-
-                action?.let {
                     IconButton(
-                        colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer,
-                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        ),
-                        onClick = { onActionClick(product, action) },
+                        onClick = { onFavourite(product) }
                     ) {
                         Icon(
-                            imageVector = action.icon,
-                            contentDescription = stringResource(id = action.textId),
+                            imageVector = if (favourite) Phosphor.HeartStraightFill else Phosphor.HeartStraight,
+                            contentDescription = stringResource(id = if (favourite) R.string.favorite_remove else R.string.favorite_add),
+                            tint = if (favourite) Color.Red else MaterialTheme.colorScheme.outline
                         )
+                    }
+
+                    action?.let {
+                        IconButton(
+                            colors = IconButtonDefaults.iconButtonColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            ),
+                            onClick = { onActionClick(product, action) },
+                        ) {
+                            Icon(
+                                imageVector = action.icon,
+                                contentDescription = stringResource(id = action.textId),
+                            )
+                        }
                     }
                 }
             }
-        }
+        },
     )
 }
 

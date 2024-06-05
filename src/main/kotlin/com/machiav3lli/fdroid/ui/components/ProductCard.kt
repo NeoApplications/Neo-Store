@@ -23,7 +23,7 @@ import com.machiav3lli.fdroid.network.createIconUri
 
 val PRODUCT_CARD_ICON = 48.dp
 val PRODUCT_CARD_HEIGHT = 64.dp
-val PRODUCT_CAROUSEL_HEIGHT = 136.dp
+val PRODUCT_CAROUSEL_HEIGHT = 164.dp
 val PRODUCT_CARD_WIDTH = 220.dp
 
 @Composable
