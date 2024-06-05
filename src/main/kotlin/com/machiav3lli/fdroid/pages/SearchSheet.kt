@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.pages
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -8,7 +9,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -26,15 +29,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.NeoActivity
+import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.DialogKey
+import com.machiav3lli.fdroid.entity.Source
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SortFilterButton
+import com.machiav3lli.fdroid.ui.components.TabButton
 import com.machiav3lli.fdroid.ui.components.WideSearchField
 import com.machiav3lli.fdroid.ui.components.common.BottomSheet
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
 import com.machiav3lli.fdroid.ui.compose.utils.addIfElse
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
@@ -64,6 +75,13 @@ fun SearchSheet(viewModel: SearchVM) {
     }
     val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
     val query by neoActivity.searchQuery.collectAsState()
+    val source = viewModel.source.collectAsState()
+    val currentTab by remember {
+        derivedStateOf {
+            listOf(Source.SEARCH, Source.SEARCH_INSTALLED, Source.SEARCH_NEW)
+                .indexOf(source.value)
+        }
+    }
     var showSortSheet by rememberSaveable { mutableStateOf(false) }
     val sortSheetState = rememberModalBottomSheetState(true)
     val openDialog = remember { mutableStateOf(false) }
@@ -110,24 +128,53 @@ fun SearchSheet(viewModel: SearchVM) {
     }
 
     val searchBar: @Composable (() -> Unit) = {
-        Row(
-            modifier = Modifier.padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            WideSearchField(
-                modifier = Modifier.weight(1f),
-                query = query,
-                onClose = {
-                    neoActivity.setSearchQuery("")
-                },
-                onQueryChanged = { newQuery ->
-                    if (newQuery != query) neoActivity.setSearchQuery(newQuery)
-                },
-                focusOnCompose = false,
-            )
-            SortFilterButton(notModified = notModifiedSortFilter) {
-                showSortSheet = true
+        Column {
+            Row(
+                modifier = Modifier.padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                WideSearchField(
+                    modifier = Modifier.weight(1f),
+                    query = query,
+                    onClose = {
+                        neoActivity.setSearchQuery("")
+                    },
+                    onQueryChanged = { newQuery ->
+                        if (newQuery != query) neoActivity.setSearchQuery(newQuery)
+                    },
+                    focusOnCompose = false,
+                )
+                SortFilterButton(notModified = notModifiedSortFilter) {
+                    showSortSheet = true
+                }
+            }
+            PrimaryTabRow(
+                containerColor = Color.Transparent,
+                selectedTabIndex = currentTab,
+                divider = {}
+            ) {
+                TabButton(
+                    text = stringResource(id = R.string.all),
+                    icon = Phosphor.CirclesFour,
+                    onClick = {
+                        viewModel.setSource(Source.SEARCH)
+                    }
+                )
+                TabButton(
+                    text = stringResource(id = R.string.installed),
+                    icon = Phosphor.ArrowSquareOut,
+                    onClick = {
+                        viewModel.setSource(Source.SEARCH_INSTALLED)
+                    }
+                )
+                TabButton(
+                    text = stringResource(id = R.string.new_applications),
+                    icon = Phosphor.CircleWavyWarning,
+                    onClick = {
+                        viewModel.setSource(Source.SEARCH_NEW)
+                    }
+                )
             }
         }
     }
@@ -139,8 +186,22 @@ fun SearchSheet(viewModel: SearchVM) {
     Scaffold(
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground,
-        topBar = { if (!Preferences[Preferences.Key.BottomSearchBar]) searchBar() },
-        bottomBar = { if (Preferences[Preferences.Key.BottomSearchBar]) searchBar() },
+        topBar = {
+            if (!Preferences[Preferences.Key.BottomSearchBar]) {
+                Column {
+                    searchBar()
+                    HorizontalDivider()
+                }
+            }
+        },
+        bottomBar = {
+            if (Preferences[Preferences.Key.BottomSearchBar]) {
+                Column {
+                    HorizontalDivider()
+                    searchBar()
+                }
+            }
+        },
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
