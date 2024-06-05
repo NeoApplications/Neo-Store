@@ -19,11 +19,13 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@OptIn(ExperimentalCoroutinesApi::class)
 open class SingleListVM(
     val db: DatabaseX,
     src: Source,
@@ -60,8 +62,7 @@ open class SingleListVM(
         Source.NEW              -> Request.productsNew()
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val installed = db.getInstalledDao().getAllFlow().mapLatest {
+    val installed = db.getInstalledDao().getAllFlow().distinctUntilChanged().mapLatest {
         it.associateBy(Installed::packageName)
     }.stateIn(
         scope = viewModelScope,
@@ -84,8 +85,8 @@ open class SingleListVM(
     private val products: StateFlow<List<Product>> = combine(
         request,
         installed,
-        db.getProductDao().queryFlowList(request.value),
-        db.getExtrasDao().getAllFlow(),
+        db.getProductDao().queryFlowList(request.value).distinctUntilChanged(),
+        db.getExtrasDao().getAllFlow().distinctUntilChanged(),
     ) { req, _, _, _ ->
         withContext(cc) {
             db.getProductDao().queryObject(req)
@@ -106,14 +107,11 @@ open class SingleListVM(
             emptyList()
         )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val repositories = db.getRepositoryDao().getAllFlow().mapLatest { it }
+    val repositories = db.getRepositoryDao().getAllFlow().distinctUntilChanged()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val categories = db.getCategoryDao().getAllNamesFlow().mapLatest { it }
+    val categories = db.getCategoryDao().getAllNamesFlow().distinctUntilChanged()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val licenses = db.getProductDao().getAllLicensesFlow().mapLatest {
+    val licenses = db.getProductDao().getAllLicensesFlow().distinctUntilChanged().mapLatest {
         it.map(Licenses::licenses).flatten().distinct()
     }
 

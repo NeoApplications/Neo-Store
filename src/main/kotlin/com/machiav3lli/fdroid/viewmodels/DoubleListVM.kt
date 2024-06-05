@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
@@ -72,8 +73,8 @@ open class DoubleListVM(
     val primaryProducts: StateFlow<List<Product>> = combine(
         primaryRequest,
         installed,
-        db.getProductDao().queryFlowList(primaryRequest.value),
-        db.getExtrasDao().getAllFlow(),
+        db.getProductDao().queryFlowList(primaryRequest.value).distinctUntilChanged(),
+        db.getExtrasDao().getAllFlow().distinctUntilChanged(),
     ) { req, _, _, _ ->
         withContext(cc) {
             db.getProductDao().queryObject(req)
@@ -89,8 +90,8 @@ open class DoubleListVM(
     val secondaryProducts: StateFlow<List<Product>> = combine(
         secondaryRequest,
         installed,
-        db.getProductDao().queryFlowList(secondaryRequest.value),
-        db.getExtrasDao().getAllFlow(),
+        db.getProductDao().queryFlowList(secondaryRequest.value).distinctUntilChanged(),
+        db.getExtrasDao().getAllFlow().distinctUntilChanged(),
     ) { req, _, _, _ ->
         withContext(cc) {
             db.getProductDao().queryObject(req)
@@ -101,11 +102,11 @@ open class DoubleListVM(
         initialValue = emptyList()
     )
 
-    val repositories = db.getRepositoryDao().getAllFlow().mapLatest { it }
+    val repositories = db.getRepositoryDao().getAllFlow().distinctUntilChanged()
 
-    val categories = db.getCategoryDao().getAllNamesFlow().mapLatest { it }
+    val categories = db.getCategoryDao().getAllNamesFlow().distinctUntilChanged()
 
-    val licenses = db.getProductDao().getAllLicensesFlow().mapLatest {
+    val licenses = db.getProductDao().getAllLicensesFlow().distinctUntilChanged().mapLatest {
         it.map(Licenses::licenses).flatten().distinct()
     }
 

@@ -17,11 +17,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@OptIn(ExperimentalCoroutinesApi::class)
 open class InstalledVM(val db: DatabaseX) : ViewModel() {
 
     private val cc = Dispatchers.IO
@@ -32,8 +34,7 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
         viewModelScope.launch { _sortFilter.emit(value) }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val installed = db.getInstalledDao().getAllFlow().mapLatest {
+    val installed = db.getInstalledDao().getAllFlow().distinctUntilChanged().mapLatest {
         it.associateBy(Installed::packageName)
     }.stateIn(
         scope = viewModelScope,
@@ -44,8 +45,8 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
     val installedProducts: StateFlow<List<Product>> = combine(
         sortFilter,
         installed,
-        db.getProductDao().queryFlowList(Request.productsInstalled()),
-        db.getExtrasDao().getAllFlow(),
+        db.getProductDao().queryFlowList(Request.productsInstalled()).distinctUntilChanged(),
+        db.getExtrasDao().getAllFlow().distinctUntilChanged(),
     ) { _, _, _, _ ->
         withContext(cc) {
             db.getProductDao().queryObject(Request.productsInstalled())
@@ -70,19 +71,15 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
         initialValue = emptyList()
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val repositories = db.getRepositoryDao().getAllFlow().mapLatest { it }
+    val repositories = db.getRepositoryDao().getAllFlow().distinctUntilChanged()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val categories = db.getCategoryDao().getAllNamesFlow().mapLatest { it }
+    val categories = db.getCategoryDao().getAllNamesFlow().distinctUntilChanged()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val licenses = db.getProductDao().getAllLicensesFlow().mapLatest {
+    val licenses = db.getProductDao().getAllLicensesFlow().distinctUntilChanged().mapLatest {
         it.map(Licenses::licenses).flatten().distinct()
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val iconDetails = db.getProductDao().getIconDetailsFlow().mapLatest {
+    val iconDetails = db.getProductDao().getIconDetailsFlow().distinctUntilChanged().mapLatest {
         it.associateBy(IconDetails::packageName)
     }.stateIn(
         scope = viewModelScope,
