@@ -139,8 +139,9 @@ val PrefsEntries = mapOf(
         }
     },
     Preferences.Key.DefaultTab to mapOf(
-        Preferences.DefaultTab.Explore to R.string.explore,
         Preferences.DefaultTab.Latest to R.string.latest,
+        Preferences.DefaultTab.Explore to R.string.explore,
+        Preferences.DefaultTab.Search to R.string.search,
         Preferences.DefaultTab.Installed to R.string.installed,
     ),
     Preferences.Key.ActionLockDialog to mapOf(

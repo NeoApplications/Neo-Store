@@ -647,11 +647,14 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
     sealed class DefaultTab(override val valueString: String) : Enumeration<DefaultTab> {
         override val values: List<DefaultTab>
-            get() = listOf(Explore, Latest, Installed)
+            get() = listOf(Latest, Explore, Search, Installed)
 
-        data object Explore : DefaultTab("1")
+        val index get() = valueString.toInt()
+
         data object Latest : DefaultTab("0")
-        data object Installed : DefaultTab("2")
+        data object Explore : DefaultTab("1")
+        data object Search : DefaultTab("2")
+        data object Installed : DefaultTab("3")
     }
 
     operator fun <T> get(key: Key<T>): T {
