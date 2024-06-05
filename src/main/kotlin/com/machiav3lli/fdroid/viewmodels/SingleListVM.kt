@@ -9,7 +9,6 @@ import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.entity.Request
-import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.Source
 import com.machiav3lli.fdroid.utility.matchSearchQuery
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +18,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
@@ -28,11 +26,13 @@ import kotlinx.coroutines.withContext
 
 open class SingleListVM(
     val db: DatabaseX,
-    source: Source,
+    src: Source,
 ) : ViewModel() {
     private val cc = Dispatchers.IO
     private val _sortFilter = MutableStateFlow("")
     val sortFilter: StateFlow<String> = _sortFilter
+    private val _source = MutableStateFlow(src)
+    val source: StateFlow<Source> = _source
 
     fun setSortFilter(value: String) {
         viewModelScope.launch { _sortFilter.emit(value) }
@@ -44,23 +44,20 @@ open class SingleListVM(
         viewModelScope.launch { query.emit(value) }
     }
 
-    private val sections = MutableStateFlow<Section>(Section.All)
-
-    fun setSections(value: Section) {
-        viewModelScope.launch { sections.emit(value) }
+    fun setSource(ns: Source) {
+        viewModelScope.launch { _source.emit(ns) }
     }
 
-    fun request(source: Source): Request {
-        var mSections: Section = Section.All
-        sections.value.let { if (source.sections) mSections = it }
-        return when (source) {
-            Source.AVAILABLE -> Request.productsAll(mSections)
-            Source.SEARCH    -> Request.productsSearch()
-            Source.INSTALLED -> Request.productsInstalled()
-            Source.UPDATES   -> Request.productsUpdates()
-            Source.UPDATED   -> Request.productsUpdated()
-            Source.NEW       -> Request.productsNew()
-        }
+    fun request(source: Source): Request = when (source) {
+        Source.AVAILABLE        -> Request.productsAll()
+        Source.FAVORITES        -> Request.productsFavorites()
+        Source.SEARCH           -> Request.productsSearch()
+        Source.SEARCH_INSTALLED -> Request.productsSearchInstalled()
+        Source.SEARCH_NEW       -> Request.productsSearchNew()
+        Source.INSTALLED        -> Request.productsInstalled()
+        Source.UPDATES          -> Request.productsUpdates()
+        Source.UPDATED          -> Request.productsUpdated()
+        Source.NEW              -> Request.productsNew()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -72,17 +69,16 @@ open class SingleListVM(
         initialValue = emptyMap()
     )
 
-    private var request: StateFlow<Request> = combineTransform(
+    private var request: StateFlow<Request> = combine(
         sortFilter,
-        sections,
+        _source,
         installed
-    ) { _, _, _ ->
-        val newRequest = request(source)
-        emit(newRequest)
+    ) { _, src, _ ->
+        request(src)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = request(source)
+        initialValue = request(src)
     )
 
     private val products: StateFlow<List<Product>> = combine(

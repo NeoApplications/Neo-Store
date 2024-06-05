@@ -65,13 +65,16 @@ enum class InstallState {
     PENDING
 }
 
-enum class Source(val sections: Boolean, val order: Boolean) {
-    AVAILABLE(true, true),
-    SEARCH(false, true),
-    INSTALLED(false, true),
-    UPDATES(false, false),
-    UPDATED(false, true),
-    NEW(false, true)
+enum class Source {
+    AVAILABLE,
+    FAVORITES,
+    SEARCH,
+    SEARCH_INSTALLED,
+    SEARCH_NEW,
+    INSTALLED,
+    UPDATES,
+    UPDATED,
+    NEW
 }
 
 enum class LinkRef(

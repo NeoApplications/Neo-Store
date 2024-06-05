@@ -203,12 +203,26 @@ data class Request(
     val numberOfItems: Int = 0,
 ) {
     companion object {
-        fun productsAll(section: Section) = Request(
+        fun productsAll() = Request(
             id = 1,
             installed = false,
             updates = false,
             updateCategory = UpdateCategory.ALL,
-            section = section,
+            section = Section.All,
+            order = Preferences[Preferences.Key.SortOrderExplore].order,
+            ascending = Preferences[Preferences.Key.SortOrderAscendingExplore],
+            category = Preferences[Preferences.Key.CategoriesFilterExplore],
+            filteredOutRepos = Preferences[Preferences.Key.ReposFilterExplore],
+            filteredAntiFeatures = Preferences[Preferences.Key.AntifeaturesFilterExplore],
+            filteredLicenses = Preferences[Preferences.Key.LicensesFilterExplore],
+        )
+
+        fun productsFavorites() = Request(
+            id = 9,
+            installed = false,
+            updates = false,
+            updateCategory = UpdateCategory.ALL,
+            section = Section.FAVORITE,
             order = Preferences[Preferences.Key.SortOrderExplore].order,
             ascending = Preferences[Preferences.Key.SortOrderAscendingExplore],
             category = Preferences[Preferences.Key.CategoriesFilterExplore],
@@ -244,6 +258,21 @@ data class Request(
             filteredOutRepos = Preferences[Preferences.Key.ReposFilterInstalled],
             filteredAntiFeatures = Preferences[Preferences.Key.AntifeaturesFilterInstalled],
             filteredLicenses = Preferences[Preferences.Key.LicensesFilterInstalled],
+        )
+
+        fun productsSearchInstalled() = Request(
+            id = 7,
+            installed = true,
+            updates = false,
+            updateCategory = UpdateCategory.ALL,
+            section = Section.All,
+            order = Preferences[Preferences.Key.SortOrderSearch].order,
+            ascending = Preferences[Preferences.Key.SortOrderAscendingSearch],
+            category = Preferences[Preferences.Key.CategoriesFilterSearch],
+            filteredOutRepos = Preferences[Preferences.Key.ReposFilterSearch],
+            filteredAntiFeatures = Preferences[Preferences.Key.AntifeaturesFilterSearch],
+            filteredLicenses = Preferences[Preferences.Key.LicensesFilterSearch],
+            numberOfItems = Preferences[Preferences.Key.SearchApps],
         )
 
         fun productsUpdates() = Request(
@@ -289,6 +318,21 @@ data class Request(
             filteredAntiFeatures = emptySet(),
             filteredLicenses = emptySet(),
             numberOfItems = Preferences[Preferences.Key.NewApps],
+        )
+
+        fun productsSearchNew() = Request(
+            id = 8,
+            installed = false,
+            updates = false,
+            updateCategory = UpdateCategory.NEW,
+            section = Section.All,
+            order = Order.DATE_ADDED,
+            ascending = false,
+            category = Preferences[Preferences.Key.CategoriesFilterSearch],
+            filteredOutRepos = Preferences[Preferences.Key.ReposFilterSearch],
+            filteredAntiFeatures = Preferences[Preferences.Key.AntifeaturesFilterSearch],
+            filteredLicenses = Preferences[Preferences.Key.LicensesFilterSearch],
+            numberOfItems = Preferences[Preferences.Key.SearchApps],
         )
     }
 }

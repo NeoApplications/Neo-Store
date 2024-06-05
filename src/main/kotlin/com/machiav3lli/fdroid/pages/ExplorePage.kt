@@ -38,7 +38,7 @@ import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.DialogKey
-import com.machiav3lli.fdroid.entity.Section
+import com.machiav3lli.fdroid.entity.Source
 import com.machiav3lli.fdroid.entity.appCategoryIcon
 import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.ui.components.CategoriesList
@@ -145,7 +145,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                 ) {
                     Preferences[Preferences.Key.CategoriesFilterExplore] = ""
                     selectedCategory.value = ""
-                    viewModel.setSections(Section.All)
+                    viewModel.setSource(Source.AVAILABLE)
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -170,7 +170,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                     favString -> {
                         Preferences[Preferences.Key.CategoriesFilterExplore] = FILTER_CATEGORY_ALL
                         selectedCategory.value = favString
-                        viewModel.setSections(Section.FAVORITE)
+                        viewModel.setSource(Source.FAVORITES)
                     }
 
                     else      -> {
@@ -178,7 +178,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                             if (it != allString) it
                             else FILTER_CATEGORY_ALL
                         selectedCategory.value = it
-                        viewModel.setSections(Section.All)
+                        viewModel.setSource(Source.AVAILABLE)
                     }
                 }
                 scope.launch {

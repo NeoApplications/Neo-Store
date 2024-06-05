@@ -10,7 +10,6 @@ import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.entity.Request
-import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.entity.Source
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,15 +37,16 @@ open class DoubleListVM(
         viewModelScope.launch { _sortFilter.emit(value) }
     }
 
-    fun request(source: Source): Request {
-        return when (source) {
-            Source.AVAILABLE -> Request.productsAll(Section.All)
-            Source.SEARCH    -> Request.productsSearch()
-            Source.INSTALLED -> Request.productsInstalled()
-            Source.UPDATES   -> Request.productsUpdates()
-            Source.UPDATED   -> Request.productsUpdated()
-            Source.NEW       -> Request.productsNew()
-        }
+    fun request(source: Source): Request = when (source) {
+        Source.AVAILABLE        -> Request.productsAll()
+        Source.FAVORITES        -> Request.productsFavorites()
+        Source.SEARCH           -> Request.productsSearch()
+        Source.SEARCH_INSTALLED -> Request.productsSearchInstalled()
+        Source.SEARCH_NEW       -> Request.productsSearchNew()
+        Source.INSTALLED        -> Request.productsInstalled()
+        Source.UPDATES          -> Request.productsUpdates()
+        Source.UPDATED          -> Request.productsUpdated()
+        Source.NEW              -> Request.productsNew()
     }
 
     val installed = db.getInstalledDao().getAllFlow().mapLatest {
