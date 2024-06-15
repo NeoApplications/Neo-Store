@@ -65,7 +65,6 @@ import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.DialogKey
 import com.machiav3lli.fdroid.entity.DonateType
 import com.machiav3lli.fdroid.entity.PrivacyNote
-import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.network.createIconUri
 import com.machiav3lli.fdroid.service.ActionReceiver
 import com.machiav3lli.fdroid.service.worker.DownloadWorker
@@ -336,8 +335,7 @@ fun AppSheet(
 
             ActionState.Uninstall -> {
                 scope.launch {
-                    AppInstaller.getInstance(MainApplication.mainActivity)?.defaultInstaller
-                        ?.uninstall(packageName)
+                    MainApplication.installer.uninstall(packageName)
                 }
                 Unit
             }

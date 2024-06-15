@@ -21,7 +21,6 @@ import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.database.entity.InstallTask
-import com.machiav3lli.fdroid.installer.AppInstaller
 import com.machiav3lli.fdroid.installer.LegacyInstaller
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.installNotificationBuilder
@@ -71,14 +70,14 @@ class InstallWorker(
         val label = inputData.getString(ARG_NAME) ?: ""
         val fileName = inputData.getString(ARG_FILE_NAME) ?: ""
         var task = MainApplication.db.getInstallTaskDao().get(fileName)
-        val installerInstance = AppInstaller.getInstance(context)
+        val installerInstance = MainApplication.installer
 
         try {
             while (task != null) {
-                if (!lock.isLocked && installerInstance?.defaultInstaller?.isInstalling(task.packageName) != true) {
+                if (!lock.isLocked && !installerInstance.isInstalling(task.packageName)) {
                     currentTask = task
                     val installer = suspend { // TODO add sort of notification
-                        installerInstance?.defaultInstaller?.install(
+                        installerInstance.install(
                             label,
                             fileName
                         ) {
@@ -88,7 +87,7 @@ class InstallWorker(
 
                     lock.lock()
                     try {
-                        if (MainApplication.mainActivity != null && installerInstance?.defaultInstaller is LegacyInstaller) {
+                        if (MainApplication.mainActivity != null && installerInstance is LegacyInstaller) {
                             MainApplication.mainActivity?.withResumed {
                                 scope.launch { installer() }
                             }

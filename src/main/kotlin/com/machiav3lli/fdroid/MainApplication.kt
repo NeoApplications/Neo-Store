@@ -21,6 +21,9 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.databaseModule
 import com.machiav3lli.fdroid.index.RepositoryUpdater
+import com.machiav3lli.fdroid.installer.AppInstaller
+import com.machiav3lli.fdroid.installer.BaseInstaller
+import com.machiav3lli.fdroid.installer.installerModule
 import com.machiav3lli.fdroid.network.CoilDownloader
 import com.machiav3lli.fdroid.network.Downloader
 import com.machiav3lli.fdroid.network.downloadClientModule
@@ -52,6 +55,7 @@ class MainApplication : Application(), ImageLoaderFactory {
     val db: DatabaseX by inject()
     lateinit var mActivity: AppCompatActivity
     val wm: WorkerManager by inject()
+    val installer: AppInstaller by inject()
 
     companion object {
         val enqueuedInstalls: MutableSet<String> = mutableSetOf()
@@ -71,6 +75,7 @@ class MainApplication : Application(), ImageLoaderFactory {
 
         val wm: WorkerManager get() = neo_store.wm
         val db: DatabaseX get() = neo_store.db
+        val installer: BaseInstaller get() = neo_store.installer.defaultInstaller
 
         private val progress = mutableStateOf(Pair(false, 0f))
 
@@ -100,6 +105,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                 downloadClientModule,
                 workmanagerModule,
                 databaseModule,
+                installerModule
             )
         }
 
