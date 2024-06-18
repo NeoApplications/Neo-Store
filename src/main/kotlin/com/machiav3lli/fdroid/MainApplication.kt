@@ -49,7 +49,6 @@ import java.lang.ref.WeakReference
 import java.net.Proxy
 
 
-@Suppress("unused")
 class MainApplication : Application(), ImageLoaderFactory {
 
     val db: DatabaseX by inject()

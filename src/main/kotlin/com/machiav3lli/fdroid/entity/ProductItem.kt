@@ -9,7 +9,7 @@ data class ProductItem(
     val icon: String = "",
     val metadataIcon: String = "",
     val version: String = "69",
-    var installedVersion: String = "69",
+    var installedVersion: String = "",
     var compatible: Boolean = false,
     var canUpdate: Boolean = false,
     var launchable: Boolean = false,
