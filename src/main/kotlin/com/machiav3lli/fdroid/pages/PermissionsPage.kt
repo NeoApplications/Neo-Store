@@ -53,6 +53,7 @@ fun PermissionsPage(navController: NavHostController) {
     val context = LocalContext.current
     val powerManager =
         MainApplication.mainActivity?.getSystemService(Context.POWER_SERVICE) as PowerManager
+    val mScope = CoroutineScope(Dispatchers.Main)
 
     val permissionStatePostNotifications = if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) {
         rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
@@ -71,7 +72,7 @@ fun PermissionsPage(navController: NavHostController) {
                     powerManager,
                     permissionStatePostNotifications,
                 ) {
-                    navController.navigate(NavItem.Main.destination)
+                    mScope.launch { navController.navigate(NavItem.Main.destination) }
                 }
             }
         }
@@ -94,14 +95,12 @@ fun PermissionsPage(navController: NavHostController) {
         ) {
             items(permissionsList) { pair ->
                 PermissionItem(pair.first, pair.second) {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        permissionsList.refresh(
-                            context,
-                            powerManager,
-                            permissionStatePostNotifications,
-                        ) {
-                            navController.navigate(NavItem.Main.destination)
-                        }
+                    permissionsList.refresh(
+                        context,
+                        powerManager,
+                        permissionStatePostNotifications,
+                    ) {
+                        mScope.launch { navController.navigate(NavItem.Main.destination) }
                     }
                 }
             }
