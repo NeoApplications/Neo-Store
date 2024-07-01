@@ -372,7 +372,7 @@
     <string name="alt_block_layout_summary">Use an alternative/old layout for page blocks with borders instead of colored surfaces.</string>
     <string name="confirm_download_DESC_FORMAT">Are you sure you want to download %s?</string>
     <string name="download_show_dialog">Show download dialog</string>
-    <string name="download_show_dialog_summary">Show a dialog asking if you\'re sure you want to download an app (previous to starting download).</string>
+    <string name="download_show_dialog_summary">Show a dialog asking if you\'re sure you want to download an app (prior to starting the download).</string>
     <string name="bottom_search_bar">Bottom search bar</string>
     <string name="bottom_search_bar_summary">Place search bar at the bottom of the page.</string>
     <string name="select_all">Select all</string>

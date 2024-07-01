@@ -279,7 +279,7 @@
     <string name="action_open_website">Visiter le site web</string>
     <string name="trackers_none">Pas de traceurs</string>
     <string name="trackers_in">Traceurs dans %s</string>
-    <string name="trackers_note_0">Est-ce une application ou un logiciel espion ?</string>
+    <string name="trackers_note_0">Est-ce une application ou un logiciel espion ?</string>
     <string name="trackers_note_1">Comprend de nombreux traceurs de vos données sensibles</string>
     <string name="trackers_note_2">Pourquoi ces traceurs sont-ils nécessaires \?</string>
     <string name="permissions_note_1">Requiert un nombre significatif de permissions</string>
@@ -295,7 +295,7 @@
     <string name="no_vulnerabilities_installed_apps">Aucune application installée ne présente de vulnérabilité connue.</string>
     <string name="vulnerabilities">Vulnérabilités.</string>
     <string name="post_notifications_permission_title">Permission d\'afficher des notifications</string>
-    <string name="post_notifications_permission_message">A partir d\'Android 13 les applications nécessitent cette permission pour pouvoir afficher des notifications.</string>
+    <string name="post_notifications_permission_message">A partir d\'Android 13 les applications requièrent cette permission pour pouvoir afficher des notifications.</string>
     <string name="enable_download_directory_summary">Autorise la conservation des APKs téléchargées dans un dossier choisi.</string>
     <string name="custom_download_directory">Dossier de téléchargement personnalisé</string>
     <string name="tools">Outils</string>
@@ -349,11 +349,11 @@
     <string name="alt_navbar_item_description">Utiliser la disposition alternative des éléments de la barre de navigation, qui affiche l\'étiquette des éléments non sélectionnés.</string>
     <string name="no_releases">Aucune version compatible à afficher</string>
     <string name="allow_unstable_updates">Autoriser l\'affichage des mises à jour instables</string>
-    <string name="repos_import">Importer des dépôts (remplace ceux déjà existants)</string>
+    <string name="repos_import">Importer des dépôts (écrase les existants)</string>
     <string name="alt_new_apps">Utiliser une disposition alternative des nouvelles applications</string>
     <string name="enabled">Activé</string>
     <string name="disabled">Désactivé</string>
-    <string name="proxy_url">Url</string>
+    <string name="proxy_url">URL</string>
     <string name="black_medium_contrast">Noir (moyen contraste)</string>
     <string name="root_allow_downgrades_description">Permettre la rétrogradation de version des applications à l\'aide de l\'installateur racine (s\'applique seulement aux versions d\'applications débogables). Optimalement utilisé en combinaison avec \"Disable download version check\".</string>
     <string name="am_installer">Installateur du Gestionnaire d\'applications</string>
@@ -370,4 +370,25 @@
     <string name="download_manager_summary">Utilisez le gestionnaire de téléchargement du système pour télécharger les applications de manière plus fiable. Cette option ne supporte pas le TOR ou le proxy personnalisé, elle utilise les paramètres du système.</string>
     <string name="install_packages_permission_title">Permission d\'installer des paquets</string>
     <string name="install_packages_permission_message">Démarrer les applications Android 8 nécessite cette autorisation pour pouvoir installer des paquets.</string>
+    <string name="system_installer">Installateur système</string>
+    <string name="kids_mode_summary">Active le mode Enfants, désactive l\'installation de nouvelles applications.</string>
+    <string name="prefs_search_apps">Nombre maximal d\'applications à afficher dans les résultats de recherche.</string>
+    <string name="enable">Activer</string>
+    <string name="android_instead_of_sdk">Montrer la version d\'Android au lieu de celle du SDK</string>
+    <string name="confirm_download_DESC_FORMAT">Êtes-vous sûr de vouloir télécharger %s?</string>
+    <string name="download_show_dialog">Afficher le dialogue de téléchargement</string>
+    <string name="download_show_dialog_summary">Affiche un dialogue demandant si vous êtes sûr de télécharger une application (nécessaire pour démarrer le téléchargement)</string>
+    <string name="bottom_search_bar">Barre de recherche en bas</string>
+    <string name="bottom_search_bar_summary">Place la barre de recherche en bas de la page.</string>
+    <string name="select_all">Tout sélectionner</string>
+    <string name="deselect_all">Tout désélectionner</string>
+    <string name="action_lock_none">Aucun verrouillage</string>
+    <string name="action_lock_device">Verrouillage de l\'appareil</string>
+    <string name="action_lock_biometric">Verrouillage biométrique</string>
+    <string name="kids_mode">Mode Enfants</string>
+    <string name="hide_new_apps">Masque la barre des nouvelles applications</string>
+    <string name="hide_new_apps_description">Combine les nouvelles applications et celles récemment mises à jour dans la liste verticale de la dernière page.</string>
+    <string name="wait_to_sync">Attendre quelques secondes avant de réessayer de synchroniser.</string>
+    <string name="prefs_search_apps_description">Nombre maximal d\'applications à inclure dans les résultats de recherche (mettre à 0 pour inclure toutes les applications).</string>
+    <string name="state_modified">Modifié</string>
 </resources>

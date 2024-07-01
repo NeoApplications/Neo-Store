@@ -391,7 +391,7 @@
     <string name="alt_block_layout_summary">استخدم تخطيطًا بديلاً/قديمًا لكتل الصفحات ذات الحدود بدلاً من الأسطح الملونة.</string>
     <string name="confirm_download_DESC_FORMAT">هل أنت متأكد من أنك تريد تحميل %s؟?</string>
     <string name="download_show_dialog">عرض مربع حوار التنزيل</string>
-    <string name="download_show_dialog_summary">قم بعرض مربع حوار يسألك عما إذا كنت متأكدًا من رغبتك في تنزيل تطبيق ما (قبل بدء التنزيل).</string>
+    <string name="download_show_dialog_summary">اعرض مربع حوار يسألك عما إذا كنت متأكدًا من رغبتك في تنزيل تطبيق ما (قبل بدء التنزيل).</string>
     <string name="system_installer">مثبت النظام</string>
     <string name="hide_new_apps">إخفاء شريط التطبيقات الجديد</string>
     <string name="hide_new_apps_description">قم بدمج كل من التطبيقات الجديدة والمحدثة مؤخرًا في القائمة العمودية للصفحة الأخيرة.</string>
@@ -399,4 +399,10 @@
     <string name="wait_to_sync">انتظر بضع ثوانٍ قبل إعادة محاولة المزامنة.</string>
     <string name="prefs_search_apps_description">الحد الأقصى لعدد التطبيقات المراد تضمينها في نتائج البحث (اضبط على 0 لتضمين جميع التطبيقات).</string>
     <string name="state_modified">تم تعديله</string>
+    <string name="dismiss">رفض</string>
+    <string name="target_android">الاندرويد المستهدف</string>
+    <string name="android_instead_of_sdk">إظهار إصدار Android بدلاً من SDK</string>
+    <string name="enable">تمكين</string>
+    <string name="android_instead_of_sdk_summary">إظهار اسم إصدار Android بدلاً من إظهار رقم SDK لـ minSDK وtargetSDK.</string>
+    <string name="min_android">الحد الأدنى للأندرويد</string>
 </resources>

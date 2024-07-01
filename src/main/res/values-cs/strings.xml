@@ -393,4 +393,10 @@
     <string name="wait_to_sync">Počkejte několik sekund před opětovným pokusem o synchronizaci.</string>
     <string name="prefs_search_apps_description">Maximální počet aplikací zahrnutých ve výsledcích vyhledávání (nastavte na 0 pro zahrnutí všech aplikací).</string>
     <string name="state_modified">Upraveno</string>
+    <string name="enable">Povolit</string>
+    <string name="min_android">Min. verze Android</string>
+    <string name="target_android">Cíl. verze Android</string>
+    <string name="android_instead_of_sdk">Zobrazit verzi systému Android namísto SDK</string>
+    <string name="dismiss">Zavřít</string>
+    <string name="android_instead_of_sdk_summary">Zobrazit název verze systému Android namísto zobrazení čísla SDK pro minSDK a targetSDK.</string>
 </resources>

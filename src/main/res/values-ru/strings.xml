@@ -309,7 +309,7 @@
     <string name="enable_download_directory_summary">Сохранять загруженные APK в указанной папке.</string>
     <string name="custom_download_directory">Путь пользовательской папки загрузки</string>
     <string name="post_notifications_permission_title">Разрешение на уведомления</string>
-    <string name="post_notifications_permission_message">Начиная с Android 13 приложениям требуется это разрешение, чтобы показывать уведомления.</string>
+    <string name="post_notifications_permission_message">Начиная с Android 13 для показа уведомлений приложениям требуется это разрешение.</string>
     <string name="ignore_vulns">Игнорировать известные уязвимости безопасности</string>
     <string name="downloads">Загрузки</string>
     <string name="warning_disable_battery_optimization">Начиная с Android 12, приложению требуется оптимизации батареи для выполнения фоновых процессов, таких как синхронизация и загрузка. Если вы проигнорируете и не предоставите это разрешение, ваши отчёты об ошибках будут проигнорированы.</string>
@@ -395,4 +395,10 @@
     <string name="wait_to_sync">Подождать пару секунд перед повторением попытки синхронизации.</string>
     <string name="prefs_search_apps_description">Максимальное количество приложений в результатах поиска (0 для снятия ограничения).</string>
     <string name="state_modified">Изменено</string>
+    <string name="enable">Включить</string>
+    <string name="dismiss">Отклонить</string>
+    <string name="target_android">Желаемая версия ОС</string>
+    <string name="min_android">Минимальная версия ОС</string>
+    <string name="android_instead_of_sdk">Отображать версии Android вместо версий SDK</string>
+    <string name="android_instead_of_sdk_summary">Для приложений будут отображаться соответствующие версии Android вместо минимальных и рекомендуемых версий SDK.</string>
 </resources>

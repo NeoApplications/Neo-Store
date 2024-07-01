@@ -8,7 +8,7 @@
     <string name="author_email">Udviklerens e-mail</string>
     <string name="available">Tilgængelig</string>
     <string name="bug_tracker">Fejlsporing</string>
-    <string name="cancel">Annullér</string>
+    <string name="cancel">Annuller</string>
     <string name="changelog">Ændringslog</string>
     <string name="checking_repository">Kontrollerer repository…</string>
     <string name="compiled_for_debugging">Kompileret til fejlfinding</string>
@@ -24,12 +24,12 @@
     <string name="donate">Donér</string>
     <string name="downloaded_FORMAT">Hentet %s</string>
     <string name="downloading_FORMAT">Henter %s…</string>
-    <string name="edit_repository">Redigér repository</string>
+    <string name="edit_repository">Rediger repository</string>
     <string name="file_format_error_DESC">Ugyldigt filformat.</string>
     <string name="fingerprint">Fingeraftryk</string>
     <string name="has_security_vulnerabilities">Har sikkerhedssårbarheder</string>
     <string name="http_proxy">HTTP-proxy</string>
-    <string name="ignore_all_updates">Ignorér alle nye versioner</string>
+    <string name="ignore_all_updates">Ignorer alle nye versioner</string>
     <string name="incompatible_api_DESC_FORMAT">Din %1$s (API-version %2$d) understøttes ikke. %3$s</string>
     <string name="incompatible_api_max_DESC_FORMAT">Maksimal API-version er %d.</string>
     <string name="incompatible_api_min_DESC_FORMAT">Minimum API-version er %d.</string>
@@ -39,7 +39,7 @@
     <string name="incompatible_versions">Inkompatible versioner</string>
     <string name="incompatible_versions_summary">Vis versioner, der er inkompatible med enheden.</string>
     <string name="incompatible_with_FORMAT">Inkompatibel med %s</string>
-    <string name="install">Installér</string>
+    <string name="install">Installer</string>
     <string name="invalid_fingerprint_format">Ugyldigt fingeraftryksformat</string>
     <string name="invalid_metadata_error_DESC">Ugyldige metadata.</string>
     <string name="invalid_permissions_error_DESC">Ugyldige tilladelser.</string>
@@ -103,11 +103,11 @@
     <string name="signed_using_unsafe_algorithm">Signeret med en usikker algoritme</string>
     <string name="size">Størrelse</string>
     <string name="socks_proxy">SOCKS-proxy</string>
-    <string name="sorting_order">Sortér efter</string>
+    <string name="sorting_order">Sorter efter</string>
     <string name="source_code">Kildekode</string>
     <string name="suggested">Foreslået</string>
-    <string name="sync_repositories">Synkronisér repositories</string>
-    <string name="sync_repositories_automatically">Auto-synkronisér repositories</string>
+    <string name="sync_repositories">Synkroniser repositories</string>
+    <string name="sync_repositories_automatically">Auto-synkroniser repositories</string>
     <string name="syncing">Synkroniserer</string>
     <string name="syncing_FORMAT">Synkroniserer %s…</string>
     <string name="system">System</string>
@@ -133,8 +133,8 @@
     <string name="show_less">Vis mindre</string>
     <string name="explore">Udforsk</string>
     <string name="installed_applications">Installeret</string>
-    <string name="sort_filter">Sortér og filtrér</string>
-    <string name="install_after_sync">Auto-opdatér</string>
+    <string name="sort_filter">Sorter og filtrer</string>
+    <string name="install_after_sync">Auto-opdater</string>
     <string name="prefs_updated_apps">Antal apps, der vises i \"Nyligt opdateret\"</string>
     <string name="prefs_new_apps">Antal apps, der vises i \"Nye apps\"</string>
     <string name="new_repository">Nyt repository</string>
@@ -176,7 +176,7 @@
     <string name="permission_other">Andre tilladelser</string>
     <string name="trackers">Sporing</string>
     <string name="trackers_identification">Identifikationssporing</string>
-    <string name="trackers_identification_description">Sporing lader apps bruge login-tjenesterne til specifikke tjenester, f.eks. Facebook.</string>
+    <string name="trackers_identification_description">Sporing lader apps bruge login-tjenesterne til specifikke tjenester, fx Facebook.</string>
     <string name="trackers_ads">Reklamesporing</string>
     <string name="trackers_bug">Fejlrapporteringssporing</string>
     <string name="trackers_bug_description">Sporing, der bruges til at rapportere de tekniske problemer, som appen kan have.</string>
@@ -186,7 +186,7 @@
     <string name="source_copyright">Copyright</string>
     <string name="action_change_permissions">Ændr tilladelser</string>
     <string name="action_open_tc">Åbn TrackerControl</string>
-    <string name="action_install_tc">Installér TrackerControl</string>
+    <string name="action_install_tc">Installer TrackerControl</string>
     <string name="trackers_note_0">Er det en app eller spyware?</string>
     <string name="trackers_note_1">Indeholder mange sporinger af dine følsomme data</string>
     <string name="trackers_note_2">Hvorfor har den brug for disse sporinger?</string>
@@ -196,8 +196,8 @@
     <string name="permission_not_present">Ikke tilstede på dit system</string>
     <string name="vulnerabilities_installed_apps">Disse installerede apps har kendte sårbarheder!</string>
     <string name="no_vulnerabilities_installed_apps">Ingen installerede apps har kendte sårbarheder.</string>
-    <string name="extras_export">Eksportér ekstra (Favoritter, Ignorér opdateringer osv.)</string>
-    <string name="extras_import">Importér ekstra (Favoritter, Ignorér opdateringer osv.)</string>
+    <string name="extras_export">Eksportér ekstra (Favoritter, Ignorer opdateringer osv.)</string>
+    <string name="extras_import">Importér ekstra (Favoritter, Ignorer opdateringer osv.)</string>
     <string name="show_trackers">Vis sporinger</string>
     <string name="show_trackers_description">Få og vis apps\' sporinger fra Exodus Privacy.</string>
     <string name="enable_download_directory">Brug tilpasset overførselsmappe</string>
@@ -217,11 +217,11 @@
     <string name="downloading">Henter</string>
     <string name="has_advertising">Har reklamer</string>
     <string name="has_non_free_dependencies">Har ikke-frie afhængigheder</string>
-    <string name="ignore_this_update">Ignorér denne version</string>
+    <string name="ignore_this_update">Ignorer denne version</string>
     <string name="http_error_DESC">Ugyldigt serversvar.</string>
-    <string name="incompatible_older_DESC">Denne version er ældre end den, der er installeret på din enhed. Afinstallér den først.</string>
+    <string name="incompatible_older_DESC">Denne version er ældre end den, der er installeret på din enhed. Afinstaller den først.</string>
     <string name="incompatible_signature_DESC">Denne version er signeret med et andet certifikat end det, der er installeret på din enhed.
-\nAfinstallér det først.</string>
+\nAfinstaller det først.</string>
     <string name="install_types">Installationstyper</string>
     <string name="installed">Installeret</string>
     <string name="invalid_address">Ugyldig adresse</string>
@@ -245,7 +245,7 @@
     <string name="source_code_no_longer_available">Kildekode er ikke længere tilgængelig</string>
     <string name="app_installed">Installeret</string>
     <string name="target">Mål</string>
-    <string name="uninstall">Afinstallér</string>
+    <string name="uninstall">Afinstaller</string>
     <string name="system_black">System (Sort)</string>
     <string name="unknown">Ukendt</string>
     <string name="theme">Tema</string>
@@ -256,9 +256,9 @@
     <string name="ignore_battery_optimization_not_supported">Din Android-installation understøtter ikke deaktivering af batterioptimering.</string>
     <string name="prefs_language_title">Sprog</string>
     <string name="latest">Seneste</string>
-    <string name="update_all">Installér alle</string>
+    <string name="update_all">Installer alle</string>
     <string name="new_applications">Nye apps</string>
-    <string name="install_after_sync_summary">Installér alle nye versioner efter gennemgang af repositories for nye apps.</string>
+    <string name="install_after_sync_summary">Installer alle nye versioner efter gennemgang af repositories for nye apps.</string>
     <string name="root_installer">Root installatør</string>
     <string name="ignore_battery_optimization_message">Appen opfører sig bedre uden batterioptimering og forhindrer nedbrud på Android 12+.</string>
     <string name="permission_contacts">Kontakter</string>
@@ -278,7 +278,7 @@
     <string name="permission_identification_data">Tilladelser til identifikationsdata</string>
     <string name="permission_physical_data">Tilladelser til fysiske data</string>
     <string name="trackers_analytics">Analysesporing</string>
-    <string name="trackers_analytics_description">Sporing, der bruges til at indsamle statistikker over din brug af apps, f.eks. tryk og klik.</string>
+    <string name="trackers_analytics_description">Sporing, der bruges til at indsamle statistikker over din brug af apps, fx tryk og klik.</string>
     <string name="trackers_ads_description">Sporing, der bruges til at vise annoncer og spore din interaktion med disse.</string>
     <string name="trackers_in">Sporing i %s</string>
     <string name="trackers_profiling">Profileringssporing</string>
@@ -301,13 +301,13 @@
     <string name="vulnerabilities">Sårbarheder.</string>
     <string name="tools">Værktøjer</string>
     <string name="permission_not_granted">Ikke tilladt</string>
-    <string name="edit">Redigér</string>
+    <string name="edit">Rediger</string>
     <string name="only_on_battery">Kun under opladning</string>
     <string name="allowed_anti_features">Tilladte Anti-funktioner</string>
     <string name="post_notifications_permission_title">Tilladelse til at sende notifikationer</string>
     <string name="post_notifications_permission_message">Fra og med Android 13 kræver apps denne tilladelse for at kunne sende notifikationer.</string>
     <string name="file_share_text">Fil fra Neo Store</string>
-    <string name="ignore_vulns">Ignorér rapporterede sikkerhedssårbarheder</string>
+    <string name="ignore_vulns">Ignorer rapporterede sikkerhedssårbarheder</string>
     <string name="downloads">Overførsler</string>
     <string name="no_trackers_data_available">Ingen data om sporinger tilgængelige (endnu).</string>
     <string name="privacy_panel">Privatlivspanel</string>
@@ -321,13 +321,13 @@
     <string name="next">Næste</string>
     <string name="disable_download_version_check_summary">Tillader at hente ældre versioner af installerede apps. Kan bruges i kombination med Magisk\'s \"letmedowngrade\" patch.</string>
     <string name="disable_signature_check_summary">Kontrollér ikke, om den hentede APK har samme signatur som den installerede app.</string>
-    <string name="ignore">Ignorér</string>
+    <string name="ignore">Ignorer</string>
     <string name="warning_disable_battery_optimization">Fra og med Android 12 kræver appen batterioptimering for at udføre baggrundsprocesser som synkronisering og hentning. Hvis du ignorerer denne tilladelse, må du klare dig selv, og dine nedbrudsrapporter ignoreres.</string>
     <string name="warning_show_notification">Fra og med Android 13 kræver appen denne tilladelse for at kunne give dig besked om de forskellige processer. Hvis du ignorerer denne tilladelse, får du ingen notifikationer.</string>
     <string name="keep_install_notification">Behold installationsnotifikation</string>
     <string name="keep_install_notification_summary">Behold notifikationen om vellykket installation af en app.</string>
     <string name="allowed_licenses">Tilladte licenser</string>
-    <string name="cancel_all">Annullér alle</string>
+    <string name="cancel_all">Annuller alle</string>
     <string name="disable_signature_check">Deaktivér signaturkontrol</string>
     <string name="disable_download_version_check">Deaktivér kontrol af overførselsversion</string>
     <string name="show_categories_bar_description">Vis kategori-sidebjælke på udforsk-side.</string>
@@ -350,7 +350,7 @@
     <string name="black_medium_contrast">Sort (middel kontrast)</string>
     <string name="black_high_contrast">Sort (høj kontrast)</string>
     <string name="installed_export">Eksportér liste over installerede apps</string>
-    <string name="installed_import">Importér og installér en liste af apps (tager dem fra aktiverede repositories, hvis de findes)</string>
+    <string name="installed_import">Importér og installer en liste af apps (tager dem fra aktiverede repositories, hvis de findes)</string>
     <string name="root_allow_downgrades">Tillad at nedgradere apps</string>
     <string name="root_allow_downgrades_description">Tillad at nedgradere applikationer med root installatøren (gælder kun for applikationsversioner, der kan fejlfindes). Bruges bedst i kombination med \"Deaktivér kontrol af overførselsversion\".</string>
     <string name="root_allow_installing_old_apps">Tillad at installere ældre apps</string>
@@ -375,7 +375,7 @@
     <string name="confirm_download_DESC_FORMAT">Er du sikker på, at du vil hente %s?</string>
     <string name="download_show_dialog">Vis overførselsdialog</string>
     <string name="bottom_search_bar">Søgefelt i bunden</string>
-    <string name="bottom_search_bar_summary">Placér søgefeltet nederst på siden.</string>
+    <string name="bottom_search_bar_summary">Placer søgefeltet nederst på siden.</string>
     <string name="select_all">Vælg alle</string>
     <string name="deselect_all">Fravælg alle</string>
     <string name="action_lock_dialog">Vis dialogboks for handlingslås</string>
@@ -384,11 +384,17 @@
     <string name="action_lock_biometric">Biometrisk lås</string>
     <string name="kids_mode">Børnetilstand</string>
     <string name="kids_mode_summary">Aktivér børnetilstand, der deaktiverer installation af nye apps.</string>
-    <string name="download_show_dialog_summary">Vis en dialogboks, der spørger, om du er sikker på, at du vil hente en app (før du starter hentning).</string>
+    <string name="download_show_dialog_summary">Vis en dialogboks, der spørger, om du er sikker på, at du vil hente en app (før start af hentningen).</string>
     <string name="kids_mode_summary_full">Aktivér børnetilstand, der deaktiverer nye app-installationer. For at deaktivere skal du trykke seks gange på appens version på den anden side. Når appen genstartes, skjules dette hint.</string>
     <string name="hide_new_apps">Skjul nye apps-linjen</string>
-    <string name="hide_new_apps_description">Kombinér både nye og nyligt opdaterede apps i den seneste sides lodrette liste.</string>
+    <string name="hide_new_apps_description">Kombiner både nye og nyligt opdaterede apps i den seneste sides lodrette liste.</string>
     <string name="wait_to_sync">Vent nogle sekunder, før du prøver at synkronisere igen.</string>
     <string name="state_modified">Ændret</string>
     <string name="prefs_search_apps_description">Maksimalt antal applikationer at inkludere i søgeresultater (sæt til 0 for at inkludere alle apps).</string>
+    <string name="enable">Aktivér</string>
+    <string name="dismiss">Afvis</string>
+    <string name="min_android">Minimum Android</string>
+    <string name="android_instead_of_sdk">Vis Android-version i stedet for SDK</string>
+    <string name="android_instead_of_sdk_summary">Vis navnet på Android-versionen i stedet for at vise SDK-nummeret for minSDK og targetSDK.</string>
+    <string name="target_android">Target Android</string>
 </resources>
