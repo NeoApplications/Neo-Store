@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="all_applications">所有程式</string>
-    <string name="all_applications_up_to_date">所有程式已更新</string>
+    <string name="all_applications_up_to_date">所有應用程式都是最新的</string>
     <string name="always">總是</string>
     <string name="application">程式</string>
     <string name="address">地址</string>
@@ -183,7 +183,7 @@
     <string name="search">搜尋</string>
     <string name="show_more">顯示更多</string>
     <string name="theme">主題</string>
-    <string name="ignore_battery_optimization_not_supported">你的 Android 不支援關閉電池優化。</string>
+    <string name="ignore_battery_optimization_not_supported">你的 Android 安裝不支援停用電池優化。</string>
     <string name="syncing">同步中</string>
     <string name="target">目標</string>
     <string name="incompatible_signature_DESC">此版本和已安裝版本使用不同的證書簽署。
@@ -204,14 +204,14 @@
     <string name="loading_list">正在載入列表…</string>
     <string name="prefs_personal">個人</string>
     <string name="auto_sync_interval">自動同步間隔 (分鐘)</string>
-    <string name="images_cache_retention">保留圖像快取</string>
+    <string name="images_cache_retention">圖片快取保留</string>
     <string name="releases_cache_retention">保留已下載APK快取</string>
     <string name="favorite_applications">收藏夾</string>
     <string name="group_telegram">我們的Telegram群組</string>
     <string name="group_matrix">我們的Matrix群組</string>
     <string name="min_sdk">最低SDK</string>
     <string name="no_permissions_identified">無法識別您所要求的權限</string>
-    <string name="show_screenshots_description">於頁面顯示截圖。</string>
+    <string name="show_screenshots_description">在應用程式頁面上顯示螢幕截圖。</string>
     <string name="favorite_remove">從收藏夾中移除</string>
     <string name="favorite_add">新增至收藏夾</string>
     <string name="show_screenshots">顯示截圖</string>
@@ -273,7 +273,7 @@
     <string name="action_install_tc">安裝 TrackerControl</string>
     <string name="action_open_code">查看程式碼</string>
     <string name="action_open_website">打開網站</string>
-    <string name="trackers_none">沒有可顯示的追蹤器</string>
+    <string name="trackers_none">沒有追蹤器</string>
     <string name="trackers_in">追蹤於 %s</string>
     <string name="trackers_note_0">它是應用程式還是間諜軟體？</string>
     <string name="trackers_note_1">包括敏感資料的許多追蹤器</string>
@@ -284,7 +284,7 @@
     <string name="permissions_note_1">需要大量的權限</string>
     <string name="permissions_note_2">不需要很多權限</string>
     <string name="permissions_note_3">少量權限</string>
-    <string name="permission_not_present">包括您敏感資料的許多追蹤器</string>
+    <string name="permission_not_present">不存在於你的系統</string>
     <string name="permissions_note_4">幾乎不需要權限</string>
     <string name="permission_granted">以允許</string>
     <string name="permission_not_granted">未允許</string>
@@ -330,4 +330,5 @@
     <string name="canceled">已取消</string>
     <string name="finished">已完成</string>
     <string name="list_apps">顯示存儲庫的應用程式</string>
+    <string name="auto_sync_interval_hours">自動同步間隔（以小時為單位）</string>
 </resources>
