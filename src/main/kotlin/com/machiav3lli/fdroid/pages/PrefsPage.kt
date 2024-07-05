@@ -13,8 +13,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
@@ -25,6 +27,9 @@ import kotlinx.collections.immutable.persistentListOf
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PrefsPage(navController: NavHostController, pageIndex: Int) {
+    val context = LocalContext.current
+    val mActivity = context as NeoActivity
+
     val pages = persistentListOf(
         NavItem.PersonalPrefs,
         NavItem.UpdatesPrefs,
@@ -35,7 +40,10 @@ fun PrefsPage(navController: NavHostController, pageIndex: Int) {
     val currentPage by remember { derivedStateOf { pages[pagerState.currentPage] } }
 
     BackHandler {
-        navController.navigateUp()
+        if (mActivity.isAppSheetOpen)
+            mActivity.navigateProduct("")
+        else
+            navController.navigateUp()
     }
 
     Scaffold(

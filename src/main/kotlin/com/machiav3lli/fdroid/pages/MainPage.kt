@@ -51,7 +51,10 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
     val pagerState = rememberPagerState(initialPage = pageIndex, pageCount = { pages.size })
 
     BackHandler {
-        mActivity.moveTaskToBack(true)
+        if (mActivity.isAppSheetOpen)
+            mActivity.navigateProduct("")
+        else
+            mActivity.moveTaskToBack(true)
     }
 
     Scaffold(
