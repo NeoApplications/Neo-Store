@@ -19,12 +19,12 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -51,6 +51,7 @@ import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import com.machiav3lli.fdroid.viewmodels.SearchVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -74,12 +75,15 @@ class NeoActivity : AppCompatActivity() {
     }
 
     private lateinit var navController: NavHostController
-    private val cScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+    private val cScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
     private val mScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
     private val _appSheetPackage: MutableStateFlow<String> = MutableStateFlow("")
+    private val _showAppSheet: MutableSharedFlow<Boolean> = MutableSharedFlow(replay = 1)
+    val isAppSheetOpen: Boolean
+        get() = _showAppSheet.replayCache.first()
 
     val db
         get() = (application as MainApplication).db
@@ -138,22 +142,21 @@ class NeoActivity : AppCompatActivity() {
                 val sheetState = rememberStandardBottomSheetState()
                 val scaffoldState = rememberBottomSheetScaffoldState(sheetState)
                 val appSheetPackage by _appSheetPackage.collectAsState()
-                val appSheetVM = remember(appSheetPackage) {
-                    AppSheetVM(
-                        MainApplication.db,
-                        appSheetPackage,
-                    )
+                val appSheetVM = remember {
+                    derivedStateOf {
+                        AppSheetVM(
+                            MainApplication.db,
+                            appSheetPackage,
+                        )
+                    }
                 }
 
                 LaunchedEffect(Unit) {
-                    withContext(Dispatchers.Default) {
-                        _appSheetPackage.collectLatest {
+                    withContext(Dispatchers.IO) {
+                        _showAppSheet.collectLatest {
                             mScope.launch {
-                                if (it.isNotEmpty()) {
-                                    scaffoldState.bottomSheetState.expand()
-                                } else {
-                                    scaffoldState.bottomSheetState.partialExpand()
-                                }
+                                if (it) scaffoldState.bottomSheetState.expand()
+                                else scaffoldState.bottomSheetState.partialExpand()
                             }
                         }
                     }
@@ -167,7 +170,7 @@ class NeoActivity : AppCompatActivity() {
                     sheetContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                     sheetContent = {
                         AppSheet(
-                            appSheetVM,
+                            appSheetVM.value,
                             appSheetPackage,
                         )
                     }
@@ -175,14 +178,6 @@ class NeoActivity : AppCompatActivity() {
                     LaunchedEffect(key1 = navController) {
                         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
                             handleIntent(intent)
-                        }
-                    }
-
-                    LaunchedEffect(scaffoldState.bottomSheetState.currentValue) {
-                        if (scaffoldState.bottomSheetState.currentValue == SheetValue.PartiallyExpanded) {
-                            cScope.launch {
-                                _appSheetPackage.emit("")
-                            }
                         }
                     }
 
@@ -345,11 +340,11 @@ class NeoActivity : AppCompatActivity() {
         super.attachBaseContext(ContextWrapperX.wrap(newBase))
     }
 
-    val isAppSheetOpen: Boolean
-        get() = _appSheetPackage.value.isNotEmpty()
-
     internal fun navigateProduct(packageName: String) {
-        cScope.launch { _appSheetPackage.emit(packageName) }
+        cScope.launch {
+            _appSheetPackage.emit(packageName)
+            _showAppSheet.emit(packageName.isNotEmpty())
+        }
     }
 
     fun setSearchQuery(value: String) {
@@ -361,7 +356,7 @@ class NeoActivity : AppCompatActivity() {
             navController.navigate("${NavItem.Main.destination}?page=${Preferences.DefaultTab.Search.index}")
         }
         cScope.launch {
-            _appSheetPackage.emit("")
+            _showAppSheet.emit(false)
             query?.let { _searchQuery.emit(it) }
         }
     }
