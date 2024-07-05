@@ -24,46 +24,9 @@ import java.util.Date
 
 @Composable
 fun AppInfoChips(
+    list: ImmutableList<String>,
     modifier: Modifier = Modifier,
-    product: Product,
-    latestRelease: Release?,
-    installed: Installed?,
 ) {
-    val list: ImmutableList<String> = listOfNotNull(
-        if (product.canUpdate(installed) && installed != null)
-            "v${installed.version} → v${product.version}"
-        else if (installed != null) "v${installed.version}"
-        else "v${product.version}",
-        product.displayRelease?.size?.formatSize().orEmpty(),
-        DateFormat.getDateInstance().format(Date(product.updated)),
-        *product.categories.toTypedArray(),
-        when {
-            Preferences[Preferences.Key.AndroidInsteadOfSDK] && latestRelease != null && latestRelease.minSdkVersion != 0 ->
-                "${stringResource(id = R.string.min_android)} ${getAndroidVersionName(latestRelease.minSdkVersion)}"
-
-            latestRelease?.minSdkVersion != 0                                                                             ->
-                "${stringResource(id = R.string.min_sdk)} ${latestRelease?.minSdkVersion}"
-
-            else                                                                                                          -> null
-        },
-        when {
-            Preferences[Preferences.Key.AndroidInsteadOfSDK] && latestRelease != null && latestRelease.targetSdkVersion != 0 ->
-                "${stringResource(id = R.string.target_android)} ${
-                    getAndroidVersionName(
-                        latestRelease.targetSdkVersion
-                    )
-                }"
-
-            latestRelease?.targetSdkVersion != 0                                                                             ->
-                "${stringResource(id = R.string.target_sdk)} ${latestRelease?.targetSdkVersion}"
-
-            else                                                                                                             -> null
-        },
-        if (product.antiFeatures.isNotEmpty()) stringResource(id = R.string.anti_features)
-        else null,
-        *product.licenses.toTypedArray(),
-    ).toImmutableList()
-
     LazyRow(
         modifier = modifier.height(54.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -76,3 +39,39 @@ fun AppInfoChips(
         }
     }
 }
+
+@Composable
+fun Product.appInfoChips(installed: Installed?, latestRelease: Release?) = listOfNotNull(
+    if (this.canUpdate(installed) && installed != null)
+        "v${installed.version} → v$version"
+    else if (installed != null) "v${installed.version}"
+    else "v$version",
+    displayRelease?.size?.formatSize().orEmpty(),
+    DateFormat.getDateInstance().format(Date(updated)),
+    *categories.toTypedArray(),
+    when {
+        Preferences[Preferences.Key.AndroidInsteadOfSDK] && latestRelease != null && latestRelease.minSdkVersion != 0 ->
+            "${stringResource(id = R.string.min_android)} ${getAndroidVersionName(latestRelease.minSdkVersion)}"
+
+        latestRelease?.minSdkVersion != 0                                                                             ->
+            "${stringResource(id = R.string.min_sdk)} ${latestRelease?.minSdkVersion}"
+
+        else                                                                                                          -> null
+    },
+    when {
+        Preferences[Preferences.Key.AndroidInsteadOfSDK] && latestRelease != null && latestRelease.targetSdkVersion != 0 ->
+            "${stringResource(id = R.string.target_android)} ${
+                getAndroidVersionName(
+                    latestRelease.targetSdkVersion
+                )
+            }"
+
+        latestRelease?.targetSdkVersion != 0                                                                             ->
+            "${stringResource(id = R.string.target_sdk)} ${latestRelease?.targetSdkVersion}"
+
+        else                                                                                                             -> null
+    },
+    if (antiFeatures.isNotEmpty()) stringResource(id = R.string.anti_features)
+    else null,
+    *licenses.toTypedArray(),
+).toImmutableList()

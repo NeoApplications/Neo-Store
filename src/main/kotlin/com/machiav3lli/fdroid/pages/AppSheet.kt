@@ -81,6 +81,7 @@ import com.machiav3lli.fdroid.ui.components.appsheet.ReleaseItem
 import com.machiav3lli.fdroid.ui.components.appsheet.SourceCodeButton
 import com.machiav3lli.fdroid.ui.components.appsheet.TopBarHeader
 import com.machiav3lli.fdroid.ui.components.appsheet.WarningCard
+import com.machiav3lli.fdroid.ui.components.appsheet.appInfoChips
 import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.components.privacy.MeterIconsBar
 import com.machiav3lli.fdroid.ui.components.toScreenshotItem
@@ -443,11 +444,7 @@ fun AppSheet(
                             )
                         },
                     )
-                    AppInfoChips(
-                        product = product,
-                        latestRelease = displayRelease,
-                        installed = installed,
-                    )
+                    AppInfoChips(product.appInfoChips(installed, displayRelease))
                     MeterIconsBar(
                         modifier = Modifier.fillMaxWidth(),
                         selectedTrackers = trackersRank,
