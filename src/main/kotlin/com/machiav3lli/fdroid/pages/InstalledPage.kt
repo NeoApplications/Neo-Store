@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -21,8 +22,8 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -54,8 +55,8 @@ import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
+import com.machiav3lli.fdroid.ui.components.SegmentedTabButton
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
-import com.machiav3lli.fdroid.ui.components.TabButton
 import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -119,31 +120,37 @@ fun InstalledPage(viewModel: InstalledVM) {
             .fillMaxSize(),
         containerColor = Color.Transparent,
         topBar = {
-            PrimaryTabRow(
-                containerColor = Color.Transparent,
-                selectedTabIndex = currentPage,
-            ) {
-                TabButton(
-                    text = stringResource(id = R.string.installed),
-                    icon = Phosphor.ArrowSquareOut,
-                    onClick = {
-                        scope.launch {
-                            pagerState.animateScrollToPage(0)
-                        }
-                    }
-                )
-                TabButton(
-                    text = stringResource(id = R.string.downloads),
-                    icon = Phosphor.Download,
-                    onClick = {
-                        scope.launch {
-                            pagerState.animateScrollToPage(1)
-                        }
-                    }
-                )
-            }
-        }
     ) { paddingValues ->
+        SingleChoiceSegmentedButtonRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+        ) {
+            SegmentedTabButton(
+                text = stringResource(id = R.string.installed),
+                icon = Phosphor.ArrowSquareOut,
+                selected = { currentPage == 0 },
+                index = 0,
+                count = 2,
+                onClick = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(0)
+                    }
+                }
+            )
+            SegmentedTabButton(
+                text = stringResource(id = R.string.downloads),
+                icon = Phosphor.Download,
+                selected = { currentPage == 1 },
+                index = 1,
+                count = 2,
+                onClick = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(1)
+                    }
+                }
+            )
+        }
         HorizontalPager(
             modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
             state = pagerState,
@@ -170,36 +177,35 @@ fun InstallsPage(viewModel: InstalledVM) {
     }
     val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow()
         .collectAsState(emptyArray())
-    val iconDetails by viewModel.iconDetails.collectAsState()
 
     val updatesAvailable by remember {
         derivedStateOf {
             updates.isNotEmpty()
         }
     }
-
+    val iconDetails by viewModel.iconDetails.collectAsState()
     val downloaded = viewModel.downloaded.collectAsState()
-    val downloads by remember {
+    val downloads = remember {
         derivedStateOf {
             downloaded.value.filter { it.state is DownloadState.Downloading }
         }
     }
-    val downloadsRunning by remember(downloads) {
-        derivedStateOf { downloads.isNotEmpty() }
+    val downloadsRunning by remember {
+        derivedStateOf { downloads.value.isNotEmpty() }
     }
 
-    val sortedDownloads by remember(downloads) {
-        derivedStateOf { downloads.sortedBy { it.state.name } }
+    val sortedDownloads by remember {
+        derivedStateOf { downloads.value.sortedBy { it.state.name } }
     }
 
 
     var updatesVisible by remember { mutableStateOf(true) }
 
-    val openDialog = remember { mutableStateOf(false) }
-    val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
+
     var showSortSheet by rememberSaveable { mutableStateOf(false) }
     val sortSheetState = rememberModalBottomSheetState(true)
-
+    val openDialog = remember { mutableStateOf(false) }
+    val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
     val sortFilter by viewModel.sortFilter.collectAsState()
     val notModifiedSortFilter by remember(sortFilter) {
         derivedStateOf {
@@ -291,20 +297,22 @@ fun InstallsPage(viewModel: InstalledVM) {
                 }
             }
         }
-        if (downloadsRunning) item {
-            Text(
-                modifier = Modifier.padding(8.dp),
-                text = stringResource(id = R.string.downloading)
-            )
-        }
-        if (downloadsRunning) items(sortedDownloads, key = { it.cacheFileName }) { item ->
-            DownloadedItem(
-                download = item,
-                iconDetails = iconDetails[item.packageName],
-                repo = repositoriesMap[item.state.repoId],
-                state = item.state,
-            ) {
-                neoActivity.navigateProduct(item.packageName)
+        if (downloadsRunning) {
+            item {
+                Text(
+                    modifier = Modifier.padding(8.dp),
+                    text = stringResource(id = R.string.downloading)
+                )
+            }
+            items(sortedDownloads, key = { it.cacheFileName }) { item ->
+                DownloadedItem(
+                    download = item,
+                    iconDetails = iconDetails[item.packageName],
+                    repo = repositoriesMap[item.state.repoId],
+                    state = item.state,
+                ) {
+                    neoActivity.navigateProduct(item.packageName)
+                }
             }
         }
         item {
