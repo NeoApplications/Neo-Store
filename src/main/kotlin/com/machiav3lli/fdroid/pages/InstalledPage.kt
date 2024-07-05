@@ -22,7 +22,6 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -114,13 +113,11 @@ fun InstalledPage(viewModel: InstalledVM) {
         }
     }
 
-    Scaffold(
-        modifier = Modifier
+    Column(
+        Modifier
             .background(Color.Transparent)
             .fillMaxSize(),
-        containerColor = Color.Transparent,
-        topBar = {
-    ) { paddingValues ->
+    ) {
         SingleChoiceSegmentedButtonRow(
             modifier = Modifier
                 .fillMaxWidth()
@@ -152,7 +149,6 @@ fun InstalledPage(viewModel: InstalledVM) {
             )
         }
         HorizontalPager(
-            modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
             state = pagerState,
             beyondBoundsPageCount = 1
         ) { index ->
