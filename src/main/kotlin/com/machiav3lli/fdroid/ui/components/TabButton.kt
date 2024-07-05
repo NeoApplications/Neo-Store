@@ -10,8 +10,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRowScope
 import androidx.compose.material3.TabPosition
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
@@ -47,6 +51,28 @@ fun TabButton(
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = text)
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SingleChoiceSegmentedButtonRowScope.SegmentedTabButton(
+    text: String,
+    icon: ImageVector,
+    index: Int,
+    count: Int,
+    selected: () -> Boolean,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    SegmentedButton(
+        selected = selected(),
+        onClick = onClick,
+        shape = SegmentedButtonDefaults.itemShape(index, count),
+        icon = {
+            Icon(imageVector = icon, contentDescription = text)
+        }) {
+        Text(text = text)
     }
 }
 
