@@ -16,26 +16,26 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.SheetValue
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.pages.AppSheet
-import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.AppNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavItem
@@ -53,7 +53,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.properties.Delegates
 
 class NeoActivity : AppCompatActivity() {
@@ -77,7 +79,7 @@ class NeoActivity : AppCompatActivity() {
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
-    private val appSheetPackage: MutableState<String> = mutableStateOf("")
+    private val _appSheetPackage: MutableStateFlow<String> = MutableStateFlow("")
 
     val db
         get() = (application as MainApplication).db
@@ -133,24 +135,54 @@ class NeoActivity : AppCompatActivity() {
                 val mScope = rememberCoroutineScope()
                 navController = rememberNavController()
 
-                val showAppSheet by remember {
-                    derivedStateOf { appSheetPackage.value.isNotEmpty() }
-                }
-                val appSheetState = rememberModalBottomSheetState(true)
-                val appSheetVM = remember(appSheetPackage.value) {
+                val sheetState = rememberStandardBottomSheetState()
+                val scaffoldState = rememberBottomSheetScaffoldState(sheetState)
+                val appSheetPackage by _appSheetPackage.collectAsState()
+                val appSheetVM = remember(appSheetPackage) {
                     AppSheetVM(
                         MainApplication.db,
-                        appSheetPackage.value,
+                        appSheetPackage,
                     )
                 }
 
-                Scaffold(
+                LaunchedEffect(Unit) {
+                    withContext(Dispatchers.Default) {
+                        _appSheetPackage.collectLatest {
+                            mScope.launch {
+                                if (it.isNotEmpty()) {
+                                    scaffoldState.bottomSheetState.expand()
+                                } else {
+                                    scaffoldState.bottomSheetState.partialExpand()
+                                }
+                            }
+                        }
+                    }
+                }
+
+                BottomSheetScaffold(
+                    scaffoldState = scaffoldState,
+                    sheetPeekHeight = 0.dp,
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                     contentColor = MaterialTheme.colorScheme.onBackground,
-                ) { paddingValues ->
+                    sheetContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    sheetContent = {
+                        AppSheet(
+                            appSheetVM,
+                            appSheetPackage,
+                        )
+                    }
+                ) {
                     LaunchedEffect(key1 = navController) {
                         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
                             handleIntent(intent)
+                        }
+                    }
+
+                    LaunchedEffect(scaffoldState.bottomSheetState.currentValue) {
+                        if (scaffoldState.bottomSheetState.currentValue == SheetValue.PartiallyExpanded) {
+                            cScope.launch {
+                                _appSheetPackage.emit("")
+                            }
                         }
                     }
 
@@ -158,21 +190,6 @@ class NeoActivity : AppCompatActivity() {
                         modifier = Modifier.imePadding(),
                         navController = navController,
                     )
-
-                    if (showAppSheet) {
-                        BottomSheet(
-                            sheetState = appSheetState,
-                            onDismiss = {
-                                mScope.launch { appSheetState.hide() }
-                                appSheetPackage.value = ""
-                            },
-                        ) {
-                            AppSheet(
-                                appSheetVM,
-                                appSheetPackage.value,
-                            )
-                        }
-                    }
                 }
             }
         }
@@ -328,8 +345,11 @@ class NeoActivity : AppCompatActivity() {
         super.attachBaseContext(ContextWrapperX.wrap(newBase))
     }
 
+    val isAppSheetOpen: Boolean
+        get() = _appSheetPackage.value.isNotEmpty()
+
     internal fun navigateProduct(packageName: String) {
-        appSheetPackage.value = packageName
+        cScope.launch { _appSheetPackage.emit(packageName) }
     }
 
     fun setSearchQuery(value: String) {
@@ -341,7 +361,7 @@ class NeoActivity : AppCompatActivity() {
             navController.navigate("${NavItem.Main.destination}?page=${Preferences.DefaultTab.Search.index}")
         }
         cScope.launch {
-            appSheetPackage.value = ""
+            _appSheetPackage.emit("")
             query?.let { _searchQuery.emit(it) }
         }
     }
