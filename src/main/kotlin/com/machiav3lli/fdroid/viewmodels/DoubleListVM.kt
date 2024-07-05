@@ -8,7 +8,7 @@ import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Licenses
-import com.machiav3lli.fdroid.database.entity.Product
+import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Request
 import com.machiav3lli.fdroid.entity.Source
 import kotlinx.coroutines.Dispatchers
@@ -70,14 +70,15 @@ open class DoubleListVM(
         initialValue = request(primarySource)
     )
 
-    val primaryProducts: StateFlow<List<Product>> = combine(
+    val primaryProducts: StateFlow<List<ProductItem>> = combine(
         primaryRequest,
         installed,
         db.getProductDao().queryFlowList(primaryRequest.value).distinctUntilChanged(),
         db.getExtrasDao().getAllFlow().distinctUntilChanged(),
-    ) { req, _, _, _ ->
+    ) { req, installed, _, _ ->
         withContext(cc) {
             db.getProductDao().queryObject(req)
+                .map { it.toItem(installed[it.packageName]) }
         }
     }.stateIn(
         scope = viewModelScope,
@@ -87,14 +88,15 @@ open class DoubleListVM(
 
     private var secondaryRequest = MutableStateFlow(request(secondarySource))
 
-    val secondaryProducts: StateFlow<List<Product>> = combine(
+    val secondaryProducts: StateFlow<List<ProductItem>> = combine(
         secondaryRequest,
         installed,
         db.getProductDao().queryFlowList(secondaryRequest.value).distinctUntilChanged(),
         db.getExtrasDao().getAllFlow().distinctUntilChanged(),
-    ) { req, _, _, _ ->
+    ) { req, installed, _, _ ->
         withContext(cc) {
             db.getProductDao().queryObject(req)
+                .map { it.toItem(installed[it.packageName]) }
         }
     }.stateIn(
         scope = viewModelScope,

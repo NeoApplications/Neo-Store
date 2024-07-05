@@ -56,12 +56,10 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.ExploreVM
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExplorePage(viewModel: ExploreVM) {
     val context = LocalContext.current
@@ -70,9 +68,7 @@ fun ExplorePage(viewModel: ExploreVM) {
     val listState = rememberLazyListState()
 
     val installedList by viewModel.installed.collectAsState(emptyMap())
-    val filteredProducts by viewModel.filteredProducts
-        .mapLatest { list -> list.map { it.toItem(installedList[it.packageName]) } }
-        .collectAsState(emptyList())
+    val filteredProducts by viewModel.filteredProducts.collectAsState(emptyList())
     val repositories by viewModel.repositories.collectAsState(emptyList())
     val repositoriesMap = remember(repositories) {
         mutableMapOf(*repositories.map { repo -> Pair(repo.id, repo) }.toTypedArray())

@@ -9,7 +9,7 @@ import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.IconDetails
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Licenses
-import com.machiav3lli.fdroid.database.entity.Product
+import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Request
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -42,14 +42,15 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
         initialValue = emptyMap(),
     )
 
-    val installedProducts: StateFlow<List<Product>> = combine(
+    val installedProducts: StateFlow<List<ProductItem>> = combine(
         sortFilter,
         installed,
         db.getProductDao().queryFlowList(Request.productsInstalled()).distinctUntilChanged(),
         db.getExtrasDao().getAllFlow().distinctUntilChanged(),
-    ) { _, _, _, _ ->
+    ) { _, installed, _, _ ->
         withContext(cc) {
             db.getProductDao().queryObject(Request.productsInstalled())
+                .map { it.toItem(installed[it.packageName]) }
         }
     }.stateIn(
         scope = viewModelScope,
@@ -57,13 +58,14 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
         initialValue = emptyList()
     )
 
-    val updates: StateFlow<List<Product>> = combine(
+    val updates: StateFlow<List<ProductItem>> = combine(
         installed,
         db.getProductDao().queryFlowList(Request.productsUpdates()),
         db.getExtrasDao().getAllFlow(),
-    ) { _, _, _ ->
+    ) { installed, _, _ ->
         withContext(cc) {
             db.getProductDao().queryObject(Request.productsUpdates())
+                .map { it.toItem(installed[it.packageName]) }
         }
     }.stateIn(
         scope = viewModelScope,

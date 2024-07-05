@@ -71,8 +71,6 @@ import com.machiav3lli.fdroid.viewmodels.InstalledVM
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -156,7 +154,7 @@ fun InstalledPage(viewModel: InstalledVM) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstallsPage(viewModel: InstalledVM) {
     val context = LocalContext.current
@@ -164,12 +162,8 @@ fun InstallsPage(viewModel: InstalledVM) {
     val scope = rememberCoroutineScope()
 
     val installedList by viewModel.installed.collectAsState(emptyMap())
-    val updates by viewModel.updates
-        .mapLatest { list -> list.map { it.toItem(installedList[it.packageName]) } }
-        .collectAsState(emptyList())
-    val installedItems by viewModel.installedProducts
-        .mapLatest { list -> list.map { it.toItem(installedList[it.packageName]) } }
-        .collectAsState(emptyList())
+    val updates by viewModel.updates.collectAsState(emptyList())
+    val installedItems by viewModel.installedProducts.collectAsState(emptyList())
     val repositories by viewModel.repositories.collectAsState(emptyList())
     val repositoriesMap = remember(repositories) {
         mutableMapOf(*repositories.map { repo -> Pair(repo.id, repo) }.toTypedArray())

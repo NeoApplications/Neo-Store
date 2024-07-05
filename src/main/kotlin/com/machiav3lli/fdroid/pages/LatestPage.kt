@@ -42,12 +42,10 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.LatestVM
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LatestPage(viewModel: LatestVM) {
     val context = LocalContext.current
@@ -55,17 +53,14 @@ fun LatestPage(viewModel: LatestVM) {
     val scope = rememberCoroutineScope()
 
     val installedList by viewModel.installed.collectAsState(emptyMap())
-    val secondaryList by viewModel.secondaryProducts
-        .mapLatest { list -> list.map { it.toItem(installedList[it.packageName]) } }
-        .collectAsState(emptyList())
-    val primaryList by viewModel.primaryProducts
-        .mapLatest { list -> list.map { it.toItem(installedList[it.packageName]) } }
-        .collectAsState(emptyList())
+    val secondaryList by viewModel.secondaryProducts.collectAsState(emptyList())
+    val primaryList by viewModel.primaryProducts.collectAsState(emptyList())
     val repositories by viewModel.repositories.collectAsState(emptyList())
     val repositoriesMap = remember(repositories) {
         mutableMapOf(*repositories.map { repo -> Pair(repo.id, repo) }.toTypedArray())
     }
     val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
+
     var showSortSheet by rememberSaveable { mutableStateOf(false) }
     val sortSheetState = rememberModalBottomSheetState(true)
     val openDialog = remember { mutableStateOf(false) }

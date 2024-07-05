@@ -8,6 +8,7 @@ import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Licenses
 import com.machiav3lli.fdroid.database.entity.Product
+import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Request
 import com.machiav3lli.fdroid.entity.Source
 import com.machiav3lli.fdroid.utility.matchSearchQuery
@@ -98,9 +99,10 @@ open class SingleListVM(
     )
 
     @OptIn(FlowPreview::class)
-    val filteredProducts: StateFlow<List<Product>> =
+    val filteredProducts: StateFlow<List<ProductItem>> =
         combine(products, query.debounce(400)) { products, query ->
             products.matchSearchQuery(query)
+                .map { it.toItem(installed.value[it.packageName]) }
         }.stateIn(
             viewModelScope,
             SharingStarted.Lazily,
