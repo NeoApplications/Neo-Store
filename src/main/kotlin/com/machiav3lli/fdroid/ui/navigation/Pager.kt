@@ -51,7 +51,6 @@ fun SlidePager(
 @Composable
 fun PagerNavBar(pageItems: List<NavItem>, pagerState: PagerState) {
     val scope = rememberCoroutineScope()
-    val currentPage by remember { derivedStateOf { pagerState.currentPage } }
 
     NavigationBar(
         modifier = Modifier.padding(horizontal = 8.dp),
@@ -59,7 +58,7 @@ fun PagerNavBar(pageItems: List<NavItem>, pagerState: PagerState) {
         contentColor = MaterialTheme.colorScheme.onSurface,
     ) {
         pageItems.forEachIndexed { index, item ->
-            val selected by derivedStateOf { currentPage == index }
+            val selected by derivedStateOf { pagerState.currentPage == index }
 
             if (Preferences[Preferences.Key.AltNavBarItem])
                 AltNavBarItem(

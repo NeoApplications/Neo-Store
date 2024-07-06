@@ -66,12 +66,14 @@ fun SingleChoiceSegmentedButtonRowScope.SegmentedTabButton(
     onClick: () -> Unit,
 ) {
     SegmentedButton(
+        modifier = modifier,
         selected = selected(),
         onClick = onClick,
         shape = SegmentedButtonDefaults.itemShape(index, count),
         icon = {
             Icon(imageVector = icon, contentDescription = text)
-        }) {
+        }
+    ) {
         Text(text = text)
     }
 }

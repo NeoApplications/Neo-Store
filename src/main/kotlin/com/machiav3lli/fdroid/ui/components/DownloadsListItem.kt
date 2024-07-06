@@ -11,10 +11,11 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -34,23 +35,22 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Eraser
 
 @Composable
 fun DownloadsListItem(
-    item: ProductItem,
+    product: ProductItem,
     repo: Repository? = null,
     installed: Installed? = null,
     state: DownloadState,
     onUserClick: (ProductItem) -> Unit = {},
 ) {
-    val product by remember(item) { mutableStateOf(item) }
-    val imageData by remember {
-        derivedStateOf {
-            createIconUri(
-                product.packageName,
-                product.icon,
-                product.metadataIcon,
-                repo?.address,
-                repo?.authentication
-            ).toString()
-        }
+    var imageData by remember { mutableStateOf<String?>(null) }
+
+    SideEffect {
+        imageData = createIconUri(
+            product.packageName,
+            product.icon,
+            product.metadataIcon,
+            repo?.address,
+            repo?.authentication
+        ).toString()
     }
 
     ListItem(
@@ -109,16 +109,16 @@ fun DownloadedItem(
     onEraseClick: (() -> Unit)? = null,
     onUserClick: (Downloaded) -> Unit = {},
 ) {
-    val imageData by remember(download, iconDetails) {
-        derivedStateOf {
-            createIconUri(
-                download.packageName,
-                iconDetails?.icon ?: "",
-                iconDetails?.metadataIcon ?: "",
-                repo?.address,
-                repo?.authentication
-            ).toString()
-        }
+    var imageData by remember { mutableStateOf<String?>(null) }
+
+    SideEffect {
+        imageData = createIconUri(
+            download.packageName,
+            iconDetails?.icon ?: "",
+            iconDetails?.metadataIcon ?: "",
+            repo?.address,
+            repo?.authentication
+        ).toString()
     }
 
     ListItem(
