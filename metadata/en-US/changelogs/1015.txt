@@ -1,0 +1,7 @@
+Add: Special search filter tabs
+Add: Indicator that an app is installed to list items
+Fix: Crash on using same key for lazy release items
+Fix: Opening different prefs page when default page is changed
+Update: Convert Search back to a page
+Update: Revamp apps' carrousel and limit version name length
++ more in more than 10 commits & 30 translation contributions

@@ -1,6 +1,33 @@
 CHANGELOG
 =========
 
+1.0.3 (06.07.2024) 30+ Commits +30 Translations
+------------------
+
+### Function
+
+- Fix: BackHandler of AppSheet
+- Fix: Crash on launching from permissions' page
+- Fix: Crash on using same key for lazy release items
+- Fix: Opening different prefs page when default page is changed
+- Update: Inject installer using Koin
+- Update: Migrate most sheets to BottomSheetScaffold
+- Update: Make flows respect distinction earlier
+- Update: Revamp Source handling of requests
+
+### UI
+
+- Update: Convert Search back to a page
+- Update: Revamp Installed page hierarchy
+- Update: Use segmented buttons in Installed page
+- Update: Revamp apps' carrousel and limit version name length
+
+### UX
+
+- Add: Special search filter tabs
+- Add: Indicator that an app is installed to list items
+- Update: Default to search all apps
+
 1.0.2 (19.05.2024) 10+ Commits +50 Translations
 ------------------
 
