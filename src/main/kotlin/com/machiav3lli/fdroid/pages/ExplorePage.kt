@@ -13,8 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -79,8 +83,8 @@ fun ExplorePage(viewModel: ExploreVM) {
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }
-    var showSortSheet by rememberSaveable { mutableStateOf(false) }
-    val sortSheetState = rememberModalBottomSheetState(true)
+
+    val scaffoldState = rememberBottomSheetScaffoldState()
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
 
@@ -122,119 +126,123 @@ fun ExplorePage(viewModel: ExploreVM) {
         }
     }
 
-    Column(
-        Modifier
-            .background(Color.Transparent)
-            .fillMaxSize(),
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            AnimatedVisibility(selectedCategory.value.isNotEmpty()) {
-                TopBarAction(
-                    icon = Phosphor.ListBullets,
-                    description = stringResource(id = R.string.categories)
-                ) {
-                    Preferences[Preferences.Key.CategoriesFilterExplore] = ""
-                    selectedCategory.value = ""
-                    viewModel.setSource(Source.AVAILABLE)
+
+    BottomSheetScaffold(
+        scaffoldState = scaffoldState,
+        sheetPeekHeight = 0.dp,
+        sheetDragHandle = null,
+        containerColor = Color.Transparent,
+        contentColor = MaterialTheme.colorScheme.onBackground,
+        sheetContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+        sheetContent = {
+            SortFilterSheet(NavItem.Search.destination) {
+                scope.launch {
+                    scaffoldState.bottomSheetState.partialExpand()
                 }
             }
-            Spacer(modifier = Modifier.weight(1f))
-            SortFilterChip(
-                notModified = notModifiedSortFilter,
-                fullWidth = true,
-            ) {
-                showSortSheet = true
-            }
         }
-        Row {
-            val allString = stringResource(id = R.string.all_applications)
-            val favString = stringResource(id = R.string.favorite_applications)
-            CategoriesList(
-                items = listOf(
-                    Pair(allString, Phosphor.CirclesFour),
-                    Pair(favString, Phosphor.HeartStraight),
-                ) + (categories.sorted().map { Pair(it, it.appCategoryIcon) }),
-                selectedKey = selectedCategory,
+    ) {
+        Column(
+            Modifier
+                .background(Color.Transparent)
+                .fillMaxSize(),
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                when (it) {
-                    favString -> {
-                        Preferences[Preferences.Key.CategoriesFilterExplore] = FILTER_CATEGORY_ALL
-                        selectedCategory.value = favString
-                        viewModel.setSource(Source.FAVORITES)
-                    }
-
-                    else      -> {
-                        Preferences[Preferences.Key.CategoriesFilterExplore] =
-                            if (it != allString) it
-                            else FILTER_CATEGORY_ALL
-                        selectedCategory.value = it
+                AnimatedVisibility(selectedCategory.value.isNotEmpty()) {
+                    TopBarAction(
+                        icon = Phosphor.ListBullets,
+                        description = stringResource(id = R.string.categories)
+                    ) {
+                        Preferences[Preferences.Key.CategoriesFilterExplore] = ""
+                        selectedCategory.value = ""
                         viewModel.setSource(Source.AVAILABLE)
                     }
                 }
-                scope.launch {
-                    listState.animateScrollToItem(0)
+                Spacer(modifier = Modifier.weight(1f))
+                SortFilterChip(
+                    notModified = notModifiedSortFilter,
+                    fullWidth = true,
+                ) {
+                    scope.launch {
+                        scaffoldState.bottomSheetState.expand()
+                    }
                 }
             }
-
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                state = listState,
-                contentPadding = PaddingValues(vertical = 8.dp),
-            ) {
-                items(items = filteredProducts, key = { it.packageName }) { item ->
-                    ProductsListItem(
-                        item = item,
-                        repo = repositoriesMap[item.repositoryId],
-                        isFavorite = favorites.contains(item.packageName),
-                        onUserClick = {
-                            neoActivity.navigateProduct(it.packageName)
-                        },
-                        onFavouriteClick = {
-                            viewModel.setFavorite(
-                                it.packageName,
-                                !favorites.contains(it.packageName)
-                            )
-                        },
-                        installed = installedList[item.packageName],
-                        onActionClick = {
-                            val installed = installedList[it.packageName]
-                            val action = { MainApplication.wm.install(it) }
-                            if (installed != null && installed.launcherActivities.isNotEmpty())
-                                context.onLaunchClick(
-                                    installed,
-                                    neoActivity.supportFragmentManager
-                                )
-                            else if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                                dialogKey.value = DialogKey.Download(it.name, action)
-                                openDialog.value = true
-                            } else action()
+            Row {
+                val allString = stringResource(id = R.string.all_applications)
+                val favString = stringResource(id = R.string.favorite_applications)
+                CategoriesList(
+                    items = listOf(
+                        Pair(allString, Phosphor.CirclesFour),
+                        Pair(favString, Phosphor.HeartStraight),
+                    ) + (categories.sorted().map { Pair(it, it.appCategoryIcon) }),
+                    selectedKey = selectedCategory,
+                ) {
+                    when (it) {
+                        favString -> {
+                            Preferences[Preferences.Key.CategoriesFilterExplore] = FILTER_CATEGORY_ALL
+                            selectedCategory.value = favString
+                            viewModel.setSource(Source.FAVORITES)
                         }
-                    )
+
+                        else      -> {
+                            Preferences[Preferences.Key.CategoriesFilterExplore] =
+                                if (it != allString) it
+                                else FILTER_CATEGORY_ALL
+                            selectedCategory.value = it
+                            viewModel.setSource(Source.AVAILABLE)
+                        }
+                    }
+                    scope.launch {
+                        listState.animateScrollToItem(0)
+                    }
+                }
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    state = listState,
+                    contentPadding = PaddingValues(vertical = 8.dp),
+                ) {
+                    items(items = filteredProducts, key = { it.packageName }) { item ->
+                        ProductsListItem(
+                            item = item,
+                            repo = repositoriesMap[item.repositoryId],
+                            isFavorite = favorites.contains(item.packageName),
+                            onUserClick = {
+                                neoActivity.navigateProduct(it.packageName)
+                            },
+                            onFavouriteClick = {
+                                viewModel.setFavorite(
+                                    it.packageName,
+                                    !favorites.contains(it.packageName)
+                                )
+                            },
+                            installed = installedList[item.packageName],
+                            onActionClick = {
+                                val installed = installedList[it.packageName]
+                                val action = { MainApplication.wm.install(it) }
+                                if (installed != null && installed.launcherActivities.isNotEmpty())
+                                    context.onLaunchClick(
+                                        installed,
+                                        neoActivity.supportFragmentManager
+                                    )
+                                else if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                    dialogKey.value = DialogKey.Download(it.name, action)
+                                    openDialog.value = true
+                                } else action()
+                            }
+                        )
+                    }
                 }
             }
-        }
 
-    }
-
-    if (showSortSheet) {
-        BottomSheet(
-            sheetState = sortSheetState,
-            onDismiss = {
-                scope.launch { sortSheetState.hide() }
-                showSortSheet = false
-            },
-        ) {
-            SortFilterSheet(NavItem.Explore.destination) {
-                scope.launch { sortSheetState.hide() }
-                showSortSheet = false
-            }
         }
     }
 
