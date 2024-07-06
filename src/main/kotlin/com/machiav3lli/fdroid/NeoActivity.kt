@@ -17,10 +17,11 @@ import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -59,6 +60,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.properties.Delegates
 
+@OptIn(ExperimentalMaterial3Api::class)
 class NeoActivity : AppCompatActivity() {
     companion object {
         const val ACTION_UPDATES = "${BuildConfig.APPLICATION_ID}.intent.action.UPDATES"
@@ -75,6 +77,7 @@ class NeoActivity : AppCompatActivity() {
     }
 
     private lateinit var navController: NavHostController
+    private lateinit var scaffoldState: BottomSheetScaffoldState
     private val cScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
     private val mScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 
@@ -83,7 +86,7 @@ class NeoActivity : AppCompatActivity() {
     private val _appSheetPackage: MutableStateFlow<String> = MutableStateFlow("")
     private val _showAppSheet: MutableSharedFlow<Boolean> = MutableSharedFlow(replay = 1)
     val isAppSheetOpen: Boolean
-        get() = _showAppSheet.replayCache.first()
+        get() = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded
 
     val db
         get() = (application as MainApplication).db
@@ -107,7 +110,6 @@ class NeoActivity : AppCompatActivity() {
     }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).mActivity = this
         currentTheme = Preferences[Preferences.Key.Theme].resId
@@ -139,8 +141,7 @@ class NeoActivity : AppCompatActivity() {
                 val mScope = rememberCoroutineScope()
                 navController = rememberNavController()
 
-                val sheetState = rememberStandardBottomSheetState()
-                val scaffoldState = rememberBottomSheetScaffoldState(sheetState)
+                scaffoldState = rememberBottomSheetScaffoldState()
                 val appSheetPackage by _appSheetPackage.collectAsState()
                 val appSheetVM = remember {
                     derivedStateOf {

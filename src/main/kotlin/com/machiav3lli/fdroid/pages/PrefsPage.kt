@@ -40,10 +40,7 @@ fun PrefsPage(navController: NavHostController, pageIndex: Int) {
     val currentPage by remember { derivedStateOf { pages[pagerState.currentPage] } }
 
     BackHandler {
-        if (mActivity.isAppSheetOpen)
-            mActivity.navigateProduct("")
-        else
-            navController.navigateUp()
+        navController.navigateUp()
     }
 
     Scaffold(
