@@ -2,7 +2,7 @@
 <resources>
     <string name="fingerprint">Адбітак пальца</string>
     <string name="could_not_download_FORMAT">Спампаваць немагчыма %s</string>
-    <string name="downloading">Спампуецца</string>
+    <string name="downloading">Спампоўванне</string>
     <string name="all_applications_up_to_date">Усе праграмы абноўлены</string>
     <string name="changelog">Журнал змяненняў</string>
     <string name="could_not_sync_FORMAT">Сінхранізаваць немагчыма %s</string>
@@ -27,12 +27,32 @@
     <string name="delete_repository_DESC">Выдаліць гэты рэпазіторый\?</string>
     <string name="donate">Падтрымаць</string>
     <string name="add_repository">Дадаць рэпазіторый</string>
-    <string name="could_not_validate_FORMAT">Пацвярдзіць немагчыма %s</string>
+    <string name="could_not_validate_FORMAT">Пацвердзіць немагчыма %s</string>
     <string name="available">Даступна</string>
     <string name="author_email">Электронная пошта аўтара</string>
-    <string name="confirmation">Пацверджанне</string>
+    <string name="confirmation">Пацвярджэнне</string>
     <string name="changes">Змянення</string>
-    <string name="downloading_FORMAT">Спампуецца %s…</string>
-    <string name="application_not_found">Праграма не існуе!</string>
+    <string name="downloading_FORMAT">Спампоўванне %s…</string>
+    <string name="application_not_found">Не ўдалося знайсці гэту праграму</string>
     <string name="credits">Удзельнікі</string>
+    <string name="action_failed">Дзеянне не атрымалася</string>
+    <string name="anti_features">Антыфункцыі</string>
+    <string name="cant_edit_sync_DESC">Немагчыма рэдагаваць сінхранізаваныя рэпазітары…</string>
+    <string name="compiled_for_debugging">Скампілявана для адладкі</string>
+    <string name="checking_repository">Праверка рэпазітара…</string>
+    <string name="contains_non_free_media">Змяшчае несвабодныя матэрыялы</string>
+    <string name="has_non_free_dependencies">Змяшчае несвабодныя залежнасці</string>
+    <string name="has_security_vulnerabilities">Змяшчае ўразлівасці сістэмы бяспекі</string>
+    <string name="http_error_DESC">Няправільны адказ сервера.</string>
+    <string name="http_proxy">HTTP-проксі</string>
+    <string name="ignore_all_updates">Ігнараваць усе новыя версіі</string>
+    <string name="ignore_this_update">Ігнаруйце гэтую версію</string>
+    <string name="incompatible_api_DESC_FORMAT">Ваш %1$s (версія API %2$d) не падтрымліваецца. %3$s</string>
+    <string name="incompatible_api_max_DESC_FORMAT">Максімальная версія API %d.</string>
+    <string name="incompatible_api_min_DESC_FORMAT">Мінімальна версія API %d.</string>
+    <string name="incompatible_features_DESC">Адсутныя функцыі.</string>
+    <string name="incompatible_older_DESC">Бягучая версія старэйшая за ўсталяваную на вашай прыладзе. Спачатку выдаліце ўсталяваную.</string>
+    <string name="incompatible_platforms_DESC_FORMAT">Ваша платформа %1$s не падтрымліваецца. Платформы, якія падтрымліваюцца: %2$s.</string>
+    <string name="incompatible_signature_DESC">Гэтая версія падпісана іншым сертыфікатам, чым той, які ўсталяваны на вашай прыладзе.
+\nСпачатку выдаліце ўсталяваны.</string>
 </resources>
