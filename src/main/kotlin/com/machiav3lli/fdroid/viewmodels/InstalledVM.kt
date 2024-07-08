@@ -45,11 +45,11 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
     val installedProducts: StateFlow<List<ProductItem>> = combine(
         sortFilter,
         installed,
-        db.getProductDao().queryFlowList(Request.productsInstalled()).distinctUntilChanged(),
+        db.getProductDao().queryFlowList(Request.Installed).distinctUntilChanged(),
         db.getExtrasDao().getAllFlow().distinctUntilChanged(),
     ) { _, installed, _, _ ->
         withContext(cc) {
-            db.getProductDao().queryObject(Request.productsInstalled())
+            db.getProductDao().queryObject(Request.Installed)
                 .map { it.toItem(installed[it.packageName]) }
         }
     }.stateIn(
@@ -60,11 +60,11 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
 
     val updates: StateFlow<List<ProductItem>> = combine(
         installed,
-        db.getProductDao().queryFlowList(Request.productsUpdates()),
+        db.getProductDao().queryFlowList(Request.Updates),
         db.getExtrasDao().getAllFlow(),
     ) { installed, _, _ ->
         withContext(cc) {
-            db.getProductDao().queryObject(Request.productsUpdates())
+            db.getProductDao().queryObject(Request.Updates)
                 .map { it.toItem(installed[it.packageName]) }
         }
     }.stateIn(

@@ -193,6 +193,11 @@ interface ProductDao : BaseDao<Product> {
     ): SupportSQLiteQuery {
         val builder = QueryBuilder()
 
+        if (section == Section.NONE) {
+            builder += "SELECT * FROM $TABLE_PRODUCT LIMIT 0"
+            return SimpleSQLiteQuery(builder.build(), builder.arguments.toTypedArray())
+        }
+
         // Selection
         builder += generateSelectFields()
 

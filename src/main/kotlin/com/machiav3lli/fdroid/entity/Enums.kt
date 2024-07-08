@@ -74,7 +74,9 @@ enum class Source {
     INSTALLED,
     UPDATES,
     UPDATED,
-    NEW
+    NEW,
+    NONE,
+}
 
 enum class Section {
     All,

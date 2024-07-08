@@ -52,15 +52,16 @@ open class SingleListVM(
     }
 
     fun request(source: Source): Request = when (source) {
-        Source.AVAILABLE        -> Request.productsAll()
-        Source.FAVORITES        -> Request.productsFavorites()
-        Source.SEARCH           -> Request.productsSearch()
-        Source.SEARCH_INSTALLED -> Request.productsSearchInstalled()
-        Source.SEARCH_NEW       -> Request.productsSearchNew()
-        Source.INSTALLED        -> Request.productsInstalled()
-        Source.UPDATES          -> Request.productsUpdates()
-        Source.UPDATED          -> Request.productsUpdated()
-        Source.NEW              -> Request.productsNew()
+        Source.AVAILABLE        -> Request.All
+        Source.FAVORITES        -> Request.Favorites
+        Source.SEARCH           -> Request.Search
+        Source.SEARCH_INSTALLED -> Request.SearchInstalled
+        Source.SEARCH_NEW       -> Request.SearchNew
+        Source.INSTALLED        -> Request.Installed
+        Source.UPDATES          -> Request.Updates
+        Source.UPDATED          -> Request.Updated
+        Source.NEW              -> Request.New
+        Source.NONE             -> Request.None
     }
 
     val installed = db.getInstalledDao().getAllFlow().distinctUntilChanged().mapLatest {
@@ -134,7 +135,7 @@ open class SingleListVM(
     }
 }
 
-class ExploreVM(db: DatabaseX) : SingleListVM(db, Source.AVAILABLE) {
+class ExploreVM(db: DatabaseX) : SingleListVM(db, Source.NONE) {
     class Factory(val db: DatabaseX) :
         ViewModelProvider.Factory {
         @Suppress("unchecked_cast")
