@@ -161,7 +161,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                     ) {
                         Preferences[Preferences.Key.CategoriesFilterExplore] = ""
                         selectedCategory.value = ""
-                        viewModel.setSource(Source.AVAILABLE)
+                        viewModel.setSource(Source.NONE)
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
@@ -175,11 +175,9 @@ fun ExplorePage(viewModel: ExploreVM) {
                 }
             }
             Row {
-                val allString = stringResource(id = R.string.all_applications)
                 val favString = stringResource(id = R.string.favorite_applications)
                 CategoriesList(
                     items = listOf(
-                        Pair(allString, Phosphor.CirclesFour),
                         Pair(favString, Phosphor.HeartStraight),
                     ) + (categories.sorted().map { Pair(it, it.appCategoryIcon) }),
                     selectedKey = selectedCategory,
@@ -192,9 +190,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                         }
 
                         else      -> {
-                            Preferences[Preferences.Key.CategoriesFilterExplore] =
-                                if (it != allString) it
-                                else FILTER_CATEGORY_ALL
+                            Preferences[Preferences.Key.CategoriesFilterExplore] = it
                             selectedCategory.value = it
                             viewModel.setSource(Source.AVAILABLE)
                         }
