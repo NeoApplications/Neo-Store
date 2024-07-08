@@ -12,6 +12,7 @@ import kotlinx.serialization.json.Json
 @Serializable
 data class Extras(
     @PrimaryKey
+    @ColumnInfo(index = true)
     var packageName: String = "",
     var favorite: Boolean = false,
     var ignoreUpdates: Boolean = false,

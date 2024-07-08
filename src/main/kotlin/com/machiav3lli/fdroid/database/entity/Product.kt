@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.database.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
@@ -21,7 +22,9 @@ import kotlinx.serialization.json.Json
 @Entity(tableName = TABLE_PRODUCT, primaryKeys = [ROW_REPOSITORY_ID, ROW_PACKAGE_NAME])
 @Serializable
 open class Product(
+    @ColumnInfo(index = true)
     var repositoryId: Long,
+    @ColumnInfo(index = true)
     var packageName: String,
 ) {
     var label: String = ""

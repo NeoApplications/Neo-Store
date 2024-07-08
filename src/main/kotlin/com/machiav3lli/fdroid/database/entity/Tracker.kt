@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.database.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
@@ -9,6 +10,7 @@ import kotlinx.serialization.json.Json
 @Entity
 data class Tracker(
     @PrimaryKey
+    @ColumnInfo(index = true)
     val key: Int = 0,
     override val name: String = String(),
     override val network_signature: String = String(),

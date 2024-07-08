@@ -70,7 +70,7 @@ import org.koin.dsl.module
         Downloaded::class,
         InstallTask::class,
     ],
-    version = 23,
+    version = 24,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -145,6 +145,10 @@ import org.koin.dsl.module
             from = 22,
             to = 23,
             spec = DatabaseX.Companion.MigrationSpec22to23::class
+        ),
+        AutoMigration(
+            from = 23,
+            to = 24,
         ),
     ]
 )

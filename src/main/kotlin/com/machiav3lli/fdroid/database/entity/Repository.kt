@@ -17,7 +17,7 @@ import java.nio.charset.Charset
 @Serializable
 data class Repository(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = ROW_ID)
+    @ColumnInfo(name = ROW_ID, index = true)
     val id: Long = 0,
     var address: String = "",
     val mirrors: List<String> = emptyList(),
