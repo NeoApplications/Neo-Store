@@ -75,6 +75,11 @@ enum class Source {
     UPDATES,
     UPDATED,
     NEW
+
+enum class Section {
+    All,
+    FAVORITE,
+    NONE,
 }
 
 enum class LinkRef(
