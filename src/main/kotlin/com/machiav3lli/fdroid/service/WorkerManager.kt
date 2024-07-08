@@ -87,10 +87,6 @@ class WorkerManager(appContext: Context) {
         scope.launch {
             workManager.getWorkInfosByTagFlow(
                 SyncWorker::class.qualifiedName!!
-            ).stateIn(
-                scope,
-                SharingStarted.Eagerly,
-                mutableListOf()
             ).collectLatest {
                 onSyncProgress(this@WorkerManager, it)
             }
@@ -98,11 +94,7 @@ class WorkerManager(appContext: Context) {
         scope.launch {
             workManager.getWorkInfosByTagFlow(
                 DownloadWorker::class.qualifiedName!!
-            ).stateIn(
-                scope,
-                SharingStarted.Eagerly,
-                mutableListOf()
-            ).collectLatest {
+            ).collect {
                 onDownloadProgress(this@WorkerManager, it)
             }
         }

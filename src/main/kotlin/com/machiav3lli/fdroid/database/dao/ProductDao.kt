@@ -195,7 +195,10 @@ interface ProductDao : BaseDao<Product> {
 
         if (section == Section.NONE) {
             builder += "SELECT * FROM $TABLE_PRODUCT LIMIT 0"
-            return SimpleSQLiteQuery(builder.build(), builder.arguments.toTypedArray())
+            SimpleSQLiteQuery(builder.build()).apply {
+                Log.v(this::class.simpleName, this.toString())
+                return this
+            }
         }
 
         // Selection
@@ -295,8 +298,10 @@ interface ProductDao : BaseDao<Product> {
             }
         )
 
-        Log.v(this::class.simpleName, builder.build())
-        return SimpleSQLiteQuery(builder.build(), builder.arguments.toTypedArray())
+        SimpleSQLiteQuery(builder.build(), builder.arguments.toTypedArray()).apply {
+            Log.v(this::class.simpleName, this.toString())
+            return this
+        }
     }
 }
 
