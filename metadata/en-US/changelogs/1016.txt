@@ -1,0 +1,5 @@
+Add: Indexes to Room entities
+Add: None Source & Request
+Fix: A memory leak
+Update: Revamp Request
+Remove: All from explore page

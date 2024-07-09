@@ -1,6 +1,20 @@
 CHANGELOG
 =========
 
+1.0.4 (09.07.2024) 10- Commits
+------------------
+
+### Function
+
+- Add: Indexes to Room entities
+- Add: None Source & Request
+- Fix: A memory leak
+- Update: Revamp Request
+
+### UI/UX
+
+- Remove: All from explore page
+
 1.0.3 (06.07.2024) 30+ Commits +30 Translations
 ------------------
 
