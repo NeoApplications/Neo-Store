@@ -97,7 +97,7 @@
     <string name="root_permission_description">Usar root para instalações sem interação</string>
     <string name="save">Guardar</string>
     <string name="saving_details">A guardar detalhes…</string>
-    <string name="screenshots">Capturas de ecrã</string>
+    <string name="screenshots">Imagens</string>
     <string name="search">Procurar</string>
     <string name="select_mirror">Selecione um \'mirror\'</string>
     <string name="share">Partilhar</string>
@@ -159,9 +159,9 @@
     <string name="trackers_ads">Rastreadores de anúncios</string>
     <string name="trackers_ads_description">Rastreadores utilizados para mostrar anúncios e rastrear a sua interação com estes.</string>
     <string name="trackers_profiling">Rastreadores de perfil</string>
-    <string name="trackers_profiling_description">Rastreadores que tentam criar um perfil seu, com base nos dados que agregam.</string>
+    <string name="trackers_profiling_description">Rastreadores que tentam criar um perfil, com base nos dados que agregam.</string>
     <string name="trackers_location">Rastreadores de localização</string>
-    <string name="trackers_location_description">Rastreadores que se concentram no rastreio da sua localização física.</string>
+    <string name="trackers_location_description">Rastreadores que se focam em rastrear a sua localização física.</string>
     <string name="trackers_bug">Rastreadores de informação de erros</string>
     <string name="trackers_bug_description">Rastreadores utilizados para reportar os problemas técnicos que a aplicação pode enfrentar.</string>
     <string name="source_proprietary">Proprietário</string>
@@ -173,7 +173,7 @@
     <string name="source_copyright">Copyright</string>
     <string name="source_copyright_description">A aplicação depende do conteúdo protegido por direitos de autor ou liga-se a redes proprietárias.</string>
     <string name="source_dependencies">Dependências</string>
-    <string name="source_dependencies_description">O aplicativo tem algumas dependências que podem não ser respeitadoras da privacidade.</string>
+    <string name="source_dependencies_description">A aplicação tem algumas dependências que podem não ser respeitadoras da privacidade.</string>
     <string name="action_change_permissions">Alterar permissões</string>
     <string name="action_open_tc">Abrir TrackerControl</string>
     <string name="action_install_tc">Instalar TrackerControl</string>
@@ -281,7 +281,7 @@
     <string name="action_open_website">Abrir site</string>
     <string name="trackers_none">Sem rastreadores</string>
     <string name="trackers_in">Rastreadores em %s</string>
-    <string name="trackers_note_0">É uma aplicação ou um spyware?</string>
+    <string name="trackers_note_0">É uma aplicação ou spyware?</string>
     <string name="trackers_note_1">Inclui muitos rastreadores de dados confidenciais</string>
     <string name="trackers_note_2">Porque precisa desses rastreadores?</string>
     <string name="trackers_note_3">Tem alguns rastreadores</string>
@@ -333,7 +333,7 @@
     <string name="next">Seguinte</string>
     <string name="previous">Anterior</string>
     <string name="alt_navbar_item">Usar barra de navegação alternativa</string>
-    <string name="alt_navbar_item_description">Utilizar barra de navegação alternativo/antiga, que mostra o texto dos itens não selecionados.</string>
+    <string name="alt_navbar_item_description">Utilizar barra de navegação alternativa/antiga, que mostra o texto dos itens não selecionados.</string>
     <string name="auto_sync_interval_hours">Intervalo de sincronização automática (horas)</string>
     <string name="repos_export">Exportar repositórios</string>
     <string name="repos_import">Importar repositórios (substitui os existentes)</string>
