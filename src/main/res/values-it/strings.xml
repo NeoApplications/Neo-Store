@@ -399,4 +399,5 @@
     <string name="target_android">Android di destinazione</string>
     <string name="android_instead_of_sdk_summary">Mostra il nome della versione Android invece di mostrare il numero SDK per minSDK e targetSDK.</string>
     <string name="android_instead_of_sdk">Mostra la versione di Android anziché l\'SDK</string>
+    <string name="all">Tutto</string>
 </resources>
