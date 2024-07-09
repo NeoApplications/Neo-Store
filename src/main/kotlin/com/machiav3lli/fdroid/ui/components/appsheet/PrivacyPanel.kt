@@ -25,7 +25,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.afollestad.materialdialogs.ModalDialog
 import com.machiav3lli.fdroid.ANTIFEATURES_WEBSITE
 import com.machiav3lli.fdroid.EXODUS_TRACKER_WEBSITE
 import com.machiav3lli.fdroid.NeoActivity
@@ -272,7 +271,6 @@ fun PrivacyPanel(
                                     Uri.parse("market://search?q=$TC_PACKAGENAME")
                                 )
                             )
-                            ModalDialog.onDismiss()
                         } else context.startActivity(
                             tcIntent.putExtra(
                                 TC_INTENT_EXTRA_SEARCH,

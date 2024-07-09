@@ -165,26 +165,27 @@ class DownloadWorker(
         val partialRelease =
             Cache.getPartialReleaseFile(applicationContext, task.release.cacheFileName)
 
-        val callback: suspend (read: Long, total: Long?, downloadID: Long) -> Unit = { read, total, downloadID ->
-            val progress = if (total != null) {
-                workDataOf(
-                    ARG_PROGRESS to (100f * read / total).roundToInt(),
-                    ARG_READ to read,
-                    ARG_TOTAL to total
-                )
-            } else {
-                workDataOf(
-                    ARG_PROGRESS to -1,
-                    ARG_READ to read,
-                    ARG_TOTAL to 0,
-                )
+        val callback: suspend (read: Long, total: Long?, downloadID: Long) -> Unit =
+            { read, total, downloadID ->
+                val progress = if (total != null) {
+                    workDataOf(
+                        ARG_PROGRESS to (100f * read / total).roundToInt(),
+                        ARG_READ to read,
+                        ARG_TOTAL to total
+                    )
+                } else {
+                    workDataOf(
+                        ARG_PROGRESS to -1,
+                        ARG_READ to read,
+                        ARG_TOTAL to 0,
+                    )
+                }
+                if (!isStopped) setProgress(progress)
+                else if (downloadID != -1L) {
+                    ContextCompat.getSystemService(context, DownloadManager::class.java)
+                        ?.remove(downloadID)
+                }
             }
-            if (!isStopped) setProgress(progress)
-            else if (downloadID != -1L) {
-                ContextCompat.getSystemService(context, DownloadManager::class.java)
-                    ?.remove(downloadID)
-            }
-        }
 
         (if (Preferences[Preferences.Key.DownloadManager])
             Downloader.dmDownload(context, task, partialRelease, callback)
