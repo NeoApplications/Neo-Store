@@ -405,4 +405,5 @@
     <string name="enable">تمكين</string>
     <string name="android_instead_of_sdk_summary">إظهار اسم إصدار Android بدلاً من إظهار رقم SDK لـ minSDK وtargetSDK.</string>
     <string name="min_android">الحد الأدنى للأندرويد</string>
+    <string name="all">الكل</string>
 </resources>
