@@ -401,4 +401,5 @@
     <string name="root_allow_installing_old_apps">Pozwól na instalację przestarzałych aplikacji</string>
     <string name="wait_to_sync">Odczekaj kilka sekund przed ponowną próbą synchronizacji.</string>
     <string name="prefs_search_apps_description">Maksymalna liczba aplikacji do uwzględnienia w wynikach wyszukiwania (ustawiona na 0, uwzględnia wszystkie aplikacje).</string>
+    <string name="all">Wszystko</string>
 </resources>
