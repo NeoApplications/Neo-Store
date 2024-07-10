@@ -399,4 +399,5 @@
     <string name="wait_to_sync">Aguarde alguns segundos antes de tentar sincronizar novamente.</string>
     <string name="prefs_search_apps_description">Número máximo de aplicativos para incluir nos resultados da pesquisa (definido como 0 para incluir todos os aplicativos).</string>
     <string name="state_modified">Modificado</string>
+    <string name="all">Tudo</string>
 </resources>
