@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="already_exists">Existerar redan</string>
+    <string name="already_exists">Eksisterer allerede</string>
     <string name="always">Alltid</string>
     <string name="amoled">Svart</string>
     <string name="author_email">Utviklerens e-postadresse</string>
@@ -11,25 +11,25 @@
     <string name="compiled_for_debugging">Kompilert for avlusing</string>
     <string name="confirmation">Bekreftelse</string>
     <string name="could_not_download_FORMAT">Kunne ikke laste ned %s</string>
-    <string name="connecting">Kobler til…</string>
+    <string name="connecting">Kobler til …</string>
     <string name="contains_non_free_media">Inneholder ufri media</string>
     <string name="delete_repository_DESC">Slett denne pakkebrønnen\?</string>
     <string name="downloaded_FORMAT">Lastet ned %s</string>
     <string name="downloading">Laster ned</string>
     <string name="fingerprint">Fingeravtrykk</string>
-    <string name="has_advertising">Har reklame</string>
+    <string name="has_advertising">Inneholder reklame</string>
     <string name="has_non_free_dependencies">Har ufrie avhengigheter</string>
     <string name="has_security_vulnerabilities">Har sikkerhetssårbarheter</string>
     <string name="http_error_DESC">Ugyldig tjenersvar.</string>
     <string name="ignore_all_updates">Ignorer alle nye versjoner</string>
     <string name="ignore_this_update">Ignorer denne versjonen</string>
     <string name="incompatible_api_DESC_FORMAT">Din %1$s (API-versjon %2$d) støttes ikke. %3$s</string>
-    <string name="incompatible_api_max_DESC_FORMAT">Maksimal API-versjon er %d.</string>
+    <string name="incompatible_api_max_DESC_FORMAT">Høyeste API-versjon er %d.</string>
     <string name="incompatible_older_DESC">Denne versjonen er eldre enn den som er installert på enheten din. Avinstaller den først.</string>
-    <string name="incompatible_api_min_DESC_FORMAT">Minste tillatte API-versjon er %d.</string>
+    <string name="incompatible_api_min_DESC_FORMAT">Laveste tillatte API-versjon er %d.</string>
     <string name="incompatible_platforms_DESC_FORMAT">Din %1$s-plattform støttes ikke. Støttede plattformer er %2$s.</string>
-    <string name="incompatible_versions">Ukompatible versjoner</string>
-    <string name="incompatible_with_FORMAT">Ukompatibelt med %s</string>
+    <string name="incompatible_versions">Ikke kompatible versjoner</string>
+    <string name="incompatible_with_FORMAT">Ikke kompatibelt med %s</string>
     <string name="integrity_check_error_DESC">Kunne ikke sjekke filens gyldighet.</string>
     <string name="light">Lys</string>
     <string name="invalid_username_format">Ugyldig brukernavnsformat</string>
@@ -43,15 +43,15 @@
     <string name="no_description_available_DESC">Ingen beskrivelse.</string>
     <string name="open_DESC_FORMAT">Åpne %s\?</string>
     <string name="no_matching_applications_found">Fant ingen samsvarende programmer</string>
-    <string name="notify_about_updates">Gi merknad om nye versjoner av programmer</string>
+    <string name="notify_about_updates">Varsl om nye versjoner av programmer</string>
     <string name="number_of_applications">Antall programmer</string>
     <string name="only_compatible_with_FORMAT">Kun kompatibelt med %s</string>
     <string name="other">Andre</string>
     <string name="password_missing">Passord mangler</string>
     <string name="permissions">Tilganger</string>
-    <string name="plus_more_FORMAT">+%d til</string>
+    <string name="plus_more_FORMAT">+%d mer</string>
     <string name="settings">Innstillinger</string>
-    <string name="processing_FORMAT">Behandler %1$s…</string>
+    <string name="processing_FORMAT">Behandler %1$s …</string>
     <string name="promotes_non_free_network_services">Promoterer ufrie nettverkstjenester</string>
     <string name="provided_by_FORMAT">Tilbudt av %s</string>
     <string name="proxy_host">Vert</string>
@@ -95,12 +95,12 @@
     <string name="version_FORMAT">Versjon %s</string>
     <string name="waiting_to_start_download">Laster ned …</string>
     <string name="action_failed">Handlingen mislyktes</string>
-    <string name="all_applications_up_to_date">Alla appar är uppdaterade</string>
+    <string name="all_applications_up_to_date">Alle programmer er oppdaterte</string>
     <string name="launch">Kjør</string>
-    <string name="notify_about_updates_summary">Vis en merknad når nye versjoner er tilgjengelig.</string>
-    <string name="add_repository">Lägg till arkiv</string>
+    <string name="notify_about_updates_summary">Varsl når nye versjoner er tilgjengelig.</string>
+    <string name="add_repository">Legg til arkiv</string>
     <string name="credits">Bidragsytere</string>
-    <string name="downloading_FORMAT">Laster ned %s…</string>
+    <string name="downloading_FORMAT">Laster ned %s …</string>
     <string name="network_error_DESC">Nettverksfeil.</string>
     <string name="no_proxy">Ingen mellomtjener</string>
     <string name="only_on_wifi">Kun på Wi-Fi</string>
@@ -116,7 +116,7 @@
     <string name="description">Beskrivelse</string>
     <string name="donate">Doner</string>
     <string name="edit_repository">Rediger pakkebrønn</string>
-    <string name="incompatible_versions_summary">Vis versjoner som er ukompatible med enheten.</string>
+    <string name="incompatible_versions_summary">Vis versjoner som ikke er kompatible med enheten.</string>
     <string name="installed">Installert</string>
     <string name="invalid_metadata_error_DESC">Ugyldig metadata.</string>
     <plurals name="new_updates_DESC_FORMAT">
@@ -126,7 +126,7 @@
     <string name="project_website">Prosjektnettside</string>
     <string name="unknown">Ukjent</string>
     <string name="username_missing">Brukernavn mangler</string>
-    <string name="all_applications">Alla appar</string>
+    <string name="all_applications">Alle programmer</string>
     <string name="bug_tracker">Feilsporer</string>
     <string name="cancel">Avbryt</string>
     <string name="install">Installer</string>
@@ -137,15 +137,15 @@
     <string name="links">Lenker</string>
     <string name="name">Navn</string>
     <string name="password">Passord</string>
-    <string name="address">Adress</string>
-    <string name="anti_features">Anti-funktioner</string>
+    <string name="address">Adresse</string>
+    <string name="anti_features">Anti-funksjoner</string>
     <string name="application">Program</string>
     <string name="available">Tilgjengelig</string>
     <string name="could_not_validate_FORMAT">Kunne ikke bekrefte %s</string>
     <string name="delete">Slett</string>
     <string name="file_format_error_DESC">Ugyldig filformat.</string>
     <string name="http_proxy">HTTP-mellomtjener</string>
-    <string name="incompatible_version">Ukompatibel versjon</string>
+    <string name="incompatible_version">Ikke kompatibel versjon</string>
     <string name="invalid_address">Ugyldig adresse</string>
     <string name="merging_FORMAT">Fletter %s …</string>
     <string name="never">Aldri</string>
@@ -161,7 +161,7 @@
     <string name="signature_FORMAT">%s-signatur</string>
     <string name="unstable_updates">Ustabile oppgraderinger</string>
     <string name="incompatible_signature_DESC">Denne versjonen er signert med et annet sertifikat enn det som er installert på enheten din.
-\nAvinstaller det først.</string>
+\nAvinstaller den først.</string>
     <string name="ok">OK</string>
     <string name="parsing_index_error_DESC">Kunne ikke tolke indeksfilen.</string>
     <string name="promotes_non_free_software">Promoterer ufri programvare</string>
