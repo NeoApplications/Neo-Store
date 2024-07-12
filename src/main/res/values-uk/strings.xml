@@ -401,4 +401,5 @@
     <string name="min_android">Мінімальний Android</string>
     <string name="android_instead_of_sdk">Показувати версію Android замість SDK</string>
     <string name="android_instead_of_sdk_summary">Показувати назву версії Android замість номеру SDK для minSDK і targetSDK.</string>
+    <string name="all">Все</string>
 </resources>
