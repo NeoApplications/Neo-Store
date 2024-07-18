@@ -619,11 +619,12 @@ class WorkerManager(appContext: Context) {
                         CoroutineScope(Dispatchers.IO).launch { // TODO manage abrupt breaks
                             MainApplication.db.getDownloadedDao().upsert(
                                 Downloaded(
-                                    it.packageName,
-                                    it.version,
-                                    it.cacheFileName,
-                                    System.currentTimeMillis(),
-                                    it
+                                    packageName = it.packageName,
+                                    version = it.version,
+                                    repositoryId = it.repoId,
+                                    cacheFileName = it.cacheFileName,
+                                    changed = System.currentTimeMillis(),
+                                    state = it,
                                 )
                             )
                         }

@@ -25,8 +25,8 @@ interface DownloadedDao : BaseDao<Downloaded> {
     @Query("DELETE FROM downloaded WHERE packageName = :packageName")
     fun deleteAll(packageName: String)
 
-    @Query("DELETE FROM downloaded WHERE packageName = :packageName AND version = :version AND cacheFileName = :cacheFileName")
-    fun delete(packageName: String, version: String, cacheFileName: String)
+    @Query("DELETE FROM downloaded WHERE packageName = :packageName AND repositoryId = :repositoryId AND version = :version AND cacheFileName = :cacheFileName")
+    fun delete(packageName: String, version: String, repositoryId: Long, cacheFileName: String)
 
     @Query("DELETE FROM downloaded")
     fun emptyTable()

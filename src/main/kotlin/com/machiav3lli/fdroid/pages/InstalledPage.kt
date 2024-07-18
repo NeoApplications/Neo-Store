@@ -312,7 +312,7 @@ fun InstallsPage(viewModel: InstalledVM) {
                         text = stringResource(id = R.string.downloading)
                     )
                 }
-                items(sortedDownloads, key = { it.cacheFileName }) { item ->
+                items(sortedDownloads, key = { it.itemKey }) { item ->
                     DownloadedItem(
                         download = item,
                         iconDetails = iconDetails[item.packageName],
@@ -443,7 +443,7 @@ fun DownloadedPage(viewModel: InstalledVM) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
     ) {
-        items(sortedDownloaded, key = { it.cacheFileName }) { item ->
+        items(sortedDownloaded, key = { it.itemKey }) { item ->
             val state by remember(item) {
                 derivedStateOf { item.state }
             }
