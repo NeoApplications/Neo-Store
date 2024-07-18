@@ -65,6 +65,7 @@ import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.entity.DialogKey
 import com.machiav3lli.fdroid.entity.DonateType
 import com.machiav3lli.fdroid.entity.PrivacyNote
+import com.machiav3lli.fdroid.installer.RootInstaller
 import com.machiav3lli.fdroid.network.createIconUri
 import com.machiav3lli.fdroid.service.ActionReceiver
 import com.machiav3lli.fdroid.service.worker.DownloadWorker
@@ -335,9 +336,20 @@ fun AppSheet(
             }
 
             ActionState.Uninstall -> {
-                scope.launch {
-                    MainApplication.installer.uninstall(packageName)
+                val actionJob: () -> Unit = {
+                    scope.launch {
+                        MainApplication.installer.uninstall(packageName)
+                    }
                 }
+                if (MainApplication.installer is RootInstaller) {
+                    val productRepository =
+                        findSuggestedProduct(productRepos, installed) { it.first }
+                    dialogKey.value = DialogKey.Uninstall(
+                        productRepository?.first?.label ?: packageName,
+                        actionJob
+                    )
+                    openDialog.value = true
+                } else actionJob()
                 Unit
             }
 
@@ -696,7 +708,7 @@ fun AppSheet(
                             openDialog = openDialog,
                             primaryAction = {
                                 when (dialogKey.value) {
-                                    is DialogKey.Link     -> {
+                                    is DialogKey.Link   -> {
                                         try {
                                             context.startActivity(
                                                 Intent(
@@ -709,19 +721,19 @@ fun AppSheet(
                                         }
                                     }
 
-                                    is DialogKey.Download -> {
+                                    is DialogKey.Action -> {
                                         if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None)
                                             neoActivity.launchLockPrompt {
-                                                (dialogKey.value as DialogKey.Download).action()
+                                                (dialogKey.value as DialogKey.Action).action()
                                                 openDialog.value = false
                                             }
                                         else {
-                                            (dialogKey.value as DialogKey.Download).action()
+                                            (dialogKey.value as DialogKey.Action).action()
                                             openDialog.value = false
                                         }
                                     }
 
-                                    else                  -> {
+                                    else                -> {
                                         dialogKey.value = null
                                         openDialog.value = false
                                     }
