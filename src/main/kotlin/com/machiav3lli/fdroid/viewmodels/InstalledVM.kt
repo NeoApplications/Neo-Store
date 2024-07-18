@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
@@ -89,11 +90,13 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
         initialValue = emptyMap(),
     )
 
-    val downloaded = db.getDownloadedDao().getAllFlow().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Lazily,
-        initialValue = emptyList(),
-    )
+    val downloaded = db.getDownloadedDao().getAllFlow()
+        .debounce(250L)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = emptyList(),
+        )
 
     fun eraseDownloaded(downloaded: Downloaded) {
         viewModelScope.launch {
