@@ -364,12 +364,22 @@ data class Request(
 
 sealed class DialogKey {
     data class Link(val uri: Uri) : DialogKey()
-    data class Download(
+    open class Action(
         val label: String,
         val action: () -> Unit
     ) : DialogKey()
 
-    data class BatchDownload(
+    class Download(
+        label: String,
+        action: () -> Unit
+    ) : Action(label, action)
+
+    class Uninstall(
+        label: String,
+        action: () -> Unit
+    ) : Action(label, action)
+
+    class BatchDownload(
         val labels: List<String>,
         val action: () -> Unit
     ) : DialogKey()

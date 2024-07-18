@@ -399,4 +399,5 @@
     <string name="android_instead_of_sdk_summary">Show the Android version name instead of showing the SDK number for minSDK and targetSDK.</string>
     <string name="all">All</string>
     <string name="last_successful_sync">Latest update: %s\nAll repos: %s</string>
+    <string name="confirm_uninstall_DESC_FORMAT">Are you sure you want to uninstall %s?</string>
 </resources>

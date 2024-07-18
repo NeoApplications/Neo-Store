@@ -113,7 +113,7 @@ fun KeyDialogUI(
             is DialogKey.ReleaseIssue,
                  -> stringResource(id = R.string.incompatible_version)
 
-            is DialogKey.Download,
+            is DialogKey.Action,
             is DialogKey.BatchDownload,
             is DialogKey.Link,
                  -> stringResource(id = R.string.confirmation)
@@ -125,6 +125,11 @@ fun KeyDialogUI(
             is DialogKey.Link                -> stringResource(
                 id = R.string.open_DESC_FORMAT,
                 key.uri
+            )
+
+            is DialogKey.Uninstall            -> stringResource(
+                id = R.string.confirm_uninstall_DESC_FORMAT,
+                key.label
             )
 
             is DialogKey.Download            -> stringResource(
@@ -193,7 +198,7 @@ fun KeyDialogUI(
             is DialogKey.ReleaseIssue,
             is DialogKey.ReleaseIncompatible,
             is DialogKey.Link,
-            is DialogKey.Download,
+            is DialogKey.Action,
             is DialogKey.BatchDownload,
                  -> stringResource(id = R.string.ok)
 
