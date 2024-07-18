@@ -46,8 +46,10 @@ import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV21
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV22
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV23
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV9
+import com.machiav3lli.fdroid.database.entity.Repository.Companion.archiveRepos
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.defaultRepositories
 import com.machiav3lli.fdroid.database.entity.Tracker
+import com.machiav3lli.fdroid.service.worker.SyncWorker.Companion.enableRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -70,7 +72,7 @@ import org.koin.dsl.module
         Downloaded::class,
         InstallTask::class,
     ],
-    version = 24,
+    version = 25,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -149,6 +151,11 @@ import org.koin.dsl.module
         AutoMigration(
             from = 23,
             to = 24,
+        ),
+        AutoMigration(
+            from = 24,
+            to = 25,
+            spec = DatabaseX.Companion.MigrationSpec24to25::class
         ),
     ]
 )
@@ -287,6 +294,13 @@ abstract class DatabaseX : RoomDatabase() {
             }
         }
 
+        class MigrationSpec24to25 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(24)
+            }
+        }
+
         fun onPostMigrate(from: Int) {
             val preRepos = mutableListOf<Repository>()
             if (from == 8) preRepos.addAll(addedReposV9)
@@ -306,6 +320,10 @@ abstract class DatabaseX : RoomDatabase() {
                 preRepos.forEach {
                     INSTANCE?.getRepositoryDao()?.put(it)
                     if (from == 20) INSTANCE?.getDownloadedDao()?.emptyTable()
+                }
+                if (from == 24) archiveRepos.forEach {
+                    enableRepo(it, false)
+                    INSTANCE?.getRepositoryDao()?.deleteByAddress(it.address)
                 }
             }
         }

@@ -61,6 +61,9 @@ interface RepositoryDao : BaseDao<Repository> {
     @Query("DELETE FROM repository WHERE _id = :id")
     fun deleteById(id: Long)
 
+    @Query("DELETE FROM repository WHERE address = :address")
+    fun deleteByAddress(address: String)
+
     @Query("SELECT MAX(_id) FROM repository")
     fun latestAddedId(): Long
 }

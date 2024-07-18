@@ -907,8 +907,8 @@ data class Repository(
         )
 
         val defaultRepositories = listOf(
-            F_DROID, F_DROID_ARCHIVE, IZZY,
-            GUARDIAN, GUARDIAN_ARCHIVE, ONIONSHARE_NIGHTLY, MICRO_G,
+            F_DROID, IZZY,
+            GUARDIAN, ONIONSHARE_NIGHTLY, MICRO_G,
             BROMITE, CROMITE,
             NEWPIPE, LIBRETRO, BITWARDEN, GITJOURNAL,
             CALYX_OS, CALYX_OS_TEST, DIVEST_OS, DIVEST_OS_UNOFFICIAL,
@@ -919,7 +919,7 @@ data class Repository(
             SIMPLEX_CHAT, REVOLT, TWIN_HELIX,
             PI2P, OFFICIAL_I2P, COLLABORA,
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
-            FROSTNERD, FROSTNERD_ARCHIVE, F_DROID_CLASSIC,
+            FROSTNERD, F_DROID_CLASSIC,
             ETOPA, METATRANS_APPS, FUTO, KVAESITSO,
             LTTRS, KAFFEEMITKOFFEIN,
             MOBILSICHER, SAUNAREPO, UNOFFICIAL_FIREFOX, PATCHED,
@@ -941,7 +941,7 @@ data class Repository(
         val addedReposV9 = listOf(
             SIMPLEX_CHAT,
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
-            FROSTNERD, FROSTNERD_ARCHIVE
+            FROSTNERD,
         )
 
         val addedReposV10 = listOf(
@@ -999,6 +999,12 @@ data class Repository(
 
         val addedReposV23 = listOf(
             CLOUDBURST, HUIZENGEK,
+        )
+
+        val archiveRepos = listOf(
+            F_DROID_ARCHIVE,
+            GUARDIAN_ARCHIVE,
+            FROSTNERD_ARCHIVE,
         )
     }
 }
