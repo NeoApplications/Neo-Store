@@ -143,6 +143,10 @@ const val TC_INTENT_EXTRA_SEARCH = "Search"
 const val NAV_MAIN = 0
 const val NAV_PREFS = 1
 
+const val POPUP_NONE = 0
+const val POPUP_SHORT = 1
+const val POPUP_LONG = 2
+
 // Permissions based on Risk
 
 val LOW_RISK_PERMISSIONS = listOf(

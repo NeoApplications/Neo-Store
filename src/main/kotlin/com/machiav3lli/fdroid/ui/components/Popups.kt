@@ -10,34 +10,35 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import com.machiav3lli.fdroid.POPUP_NONE
 import kotlinx.coroutines.delay
 
 @Composable
 fun Tooltip(
     text: String,
-    openPopup: MutableState<Boolean>,
+    openPopup: MutableIntState,
 ) {
     Popup(
         alignment = Alignment.TopCenter,
         offset = IntOffset(0, 100),
     ) {
         LaunchedEffect(key1 = Unit) {
-            delay(3000)
-            openPopup.value = false
+            delay(3000L)
+            openPopup.intValue = POPUP_NONE
         }
 
         Box {
             Row(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .widthIn(max = 120.dp)
+                    .widthIn(max = 180.dp)
                     .background(
                         color = MaterialTheme.colorScheme.surface,
                         shape = MaterialTheme.shapes.medium

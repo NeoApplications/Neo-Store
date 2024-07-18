@@ -16,7 +16,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +24,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.POPUP_NONE
+import com.machiav3lli.fdroid.POPUP_SHORT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.components.Tooltip
@@ -109,12 +111,12 @@ fun MeterIcon(
     tooltips: ImmutableList<Int> = persistentListOf(0, 0, 0, 0, 0),
 ) {
     val colors = persistentListOf(Color.Red, Orange, Color.Yellow, LightGreen, Color.Green)
-    val openPopup = remember { mutableStateOf(false) }
+    val openPopup = remember { mutableIntStateOf(POPUP_NONE) }
 
     Row(
         modifier = modifier
             .clip(MaterialTheme.shapes.extraSmall)
-            .clickable { openPopup.value = true },
+            .clickable { openPopup.intValue = POPUP_SHORT },
     ) {
         colors.forEachIndexed { index, color ->
             val isSelected by remember(selected) { derivedStateOf { selected == index } }
@@ -143,9 +145,9 @@ fun MeterIcon(
                 }
             )
 
-            if (isSelected && openPopup.value) {
+            if (isSelected && openPopup.intValue != POPUP_NONE) {
                 Tooltip(stringResource(id = tooltips[index]), openPopup)
-            } else if (index == 2 && selected == null && openPopup.value) {
+            } else if (index == 2 && selected == null && openPopup.intValue != POPUP_NONE) {
                 Tooltip(stringResource(id = R.string.no_trackers_data_available), openPopup)
             }
         }

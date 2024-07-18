@@ -398,4 +398,5 @@
     <string name="android_instead_of_sdk">Show Android version instead of SDK</string>
     <string name="android_instead_of_sdk_summary">Show the Android version name instead of showing the SDK number for minSDK and targetSDK.</string>
     <string name="all">All</string>
+    <string name="last_successful_sync">Latest update: %s\nAll repos: %s</string>
 </resources>
