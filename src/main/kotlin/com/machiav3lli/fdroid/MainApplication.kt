@@ -96,18 +96,6 @@ class MainApplication : Application(), ImageLoaderFactory {
         )
         appRef = WeakReference(this)
 
-        startKoin {
-            androidLogger()
-            androidContext(this@MainApplication)
-            modules(
-                exodusModule,
-                downloadClientModule,
-                workmanagerModule,
-                databaseModule,
-                installerModule
-            )
-        }
-
         Preferences.init(this)
         RepositoryUpdater.init(this)
         listenApplications()
@@ -116,6 +104,22 @@ class MainApplication : Application(), ImageLoaderFactory {
         wm.prune()
         Cache.cleanup(this)
         updateSyncJob(false)
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+
+        startKoin {
+            androidLogger()
+            androidContext(this@MainApplication)
+            modules(
+                exodusModule,
+                downloadClientModule,
+                workmanagerModule,
+                databaseModule,
+                installerModule,
+            )
+        }
     }
 
     private fun listenApplications() {
