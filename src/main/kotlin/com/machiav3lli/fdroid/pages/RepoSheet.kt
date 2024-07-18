@@ -69,6 +69,7 @@ import com.machiav3lli.fdroid.ui.dialog.ProductsListDialogUI
 import com.machiav3lli.fdroid.ui.dialog.StringInputDialogUI
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
+import com.machiav3lli.fdroid.utility.getLocaleDateString
 import kotlinx.coroutines.launch
 import java.net.URI
 import java.net.URL
@@ -301,13 +302,7 @@ fun RepoPage(
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         BlockText(
-                            text = run {
-                                val date = Date(repo.updated)
-                                val format =
-                                    if (DateUtils.isToday(date.time)) DateUtils.FORMAT_SHOW_TIME else
-                                        DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE
-                                DateUtils.formatDateTime(context, date.time, format)
-                            }
+                            text = context.getLocaleDateString(repo.updated)
                         )
                     }
                 }

@@ -18,6 +18,7 @@ import android.content.pm.Signature
 import android.content.res.Configuration
 import android.net.Uri
 import android.provider.Settings
+import android.text.format.DateUtils
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -494,6 +495,13 @@ fun List<PermissionInfo>.getLabelsAndDescriptions(context: Context): List<String
         if (description.isNullOrEmpty()) (label ?: permission.name).toString()
         else "${label ?: permission.name}: $description"
     }
+}
+
+fun Context.getLocaleDateString(time: Long): String {
+    val date = Date(time)
+    val format = if (DateUtils.isToday(date.time)) DateUtils.FORMAT_SHOW_TIME else
+        DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE
+    return DateUtils.formatDateTime(this, date.time, format)
 }
 
 fun Collection<Product>.matchSearchQuery(searchQuery: String): List<Product> {
