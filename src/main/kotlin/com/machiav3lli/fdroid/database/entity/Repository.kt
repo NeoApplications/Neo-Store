@@ -1008,3 +1008,8 @@ data class Repository(
         )
     }
 }
+
+data class LatestSyncs(
+    var latest: Long,
+    var latestAll: Long,
+)

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.machiav3lli.fdroid.database.entity.LatestSyncs
 import com.machiav3lli.fdroid.database.entity.Repository
 import kotlinx.coroutines.flow.Flow
 
@@ -66,4 +67,7 @@ interface RepositoryDao : BaseDao<Repository> {
 
     @Query("SELECT MAX(_id) FROM repository")
     fun latestAddedId(): Long
+
+    @Query("SELECT MAX(updated) AS latest, MIN(updated) AS latestAll FROM repository WHERE enabled != 0")
+    fun latestUpdatesFlow(): Flow<LatestSyncs>
 }
