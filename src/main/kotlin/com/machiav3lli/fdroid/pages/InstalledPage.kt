@@ -219,7 +219,7 @@ fun InstallsPage(viewModel: InstalledVM) {
         contentColor = MaterialTheme.colorScheme.onBackground,
         sheetContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         sheetContent = {
-            SortFilterSheet(NavItem.Search.destination) {
+            SortFilterSheet(NavItem.Installed.destination) {
                 scope.launch {
                     scaffoldState.bottomSheetState.partialExpand()
                 }

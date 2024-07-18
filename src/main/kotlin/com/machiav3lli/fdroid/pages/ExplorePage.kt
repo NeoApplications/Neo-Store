@@ -135,7 +135,7 @@ fun ExplorePage(viewModel: ExploreVM) {
         contentColor = MaterialTheme.colorScheme.onBackground,
         sheetContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         sheetContent = {
-            SortFilterSheet(NavItem.Search.destination) {
+            SortFilterSheet(NavItem.Explore.destination) {
                 scope.launch {
                     scaffoldState.bottomSheetState.partialExpand()
                 }
