@@ -17,8 +17,6 @@ import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -29,7 +27,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,9 +46,7 @@ import com.machiav3lli.fdroid.ui.components.CategoriesList
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
 import com.machiav3lli.fdroid.ui.components.TopBarAction
-import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ListBullets
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
@@ -73,9 +68,11 @@ fun ExplorePage(viewModel: ExploreVM) {
 
     val installedList by viewModel.installed.collectAsState(emptyMap())
     val filteredProducts by viewModel.filteredProducts.collectAsState(emptyList())
-    val repositories by viewModel.repositories.collectAsState(emptyList())
-    val repositoriesMap = remember(repositories) {
-        mutableMapOf(*repositories.map { repo -> Pair(repo.id, repo) }.toTypedArray())
+    val repositories = viewModel.repositories.collectAsState(emptyList())
+    val repositoriesMap by remember {
+        derivedStateOf {
+            repositories.value.associateBy { repo -> repo.id }
+        }
     }
     val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
     val categories by RepositoryUpdater.db.getCategoryDao()
@@ -184,7 +181,8 @@ fun ExplorePage(viewModel: ExploreVM) {
                 ) {
                     when (it) {
                         favString -> {
-                            Preferences[Preferences.Key.CategoriesFilterExplore] = FILTER_CATEGORY_ALL
+                            Preferences[Preferences.Key.CategoriesFilterExplore] =
+                                FILTER_CATEGORY_ALL
                             selectedCategory.value = favString
                             viewModel.setSource(Source.FAVORITES)
                         }

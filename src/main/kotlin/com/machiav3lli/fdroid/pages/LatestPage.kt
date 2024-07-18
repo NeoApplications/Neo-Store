@@ -11,7 +11,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -56,9 +55,11 @@ fun LatestPage(viewModel: LatestVM) {
     val installedList by viewModel.installed.collectAsState(emptyMap())
     val secondaryList by viewModel.secondaryProducts.collectAsState(emptyList())
     val primaryList by viewModel.primaryProducts.collectAsState(emptyList())
-    val repositories by viewModel.repositories.collectAsState(emptyList())
-    val repositoriesMap = remember(repositories) {
-        mutableMapOf(*repositories.map { repo -> Pair(repo.id, repo) }.toTypedArray())
+    val repositories = viewModel.repositories.collectAsState(emptyList())
+    val repositoriesMap by remember {
+        derivedStateOf {
+            repositories.value.associateBy { repo -> repo.id }
+        }
     }
     val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
 

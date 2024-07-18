@@ -63,9 +63,11 @@ fun SearchPage(viewModel: SearchVM) {
     val listState = rememberLazyListState()
     val installedList by viewModel.installed.collectAsState(emptyMap())
     val filteredProducts by viewModel.filteredProducts.collectAsState(emptyList())
-    val repositories by viewModel.repositories.collectAsState(emptyList())
-    val repositoriesMap = remember(repositories) {
-        mutableMapOf(*repositories.map { repo -> Pair(repo.id, repo) }.toTypedArray())
+    val repositories = viewModel.repositories.collectAsState(emptyList())
+    val repositoriesMap by remember {
+        derivedStateOf {
+            repositories.value.associateBy { repo -> repo.id }
+        }
     }
     val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
     val query by neoActivity.searchQuery.collectAsState()

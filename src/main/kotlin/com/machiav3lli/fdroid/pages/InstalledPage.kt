@@ -166,9 +166,11 @@ fun InstallsPage(viewModel: InstalledVM) {
     val installedList by viewModel.installed.collectAsState(emptyMap())
     val updates by viewModel.updates.collectAsState(emptyList())
     val installedItems by viewModel.installedProducts.collectAsState(emptyList())
-    val repositories by viewModel.repositories.collectAsState(emptyList())
-    val repositoriesMap = remember(repositories) {
-        mutableMapOf(*repositories.map { repo -> Pair(repo.id, repo) }.toTypedArray())
+    val repositories = viewModel.repositories.collectAsState(emptyList())
+    val repositoriesMap by remember {
+        derivedStateOf {
+            repositories.value.associateBy { repo -> repo.id }
+        }
     }
     val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow()
         .collectAsState(emptyArray())
@@ -185,7 +187,7 @@ fun InstallsPage(viewModel: InstalledVM) {
             downloaded.value.filter { it.state is DownloadState.Downloading }
         }
     }
-    val downloadsRunning by remember {
+    val isDownloading by remember {
         derivedStateOf { downloads.value.isNotEmpty() }
     }
 
@@ -305,7 +307,7 @@ fun InstallsPage(viewModel: InstalledVM) {
                     }
                 }
             }
-            if (downloadsRunning) {
+            if (isDownloading) {
                 item {
                     Text(
                         modifier = Modifier.padding(8.dp),

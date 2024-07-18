@@ -106,8 +106,12 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
 
     private suspend fun deleteDownloaded(downloaded: Downloaded) {
         withContext(cc) {
-            db.getDownloadedDao()
-                .delete(downloaded.packageName, downloaded.version, downloaded.cacheFileName)
+            db.getDownloadedDao().delete(
+                downloaded.packageName,
+                downloaded.version,
+                downloaded.repositoryId,
+                downloaded.cacheFileName
+            )
         }
     }
 
