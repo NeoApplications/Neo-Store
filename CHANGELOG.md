@@ -1,7 +1,23 @@
 CHANGELOG
 =========
 
-1.0.4 (09.07.2024) 10- Commits
+1.0.5 (19.07.2024) +10 Commits +10 Translations
+------------------
+
+### Function
+
+- Add: Debounce on downloaded flow
+  - Add: RepoId to Downloaded for a more unique key
+  - Fix: SortFilter sheets across pages
+  - Update: Init Koin earlier
+  - Remove: All archive repositories
+
+### UI/UX
+
+- Add: Confirmation dialog on root uninstaller too
+  - Add: Long tap sync button for latest successful sync info
+
+1.0.4 (09.07.2024) -10 Commits
 ------------------
 
 ### Function

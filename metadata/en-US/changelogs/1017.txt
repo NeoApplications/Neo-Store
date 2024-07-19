@@ -1,0 +1,5 @@
+Add: Confirmation dialog on root uninstaller too
+Add: Long tap sync button for latest successful sync info
+Fix: SortFilter sheets across pages
+Remove: All archive repositories
++ more in more than 10 commits & 10 translation contributions
