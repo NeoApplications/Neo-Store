@@ -42,6 +42,7 @@ import com.machiav3lli.fdroid.ui.components.PermissionItem
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.extension.android.Android
+import com.machiav3lli.fdroid.utility.isRunningOnTV
 import com.machiav3lli.fdroid.utility.showBatteryOptimizationDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -119,6 +120,7 @@ fun SnapshotStateList<Pair<Permission, () -> Unit>>.refresh(
     addAll(buildList {
         if (!powerManager.isIgnoringBatteryOptimizations(context.packageName)
             && !Preferences[Preferences.Key.IgnoreDisableBatteryOptimization]
+            && !context.isRunningOnTV
         ) add(Pair(Permission.BatteryOptimization) {
             context.showBatteryOptimizationDialog()
         })

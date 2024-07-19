@@ -524,6 +524,8 @@ fun isDifferenceMoreThanOneYear(time1: Long, time2: Long): Boolean {
     return difference > oneYearInMilliseconds
 }
 
+val Context.isRunningOnTV: Boolean
+    get() = packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
 
 val currentTimestamp: String
     get() {
