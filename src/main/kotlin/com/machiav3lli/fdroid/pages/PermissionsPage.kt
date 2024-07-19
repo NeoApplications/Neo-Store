@@ -94,7 +94,7 @@ fun PermissionsPage(navController: NavHostController) {
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(8.dp)
         ) {
-            items(permissionsList) { pair ->
+            items(permissionsList, key = { it.first.nameId }) { pair ->
                 PermissionItem(pair.first, pair.second) {
                     permissionsList.refresh(
                         context,

@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -17,12 +18,9 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -157,12 +155,13 @@ fun CardButton(
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
 ) {
-    Surface(
+    Box(
         modifier = modifier
+            .minimumInteractiveComponentSize()
             .clip(MaterialTheme.shapes.extraLarge)
             .combinedClickable(onClick = onClick, onLongClick = onLongClick)
             .padding(8.dp),
-        color = Color.Transparent,
+        contentAlignment = Alignment.Center
     ) {
         Icon(
             modifier = Modifier.size(PRODUCT_CARD_ICON - 16.dp),
@@ -178,19 +177,13 @@ fun SourceCodeButton(
     onClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
-    val img by remember(sourceType) {
-        derivedStateOf {
-            when {
-                sourceType.isFree            -> Phosphor.Copyleft
-                sourceType.isOpenSource      -> com.machiav3lli.fdroid.ui.compose.icons.Icon.Opensource
-                sourceType.isSourceAvailable -> Phosphor.Copyright
-                else                         -> Phosphor.GlobeSimple
-            }
-        }
-    }
-
     CardButton(
-        icon = img,
+        icon = when {
+            sourceType.isFree            -> Phosphor.Copyleft
+            sourceType.isOpenSource      -> com.machiav3lli.fdroid.ui.compose.icons.Icon.Opensource
+            sourceType.isSourceAvailable -> Phosphor.Copyright
+            else                         -> Phosphor.GlobeSimple
+        },
         description = stringResource(id = R.string.source_code),
         onClick = onClick,
         onLongClick = onLongClick

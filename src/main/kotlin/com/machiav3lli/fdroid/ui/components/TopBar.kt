@@ -5,6 +5,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -26,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -222,7 +224,9 @@ fun TopBarAction(
     Box(
         modifier = Modifier
             .minimumInteractiveComponentSize()
-            .combinedClickable(role = Role.Button, onClick = onClick, onLongClick = onLongClick),
+            .clip(MaterialTheme.shapes.extraLarge)
+            .combinedClickable(role = Role.Button, onClick = onClick, onLongClick = onLongClick)
+            .padding(8.dp),
         contentAlignment = Alignment.Center
     ) {
         Icon(
