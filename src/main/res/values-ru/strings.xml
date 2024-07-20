@@ -312,7 +312,7 @@
     <string name="post_notifications_permission_message">Начиная с Android 13 для показа уведомлений приложениям требуется это разрешение.</string>
     <string name="ignore_vulns">Игнорировать известные уязвимости безопасности</string>
     <string name="downloads">Загрузки</string>
-    <string name="warning_disable_battery_optimization">Начиная с Android 12, приложению требуется оптимизации батареи для выполнения фоновых процессов, таких как синхронизация и загрузка. Если вы проигнорируете и не предоставите это разрешение, ваши отчёты об ошибках будут проигнорированы.</string>
+    <string name="warning_disable_battery_optimization">Начиная с Android 12, приложению требуется разрешение на оптимизацию энергопотребления для выполнения фоновых процессов, таких как синхронизация и загрузка. Если вы проигнорируете это разрешение, вы останетесь один, и ваши отчеты о сбоях будут игнорироваться.</string>
     <string name="disable_signature_check_summary">Не проверять, имеет ли загруженный APK ту же подпись, что и установленное приложение.</string>
     <string name="disable_download_version_check_summary">Разрешается загружать старые версии установленных приложений. Может использоваться в сочетании с патчем Magisk \"letmedowngrade\".</string>
     <string name="ignore">Игнорировать</string>
@@ -384,7 +384,7 @@
     <string name="action_lock_biometric">Биометрическая блокировка</string>
     <string name="confirm_download_DESC_FORMAT">Вы уверены, что хотите скачать %s?</string>
     <string name="alt_block_layout_summary">Использовать альтернативный/старый вид блоков страниц с границами вместо цветных поверхностей.</string>
-    <string name="download_show_dialog_summary">Показывать диалоговое окно с запросом подтверждения на скачивание приложения (перед началом загрузки).</string>
+    <string name="download_show_dialog_summary">Отобразить диалоговое окно с вопросом, действительно ли вы хотите загрузить приложение (перед началом загрузки).</string>
     <string name="action_lock_device">Блокировка устройства</string>
     <string name="kids_mode_summary">Использовать детский режим, отключающий установку новых приложений.</string>
     <string name="system_installer">Системный установщик</string>
