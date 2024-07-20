@@ -401,4 +401,5 @@
     <string name="min_android">Минимальная версия ОС</string>
     <string name="android_instead_of_sdk">Отображать версии Android вместо версий SDK</string>
     <string name="android_instead_of_sdk_summary">Для приложений будут отображаться соответствующие версии Android вместо минимальных и рекомендуемых версий SDK.</string>
+    <string name="all">Все</string>
 </resources>
