@@ -397,4 +397,5 @@
     <string name="android_instead_of_sdk">Vis Android-version i stedet for SDK</string>
     <string name="android_instead_of_sdk_summary">Vis navnet på Android-versionen i stedet for at vise SDK-nummeret for minSDK og targetSDK.</string>
     <string name="target_android">Target Android</string>
+    <string name="all">Alt</string>
 </resources>
