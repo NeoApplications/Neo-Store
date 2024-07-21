@@ -400,4 +400,7 @@
     <string name="dismiss">Zavřít</string>
     <string name="android_instead_of_sdk_summary">Zobrazit název verze systému Android namísto zobrazení čísla SDK pro minSDK a targetSDK.</string>
     <string name="all">Vše</string>
+    <string name="last_successful_sync">Poslední aktualizace: %s
+\nVšechny repozitáře: %s</string>
+    <string name="confirm_uninstall_DESC_FORMAT">Opravdu chcete odinstalovat %s?</string>
 </resources>
