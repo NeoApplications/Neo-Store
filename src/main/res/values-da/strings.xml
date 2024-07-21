@@ -398,4 +398,7 @@
     <string name="android_instead_of_sdk_summary">Vis navnet på Android-versionen i stedet for at vise SDK-nummeret for minSDK og targetSDK.</string>
     <string name="target_android">Target Android</string>
     <string name="all">Alt</string>
+    <string name="confirm_uninstall_DESC_FORMAT">Er du sikker på, at du vil afinstallere %s?</string>
+    <string name="last_successful_sync">Seneste opdatering: %s
+\nAlle repos: %s</string>
 </resources>
