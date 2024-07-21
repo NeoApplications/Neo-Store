@@ -397,4 +397,8 @@
     <string name="wait_to_sync">Wacht een paar seconden voordat je opnieuw probeert te synchroniseren.</string>
     <string name="prefs_search_apps_description">Maximum aantal apps dat in de zoekresultaten moet worden opgenomen (zet op 0 om alle apps op te nemen).</string>
     <string name="state_modified">Aangepast</string>
+    <string name="last_successful_sync">Laatste update: %s
+\nAlle archieven: %s</string>
+    <string name="confirm_uninstall_DESC_FORMAT">Weet je zeker dat je %s wil verwijderen?</string>
+    <string name="all">Alle</string>
 </resources>
