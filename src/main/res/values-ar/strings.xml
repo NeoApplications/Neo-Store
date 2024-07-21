@@ -406,4 +406,7 @@
     <string name="android_instead_of_sdk_summary">إظهار اسم إصدار Android بدلاً من إظهار رقم SDK لـ minSDK وtargetSDK.</string>
     <string name="min_android">الحد الأدنى للأندرويد</string>
     <string name="all">الكل</string>
+    <string name="last_successful_sync">آخر تحديث: %s
+\nجميع المستودعات: %s</string>
+    <string name="confirm_uninstall_DESC_FORMAT">هل أنت متأكد من أنك تريد أن إلغاء تثبيت%s؟</string>
 </resources>
