@@ -402,4 +402,7 @@
     <string name="android_instead_of_sdk">Отображать версии Android вместо версий SDK</string>
     <string name="android_instead_of_sdk_summary">Для приложений будут отображаться соответствующие версии Android вместо минимальных и рекомендуемых версий SDK.</string>
     <string name="all">Все</string>
+    <string name="confirm_uninstall_DESC_FORMAT">Вы точно хотите удалить %s?</string>
+    <string name="last_successful_sync">Последнее обновление: %s
+\nВсе репозитории: %s</string>
 </resources>
