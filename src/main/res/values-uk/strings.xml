@@ -402,4 +402,7 @@
     <string name="android_instead_of_sdk">Показувати версію Android замість SDK</string>
     <string name="android_instead_of_sdk_summary">Показувати назву версії Android замість номеру SDK для minSDK і targetSDK.</string>
     <string name="all">Все</string>
+    <string name="confirm_uninstall_DESC_FORMAT">Хочете видалити %s?</string>
+    <string name="last_successful_sync">Останнє оновлення: %s
+\nВсі репозиторії: %s</string>
 </resources>
