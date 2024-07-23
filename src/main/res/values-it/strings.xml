@@ -400,4 +400,7 @@
     <string name="android_instead_of_sdk_summary">Mostra il nome della versione Android invece di mostrare il numero SDK per minSDK e targetSDK.</string>
     <string name="android_instead_of_sdk">Mostra la versione di Android anziché l\'SDK</string>
     <string name="all">Tutto</string>
+    <string name="last_successful_sync">Ultimi aggiornamenti: %s
+\n Tutti i repository: %s</string>
+    <string name="confirm_uninstall_DESC_FORMAT">Sei sicuro di voler disinstallare %s?</string>
 </resources>
