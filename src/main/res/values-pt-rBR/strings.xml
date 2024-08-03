@@ -400,4 +400,7 @@
     <string name="prefs_search_apps_description">Número máximo de aplicativos para incluir nos resultados da pesquisa (definido como 0 para incluir todos os aplicativos).</string>
     <string name="state_modified">Modificado</string>
     <string name="all">Tudo</string>
+    <string name="last_successful_sync">Última atualização: %s
+\nTodos os repositórios: %s</string>
+    <string name="confirm_uninstall_DESC_FORMAT">Você tem certeza que deseja desinstalar %s?</string>
 </resources>
