@@ -1,0 +1,5 @@
+Dodano: Indeksy do jednostek pokoju
+Dodano: Brak źródła i żądań
+Poprawka: Wyciek pamięci
+Aktualizacja: Żądania zmiany
+Usunięto: Wszystko ze strony eksploracji

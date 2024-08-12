@@ -1,0 +1,5 @@
+Dodano: Okno dialogowe potwierdzenia również w deinstalatorze root
+Dodano: Przycisk synchronizacji z długim dotknięciem dla najnowszych informacji o pomyślnej synchronizacji
+Poprawka: Arkusze filtrów sortowań na różnych stronach
+Usunięto: Wszystkie repozytoria archiwum
++ więcej w ponad 10 poprawkach i 10 tłumaczeniach

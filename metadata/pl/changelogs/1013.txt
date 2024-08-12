@@ -1,0 +1,8 @@
+Dodano: Zabezpieczenie przed spamowaniem synchronizacji
+Dodano: Opcja ograniczania załadowanych aplikacji do wyszukiwania
+Dodano: Wsparcie dla powtarzalnych kompilacji
+Dodano: Wskaźnik zastosowania własnego sortowania/filtra
+Poprawka: Ładowanie aplikacji bez kategorii (np. Total Commander Android)
+Poprawka: Zmiana ranżacji większości interfejsu użytkownika (redukcja opóźnień)
+Poprawka: Obsługa języków lokalnych z trzema literami jako kod języka
++ więcej w ponad 30 poprawkach i 20 tłumaczeniach
