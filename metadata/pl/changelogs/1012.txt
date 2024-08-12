@@ -1,0 +1,8 @@
+Dodano: Równoległe pobieranie i synchronizacja
+Dodano: Eksport/import zainstalowanych aplikacji i repozytoriów
+Dodano: +50 nowych repozytoriów
+Dodano: Tryb dziecięcy
+Poprawka: wywoływanie adresów Tor
+Aktualizacja: Odświeżenie całego interfejsu użytkownika
+Aktualizacja: Poprawa ustawień wartości okna dialogowego preferencji
++ znacznie więcej w ponad 440 poprawkach i 380 tłumaczeniach

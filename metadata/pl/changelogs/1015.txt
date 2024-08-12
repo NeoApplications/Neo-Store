@@ -1,0 +1,7 @@
+Dodano: Specjalne zakładki filtrów wyszukiwania
+Dodano: Wskaźnik, że aplikacja jest zainstalowana na liście elementów.
+Poprawka: Awarii przy użyciu tego samego klucza dla elementów leniwego wydania
+Poprawka: Otwieranie innej strony preferencji po zmianie strony domyślnej
+Aktualizacja: Konwersja wyszukiwania z powrotem na stronę
+Aktualizacja: Zmiana karuzeli aplikacji i ograniczenie długości nazwy wersji
++ więcej w ponad 10 poprawkach i 30 tłumaczeniach

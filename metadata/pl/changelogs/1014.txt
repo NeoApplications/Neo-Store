@@ -1,0 +1,6 @@
+Dodano: Pasek wyszukiwania na stronie repozytoriów
+Dodano: Opcja wyświetlania nazwy wersji Androida zamiast SDK (domyślnie włączona)
+Dodano: Okno dialogowe po kliknięciu linków z opisów aplikacji lub dzienników zmian
+Poprawka: Błąd po dotknięciu powiadomienia o instalacji instalatora sesji
+Aktualizacja: Dodano przyciski włączania i wyłączania do RepoSheet
++ więcej w ponad 10 poprawkach i 50 tłumaczeniach
