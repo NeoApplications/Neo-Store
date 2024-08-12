@@ -395,4 +395,8 @@
     <string name="android_instead_of_sdk_summary">对于最低 SDK 版本和目标 SDK 版本，显示 Android 版本名称而不是 SDK 数字。</string>
     <string name="android_instead_of_sdk">显示 Android 版本而不是 SDK 版本</string>
     <string name="enable">启用</string>
+    <string name="last_successful_sync">最近更新：%s
+\n所有仓库：%s</string>
+    <string name="confirm_uninstall_DESC_FORMAT">您确定要卸载 %s 吗？</string>
+    <string name="all">全部</string>
 </resources>
