@@ -1,0 +1,5 @@
+Přidáno: Potvrzovací dialog i u root odinstalátoru
+Přidáno: Dlouhé klepnutí na tlačítko synchronizace pro nejnovější informace o úspěšné synchronizaci
+Opraveno: Listy SortFilter napříč stránkami
+Odstraněno: Všechny archivované repozitáře
++ další ve více než 10 commitech a 10 příspěvcích k překladu

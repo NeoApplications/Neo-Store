@@ -1,0 +1,5 @@
+Přidáno: Indexy k entitám místnosti
+Přidáno: Žádný zdroj a požadavek
+Opraveno: Únik paměti
+Aktualizováno: Požadavek na přepracování
+Odstraněno: Vše ze stránky prozkoumat
