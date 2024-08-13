@@ -1,0 +1,7 @@
+Přidáno: Speciální karty filtru vyhledávání
+Přidáno: Indikátor, že je nainstalována aplikace pro seznam položek
+Opraveno: Pád při použití stejného klíče pro položky líného vydání
+Opraveno: Otevření jiné stránky předvoleb při změně výchozí stránky
+Aktualizováno: Převedení vyhledávání zpět na stránku
+Aktualizováno: Přepracování karuselu aplikací a omezení délky názvu verze
++ další ve více než 10 commitech a 30 příspěvcích k překladu
