@@ -1,0 +1,5 @@
+Aggiunto: indici alle entità Room
+Aggiunto: Nessuno Origine e richiesta
+Corretto: una perdita di memoria
+Aggiornato: richiesta di rinnovamento
+Rimosso: tutto dalla pagina Esplora
