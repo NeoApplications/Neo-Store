@@ -1,0 +1,5 @@
+Aggiunto: finestra di dialogo di conferma anche sul programma di disinstallazione root
+Aggiunto: pulsante di sincronizzazione con tocco lungo per le ultime informazioni sulla sincronizzazione riuscita
+Corretto: fogli SortFilter tra le pagine
+Rimosso: tutti i repository di archivio
++ altro in più di 10 commit e 10 contributi di traduzione

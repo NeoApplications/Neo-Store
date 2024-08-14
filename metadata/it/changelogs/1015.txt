@@ -1,0 +1,7 @@
+Aggiunto: schede speciali per i filtri di ricerca
+Aggiunto: indicatore che è installata un'app per elencare gli elementi
+Corretto: arresto anomalo quando si usa la stessa chiave per elementi a rilascio lento
+Corretto: apertura di una pagina delle preferenze diversa quando viene modificata la pagina predefinita
+Aggiornato: riconverte la ricerca in una pagina
+Aggiornato: rinnova carosello delle app, limita lunghezza del nome della versione
++ altro in più di 10 commit e 30 contributi di traduzione
