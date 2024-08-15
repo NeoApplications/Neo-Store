@@ -1,0 +1,5 @@
+Agregar: Índices a entidades de la room
+Agregar: Ninguno Fuente y solicitud
+Solución: una pérdida de memoria
+Actualización: Solicitud de renovación
+Eliminar: Todo de la página de exploración
