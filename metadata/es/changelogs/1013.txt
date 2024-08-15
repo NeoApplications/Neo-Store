@@ -1,8 +1,8 @@
-Agregar: Protección para evitar la sincronización de spam
-Agregar: limitar las aplicaciones en la búsqueda
+Agregar: Protección para evitar spam
+Agregar: limitar la búsqueda de aplicaciones 
 Agregar: soporte de compilaciones reproducibles
 Agregar: indicador si se aplica una clasificación/filtro personalizado
-Solución: carga de aplicaciones sin categorías (por ejemplo, Total Commander Android)
+Solución: cargar aplicaciones sin categorías (por ejemplo, Total Commander Android)
 Solución: recomposición constante de la mayoría de las UI (reducir Jitter/Lag)
-Solución: manejo de configuraciones regionales con tres letras como código de idioma
+Solución: configuraciones regionales con tres letras para el idioma
 + más en más de 30 confirmaciones y 20 contribuciones de traducción

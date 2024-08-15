@@ -1,0 +1,5 @@
+Agregar: confirmación en el desinstalador root
+Agregar: Mantenga pulsado sincronización para obtener la información actualizada sobre la sincronización
+Solución: Filtrar hojas en distintas páginas
+Eliminar: todos los repositorios de archivos
++ más en más de 10 confirmaciones y 10 contribuciones de traducción

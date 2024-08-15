@@ -1,0 +1,7 @@
+Pestañas de filtro de búsqueda privada
+Añadir: Indicador en la instalación de la aplicación para insertar elementos
+Corrección: Bloqueo al usar la misma tecla para editar elementos
+Corregido: Apertura de una página de preferencias diferente al cambiar la página por defecto
+Actualizado: Convertir la búsqueda en una página
+Actualización: Actualizar el carrusel de aplicaciones y especificar la longitud del nombre de la versión
++ Más en más de 10 commits y 30 contribuciones de traducción
