@@ -1,0 +1,5 @@
+Hinzufügen: Bestätigungsdialog auch im Root-Deinstallationsprogramm
+Hinzufügen: Langes Tippen auf die Synchronisierungsschaltfläche, um die Informationen zur letzten erfolgreichen Synchronisierung anzuzeigen
+Fix: SortFilter-Blätter über Seiten hinweg
+Entfernen: Alle Archiv-Repositories
++ mehr in mehr als 10 Commits und 10 Übersetzungsbeiträgen

@@ -1,0 +1,7 @@
+Hinzufügen: Spezielle Suchfilter-Registerkarten
+Hinzufügen: Anzeige, dass eine App installiert ist, um Elemente aufzulisten
+Fix: Absturz bei Verwendung desselben Schlüssels für verzögert freigegebene Elemente
+Fix: Öffnet eine andere Einstellungsseite, wenn die Standardseite geändert wird
+Update: Konvertiert die Suche zurück in eine Seite
+Update: Überarbeitet das Karussell der Apps und begrenzt die Länge des Versionsnamens
++ mehr in über 10 Commits und 30 Übersetzungsbeiträgen

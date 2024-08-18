@@ -1,0 +1,8 @@
+hinzufügen: Schutz, um Spamming bei der Synchronisierung zu vermeiden
+Hinzufügen: Option zum Begrenzen geladener Apps für die Suche
+Hinzufügen: Unterstützung reproduzierbarer Builds
+Hinzufügen: Anzeige, wenn eine benutzerdefinierte Sortierung/Filterung angewendet wird
+Fix: Laden von Apps ohne Kategorien (z. B. Total Commander Android)
+Fix: Ständige Neuzusammenstellung der meisten Benutzeroberflächen (Jitter/Lag reduzieren)
+Fix: Umgang mit Gebietsschemas mit drei Buchstaben als Sprachcode
++ mehr in über 30 Commits und 20 Übersetzungsbeiträgen

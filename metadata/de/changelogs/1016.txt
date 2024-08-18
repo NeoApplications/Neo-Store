@@ -1,0 +1,5 @@
+Hinzufügen: Indizes zu Raumentitäten
+Hinzufügen: Keine Quelle und Anfrage
+Fix: Ein Speicherleck
+Update: Anfrage überarbeiten
+Entfernen: Alles von der Erkundungsseite
