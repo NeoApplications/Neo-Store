@@ -190,7 +190,7 @@
     <string name="installing">Installation</string>
     <string name="pending">Verfügbar</string>
     <string name="dialog_refuse">Behalten</string>
-    <string name="ignore_battery_optimization_not_supported">Dein Android-Betriebssystem erlaubt kein Abschalten von Akkulaufzeitverbesserungen.</string>
+    <string name="ignore_battery_optimization_not_supported">Dein Android-Betriebssystem erlaubt kein Abschalten der Akkulaufzeitverbesserungen.</string>
     <string name="ignore_battery_optimization_title">Akkulaufzeitverbesserung</string>
     <string name="ignore_battery_optimization_message">Die Anwendung verhält sich ohne Batterieoptimierung besser und verhindert Abstürze unter Android 12+.</string>
     <string name="dialog_approve">Ausschalten</string>
@@ -208,7 +208,7 @@
     <string name="dynamic">Systemstandard</string>
     <string name="releases">Veröffentlichungen</string>
     <string name="no_updates_available">Keine Versionen verfügbar</string>
-    <string name="images_cache_retention">Aufbewahrungszeit der Bilder</string>
+    <string name="images_cache_retention">Bildcacheaufbewahrung</string>
     <string name="releases_cache_retention">Aufbewahrungszeit heruntergeladener APK</string>
     <string name="auto_sync_interval">Auto-Sync Intervall (in Minuten)</string>
     <string name="favorite_applications">Favoriten</string>
@@ -308,7 +308,7 @@
     <string name="extras_export">Extras exportieren (Favoriten, Updates ignorieren, etc.)</string>
     <string name="file_share_text">Datei aus Neo Store</string>
     <string name="post_notifications_permission_title">Erlaubnis um Benachrichtigungen zu senden</string>
-    <string name="post_notifications_permission_message">A13-Apps benötigen die Erlaubnis Benachrichtigungen zu senden, damit diese gestartet werden können.</string>
+    <string name="post_notifications_permission_message">Ab Android 13 benötigen Apps diese Berechtigung, um Benachrichtigungen posten zu können.</string>
     <string name="vulnerabilities_installed_apps">Diese installierten Apps haben Sicherheitsprobleme!</string>
     <string name="show_categories_bar">Kategorienleiste anzeigen</string>
     <string name="show_categories_bar_description">Zeigt die Kategorienleiste auf der Entdecken-Seite an.</string>
@@ -332,7 +332,7 @@
     <string name="previous">Vorherige</string>
     <string name="clear_text">Lösche Text</string>
     <string name="auto_sync_interval_hours">Intervall für Auto-Sync (in Std.)</string>
-    <string name="repos_import">Importiere Paketquellen (überschreibt bereits existierende)</string>
+    <string name="repos_import">Importiere Paketquellen (überschreibt existierende)</string>
     <string name="repos_export">Exportiere Paketquellen</string>
     <string name="alt_navbar_item">Verwende alternatives Element der Navigationsleiste</string>
     <string name="alt_navbar_item_description">Verwende alternatives/altes Navigationsleisten-Layout, das die Beschriftung nicht ausgewählter Elemente anzeigt.</string>
@@ -358,7 +358,7 @@
     <string name="root_allow_downgrades_description">Erlaubt Downgrade von Anwendungen mithilfe des Root-Installers (gilt nur für debuggbare Anwendungsversionen). Besser in Kombination mit „Versionsprüfung beim Herunterladen deaktivieren“ verwenden.</string>
     <string name="root_allow_installing_old_apps_description">Ab Android 14 ist es nicht mehr möglich, Anwendungen zu installieren, die auf viel ältere Android-Versionen (Android 5.1 oder früher) abzielen. Diese Option ermöglicht es Ihnen, dieses Verhalten zu umgehen.</string>
     <string name="repo_qr_code">QR-Code der Paketquelle</string>
-    <string name="proxy_url">URL (link)</string>
+    <string name="proxy_url">URL</string>
     <string name="no_releases">Keine kompatiblen Veröffentlichungen vorhanden</string>
     <string name="alt_new_apps_description">Verwende alternatives/altes Neue Apps-Ansicht, das kleine App-Karten zeigt.</string>
     <string name="allow_unstable_updates">Anzeige instabiler Updates zulassen</string>
@@ -370,7 +370,7 @@
     <string name="install_packages_permission_message">Apps, die mit Android 8 starten, benötigen diese Berechtigung, um Pakete installieren zu können.</string>
     <string name="alt_block_layout">Alternative Darstellung für Seitenelemente verwenden</string>
     <string name="download_show_dialog">Download-Dialog anzeigen</string>
-    <string name="download_show_dialog_summary">Einen Dialog anzeigen, der erfragt, ob man sich sicher über den App-Download ist (vorm Start des Downloads).</string>
+    <string name="download_show_dialog_summary">Zeigen Sie ein Dialogfeld an, in dem Sie gefragt werden, ob Sie sicher sind, dass Sie eine App herunterladen möchten (bevor der Download gestartet wird).</string>
     <string name="bottom_search_bar">Suchleiste unten</string>
     <string name="bottom_search_bar_summary">Suchleiste am unteren Seitenrand platzieren.</string>
     <string name="action_lock_dialog">Dialog für gesperrte Aktionen anzeigen</string>
@@ -383,8 +383,22 @@
     <string name="confirm_download_DESC_FORMAT">Bist Du sicher, dass Du %s herunterladen möchtest?</string>
     <string name="action_lock_biometric">Biometrische Sperre</string>
     <string name="deselect_all">Alle abwählen</string>
-    <string name="kids_mode_summary_full">Kinder-Modus aktivieren, der die Installation neuer Apps verhindert. Zum Deaktivieren auf der Seite „Andere“ sechsmal die App-Version antippen. Dieser Hinweis verschwindet nach Neustart der App.</string>
+    <string name="kids_mode_summary_full">Aktivieren Sie den Kindermodus und deaktivieren Sie die Installation neuer Apps. Um den Modus zu deaktivieren, tippen Sie auf der anderen Seite sechsmal auf die Version der App. Beim Neustart der App wird dieser Hinweis ausgeblendet.</string>
     <string name="system_installer">System-Installer</string>
     <string name="hide_new_apps">Neue App-Leiste verbergen</string>
     <string name="hide_new_apps_description">Neue und kürzlich aktualisierte Apps in der vertikalen Neueste-Liste kombinieren.</string>
+    <string name="last_successful_sync">letztes Update: %s
+\nAlle Repos: %s</string>
+    <string name="confirm_uninstall_DESC_FORMAT">Möchten Sie %s wirklich deinstallieren?</string>
+    <string name="prefs_search_apps">Maximale Anzahl von Anwendungen, die nach Suchergebnissen abgefragt werden sollen.</string>
+    <string name="wait_to_sync">Warten Sie einige Sekunden, bevor Sie die Synchronisierung erneut versuchen.</string>
+    <string name="prefs_search_apps_description">Maximale Anzahl von Anwendungen, die in die Suchergebnisse einbezogen werden sollen (auf 0 setzen, um alle Apps einzubeziehen).</string>
+    <string name="enable">Aktivieren</string>
+    <string name="dismiss">Zurückweisen</string>
+    <string name="min_android">Minimale Android-Version</string>
+    <string name="target_android">Ziel-Android-Version</string>
+    <string name="android_instead_of_sdk">Android-Version statt SDK anzeigen</string>
+    <string name="android_instead_of_sdk_summary">Zeigen Sie den Android-Versionsnamen anstelle der SDK-Nummer für minSDK und targetSDK an.</string>
+    <string name="all">Alle</string>
+    <string name="state_modified">Modifiziert</string>
 </resources>
