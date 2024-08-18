@@ -1,0 +1,6 @@
+hinzufügen: Suchleiste zur Repos-Seite
+Hinzufügen: Option zum Anzeigen des Android-Versionsnamens anstelle des SDK (standardmäßig aktiviert)
+Hinzufügen: Dialog beim Klicken auf Links in App-Beschreibungen oder Änderungsprotokollen
+Fix: Absturz beim Tippen auf die Installationsbenachrichtigung des Sitzungsinstallers
+Update: Schaltflächen zum Aktivieren und Schließen zu RepoSheet hinzufügen
++ mehr in mehr als 10 Commits und 50 Übersetzungsbeiträgen

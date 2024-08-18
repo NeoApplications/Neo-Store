@@ -1,0 +1,8 @@
+Hinzufügen: Paralleler Download und Synchronisierung
+Hinzufügen: Export/Import installierter Apps und Repositories
+Hinzufügen: +50 neue Repos
+Hinzufügen: Kindermodus
+Fix: Anrufen von Tor-Adressen
+Update: Überarbeitung der gesamten Benutzeroberfläche
+Update: Verbesserung der Werteeinstellung im Einstellungsdialog
++ viel mehr in über 440 Commits und 380 Übersetzungsbeiträgen
