@@ -9,7 +9,7 @@
     <string name="connecting">कनेक्ट हो रहा है…</string>
     <string name="could_not_validate_FORMAT">%s मान्य नहीं हो सका</string>
     <string name="all_applications">सभी एप्लीकेशन</string>
-    <string name="all_applications_up_to_date">सभी एप्लीकेशन नवीनतम हैं</string>
+    <string name="all_applications_up_to_date">सभी एप्लीकेशन अप-टू डेट हैं</string>
     <string name="already_exists">पहले से ही मौजूद है</string>
     <string name="amoled">काला</string>
     <string name="anti_features">विरोधी-विशेषताएं</string>
@@ -207,7 +207,7 @@
     <string name="latest">नवीनतम</string>
     <string name="app_installed">इंस्टॉल है</string>
     <string name="tap_to_install_DESC">इंस्टॉल करने के लिए टैप करें।</string>
-    <string name="ignore_battery_optimization_not_supported">आपका एंड्रॉइड इंस्टॉलेशन बैटरी ऑप्टिमाइज़ेशन बंद करने का समर्थन नहीं करता है।</string>
+    <string name="ignore_battery_optimization_not_supported">आपका एंड्रॉइड इंस्टॉलेशन बैटरी ऑप्टिमाइज़ेशन अश्रम करने का समर्थन नहीं करता।</string>
     <string name="root_session_installer_description">धीमा, लेकिन Android 13+ पर इंस्टॉल किए गए ऐप्स के साथ समस्याओं से बचाता है।</string>
     <string name="action_install_tc">ट्रैकरकंट्रोल इंस्टॉल करें</string>
     <string name="auto_sync_interval_hours">ऑटो-सिंक अंतराल (घंटे में)</string>
@@ -236,7 +236,7 @@
     <string name="dialog_refuse">रखें</string>
     <string name="releases">ऐप्स की रिलीज़ें</string>
     <string name="dynamic">सिस्टम डायनामिक</string>
-    <string name="images_cache_retention">छवियाँ कैश रिटेंशन</string>
+    <string name="images_cache_retention">छवि कैश रिटेंशन</string>
     <string name="list_apps">रिपॉजिटरी के ऐप्स दिखाएं</string>
     <string name="repos_export">रिपॉजिटरीआं निर्यात करें</string>
     <plurals name="privacy_points_FORMAT">
@@ -249,7 +249,7 @@
     <string name="previous">पिछला</string>
     <string name="installed_export">इंस्टॉल किए गए ऐप्स की सूची निर्यात करें</string>
     <string name="alt_navbar_item_description">वैकल्पिक/पुराने नेविगेशन बार आइटम लेआउट का उपयोग करें, जो अचयनित आइटमों का लेबल दिखाता है।</string>
-    <string name="repos_import">रिपॉजिटरीज़ आयात करें (पहले से मौजूद रिपॉजिटरीज़ को ओवरराइड करता है)</string>
+    <string name="repos_import">रिपॉजिटरीज़ आयात करें (मौजूदा रिपॉजिटरीज़ को ओवरराइड करता है)</string>
     <string name="no_releases">दिखाने के लिए कोई संगत रिलीज़ नहीं</string>
     <string name="allow_unstable_updates">अस्थिर अपडेट दिखाने की अनुमति दें</string>
     <string name="permission_internet">इंटरनेट</string>
@@ -316,7 +316,7 @@
     <string name="trackers_note_3">इसमें कुछ ट्रैकर्स हैं</string>
     <string name="trackers_bug">बग रिपोर्टिंग ट्रैकर्स</string>
     <string name="trackers_location_description">ट्रैकर्स जो आपके भौतिक स्थान को ट्रैक करने पर ध्यान केंद्रित करते हैं।</string>
-    <string name="post_notifications_permission_message">एंड्रॉइड 13 से शुरु होकर ऐप्स को सूचनाएं पोस्ट करने में सक्षम होने के लिए इस अनुमति की आवश्यकता होती है।</string>
+    <string name="post_notifications_permission_message">एंड्रॉइड 13, से शुरु होकर ऐप्स को सूचनाएं पोस्ट करने में सक्षम होने के लिए इस अनुमति की आवश्यकता होती है।</string>
     <string name="source_copyright_description">ऐप कॉपीराइट सामग्री पर निर्भर करता है या मालिकाना नेटवर्क से जुड़ता है।</string>
     <string name="privacy_panel">गोपनीयता पैनल</string>
     <string name="file_share_text">नियो स्टोर से फ़ाइल</string>
@@ -324,7 +324,7 @@
     <string name="custom_download_directory">कस्टम डाउनलोड फ़ोल्डर</string>
     <string name="disable_download_version_check">डाउनलोड संस्करण जांच अक्षम करें</string>
     <string name="show_categories_bar">श्रेणियों की बार दिखाएँ</string>
-    <string name="warning_disable_battery_optimization">एंड्रॉइड 12 से शुरू होकर, ऐप को सिंकिंग और डाउनलोडिंग जैसी पृष्ठभूमि प्रक्रियाओं को करने के लिए बैटरी आपटीमाईज़ेशन की आवश्यकता होती है। यदि आप इस अनुमति को अनदेखा करते हैं तो आप अपने-आप पे छोड़ दिये जाएंगे और आपकी क्रैश रिपोर्ट को अनदेखा कर दिया जाएगा।</string>
+    <string name="warning_disable_battery_optimization">एंड्रॉइड 12, से शुरू होकर, ऐप को सिंकिंग और डाउनलोडिंग जैसी पृष्ठभूमि प्रक्रियाओं को करने के लिए बैटरी आपटीमाईज़ेशन की आवश्यकता होती है। यदि आप इस अनुमति को अनदेखा करते हैं तो आप अपने-आप पे छोड़ दिये जाएंगे और आपकी क्रैश रिपोर्ट को अनदेखा कर दिया जाएगा।</string>
     <string name="permissions_note_3">अनुमतियों की न्यूनतम मात्रा</string>
     <string name="trackers_note_4">न्यूनतम या कोई ट्रैकर नहीं</string>
     <string name="tools">टूल्स</string>
@@ -351,10 +351,10 @@
     <string name="alt_new_apps">वैकल्पिक नए ऐप्स लेआउट का उपयोग करें</string>
     <string name="enabled">सक्षम</string>
     <string name="disabled">अक्षम</string>
-    <string name="proxy_url">Url</string>
+    <string name="proxy_url">URL</string>
     <string name="repo_qr_code">रिपॉजिटरी का क्यूआर कोड</string>
     <string name="download_manager">सिस्टम का डाउनलोड मैनेजर</string>
-    <string name="install_packages_permission_message">एंड्रॉइड 8 से ऐप्स के लिए पैकेज इंस्टॉल करने में सक्षम होने के लिए इस अनुमति की आवश्यकता होती है।</string>
+    <string name="install_packages_permission_message">एंड्रॉइड 8, से ऐप्स के लिए पैकेज इंस्टॉल करने में सक्षम होने के लिए इस अनुमति की आवश्यकता होती है।</string>
     <string name="install_packages_permission_title">पैकेज इंस्टॉल करने की अनुमति</string>
     <string name="download_manager_summary">ऐप्स को अधिक विश्वसनीय रूप से डाउनलोड करने के लिए सिस्टम के डाउनलोड मैनेजर का उपयोग करें। यह विकल्प TOR या कस्टम प्रॉक्सी का समर्थन नहीं करता है, यह सिस्टम सेटिंग्स का उपयोग करता है।</string>
     <string name="am_installer">ऐप मैनेजर इंस्टॉलर</string>
@@ -374,10 +374,10 @@
     <string name="action_lock_biometric">बायोमेट्रिक लॉक</string>
     <string name="kids_mode">किड्स मोड</string>
     <string name="kids_mode_summary">नए ऐप्स के इंस्टॉल को अक्षम करते हुए किड्स मोड सक्षम करें।</string>
-    <string name="kids_mode_summary_full">नए ऐप्स के इंस्टॉल को अक्षम करते हुए किड्स मोड सक्षम करें। अक्षम करने के लिए दूसरे पेज में ऐप के संस्करण पर छह बार टैप करें। ऐप रीस्टार्ट करने पर यह संकेत छिप जाता है।</string>
+    <string name="kids_mode_summary_full">किड्स मोड सक्षम करें, नए ऐप इंस्टॉल को अक्षम करें। अक्षम करने के लिए, दूसरे पेज पर ऐप के संस्करण को छह बार टैप करें। ऐप को पुनः आरंभ करने पर, यह संकेत छिप जाता है।</string>
     <string name="system_installer">सिस्टम इंस्टालर</string>
     <string name="download_show_dialog">डाउनलोड संवाद दिखाएँ</string>
-    <string name="download_show_dialog_summary">एक संवाद दिखाएँ जिसमें पूछा जाए कि क्या आप सुनिश्चित हैं कि आप एक ऐप डाउनलोड करना चाहते हैं (डाउनलोड शुरू करने से पहले)।</string>
+    <string name="download_show_dialog_summary">एक संवाद दिखाएँ जिसमें (डाउनलोड शुरू करने से पहले) पूछा जाएगा कि क्या आप वाकई कोई ऐप डाउनलोड करना चाहते हैं।</string>
     <string name="bottom_search_bar">निचला खोज बार</string>
     <string name="bottom_search_bar_summary">खोज बार को पृष्ठ के नीचे रखें।</string>
     <string name="select_all">सभी चुनें</string>
@@ -387,4 +387,18 @@
     <string name="action_lock_device">डिवाइस लॉक</string>
     <string name="hide_new_apps">नया ऐप्स बार छुपाएं</string>
     <string name="hide_new_apps_description">नवीनतम पेज की वर्टिकल सूची में नए और हाल ही में अपडेट किए गए दोनों ऐप्स को मिलाएं।</string>
+    <string name="last_successful_sync">नवीनतम अपडेट: %s
+\nसभी रिपोज़: %s</string>
+    <string name="prefs_search_apps">खोज परिणामों के लिए क्वेरी करने हेतु एप्लीकेशनस की अधिकतम संख्या।</string>
+    <string name="enable">सश्रम करें</string>
+    <string name="dismiss">ख़ारिज करें</string>
+    <string name="min_android">न्यूनतम एंड्रॉयड</string>
+    <string name="target_android">टार्गेट एंड्रॉयड</string>
+    <string name="android_instead_of_sdk_summary">minSDK और targetSDK के लिए SDK नंबर दिखाने के बजाय एंड्रायड संस्करण का नाम दिखाएं।</string>
+    <string name="all">सभी</string>
+    <string name="android_instead_of_sdk">SDK के बजाय एंड्रॉयड संस्करण दिखाएँ</string>
+    <string name="confirm_uninstall_DESC_FORMAT">क्या आप वाकई %s को अनइंस्टॉल करना चाहते हैं?</string>
+    <string name="wait_to_sync">सिंक करने का पुनः प्रयास करने से पहले कुछ सेकंड प्रतीक्षा करें।</string>
+    <string name="prefs_search_apps_description">खोज परिणामों में शामिल किए जाने वाले एप्लीकेशनस की अधिकतम संख्या (सभी एप्लीकेशनस को शामिल करने के लिए 0 पर सेट करें)।</string>
+    <string name="state_modified">संशोधित</string>
 </resources>
