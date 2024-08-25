@@ -397,4 +397,8 @@
     <string name="prefs_search_apps_description">ਖੋਜ ਨਤੀਜਿਆਂ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰਨ ਲਈ ਐਪਲੀਕੇਸ਼ਨਾਂ ਦੀ ਅਧਿਕਤਮ ਸੰਖਿਆ (ਸਾਰੇ ਐਪਾਂ ਨੂੰ ਸ਼ਾਮਲ ਕਰਨ ਲਈ 0 \'ਤੇ ਸੈੱਟ ਕਰੋ)।</string>
     <string name="wait_to_sync">ਸਿੰਕ ਕਰਨ ਦੀ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਕੁਝ ਸਕਿੰਟ ਉਡੀਕ ਕਰੋ।</string>
     <string name="state_modified">ਸੋਧਿਆ ਹੋਇਆ</string>
+    <string name="last_successful_sync">ਨਵੀਨਤਮ ਅੱਪਡੇਟ: %s
+\nਸਾਰੇ ਰਿਪੋਜ਼: %s</string>
+    <string name="confirm_uninstall_DESC_FORMAT">ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ \'ਤੇ %s ਨੂੰ ਅਣਇੰਸਟਾਲ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
+    <string name="all">ਸਾਰੇ</string>
 </resources>
