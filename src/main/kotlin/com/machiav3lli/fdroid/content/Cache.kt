@@ -166,6 +166,11 @@ object Cache {
         }
     }
 
+    fun eraseDownload(context: Context, fileName: String) =
+        getPartialReleaseFile(context, fileName).let {
+            if (it.exists()) it else getReleaseFile(context, fileName)
+        }.delete()
+
     class Provider : FileProvider(R.xml.cache_provider) {
         companion object {
             private val defaultColumns = arrayOf(OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE)

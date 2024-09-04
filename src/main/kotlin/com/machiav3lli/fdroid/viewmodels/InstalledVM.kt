@@ -3,6 +3,8 @@ package com.machiav3lli.fdroid.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.machiav3lli.fdroid.MainApplication
+import com.machiav3lli.fdroid.content.Cache
 import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.Downloaded
 import com.machiav3lli.fdroid.database.entity.Extras
@@ -112,6 +114,7 @@ open class InstalledVM(val db: DatabaseX) : ViewModel() {
                 downloaded.repositoryId,
                 downloaded.cacheFileName
             )
+            Cache.eraseDownload(MainApplication.context, downloaded.cacheFileName)
         }
     }
 
