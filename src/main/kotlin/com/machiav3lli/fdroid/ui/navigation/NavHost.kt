@@ -7,15 +7,12 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import com.machiav3lli.fdroid.content.Preferences
+import androidx.navigation.toRoute
 import com.machiav3lli.fdroid.pages.MainPage
 import com.machiav3lli.fdroid.pages.PermissionsPage
 import com.machiav3lli.fdroid.pages.PrefsPage
@@ -24,57 +21,37 @@ import com.machiav3lli.fdroid.pages.PrefsPage
 fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-) =
-    NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = NavItem.Permissions.destination,
-    ) {
-        fadeComposable(NavItem.Permissions.destination) {
-            PermissionsPage(navController)
-        }
-        slideInComposable(
-            "${NavItem.Main.destination}?page={page}",
-            args = listOf(
-                navArgument("page") {
-                    type = NavType.IntType
-                    defaultValue = Preferences[Preferences.Key.DefaultTab].valueString.toInt()
-                }
-            )
-        ) {
-            val args = it.arguments!!
-            val pi = args.getInt("page")
-            MainPage(
-                pageIndex = pi,
-                navController = navController,
-            )
-        }
-        slideInComposable(
-            "${NavItem.Prefs.destination}?page={page}",
-            args = listOf(
-                navArgument("page") {
-                    type = NavType.IntType
-                    defaultValue = 0
-                }
-            )
-        ) {
-            val args = it.arguments!!
-            val pi = args.getInt("page")
-            PrefsPage(
-                pageIndex = pi,
-                navController = navController,
-            )
-        }
-    }
-
-fun NavGraphBuilder.slideInComposable(
-    route: String,
-    args: List<NamedNavArgument> = emptyList(),
-    content: @Composable (AnimatedVisibilityScope.(NavBackStackEntry) -> Unit),
+) = NavHost(
+    modifier = modifier,
+    navController = navController,
+    startDestination = NavRoute.Permissions,
 ) {
-    composable(
-        route,
-        args,
+    fadeComposable<NavRoute.Permissions> {
+        PermissionsPage(navController)
+    }
+    slideInComposable<NavRoute.Main> {
+        val args = it.toRoute<NavRoute.Main>()
+
+        MainPage(
+            pageIndex = args.page,
+            navController = navController,
+        )
+    }
+    slideInComposable<NavRoute.Prefs> {
+        val args = it.toRoute<NavRoute.Prefs>()
+
+        PrefsPage(
+            pageIndex = args.page,
+            navController = navController,
+        )
+    }
+}
+
+
+inline fun <reified T : NavRoute> NavGraphBuilder.slideInComposable(
+    crossinline content: @Composable (AnimatedVisibilityScope.(NavBackStackEntry) -> Unit),
+) {
+    composable<T>(
         enterTransition = { slideInHorizontally { width -> width } },
         exitTransition = { slideOutHorizontally { width -> -width } },
         popEnterTransition = { slideInHorizontally { width -> -width } },
@@ -84,14 +61,11 @@ fun NavGraphBuilder.slideInComposable(
     }
 }
 
-fun NavGraphBuilder.fadeComposable(
-    route: String,
-    args: List<NamedNavArgument> = emptyList(),
-    content: @Composable (AnimatedVisibilityScope.(NavBackStackEntry) -> Unit),
+
+inline fun <reified T : NavRoute> NavGraphBuilder.fadeComposable(
+    crossinline content: @Composable (AnimatedVisibilityScope.(NavBackStackEntry) -> Unit),
 ) {
-    composable(
-        route,
-        args,
+    composable<T>(
         enterTransition = { fadeIn(initialAlpha = 0.3f) },
         exitTransition = { fadeOut(targetAlpha = 0.3f) }
     ) {

@@ -40,7 +40,7 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.Permission
 import com.machiav3lli.fdroid.ui.components.PermissionItem
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
-import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.isRunningOnTV
 import com.machiav3lli.fdroid.utility.showBatteryOptimizationDialog
@@ -73,7 +73,7 @@ fun PermissionsPage(navController: NavHostController) {
                     powerManager,
                     permissionStatePostNotifications,
                 ) {
-                    mScope.launch { navController.navigate(NavItem.Main.destination) }
+                    mScope.launch { navController.navigate(NavRoute.Main()) }
                 }
             }
         }
@@ -101,7 +101,7 @@ fun PermissionsPage(navController: NavHostController) {
                         powerManager,
                         permissionStatePostNotifications,
                     ) {
-                        mScope.launch { navController.navigate(NavItem.Main.destination) }
+                        mScope.launch { navController.navigate(NavRoute.Main()) }
                     }
                 }
             }

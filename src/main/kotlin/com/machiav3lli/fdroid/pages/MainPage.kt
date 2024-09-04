@@ -35,6 +35,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
 import com.machiav3lli.fdroid.ui.navigation.SlidePager
 import com.machiav3lli.fdroid.utility.getLocaleDateString
@@ -94,7 +95,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
                     icon = Phosphor.GearSix,
                     description = stringResource(id = R.string.settings)
                 ) {
-                    navController.navigate(NavItem.Prefs.destination)
+                    navController.navigate(NavRoute.Prefs())
                 }
 
                 if (showPopup.intValue != POPUP_NONE) {

@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.pages.ExplorePage
 import com.machiav3lli.fdroid.pages.InstalledPage
 import com.machiav3lli.fdroid.pages.LatestPage
@@ -34,25 +35,18 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Compass
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.DotsThreeOutline
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Graph
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.House
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MagnifyingGlass
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserGear
+import kotlinx.serialization.Serializable
 
 sealed class NavItem(
     val title: Int,
     val icon: ImageVector,
     val destination: String,
-    val content: @Composable () -> Unit = {}
+    val content: @Composable () -> Unit,
 ) {
-    data object Main :
-        NavItem(R.string.explore, Phosphor.House, "main")
-
-    data object Permissions :
-        NavItem(R.string.permissions, Phosphor.ShieldStar, "main_permissions")
-
     data object Explore :
         NavItem(R.string.explore, Phosphor.Compass, "main_explore", {
             MainApplication.mainActivity?.exploreViewModel?.let {
@@ -81,9 +75,6 @@ sealed class NavItem(
             }
         })
 
-    data object Prefs :
-        NavItem(R.string.settings, Phosphor.GearSix, "prefs")
-
     data object PersonalPrefs :
         NavItem(R.string.prefs_personalization, Phosphor.UserGear, "prefs_personal", {
             PrefsPersonalPage()
@@ -107,4 +98,17 @@ sealed class NavItem(
                 PrefsOtherPage(it)
             }
         })
+}
+
+@Serializable
+open class NavRoute {
+    @Serializable
+    data object Permissions : NavRoute()
+
+    @Serializable
+    data class Main(val page: Int = Preferences[Preferences.Key.DefaultTab].index) :
+        NavRoute()
+
+    @Serializable
+    data class Prefs(val page: Int = 0) : NavRoute()
 }

@@ -39,7 +39,7 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.pages.AppSheet
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.AppNavHost
-import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import com.machiav3lli.fdroid.utility.isBiometricLockEnabled
@@ -235,7 +235,7 @@ class NeoActivity : AppCompatActivity() {
         when (specialIntent) {
             is SpecialIntent.Updates -> {
                 // TODO directly update the apps??
-                navController.navigate("${NavItem.Main.destination}?page=${Preferences.DefaultTab.Installed.index}")
+                navController.navigate(NavRoute.Main(Preferences.DefaultTab.Installed.index))
             }
 
             is SpecialIntent.AddRepo -> {
@@ -243,7 +243,7 @@ class NeoActivity : AppCompatActivity() {
                     specialIntent.address,
                     specialIntent.fingerprint,
                 )
-                navController.navigate("${NavItem.Prefs.destination}?page=2")
+                navController.navigate(NavRoute.Prefs(2))
             }
 
             is SpecialIntent.Install -> {
@@ -354,7 +354,7 @@ class NeoActivity : AppCompatActivity() {
 
     private fun showSearchPage(query: String? = null) {
         mScope.launch {
-            navController.navigate("${NavItem.Main.destination}?page=${Preferences.DefaultTab.Search.index}")
+            navController.navigate(NavRoute.Main(Preferences.DefaultTab.Search.index))
         }
         cScope.launch {
             _showAppSheet.emit(false)
