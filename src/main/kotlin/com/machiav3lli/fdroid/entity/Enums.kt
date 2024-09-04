@@ -58,13 +58,6 @@ enum class UpdateCategory(val id: Int) {
     NEW(2),
 }
 
-enum class InstallState {
-    INSTALL,
-    INSTALLING,
-    INSTALLED,
-    PENDING
-}
-
 enum class Source {
     AVAILABLE,
     FAVORITES,
