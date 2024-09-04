@@ -18,8 +18,8 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.work.Data
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import androidx.work.WorkQuery
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
-import com.machiav3lli.fdroid.ARG_REPOSITORY_NAME
 import com.machiav3lli.fdroid.ARG_RESULT_CODE
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
 import com.machiav3lli.fdroid.MainApplication
@@ -41,12 +41,10 @@ import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.service.worker.DownloadWorker
-import com.machiav3lli.fdroid.service.worker.ErrorType
 import com.machiav3lli.fdroid.service.worker.InstallWorker
 import com.machiav3lli.fdroid.service.worker.SyncState
 import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.worker.ValidationError
-import com.machiav3lli.fdroid.service.worker.isRunning
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.displayUpdatesNotification
 import com.machiav3lli.fdroid.utility.displayVulnerabilitiesNotification
@@ -55,29 +53,33 @@ import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
 import com.machiav3lli.fdroid.utility.syncNotificationBuilder
 import com.machiav3lli.fdroid.utility.updateProgress
-import com.machiav3lli.fdroid.utility.updateWithError
-import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.koin.dsl.module
 
-class WorkerManager(appContext: Context) {
+class WorkerManager(appContext: Context) : KoinComponent {
 
-    var workManager: WorkManager
-    var actionReceiver: ActionReceiver
+    val workManager: WorkManager by inject()
+    private val actionReceiver: ActionReceiver by inject()
     var context: Context = appContext
     val notificationManager: NotificationManagerCompat
-    private val scope = CoroutineScope(Dispatchers.Default)
-    private val ioScope = CoroutineScope(Dispatchers.IO)
+    private val syncWorkInfoFlow = MutableStateFlow<List<WorkInfo>>(emptyList())
+    private val downloadWorkInfoFlow = MutableStateFlow<List<WorkInfo>>(emptyList())
+    private val installMutex = Mutex()
+
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     init {
-        workManager = WorkManager.getInstance(context)
-        actionReceiver = ActionReceiver()
-
         context.registerReceiver(actionReceiver, IntentFilter())
 
         notificationManager = NotificationManagerCompat.from(context)
@@ -85,31 +87,35 @@ class WorkerManager(appContext: Context) {
 
         workManager.pruneWork()
         scope.launch {
-            workManager.getWorkInfosByTagFlow(
-                SyncWorker::class.qualifiedName!!
-            ).collectLatest {
-                onSyncProgress(this@WorkerManager, it)
+            workManager.getWorkInfosByTagFlow(SyncWorker::class.qualifiedName!!)
+                .collect { syncWorkInfoFlow.value = it }
+        }
+        scope.launch {
+            workManager.getWorkInfosByTagFlow(DownloadWorker::class.qualifiedName!!)
+                .collect { downloadWorkInfoFlow.value = it }
+        }
+        scope.launch {
+            syncWorkInfoFlow.collect {
+                onSyncProgress(this@WorkerManager, it.toMutableList())
             }
         }
         scope.launch {
-            workManager.getWorkInfosByTagFlow(
-                DownloadWorker::class.qualifiedName!!
-            ).collect {
-                onDownloadProgress(this@WorkerManager, it)
+            downloadWorkInfoFlow.collect {
+                onDownloadProgress(this@WorkerManager, it.toMutableList())
             }
         }
-        ioScope.launch {
+        scope.launch {
             MainApplication.db.getInstallTaskDao()
                 .getAllFlow() // Add similar table for DownloadTasks
                 .stateIn(
-                    ioScope,
+                    this,
                     SharingStarted.Eagerly,
-                    mutableListOf()
+                    emptyList()
                 )
-                .collectLatest {
-                    if (it.isNotEmpty()) {
+                .collectLatest { tasks ->
+                    if (tasks.isNotEmpty()) {
                         prune()
-                        launchInstaller(it)
+                        enqueueTasks(tasks)
                     }
                 }
         }
@@ -125,9 +131,9 @@ class WorkerManager(appContext: Context) {
     }
 
     fun cancelSyncAll() {
-        MainApplication.wm.prune()
         SyncWorker::class.qualifiedName?.let {
             workManager.cancelAllWorkByTag(it)
+            prune()
         }
         MainApplication.setProgress() // TODO re-consider
     }
@@ -142,9 +148,9 @@ class WorkerManager(appContext: Context) {
     }
 
     fun cancelDownloadAll() {
-        MainApplication.wm.prune()
         DownloadWorker::class.qualifiedName?.let {
             workManager.cancelAllWorkByTag(it)
+            prune()
         }
         MainApplication.setProgress() // TODO re-consider
     }
@@ -174,7 +180,7 @@ class WorkerManager(appContext: Context) {
     fun update(vararg product: ProductItem) = batchUpdate(product.toList(), false)
 
     private fun batchUpdate(productItems: List<ProductItem>, enforce: Boolean = false) {
-        ioScope.launch {
+        scope.launch(Dispatchers.IO) {
             productItems.map { productItem ->
                 Triple(
                     productItem.packageName,
@@ -187,7 +193,7 @@ class WorkerManager(appContext: Context) {
                     val productRepository = MainApplication.db.getProductDao().get(packageName)
                         .filter { product -> product.repositoryId == repo!!.id }
                         .map { product -> Pair(product, repo!!) }
-                    ioScope.launch {
+                    scope.launch(Dispatchers.IO) {
                         Utils.startUpdate(
                             packageName,
                             installed,
@@ -199,9 +205,30 @@ class WorkerManager(appContext: Context) {
         }
     }
 
-    fun launchInstaller(installTasks: List<InstallTask>) = ioScope.launch {
+    private fun launchInstaller(installTasks: List<InstallTask>) = scope.launch(Dispatchers.IO) {
         installTasks.forEach {
             InstallWorker.enqueue(it.packageName, it.label, it.cacheFileName)
+        }
+    }
+
+    private suspend fun enqueueTasks(tasks: List<InstallTask>) = installMutex.withLock {
+        val enqeuedWorks = workManager.getWorkInfos(
+            WorkQuery.Builder
+                .fromTags(listOf(InstallWorker::class.java.name))
+                .addStates(listOf(WorkInfo.State.RUNNING, WorkInfo.State.ENQUEUED))
+                .build()
+        ).get()
+
+        if (enqeuedWorks.isEmpty()) {
+            // No InstallWorker is currently running, so we can start a new one
+            val nextTask = tasks.firstOrNull()
+            nextTask?.let {
+                InstallWorker.enqueue(
+                    packageName = it.packageName,
+                    label = it.label,
+                    fileName = it.cacheFileName
+                )
+            }
         }
     }
 
@@ -233,7 +260,7 @@ class WorkerManager(appContext: Context) {
     }
 
     companion object {
-        private val syncsRunning = SnapshotStateMap<Long, SyncState>()
+        private val syncsRunning = SnapshotStateMap<Long, SyncState?>()
         private val downloadsRunning = SnapshotStateMap<String, DownloadState>()
 
         private val syncNotificationBuilder by lazy {
@@ -293,15 +320,11 @@ class WorkerManager(appContext: Context) {
         private var lockDownloadProgress = object {}
 
         fun onSyncProgress(handler: WorkerManager, syncs: MutableList<WorkInfo>? = null) {
-            synchronized(lockSyncProgress) {
-                onSyncProgressNoSync(handler, syncs)
-            }
+            onSyncProgressNoSync(handler, syncs)
         }
 
         fun onDownloadProgress(handler: WorkerManager, downloads: MutableList<WorkInfo>? = null) {
-            synchronized(lockDownloadProgress) {
-                onDownloadProgressNoSync(handler, downloads)
-            }
+            onDownloadProgressNoSync(handler, downloads)
         }
 
         private fun onSyncProgressNoSync(
@@ -315,94 +338,68 @@ class WorkerManager(appContext: Context) {
                 ?: return
 
             val context = MainApplication.context
-            syncsRunning.clear() // TODO re-evaluate
+            updateSyncsRunning(syncs)
 
-            syncs.forEach { wi ->
-                val data = wi.outputData.takeIf {
-                    it != Data.EMPTY
-                } ?: wi.progress
+            syncsRunning.forEach { (repoId, state) ->
+                val notificationBuilder = context.syncNotificationBuilder()
+                val repoName = MainApplication.db.getRepositoryDao().getRepoName(repoId)
 
-                data.takeIf { it != Data.EMPTY }?.let { data ->
-                    val task = SyncWorker.getTask(data)
-                    val state = SyncWorker.getState(data)
-                    val progress = SyncWorker.getProgress(data)
-                    val repoName = data.getString(ARG_REPOSITORY_NAME)
-
-                    val notificationBuilder = context.syncNotificationBuilder()
-
-                    syncsRunning.compute(task.repositoryId) { _, _ ->
-                        when (wi.state) {
-                            WorkInfo.State.ENQUEUED,
-                            WorkInfo.State.BLOCKED,
-                            WorkInfo.State.SUCCEEDED,
-                            WorkInfo.State.CANCELLED,
-                            -> {
-                                null
-                            }
-
-                            WorkInfo.State.RUNNING,
-                            -> {
-                                when (state) {
-                                    SyncState.CONNECTING -> {
-                                        notificationBuilder
-                                            .setContentTitle(
-                                                context.getString(
-                                                    R.string.syncing_FORMAT,
-                                                    repoName
-                                                )
-                                            )
-                                            .setContentText(context.getString(R.string.connecting))
-                                            .setProgress(0, 0, true)
-                                    }
-
-                                    SyncState.SYNCING    -> {
-                                        notificationBuilder
-                                            .setContentTitle(
-                                                context.getString(
-                                                    R.string.syncing_FORMAT,
-                                                    repoName
-                                                )
-                                            )
-                                            .updateProgress(context, progress)
-                                    }
-
-                                    else                 -> {}
-                                }
-                                state
-                            }
-
-                            WorkInfo.State.FAILED,
-                            -> {
-                                notificationBuilder
-                                    .setContentTitle(
-                                        context.getString(
-                                            R.string.syncing_FORMAT,
-                                            repoName
-                                        )
-                                    )
-                                    .setContentText(context.getString(R.string.action_failed))
-                                    .setSmallIcon(R.drawable.ic_new_releases)
-                                SyncState.FAILED
-                            }
-                        }
-                    }.let {
-                        if (ActivityCompat.checkSelfPermission(
-                                context,
-                                Manifest.permission.POST_NOTIFICATIONS
-                            ) == PackageManager.PERMISSION_GRANTED
-                        ) {
-                            if (it != null) MainApplication.wm.notificationManager
-                                .notify(
-                                    NOTIFICATION_ID_SYNCING + task.repositoryId.toInt(),
-                                    notificationBuilder.setOngoing(it != SyncState.FAILED).build()
-                                ) else MainApplication.wm.notificationManager
-                                .cancel(NOTIFICATION_ID_SYNCING + task.repositoryId.toInt())
-                        }
+                when (state) {
+                    is SyncState.Connecting -> {
+                        notificationBuilder
+                            .setContentTitle(
+                                context.getString(
+                                    R.string.syncing_FORMAT,
+                                    repoName
+                                )
+                            )
+                            .setContentText(context.getString(R.string.connecting))
+                            .setProgress(0, 0, true)
                     }
+
+                    is SyncState.Syncing    -> {
+                        notificationBuilder
+                            .setContentTitle(
+                                context.getString(
+                                    R.string.syncing_FORMAT,
+                                    repoName
+                                )
+                            )
+                            .updateProgress(context, state.progress)
+                    }
+
+                    is SyncState.Failed     -> {
+                        notificationBuilder
+                            .setContentTitle(
+                                context.getString(
+                                    R.string.syncing_FORMAT,
+                                    repoName
+                                )
+                            )
+                            .setContentText(context.getString(R.string.action_failed))
+                            .setSmallIcon(R.drawable.ic_new_releases)
+
+                    }
+
+                    else                    -> {}
+                }
+
+                if (ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    if (state != null) MainApplication.wm.notificationManager
+                        .notify(
+                            NOTIFICATION_ID_SYNCING + repoId.toInt(),
+                            notificationBuilder.setOngoing(state !is SyncState.Failed)
+                                .build()
+                        ) else MainApplication.wm.notificationManager
+                        .cancel(NOTIFICATION_ID_SYNCING + repoId.toInt())
                 }
             }
 
-            if (syncsRunning.values.any { it.isRunning })
+            if (syncsRunning.values.any { it?.isRunning == true })
                 MainApplication.wm.notificationManager.notify(
                     NOTIFICATION_ID_SYNCING,
                     syncNotificationBuilder.build()
@@ -449,10 +446,41 @@ class WorkerManager(appContext: Context) {
             }
         }
 
+        private fun updateSyncsRunning(workers: List<WorkInfo>) {
+            val tasks = workers.mapNotNull { wi ->
+                (wi.outputData.takeIf { it != Data.EMPTY } ?: wi.progress)
+                    .takeIf { it != Data.EMPTY }?.let { data ->
+                        val task = SyncWorker.getTask(data)
+                        val dataState = SyncWorker.getState(data)
+
+                        syncsRunning.compute(task.repositoryId) { _, _ ->
+                            when (wi.state) {
+                                WorkInfo.State.ENQUEUED,
+                                WorkInfo.State.BLOCKED,
+                                WorkInfo.State.SUCCEEDED,
+                                WorkInfo.State.CANCELLED,
+                                -> null
+
+                                WorkInfo.State.RUNNING,
+                                -> dataState
+
+                                WorkInfo.State.FAILED,
+                                -> SyncState.Failed
+                            }
+                        }
+                        task
+                    }
+            }
+            syncsRunning.keys.retainAll { repoId ->
+                tasks.any { task -> task.repositoryId == repoId }
+            }
+        }
+
         private fun onDownloadProgressNoSync(
             manager: WorkerManager,
             workInfos: MutableList<WorkInfo>? = null,
         ) {
+            val ioScope = CoroutineScope(Dispatchers.IO)
             val downloads = workInfos
                 ?: manager.workManager
                     .getWorkInfosByTag(DownloadWorker::class.qualifiedName!!)
@@ -460,203 +488,139 @@ class WorkerManager(appContext: Context) {
                 ?: return
 
             val appContext = MainApplication.context
-            downloadsRunning.clear() // TODO re-evaluate
+            updateDownloadsRunning(downloads)
 
             var allCount = downloads.size
             var allProcessed = 0
             var allFailed = 0
 
-            downloads.forEach { wi ->
-                val data = wi.outputData.takeIf {
-                    it != Data.EMPTY
-                } ?: wi.progress
-                data.takeIf { it != Data.EMPTY }?.let { data ->
-                    val task = DownloadWorker.getTask(data)
-                    val progress = DownloadWorker.getProgress(data)
-                    val resultCode = data.getInt(ARG_RESULT_CODE, 0)
-                    val validationError = ValidationError.values()[
-                        data.getInt(ARG_VALIDATION_ERROR, 0)
-                    ]
+            downloadsRunning.forEach { (key, state) ->
+                val notificationBuilder = appContext.downloadNotificationBuilder()
+                var cancelNotification = false
 
-                    val notificationBuilder = appContext.downloadNotificationBuilder()
-                    var cancelNotification = false
-
-                    val cancelIntent = Intent(appContext, ActionReceiver::class.java).apply {
-                        action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD
-                        putExtra(ARG_PACKAGE_NAME, task.packageName)
-                    }
-                    val cancelPendingIntent = PendingIntent.getBroadcast(
-                        appContext,
-                        task.key.hashCode(),
-                        cancelIntent,
-                        PendingIntent.FLAG_IMMUTABLE
+                MainApplication.db.getDownloadedDao().upsert(
+                    Downloaded(
+                        packageName = state.packageName,
+                        version = state.version,
+                        repositoryId = state.repoId,
+                        cacheFileName = state.cacheFileName,
+                        changed = System.currentTimeMillis(),
+                        state = state,
                     )
+                )
 
-                    downloadsRunning.compute(task.key) { _, _ ->
-                        when (wi.state) {
-                            WorkInfo.State.ENQUEUED  -> {
-                                notificationBuilder
-                                    .setContentTitle(
-                                        appContext.getString(
-                                            R.string.downloading_FORMAT,
-                                            "${task.name} (${task.release.version})"
-                                        )
-                                    )
-                                    .setContentText(appContext.getString(R.string.pending))
-                                    .setProgress(1, 0, true)
-                                    .addAction(
-                                        R.drawable.ic_cancel,
-                                        appContext.getString(R.string.cancel),
-                                        cancelPendingIntent
-                                    )
-                                DownloadState.Pending(
-                                    task.packageName,
-                                    task.name,
-                                    task.release.version,
-                                    task.release.cacheFileName,
-                                    task.repoId,
-                                    wi.state == WorkInfo.State.BLOCKED
-                                )
-                            }
+                val cancelIntent = Intent(appContext, ActionReceiver::class.java).apply {
+                    action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD
+                    putExtra(ARG_PACKAGE_NAME, state.packageName)
+                }
+                val cancelPendingIntent = PendingIntent.getBroadcast(
+                    appContext,
+                    key.hashCode(),
+                    cancelIntent,
+                    PendingIntent.FLAG_IMMUTABLE
+                )
 
-                            WorkInfo.State.RUNNING   -> {
-                                notificationBuilder
-                                    .setContentTitle(
-                                        appContext.getString(
-                                            R.string.downloading_FORMAT,
-                                            "${task.name} (${task.release.version})"
-                                        )
-                                    )
-                                    .setContentText("${progress.read.formatSize()} / ${progress.total.formatSize()}")
-                                    .setProgress(100, progress.progress, false)
-                                    .addAction(
-                                        R.drawable.ic_cancel,
-                                        appContext.getString(R.string.cancel),
-                                        cancelPendingIntent
-                                    )
-                                DownloadState.Downloading(
-                                    task.packageName,
-                                    task.name,
-                                    task.release.version,
-                                    task.release.cacheFileName,
-                                    task.repoId,
-                                    progress.read,
-                                    progress.total,
-                                )
-                            }
-
-                            WorkInfo.State.CANCELLED -> {
-                                allCount -= 1
-                                notificationBuilder
-                                    .setOngoing(false)
-                                    .setContentTitle(
-                                        appContext.getString(
-                                            R.string.downloading_FORMAT,
-                                            "${task.name} (${task.release.version})"
-                                        )
-                                    )
-                                    .setContentText("${appContext.getString(R.string.canceled)}. stopReason: ${wi.stopReason}") // TODO add stopReason string
-                                    .setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
-                                cancelNotification = true
-                                DownloadState.Cancel(
-                                    packageName = task.packageName,
-                                    name = task.name,
-                                    version = task.release.version,
-                                    cacheFileName = task.release.cacheFileName,
-                                    repoId = task.repoId,
-                                )
-                            }
-
-                            WorkInfo.State.SUCCEEDED -> {
-                                allProcessed += 1
-                                notificationBuilder.setOngoing(false)
-                                    .setContentTitle(
-                                        appContext.getString(
-                                            R.string.downloaded_FORMAT,
-                                            task.name
-                                        )
-                                    )
-                                // TODO add to InstallTask & Launch InstallerWork
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    MainApplication.db.getInstallTaskDao().put(task.toInstallTask())
-                                }
-                                if (!Preferences[Preferences.Key.KeepInstallNotification]) {
-                                    notificationBuilder.setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
-                                    cancelNotification = true
-                                }
-                                DownloadState.Success(
-                                    packageName = task.packageName,
-                                    name = task.name,
-                                    version = task.release.version,
-                                    cacheFileName = task.release.cacheFileName,
-                                    repoId = task.repoId,
-                                    release = task.release,
-                                )
-                            }
-
-                            WorkInfo.State.FAILED    -> {
-                                allProcessed += 1
-                                allFailed += 1
-                                val errorType = when {
-                                    validationError != ValidationError.NONE
-                                    -> ErrorType.Validation(validationError)
-
-                                    resultCode != HttpStatusCode.GatewayTimeout.value
-                                    -> ErrorType.Http(resultCode)
-
-                                    else
-                                    -> ErrorType.Network
-                                }
-                                notificationBuilder.updateWithError(appContext, task, errorType)
-                                Log.i(
-                                    this::class.java.name,
-                                    "download error for package: ${task.packageName}. stopReason: ${wi.stopReason}"
-                                )
-                                DownloadState.Error(
-                                    task.packageName,
-                                    task.name,
-                                    task.release.version,
-                                    task.release.cacheFileName,
-                                    task.repoId,
-                                    resultCode,
-                                    validationError,
-                                )
-                            }
-
-                            WorkInfo.State.BLOCKED   -> null
-                        }
-                    }?.let {
-                        CoroutineScope(Dispatchers.IO).launch { // TODO manage abrupt breaks
-                            MainApplication.db.getDownloadedDao().upsert(
-                                Downloaded(
-                                    packageName = it.packageName,
-                                    version = it.version,
-                                    repositoryId = it.repoId,
-                                    cacheFileName = it.cacheFileName,
-                                    changed = System.currentTimeMillis(),
-                                    state = it,
+                when (state) {
+                    is DownloadState.Pending,
+                    is DownloadState.Connecting
+                    -> {
+                        notificationBuilder
+                            .setContentTitle(
+                                appContext.getString(
+                                    R.string.downloading_FORMAT,
+                                    "${state.name} (${state.version})"
                                 )
                             )
+                            .setContentText(appContext.getString(R.string.pending))
+                            .setProgress(1, 0, true)
+                            .addAction(
+                                R.drawable.ic_cancel,
+                                appContext.getString(R.string.cancel),
+                                cancelPendingIntent
+                            )
+                    }
+
+                    is DownloadState.Downloading
+                    -> {
+                        notificationBuilder
+                            .setContentTitle(
+                                appContext.getString(
+                                    R.string.downloading_FORMAT,
+                                    "${state.name} (${state.version})"
+                                )
+                            )
+                            .setContentText("${state.read.formatSize()} / ${state.total?.formatSize()}")
+                            .setProgress(100, state.progress, false)
+                            .addAction(
+                                R.drawable.ic_cancel,
+                                appContext.getString(R.string.cancel),
+                                cancelPendingIntent
+                            )
+                    }
+
+                    is DownloadState.Cancel
+                    -> {
+                        allCount -= 1
+                        notificationBuilder
+                            .setOngoing(false)
+                            .setContentTitle(
+                                appContext.getString(
+                                    R.string.downloading_FORMAT,
+                                    "${state.name} (${state.version})"
+                                )
+                            )
+                            .setContentText(appContext.getString(R.string.canceled)) //. stopReason: ${wi.stopReason}")
+                            .setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
+                        cancelNotification = true
+                    }
+
+                    is DownloadState.Success
+                    -> {
+                        allProcessed += 1
+                        notificationBuilder.setOngoing(false)
+                            .setContentTitle(
+                                appContext.getString(
+                                    R.string.downloaded_FORMAT,
+                                    state.name
+                                )
+                            )
+                        ioScope.launch {
+                            MainApplication.db.getInstallTaskDao()
+                                .put(state.toInstallTask())
+                        }
+                        if (!Preferences[Preferences.Key.KeepInstallNotification]) {
+                            notificationBuilder.setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
+                            cancelNotification = true
                         }
                     }
-                    val stopped = wi.stopReason != WorkInfo.STOP_REASON_NOT_STOPPED
-                    if (stopped) Log.i(
-                        this::class.java.name,
-                        "stopReason: ${wi.stopReason} for download task: ${task.packageName}"
-                    )
 
-                    if (cancelNotification)
-                        MainApplication.wm.notificationManager.cancel(task.key.hashCode())
-                    else if (ActivityCompat.checkSelfPermission(
-                            appContext,
-                            Manifest.permission.POST_NOTIFICATIONS
-                        ) == PackageManager.PERMISSION_GRANTED
-                    ) MainApplication.wm.notificationManager
-                        .notify(
-                            task.key.hashCode(),
-                            notificationBuilder.build(),
+                    is DownloadState.Error
+                    -> {
+                        allProcessed += 1
+                        allFailed += 1
+                        Log.i(
+                            this::class.java.name,
+                            "download error for package: ${state.packageName}. stopReason: ${state.stopReason}" // TODO add stopReason string
                         )
+                    }
                 }
+
+                if (state is DownloadState.Error && state.stopReason != WorkInfo.STOP_REASON_NOT_STOPPED) Log.i(
+                    this::class.java.name,
+                    "stopReason: ${state.stopReason} for download task: ${state.packageName}"
+                )
+
+                if (cancelNotification)
+                    MainApplication.wm.notificationManager.cancel(key.hashCode())
+                else if (ActivityCompat.checkSelfPermission(
+                        appContext,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) MainApplication.wm.notificationManager
+                    .notify(
+                        key.hashCode(),
+                        notificationBuilder.build(),
+                    )
             }
 
             manager.prune()
@@ -679,9 +643,81 @@ class WorkerManager(appContext: Context) {
                     )
                 }
         }
+
+        private fun updateDownloadsRunning(workers: List<WorkInfo>) {
+            val tasks = workers.mapNotNull { wi ->
+                (wi.outputData.takeIf { it != Data.EMPTY } ?: wi.progress)
+                    .takeIf { it != Data.EMPTY }?.let { data ->
+                        val task = DownloadWorker.getTask(data)
+                        val progress = DownloadWorker.getProgress(data)
+                        val resultCode = data.getInt(ARG_RESULT_CODE, 0)
+                        val validationError = ValidationError.entries[
+                            data.getInt(ARG_VALIDATION_ERROR, 0)
+                        ]
+
+                        downloadsRunning.compute(task.key) { _, _ ->
+                            when (wi.state) {
+                                WorkInfo.State.ENQUEUED,
+                                WorkInfo.State.BLOCKED   -> DownloadState.Pending(
+                                    packageName = task.packageName,
+                                    name = task.name,
+                                    version = task.release.version,
+                                    cacheFileName = task.release.cacheFileName,
+                                    repoId = task.repoId,
+                                    blocked = wi.state == WorkInfo.State.BLOCKED
+                                )
+
+                                WorkInfo.State.RUNNING   -> DownloadState.Downloading(
+                                    packageName = task.packageName,
+                                    name = task.name,
+                                    version = task.release.version,
+                                    cacheFileName = task.release.cacheFileName,
+                                    repoId = task.repoId,
+                                    read = progress.read,
+                                    total = progress.total,
+                                )
+
+                                WorkInfo.State.CANCELLED -> DownloadState.Cancel(
+                                    packageName = task.packageName,
+                                    name = task.name,
+                                    version = task.release.version,
+                                    cacheFileName = task.release.cacheFileName,
+                                    repoId = task.repoId,
+                                )
+
+                                WorkInfo.State.SUCCEEDED -> DownloadState.Success(
+                                    packageName = task.packageName,
+                                    name = task.name,
+                                    version = task.release.version,
+                                    cacheFileName = task.release.cacheFileName,
+                                    repoId = task.repoId,
+                                    release = task.release,
+                                )
+
+                                WorkInfo.State.FAILED    -> DownloadState.Error(
+                                    packageName = task.packageName,
+                                    name = task.name,
+                                    version = task.release.version,
+                                    cacheFileName = task.release.cacheFileName,
+                                    repoId = task.repoId,
+                                    resultCode = resultCode,
+                                    validationError = validationError,
+                                    stopReason = wi.stopReason
+                                )
+                            }
+                        }
+                        task
+                    }
+            }
+            downloadsRunning.keys.retainAll { key ->
+                tasks.any { task -> task.key == key }
+            }
+        }
     }
 }
 
 val workmanagerModule = module {
     single { WorkerManager(get()) }
+    single { WorkManager.getInstance(get()) }
+    single { ActionReceiver() }
 }

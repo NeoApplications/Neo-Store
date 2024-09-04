@@ -29,7 +29,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     private val _showSheet = MutableSharedFlow<SheetNavigationData?>()
     val showSheet: SharedFlow<SheetNavigationData?> = _showSheet
 
-    val repositories = db.getRepositoryDao().getAllRepositories()
+    val repositories = db.getRepositoryDao().getAllFlow()
         .stateIn(
             viewModelScope,
             SharingStarted.Lazily,

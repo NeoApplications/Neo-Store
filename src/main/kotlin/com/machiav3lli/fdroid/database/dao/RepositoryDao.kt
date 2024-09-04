@@ -35,13 +35,7 @@ interface RepositoryDao : BaseDao<Repository> {
     fun get(id: Long): Repository?
 
     @Query("SELECT * FROM repository WHERE _id = :id")
-    fun getLive(id: Long): LiveData<Repository?>
-
-    @Query("SELECT * FROM repository WHERE _id = :id")
     fun getFlow(id: Long): Flow<Repository?>
-
-    @Query("SELECT * FROM repository ORDER BY _id ASC")
-    fun getAllRepositories(): Flow<List<Repository>>
 
     @Query("SELECT * FROM repository ORDER BY _id ASC")
     fun getAll(): List<Repository>
@@ -49,8 +43,8 @@ interface RepositoryDao : BaseDao<Repository> {
     @Query("SELECT * FROM repository ORDER BY _id ASC")
     fun getAllFlow(): Flow<List<Repository>>
 
-    @Query("SELECT * FROM repository ORDER BY _id ASC")
-    fun getAllLive(): LiveData<List<Repository>>
+    @Query("SELECT name FROM repository WHERE _id = :id")
+    fun getRepoName(id: Long): String
 
     @Query("SELECT _id FROM repository WHERE enabled != 0 ORDER BY _id ASC")
     fun getAllEnabledIds(): List<Long>
