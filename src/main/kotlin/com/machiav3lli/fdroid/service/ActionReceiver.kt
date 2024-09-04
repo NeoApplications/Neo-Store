@@ -14,6 +14,7 @@ class ActionReceiver : BroadcastReceiver() {
         const val COMMAND_CANCEL_SYNC_ALL = "cancel_sync_all"
         const val COMMAND_CANCEL_DOWNLOAD = "cancel_download"
         const val COMMAND_CANCEL_DOWNLOAD_ALL = "cancel_download_all"
+        const val COMMAND_CANCEL_INSTALL = "cancel_install"
     }
 
     override fun onReceive(context: Context, intent: Intent?) {
@@ -35,6 +36,11 @@ class ActionReceiver : BroadcastReceiver() {
 
             COMMAND_CANCEL_SYNC_ALL     -> {
                 MainApplication.wm.cancelSyncAll()
+            }
+
+            COMMAND_CANCEL_INSTALL      -> {
+                intent.getStringExtra(ARG_PACKAGE_NAME)
+                    ?.let { packageName -> MainApplication.wm.cancelInstall(packageName) }
             }
 
             else                        -> {}

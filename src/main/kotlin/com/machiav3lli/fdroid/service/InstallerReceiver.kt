@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.net.Uri
+import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.notifyStatus
@@ -29,6 +30,14 @@ class InstallerReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent?) {
         val status = intent?.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
+        val sessionId = intent?.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, -1) ?: 0
+
+        // get package information from session
+        val sessionInstaller = context.packageManager.packageInstaller
+        val session = if (sessionId > 0) sessionInstaller.getSessionInfo(sessionId) else null
+
+        val packageName =
+            session?.appPackageName ?: intent?.getStringExtra(PackageInstaller.EXTRA_PACKAGE_NAME)
 
         // only trigger a prompt if in foreground, otherwise make notification
         if (Utils.inForeground() && status == PackageInstaller.STATUS_PENDING_USER_ACTION) {
@@ -42,6 +51,18 @@ class InstallerReceiver : BroadcastReceiver() {
 
                 context.startActivity(it)
             }
+        } else if (
+            status == PackageInstaller.STATUS_FAILURE_ABORTED
+            || status == PackageInstaller.STATUS_FAILURE_CONFLICT
+            || status == PackageInstaller.STATUS_FAILURE_INCOMPATIBLE
+            || status == PackageInstaller.STATUS_FAILURE_INVALID
+            || status == PackageInstaller.STATUS_FAILURE_STORAGE
+        ) {
+            val cancelIntent = Intent(context, ActionReceiver::class.java).apply {
+                this.action = ActionReceiver.COMMAND_CANCEL_INSTALL
+                putExtra(ARG_PACKAGE_NAME, packageName)
+            }
+            context.sendBroadcast(cancelIntent)
         } else {
             notifyStatus(context, intent)
         }

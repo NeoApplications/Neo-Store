@@ -159,6 +159,16 @@ class WorkerManager(appContext: Context) {
         }
     }
 
+    fun cancelInstall(packageName: String) {
+        DownloadWorker::class.qualifiedName?.let {
+            workManager.cancelUniqueWork("Installer_$packageName")
+            scope.launch {
+                MainApplication.db.getInstallTaskDao().delete(packageName)
+            }
+            prune()
+        }
+    }
+
     fun install(vararg product: ProductItem) = batchUpdate(product.toList(), true)
 
     fun update(vararg product: ProductItem) = batchUpdate(product.toList(), false)
