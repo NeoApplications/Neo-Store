@@ -16,25 +16,89 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.database.entity.Tracker
 import com.machiav3lli.fdroid.network.RExodusAPI
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.android.annotation.KoinWorker
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 @KoinWorker
 class ExodusWorker(
     context: Context,
     params: WorkerParameters,
 ) : CoroutineWorker(context, params), KoinComponent {
+    private val repoExodusAPI: RExodusAPI by inject()
 
-    val scope = CoroutineScope(Dispatchers.IO)
-    private val repoExodusAPI: RExodusAPI by getKoin().inject()
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+        val type = WorkType.entries[
+            inputData.getInt(ARG_WORK_TYPE, 0)
+        ]
+
+        when (type) {
+            WorkType.TRACKERS -> fetchTrackers()
+            WorkType.DATA     -> fetchExodusData(
+                inputData.getString(ARG_PACKAGE_NAME)!!,
+                inputData.getLong(ARG_VERSION_CODE, -1)
+            )
+        }
+
+        Result.success()
+    }
+
+    private suspend fun fetchTrackers() {
+        if (Preferences[Preferences.Key.ShowTrackers]) {
+            withContext(Dispatchers.IO) {
+                try {
+                    val trackerList = repoExodusAPI.getTrackers()
+                    // TODO **conditionally** update DB with the trackers
+                    MainApplication.db.getTrackerDao().upsert(
+                        *trackerList.trackers
+                            .map { (key, value) ->
+                                Tracker(
+                                    key.toInt(),
+                                    value.name,
+                                    value.network_signature,
+                                    value.code_signature,
+                                    value.creation_date,
+                                    value.website,
+                                    value.description,
+                                    value.categories
+                                )
+                            }.toTypedArray()
+                    )
+                } catch (e: Exception) {
+                    Log.e(this::javaClass.name, "Failed fetching exodus trackers", e)
+                }
+            }
+        }
+    }
+
+    private suspend fun fetchExodusData(packageName: String, versionCode: Long) {
+        if (Preferences[Preferences.Key.ShowTrackers]) {
+            withContext(Dispatchers.IO) {
+                try {
+                    val sourceFiltered = repoExodusAPI.getExodusInfo(packageName).let {
+                        it.fastFilter { info -> info.source == "fdroid" }
+                            .ifEmpty { it }
+                    }
+                    val latestExodusApp = sourceFiltered
+                        .fastFilter { it.version_code.toLong() == versionCode }
+                        .firstOrNull()
+                        ?: sourceFiltered.maxByOrNull { it.version_code.toLong() }
+                        ?: ExodusInfo()
+
+                    val exodusInfo = latestExodusApp.toExodusInfo(packageName)
+                    MainApplication.db.getExodusInfoDao().upsert(exodusInfo)
+                } catch (e: Exception) {
+                    Log.e(this::javaClass.name, "Failed fetching exodus info", e)
+                }
+            }
+        }
+    }
 
     enum class WorkType { TRACKERS, DATA }
 
     companion object {
-
         fun fetchTrackers() {
             val data = workDataOf(
                 ARG_WORK_TYPE to WorkType.TRACKERS.ordinal,
@@ -65,75 +129,6 @@ class ExodusWorker(
                     .addTag(WorkType.TRACKERS.toString())
                     .build()
             )
-        }
-    }
-
-    override suspend fun doWork(): Result {
-        val type = WorkType.values()[
-            inputData.getInt(ARG_WORK_TYPE, 0)
-        ]
-
-        when (type) {
-            WorkType.TRACKERS -> fetchTrackers()
-            WorkType.DATA     -> fetchExodusData(
-                inputData.getString(ARG_PACKAGE_NAME)!!,
-                inputData.getLong(ARG_VERSION_CODE, -1)
-            )
-        }
-
-        return Result.success()
-    }
-
-
-    private fun fetchTrackers() {
-        if (Preferences[Preferences.Key.ShowTrackers]) {
-            scope.launch {
-                try {
-                    val trackerList = repoExodusAPI.getTrackers()
-                    // TODO **conditionally** update DB with the trackers
-                    MainApplication.db.getTrackerDao().upsert(
-                        *trackerList.trackers
-                            .map { (key, value) ->
-                                Tracker(
-                                    key.toInt(),
-                                    value.name,
-                                    value.network_signature,
-                                    value.code_signature,
-                                    value.creation_date,
-                                    value.website,
-                                    value.description,
-                                    value.categories
-                                )
-                            }.toTypedArray()
-                    )
-                } catch (e: Exception) {
-                    Log.e(this::javaClass.name, "Failed fetching exodus trackers", e)
-                }
-            }
-        }
-    }
-
-    private fun fetchExodusData(packageName: String, versionCode: Long) {
-        if (Preferences[Preferences.Key.ShowTrackers]) {
-            scope.launch {
-                try {
-                    val sourceFiltered = repoExodusAPI.getExodusInfo(packageName).let {
-                        it.fastFilter { info -> info.source == "fdroid" }
-                            .ifEmpty { it }
-                    }
-                    val latestExodusApp = sourceFiltered
-                        .fastFilter { it.version_code.toLong() == versionCode }
-                        .firstOrNull()
-                        ?: sourceFiltered.maxByOrNull { it.version_code.toLong() }
-                        ?: ExodusInfo()
-
-                    val exodusInfo = latestExodusApp.toExodusInfo(packageName)
-                    Log.e(this::javaClass.name, exodusInfo.toString())
-                    MainApplication.db.getExodusInfoDao().upsert(exodusInfo)
-                } catch (e: Exception) {
-                    Log.e(this::javaClass.name, "Failed fetching exodus info", e)
-                }
-            }
         }
     }
 }
