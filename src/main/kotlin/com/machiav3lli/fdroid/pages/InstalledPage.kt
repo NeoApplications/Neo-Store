@@ -149,7 +149,7 @@ fun InstalledPage(viewModel: InstalledVM) {
         }
         HorizontalPager(
             state = pagerState,
-            beyondBoundsPageCount = 1
+            beyondViewportPageCount = 1
         ) { index ->
             pages[index].invoke()
         }

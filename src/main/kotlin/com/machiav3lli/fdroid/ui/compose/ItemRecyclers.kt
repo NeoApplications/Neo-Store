@@ -92,7 +92,7 @@ fun ProductsCarousel(
             state = state,
             contentPadding = PaddingValues(horizontal = 8.dp),
             pageSpacing = 8.dp,
-            beyondBoundsPageCount = 3,
+            beyondViewportPageCount = 3,
         ) {
             productsList.getOrNull(it)?.let { item ->
                 ProductCarouselItem(

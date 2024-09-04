@@ -34,7 +34,7 @@ fun ScreenshotsPage(
             .fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        HorizontalPager(state = pagerState, beyondBoundsPageCount = 3) { page ->
+        HorizontalPager(state = pagerState, beyondViewportPageCount = 3) { page ->
             val screenshot = screenshots[page]
             val image by remember(screenshot) {
                 derivedStateOf {

@@ -158,7 +158,7 @@ fun PrefsReposPage(viewModel: PrefsVM) {
             }
             items(items = partedRrepos.first, key = { it.id }) {
                 RepositoryItem(
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier.animateItem(),
                     repository = it,
                     onClick = { repo ->
                         viewModel.viewModelScope.launch {
@@ -173,7 +173,7 @@ fun PrefsReposPage(viewModel: PrefsVM) {
             }
             items(items = partedRrepos.second, key = { it.id }) {
                 RepositoryItem(
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier.animateItem(),
                     repository = it,
                     onClick = { repo ->
                         viewModel.viewModelScope.launch {
