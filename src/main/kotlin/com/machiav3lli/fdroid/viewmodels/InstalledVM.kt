@@ -15,6 +15,7 @@ import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Request
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +27,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(
+    FlowPreview::class,
+    ExperimentalCoroutinesApi::class
+)
 open class InstalledVM(val db: DatabaseX) : ViewModel() {
 
     private val cc = Dispatchers.IO

@@ -64,7 +64,10 @@ object Cache {
 
     fun Context.getPackageArchiveInfo(file: File): PackageInfo? =
         if (Android.sdk(Build.VERSION_CODES.TIRAMISU))
-            packageManager.getPackageArchiveInfo(file.absolutePath, PackageManager.PackageInfoFlags.of(0))
+            packageManager.getPackageArchiveInfo(
+                file.absolutePath,
+                PackageManager.PackageInfoFlags.of(0)
+            )
         else packageManager.getPackageArchiveInfo(file.absolutePath, 0)
 
     fun getTemporaryFile(context: Context): File {

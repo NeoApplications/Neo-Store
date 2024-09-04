@@ -87,11 +87,11 @@ fun LanguagePrefDialogUI(
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 DialogNegativeButton(
                     onClick = { openDialogCustom.value = false }
                 )
-                Spacer(Modifier.weight(1f))
                 DialogPositiveButton(
                     modifier = Modifier.padding(start = 16.dp),
                     onClick = {

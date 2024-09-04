@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.pages
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,7 +20,6 @@ import com.machiav3lli.fdroid.ui.components.NetworkImage
 import com.machiav3lli.fdroid.ui.components.ScreenshotItem
 import com.machiav3lli.fdroid.ui.compose.CarouselIndicators
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ScreenshotsPage(
     screenshots: List<ScreenshotItem>,

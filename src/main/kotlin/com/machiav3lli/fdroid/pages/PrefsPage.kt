@@ -1,7 +1,6 @@
 package com.machiav3lli.fdroid.pages
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
@@ -24,7 +23,6 @@ import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
 import com.machiav3lli.fdroid.ui.navigation.SlidePager
 import kotlinx.collections.immutable.persistentListOf
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PrefsPage(navController: NavHostController, pageIndex: Int) {
     val context = LocalContext.current

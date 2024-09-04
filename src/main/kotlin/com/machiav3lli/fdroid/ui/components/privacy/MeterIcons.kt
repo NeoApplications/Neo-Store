@@ -1,7 +1,6 @@
 package com.machiav3lli.fdroid.ui.components.privacy
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -40,7 +39,6 @@ import com.machiav3lli.fdroid.ui.compose.theme.Orange
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MeterIconsBar(
     modifier: Modifier = Modifier,

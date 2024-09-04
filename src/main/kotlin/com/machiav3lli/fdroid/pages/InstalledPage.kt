@@ -2,7 +2,6 @@ package com.machiav3lli.fdroid.pages
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -63,6 +62,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUp
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Eraser
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
@@ -74,7 +74,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun InstalledPage(viewModel: InstalledVM) {
     val scope = rememberCoroutineScope()
@@ -253,7 +252,9 @@ fun InstallsPage(viewModel: InstalledVM) {
                             Modifier.padding(4.dp),
                         ) {
                             Row(
+                                modifier = Modifier.fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween,
                             ) {
                                 ElevatedButton(
                                     colors = ButtonDefaults.elevatedButtonColors(
@@ -274,7 +275,6 @@ fun InstallsPage(viewModel: InstalledVM) {
                                         contentDescription = stringResource(id = R.string.updates)
                                     )
                                 }
-                                Spacer(modifier = Modifier.weight(1f))
                                 AnimatedVisibility(updatesVisible) {
                                     ActionChip(
                                         text = stringResource(id = R.string.update_all),
@@ -328,13 +328,13 @@ fun InstallsPage(viewModel: InstalledVM) {
             }
             item {
                 Row(
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.installed_applications),
-                        modifier = Modifier.weight(1f),
-                    )
+                    Text(text = stringResource(id = R.string.installed_applications))
                     SortFilterChip(notModified = notModifiedSortFilter) {
                         scope.launch {
                             scaffoldState.bottomSheetState.expand()

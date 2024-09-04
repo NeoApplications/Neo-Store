@@ -2,7 +2,6 @@ package com.machiav3lli.fdroid.pages
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -46,7 +45,7 @@ import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrefsReposPage(viewModel: PrefsVM) {
     val context = LocalContext.current

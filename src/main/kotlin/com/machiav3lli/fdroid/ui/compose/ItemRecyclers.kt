@@ -2,7 +2,6 @@ package com.machiav3lli.fdroid.ui.compose
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -64,7 +63,6 @@ fun ProductsHorizontalRecycler(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductsCarousel(
     modifier: Modifier = Modifier,
@@ -90,7 +88,7 @@ fun ProductsCarousel(
                 .fillMaxSize()
                 .padding(bottom = 16.dp),
             state = state,
-            contentPadding = PaddingValues(horizontal = 8.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
             pageSpacing = 8.dp,
             beyondViewportPageCount = 3,
         ) {
@@ -115,7 +113,6 @@ fun ProductsCarousel(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CarouselIndicators(
     modifier: Modifier,

@@ -8,7 +8,6 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -107,7 +106,7 @@ import kotlinx.coroutines.withContext
 import kotlin.math.truncate
 
 @OptIn(
-    ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3Api::class,
     ExperimentalCoroutinesApi::class
 )
 @Composable

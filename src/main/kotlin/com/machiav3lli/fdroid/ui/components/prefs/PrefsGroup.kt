@@ -42,27 +42,22 @@ fun PreferenceGroup(
 
 @Composable
 fun PreferenceGroup(
+    heading: String,
+    keys: List<Preferences.Key<*>>,
     modifier: Modifier = Modifier,
     titleModifier: Modifier = Modifier,
-    heading: String? = null,
-    keys: List<Preferences.Key<*>>,
     onPrefDialog: (Preferences.Key<*>) -> Unit,
 ) {
     val size = keys.size
 
     PreferenceGroup(
+        heading = heading,
         modifier = modifier,
         titleModifier = titleModifier,
-        heading = heading
     ) {
-        keys.forEachIndexed { index, item ->
-            PrefsBuilder(
-                item,
-                onPrefDialog,
-                index,
-                size
-            )
-            if (index < size - 1) Spacer(modifier = Modifier.height(4.dp))
+        keys.forEachIndexed { i, it ->
+            PrefsBuilder(it, i, size, onPrefDialog)
+            if (i < size - 1) Spacer(modifier = Modifier.height(4.dp))
         }
     }
 }
@@ -81,13 +76,9 @@ fun PreferenceGroup(
         titleModifier = titleModifier,
         heading = heading
     ) {
-        links.forEachIndexed { index, item ->
-            LinkPreference(
-                link = item,
-                index = index,
-                groupSize = size,
-            )
-            if (index < size - 1) Spacer(modifier = Modifier.height(4.dp))
+        links.forEachIndexed { i, it ->
+            LinkPreference(link = it, index = i, groupSize = size)
+            if (i < size - 1) Spacer(modifier = Modifier.height(4.dp))
         }
     }
 }

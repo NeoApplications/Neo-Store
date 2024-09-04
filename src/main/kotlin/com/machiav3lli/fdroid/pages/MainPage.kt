@@ -1,7 +1,6 @@
 package com.machiav3lli.fdroid.pages
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
@@ -41,10 +40,8 @@ import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
 import com.machiav3lli.fdroid.ui.navigation.SlidePager
 import com.machiav3lli.fdroid.utility.getLocaleDateString
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.launch
 
-@OptIn(
-    ExperimentalFoundationApi::class,
-)
 @Composable
 fun MainPage(navController: NavHostController, pageIndex: Int) {
     val context = LocalContext.current

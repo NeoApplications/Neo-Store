@@ -66,6 +66,7 @@ fun ExpandableCard(
         }
     }
 }
+
 @Composable
 fun BlockCard(
     modifier: Modifier = Modifier,

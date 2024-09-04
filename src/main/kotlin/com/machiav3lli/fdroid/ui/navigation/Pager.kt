@@ -17,7 +17,6 @@
  */
 package com.machiav3lli.fdroid.ui.navigation
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -26,7 +25,6 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,7 +33,6 @@ import com.machiav3lli.fdroid.content.Preferences
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SlidePager(
     modifier: Modifier = Modifier,
@@ -47,7 +44,6 @@ fun SlidePager(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PagerNavBar(pageItems: List<NavItem>, pagerState: PagerState) {
     val scope = rememberCoroutineScope()
