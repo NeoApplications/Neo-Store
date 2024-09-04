@@ -8,6 +8,7 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.Constraints
+import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
@@ -15,7 +16,6 @@ import androidx.work.ForegroundInfo
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.google.common.util.concurrent.ListenableFuture
@@ -52,153 +52,16 @@ import kotlin.math.roundToInt
 class SyncWorker(
     private val context: Context,
     workerParams: WorkerParameters,
-) : Worker(context, workerParams) {
-    private val scope = CoroutineScope(Dispatchers.IO)
-
-    data class Progress(
-        val stage: RepositoryUpdater.Stage,
-        val read: Long,
-        val total: Long,
-    ) {
-        val percentage: Int
-            get() = (100f * read / total).roundToInt()
-    }
-
+) : CoroutineWorker(context, workerParams) {
     private var repoId = inputData.getLong(ARG_REPOSITORY_ID, -1L)
-    private var request = SyncRequest.values()[
+    private var request = SyncRequest.entries[
         inputData.getInt(ARG_SYNC_REQUEST, 0)
     ]
 
-    companion object {
-
-        fun enqueue(
-            request: SyncRequest,
-            vararg ids: Long,
-        ) {
-            ids.map { repoId ->
-
-                if (repoId != EXODUS_TRACKERS_SYNC) {
-                    val data = workDataOf(
-                        ARG_REPOSITORY_ID to repoId,
-                        ARG_SYNC_REQUEST to request.ordinal,
-                    )
-
-                    MainApplication.wm.workManager.enqueueUniqueWork(
-                        "sync_$repoId",
-                        ExistingWorkPolicy.KEEP,
-                        OneTimeWorkRequestBuilder<SyncWorker>()
-                            .setInputData(data)
-                            .addTag(TAG_SYNC_ONETIME)
-                            .addTag("sync_$repoId")
-                            .build()
-                    )
-                } else ExodusWorker.fetchTrackers()
-            }
-        }
-
-        fun enqueueAll(request: SyncRequest) {
-            CoroutineScope(Dispatchers.IO).launch {
-                enqueue(
-                    request,
-                    *(MainApplication.db.getRepositoryDao().getAll()
-                        .filter { it.enabled }
-                        .map { it.id } + EXODUS_TRACKERS_SYNC).toLongArray()
-                )
-            }
-        }
-
-        fun enqueuePeriodic(
-            connectionType: NetworkType,
-            chargingBattery: Boolean,
-        ) {
-            val constraints = Constraints.Builder()
-                .setRequiresCharging(chargingBattery)
-                .setRequiredNetworkType(connectionType)
-                .build()
-
-            CoroutineScope(Dispatchers.IO).launch {
-                (MainApplication.db.getRepositoryDao().getAll()
-                    .filter { it.enabled }
-                    .map { it.id } + EXODUS_TRACKERS_SYNC)
-                    .forEach { repoId ->
-                        val data = workDataOf(
-                            ARG_REPOSITORY_ID to repoId,
-                            ARG_SYNC_REQUEST to SyncRequest.AUTO.ordinal,
-                        )
-
-                        val workRequest = PeriodicWorkRequestBuilder<SyncWorker>(
-                            Preferences[Preferences.Key.AutoSyncInterval].toLong(),
-                            TimeUnit.HOURS,
-                        )
-                            .setInitialDelay(
-                                Preferences[Preferences.Key.AutoSyncInterval].toLong(),
-                                TimeUnit.HOURS,
-                            )
-                            .setConstraints(constraints)
-                            .setInputData(data)
-                            .addTag(TAG_SYNC_PERIODIC)
-                            .build()
-
-                        MainApplication.wm.workManager.enqueueUniquePeriodicWork(
-                            "sync_periodic_$repoId",
-                            ExistingPeriodicWorkPolicy.UPDATE,
-                            workRequest,
-                        )
-                    }
-
-            }
-        }
-
-        suspend fun enableRepo(repository: Repository, enabled: Boolean): Boolean =
-            withContext(Dispatchers.IO) {
-                MainApplication.db.getRepositoryDao().put(repository.enable(enabled))
-                val isEnabled = !repository.enabled && repository.lastModified.isEmpty()
-                val cooldownedSync = System.currentTimeMillis() -
-                        MainApplication.latestSyncs.getOrDefault(repository.id, 0L) >=
-                        10_000L
-                if (enabled && isEnabled && cooldownedSync) {
-                    MainApplication.latestSyncs[repository.id] = System.currentTimeMillis()
-                    enqueue(SyncRequest.MANUAL, repository.id)
-                } else {
-                    MainApplication.wm.cancelSync(repository.id)
-                    MainApplication.db.cleanUp(Pair(repository.id, false))
-                }
-                true
-            }
-
-        suspend fun deleteRepo(repoId: Long): Boolean = withContext(Dispatchers.IO) {
-            val repository = MainApplication.db.getRepositoryDao().get(repoId)
-            repository != null && run {
-                enableRepo(repository, false)
-                MainApplication.db.getRepositoryDao().deleteById(repoId)
-                true
-            }
-        }
-
-        fun getTask(data: Data) = SyncTask(
-            data.getLong(ARG_REPOSITORY_ID, -1L),
-            SyncRequest.values()[
-                data.getInt(ARG_SYNC_REQUEST, 0)
-            ],
-        )
-
-        fun getState(data: Data) = SyncState.values()[
-            data.getInt(ARG_STATE, 0)
-        ]
-
-        fun getProgress(data: Data) = Progress(
-            RepositoryUpdater.Stage.values()[
-                data.getInt(ARG_STAGE, 0)
-            ],
-            data.getLong(ARG_READ, 0L),
-            data.getLong(ARG_TOTAL, -1L),
-        )
-    }
-
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         val task = SyncTask(repoId, request)
 
-        return if (repoId != -1L) {
+        return@withContext if (repoId != -1L) {
             handleSync(task)
         } else Result.success(
             workDataOf(
@@ -208,59 +71,57 @@ class SyncWorker(
         )
     }
 
-    private fun handleSync(task: SyncTask): Result {
-        scope.launch {
-            setForegroundAsync(foregroundInfo)
-        }
-        val repository = scope.future {
-            MainApplication.db.getRepositoryDao().get(task.repositoryId)
-        }.join()
+    private fun CoroutineScope.handleSync(task: SyncTask): Result {
+        val repository = MainApplication.db.getRepositoryDao().get(task.repositoryId)
 
         Log.i(this::class.java.simpleName, "sync repository: ${task.repositoryId}")
         if (repository != null && repository.enabled && task.repositoryId != EXODUS_TRACKERS_SYNC) {
-            setProgressAsync(
-                workDataOf(
-                    ARG_STATE to SyncState.CONNECTING.ordinal,
-                    ARG_REPOSITORY_NAME to repository.name,
+            launch {
+                setProgress(
+                    workDataOf(
+                        ARG_STATE to SyncState.Enum.CONNECTING.ordinal,
+                        ARG_REPOSITORY_NAME to repository.name,
+                    )
                 )
-            )
+            }
             val unstable = Preferences[Preferences.Key.UpdateUnstable]
 
             try {
-                val changed = scope.future {
+                val changed = future {
                     RepositoryUpdater.update(
                         context,
                         repository,
                         unstable
                     ) { stage, progress, total ->
-                        setProgressAsync(
-                            workDataOf(
-                                ARG_STATE to SyncState.SYNCING.ordinal,
-                                ARG_REPOSITORY_NAME to repository.name,
-                                ARG_STAGE to stage.ordinal,
-                                ARG_READ to progress,
-                                ARG_TOTAL to total,
+                        launch {
+                            setProgress(
+                                workDataOf(
+                                    ARG_STATE to SyncState.Enum.SYNCING.ordinal,
+                                    ARG_REPOSITORY_NAME to repository.name,
+                                    ARG_STAGE to stage.ordinal,
+                                    ARG_READ to progress,
+                                    ARG_TOTAL to total,
+                                )
                             )
-                        )
+                        }
                     }
                 }.join()
                 return Result.success(
                     workDataOf(
                         ARG_REPOSITORY_ID to repoId,
                         ARG_SYNC_REQUEST to request.ordinal,
-                        ARG_STATE to SyncState.FINISHING.ordinal,
+                        ARG_STATE to SyncState.Enum.FINISHING.ordinal,
                         ARG_REPOSITORY_NAME to repository.name,
                         ARG_CHANGED to changed,
                     )
                 )
-
             } catch (throwable: Throwable) {
                 throwable.printStackTrace()
                 return Result.failure(
                     workDataOf(
                         ARG_REPOSITORY_ID to repoId,
                         ARG_SYNC_REQUEST to request.ordinal,
-                        ARG_STATE to SyncState.FAILED.ordinal,
+                        ARG_STATE to SyncState.Enum.FAILED.ordinal,
                         ARG_REPOSITORY_NAME to repository.name,
                         ARG_EXCEPTION to throwable.message,
                     )
@@ -271,7 +132,7 @@ class SyncWorker(
                 workDataOf(
                     ARG_REPOSITORY_ID to repoId,
                     ARG_SYNC_REQUEST to request.ordinal,
-                    ARG_STATE to SyncState.FINISHING.ordinal,
+                    ARG_STATE to SyncState.Enum.FINISHING.ordinal,
                     ARG_REPOSITORY_NAME to repository?.name,
                     ARG_CHANGED to false,
                 )
@@ -279,7 +140,7 @@ class SyncWorker(
         }
     }
 
-    override fun getForegroundInfo(): ForegroundInfo {
+    override suspend fun getForegroundInfo(): ForegroundInfo {
         val contentPendingIntent = PendingIntent.getActivity(
             context, 0,
             Intent(context, NeoActivity::class.java),
@@ -327,6 +188,141 @@ class SyncWorker(
                 .putLong(ARG_REPOSITORY_ID, repoId)
                 .putInt(ARG_SYNC_REQUEST, request.ordinal)
                 .build()
+        )
+    }
+
+    data class Progress(
+        val stage: RepositoryUpdater.Stage,
+        val read: Long,
+        val total: Long,
+    ) {
+        val percentage: Int
+            get() = (100f * read / total).roundToInt()
+    }
+
+    companion object {
+        private fun enqueue(
+            request: SyncRequest,
+            vararg ids: Long,
+        ) {
+            ids.map { repoId ->
+
+                if (repoId != EXODUS_TRACKERS_SYNC) {
+                    val data = workDataOf(
+                        ARG_REPOSITORY_ID to repoId,
+                        ARG_SYNC_REQUEST to request.ordinal,
+                    )
+
+                    MainApplication.wm.workManager.enqueueUniqueWork(
+                        "sync_$repoId",
+                        ExistingWorkPolicy.KEEP,
+                        OneTimeWorkRequestBuilder<SyncWorker>()
+                            .setInputData(data)
+                            .addTag(TAG_SYNC_ONETIME)
+                            .build()
+                    )
+                } else ExodusWorker.fetchTrackers()
+            }
+        }
+
+        suspend fun enqueueAll(request: SyncRequest) {
+            withContext(Dispatchers.IO) {
+                enqueue(
+                    request,
+                    *(MainApplication.db.getRepositoryDao().getAll()
+                        .filter { it.enabled }
+                        .map { it.id } + EXODUS_TRACKERS_SYNC).toLongArray()
+                )
+            }
+        }
+
+        suspend fun enqueuePeriodic(
+            connectionType: NetworkType,
+            chargingBattery: Boolean,
+        ) {
+            val constraints = Constraints.Builder()
+                .setRequiresCharging(chargingBattery)
+                .setRequiredNetworkType(connectionType)
+                .build()
+
+            withContext(Dispatchers.IO) {
+                (MainApplication.db.getRepositoryDao().getAll()
+                    .filter { it.enabled }
+                    .map { it.id } + EXODUS_TRACKERS_SYNC)
+                    .forEach { repoId ->
+                        val data = workDataOf(
+                            ARG_REPOSITORY_ID to repoId,
+                            ARG_SYNC_REQUEST to SyncRequest.AUTO.ordinal,
+                        )
+
+                        val workRequest = PeriodicWorkRequestBuilder<SyncWorker>(
+                            Preferences[Preferences.Key.AutoSyncInterval].toLong(),
+                            TimeUnit.HOURS,
+                        )
+                            .setInitialDelay(
+                                Preferences[Preferences.Key.AutoSyncInterval].toLong(),
+                                TimeUnit.HOURS,
+                            )
+                            .setConstraints(constraints)
+                            .setInputData(data)
+                            .addTag(TAG_SYNC_PERIODIC)
+                            .build()
+
+                        MainApplication.wm.workManager.enqueueUniquePeriodicWork(
+                            "sync_periodic_$repoId",
+                            ExistingPeriodicWorkPolicy.UPDATE,
+                            workRequest,
+                        )
+                    }
+            }
+        }
+
+        suspend fun enableRepo(repository: Repository, enabled: Boolean): Boolean =
+            withContext(Dispatchers.IO) {
+                MainApplication.db.getRepositoryDao().put(repository.enable(enabled))
+                val isEnabled = !repository.enabled && repository.lastModified.isEmpty()
+                val cooldownedSync = System.currentTimeMillis() -
+                        MainApplication.latestSyncs.getOrDefault(repository.id, 0L) >=
+                        10_000L
+                if (enabled && isEnabled && cooldownedSync) {
+                    MainApplication.latestSyncs[repository.id] = System.currentTimeMillis()
+                    enqueue(SyncRequest.MANUAL, repository.id)
+                } else {
+                    MainApplication.wm.cancelSync(repository.id)
+                    MainApplication.db.cleanUp(Pair(repository.id, false))
+                }
+                true
+            }
+
+        suspend fun deleteRepo(repoId: Long): Boolean = withContext(Dispatchers.IO) {
+            val repository = MainApplication.db.getRepositoryDao().get(repoId)
+            repository != null && run {
+                enableRepo(repository, false)
+                MainApplication.db.getRepositoryDao().deleteById(repoId)
+                true
+            }
+        }
+
+        fun getTask(data: Data) = SyncTask(
+            data.getLong(ARG_REPOSITORY_ID, -1L),
+            SyncRequest.entries[
+                data.getInt(ARG_SYNC_REQUEST, 0)
+            ],
+        )
+
+        fun getState(data: Data): SyncState = when (data.getInt(ARG_STATE, 0)) {
+            SyncState.Enum.FAILED.ordinal -> SyncState.Failed
+            SyncState.Enum.FINISHING.ordinal -> SyncState.Finishing
+            SyncState.Enum.SYNCING.ordinal -> SyncState.Syncing(getProgress(data))
+            else -> SyncState.Connecting // SyncState.Enum.CONNECTING
+        }
+
+        private fun getProgress(data: Data) = Progress(
+            RepositoryUpdater.Stage.entries[
+                data.getInt(ARG_STAGE, 0)
+            ],
+            data.getLong(ARG_READ, 0L),
+            data.getLong(ARG_TOTAL, -1L),
         )
     }
 }

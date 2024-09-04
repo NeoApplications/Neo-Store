@@ -12,6 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -48,6 +49,7 @@ import kotlinx.collections.immutable.persistentListOf
 fun MainPage(navController: NavHostController, pageIndex: Int) {
     val context = LocalContext.current
     val mActivity = context as NeoActivity
+    val scope = rememberCoroutineScope()
 
     val successfulSyncs by MainApplication.db.getRepositoryDao().latestUpdatesFlow()
         .collectAsState(initial = LatestSyncs(0L, 0L))
@@ -85,7 +87,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
                         if (System.currentTimeMillis() - Preferences[Preferences.Key.LastManualSyncTime] >= 10_000L) {
                             Preferences[Preferences.Key.LastManualSyncTime] =
                                 System.currentTimeMillis()
-                            SyncWorker.enqueueAll(SyncRequest.MANUAL)
+                            scope.launch { SyncWorker.enqueueAll(SyncRequest.MANUAL) }
                         } else {
                             showPopup.intValue = POPUP_SHORT
                         }
