@@ -22,5 +22,5 @@ data class Downloaded(
     var state: DownloadState,
 ) {
     val itemKey: String
-        get() = "$repositoryId-$cacheFileName"
+        get() = "$packageName-$repositoryId-$version-$cacheFileName"
 }
