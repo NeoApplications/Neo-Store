@@ -6,9 +6,6 @@ import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
@@ -36,7 +33,6 @@ import com.machiav3lli.fdroid.ARG_TOTAL
 import com.machiav3lli.fdroid.ARG_URL
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
 import com.machiav3lli.fdroid.MainApplication
-import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Cache
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Release
@@ -45,17 +41,15 @@ import com.machiav3lli.fdroid.network.Downloader
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.downloadNotificationBuilder
 import com.machiav3lli.fdroid.utility.extension.android.Android
-import com.machiav3lli.fdroid.utility.extension.android.notificationManager
 import com.machiav3lli.fdroid.utility.extension.android.singleSignature
 import com.machiav3lli.fdroid.utility.extension.android.versionCodeCompat
 import com.machiav3lli.fdroid.utility.extension.text.hex
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.getDownloadFolder
 import com.machiav3lli.fdroid.utility.isDownloadExternal
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.security.MessageDigest
 import kotlin.math.roundToInt
@@ -64,100 +58,25 @@ class DownloadWorker(
     val context: Context,
     params: WorkerParameters,
 ) : CoroutineWorker(context, params) {
-
-    data class Progress(
-        val progress: Int = 0,
-        val read: Long = -1L,
-        val total: Long = -1L,
-    )
-
-    companion object {
-        fun enqueue(
-            packageName: String,
-            label: String,
-            repository: Repository,
-            release: Release,
-        ) {
-            val data = workDataOf(
-                ARG_STARTED to System.currentTimeMillis(),
-                ARG_PACKAGE_NAME to packageName,
-                ARG_NAME to label,
-                ARG_RELEASE to release.toJSON(),
-                ARG_URL to release.getDownloadUrl(repository),
-                ARG_REPOSITORY_ID to repository.id,
-                ARG_AUTHENTICATION to repository.authentication,
-            )
-            val constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-            val downloadRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
-                .setInputData(data)
-                .setConstraints(constraints)
-                .addTag("download_$packageName")
-                .build()
-
-            MainApplication.wm.workManager
-                .beginUniqueWork(
-                    "$packageName-${repository.id}-${release.version}",
-                    ExistingWorkPolicy.KEEP,
-                    downloadRequest,
-                )
-                .enqueue()
-        }
-
-        fun getTask(data: Data) = DownloadTask(
-            data.getLong(ARG_STARTED, System.currentTimeMillis()),
-            data.getString(ARG_PACKAGE_NAME) ?: "",
-            data.getString(ARG_NAME) ?: "",
-            Release.fromJson(data.getString(ARG_RELEASE) ?: ""),
-            data.getString(ARG_URL) ?: "",
-            data.getLong(ARG_REPOSITORY_ID, -1L),
-            data.getString(ARG_AUTHENTICATION) ?: "",
-        )
-
-        fun getProgress(data: Data) = Progress(
-            data.getInt(ARG_PROGRESS, -1),
-            data.getLong(ARG_READ, 0L),
-            data.getLong(ARG_TOTAL, 0L),
-        )
-    }
-
-    private val scope = CoroutineScope(Dispatchers.IO)
-
-    private val notificationManager = context.notificationManager
-    private val packageManager = context.packageManager
+    private val packageManager: PackageManager by lazy { context.packageManager }
     private lateinit var task: DownloadTask
 
-    override suspend fun doWork(): Result {
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         try {
             task = getTask(inputData)
 
             if (Cache.getReleaseFile(applicationContext, task.release.cacheFileName).exists()) {
                 Log.i(this::javaClass.name, "Running publish success from fun enqueue")
                 finalize(task)
-                return Result.success(getWorkData(task, null))
+                return@withContext Result.success(getWorkData(task, null))
             }
 
-            stateNotificationBuilder.setContentTitle(
-                context.getString(
-                    R.string.downloading_FORMAT,
-                    "${task.name} (${task.release.version})"
-                )
-            )
-                .setWhen(System.currentTimeMillis())
-                .setSortKey(System.currentTimeMillis().toString())
-                .setProgress(1, 0, true)
-
-            notificationManager.notify(
-                task.key.hashCode(),
-                stateNotificationBuilder.build(),
-            )
-
-            return handleDownload(this.task)
-
+            val result = handleDownload(task)
+            result
         } catch (e: Exception) {
             Log.i(this::javaClass.name, e.message ?: "download failed")
-            return Result.failure()
+            val result = Result.failure() // TODO (workDataOf(ARG_ERROR_MESSAGE to e.message))
+            result
         }
     }
 
@@ -167,55 +86,47 @@ class DownloadWorker(
 
         val callback: suspend (read: Long, total: Long?, downloadID: Long) -> Unit =
             { read, total, downloadID ->
-                val progress = if (total != null) {
+                setProgress(
                     workDataOf(
-                        ARG_PROGRESS to (100f * read / total).roundToInt(),
+                        ARG_PROGRESS to if (total != null) (100f * read / total).roundToInt() else -1,
                         ARG_READ to read,
-                        ARG_TOTAL to total
+                        ARG_TOTAL to (total ?: -1L),
                     )
-                } else {
-                    workDataOf(
-                        ARG_PROGRESS to -1,
-                        ARG_READ to read,
-                        ARG_TOTAL to 0,
-                    )
-                }
-                if (!isStopped) setProgress(progress)
-                else if (downloadID != -1L) {
+                )
+
+                if (isStopped && downloadID != -1L) {
                     ContextCompat.getSystemService(context, DownloadManager::class.java)
                         ?.remove(downloadID)
                 }
             }
 
-        (if (Preferences[Preferences.Key.DownloadManager])
+        val result = if (Preferences[Preferences.Key.DownloadManager]) {
             Downloader.dmDownload(context, task, partialRelease, callback)
-        else Downloader.download(task.url, partialRelease, "", "", task.authentication, callback))
-            .let { result ->
-                if (!result.success) {
-                    Log.i(this::javaClass.name, "Worker failure by error ${result.statusCode}")
-                    return@coroutineScope Result.failure(getWorkData(task, result))
-                }
+        } else {
+            Downloader.download(task.url, partialRelease, "", "", task.authentication, callback)
+        }
 
-                val validationError = validatePackage(task, partialRelease)
-                return@coroutineScope if (validationError == ValidationError.NONE) {
-                    val releaseFile =
-                        Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
-                    partialRelease.renameTo(releaseFile)
-                    Log.i(this::javaClass.name, "Worker success with result: $result")
-                    finalize(task)
-                    Result.success(getWorkData(task, result))
-                } else {
-                    partialRelease.delete()
-                    Log.i(
-                        this::javaClass.name,
-                        "Worker failure by validation error: $validationError"
-                    )
-                    Result.failure(getWorkData(task, result, validationError))
-                }
-            }
+        if (!result.success) {
+            Log.i(this::javaClass.name, "Worker failure by error ${result.statusCode}")
+            return@coroutineScope Result.failure(getWorkData(task, result))
+        }
+
+        val validationError = validatePackage(task, partialRelease)
+        if (validationError == ValidationError.NONE) {
+            val releaseFile = Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
+            partialRelease.renameTo(releaseFile)
+            Log.i(this::javaClass.name, "Worker success with result: $result")
+            finalize(task)
+            Result.success(getWorkData(task, result))
+        } else {
+            partialRelease.delete()
+            Log.i(this::javaClass.name, "Worker failure by validation error: $validationError")
+            Result.failure(getWorkData(task, result, validationError))
+        }
     }
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
+        val stateNotificationBuilder = applicationContext.downloadNotificationBuilder()
         return ForegroundInfo(
             task.key.hashCode(),
             stateNotificationBuilder.build(),
@@ -239,13 +150,9 @@ class DownloadWorker(
         )
     }
 
-    private var stateNotificationBuilder by mutableStateOf(
-        applicationContext.downloadNotificationBuilder()
-    )
-
     private fun getWorkData(
         task: DownloadTask,
-        result: Downloader.Result?,
+        result: Downloader.Result? = null,
         validationError: ValidationError? = null,
     ): Data = if (result == null)
         workDataOf(
@@ -274,15 +181,13 @@ class DownloadWorker(
             context.getDownloadFolder()?.let { downloadFolder ->
                 val cacheFile = Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
                     .toDocumentFile(applicationContext)
-                scope.launch {
-                    if (downloadFolder.findFile(task.release.cacheFileName)?.exists() != true) {
-                        cacheFile?.copyFileTo(
-                            applicationContext,
-                            downloadFolder,
-                            null,
-                            object : FileCallback() {}
-                        )
-                    }
+                if (downloadFolder.findFile(task.release.cacheFileName)?.exists() != true) {
+                    cacheFile?.copyFileTo(
+                        applicationContext,
+                        downloadFolder,
+                        null,
+                        object : FileCallback() {}
+                    )
                 }
             }
         }
@@ -338,5 +243,62 @@ class DownloadWorker(
                 }
             } ?: ValidationError.NONE
         }
+    }
+
+    data class Progress(
+        val progress: Int = 0,
+        val read: Long = -1L,
+        val total: Long = -1L,
+    )
+
+    companion object {
+        fun enqueue(
+            packageName: String,
+            label: String,
+            repository: Repository,
+            release: Release,
+        ) {
+            val data = workDataOf(
+                ARG_STARTED to System.currentTimeMillis(),
+                ARG_PACKAGE_NAME to packageName,
+                ARG_NAME to label,
+                ARG_RELEASE to release.toJSON(),
+                ARG_URL to release.getDownloadUrl(repository),
+                ARG_REPOSITORY_ID to repository.id,
+                ARG_AUTHENTICATION to repository.authentication,
+            )
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+            val downloadRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
+                .setInputData(data)
+                .setConstraints(constraints)
+                .addTag("download_$packageName")
+                .build()
+
+            MainApplication.wm.workManager
+                .beginUniqueWork(
+                    "$packageName-${repository.id}-${release.version}",
+                    ExistingWorkPolicy.KEEP,
+                    downloadRequest,
+                )
+                .enqueue()
+        }
+
+        fun getTask(data: Data) = DownloadTask(
+            data.getLong(ARG_STARTED, System.currentTimeMillis()),
+            data.getString(ARG_PACKAGE_NAME) ?: "",
+            data.getString(ARG_NAME) ?: "",
+            Release.fromJson(data.getString(ARG_RELEASE) ?: ""),
+            data.getString(ARG_URL) ?: "",
+            data.getLong(ARG_REPOSITORY_ID, -1L),
+            data.getString(ARG_AUTHENTICATION) ?: "",
+        )
+
+        fun getProgress(data: Data) = Progress(
+            data.getInt(ARG_PROGRESS, -1),
+            data.getLong(ARG_READ, 0L),
+            data.getLong(ARG_TOTAL, -1L),
+        )
     }
 }

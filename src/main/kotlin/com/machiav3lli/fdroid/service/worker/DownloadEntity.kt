@@ -6,6 +6,7 @@ import com.machiav3lli.fdroid.database.entity.Release
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlin.math.roundToInt
 
 @Serializable
 class DownloadTask(
@@ -19,17 +20,6 @@ class DownloadTask(
 ) {
     val key: String
         get() = "$packageName-$repoId-${release.version}"
-
-    fun toInstallTask() = InstallTask(
-        packageName = packageName,
-        repositoryId = repoId,
-        versionCode = release.versionCode,
-        versionName = release.version,
-        label = name,
-        cacheFileName = release.cacheFileName,
-        added = System.currentTimeMillis(),
-        requireUser = false,
-    )
 
     fun toJSON() = Json.encodeToString(this)
 
@@ -81,6 +71,8 @@ sealed class DownloadState {
         val total: Long?,
     ) : DownloadState() {
         override val changed: Long = System.currentTimeMillis()
+        val progress: Int
+            get() = if (total != null) (100f * read / total).roundToInt() else -1
     }
 
     @Serializable
@@ -93,6 +85,17 @@ sealed class DownloadState {
         val release: Release,
     ) : DownloadState() {
         override val changed: Long = System.currentTimeMillis()
+
+        fun toInstallTask() = InstallTask(
+            packageName = packageName,
+            repositoryId = repoId,
+            versionCode = release.versionCode,
+            versionName = release.version,
+            label = name,
+            cacheFileName = release.cacheFileName,
+            added = System.currentTimeMillis(),
+            requireUser = false,
+        )
     }
 
     @Serializable
@@ -104,6 +107,7 @@ sealed class DownloadState {
         override val repoId: Long,
         val resultCode: Int,
         val validationError: ValidationError,
+        val stopReason: Int,
     ) : DownloadState() {
         override val changed: Long = System.currentTimeMillis()
     }
