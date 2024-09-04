@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.work.NetworkType
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import com.anggrayudi.storage.extension.postToUi
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import com.machiav3lli.fdroid.content.Cache
@@ -41,6 +42,7 @@ import io.ktor.http.Url
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -88,6 +90,7 @@ class MainApplication : Application(), ImageLoaderFactory {
 
     override fun onCreate() {
         super.onCreate()
+        val ioScope = CoroutineScope(Dispatchers.IO)
         DynamicColors.applyToActivitiesIfAvailable(
             this,
             DynamicColorsOptions.Builder()
@@ -98,12 +101,16 @@ class MainApplication : Application(), ImageLoaderFactory {
 
         Preferences.init(this)
         RepositoryUpdater.init(this)
-        listenApplications()
-        listenPreferences()
+        ioScope.launch {
+            listenApplications()
+            listenPreferences()
+        }
 
         wm.prune()
         Cache.cleanup(this)
-        updateSyncJob(false)
+        ioScope.launch {
+            updatePeriodicSyncJob(false)
+        }
     }
 
     override fun attachBaseContext(base: Context?) {
@@ -122,7 +129,7 @@ class MainApplication : Application(), ImageLoaderFactory {
         }
     }
 
-    private fun listenApplications() {
+    private suspend fun listenApplications() {
         registerReceiver(
             PackageChangedReceiver(),
             IntentFilter().apply {
@@ -155,15 +162,15 @@ class MainApplication : Application(), ImageLoaderFactory {
         val installedItems = packageManager
             .getInstalledPackages(Android.PackageManager.signaturesFlag)
             .map { it.toInstalledItem(launcherActivitiesMap[it.packageName].orEmpty()) }
-        CoroutineScope(Dispatchers.Default).launch {
+        withContext(Dispatchers.IO) {
             db.getInstalledDao().emptyTable()
             db.getInstalledDao().put(*installedItems.toTypedArray())
         }
     }
 
-    private fun listenPreferences() {
+    private suspend fun listenPreferences() {
         updateProxy()
-        CoroutineScope(Dispatchers.Default).launch {
+        withContext(Dispatchers.Default) {
             Preferences.subject.collect {
                 when (it) {
                     Preferences.Key.ProxyType,
@@ -177,7 +184,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                     Preferences.Key.AutoSync,
                     Preferences.Key.AutoSyncInterval,
                                                    -> {
-                        updateSyncJob(true)
+                        updatePeriodicSyncJob(true)
                     }
 
                     Preferences.Key.UpdateUnstable -> {
@@ -185,7 +192,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                     }
 
                     Preferences.Key.Theme          -> {
-                        CoroutineScope(Dispatchers.Main).launch { mActivity.recreate() }
+                        postToUi { mActivity.recreate() }
                     }
 
                     Preferences.Key.Language       -> {
@@ -204,7 +211,7 @@ class MainApplication : Application(), ImageLoaderFactory {
         }
     }
 
-    private fun updateSyncJob(force: Boolean) {
+    private suspend fun updatePeriodicSyncJob(force: Boolean) = withContext(Dispatchers.IO) {
         val wm = MainApplication.wm.workManager
         val reschedule = force || wm.getWorkInfosByTag(TAG_SYNC_PERIODIC).get().isEmpty()
         if (reschedule) {
@@ -240,7 +247,7 @@ class MainApplication : Application(), ImageLoaderFactory {
         }
     }
 
-    private fun autoSync(
+    private suspend fun autoSync(
         connectionType: NetworkType,
         chargingBattery: Boolean = false,
     ) {
@@ -284,7 +291,7 @@ class MainApplication : Application(), ImageLoaderFactory {
         }
     }
 
-    private fun forceSyncAll() {
+    private suspend fun forceSyncAll() {
         db.getRepositoryDao().getAll().forEach {
             if (it.lastModified.isNotEmpty() || it.entityTag.isNotEmpty()) {
                 db.getRepositoryDao().put(it.copy(lastModified = "", entityTag = ""))
