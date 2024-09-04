@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -445,6 +446,27 @@ fun DownloadedPage(viewModel: InstalledVM) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
     ) {
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text(text = stringResource(id = R.string.downloads))
+                AnimatedVisibility(visible = sortedDownloaded.isNotEmpty()) {
+                    ActionChip(
+                        text = stringResource(id = R.string.erase_all),
+                        icon = Phosphor.Eraser,
+                    ) {
+                        sortedDownloaded.forEach {
+                            viewModel.eraseDownloaded(it)
+                        }
+                    }
+                }
+            }
+        }
         items(sortedDownloaded, key = { it.itemKey }) { item ->
             val state by remember(item) {
                 derivedStateOf { item.state }
