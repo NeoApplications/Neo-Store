@@ -391,7 +391,7 @@
 \nAlle Repos: %s</string>
     <string name="confirm_uninstall_DESC_FORMAT">Möchten Sie %s wirklich deinstallieren?</string>
     <string name="prefs_search_apps">Maximale Anzahl von Anwendungen, die nach Suchergebnissen abgefragt werden sollen.</string>
-    <string name="wait_to_sync">Warten Sie einige Sekunden, bevor Sie die Synchronisierung erneut versuchen.</string>
+    <string name="wait_to_sync">Warte ein paar Sekunden, bevor Du erneut versuchst zu synchronisieren.</string>
     <string name="prefs_search_apps_description">Maximale Anzahl von Anwendungen, die in die Suchergebnisse einbezogen werden sollen (auf 0 setzen, um alle Apps einzubeziehen).</string>
     <string name="enable">Aktivieren</string>
     <string name="dismiss">Zurückweisen</string>
