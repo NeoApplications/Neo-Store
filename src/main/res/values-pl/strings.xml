@@ -405,4 +405,5 @@
     <string name="confirm_uninstall_DESC_FORMAT">Czy na pewno chcesz odinstalować %s?</string>
     <string name="last_successful_sync">Ostatnio zaktualizowano: %s
 \nWszystkie repozytoria: %s</string>
+    <string name="erase_all">Wymaż wszystko</string>
 </resources>
