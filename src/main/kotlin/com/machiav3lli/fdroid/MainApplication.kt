@@ -1,8 +1,6 @@
 package com.machiav3lli.fdroid
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.ContextWrapper
@@ -49,7 +47,6 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import java.lang.ref.WeakReference
 import java.net.Proxy
-
 
 class MainApplication : Application(), ImageLoaderFactory {
 
@@ -299,11 +296,6 @@ class MainApplication : Application(), ImageLoaderFactory {
             }
         }
         SyncWorker.enqueueAll(SyncRequest.FORCE)
-    }
-
-    class BootReceiver : BroadcastReceiver() {
-        @SuppressLint("UnsafeProtectedBroadcastReceiver")
-        override fun onReceive(context: Context, intent: Intent) = Unit
     }
 
     override fun newImageLoader(): ImageLoader {
