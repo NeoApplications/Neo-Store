@@ -124,6 +124,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                 downloadClientModule,
                 workmanagerModule,
                 databaseModule,
+                viewModelsModule,
                 installerModule,
             )
         }

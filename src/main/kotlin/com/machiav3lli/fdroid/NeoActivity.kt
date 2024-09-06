@@ -10,7 +10,6 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
@@ -36,6 +35,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.pages.AppSheet
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.AppNavHost
@@ -45,12 +45,8 @@ import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import com.machiav3lli.fdroid.utility.isBiometricLockEnabled
 import com.machiav3lli.fdroid.utility.isDarkTheme
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
-import com.machiav3lli.fdroid.viewmodels.ExploreVM
-import com.machiav3lli.fdroid.viewmodels.InstalledVM
-import com.machiav3lli.fdroid.viewmodels.LatestVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
-import com.machiav3lli.fdroid.viewmodels.SearchVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -93,15 +89,12 @@ class NeoActivity : AppCompatActivity() {
     val isAppSheetOpen: Boolean
         get() = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded
 
-    val db
-        get() = (application as MainApplication).db
+    val db: DatabaseX by inject()
 
     private var currentTheme by Delegates.notNull<Int>()
 
-    val prefsViewModel: PrefsVM by viewModels {
-        PrefsVM.Factory(db)
-    }
     val mainViewModel: MainVM by viewModel()
+    val prefsViewModel: PrefsVM by viewModel()
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -385,4 +378,9 @@ class NeoActivity : AppCompatActivity() {
                 }
             })
     }
+}
+
+val viewModelsModule = module {
+    viewModel { MainVM(get()) }
+    viewModel { PrefsVM(get()) }
 }
