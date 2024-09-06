@@ -77,6 +77,13 @@ enum class Section {
     NONE,
 }
 
+enum class Page {
+    LATEST,
+    EXPLORE,
+    SEARCH,
+    INSTALLED,
+}
+
 enum class LinkRef(
     @StringRes val titleId: Int,
     val url: String? = null,
