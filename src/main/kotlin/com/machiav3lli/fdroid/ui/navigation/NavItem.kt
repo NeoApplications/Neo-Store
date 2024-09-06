@@ -49,29 +49,29 @@ sealed class NavItem(
 ) {
     data object Explore :
         NavItem(R.string.explore, Phosphor.Compass, "main_explore", {
-            MainApplication.mainActivity?.exploreViewModel?.let {
-                ExplorePage(it)
+            MainApplication.mainActivity?.let {
+                ExplorePage(it.mainViewModel)
             }
         })
 
     data object Latest :
         NavItem(R.string.latest, Phosphor.CircleWavyWarning, "main_latest", {
-            MainApplication.mainActivity?.latestViewModel?.let {
-                LatestPage(it)
+            MainApplication.mainActivity?.let {
+                LatestPage(it.mainViewModel)
             }
         })
 
     data object Installed :
         NavItem(R.string.installed, Phosphor.House, "main_installed", {
-            MainApplication.mainActivity?.installedViewModel?.let {
-                InstalledPage(it)
+            MainApplication.mainActivity?.let {
+                InstalledPage(it.mainViewModel)
             }
         })
 
     data object Search :
         NavItem(R.string.search, Phosphor.MagnifyingGlass, "main_search", {
             MainApplication.mainActivity?.let {
-                SearchPage(it.searchViewModel)
+                SearchPage(it.mainViewModel)
             }
         })
 

@@ -48,6 +48,7 @@ import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import com.machiav3lli.fdroid.viewmodels.ExploreVM
 import com.machiav3lli.fdroid.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.viewmodels.LatestVM
+import com.machiav3lli.fdroid.viewmodels.MainVM
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import com.machiav3lli.fdroid.viewmodels.SearchVM
 import kotlinx.coroutines.CoroutineScope
@@ -58,6 +59,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.dsl.module
 import kotlin.properties.Delegates
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -93,21 +98,10 @@ class NeoActivity : AppCompatActivity() {
 
     private var currentTheme by Delegates.notNull<Int>()
 
-    val exploreViewModel: ExploreVM by viewModels {
-        ExploreVM.Factory(db)
-    }
-    val latestViewModel: LatestVM by viewModels {
-        LatestVM.Factory(db)
-    }
-    val installedViewModel: InstalledVM by viewModels {
-        InstalledVM.Factory(db)
-    }
-    val searchViewModel: SearchVM by viewModels {
-        SearchVM.Factory(db)
-    }
     val prefsViewModel: PrefsVM by viewModels {
         PrefsVM.Factory(db)
     }
+    val mainViewModel: MainVM by viewModel()
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {

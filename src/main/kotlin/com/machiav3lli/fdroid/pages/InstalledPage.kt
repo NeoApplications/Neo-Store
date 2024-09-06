@@ -49,6 +49,7 @@ import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.DialogKey
+import com.machiav3lli.fdroid.entity.Page
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.ui.components.ActionChip
@@ -67,7 +68,7 @@ import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
-import com.machiav3lli.fdroid.viewmodels.InstalledVM
+import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
@@ -75,7 +76,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun InstalledPage(viewModel: InstalledVM) {
+fun InstalledPage(viewModel: MainVM) {
     val scope = rememberCoroutineScope()
 
     val pages: ImmutableList<@Composable () -> Unit> = persistentListOf(
@@ -96,6 +97,7 @@ fun InstalledPage(viewModel: InstalledVM) {
                     Preferences.Key.SortOrderInstalled,
                     Preferences.Key.SortOrderAscendingInstalled,
                          -> viewModel.setSortFilter(
+                        Page.INSTALLED,
                         listOf(
                             Preferences[Preferences.Key.ReposFilterInstalled],
                             Preferences[Preferences.Key.CategoriesFilterInstalled],
@@ -158,14 +160,14 @@ fun InstalledPage(viewModel: InstalledVM) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InstallsPage(viewModel: InstalledVM) {
+fun InstallsPage(viewModel: MainVM) {
     val context = LocalContext.current
     val neoActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
 
     val installedList by viewModel.installed.collectAsState(emptyMap())
-    val updates by viewModel.updates.collectAsState(emptyList())
-    val installedItems by viewModel.installedProducts.collectAsState(emptyList())
+    val updates by viewModel.updateProdsInstalled.collectAsState(emptyList())
+    val installedItems by viewModel.installedProdsInstalled.collectAsState(emptyList())
     val repositories = viewModel.repositories.collectAsState(emptyList())
     val repositoriesMap by remember {
         derivedStateOf {
@@ -201,7 +203,7 @@ fun InstallsPage(viewModel: InstalledVM) {
     val scaffoldState = rememberBottomSheetScaffoldState()
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
-    val sortFilter by viewModel.sortFilter.collectAsState()
+    val sortFilter by viewModel.sortFilterInstalled.collectAsState()
     val notModifiedSortFilter by remember(sortFilter) {
         derivedStateOf {
             Preferences[Preferences.Key.SortOrderInstalled] == Preferences.Key.SortOrderInstalled.default.value &&
@@ -425,7 +427,7 @@ fun InstallsPage(viewModel: InstalledVM) {
 }
 
 @Composable
-fun DownloadedPage(viewModel: InstalledVM) {
+fun DownloadedPage(viewModel: MainVM) {
     val context = LocalContext.current
     val neoActivity = context as NeoActivity
 

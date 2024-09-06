@@ -39,6 +39,7 @@ import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.DialogKey
+import com.machiav3lli.fdroid.entity.Page
 import com.machiav3lli.fdroid.entity.Source
 import com.machiav3lli.fdroid.entity.appCategoryIcon
 import com.machiav3lli.fdroid.index.RepositoryUpdater
@@ -53,21 +54,21 @@ import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
-import com.machiav3lli.fdroid.viewmodels.ExploreVM
+import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExplorePage(viewModel: ExploreVM) {
+fun ExplorePage(viewModel: MainVM) {
     val context = LocalContext.current
     val neoActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
 
     val installedList by viewModel.installed.collectAsState(emptyMap())
-    val filteredProducts by viewModel.filteredProducts.collectAsState(emptyList())
+    val filteredProducts by viewModel.productsExplore.collectAsState(emptyList())
     val repositories = viewModel.repositories.collectAsState(emptyList())
     val repositoriesMap by remember {
         derivedStateOf {
@@ -85,7 +86,7 @@ fun ExplorePage(viewModel: ExploreVM) {
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
 
-    val sortFilter by viewModel.sortFilter.collectAsState()
+    val sortFilter by viewModel.sortFilterExplore.collectAsState()
     val notModifiedSortFilter by remember(sortFilter) {
         derivedStateOf {
             Preferences[Preferences.Key.SortOrderExplore] == Preferences.Key.SortOrderExplore.default.value &&
@@ -107,6 +108,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                     Preferences.Key.SortOrderExplore,
                     Preferences.Key.SortOrderAscendingExplore,
                     -> viewModel.setSortFilter(
+                        Page.EXPLORE,
                         listOf(
                             Preferences[Preferences.Key.ReposFilterExplore],
                             Preferences[Preferences.Key.CategoriesFilterExplore],
@@ -158,7 +160,7 @@ fun ExplorePage(viewModel: ExploreVM) {
                     ) {
                         Preferences[Preferences.Key.CategoriesFilterExplore] = ""
                         selectedCategory.value = ""
-                        viewModel.setSource(Source.NONE)
+                        viewModel.setExploreSource(Source.NONE)
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
@@ -184,13 +186,13 @@ fun ExplorePage(viewModel: ExploreVM) {
                             Preferences[Preferences.Key.CategoriesFilterExplore] =
                                 FILTER_CATEGORY_ALL
                             selectedCategory.value = favString
-                            viewModel.setSource(Source.FAVORITES)
+                            viewModel.setExploreSource(Source.FAVORITES)
                         }
 
                         else      -> {
                             Preferences[Preferences.Key.CategoriesFilterExplore] = it
                             selectedCategory.value = it
-                            viewModel.setSource(Source.AVAILABLE)
+                            viewModel.setExploreSource(Source.AVAILABLE)
                         }
                     }
                     scope.launch {

@@ -35,6 +35,7 @@ import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.DialogKey
+import com.machiav3lli.fdroid.entity.Page
 import com.machiav3lli.fdroid.entity.Source
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SortFilterButton
@@ -49,20 +50,20 @@ import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
-import com.machiav3lli.fdroid.viewmodels.SearchVM
+import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchPage(viewModel: SearchVM) {
+fun SearchPage(viewModel: MainVM) {
     val context = LocalContext.current
     val neoActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
     val installedList by viewModel.installed.collectAsState(emptyMap())
-    val filteredProducts by viewModel.filteredProducts.collectAsState(emptyList())
+    val filteredProducts by viewModel.filteredProdsSearch.collectAsState(emptyList())
     val repositories = viewModel.repositories.collectAsState(emptyList())
     val repositoriesMap by remember {
         derivedStateOf {
@@ -71,7 +72,7 @@ fun SearchPage(viewModel: SearchVM) {
     }
     val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
     val query by neoActivity.searchQuery.collectAsState()
-    val source = viewModel.source.collectAsState()
+    val source = viewModel.sourceSearch.collectAsState()
     val currentTab by remember {
         derivedStateOf {
             listOf(Source.SEARCH, Source.SEARCH_INSTALLED, Source.SEARCH_NEW)
@@ -83,7 +84,7 @@ fun SearchPage(viewModel: SearchVM) {
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
 
-    val sortFilter by viewModel.sortFilter.collectAsState()
+    val sortFilter by viewModel.sortFilterSearch.collectAsState()
     val notModifiedSortFilter by remember(sortFilter) {
         derivedStateOf {
             Preferences[Preferences.Key.SortOrderSearch] == Preferences.Key.SortOrderSearch.default.value &&
@@ -107,6 +108,7 @@ fun SearchPage(viewModel: SearchVM) {
                     Preferences.Key.SortOrderAscendingSearch,
                     Preferences.Key.SearchApps,
                     -> viewModel.setSortFilter(
+                        Page.SEARCH,
                         listOf(
                             Preferences[Preferences.Key.ReposFilterSearch],
                             Preferences[Preferences.Key.CategoriesFilterSearch],
@@ -156,21 +158,21 @@ fun SearchPage(viewModel: SearchVM) {
                     text = stringResource(id = R.string.all),
                     icon = Phosphor.CirclesFour,
                     onClick = {
-                        viewModel.setSource(Source.SEARCH)
+                        viewModel.setSearchSource(Source.SEARCH)
                     }
                 )
                 TabButton(
                     text = stringResource(id = R.string.installed),
                     icon = Phosphor.ArrowSquareOut,
                     onClick = {
-                        viewModel.setSource(Source.SEARCH_INSTALLED)
+                        viewModel.setSearchSource(Source.SEARCH_INSTALLED)
                     }
                 )
                 TabButton(
                     text = stringResource(id = R.string.new_applications),
                     icon = Phosphor.CircleWavyWarning,
                     onClick = {
-                        viewModel.setSource(Source.SEARCH_NEW)
+                        viewModel.setSearchSource(Source.SEARCH_NEW)
                     }
                 )
             }

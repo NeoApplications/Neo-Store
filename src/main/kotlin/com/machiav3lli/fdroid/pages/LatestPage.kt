@@ -32,6 +32,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.ActionState
 import com.machiav3lli.fdroid.entity.DialogKey
+import com.machiav3lli.fdroid.entity.Page
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
 import com.machiav3lli.fdroid.ui.compose.ProductsCarousel
@@ -40,21 +41,21 @@ import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utility.onLaunchClick
-import com.machiav3lli.fdroid.viewmodels.LatestVM
+import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LatestPage(viewModel: LatestVM) {
+fun LatestPage(viewModel: MainVM) {
     val context = LocalContext.current
     val neoActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
 
     val installedList by viewModel.installed.collectAsState(emptyMap())
-    val secondaryList by viewModel.secondaryProducts.collectAsState(emptyList())
-    val primaryList by viewModel.primaryProducts.collectAsState(emptyList())
+    val secondaryList by viewModel.newProdsLatest.collectAsState(emptyList())
+    val primaryList by viewModel.updatedProdsLatest.collectAsState(emptyList())
     val repositories = viewModel.repositories.collectAsState(emptyList())
     val repositoriesMap by remember {
         derivedStateOf {
@@ -66,7 +67,7 @@ fun LatestPage(viewModel: LatestVM) {
     val scaffoldState = rememberBottomSheetScaffoldState()
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
-    val sortFilter by viewModel.sortFilter.collectAsState()
+    val sortFilter by viewModel.sortFilterLatest.collectAsState()
     val notModifiedSortFilter by remember(sortFilter) {
         derivedStateOf {
             Preferences[Preferences.Key.SortOrderAscendingLatest] == Preferences.Key.SortOrderAscendingLatest.default.value &&
@@ -88,6 +89,7 @@ fun LatestPage(viewModel: LatestVM) {
                     Preferences.Key.SortOrderLatest,
                     Preferences.Key.SortOrderAscendingLatest,
                     -> viewModel.setSortFilter(
+                        Page.LATEST,
                         listOf(
                             Preferences[Preferences.Key.ReposFilterLatest],
                             Preferences[Preferences.Key.CategoriesFilterLatest],
