@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.machiav3lli.fdroid"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.machiav3lli.fdroid"
