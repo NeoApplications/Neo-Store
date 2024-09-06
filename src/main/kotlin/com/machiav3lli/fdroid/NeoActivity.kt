@@ -133,7 +133,7 @@ class NeoActivity : AppCompatActivity() {
                 val appSheetVM = remember {
                     derivedStateOf {
                         AppSheetVM(
-                            MainApplication.db,
+                            db,
                             appSheetPackage,
                         )
                     }

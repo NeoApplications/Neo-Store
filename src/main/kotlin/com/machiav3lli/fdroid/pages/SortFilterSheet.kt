@@ -60,8 +60,7 @@ import kotlinx.coroutines.flow.mapLatest
 fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
     val context = LocalContext.current
     val nestedScrollConnection = rememberNestedScrollInteropConnection()
-    val dbHandler = MainApplication.db
-    val repos by dbHandler.getRepositoryDao().getAllFlow().collectAsState(emptyList())
+    val repos by MainApplication.db.getRepositoryDao().getAllFlow().collectAsState(emptyList())
     val categories by db.getCategoryDao().getAllNamesFlow().collectAsState(emptyList())
     val licenses by db.getProductDao().getAllLicensesFlow().mapLatest {
         it.map(Licenses::licenses).flatten().distinct()

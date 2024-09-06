@@ -1,7 +1,6 @@
 package com.machiav3lli.fdroid.viewmodels
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.Extras
@@ -154,16 +153,6 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
                     db.getRepositoryDao().insertOrUpdate(*newValue)
                 }
             }
-        }
-    }
-
-    class Factory(private val db: DatabaseX) : ViewModelProvider.Factory {
-        @Suppress("unchecked_cast")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(PrefsVM::class.java)) {
-                return PrefsVM(db) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
 }

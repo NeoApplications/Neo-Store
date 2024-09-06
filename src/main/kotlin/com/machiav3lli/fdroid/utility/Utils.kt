@@ -72,7 +72,7 @@ object Utils {
             versionName.orEmpty(),
             versionCodeCompat,
             signatureString,
-            applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == ApplicationInfo.FLAG_SYSTEM,
+            applicationInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM) == ApplicationInfo.FLAG_SYSTEM,
             launcherActivities
         )
     }

@@ -6,6 +6,8 @@ val PackageInfo.grantedPermissions: Map<String, Boolean>
     get() = requestedPermissions?.mapIndexed { index, perm ->
         Pair(
             perm,
-            requestedPermissionsFlags[index] and PackageInfo.REQUESTED_PERMISSION_GRANTED == PackageInfo.REQUESTED_PERMISSION_GRANTED
+            (requestedPermissionsFlags?.get(index)
+                ?: 0) and PackageInfo.REQUESTED_PERMISSION_GRANTED
+                    == PackageInfo.REQUESTED_PERMISSION_GRANTED
         )
     }?.toMap().orEmpty()

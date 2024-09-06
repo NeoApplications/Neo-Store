@@ -1,7 +1,6 @@
 package com.machiav3lli.fdroid.viewmodels
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Cache
@@ -279,16 +278,6 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
                 .upsert(oldValue.copy(favorite = setBoolean))
             else db.getExtrasDao()
                 .upsert(Extras(packageName, favorite = setBoolean))
-        }
-    }
-
-    class Factory(val db: DatabaseX) : ViewModelProvider.Factory {
-        @Suppress("unchecked_cast")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(MainVM::class.java)) {
-                return MainVM(db) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
 }
