@@ -403,4 +403,5 @@
     <string name="last_successful_sync">Ultimi aggiornamenti: %s
 \n Tutti i repository: %s</string>
     <string name="confirm_uninstall_DESC_FORMAT">Sei sicuro di voler disinstallare %s?</string>
+    <string name="erase_all">Cancella tutto</string>
 </resources>
