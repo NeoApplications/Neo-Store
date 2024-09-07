@@ -409,4 +409,5 @@
     <string name="last_successful_sync">آخر تحديث: %s
 \nجميع المستودعات: %s</string>
     <string name="confirm_uninstall_DESC_FORMAT">هل أنت متأكد من أنك تريد أن إلغاء تثبيت%s؟</string>
+    <string name="erase_all">مسح الكل</string>
 </resources>
