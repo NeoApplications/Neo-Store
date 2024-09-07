@@ -403,4 +403,5 @@
     <string name="last_successful_sync">Poslední aktualizace: %s
 \nVšechny repozitáře: %s</string>
     <string name="confirm_uninstall_DESC_FORMAT">Opravdu chcete odinstalovat %s?</string>
+    <string name="erase_all">Vymazat vše</string>
 </resources>
