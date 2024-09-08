@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.text.format.DateUtils
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -336,6 +337,12 @@ fun RepoPage(
                     }
                 }
                 item {
+                    val strokeColor by animateColorAsState(
+                        if (addressValidity.value) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.tertiary,
+                        label = "strokeColorAddress"
+                    )
+
                     TitleText(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(id = R.string.address),
@@ -349,7 +356,7 @@ fun RepoPage(
                             OutlinedCard(
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = MaterialTheme.shapes.large,
-                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                                border = BorderStroke(1.dp, strokeColor),
                                 onClick = {
                                     dialogProps.intValue = DIALOG_ADDRESS
                                     openDialog.value = true
@@ -384,6 +391,12 @@ fun RepoPage(
                     }
                 }
                 item {
+                    val strokeColor by animateColorAsState(
+                        if (fingerprintValidity.value) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.tertiary,
+                        label = "strokeColorFP"
+                    )
+
                     TitleText(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(id = R.string.fingerprint),
@@ -408,7 +421,7 @@ fun RepoPage(
                         OutlinedCard(
                             modifier = Modifier.fillMaxWidth(),
                             shape = MaterialTheme.shapes.large,
-                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                            border = BorderStroke(1.dp, strokeColor),
                             onClick = {
                                 dialogProps.intValue = DIALOG_FINGERPRINT
                                 openDialog.value = true
@@ -447,6 +460,12 @@ fun RepoPage(
                 }
                 if (editMode) {
                     item {
+                        val strokeColor by animateColorAsState(
+                            if (usernameValidity.value) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.tertiary,
+                            label = "strokeColorUN"
+                        )
+
                         TitleText(
                             modifier = Modifier.fillMaxWidth(),
                             text = stringResource(id = R.string.username),
@@ -455,7 +474,7 @@ fun RepoPage(
                         OutlinedCard(
                             modifier = Modifier.fillMaxWidth(),
                             shape = MaterialTheme.shapes.large,
-                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                            border = BorderStroke(1.dp, strokeColor),
                             onClick = {
                                 dialogProps.intValue = DIALOG_USERNAME
                                 openDialog.value = true
@@ -470,6 +489,12 @@ fun RepoPage(
                         }
                     }
                     item {
+                        val strokeColor by animateColorAsState(
+                            if (passwordValidity.value) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.tertiary,
+                            label = "strokeColorPW"
+                        )
+
                         TitleText(
                             modifier = Modifier
                                 .clickable {
@@ -483,7 +508,7 @@ fun RepoPage(
                         OutlinedCard(
                             modifier = Modifier.fillMaxWidth(),
                             shape = MaterialTheme.shapes.large,
-                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                            border = BorderStroke(1.dp, strokeColor),
                             onClick = {
                                 dialogProps.intValue = DIALOG_PASSWORD
                                 openDialog.value = true
