@@ -347,27 +347,3 @@ interface ProductTempDao : BaseDao<ProductTemp> {
         }
     }
 }
-
-@Dao
-interface ExtrasDao : BaseDao<Extras> {
-    @Query("DELETE FROM extras WHERE packageName = :packageName")
-    fun delete(packageName: String)
-
-    @Query("SELECT * FROM extras WHERE packageName = :packageName")
-    operator fun get(packageName: String): Extras?
-
-    @Query("SELECT * FROM extras WHERE packageName = :packageName")
-    fun getFlow(packageName: String): Flow<Extras?>
-
-    @Query("SELECT * FROM extras")
-    fun getAll(): List<Extras>
-
-    @Query("SELECT * FROM extras")
-    fun getAllFlow(): Flow<List<Extras>>
-
-    @Query("SELECT packageName FROM extras WHERE favorite != 0")
-    fun getFavorites(): Array<String>
-
-    @Query("SELECT packageName FROM extras WHERE favorite != 0")
-    fun getFavoritesFlow(): Flow<Array<String>>
-}
