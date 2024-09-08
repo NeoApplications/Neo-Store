@@ -527,7 +527,7 @@ fun RepoPage(
                 DIALOG_ADDRESS -> {
                     StringInputDialogUI(
                         titleText = stringResource(id = R.string.address),
-                        initValue = repo?.address ?: "",
+                        initValue = addressFieldValue,
                         openDialogCustom = openDialog
                     ) {
                         addressFieldValue = it
@@ -538,7 +538,7 @@ fun RepoPage(
                 DIALOG_FINGERPRINT -> {
                     StringInputDialogUI(
                         titleText = stringResource(id = R.string.fingerprint),
-                        initValue = repo?.fingerprint ?: "",
+                        initValue = fingerprintFieldValue,
                         openDialogCustom = openDialog
                     ) {
                         fingerprintFieldValue = it
@@ -549,7 +549,7 @@ fun RepoPage(
                 DIALOG_USERNAME -> {
                     StringInputDialogUI(
                         titleText = stringResource(id = R.string.username),
-                        initValue = repo?.authenticationPair?.first ?: "",
+                        initValue = usernameFieldValue,
                         openDialogCustom = openDialog
                     ) {
                         usernameFieldValue = it
@@ -564,7 +564,7 @@ fun RepoPage(
                 DIALOG_PASSWORD -> {
                     StringInputDialogUI(
                         titleText = stringResource(id = R.string.password),
-                        initValue = repo?.authenticationPair?.second ?: "",
+                        initValue = passwordFieldValue,
                         openDialogCustom = openDialog
                     ) {
                         passwordFieldValue = it
