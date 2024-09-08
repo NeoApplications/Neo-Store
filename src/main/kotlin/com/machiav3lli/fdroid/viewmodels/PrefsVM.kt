@@ -8,31 +8,25 @@ import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.newRepository
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 
 class PrefsVM(val db: DatabaseX) : ViewModel() {
-
     private val cc = Dispatchers.IO
-    private val cScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
-    private val _showSheet = MutableSharedFlow<SheetNavigationData?>()
-    val showSheet: SharedFlow<SheetNavigationData?> = _showSheet
+    private val ioScope = viewModelScope.plus(Dispatchers.IO)
 
     val repositories = db.getRepositoryDao().getAllFlow()
         .stateIn(
-            viewModelScope,
+            ioScope,
             SharingStarted.Lazily,
             emptyList()
         )
@@ -46,18 +40,17 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
         }
     }
         .stateIn(
-            viewModelScope,
+            ioScope,
             SharingStarted.Lazily,
             emptyList()
         )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val installed = db.getInstalledDao().getAllFlow().mapLatest {
+    val installed = db.getInstalledDao().getAllFlow().map {
         it.associateBy(Installed::packageName)
     }
 
     val extras = db.getExtrasDao().getAllFlow().stateIn(
-        viewModelScope,
+        ioScope,
         SharingStarted.Eagerly,
         emptyList()
     )
@@ -68,39 +61,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     val fingerprint = intentFingerprint as StateFlow<String>
 
     fun setSearchQuery(value: String) {
-        cScope.launch { _reposSearchQuery.emit(value) }
-    }
-
-    fun showRepositorySheet(
-        repositoryId: Long = 0L,
-        editMode: Boolean = false,
-        address: String = "",
-        fingerprint: String = "",
-        addNew: Boolean = false,
-    ) {
-        viewModelScope.launch {
-            _showSheet.emit(
-                when {
-                    addNew && (address.isEmpty() || repositories.value.none { it.address == address }) -> {
-                        SheetNavigationData(addNewRepository(address, fingerprint), editMode)
-                    }
-
-                    !addNew                                                                            -> {
-                        SheetNavigationData(repositoryId, editMode)
-                    }
-
-                    else                                                                               -> {
-                        null
-                    }
-                }
-            )
-        }
-    }
-
-    fun closeRepositorySheet() {
-        viewModelScope.launch {
-            _showSheet.emit(null)
-        }
+        ioScope.launch { _reposSearchQuery.emit(value) }
     }
 
     fun setIntent(address: String?, fingerprint: String?) {
@@ -112,14 +73,13 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
 
     suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long =
         withContext(cc) {
-            db.getRepositoryDao().insert(
+            db.getRepositoryDao().insertReturn(
                 newRepository(
                     fallbackName = "new repository",
                     address = address,
                     fingerprint = fingerprint
                 )
             )
-            db.getRepositoryDao().latestAddedId()
         }
 
     fun updateRepo(newValue: Repository?) {

@@ -13,6 +13,9 @@ interface RepositoryDao : BaseDao<Repository> {
     @Query("SELECT COUNT(_id) FROM repository")
     fun getCount(): Int
 
+    @Insert
+    fun insertReturn(repo: Repository) : Long
+
     fun put(repository: Repository): Repository {
         repository.let { item ->
             val newId = if (item.id > 0L) update(item).toLong() else returnInsert(item)

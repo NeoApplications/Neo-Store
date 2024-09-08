@@ -15,31 +15,21 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
-import com.machiav3lli.fdroid.pages.AppSheet
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.AppNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
@@ -47,17 +37,13 @@ import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import com.machiav3lli.fdroid.utility.isBiometricLockEnabled
 import com.machiav3lli.fdroid.utility.isDarkTheme
-import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -87,10 +73,6 @@ class NeoActivity : AppCompatActivity() {
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
-    private val _appSheetPackage: MutableStateFlow<String> = MutableStateFlow("")
-    private val _showAppSheet: MutableSharedFlow<Boolean> = MutableSharedFlow(replay = 1)
-    val isAppSheetOpen: Boolean
-        get() = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded
 
     val db: DatabaseX by inject()
 
@@ -128,44 +110,12 @@ class NeoActivity : AppCompatActivity() {
                     else -> isDarkTheme
                 }
             ) {
-                val mScope = rememberCoroutineScope()
                 navController = rememberNavController()
-
-                scaffoldState = rememberBottomSheetScaffoldState()
-                val appSheetPackage by _appSheetPackage.collectAsState()
-                val appSheetVM = remember {
-                    derivedStateOf {
-                        AppSheetVM(
-                            db,
-                            appSheetPackage,
-                        )
-                    }
-                }
                 mainNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
 
-                LaunchedEffect(Unit) {
-                    withContext(Dispatchers.IO) {
-                        _showAppSheet.collectLatest {
-                            mScope.launch {
-                                if (it) scaffoldState.bottomSheetState.expand()
-                                else scaffoldState.bottomSheetState.partialExpand()
-                            }
-                        }
-                    }
-                }
-
-                BottomSheetScaffold(
-                    scaffoldState = scaffoldState,
-                    sheetPeekHeight = 0.dp,
+                Scaffold(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                     contentColor = MaterialTheme.colorScheme.onBackground,
-                    sheetContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                    sheetContent = {
-                        AppSheet(
-                            appSheetVM.value,
-                            appSheetPackage,
-                        )
-                    }
                 ) {
                     LaunchedEffect(key1 = navController) {
                         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
@@ -266,7 +216,7 @@ class NeoActivity : AppCompatActivity() {
                     && !intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)
                 ) {
                     intent.putExtra(EXTRA_INTENT_HANDLED, true)
-                    val (addressText, fingerprintText) = try {
+                    val (repoAddress, repoFingerprint) = try {
                         val uri = data.buildUpon()
                             .scheme("https")
                             .path(data.path?.pathCropped)
@@ -277,8 +227,8 @@ class NeoActivity : AppCompatActivity() {
                     }
                     handleSpecialIntent(
                         SpecialIntent.AddRepo(
-                            addressText,
-                            fingerprintText
+                            repoAddress,
+                            repoFingerprint
                         )
                     )
                 } else if (host == "search") {

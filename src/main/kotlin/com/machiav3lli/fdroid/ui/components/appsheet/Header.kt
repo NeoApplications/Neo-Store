@@ -104,10 +104,10 @@ fun AppInfoHeader(
 
 @Composable
 fun TopBarHeader(
-    modifier: Modifier = Modifier,
-    icon: String? = null,
     appName: String,
     packageName: String,
+    modifier: Modifier = Modifier,
+    icon: String? = null,
     state: DownloadState? = null,
     actions: @Composable () -> Unit = {},
 ) {
@@ -150,8 +150,8 @@ fun TopBarHeader(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CardButton(
-    modifier: Modifier = Modifier,
     icon: ImageVector,
+    modifier: Modifier = Modifier,
     description: String = "",
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
@@ -193,10 +193,10 @@ fun SourceCodeButton(
 
 @Composable
 fun DownloadProgress(
-    modifier: Modifier = Modifier,
     totalSize: Long,
     downloaded: Long?,
     isIndeterminate: Boolean,
+    modifier: Modifier = Modifier,
     finishedTime: Long = 0L,
 ) {
     Column(
@@ -236,10 +236,12 @@ fun DownloadProgress(
                     style = MaterialTheme.typography.bodySmall,
                 )
                 LinearProgressIndicator(
+                    progress = {
+                        downloaded?.toFloat()?.div(totalSize) ?: 1f
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(ShapeDefaults.Large),
-                    progress = downloaded?.toFloat()?.div(totalSize) ?: 1f
                 )
             }
         }

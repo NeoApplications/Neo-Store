@@ -25,26 +25,24 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
-
     private val cc = Dispatchers.IO
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val products = db.getProductDao().getFlow(packageName).mapLatest { it.filterNotNull() }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private val developer = products.mapLatest { it.firstOrNull()?.author?.name ?: "" }.stateIn(
         viewModelScope,
         SharingStarted.Lazily,
         ""
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val exodusInfo = db.getExodusInfoDao().getFlow(packageName)
         .mapLatest { it.maxByOrNull(ExodusInfo::version_code) }
 
@@ -52,7 +50,6 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         b.filter { it.key in (a?.trackers ?: emptyList()) }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val repositories = db.getRepositoryDao().getAllFlow().mapLatest { it }
 
     val installedItem = db.getInstalledDao().getFlow(packageName)
@@ -85,12 +82,10 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
         PrivacyData(emptyMap(), emptyList(), emptyList())
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val privacyNote = privacyData.mapLatest {
         it.toPrivacyNote()
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val downloadingState = db.getDownloadedDao().getLatestFlow(packageName)
         .mapLatest { it?.state }
         .stateIn(
@@ -164,16 +159,14 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
             old.second == new.second && matchCancel
         }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val mainAction: StateFlow<ActionState> = actions.mapLatest { it.first }
+    val mainAction: StateFlow<ActionState> = actions.map { it.first }
         .stateIn(
             viewModelScope,
             SharingStarted.Lazily,
             ActionState.Bookmark
         )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val subActions: StateFlow<Set<ActionState>> = actions.mapLatest { it.second }
+    val subActions: StateFlow<Set<ActionState>> = actions.map { it.second }
         .stateIn(
             viewModelScope,
             SharingStarted.Lazily,

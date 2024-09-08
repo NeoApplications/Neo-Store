@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -83,7 +84,7 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
         initialValue = emptyMap(),
     )
 
-    val installed = db.getInstalledDao().getAllFlow().mapLatest {
+    val installed = db.getInstalledDao().getAllFlow().map {
         it.associateBy(Installed::packageName)
     }.stateIn(
         scope = ioScope,

@@ -84,8 +84,9 @@ fun NeoNavigationSuiteScaffold(
                     selected = it == selectedPage,
                     itemColors = itemColors,
                     onClick = {
-                        if (customNavSuiteType == NavigationSuiteType.NavigationBar)
-                            mActivity.paneNavigator.navigateTo(ListDetailPaneScaffoldRole.List)
+                        if (customNavSuiteType == NavigationSuiteType.NavigationBar
+                            && pages.contains(NavItem.Latest)
+                        ) mActivity.mainNavigator.navigateTo(ListDetailPaneScaffoldRole.List)
                         onItemClick(index)
                     }
                 )
