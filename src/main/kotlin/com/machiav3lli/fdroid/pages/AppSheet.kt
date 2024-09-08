@@ -496,7 +496,8 @@ fun AppSheet(
                         item {
                             AppInfoHeader(
                                 mainAction = mainAction,
-                                possibleActions = actions.filter { it != mainAction }.toSet(),
+                                possibleActions = actions,
+                                favState = { extras?.favorite == true },
                                 onAction = { onActionClick(it) }
                             )
                         }

@@ -48,9 +48,10 @@ import com.machiav3lli.fdroid.utility.extension.text.formatSize
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AppInfoHeader(
-    modifier: Modifier = Modifier,
     mainAction: ActionState,
+    favState: () -> Boolean,
     possibleActions: Set<ActionState>,
+    modifier: Modifier = Modifier,
     onAction: (ActionState?) -> Unit = { },
 ) {
     Column(
@@ -64,25 +65,25 @@ fun AppInfoHeader(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (mainAction != ActionState.Bookmark || mainAction != ActionState.Bookmarked) {
-                val secondAction =
-                    possibleActions.find { it == ActionState.Bookmark || it == ActionState.Bookmarked }
+            val secondAction = if (favState()) ActionState.Bookmarked
+            else ActionState.Bookmark
+            val firstAction = if (mainAction == ActionState.NoAction) secondAction
+            else mainAction
+
+            if (firstAction != secondAction) {
                 SecondaryActionButton(packageState = secondAction) {
                     onAction(secondAction)
                 }
             }
             MainActionButton(
                 modifier = Modifier.weight(1f),
-                actionState = mainAction,
+                actionState = firstAction,
                 onClick = {
-                    onAction(mainAction)
+                    onAction(firstAction)
                 }
             )
         }
-        val secondaryActions = possibleActions
-            .minus(ActionState.Bookmark)
-            .minus(ActionState.Bookmarked)
-        AnimatedVisibility(visible = secondaryActions.isNotEmpty()) {
+        AnimatedVisibility(visible = possibleActions.isNotEmpty()) {
             FlowRow(
                 modifier = modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(
@@ -91,7 +92,7 @@ fun AppInfoHeader(
                 ),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                secondaryActions.forEach {
+                possibleActions.forEach {
                     SecondaryActionButton(packageState = it) {
                         onAction(it)
                     }
