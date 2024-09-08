@@ -3,7 +3,6 @@ package com.machiav3lli.fdroid.pages
 import android.content.ClipboardManager
 import android.content.Context
 import android.net.Uri
-import android.text.format.DateUtils
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
@@ -13,8 +12,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,10 +19,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -40,10 +37,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
@@ -62,7 +57,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TrashSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
-import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.dialog.ActionsDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.DIALOG_NONE
@@ -74,7 +68,6 @@ import com.machiav3lli.fdroid.utility.getLocaleDateString
 import kotlinx.coroutines.launch
 import java.net.URI
 import java.net.URL
-import java.util.Date
 import java.util.Locale
 
 const val DIALOG_ADDRESS = 1
@@ -176,103 +169,13 @@ fun RepoPage(
             }
         }
 
-        Scaffold(
-            containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.onBackground,
-            bottomBar = {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    if (!editMode) Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        CheckChip(
-                            checked = enabled,
-                            text = stringResource(
-                                id = if (enabled) R.string.enabled
-                                else R.string.enable
-                            ),
-                            fullWidth = false,
-                        ) {
-                            scope.launch {
-                                SyncWorker.enableRepo(repo, !enabled)
-                            }
-                        }
-                        ActionButton(
-                            text = stringResource(id = R.string.delete),
-                            icon = Phosphor.TrashSimple,
-                            positive = false
-                        ) {
-                            openDeleteDialog.value = true
-                        }
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        ActionButton(
-                            modifier = Modifier.weight(1f),
-                            text = stringResource(
-                                id = if (!editMode) R.string.dismiss
-                                else R.string.cancel
-                            ),
-                            icon = if (!editMode) Phosphor.CaretDown
-                            else Phosphor.X,
-                            positive = false
-                        ) {
-                            if (!editMode)
-                                onDismiss()
-                            else {
-                                editMode = false
-                                addressFieldValue = repo.address
-                                fingerprintFieldValue = repo.fingerprint
-                                usernameFieldValue = repo.authenticationPair.first.orEmpty()
-                                passwordFieldValue = repo.authenticationPair.second.orEmpty()
-                            }
-                        }
-                        ActionButton(
-                            text = stringResource(
-                                id = if (!editMode) R.string.edit
-                                else R.string.save
-                            ),
-                            icon = if (!editMode) Phosphor.GearSix
-                            else Phosphor.Check,
-                            modifier = Modifier.weight(1f),
-                            positive = true,
-                            enabled = !editMode || validations.all { it.value },
-                            onClick = {
-                                if (!editMode) editMode = true
-                                else {
-                                    // TODO show readable error
-                                    updateRepo(repo.apply {
-                                        address = addressFieldValue
-                                        fingerprint = fingerprintFieldValue.uppercase()
-                                        setAuthentication(
-                                            usernameFieldValue,
-                                            passwordFieldValue,
-                                        )
-                                    })
-                                    // TODO sync a new when is already active
-                                    editMode = false
-                                }
-                            }
-                        )
-                    }
-                }
-            }
-        ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
             LazyColumn(
                 modifier = Modifier
-                    .padding(
-                        bottom = paddingValues.calculateBottomPadding(),
-                        start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
-                        end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
-                    )
-                    .blockBorder()
+                    .weight(1f, true)
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 contentPadding = PaddingValues(16.dp)
@@ -287,7 +190,7 @@ fun RepoPage(
                         BlockText(text = repo.name)
                     }
                 }
-                if (!editMode) {
+                if (!editMode && repo.description.isNotEmpty()) {
                     item {
                         TitleText(
                             modifier = Modifier.fillMaxWidth(),
@@ -524,6 +427,90 @@ fun RepoPage(
                             }
                         }
                     }
+                }
+            }
+            HorizontalDivider(thickness = 2.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                if (!editMode) Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    CheckChip(
+                        checked = enabled,
+                        text = stringResource(
+                            id = if (enabled) R.string.enabled
+                            else R.string.enable
+                        ),
+                        fullWidth = false,
+                    ) {
+                        scope.launch {
+                            SyncWorker.enableRepo(repo, !enabled)
+                        }
+                    }
+                    ActionButton(
+                        text = stringResource(id = R.string.delete),
+                        icon = Phosphor.TrashSimple,
+                        positive = false
+                    ) {
+                        openDeleteDialog.value = true
+                    }
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    ActionButton(
+                        modifier = Modifier.weight(1f),
+                        text = stringResource(
+                            id = if (!editMode) R.string.dismiss
+                            else R.string.cancel
+                        ),
+                        icon = if (!editMode) Phosphor.CaretDown
+                        else Phosphor.X,
+                        positive = false
+                    ) {
+                        if (!editMode)
+                            onDismiss()
+                        else {
+                            editMode = false
+                            addressFieldValue = repo.address
+                            fingerprintFieldValue = repo.fingerprint
+                            usernameFieldValue = repo.authenticationPair.first.orEmpty()
+                            passwordFieldValue = repo.authenticationPair.second.orEmpty()
+                        }
+                    }
+                    ActionButton(
+                        text = stringResource(
+                            id = if (!editMode) R.string.edit
+                            else R.string.save
+                        ),
+                        icon = if (!editMode) Phosphor.GearSix
+                        else Phosphor.Check,
+                        modifier = Modifier.weight(1f),
+                        positive = true,
+                        enabled = !editMode || validations.all { it.value },
+                        onClick = {
+                            if (!editMode) editMode = true
+                            else {
+                                // TODO show readable error
+                                updateRepo(repo.apply {
+                                    address = addressFieldValue
+                                    fingerprint = fingerprintFieldValue.uppercase()
+                                    setAuthentication(
+                                        usernameFieldValue,
+                                        passwordFieldValue,
+                                    )
+                                })
+                                // TODO sync a new when is already active
+                                editMode = false
+                            }
+                        }
+                    )
                 }
             }
         }
