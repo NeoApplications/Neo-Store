@@ -156,12 +156,14 @@ fun RepoPage(
         invalidateAddress(addressValidity, addressFieldValue)
         invalidateFingerprint(fingerprintValidity, fingerprintFieldValue)
         invalidateAuthentication(
+            usernameValidity,
             passwordValidity,
             usernameFieldValue,
             passwordFieldValue,
         )
         invalidateAuthentication(
             usernameValidity,
+            passwordValidity,
             usernameFieldValue,
             passwordFieldValue,
         )
@@ -579,6 +581,7 @@ fun RepoPage(
                     ) {
                         usernameFieldValue = it
                         invalidateAuthentication(
+                            usernameValidity,
                             passwordValidity,
                             usernameFieldValue,
                             passwordFieldValue,
@@ -594,6 +597,7 @@ fun RepoPage(
                     ) {
                         passwordFieldValue = it
                         invalidateAuthentication(
+                            usernameValidity,
                             passwordValidity,
                             usernameFieldValue,
                             passwordFieldValue,
@@ -626,14 +630,16 @@ private fun invalidateFingerprint(validity: MutableState<Boolean>, fingerprint: 
 
 
 private fun invalidateAuthentication(
-    validity: MutableState<Boolean>,
+    usernameValidity: MutableState<Boolean>,
+    passwordValidity: MutableState<Boolean>,
     username: String,
     password: String,
 ) {
     val usernameInvalid = username.contains(':')
     val usernameEmpty = username.isEmpty() && password.isNotEmpty()
     val passwordEmpty = username.isNotEmpty() && password.isEmpty()
-    validity.value = !(usernameInvalid || usernameEmpty || passwordEmpty)
+    usernameValidity.value = !usernameInvalid && !usernameEmpty
+    passwordValidity.value = !passwordEmpty
 }
 
 private fun normalizeAddress(address: String): String? {
