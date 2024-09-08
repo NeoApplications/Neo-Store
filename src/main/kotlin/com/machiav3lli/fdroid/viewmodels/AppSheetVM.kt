@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.DatabaseX
+import com.machiav3lli.fdroid.database.dao.ExtrasDao
 import com.machiav3lli.fdroid.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Product
@@ -119,7 +120,7 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
     }
 
     private val actions: Flow<Pair<ActionState, Set<ActionState>>> =
-        combine(productRepos, downloadingState, installedItem, extras) { prs, ds, ins, ex ->
+        combine(productRepos, downloadingState, installedItem) { prs, ds, ins ->
             val product = findSuggestedProduct(prs, ins) { it.first }?.first
             val compatible = product != null && product.selectedReleases.firstOrNull()
                 .let { it != null && it.incompatibilities.isEmpty() }
@@ -133,7 +134,6 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
                     ins != null && ins.launcherActivities.isNotEmpty()
             val canShare = product != null &&
                     prs[0].second.name in setOf("F-Droid", "IzzyOnDroid F-Droid Repo")
-            val bookmarked = ex?.favorite ?: false
 
             val actions = mutableSetOf<ActionState>()
             synchronized(actions) {
@@ -143,22 +143,19 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
                 if (ins != null) actions += ActionState.Details
                 if (canUninstall) actions += ActionState.Uninstall
                 if (canShare) actions += ActionState.Share
-                if (bookmarked) actions += ActionState.Bookmarked
-                else actions += ActionState.Bookmark
             }
             val primaryAction = when {
                 canUpdate -> ActionState.Update
                 canLaunch -> ActionState.Launch
                 canInstall && !Preferences[Preferences.Key.KidsMode] -> ActionState.Install
                 canShare -> ActionState.Share
-                bookmarked -> ActionState.Bookmarked
-                else -> ActionState.Bookmark
+                else -> ActionState.NoAction
             }
 
             val mA = if (ds != null && ds.isActive)
                 ActionState.Cancel(ds.description)
             else primaryAction
-            Pair(mA, actions)
+            Pair(mA, actions.minus(mA))
         }.distinctUntilChanged { old, new ->
             val omA = old.first
             val nmA = new.first
@@ -186,97 +183,71 @@ class AppSheetVM(val db: DatabaseX, val packageName: String) : ViewModel() {
     private fun shouldIgnore(appVersionCode: Long): Boolean =
         extras.value?.ignoredVersion == appVersionCode || extras.value?.ignoreUpdates == true
 
+    private suspend fun saveExtraField(
+        packageName: String,
+        updateFunc: ExtrasDao.(Extras?) -> Unit
+    ) {
+        withContext(cc) {
+            db.getExtrasDao().upsertExtra(packageName, updateFunc)
+        }
+    }
+
     fun setIgnoredVersion(packageName: String, versionCode: Long) {
         viewModelScope.launch {
-            saveIgnoredVersion(packageName, versionCode)
+            saveExtraField(packageName) {
+                if (it != null) updateIgnoredVersion(packageName, versionCode)
+                else insert(Extras(packageName, ignoredVersion = versionCode))
+            }
         }
     }
-
-    private suspend fun saveIgnoredVersion(packageName: String, versionCode: Long) {
-        withContext(cc) {
-            val oldValue = db.getExtrasDao()[packageName]
-            if (oldValue != null) db.getExtrasDao()
-                .upsert(oldValue.copy(ignoredVersion = versionCode))
-            else db.getExtrasDao()
-                .upsert(Extras(packageName, ignoredVersion = versionCode))
-        }
-    }
-
 
     fun setIgnoreUpdates(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
-            saveIgnoreUpdates(packageName, setBoolean)
-        }
-    }
-
-    private suspend fun saveIgnoreUpdates(packageName: String, setBoolean: Boolean) {
-        withContext(cc) {
-            val oldValue = db.getExtrasDao()[packageName]
-            if (oldValue != null) db.getExtrasDao()
-                .upsert(oldValue.copy(ignoreUpdates = setBoolean))
-            else db.getExtrasDao()
-                .upsert(Extras(packageName, ignoreUpdates = setBoolean))
+            saveExtraField(packageName) {
+                if (it != null) updateIgnoreUpdates(packageName, setBoolean)
+                else insert(Extras(packageName, ignoreUpdates = setBoolean))
+            }
         }
     }
 
     fun setIgnoreVulns(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
-            saveIgnoreVulns(packageName, setBoolean)
-        }
-    }
-
-    private suspend fun saveIgnoreVulns(packageName: String, setBoolean: Boolean) {
-        withContext(cc) {
-            val oldValue = db.getExtrasDao()[packageName]
-            if (oldValue != null) db.getExtrasDao()
-                .upsert(oldValue.copy(ignoreVulns = setBoolean))
-            else db.getExtrasDao()
-                .upsert(Extras(packageName, ignoreVulns = setBoolean))
+            saveExtraField(packageName) {
+                if (it != null) updateIgnoreVulns(packageName, setBoolean)
+                else insert(Extras(packageName, ignoreVulns = setBoolean))
+            }
         }
     }
 
     fun setAllowUnstableUpdates(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
-            saveAllowUnstableUpdates(packageName, setBoolean)
-        }
-    }
-
-    private suspend fun saveAllowUnstableUpdates(packageName: String, setBoolean: Boolean) {
-        withContext(cc) {
-            val oldValue = db.getExtrasDao()[packageName]
-            if (oldValue != null) db.getExtrasDao()
-                .upsert(oldValue.copy(allowUnstable = setBoolean))
-            else db.getExtrasDao()
-                .upsert(Extras(packageName, allowUnstable = setBoolean))
-            val features = MainApplication.context.packageManager.systemAvailableFeatures
-                .asSequence().map { it.name }.toSet() + setOf("android.hardware.touchscreen")
-            productRepos.value.forEach {
-                db.getProductDao().upsert(
-                    it.first.apply {
-                        refreshReleases(
-                            features,
-                            setBoolean || Preferences[Preferences.Key.UpdateUnstable]
-                        )
-                        refreshVariables()
-                    }
-                )
+            saveExtraField(packageName) {
+                if (it != null) updateAllowUnstable(packageName, setBoolean)
+                else insert(Extras(packageName, allowUnstable = setBoolean))
+                val features = MainApplication.context.packageManager.systemAvailableFeatures
+                    .asSequence().map { feat -> feat.name }
+                    .toSet() + setOf("android.hardware.touchscreen")
+                productRepos.value.forEach { prodRepo ->
+                    db.getProductDao().upsert(
+                        prodRepo.first.apply {
+                            refreshReleases(
+                                features,
+                                setBoolean || Preferences[Preferences.Key.UpdateUnstable]
+                            )
+                            refreshVariables()
+                        }
+                    )
+                }
             }
         }
     }
 
     fun setFavorite(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
-            saveFavorite(packageName, setBoolean)
-        }
-    }
-
-    private suspend fun saveFavorite(packageName: String, setBoolean: Boolean) {
-        withContext(cc) {
-            val oldValue = db.getExtrasDao()[packageName]
-            if (oldValue != null) db.getExtrasDao()
-                .upsert(oldValue.copy(favorite = setBoolean))
-            else db.getExtrasDao()
-                .upsert(Extras(packageName, favorite = setBoolean))
+            saveExtraField(packageName) {
+                if (it != null) updateFavorite(packageName, setBoolean)
+                else insert(Extras(packageName, favorite = setBoolean))
+            }
         }
     }
 }
