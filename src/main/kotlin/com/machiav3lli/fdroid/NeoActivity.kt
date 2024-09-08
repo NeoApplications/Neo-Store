@@ -17,10 +17,13 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
+import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -61,7 +64,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.dsl.module
 import kotlin.properties.Delegates
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 class NeoActivity : AppCompatActivity() {
     companion object {
         const val ACTION_UPDATES = "${BuildConfig.APPLICATION_ID}.intent.action.UPDATES"
@@ -78,7 +81,7 @@ class NeoActivity : AppCompatActivity() {
     }
 
     private lateinit var navController: NavHostController
-    private lateinit var scaffoldState: BottomSheetScaffoldState
+    lateinit var mainNavigator: ThreePaneScaffoldNavigator<Any>
     private val cScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
     private val mScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 
@@ -138,6 +141,7 @@ class NeoActivity : AppCompatActivity() {
                         )
                     }
                 }
+                mainNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
 
                 LaunchedEffect(Unit) {
                     withContext(Dispatchers.IO) {
@@ -330,8 +334,7 @@ class NeoActivity : AppCompatActivity() {
 
     internal fun navigateProduct(packageName: String) {
         cScope.launch {
-            _appSheetPackage.emit(packageName)
-            _showAppSheet.emit(packageName.isNotEmpty())
+            mainNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, packageName)
         }
     }
 
@@ -341,10 +344,10 @@ class NeoActivity : AppCompatActivity() {
 
     private fun showSearchPage(query: String? = null) {
         mScope.launch {
+            mainNavigator.navigateTo(ListDetailPaneScaffoldRole.List)
             navController.navigate(NavRoute.Main(Preferences.DefaultTab.Search.index))
         }
         cScope.launch {
-            _showAppSheet.emit(false)
             query?.let { _searchQuery.emit(it) }
         }
     }

@@ -6,10 +6,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.layout.AnimatedPane
+import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -36,12 +42,15 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
-import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
+import com.machiav3lli.fdroid.ui.navigation.NeoNavigationSuiteScaffold
 import com.machiav3lli.fdroid.ui.navigation.SlidePager
+import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.getLocaleDateString
+import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun MainPage(navController: NavHostController, pageIndex: Int) {
     val context = LocalContext.current
@@ -60,67 +69,104 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
         NavItem.Installed,
     )
     val pagerState = rememberPagerState(initialPage = pageIndex, pageCount = { pages.size })
-
-    BackHandler {
-        if (mActivity.isAppSheetOpen)
-            mActivity.navigateProduct("")
-        else
-            mActivity.moveTaskToBack(true)
+    val currentPage by remember { derivedStateOf { pages[pagerState.currentPage] } }
+    val appPackage: MutableState<String?> = remember { mutableStateOf(null) }
+    val appSheetVM by remember {
+        derivedStateOf {
+            AppSheetVM(
+                MainApplication.db,
+                appPackage.value ?: "",
+            )
+        }
     }
 
-    Scaffold(
-        containerColor = Color.Transparent,
-        contentColor = MaterialTheme.colorScheme.onBackground,
-        bottomBar = { PagerNavBar(pageItems = pages, pagerState = pagerState) },
-        topBar = {
-            TopBar(title = stringResource(id = R.string.application_name)) {
-                TopBarAction(
-                    icon = Phosphor.ArrowsClockwise,
-                    description = stringResource(id = R.string.sync_repositories),
-                    onLongClick = {
-                        showPopup.intValue = POPUP_LONG
-                    },
-                    onClick = {
-                        if (System.currentTimeMillis() - Preferences[Preferences.Key.LastManualSyncTime] >= 10_000L) {
-                            Preferences[Preferences.Key.LastManualSyncTime] =
-                                System.currentTimeMillis()
-                            scope.launch { SyncWorker.enqueueAll(SyncRequest.MANUAL) }
-                        } else {
-                            showPopup.intValue = POPUP_SHORT
-                        }
-                    }
-                )
-                TopBarAction(
-                    icon = Phosphor.GearSix,
-                    description = stringResource(id = R.string.settings)
-                ) {
-                    navController.navigate(NavRoute.Prefs())
-                }
+    BackHandler {
+        mActivity.moveTaskToBack(true)
+    }
 
-                if (showPopup.intValue != POPUP_NONE) {
-                    Tooltip(
-                        when (showPopup.intValue) {
-                            POPUP_LONG -> stringResource(
-                                id = R.string.last_successful_sync,
-                                context.getLocaleDateString(successfulSyncs.latest),
-                                context.getLocaleDateString(successfulSyncs.latestAll),
-                            )
-
-                            else       -> stringResource(id = R.string.wait_to_sync)
-                        },
-                        showPopup
-                    )
-                }
+    NeoNavigationSuiteScaffold(
+        pages = pages,
+        selectedPage = currentPage,
+        onItemClick = { index ->
+            scope.launch {
+                pagerState.animateScrollToPage(index)
             }
         }
-    ) { paddingValues ->
-        SlidePager(
-            modifier = Modifier
-                .padding(paddingValues)
-                .blockBorder()
-                .fillMaxSize(),
-            pagerState = pagerState,
-            pageItems = pages,
+    ) {
+        NavigableListDetailPaneScaffold(
+            navigator = mActivity.mainNavigator,
+            listPane = {
+                AnimatedPane {
+                    Scaffold(
+                        containerColor = Color.Transparent,
+                        contentColor = MaterialTheme.colorScheme.onBackground,
+                        topBar = {
+                            TopBar(title = stringResource(id = R.string.application_name)) {
+                                TopBarAction(
+                                    icon = Phosphor.ArrowsClockwise,
+                                    description = stringResource(id = R.string.sync_repositories),
+                                    onLongClick = {
+                                        showPopup.intValue = POPUP_LONG
+                                    },
+                                    onClick = {
+                                        if (System.currentTimeMillis() - Preferences[Preferences.Key.LastManualSyncTime] >= 10_000L) {
+                                            Preferences[Preferences.Key.LastManualSyncTime] =
+                                                System.currentTimeMillis()
+                                            scope.launch { SyncWorker.enqueueAll(SyncRequest.MANUAL) }
+                                        } else {
+                                            showPopup.intValue = POPUP_SHORT
+                                        }
+                                    }
+                                )
+                                TopBarAction(
+                                    icon = Phosphor.GearSix,
+                                    description = stringResource(id = R.string.settings)
+                                ) {
+                                    navController.navigate(NavRoute.Prefs())
+                                }
+
+                                if (showPopup.intValue != POPUP_NONE) {
+                                    Tooltip(
+                                        when (showPopup.intValue) {
+                                            POPUP_LONG -> stringResource(
+                                                id = R.string.last_successful_sync,
+                                                context.getLocaleDateString(successfulSyncs.latest),
+                                                context.getLocaleDateString(successfulSyncs.latestAll),
+                                            )
+
+                                            else       -> stringResource(id = R.string.wait_to_sync)
+                                        },
+                                        showPopup
+                                    )
+                                }
+                            }
+                        }
+                    ) { paddingValues ->
+                        SlidePager(
+                            modifier = Modifier
+                                .padding(paddingValues)
+                                .blockBorder()
+                                .fillMaxSize(),
+                            pagerState = pagerState,
+                            pageItems = pages,
+                        )
+                    }
+                }
+            },
+            detailPane = {
+                appPackage.value = mActivity.mainNavigator.currentDestination
+                    ?.takeIf { it.pane == this.role }?.content?.toString()
+                    ?.nullIfEmpty()
+
+                appPackage.value?.let {
+                    AnimatedPane {
+                        AppSheet(
+                            viewModel = appSheetVM,
+                            packageName = appPackage.value ?: "",
+                        )
+                    }
+                }
+            }
         )
     }
 }
