@@ -405,4 +405,5 @@
     <string name="confirm_uninstall_DESC_FORMAT">Вы точно хотите удалить %s?</string>
     <string name="last_successful_sync">Последнее обновление: %s
 \nВсе репозитории: %s</string>
+    <string name="erase_all">Удалить все</string>
 </resources>
