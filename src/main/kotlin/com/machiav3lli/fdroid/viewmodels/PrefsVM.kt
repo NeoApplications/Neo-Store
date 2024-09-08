@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.viewmodels
 
+import android.os.Parcelable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.database.DatabaseX
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.parcelize.Parcelize
 
 class PrefsVM(val db: DatabaseX) : ViewModel() {
 
@@ -108,7 +110,7 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
         }
     }
 
-    private suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long =
+    suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long =
         withContext(cc) {
             db.getRepositoryDao().insert(
                 newRepository(
@@ -157,7 +159,8 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     }
 }
 
+@Parcelize
 data class SheetNavigationData(
     val repositoryId: Long = 0L,
     val editMode: Boolean = false,
-)
+) : Parcelable
