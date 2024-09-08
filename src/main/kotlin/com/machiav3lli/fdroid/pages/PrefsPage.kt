@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -19,14 +20,16 @@ import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavItem
-import com.machiav3lli.fdroid.ui.navigation.PagerNavBar
+import com.machiav3lli.fdroid.ui.navigation.NeoNavigationSuiteScaffold
 import com.machiav3lli.fdroid.ui.navigation.SlidePager
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.launch
 
 @Composable
 fun PrefsPage(navController: NavHostController, pageIndex: Int) {
     val context = LocalContext.current
     val mActivity = context as NeoActivity
+    val scope = rememberCoroutineScope()
 
     val pages = persistentListOf(
         NavItem.PersonalPrefs,
@@ -41,21 +44,30 @@ fun PrefsPage(navController: NavHostController, pageIndex: Int) {
         navController.navigateUp()
     }
 
-    Scaffold(
-        containerColor = Color.Transparent,
-        contentColor = MaterialTheme.colorScheme.onBackground,
-        bottomBar = { PagerNavBar(pageItems = pages, pagerState = pagerState) },
-        topBar = {
-            TopBar(title = stringResource(id = currentPage.title))
+    NeoNavigationSuiteScaffold(
+        pages = pages,
+        selectedPage = currentPage,
+        onItemClick = { index ->
+            scope.launch {
+                pagerState.animateScrollToPage(index)
+            }
         }
-    ) { paddingValues ->
-        SlidePager(
-            modifier = Modifier
-                .padding(paddingValues)
-                .blockBorder()
-                .fillMaxSize(),
-            pagerState = pagerState,
-            pageItems = pages,
-        )
+    ) {
+        Scaffold(
+            containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onBackground,
+            topBar = {
+                TopBar(title = stringResource(id = currentPage.title))
+            }
+        ) { paddingValues ->
+            SlidePager(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .blockBorder()
+                    .fillMaxSize(),
+                pagerState = pagerState,
+                pageItems = pages,
+            )
+        }
     }
 }
