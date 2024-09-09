@@ -1,21 +1,48 @@
 CHANGELOG
 =========
 
+1.0.6 (XX.09.2024) +10 Commits +30 Translations
+------------------
+
+### Function
+
+- Add: Delete the downloaded file when erasing the download entry
+- Fix: Validation of repo authentication values
+- Fix: Editing of current values of repo
+- Fix: Make Downloaded keys fully unique
+- Fix: Installs queueing logic
+- Fix: Performance issues of SyncWorker
+- Update: AppSheet header logic
+- Update: Revamp updating extras logic (reduce latency)
+- Update: Koin-inject Main & Prefs ViewModels
+- Update: Replace the multiple VMs for single MainVM
+- Update: Revamp WorkerManager & all Workers
+- Update: Migrate to type-safe navigation
+- Remove: Unused BootReceiver
+- CompileSDK 35
+
+### UI/UX
+
+- Add: Erase-all button to downloads page
+- Add: Indicator of the invalid field in repo editor
+- Update: Make UI wide screens friendly & navigation adaptive
+- Update: Revamp repo page
+
 1.0.5 (19.07.2024) +10 Commits +10 Translations
 ------------------
 
 ### Function
 
 - Add: Debounce on downloaded flow
-  - Add: RepoId to Downloaded for a more unique key
-  - Fix: SortFilter sheets across pages
-  - Update: Init Koin earlier
-  - Remove: All archive repositories
+- Add: RepoId to Downloaded for a more unique key
+- Fix: SortFilter sheets across pages
+- Update: Init Koin earlier
+- Remove: All archive repositories
 
 ### UI/UX
 
 - Add: Confirmation dialog on root uninstaller too
-  - Add: Long tap sync button for latest successful sync info
+- Add: Long tap sync button for latest successful sync info
 
 1.0.4 (09.07.2024) -10 Commits
 ------------------
