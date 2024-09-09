@@ -127,7 +127,7 @@ dependencies {
     implementation(libs.preference)
     implementation(libs.activity.compose)
     implementation(libs.collections.immutable)
-    debugImplementation(libs.leakcanary)
+    //debugImplementation(libs.leakcanary)
 
     // use the new WorkInfo.stopReason (report stopReason), setNextScheduleTimeOverride (Precise scheduling), Configuration.Builder.setContentUriTriggerWorkersLimit (limit for content uri workers)
     implementation(libs.work.runtime)
