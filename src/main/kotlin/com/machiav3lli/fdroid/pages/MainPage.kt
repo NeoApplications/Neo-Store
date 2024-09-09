@@ -96,61 +96,60 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
         NavigableListDetailPaneScaffold(
             navigator = mActivity.mainNavigator,
             listPane = {
-                AnimatedPane {
-                    Scaffold(
-                        containerColor = Color.Transparent,
-                        contentColor = MaterialTheme.colorScheme.onBackground,
-                        topBar = {
-                            TopBar(title = stringResource(id = R.string.application_name)) {
-                                TopBarAction(
-                                    icon = Phosphor.ArrowsClockwise,
-                                    description = stringResource(id = R.string.sync_repositories),
-                                    onLongClick = {
-                                        showPopup.intValue = POPUP_LONG
-                                    },
-                                    onClick = {
-                                        if (System.currentTimeMillis() - Preferences[Preferences.Key.LastManualSyncTime] >= 10_000L) {
-                                            Preferences[Preferences.Key.LastManualSyncTime] =
-                                                System.currentTimeMillis()
-                                            scope.launch { SyncWorker.enqueueAll(SyncRequest.MANUAL) }
-                                        } else {
-                                            showPopup.intValue = POPUP_SHORT
-                                        }
+                //AnimatedPane { } TODO re-add when fixing recomposition issue
+                Scaffold(
+                    containerColor = Color.Transparent,
+                    contentColor = MaterialTheme.colorScheme.onBackground,
+                    topBar = {
+                        TopBar(title = stringResource(id = R.string.application_name)) {
+                            TopBarAction(
+                                icon = Phosphor.ArrowsClockwise,
+                                description = stringResource(id = R.string.sync_repositories),
+                                onLongClick = {
+                                    showPopup.intValue = POPUP_LONG
+                                },
+                                onClick = {
+                                    if (System.currentTimeMillis() - Preferences[Preferences.Key.LastManualSyncTime] >= 10_000L) {
+                                        Preferences[Preferences.Key.LastManualSyncTime] =
+                                            System.currentTimeMillis()
+                                        scope.launch { SyncWorker.enqueueAll(SyncRequest.MANUAL) }
+                                    } else {
+                                        showPopup.intValue = POPUP_SHORT
                                     }
+                                }
+                            )
+                            TopBarAction(
+                                icon = Phosphor.GearSix,
+                                description = stringResource(id = R.string.settings)
+                            ) {
+                                navController.navigate(NavRoute.Prefs())
+                            }
+
+                            if (showPopup.intValue != POPUP_NONE) {
+                                Tooltip(
+                                    when (showPopup.intValue) {
+                                        POPUP_LONG -> stringResource(
+                                            id = R.string.last_successful_sync,
+                                            context.getLocaleDateString(successfulSyncs.latest),
+                                            context.getLocaleDateString(successfulSyncs.latestAll),
+                                        )
+
+                                        else       -> stringResource(id = R.string.wait_to_sync)
+                                    },
+                                    showPopup
                                 )
-                                TopBarAction(
-                                    icon = Phosphor.GearSix,
-                                    description = stringResource(id = R.string.settings)
-                                ) {
-                                    navController.navigate(NavRoute.Prefs())
-                                }
-
-                                if (showPopup.intValue != POPUP_NONE) {
-                                    Tooltip(
-                                        when (showPopup.intValue) {
-                                            POPUP_LONG -> stringResource(
-                                                id = R.string.last_successful_sync,
-                                                context.getLocaleDateString(successfulSyncs.latest),
-                                                context.getLocaleDateString(successfulSyncs.latestAll),
-                                            )
-
-                                            else       -> stringResource(id = R.string.wait_to_sync)
-                                        },
-                                        showPopup
-                                    )
-                                }
                             }
                         }
-                    ) { paddingValues ->
-                        SlidePager(
-                            modifier = Modifier
-                                .padding(paddingValues)
-                                .blockBorder()
-                                .fillMaxSize(),
-                            pagerState = pagerState,
-                            pageItems = pages,
-                        )
                     }
+                ) { paddingValues ->
+                    SlidePager(
+                        modifier = Modifier
+                            .padding(paddingValues)
+                            .blockBorder()
+                            .fillMaxSize(),
+                        pagerState = pagerState,
+                        pageItems = pages,
+                    )
                 }
             },
             detailPane = {
@@ -162,7 +161,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
                     AnimatedPane {
                         AppSheet(
                             viewModel = appSheetVM,
-                            packageName = appPackage.value ?: "",
+                            packageName = it,
                         )
                     }
                 }

@@ -62,6 +62,7 @@ import kotlinx.coroutines.withContext
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExplorePage(viewModel: MainVM) {
+    // TODO fix crash on closing detailPane when in AnimatedPane
     val context = LocalContext.current
     val neoActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
