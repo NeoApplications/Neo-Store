@@ -57,9 +57,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -88,33 +87,19 @@ class WorkerManager(appContext: Context) : KoinComponent {
         workManager.pruneWork()
         scope.launch {
             workManager.getWorkInfosByTagFlow(SyncWorker::class.qualifiedName!!)
-                .collect { syncWorkInfoFlow.value = it }
+                .collect { onSyncProgress(this@WorkerManager, it.toMutableList()) }
         }
         scope.launch {
             workManager.getWorkInfosByTagFlow(DownloadWorker::class.qualifiedName!!)
-                .collect { downloadWorkInfoFlow.value = it }
-        }
-        scope.launch {
-            syncWorkInfoFlow.collect {
-                onSyncProgress(this@WorkerManager, it.toMutableList())
-            }
-        }
-        scope.launch {
-            downloadWorkInfoFlow.collect {
-                onDownloadProgress(this@WorkerManager, it.toMutableList())
-            }
+                .collect { onDownloadProgress(this@WorkerManager, it.toMutableList()) }
         }
         scope.launch {
             MainApplication.db.getInstallTaskDao()
                 .getAllFlow() // Add similar table for DownloadTasks
-                .stateIn(
-                    this,
-                    SharingStarted.Eagerly,
-                    emptyList()
-                )
+                .distinctUntilChanged()
                 .collectLatest { tasks ->
                     if (tasks.isNotEmpty()) {
-                        prune()
+                        //prune()
                         enqueueTasks(tasks)
                     }
                 }
@@ -171,7 +156,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
             scope.launch {
                 MainApplication.db.getInstallTaskDao().delete(packageName)
             }
-            prune()
+            //prune()
         }
     }
 
