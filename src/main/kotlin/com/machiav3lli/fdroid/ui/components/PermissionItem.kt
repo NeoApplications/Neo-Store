@@ -28,11 +28,12 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 @Composable
 fun PermissionItem(
     item: Permission,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onIgnore: () -> Unit = {},
 ) {
     ListItem(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
             .clickable(onClick = onClick),

@@ -95,7 +95,11 @@ fun PermissionsPage(navController: NavHostController) {
             contentPadding = PaddingValues(8.dp)
         ) {
             items(permissionsList, key = { it.first.nameId }) { pair ->
-                PermissionItem(pair.first, pair.second) {
+                PermissionItem(
+                    modifier = Modifier.animateItem(),
+                    item = pair.first,
+                    onClick = pair.second
+                ) {
                     permissionsList.refresh(
                         context,
                         powerManager,
