@@ -182,8 +182,8 @@ fun InstallsPage(viewModel: MainVM) {
             updates.isNotEmpty()
         }
     }
-    val iconDetails by viewModel.iconDetails.collectAsState()
-    val downloaded = viewModel.downloaded.collectAsState()
+    val iconDetails by viewModel.iconDetails.collectAsState(emptyMap())
+    val downloaded = viewModel.downloaded.collectAsState(emptyList())
     val downloads = remember {
         derivedStateOf {
             downloaded.value.filter { it.state is DownloadState.Downloading }
@@ -437,11 +437,11 @@ fun DownloadedPage(viewModel: MainVM) {
             repositories?.associateBy { repo -> repo.id } ?: emptyMap()
         }
     }
-    val iconDetails by viewModel.iconDetails.collectAsState()
-    val downloaded = viewModel.downloaded.collectAsState()
+    val iconDetails by viewModel.iconDetails.collectAsState(emptyMap())
+    val downloaded = viewModel.downloaded.collectAsState(emptyList())
     val sortedDownloaded by remember {
         derivedStateOf {
-            downloaded.value.sortedByDescending { it.changed / 60_000L }
+            downloaded.value.sortedByDescending { it.changed / 20_000L }
         }
     }
 

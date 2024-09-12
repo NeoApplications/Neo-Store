@@ -19,6 +19,7 @@ import com.machiav3lli.fdroid.utility.matchSearchQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -78,11 +79,7 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
 
     val iconDetails = db.getProductDao().getIconDetailsFlow().distinctUntilChanged().mapLatest {
         it.associateBy(IconDetails::packageName)
-    }.stateIn(
-        scope = ioScope,
-        started = SharingStarted.Lazily,
-        initialValue = emptyMap(),
-    )
+    }
 
     val installed = db.getInstalledDao().getAllFlow().map {
         it.associateBy(Installed::packageName)
@@ -116,7 +113,7 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
         initialValue = request(Source.SEARCH)
     )
 
-    val productsExplore: StateFlow<List<ProductItem>> = combine(
+    val productsExplore: Flow<List<ProductItem>> = combine(
         requestExplore,
         installed,
         db.getProductDao().queryFlowList(requestExplore.value).distinctUntilChanged(),
@@ -126,13 +123,9 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
             db.getProductDao().queryObject(req)
                 .map { it.toItem(installed.value[it.packageName]) }
         }
-    }.stateIn(
-        scope = ioScope,
-        started = SharingStarted.Lazily,
-        initialValue = emptyList()
-    )
+    }
 
-    private val productsSearch: StateFlow<List<Product>> = combine(
+    private val productsSearch: Flow<List<Product>> = combine(
         requestSearch,
         installed,
         db.getProductDao().queryFlowList(requestSearch.value).distinctUntilChanged(),
@@ -141,23 +134,15 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
         withContext(cc) {
             db.getProductDao().queryObject(req)
         }
-    }.stateIn(
-        scope = ioScope,
-        started = SharingStarted.Lazily,
-        initialValue = emptyList()
-    )
+    }
 
-    val filteredProdsSearch: StateFlow<List<ProductItem>> =
+    val filteredProdsSearch: Flow<List<ProductItem>> =
         combine(productsSearch, querySearch.debounce(400)) { products, query ->
             products.matchSearchQuery(query)
                 .map { it.toItem(installed.value[it.packageName]) }
-        }.stateIn(
-            ioScope,
-            SharingStarted.Eagerly,
-            emptyList()
-        )
+        }
 
-    val installedProdsInstalled: StateFlow<List<ProductItem>> = combine(
+    val installedProdsInstalled: Flow<List<ProductItem>> = combine(
         sortFilterInstalled,
         installed,
         db.getProductDao().queryFlowList(Request.Installed).distinctUntilChanged(),
@@ -167,21 +152,13 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
             db.getProductDao().queryObject(Request.Installed)
                 .map { it.toItem(installed[it.packageName]) }
         }
-    }.stateIn(
-        scope = ioScope,
-        started = SharingStarted.Lazily,
-        initialValue = emptyList()
-    )
+    }
 
     val downloaded = db.getDownloadedDao().getAllFlow()
         .debounce(250L)
-        .stateIn(
-            scope = ioScope,
-            started = SharingStarted.Lazily,
-            initialValue = emptyList(),
-        )
+        .distinctUntilChanged()
 
-    val updatedProdsLatest: StateFlow<List<ProductItem>> = combine(
+    val updatedProdsLatest: Flow<List<ProductItem>> = combine(
         sortFilterLatest,
         installed,
         db.getProductDao().queryFlowList(Request.Updated).distinctUntilChanged(),
@@ -191,13 +168,9 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
             db.getProductDao().queryObject(Request.Updated)
                 .map { it.toItem(installed[it.packageName]) }
         }
-    }.stateIn(
-        scope = ioScope,
-        started = SharingStarted.Lazily,
-        initialValue = emptyList()
-    )
+    }
 
-    val newProdsLatest: StateFlow<List<ProductItem>> = combine(
+    val newProdsLatest: Flow<List<ProductItem>> = combine(
         installed,
         db.getProductDao().queryFlowList(Request.New).distinctUntilChanged(),
         db.getExtrasDao().getAllFlow().distinctUntilChanged(),
@@ -206,13 +179,9 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
             db.getProductDao().queryObject(Request.New)
                 .map { it.toItem(installed[it.packageName]) }
         }
-    }.stateIn(
-        scope = ioScope,
-        started = SharingStarted.Lazily,
-        initialValue = emptyList()
-    )
+    }
 
-    val updateProdsInstalled: StateFlow<List<ProductItem>> = combine(
+    val updateProdsInstalled: Flow<List<ProductItem>> = combine(
         installed,
         db.getProductDao().queryFlowList(Request.Updates),
         db.getExtrasDao().getAllFlow(),
@@ -221,11 +190,7 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
             db.getProductDao().queryObject(Request.Updates)
                 .map { it.toItem(installed[it.packageName]) }
         }
-    }.stateIn(
-        scope = ioScope,
-        started = SharingStarted.Lazily,
-        initialValue = emptyList()
-    )
+    }
 
     fun setSortFilter(page: Page, value: String) = viewModelScope.launch {
         when (page) {
