@@ -35,6 +35,7 @@ import com.machiav3lli.fdroid.database.entity.Installed
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.entity.AndroidVersion
 import com.machiav3lli.fdroid.entity.Contrast
 import com.machiav3lli.fdroid.entity.LinkType
 import com.machiav3lli.fdroid.entity.PermissionGroup
@@ -566,42 +567,4 @@ fun Activity.setCustomTheme() {
 }
 
 fun getAndroidVersionName(versionCode: Int): String =
-    AndroidVersion.entries.getOrNull(versionCode)?.formalName ?: "Unknown sdk: $versionCode"
-
-enum class AndroidVersion(val formalName: String) {
-    Unknown("Unknown"),
-    Base("1.0"),
-    BASE_1_1("1.1"),
-    Cupcake("1.5"),
-    Donut("1.6"),
-    Eclair("2.0"),
-    Eclair_0_1("2.0.1"),
-    Eclair_MR1("2.1"),
-    Froyo("2.2"),
-    Gingerbread("2.3"),
-    Gingerbread_MR1("2.3.3"),
-    Honeycomb("3.0"),
-    Honeycomb_MR1("3.1"),
-    Honeycomb_MR2("3.2"),
-    IceCreamSandwich("4.0"),
-    IceCreamSandwich_MR1("4.0.3"),
-    JellyBean("4.1"),
-    JellyBean_MR1("4.2"),
-    JellyBean_MR2("4.3"),
-    KitKat("4.4"),
-    KitKat_Watch("4.4W"),
-    Lollipop("5.0"),
-    Lollipop_MR1("5.1"),
-    Marshmallow("6.0"),
-    Nougat("7.0"),
-    Nougat_MR1("7.1"),
-    Oreo("8.0"),
-    Oreo_MR1("8.1"),
-    Pie("9"),
-    Q("10"),
-    R("11"),
-    S("12.0"),
-    S_V2("12.1"),
-    Tiramisu("13"),
-    UpsideDownCake("14");
-}
+    AndroidVersion.entries.getOrNull(versionCode)?.valueString ?: "Unknown sdk: $versionCode"
