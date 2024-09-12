@@ -210,10 +210,36 @@ data object Preferences : OnSharedPreferenceChangeListener {
                 preferences.edit().putString(key, value.valueString).apply()
             }
         }
+
+        class EnumValue<T>(override val value: T, private val enumClass: Class<T>) : Value<T>()
+                where T : Enum<T>, T : EnumEnumeration {
+            override fun get(
+                preferences: SharedPreferences,
+                key: String,
+                defaultValue: Value<T>,
+            ): T {
+                val value = preferences.getInt(key, defaultValue.value.ordinal)
+                return enumFromOrdinal(enumClass, value)
+            }
+
+            override fun set(preferences: SharedPreferences, key: String, value: T) {
+                preferences.edit().putInt(key, value.ordinal).apply()
+            }
+
+            private fun enumFromOrdinal(enumClass: Class<T>, ordinal: Int): T {
+                return enumClass.enumConstants?.getOrNull(ordinal)
+                    ?: enumClass.enumConstants?.first()
+                    ?: throw NoSuchElementException("Enum ${enumClass.simpleName} is empty.")
+            }
+        }
     }
 
     interface Enumeration<T> {
         val values: List<T>
+        val valueString: String
+    }
+
+    interface EnumEnumeration {
         val valueString: String
     }
 
