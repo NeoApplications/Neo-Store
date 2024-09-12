@@ -12,21 +12,21 @@ interface InstallTaskDao : BaseDao<InstallTask> {
         tasks.forEach { upsert(it) }
     }
 
-    @Query("SELECT * FROM `installtask` ORDER BY added DESC")
+    @Query("SELECT * FROM installTask ORDER BY added DESC")
     fun getAll(): List<InstallTask>
 
-    @Query("SELECT * FROM `installtask` ORDER BY added DESC")
+    @Query("SELECT * FROM installTask ORDER BY added DESC")
     fun getAllFlow(): Flow<List<InstallTask>>
 
-    @Query("SELECT * FROM `installtask` WHERE cacheFileName = :fileName ORDER BY added ASC")
+    @Query("SELECT * FROM installTask WHERE cacheFileName = :fileName ORDER BY added ASC")
     fun get(fileName: String): InstallTask?
 
-    @Query("SELECT * FROM `installtask` WHERE cacheFileName = :fileName ORDER BY added ASC")
+    @Query("SELECT * FROM installTask WHERE cacheFileName = :fileName ORDER BY added ASC")
     fun getFlow(fileName: String): Flow<InstallTask?>
 
-    @Query("DELETE FROM `installtask` WHERE packageName = :packageName")
+    @Query("DELETE FROM installTask WHERE packageName = :packageName")
     fun delete(packageName: String)
 
-    @Query("DELETE FROM `installtask`")
+    @Query("DELETE FROM installTask")
     fun emptyTable()
 }

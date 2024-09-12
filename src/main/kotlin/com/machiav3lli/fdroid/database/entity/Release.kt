@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-// TODO make a Room entity
+// TODO add repoID, use for queries
 @Entity(
     tableName = TABLE_RELEASE,
     primaryKeys = [ROW_PACKAGE_NAME, ROW_VERSION_CODE, ROW_SIGNATURE]

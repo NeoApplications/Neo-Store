@@ -1,9 +1,13 @@
 package com.machiav3lli.fdroid.database.entity
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
+import com.machiav3lli.fdroid.ROW_ADDED
+import com.machiav3lli.fdroid.ROW_AUTHOR
+import com.machiav3lli.fdroid.ROW_LABEL
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
+import com.machiav3lli.fdroid.ROW_UPDATED
 import com.machiav3lli.fdroid.TABLE_PRODUCT
 import com.machiav3lli.fdroid.TABLE_PRODUCT_TEMP
 import com.machiav3lli.fdroid.content.Preferences
@@ -19,12 +23,21 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 // TODO Add Product Extras to handle favorite lists etc..
-@Entity(tableName = TABLE_PRODUCT, primaryKeys = [ROW_REPOSITORY_ID, ROW_PACKAGE_NAME])
+@Entity(
+    tableName = TABLE_PRODUCT,
+    primaryKeys = [ROW_REPOSITORY_ID, ROW_PACKAGE_NAME],
+    indices = [
+        Index(value = [ROW_PACKAGE_NAME]),
+        Index(value = [ROW_REPOSITORY_ID, ROW_PACKAGE_NAME], unique = true),
+        Index(value = [ROW_LABEL]),
+        Index(value = [ROW_ADDED]),
+        Index(value = [ROW_UPDATED]),
+        Index(value = [ROW_AUTHOR]),
+    ]
+)
 @Serializable
 open class Product(
-    @ColumnInfo(index = true)
     var repositoryId: Long,
-    @ColumnInfo(index = true)
     var packageName: String,
 ) {
     var label: String = ""

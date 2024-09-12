@@ -1,9 +1,10 @@
 package com.machiav3lli.fdroid.database.entity
 
 import android.util.Base64
-import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.machiav3lli.fdroid.ROW_ENABLED
 import com.machiav3lli.fdroid.ROW_ID
 import com.machiav3lli.fdroid.TABLE_REPOSITORY
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
@@ -13,11 +14,16 @@ import kotlinx.serialization.json.Json
 import java.net.URL
 import java.nio.charset.Charset
 
-@Entity(tableName = TABLE_REPOSITORY)
+@Entity(
+    tableName = TABLE_REPOSITORY,
+    indices = [
+        Index(value = [ROW_ID], unique = true),
+        Index(value = [ROW_ENABLED]),
+    ]
+)
 @Serializable
 data class Repository(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = ROW_ID, index = true)
     val id: Long = 0,
     var address: String = "",
     val mirrors: List<String> = emptyList(),

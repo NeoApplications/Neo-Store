@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RepositoryDao : BaseDao<Repository> {
-    @Query("SELECT COUNT(_id) FROM repository")
+    @Query("SELECT COUNT(id) FROM repository")
     fun getCount(): Int
 
     @Insert
@@ -34,35 +34,35 @@ interface RepositoryDao : BaseDao<Repository> {
     @Insert
     fun returnInsert(product: Repository): Long
 
-    @Query("SELECT * FROM repository WHERE _id = :id")
+    @Query("SELECT * FROM repository WHERE id = :id")
     fun get(id: Long): Repository?
 
-    @Query("SELECT * FROM repository WHERE _id = :id")
+    @Query("SELECT * FROM repository WHERE id = :id")
     fun getFlow(id: Long): Flow<Repository?>
 
-    @Query("SELECT * FROM repository ORDER BY _id ASC")
+    @Query("SELECT * FROM repository ORDER BY id ASC")
     fun getAll(): List<Repository>
 
-    @Query("SELECT * FROM repository ORDER BY _id ASC")
+    @Query("SELECT * FROM repository ORDER BY id ASC")
     fun getAllFlow(): Flow<List<Repository>>
 
-    @Query("SELECT name FROM repository WHERE _id = :id")
+    @Query("SELECT name FROM repository WHERE id = :id")
     fun getRepoName(id: Long): String
 
-    @Query("SELECT _id FROM repository WHERE enabled != 0 ORDER BY _id ASC")
+    @Query("SELECT id FROM repository WHERE enabled != 0 ORDER BY id ASC")
     fun getAllEnabledIds(): List<Long>
 
-    @Query("SELECT _id FROM repository WHERE enabled == 0 ORDER BY _id ASC")
+    @Query("SELECT id FROM repository WHERE enabled == 0 ORDER BY id ASC")
     fun getAllDisabledIds(): List<Long>
 
     // TODO clean up products and other tables afterwards
-    @Query("DELETE FROM repository WHERE _id = :id")
+    @Query("DELETE FROM repository WHERE id = :id")
     fun deleteById(id: Long)
 
     @Query("DELETE FROM repository WHERE address = :address")
     fun deleteByAddress(address: String)
 
-    @Query("SELECT MAX(_id) FROM repository")
+    @Query("SELECT MAX(id) FROM repository")
     fun latestAddedId(): Long
 
     @Query("SELECT MAX(updated) AS latest, MIN(updated) AS latestAll FROM repository WHERE enabled != 0")

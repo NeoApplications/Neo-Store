@@ -1,16 +1,22 @@
 package com.machiav3lli.fdroid.database.entity
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
+import com.machiav3lli.fdroid.TABLE_EXODUS_INFO
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-@Entity
+@Entity(
+    tableName = TABLE_EXODUS_INFO,
+    indices = [
+        Index(value = [ROW_PACKAGE_NAME]),
+    ]
+)
 data class ExodusInfo(
     @PrimaryKey
-    @ColumnInfo(index = true)
     val packageName: String = "",
     override val handle: String = String(),
     override val app_name: String = String(),

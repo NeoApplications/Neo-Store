@@ -12,7 +12,7 @@ interface CategoryDao : BaseDao<Category> {
         """SELECT DISTINCT category.label
         FROM category AS category
         JOIN repository AS repository
-        ON category.repositoryId = repository._id
+        ON category.repositoryId = repository.id
         WHERE repository.enabled != 0"""
     )
     fun getAllNames(): List<String>
@@ -21,7 +21,7 @@ interface CategoryDao : BaseDao<Category> {
         """SELECT DISTINCT category.label
         FROM category AS category
         JOIN repository AS repository
-        ON category.repositoryId = repository._id
+        ON category.repositoryId = repository.id
         WHERE repository.enabled != 0"""
     )
     fun getAllNamesFlow(): Flow<List<String>>
