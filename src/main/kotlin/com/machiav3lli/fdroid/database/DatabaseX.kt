@@ -3,11 +3,18 @@ package com.machiav3lli.fdroid.database
 import android.content.Context
 import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.RenameColumn
+import androidx.room.RenameTable
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.machiav3lli.fdroid.ROW_ID
+import com.machiav3lli.fdroid.TABLE_EXODUS_INFO
+import com.machiav3lli.fdroid.TABLE_INSTALL_TASK
+import com.machiav3lli.fdroid.TABLE_REPOSITORY
+import com.machiav3lli.fdroid.TABLE_TRACKER
 import com.machiav3lli.fdroid.database.dao.CategoryDao
 import com.machiav3lli.fdroid.database.dao.CategoryTempDao
 import com.machiav3lli.fdroid.database.dao.DownloadedDao
@@ -72,7 +79,7 @@ import org.koin.dsl.module
         Downloaded::class,
         InstallTask::class,
     ],
-    version = 25,
+    version = 26,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -156,6 +163,11 @@ import org.koin.dsl.module
             from = 24,
             to = 25,
             spec = DatabaseX.Companion.MigrationSpec24to25::class
+        ),
+        AutoMigration(
+            from = 25,
+            to = 26,
+            spec = DatabaseX.Companion.AutoMigration25to26::class
         ),
     ]
 )
@@ -300,6 +312,12 @@ abstract class DatabaseX : RoomDatabase() {
                 onPostMigrate(24)
             }
         }
+
+        @RenameColumn(tableName = TABLE_REPOSITORY, fromColumnName = "_id", toColumnName = ROW_ID)
+        @RenameTable(fromTableName = "ExodusInfo", toTableName = TABLE_EXODUS_INFO)
+        @RenameTable(fromTableName = "Tracker", toTableName = TABLE_TRACKER)
+        @RenameTable(fromTableName = "InstallTask", toTableName = TABLE_INSTALL_TASK)
+        class AutoMigration25to26 : AutoMigrationSpec
 
         fun onPostMigrate(from: Int) {
             val preRepos = mutableListOf<Repository>()
