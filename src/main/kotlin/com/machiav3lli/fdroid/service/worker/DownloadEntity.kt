@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.service.worker
 
+import androidx.work.WorkInfo
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.InstallTask
 import com.machiav3lli.fdroid.database.entity.Release
@@ -107,7 +108,7 @@ sealed class DownloadState {
         override val repoId: Long,
         val resultCode: Int,
         val validationError: ValidationError,
-        val stopReason: Int,
+        val stopReason: Int = WorkInfo.STOP_REASON_NOT_STOPPED,
     ) : DownloadState() {
         override val changed: Long = System.currentTimeMillis()
     }
