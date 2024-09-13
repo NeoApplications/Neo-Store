@@ -10,6 +10,7 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.PREFS_LANGUAGE
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.entity.AndroidVersion
 import com.machiav3lli.fdroid.entity.InstallerType
 import com.machiav3lli.fdroid.entity.Order
 import com.machiav3lli.fdroid.utility.extension.android.Android
@@ -61,6 +62,14 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.RootSessionInstaller,
         Key.RootAllowDowngrades,
         Key.RootAllowInstallingOldApps,
+        Key.Theme,
+        Key.DefaultTab,
+        Key.UpdateNotify,
+        Key.KeepInstallNotification,
+        Key.DisableDownloadVersionCheck,
+        Key.UpdateUnstable,
+        Key.KidsMode,
+        // sort & filter
         Key.SortOrderExplore,
         Key.SortOrderLatest,
         Key.SortOrderInstalled,
@@ -85,13 +94,14 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.LicensesFilterLatest,
         Key.LicensesFilterInstalled,
         Key.LicensesFilterSearch,
-        Key.Theme,
-        Key.DefaultTab,
-        Key.UpdateNotify,
-        Key.KeepInstallNotification,
-        Key.DisableDownloadVersionCheck,
-        Key.UpdateUnstable,
-        Key.KidsMode,
+        Key.MinSDKExplore,
+        Key.MinSDKLatest,
+        Key.MinSDKInstalled,
+        Key.MinSDKSearch,
+        Key.TargetSDKExplore,
+        Key.TargetSDKLatest,
+        Key.TargetSDKInstalled,
+        Key.TargetSDKSearch,
         // invisible values
         Key.IgnoreDisableBatteryOptimization,
         Key.IgnoreShowNotifications,
@@ -258,7 +268,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
             Key<Boolean>("download_directory_enable", Value.BooleanValue(false))
 
         data object DownloadManager :
-            Key<Boolean>("download_manager", Value.BooleanValue(false))
+            Key<Boolean>("download_manager", Value.BooleanValue(true))
 
         data object DownloadDirectory :
             Key<String>("download_directory_value", Value.StringValue(""))
@@ -299,7 +309,9 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object AltNewApps : Key<Boolean>("alt_new_apps_layout", Value.BooleanValue(false))
         data object HideNewApps : Key<Boolean>("hide_new_apps", Value.BooleanValue(false))
         data object AltBlockLayout : Key<Boolean>("alt_block_layout", Value.BooleanValue(false))
-        data object AndroidInsteadOfSDK : Key<Boolean>("android_instead_of_sdk", Value.BooleanValue(true))
+        data object AndroidInsteadOfSDK :
+            Key<Boolean>("android_instead_of_sdk", Value.BooleanValue(true))
+
         data object BottomSearchBar : Key<Boolean>("bottom_search_bar", Value.BooleanValue(false))
 
         data object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(150))
@@ -447,6 +459,46 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object LicensesFilterSearch : Key<Set<String>>(
             "licenses_filter_search",
             Value.StringSetValue(emptySet())
+        )
+
+        data object TargetSDKExplore : Key<AndroidVersion>(
+            "targetsdk_filter_explore",
+            Value.EnumValue(AndroidVersion.Unknown, AndroidVersion::class.java)
+        )
+
+        data object TargetSDKLatest : Key<AndroidVersion>(
+            "targetsdk_filter_latest",
+            Value.EnumValue(AndroidVersion.Unknown, AndroidVersion::class.java)
+        )
+
+        data object TargetSDKInstalled : Key<AndroidVersion>(
+            "targetsdk_filter_installed",
+            Value.EnumValue(AndroidVersion.Unknown, AndroidVersion::class.java)
+        )
+
+        data object TargetSDKSearch : Key<AndroidVersion>(
+            "targetsdk_filter_search",
+            Value.EnumValue(AndroidVersion.Unknown, AndroidVersion::class.java)
+        )
+
+        data object MinSDKExplore : Key<AndroidVersion>(
+            "minsdk_filter_explore",
+            Value.EnumValue(AndroidVersion.Unknown, AndroidVersion::class.java)
+        )
+
+        data object MinSDKLatest : Key<AndroidVersion>(
+            "minsdk_filter_latest",
+            Value.EnumValue(AndroidVersion.Unknown, AndroidVersion::class.java)
+        )
+
+        data object MinSDKInstalled : Key<AndroidVersion>(
+            "minsdk_filter_installed",
+            Value.EnumValue(AndroidVersion.Unknown, AndroidVersion::class.java)
+        )
+
+        data object MinSDKSearch : Key<AndroidVersion>(
+            "minsdk_filter_search",
+            Value.EnumValue(AndroidVersion.Unknown, AndroidVersion::class.java)
         )
 
         data object Theme : Key<Preferences.Theme>(
