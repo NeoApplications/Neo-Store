@@ -128,7 +128,9 @@ interface ProductDao : BaseDao<Product> {
             order = request.order,
             ascending = request.ascending,
             numberOfItems = request.numberOfItems,
-            updateCategory = request.updateCategory
+            updateCategory = request.updateCategory,
+            targetSdkVersion = request.targetSDK,
+            minSdkVersion = request.minSDK,
         )
     )
 
@@ -140,7 +142,7 @@ interface ProductDao : BaseDao<Product> {
         filteredLicenses: Set<String> = emptySet(),
         order: Order, ascending: Boolean, numberOfItems: Int = 0,
         updateCategory: UpdateCategory = UpdateCategory.ALL,
-        author: String = "",
+        author: String = "", minSdkVersion: Int = 0, targetSdkVersion: Int = 0
     ): List<Product> = queryObject(
         buildProductQuery(
             installed = installed,
@@ -155,6 +157,8 @@ interface ProductDao : BaseDao<Product> {
             numberOfItems = numberOfItems,
             updateCategory = updateCategory,
             author = author,
+            minSdkVersion = minSdkVersion,
+            targetSdkVersion = targetSdkVersion,
         )
     )
 
@@ -174,6 +178,8 @@ interface ProductDao : BaseDao<Product> {
             ascending = request.ascending,
             numberOfItems = request.numberOfItems,
             updateCategory = request.updateCategory,
+            targetSdkVersion = request.targetSDK,
+            minSdkVersion = request.minSDK,
         )
     )
 
@@ -190,6 +196,8 @@ interface ProductDao : BaseDao<Product> {
         numberOfItems: Int = 0,
         updateCategory: UpdateCategory = UpdateCategory.ALL,
         author: String = "",
+        targetSdkVersion: Int = 0,
+        minSdkVersion: Int = 0,
     ): SupportSQLiteQuery {
         val builder = QueryBuilder()
 
