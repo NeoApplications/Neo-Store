@@ -74,7 +74,9 @@ fun LatestPage(viewModel: MainVM) {
                     Preferences[Preferences.Key.ReposFilterLatest] == Preferences.Key.ReposFilterLatest.default.value &&
                     Preferences[Preferences.Key.CategoriesFilterLatest] == Preferences.Key.CategoriesFilterLatest.default.value &&
                     Preferences[Preferences.Key.LicensesFilterLatest] == Preferences.Key.LicensesFilterLatest.default.value &&
-                    Preferences[Preferences.Key.AntifeaturesFilterLatest] == Preferences.Key.AntifeaturesFilterLatest.default.value
+                    Preferences[Preferences.Key.AntifeaturesFilterLatest] == Preferences.Key.AntifeaturesFilterLatest.default.value &&
+                    Preferences[Preferences.Key.TargetSDKLatest] == Preferences.Key.TargetSDKLatest.default.value &&
+                    Preferences[Preferences.Key.MinSDKLatest] == Preferences.Key.MinSDKLatest.default.value
         }
     }
 
@@ -88,6 +90,8 @@ fun LatestPage(viewModel: MainVM) {
                     Preferences.Key.LicensesFilterLatest,
                     Preferences.Key.SortOrderLatest,
                     Preferences.Key.SortOrderAscendingLatest,
+                    Preferences.Key.TargetSDKLatest,
+                    Preferences.Key.MinSDKLatest,
                     -> viewModel.setSortFilter(
                         Page.LATEST,
                         listOf(
@@ -97,6 +101,8 @@ fun LatestPage(viewModel: MainVM) {
                             Preferences[Preferences.Key.LicensesFilterLatest],
                             Preferences[Preferences.Key.SortOrderLatest],
                             Preferences[Preferences.Key.SortOrderAscendingLatest],
+                            Preferences[Preferences.Key.TargetSDKLatest],
+                            Preferences[Preferences.Key.MinSDKLatest],
                         ).toString()
                     )
 

@@ -94,7 +94,9 @@ fun ExplorePage(viewModel: MainVM) {
                     Preferences[Preferences.Key.SortOrderAscendingExplore] == Preferences.Key.SortOrderAscendingExplore.default.value &&
                     Preferences[Preferences.Key.ReposFilterExplore] == Preferences.Key.ReposFilterExplore.default.value &&
                     Preferences[Preferences.Key.LicensesFilterExplore] == Preferences.Key.LicensesFilterExplore.default.value &&
-                    Preferences[Preferences.Key.AntifeaturesFilterExplore] == Preferences.Key.AntifeaturesFilterExplore.default.value
+                    Preferences[Preferences.Key.AntifeaturesFilterExplore] == Preferences.Key.AntifeaturesFilterExplore.default.value &&
+                    Preferences[Preferences.Key.TargetSDKExplore] == Preferences.Key.TargetSDKExplore.default.value &&
+                    Preferences[Preferences.Key.MinSDKExplore] == Preferences.Key.MinSDKExplore.default.value
         }
     }
 
@@ -108,6 +110,8 @@ fun ExplorePage(viewModel: MainVM) {
                     Preferences.Key.LicensesFilterExplore,
                     Preferences.Key.SortOrderExplore,
                     Preferences.Key.SortOrderAscendingExplore,
+                    Preferences.Key.TargetSDKExplore,
+                    Preferences.Key.MinSDKExplore,
                     -> viewModel.setSortFilter(
                         Page.EXPLORE,
                         listOf(
@@ -117,6 +121,8 @@ fun ExplorePage(viewModel: MainVM) {
                             Preferences[Preferences.Key.LicensesFilterExplore],
                             Preferences[Preferences.Key.SortOrderExplore],
                             Preferences[Preferences.Key.SortOrderAscendingExplore],
+                            Preferences[Preferences.Key.TargetSDKExplore],
+                            Preferences[Preferences.Key.MinSDKExplore],
                         ).toString()
                     )
 

@@ -92,7 +92,9 @@ fun SearchPage(viewModel: MainVM) {
                     Preferences[Preferences.Key.ReposFilterSearch] == Preferences.Key.ReposFilterSearch.default.value &&
                     Preferences[Preferences.Key.CategoriesFilterSearch] == Preferences.Key.CategoriesFilterSearch.default.value &&
                     Preferences[Preferences.Key.LicensesFilterSearch] == Preferences.Key.LicensesFilterSearch.default.value &&
-                    Preferences[Preferences.Key.AntifeaturesFilterSearch] == Preferences.Key.AntifeaturesFilterSearch.default.value
+                    Preferences[Preferences.Key.AntifeaturesFilterSearch] == Preferences.Key.AntifeaturesFilterSearch.default.value &&
+                    Preferences[Preferences.Key.TargetSDKSearch] == Preferences.Key.TargetSDKSearch.default.value &&
+                    Preferences[Preferences.Key.MinSDKSearch] == Preferences.Key.MinSDKSearch.default.value
         }
     }
 
@@ -106,6 +108,8 @@ fun SearchPage(viewModel: MainVM) {
                     Preferences.Key.LicensesFilterSearch,
                     Preferences.Key.SortOrderSearch,
                     Preferences.Key.SortOrderAscendingSearch,
+                    Preferences.Key.TargetSDKSearch,
+                    Preferences.Key.MinSDKSearch,
                     Preferences.Key.SearchApps,
                     -> viewModel.setSortFilter(
                         Page.SEARCH,
@@ -116,6 +120,9 @@ fun SearchPage(viewModel: MainVM) {
                             Preferences[Preferences.Key.LicensesFilterSearch],
                             Preferences[Preferences.Key.SortOrderSearch],
                             Preferences[Preferences.Key.SortOrderAscendingSearch],
+                            Preferences[Preferences.Key.TargetSDKSearch],
+                            Preferences[Preferences.Key.MinSDKSearch],
+                            Preferences[Preferences.Key.SearchApps],
                         ).toString()
                     )
 

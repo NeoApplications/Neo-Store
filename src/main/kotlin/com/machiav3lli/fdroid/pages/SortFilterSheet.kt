@@ -104,6 +104,18 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
         NavItem.Search.destination    -> Preferences.Key.LicensesFilterSearch
         else                          -> Preferences.Key.LicensesFilterExplore // NavItem.Explore
     }
+    val minSDKFilterKey = when (navPage) {
+        NavItem.Latest.destination    -> Preferences.Key.MinSDKLatest
+        NavItem.Installed.destination -> Preferences.Key.MinSDKInstalled
+        NavItem.Search.destination    -> Preferences.Key.MinSDKSearch
+        else                          -> Preferences.Key.MinSDKExplore // NavItem.Explore
+    }
+    val targetSDKFilterKey = when (navPage) {
+        NavItem.Latest.destination    -> Preferences.Key.TargetSDKLatest
+        NavItem.Installed.destination -> Preferences.Key.TargetSDKInstalled
+        NavItem.Search.destination    -> Preferences.Key.TargetSDKSearch
+        else                          -> Preferences.Key.TargetSDKExplore // NavItem.Explore
+    }
 
     var sortOption by remember(Preferences[sortKey]) {
         mutableStateOf(Preferences[sortKey])
@@ -122,6 +134,12 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
     }
     val filteredLicenses = remember(Preferences[licensesFilterKey]) {
         mutableStateListOf(*Preferences[licensesFilterKey].toTypedArray())
+    }
+    val filterMinSDK by remember(Preferences[minSDKFilterKey]) {
+        mutableStateOf(Preferences[minSDKFilterKey])
+    }
+    val filterTargetSDK by remember(Preferences[targetSDKFilterKey]) {
+        mutableStateOf(Preferences[targetSDKFilterKey])
     }
 
     Scaffold(
@@ -163,6 +181,8 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                             Preferences[categoriesFilterKey] = filterCategory
                             Preferences[antifeaturesFilterKey] = filteredAntifeatures.toSet()
                             Preferences[licensesFilterKey] = filteredLicenses.toSet()
+                            Preferences[minSDKFilterKey] = filterMinSDK
+                            Preferences[targetSDKFilterKey] = filterTargetSDK
                             onDismiss()
                         }
                     )
@@ -262,6 +282,48 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                     }
                 }
             }
+            /*if (minSDKFilterKey == Preferences.Key.MinSDKSearch) item {
+                ExpandableItemsBlock(
+                    heading = stringResource(id = R.string.min_sdk),
+                    preExpanded = filterMinSDK != AndroidVersion.Unknown,
+                ) {
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        AndroidVersion.entries.forEach {
+                            SelectChip(
+                                text = it.valueString,
+                                checked = it == filterMinSDK,
+                                alwaysShowIcon = false,
+                            ) {
+                                filterMinSDK = it
+                            }
+                        }
+                    }
+                }
+            }
+            if (targetSDKFilterKey == Preferences.Key.TargetSDKSearch) item {
+                ExpandableItemsBlock(
+                    heading = stringResource(id = R.string.target_sdk),
+                    preExpanded = filterTargetSDK != AndroidVersion.Unknown,
+                ) {
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        AndroidVersion.entries.forEach {
+                            SelectChip(
+                                text = it.valueString,
+                                checked = it == filterTargetSDK,
+                                alwaysShowIcon = false,
+                            ) {
+                                filterTargetSDK = it
+                            }
+                        }
+                    }
+                }
+            }*/
             item {
                 ExpandableItemsBlock(
                     heading = stringResource(id = R.string.allowed_anti_features),

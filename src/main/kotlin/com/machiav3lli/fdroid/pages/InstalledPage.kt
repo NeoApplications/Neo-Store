@@ -96,6 +96,8 @@ fun InstalledPage(viewModel: MainVM) {
                     Preferences.Key.LicensesFilterInstalled,
                     Preferences.Key.SortOrderInstalled,
                     Preferences.Key.SortOrderAscendingInstalled,
+                    Preferences.Key.TargetSDKInstalled,
+                    Preferences.Key.MinSDKInstalled,
                          -> viewModel.setSortFilter(
                         Page.INSTALLED,
                         listOf(
@@ -105,6 +107,8 @@ fun InstalledPage(viewModel: MainVM) {
                             Preferences[Preferences.Key.LicensesFilterInstalled],
                             Preferences[Preferences.Key.SortOrderInstalled],
                             Preferences[Preferences.Key.SortOrderAscendingInstalled],
+                            Preferences[Preferences.Key.TargetSDKInstalled],
+                            Preferences[Preferences.Key.MinSDKInstalled],
                         ).toString()
                     )
 
@@ -211,7 +215,9 @@ fun InstallsPage(viewModel: MainVM) {
                     Preferences[Preferences.Key.ReposFilterInstalled] == Preferences.Key.ReposFilterInstalled.default.value &&
                     Preferences[Preferences.Key.CategoriesFilterInstalled] == Preferences.Key.CategoriesFilterInstalled.default.value &&
                     Preferences[Preferences.Key.LicensesFilterInstalled] == Preferences.Key.LicensesFilterInstalled.default.value &&
-                    Preferences[Preferences.Key.AntifeaturesFilterInstalled] == Preferences.Key.AntifeaturesFilterInstalled.default.value
+                    Preferences[Preferences.Key.AntifeaturesFilterInstalled] == Preferences.Key.AntifeaturesFilterInstalled.default.value &&
+                    Preferences[Preferences.Key.TargetSDKInstalled] == Preferences.Key.TargetSDKInstalled.default.value &&
+                    Preferences[Preferences.Key.MinSDKInstalled] == Preferences.Key.MinSDKInstalled.default.value
         }
     }
 
