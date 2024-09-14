@@ -367,12 +367,12 @@ abstract class DatabaseX : RoomDatabase() {
                 getCategoryDao().deleteById(repository.id)
                 getProductDao().insert(*(getProductTempDao().getAll()))
                 getCategoryDao().insert(*(getCategoryTempDao().getAll()))
-                //getReleaseDao().insert(*(getReleaseTempDao().getAll()))
+                getReleaseDao().insert(*(getReleaseTempDao().getAll()))
                 getRepositoryDao().put(repository)
             }
             getProductTempDao().emptyTable()
             getCategoryTempDao().emptyTable()
-            //getReleaseTempDao().emptyTable()
+            getReleaseTempDao().emptyTable()
         }
     }
 }

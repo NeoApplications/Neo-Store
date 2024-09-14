@@ -7,6 +7,7 @@ import com.machiav3lli.fdroid.database.DatabaseX
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.database.entity.asReleaseTemp
 import com.machiav3lli.fdroid.network.Downloader
 import com.machiav3lli.fdroid.utility.CoroutineUtils
 import com.machiav3lli.fdroid.utility.ProgressInputStream
@@ -195,6 +196,7 @@ object RepositoryUpdater {
                 val indexEntry = jarFile.getEntry(indexType.contentName) as JarEntry
                 val total = indexEntry.size
                 db.getProductTempDao().emptyTable()
+                db.getReleaseTempDao().emptyTable()
                 db.getCategoryTempDao().emptyTable()
                 val features = context.packageManager.systemAvailableFeatures
                     .asSequence().map { it.name }.toSet() + setOf("android.hardware.touchscreen")
@@ -232,6 +234,9 @@ object RepositoryUpdater {
                                     }
                                     if (products.size >= 50) {
                                         db.getProductTempDao().putTemporary(products)
+                                        db.getReleaseTempDao()
+                                            .insert(*(products.flatMap { it.releases }
+                                                .map { it.asReleaseTemp() }.toTypedArray()))
                                         products.clear()
                                     }
                                 }
@@ -250,6 +255,9 @@ object RepositoryUpdater {
                         }
                         if (products.isNotEmpty()) {
                             db.getProductTempDao().putTemporary(products)
+                            db.getReleaseTempDao()
+                                .insert(*(products.flatMap { it.releases }
+                                    .map { it.asReleaseTemp() }.toTypedArray()))
                             products.clear()
                         }
                         Pair(changedRepository, certificateFromIndex)
@@ -335,13 +343,17 @@ object RepositoryUpdater {
                                             progress.toLong(),
                                             totalCount.toLong()
                                         )
-                                        db.getProductTempDao().putTemporary(products
-                                            .map {
-                                                it.apply {
-                                                    refreshReleases(features, unstable)
-                                                    refreshVariables()
-                                                }
-                                            })
+                                        products.map {
+                                            it.apply {
+                                                refreshReleases(features, unstable)
+                                                refreshVariables()
+                                            }
+                                        }.let { updatedProducts ->
+                                            db.getProductTempDao().putTemporary(updatedProducts)
+                                            db.getReleaseTempDao()
+                                                .insert(*(updatedProducts.flatMap { it.releases }
+                                                    .map { it.asReleaseTemp() }.toTypedArray()))
+                                        }
                                     }
                                 }
                             }
