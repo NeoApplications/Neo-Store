@@ -31,6 +31,7 @@ import com.machiav3lli.fdroid.TABLE_CATEGORY
 import com.machiav3lli.fdroid.TABLE_EXTRAS
 import com.machiav3lli.fdroid.TABLE_INSTALLED
 import com.machiav3lli.fdroid.TABLE_PRODUCT
+import com.machiav3lli.fdroid.TABLE_RELEASE
 import com.machiav3lli.fdroid.TABLE_REPOSITORY
 import com.machiav3lli.fdroid.database.QueryBuilder
 import com.machiav3lli.fdroid.database.entity.Category
@@ -215,6 +216,7 @@ interface ProductDao : BaseDao<Product> {
         LEFT JOIN $TABLE_EXTRAS ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_EXTRAS.$ROW_PACKAGE_NAME
         ${if (!installed && !updates) "LEFT " else ""}JOIN $TABLE_INSTALLED ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_INSTALLED.$ROW_PACKAGE_NAME
         LEFT JOIN $TABLE_CATEGORY ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_CATEGORY.$ROW_PACKAGE_NAME
+        LEFT JOIN $TABLE_RELEASE ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_RELEASE.$ROW_PACKAGE_NAME
         """
 
         // Filtering
@@ -281,7 +283,28 @@ interface ProductDao : BaseDao<Product> {
             )
         }
 
-        //// TODO SDK conditions
+        //// SDK
+        targetSdkVersion.takeIf { it > 1 }?.let { minTarget ->
+            whereConditions.add("""
+            EXISTS (
+                SELECT 1 FROM $TABLE_RELEASE
+                WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
+                AND $TABLE_RELEASE.targetSdkVersion >= ?
+            )
+        """.trimIndent())
+            builder.addArgument(minTarget.toString())
+        }
+
+        minSdkVersion.takeIf { it > 1 }?.let { minMin ->
+            whereConditions.add("""
+            EXISTS (
+                SELECT 1 FROM $TABLE_RELEASE
+                WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
+                AND $TABLE_RELEASE.minSdkVersion >= ?
+            )
+        """.trimIndent())
+            builder.addArgument(minMin.toString())
+        }
 
         builder += "WHERE ${whereConditions.joinToString(" AND ")}"
 
