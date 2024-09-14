@@ -2,8 +2,11 @@ package com.machiav3lli.fdroid.database.entity
 
 import android.net.Uri
 import androidx.room.Entity
+import androidx.room.Index
+import com.machiav3lli.fdroid.ROW_MINSDK_VERSION
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_SIGNATURE
+import com.machiav3lli.fdroid.ROW_TARGETSDK_VERSION
 import com.machiav3lli.fdroid.ROW_VERSION_CODE
 import com.machiav3lli.fdroid.TABLE_RELEASE
 import com.machiav3lli.fdroid.TABLE_RELEASE_TEMP
@@ -14,7 +17,14 @@ import kotlinx.serialization.json.Json
 // TODO add repoID, use for queries
 @Entity(
     tableName = TABLE_RELEASE,
-    primaryKeys = [ROW_PACKAGE_NAME, ROW_VERSION_CODE, ROW_SIGNATURE]
+    primaryKeys = [ROW_PACKAGE_NAME, ROW_VERSION_CODE, ROW_SIGNATURE],
+    indices = [
+        Index(value = [ROW_PACKAGE_NAME, ROW_VERSION_CODE, ROW_SIGNATURE], unique = true),
+        Index(value = [ROW_PACKAGE_NAME, ROW_MINSDK_VERSION, ROW_TARGETSDK_VERSION]),
+        Index(value = [ROW_PACKAGE_NAME]),
+        Index(value = [ROW_MINSDK_VERSION]),
+        Index(value = [ROW_TARGETSDK_VERSION]),
+    ]
 )
 @Serializable
 open class Release(

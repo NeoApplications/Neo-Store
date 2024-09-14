@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 26,
-    "identityHash": "88723ae801d18b7b528fb78e1c73fb38",
+    "identityHash": "cbe1f3cefdf35b45d91984f2f984a010",
     "entities": [
       {
         "tableName": "repository",
@@ -493,7 +493,57 @@
             "signature"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_release_packageName_versionCode_signature",
+            "unique": true,
+            "columnNames": [
+              "packageName",
+              "versionCode",
+              "signature"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_release_packageName_versionCode_signature` ON `${TABLE_NAME}` (`packageName`, `versionCode`, `signature`)"
+          },
+          {
+            "name": "index_release_packageName_minSdkVersion_targetSdkVersion",
+            "unique": false,
+            "columnNames": [
+              "packageName",
+              "minSdkVersion",
+              "targetSdkVersion"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_release_packageName_minSdkVersion_targetSdkVersion` ON `${TABLE_NAME}` (`packageName`, `minSdkVersion`, `targetSdkVersion`)"
+          },
+          {
+            "name": "index_release_packageName",
+            "unique": false,
+            "columnNames": [
+              "packageName"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_release_packageName` ON `${TABLE_NAME}` (`packageName`)"
+          },
+          {
+            "name": "index_release_minSdkVersion",
+            "unique": false,
+            "columnNames": [
+              "minSdkVersion"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_release_minSdkVersion` ON `${TABLE_NAME}` (`minSdkVersion`)"
+          },
+          {
+            "name": "index_release_targetSdkVersion",
+            "unique": false,
+            "columnNames": [
+              "targetSdkVersion"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_release_targetSdkVersion` ON `${TABLE_NAME}` (`targetSdkVersion`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
@@ -1361,7 +1411,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '88723ae801d18b7b528fb78e1c73fb38')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cbe1f3cefdf35b45d91984f2f984a010')"
     ]
   }
 }
