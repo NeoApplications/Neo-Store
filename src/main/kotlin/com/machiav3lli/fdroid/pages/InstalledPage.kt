@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.pages
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -23,6 +24,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -219,6 +221,10 @@ fun InstallsPage(viewModel: MainVM) {
                     Preferences[Preferences.Key.TargetSDKInstalled] == Preferences.Key.TargetSDKInstalled.default.value &&
                     Preferences[Preferences.Key.MinSDKInstalled] == Preferences.Key.MinSDKInstalled.default.value
         }
+    }
+
+    BackHandler(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+        scope.launch { scaffoldState.bottomSheetState.partialExpand() }
     }
 
     BottomSheetScaffold(

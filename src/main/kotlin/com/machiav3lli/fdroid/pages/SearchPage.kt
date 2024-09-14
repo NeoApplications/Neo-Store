@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.pages
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -188,6 +190,10 @@ fun SearchPage(viewModel: MainVM) {
 
     LaunchedEffect(key1 = query) {
         viewModel.setSearchQuery(query)
+    }
+
+    BackHandler(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+        scope.launch { scaffoldState.bottomSheetState.partialExpand() }
     }
 
     BottomSheetScaffold(

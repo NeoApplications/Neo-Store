@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.pages
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
@@ -110,6 +112,10 @@ fun LatestPage(viewModel: MainVM) {
                 }
             }
         }
+    }
+
+    BackHandler(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+        scope.launch { scaffoldState.bottomSheetState.partialExpand() }
     }
 
     BottomSheetScaffold(

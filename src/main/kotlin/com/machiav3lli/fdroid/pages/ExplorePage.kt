@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.pages
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -132,6 +134,9 @@ fun ExplorePage(viewModel: MainVM) {
         }
     }
 
+    BackHandler(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+        scope.launch { scaffoldState.bottomSheetState.partialExpand() }
+    }
 
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
