@@ -401,4 +401,5 @@
 \nਸਾਰੇ ਰਿਪੋਜ਼: %s</string>
     <string name="confirm_uninstall_DESC_FORMAT">ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ \'ਤੇ %s ਨੂੰ ਅਣਇੰਸਟਾਲ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
     <string name="all">ਸਾਰੇ</string>
+    <string name="erase_all">ਸਾਰੇ ਮਿਟਾਓ</string>
 </resources>
