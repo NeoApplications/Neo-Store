@@ -35,6 +35,7 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Licenses
+import com.machiav3lli.fdroid.entity.AndroidVersion
 import com.machiav3lli.fdroid.entity.AntiFeature
 import com.machiav3lli.fdroid.index.RepositoryUpdater.db
 import com.machiav3lli.fdroid.ui.components.ActionButton
@@ -135,10 +136,10 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
     val filteredLicenses = remember(Preferences[licensesFilterKey]) {
         mutableStateListOf(*Preferences[licensesFilterKey].toTypedArray())
     }
-    val filterMinSDK by remember(Preferences[minSDKFilterKey]) {
+    var filterMinSDK by remember(Preferences[minSDKFilterKey]) {
         mutableStateOf(Preferences[minSDKFilterKey])
     }
-    val filterTargetSDK by remember(Preferences[targetSDKFilterKey]) {
+    var filterTargetSDK by remember(Preferences[targetSDKFilterKey]) {
         mutableStateOf(Preferences[targetSDKFilterKey])
     }
 
@@ -282,7 +283,7 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                     }
                 }
             }
-            /*if (minSDKFilterKey == Preferences.Key.MinSDKSearch) item {
+            item {
                 ExpandableItemsBlock(
                     heading = stringResource(id = R.string.min_sdk),
                     preExpanded = filterMinSDK != AndroidVersion.Unknown,
@@ -303,7 +304,7 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                     }
                 }
             }
-            if (targetSDKFilterKey == Preferences.Key.TargetSDKSearch) item {
+            item {
                 ExpandableItemsBlock(
                     heading = stringResource(id = R.string.target_sdk),
                     preExpanded = filterTargetSDK != AndroidVersion.Unknown,
@@ -323,7 +324,7 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                         }
                     }
                 }
-            }*/
+            }
             item {
                 ExpandableItemsBlock(
                     heading = stringResource(id = R.string.allowed_anti_features),
