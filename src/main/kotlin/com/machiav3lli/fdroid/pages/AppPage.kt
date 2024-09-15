@@ -113,7 +113,7 @@ import kotlin.math.truncate
     ExperimentalCoroutinesApi::class
 )
 @Composable
-fun AppSheet(
+fun AppPage(
     viewModel: AppSheetVM,
     packageName: String,
 ) {

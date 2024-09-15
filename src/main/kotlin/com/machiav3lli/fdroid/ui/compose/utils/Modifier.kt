@@ -45,13 +45,13 @@ fun Modifier.blockBorder(altStyle: Boolean = Preferences[Preferences.Key.AltBloc
             .addIfElse(altStyle,
                 factory = {
                     border(
-                        1.dp,
-                        MaterialTheme.colorScheme.outline,
-                        MaterialTheme.shapes.extraLarge,
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = MaterialTheme.shapes.extraLarge,
                     )
                 },
                 elseFactory = {
-                    background(MaterialTheme.colorScheme.surfaceContainer)
+                    background(color = MaterialTheme.colorScheme.surfaceContainerLow)
                 }
             )
     }
@@ -62,9 +62,9 @@ fun Modifier.blockShadow(altStyle: Boolean = Preferences[Preferences.Key.AltBloc
             .addIfElse(altStyle,
                 factory = {
                     border(
-                        1.dp,
-                        MaterialTheme.colorScheme.outline,
-                        MaterialTheme.shapes.extraLarge,
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = MaterialTheme.shapes.extraLarge,
                     )
                 },
                 elseFactory = {

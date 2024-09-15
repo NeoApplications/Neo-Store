@@ -159,7 +159,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
 
                 appPackage.value?.let {
                     AnimatedPane {
-                        AppSheet(
+                        AppPage(
                             viewModel = appSheetVM,
                             packageName = it,
                         )

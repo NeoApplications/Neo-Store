@@ -10,9 +10,9 @@ import com.machiav3lli.fdroid.entity.LinkRef
 @Composable
 fun LinkPreference(
     link: LinkRef,
+    modifier: Modifier = Modifier,
     index: Int = 1,
     groupSize: Int = 1,
-    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 

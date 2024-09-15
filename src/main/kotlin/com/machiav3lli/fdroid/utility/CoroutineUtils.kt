@@ -7,6 +7,7 @@ import kotlinx.coroutines.withTimeout
 import okhttp3.Call
 import okhttp3.Response
 
+// TODO consider dropping
 object CoroutineUtils {
     private class ManagedCancellable(private val cancel: suspend () -> Unit) {
         @Volatile

@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.pages
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -136,6 +137,7 @@ fun LatestPage(viewModel: MainVM) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             if (!Preferences[Preferences.Key.HideNewApps]) item {
                 Row(
@@ -220,6 +222,7 @@ fun LatestPage(viewModel: MainVM) {
             }
             items(
                 items = primaryList,
+                key = { it.packageName },
             ) { item ->
                 ProductsListItem(
                     item = item,

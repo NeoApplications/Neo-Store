@@ -68,7 +68,7 @@ fun ReleaseItem(
     val container by animateColorAsState(
         targetValue = if (isSuggested or isInstalled)
             MaterialTheme.colorScheme.surfaceContainerHighest
-        else MaterialTheme.colorScheme.surfaceContainerLow, label = "containerColor"
+        else MaterialTheme.colorScheme.surfaceContainer, label = "containerColor"
     )
     val border by animateColorAsState(
         targetValue = if (isSuggested or isInstalled)

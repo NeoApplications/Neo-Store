@@ -281,7 +281,7 @@ fun RepoPage(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                             ) {
-                                items(repo.mirrors) { text ->
+                                items(items = repo.mirrors, key = { it }) { text ->
                                     SelectChip(
                                         text = text,
                                         checked = text == addressFieldValue,

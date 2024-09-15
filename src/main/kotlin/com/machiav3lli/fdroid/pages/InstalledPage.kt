@@ -245,78 +245,77 @@ fun InstallsPage(viewModel: MainVM) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            if (updatesAvailable) {
-                item {
-                    val cardColor by animateColorAsState(
-                        targetValue = if (updatesVisible) MaterialTheme.colorScheme.surfaceContainerHighest
-                        else Color.Transparent,
-                        label = "cardColor"
-                    )
+            if (updatesAvailable) item {
+                val cardColor by animateColorAsState(
+                    targetValue = if (updatesVisible) MaterialTheme.colorScheme.surfaceContainerHighest
+                    else Color.Transparent,
+                    label = "cardColor"
+                )
 
-                    Surface(
-                        modifier = Modifier.padding(
-                            horizontal = 8.dp,
-                            vertical = 4.dp
-                        ),
-                        shape = MaterialTheme.shapes.large,
-                        color = cardColor,
+                Surface(
+                    modifier = Modifier.padding(
+                        horizontal = 8.dp,
+                        vertical = 4.dp
+                    ),
+                    shape = MaterialTheme.shapes.large,
+                    color = cardColor,
+                ) {
+                    Column(
+                        Modifier.padding(4.dp),
                     ) {
-                        Column(
-                            Modifier.padding(4.dp),
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween,
+                            ElevatedButton(
+                                colors = ButtonDefaults.elevatedButtonColors(
+                                    containerColor = MaterialTheme.colorScheme.surface,
+                                    contentColor = MaterialTheme.colorScheme.primary
+                                ),
+                                onClick = { updatesVisible = !updatesVisible }
                             ) {
-                                ElevatedButton(
-                                    colors = ButtonDefaults.elevatedButtonColors(
-                                        containerColor = MaterialTheme.colorScheme.surface,
-                                        contentColor = MaterialTheme.colorScheme.primary
-                                    ),
-                                    onClick = { updatesVisible = !updatesVisible }
-                                ) {
-                                    Text(
-                                        text = stringResource(id = R.string.updates),
-                                        textAlign = TextAlign.Center,
-                                        style = MaterialTheme.typography.titleSmall
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Icon(
-                                        modifier = Modifier.size(18.dp),
-                                        imageVector = if (updatesVisible) Phosphor.CaretUp else Phosphor.CaretDown,
-                                        contentDescription = stringResource(id = R.string.updates)
-                                    )
-                                }
-                                AnimatedVisibility(updatesVisible) {
-                                    ActionChip(
-                                        text = stringResource(id = R.string.update_all),
-                                        icon = Phosphor.Download,
-                                    ) {
-                                        val action = {
-                                            MainApplication.wm.update(
-                                                *updates.toTypedArray()
-                                            )
-                                        }
-                                        if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                                            dialogKey.value =
-                                                DialogKey.BatchDownload(
-                                                    updates.map(ProductItem::name), action
-                                                )
-                                            openDialog.value = true
-                                        } else action()
-                                    }
-                                }
+                                Text(
+                                    text = stringResource(id = R.string.updates),
+                                    textAlign = TextAlign.Center,
+                                    style = MaterialTheme.typography.titleSmall
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Icon(
+                                    modifier = Modifier.size(18.dp),
+                                    imageVector = if (updatesVisible) Phosphor.CaretUp else Phosphor.CaretDown,
+                                    contentDescription = stringResource(id = R.string.updates)
+                                )
                             }
                             AnimatedVisibility(updatesVisible) {
-                                ProductsHorizontalRecycler(
-                                    productsList = updates,
-                                    repositories = repositoriesMap,
-                                    rowsNumber = updates.size.coerceIn(1, 2),
-                                ) { item ->
-                                    neoActivity.navigateProduct(item.packageName)
+                                ActionChip(
+                                    text = stringResource(id = R.string.update_all),
+                                    icon = Phosphor.Download,
+                                ) {
+                                    val action = {
+                                        MainApplication.wm.update(
+                                            *updates.toTypedArray()
+                                        )
+                                    }
+                                    if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                        dialogKey.value =
+                                            DialogKey.BatchDownload(
+                                                updates.map(ProductItem::name), action
+                                            )
+                                        openDialog.value = true
+                                    } else action()
                                 }
+                            }
+                        }
+                        AnimatedVisibility(updatesVisible) {
+                            ProductsHorizontalRecycler(
+                                productsList = updates,
+                                repositories = repositoriesMap,
+                                rowsNumber = updates.size.coerceIn(1, 2),
+                            ) { item ->
+                                neoActivity.navigateProduct(item.packageName)
                             }
                         }
                     }
@@ -459,6 +458,7 @@ fun DownloadedPage(viewModel: MainVM) {
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         item {
             Row(

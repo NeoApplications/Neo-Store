@@ -349,12 +349,11 @@ abstract class DatabaseX : RoomDatabase() {
 
     fun cleanUp(vararg pairs: Pair<Long, Boolean>) {
         runInTransaction {
-            pairs.forEach { pair ->
-                val id = pair.first
+            pairs.forEach { (id, enabled)  ->
                 getProductDao().deleteById(id)
                 getCategoryDao().deleteById(id)
-                if (pair.second) getRepositoryDao().deleteById(id)
                 getReleaseDao().deleteById(id)
+                if (enabled) getRepositoryDao().deleteById(id)
             }
         }
     }

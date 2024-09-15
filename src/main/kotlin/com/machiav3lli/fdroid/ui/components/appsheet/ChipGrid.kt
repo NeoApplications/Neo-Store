@@ -32,7 +32,7 @@ fun AppInfoChips(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(8.dp)
     ) {
-        items(list) { text ->
+        items(items = list, key = { it }) { text ->
             InfoChip(
                 text = text,
             )
