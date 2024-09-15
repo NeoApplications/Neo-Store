@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-1.0.6 (XX.09.2024) +10 Commits +30 Translations
+1.0.6 (XX.09.2024) +60 Commits +30 Translations
 ------------------
 
 ### Function
@@ -12,21 +12,28 @@ CHANGELOG
 - Fix: Make Downloaded keys fully unique
 - Fix: Installs queueing logic
 - Fix: Performance issues of SyncWorker
+- Fix: Back handling in Main pages
+- Fix: Crash on missing stopReason
 - Update: AppSheet header logic
 - Update: Revamp updating extras logic (reduce latency)
 - Update: Koin-inject Main & Prefs ViewModels
 - Update: Replace the multiple VMs for single MainVM
 - Update: Revamp WorkerManager & all Workers
 - Update: Migrate to type-safe navigation
+- Update: Indices and naming of Room Entities
+- Update: Improve performance of the main queries
+- Update: Improve memory and performance of flows in Main
 - Remove: Unused BootReceiver
 - CompileSDK 35
 
 ### UI/UX
 
+- Add: Target- & MinSDK filters
 - Add: Erase-all button to downloads page
 - Add: Indicator of the invalid field in repo editor
 - Update: Make UI wide screens friendly & navigation adaptive
 - Update: Revamp repo page
+- Update: Animate permission cards
 
 1.0.5 (19.07.2024) +10 Commits +10 Translations
 ------------------
