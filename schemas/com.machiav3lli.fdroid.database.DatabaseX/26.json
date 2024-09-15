@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 26,
-    "identityHash": "cbe1f3cefdf35b45d91984f2f984a010",
+    "identityHash": "381bfd44450e5d77cd8c8465f92d8f37",
     "entities": [
       {
         "tableName": "repository",
@@ -1093,7 +1093,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "exodusInfo",
+        "tableName": "exodus_info",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `handle` TEXT NOT NULL, `app_name` TEXT NOT NULL, `uaid` TEXT NOT NULL, `version_name` TEXT NOT NULL, `version_code` TEXT NOT NULL, `source` TEXT NOT NULL, `icon_hash` TEXT NOT NULL, `apk_hash` TEXT NOT NULL, `created` TEXT NOT NULL, `updated` TEXT NOT NULL, `report` INTEGER NOT NULL, `creator` TEXT NOT NULL, `downloads` TEXT NOT NULL, `trackers` BLOB NOT NULL, `permissions` BLOB NOT NULL, PRIMARY KEY(`packageName`))",
         "fields": [
           {
@@ -1201,13 +1201,13 @@
         },
         "indices": [
           {
-            "name": "index_exodusInfo_packageName",
+            "name": "index_exodus_info_packageName",
             "unique": false,
             "columnNames": [
               "packageName"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_exodusInfo_packageName` ON `${TABLE_NAME}` (`packageName`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_exodus_info_packageName` ON `${TABLE_NAME}` (`packageName`)"
           }
         ],
         "foreignKeys": []
@@ -1344,7 +1344,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "installTask",
+        "tableName": "install_task",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `repositoryId` INTEGER NOT NULL, `versionCode` INTEGER NOT NULL, `versionName` TEXT NOT NULL, `label` TEXT NOT NULL, `cacheFileName` TEXT NOT NULL, `added` INTEGER NOT NULL, `requireUser` INTEGER NOT NULL, PRIMARY KEY(`packageName`, `repositoryId`, `versionCode`))",
         "fields": [
           {
@@ -1411,7 +1411,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cbe1f3cefdf35b45d91984f2f984a010')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '381bfd44450e5d77cd8c8465f92d8f37')"
     ]
   }
 }
