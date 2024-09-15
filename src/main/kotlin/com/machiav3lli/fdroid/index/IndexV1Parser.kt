@@ -156,7 +156,7 @@ object IndexV1Parser {
                         if (it.token == JsonToken.START_ARRAY) {
                             val packageName = it.key
                             val releases =
-                                collectNotNull(JsonToken.START_OBJECT) { parseRelease(packageName) }
+                                collectNotNull(JsonToken.START_OBJECT) { parseRelease(repositoryId, packageName) }
                             callback.onReleases(packageName, releases)
                         } else {
                             skipChildren()
@@ -315,7 +315,7 @@ object IndexV1Parser {
         )
     }
 
-    private fun JsonParser.parseRelease(packageName: String): Release {
+    private fun JsonParser.parseRelease(repositoryId: Long, packageName: String): Release {
         var version = ""
         var versionCode = 0L
         var added = 0L
@@ -366,6 +366,7 @@ object IndexV1Parser {
         val obbPatchHashType = if (obbPatchHash.isNotEmpty()) "sha256" else ""
         return Release(
             packageName,
+            repositoryId,
             false,
             version,
             versionCode,

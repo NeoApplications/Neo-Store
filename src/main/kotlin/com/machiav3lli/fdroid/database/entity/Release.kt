@@ -1,10 +1,12 @@
 package com.machiav3lli.fdroid.database.entity
 
 import android.net.Uri
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import com.machiav3lli.fdroid.ROW_MINSDK_VERSION
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
+import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
 import com.machiav3lli.fdroid.ROW_SIGNATURE
 import com.machiav3lli.fdroid.ROW_TARGETSDK_VERSION
 import com.machiav3lli.fdroid.ROW_VERSION_CODE
@@ -15,11 +17,12 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 // TODO add repoID, use for queries
+// TODO consider denormalizing by adding minSdkVersion and maxSdkVersion columns to Product
 @Entity(
     tableName = TABLE_RELEASE,
-    primaryKeys = [ROW_PACKAGE_NAME, ROW_VERSION_CODE, ROW_SIGNATURE],
+    primaryKeys = [ROW_PACKAGE_NAME, ROW_REPOSITORY_ID, ROW_VERSION_CODE, ROW_SIGNATURE],
     indices = [
-        Index(value = [ROW_PACKAGE_NAME, ROW_VERSION_CODE, ROW_SIGNATURE], unique = true),
+        Index(value = [ROW_PACKAGE_NAME, ROW_REPOSITORY_ID, ROW_VERSION_CODE, ROW_SIGNATURE], unique = true),
         Index(value = [ROW_PACKAGE_NAME, ROW_MINSDK_VERSION, ROW_TARGETSDK_VERSION]),
         Index(value = [ROW_PACKAGE_NAME]),
         Index(value = [ROW_MINSDK_VERSION]),
@@ -29,6 +32,8 @@ import kotlinx.serialization.json.Json
 @Serializable
 open class Release(
     val packageName: String,
+    @ColumnInfo(defaultValue = "0")
+    val repositoryId : Long = 0L,
     val selected: Boolean,
     val version: String,
     val versionCode: Long,
@@ -95,6 +100,7 @@ open class Release(
         selected: Boolean,
     ) = Release(
         packageName,
+        repositoryId,
         selected,
         version,
         versionCode,
@@ -124,6 +130,7 @@ open class Release(
 @Entity(tableName = TABLE_RELEASE_TEMP)
 class ReleaseTemp(
     packageName: String,
+    repositoryId: Long,
     selected: Boolean,
     version: String,
     versionCode: Long,
@@ -149,6 +156,7 @@ class ReleaseTemp(
     incompatibilities: List<Incompatibility>,
 ) : Release(
     packageName,
+    repositoryId,
     selected,
     version,
     versionCode,
@@ -176,6 +184,7 @@ class ReleaseTemp(
 
 fun Release.asReleaseTemp() = ReleaseTemp(
     packageName = packageName,
+    repositoryId = repositoryId,
     selected = selected,
     version = version,
     versionCode = versionCode,

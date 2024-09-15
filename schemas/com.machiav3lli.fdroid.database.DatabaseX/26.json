@@ -338,13 +338,20 @@
       },
       {
         "tableName": "release",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `selected` INTEGER NOT NULL, `version` TEXT NOT NULL, `versionCode` INTEGER NOT NULL, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `source` TEXT NOT NULL, `release` TEXT NOT NULL, `hash` TEXT NOT NULL, `hashType` TEXT NOT NULL, `signature` TEXT NOT NULL, `obbMain` TEXT NOT NULL, `obbMainHash` TEXT NOT NULL, `obbMainHashType` TEXT NOT NULL, `obbPatch` TEXT NOT NULL, `obbPatchHash` TEXT NOT NULL, `obbPatchHashType` TEXT NOT NULL, `permissions` BLOB NOT NULL, `features` BLOB NOT NULL, `platforms` BLOB NOT NULL, `incompatibilities` BLOB NOT NULL, PRIMARY KEY(`packageName`, `versionCode`, `signature`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `repositoryId` INTEGER NOT NULL DEFAULT 0, `selected` INTEGER NOT NULL, `version` TEXT NOT NULL, `versionCode` INTEGER NOT NULL, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `source` TEXT NOT NULL, `release` TEXT NOT NULL, `hash` TEXT NOT NULL, `hashType` TEXT NOT NULL, `signature` TEXT NOT NULL, `obbMain` TEXT NOT NULL, `obbMainHash` TEXT NOT NULL, `obbMainHashType` TEXT NOT NULL, `obbPatch` TEXT NOT NULL, `obbPatchHash` TEXT NOT NULL, `obbPatchHashType` TEXT NOT NULL, `permissions` BLOB NOT NULL, `features` BLOB NOT NULL, `platforms` BLOB NOT NULL, `incompatibilities` BLOB NOT NULL, PRIMARY KEY(`packageName`, `repositoryId`, `versionCode`, `signature`))",
         "fields": [
           {
             "fieldPath": "packageName",
             "columnName": "packageName",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "selected",
@@ -489,21 +496,23 @@
           "autoGenerate": false,
           "columnNames": [
             "packageName",
+            "repositoryId",
             "versionCode",
             "signature"
           ]
         },
         "indices": [
           {
-            "name": "index_release_packageName_versionCode_signature",
+            "name": "index_release_packageName_repositoryId_versionCode_signature",
             "unique": true,
             "columnNames": [
               "packageName",
+              "repositoryId",
               "versionCode",
               "signature"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_release_packageName_versionCode_signature` ON `${TABLE_NAME}` (`packageName`, `versionCode`, `signature`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_release_packageName_repositoryId_versionCode_signature` ON `${TABLE_NAME}` (`packageName`, `repositoryId`, `versionCode`, `signature`)"
           },
           {
             "name": "index_release_packageName_minSdkVersion_targetSdkVersion",
@@ -548,13 +557,20 @@
       },
       {
         "tableName": "temporary_release",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `selected` INTEGER NOT NULL, `version` TEXT NOT NULL, `versionCode` INTEGER NOT NULL, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `source` TEXT NOT NULL, `release` TEXT NOT NULL, `hash` TEXT NOT NULL, `hashType` TEXT NOT NULL, `signature` TEXT NOT NULL, `obbMain` TEXT NOT NULL, `obbMainHash` TEXT NOT NULL, `obbMainHashType` TEXT NOT NULL, `obbPatch` TEXT NOT NULL, `obbPatchHash` TEXT NOT NULL, `obbPatchHashType` TEXT NOT NULL, `permissions` BLOB NOT NULL, `features` BLOB NOT NULL, `platforms` BLOB NOT NULL, `incompatibilities` BLOB NOT NULL, PRIMARY KEY(`packageName`, `versionCode`, `signature`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `repositoryId` INTEGER NOT NULL DEFAULT 0, `selected` INTEGER NOT NULL, `version` TEXT NOT NULL, `versionCode` INTEGER NOT NULL, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `source` TEXT NOT NULL, `release` TEXT NOT NULL, `hash` TEXT NOT NULL, `hashType` TEXT NOT NULL, `signature` TEXT NOT NULL, `obbMain` TEXT NOT NULL, `obbMainHash` TEXT NOT NULL, `obbMainHashType` TEXT NOT NULL, `obbPatch` TEXT NOT NULL, `obbPatchHash` TEXT NOT NULL, `obbPatchHashType` TEXT NOT NULL, `permissions` BLOB NOT NULL, `features` BLOB NOT NULL, `platforms` BLOB NOT NULL, `incompatibilities` BLOB NOT NULL, PRIMARY KEY(`packageName`, `repositoryId`, `versionCode`, `signature`))",
         "fields": [
           {
             "fieldPath": "packageName",
             "columnName": "packageName",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "selected",
@@ -699,6 +715,7 @@
           "autoGenerate": false,
           "columnNames": [
             "packageName",
+            "repositoryId",
             "versionCode",
             "signature"
           ]

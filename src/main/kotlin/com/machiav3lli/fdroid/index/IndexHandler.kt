@@ -116,7 +116,7 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
         )
     }
 
-    private class ReleaseBuilder {
+    private class ReleaseBuilder(val repositoryId: Long) {
         var packageName = ""
         var version = ""
         var versionCode = 0L
@@ -144,6 +144,7 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
             val obbPatchHashType = if (obbPatchHash.isNotEmpty()) "sha256" else ""
             return Release(
                 packageName,
+                repositoryId,
                 false,
                 version,
                 versionCode,
@@ -211,7 +212,7 @@ class IndexHandler(private val repositoryId: Long, private val callback: Callbac
             }
 
             localName == "package" && productBuilder != null && releaseBuilder == null                             -> {
-                this.releaseBuilder = ReleaseBuilder()
+                this.releaseBuilder = ReleaseBuilder(repositoryId)
             }
 
             localName == "hash" && releaseBuilder != null                                                          -> {

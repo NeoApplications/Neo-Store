@@ -6,6 +6,7 @@ import com.machiav3lli.fdroid.database.entity.Repository
 object SampleData {
     val demoRelease = Release(
         packageName = "com.machiav3lli.fdroid",
+        repositoryId = 1,
         selected = false,
         version = "v0.2.3",
         versionCode = 1234,
