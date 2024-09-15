@@ -16,8 +16,7 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import com.anggrayudi.storage.callback.FileCallback
-import com.anggrayudi.storage.file.copyFileTo
+import com.anggrayudi.storage.file.children
 import com.anggrayudi.storage.file.toDocumentFile
 import com.google.common.util.concurrent.ListenableFuture
 import com.machiav3lli.fdroid.ARG_AUTHENTICATION
@@ -39,6 +38,7 @@ import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.network.Downloader
 import com.machiav3lli.fdroid.utility.Utils
+import com.machiav3lli.fdroid.utility.copyTo
 import com.machiav3lli.fdroid.utility.downloadNotificationBuilder
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.android.singleSignature
@@ -176,18 +176,15 @@ class DownloadWorker(
         ARG_VALIDATION_ERROR to validationError?.ordinal,
     )
 
-    private fun finalize(task: DownloadTask) {
+    private suspend fun finalize(task: DownloadTask) {
         if (isDownloadExternal) {
             context.getDownloadFolder()?.let { downloadFolder ->
                 val cacheFile = Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
                     .toDocumentFile(applicationContext)
-                if (downloadFolder.findFile(task.release.cacheFileName)?.exists() != true) {
-                    cacheFile?.copyFileTo(
-                        applicationContext,
-                        downloadFolder,
-                        null,
-                        object : FileCallback() {}
-                    )
+                if (downloadFolder.children.none { it.name == task.release.cacheFileName }) {
+                    withContext(Dispatchers.IO) {
+                        cacheFile?.copyTo(context, downloadFolder)
+                    }
                 }
             }
         }
