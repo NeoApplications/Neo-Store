@@ -354,6 +354,7 @@ abstract class DatabaseX : RoomDatabase() {
                 getProductDao().deleteById(id)
                 getCategoryDao().deleteById(id)
                 if (pair.second) getRepositoryDao().deleteById(id)
+                getReleaseDao().deleteById(id)
             }
         }
     }

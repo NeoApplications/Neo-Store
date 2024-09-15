@@ -14,6 +14,9 @@ interface ReleaseDao : BaseDao<Release> {
     // This one for the separating releases of different sources
     @Query("SELECT * FROM `release` WHERE packageName = :packageName AND signature = :signature")
     fun get(packageName: String, signature: String): List<Release>
+
+    @Query("DELETE FROM `release` WHERE repositoryId = :id")
+    fun deleteById(id: Long): Int
 }
 
 @Dao
