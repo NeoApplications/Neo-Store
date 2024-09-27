@@ -389,4 +389,8 @@
     <string name="state_modified">Muudetud</string>
     <string name="prefs_search_apps_description">Otsingutulemustesse kaasatavate rakenduste maksimaalne arv (kõigi rakenduste kaasamiseks pange 0).</string>
     <string name="wait_to_sync">Oodake paar sekundit, enne kui uuesti sünkroonite.</string>
+    <string name="source_copyleft">Copyleft autorlus</string>
+    <string name="trackers_in">%s jälitajad</string>
+    <string name="erase_all">Kustuta kõik</string>
+    <string name="all">Kõik</string>
 </resources>
