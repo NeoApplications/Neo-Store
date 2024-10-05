@@ -3,7 +3,7 @@
     <string name="address">Adresse</string>
     <string name="all_applications">Alle Apps</string>
     <string name="already_exists">Findes allerede</string>
-    <string name="anti_features">Anti-funktioner</string>
+    <string name="anti_features">Antifunktioner</string>
     <string name="application">App</string>
     <string name="author_email">Udviklerens e-mail</string>
     <string name="available">Tilgængelig</string>
@@ -22,7 +22,7 @@
     <string name="delete">Slet</string>
     <string name="details">Detaljer</string>
     <string name="donate">Donér</string>
-    <string name="downloaded_FORMAT">Hentet %s</string>
+    <string name="downloaded_FORMAT">Hentede %s</string>
     <string name="downloading_FORMAT">Henter %s…</string>
     <string name="edit_repository">Rediger repository</string>
     <string name="file_format_error_DESC">Ugyldigt filformat.</string>
@@ -50,7 +50,7 @@
     <string name="light">Lys</string>
     <string name="links">Links</string>
     <string name="list_animation">Listeanimationer</string>
-    <string name="list_animation_description">Animér listen på hovedsiden</string>
+    <string name="list_animation_description">Animer listen på hovedsiden</string>
     <string name="merging_FORMAT">Fletter %s…</string>
     <string name="name">Navn</string>
     <string name="never">Aldrig</string>
@@ -401,4 +401,5 @@
     <string name="confirm_uninstall_DESC_FORMAT">Er du sikker på, at du vil afinstallere %s?</string>
     <string name="last_successful_sync">Seneste opdatering: %s
 \nAlle repos: %s</string>
+    <string name="erase_all">Slet alt</string>
 </resources>
