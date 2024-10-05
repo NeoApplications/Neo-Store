@@ -2,7 +2,7 @@ Tilføjet: Parallel hentning og synkronisering
 Tilføjet: Eksport/import af installerede apps og repositories
 Tilføjet: +50 nye repos
 Tilføjet: Børnetilstand
-Fejlrettelse: Kalder Tor-adresser
+Rettet: Kalder Tor-adresser
 Opdateret: Fornyet hele brugergrænsefladen
 Opdateret: Forbedret indstilling af værdier i præferencedialog
 + meget mere i mere end 440 commits og 380 oversættelsesbidrag
