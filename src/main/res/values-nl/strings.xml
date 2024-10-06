@@ -401,4 +401,5 @@
 \nAlle archieven: %s</string>
     <string name="confirm_uninstall_DESC_FORMAT">Weet je zeker dat je %s wil verwijderen?</string>
     <string name="all">Alle</string>
+    <string name="erase_all">Alles wissen</string>
 </resources>
