@@ -1,6 +1,6 @@
 - Opdateret: Design til MD3
 - Opdateret: Bedre UX til skærmbilleder
-- Fejlrettelse: Frysning under programinstallation med root-metode
+- Rettet: Frysning under programinstallation med root-metode
 - Opdateret: Fornyede temaprofiler
 - Tilføjet: Deling af links (kun officiel F-Droid indtil videre)
 - Andre små UI/UX-rettelser
