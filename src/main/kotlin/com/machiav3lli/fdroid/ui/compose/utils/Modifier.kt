@@ -2,8 +2,11 @@ package com.machiav3lli.fdroid.ui.compose.utils
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
@@ -38,16 +41,36 @@ fun Modifier.vertical() =
         }
     }
 
-fun Modifier.blockBorder(altStyle: Boolean = Preferences[Preferences.Key.AltBlockLayout]) =
+fun Modifier.blockBorderTop(altStyle: Boolean = Preferences[Preferences.Key.AltBlockLayout]) =
     composed {
         this
-            .clip(MaterialTheme.shapes.extraLarge)
+            .padding(2.dp)
+            .clip(BlockTopShape)
             .addIfElse(altStyle,
                 factory = {
                     border(
                         width = 1.dp,
                         color = MaterialTheme.colorScheme.outline,
-                        shape = MaterialTheme.shapes.extraLarge,
+                        shape = BlockTopShape,
+                    )
+                },
+                elseFactory = {
+                    background(color = MaterialTheme.colorScheme.surfaceContainerLow)
+                }
+            )
+    }
+
+fun Modifier.blockBorderBottom(altStyle: Boolean = Preferences[Preferences.Key.AltBlockLayout]) =
+    composed {
+        this
+            .padding(2.dp)
+            .clip(BlockBottomShape)
+            .addIfElse(altStyle,
+                factory = {
+                    border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = BlockBottomShape,
                     )
                 },
                 elseFactory = {
@@ -73,3 +96,19 @@ fun Modifier.blockShadow(altStyle: Boolean = Preferences[Preferences.Key.AltBloc
                 }
             )
     }
+
+val BlockTopShape
+    @Composable @ReadOnlyComposable get() = RoundedCornerShape(
+        topStart = MaterialTheme.shapes.extraLarge.topStart,
+        topEnd = MaterialTheme.shapes.extraLarge.topEnd,
+        bottomEnd = MaterialTheme.shapes.extraSmall.bottomEnd,
+        bottomStart = MaterialTheme.shapes.extraSmall.bottomStart,
+    )
+
+val BlockBottomShape
+    @Composable @ReadOnlyComposable get() = RoundedCornerShape(
+        topStart = MaterialTheme.shapes.extraSmall.topStart,
+        topEnd = MaterialTheme.shapes.extraSmall.topEnd,
+        bottomEnd = MaterialTheme.shapes.extraLarge.bottomEnd,
+        bottomStart = MaterialTheme.shapes.extraLarge.bottomStart,
+    )
