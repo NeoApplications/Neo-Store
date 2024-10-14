@@ -365,6 +365,7 @@ abstract class DatabaseX : RoomDatabase() {
             if (success) {
                 getProductDao().deleteById(repository.id)
                 getCategoryDao().deleteById(repository.id)
+                getReleaseDao().deleteById(repository.id)
                 getProductDao().insert(*(getProductTempDao().getAll()))
                 getCategoryDao().insert(*(getCategoryTempDao().getAll()))
                 getReleaseDao().insert(*(getReleaseTempDao().getAll()))
