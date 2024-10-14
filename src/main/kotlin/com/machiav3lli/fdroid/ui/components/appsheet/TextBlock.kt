@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.ui.compose.utils.addIf
+import com.machiav3lli.fdroid.ui.compose.utils.addIfElse
 import dev.jeziellago.compose.markdowntext.MarkdownText
 
 @Composable
@@ -28,18 +28,20 @@ fun HtmlTextBlock(
     onUriClick: (String) -> Unit = {},
 ) {
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .animateContentSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         var isExpanded by rememberSaveable { mutableStateOf(false) }
         MarkdownText(
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(12.dp)
-                .addIf(!isExpanded) {
-                    align(Alignment.CenterHorizontally)
-                }
-                .animateContentSize(),
+                .addIfElse(
+                    isExpanded,
+                    { fillMaxWidth() },
+                    { align(Alignment.CenterHorizontally) }
+                ),
             markdown = if (isExpanded) longText
             else shortText,
             linkColor = MaterialTheme.colorScheme.secondary,
