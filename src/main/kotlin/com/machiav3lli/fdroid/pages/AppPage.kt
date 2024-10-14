@@ -12,13 +12,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -31,6 +29,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +39,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -89,7 +89,8 @@ import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.components.privacy.MeterIconsBar
 import com.machiav3lli.fdroid.ui.components.toScreenshotItem
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
-import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorderTop
 import com.machiav3lli.fdroid.ui.dialog.ActionSelectionDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
@@ -382,9 +383,9 @@ fun AppPage(
     }
 
     suggestedProductRepo?.let { (product, repo) ->
-        val imageData by remember(product) {
-            derivedStateOf {
-                createIconUri(
+        val imageData by produceState<String?>(initialValue = null, product, repo) {
+            launch(Dispatchers.IO) {
+                value = createIconUri(
                     product.packageName,
                     product.icon,
                     product.metadataIcon,
@@ -429,13 +430,14 @@ fun AppPage(
         }
 
         Scaffold(
-            modifier = Modifier
-                .padding(WindowInsets.safeDrawing.asPaddingValues()),
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
             topBar = {
                 Column(
-                    modifier = Modifier.padding(bottom = 8.dp),
+                    modifier = Modifier
+                        .windowInsetsPadding(TopAppBarDefaults.windowInsets)
+                        .blockBorderTop()
+                        .padding(bottom = 8.dp),
                 ) {
                     TopBarHeader(
                         appName = product.label,
@@ -482,7 +484,7 @@ fun AppPage(
                 state = pagerState,
                 modifier = Modifier
                     .padding(paddingValues)
-                    .blockBorder(),
+                    .blockBorderBottom(),
                 beyondViewportPageCount = 1,
             ) { pageIndex ->
                 if (pageIndex == 0) {

@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.ui.components.TopBar
-import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.NeoNavigationSuiteScaffold
 import com.machiav3lli.fdroid.ui.navigation.SlidePager
@@ -63,7 +63,7 @@ fun PrefsPage(navController: NavHostController, pageIndex: Int) {
             SlidePager(
                 modifier = Modifier
                     .padding(paddingValues)
-                    .blockBorder()
+                    .blockBorderBottom()
                     .fillMaxSize(),
                 pagerState = pagerState,
                 pageItems = pages,

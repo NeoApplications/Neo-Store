@@ -39,7 +39,7 @@ import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
-import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
+import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.ui.navigation.NeoNavigationSuiteScaffold
@@ -145,7 +145,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
                     SlidePager(
                         modifier = Modifier
                             .padding(paddingValues)
-                            .blockBorder()
+                            .blockBorderBottom()
                             .fillMaxSize(),
                         pagerState = pagerState,
                         pageItems = pages,
