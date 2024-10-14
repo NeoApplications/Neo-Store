@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.machiav3lli.fdroid.NeoActivity
+import com.machiav3lli.fdroid.content.Preferences
 import kotlinx.collections.immutable.ImmutableList
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
@@ -120,7 +121,7 @@ fun NavigationSuiteScope.navItem(
         },
         label = {
             AnimatedVisibility(
-                visible = !selected,
+                visible = !selected || Preferences[Preferences.Key.AltNavBarItem],
                 enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
                 exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Top),
             ) {
