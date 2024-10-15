@@ -79,7 +79,7 @@ import org.koin.dsl.module
         Downloaded::class,
         InstallTask::class,
     ],
-    version = 26,
+    version = 27,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -168,6 +168,10 @@ import org.koin.dsl.module
             from = 25,
             to = 26,
             spec = DatabaseX.Companion.AutoMigration25to26::class
+        ),
+        AutoMigration(
+            from = 26,
+            to = 27,
         ),
     ]
 )
