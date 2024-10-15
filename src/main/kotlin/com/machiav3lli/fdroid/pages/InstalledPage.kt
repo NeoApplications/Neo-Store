@@ -234,6 +234,7 @@ fun InstallsPage(viewModel: MainVM) {
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground,
         sheetContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+        sheetShape = MaterialTheme.shapes.extraSmall,
         sheetContent = {
             SortFilterSheet(NavItem.Installed.destination) {
                 scope.launch {

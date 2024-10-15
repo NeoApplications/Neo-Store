@@ -126,6 +126,7 @@ fun LatestPage(viewModel: MainVM) {
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground,
         sheetContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+        sheetShape = MaterialTheme.shapes.extraSmall,
         sheetContent = {
             SortFilterSheet(NavItem.Latest.destination) {
                 scope.launch {
