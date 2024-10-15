@@ -353,7 +353,7 @@ abstract class DatabaseX : RoomDatabase() {
 
     fun cleanUp(vararg pairs: Pair<Long, Boolean>) {
         runInTransaction {
-            pairs.forEach { (id, enabled)  ->
+            pairs.forEach { (id, enabled) ->
                 getProductDao().deleteById(id)
                 getCategoryDao().deleteById(id)
                 getReleaseDao().deleteById(id)
@@ -384,17 +384,17 @@ abstract class DatabaseX : RoomDatabase() {
 
 val databaseModule = module {
     single { DatabaseX.getInstance(androidContext()) }
-    factory { get<DatabaseX>().getRepositoryDao() }
-    factory { get<DatabaseX>().getProductDao() }
-    factory { get<DatabaseX>().getReleaseDao() }
-    factory { get<DatabaseX>().getReleaseTempDao() }
-    factory { get<DatabaseX>().getProductTempDao() }
-    factory { get<DatabaseX>().getCategoryDao() }
-    factory { get<DatabaseX>().getCategoryTempDao() }
-    factory { get<DatabaseX>().getInstalledDao() }
-    factory { get<DatabaseX>().getExtrasDao() }
-    factory { get<DatabaseX>().getExodusInfoDao() }
-    factory { get<DatabaseX>().getTrackerDao() }
-    factory { get<DatabaseX>().getDownloadedDao() }
-    factory { get<DatabaseX>().getInstallTaskDao() }
+    single { get<DatabaseX>().getRepositoryDao() }
+    single { get<DatabaseX>().getProductDao() }
+    single { get<DatabaseX>().getReleaseDao() }
+    single { get<DatabaseX>().getReleaseTempDao() }
+    single { get<DatabaseX>().getProductTempDao() }
+    single { get<DatabaseX>().getCategoryDao() }
+    single { get<DatabaseX>().getCategoryTempDao() }
+    single { get<DatabaseX>().getInstalledDao() }
+    single { get<DatabaseX>().getExtrasDao() }
+    single { get<DatabaseX>().getExodusInfoDao() }
+    single { get<DatabaseX>().getTrackerDao() }
+    single { get<DatabaseX>().getDownloadedDao() }
+    single { get<DatabaseX>().getInstallTaskDao() }
 }

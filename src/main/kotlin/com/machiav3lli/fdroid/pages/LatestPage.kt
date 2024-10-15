@@ -95,7 +95,7 @@ fun LatestPage(viewModel: MainVM) {
                     Preferences.Key.SortOrderAscendingLatest,
                     Preferences.Key.TargetSDKLatest,
                     Preferences.Key.MinSDKLatest,
-                    -> viewModel.setSortFilter(
+                        -> viewModel.setSortFilter(
                         Page.LATEST,
                         listOf(
                             Preferences[Preferences.Key.ReposFilterLatest],

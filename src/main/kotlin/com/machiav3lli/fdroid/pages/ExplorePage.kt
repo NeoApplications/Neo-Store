@@ -114,7 +114,7 @@ fun ExplorePage(viewModel: MainVM) {
                     Preferences.Key.SortOrderAscendingExplore,
                     Preferences.Key.TargetSDKExplore,
                     Preferences.Key.MinSDKExplore,
-                    -> viewModel.setSortFilter(
+                        -> viewModel.setSortFilter(
                         Page.EXPLORE,
                         listOf(
                             Preferences[Preferences.Key.ReposFilterExplore],

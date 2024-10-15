@@ -113,7 +113,7 @@ fun SearchPage(viewModel: MainVM) {
                     Preferences.Key.TargetSDKSearch,
                     Preferences.Key.MinSDKSearch,
                     Preferences.Key.SearchApps,
-                    -> viewModel.setSortFilter(
+                        -> viewModel.setSortFilter(
                         Page.SEARCH,
                         listOf(
                             Preferences[Preferences.Key.ReposFilterSearch],

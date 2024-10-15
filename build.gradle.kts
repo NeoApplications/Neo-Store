@@ -65,19 +65,19 @@ android {
     }
 
     buildTypes {
-        named("debug") {
+        debug {
             isMinifyEnabled = false
             isShrinkResources = false
             applicationIdSuffix = ".debug"
             resValue("string", "application_name", "Neo Store - Debug")
         }
-        create("neo") {
+        register("neo") {
             isMinifyEnabled = false
             isShrinkResources = false
             applicationIdSuffix = ".neo"
             resValue("string", "application_name", "Neo Store")
         }
-        named("release") {
+        release {
             isMinifyEnabled = true
             isShrinkResources = true
             resValue("string", "application_name", "Neo Store")

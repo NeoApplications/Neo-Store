@@ -39,7 +39,6 @@ import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.entity.Permission
 import com.machiav3lli.fdroid.ui.components.PermissionItem
-import com.machiav3lli.fdroid.ui.compose.utils.blockBorder
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.isRunningOnTV
@@ -88,9 +87,8 @@ fun PermissionsPage(navController: NavHostController) {
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
-                .blockBorder()
-                .fillMaxSize()
-                .padding(paddingValues),
+                .padding(paddingValues)
+                .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(8.dp)
         ) {
