@@ -11,11 +11,8 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -32,6 +29,8 @@ import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.ui.components.appsheet.DownloadProgress
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Eraser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun DownloadsListItem(
@@ -41,16 +40,16 @@ fun DownloadsListItem(
     state: DownloadState,
     onUserClick: (ProductItem) -> Unit = {},
 ) {
-    var imageData by remember { mutableStateOf<String?>(null) }
-
-    SideEffect {
-        imageData = createIconUri(
-            product.packageName,
-            product.icon,
-            product.metadataIcon,
-            repo?.address,
-            repo?.authentication
-        ).toString()
+    val imageData by produceState<String?>(initialValue = null, product, repo) {
+        launch(Dispatchers.IO) {
+            value = createIconUri(
+                product.packageName,
+                product.icon,
+                product.metadataIcon,
+                repo?.address,
+                repo?.authentication
+            ).toString()
+        }
     }
 
     ListItem(
@@ -109,16 +108,16 @@ fun DownloadedItem(
     onEraseClick: (() -> Unit)? = null,
     onUserClick: (Downloaded) -> Unit = {},
 ) {
-    var imageData by remember { mutableStateOf<String?>(null) }
-
-    SideEffect {
-        imageData = createIconUri(
-            download.packageName,
-            iconDetails?.icon ?: "",
-            iconDetails?.metadataIcon ?: "",
-            repo?.address,
-            repo?.authentication
-        ).toString()
+    val imageData by produceState<String?>(initialValue = null, download, iconDetails, repo) {
+        launch(Dispatchers.IO) {
+            value = createIconUri(
+                download.packageName,
+                iconDetails?.icon ?: "",
+                iconDetails?.metadataIcon ?: "",
+                repo?.address,
+                repo?.authentication
+            ).toString()
+        }
     }
 
     ListItem(

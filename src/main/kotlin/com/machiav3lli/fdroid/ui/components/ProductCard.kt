@@ -10,9 +10,8 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
@@ -20,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.network.createIconUri
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 val PRODUCT_CARD_ICON = 48.dp
 val PRODUCT_CARD_HEIGHT = 64.dp
@@ -32,9 +33,9 @@ fun ProductCard(
     repo: Repository? = null,
     onUserClick: (ProductItem) -> Unit = {},
 ) {
-    val imageData by remember(product) {
-        derivedStateOf {
-            createIconUri(
+    val imageData by produceState<String?>(initialValue = null, product, repo) {
+        launch(Dispatchers.IO) {
+            value = createIconUri(
                 product.packageName,
                 product.icon,
                 product.metadataIcon,

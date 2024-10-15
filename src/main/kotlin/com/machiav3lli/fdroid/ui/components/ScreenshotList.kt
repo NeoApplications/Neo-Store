@@ -9,11 +9,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -21,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.Screenshot
 import com.machiav3lli.fdroid.network.createScreenshotUri
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 data class ScreenshotItem(
     val screenShot: Screenshot,
@@ -42,15 +41,14 @@ fun ScreenshotList(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         itemsIndexed(screenShots) { index, it ->
-
-            var image by remember { mutableStateOf<String?>(null) }
-
-            SideEffect {
-                image = createScreenshotUri(
-                    it.repository,
-                    it.packageName,
-                    it.screenShot
-                ).toString()
+            val image by produceState<String?>(initialValue = null, it) {
+                launch(Dispatchers.IO) {
+                    value = createScreenshotUri(
+                        it.repository,
+                        it.packageName,
+                        it.screenShot,
+                    ).toString()
+                }
             }
 
             NetworkImage(
