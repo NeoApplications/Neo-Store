@@ -40,12 +40,13 @@ fun <T> ListDialogUI(
         Column(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(text = titleText, style = MaterialTheme.typography.titleLarge)
 
             Box(
                 modifier = Modifier
+                    .padding(vertical = 8.dp, horizontal = 4.dp)
                     .fillMaxWidth()
                     .blockShadow(),
                 contentAlignment = if (items.isNullOrEmpty()) Alignment.Center

@@ -3,7 +3,6 @@ package com.machiav3lli.fdroid.ui.dialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -63,7 +62,7 @@ fun LanguagePrefDialogUI(
             )
             LazyColumn(
                 modifier = Modifier
-                    .padding(top = 16.dp, bottom = 8.dp)
+                    .padding(vertical = 8.dp, horizontal = 4.dp)
                     .weight(1f, false)
                     .blockShadow()
             ) {
@@ -110,7 +109,6 @@ fun EnumSelectionPrefDialogUI(
     prefKey: Preferences.Key<Preferences.Enumeration<*>>,
     openDialogCustom: MutableState<Boolean>,
 ) {
-    val context = LocalContext.current
     var selected by remember { mutableStateOf(Preferences[prefKey]) }
     val entryPairs = PrefsEntries[prefKey]?.entries?.toList() ?: emptyList()
 
@@ -130,7 +128,7 @@ fun EnumSelectionPrefDialogUI(
             )
             LazyColumn(
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 8.dp, horizontal = 4.dp)
                     .weight(1f, false)
                     .blockShadow()
             ) {
@@ -154,11 +152,11 @@ fun EnumSelectionPrefDialogUI(
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 DialogNegativeButton(
                     onClick = { openDialogCustom.value = false }
                 )
-                Spacer(Modifier.weight(1f))
                 DialogPositiveButton(
                     modifier = Modifier.padding(start = 16.dp),
                     onClick = {
@@ -178,8 +176,6 @@ fun <T> ActionSelectionDialogUI(
     openDialogCustom: MutableState<Boolean>,
     onAction: (T) -> Unit,
 ) {
-    val context = LocalContext.current
-
     Card(
         shape = MaterialTheme.shapes.extraLarge,
         modifier = Modifier.padding(8.dp),
@@ -196,10 +192,9 @@ fun <T> ActionSelectionDialogUI(
             )
             LazyColumn(
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
-                    .fillMaxWidth()
+                    .padding(vertical = 8.dp, horizontal = 4.dp)
+                    .weight(1f, false)
                     .blockShadow(),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 items(
                     items = options.entries.toList(),
