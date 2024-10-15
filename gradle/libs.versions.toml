@@ -39,8 +39,11 @@ collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-im
 work-runtime = { module = "androidx.work:work-runtime", version.ref = "work" }
 biometric = { module = "androidx.biometric:biometric", version.ref = "biometric" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
-koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
-koin-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koin" }
+koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
+koin-android = { group = "io.insert-koin", name = "koin-android" }
+koin-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
+koin-startup = { group = "io.insert-koin", name = "koin-androidx-startup" }
 koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koin-ksp" }
 koin-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koin-ksp" }
 
