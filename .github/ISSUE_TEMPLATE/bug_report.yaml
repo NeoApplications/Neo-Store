@@ -1,0 +1,78 @@
+name: Bug Report
+description: Report a bug in Neo Store's functionality
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **README: Before You Submit Your Issue**
+        - Issues are not a place to go ask support questions or start discussions.
+        - Please ask support questions in our [Telegram](https://t.me/neo_android_store) or [Matrix](https://matrix.to/#/#neo-store:matrix.org) groups or start discussions on the [discussions page](https://github.com/NeoApplications/Neo-Store/discussions).
+  - type: checkboxes
+    attributes:
+      label: Guidelines
+      description: Please ensure you've completed all of the following.
+      options:
+        - label: I have searched the issue tracker for [open](https://github.com/NeoApplications/Neo-Store/issues) and [closed](https://github.com/NeoApplications/Neo-Store/issues?q=is%3Aissue+is%3Aclosed) issues that are similar to the feature request I want to file, without success.
+          required: true
+        - label: I'm on the latest version.
+          required: true
+        - label: I'm not using a test build (alpha/beta/release-candidate).
+          required: true
+        - label: This issue contains only one bug.
+          required: true
+  - type: textarea
+    attributes:
+      label: Describe the bug
+      description: 'Steps to reproduce the behavior:'
+      placeholder: |
+          1. Go to '...'
+          2. Click on '....'
+          3. Scroll down to '....'
+          4. See error
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Neo Store's Version
+      description: Enter the version name on which the bug occurs.
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Installation Source
+      description: Where did you install Neo Store from?
+      options:
+        - Official F-Droid repo
+        - IzzyOnDroid's repo
+        - Github/Codeberg/Gitlab releases
+        - Other…
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: 'Last Known Working Version'
+      description: What is the last version of Neo Store this worked on? (If Any)
+      placeholder: 1.0.0
+  - type: textarea
+    attributes:
+      label: Relevant information
+      description: |
+        Feel free to add any other context or media about the feature request here.
+      value: |
+        - Device:
+        - Android Version:
+        - ROM: (AOSP, CalyxOS, MIUI, GOS...)
+        - Disabled battery optimization for Neo Store?
+        - What is your selected installer?
+  - type: markdown
+    attributes:
+      value: |
+        **Thanks for making us aware of the bug!**
