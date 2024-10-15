@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream
 import java.io.Closeable
 import java.io.File
 
-class IndexMerger(file: File) : Closeable {
+class IndexV1Merger(file: File) : Closeable {
     private val db = SQLiteDatabase.openOrCreateDatabase(file, null)
 
     init {
@@ -47,37 +47,36 @@ class IndexMerger(file: File) : Closeable {
         }
     }
 
-    private fun closeTransaction() {
-        if (db.inTransaction()) {
-            db.setTransactionSuccessful()
-            db.endTransaction()
-        }
-    }
-
     fun forEach(repositoryId: Long, windowSize: Int, callback: (List<Product>, Int) -> Unit) {
         closeTransaction()
         db.rawQuery(
             """SELECT product.description, product.data AS pd, releases.data AS rd FROM product
       LEFT JOIN releases ON product.package_name = releases.package_name""", null
-        )
-            ?.use { it ->
-                it.asSequence().map {
-                    val description = it.getString(0)
-                    val product = Product.fromJson(String(it.getBlob(1))).apply {
-                        this.repositoryId = repositoryId
-                        this.description = description
-                    }
-                    val releases = it.getBlob(2)?.let(::toReleases).orEmpty()
-                    product.apply {
-                        this.releases = releases
-                        refreshVariables()
-                    }
-                }.windowed(windowSize, windowSize, true)
-                    .forEach { products -> callback(products, it.count) }
-            }
+        )?.use { cursor ->
+            cursor.asSequence().map {
+                val description = it.getString(0)
+                val product = Product.fromJson(String(it.getBlob(1))).apply {
+                    this.repositoryId = repositoryId
+                    this.description = description
+                }
+                val releases = it.getBlob(2)?.let(::toReleases).orEmpty()
+                product.apply {
+                    this.releases = releases
+                    refreshVariables()
+                }
+            }.windowed(windowSize, windowSize, true)
+                .forEach { products -> callback(products, cursor.count) }
+        }
     }
 
     override fun close() {
         db.use { closeTransaction() }
+    }
+
+    private fun closeTransaction() {
+        if (db.inTransaction()) {
+            db.setTransactionSuccessful()
+            db.endTransaction()
+        }
     }
 }

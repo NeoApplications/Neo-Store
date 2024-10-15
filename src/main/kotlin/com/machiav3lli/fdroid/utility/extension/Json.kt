@@ -2,14 +2,9 @@
 
 package com.machiav3lli.fdroid.utility.extension.json
 
-import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
-
-object Json {
-    val factory = JsonFactory()
-}
 
 fun JsonParser.illegal(): Nothing {
     throw JsonParseException(this, "Illegal state")
@@ -38,7 +33,7 @@ inline fun JsonParser.forEachKey(callback: JsonParser.(KeyToken) -> Unit) {
     while (true) {
         val token = nextToken()
         if (token == JsonToken.FIELD_NAME) {
-            passKey = currentName
+            passKey = currentName()
             passToken = nextToken()
             callback(keyToken)
         } else if (token == JsonToken.END_OBJECT) {
@@ -49,20 +44,18 @@ inline fun JsonParser.forEachKey(callback: JsonParser.(KeyToken) -> Unit) {
     }
 }
 
-fun JsonParser.forEach(requiredToken: JsonToken, callback: JsonParser.() -> Unit) {
+inline fun JsonParser.forEach(requiredToken: JsonToken, callback: JsonParser.() -> Unit) {
     while (true) {
         val token = nextToken()
-        if (token == JsonToken.END_ARRAY) {
-            break
-        } else if (token == requiredToken) {
-            callback()
-        } else if (token.isStructStart) {
-            skipChildren()
+        when {
+            token.isStructEnd      -> break
+            token == requiredToken -> callback()
+            token.isStructStart    -> skipChildren()
         }
     }
 }
 
-fun <T> JsonParser.collectNotNull(
+inline fun <T> JsonParser.collectNotNull(
     requiredToken: JsonToken,
     callback: JsonParser.() -> T?,
 ): List<T> {
@@ -77,9 +70,9 @@ fun <T> JsonParser.collectNotNull(
 }
 
 fun JsonParser.collectNotNullStrings(): List<String> {
-    return collectNotNull(JsonToken.VALUE_STRING) { valueAsString }
+    return collectNotNull(JsonToken.VALUE_STRING) { text }
 }
 
 fun JsonParser.collectDistinctNotEmptyStrings(): List<String> {
-    return collectNotNullStrings().asSequence().filter { it.isNotEmpty() }.distinct().toList()
+    return collectNotNullStrings().filter { it.isNotEmpty() }.distinct().toList()
 }

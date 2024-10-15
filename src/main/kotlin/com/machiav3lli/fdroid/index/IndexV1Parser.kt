@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.index
 import android.content.res.Resources
 import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.core.os.LocaleListCompat
+import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
 import com.machiav3lli.fdroid.database.entity.Product
@@ -11,16 +12,16 @@ import com.machiav3lli.fdroid.entity.Author
 import com.machiav3lli.fdroid.entity.Donate
 import com.machiav3lli.fdroid.entity.Screenshot
 import com.machiav3lli.fdroid.utility.extension.android.Android
-import com.machiav3lli.fdroid.utility.extension.json.Json
 import com.machiav3lli.fdroid.utility.extension.json.collectDistinctNotEmptyStrings
 import com.machiav3lli.fdroid.utility.extension.json.collectNotNull
 import com.machiav3lli.fdroid.utility.extension.json.forEach
 import com.machiav3lli.fdroid.utility.extension.json.forEachKey
 import com.machiav3lli.fdroid.utility.extension.json.illegal
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
+import okhttp3.internal.toLongOrDefault
 import java.io.InputStream
 
-object IndexV1Parser {
+class IndexV1Parser(private val repositoryId: Long, private val callback: Callback) {
     interface Callback {
         fun onRepository(
             mirrors: List<String>,
@@ -44,6 +45,8 @@ object IndexV1Parser {
         val name: String, val summary: String, val description: String,
         val whatsNew: String, val metadataIcon: String, val screenshots: Screenshots?,
     )
+
+    class ParsingException(message: String, cause: Throwable? = null) : Exception(message, cause)
 
     private fun <T> Map<String, Localized>.getAndCall(
         key: String,
@@ -115,48 +118,36 @@ object IndexV1Parser {
             ?: findString(fallback, callback)).trim()
     }
 
-    fun parse(repositoryId: Long, inputStream: InputStream, callback: Callback) {
-        val jsonParser = Json.factory.createParser(inputStream)
-        if (jsonParser.nextToken() != JsonToken.START_OBJECT) {
-            jsonParser.illegal()
-        } else {
-            jsonParser.forEachKey { it ->
-                when {
-                    it.dictionary("repo")     -> {
-                        var address = ""
-                        var mirrors = emptyList<String>()
-                        var name = ""
-                        var description = ""
-                        var version = 0
-                        var timestamp = 0L
-                        forEachKey {
-                            when {
-                                it.string("address")     -> address = valueAsString
-                                it.array("mirrors")      -> mirrors =
-                                    collectDistinctNotEmptyStrings()
+    private val jsonFactory = JsonFactory()
 
-                                it.string("name")        -> name = valueAsString
-                                it.string("description") -> description = valueAsString
-                                it.number("version")     -> version = valueAsInt
-                                it.number("timestamp")   -> timestamp = valueAsLong
-                                else                     -> skipChildren()
-                            }
-                        }
-                        val realMirrors =
-                            ((if (address.isNotEmpty()) listOf(address) else emptyList()) + mirrors).distinct()
-                        callback.onRepository(realMirrors, name, description, version, timestamp)
-                    }
+    fun parse(inputStream: InputStream) {
+        try {
+            val parser = jsonFactory.createParser(inputStream)
+            parser.parseJson()
+        } catch (e: Exception) {
+            throw ParsingException("Error parsing index", e)
+        }
+    }
+
+    private fun JsonParser.parseJson() {
+        if (nextToken() != JsonToken.START_OBJECT) {
+            illegal()
+        } else {
+            forEachKey { it ->
+                when {
+                    it.dictionary("repo")     -> parseRepository()
 
                     it.array("apps")          -> forEach(JsonToken.START_OBJECT) {
-                        val product = parseProduct(repositoryId)
+                        val product = parseProduct()
                         callback.onProduct(product)
                     }
 
                     it.dictionary("packages") -> forEachKey {
                         if (it.token == JsonToken.START_ARRAY) {
                             val packageName = it.key
-                            val releases =
-                                collectNotNull(JsonToken.START_OBJECT) { parseRelease(repositoryId, packageName) }
+                            val releases = collectNotNull(JsonToken.START_OBJECT) {
+                                parseRelease(packageName)
+                            }
                             callback.onReleases(packageName, releases)
                         } else {
                             skipChildren()
@@ -169,7 +160,31 @@ object IndexV1Parser {
         }
     }
 
-    private fun JsonParser.parseProduct(repositoryId: Long): Product {
+    private fun JsonParser.parseRepository() {
+        var mirrors = emptyList<String>()
+        var address = ""
+        var name = ""
+        var description = ""
+        var version = 0
+        var timestamp = 0L
+
+        while (nextToken() != JsonToken.END_OBJECT) {
+            when (this.currentName()) {
+                "address"     -> address = text
+                "mirrors"     -> mirrors = collectDistinctNotEmptyStrings()
+                "name"        -> name = text
+                "description" -> description = text
+                "version"     -> version = valueAsInt
+                "timestamp"   -> timestamp = valueAsLong
+            }
+        }
+
+        val realMirrors = if (address.isNotEmpty()) listOf(address).plus(mirrors).distinct()
+        else mirrors
+        callback.onRepository(realMirrors, name, description, version, timestamp)
+    }
+
+    private fun JsonParser.parseProduct(): Product {
         var packageName = ""
         var nameFallback = ""
         var summaryFallback = ""
@@ -192,37 +207,77 @@ object IndexV1Parser {
         val localizedMap = mutableMapOf<String, Localized>()
         forEachKey { it ->
             when {
-                it.string("packageName")          -> packageName = valueAsString
-                it.string("name")                 -> nameFallback = valueAsString
-                it.string("summary")              -> summaryFallback = valueAsString
-                it.string("description")          -> descriptionFallback = valueAsString
-                it.string("icon")                 -> icon = IndexHandler.validateIcon(valueAsString)
-                it.string("authorName")           -> authorName = valueAsString
-                it.string("authorEmail")          -> authorEmail = valueAsString
-                it.string("authorWebSite")        -> authorWeb = valueAsString
-                it.string("sourceCode")           -> source = valueAsString
-                it.string("changelog")            -> changelog = valueAsString
-                it.string("webSite")              -> web = valueAsString
-                it.string("issueTracker")         -> tracker = valueAsString
-                it.number("added")                -> added = valueAsLong
-                it.number("lastUpdated")          -> updated = valueAsLong
-                it.string("suggestedVersionCode") -> suggestedVersionCode =
-                    valueAsString.toLongOrNull() ?: 0L
+                it.string("packageName")
+                     -> packageName = text
 
-                it.array("categories")            -> categories = collectDistinctNotEmptyStrings()
-                it.array("antiFeatures")          -> antiFeatures = collectDistinctNotEmptyStrings()
-                it.string("license")              -> licenses += valueAsString.split(',')
-                    .filter { it.isNotEmpty() }
+                it.string("name")
+                     -> nameFallback = text
 
-                it.string("donate")               -> donates += Donate.Regular(valueAsString)
-                it.string("bitcoin")              -> donates += Donate.Bitcoin(valueAsString)
-                it.string("flattrID")             -> donates += Donate.Flattr(valueAsString)
-                it.string("liberapayID")          -> donates += Donate.Liberapay(valueAsString)
-                it.string("openCollective")       -> donates += Donate.OpenCollective(
-                    valueAsString
-                )
+                it.string("summary")
+                     -> summaryFallback = text
 
-                it.dictionary("localized")        -> forEachKey { keyToken ->
+                it.string("description")
+                     -> descriptionFallback = text
+
+                it.string("icon")
+                     -> icon = IndexV0Parser.validateIcon(text)
+
+                it.string("authorName")
+                     -> authorName = text
+
+                it.string("authorEmail")
+                     -> authorEmail = text
+
+                it.string("authorWebSite")
+                     -> authorWeb = text
+
+                it.string("sourceCode")
+                     -> source = text
+
+                it.string("changelog")
+                     -> changelog = text
+
+                it.string("webSite")
+                     -> web = text
+
+                it.string("issueTracker")
+                     -> tracker = text
+
+                it.number("added")
+                     -> added = valueAsLong
+
+                it.number("lastUpdated")
+                     -> updated = valueAsLong
+
+                it.string("suggestedVersionCode")
+                     -> suggestedVersionCode = text.toLongOrDefault(0L)
+
+                it.array("categories")
+                     -> categories = collectDistinctNotEmptyStrings()
+
+                it.array("antiFeatures")
+                     -> antiFeatures = collectDistinctNotEmptyStrings()
+
+                it.string("license")
+                     -> licenses += text.split(',').filter { it.isNotEmpty() }
+
+                it.string("donate")
+                     -> donates += Donate.Regular(text)
+
+                it.string("bitcoin")
+                     -> donates += Donate.Bitcoin(text)
+
+                it.string("flattrID")
+                     -> donates += Donate.Flattr(text)
+
+                it.string("liberapayID")
+                     -> donates += Donate.Liberapay(text)
+
+                it.string("openCollective")
+                     -> donates += Donate.OpenCollective(text)
+
+                it.dictionary("localized")
+                     -> forEachKey { keyToken ->
                     if (keyToken.token == JsonToken.START_OBJECT) {
                         val locale = keyToken.key
                         var name = ""
@@ -235,21 +290,31 @@ object IndexV1Parser {
                         var largeTablet = emptyList<String>()
                         forEachKey {
                             when {
-                                it.string("name")                -> name = valueAsString
-                                it.string("summary")             -> summary = valueAsString
-                                it.string("description")         -> description = valueAsString
-                                it.string("whatsNew")            -> whatsNew = valueAsString
-                                it.string("icon")                -> metadataIcon = valueAsString
-                                it.array("phoneScreenshots")     -> phone =
-                                    collectDistinctNotEmptyStrings()
+                                it.string("name")
+                                     -> name = text
 
-                                it.array("sevenInchScreenshots") -> smallTablet =
-                                    collectDistinctNotEmptyStrings()
+                                it.string("summary")
+                                     -> summary = text
 
-                                it.array("tenInchScreenshots")   -> largeTablet =
-                                    collectDistinctNotEmptyStrings()
+                                it.string("description")
+                                     -> description = text
 
-                                else                             -> skipChildren()
+                                it.string("whatsNew")
+                                     -> whatsNew = text
+
+                                it.string("icon")
+                                     -> metadataIcon = text
+
+                                it.array("phoneScreenshots")
+                                     -> phone = collectDistinctNotEmptyStrings()
+
+                                it.array("sevenInchScreenshots")
+                                     -> smallTablet = collectDistinctNotEmptyStrings()
+
+                                it.array("tenInchScreenshots")
+                                     -> largeTablet = collectDistinctNotEmptyStrings()
+
+                                else -> skipChildren()
                             }
                         }
                         val screenshots =
@@ -264,7 +329,7 @@ object IndexV1Parser {
                     }
                 }
 
-                else                              -> skipChildren()
+                else -> skipChildren()
             }
         }
         val name = localizedMap.findLocalizedString(nameFallback) { it.name }
@@ -303,7 +368,7 @@ object IndexV1Parser {
             categories = categories,
             antiFeatures = antiFeatures,
             licenses = licenses,
-            donates = donates.sortedWith(IndexHandler.DonateComparator),
+            donates = donates.sortedWith(IndexV0Parser.DonateComparator),
             screenshots = screenshots,
             suggestedVersionCode = suggestedVersionCode,
             author = Author(authorName, authorEmail, authorWeb),
@@ -315,7 +380,7 @@ object IndexV1Parser {
         )
     }
 
-    private fun JsonParser.parseRelease(repositoryId: Long, packageName: String): Release {
+    private fun JsonParser.parseRelease(packageName: String): Release {
         var version = ""
         var versionCode = 0L
         var added = 0L
@@ -337,22 +402,22 @@ object IndexV1Parser {
         var platforms = emptyList<String>()
         forEachKey {
             when {
-                it.string("versionName")           -> version = valueAsString
+                it.string("versionName")           -> version = text
                 it.number("versionCode")           -> versionCode = valueAsLong
                 it.number("added")                 -> added = valueAsLong
                 it.number("size")                  -> size = valueAsLong
                 it.number("minSdkVersion")         -> minSdkVersion = valueAsInt
                 it.number("targetSdkVersion")      -> targetSdkVersion = valueAsInt
                 it.number("maxSdkVersion")         -> maxSdkVersion = valueAsInt
-                it.string("srcname")               -> source = valueAsString
-                it.string("apkName")               -> release = valueAsString
-                it.string("hash")                  -> hash = valueAsString
-                it.string("hashType")              -> hashTypeCandidate = valueAsString
-                it.string("sig")                   -> signature = valueAsString
-                it.string("obbMainFile")           -> obbMain = valueAsString
-                it.string("obbMainFileSha256")     -> obbMainHash = valueAsString
-                it.string("obbPatchFile")          -> obbPatch = valueAsString
-                it.string("obbPatchFileSha256")    -> obbPatchHash = valueAsString
+                it.string("srcname")               -> source = text
+                it.string("apkName")               -> release = text
+                it.string("hash")                  -> hash = text
+                it.string("hashType")              -> hashTypeCandidate = text
+                it.string("sig")                   -> signature = text
+                it.string("obbMainFile")           -> obbMain = text
+                it.string("obbMainFileSha256")     -> obbMainHash = text
+                it.string("obbPatchFile")          -> obbPatch = text
+                it.string("obbPatchFileSha256")    -> obbPatchHash = text
                 it.array("uses-permission")        -> collectPermissions(permissions, 0)
                 it.array("uses-permission-sdk-23") -> collectPermissions(permissions, 23)
                 it.array("features")               -> features = collectDistinctNotEmptyStrings()
