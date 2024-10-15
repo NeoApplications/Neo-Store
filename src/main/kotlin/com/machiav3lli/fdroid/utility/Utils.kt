@@ -58,8 +58,6 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.net.URL
 import java.security.MessageDigest
-import java.security.cert.Certificate
-import java.security.cert.CertificateEncodingException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -81,33 +79,6 @@ object Utils {
     fun calculateHash(signature: Signature): String {
         return MessageDigest.getInstance("MD5").digest(signature.toCharsString().toByteArray())
             .hex()
-    }
-
-    fun calculateFingerprint(certificate: Certificate): String {
-        val encoded = try {
-            certificate.encoded
-        } catch (e: CertificateEncodingException) {
-            null
-        }
-        return encoded?.let(::calculateFingerprint).orEmpty()
-    }
-
-    fun calculateFingerprint(key: ByteArray): String {
-        return if (key.size >= 256) {
-            try {
-                val fingerprint = MessageDigest.getInstance("SHA-256").digest(key)
-                val builder = StringBuilder()
-                for (byte in fingerprint) {
-                    builder.append("%02X".format(Locale.US, byte.toInt() and 0xff))
-                }
-                builder.toString()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                ""
-            }
-        } else {
-            ""
-        }
     }
 
     suspend fun startUpdate(
