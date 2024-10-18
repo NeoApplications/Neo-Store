@@ -399,4 +399,5 @@
 \n所有仓库：%s</string>
     <string name="confirm_uninstall_DESC_FORMAT">您确定要卸载 %s 吗？</string>
     <string name="all">全部</string>
+    <string name="erase_all">全部删除</string>
 </resources>
