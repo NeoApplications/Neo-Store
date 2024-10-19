@@ -13,7 +13,7 @@
     <string name="delete_repository_DESC">Remover este repositório\?</string>
     <string name="description">Descrição</string>
     <string name="details">Detalhes</string>
-    <string name="donate">Doar</string>
+    <string name="donate">Donativos</string>
     <string name="downloaded_FORMAT">%s descarregada</string>
     <string name="downloading">A descarregar</string>
     <string name="downloading_FORMAT">A descarregar %s…</string>
@@ -264,7 +264,7 @@
     <string name="available">Disponível</string>
     <string name="bug_tracker">Rastreio de erros</string>
     <string name="cancel">Cancelar</string>
-    <string name="cant_edit_sync_DESC">Não é possível editar os repositórios durante a sincronização…</string>
+    <string name="cant_edit_sync_DESC">Não pode editar repositórios durante a sincronização…</string>
     <string name="changelog">Registo de alterações</string>
     <string name="changes">Alterações</string>
     <string name="checking_repository">A verificar repositório…</string>
@@ -308,17 +308,17 @@
     <string name="post_notifications_permission_title">Permissão para enviar notificações</string>
     <string name="post_notifications_permission_message">Em Android 13+, esta permissão é necessária para poder mostrar notificações.</string>
     <string name="enable_download_directory_summary">Permite manter APKs na pasta escolhida.</string>
-    <string name="enable_download_directory">Usar pasta personalizada</string>
+    <string name="enable_download_directory">Utilizar pasta personalizada</string>
     <string name="ignore_vulns">Ignorar vulnerabilidades de segurança reportadas</string>
     <string name="downloads">Descargas</string>
     <string name="ignore">Ignorar</string>
     <string name="disable_signature_check_summary">Não verificar se o APK descarregado tem a mesma assinatura que a aplicação instalada.</string>
     <string name="keep_install_notification">Manter notificação de instalação</string>
-    <string name="keep_install_notification_summary">Manter notificação de instalação bem sucedida de uma aplicação.</string>
+    <string name="keep_install_notification_summary">Manter notificação de uma instalação efetuada com sucesso.</string>
     <string name="allowed_licenses">Licenças permitidas</string>
     <string name="cancel_all">Cancelar tudo</string>
     <string name="disable_download_version_check">Desativar verificação da versão descarregada</string>
-    <string name="warning_disable_battery_optimization">Em Android 12+, a aplicação requer otimização de bateria para processos em segundo plano, tais como sincronização e descargas. Se ignorar esta permissão, fica por sua conta e os seus relatórios de erro serão ignorados.</string>
+    <string name="warning_disable_battery_optimization">Em Android 12+, a aplicação requer otimização de bateria para processos em segundo plano, tais como sincronização e descargas. Se ignorar esta permissão, fica por sua conta e risco. Adicionalmente, os seus relatórios de erro serão ignorados.</string>
     <string name="disable_signature_check">Desativar verificação de assinaturas</string>
     <string name="warning_show_notification">Em Android 13+, a aplicação requer esta permissão para ser notificado acerca dos diferentes processos. Se ignorar esta permissão, não receberá qualquer notificação.</string>
     <string name="disable_download_version_check_summary">Permite descarregar versões mais antigas das aplicações instaladas. Pode ser utilizado em combinação com o patch \"letmedowngrade\" Magisk.</string>
@@ -332,7 +332,7 @@
     <string name="list_apps">Mostrar aplicações do repositório</string>
     <string name="next">Seguinte</string>
     <string name="previous">Anterior</string>
-    <string name="alt_navbar_item">Usar barra de navegação alternativa</string>
+    <string name="alt_navbar_item">Utilizar barra de navegação alternativa</string>
     <string name="alt_navbar_item_description">Utilizar barra de navegação alternativa/antiga, que mostra o texto dos itens não selecionados.</string>
     <string name="auto_sync_interval_hours">Intervalo de sincronização automática (horas)</string>
     <string name="repos_export">Exportar repositórios</string>
@@ -361,7 +361,7 @@
     <string name="black_medium_contrast">Preto (contraste médio)</string>
     <string name="root_allow_downgrades">Permitir \'downgrade\' de aplicações</string>
     <string name="download_manager">Gestor de descargas do sistema</string>
-    <string name="download_manager_summary">Utilizar gestor do sistema pode ser mais fiável. Esta opção não permite descarregar via rede TOR ou proxy personalizado.</string>
+    <string name="download_manager_summary">Utilizar o gestor de descargas do sistema pode ser mais fiável. Esta opção não permite descarregar via rede TOR ou proxy personalizado.</string>
     <string name="install_packages_permission_title">Permissão para instalar pacotes</string>
     <string name="install_packages_permission_message">Em Android 8+, esta permissão é necessária para poder instalar aplicações.</string>
     <string name="am_installer">Instalador do gestor de aplicações</string>
@@ -380,9 +380,9 @@
     <string name="kids_mode">Modo infantil</string>
     <string name="kids_mode_summary">Ativa o modo infantil e desativa a instalação de aplicações.</string>
     <string name="hide_new_apps">Ocultar barra de novas aplicações</string>
-    <string name="alt_block_layout">Utilizar esquema alternativo para os blocos de páginas</string>
+    <string name="alt_block_layout">Utilizar esquema alternativo para blocos de páginas</string>
     <string name="alt_block_layout_summary">Utilizar modo alternativo/antigo para os blocos de páginas em vez de superfícies coloridas.</string>
-    <string name="download_show_dialog_summary">Mostrar diálogo a perguntar pretende descarregar uma aplicação (antes de a descarregar).</string>
+    <string name="download_show_dialog_summary">Mostrar diálogo a perguntar se pretende descarregar uma aplicação (antes de a descarregar).</string>
     <string name="action_lock_dialog">Mostrar diálogo para bloqueio de ações</string>
     <string name="action_lock_none">Sem bloqueio</string>
     <string name="kids_mode_summary_full">Ativa o modo infantil e desativar a instalação de aplicações. Para desativar, toque na versão da aplicação seis vezes. Este dica desaparece após reiniciar a aplicação.</string>
@@ -396,4 +396,10 @@
     <string name="wait_to_sync">Aguardar alguns segundos antes de uma nova tentativa de sincronização.</string>
     <string name="prefs_search_apps_description">Número máximo de aplicações a incluir nos resultados da pesquisa (utilize 0 para não impor limites).</string>
     <string name="state_modified">Modificada</string>
+    <string name="last_successful_sync">Última atualização: %s\nTodos os repositórios: %s</string>
+    <string name="confirm_uninstall_DESC_FORMAT">Tem a certeza de que pretende desinstalar %s?</string>
+    <string name="erase_all">Apagar tudo</string>
+    <string name="root_allow_installing_old_apps_description">Em Android 14+, não é possível instalar aplicações criadas para versões mais antigas (Android 5.1 ou anteriores). Esta opção permite contornar esse comportamento.</string>
+    <string name="android_instead_of_sdk_summary">Mostrar nome da versão Android em vez de mostrar o número SDK (minSDK e targetSDK).</string>
+    <string name="all">Tudo</string>
 </resources>
