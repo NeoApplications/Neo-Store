@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
+import com.machiav3lli.fdroid.ROW_HASH
 import com.machiav3lli.fdroid.ROW_MINSDK_VERSION
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_PLATFORMS
@@ -20,10 +21,10 @@ import kotlinx.serialization.json.Json
 // TODO consider denormalizing by adding minSdkVersion and maxSdkVersion columns to Product
 @Entity(
     tableName = TABLE_RELEASE,
-    primaryKeys = [ROW_PACKAGE_NAME, ROW_REPOSITORY_ID, ROW_VERSION_CODE, ROW_SIGNATURE, ROW_PLATFORMS],
+    primaryKeys = [ROW_PACKAGE_NAME, ROW_REPOSITORY_ID, ROW_VERSION_CODE, ROW_SIGNATURE, ROW_PLATFORMS, ROW_HASH],
     indices = [
         Index(
-            value = [ROW_PACKAGE_NAME, ROW_REPOSITORY_ID, ROW_VERSION_CODE, ROW_SIGNATURE, ROW_PLATFORMS],
+            value = [ROW_PACKAGE_NAME, ROW_REPOSITORY_ID, ROW_VERSION_CODE, ROW_SIGNATURE, ROW_PLATFORMS, ROW_HASH],
             unique = true
         ),
         Index(value = [ROW_PACKAGE_NAME, ROW_MINSDK_VERSION, ROW_TARGETSDK_VERSION]),
