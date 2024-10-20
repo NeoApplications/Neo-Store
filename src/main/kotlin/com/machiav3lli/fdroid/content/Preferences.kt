@@ -54,6 +54,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.SearchApps,
         Key.UpdatedApps,
         Key.NewApps,
+        Key.DisableCertificateValidation,
         Key.ProxyUrl,
         Key.ProxyHost,
         Key.ProxyPort,
@@ -317,6 +318,9 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(150))
         data object SearchApps : Key<Int>("search_apps_num", Value.IntValue(0))
         data object NewApps : Key<Int>("new_apps", Value.IntValue(30))
+
+        data object DisableCertificateValidation :
+            Key<Boolean>("disable_certificate_validation", Value.BooleanValue(false))
 
         data object ProxyUrl : Key<String>("proxy_url", Value.StringValue(""))
         data object ProxyHost : Key<String>("proxy_host", Value.StringValue("localhost"))

@@ -54,6 +54,7 @@ fun PrefsOtherPage(viewModel: PrefsVM) {
     }
     val hidingCounter = rememberSaveable { mutableIntStateOf(0) }
     val proxyPrefs = listOf(
+        Preferences.Key.DisableCertificateValidation,
         Preferences.Key.ProxyType,
         Preferences.Key.ProxyUrl,
         Preferences.Key.ProxyHost,

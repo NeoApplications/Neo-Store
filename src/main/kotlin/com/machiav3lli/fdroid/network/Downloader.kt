@@ -12,6 +12,7 @@ import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.CLIENT_CONNECT_TIMEOUT_MS
 import com.machiav3lli.fdroid.POOL_DEFAULT_KEEP_ALIVE_DURATION_M
 import com.machiav3lli.fdroid.POOL_DEFAULT_MAX_IDLE_CONNECTIONS
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.service.worker.DownloadTask
 import com.machiav3lli.fdroid.utility.dmReasonToHttpResponse
 import com.machiav3lli.fdroid.utility.extension.text.formatDateTime
@@ -56,8 +57,12 @@ import org.koin.mp.KoinPlatform.getKoin
 import java.io.File
 import java.io.FileOutputStream
 import java.net.Proxy
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
+import javax.net.ssl.SSLContext
+import javax.net.ssl.X509TrustManager
 import kotlin.math.pow
 
 object Downloader {
@@ -291,6 +296,28 @@ private fun initDownloadClient(): HttpClient = HttpClient(OkHttp) {
                     ConnectionSpec.CLEARTEXT
                 )
             )
+            if (Preferences[Preferences.Key.DisableCertificateValidation]) {
+                val trustAllCerts = object : X509TrustManager {
+                    override fun checkClientTrusted(
+                        chain: Array<out X509Certificate>?,
+                        authType: String?
+                    ) {
+                    }
+
+                    override fun checkServerTrusted(
+                        chain: Array<out X509Certificate>?,
+                        authType: String?
+                    ) {
+                    }
+
+                    override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+                }
+                val sslContext = SSLContext.getInstance("TLS")
+                sslContext.init(null, arrayOf(trustAllCerts), SecureRandom())
+                val sslSocketFactory = sslContext.socketFactory
+                sslSocketFactory(sslSocketFactory, trustAllCerts)
+                hostnameVerifier { _, _ -> true }
+            }
         }
     }
     install(Logging) {

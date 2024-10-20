@@ -401,4 +401,6 @@
     <string name="last_successful_sync">Latest update: %s\nAll repos: %s</string>
     <string name="confirm_uninstall_DESC_FORMAT">Are you sure you want to uninstall %s?</string>
     <string name="erase_all">Erase all</string>
+    <string name="disable_certificate_check">Disable SSL certificate check (requires restart the app)</string>
+    <string name="disable_certificate_check_summary">Could be useful in case of self-signed or invalid certificates (required for some deprecated repositories).</string>
 </resources>

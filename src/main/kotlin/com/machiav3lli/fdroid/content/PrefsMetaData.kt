@@ -93,6 +93,10 @@ val BooleanPrefsMeta = mapOf(
         if (Preferences[Preferences.Key.KidsMode]) R.string.kids_mode_summary
         else R.string.kids_mode_summary_full
     ),
+    Preferences.Key.DisableCertificateValidation to Pair(
+        R.string.disable_certificate_check,
+        R.string.disable_certificate_check_summary
+    ),
 )
 
 val NonBooleanPrefsMeta = mapOf(
