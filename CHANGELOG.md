@@ -1,12 +1,14 @@
 CHANGELOG
 =========
 
-1.0.6 (XX.09.2024) +60 Commits +30 Translations
+1.0.6 (XX.10.2024) +90 Commits +40 Translations
 ------------------
 
 ### Function
 
 - Add: Delete the downloaded file when erasing the download entry
+- Add: Break download and clean when exceeding total file size
+- Add: Option to disable SSL validation
 - Fix: Validation of repo authentication values
 - Fix: Editing of current values of repo
 - Fix: Make Downloaded keys fully unique
@@ -14,6 +16,10 @@ CHANGELOG
 - Fix: Performance issues of SyncWorker
 - Fix: Back handling in Main pages
 - Fix: Crash on missing stopReason
+- Fix: Adding Products with duplicate categories
+- Fix: Updating repositories on sync
+- Update: Automate V1-parsing using IndexV1
+- Update: Rewrite IndexV0 xml parser
 - Update: AppSheet header logic
 - Update: Revamp updating extras logic (reduce latency)
 - Update: Koin-inject Main & Prefs ViewModels
@@ -24,6 +30,7 @@ CHANGELOG
 - Update: Improve performance of the main queries
 - Update: Improve memory and performance of flows in Main
 - Remove: Unused BootReceiver
+- Remove Bromite, INVISV, Funkwhale, Divolt and archive repos
 - CompileSDK 35
 
 ### UI/UX
@@ -31,9 +38,17 @@ CHANGELOG
 - Add: Target- & MinSDK filters
 - Add: Erase-all button to downloads page
 - Add: Indicator of the invalid field in repo editor
+- Fix: Chips visibility independent of background pref
+- Fix: Folding full app description
 - Update: Make UI wide screens friendly & navigation adaptive
 - Update: Revamp repo page
+- Update: Separate BlockBorder top top & bottom
+- Update: Show text always on alternative navigation button
 - Update: Animate permission cards
+- Update: Highlight version update chip
+- Update: Revamp dialog layouts
+- Update: Revamp icons & screenshots state creation
+- Update: Workout sheet layouts to fit the new BlockBorders
 
 1.0.5 (19.07.2024) +10 Commits +10 Translations
 ------------------
