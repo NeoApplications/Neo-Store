@@ -55,13 +55,12 @@ android {
         compose = true
     }
 
-    applicationVariants.all { variant ->
-        variant.outputs
-            .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
-            .forEach { output ->
-                output.outputFileName = "Neo_Store_${variant.name}_${variant.versionName}.apk"
-            }
-        true
+    applicationVariants.all {
+        val variant = this
+        outputs.all {
+            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName =
+                "Neo_Store_${variant.versionName}_${variant.buildType.name}.apk"
+        }
     }
 
     buildTypes {
