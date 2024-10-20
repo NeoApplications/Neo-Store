@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.index
+package com.machiav3lli.fdroid.index.v1
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase

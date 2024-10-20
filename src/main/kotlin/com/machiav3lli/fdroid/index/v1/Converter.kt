@@ -8,7 +8,7 @@ import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.entity.Author
 import com.machiav3lli.fdroid.entity.Donate
 import com.machiav3lli.fdroid.entity.Screenshot
-import com.machiav3lli.fdroid.index.IndexV0Parser
+import com.machiav3lli.fdroid.index.v0.IndexV0Parser
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import okhttp3.internal.toLongOrDefault

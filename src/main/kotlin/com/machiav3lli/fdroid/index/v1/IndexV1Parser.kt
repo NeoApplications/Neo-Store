@@ -1,10 +1,7 @@
-package com.machiav3lli.fdroid.index
+package com.machiav3lli.fdroid.index.v1
 
 import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
-import com.machiav3lli.fdroid.index.v1.IndexV1
-import com.machiav3lli.fdroid.index.v1.toProduct
-import com.machiav3lli.fdroid.index.v1.toRelease
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream

@@ -8,6 +8,9 @@ import com.machiav3lli.fdroid.database.entity.Product
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.database.entity.asReleaseTemp
+import com.machiav3lli.fdroid.index.v0.IndexV0Parser
+import com.machiav3lli.fdroid.index.v1.IndexV1Merger
+import com.machiav3lli.fdroid.index.v1.IndexV1Parser
 import com.machiav3lli.fdroid.network.Downloader
 import com.machiav3lli.fdroid.utility.CoroutineUtils
 import com.machiav3lli.fdroid.utility.ProgressInputStream

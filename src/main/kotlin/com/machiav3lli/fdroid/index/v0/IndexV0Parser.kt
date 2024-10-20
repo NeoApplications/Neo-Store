@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.index
+package com.machiav3lli.fdroid.index.v0
 
 import android.util.Xml
 import com.machiav3lli.fdroid.database.entity.Product
