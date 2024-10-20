@@ -344,7 +344,7 @@ interface ProductTempDao : BaseDao<ProductTemp> {
     fun putTemporary(products: List<Product>) {
         products.forEach {
             insert(it.asProductTemp())
-            it.categories.forEach { category ->
+            it.categories.distinct().forEach { category ->
                 insertCategory(CategoryTemp().apply {
                     repositoryId = it.repositoryId
                     packageName = it.packageName
