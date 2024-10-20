@@ -36,6 +36,7 @@ import com.machiav3lli.fdroid.content.Cache
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.network.DownloadSizeException
 import com.machiav3lli.fdroid.network.Downloader
 import com.machiav3lli.fdroid.utility.Utils
 import com.machiav3lli.fdroid.utility.copyTo
@@ -47,6 +48,7 @@ import com.machiav3lli.fdroid.utility.extension.text.hex
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.getDownloadFolder
 import com.machiav3lli.fdroid.utility.isDownloadExternal
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
@@ -100,28 +102,50 @@ class DownloadWorker(
                 }
             }
 
-        val result = if (Preferences[Preferences.Key.DownloadManager]) {
-            Downloader.dmDownload(context, task, partialRelease, callback)
-        } else {
-            Downloader.download(task.url, partialRelease, "", "", task.authentication, callback)
-        }
+        try {
+            val result = if (Preferences[Preferences.Key.DownloadManager]) {
+                Downloader.dmDownload(context, task, partialRelease, callback)
+            } else {
+                Downloader.download(task.url, partialRelease, "", "", task.authentication, callback)
+            }
 
-        if (!result.success) {
-            Log.i(this::javaClass.name, "Worker failure by error ${result.statusCode}")
-            return@coroutineScope Result.failure(getWorkData(task, result))
-        }
+            if (!result.success) {
+                Log.i(this::javaClass.name, "Worker failure by error ${result.statusCode}")
+                return@coroutineScope Result.failure(getWorkData(task, result))
+            }
 
-        val validationError = validatePackage(task, partialRelease)
-        if (validationError == ValidationError.NONE) {
-            val releaseFile = Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
-            partialRelease.renameTo(releaseFile)
-            Log.i(this::javaClass.name, "Worker success with result: $result")
-            finalize(task)
-            Result.success(getWorkData(task, result))
-        } else {
+            val validationError = validatePackage(task, partialRelease)
+            if (validationError == ValidationError.NONE) {
+                val releaseFile =
+                    Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
+                partialRelease.renameTo(releaseFile)
+                Log.i(this::javaClass.name, "Worker success with result: $result")
+                finalize(task)
+                Result.success(getWorkData(task, result))
+            } else {
+                partialRelease.delete()
+                Log.i(this::javaClass.name, "Worker failure by validation error: $validationError")
+                Result.failure(getWorkData(task, result, validationError))
+            }
+        } catch (e: DownloadSizeException) {
+            Log.e(this::javaClass.name, "Download size error: ${e.message}")
             partialRelease.delete()
-            Log.i(this::javaClass.name, "Worker failure by validation error: $validationError")
-            Result.failure(getWorkData(task, result, validationError))
+            Result.failure(
+                getWorkData(
+                    task,
+                    Downloader.Result(HttpStatusCode.BadRequest, "", ""),
+                    ValidationError.FILE_SIZE
+                )
+            )
+        } catch (e: Exception) {
+            Log.e(this::javaClass.name, "Download error: ${e.message}")
+            Result.failure(
+                getWorkData(
+                    task,
+                    Downloader.Result(HttpStatusCode.InternalServerError, "", ""),
+                    ValidationError.UNKNOWN
+                )
+            )
         }
     }
 

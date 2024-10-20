@@ -142,6 +142,12 @@ object Downloader {
                         if (Thread.interrupted()) {
                             throw InterruptedException()
                         }
+
+                        // Check if downloaded size exceeds total size
+                        if (total > 0 && progressStart + read > total) {
+                            throw DownloadSizeException("Downloaded size exceeds expected total size")
+                        }
+
                         CoroutineScope(Dispatchers.IO).launch {
                             callback.invoke(progressStart + read, progressTotal, -1L)
                         }
@@ -247,6 +253,13 @@ object Downloader {
             progressTotal = cursor.getIntOrNull(
                 cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES)
             )?.toLong()
+
+            // Check if downloaded size exceeds total size
+            if (progressTotal != null && progressTotal != -1L && progressStart + progressRead > progressTotal) {
+                downloadManager.remove(downloadID)
+                throw DownloadSizeException("Downloaded size exceeds expected total size")
+            }
+
             lastModified = cursor.getLongOrNull(
                 cursor.getColumnIndex(DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP)
             )
@@ -271,6 +284,13 @@ object Downloader {
 
             cursor.close()
         } while (isDownloading)
+
+        // Final check after download completion
+        if (progressTotal != null && progressTotal != -1L && target.length() > progressTotal) {
+            downloadManager.remove(downloadID)
+            throw DownloadSizeException("Downloaded size exceeds expected total size")
+        }
+
         Result(response, lastModified?.formatDateTime() ?: "", "")
     }
 }
@@ -343,3 +363,5 @@ private fun initDownloadClient(): HttpClient = HttpClient(OkHttp) {
 val downloadClientModule = module {
     single { initDownloadClient() }
 }
+
+class DownloadSizeException(message: String, cause: Throwable? = null) : Exception(message, cause)

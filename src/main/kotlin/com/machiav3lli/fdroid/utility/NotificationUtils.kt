@@ -320,6 +320,8 @@ fun NotificationCompat.Builder.updateWithError(
                             ValidationError.METADATA    -> R.string.invalid_metadata_error_DESC
                             ValidationError.SIGNATURE   -> R.string.invalid_signature_error_DESC
                             ValidationError.PERMISSIONS -> R.string.invalid_permissions_error_DESC
+                            ValidationError.FILE_SIZE   -> R.string.file_size_error_DESC
+                            ValidationError.UNKNOWN     -> R.string.unknown_error_DESC
                             ValidationError.NONE        -> -1
                         }
                     )
