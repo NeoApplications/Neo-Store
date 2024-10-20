@@ -357,8 +357,8 @@ object RepositoryUpdater {
                         it,
                         total
                     )
-                }.use { it ->
-                    val parser = IndexV1Parser(
+                }.use { progressInputStream ->
+                    IndexV1Parser(
                         repository.id,
                         object : IndexV1Parser.Callback {
                             override fun onRepository(
@@ -399,8 +399,7 @@ object RepositoryUpdater {
                                 }
                             }
                         }
-                    )
-                    parser.parse(inputStream)
+                    ).parse(progressInputStream)
 
                     if (Thread.interrupted()) {
                         throw InterruptedException()

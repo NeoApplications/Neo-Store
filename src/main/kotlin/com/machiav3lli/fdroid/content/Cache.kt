@@ -27,7 +27,7 @@ object Cache {
         return File(
             context.cacheDir,
             name
-        ).apply { isDirectory || mkdirs() || throw RuntimeException() }
+        ).apply { isDirectory || mkdirs() }
     }
 
     private fun ensureExtCacheDir(context: Context, name: String): File {

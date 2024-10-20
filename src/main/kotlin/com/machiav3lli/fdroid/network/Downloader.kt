@@ -154,12 +154,14 @@ object Downloader {
                     }
                 }.execute { response ->
                     when {
-                        response.status == HttpStatusCode.NotModified                                                        -> {
+                        response.status == HttpStatusCode.NotModified
+                            -> {
                             retries.remove(url)
                             Result(response.status, lastModified, entityTag)
                         }
 
-                        response.status.isSuccess()                                                                          -> {
+                        response.status.isSuccess()
+                            -> {
                             val append = start != null && response.headers["Content-Range"] != null
                             val channel = response.bodyAsChannel().toInputStream()
 
@@ -175,7 +177,8 @@ object Downloader {
                             Result(response)
                         }
 
-                        response.status == HttpStatusCode.RequestedRangeNotSatisfiable                                       -> {
+                        response.status == HttpStatusCode.RequestedRangeNotSatisfiable
+                            -> {
                             Log.w(
                                 this.javaClass.name,
                                 "Failed to download file ($url) with Range: ${start?.let { "bytes=$it-" }}."
@@ -184,11 +187,17 @@ object Downloader {
                             download(url, target, lastModified, entityTag, authentication, callback)
                         }
 
-                        response.status == HttpStatusCode.GatewayTimeout || response.status == HttpStatusCode.RequestTimeout -> {
-                            download(url, target, lastModified, entityTag, authentication, callback)
-                        }
+                        response.status == HttpStatusCode.GatewayTimeout || response.status == HttpStatusCode.RequestTimeout
+                            -> download(
+                            url,
+                            target,
+                            lastModified,
+                            entityTag,
+                            authentication,
+                            callback
+                        )
 
-                        else                                                                                                 -> {
+                        else -> {
                             Log.w(
                                 this.javaClass.name,
                                 "Failed to download file ($url). Response code ${response.status.value}:${response.status.description}."
@@ -279,7 +288,7 @@ object Downloader {
             when (downloadStatus) {
                 DownloadManager.STATUS_SUCCESSFUL,
                 DownloadManager.STATUS_FAILED,
-                -> isDownloading = false
+                    -> isDownloading = false
             }
 
             cursor.close()

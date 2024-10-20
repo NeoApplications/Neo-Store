@@ -22,6 +22,7 @@
     <application
         android:name=".MainApplication"
         android:allowBackup="false"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application_name"
         android:networkSecurityConfig="@xml/network_security_policy"
@@ -29,7 +30,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Main.Amoled"
         tools:ignore="GoogleAppIndexingWarning"
-        tools:targetApi="33">
+        tools:targetApi="34">
 
         <activity
             android:name=".NeoActivity"
