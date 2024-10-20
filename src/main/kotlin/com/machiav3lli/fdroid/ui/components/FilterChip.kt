@@ -79,7 +79,7 @@ fun InfoChip(
         colors = colors,
         shape = MaterialTheme.shapes.small,
         border = null,
-        selected = false,
+        selected = text.contains("→"),
         onClick = { onSelected() },
         label = {
             Text(text = text)
