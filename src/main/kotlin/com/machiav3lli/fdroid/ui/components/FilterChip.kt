@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -66,7 +65,7 @@ fun InfoChip(
     modifier: Modifier = Modifier,
     text: String,
     colors: SelectableChipColors = FilterChipDefaults.filterChipColors(
-        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
         labelColor = MaterialTheme.colorScheme.onSurface,
         iconColor = MaterialTheme.colorScheme.onSurface,
         selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -94,11 +93,11 @@ fun SelectChip(
     text: String,
     checked: Boolean = false,
     colors: SelectableChipColors = FilterChipDefaults.filterChipColors(
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
         labelColor = MaterialTheme.colorScheme.onSurface,
-        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
         iconColor = MaterialTheme.colorScheme.onSurface,
+        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
         selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
     ),
     alwaysShowIcon: Boolean = true,
