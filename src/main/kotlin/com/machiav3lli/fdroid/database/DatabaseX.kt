@@ -55,6 +55,7 @@ import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV23
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV9
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.archiveRepos
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.defaultRepositories
+import com.machiav3lli.fdroid.database.entity.Repository.Companion.removedReposV28
 import com.machiav3lli.fdroid.database.entity.Tracker
 import com.machiav3lli.fdroid.service.worker.SyncWorker.Companion.enableRepo
 import kotlinx.coroutines.Dispatchers
@@ -79,7 +80,7 @@ import org.koin.dsl.module
         Downloaded::class,
         InstallTask::class,
     ],
-    version = 27,
+    version = 28,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -172,6 +173,11 @@ import org.koin.dsl.module
         AutoMigration(
             from = 26,
             to = 27,
+        ),
+        AutoMigration(
+            from = 27,
+            to = 28,
+            spec = DatabaseX.Companion.AutoMigration27to28::class
         ),
     ]
 )
@@ -323,6 +329,13 @@ abstract class DatabaseX : RoomDatabase() {
         @RenameTable(fromTableName = "InstallTask", toTableName = TABLE_INSTALL_TASK)
         class AutoMigration25to26 : AutoMigrationSpec
 
+        class AutoMigration27to28 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(27)
+            }
+        }
+
         fun onPostMigrate(from: Int) {
             val preRepos = mutableListOf<Repository>()
             if (from == 8) preRepos.addAll(addedReposV9)
@@ -344,6 +357,10 @@ abstract class DatabaseX : RoomDatabase() {
                     if (from == 20) INSTANCE?.getDownloadedDao()?.emptyTable()
                 }
                 if (from == 24) archiveRepos.forEach {
+                    enableRepo(it, false)
+                    INSTANCE?.getRepositoryDao()?.deleteByAddress(it.address)
+                }
+                if (from == 27) removedReposV28.forEach {
                     enableRepo(it, false)
                     INSTANCE?.getRepositoryDao()?.deleteByAddress(it.address)
                 }

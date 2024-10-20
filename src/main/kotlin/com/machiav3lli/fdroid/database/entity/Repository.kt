@@ -915,7 +915,7 @@ data class Repository(
         val defaultRepositories = listOf(
             F_DROID, IZZY,
             GUARDIAN, ONIONSHARE_NIGHTLY, MICRO_G,
-            BROMITE, CROMITE,
+            CROMITE,
             NEWPIPE, LIBRETRO, BITWARDEN, GITJOURNAL,
             CALYX_OS, CALYX_OS_TEST, DIVEST_OS, DIVEST_OS_UNOFFICIAL,
             KDE_RELEASE, KDE_NIGHTLY, NANODROID, NETSYMS,
@@ -935,10 +935,10 @@ data class Repository(
             LAGRANGE, ROHIT, LUBLIN, NAILYK, LUBL,
             SYLKEVICIOUS, OBERNBERGER, NUCLEUS,
             XARANTOLUS, TWOBR, OBFUSK, MAXXIS,
-            JAK_LINUX, INVISV, MONERUJO,
+            JAK_LINUX, MONERUJO,
             IODE, SPIRIT_CROC, SPIRIT_CROC_TEST,
-            FUNKWHALE, ANIYOMI, KOYU, KUSCHKU,
-            DIVOLT, STACK_WALLET,
+            ANIYOMI, KOYU, KUSCHKU,
+            STACK_WALLET,
             GROBOX, FAIRFAX, ZIMBELSTERN,
             LIBRECHURCH, JUWELERKASSA, INVIZBOX,
             CLOUDBURST, HUIZENGEK,
@@ -975,12 +975,12 @@ data class Repository(
             JAK_LINUX, C_GEO, C_GEO_NIGHTLY,
         )
         val addedReposV18 = listOf(
-            INVISV, MONERUJO, IODE, SPIRIT_CROC,
-            DIVEST_OS_UNOFFICIAL, FUNKWHALE,
+            MONERUJO, IODE, SPIRIT_CROC,
+            DIVEST_OS_UNOFFICIAL,
         )
 
         val addedReposV19 = listOf(
-            DIVOLT, CROMITE,
+            CROMITE,
         )
 
         val addedReposV20 = listOf(
@@ -1011,6 +1011,10 @@ data class Repository(
             F_DROID_ARCHIVE,
             GUARDIAN_ARCHIVE,
             FROSTNERD_ARCHIVE,
+        )
+
+        val removedReposV28 = listOf(
+            FUNKWHALE, DIVOLT, INVISV, BROMITE
         )
     }
 }
