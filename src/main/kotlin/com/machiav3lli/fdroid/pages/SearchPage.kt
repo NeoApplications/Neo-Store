@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.pages
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetValue
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -188,6 +190,58 @@ fun SearchPage(viewModel: MainVM) {
         }
     }
 
+    val productsList: @Composable ((paddingValues: PaddingValues) -> Unit) = { paddingValues: PaddingValues ->
+        LazyColumn(
+            modifier = Modifier
+                .addIfElse(
+                    Preferences[Preferences.Key.BottomSearchBar],
+                    factory = {
+                        padding(bottom = paddingValues.calculateBottomPadding())
+                    },
+                    elseFactory = {
+                        padding(top = paddingValues.calculateTopPadding())
+                    }
+                )
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            state = listState,
+        ) {
+            items(
+                items = filteredProducts,
+                key = { it.packageName },
+            ) { item ->
+                ProductsListItem(
+                    item = item,
+                    repo = repositoriesMap[item.repositoryId],
+                    isFavorite = favorites.contains(item.packageName),
+                    onUserClick = {
+                        neoActivity.navigateProduct(it.packageName)
+                    },
+                    onFavouriteClick = {
+                        viewModel.setFavorite(
+                            it.packageName,
+                            !favorites.contains(it.packageName)
+                        )
+                    },
+                    installed = installedList[item.packageName],
+                    onActionClick = {
+                        val installed = installedList[it.packageName]
+                        val action = { MainApplication.wm.install(it) }
+                        if (installed != null && installed.launcherActivities.isNotEmpty())
+                            context.onLaunchClick(
+                                installed,
+                                neoActivity.supportFragmentManager
+                            )
+                        else if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                            dialogKey.value = DialogKey.Download(it.name, action)
+                            openDialog.value = true
+                        } else action()
+                    }
+                )
+            }
+        }
+    }
+
     LaunchedEffect(key1 = query) {
         viewModel.setSearchQuery(query)
     }
@@ -232,55 +286,28 @@ fun SearchPage(viewModel: MainVM) {
                 }
             },
         ) { paddingValues ->
-            LazyColumn(
-                modifier = Modifier
-                    .addIfElse(
-                        Preferences[Preferences.Key.BottomSearchBar],
-                        factory = {
-                            padding(bottom = paddingValues.calculateBottomPadding())
-                        },
-                        elseFactory = {
-                            padding(top = paddingValues.calculateTopPadding())
-                        }
-                    )
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                state = listState,
-            ) {
-                items(
-                    items = filteredProducts,
-                    key = { it.packageName },
-                ) { item ->
-                    ProductsListItem(
-                        item = item,
-                        repo = repositoriesMap[item.repositoryId],
-                        isFavorite = favorites.contains(item.packageName),
-                        onUserClick = {
-                            neoActivity.navigateProduct(it.packageName)
-                        },
-                        onFavouriteClick = {
-                            viewModel.setFavorite(
-                                it.packageName,
-                                !favorites.contains(it.packageName)
-                            )
-                        },
-                        installed = installedList[item.packageName],
-                        onActionClick = {
-                            val installed = installedList[it.packageName]
-                            val action = { MainApplication.wm.install(it) }
-                            if (installed != null && installed.launcherActivities.isNotEmpty())
-                                context.onLaunchClick(
-                                    installed,
-                                    neoActivity.supportFragmentManager
-                                )
-                            else if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                                dialogKey.value = DialogKey.Download(it.name, action)
-                                openDialog.value = true
-                            } else action()
-                        }
+            if (filteredProducts.isEmpty())
+                Column(
+                    modifier = Modifier
+                        .addIfElse(
+                            Preferences[Preferences.Key.BottomSearchBar],
+                            factory = {
+                                padding(bottom = paddingValues.calculateBottomPadding())
+                            },
+                            elseFactory = {
+                                padding(top = paddingValues.calculateTopPadding())
+                            }
+                        )
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.application_not_found)
                     )
                 }
-            }
+            else
+                productsList(paddingValues)
         }
     }
 
