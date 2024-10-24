@@ -286,7 +286,7 @@ fun SearchPage(viewModel: MainVM) {
                 }
             },
         ) { paddingValues ->
-            if (filteredProducts.isEmpty())
+            if (filteredProducts.isEmpty() && query.isNotBlank())
                 Column(
                     modifier = Modifier
                         .addIfElse(
