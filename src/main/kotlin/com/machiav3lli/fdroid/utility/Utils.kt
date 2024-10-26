@@ -328,7 +328,7 @@ fun Context.shareIntent(packageName: String, appName: String, repository: String
         -> "https://apt.izzysoft.de/fdroid/index/apk/$packageName"
 
         else
-        -> "https://www.f-droid.org/${resources.configuration.locales[0].language}/packages/${packageName}/"
+        -> "https://f-droid.org/packages/${packageName}/"
     }
 
     shareIntent.type = "text/plain"
