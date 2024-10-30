@@ -276,4 +276,22 @@
     <string name="trackers_in">𐑑𐑮𐑨𐑒𐑼𐑟 𐑦𐑯 %s</string>
     <string name="action_install_tc">𐑦𐑯𐑕𐑑𐑷𐑤 ·𐑑𐑮𐑨𐑒𐑼𐑒𐑩𐑯𐑑𐑮𐑴𐑤</string>
     <string name="action_open_website">𐑴𐑐𐑩𐑯 𐑢𐑧𐑚𐑕𐑲𐑑</string>
+    <string name="trackers_note_1">𐑦𐑯𐑒𐑤𐑵𐑛𐑟 𐑥𐑧𐑯𐑦 𐑑𐑮𐑨𐑒𐑼𐑟 𐑝 𐑘𐑹 𐑕𐑧𐑯𐑕𐑦𐑑𐑦𐑝 𐑛𐑱𐑑𐑩</string>
+    <string name="trackers_note_2">¿𐑢𐑲 𐑛𐑳𐑟 𐑦𐑑 𐑯𐑰𐑛 𐑞𐑰𐑟 𐑑𐑮𐑨𐑒𐑼𐑟?</string>
+    <string name="trackers_note_3">𐑣𐑨𐑟 𐑒𐑳𐑐𐑩𐑤 𐑝 𐑑𐑮𐑨𐑒𐑼𐑟</string>
+    <string name="permissions_note_0">𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑕 𐑥𐑧𐑯𐑦 𐑛𐑱𐑯𐑡𐑼𐑩𐑕 𐑐𐑼𐑥𐑦𐑖𐑩𐑯𐑟</string>
+    <string name="permissions_note_1">𐑮𐑦𐑒𐑢𐑲𐑼𐑟 𐑩 𐑜𐑫𐑛 𐑩𐑥𐑬𐑯𐑑 𐑝 𐑐𐑼𐑥𐑦𐑖𐑩𐑯𐑟</string>
+    <string name="permissions_note_4">𐑮𐑦𐑒𐑢𐑲𐑼𐑟 𐑷𐑤𐑥𐑴𐑕𐑑 𐑯𐑴 𐑐𐑼𐑥𐑦𐑖𐑩𐑯𐑟</string>
+    <string name="permission_not_present">𐑯𐑪𐑑 𐑐𐑮𐑧𐑟𐑩𐑯𐑑 𐑪𐑯 𐑘𐑹 𐑕𐑦𐑕𐑑𐑩𐑥</string>
+    <string name="vulnerabilities_installed_apps">¡𐑞𐑰𐑟 𐑦𐑯𐑕𐑑𐑷𐑤𐑛 𐑨𐑐𐑕 𐑣𐑨𐑝 𐑯𐑴𐑯 𐑝𐑳𐑤𐑯𐑼𐑩𐑚𐑦𐑤𐑦𐑑𐑦𐑟!</string>
+    <string name="vulnerabilities">𐑝𐑳𐑤𐑯𐑼𐑩𐑚𐑦𐑤𐑦𐑑𐑦𐑟.</string>
+    <string name="only_on_battery">𐑴𐑯𐑤𐑦 𐑢𐑧𐑯 𐑗𐑸𐑡𐑦𐑙</string>
+    <string name="edit">𐑧𐑛𐑦𐑑</string>
+    <string name="tools">𐑑𐑵𐑤𐑟</string>
+    <string name="trackers_note_4">𐑥𐑦𐑯𐑦𐑥𐑩𐑥 𐑑 𐑯𐑴 𐑑𐑮𐑨𐑒𐑼𐑟</string>
+    <string name="permission_granted">𐑜𐑮𐑭𐑯𐑑𐑩𐑛</string>
+    <string name="permissions_note_2">𐑛𐑳𐑟𐑩𐑯\'𐑑 𐑮𐑦𐑒𐑢𐑲𐑼 𐑥𐑧𐑯𐑦 𐑐𐑼𐑥𐑦𐑖𐑩𐑯𐑟</string>
+    <string name="permissions_note_3">𐑥𐑦𐑯𐑦𐑥𐑩𐑤 𐑩𐑥𐑬𐑯𐑑 𐑝 𐑐𐑼𐑥𐑦𐑖𐑩𐑯𐑟</string>
+    <string name="permission_not_granted">𐑯𐑪𐑑 𐑜𐑮𐑭𐑯𐑑𐑩𐑛</string>
+    <string name="no_vulnerabilities_installed_apps">𐑯𐑴 𐑦𐑯𐑕𐑑𐑷𐑤𐑛 𐑨𐑐𐑕 𐑣𐑨𐑝 𐑯𐑴𐑯 𐑝𐑳𐑤𐑯𐑼𐑩𐑚𐑦𐑤𐑦𐑑𐑦𐑟.</string>
 </resources>
