@@ -145,7 +145,7 @@
     <string name="sync_repositories">Sincronizza repository</string>
     <string name="sync_repositories_automatically">Sincronizza automaticamente i repository</string>
     <string name="syncing">Sincronizzando</string>
-    <string name="syncing_FORMAT">Sincronizzando %s…</string>
+    <string name="syncing_FORMAT">Sincronizzazione %s…</string>
     <string name="system">Sistema</string>
     <string name="tap_to_install_DESC">Tocca per installare.</string>
     <string name="target">Destinazione</string>
