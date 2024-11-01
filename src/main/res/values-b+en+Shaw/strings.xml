@@ -294,4 +294,14 @@
     <string name="permissions_note_3">𐑥𐑦𐑯𐑦𐑥𐑩𐑤 𐑩𐑥𐑬𐑯𐑑 𐑝 𐑐𐑼𐑥𐑦𐑖𐑩𐑯𐑟</string>
     <string name="permission_not_granted">𐑯𐑪𐑑 𐑜𐑮𐑭𐑯𐑑𐑩𐑛</string>
     <string name="no_vulnerabilities_installed_apps">𐑯𐑴 𐑦𐑯𐑕𐑑𐑷𐑤𐑛 𐑨𐑐𐑕 𐑣𐑨𐑝 𐑯𐑴𐑯 𐑝𐑳𐑤𐑯𐑼𐑩𐑚𐑦𐑤𐑦𐑑𐑦𐑟.</string>
+    <string name="extras_export">𐑦𐑒𐑕𐑐𐑹𐑑 𐑧𐑒𐑕𐑑𐑮𐑩𐑟 (·𐑓𐑱𐑝𐑼𐑦𐑑𐑕, ·𐑦𐑜𐑯𐑹 𐑳𐑐𐑛𐑱𐑑𐑕, 𐑯𐑯𐑯)</string>
+    <string name="extras_import">𐑦𐑥𐑐𐑹𐑑 𐑧𐑒𐑕𐑑𐑮𐑩𐑟 (·𐑓𐑱𐑝𐑼𐑦𐑑𐑕, ·𐑦𐑜𐑯𐑹 𐑳𐑐𐑛𐑱𐑑𐑕, 𐑯𐑯𐑯)</string>
+    <string name="file_share_text">𐑓𐑲𐑤 𐑓𐑮𐑪𐑥 ·𐑯𐑰𐑴 𐑕𐑑𐑹</string>
+    <string name="allowed_anti_features">𐑩𐑤𐑬𐑛 𐑨𐑯𐑑𐑦-𐑓𐑰𐑗𐑼𐑟</string>
+    <string name="show_trackers">𐑖𐑴 𐑑𐑮𐑨𐑒𐑼𐑟</string>
+    <string name="show_trackers_description">𐑜𐑧𐑑 𐑯 𐑖𐑴 𐑨𐑐𐑕\' 𐑑𐑮𐑨𐑒𐑼𐑟 𐑓𐑮𐑪𐑥 ·𐑧𐑒𐑕𐑩𐑛𐑩𐑕 𐑐𐑮𐑦𐑝𐑩𐑕𐑦.</string>
+    <string name="no_trackers_data_available">𐑯𐑴 𐑛𐑱𐑑𐑩 𐑪𐑯 𐑑𐑮𐑨𐑒𐑼𐑟 𐑩𐑝𐑱𐑤𐑩𐑚𐑩𐑤 (𐑘𐑧𐑑).</string>
+    <string name="enable_download_directory">𐑿𐑟 𐑒𐑳𐑕𐑑𐑩𐑥 𐑛𐑬𐑯𐑤𐑴𐑛 𐑓𐑴𐑤𐑛𐑼</string>
+    <string name="post_notifications_permission_title">𐑐𐑼𐑥𐑦𐑖𐑩𐑯 𐑑 𐑐𐑴𐑕𐑑 𐑯𐑴𐑑𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯𐑟</string>
+    <string name="post_notifications_permission_message">𐑕𐑑𐑸𐑑𐑦𐑙 ·𐑨𐑯𐑛𐑮𐑶𐑛 13, 𐑨𐑐𐑕 𐑮𐑦𐑒𐑢𐑲𐑼 𐑞𐑦𐑕 𐑐𐑼𐑥𐑦𐑖𐑩𐑯 𐑑 𐑚𐑰 𐑱𐑚𐑩𐑤 𐑑 𐑐𐑴𐑕𐑑 𐑯𐑴𐑑𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯𐑟.</string>
 </resources>
