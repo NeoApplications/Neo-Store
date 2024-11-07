@@ -401,4 +401,8 @@
     <string name="android_instead_of_sdk_summary">Zeigen Sie den Android-Versionsnamen anstelle der SDK-Nummer für minSDK und targetSDK an.</string>
     <string name="all">Alle</string>
     <string name="state_modified">Modifiziert</string>
+    <string name="file_size_error_DESC">Die Dateigröße überschreitet die erwartete Größe.</string>
+    <string name="disable_certificate_check">SSL-Zertifikatsprüfung deaktivieren (erfordert einen Neustart der App).</string>
+    <string name="disable_certificate_check_summary">Könnte nützlich sein bei selbstsignierten oder ungültigen Zertifikaten (erforderlich für einige veraltete Repositories).</string>
+    <string name="erase_all">Alles löschen</string>
 </resources>
