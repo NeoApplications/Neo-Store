@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.pages
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
@@ -56,6 +58,7 @@ fun LatestPage(viewModel: MainVM) {
     val neoActivity = context as NeoActivity
     val scope = rememberCoroutineScope()
 
+    val sync by viewModel.sync.collectAsState(false)
     val installedList by viewModel.installed.collectAsState(emptyMap())
     val secondaryList by viewModel.newProdsLatest.collectAsState(emptyList())
     val primaryList by viewModel.updatedProdsLatest.collectAsState(emptyList())
@@ -135,153 +138,167 @@ fun LatestPage(viewModel: MainVM) {
             }
         }
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-            if (!Preferences[Preferences.Key.HideNewApps]) item {
-                Row(
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.new_applications),
-                        modifier = Modifier.weight(1f),
-                    )
+        if (sync) {
+            LoadingWidget()
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                if (!Preferences[Preferences.Key.HideNewApps]) item {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.new_applications),
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
                 }
-            }
-            if (!Preferences[Preferences.Key.HideNewApps]) item {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    if (Preferences[Preferences.Key.AltNewApps]) {
-                        ProductsHorizontalRecycler(
-                            modifier = Modifier.weight(1f),
-                            productsList = secondaryList,
-                            repositories = repositoriesMap,
-                        ) { item ->
-                            neoActivity.navigateProduct(item.packageName)
-                        }
-                    } else {
-                        ProductsCarousel(
-                            modifier = Modifier.weight(1f),
-                            productsList = secondaryList,
-                            repositories = repositoriesMap,
-                            favorites = favorites,
-                            onFavouriteClick = {
-                                viewModel.setFavorite(
-                                    it.packageName,
-                                    !favorites.contains(it.packageName)
-                                )
-                            },
-                            onActionClick = { item, action ->
-                                val installed = installedList[item.packageName]
-                                val installFun = { MainApplication.wm.install(item) }
-
-                                when (action) {
-                                    is ActionState.Install -> {
-                                        if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                                            dialogKey.value =
-                                                DialogKey.Download(item.name, installFun)
-                                            openDialog.value = true
-                                        } else installFun()
-                                    }
-
-                                    is ActionState.Launch  -> installed?.let {
-                                        context.onLaunchClick(
-                                            it,
-                                            neoActivity.supportFragmentManager
-                                        )
-                                    }
-
-                                    else                   -> {}
-                                }
-                            },
-                            onUserClick = { item ->
+                if (!Preferences[Preferences.Key.HideNewApps]) item {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        if (Preferences[Preferences.Key.AltNewApps]) {
+                            ProductsHorizontalRecycler(
+                                modifier = Modifier.weight(1f),
+                                productsList = secondaryList,
+                                repositories = repositoriesMap,
+                            ) { item ->
                                 neoActivity.navigateProduct(item.packageName)
-                            },
-                        )
-                    }
-                }
-            }
-            item {
-                Row(
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.recently_updated),
-                        modifier = Modifier.weight(1f),
-                    )
-                    SortFilterChip(notModified = notModifiedSortFilter) {
-                        scope.launch {
-                            scaffoldState.bottomSheetState.expand()
+                            }
+                        } else {
+                            ProductsCarousel(
+                                modifier = Modifier.weight(1f),
+                                productsList = secondaryList,
+                                repositories = repositoriesMap,
+                                favorites = favorites,
+                                onFavouriteClick = {
+                                    viewModel.setFavorite(
+                                        it.packageName,
+                                        !favorites.contains(it.packageName)
+                                    )
+                                },
+                                onActionClick = { item, action ->
+                                    val installed = installedList[item.packageName]
+                                    val installFun = { MainApplication.wm.install(item) }
+
+                                    when (action) {
+                                        is ActionState.Install -> {
+                                            if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                                dialogKey.value =
+                                                    DialogKey.Download(item.name, installFun)
+                                                openDialog.value = true
+                                            } else installFun()
+                                        }
+
+                                        is ActionState.Launch -> installed?.let {
+                                            context.onLaunchClick(
+                                                it,
+                                                neoActivity.supportFragmentManager
+                                            )
+                                        }
+
+                                        else -> {}
+                                    }
+                                },
+                                onUserClick = { item ->
+                                    neoActivity.navigateProduct(item.packageName)
+                                },
+                            )
                         }
                     }
                 }
-            }
-            items(
-                items = primaryList,
-                key = { it.packageName },
-            ) { item ->
-                ProductsListItem(
-                    item = item,
-                    repo = repositoriesMap[item.repositoryId],
-                    isFavorite = favorites.contains(item.packageName),
-                    onUserClick = {
-                        neoActivity.navigateProduct(it.packageName)
-                    },
-                    onFavouriteClick = {
-                        viewModel.setFavorite(
-                            it.packageName,
-                            !favorites.contains(it.packageName)
+                item {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.recently_updated),
+                            modifier = Modifier.weight(1f),
                         )
-                    },
-                    installed = installedList[item.packageName],
-                    onActionClick = {
-                        val installed = installedList[it.packageName]
-                        val action = { MainApplication.wm.install(it) }
-                        if (installed != null && installed.launcherActivities.isNotEmpty())
-                            context.onLaunchClick(
-                                installed,
-                                neoActivity.supportFragmentManager
-                            )
-                        else if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                            dialogKey.value = DialogKey.Download(it.name, action)
-                            openDialog.value = true
-                        } else action()
+                        SortFilterChip(notModified = notModifiedSortFilter) {
+                            scope.launch {
+                                scaffoldState.bottomSheetState.expand()
+                            }
+                        }
                     }
-                )
+                }
+                items(
+                    items = primaryList,
+                    key = { it.packageName },
+                ) { item ->
+                    ProductsListItem(
+                        item = item,
+                        repo = repositoriesMap[item.repositoryId],
+                        isFavorite = favorites.contains(item.packageName),
+                        onUserClick = {
+                            neoActivity.navigateProduct(it.packageName)
+                        },
+                        onFavouriteClick = {
+                            viewModel.setFavorite(
+                                it.packageName,
+                                !favorites.contains(it.packageName)
+                            )
+                        },
+                        installed = installedList[item.packageName],
+                        onActionClick = {
+                            val installed = installedList[it.packageName]
+                            val action = { MainApplication.wm.install(it) }
+                            if (installed != null && installed.launcherActivities.isNotEmpty())
+                                context.onLaunchClick(
+                                    installed,
+                                    neoActivity.supportFragmentManager
+                                )
+                            else if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                dialogKey.value = DialogKey.Download(it.name, action)
+                                openDialog.value = true
+                            } else action()
+                        }
+                    )
+                }
             }
         }
-    }
 
-    if (openDialog.value) {
-        BaseDialog(openDialogCustom = openDialog) {
-            when (dialogKey.value) {
-                is DialogKey.Download -> KeyDialogUI(
-                    key = dialogKey.value,
-                    openDialog = openDialog,
-                    primaryAction = {
-                        if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None)
-                            neoActivity.launchLockPrompt {
+        if (openDialog.value) {
+            BaseDialog(openDialogCustom = openDialog) {
+                when (dialogKey.value) {
+                    is DialogKey.Download -> KeyDialogUI(
+                        key = dialogKey.value,
+                        openDialog = openDialog,
+                        primaryAction = {
+                            if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None)
+                                neoActivity.launchLockPrompt {
+                                    (dialogKey.value as DialogKey.Download).action()
+                                    openDialog.value = false
+                                }
+                            else {
                                 (dialogKey.value as DialogKey.Download).action()
                                 openDialog.value = false
                             }
-                        else {
-                            (dialogKey.value as DialogKey.Download).action()
+                        },
+                        onDismiss = {
+                            dialogKey.value = null
                             openDialog.value = false
                         }
-                    },
-                    onDismiss = {
-                        dialogKey.value = null
-                        openDialog.value = false
-                    }
-                )
+                    )
 
-                else                  -> {}
+                    else -> {}
+                }
             }
         }
+    }
+}
+
+@Composable
+private fun LoadingWidget() {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        CircularProgressIndicator()
     }
 }

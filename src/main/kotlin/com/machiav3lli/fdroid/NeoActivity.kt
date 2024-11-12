@@ -334,6 +334,6 @@ class NeoActivity : AppCompatActivity() {
 }
 
 val viewModelsModule = module {
-    viewModel { MainVM(get()) }
+    viewModel { MainVM(get(), get()) }
     viewModel { PrefsVM(get()) }
 }
