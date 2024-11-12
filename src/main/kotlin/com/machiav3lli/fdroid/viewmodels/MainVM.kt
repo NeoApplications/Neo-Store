@@ -15,6 +15,7 @@ import com.machiav3lli.fdroid.entity.Page
 import com.machiav3lli.fdroid.entity.ProductItem
 import com.machiav3lli.fdroid.entity.Request
 import com.machiav3lli.fdroid.entity.Source
+import com.machiav3lli.fdroid.service.WorkerManager
 import com.machiav3lli.fdroid.utility.matchSearchQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,7 +38,10 @@ import kotlinx.coroutines.withContext
     ExperimentalCoroutinesApi::class,
     FlowPreview::class,
 )
-open class MainVM(val db: DatabaseX) : ViewModel() {
+open class MainVM(
+    private val workerManager: WorkerManager,
+    val db: DatabaseX
+) : ViewModel() {
     private val cc = Dispatchers.IO
     private val ioScope = viewModelScope.plus(Dispatchers.IO)
 
@@ -67,6 +71,13 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
         Source.UPDATED          -> Request.Updated
         Source.NEW              -> Request.New
         Source.NONE             -> Request.None
+    }
+
+    val sync: Flow<Boolean> = combine(
+        db.getProductDao().queryFlowList(Request.Updated),
+        workerManager.repositorySyncWorkersFlow
+    ) { productList, workerList ->
+        productList.isEmpty() && workerList.isNotEmpty()
     }
 
     val repositories = db.getRepositoryDao().getAllFlow().distinctUntilChanged()

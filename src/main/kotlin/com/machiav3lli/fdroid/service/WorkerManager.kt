@@ -56,9 +56,11 @@ import com.machiav3lli.fdroid.utility.updateProgress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -104,6 +106,16 @@ class WorkerManager(appContext: Context) : KoinComponent {
                     }
                 }
         }
+    }
+
+    val repositorySyncWorkersFlow: Flow<List<WorkInfo>> get() {
+        return workManager.getWorkInfosByTagFlow(SyncWorker::class.qualifiedName.orEmpty())
+            .map { syncWorkerList ->
+                syncWorkerList.filter { workInfo ->
+                    val task = SyncWorker.getTask(workInfo.progress)
+                    task.repositoryId != NON_EXISTENT_REPOSITORY_ID
+                }
+            }
     }
 
     fun release(): WorkerManager? {
@@ -245,6 +257,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
     }
 
     companion object {
+        private const val NON_EXISTENT_REPOSITORY_ID = -1L
         private val syncsRunning = SnapshotStateMap<Long, SyncState?>()
         private val downloadsRunning = SnapshotStateMap<String, DownloadState>()
 
