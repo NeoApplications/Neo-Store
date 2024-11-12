@@ -910,6 +910,15 @@ data class Repository(
             false,
             "A9F4730F35858B40CD7ED86E46030644120FB5DFBC1B3366D05CE38A7BDB5C79",
             ""
+        ),
+        private val F5A = defaultRepository(
+            "https://f5a.torus.icu/fdroid/repo",
+            "Fcitx 5 For Android F-Droid Repo",
+            "Out-of-tree fcitx5-android plugins.",
+            21,
+            false,
+            "5D87CE1FAD3772425C2A7ED987A57595A20B07543B9595A7FD2CED25DFF3CF12",
+            ""
         )
 
         val defaultRepositories = listOf(
@@ -942,6 +951,7 @@ data class Repository(
             GROBOX, FAIRFAX, ZIMBELSTERN,
             LIBRECHURCH, JUWELERKASSA, INVIZBOX,
             CLOUDBURST, HUIZENGEK,
+            F5A,
         )
 
         val addedReposV9 = listOf(
