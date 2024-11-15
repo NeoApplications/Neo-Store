@@ -13,7 +13,7 @@
     <string name="application">Ứng dụng</string>
     <string name="could_not_sync_FORMAT">Không thể đồng bộ %s</string>
     <string name="password_missing">Thiếu mật khẩu</string>
-    <string name="all_applications_up_to_date">Tất cả ứng dụng đã được cập nhật</string>
+    <string name="all_applications_up_to_date">Mọi ứng dụng đã được cập nhật</string>
     <string name="add_repository">Thêm kho ứng dụng</string>
     <string name="invalid_username_format">Không có định dạng người dùng</string>
     <string name="project_website">Trang chủ dự án</string>
@@ -160,4 +160,26 @@
     <string name="screenshots">Ảnh chụp màn hình</string>
     <string name="root_permission_description">Sử dụng root để cài đặt mà không cần tương tác</string>
     <string name="socks_proxy">SOCKS proxy</string>
+    <string name="allowed_anti_features">Cho phép các tính năng không mong muốn</string>
+    <string name="show_trackers">Hiển thị trình theo dõi</string>
+    <string name="show_trackers_description">Nhận và hiển thị trình theo dõi ứng dụng từ Exodus Privacy.</string>
+    <string name="show_categories_bar">Hiển thị thanh danh mục</string>
+    <string name="sort_filter">Sắp xếp và lọc</string>
+    <string name="show_screenshots_description">Hiện ảnh chụp màn hình trên trang ứng dụng.</string>
+    <string name="show_less">Ẩn bớt</string>
+    <string name="saving_details">Đang lưu chi tiết…</string>
+    <string name="update">Cập nhật</string>
+    <string name="anti_features">Tính năng không mong muốn</string>
+    <string name="warning_show_notification">Bắt đầu từ Android 13, ứng dụng yêu cầu quyền này để thông báo cho bạn về các quy trình khác nhau. Nếu bạn bỏ qua quyền này, bạn sẽ không nhận được bất kỳ thông báo nào.</string>
+    <string name="updates">Bản cập nhật</string>
+    <string name="upstream_source_code_is_not_free">Mã nguồn ngược dòng không phải là libre</string>
+    <string name="prefs_new_apps">Số lượng ứng dụng hiển thị trong \"Ứng dụng mới\"</string>
+    <string name="new_repository">Kho lưu trữ mới</string>
+    <string name="prefs_updated_apps">Số lượng ứng dụng hiển thị trong \"Đã cập nhật gần đây\"</string>
+    <string name="whats_new">Có gì mới</string>
+    <string name="new_applications">Ứng dụng mới</string>
+    <string name="show_screenshots">Hiện ảnh chụp màn hình</string>
+    <string name="sort_ascending">Tăng dần</string>
+    <string name="sort_descending">Giảm dần</string>
+    <string name="trackers_ads_description">Trình theo dõi được sử dụng để hiển thị quảng cáo và theo dõi tương tác của bạn với các quảng cáo này.</string>
 </resources>
