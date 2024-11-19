@@ -387,7 +387,7 @@
     <string name="kids_mode">Tryb dziecka</string>
     <string name="kids_mode_summary_full">Włącz \"Tryb dziecka\", wyłączając nowe instalacje aplikacji. Aby wyłączyć, dotknij wersji aplikacji sześć razy na drugiej stronie. Po ponownym uruchomieniu aplikacji ta podpowiedź zostanie ukryta.</string>
     <string name="hide_new_apps">Ukrywaj pasek nowych aplikacji</string>
-    <string name="hide_new_apps_description">Połącz nowe i ostatnio zaktualizowane aplikacje na pionowej liście karty „najnowsze”</string>
+    <string name="hide_new_apps_description">Połącz nowe i ostatnio zaktualizowane aplikacje na pionowej liście karty „najnowsze”.</string>
     <string name="root_allow_installing_old_apps_description">Począwszy od Androida 14, nie jest już możliwe instalowanie aplikacji ukierunkowanych na znacznie starsze wersje Androida (Android 5.1 lub wcześniejsze). Ta opcja pozwala zastąpić to zachowanie.</string>
     <string name="download_show_dialog_summary">Wyświetlaj okna dialogowego z pytaniem, czy na pewno chcesz pobrać aplikację (przed rozpoczęciem pobierania).</string>
     <string name="install_packages_permission_title">Uprawnienie do instalowania pakietów</string>
