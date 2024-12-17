@@ -1,0 +1,7 @@
+Adicionado: Separadores especiais de filtro de pesquisa
+Adicionado: Indicador de que está instalada uma aplicação para listar itens
+Correção: Falha ao utilizar a mesma chave para itens de lançamento lento
+Correção: Abertura de páginas de preferências diferentes quando a página predefinida é alterada
+Atualização: Converter a pesquisa de volta numa página
+Atualização: Reformule o carrossel das aplicações e limite o comprimento do nome da versão
++ mais em mais de 10 commits e 30 contribuições de tradução

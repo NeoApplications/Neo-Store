@@ -1,0 +1,8 @@
+Adicionar: download e sincronização paralelos
+Adicionar: Exportação/importação de aplicações e repositórios instalados
+Adicionar: +50 novos repositórios
+Adicionar: modo infantil
+Correção: Chamando endereços Tor
+Atualização: renove toda a IU
+Atualização: Melhore a configuração do valor da caixa de diálogo de preferências
++ muito mais em mais de 440 commits e 380 contribuições de tradução
