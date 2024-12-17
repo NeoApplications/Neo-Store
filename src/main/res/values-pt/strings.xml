@@ -402,4 +402,5 @@
     <string name="root_allow_installing_old_apps_description">Em Android 14+, não é possível instalar aplicações criadas para versões mais antigas (Android 5.1 ou anteriores). Esta opção permite contornar esse comportamento.</string>
     <string name="android_instead_of_sdk_summary">Mostrar nome da versão Android em vez de mostrar o número SDK (minSDK e targetSDK).</string>
     <string name="all">Tudo</string>
+    <string name="root_allow_downgrades_description">Permitir o downgrade de aplicações utilizando o instalador raiz (aplica-se apenas a versões depuráveis de aplicações). Melhor utilizado em combinação com \"Desativar verificação de versão de download\".</string>
 </resources>
