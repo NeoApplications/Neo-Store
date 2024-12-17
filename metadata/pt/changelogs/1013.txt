@@ -1,0 +1,8 @@
+Adicionar: Proteção para evitar sincronização de spam
+Adicionar: Opção para limitar aplicações carregadas para pesquisa
+Adicionar: Suporte para compilações reproduzíveis
+Adicionar: Indicador se for aplicada uma classificação/filtro personalizado
+Correção: Carregar aplicações sem categorias (por exemplo, Total Commander Android)
+Correção: recomposição constante da maioria da UI (reduz o Jitter/Lag)
+Correção: tratamento de localidades com três letras como código de idioma
++ mais em mais de 30 commits e 20 contribuições de tradução
