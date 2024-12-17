@@ -1,0 +1,5 @@
+Adicionado: Caixa de diálogo de confirmação no desinstalador raiz também
+Adicionado: Botão de sincronização de toque longo para obter as últimas informações de sincronização bem-sucedidas
+Correção: Folhas SortFilter entre páginas
+Remover: Todos os repositórios de ficheiros
++ mais em mais de 10 commits e 10 contribuições de tradução
