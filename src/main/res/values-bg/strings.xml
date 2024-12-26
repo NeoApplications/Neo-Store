@@ -88,7 +88,7 @@
     <string name="project_website">Уебстраница на проекта</string>
     <string name="promotes_non_free_network_services">Насърчава несвободни мрежови услуги</string>
     <string name="promotes_non_free_software">Насърчава несвободен софтуер</string>
-    <string name="provided_by_FORMAT">Предоставени от %s</string>
+    <string name="provided_by_FORMAT">Предоставено от %s</string>
     <string name="proxy">Прокси</string>
     <string name="proxy_host">Хост</string>
     <string name="proxy_port">Порт</string>
@@ -330,7 +330,7 @@
     <string name="list_apps">Показване на приложенията на хранилището</string>
     <string name="alt_navbar_item">Използвай алтернативен елемент от лентата за навигация</string>
     <string name="alt_navbar_item_description">Използвай алтернативното/старо оформление на елементи от лентата за навигация, което показва етикет на неизбраните елементи.</string>
-    <string name="repos_import">Импортиране на хранилища (заменя вече съществуващите)</string>
+    <string name="repos_import">Импортиране на хранилища (заменя съществуващите)</string>
     <string name="source_copyright">Авторско право</string>
     <string name="action_open_tc">Отвори TrackerControl</string>
     <string name="action_install_tc">Инсталирай TrackerControl</string>
@@ -349,7 +349,7 @@
     <string name="dynamic_light">Светла с динамични цветове</string>
     <string name="dynamic_black">Черна с динамични цветове</string>
     <string name="alt_new_apps">Използвай алтернативно оформление за нови приложения</string>
-    <string name="proxy_url">Url адрес</string>
+    <string name="proxy_url">URL адрес</string>
     <string name="enabled">Активирано</string>
     <string name="disabled">Деактивирано</string>
     <string name="repo_qr_code">QR код на хранилището</string>
@@ -387,4 +387,21 @@
     <string name="hide_new_apps_description">Комбинирайте както нови, така и наскоро актуализирани приложения във вертикалния списък на последната страница.</string>
     <string name="download_show_dialog_summary">Показване на диалогов прозорец с въпрос дали сте сигурни, че искате да изтеглите приложение (преди започване на изтеглянето).</string>
     <string name="kids_mode_summary_full">Активирайте режима за деца, което деактивира инсталирането на нови приложения. За да деактивирате, докоснете версията на приложението на другата страница шест пъти. Тази подсказка се скрива при рестартиране на приложението.</string>
+    <string name="disable_certificate_check">Деактивирай проверката на SSL сертификатите (изисква рестартиране на приложението)</string>
+    <string name="last_successful_sync">Последна актуализация: %s\nВсички хранилища: %s</string>
+    <string name="confirm_uninstall_DESC_FORMAT">Сигурни ли сте, че искате да деинсталирате %s?</string>
+    <string name="prefs_search_apps">Максимален брой приложения в резултатите от търсенето.</string>
+    <string name="erase_all">Изтрий всички</string>
+    <string name="enable">Активирай</string>
+    <string name="dismiss">Отхвърли</string>
+    <string name="min_android">Минимална Android версия</string>
+    <string name="target_android">Целева Android версия</string>
+    <string name="android_instead_of_sdk_summary">Показвайте името на версията на Android вместо номера на SDK за minSDK и targetSDK.</string>
+    <string name="prefs_search_apps_description">Максимален брой показани приложения в резултатите от търсенето (оставете на 0, за да се покажат всички приложения).</string>
+    <string name="android_instead_of_sdk">Показване на версията на Android вместо на SDK</string>
+    <string name="file_size_error_DESC">Размерът на файла надвишава очаквания размер.</string>
+    <string name="disable_certificate_check_summary">Може да бъде полезно в случай на самоподписани или невалидни сертификати (изисква се за някои остарели хранилища).</string>
+    <string name="all">Всички</string>
+    <string name="state_modified">Променен</string>
+    <string name="wait_to_sync">Изчакайте няколко секунди, преди да опитвате нова синхронизация.</string>
 </resources>
