@@ -404,4 +404,7 @@
 \nVšechny repozitáře: %s</string>
     <string name="confirm_uninstall_DESC_FORMAT">Opravdu chcete odinstalovat %s?</string>
     <string name="erase_all">Vymazat vše</string>
+    <string name="disable_certificate_check_summary">Může být užitečné v případě použití sebou podepsaných nebo neplatných certifikátů (vyžadováno některé pro zastaralé repozitáře).</string>
+    <string name="file_size_error_DESC">Velikost souboru překračuje očekávanou hodnotu.</string>
+    <string name="disable_certificate_check">Zakázat kontrolu SSL certifikátů (vyžaduje restart aplikace)</string>
 </resources>

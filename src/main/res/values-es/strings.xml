@@ -404,4 +404,7 @@
 \nTodos los repositorios: %s</string>
     <string name="confirm_uninstall_DESC_FORMAT">¿Estás seguro de que quieres desinstalar %s?</string>
     <string name="erase_all">Borrar todo</string>
+    <string name="disable_certificate_check">Deshabilitar la verificación del certificado SSL (requiere reiniciar la aplicación)</string>
+    <string name="file_size_error_DESC">El tamaño del archivo excede el tamaño esperado.</string>
+    <string name="disable_certificate_check_summary">Podría ser útil en caso de certificados autofirmados o no válidos (requeridos para algunos repositorios obsoletos).</string>
 </resources>
