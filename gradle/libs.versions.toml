@@ -40,6 +40,7 @@ work-runtime = { module = "androidx.work:work-runtime", version.ref = "work" }
 biometric = { module = "androidx.biometric:biometric", version.ref = "biometric" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
+koin-core = { group = "io.insert-koin", name = "koin-core" }
 koin-android = { group = "io.insert-koin", name = "koin-android" }
 koin-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }

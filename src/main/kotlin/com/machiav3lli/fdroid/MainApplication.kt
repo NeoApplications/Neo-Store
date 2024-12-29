@@ -44,11 +44,13 @@ import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
+import org.koin.androix.startup.KoinStartup
+import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.dsl.koinConfiguration
 import java.lang.ref.WeakReference
 import java.net.Proxy
 
-class MainApplication : Application(), ImageLoaderFactory {
+class MainApplication : Application(), ImageLoaderFactory, KoinStartup {
 
     val db: DatabaseX by inject()
     lateinit var mActivity: AppCompatActivity
@@ -110,21 +112,18 @@ class MainApplication : Application(), ImageLoaderFactory {
         }
     }
 
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-
-        startKoin {
-            androidLogger()
-            androidContext(this@MainApplication)
-            modules(
-                exodusModule,
-                downloadClientModule,
-                workmanagerModule,
-                databaseModule,
-                viewModelsModule,
-                installerModule,
-            )
-        }
+    @KoinExperimentalAPI
+    override fun onKoinStartup() = koinConfiguration {
+        androidLogger()
+        androidContext(this@MainApplication)
+        modules(
+            exodusModule,
+            downloadClientModule,
+            workmanagerModule,
+            databaseModule,
+            viewModelsModule,
+            installerModule,
+        )
     }
 
     private suspend fun listenApplications() {
