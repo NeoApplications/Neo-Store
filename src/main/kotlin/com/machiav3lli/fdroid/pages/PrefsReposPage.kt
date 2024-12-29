@@ -48,11 +48,12 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.QrCode
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import com.machiav3lli.fdroid.viewmodels.SheetNavigationData
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-fun PrefsReposPage(viewModel: PrefsVM) {
+fun PrefsReposPage(viewModel: PrefsVM = koinViewModel()) {
     val context = LocalContext.current
     val mActivity = context as NeoActivity
     val scope = rememberCoroutineScope()

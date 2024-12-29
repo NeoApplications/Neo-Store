@@ -41,9 +41,10 @@ import com.machiav3lli.fdroid.utility.currentTimestamp
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun PrefsOtherPage(viewModel: PrefsVM) {
+fun PrefsOtherPage(viewModel: PrefsVM = koinViewModel()) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val openDialog = remember { mutableStateOf(false) }

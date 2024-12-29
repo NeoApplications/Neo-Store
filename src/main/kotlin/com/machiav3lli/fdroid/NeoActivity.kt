@@ -79,9 +79,7 @@ class NeoActivity : AppCompatActivity() {
     val db: DatabaseX by inject()
 
     private var currentTheme by Delegates.notNull<Int>()
-
-    val mainViewModel: MainVM by viewModel()
-    val prefsViewModel: PrefsVM by viewModel()
+    private val prefsViewModel: PrefsVM by viewModel()
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {

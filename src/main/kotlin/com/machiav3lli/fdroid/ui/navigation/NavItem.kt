@@ -49,30 +49,22 @@ sealed class NavItem(
 ) {
     data object Explore :
         NavItem(R.string.explore, Phosphor.Compass, "main_explore", {
-            MainApplication.mainActivity?.let {
-                ExplorePage(it.mainViewModel)
-            }
+            ExplorePage()
         })
 
     data object Latest :
         NavItem(R.string.latest, Phosphor.CircleWavyWarning, "main_latest", {
-            MainApplication.mainActivity?.let {
-                LatestPage(it.mainViewModel)
-            }
+            LatestPage()
         })
 
     data object Installed :
         NavItem(R.string.installed, Phosphor.House, "main_installed", {
-            MainApplication.mainActivity?.let {
-                InstalledPage(it.mainViewModel)
-            }
+            InstalledPage()
         })
 
     data object Search :
         NavItem(R.string.search, Phosphor.MagnifyingGlass, "main_search", {
-            MainApplication.mainActivity?.let {
-                SearchPage(it.mainViewModel)
-            }
+            SearchPage()
         })
 
     data object PersonalPrefs :
@@ -87,16 +79,12 @@ sealed class NavItem(
 
     data object ReposPrefs :
         NavItem(R.string.repositories, Phosphor.Graph, "prefs_repos", {
-            MainApplication.mainActivity?.prefsViewModel?.let {
-                PrefsReposPage(it)
-            }
+            PrefsReposPage()
         })
 
     data object OtherPrefs :
         NavItem(R.string.other, Phosphor.DotsThreeOutline, "prefs_other", {
-            MainApplication.mainActivity?.prefsViewModel?.let {
-                PrefsOtherPage(it)
-            }
+            PrefsOtherPage()
         })
 }
 

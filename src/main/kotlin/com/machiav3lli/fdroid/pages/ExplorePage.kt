@@ -60,10 +60,11 @@ import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExplorePage(viewModel: MainVM) {
+fun ExplorePage(viewModel: MainVM = koinViewModel()) {
     // TODO fix crash on closing detailPane when in AnimatedPane
     val context = LocalContext.current
     val neoActivity = context as NeoActivity

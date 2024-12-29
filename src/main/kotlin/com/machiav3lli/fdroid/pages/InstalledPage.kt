@@ -76,9 +76,10 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun InstalledPage(viewModel: MainVM) {
+fun InstalledPage(viewModel: MainVM = koinViewModel()) {
     val scope = rememberCoroutineScope()
 
     val pages: ImmutableList<@Composable () -> Unit> = persistentListOf(
