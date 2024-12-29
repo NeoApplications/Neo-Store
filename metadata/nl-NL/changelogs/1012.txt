@@ -1,0 +1,15 @@
+Toegevoegd: Parallelle download en synchronisatie
+
+Toegevoegd: Exporteren/importeren van geïnstalleerde apps en repositories
+
+Toegevoegen: +50 nieuwe repo's
+
+Toegevoegen: kindermodus
+
+Oplossing: Tor-adressen bellen
+
+Update: de hele gebruikersinterface is Vernieuwd
+
+Update: Verbeter de waarde-instelling van het voorkeursdialoogvenster
+
++ veel meer in meer dan 440 commits en 380 vertaalbijdragen
