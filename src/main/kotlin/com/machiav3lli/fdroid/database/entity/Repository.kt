@@ -910,7 +910,7 @@ data class Repository(
             false,
             "A9F4730F35858B40CD7ED86E46030644120FB5DFBC1B3366D05CE38A7BDB5C79",
             ""
-        ),
+        )
         private val F5A = defaultRepository(
             "https://f5a.torus.icu/fdroid/repo",
             "Fcitx 5 For Android F-Droid Repo",
@@ -926,7 +926,7 @@ data class Repository(
             GUARDIAN, ONIONSHARE_NIGHTLY, MICRO_G,
             CROMITE,
             NEWPIPE, LIBRETRO, BITWARDEN, GITJOURNAL,
-            CALYX_OS, CALYX_OS_TEST, DIVEST_OS, DIVEST_OS_UNOFFICIAL,
+            CALYX_OS, CALYX_OS_TEST,
             KDE_RELEASE, KDE_NIGHTLY, NANODROID, NETSYMS,
             FEDILAB, NETHUNTER, BEOCODE, INSPORATION,
             PIXELFED, VIDELIBRI, GADGETBRIDGE,
@@ -986,7 +986,6 @@ data class Repository(
         )
         val addedReposV18 = listOf(
             MONERUJO, IODE, SPIRIT_CROC,
-            DIVEST_OS_UNOFFICIAL,
         )
 
         val addedReposV19 = listOf(
@@ -1025,6 +1024,14 @@ data class Repository(
 
         val removedReposV28 = listOf(
             FUNKWHALE, DIVOLT, INVISV, BROMITE
+        )
+
+        val addedReposV29 = listOf(
+            F5A
+        )
+
+        val removedReposV29 = listOf(
+            DIVEST_OS, DIVEST_OS_UNOFFICIAL,
         )
     }
 }
