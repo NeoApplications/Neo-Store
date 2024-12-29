@@ -1,5 +1,4 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
-import org.jetbrains.kotlin.utils.addIfNotNull
 
 plugins {
     alias(libs.plugins.android.application)
@@ -201,7 +200,9 @@ task("detectAndroidLocals") {
         ) {
             var languageCode = this.file.parentFile?.name?.replace("values-", "")
             languageCode = if (languageCode == "values") "en" else languageCode
-            langsList.addIfNotNull(languageCode)
+            languageCode?.let {
+                langsList.add(languageCode)
+            }
         }
     }
     val langsListString = "{${langsList.sorted().joinToString(",") { "\"${it}\"" }}}"

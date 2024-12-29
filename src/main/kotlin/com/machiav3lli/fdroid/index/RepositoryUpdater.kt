@@ -41,7 +41,8 @@ object RepositoryUpdater {
         val certificateFromIndex: Boolean,
     ) {
         INDEX("index.jar", "index.xml", true),
-        INDEX_V1("index-v1.jar", "index-v1.json", false)
+        INDEX_V1("index-v1.jar", "index-v1.json", false),
+        //INDEX_V2("index-v2.jar", "index-v1.json", false), TODO
     }
 
     enum class ErrorType {

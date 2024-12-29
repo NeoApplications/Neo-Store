@@ -1,9 +1,9 @@
 package com.machiav3lli.fdroid
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.SystemBarStyle
@@ -46,7 +46,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -92,12 +91,12 @@ class NeoActivity : AppCompatActivity() {
             DisposableEffect(Preferences[Preferences.Key.Theme]) {
                 enableEdgeToEdge(
                     statusBarStyle = SystemBarStyle.auto(
-                        android.graphics.Color.TRANSPARENT,
-                        android.graphics.Color.TRANSPARENT,
+                        Color.TRANSPARENT,
+                        Color.TRANSPARENT,
                     ) { isDarkTheme },
                     navigationBarStyle = SystemBarStyle.auto(
-                        android.graphics.Color.TRANSPARENT,
-                        android.graphics.Color.TRANSPARENT,
+                        Color.TRANSPARENT,
+                        Color.TRANSPARENT,
                     ) { isDarkTheme },
                 )
                 onDispose {}
@@ -264,7 +263,7 @@ class NeoActivity : AppCompatActivity() {
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
+            if (result.resultCode == RESULT_OK) {
                 val scan = result.data?.getStringExtra("SCAN_RESULT")
                 scan?.replace("fdroidrepo", "http")
                 intent.data = Uri.parse(scan)
@@ -334,7 +333,7 @@ class NeoActivity : AppCompatActivity() {
 }
 
 val viewModelsModule = module {
-    viewModel { MainVM(get()) }
-    viewModel { PrefsVM(get()) }
+    viewModelOf(::MainVM)
+    viewModelOf(::PrefsVM)
     viewModelOf(::AppSheetVM)
 }
