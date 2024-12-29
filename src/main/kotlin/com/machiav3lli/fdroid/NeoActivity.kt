@@ -37,6 +37,7 @@ import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.extension.text.pathCropped
 import com.machiav3lli.fdroid.utility.isBiometricLockEnabled
 import com.machiav3lli.fdroid.utility.isDarkTheme
+import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.CoroutineScope
@@ -47,6 +48,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import kotlin.properties.Delegates
 
@@ -336,4 +338,5 @@ class NeoActivity : AppCompatActivity() {
 val viewModelsModule = module {
     viewModel { MainVM(get()) }
     viewModel { PrefsVM(get()) }
+    viewModelOf(::AppSheetVM)
 }

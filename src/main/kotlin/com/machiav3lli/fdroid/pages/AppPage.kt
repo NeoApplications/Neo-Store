@@ -107,6 +107,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.androidx.compose.koinViewModel
 import kotlin.math.truncate
 
 @OptIn(
@@ -115,8 +116,8 @@ import kotlin.math.truncate
 )
 @Composable
 fun AppPage(
-    viewModel: AppSheetVM,
     packageName: String,
+    viewModel: AppSheetVM = koinViewModel(),
 ) {
     val context = LocalContext.current
     val neoActivity = context as NeoActivity
@@ -145,6 +146,10 @@ fun AppPage(
     val mainAction by viewModel.mainAction.collectAsState()
     val actions by viewModel.subActions.collectAsState()
     val extras by viewModel.extras.collectAsState()
+
+    LaunchedEffect(packageName) {
+        viewModel.setApp(packageName)
+    }
 
     val productRepos = remember {
         derivedStateOf {

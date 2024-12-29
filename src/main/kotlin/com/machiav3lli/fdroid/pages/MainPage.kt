@@ -46,7 +46,6 @@ import com.machiav3lli.fdroid.ui.navigation.NeoNavigationSuiteScaffold
 import com.machiav3lli.fdroid.ui.navigation.SlidePager
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utility.getLocaleDateString
-import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
@@ -71,14 +70,6 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
     val pagerState = rememberPagerState(initialPage = pageIndex, pageCount = { pages.size })
     val currentPage by remember { derivedStateOf { pages[pagerState.currentPage] } }
     val appPackage: MutableState<String?> = remember { mutableStateOf(null) }
-    val appSheetVM by remember {
-        derivedStateOf {
-            AppSheetVM(
-                MainApplication.db,
-                appPackage.value ?: "",
-            )
-        }
-    }
 
     BackHandler {
         mActivity.moveTaskToBack(true)
@@ -160,7 +151,6 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
                 appPackage.value?.let {
                     AnimatedPane {
                         AppPage(
-                            viewModel = appSheetVM,
                             packageName = it,
                         )
                     }
