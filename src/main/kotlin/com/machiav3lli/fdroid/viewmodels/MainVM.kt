@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
@@ -92,8 +93,7 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
     private var requestExplore: StateFlow<Request> = combine(
         sortFilterExplore,
         sourceExplore,
-        installed
-    ) { _, src, _ ->
+    ) { _, src ->
         request(src)
     }.stateIn(
         scope = ioScope,
@@ -104,8 +104,7 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
     private var requestSearch: StateFlow<Request> = combine(
         sortFilterSearch,
         sourceSearch,
-        installed
-    ) { _, src, _ ->
+    ) { _, src ->
         request(src)
     }.stateIn(
         scope = ioScope,
@@ -116,43 +115,45 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
     val productsExplore: Flow<List<ProductItem>> = combine(
         requestExplore,
         installed,
-        db.getProductDao().queryFlowList(requestExplore.value).distinctUntilChanged(),
         db.getExtrasDao().getAllFlow().distinctUntilChanged(),
-    ) { req, _, _, _ ->
-        withContext(cc) {
-            db.getProductDao().queryObject(req)
-                .map { it.toItem(installed.value[it.packageName]) }
+    ) { req, _, _ -> db.getProductDao().queryFlowList(req) }
+        .flatMapLatest { it }
+        .distinctUntilChanged()
+        .mapLatest { list ->
+            list.map { it.toItem(installed.value[it.packageName]) }
         }
-    }
 
     private val productsSearch: Flow<List<Product>> = combine(
         requestSearch,
         installed,
-        db.getProductDao().queryFlowList(requestSearch.value).distinctUntilChanged(),
         db.getExtrasDao().getAllFlow().distinctUntilChanged(),
-    ) { req, _, _, _ ->
-        withContext(cc) {
-            db.getProductDao().queryObject(req)
-        }
-    }
+    ) { req, _, _ -> db.getProductDao().queryFlowList(req) }
+        .flatMapLatest { it }
+        .distinctUntilChanged()
 
-    val filteredProdsSearch: Flow<List<ProductItem>> =
-        combine(productsSearch, querySearch.debounce(400)) { products, query ->
-            products.matchSearchQuery(query)
-                .map { it.toItem(installed.value[it.packageName]) }
-        }
+    val filteredProdsSearch: Flow<List<ProductItem>> = combine(
+        productsSearch,
+        querySearch.debounce(400),
+        installed,
+    ) { products, query, installed ->
+        products.matchSearchQuery(query)
+            .map { it.toItem(installed[it.packageName]) }
+    }.stateIn(
+        scope = ioScope,
+        started = SharingStarted.Lazily,
+        initialValue = emptyList()
+    )
 
     val installedProdsInstalled: Flow<List<ProductItem>> = combine(
         sortFilterInstalled,
         installed,
-        db.getProductDao().queryFlowList(Request.Installed).distinctUntilChanged(),
         db.getExtrasDao().getAllFlow().distinctUntilChanged(),
-    ) { _, installed, _, _ ->
-        withContext(cc) {
-            db.getProductDao().queryObject(Request.Installed)
-                .map { it.toItem(installed[it.packageName]) }
+    ) { _, _, _ -> db.getProductDao().queryFlowList(Request.Installed) }
+        .flatMapLatest { it }
+        .distinctUntilChanged()
+        .mapLatest { list ->
+            list.map { it.toItem(installed.value[it.packageName]) }
         }
-    }
 
     val downloaded = db.getDownloadedDao().getAllFlow()
         .debounce(250L)
@@ -161,36 +162,33 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
     val updatedProdsLatest: Flow<List<ProductItem>> = combine(
         sortFilterLatest,
         installed,
-        db.getProductDao().queryFlowList(Request.Updated).distinctUntilChanged(),
         db.getExtrasDao().getAllFlow().distinctUntilChanged(),
-    ) { _, installed, _, _ ->
-        withContext(cc) {
-            db.getProductDao().queryObject(Request.Updated)
-                .map { it.toItem(installed[it.packageName]) }
+    ) { _, _, _ -> db.getProductDao().queryFlowList(Request.Updated) }
+        .flatMapLatest { it }
+        .distinctUntilChanged()
+        .mapLatest { list ->
+            list.map { it.toItem(installed.value[it.packageName]) }
         }
-    }
 
     val newProdsLatest: Flow<List<ProductItem>> = combine(
         installed,
-        db.getProductDao().queryFlowList(Request.New).distinctUntilChanged(),
         db.getExtrasDao().getAllFlow().distinctUntilChanged(),
-    ) { installed, _, _ ->
-        withContext(cc) {
-            db.getProductDao().queryObject(Request.New)
-                .map { it.toItem(installed[it.packageName]) }
+    ) { _, _ -> db.getProductDao().queryFlowList(Request.New) }
+        .flatMapLatest { it }
+        .distinctUntilChanged()
+        .mapLatest { list ->
+            list.map { it.toItem(installed.value[it.packageName]) }
         }
-    }
 
     val updateProdsInstalled: Flow<List<ProductItem>> = combine(
         installed,
-        db.getProductDao().queryFlowList(Request.Updates),
         db.getExtrasDao().getAllFlow(),
-    ) { installed, _, _ ->
-        withContext(cc) {
-            db.getProductDao().queryObject(Request.Updates)
-                .map { it.toItem(installed[it.packageName]) }
+    ) { _, _ -> db.getProductDao().queryFlowList(Request.Updates) }
+        .flatMapLatest { it }
+        .distinctUntilChanged()
+        .mapLatest { list ->
+            list.map { it.toItem(installed.value[it.packageName]) }
         }
-    }
 
     fun setSortFilter(page: Page, value: String) = viewModelScope.launch {
         when (page) {
