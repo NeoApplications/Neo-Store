@@ -137,14 +137,14 @@ object Downloader {
                     }
                     this.onDownload { read, total ->
                         val progressStart = start ?: 0L
-                        val progressTotal = progressStart + total
+                        val progressTotal = total?.let { progressStart + total }
 
                         if (Thread.interrupted()) {
                             throw InterruptedException()
                         }
 
                         // Check if downloaded size exceeds total size
-                        if (total > 0 && progressStart + read > total) {
+                        if (total != null && total > 0 && progressStart + read > total) {
                             throw DownloadSizeException("Downloaded size exceeds expected total size")
                         }
 
