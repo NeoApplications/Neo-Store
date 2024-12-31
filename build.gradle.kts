@@ -133,7 +133,10 @@ dependencies {
     implementation(libs.material)
 
     // Coil, Ktor, Okhttp, Zxing
+    api(platform(libs.coil.bom))
     implementation(libs.coil)
+    implementation(libs.coil.ktor)
+    implementation(libs.coil.okhttp)
     implementation(libs.coil.compose)
     implementation(libs.zxing.core)
     implementation(libs.ktor.core)

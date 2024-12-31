@@ -2,7 +2,7 @@
 activity = "1.9.3"
 agp = "8.7.3"
 biometric = "1.2.0-alpha05"
-coil = "2.7.0"
+coil = "3.0.4"
 compose-bom = "2024.12.01"
 compose-accompanist = "0.37.0"
 compose-markdown = "0.5.0"
@@ -48,8 +48,11 @@ koin-startup = { group = "io.insert-koin", name = "koin-androidx-startup" }
 koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koin-ksp" }
 koin-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koin-ksp" }
 
-coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-bom = { group = "io.coil-kt.coil3", name = "coil-bom", version.ref = "coil" }
+coil = { group = "io.coil-kt.coil3", name = "coil" }
+coil-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor3" }
+coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose" }
 ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktor-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
