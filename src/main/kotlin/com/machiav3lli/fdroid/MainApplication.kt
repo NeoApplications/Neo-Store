@@ -10,8 +10,10 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.mutableStateOf
 import androidx.work.NetworkType
-import coil.ImageLoader
-import coil.ImageLoaderFactory
+import coil3.ImageLoader
+import coil3.SingletonImageLoader
+import coil3.network.okhttp.OkHttpNetworkFetcherFactory
+import coil3.request.crossfade
 import com.anggrayudi.storage.extension.postToUi
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
@@ -50,7 +52,7 @@ import org.koin.dsl.koinConfiguration
 import java.lang.ref.WeakReference
 import java.net.Proxy
 
-class MainApplication : Application(), ImageLoaderFactory, KoinStartup {
+class MainApplication : Application(), SingletonImageLoader.Factory, KoinStartup {
 
     val db: DatabaseX by inject()
     lateinit var mActivity: AppCompatActivity
@@ -297,9 +299,15 @@ class MainApplication : Application(), ImageLoaderFactory, KoinStartup {
         SyncWorker.enqueueAll(SyncRequest.FORCE)
     }
 
-    override fun newImageLoader(): ImageLoader {
-        return ImageLoader.Builder(this)
-            .callFactory(CoilDownloader.Factory(Cache.getImagesDir(this))) // TODO migrate to Ktor on Coil 3.X
+    override fun newImageLoader(context: Context): ImageLoader {
+        return ImageLoader.Builder(context)
+            .components {
+                add(
+                    OkHttpNetworkFetcherFactory( // TODO migrate to Ktor on Coil 3.X
+                        callFactory = CoilDownloader.Factory(Cache.getImagesDir(context))
+                    )
+                )
+            }
             .crossfade(true)
             .build()
     }
