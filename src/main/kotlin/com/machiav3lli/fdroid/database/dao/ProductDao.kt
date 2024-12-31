@@ -102,24 +102,6 @@ interface ProductDao : BaseDao<Product> {
     @RawQuery
     fun queryObject(query: SupportSQLiteQuery): List<Product>
 
-    fun queryObject(request: Request): List<Product> = queryObject(
-        buildProductQuery(
-            installed = request.installed,
-            updates = request.updates,
-            section = request.section,
-            filteredOutRepos = request.filteredOutRepos,
-            category = request.category,
-            filteredAntiFeatures = request.filteredAntiFeatures,
-            filteredLicenses = request.filteredLicenses,
-            order = request.order,
-            ascending = request.ascending,
-            numberOfItems = request.numberOfItems,
-            updateCategory = request.updateCategory,
-            targetSdkVersion = request.targetSDK,
-            minSdkVersion = request.minSDK,
-        )
-    )
-
     @Transaction
     fun queryObject(
         installed: Boolean, updates: Boolean,
