@@ -1,5 +1,6 @@
 -dontobfuscate
 -dontwarn org.slf4j.impl.StaticLoggerBinder
+-dontwarn okhttp3.internal.Util
 
 # Disable ServiceLoader reproducibility-breaking optimizations
 -keep class kotlinx.coroutines.CoroutineExceptionHandler
