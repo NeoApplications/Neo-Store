@@ -404,4 +404,6 @@
     <string name="file_size_error_DESC">File size exceeds expected size.</string>
     <string name="disable_certificate_check">Disable SSL certificate check (requires restart the app)</string>
     <string name="disable_certificate_check_summary">Could be useful in case of self-signed or invalid certificates (required for some deprecated repositories).</string>
+    <string name="downloading_error_FORMAT">Error while downloading %s</string>
+    <string name="validation_error_FORMAT">Validation error: %s</string>
 </resources>

@@ -32,15 +32,13 @@ import com.machiav3lli.fdroid.index.RepositoryUpdater
 import com.machiav3lli.fdroid.service.ActionReceiver
 import com.machiav3lli.fdroid.service.InstallerReceiver
 import com.machiav3lli.fdroid.service.installIntent
-import com.machiav3lli.fdroid.service.worker.DownloadTask
-import com.machiav3lli.fdroid.service.worker.ErrorType
+import com.machiav3lli.fdroid.service.worker.DownloadState
 import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.worker.ValidationError
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.android.notificationManager
 import com.machiav3lli.fdroid.utility.extension.resources.getColorFromAttr
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
-import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -272,63 +270,33 @@ fun NotificationCompat.Builder.updateProgress(
 
 fun NotificationCompat.Builder.updateWithError(
     context: Context,
-    task: DownloadTask,
-    errorType: ErrorType?,
+    state: DownloadState,
+    errorType: ValidationError,
 ) = apply {
-    if (errorType != null) {
-        setAutoCancel(true)
-        setSmallIcon(android.R.drawable.stat_sys_warning)
-        when (errorType) {
-            is ErrorType.Network    -> {
-                setContentTitle(
-                    context.getString(
-                        R.string.could_not_download_FORMAT,
-                        task.name
-                    )
-                )
-                setContentText(context.getString(R.string.network_error_DESC))
-            }
-
-            is ErrorType.Http       -> {
-                setContentTitle(
-                    context.getString(
-                        R.string.could_not_download_FORMAT,
-                        task.name
-                    )
-                )
-                setContentText(
-                    "${
-                        context.getString(R.string.http_error_DESC)
-                    } ${
-                        HttpStatusCode.fromValue(errorType.code)
-                    }"
-                )
-            }
-
-            is ErrorType.Validation -> {
-                setContentTitle(
-                    context.getString(
-                        R.string.could_not_validate_FORMAT,
-                        task.name
-                    )
-                )
-                setContentText(
-                    context.getString(
-                        when (errorType.validateError) {
-                            ValidationError.INTEGRITY   -> R.string.integrity_check_error_DESC
-                            ValidationError.FORMAT      -> R.string.file_format_error_DESC
-                            ValidationError.METADATA    -> R.string.invalid_metadata_error_DESC
-                            ValidationError.SIGNATURE   -> R.string.invalid_signature_error_DESC
-                            ValidationError.PERMISSIONS -> R.string.invalid_permissions_error_DESC
-                            ValidationError.FILE_SIZE   -> R.string.file_size_error_DESC
-                            ValidationError.UNKNOWN     -> R.string.unknown_error_DESC
-                            ValidationError.NONE        -> -1
-                        }
-                    )
-                )
-            }
-        }::class
-    }
+    setSmallIcon(android.R.drawable.stat_sys_warning)
+    setContentTitle(
+        context.getString(
+            R.string.downloading_error_FORMAT,
+            "${state.name} (${state.version})"
+        )
+    )
+    setContentText(
+        context.getString(
+            R.string.validation_error_FORMAT,
+            context.getString(
+                when (errorType) {
+                    ValidationError.INTEGRITY   -> R.string.integrity_check_error_DESC
+                    ValidationError.FORMAT      -> R.string.file_format_error_DESC
+                    ValidationError.METADATA    -> R.string.invalid_metadata_error_DESC
+                    ValidationError.SIGNATURE   -> R.string.invalid_signature_error_DESC
+                    ValidationError.PERMISSIONS -> R.string.invalid_permissions_error_DESC
+                    ValidationError.FILE_SIZE   -> R.string.file_size_error_DESC
+                    ValidationError.UNKNOWN     -> R.string.unknown_error_DESC
+                    ValidationError.NONE        -> -1
+                }
+            )
+        )
+    )
 }
 
 /**
