@@ -187,7 +187,7 @@ fun ExplorePage(viewModel: MainVM = koinViewModel()) {
                     }
                 }
             }
-            Row {
+            Column {
                 val favString = stringResource(id = R.string.favorite_applications)
                 CategoriesList(
                     items = listOf(
