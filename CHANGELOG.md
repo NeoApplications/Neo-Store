@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-1.0.6 (XX.10.2024) +90 Commits +40 Translations
+1.0.6 (XX.10.2024) +120 Commits +60 Translations
 ------------------
 
 ### Function
@@ -18,6 +18,7 @@ CHANGELOG
 - Fix: Crash on missing stopReason
 - Fix: Adding Products with duplicate categories
 - Fix: Updating repositories on sync
+- Fix: Lazy load of installed apps?
 - Update: Automate V1-parsing using IndexV1
 - Update: Rewrite IndexV0 xml parser
 - Update: AppSheet header logic
@@ -25,12 +26,15 @@ CHANGELOG
 - Update: Koin-inject Main & Prefs ViewModels
 - Update: Replace the multiple VMs for single MainVM
 - Update: Revamp WorkerManager & all Workers
+- Update: Revamp WorkerManager handling of downloads
 - Update: Migrate to type-safe navigation
 - Update: Indices and naming of Room Entities
 - Update: Improve performance of the main queries
-- Update: Improve memory and performance of flows in Main
+- Update: Improve flows' memory & performance in MainVM
+- Update: Improve f-droid sharing link (credits @leoheitmannruiz)
 - Remove: Unused BootReceiver
-- Remove Bromite, INVISV, Funkwhale, Divolt and archive repos
+- Add Fcitx5 repos (credits @Integral-Tech)
+- Remove Bromite, INVISV, Funkwhale, Divolt, DivestOS and archive repos
 - CompileSDK 35
 
 ### UI/UX
@@ -47,8 +51,10 @@ CHANGELOG
 - Update: Animate permission cards
 - Update: Highlight version update chip
 - Update: Revamp dialog layouts
+- Update: Revamp Explore page
 - Update: Revamp icons & screenshots state creation
 - Update: Workout sheet layouts to fit the new BlockBorders
+- Update: Improve install & validation state notifications
 
 1.0.5 (19.07.2024) +10 Commits +10 Translations
 ------------------
