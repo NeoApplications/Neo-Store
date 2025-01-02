@@ -1,0 +1,8 @@
+Ekleme: Paralel indirme ve senkronizasyon
+Ekleme: Yüklü uygulamaların ve depoların dışa/içe aktarımı
+Ekleme: +50 yeni repo
+Ekleme: Çocuk modu
+Düzeltme: Tor adreslerini çağırma
+Güncelleme: Tüm kullanıcı arayüzünü yenileyin
+Güncelleme: Tercih iletişim kutusu değer ayarını iyileştirin
++ 440'tan fazla taahhüt ve 380 çeviri katkısıyla çok daha fazlası

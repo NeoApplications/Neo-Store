@@ -1,0 +1,6 @@
+Adicionado: barra de pesquisa à página de repositórios
+Adicionado: opção para mostrar o nome da versão do Android em vez do SDK (enbalado por defeito)
+Adicionado: caixa de diálogo ao clicar em ligações de descrições de aplicações ou registos de alterações
+Correção: falha ao tocar na notificação de instalação do instalador da sessão
+Atualização: adicionar botões ativar e descartar ao RepoSheet
++ mais em mais de 10 commits e 50 contribuições de tradução

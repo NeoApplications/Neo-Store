@@ -1,0 +1,11 @@
+Een feature-rijke snelle F-Droid-client:
+
+*UX gericht op het empoweren van gebruikers
+*geen kaarten of onnodig animaties
+*snelle synchronisatie van opslagplaats
+*Standaard Android-componenten en minimale afhankelijkheden
+
+Een directe adaptatie/modificatie van Foxy-Droid
+
+Copylefted libre-software, gelicentieerd GPLv3+.\
+Gebruik, bestudeer, verander en deel; met allemaal.
