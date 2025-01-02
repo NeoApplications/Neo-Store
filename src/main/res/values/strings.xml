@@ -406,4 +406,12 @@
     <string name="disable_certificate_check_summary">Could be useful in case of self-signed or invalid certificates (required for some deprecated repositories).</string>
     <string name="downloading_error_FORMAT">Error while downloading %s</string>
     <string name="validation_error_FORMAT">Validation error: %s</string>
+    <string name="installing_error_FORMAT">Error while installing %s</string>
+    <string name="installing_error_storage_DESC">Install failed on storage issues.</string>
+    <string name="installing_error_incompatible_DESC">Install incompatible.</string>
+    <string name="installing_error_blocked_DESC">Install got blocked.</string>
+    <string name="installing_error_timeout_DESC">Install timeout.</string>
+    <string name="installing_error_conflict_DESC">Error caused by a conflict.</string>
+    <string name="installing_error_invalid_DESC">Invalid install.</string>
+    <string name="installing_error_unknown_DESC">Unknown error while installing.</string>
 </resources>

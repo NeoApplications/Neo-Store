@@ -63,6 +63,7 @@ class InstallerReceiver : BroadcastReceiver() {
                 putExtra(ARG_PACKAGE_NAME, packageName)
             }
             context.sendBroadcast(cancelIntent)
+            notifyStatus(context, intent)
         } else {
             notifyStatus(context, intent)
         }

@@ -406,7 +406,6 @@ fun notifyStatus(context: Context, intent: Intent?) {
 
         PackageInstaller.STATUS_FAILURE_ABORTED     -> {
             // do nothing if user cancels
-            packageName?.let { scope.launch { MainApplication.db.getInstallTaskDao().delete(it) } }
         }
 
         else                                        -> {
@@ -415,8 +414,32 @@ fun notifyStatus(context: Context, intent: Intent?) {
             packageName?.let { scope.launch { MainApplication.db.getInstallTaskDao().delete(it) } }
             val notification = builder
                 .setSmallIcon(android.R.drawable.stat_notify_error)
-                .setContentTitle(context.getString(R.string.unknown_error_DESC))
-                .setContentText(message)
+                .setContentTitle(context.getString(R.string.installing_error_FORMAT, appLabel))
+                .setContentText(
+                    message ?: context.getString(
+                        when (status) {
+                            PackageInstaller.STATUS_FAILURE_STORAGE
+                                 -> R.string.installing_error_storage_DESC
+
+                            PackageInstaller.STATUS_FAILURE_BLOCKED
+                                 -> R.string.installing_error_blocked_DESC
+
+                            PackageInstaller.STATUS_FAILURE_INCOMPATIBLE
+                                 -> R.string.installing_error_incompatible_DESC
+
+                            PackageInstaller.STATUS_FAILURE_CONFLICT
+                                 -> R.string.installing_error_conflict_DESC
+
+                            PackageInstaller.STATUS_FAILURE_TIMEOUT
+                                 -> R.string.installing_error_timeout_DESC
+
+                            PackageInstaller.STATUS_FAILURE_INVALID
+                                 -> R.string.installing_error_invalid_DESC
+
+                            else -> R.string.installing_error_unknown_DESC // PackageInstaller.STATUS_FAILURE & unknown
+                        }
+                    )
+                )
                 .build()
             context.notificationManager.notify(
                 notificationTag,
