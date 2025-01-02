@@ -94,14 +94,8 @@ class WorkerManager(appContext: Context) : KoinComponent {
         if (Android.sdk(Build.VERSION_CODES.O)) createNotificationChannels()
 
         workManager.pruneWork()
-        scope.launch {
-            workManager.getWorkInfosByTagFlow(SyncWorker::class.qualifiedName!!)
-                .collect { onSyncProgress(this@WorkerManager, it.toMutableList()) }
-        }
-        scope.launch {
-            workManager.getWorkInfosByTagFlow(DownloadWorker::class.qualifiedName!!)
-                .collect { onDownloadProgress(this@WorkerManager, it.toMutableList()) }
-        }
+        setupWorkInfoCollection()
+        monitorWorkProgress()
         scope.launch {
             MainApplication.db.getInstallTaskDao()
                 .getAllFlow() // Add similar table for DownloadTasks
@@ -122,6 +116,57 @@ class WorkerManager(appContext: Context) : KoinComponent {
 
     fun prune() {
         workManager.pruneWork()
+    }
+
+    private fun setupWorkInfoCollection() {
+        scope.launch {
+            workManager.getWorkInfosByTagFlow(SyncWorker::class.qualifiedName!!)
+                .retryWhen { cause, attempt ->
+                    delay(attempt * 1_000L)
+                    cause !is CancellationException
+                }
+                .collect { workInfos ->
+                    try {
+                        onSyncProgress(this@WorkerManager, workInfos)
+                    } catch (e: Exception) {
+                        Log.e("WorkerManager", "Error processing sync updates", e)
+                    }
+                }
+        }
+
+        scope.launch {
+            workManager.getWorkInfosByTagFlow(DownloadWorker::class.qualifiedName!!)
+                .retryWhen { cause, attempt ->
+                    delay(attempt * 1_000L)
+                    cause !is CancellationException
+                }
+                .collect { workInfos ->
+                    try {
+                        onDownloadProgress(workInfos)
+                    } catch (e: Exception) {
+                        Log.e("WorkerManager", "Error processing download updates", e)
+                    }
+                }
+        }
+    }
+
+    private fun monitorWorkProgress() {
+        scope.launch {
+            while (isActive) {
+                try {
+                    workManager.getWorkInfos(
+                        WorkQuery.Builder
+                            .fromStates(listOf(WorkInfo.State.RUNNING))
+                            .build()
+                    ).get().filter { it.runAttemptCount > 5 }.forEach { wi ->
+                        workManager.cancelWorkById(wi.id)
+                    }
+                } catch (e: Exception) {
+                    Log.e("WorkerManager", "Error in work monitoring", e)
+                }
+                delay(TimeUnit.MINUTES.toMillis(5))
+            }
+        }
     }
 
     fun cancelSyncAll() {
@@ -196,12 +241,6 @@ class WorkerManager(appContext: Context) : KoinComponent {
                     }
                 }
 
-        }
-    }
-
-    private fun launchInstaller(installTasks: List<InstallTask>) = scope.launch(Dispatchers.IO) {
-        installTasks.forEach {
-            InstallWorker.enqueue(it.packageName, it.label, it.cacheFileName)
         }
     }
 

@@ -153,12 +153,12 @@ class InstallWorker(
                 .build()
 
             MainApplication.wm.workManager
-                .beginUniqueWork(
+                .enqueueUniqueWork(
                     "Installer_$packageName",
                     if (enforce) ExistingWorkPolicy.REPLACE
                     else ExistingWorkPolicy.KEEP,
                     installerRequest,
-                ).enqueue()
+                )
         }
     }
 }

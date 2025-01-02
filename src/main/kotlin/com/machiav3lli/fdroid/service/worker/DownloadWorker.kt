@@ -298,12 +298,11 @@ class DownloadWorker(
                 .build()
 
             MainApplication.wm.workManager
-                .beginUniqueWork(
+                .enqueueUniqueWork(
                     "$packageName-${repository.id}-${release.version}",
                     ExistingWorkPolicy.REPLACE,
                     downloadRequest,
                 )
-                .enqueue()
         }
 
         fun getTask(data: Data) = DownloadTask(

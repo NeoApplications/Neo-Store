@@ -41,6 +41,17 @@ fun Modifier.vertical() =
         }
     }
 
+fun Modifier.horizontal() =
+    layout { measurable, constraints ->
+        val placeable = measurable.measure(constraints)
+        layout(placeable.width, placeable.height) {
+            placeable.place(
+                x = -(placeable.width / 2 - placeable.height / 2),
+                y = -(placeable.height / 2 - placeable.width / 2)
+            )
+        }
+    }
+
 fun Modifier.blockBorderTop(altStyle: Boolean = Preferences[Preferences.Key.AltBlockLayout]) =
     composed {
         this
