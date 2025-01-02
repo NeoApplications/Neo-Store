@@ -300,7 +300,7 @@ class DownloadWorker(
             MainApplication.wm.workManager
                 .beginUniqueWork(
                     "$packageName-${repository.id}-${release.version}",
-                    ExistingWorkPolicy.KEEP,
+                    ExistingWorkPolicy.REPLACE,
                     downloadRequest,
                 )
                 .enqueue()
