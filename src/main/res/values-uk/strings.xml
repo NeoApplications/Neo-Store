@@ -406,4 +406,17 @@
     <string name="last_successful_sync">Останнє оновлення: %s
 \nВсі репозиторії: %s</string>
     <string name="erase_all">Стерти все</string>
+    <string name="file_size_error_DESC">Розмір файлу перевищує очікуваний.</string>
+    <string name="validation_error_FORMAT">Помилка перевірки: %s</string>
+    <string name="installing_error_incompatible_DESC">Встановлення несумісне.</string>
+    <string name="installing_error_timeout_DESC">Термін дії встановлення минув.</string>
+    <string name="installing_error_invalid_DESC">Неправильне встановлення.</string>
+    <string name="disable_certificate_check_summary">Може бути корисним у випадку самопідписаних або недійсних сертифікатів (потрібні для деяких застарілих репозиторіїв).</string>
+    <string name="installing_error_FORMAT">Помилка під час встановлення %s</string>
+    <string name="installing_error_conflict_DESC">Помилка через конфлікт.</string>
+    <string name="installing_error_unknown_DESC">Невідома помилка під час встановлення.</string>
+    <string name="disable_certificate_check">Вимкнути перевірку SSL-сертифіката (вимагає перезапуску застосунку)</string>
+    <string name="downloading_error_FORMAT">Помилка під час завантаження %s</string>
+    <string name="installing_error_storage_DESC">Не вдалося встановити через проблеми зі сховищем.</string>
+    <string name="installing_error_blocked_DESC">Встановлення заблоковано.</string>
 </resources>
