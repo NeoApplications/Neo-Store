@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
@@ -131,7 +132,8 @@ fun SnapshotStateList<Pair<Permission, () -> Unit>>.refresh(
         ) add(Pair(Permission.PostNotifications) {
             permissionStatePostNotifications.launchPermissionRequest()
         })
-        if (Android.sdk(Build.VERSION_CODES.O) && !context.packageManager.canRequestPackageInstalls())
+        if (Android.sdk(Build.VERSION_CODES.O) && !context.packageManager.canRequestPackageInstalls() && context.checkSelfPermission(
+                Manifest.permission.INSTALL_PACKAGES).equals(PackageManager.PERMISSION_DENIED))
             add(Pair(Permission.InstallPackages) {
                 val intent = Intent(
                     Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
