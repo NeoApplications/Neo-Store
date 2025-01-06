@@ -406,4 +406,17 @@
     <string name="last_successful_sync">Ostatnio zaktualizowano: %s
 \nWszystkie repozytoria: %s</string>
     <string name="erase_all">Wymaż wszystko</string>
+    <string name="file_size_error_DESC">Rozmiar pliku przekracza oczekiwany rozmiar.</string>
+    <string name="downloading_error_FORMAT">Błąd podczas pobierania %s</string>
+    <string name="installing_error_storage_DESC">Instalacja nie powiodła się z powodu problemów z pamięcią masową.</string>
+    <string name="installing_error_unknown_DESC">Nieznany błąd podczas instalacji.</string>
+    <string name="disable_certificate_check">Wyłącz sprawdzanie certyfikatu SSL (wymaga ponownego uruchomienia aplikacji)</string>
+    <string name="validation_error_FORMAT">Błąd walidacji: %s</string>
+    <string name="installing_error_FORMAT">Błąd podczas instalacji %s</string>
+    <string name="installing_error_blocked_DESC">Instalacja została zablokowana.</string>
+    <string name="installing_error_incompatible_DESC">Instalacja niezgodna.</string>
+    <string name="installing_error_timeout_DESC">Limit czasu instalacji.</string>
+    <string name="installing_error_conflict_DESC">Błąd spowodowany konfliktem.</string>
+    <string name="disable_certificate_check_summary">Może być przydatny w przypadku samopodpisanych lub nieważnych certyfikatów (wymaganych dla niektórych przestarzałych repozytoriów).</string>
+    <string name="installing_error_invalid_DESC">Nieprawidłowa instalacja.</string>
 </resources>
