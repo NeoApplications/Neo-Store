@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageInstaller.SessionParams
+import android.content.pm.PackageManager
 import android.util.Log
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.content.Cache
@@ -29,6 +30,9 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
             if (Android.sdk(31)) PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             else PendingIntent.FLAG_UPDATE_CURRENT
         val sessionParams = SessionParams(SessionParams.MODE_FULL_INSTALL).apply {
+            if (Android.sdk(26)) {
+                setInstallReason(PackageManager.INSTALL_REASON_USER)
+            }
             if (Android.sdk(31)) {
                 setRequireUserAction(SessionParams.USER_ACTION_NOT_REQUIRED)
             }

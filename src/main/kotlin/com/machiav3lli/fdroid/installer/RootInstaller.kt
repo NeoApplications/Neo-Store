@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.installer
 
 import android.content.Context
+import android.content.pm.PackageManager
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Cache
@@ -49,6 +50,7 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
             if (Preferences[Preferences.Key.RootAllowInstallingOldApps]) "--bypass-low-target-sdk-block" else null,
             "-i", BuildConfig.APPLICATION_ID,
             "--user", getCurrentUserState,
+            if (Android.sdk(26)) "--install-reason ${PackageManager.INSTALL_REASON_USER}" else null,
             "-t",
             "-r",
             "-S", length(),
@@ -60,6 +62,7 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
             if (Preferences[Preferences.Key.RootAllowInstallingOldApps]) "--bypass-low-target-sdk-block" else null,
             "-i", BuildConfig.APPLICATION_ID,
             "--user", getCurrentUserState,
+            if (Android.sdk(26)) "--install-reason ${PackageManager.INSTALL_REASON_USER}" else null,
             "-t",
             "-r",
             "-S", length(),
