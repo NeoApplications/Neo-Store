@@ -306,7 +306,7 @@
     <string name="show_trackers_description">Показывать информацию о трекерах в приложении из базы Exodus Privacy.</string>
     <string name="no_trackers_data_available">Данные о трекерах (пока) отсутствуют.</string>
     <string name="enable_download_directory">Пользовательская папка загрузки</string>
-    <string name="enable_download_directory_summary">Сохранять загруженные APK в указанной папке.</string>
+    <string name="enable_download_directory_summary">Сохранять скачанные APK в указанной папке.</string>
     <string name="custom_download_directory">Путь пользовательской папки загрузки</string>
     <string name="post_notifications_permission_title">Разрешение на уведомления</string>
     <string name="post_notifications_permission_message">Начиная с Android 13 для показа уведомлений приложениям требуется это разрешение.</string>
@@ -384,7 +384,7 @@
     <string name="action_lock_biometric">Биометрическая блокировка</string>
     <string name="confirm_download_DESC_FORMAT">Вы уверены, что хотите скачать %s?</string>
     <string name="alt_block_layout_summary">Использовать альтернативный/старый вид блоков страниц с границами вместо цветных поверхностей.</string>
-    <string name="download_show_dialog_summary">Отобразить диалоговое окно с вопросом, действительно ли вы хотите загрузить приложение (перед началом загрузки).</string>
+    <string name="download_show_dialog_summary">Показывать диалоговое окно с запросом подтверждения на скачивание приложения (перед началом загрузки).</string>
     <string name="action_lock_device">Блокировка устройства</string>
     <string name="kids_mode_summary">Использовать детский режим, отключающий установку новых приложений.</string>
     <string name="system_installer">Системный установщик</string>
@@ -406,4 +406,17 @@
     <string name="last_successful_sync">Последнее обновление: %s
 \nВсе репозитории: %s</string>
     <string name="erase_all">Удалить все</string>
+    <string name="disable_certificate_check_summary">Может быть полезно в случае самоподписанных или недействительных сертификатов (требуется для некоторых устаревших репозиториев).</string>
+    <string name="downloading_error_FORMAT">Ошибка при скачивании %s</string>
+    <string name="installing_error_FORMAT">Ошибка при установке %s</string>
+    <string name="installing_error_incompatible_DESC">Установка несовместима.</string>
+    <string name="installing_error_blocked_DESC">Установка заблокирована.</string>
+    <string name="installing_error_timeout_DESC">Истекло время ожидания установки.</string>
+    <string name="disable_certificate_check">Отключить проверку сертификата SSL (требуется перезапуск приложения)</string>
+    <string name="validation_error_FORMAT">Ошибка проверки: %s</string>
+    <string name="installing_error_storage_DESC">Установка не выполнена из-за проблем с хранилищем.</string>
+    <string name="installing_error_conflict_DESC">Ошибка из-за конфликта.</string>
+    <string name="installing_error_invalid_DESC">Неправильная установка.</string>
+    <string name="installing_error_unknown_DESC">Неизвестная ошибка при установке.</string>
+    <string name="file_size_error_DESC">Размер файла больше ожидаемого.</string>
 </resources>
