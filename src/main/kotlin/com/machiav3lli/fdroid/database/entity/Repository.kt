@@ -920,6 +920,15 @@ data class Repository(
             "5D87CE1FAD3772425C2A7ED987A57595A20B07543B9595A7FD2CED25DFF3CF12",
             ""
         )
+        private val IRONFOX = defaultRepository(
+            "https://fdroid.ironfoxoss.org/fdroid/repo",
+            "IronFox",
+            "The official repository for IronFox: A privacy and security-oriented Firefox-based browser for Android.",
+            21,
+            false,
+            "C5E291B5A571F9C8CD9A9799C2C94E02EC9703948893F2CA756D67B94204F904",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, IZZY,
@@ -951,7 +960,7 @@ data class Repository(
             GROBOX, FAIRFAX, ZIMBELSTERN,
             LIBRECHURCH, JUWELERKASSA, INVIZBOX,
             CLOUDBURST, HUIZENGEK,
-            F5A,
+            F5A, IRONFOX,
         )
 
         val addedReposV9 = listOf(
