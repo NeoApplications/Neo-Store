@@ -1,24 +1,43 @@
 package com.machiav3lli.fdroid.pages
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.res.ResourcesCompat
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
@@ -27,6 +46,7 @@ import com.machiav3lli.fdroid.content.SAFFile
 import com.machiav3lli.fdroid.database.entity.Extras
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.LinkRef
+import com.machiav3lli.fdroid.ui.components.LinkChip
 import com.machiav3lli.fdroid.ui.components.prefs.BasePreference
 import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroup
 import com.machiav3lli.fdroid.utility.currentTimestamp
@@ -160,6 +180,96 @@ fun PrefsOtherPage(viewModel: PrefsVM = koinViewModel()) {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+                    .background(
+                        MaterialTheme.colorScheme.surfaceContainerHighest,
+                        MaterialTheme.shapes.extraLarge
+                    )
+                    .clip(MaterialTheme.shapes.extraLarge),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                ListItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ListItemDefaults.colors(
+                        containerColor = Color.Transparent,
+                    ),
+                    leadingContent = {
+                        ResourcesCompat.getDrawable(
+                            LocalContext.current.resources,
+                            R.mipmap.ic_launcher,
+                            LocalContext.current.theme
+                        )?.let { drawable ->
+                            val bitmap = Bitmap.createBitmap(
+                                drawable.intrinsicWidth,
+                                drawable.intrinsicHeight,
+                                Bitmap.Config.ARGB_8888
+                            )
+                            val canvas = Canvas(bitmap)
+                            drawable.setBounds(0, 0, canvas.width, canvas.height)
+                            drawable.draw(canvas)
+                            Image(
+                                bitmap = bitmap.asImageBitmap(),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .requiredSize(84.dp)
+                                    .clip(MaterialTheme.shapes.large)
+                            )
+                        }
+                    },
+                    headlineContent = {
+                        Text(
+                            text = stringResource(id = R.string.application_name),
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                    },
+                    supportingContent = {
+                        Column {
+                            Text(
+                                text = stringResource(
+                                    id = R.string.about_build_FORMAT,
+                                    BuildConfig.VERSION_NAME,
+                                    BuildConfig.VERSION_CODE
+                                ),
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.clickable {
+                                    if (Preferences[Preferences.Key.KidsMode])
+                                        hidingCounter.intValue += 1
+                                    if (hidingCounter.intValue >= 6) {
+                                        Preferences[Preferences.Key.KidsMode] = false
+                                        hidingCounter.intValue = 0
+                                    }
+                                },
+                            )
+                            Text(
+                                text = BuildConfig.APPLICATION_ID,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                )
+
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(8.dp),
+                ) {
+                    items(LinkRef.entries) { link ->
+                        LinkChip(
+                            icon = link.icon,
+                            label = stringResource(id = link.titleId),
+                            url = link.url,
+                        )
+                    }
+                }
+            }
+        }
+        item {
             PreferenceGroup(heading = stringResource(id = R.string.tools)) {
                 BasePreference(
                     titleId = R.string.extras_export,
@@ -218,20 +328,6 @@ fun PrefsOtherPage(viewModel: PrefsVM = koinViewModel()) {
                     }
                 )
             }
-        }
-        item {
-            PreferenceGroup(
-                heading = "${stringResource(id = R.string.application_name)} ${BuildConfig.VERSION_NAME}",
-                links = LinkRef.entries,
-                titleModifier = Modifier.clickable {
-                    if (Preferences[Preferences.Key.KidsMode])
-                        hidingCounter.intValue += 1
-                    if (hidingCounter.intValue >= 6) {
-                        Preferences[Preferences.Key.KidsMode] = false
-                        hidingCounter.intValue = 0
-                    }
-                }
-            )
         }
         item {
             Spacer(modifier = Modifier.height(16.dp))

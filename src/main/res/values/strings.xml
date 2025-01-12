@@ -418,4 +418,5 @@
     <string name="prefs_connection">Internet connection</string>
     <string name="prefs_service">Service</string>
     <string name="about_channel">Channel</string>
+    <string name="about_build_FORMAT">%s (Build %s)</string>
 </resources>
