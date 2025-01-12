@@ -1,12 +1,40 @@
 package com.machiav3lli.fdroid.service.worker
 
-class SyncTask(val repositoryId: Long, val request: SyncRequest)
+class SyncTask(
+    val repoId: Long,
+    val request: SyncRequest,
+    val repoName: String,
+)
 
-sealed class SyncState {
-    data object Connecting : SyncState()
-    data object Failed : SyncState()
-    data object Finishing : SyncState()
-    class Syncing(val progress: SyncWorker.Progress) : SyncState()
+sealed class SyncState(
+    val repoId: Long,
+    val request: SyncRequest,
+    val repoName: String,
+) {
+    class Connecting(
+        repoId: Long,
+        request: SyncRequest,
+        repoName: String,
+    ) : SyncState(repoId, request, repoName)
+
+    class Failed(
+        repoId: Long,
+        request: SyncRequest,
+        repoName: String,
+    ) : SyncState(repoId, request, repoName)
+
+    class Finishing(
+        repoId: Long,
+        request: SyncRequest,
+        repoName: String,
+    ) : SyncState(repoId, request, repoName)
+
+    class Syncing(
+        repoId: Long,
+        request: SyncRequest,
+        repoName: String,
+        val progress: SyncWorker.Progress
+    ) : SyncState(repoId, request, repoName)
 
     val isRunning: Boolean
         get() = this is Connecting || this is Syncing
