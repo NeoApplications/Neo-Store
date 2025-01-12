@@ -4,11 +4,13 @@ package com.machiav3lli.fdroid.utility.extension.android
 
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.Signature
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Build
+import androidx.core.net.toUri
 
 fun Cursor.asSequence(): Sequence<Cursor> {
     return generateSequence { if (moveToNext()) this else null }
@@ -23,6 +25,15 @@ val Context.notificationManager: NotificationManager
 
 val PackageInfo.versionCodeCompat: Long
     get() = if (Android.sdk(Build.VERSION_CODES.P)) longVersionCode else @Suppress("DEPRECATION") versionCode.toLong()
+
+fun Context.launchView(url: String) {
+    startActivity(
+        Intent(
+            Intent.ACTION_VIEW,
+            url.toUri()
+        )
+    )
+}
 
 val PackageInfo.singleSignature: Signature?
     get() {

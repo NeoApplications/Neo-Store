@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.entity
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.machiav3lli.fdroid.HELP_CHANGELOG
+import com.machiav3lli.fdroid.HELP_CHANNEL
 import com.machiav3lli.fdroid.HELP_LICENSE
 import com.machiav3lli.fdroid.HELP_MATRIX
 import com.machiav3lli.fdroid.HELP_SOURCECODE
@@ -10,9 +11,15 @@ import com.machiav3lli.fdroid.HELP_TELEGRAM
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.BracketsSquare
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CalendarPlus
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CalendarX
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyleft
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GithubLogo
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ListBullets
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Megaphone
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TagSimple
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TelegramLogo
 
 enum class InstallerType(@StringRes val titleResId: Int) {
     DEFAULT(R.string.default_installer),
@@ -124,27 +131,38 @@ enum class Page {
 }
 
 enum class LinkRef(
+    val icon: ImageVector,
     @StringRes val titleId: Int,
-    val url: String? = null,
+    val url: String,
 ) {
     Sourcecode(
+        icon = Phosphor.GithubLogo,
         titleId = R.string.source_code,
-        url = HELP_SOURCECODE
+        url = HELP_SOURCECODE,
     ),
     Changelog(
+        icon = Phosphor.ListBullets,
         titleId = R.string.changelog,
-        url = HELP_CHANGELOG
+        url = HELP_CHANGELOG,
+    ),
+    Channel(
+        icon = Phosphor.Megaphone,
+        titleId = R.string.about_channel,
+        url = HELP_CHANNEL,
     ),
     Telegram(
+        icon = Phosphor.TelegramLogo,
         titleId = R.string.group_telegram,
-        url = HELP_TELEGRAM
+        url = HELP_TELEGRAM,
     ),
     Matrix(
+        icon = Phosphor.BracketsSquare,
         titleId = R.string.group_matrix,
-        url = HELP_MATRIX
+        url = HELP_MATRIX,
     ),
     License(
+        icon = Phosphor.Copyleft,
         titleId = R.string.license,
-        url = HELP_LICENSE
+        url = HELP_LICENSE,
     ),
 }

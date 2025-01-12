@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -25,8 +27,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -34,6 +38,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CheckCircle
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Circle
 import com.machiav3lli.fdroid.ui.compose.utils.addIf
+import com.machiav3lli.fdroid.utility.extension.android.launchView
 
 private enum class SelectionState { Unselected, Selected }
 
@@ -273,4 +278,42 @@ fun ChipsSwitch(
             }
         )
     }
+}
+
+@Composable
+fun LinkChip(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    label: String,
+    url: String,
+) {
+    val context = LocalContext.current
+
+    AssistChip(
+        modifier = modifier,
+        border = null,
+        shape = MaterialTheme.shapes.medium,
+        colors = AssistChipDefaults.assistChipColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        ),
+        leadingIcon = {
+            Icon(
+                imageVector = icon,
+                contentDescription = label,
+                tint = MaterialTheme.colorScheme.primary,
+            )
+        },
+        label = {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
+        onClick = {
+            context.launchView(url)
+        }
+    )
 }
