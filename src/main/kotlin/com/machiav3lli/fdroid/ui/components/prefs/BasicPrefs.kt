@@ -1,7 +1,9 @@
 package com.machiav3lli.fdroid.ui.components.prefs
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -49,6 +51,7 @@ fun BasePreference(
     startWidget: (@Composable () -> Unit)? = null,
     endWidget: (@Composable () -> Unit)? = null,
     bottomWidget: (@Composable () -> Unit)? = null,
+    interactionSource: MutableInteractionSource? = null,
     onClick: (() -> Unit)? = null,
 ) {
     val base = index.toFloat() / groupSize
@@ -70,7 +73,12 @@ fun BasePreference(
                 )
             )
             .addIf(onClick != null) {
-                clickable(enabled = isEnabled, onClick = onClick!!)
+                clickable(
+                    enabled = isEnabled,
+                    interactionSource = interactionSource,
+                    indication = LocalIndication.current,
+                    onClick = onClick ?: {}
+                )
             }
             .addIf(!isEnabled) {
                 alpha(0.3f)
@@ -114,6 +122,7 @@ fun SwitchPreference(
     onCheckedChange: ((Boolean) -> Unit) = {},
 ) {
     val context = LocalContext.current
+    val interactionSource = remember { MutableInteractionSource() }
     val (checked, check) = remember(Preferences[prefKey]) { mutableStateOf(Preferences[prefKey]) }
     val dependency = PrefsDependencies[prefKey]
     var isEnabled by remember {
@@ -149,6 +158,7 @@ fun SwitchPreference(
         endWidget = {
             Switch(
                 checked = checked,
+                interactionSource = interactionSource,
                 onCheckedChange = {
                     onCheckedChange(it)
                     Preferences[prefKey] = it
@@ -156,7 +166,8 @@ fun SwitchPreference(
                 },
                 enabled = isEnabled,
             )
-        }
+        },
+        interactionSource = interactionSource,
     )
 }
 
