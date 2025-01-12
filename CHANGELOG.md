@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-1.0.6 (XX.10.2024) +120 Commits +60 Translations
+1.0.6 (XX.01.2025) +130 Commits +60 Translations
 ------------------
 
 ### Function
@@ -9,6 +9,7 @@ CHANGELOG
 - Add: Delete the downloaded file when erasing the download entry
 - Add: Break download and clean when exceeding total file size
 - Add: Option to disable SSL validation
+- Add: Worker for batch syncs
 - Fix: Validation of repo authentication values
 - Fix: Editing of current values of repo
 - Fix: Make Downloaded keys fully unique
@@ -19,6 +20,8 @@ CHANGELOG
 - Fix: Adding Products with duplicate categories
 - Fix: Updating repositories on sync
 - Fix: Lazy load of installed apps?
+- Fix: Fetching icons/screenshots also respect disabling ssl certificate check
+- Fix: New installed app isn't being added to homescreen (credits @Dhina17).
 - Update: Automate V1-parsing using IndexV1
 - Update: Rewrite IndexV0 xml parser
 - Update: AppSheet header logic
@@ -27,13 +30,15 @@ CHANGELOG
 - Update: Replace the multiple VMs for single MainVM
 - Update: Revamp WorkerManager & all Workers
 - Update: Revamp WorkerManager handling of downloads
+- Update: Revamp WorkerManager handling of syncs
 - Update: Migrate to type-safe navigation
 - Update: Indices and naming of Room Entities
 - Update: Improve performance of the main queries
 - Update: Improve flows' memory & performance in MainVM
 - Update: Improve f-droid sharing link (credits @leoheitmannruiz)
+- Update: Avoid request for install permissions when INSTALL_PACKAGES is granted (credits @tharowt)
 - Remove: Unused BootReceiver
-- Add Fcitx5 repos (credits @Integral-Tech)
+- Add Fcitx5, IronFox repos (credits @Integral-Tech, @celenityy)
 - Remove Bromite, INVISV, Funkwhale, Divolt, DivestOS and archive repos
 - CompileSDK 35
 
@@ -42,10 +47,12 @@ CHANGELOG
 - Add: Target- & MinSDK filters
 - Add: Erase-all button to downloads page
 - Add: Indicator of the invalid field in repo editor
+- Add: Info card in other prefs page
 - Fix: Chips visibility independent of background pref
 - Fix: Folding full app description
 - Update: Make UI wide screens friendly & navigation adaptive
 - Update: Revamp repo page
+- Update: Restructure prefs hierarchy
 - Update: Separate BlockBorder top top & bottom
 - Update: Show text always on alternative navigation button
 - Update: Animate permission cards
@@ -55,6 +62,9 @@ CHANGELOG
 - Update: Revamp icons & screenshots state creation
 - Update: Workout sheet layouts to fit the new BlockBorders
 - Update: Improve install & validation state notifications
+- Update: Revamp block borders' design and make default
+- Update: Animate transition between categories' layouts
+- Update: Make preference's surface and switch interactively connected
 
 1.0.5 (19.07.2024) +10 Commits +10 Translations
 ------------------
