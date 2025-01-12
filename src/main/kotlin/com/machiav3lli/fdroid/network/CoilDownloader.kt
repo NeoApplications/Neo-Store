@@ -18,6 +18,7 @@ import com.machiav3lli.fdroid.QUERY_LOCALE
 import com.machiav3lli.fdroid.QUERY_METADATA_ICON
 import com.machiav3lli.fdroid.QUERY_PACKAGE_NAME
 import com.machiav3lli.fdroid.QUERY_SCREENSHOT
+import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.Screenshot
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
@@ -30,8 +31,12 @@ import okhttp3.Request
 import java.io.File
 import java.net.InetSocketAddress
 import java.net.Proxy
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.X509TrustManager
 
 
 object CoilDownloader {
@@ -65,6 +70,30 @@ object CoilDownloader {
         .followRedirects(true)
         .followSslRedirects(true)
         .retryOnConnectionFailure(true)
+        .apply {
+            if (Preferences[Preferences.Key.DisableCertificateValidation]) {
+                val trustAllCerts = object : X509TrustManager {
+                    override fun checkClientTrusted(
+                        chain: Array<out X509Certificate>?,
+                        authType: String?
+                    ) {
+                    }
+
+                    override fun checkServerTrusted(
+                        chain: Array<out X509Certificate>?,
+                        authType: String?
+                    ) {
+                    }
+
+                    override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+                }
+                val sslContext = SSLContext.getInstance("TLS")
+                sslContext.init(null, arrayOf(trustAllCerts), SecureRandom())
+                val sslSocketFactory = sslContext.socketFactory
+                sslSocketFactory(sslSocketFactory, trustAllCerts)
+                hostnameVerifier { _, _ -> true }
+            }
+        }
         .build()
 
     private fun updateClient(hostUrl: String, cache: Cache?): OkHttpClient {
