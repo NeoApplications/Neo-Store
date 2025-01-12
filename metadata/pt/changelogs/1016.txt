@@ -1,0 +1,5 @@
+Adicionado: Índices para entidades de sala
+Adicionado: Nenhuma Fonte e Pedido
+Correção: Uma fuga de memória
+Atualização: Pedido de reformulação
+Remover: tudo da página de exploração
