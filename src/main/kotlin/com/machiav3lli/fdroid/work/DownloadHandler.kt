@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.work.Data
 import androidx.work.WorkInfo
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.MainApplication
@@ -17,6 +18,7 @@ import com.machiav3lli.fdroid.database.entity.Downloaded
 import com.machiav3lli.fdroid.service.ActionReceiver
 import com.machiav3lli.fdroid.service.InstallerReceiver
 import com.machiav3lli.fdroid.service.worker.DownloadState
+import com.machiav3lli.fdroid.service.worker.DownloadWorker
 import com.machiav3lli.fdroid.utility.downloadNotificationBuilder
 import com.machiav3lli.fdroid.utility.extension.text.formatSize
 import com.machiav3lli.fdroid.utility.updateWithError
@@ -24,6 +26,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
+import java.util.concurrent.ConcurrentHashMap
 
 class DownloadStateHandler(
     private val scope: CoroutineScope,
@@ -184,9 +187,35 @@ class DownloadStateHandler(
                 .setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
         }
     }
+
+    companion object {
+        private data class UpdateEvent(
+            val key: String,
+            val state: DownloadState,
+        )
+    }
 }
 
-data class UpdateEvent(
-    val key: String,
-    val state: DownloadState
-)
+/**
+ * @return if this is a new state we haven't processed
+ */
+class DownloadsTracker {
+    private val activeWorks =
+        ConcurrentHashMap<String, Pair<WorkInfo.State, DownloadWorker.Progress>>()
+
+    fun trackWork(workInfo: WorkInfo, data: Data): Boolean {
+        val previousState = activeWorks[workInfo.id.toString()]?.first
+        val previousProgress = activeWorks[workInfo.id.toString()]?.second
+        val currentState = workInfo.state
+        val currentProgress = DownloadWorker.getProgress(data)
+
+        activeWorks[workInfo.id.toString()] = Pair(currentState, currentProgress)
+
+        if (currentState.isFinished) {
+            activeWorks.remove(workInfo.id.toString())
+        }
+
+        return previousState != currentState ||
+                (currentState == WorkInfo.State.RUNNING && previousProgress != currentProgress)
+    }
+}
