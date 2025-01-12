@@ -31,8 +31,8 @@ import com.machiav3lli.fdroid.POPUP_SHORT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.LatestSyncs
+import com.machiav3lli.fdroid.service.worker.BatchSyncWorker
 import com.machiav3lli.fdroid.service.worker.SyncRequest
-import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.ui.components.Tooltip
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.components.TopBarAction
@@ -103,7 +103,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
                                     if (System.currentTimeMillis() - Preferences[Preferences.Key.LastManualSyncTime] >= 10_000L) {
                                         Preferences[Preferences.Key.LastManualSyncTime] =
                                             System.currentTimeMillis()
-                                        scope.launch { SyncWorker.enqueueAll(SyncRequest.MANUAL) }
+                                        scope.launch { BatchSyncWorker.enqueue(SyncRequest.MANUAL) }
                                     } else {
                                         showPopup.intValue = POPUP_SHORT
                                     }

@@ -1,18 +1,14 @@
 package com.machiav3lli.fdroid.service
 
-import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.snapshots.SnapshotStateMap
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.Data
@@ -26,31 +22,23 @@ import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
-import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
-import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.InstallTask
-import com.machiav3lli.fdroid.database.entity.Product
-import com.machiav3lli.fdroid.entity.AntiFeature
-import com.machiav3lli.fdroid.entity.Order
 import com.machiav3lli.fdroid.entity.ProductItem
-import com.machiav3lli.fdroid.entity.Section
 import com.machiav3lli.fdroid.service.worker.DownloadState
-import com.machiav3lli.fdroid.work.DownloadStateHandler
 import com.machiav3lli.fdroid.service.worker.DownloadWorker
 import com.machiav3lli.fdroid.service.worker.InstallWorker
 import com.machiav3lli.fdroid.service.worker.SyncState
 import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.worker.ValidationError
 import com.machiav3lli.fdroid.utility.Utils
-import com.machiav3lli.fdroid.utility.displayUpdatesNotification
-import com.machiav3lli.fdroid.utility.displayVulnerabilitiesNotification
 import com.machiav3lli.fdroid.utility.extension.android.Android
-import com.machiav3lli.fdroid.utility.syncNotificationBuilder
-import com.machiav3lli.fdroid.utility.updateProgress
+import com.machiav3lli.fdroid.work.DownloadStateHandler
+import com.machiav3lli.fdroid.work.DownloadsTracker
+import com.machiav3lli.fdroid.work.SyncStateHandler
+import com.machiav3lli.fdroid.work.SyncsTracker
 import com.machiav3lli.fdroid.work.WorkStateHolder
-import com.machiav3lli.fdroid.work.WorkTracker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -73,10 +61,14 @@ class WorkerManager(appContext: Context) : KoinComponent {
     val workManager: WorkManager by inject()
     private val actionReceiver: ActionReceiver by inject()
     var context: Context = appContext
-    val notificationManager by lazy {
-        NotificationManagerCompat.from(context)
+    val notificationManager: NotificationManagerCompat by inject()
+    private val syncStateHandler by lazy {
+        SyncStateHandler(
+            scope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
+            syncStates = WorkStateHolder(),
+            notificationManager = notificationManager
+        )
     }
-    private val syncStates = WorkStateHolder<SyncState>()
     private val downloadStateHandler by lazy {
         DownloadStateHandler(
             scope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
@@ -87,7 +79,8 @@ class WorkerManager(appContext: Context) : KoinComponent {
     private val installMutex = Mutex()
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private val workTracker = WorkTracker()
+    private val downloadTracker = DownloadsTracker()
+    private val syncTracker = SyncsTracker()
 
     init {
         context.registerReceiver(actionReceiver, IntentFilter())
@@ -292,8 +285,6 @@ class WorkerManager(appContext: Context) : KoinComponent {
     }
 
     companion object {
-        private val syncsRunning = SnapshotStateMap<Long, SyncState?>()
-
         private val syncNotificationBuilder by lazy {
             NotificationCompat
                 .Builder(MainApplication.context, NOTIFICATION_CHANNEL_SYNCING)
@@ -354,148 +345,55 @@ class WorkerManager(appContext: Context) : KoinComponent {
             manager: WorkerManager,
             workInfos: List<WorkInfo>? = null,
         ) {
-            val syncs = workInfos
-                ?: manager.workManager
-                    .getWorkInfosByTag(SyncWorker::class.qualifiedName!!)
-                    .get()
-                ?: return
+            val ioScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-            val context = MainApplication.context
-            updateSyncsRunning(syncs)
+            ioScope.launch {
+                try {
+                    val syncs = workInfos
+                        ?: manager.workManager
+                            .getWorkInfosByTag(SyncWorker::class.qualifiedName!!)
+                            .get()
+                        ?: return@launch
 
-            syncsRunning.forEach { (repoId, state) ->
-                val notificationBuilder = context.syncNotificationBuilder()
-                val repoName = MainApplication.db.getRepositoryDao().getRepoName(repoId)
-
-                when (state) {
-                    is SyncState.Connecting -> {
-                        notificationBuilder
-                            .setContentTitle(
-                                context.getString(
-                                    R.string.syncing_FORMAT,
-                                    repoName
-                                )
-                            )
-                            .setContentText(context.getString(R.string.connecting))
-                            .setProgress(0, 0, true)
-                    }
-
-                    is SyncState.Syncing    -> {
-                        notificationBuilder
-                            .setContentTitle(
-                                context.getString(
-                                    R.string.syncing_FORMAT,
-                                    repoName
-                                )
-                            )
-                            .updateProgress(context, state.progress)
-                    }
-
-                    is SyncState.Failed     -> {
-                        notificationBuilder
-                            .setContentTitle(
-                                context.getString(
-                                    R.string.syncing_FORMAT,
-                                    repoName
-                                )
-                            )
-                            .setContentText(context.getString(R.string.action_failed))
-                            .setSmallIcon(R.drawable.ic_new_releases)
-
-                    }
-
-                    else                    -> {}
+                    manager.updateSyncsRunning(syncs)
+                } catch (e: Exception) {
+                    Log.e("WorkerManager", "Error in onDownloadProgress", e)
                 }
-
-                if (ActivityCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.POST_NOTIFICATIONS
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-                    if (state != null) MainApplication.wm.notificationManager
-                        .notify(
-                            NOTIFICATION_ID_SYNCING + repoId.toInt(),
-                            notificationBuilder.setOngoing(state !is SyncState.Failed)
-                                .build()
-                        ) else MainApplication.wm.notificationManager
-                        .cancel(NOTIFICATION_ID_SYNCING + repoId.toInt())
-                }
-            }
-
-            if (syncsRunning.values.any { it?.isRunning == true })
-                MainApplication.wm.notificationManager.notify(
-                    NOTIFICATION_ID_SYNCING,
-                    syncNotificationBuilder.build()
-                )
-            else CoroutineScope(Dispatchers.IO).launch {
-                MainApplication.wm.notificationManager
-                    .cancel(NOTIFICATION_ID_SYNCING)
-                MainApplication.db.getRepositoryDao().getAllEnabledIds().forEach {
-                    if (syncsRunning[it] == null) MainApplication.wm.notificationManager
-                        .cancel(NOTIFICATION_ID_SYNCING + it.toInt())
-                }
-                MainApplication.db.getProductDao()
-                    .queryObject(
-                        installed = true,
-                        updates = true,
-                        section = Section.All,
-                        order = Order.NAME,
-                        ascending = true,
-                    )
-                    .map { it.toItem() }
-                    .let { result ->
-                        if (result.isNotEmpty() && Preferences[Preferences.Key.UpdateNotify])
-                            context.displayUpdatesNotification(result, true)
-                        if (Preferences[Preferences.Key.InstallAfterSync]) {
-                            MainApplication.wm.update(*result.toTypedArray())
-                        }
-                    }
-                MainApplication.db.getProductDao()
-                    .queryObject(
-                        installed = true,
-                        updates = false,
-                        section = Section.All,
-                        order = Order.NAME,
-                        ascending = true,
-                    ).filter { product ->
-                        product.antiFeatures.contains(AntiFeature.KNOWN_VULN.key)
-                                && MainApplication.db.getExtrasDao()[product.packageName]?.ignoreVulns != true
-                    }.let { installedWithVulns ->
-                        if (installedWithVulns.isNotEmpty())
-                            context.displayVulnerabilitiesNotification(
-                                installedWithVulns.map(Product::toItem)
-                            )
-                    }
             }
         }
 
-        private fun updateSyncsRunning(workers: List<WorkInfo>) {
-            val tasks = workers.mapNotNull { wi ->
-                (wi.outputData.takeIf { it != Data.EMPTY } ?: wi.progress)
-                    .takeIf { it != Data.EMPTY }?.let { data ->
-                        val task = SyncWorker.getTask(data)
-                        val dataState = SyncWorker.getState(data)
+        private fun WorkerManager.updateSyncsRunning(workers: List<WorkInfo>) {
+            workers.forEach { workInfo ->
+                val data = workInfo.outputData.takeIf { it != Data.EMPTY }
+                    ?: workInfo.progress.takeIf { it != Data.EMPTY }
+                    ?: return@forEach
 
-                        syncsRunning.compute(task.repositoryId) { _, _ ->
-                            when (wi.state) {
-                                WorkInfo.State.ENQUEUED,
-                                WorkInfo.State.BLOCKED,
-                                WorkInfo.State.SUCCEEDED,
-                                WorkInfo.State.CANCELLED,
-                                    -> null
+                if (!syncTracker.trackWork(workInfo, data)) {
+                    return@forEach // Skip if we've already processed this state
+                }
 
-                                WorkInfo.State.RUNNING,
-                                    -> dataState
+                try {
+                    val task = SyncWorker.getTask(data)
+                    val dataState = SyncWorker.getState(data)
 
-                                WorkInfo.State.FAILED,
-                                    -> SyncState.Failed
-                            }
-                        }
-                        task
+                    when (workInfo.state) {
+                        WorkInfo.State.ENQUEUED,
+                        WorkInfo.State.BLOCKED,
+                        WorkInfo.State.SUCCEEDED,
+                        WorkInfo.State.CANCELLED,
+                            -> null
+
+                        WorkInfo.State.RUNNING,
+                            -> dataState
+
+                        WorkInfo.State.FAILED,
+                            -> SyncState.Failed(task.repoId, task.request, task.repoName)
+                    }.let { newState ->
+                        syncStateHandler.updateState(task.repoId.toString(), newState)
                     }
-            }
-            syncsRunning.keys.retainAll { repoId ->
-                tasks.any { task -> task.repositoryId == repoId }
+                } catch (e: Exception) {
+                    Log.e("WorkerManager", "Error updating download state", e)
+                }
             }
         }
 
@@ -545,7 +443,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
                     ?: workInfo.progress.takeIf { it != Data.EMPTY }
                     ?: return@forEach
 
-                if (!workTracker.trackWork(workInfo, data)) {
+                if (!downloadTracker.trackWork(workInfo, data)) {
                     return@forEach // Skip if we've already processed this state
                 }
 

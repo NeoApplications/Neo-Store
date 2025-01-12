@@ -31,8 +31,8 @@ import com.machiav3lli.fdroid.network.downloadClientModule
 import com.machiav3lli.fdroid.network.exodusModule
 import com.machiav3lli.fdroid.service.PackageChangedReceiver
 import com.machiav3lli.fdroid.service.WorkerManager
+import com.machiav3lli.fdroid.service.worker.BatchSyncWorker
 import com.machiav3lli.fdroid.service.worker.SyncRequest
-import com.machiav3lli.fdroid.service.worker.SyncWorker
 import com.machiav3lli.fdroid.service.workmanagerModule
 import com.machiav3lli.fdroid.utility.Utils.setLanguage
 import com.machiav3lli.fdroid.utility.Utils.toInstalledItem
@@ -212,11 +212,11 @@ class MainApplication : Application(), SingletonImageLoader.Factory, KoinStartup
 
     private suspend fun updatePeriodicSyncJob(force: Boolean) = withContext(Dispatchers.IO) {
         val wm = MainApplication.wm.workManager
-        val reschedule = force || wm.getWorkInfosByTag(TAG_SYNC_PERIODIC).get().isEmpty()
+        val reschedule = force || wm.getWorkInfosForUniqueWork(TAG_BATCH_SYNC_PERIODIC).get().isEmpty()
         if (reschedule) {
             when (val autoSync = Preferences[Preferences.Key.AutoSync]) {
                 is Preferences.AutoSync.Never  -> {
-                    wm.cancelAllWorkByTag(TAG_SYNC_PERIODIC)
+                    wm.cancelUniqueWork(TAG_BATCH_SYNC_PERIODIC)
                     Log.i(this::javaClass.name, "Canceled next auto-sync run.")
                 }
 
@@ -246,11 +246,11 @@ class MainApplication : Application(), SingletonImageLoader.Factory, KoinStartup
         }
     }
 
-    private suspend fun autoSync(
+    private fun autoSync(
         connectionType: NetworkType,
         chargingBattery: Boolean = false,
     ) {
-        SyncWorker.enqueuePeriodic(
+        BatchSyncWorker.enqueuePeriodic(
             connectionType = connectionType,
             chargingBattery = chargingBattery,
         )
@@ -290,13 +290,13 @@ class MainApplication : Application(), SingletonImageLoader.Factory, KoinStartup
         }
     }
 
-    private suspend fun forceSyncAll() {
+    private fun forceSyncAll() {
         db.getRepositoryDao().getAll().forEach {
             if (it.lastModified.isNotEmpty() || it.entityTag.isNotEmpty()) {
                 db.getRepositoryDao().put(it.copy(lastModified = "", entityTag = ""))
             }
         }
-        SyncWorker.enqueueAll(SyncRequest.FORCE)
+        BatchSyncWorker.enqueue(SyncRequest.FORCE)
     }
 
     override fun newImageLoader(context: Context): ImageLoader {
