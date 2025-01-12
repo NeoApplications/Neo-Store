@@ -82,6 +82,7 @@ const val ARG_VALIDATION_ERROR = "VALIDATION_ERROR"
 const val ARG_EXCEPTION = "EXCEPTION"
 const val ARG_STATE = "STATE"
 const val ARG_STAGE = "STAGE"
+const val ARG_SUCCESS = "SUCCESS"
 const val ARG_CHANGED = "CHANGED"
 const val ARG_PROGRESS = "PROGRESS"
 const val ARG_READ = "READ"
@@ -98,6 +99,8 @@ const val RELEASE_STATE_INSTALLED = 2
 
 const val TAG_SYNC_ONETIME = "sync_onetime"
 const val TAG_SYNC_PERIODIC = "sync_periodic"
+const val TAG_BATCH_SYNC_ONETIME = "batch_sync_onetime"
+const val TAG_BATCH_SYNC_PERIODIC = "batch_sync_periodic"
 
 const val EXODUS_TRACKERS_SYNC = -22L
 
