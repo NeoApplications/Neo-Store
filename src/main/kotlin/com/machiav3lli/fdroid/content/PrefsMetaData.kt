@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.content
 
+import android.os.Build
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.utility.extension.android.Android
 
@@ -131,11 +132,11 @@ val PrefsEntries = mapOf(
         Preferences.Theme.DarkHighContrast to R.string.dark_high_contrast,
         Preferences.Theme.BlackHighContrast to R.string.black_high_contrast,
     ).apply {
-        if (Android.sdk(29)) {
+        if (Android.sdk(Build.VERSION_CODES.Q)) {
             put(Preferences.Theme.System, R.string.system)
             put(Preferences.Theme.SystemBlack, R.string.system_black)
         }
-        if (Android.sdk(31)) {
+        if (Android.sdk(Build.VERSION_CODES.S)) {
             put(Preferences.Theme.Dynamic, R.string.dynamic)
             put(Preferences.Theme.DynamicLight, R.string.dynamic_light)
             put(Preferences.Theme.DynamicDark, R.string.dynamic_dark)

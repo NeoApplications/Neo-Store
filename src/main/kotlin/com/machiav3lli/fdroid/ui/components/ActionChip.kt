@@ -44,7 +44,7 @@ fun ActionChip(
                 )
             }
         },
-        shape = MaterialTheme.shapes.large,
+        shape = MaterialTheme.shapes.extraLarge,
         colors = AssistChipDefaults.assistChipColors(
             containerColor = if (positive) MaterialTheme.colorScheme.primaryContainer
             else MaterialTheme.colorScheme.tertiaryContainer,

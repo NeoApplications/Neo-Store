@@ -36,7 +36,7 @@ fun ExpandableCard(
     mainContent: @Composable () -> Unit,
 ) {
     val background by animateColorAsState(
-        targetValue = if (isExpanded.value) MaterialTheme.colorScheme.surfaceContainerHighest
+        targetValue = if (isExpanded.value) MaterialTheme.colorScheme.surfaceContainerHigh
         else Color.Transparent,
         label = "backgroundColor",
     )

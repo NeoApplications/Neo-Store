@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.installer
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.util.AndroidRuntimeException
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Cache
@@ -70,7 +71,7 @@ class LegacyInstaller(context: Context) : BaseInstaller(context) {
         intent.data = uri
 
         @Suppress("DEPRECATION")
-        if (Android.sdk(28)) {
+        if (Android.sdk(Build.VERSION_CODES.P)) {
             intent.action = Intent.ACTION_DELETE
         } else {
             intent.action = Intent.ACTION_UNINSTALL_PACKAGE

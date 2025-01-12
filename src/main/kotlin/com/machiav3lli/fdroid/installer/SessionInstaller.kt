@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageInstaller.SessionParams
 import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Log
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.content.Cache
@@ -27,16 +28,16 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
 
     companion object {
         val flags =
-            if (Android.sdk(31)) PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            if (Android.sdk(Build.VERSION_CODES.S)) PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             else PendingIntent.FLAG_UPDATE_CURRENT
         val sessionParams = SessionParams(SessionParams.MODE_FULL_INSTALL).apply {
-            if (Android.sdk(26)) {
+            if (Android.sdk(Build.VERSION_CODES.O)) {
                 setInstallReason(PackageManager.INSTALL_REASON_USER)
             }
-            if (Android.sdk(31)) {
+            if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) {
                 setRequireUserAction(SessionParams.USER_ACTION_NOT_REQUIRED)
             }
-            if (Android.sdk(33)) {
+            if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) {
                 setPackageSource(PackageInstaller.PACKAGE_SOURCE_STORE)
             }
         }
@@ -55,7 +56,7 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
     }
 
     override suspend fun isInstalling(packageName: String): Boolean =
-        sessionInstaller.mySessions.any { (!Android.sdk(29) || it.isStaged) && it.appPackageName == packageName }
+        sessionInstaller.mySessions.any { (!Android.sdk(Build.VERSION_CODES.Q) || it.isStaged) && it.appPackageName == packageName }
 
     override suspend fun uninstall(packageName: String) = mDefaultUninstaller(packageName)
 

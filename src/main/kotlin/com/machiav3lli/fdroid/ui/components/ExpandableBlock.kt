@@ -40,7 +40,7 @@ fun ExpandableBlock(
 ) {
     var expanded by rememberSaveable { mutableStateOf(preExpanded) }
     val surfaceColor by animateColorAsState(
-        targetValue = if (expanded && heading != null) MaterialTheme.colorScheme.surfaceContainerHigh
+        targetValue = if (expanded && heading != null) MaterialTheme.colorScheme.surfaceContainer
         else MaterialTheme.colorScheme.surfaceContainerLowest,
         label = "surfaceColor"
     )
@@ -72,7 +72,7 @@ fun ExpandableItemsBlock(
 ) {
     var expanded by rememberSaveable { mutableStateOf(preExpanded) }
     val surfaceColor by animateColorAsState(
-        targetValue = if (expanded) MaterialTheme.colorScheme.surfaceContainerHighest
+        targetValue = if (expanded) MaterialTheme.colorScheme.surfaceContainerHigh
         else Color.Transparent,
         label = "surfaceColor"
     )

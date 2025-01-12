@@ -9,6 +9,7 @@ import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
@@ -183,7 +184,7 @@ fun Context.showNotificationError(repository: Repository, exception: Exception) 
 }
 
 fun Context.syncNotificationBuilder() = NotificationCompat
-    .Builder(MainApplication.context, NOTIFICATION_CHANNEL_SYNCING)
+    .Builder(this, NOTIFICATION_CHANNEL_SYNCING)
     .setSmallIcon(R.drawable.ic_sync)
     .setGroup(NOTIFICATION_CHANNEL_SYNCING)
     .setOngoing(true)
@@ -225,7 +226,7 @@ fun Context.installNotificationBuilder() = NotificationCompat
 fun NotificationCompat.Builder.updateProgress(
     context: Context,
     progress: SyncWorker.Progress,
-) {
+): NotificationCompat.Builder = apply {
     when (progress.stage) {
         RepositoryUpdater.Stage.DOWNLOAD -> {
             if (progress.total >= 0) {
@@ -307,7 +308,7 @@ fun NotificationCompat.Builder.updateWithError(
  */
 fun notifyStatus(context: Context, intent: Intent?) {
 
-    if (Android.sdk(26)) {
+    if (Android.sdk(Build.VERSION_CODES.O)) {
         NotificationChannel(
             NOTIFICATION_CHANNEL_INSTALLER,
             context.getString(R.string.install), NotificationManager.IMPORTANCE_LOW

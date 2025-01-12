@@ -84,7 +84,7 @@ fun BasePreference(
                 alpha(0.3f)
             },
         colors = ListItemDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
         ),
         leadingContent = startWidget,
         headlineContent = {

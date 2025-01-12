@@ -290,7 +290,10 @@ data object Preferences : OnSharedPreferenceChangeListener {
             Key<Boolean>("keep_install_notification", Value.BooleanValue(false))
 
         data object InstallAfterSync :
-            Key<Boolean>("auto_sync_install", Value.BooleanValue(Android.sdk(31)))
+            Key<Boolean>(
+                "auto_sync_install",
+                Value.BooleanValue(Android.sdk(Build.VERSION_CODES.S))
+            )
 
         data object IncompatibleVersions :
             Key<Boolean>("incompatible_versions", Value.BooleanValue(false))
@@ -508,9 +511,9 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object Theme : Key<Preferences.Theme>(
             "theme", Value.EnumerationValue(
                 when {
-                    Android.sdk(31) -> Preferences.Theme.Dynamic
-                    Android.sdk(29) -> Preferences.Theme.SystemBlack
-                    else            -> Preferences.Theme.Light
+                    Android.sdk(Build.VERSION_CODES.S) -> Preferences.Theme.Dynamic
+                    Android.sdk(Build.VERSION_CODES.Q) -> Preferences.Theme.SystemBlack
+                    else                               -> Preferences.Theme.Light
                 }
             )
         )
@@ -607,7 +610,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
                 DarkHighContrast,
                 BlackHighContrast,
             ).apply {
-                if (Android.sdk(31)) addAll(
+                if (Android.sdk(Build.VERSION_CODES.S)) addAll(
                     listOf(
                         Dynamic,
                         DynamicLight,
@@ -615,7 +618,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
                         DynamicBlack
                     )
                 )
-                if (Android.sdk(29)) addAll(listOf(System, SystemBlack))
+                if (Android.sdk(Build.VERSION_CODES.Q)) addAll(listOf(System, SystemBlack))
             }
 
         abstract val resId: Int

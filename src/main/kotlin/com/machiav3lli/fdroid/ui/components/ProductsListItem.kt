@@ -192,7 +192,7 @@ fun ProductCarouselItem(
             .clickable { onUserClick(product) }
             .fillMaxSize(),
         colors = ListItemDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
         ),
         leadingContent = {
             Column(

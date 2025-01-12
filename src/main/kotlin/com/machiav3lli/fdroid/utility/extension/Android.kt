@@ -22,11 +22,11 @@ val Context.notificationManager: NotificationManager
     get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
 val PackageInfo.versionCodeCompat: Long
-    get() = if (Android.sdk(28)) longVersionCode else @Suppress("DEPRECATION") versionCode.toLong()
+    get() = if (Android.sdk(Build.VERSION_CODES.P)) longVersionCode else @Suppress("DEPRECATION") versionCode.toLong()
 
 val PackageInfo.singleSignature: Signature?
     get() {
-        return if (Android.sdk(28)) {
+        return if (Android.sdk(Build.VERSION_CODES.P)) {
             val signingInfo = signingInfo
             if (signingInfo?.hasMultipleSigners() == false) signingInfo.apkContentsSigners
                 ?.let { if (it.size == 1) it[0] else null } else null
@@ -56,7 +56,7 @@ object Android {
     object PackageManager {
         // GET_SIGNATURES should always present for getPackageArchiveInfo
         val signaturesFlag: Int
-            get() = (if (sdk(28)) android.content.pm.PackageManager.GET_SIGNING_CERTIFICATES else 0) or
+            get() = (if (sdk(Build.VERSION_CODES.P)) android.content.pm.PackageManager.GET_SIGNING_CERTIFICATES else 0) or
                     @Suppress("DEPRECATION") android.content.pm.PackageManager.GET_SIGNATURES
     }
 }

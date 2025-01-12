@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.PackageItemInfo
 import android.content.pm.PermissionInfo
 import android.content.res.Resources
+import android.os.Build
 import com.machiav3lli.fdroid.CALENDAR_PERMISSIONS
 import com.machiav3lli.fdroid.CAMERA_PERMISSIONS
 import com.machiav3lli.fdroid.CONTACTS_PERMISSIONS
@@ -17,7 +18,7 @@ import com.machiav3lli.fdroid.STORAGE_PERMISSIONS
 import com.machiav3lli.fdroid.entity.PermissionGroup
 import com.machiav3lli.fdroid.entity.PermissionGroup.Companion.getPermissionGroup
 import com.machiav3lli.fdroid.utility.extension.android.Android
-import java.util.*
+import java.util.Locale
 
 object PackageItemResolver {
     class LocalCache {
@@ -92,7 +93,7 @@ object PackageItemResolver {
     }
 
     fun getPermissionGroup(permissionInfo: PermissionInfo): PermissionGroup {
-        return if (Android.sdk(29)) {
+        return if (Android.sdk(Build.VERSION_CODES.Q)) {
             when (permissionInfo.name) {
                 in CONTACTS_PERMISSIONS       -> PermissionGroup.Contacts
                 in CALENDAR_PERMISSIONS       -> PermissionGroup.Calendar

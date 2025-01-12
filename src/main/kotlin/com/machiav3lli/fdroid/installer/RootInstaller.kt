@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.installer
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.content.Cache
@@ -22,7 +23,8 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
 
     companion object {
         private val getCurrentUserState: String =
-            if (Android.sdk(25)) Shell.cmd("am get-current-user").exec().out[0]
+            if (Android.sdk(Build.VERSION_CODES.N_MR1)) Shell.cmd("am get-current-user")
+                .exec().out[0]
             else Shell.cmd("dumpsys activity | grep -E \"mUserLru\"")
                 .exec().out[0].trim()
                 .removePrefix("mUserLru: [").removeSuffix("]")
@@ -50,7 +52,7 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
             if (Preferences[Preferences.Key.RootAllowInstallingOldApps]) "--bypass-low-target-sdk-block" else null,
             "-i", BuildConfig.APPLICATION_ID,
             "--user", getCurrentUserState,
-            if (Android.sdk(26)) "--install-reason ${PackageManager.INSTALL_REASON_USER}" else null,
+            if (Android.sdk(Build.VERSION_CODES.O)) "--install-reason ${PackageManager.INSTALL_REASON_USER}" else null,
             "-t",
             "-r",
             "-S", length(),
@@ -62,7 +64,7 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
             if (Preferences[Preferences.Key.RootAllowInstallingOldApps]) "--bypass-low-target-sdk-block" else null,
             "-i", BuildConfig.APPLICATION_ID,
             "--user", getCurrentUserState,
-            if (Android.sdk(26)) "--install-reason ${PackageManager.INSTALL_REASON_USER}" else null,
+            if (Android.sdk(Build.VERSION_CODES.O)) "--install-reason ${PackageManager.INSTALL_REASON_USER}" else null,
             "-t",
             "-r",
             "-S", length(),
