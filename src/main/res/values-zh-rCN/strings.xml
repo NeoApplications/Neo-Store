@@ -400,4 +400,17 @@
     <string name="confirm_uninstall_DESC_FORMAT">您确定要卸载 %s 吗？</string>
     <string name="all">全部</string>
     <string name="erase_all">全部删除</string>
+    <string name="file_size_error_DESC">文件大小超出预期大小。</string>
+    <string name="disable_certificate_check">禁用SSL证书检查（需要重启应用）</string>
+    <string name="disable_certificate_check_summary">在自签名或证书无效的情况下可能会有用（某些弃用的存储库需要）。</string>
+    <string name="downloading_error_FORMAT">下载 %s 时发生错误</string>
+    <string name="validation_error_FORMAT">验证错误：%s</string>
+    <string name="installing_error_FORMAT">安装 %s 时发生错误</string>
+    <string name="installing_error_incompatible_DESC">安装存在不相容。</string>
+    <string name="installing_error_blocked_DESC">安装被停止。</string>
+    <string name="installing_error_timeout_DESC">安装超时。</string>
+    <string name="installing_error_invalid_DESC">无效的安装。</string>
+    <string name="installing_error_unknown_DESC">安装时出现未知错误。</string>
+    <string name="installing_error_storage_DESC">由于存储问题安装错误。</string>
+    <string name="installing_error_conflict_DESC">由于冲突导致了错误。</string>
 </resources>
