@@ -52,7 +52,7 @@ fun Modifier.horizontal() =
         }
     }
 
-fun Modifier.blockBorderTop(altStyle: Boolean = Preferences[Preferences.Key.AltBlockLayout]) =
+fun Modifier.blockBorderTop(altStyle: Boolean = !Preferences[Preferences.Key.AltBlockLayout]) =
     composed {
         this
             .padding(2.dp)
@@ -60,8 +60,8 @@ fun Modifier.blockBorderTop(altStyle: Boolean = Preferences[Preferences.Key.AltB
             .addIfElse(altStyle,
                 factory = {
                     border(
-                        width = 1.dp,
-                        color = MaterialTheme.colorScheme.outline,
+                        width = 0.5.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant,
                         shape = BlockTopShape,
                     )
                 },
@@ -71,7 +71,7 @@ fun Modifier.blockBorderTop(altStyle: Boolean = Preferences[Preferences.Key.AltB
             )
     }
 
-fun Modifier.blockBorderBottom(altStyle: Boolean = Preferences[Preferences.Key.AltBlockLayout]) =
+fun Modifier.blockBorderBottom(altStyle: Boolean = !Preferences[Preferences.Key.AltBlockLayout]) =
     composed {
         this
             .padding(2.dp)
@@ -79,8 +79,8 @@ fun Modifier.blockBorderBottom(altStyle: Boolean = Preferences[Preferences.Key.A
             .addIfElse(altStyle,
                 factory = {
                     border(
-                        width = 1.dp,
-                        color = MaterialTheme.colorScheme.outline,
+                        width = 0.5.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant,
                         shape = BlockBottomShape,
                     )
                 },
@@ -90,14 +90,14 @@ fun Modifier.blockBorderBottom(altStyle: Boolean = Preferences[Preferences.Key.A
             )
     }
 
-fun Modifier.blockShadow(altStyle: Boolean = Preferences[Preferences.Key.AltBlockLayout]) =
+fun Modifier.blockShadow(altStyle: Boolean = !Preferences[Preferences.Key.AltBlockLayout]) =
     composed {
         this
             .addIfElse(altStyle,
                 factory = {
                     border(
-                        width = 1.dp,
-                        color = MaterialTheme.colorScheme.outline,
+                        width = 0.5.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant,
                         shape = MaterialTheme.shapes.extraLarge,
                     )
                 },
