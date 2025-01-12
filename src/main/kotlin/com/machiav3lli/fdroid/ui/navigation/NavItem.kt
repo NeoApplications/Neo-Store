@@ -19,7 +19,6 @@ package com.machiav3lli.fdroid.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.machiav3lli.fdroid.MainApplication
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.pages.ExplorePage
@@ -28,16 +27,16 @@ import com.machiav3lli.fdroid.pages.LatestPage
 import com.machiav3lli.fdroid.pages.PrefsOtherPage
 import com.machiav3lli.fdroid.pages.PrefsPersonalPage
 import com.machiav3lli.fdroid.pages.PrefsReposPage
-import com.machiav3lli.fdroid.pages.PrefsUpdatesPage
+import com.machiav3lli.fdroid.pages.PrefsServicePage
 import com.machiav3lli.fdroid.pages.SearchPage
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Compass
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.DotsThreeOutline
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Graph
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.House
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MagnifyingGlass
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SlidersHorizontal
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserGear
 import kotlinx.serialization.Serializable
 
@@ -73,8 +72,8 @@ sealed class NavItem(
         })
 
     data object UpdatesPrefs :
-        NavItem(R.string.updates, Phosphor.Download, "prefs_updates", {
-            PrefsUpdatesPage()
+        NavItem(R.string.prefs_service, Phosphor.SlidersHorizontal, "prefs_updates", {
+            PrefsServicePage()
         })
 
     data object ReposPrefs :

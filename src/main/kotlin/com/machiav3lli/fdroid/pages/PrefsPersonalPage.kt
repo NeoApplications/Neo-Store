@@ -41,22 +41,25 @@ fun PrefsPersonalPage() {
         openDialog.value = true
     }
     val personalPrefs = listOf(
-        // TODO break down into two groups
         Preferences.Key.Language,
         Preferences.Key.Theme,
         Preferences.Key.DefaultTab,
-        Preferences.Key.ShowScreenshots,
-        Preferences.Key.ShowTrackers,
         Preferences.Key.KidsMode,
-        Preferences.Key.AltNavBarItem,
-        Preferences.Key.AltNewApps,
-        Preferences.Key.HideNewApps,
-        Preferences.Key.AltBlockLayout,
-        Preferences.Key.BottomSearchBar,
-        Preferences.Key.AndroidInsteadOfSDK,
+        Preferences.Key.DownloadShowDialog,
+        Preferences.Key.ActionLockDialog,
         Preferences.Key.SearchApps,
         Preferences.Key.UpdatedApps,
         Preferences.Key.NewApps,
+    )
+    val layoutPrefs = listOf(
+        Preferences.Key.AltBlockLayout,
+        Preferences.Key.AltNavBarItem,
+        Preferences.Key.AltNewApps,
+        Preferences.Key.HideNewApps,
+        Preferences.Key.BottomSearchBar,
+        Preferences.Key.ShowScreenshots,
+        Preferences.Key.ShowTrackers,
+        Preferences.Key.AndroidInsteadOfSDK,
     )
     val cachePrefs = listOf(
         Preferences.Key.EnableDownloadDirectory,
@@ -95,6 +98,13 @@ fun PrefsPersonalPage() {
             PreferenceGroup(
                 heading = stringResource(id = R.string.prefs_personalization),
                 keys = personalPrefs,
+                onPrefDialog = onPrefDialog
+            )
+        }
+        item {
+            PreferenceGroup(
+                heading = stringResource(id = R.string.prefs_layout),
+                keys = layoutPrefs,
                 onPrefDialog = onPrefDialog
             )
         }

@@ -26,7 +26,7 @@ import com.machiav3lli.fdroid.ui.dialog.StringInputPrefDialogUI
 import com.machiav3lli.fdroid.utility.extension.android.Android
 
 @Composable
-fun PrefsUpdatesPage() {
+fun PrefsServicePage() {
     val context = LocalContext.current
     val openDialog = remember { mutableStateOf(false) }
     var dialogPref by remember { mutableStateOf<Preferences.Key<*>?>(null) }
@@ -37,25 +37,30 @@ fun PrefsUpdatesPage() {
     val syncPrefs = listOf(
         Preferences.Key.AutoSync,
         Preferences.Key.AutoSyncInterval,
+        Preferences.Key.InstallAfterSync,
     )
     val updatesPrefs = listOf(
         Preferences.Key.DownloadManager,
-        Preferences.Key.InstallAfterSync,
-        Preferences.Key.DownloadShowDialog,
-        Preferences.Key.ActionLockDialog,
         Preferences.Key.UpdateNotify,
-        Preferences.Key.KeepInstallNotification,
         Preferences.Key.UpdateUnstable,
         Preferences.Key.IncompatibleVersions,
         Preferences.Key.DisableDownloadVersionCheck,
         Preferences.Key.DisableSignatureCheck,
     )
     val installPrefs = listOfNotNull(
+        Preferences.Key.KeepInstallNotification,
         Preferences.Key.Installer,
         Preferences.Key.RootSessionInstaller,
         Preferences.Key.RootAllowDowngrades,
         if (Android.sdk(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)) Preferences.Key.RootAllowInstallingOldApps
         else null,
+    )
+    val connectionPrefs = listOf(
+        Preferences.Key.DisableCertificateValidation,
+        Preferences.Key.ProxyType,
+        Preferences.Key.ProxyUrl,
+        Preferences.Key.ProxyHost,
+        Preferences.Key.ProxyPort,
     )
 
     LazyColumn(
@@ -82,6 +87,13 @@ fun PrefsUpdatesPage() {
             PreferenceGroup(
                 heading = stringResource(id = R.string.install_types),
                 keys = installPrefs,
+                onPrefDialog = onPrefDialog
+            )
+        }
+        item {
+            PreferenceGroup(
+                heading = stringResource(id = R.string.prefs_connection),
+                keys = connectionPrefs,
                 onPrefDialog = onPrefDialog
             )
         }

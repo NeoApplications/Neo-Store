@@ -414,4 +414,7 @@
     <string name="installing_error_conflict_DESC">Error caused by a conflict.</string>
     <string name="installing_error_invalid_DESC">Invalid install.</string>
     <string name="installing_error_unknown_DESC">Unknown error while installing.</string>
+    <string name="prefs_layout">Layout</string>
+    <string name="prefs_connection">Internet connection</string>
+    <string name="prefs_service">Service</string>
 </resources>

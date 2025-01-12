@@ -12,13 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -33,10 +29,6 @@ import com.machiav3lli.fdroid.database.entity.Repository
 import com.machiav3lli.fdroid.entity.LinkRef
 import com.machiav3lli.fdroid.ui.components.prefs.BasePreference
 import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroup
-import com.machiav3lli.fdroid.ui.dialog.BaseDialog
-import com.machiav3lli.fdroid.ui.dialog.EnumSelectionPrefDialogUI
-import com.machiav3lli.fdroid.ui.dialog.IntInputPrefDialogUI
-import com.machiav3lli.fdroid.ui.dialog.StringInputPrefDialogUI
 import com.machiav3lli.fdroid.utility.currentTimestamp
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.Dispatchers
@@ -47,20 +39,7 @@ import org.koin.androidx.compose.koinViewModel
 fun PrefsOtherPage(viewModel: PrefsVM = koinViewModel()) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val openDialog = remember { mutableStateOf(false) }
-    var dialogPref by remember { mutableStateOf<Preferences.Key<*>?>(null) }
-    val onPrefDialog = { pref: Preferences.Key<*> ->
-        dialogPref = pref
-        openDialog.value = true
-    }
     val hidingCounter = rememberSaveable { mutableIntStateOf(0) }
-    val proxyPrefs = listOf(
-        Preferences.Key.DisableCertificateValidation,
-        Preferences.Key.ProxyType,
-        Preferences.Key.ProxyUrl,
-        Preferences.Key.ProxyHost,
-        Preferences.Key.ProxyPort,
-    )
     val installed = viewModel.installed.collectAsState(initial = emptyMap())
 
     val startExportResult =
@@ -181,13 +160,6 @@ fun PrefsOtherPage(viewModel: PrefsVM = koinViewModel()) {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
-            PreferenceGroup(
-                heading = stringResource(id = R.string.proxy),
-                keys = proxyPrefs,
-                onPrefDialog = onPrefDialog
-            )
-        }
-        item {
             PreferenceGroup(heading = stringResource(id = R.string.tools)) {
                 BasePreference(
                     titleId = R.string.extras_export,
@@ -263,29 +235,6 @@ fun PrefsOtherPage(viewModel: PrefsVM = koinViewModel()) {
         }
         item {
             Spacer(modifier = Modifier.height(16.dp))
-        }
-    }
-
-    if (openDialog.value) {
-        BaseDialog(openDialogCustom = openDialog) {
-            when (dialogPref?.default?.value) {
-                is String -> StringInputPrefDialogUI(
-                    prefKey = dialogPref as Preferences.Key<String>,
-                    openDialogCustom = openDialog
-                )
-
-                is Int -> IntInputPrefDialogUI(
-                    prefKey = dialogPref as Preferences.Key<Int>,
-                    openDialogCustom = openDialog
-                )
-
-                is Preferences.Enumeration<*> -> EnumSelectionPrefDialogUI(
-                    prefKey = dialogPref as Preferences.Key<Preferences.Enumeration<*>>,
-                    openDialogCustom = openDialog
-                )
-
-                else -> {}
-            }
         }
     }
 }
