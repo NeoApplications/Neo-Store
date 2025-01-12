@@ -53,6 +53,7 @@ import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV21
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV22
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV23
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV29
+import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV30
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.addedReposV9
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.archiveRepos
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.defaultRepositories
@@ -82,7 +83,7 @@ import org.koin.dsl.module
         Downloaded::class,
         InstallTask::class,
     ],
-    version = 29,
+    version = 30,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -185,6 +186,11 @@ import org.koin.dsl.module
             from = 28,
             to = 29,
             spec = DatabaseX.Companion.AutoMigration28to29::class
+        ),
+        AutoMigration(
+            from = 29,
+            to = 30,
+            spec = DatabaseX.Companion.AutoMigration29to30::class
         ),
     ]
 )
@@ -350,6 +356,13 @@ abstract class DatabaseX : RoomDatabase() {
             }
         }
 
+        class AutoMigration29to30 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(29)
+            }
+        }
+
         fun onPostMigrate(from: Int) {
             val preRepos = mutableListOf<Repository>()
             if (from == 8) preRepos.addAll(addedReposV9)
@@ -366,6 +379,7 @@ abstract class DatabaseX : RoomDatabase() {
             if (from == 21) preRepos.addAll(addedReposV22)
             if (from == 22) preRepos.addAll(addedReposV23)
             if (from == 28) preRepos.addAll(addedReposV29)
+            if (from == 28) preRepos.addAll(addedReposV30)
             GlobalScope.launch(Dispatchers.IO) {
                 preRepos.forEach {
                     INSTANCE?.getRepositoryDao()?.put(it)

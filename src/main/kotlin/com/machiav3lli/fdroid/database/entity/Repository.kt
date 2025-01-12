@@ -933,7 +933,7 @@ data class Repository(
         val defaultRepositories = listOf(
             F_DROID, IZZY,
             GUARDIAN, ONIONSHARE_NIGHTLY, MICRO_G,
-            CROMITE,
+            CROMITE, IRONFOX,
             NEWPIPE, LIBRETRO, BITWARDEN, GITJOURNAL,
             CALYX_OS, CALYX_OS_TEST,
             KDE_RELEASE, KDE_NIGHTLY, NANODROID, NETSYMS,
@@ -960,7 +960,7 @@ data class Repository(
             GROBOX, FAIRFAX, ZIMBELSTERN,
             LIBRECHURCH, JUWELERKASSA, INVIZBOX,
             CLOUDBURST, HUIZENGEK,
-            F5A, IRONFOX,
+            F5A,
         )
 
         val addedReposV9 = listOf(
@@ -1037,6 +1037,10 @@ data class Repository(
 
         val addedReposV29 = listOf(
             F5A
+        )
+
+        val addedReposV30 = listOf(
+            IRONFOX
         )
 
         val removedReposV29 = listOf(
