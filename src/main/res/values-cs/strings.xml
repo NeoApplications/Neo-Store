@@ -417,4 +417,9 @@
     <string name="installing_error_timeout_DESC">Instalace vypršela.</string>
     <string name="installing_error_storage_DESC">Instalace selhala z důvodu problémů s úložištěm.</string>
     <string name="installing_error_blocked_DESC">Instalace byla zablokována.</string>
+    <string name="prefs_layout">Rozložení</string>
+    <string name="prefs_connection">Připojení k internetu</string>
+    <string name="prefs_service">Služba</string>
+    <string name="about_build_FORMAT">%s (sestavení %s)</string>
+    <string name="about_channel">Kanál</string>
 </resources>
