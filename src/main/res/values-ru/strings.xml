@@ -419,4 +419,9 @@
     <string name="installing_error_invalid_DESC">Неправильная установка.</string>
     <string name="installing_error_unknown_DESC">Неизвестная ошибка при установке.</string>
     <string name="file_size_error_DESC">Размер файла больше ожидаемого.</string>
+    <string name="prefs_layout">Оформление</string>
+    <string name="prefs_connection">Подключение к интернету</string>
+    <string name="prefs_service">Сервис</string>
+    <string name="about_channel">Канал</string>
+    <string name="about_build_FORMAT">%s (сборка %s)</string>
 </resources>
