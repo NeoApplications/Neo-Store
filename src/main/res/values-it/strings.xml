@@ -417,4 +417,9 @@
     <string name="file_size_error_DESC">La dimensione del file supera quella prevista.</string>
     <string name="disable_certificate_check_summary">Potrebbe essere utile in caso di certificati autofirmati o non validi (necessari per alcuni repository deprecati).</string>
     <string name="installing_error_storage_DESC">Installazione non riuscita per problemi di archiviazione.</string>
+    <string name="prefs_service">Servizio</string>
+    <string name="about_build_FORMAT">%s (Build %s)</string>
+    <string name="prefs_layout">Disposizione</string>
+    <string name="prefs_connection">Connessione Internet</string>
+    <string name="about_channel">Canale</string>
 </resources>
