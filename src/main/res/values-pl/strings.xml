@@ -419,4 +419,9 @@
     <string name="installing_error_conflict_DESC">Błąd spowodowany konfliktem.</string>
     <string name="disable_certificate_check_summary">Może być przydatny w przypadku samopodpisanych lub nieważnych certyfikatów (wymaganych dla niektórych przestarzałych repozytoriów).</string>
     <string name="installing_error_invalid_DESC">Nieprawidłowa instalacja.</string>
+    <string name="prefs_service">Usługa</string>
+    <string name="about_build_FORMAT">%s (Kompilacja %s)</string>
+    <string name="about_channel">Kanał</string>
+    <string name="prefs_layout">Układ</string>
+    <string name="prefs_connection">Połączenie internetowe</string>
 </resources>
