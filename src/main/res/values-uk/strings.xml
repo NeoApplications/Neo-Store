@@ -420,4 +420,8 @@
     <string name="installing_error_storage_DESC">Не вдалося встановити через проблеми зі сховищем.</string>
     <string name="installing_error_blocked_DESC">Встановлення заблоковано.</string>
     <string name="prefs_layout">Макет</string>
+    <string name="prefs_service">Сервіс</string>
+    <string name="about_channel">Канал</string>
+    <string name="about_build_FORMAT">%s (Збірка %s)</string>
+    <string name="prefs_connection">Інтернет-з\'єднання</string>
 </resources>
