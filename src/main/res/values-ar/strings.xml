@@ -410,4 +410,7 @@
 \nجميع المستودعات: %s</string>
     <string name="confirm_uninstall_DESC_FORMAT">هل أنت متأكد من أنك تريد أن إلغاء تثبيت%s؟</string>
     <string name="erase_all">مسح الكل</string>
+    <string name="disable_certificate_check">تعطيل التحقق من شهادة SSL (يتطلب إعادة تشغيل التطبيق)</string>
+    <string name="file_size_error_DESC">حجم الملف يتجاوز الحجم المتوقع.</string>
+    <string name="disable_certificate_check_summary">يمكن أن تكون مفيدة في حالة الشهادات الموقعة ذاتيًا أو غير الصالحة (مطلوبة لبعض المستودعات المهجورة).</string>
 </resources>

@@ -16,4 +16,7 @@
     <string name="available">Mövcuddur</string>
     <string name="bug_tracker">Səhv izləyici</string>
     <string name="cancel">Ləğv et</string>
+    <string name="changelog">Dəyişikliklər</string>
+    <string name="checking_repository">Anbarlar yoxlanılır…</string>
+    <string name="cant_edit_sync_DESC">Sinxronlaşdırılan anbarlara düzəliş etmək mümkün deyil…</string>
 </resources>

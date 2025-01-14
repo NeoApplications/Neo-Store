@@ -403,4 +403,6 @@
     <string name="last_successful_sync">Última atualização: %s
 \nTodos os repositórios: %s</string>
     <string name="confirm_uninstall_DESC_FORMAT">Você tem certeza que deseja desinstalar %s?</string>
+    <string name="file_size_error_DESC">O tamanho do arquivo excede o tamanho esperado.</string>
+    <string name="erase_all">Apagar tudo</string>
 </resources>
