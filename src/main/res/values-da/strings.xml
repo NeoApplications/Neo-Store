@@ -402,4 +402,7 @@
     <string name="last_successful_sync">Seneste opdatering: %s
 \nAlle repos: %s</string>
     <string name="erase_all">Slet alt</string>
+    <string name="file_size_error_DESC">Filstørrelsen overstiger forventet størrelse.</string>
+    <string name="disable_certificate_check">Deaktiver SSL-certifikatkontrol (kræver genstart af appen)</string>
+    <string name="disable_certificate_check_summary">Kan være nyttigt i tilfælde af selvsignerede eller ugyldige certifikater (påkrævet for nogle forældede repositories).</string>
 </resources>

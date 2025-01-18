@@ -404,4 +404,22 @@
 \nVšechny repozitáře: %s</string>
     <string name="confirm_uninstall_DESC_FORMAT">Opravdu chcete odinstalovat %s?</string>
     <string name="erase_all">Vymazat vše</string>
+    <string name="disable_certificate_check_summary">Může být užitečné v případě použití sebou podepsaných nebo neplatných certifikátů (vyžadováno některé pro zastaralé repozitáře).</string>
+    <string name="file_size_error_DESC">Velikost souboru překračuje očekávanou hodnotu.</string>
+    <string name="disable_certificate_check">Zakázat kontrolu SSL certifikátů (vyžaduje restart aplikace)</string>
+    <string name="installing_error_FORMAT">Chyba při instalaci %s</string>
+    <string name="downloading_error_FORMAT">Chyba při stahování %s</string>
+    <string name="installing_error_invalid_DESC">Neplatná instalace.</string>
+    <string name="installing_error_unknown_DESC">Neplatná chyba během instalace.</string>
+    <string name="installing_error_incompatible_DESC">Instalace není kompatibilní.</string>
+    <string name="validation_error_FORMAT">Chyba ověřování: %s</string>
+    <string name="installing_error_conflict_DESC">Chyba způsobená konfliktem.</string>
+    <string name="installing_error_timeout_DESC">Instalace vypršela.</string>
+    <string name="installing_error_storage_DESC">Instalace selhala z důvodu problémů s úložištěm.</string>
+    <string name="installing_error_blocked_DESC">Instalace byla zablokována.</string>
+    <string name="prefs_layout">Rozložení</string>
+    <string name="prefs_connection">Připojení k internetu</string>
+    <string name="prefs_service">Služba</string>
+    <string name="about_build_FORMAT">%s (sestavení %s)</string>
+    <string name="about_channel">Kanál</string>
 </resources>
