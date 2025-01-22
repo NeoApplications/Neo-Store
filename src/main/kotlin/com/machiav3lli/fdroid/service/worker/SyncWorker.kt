@@ -177,6 +177,7 @@ class SyncWorker(
                 .putAll(data)
                 .putLong(ARG_REPOSITORY_ID, repoId)
                 .putInt(ARG_SYNC_REQUEST, request.ordinal)
+                .putString(ARG_REPOSITORY_NAME, repoName)
                 .build()
         )
     }
@@ -248,16 +249,14 @@ class SyncWorker(
             return builder.build()
         }
 
-        private fun enqueue(
-            request: SyncRequest,
-            vararg ids: Long,
-        ) {
-            ids.map { repoId ->
+        private fun enqueueManual(vararg repos: Pair<Long, String>) {
+            repos.map { (repoId, repoName) ->
 
                 if (repoId != EXODUS_TRACKERS_SYNC) {
                     val data = workDataOf(
                         ARG_REPOSITORY_ID to repoId,
-                        ARG_SYNC_REQUEST to request.ordinal,
+                        ARG_SYNC_REQUEST to SyncRequest.MANUAL.ordinal,
+                        ARG_REPOSITORY_NAME to repoName,
                     )
 
                     MainApplication.wm.workManager.enqueueUniqueWork(
@@ -281,7 +280,7 @@ class SyncWorker(
                         10_000L
                 if (enabled && isEnabled && cooldownedSync) {
                     MainApplication.latestSyncs[repository.id] = System.currentTimeMillis()
-                    enqueue(SyncRequest.MANUAL, repository.id)
+                    enqueueManual(Pair(repository.id, repository.name))
                 } else {
                     MainApplication.wm.cancelSync(repository.id)
                     MainApplication.db.cleanUp(Pair(repository.id, false))
