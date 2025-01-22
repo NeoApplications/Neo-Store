@@ -243,7 +243,13 @@ class BatchSyncWorker(
             .setGroupSummary(true)
             .setSortKey("0")
             .setContentTitle(context.getString(R.string.syncing))
-            .setContentText("Syncing repositories ($completedRepositories/$totalRepositories)") // TODO make format string
+            .setContentText(
+                context.getString(
+                    R.string.syncing_batch_FORMAT,
+                    completedRepositories,
+                    totalRepositories
+                )
+            )
             .setSmallIcon(R.drawable.ic_sync)
             .setOngoing(completedRepositories < totalRepositories)
             .setSilent(true)

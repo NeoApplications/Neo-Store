@@ -419,4 +419,5 @@
     <string name="prefs_service">Service</string>
     <string name="about_channel">Channel</string>
     <string name="about_build_FORMAT">%s (Build %s)</string>
+    <string name="syncing_batch_FORMAT">Syncing repositories (%d/%d)</string>
 </resources>
