@@ -946,7 +946,7 @@ data class Repository(
             FROSTNERD, F_DROID_CLASSIC,
             ETOPA, METATRANS_APPS, FUTO, KVAESITSO,
             LTTRS, KAFFEEMITKOFFEIN,
-            MOBILSICHER, SAUNAREPO, UNOFFICIAL_FIREFOX, PATCHED,
+            SAUNAREPO, UNOFFICIAL_FIREFOX, PATCHED,
             WIND, UMBRELLA, CRYPTOMATOR,
             RWTH, TAGESSCHAU, WOZ,
             C_GEO, C_GEO_NIGHTLY, PETER_CXY,
@@ -1017,7 +1017,7 @@ data class Repository(
             RWTH, INSPORATION, SYLKEVICIOUS, OBERNBERGER,
             NUCLEUS, ONIONSHARE_NIGHTLY, XARANTOLUS, TWOBR,
             OBFUSK, MAXXIS, NAILYK, WOZ,
-            VIDELIBRI, PIXELFED, LUBL, MOBILSICHER,
+            VIDELIBRI, PIXELFED, LUBL,
             SAUNAREPO, INVIZBOX, LIBRECHURCH, JUWELERKASSA,
         )
 
@@ -1045,6 +1045,10 @@ data class Repository(
 
         val removedReposV29 = listOf(
             DIVEST_OS, DIVEST_OS_UNOFFICIAL,
+        )
+
+        val removedReposV31 = listOf(
+            MOBILSICHER
         )
     }
 }
