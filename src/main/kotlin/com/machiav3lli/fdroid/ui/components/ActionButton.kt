@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.FloatingActionButton
@@ -58,11 +57,10 @@ fun ActionButton(
         onClick = onClick
     ) {
         Row(
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (icon != null) Icon(imageVector = icon, contentDescription = null)
-            Spacer(modifier = Modifier.width(8.dp))
             Text(text = text)
         }
     }
@@ -148,11 +146,10 @@ fun MainActionButton(
         ) {
             Row(
                 Modifier.defaultMinSize(minHeight = ButtonDefaults.MinHeight),
-                horizontalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(imageVector = it.icon, contentDescription = stringResource(id = it.textId))
-                Spacer(modifier = Modifier.width(8.dp))
                 Text(text = stringResource(id = it.textId))
             }
         }
