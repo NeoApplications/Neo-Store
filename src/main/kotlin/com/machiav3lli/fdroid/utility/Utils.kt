@@ -478,14 +478,15 @@ fun Context.getLocaleDateString(time: Long): String {
 
 fun Collection<Product>.matchSearchQuery(searchQuery: String): List<Product> {
     if (searchQuery.isBlank()) return toList()
+    val now = System.currentTimeMillis()
     return filter {
         listOf(it.label, it.packageName, it.author.name, it.summary, it.description)
             .any { literal ->
                 literal.contains(searchQuery, true)
             }
     }.sortedByDescending {
-        (if (isDifferenceMoreThanOneYear(it.updated, System.currentTimeMillis())) 0 else 7) or
-                (if ("${it.label} ${it.packageName}".contains(searchQuery, true)) 3 else 0) or
+        (if ("${it.label} ${it.packageName}".contains(searchQuery, true)) 7 else 0) or
+                (if (isDifferenceMoreThanOneYear(it.updated, now)) 0 else 3) or
                 (if ("${it.summary} ${it.author.name}".contains(searchQuery, true)) 1 else 0)
     }
 }
