@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-1.0.6 (XX.01.2025) +130 Commits +60 Translations
+1.0.6 (23.01.2025) +140 Commits +100 Translations
 ------------------
 
 ### Function
@@ -17,11 +17,10 @@ CHANGELOG
 - Fix: Performance issues of SyncWorker
 - Fix: Back handling in Main pages
 - Fix: Crash on missing stopReason
-- Fix: Adding Products with duplicate categories
-- Fix: Updating repositories on sync
-- Fix: Lazy load of installed apps?
+- Fix: Lazy load of installed apps
 - Fix: Fetching icons/screenshots also respect disabling ssl certificate check
-- Fix: New installed app isn't being added to homescreen (credits @Dhina17).
+- Fix: New installed app isn't being added to homescreen (credits @Dhina17)
+- Update: Improve search algorithm
 - Update: Automate V1-parsing using IndexV1
 - Update: Rewrite IndexV0 xml parser
 - Update: AppSheet header logic
@@ -29,8 +28,7 @@ CHANGELOG
 - Update: Koin-inject Main & Prefs ViewModels
 - Update: Replace the multiple VMs for single MainVM
 - Update: Revamp WorkerManager & all Workers
-- Update: Revamp WorkerManager handling of downloads
-- Update: Revamp WorkerManager handling of syncs
+- Update: Revamp WorkerManager handling of downloads & syncs
 - Update: Migrate to type-safe navigation
 - Update: Indices and naming of Room Entities
 - Update: Improve performance of the main queries
@@ -39,7 +37,7 @@ CHANGELOG
 - Update: Avoid request for install permissions when INSTALL_PACKAGES is granted (credits @tharowt)
 - Remove: Unused BootReceiver
 - Add Fcitx5, IronFox repos (credits @Integral-Tech, @celenityy)
-- Remove Bromite, INVISV, Funkwhale, Divolt, DivestOS and archive repos
+- Remove Bromite, INVISV, Funkwhale, Divolt, DivestOS, Mobilsicher and the archive repos
 - CompileSDK 35
 
 ### UI/UX
@@ -48,22 +46,22 @@ CHANGELOG
 - Add: Erase-all button to downloads page
 - Add: Indicator of the invalid field in repo editor
 - Add: Info card in other prefs page
-- Fix: Chips visibility independent of background pref
 - Fix: Folding full app description
+- Fix: Chips visibility independent of background pref
+- Fix: Text overflows and stacking of release labels
+- Fix: Text padding in action buttons
 - Update: Make UI wide screens friendly & navigation adaptive
-- Update: Revamp repo page
+- Update: Revamp explore, search & repo pages
 - Update: Restructure prefs hierarchy
-- Update: Separate BlockBorder top top & bottom
+- Update: Revamp block borders' design and make default
 - Update: Show text always on alternative navigation button
 - Update: Animate permission cards
 - Update: Highlight version update chip
 - Update: Revamp dialog layouts
-- Update: Revamp Explore page
 - Update: Revamp icons & screenshots state creation
-- Update: Workout sheet layouts to fit the new BlockBorders
 - Update: Improve install & validation state notifications
-- Update: Revamp block borders' design and make default
 - Update: Animate transition between categories' layouts
+- Update: Revamp main theme colors
 - Update: Make preference's surface and switch interactively connected
 
 1.0.5 (19.07.2024) +10 Commits +10 Translations

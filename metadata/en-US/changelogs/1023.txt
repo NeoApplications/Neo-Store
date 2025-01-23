@@ -1,0 +1,9 @@
+Add: Delete the downloaded file when erasing the download entry
+Add: Target- & MinSDK filters
+Fix: Lazy load of installed apps
+Fix: New installed app isn't being added to homescreen (credits @Dhina17)
+Update: Make UI wide screens friendly & navigation adaptive
+Update: Improve f-droid sharing link (credits @leoheitmannruiz)
+Update: Avoid request for install permissions when INSTALL_PACKAGES is granted (credits @tharowt)
+Repos: Add Fcitx5, IronFox repos (credits @Integral-Tech, @celenityy)
+plus many more in over 140 commits & 100 translation contributions
