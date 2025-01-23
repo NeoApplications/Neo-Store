@@ -111,10 +111,8 @@
     <string name="recently_updated">Recentelijk bijgewerkt</string>
     <string name="repositories">Archieven</string>
     <string name="repository">Archief</string>
-    <string name="repository_not_used_DESC">Dit archief is nog niet gebruikt.
-\n Verbind om de inhoud te kunnen zien.</string>
-    <string name="repository_unsigned_DESC">Kan niet-ondertekende applijst niet verifiëren.
-\nWees voorzichtig met apps downloaden van niet-ondertekende archieven.</string>
+    <string name="repository_not_used_DESC">Dit archief is nog niet gebruikt.\nVerbind om de inhoud te kunnen zien.</string>
+    <string name="repository_unsigned_DESC">Kan niet-ondertekende applijst niet verifiëren.\nWees voorzichtig met apps downloaden van niet-ondertekende archieven.</string>
     <string name="requires_FORMAT">Vereist %s</string>
     <string name="root_permission">Stille installatie</string>
     <string name="root_permission_description">Gebruik root voor installaties zonder interactie</string>
@@ -312,7 +310,7 @@
     <string name="permission_identification_data">Toestemming voor identificatiedata</string>
     <string name="date_updated">Datum bijgewerkt</string>
     <string name="scan_qr_code">Scan QR-code</string>
-    <string name="trackers_identification_description">Trackers geven apps de mogelijkheid om inlogservices te gebruiken van specifieke services zoals Facebook.</string>
+    <string name="trackers_identification_description">Trackers geven apps de mogelijkheid om inlogservices te gebruiken van specifieke diensten, zoals Facebook.</string>
     <string name="permission_camera">Camera</string>
     <string name="action_open_code">Bekijk de code</string>
     <string name="source_proprietary_description">De code van deze app is niet zichtbaar voor het publiek.</string>
@@ -402,4 +400,22 @@
     <string name="confirm_uninstall_DESC_FORMAT">Weet je zeker dat je %s wil verwijderen?</string>
     <string name="all">Alle</string>
     <string name="erase_all">Alles wissen</string>
+    <string name="file_size_error_DESC">Bestand overschrijdt verwachte grootte.</string>
+    <string name="disable_certificate_check">SSL-certificaatcontrole uitschakelen (app opnieuw opstarten vereist)</string>
+    <string name="disable_certificate_check_summary">Kan nuttig zijn in het geval van zelfondertekende of ongeldige certificaten (vereist voor sommige verouderde archieven).</string>
+    <string name="validation_error_FORMAT">Validatiefout: %s</string>
+    <string name="downloading_error_FORMAT">Fout tijdens downloaden van %s</string>
+    <string name="installing_error_FORMAT">Fout tijdens installeren van %s</string>
+    <string name="installing_error_storage_DESC">Installatie mislukt vanwege opslagproblemen.</string>
+    <string name="installing_error_blocked_DESC">Installatie werd geblokkeerd.</string>
+    <string name="installing_error_conflict_DESC">Fout veroorzaakt door een conflict.</string>
+    <string name="installing_error_invalid_DESC">Ongeldige installatie.</string>
+    <string name="installing_error_unknown_DESC">Onbekende fout tijdens installatie.</string>
+    <string name="prefs_layout">Indeling</string>
+    <string name="prefs_service">Dienst</string>
+    <string name="prefs_connection">Internetverbinding</string>
+    <string name="about_channel">Kanaal</string>
+    <string name="about_build_FORMAT">%s (Versie %s)</string>
+    <string name="installing_error_incompatible_DESC">Installatie incompatibel.</string>
+    <string name="installing_error_timeout_DESC">Onderbreking bij installatie.</string>
 </resources>
