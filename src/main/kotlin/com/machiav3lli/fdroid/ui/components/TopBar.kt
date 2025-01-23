@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -199,7 +200,6 @@ fun WideSearchField(
         shape = MaterialTheme.shapes.extraLarge,
         leadingIcon = {
             Icon(
-                modifier = Modifier.size(24.dp),
                 imageVector = Phosphor.MagnifyingGlass,
                 contentDescription = stringResource(id = R.string.search),
             )
@@ -231,13 +231,12 @@ fun TopBarAction(
     Box(
         modifier = Modifier
             .minimumInteractiveComponentSize()
-            .clip(MaterialTheme.shapes.extraLarge)
+            .clip(CircleShape)
             .combinedClickable(role = Role.Button, onClick = onClick, onLongClick = onLongClick)
             .padding(8.dp),
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            modifier = Modifier.size(24.dp),
             imageVector = icon,
             contentDescription = description
         )

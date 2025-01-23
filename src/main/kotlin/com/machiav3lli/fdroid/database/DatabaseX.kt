@@ -59,6 +59,7 @@ import com.machiav3lli.fdroid.database.entity.Repository.Companion.archiveRepos
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.defaultRepositories
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.removedReposV28
 import com.machiav3lli.fdroid.database.entity.Repository.Companion.removedReposV29
+import com.machiav3lli.fdroid.database.entity.Repository.Companion.removedReposV31
 import com.machiav3lli.fdroid.database.entity.Tracker
 import com.machiav3lli.fdroid.service.worker.SyncWorker.Companion.enableRepo
 import kotlinx.coroutines.Dispatchers
@@ -83,7 +84,7 @@ import org.koin.dsl.module
         Downloaded::class,
         InstallTask::class,
     ],
-    version = 30,
+    version = 31,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -191,6 +192,11 @@ import org.koin.dsl.module
             from = 29,
             to = 30,
             spec = DatabaseX.Companion.AutoMigration29to30::class
+        ),
+        AutoMigration(
+            from = 30,
+            to = 31,
+            spec = DatabaseX.Companion.AutoMigration30to31::class
         ),
     ]
 )
@@ -363,37 +369,45 @@ abstract class DatabaseX : RoomDatabase() {
             }
         }
 
+        class AutoMigration30to31 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(30)
+            }
+        }
+
         fun onPostMigrate(from: Int) {
-            val preRepos = mutableListOf<Repository>()
-            if (from == 8) preRepos.addAll(addedReposV9)
-            if (from == 9) preRepos.addAll(addedReposV10)
-            if (from == 10) preRepos.addAll(addedReposV11)
-            if (from == 11) preRepos.addAll(addedReposV12)
-            if (from == 13) preRepos.addAll(addedReposV14)
-            if (from == 14) preRepos.addAll(addedReposV15)
-            if (from == 16) preRepos.addAll(addedReposV17)
-            if (from == 17) preRepos.addAll(addedReposV18)
-            if (from == 18) preRepos.addAll(addedReposV19)
-            if (from == 19) preRepos.addAll(addedReposV20)
-            if (from == 20) preRepos.addAll(addedReposV21)
-            if (from == 21) preRepos.addAll(addedReposV22)
-            if (from == 22) preRepos.addAll(addedReposV23)
-            if (from == 28) preRepos.addAll(addedReposV29)
-            if (from == 28) preRepos.addAll(addedReposV30)
+            val addRps = when (from) {
+                8    -> addedReposV9
+                9    -> addedReposV10
+                10   -> addedReposV11
+                11   -> addedReposV12
+                13   -> addedReposV14
+                14   -> addedReposV15
+                16   -> addedReposV17
+                17   -> addedReposV18
+                18   -> addedReposV19
+                19   -> addedReposV20
+                20   -> addedReposV21
+                21   -> addedReposV22
+                22   -> addedReposV23
+                28   -> addedReposV29
+                29   -> addedReposV30
+                else -> emptyList()
+            }
+            val rmRps = when (from) {
+                24   -> archiveRepos
+                27   -> removedReposV28
+                28   -> removedReposV29
+                30   -> removedReposV31
+                else -> emptyList()
+            }
             GlobalScope.launch(Dispatchers.IO) {
-                preRepos.forEach {
+                addRps.forEach {
                     INSTANCE?.getRepositoryDao()?.put(it)
                     if (from == 20) INSTANCE?.getDownloadedDao()?.emptyTable()
                 }
-                if (from == 24) archiveRepos.forEach {
-                    enableRepo(it, false)
-                    INSTANCE?.getRepositoryDao()?.deleteByAddress(it.address)
-                }
-                if (from == 27) removedReposV28.forEach {
-                    enableRepo(it, false)
-                    INSTANCE?.getRepositoryDao()?.deleteByAddress(it.address)
-                }
-                if (from == 28) removedReposV29.forEach {
+                rmRps.forEach {
                     enableRepo(it, false)
                     INSTANCE?.getRepositoryDao()?.deleteByAddress(it.address)
                 }

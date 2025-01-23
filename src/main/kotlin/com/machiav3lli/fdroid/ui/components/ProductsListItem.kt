@@ -179,10 +179,10 @@ fun ProductCarouselItem(
 
     val action = when {
         product.installedVersion.isEmpty() && !Preferences[Preferences.Key.KidsMode]
-        -> ActionState.Install
+            -> ActionState.Install
 
         product.launchable
-        -> ActionState.Launch
+            -> ActionState.Launch
 
         else -> null
     }

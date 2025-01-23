@@ -191,57 +191,58 @@ fun SearchPage(viewModel: MainVM = koinViewModel()) {
         }
     }
 
-    val productsList: @Composable ((paddingValues: PaddingValues) -> Unit) = { paddingValues: PaddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .addIfElse(
-                    Preferences[Preferences.Key.BottomSearchBar],
-                    factory = {
-                        padding(bottom = paddingValues.calculateBottomPadding())
-                    },
-                    elseFactory = {
-                        padding(top = paddingValues.calculateTopPadding())
-                    }
-                )
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            state = listState,
-        ) {
-            items(
-                items = filteredProducts,
-                key = { it.packageName },
-            ) { item ->
-                ProductsListItem(
-                    item = item,
-                    repo = repositoriesMap[item.repositoryId],
-                    isFavorite = favorites.contains(item.packageName),
-                    onUserClick = {
-                        neoActivity.navigateProduct(it.packageName)
-                    },
-                    onFavouriteClick = {
-                        viewModel.setFavorite(
-                            it.packageName,
-                            !favorites.contains(it.packageName)
-                        )
-                    },
-                    installed = installedList[item.packageName],
-                    onActionClick = {
-                        val installed = installedList[it.packageName]
-                        val action = { MainApplication.wm.install(it) }
-                        if (installed != null && installed.launcherActivities.isNotEmpty())
-                            context.onLaunchClick(
-                                installed,
-                                neoActivity.supportFragmentManager
+    val productsList: @Composable ((paddingValues: PaddingValues) -> Unit) =
+        { paddingValues: PaddingValues ->
+            LazyColumn(
+                modifier = Modifier
+                    .addIfElse(
+                        Preferences[Preferences.Key.BottomSearchBar],
+                        factory = {
+                            padding(bottom = paddingValues.calculateBottomPadding())
+                        },
+                        elseFactory = {
+                            padding(top = paddingValues.calculateTopPadding())
+                        }
+                    )
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                state = listState,
+            ) {
+                items(
+                    items = filteredProducts,
+                    key = { it.packageName },
+                ) { item ->
+                    ProductsListItem(
+                        item = item,
+                        repo = repositoriesMap[item.repositoryId],
+                        isFavorite = favorites.contains(item.packageName),
+                        onUserClick = {
+                            neoActivity.navigateProduct(it.packageName)
+                        },
+                        onFavouriteClick = {
+                            viewModel.setFavorite(
+                                it.packageName,
+                                !favorites.contains(it.packageName)
                             )
-                        else if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                            dialogKey.value = DialogKey.Download(it.name, action)
-                            openDialog.value = true
-                        } else action()
-                    }
-                )
+                        },
+                        installed = installedList[item.packageName],
+                        onActionClick = {
+                            val installed = installedList[it.packageName]
+                            val action = { MainApplication.wm.install(it) }
+                            if (installed != null && installed.launcherActivities.isNotEmpty())
+                                context.onLaunchClick(
+                                    installed,
+                                    neoActivity.supportFragmentManager
+                                )
+                            else if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                dialogKey.value = DialogKey.Download(it.name, action)
+                                openDialog.value = true
+                            } else action()
+                        }
+                    )
+                }
             }
         }
-    }
 
     LaunchedEffect(key1 = query) {
         viewModel.setSearchQuery(query)
@@ -274,14 +275,14 @@ fun SearchPage(viewModel: MainVM = koinViewModel()) {
                 if (!Preferences[Preferences.Key.BottomSearchBar]) {
                     Column {
                         searchBar()
-                        HorizontalDivider()
+                        HorizontalDivider(thickness = 0.5.dp)
                     }
                 }
             },
             bottomBar = {
                 if (Preferences[Preferences.Key.BottomSearchBar]) {
                     Column {
-                        HorizontalDivider()
+                        HorizontalDivider(thickness = 0.5.dp)
                         searchBar()
                     }
                 }

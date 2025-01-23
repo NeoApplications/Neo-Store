@@ -1,7 +1,6 @@
 package com.machiav3lli.fdroid.utility
 
 import android.Manifest
-import android.app.Activity
 import android.app.ActivityManager
 import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
 import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE
@@ -21,7 +20,6 @@ import android.provider.Settings
 import android.text.format.DateUtils
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.biometric.BiometricManager
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentManager
@@ -56,7 +54,6 @@ import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import com.topjohnwu.superuser.Shell
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.net.URL
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -174,7 +171,7 @@ object Utils {
         return ((importance == IMPORTANCE_FOREGROUND) or (importance == IMPORTANCE_VISIBLE))
     }
 
-    val charactersToBeEscaped = Regex("""[\\${'$'}"`]""")
+    private val charactersToBeEscaped = Regex("""[\\${'$'}"`]""")
 
     fun quotePath(parameter: String): String =
         "\"${parameter.replace(charactersToBeEscaped) { "\\${it.value}" }}\""
@@ -325,10 +322,10 @@ fun Context.shareIntent(packageName: String, appName: String, repository: String
     val shareIntent = Intent(Intent.ACTION_SEND)
     val extraText = when {
         repository.contains("IzzyOnDroid")
-        -> "https://apt.izzysoft.de/fdroid/index/apk/$packageName"
+            -> "https://apt.izzysoft.de/fdroid/index/apk/$packageName"
 
         else
-        -> "https://f-droid.org/packages/${packageName}/"
+            -> "https://f-droid.org/packages/${packageName}/"
     }
 
     shareIntent.type = "text/plain"
@@ -524,19 +521,6 @@ fun Context.isBiometricLockAvailable(): Boolean =
 fun Context.isBiometricLockEnabled(): Boolean =
     isBiometricLockAvailable() &&
             Preferences[Preferences.Key.ActionLockDialog] == Preferences.ActionLock.Biometric
-
-fun getBaseUrl(fullUrl: String): String {
-    val url = URL(fullUrl)
-    val protocol = url.protocol
-    val host = url.host
-    val port = if (url.port != -1) ":${url.port}" else ""
-    return "$protocol://$host$port/"
-}
-
-fun Activity.setCustomTheme() {
-    AppCompatDelegate.setDefaultNightMode(Preferences[Preferences.Key.Theme].nightMode)
-    if (!isDynamicColorsTheme) setTheme(Preferences[Preferences.Key.Theme].resId)
-}
 
 fun getAndroidVersionName(versionCode: Int): String =
     AndroidVersion.entries.getOrNull(versionCode)?.valueString ?: "Unknown sdk: $versionCode"
