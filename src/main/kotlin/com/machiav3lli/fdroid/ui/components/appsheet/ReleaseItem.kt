@@ -1,10 +1,7 @@
 package com.machiav3lli.fdroid.ui.components.appsheet
 
 import android.os.Build
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -79,7 +76,7 @@ fun ReleaseItem(
     ListItem(
         modifier = modifier
             .fillMaxWidth()
-            .border(2.dp, border, MaterialTheme.shapes.large)
+            .border(1.dp, border, MaterialTheme.shapes.large)
             .clip(MaterialTheme.shapes.large),
         colors = ListItemDefaults.colors(
             containerColor = container,
@@ -88,28 +85,18 @@ fun ReleaseItem(
             ReleaseTitleWithBadge(
                 version = currentRelease.version
             ) {
-                AnimatedVisibility(
-                    visible = currentRelease.platforms.size == 1,
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
+                if (currentRelease.platforms.size == 1) {
                     ReleaseBadge(
-                        modifier = Modifier.padding(top = 8.dp),
                         text = currentRelease.platforms.first()
                     )
                 }
-                AnimatedVisibility(
-                    visible = isSuggested or isInstalled,
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
+                if (isSuggested or isInstalled) {
                     val badgeText = remember { mutableIntStateOf(R.string.suggested) }
                     LaunchedEffect(isInstalled, isSuggested) {
                         badgeText.intValue =
                             if (isInstalled) R.string.app_installed else R.string.suggested
                     }
                     ReleaseBadge(
-                        modifier = Modifier.padding(top = 8.dp),
                         text = stringResource(id = badgeText.intValue)
                     )
                 }
@@ -167,11 +154,14 @@ fun ReleaseTitleWithBadge(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.Bottom,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(text = version, style = MaterialTheme.typography.titleMedium)
-        Spacer(Modifier.weight(1f))
+        Text(
+            text = version,
+            modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.titleMedium,
+        )
         badges()
     }
 }
@@ -193,7 +183,7 @@ fun ReleaseItemBottomText(
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 2,
         )
-        Text(text = date, style = MaterialTheme.typography.bodyMedium)
+        Text(text = date, style = MaterialTheme.typography.bodyMedium, maxLines = 1)
     }
 }
 
@@ -210,6 +200,11 @@ fun ReleaseBadge(
             .padding(6.dp, 2.dp),
         color = color,
     ) {
-        Text(text = text, color = onColor, style = MaterialTheme.typography.labelMedium)
+        Text(
+            text = text,
+            color = onColor,
+            style = MaterialTheme.typography.labelMedium,
+            maxLines = 1,
+        )
     }
 }

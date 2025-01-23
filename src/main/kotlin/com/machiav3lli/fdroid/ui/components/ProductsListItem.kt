@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -213,23 +214,30 @@ fun ProductCarouselItem(
             ) {
                 Text(
                     text = product.name,
+                    modifier = Modifier.weight(1f),
                     softWrap = true,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
                 if (product.canUpdate) ReleaseBadge(
-                    modifier = Modifier.widthIn(max = 200.dp),
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .widthIn(max = 200.dp),
                     text = "${product.installedVersion} → ${product.version}",
                     color = MaterialTheme.colorScheme.primaryContainer,
                     onColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
                 else if (product.installedVersion.isNotEmpty()) ReleaseBadge(
-                    modifier = Modifier.widthIn(max = 200.dp),
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .widthIn(max = 200.dp),
                     text = product.installedVersion,
                 ) else Text(
                     text = product.installedVersion.nullIfEmpty() ?: product.version,
-                    modifier = Modifier.widthIn(max = 200.dp),
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .widthIn(max = 200.dp),
                     textAlign = TextAlign.End,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
