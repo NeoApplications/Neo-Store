@@ -295,7 +295,7 @@
     <string name="no_vulnerabilities_installed_apps">Aucune application installée ne présente de vulnérabilité connue.</string>
     <string name="vulnerabilities">Vulnérabilités.</string>
     <string name="post_notifications_permission_title">Permission d\'afficher des notifications</string>
-    <string name="post_notifications_permission_message">A partir d\'Android 13 les applications requièrent cette permission pour pouvoir afficher des notifications.</string>
+    <string name="post_notifications_permission_message">A partir d\'Android 13, les applications requièrent cette permission pour pouvoir afficher des notifications.</string>
     <string name="enable_download_directory_summary">Autorise la conservation des APKs téléchargées dans un dossier choisi.</string>
     <string name="custom_download_directory">Dossier de téléchargement personnalisé</string>
     <string name="tools">Outils</string>
@@ -331,7 +331,7 @@
     <string name="cancel_all">Tout annuler</string>
     <string name="disable_download_version_check">Désactiver la vérification de version de téléchargement</string>
     <string name="disable_download_version_check_summary">Permet de télécharger d\'anciennes versions d\'applications installées. Peut être utilisé en combinaison avec le patch \"letmedowngrade\" de Magisk.</string>
-    <string name="warning_disable_battery_optimization">À partir d\'Android 12, l\'appli nécessite l\'optimisation de la batterie pour effectuer des tâches en arrière-plan comme synchroniser et télécharger. Si vous ignorez cette permission vous serez livré à vous-même et vos rapports de crash seront ignorés.</string>
+    <string name="warning_disable_battery_optimization">À partir d\'Android 12, l\'appli nécessite l\'optimisation de la batterie pour effectuer des tâches en arrière-plan comme synchroniser et télécharger. Si vous ignorez cette permission, vous serez livré à vous-même, et vos rapports de crash seront ignorés.</string>
     <string name="repos_export">Exporter les dépôts</string>
     <plurals name="privacy_points_FORMAT">
         <item quantity="one">(-%d point de confidentialité)</item>
@@ -354,22 +354,22 @@
     <string name="enabled">Activé</string>
     <string name="disabled">Désactivé</string>
     <string name="proxy_url">URL</string>
-    <string name="black_medium_contrast">Noir (moyen contraste)</string>
+    <string name="black_medium_contrast">Noir (contraste moyen)</string>
     <string name="root_allow_downgrades_description">Permettre la rétrogradation de version des applications à l\'aide de l\'installateur racine (s\'applique seulement aux versions d\'applications débogables). Optimalement utilisé en combinaison avec \"Disable download version check\".</string>
     <string name="am_installer">Installateur du Gestionnaire d\'applications</string>
     <string name="light_medium_contrast">Clair (moyen contraste)</string>
     <string name="light_high_contrast">Clair (fort contraste)</string>
     <string name="dark_medium_contrast">Sombre (moyen contraste)</string>
     <string name="dark_high_contrast">Sombre (haut contraste)</string>
-    <string name="black_high_contrast">Noir (haut contraste)</string>
+    <string name="black_high_contrast">Noir (contraste élevé)</string>
     <string name="root_allow_downgrades">Permettre la rétrogradation de version des applications</string>
     <string name="root_allow_installing_old_apps">Permettre l\'installation d\'applications plus anciennes</string>
     <string name="root_allow_installing_old_apps_description">À partir d\'Android 14, il n\'est plus possible d\'installer des applications ciblant des versions d\'Android beaucoup plus anciennes (Android 5.1 ou précédentes). Cette option vous permet d\'annuler ce comportement.</string>
     <string name="repo_qr_code">Code QR du dépôt</string>
     <string name="download_manager">Gestionnaire de téléchargement du système</string>
-    <string name="download_manager_summary">Utilisez le gestionnaire de téléchargement du système pour télécharger les applications de manière plus fiable. Cette option ne supporte pas le TOR ou le proxy personnalisé, elle utilise les paramètres du système.</string>
+    <string name="download_manager_summary">Utilisez le gestionnaire de téléchargement du système pour télécharger les applications de manière plus fiable. Cette option ne supporte pas TOR ou les proxy personnalisés, elle utilise les paramètres du système.</string>
     <string name="install_packages_permission_title">Permission d\'installer des paquets</string>
-    <string name="install_packages_permission_message">Démarrer les applications Android 8 nécessite cette autorisation pour pouvoir installer des paquets.</string>
+    <string name="install_packages_permission_message">Démarrer les applications Android 8, nécessite cette autorisation pour pouvoir installer des paquets.</string>
     <string name="system_installer">Installateur système</string>
     <string name="kids_mode_summary">Active le mode Enfants, désactive l\'installation de nouvelles applications.</string>
     <string name="prefs_search_apps">Nombre maximal d\'applications à afficher dans les résultats de recherche.</string>
@@ -391,4 +391,6 @@
     <string name="wait_to_sync">Attendre quelques secondes avant de réessayer de synchroniser.</string>
     <string name="prefs_search_apps_description">Nombre maximal d\'applications à inclure dans les résultats de recherche (mettre à 0 pour inclure toutes les applications).</string>
     <string name="state_modified">Modifié</string>
+    <string name="alt_block_layout_summary">Utiliser une mise en page alternative/ancienne pour les blocs de pages avec des bordures au lieu de surfaces colorées.</string>
+    <string name="alt_block_layout">Utiliser une mise en page alternative pour les blocs de pages</string>
 </resources>
