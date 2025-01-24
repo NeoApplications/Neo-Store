@@ -184,8 +184,8 @@
     <string name="new_applications">Yeni uygulamalar</string>
     <string name="install_after_sync">Otomatik güncelle</string>
     <string name="install_after_sync_summary">Depolarda yeni uygulamalar için arama yaptıktan sonra tüm yeni sürümleri yükle.</string>
-    <string name="prefs_updated_apps">"Son güncellenenler" bölümünde gösterilecek uygulama sayısı</string>
-    <string name="prefs_new_apps">"Yeni uygulamalar" bölümünde gösterilecek uygulama sayısı</string>
+    <string name="prefs_updated_apps">Son güncellenenler bölümünde gösterilecek uygulama sayısı</string>
+    <string name="prefs_new_apps">Yeni uygulamalar bölümünde gösterilecek uygulama sayısı</string>
     <string name="new_repository">Yeni depo</string>
     <string name="default_tab">Varsayılan sekme</string>
     <string name="pending">Beklemede</string>
