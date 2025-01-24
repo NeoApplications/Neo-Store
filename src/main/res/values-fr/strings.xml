@@ -184,8 +184,8 @@
     <string name="only_on_wifi_and_battery">Uniquement en Wi-Fi et branché</string>
     <string name="install_after_sync">Mises à jour automatiques</string>
     <string name="install_after_sync_summary">Installer toutes les nouvelles versions après avoir examiné les dépôts pour de nouvelles applis.</string>
-    <string name="prefs_new_apps">Nombre d’applis à afficher dans « Nouvelles applis »</string>
-    <string name="prefs_updated_apps">Nombre d’applis à afficher dans « Récemment mises à jour »</string>
+    <string name="prefs_new_apps">Nombre d’applis à afficher dans « Nouvelles applis »</string>
+    <string name="prefs_updated_apps">Nombre d’applis à afficher dans « Récemment mises à jour »</string>
     <string name="new_repository">Nouveau dépôt</string>
     <string name="default_tab">Onglet par défaut</string>
     <string name="pending">En attente</string>
