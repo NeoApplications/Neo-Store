@@ -405,4 +405,5 @@
     <string name="confirm_uninstall_DESC_FORMAT">Você tem certeza que deseja desinstalar %s?</string>
     <string name="file_size_error_DESC">O tamanho do arquivo excede o tamanho esperado.</string>
     <string name="erase_all">Apagar tudo</string>
+    <string name="disable_certificate_check">Desabilitar verificação de certificado SSL (requer reiniciar o aplicativo)</string>
 </resources>
