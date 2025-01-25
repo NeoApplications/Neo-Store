@@ -185,8 +185,8 @@
     <string name="only_on_wifi_and_battery">Лише під час Wi-Fi та підключенні до мережі</string>
     <string name="install_after_sync">Самооновлення</string>
     <string name="install_after_sync_summary">Встановлюйте всі нові версії після перевірки репозиторіїв на наявність нових застосунків.</string>
-    <string name="prefs_updated_apps">Кількість застосунків, що відображаються в «Недавно оновлені»</string>
-    <string name="prefs_new_apps">Кількість застосунків, що відображаються в «Нові застосунки»</string>
+    <string name="prefs_updated_apps">Кількість застосунків, що показано в «Недавно оновлені»</string>
+    <string name="prefs_new_apps">Кількість застосунків, що показано в «Нові застосунки»</string>
     <string name="new_repository">Новий репозиторій</string>
     <string name="default_tab">Вкладка за замовчуванням</string>
     <string name="pending">Очікується</string>
@@ -424,4 +424,5 @@
     <string name="about_channel">Канал</string>
     <string name="about_build_FORMAT">%s (Збірка %s)</string>
     <string name="prefs_connection">Інтернет-з\'єднання</string>
+    <string name="syncing_batch_FORMAT">Синхронізація репозиторіїв (%d/%d)</string>
 </resources>
