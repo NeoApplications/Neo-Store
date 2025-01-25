@@ -406,4 +406,15 @@
     <string name="file_size_error_DESC">O tamanho do arquivo excede o tamanho esperado.</string>
     <string name="erase_all">Apagar tudo</string>
     <string name="disable_certificate_check">Desabilitar verificação de certificado SSL (requer reiniciar o aplicativo)</string>
+    <string name="disable_certificate_check_summary">Pode ser útil em caso de certificados auto-assinados ou inválidos (requeridos para alguns repositórios obsoletos).</string>
+    <string name="validation_error_FORMAT">Erro de validação: %s</string>
+    <string name="installing_error_FORMAT">Erro ao instalar %s</string>
+    <string name="installing_error_storage_DESC">Falha na instalação em problemas de armazenamento.</string>
+    <string name="installing_error_incompatible_DESC">Instalar incompatível.</string>
+    <string name="installing_error_blocked_DESC">Instalar foi bloqueado.</string>
+    <string name="installing_error_timeout_DESC">Tempo limite para instalar.</string>
+    <string name="installing_error_conflict_DESC">Erro causado por um conflito.</string>
+    <string name="installing_error_invalid_DESC">Instalar inválido.</string>
+    <string name="installing_error_unknown_DESC">Erro desconhecido ao instalar.</string>
+    <string name="prefs_layout">Layout</string>
 </resources>
