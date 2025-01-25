@@ -422,4 +422,5 @@
     <string name="prefs_layout">Disposizione</string>
     <string name="prefs_connection">Connessione Internet</string>
     <string name="about_channel">Canale</string>
+    <string name="syncing_batch_FORMAT">Sincronizzazione repository (%d/%d)</string>
 </resources>
