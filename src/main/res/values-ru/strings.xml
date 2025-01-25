@@ -424,4 +424,5 @@
     <string name="prefs_service">Сервис</string>
     <string name="about_channel">Канал</string>
     <string name="about_build_FORMAT">%s (сборка %s)</string>
+    <string name="syncing_batch_FORMAT">Синхронизация репозиториев (%d/%d)</string>
 </resources>
