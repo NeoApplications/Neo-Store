@@ -417,4 +417,10 @@
     <string name="installing_error_invalid_DESC">Instalar inválido.</string>
     <string name="installing_error_unknown_DESC">Erro desconhecido ao instalar.</string>
     <string name="prefs_layout">Layout</string>
+    <string name="downloading_error_FORMAT">Erro ao baixar %s</string>
+    <string name="syncing_batch_FORMAT">Sincronizando repositórios (%d/%d)</string>
+    <string name="prefs_connection">Conexão à Internet</string>
+    <string name="prefs_service">Serviço</string>
+    <string name="about_channel">Canal</string>
+    <string name="about_build_FORMAT">%s (Build %s)</string>
 </resources>
