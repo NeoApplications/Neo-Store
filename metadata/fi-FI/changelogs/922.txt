@@ -1,0 +1,7 @@
+Lisää: Ilmoituslupa (A13)
+Lisää: Kategoriat SideNavBar tutkijaan
+Korjaus: Legacy- & RootInstaller
+Korjaus: Paranna hakutehokkuutta (ansio @pedrox-hs)
+Päivitys: Vaakasuuntainen sovellusten asettelu
+Päivitys: Pyydetään pääkäyttäjän oikeuksia root-asennusohjelmaa asetettaessa
++ yli 60 käännöspanosta
