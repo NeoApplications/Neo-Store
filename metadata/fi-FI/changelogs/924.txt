@@ -1,0 +1,6 @@
+Lisää: Varoitukset sovelluksista, joissa on tunnettuja haavoittuvuuksia
+Korjaus: Paranna haun aiheuttamaa suorituskyvyn ylikuormitusta (ansio @SocratesDz)
+Korjaus: Kaatuva asennusohjelma
+Päivitys: Päivitä automaattisen synkronoinnin toiminto
+Päivitys: Päivitä repo-arkit
++ yli 60 käännöspanosta
