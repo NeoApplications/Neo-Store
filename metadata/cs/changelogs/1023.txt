@@ -1,0 +1,8 @@
+Přidáno: smazání staženého souboru při vymazání záznamu
+Přidáno: Filtry Target- a MinSDK
+Oprava: načítání nainst. aplikací
+Oprava: nainst. aplikace se nepřidává na dom. obr. (díky @Dhina17)
+Úprava: Přizpůsobení uživatelského rozhraní pro široké obrazovky a navigace
+Úprava: Vylepšení odkazu sdílení f-droid (díky @leoheitmannruiz)
+Úprava: zamezení požadavku na instal. opr., pokud je povoleno INSTALL_PACKAGES (díky @tharowt)
+plus mnoho dalších ve více než 140 revizích a 100 příspěvcích k překladům
