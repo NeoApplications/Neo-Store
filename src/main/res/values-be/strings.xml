@@ -180,7 +180,7 @@
     <string name="new_applications">Новыя праграмы</string>
     <string name="install_after_sync">Аўтаматычнае абнаўленне</string>
     <string name="install_after_sync_summary">Усталюйце ўсё новыя версіі, прагледзеўшы рэпазіторыі на прадмет новых праграм.</string>
-    <string name="prefs_updated_apps">Колькасць праграм, якія адлюстроўваюцца ў раздзеле \"Нядаўна абноўленыя\"</string>
+    <string name="prefs_updated_apps">Колькасць праграм, якія адлюстроўваюцца ў раздзеле \"Нядаўна абноўленыя\\</string>
     <string name="default_tab">Прадвызначана ўкладка</string>
     <string name="pending">У чаканні</string>
     <string name="installing">Ўстаноўка</string>
