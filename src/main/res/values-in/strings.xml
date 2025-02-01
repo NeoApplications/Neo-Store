@@ -187,7 +187,7 @@
     <string name="no_updates_available">Tidak ada versi yang tersedia</string>
     <string name="system_black">Sistem (Hitam)</string>
     <string name="not_safe_for_work">Dapat disensor (mungkin berisi konten yang tidak ingin dilihat)</string>
-    <string name="prefs_updated_apps">Jumlah aplikasi untuk ditampilkan di \"Pembaruan terakhir\"</string>
+    <string name="prefs_updated_apps">Jumlah aplikasi untuk ditampilkan di \"Pembaruan terakhir\\</string>
     <string name="prefs_new_apps">Jumlah aplikasi untuk ditampilkan di \"Aplikasi baru\"</string>
     <string name="new_repository">Repositori baru</string>
     <string name="default_tab">Tab bawaan</string>
