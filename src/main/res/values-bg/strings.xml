@@ -199,7 +199,7 @@
     <string name="show_screenshots_description">Показване на екрани снимки в страницата на приложението.</string>
     <string name="show_screenshots">Показване на екранни снимки</string>
     <string name="install_after_sync_summary">Инсталира всички нови версии, след като провери хранилищата за нови приложения.</string>
-    <string name="prefs_updated_apps">Брой приложения, които да се покажат в \"Наскоро обновени\"</string>
+    <string name="prefs_updated_apps">Брой приложения, които да се покажат в \"Наскоро обновени\\</string>
     <string name="prefs_new_apps">Брой приложения, които да се показват в \"Нови приложения\"</string>
     <string name="ignore_battery_optimization_title">Оптимизация на батерията</string>
     <string name="ignore_battery_optimization_not_supported">Вашата инсталация на Android не поддържа изключване на оптимизацията на батерията.</string>
