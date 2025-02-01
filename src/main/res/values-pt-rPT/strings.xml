@@ -119,7 +119,7 @@
     <string name="show_more">Mostrar mais</string>
     <string name="show_older_versions">Mostrar versões antigas</string>
     <string name="signature_FORMAT">Assinatura %s</string>
-    <string name="prefs_updated_apps">Número de aplicações a mostrar em \"Atualizadas recentemente\"</string>
+    <string name="prefs_updated_apps">Número de aplicações a mostrar em \"Atualizadas recentemente\\</string>
     <string name="prefs_new_apps">Número de novas aplicações a mostrar em \"Novas aplicações\"</string>
     <string name="new_repository">Novo repositório</string>
     <string name="list_animation_description">Animar lista da página principal</string>
