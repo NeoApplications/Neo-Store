@@ -22,7 +22,7 @@
     <string name="tracks_or_reports_your_activity">עוקב אחר הפעילות שלך או מדווח עליה</string>
     <string name="unsigned">לא חתום</string>
     <string name="updates">עדכונים</string>
-    <string name="prefs_updated_apps">מספר האפליקציות שיוצגו ב\"עודכן לאחרונה\"</string>
+    <string name="prefs_updated_apps">מספר האפליקציות שיוצגו ב\"עודכן לאחרונה\\</string>
     <string name="action_failed">הפעולה נכשלה</string>
     <string name="add_repository">הוספת מאגר</string>
     <string name="address">כתובת</string>
