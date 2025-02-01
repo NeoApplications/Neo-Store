@@ -38,7 +38,8 @@ fun PrefsPage(navController: NavHostController, pageIndex: Int) {
         NavItem.OtherPrefs,
     )
     val pagerState = rememberPagerState(initialPage = pageIndex, pageCount = { pages.size })
-    val currentPage by remember { derivedStateOf { pages[pagerState.currentPage] } }
+    val currentPageIndex = remember { derivedStateOf { pagerState.currentPage } }
+    val currentPage by remember { derivedStateOf { pages[currentPageIndex.value] } }
 
     BackHandler {
         navController.navigateUp()
@@ -46,7 +47,7 @@ fun PrefsPage(navController: NavHostController, pageIndex: Int) {
 
     NeoNavigationSuiteScaffold(
         pages = pages,
-        selectedPage = currentPage,
+        selectedPage = currentPageIndex,
         onItemClick = { index ->
             scope.launch {
                 pagerState.animateScrollToPage(index)

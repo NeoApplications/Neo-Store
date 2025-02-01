@@ -68,7 +68,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
         NavItem.Installed,
     )
     val pagerState = rememberPagerState(initialPage = pageIndex, pageCount = { pages.size })
-    val currentPage by remember { derivedStateOf { pages[pagerState.currentPage] } }
+    val currentPageIndex = remember { derivedStateOf { pagerState.currentPage } }
     val appPackage: MutableState<String?> = remember { mutableStateOf(null) }
 
     BackHandler {
@@ -77,7 +77,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
 
     NeoNavigationSuiteScaffold(
         pages = pages,
-        selectedPage = currentPage,
+        selectedPage = currentPageIndex,
         onItemClick = { index ->
             scope.launch {
                 pagerState.animateScrollToPage(index)
