@@ -185,7 +185,7 @@
     <string name="only_on_wifi_and_battery">Только по Wi-Fi и при зарядке</string>
     <string name="install_after_sync">Автообновление</string>
     <string name="install_after_sync_summary">Устанавливать все новые версии после проверки репозиториев на наличие новых приложений.</string>
-    <string name="prefs_updated_apps">Количество приложений для отображения в \"Недавно обновлённые\"</string>
+    <string name="prefs_updated_apps">Количество приложений для отображения в \"Недавно обновлённые\\</string>
     <string name="prefs_new_apps">Количество приложений для отображения в \"Новые приложения\"</string>
     <string name="new_repository">Новый репозиторий</string>
     <string name="default_tab">Вкладка по умолчанию</string>
