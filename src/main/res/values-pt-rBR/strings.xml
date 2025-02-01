@@ -184,7 +184,7 @@
     <string name="only_on_wifi_and_battery">Apenas em Wi-Fi e carregando</string>
     <string name="install_after_sync">Atualização automática</string>
     <string name="install_after_sync_summary">Instale todas as novas versões após buscar nos repositórios por novos aplicativos.</string>
-    <string name="prefs_updated_apps">Número de aplicativos a serem exibidos em \"Atualizado recentemente\"</string>
+    <string name="prefs_updated_apps">Número de aplicativos a serem exibidos em \"Atualizado recentemente\\</string>
     <string name="prefs_new_apps">Número de aplicativos a serem exibidos em \"Novos aplicativos\"</string>
     <string name="new_repository">Novo repositório</string>
     <string name="default_tab">Aba padrão</string>
