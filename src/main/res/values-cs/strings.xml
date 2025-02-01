@@ -87,7 +87,7 @@
         <item quantity="few">%d aplikací ma novou verzi.</item>
         <item quantity="other">%d aplikací má novou verzi.</item>
     </plurals>
-    <string name="prefs_updated_apps">Počet aplikací, které se mají zobrazit v kategorii \"Nedávno aktualizované\"</string>
+    <string name="prefs_updated_apps">Počet aplikací, které se mají zobrazit v kategorii \"Nedávno aktualizované\\</string>
     <string name="no_applications_installed">Žádné nainstalované aplikace</string>
     <string name="no_description_available_DESC">Žádný popis.</string>
     <string name="no_matching_applications_found">Žádné takové aplikace se nepodařilo najít</string>
