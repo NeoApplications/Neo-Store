@@ -32,9 +32,10 @@ internal fun IndexV1.App.toProduct(repositoryId: Long) = Product(
     donates = listOfNotNull(
         donate?.let { Donate.Regular(it) },
         bitcoin?.let { Donate.Bitcoin(it) },
-        flattrID?.let { Donate.Flattr(it) },
-        liberapayID?.let { Donate.Liberapay(it) },
         openCollective?.let { Donate.OpenCollective(it) },
+        liberapay?.let { Donate.Liberapay(it) },
+        litecoin?.let { Donate.Litecoin(it) },
+        flattr?.let { Donate.Flattr(it) },
     )
         .sortedWith(IndexV0Parser.DonateComparator),
     screenshots = localized

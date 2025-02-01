@@ -56,8 +56,9 @@ data class IndexV1(
         val license: String = "",
         val donate: String? = null,
         val bitcoin: String? = null,
-        val flattrID: String? = null,
-        val liberapayID: String? = null,
+        val litecoin: String? = null,
+        val flattr: String? = null,
+        val liberapay: String? = null,
         val openCollective: String? = null,
         val localized: Map<String, Localized> = emptyMap(),
     )
