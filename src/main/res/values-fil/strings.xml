@@ -186,7 +186,7 @@
     <string name="install_after_sync_summary">I-install lahat ng mga bagong bersyon pagkatapos suriin ang mga repositoryo para sa mga update sa app.</string>
     <string name="install_after_sync">Awtomatikong pag-update</string>
     <string name="new_applications">Mga bagong app</string>
-    <string name="prefs_updated_apps">Ilang mga app ang ipapakita sa \"Kamakailang na-update\"</string>
+    <string name="prefs_updated_apps">Ilang mga app ang ipapakita sa \"Kamakailang na-update\\</string>
     <string name="prefs_new_apps">Ilang mga app ang ipapakita sa \"Mga bagong app\"</string>
     <string name="new_repository">Bagong repositoryo</string>
     <string name="default_tab">Default na app</string>
