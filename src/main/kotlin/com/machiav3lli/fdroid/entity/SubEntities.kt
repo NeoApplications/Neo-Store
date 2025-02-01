@@ -59,7 +59,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TrashSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Wrench
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @Serializable

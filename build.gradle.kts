@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+val jvmVersion = JavaVersion.VERSION_17
+
 android {
     namespace = "com.machiav3lli.fdroid"
     compileSdk = 35
@@ -40,12 +42,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = jvmVersion
+        targetCompatibility = jvmVersion
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = jvmVersion.toString()
         freeCompilerArgs = listOf("-Xjvm-default=all-compatibility")
     }
 

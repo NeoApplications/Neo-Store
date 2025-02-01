@@ -588,20 +588,18 @@ fun AppPage(
                                 }
                             }
                         }
-                        item {
-                            if (product.donates.isNotEmpty()) {
-                                ExpandableItemsBlock(heading = stringResource(id = R.string.donate)) {
-                                    product.donates.forEach { item ->
-                                        LinkItem(
-                                            linkType = DonateType(item, context),
-                                            onClick = { link ->
-                                                link?.let { onUriClick(it, true) }
-                                            },
-                                            onLongClick = { link ->
-                                                copyLinkToClipboard(link.toString())
-                                            }
-                                        )
-                                    }
+                        if (product.donates.isNotEmpty()) item {
+                            ExpandableItemsBlock(heading = stringResource(id = R.string.donate)) {
+                                product.donates.forEach { item ->
+                                    LinkItem(
+                                        linkType = DonateType(item, context),
+                                        onClick = { link ->
+                                            link?.let { onUriClick(it, true) }
+                                        },
+                                        onLongClick = { link ->
+                                            copyLinkToClipboard(link.toString())
+                                        }
+                                    )
                                 }
                             }
                         }
