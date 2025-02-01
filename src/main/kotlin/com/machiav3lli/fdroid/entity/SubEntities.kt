@@ -103,7 +103,9 @@ class Screenshot(val locale: String, val type: Type, val path: String) {
     enum class Type(val jsonName: String) {
         PHONE("phone"),
         SMALL_TABLET("smallTablet"),
-        LARGE_TABLET("largeTablet")
+        LARGE_TABLET("largeTablet"),
+        WEAR("wear"),
+        TV("tv"),
     }
 
     val identifier: String

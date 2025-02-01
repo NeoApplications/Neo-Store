@@ -9,6 +9,7 @@ import com.machiav3lli.fdroid.entity.Author
 import com.machiav3lli.fdroid.entity.Donate
 import com.machiav3lli.fdroid.entity.Screenshot
 import com.machiav3lli.fdroid.index.v0.IndexV0Parser
+import com.machiav3lli.fdroid.utility.extension.Quintuple
 import com.machiav3lli.fdroid.utility.extension.android.Android
 import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
 import okhttp3.internal.toLongOrDefault
@@ -40,17 +41,23 @@ internal fun IndexV1.App.toProduct(repositoryId: Long) = Product(
         .sortedWith(IndexV0Parser.DonateComparator),
     screenshots = localized
         .find { key, localized ->
-            Triple(
+            Quintuple(
                 localized.phoneScreenshots,
                 localized.sevenInchScreenshots,
-                localized.tenInchScreenshots
+                localized.tenInchScreenshots,
+                localized.tvScreenshots,
+                localized.wearScreenshots,
             )
-                .takeIf { it.first.isNotEmpty() || it.second.isNotEmpty() || it.third.isNotEmpty() }
+                .takeIf {
+                    it.first.isNotEmpty() || it.second.isNotEmpty() || it.third.isNotEmpty() || it.fourth.isNotEmpty() || it.fifth.isNotEmpty()
+                }
                 ?.let { Pair(key, it) }
         }?.let { (key, screenshots) ->
             screenshots.first.map { Screenshot(key, Screenshot.Type.PHONE, it) } +
                     screenshots.second.map { Screenshot(key, Screenshot.Type.SMALL_TABLET, it) } +
-                    screenshots.third.map { Screenshot(key, Screenshot.Type.LARGE_TABLET, it) }
+                    screenshots.third.map { Screenshot(key, Screenshot.Type.LARGE_TABLET, it) } +
+                    screenshots.fourth.map { Screenshot(key, Screenshot.Type.TV, it) } +
+                    screenshots.fifth.map { Screenshot(key, Screenshot.Type.WEAR, it) }
         }
         .orEmpty().toList(),
     suggestedVersionCode = suggestedVersionCode.toLongOrDefault(0L),

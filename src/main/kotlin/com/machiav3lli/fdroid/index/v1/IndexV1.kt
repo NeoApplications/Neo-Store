@@ -73,6 +73,8 @@ data class IndexV1(
         val phoneScreenshots: List<String> = emptyList(),
         val sevenInchScreenshots: List<String> = emptyList(),
         val tenInchScreenshots: List<String> = emptyList(),
+        val tvScreenshots: List<String> = emptyList(),
+        val wearScreenshots: List<String> = emptyList(),
     ) {
         fun localeIcon(locale: String): String = icon.nullIfEmpty()?.let { "$locale/$it" }.orEmpty()
     }

@@ -208,6 +208,8 @@ fun createScreenshotUri(
                 Screenshot.Type.PHONE        -> "phoneScreenshots"
                 Screenshot.Type.SMALL_TABLET -> "sevenInchScreenshots"
                 Screenshot.Type.LARGE_TABLET -> "tenInchScreenshots"
+                Screenshot.Type.TV           -> "tvScreenshots"
+                Screenshot.Type.WEAR         -> "wearScreenshots"
             }
         )
         .appendQueryParameter(QUERY_SCREENSHOT, screenshot.path)
