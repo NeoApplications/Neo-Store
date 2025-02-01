@@ -220,38 +220,36 @@ fun PrefsOtherPage(viewModel: PrefsVM = koinViewModel()) {
                             )
                         }
                     },
+                    overlineContent = {
+                        Text(
+                            text = stringResource(
+                                id = R.string.about_build_FORMAT,
+                                BuildConfig.VERSION_NAME,
+                                BuildConfig.VERSION_CODE,
+                            ),
+                            style = MaterialTheme.typography.labelSmall,
+                            modifier = Modifier.clickable {
+                                if (Preferences[Preferences.Key.KidsMode])
+                                    hidingCounter.intValue += 1
+                                if (hidingCounter.intValue >= 6) {
+                                    Preferences[Preferences.Key.KidsMode] = false
+                                    hidingCounter.intValue = 0
+                                }
+                            },
+                        )
+                    },
                     headlineContent = {
                         Text(
                             text = stringResource(id = R.string.application_name),
-                            style = MaterialTheme.typography.headlineMedium,
+                            style = MaterialTheme.typography.headlineSmall,
                             color = MaterialTheme.colorScheme.primary,
                         )
                     },
                     supportingContent = {
-                        Column {
-                            Text(
-                                text = stringResource(
-                                    id = R.string.about_build_FORMAT,
-                                    BuildConfig.VERSION_NAME,
-                                    BuildConfig.VERSION_CODE
-                                ),
-                                style = MaterialTheme.typography.titleSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.clickable {
-                                    if (Preferences[Preferences.Key.KidsMode])
-                                        hidingCounter.intValue += 1
-                                    if (hidingCounter.intValue >= 6) {
-                                        Preferences[Preferences.Key.KidsMode] = false
-                                        hidingCounter.intValue = 0
-                                    }
-                                },
-                            )
-                            Text(
-                                text = BuildConfig.APPLICATION_ID,
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
+                        Text(
+                            text = BuildConfig.APPLICATION_ID,
+                            style = MaterialTheme.typography.labelSmall,
+                        )
                     }
                 )
 
