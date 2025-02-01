@@ -191,7 +191,7 @@
     <string name="new_applications">Nya appar</string>
     <string name="install_after_sync">Automatisk uppdatering</string>
     <string name="install_after_sync_summary">Installera alla nya versioner efter att ha tittat igenom repos för nya appar.</string>
-    <string name="prefs_updated_apps">Antal appar att visa i \"Senast uppdaterade\"</string>
+    <string name="prefs_updated_apps">Antal appar att visa i \"Senast uppdaterade\\</string>
     <string name="prefs_new_apps">Antal appar att visa i \"Nya appar\"</string>
     <string name="new_repository">Ny repo</string>
     <string name="default_tab">Standardflik</string>
