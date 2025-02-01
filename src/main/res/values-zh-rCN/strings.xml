@@ -182,7 +182,7 @@
     <string name="only_on_wifi_and_battery">仅在连接 Wi-Fi 且充电时</string>
     <string name="install_after_sync">自动更新</string>
     <string name="install_after_sync_summary">在浏览新的应用程序存储库后，安装所有新的版本。</string>
-    <string name="prefs_updated_apps">在“最近更新”下显示的应用数量</string>
+    <string name="prefs_updated_apps">在“最近更新”下显示的应用数量\\</string>
     <string name="prefs_new_apps">在“新应用”下显示的应用数量</string>
     <string name="new_repository">新仓库</string>
     <string name="default_tab">默认标签页</string>
@@ -413,4 +413,10 @@
     <string name="installing_error_unknown_DESC">安装时出现未知错误。</string>
     <string name="installing_error_storage_DESC">由于存储问题安装错误。</string>
     <string name="installing_error_conflict_DESC">由于冲突导致了错误。</string>
+    <string name="syncing_batch_FORMAT">正在同步存储库 (%d/%d)</string>
+    <string name="prefs_service">服务</string>
+    <string name="about_channel">频道</string>
+    <string name="about_build_FORMAT">%s (构建 %s)</string>
+    <string name="prefs_layout">布局</string>
+    <string name="prefs_connection">网络连接</string>
 </resources>
