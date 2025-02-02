@@ -130,7 +130,7 @@
     <string name="prefs_personalization">Personalização</string>
     <string name="show_less">Mostrar menos</string>
     <string name="latest">Recentes</string>
-    <string name="prefs_updated_apps">Número de aplicações a mostrar em \"Atualizadas recentemente\"</string>
+    <string name="prefs_updated_apps">Número de aplicações a mostrar em \"Atualizadas recentemente\\</string>
     <string name="new_repository">Novo repositório</string>
     <string name="default_tab">Separador padrão</string>
     <string name="pending">Pendente</string>

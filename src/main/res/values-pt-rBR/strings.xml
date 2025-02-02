@@ -184,7 +184,7 @@
     <string name="only_on_wifi_and_battery">Apenas em Wi-Fi e carregando</string>
     <string name="install_after_sync">Atualização automática</string>
     <string name="install_after_sync_summary">Instale todas as novas versões após buscar nos repositórios por novos aplicativos.</string>
-    <string name="prefs_updated_apps">Número de aplicativos a serem exibidos em \"Atualizado recentemente\"</string>
+    <string name="prefs_updated_apps">Número de aplicativos a serem exibidos em \"Atualizado recentemente\\</string>
     <string name="prefs_new_apps">Número de aplicativos a serem exibidos em \"Novos aplicativos\"</string>
     <string name="new_repository">Novo repositório</string>
     <string name="default_tab">Aba padrão</string>
@@ -405,4 +405,22 @@
     <string name="confirm_uninstall_DESC_FORMAT">Você tem certeza que deseja desinstalar %s?</string>
     <string name="file_size_error_DESC">O tamanho do arquivo excede o tamanho esperado.</string>
     <string name="erase_all">Apagar tudo</string>
+    <string name="disable_certificate_check">Desabilitar verificação de certificado SSL (requer reiniciar o aplicativo)</string>
+    <string name="disable_certificate_check_summary">Pode ser útil em caso de certificados auto-assinados ou inválidos (requeridos para alguns repositórios obsoletos).</string>
+    <string name="validation_error_FORMAT">Erro de validação: %s</string>
+    <string name="installing_error_FORMAT">Erro ao instalar %s</string>
+    <string name="installing_error_storage_DESC">Falha na instalação em problemas de armazenamento.</string>
+    <string name="installing_error_incompatible_DESC">Instalar incompatível.</string>
+    <string name="installing_error_blocked_DESC">Instalar foi bloqueado.</string>
+    <string name="installing_error_timeout_DESC">Tempo limite para instalar.</string>
+    <string name="installing_error_conflict_DESC">Erro causado por um conflito.</string>
+    <string name="installing_error_invalid_DESC">Instalar inválido.</string>
+    <string name="installing_error_unknown_DESC">Erro desconhecido ao instalar.</string>
+    <string name="prefs_layout">Layout</string>
+    <string name="downloading_error_FORMAT">Erro ao baixar %s</string>
+    <string name="syncing_batch_FORMAT">Sincronizando repositórios (%d/%d)</string>
+    <string name="prefs_connection">Conexão à Internet</string>
+    <string name="prefs_service">Serviço</string>
+    <string name="about_channel">Canal</string>
+    <string name="about_build_FORMAT">%s (Build %s)</string>
 </resources>
