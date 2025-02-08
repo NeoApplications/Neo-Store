@@ -205,7 +205,7 @@
     <string name="show_screenshots_description">アプリページでスクリーンショットします。</string>
     <string name="favorite_applications">お気に入り</string>
     <string name="releases_cache_retention">ダウンロードしたAPKのキャッシュの保持</string>
-    <string name="dynamic">システムのダイナミックテーマ</string>
+    <string name="dynamic">システムのダイナミックカラー</string>
     <string name="auto_sync_interval_hours">自動更新(時間ごとに)</string>
     <string name="favorite_remove">お気に入りから削除</string>
     <string name="no_updates_available">利用可能なバージョンはありません</string>
@@ -316,7 +316,7 @@
     <string name="keep_install_notification">インストール通知をキープ</string>
     <string name="show_trackers">トラッカーを表示</string>
     <string name="disable_signature_check">署名チェックを無効化</string>
-    <string name="extras_export">データをエクスポート（お気に入り、無視するアップデートなど）</string>
+    <string name="extras_export">データをエクスポート (お気に入り、無視するアップデートなど)</string>
     <string name="post_notifications_permission_title">通知の権限</string>
     <string name="no_trackers_data_available">利用可能なトラッカーのデータが(まだ)ありません。</string>
     <string name="disable_download_version_check_summary">インストールされたアプリの古いバージョンをダウンロードすることを許可する。Magisk の \"letmedowngrade\" パッチと組み合わせて使うことができます。</string>
@@ -331,4 +331,18 @@
     <string name="error">エラー</string>
     <string name="clear_text">テキストを消去</string>
     <string name="show_categories_bar_description">\"探索\"のページにカテゴリーサイドバーを表示します。</string>
+    <string name="repos_export">リポジトリをエクスポート</string>
+    <string name="repos_import">リポジトリをインポート (現在の状態を上書き)</string>
+    <string name="light_medium_contrast">ライト (中コントラスト)</string>
+    <string name="light_high_contrast">ライト (高コントラスト)</string>
+    <string name="black_medium_contrast">ブラック (コントラスト 中)</string>
+    <string name="dark_medium_contrast">ダーク (中コントラスト)</string>
+    <string name="dark_high_contrast">ダーク (高コントラスト)</string>
+    <string name="black_high_contrast">ブラック (高コントラスト)</string>
+    <string name="installed_export">インストール済みアプリのリストをエクスポート</string>
+    <string name="installed_import">インストール済みアプリのリストをインポートしてアプリをインストール (存在する場合は、有効なリポジトリから取得)</string>
+    <string name="download_manager">システムのダウンロードマネージャー</string>
+    <string name="dynamic_light">ライトダイナミックカラー</string>
+    <string name="dynamic_dark">ダークダイナミックカラー</string>
+    <string name="dynamic_black">ブラックダイナミックカラー</string>
 </resources>
