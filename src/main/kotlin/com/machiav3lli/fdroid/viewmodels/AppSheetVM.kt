@@ -176,7 +176,7 @@ class AppSheetVM(val db: DatabaseX) : ViewModel() {
             val nmA = new.first
             val matchCancel =
                 !(omA is ActionState.Cancel && nmA is ActionState.Cancel && nmA.textId != omA.textId)
-            old.second == new.second && matchCancel
+            old.second == new.second && old.first == new.first && matchCancel
         }
 
     val mainAction: StateFlow<ActionState> = actions.map { it.first }
