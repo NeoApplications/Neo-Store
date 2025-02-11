@@ -46,7 +46,6 @@ class IndexV0Parser(private val repositoryId: Long, private val callback: Callba
             Donate.Regular::class,
             Donate.Bitcoin::class,
             Donate.Litecoin::class,
-            Donate.Flattr::class,
             Donate.Liberapay::class,
             Donate.OpenCollective::class
         )
@@ -306,9 +305,6 @@ class IndexV0Parser(private val repositoryId: Long, private val callback: Callba
 
                 "litecoin"
                      -> productBuilder.donates += Donate.Litecoin(readText())
-
-                "flattr"
-                     -> productBuilder.donates += Donate.Flattr(readText())
 
                 "liberapay"
                      -> productBuilder.donates += Donate.Liberapay(readText())

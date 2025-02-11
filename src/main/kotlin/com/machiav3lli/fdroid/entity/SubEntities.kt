@@ -13,7 +13,6 @@ import com.machiav3lli.fdroid.content.Preferences
 import com.machiav3lli.fdroid.database.entity.Release
 import com.machiav3lli.fdroid.ui.compose.icons.Icon
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
-import com.machiav3lli.fdroid.ui.compose.icons.icon.IcDonateFlattr
 import com.machiav3lli.fdroid.ui.compose.icons.icon.IcDonateLiberapay
 import com.machiav3lli.fdroid.ui.compose.icons.icon.IcDonateLitecoin
 import com.machiav3lli.fdroid.ui.compose.icons.icon.IcDonateOpencollective
@@ -80,9 +79,6 @@ sealed class Donate {
 
     @Serializable
     data class Litecoin(val address: String) : Donate()
-
-    @Serializable
-    data class Flattr(val id: String) : Donate()
 
     @Serializable
     data class Liberapay(val id: String) : Donate()
@@ -167,7 +163,6 @@ class DonateType(donate: Donate, context: Context) : LinkType(
         is Donate.Regular        -> Phosphor.CurrencyDollarSimple
         is Donate.Bitcoin        -> Phosphor.CurrencyBTC
         is Donate.Litecoin       -> Icon.IcDonateLitecoin
-        is Donate.Flattr         -> Icon.IcDonateFlattr
         is Donate.Liberapay      -> Icon.IcDonateLiberapay
         is Donate.OpenCollective -> Icon.IcDonateOpencollective
     },
@@ -175,7 +170,6 @@ class DonateType(donate: Donate, context: Context) : LinkType(
         is Donate.Regular        -> context.getString(R.string.website)
         is Donate.Bitcoin        -> "Bitcoin"
         is Donate.Litecoin       -> "Litecoin"
-        is Donate.Flattr         -> "Flattr"
         is Donate.Liberapay      -> "Liberapay"
         is Donate.OpenCollective -> "Open Collective"
     },
@@ -183,7 +177,6 @@ class DonateType(donate: Donate, context: Context) : LinkType(
         is Donate.Regular        -> Uri.parse(donate.url)
         is Donate.Bitcoin        -> Uri.parse("bitcoin:${donate.address}")
         is Donate.Litecoin       -> Uri.parse("litecoin:${donate.address}")
-        is Donate.Flattr         -> Uri.parse("https://flattr.com/thing/${donate.id}")
         is Donate.Liberapay      -> Uri.parse("https://liberapay.com/~${donate.id}")
         is Donate.OpenCollective -> Uri.parse("https://opencollective.com/${donate.id}")
     }
