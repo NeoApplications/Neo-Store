@@ -4,8 +4,8 @@ import androidx.work.WorkInfo
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.database.entity.InstallTask
 import com.machiav3lli.fdroid.database.entity.Release
+import com.machiav3lli.fdroid.entity.ActionState
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.math.roundToInt
 
@@ -136,6 +136,13 @@ sealed class DownloadState {
 
     val isActive: Boolean
         get() = (this is Connecting || this is Downloading || this is Pending) && System.currentTimeMillis() - this.changed < 60_000L
+
+    fun toActionState() = when (this) {
+        is Pending     -> ActionState.CancelPending
+        is Connecting  -> ActionState.CancelConnecting
+        is Downloading -> ActionState.CancelDownloading
+        else           -> null
+    }
 
     fun toJSON() = Json.encodeToString(this)
 

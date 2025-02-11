@@ -361,7 +361,10 @@ fun AppPage(
                 Unit
             }
 
-            is ActionState.Cancel -> {
+            is ActionState.CancelPending,
+            is ActionState.CancelConnecting,
+            is ActionState.CancelDownloading,
+                                  -> {
                 val cancelIntent = Intent(context, ActionReceiver::class.java).apply {
                     this.action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD
                     putExtra(ARG_PACKAGE_NAME, packageName)

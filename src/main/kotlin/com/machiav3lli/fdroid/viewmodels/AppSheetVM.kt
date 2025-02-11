@@ -168,16 +168,10 @@ class AppSheetVM(val db: DatabaseX) : ViewModel() {
             }
 
             val mA = if (ds != null && ds.isActive)
-                ActionState.Cancel(ds.description)
+                ds.toActionState() ?: primaryAction
             else primaryAction
             Pair(mA, actions.minus(mA))
-        }.distinctUntilChanged { old, new ->
-            val omA = old.first
-            val nmA = new.first
-            val matchCancel =
-                !(omA is ActionState.Cancel && nmA is ActionState.Cancel && nmA.textId != omA.textId)
-            old.second == new.second && old.first == new.first && matchCancel
-        }
+        }.distinctUntilChanged()
 
     val mainAction: StateFlow<ActionState> = actions.map { it.first }
         .stateIn(

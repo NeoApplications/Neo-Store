@@ -107,14 +107,22 @@ fun MainActionButton(
 ) {
     val containerColor by animateColorAsState(
         targetValue = when (actionState) {
-            is ActionState.Cancel   -> MaterialTheme.colorScheme.tertiary
+            is ActionState.CancelPending,
+            is ActionState.CancelConnecting,
+            is ActionState.CancelDownloading,
+                                    -> MaterialTheme.colorScheme.tertiary
+
             is ActionState.NoAction -> MaterialTheme.colorScheme.inverseSurface
             else                    -> MaterialTheme.colorScheme.primaryContainer
         }, label = "containerColor"
     )
     val contentColor by animateColorAsState(
         targetValue = when (actionState) {
-            is ActionState.Cancel   -> MaterialTheme.colorScheme.onTertiary
+            is ActionState.CancelPending,
+            is ActionState.CancelConnecting,
+            is ActionState.CancelDownloading,
+                                    -> MaterialTheme.colorScheme.onTertiary
+
             is ActionState.NoAction -> MaterialTheme.colorScheme.inverseOnSurface
             else                    -> MaterialTheme.colorScheme.onPrimaryContainer
         }, label = "contentColor"
@@ -132,11 +140,14 @@ fun MainActionButton(
             targetState = actionState,
             transitionSpec = {
                 when (targetState) {
-                    is ActionState.Cancel ->
+                    is ActionState.CancelPending,
+                    is ActionState.CancelConnecting,
+                    is ActionState.CancelDownloading,
+                         ->
                         ((slideInVertically { height -> height } + fadeIn()).togetherWith(
                             slideOutVertically { height -> -height } + fadeOut()))
 
-                    else                  ->
+                    else ->
                         ((slideInVertically { height -> -height } + fadeIn()).togetherWith(
                             slideOutVertically { height -> height } + fadeOut()))
                 }
