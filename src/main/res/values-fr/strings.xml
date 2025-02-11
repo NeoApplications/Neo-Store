@@ -184,8 +184,8 @@
     <string name="only_on_wifi_and_battery">Uniquement en Wi-Fi et branché</string>
     <string name="install_after_sync">Mises à jour automatiques</string>
     <string name="install_after_sync_summary">Installer toutes les nouvelles versions après avoir examiné les dépôts pour de nouvelles applis.</string>
-    <string name="prefs_new_apps">Nombre d’applis à afficher dans « Nouvelles applis »</string>
-    <string name="prefs_updated_apps">Nombre d’applis à afficher dans « Récemment mises à jour »</string>
+    <string name="prefs_new_apps">Nombre d’applis à afficher dans \"Nouvelles applis\\</string>
+    <string name="prefs_updated_apps">Nombre d’applis à afficher dans \"Récemment mis à jour\\</string>
     <string name="new_repository">Nouveau dépôt</string>
     <string name="default_tab">Onglet par défaut</string>
     <string name="pending">En attente</string>
@@ -377,9 +377,9 @@
     <string name="android_instead_of_sdk">Montrer la version d\'Android au lieu de celle du SDK</string>
     <string name="confirm_download_DESC_FORMAT">Êtes-vous sûr de vouloir télécharger %s?</string>
     <string name="download_show_dialog">Afficher le dialogue de téléchargement</string>
-    <string name="download_show_dialog_summary">Affiche un dialogue demandant si vous êtes sûr de télécharger une application (nécessaire pour démarrer le téléchargement)</string>
+    <string name="download_show_dialog_summary">Affiche une boîte de dialogue demandant si vous êtes sûr de vouloir télécharger une application (nécessaire pour démarrer le téléchargement)</string>
     <string name="bottom_search_bar">Barre de recherche en bas</string>
-    <string name="bottom_search_bar_summary">Place la barre de recherche en bas de la page.</string>
+    <string name="bottom_search_bar_summary">Placer la barre de recherche en bas de la page.</string>
     <string name="select_all">Tout sélectionner</string>
     <string name="deselect_all">Tout désélectionner</string>
     <string name="action_lock_none">Aucun verrouillage</string>
@@ -388,9 +388,11 @@
     <string name="kids_mode">Mode Enfants</string>
     <string name="hide_new_apps">Masque la barre des nouvelles applications</string>
     <string name="hide_new_apps_description">Combine les nouvelles applications et celles récemment mises à jour dans la liste verticale de la dernière page.</string>
-    <string name="wait_to_sync">Attendre quelques secondes avant de réessayer de synchroniser.</string>
+    <string name="wait_to_sync">Attendez quelques secondes avant de réessayer de synchroniser.</string>
     <string name="prefs_search_apps_description">Nombre maximal d\'applications à inclure dans les résultats de recherche (mettre à 0 pour inclure toutes les applications).</string>
     <string name="state_modified">Modifié</string>
     <string name="alt_block_layout_summary">Utiliser une mise en page alternative/ancienne pour les blocs de pages avec des bordures au lieu de surfaces colorées.</string>
     <string name="alt_block_layout">Utiliser une mise en page alternative pour les blocs de pages</string>
+    <string name="action_lock_dialog">Afficher la boîte de dialogue de verrouillage d\'action</string>
+    <string name="kids_mode_summary_full">Activer le mode enfants, désactiver l\'installation de nouvelles applications. Pour désactiver, appuyez 6 fois sur la version de l\'application sur l\'autre page. Au redémarrage de l\'application, cet indice est caché.</string>
 </resources>
