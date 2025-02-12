@@ -40,14 +40,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.content.IntPrefsRanges
-import com.machiav3lli.fdroid.content.NonBooleanPrefsMeta
-import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.data.content.IntPrefsRanges
+import com.machiav3lli.fdroid.data.content.NonBooleanPrefsMeta
+import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.ui.components.DialogNegativeButton
 import com.machiav3lli.fdroid.ui.components.DialogPositiveButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
-import com.machiav3lli.fdroid.utility.extension.text.RE_finishChars
+import com.machiav3lli.fdroid.utils.extension.text.RE_finishChars
 import kotlinx.coroutines.delay
 
 @Composable

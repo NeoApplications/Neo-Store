@@ -2,20 +2,20 @@ package com.machiav3lli.fdroid.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.machiav3lli.fdroid.MainApplication
-import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.database.DatabaseX
-import com.machiav3lli.fdroid.database.dao.ExtrasDao
-import com.machiav3lli.fdroid.database.entity.ExodusInfo
-import com.machiav3lli.fdroid.database.entity.Extras
-import com.machiav3lli.fdroid.database.entity.Product
-import com.machiav3lli.fdroid.database.entity.Repository
-import com.machiav3lli.fdroid.entity.ActionState
-import com.machiav3lli.fdroid.entity.PrivacyData
-import com.machiav3lli.fdroid.entity.toAntiFeature
-import com.machiav3lli.fdroid.utility.findSuggestedProduct
-import com.machiav3lli.fdroid.utility.generatePermissionGroups
-import com.machiav3lli.fdroid.utility.toPrivacyNote
+import com.machiav3lli.fdroid.NeoApp
+import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.database.DatabaseX
+import com.machiav3lli.fdroid.data.database.dao.ExtrasDao
+import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
+import com.machiav3lli.fdroid.data.database.entity.Extras
+import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.ActionState
+import com.machiav3lli.fdroid.data.entity.PrivacyData
+import com.machiav3lli.fdroid.data.entity.toAntiFeature
+import com.machiav3lli.fdroid.utils.findSuggestedProduct
+import com.machiav3lli.fdroid.utils.generatePermissionGroups
+import com.machiav3lli.fdroid.utils.toPrivacyNote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -84,7 +84,7 @@ class AppSheetVM(val db: DatabaseX) : ViewModel() {
         val suggestedProduct = findSuggestedProduct(prs, ins) { it.first }
         PrivacyData(
             permissions = suggestedProduct?.first?.displayRelease
-                ?.generatePermissionGroups(MainApplication.mainActivity!!) ?: emptyMap(),
+                ?.generatePermissionGroups(NeoApp.context) ?: emptyMap(),
             trackers = trs,
             antiFeatures = suggestedProduct?.first?.antiFeatures?.mapNotNull { it.toAntiFeature() }
                 ?: emptyList()
@@ -235,7 +235,7 @@ class AppSheetVM(val db: DatabaseX) : ViewModel() {
             saveExtraField(packageName) {
                 if (it != null) updateAllowUnstable(packageName, setBoolean)
                 else insert(Extras(packageName, allowUnstable = setBoolean))
-                val features = MainApplication.context.packageManager.systemAvailableFeatures
+                val features = NeoApp.context.packageManager.systemAvailableFeatures
                     .asSequence().map { feat -> feat.name }
                     .toSet() + setOf("android.hardware.touchscreen")
                 productRepos.value.forEach { prodRepo ->

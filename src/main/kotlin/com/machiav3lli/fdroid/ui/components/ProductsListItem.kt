@@ -33,17 +33,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.database.entity.Installed
-import com.machiav3lli.fdroid.database.entity.Repository
-import com.machiav3lli.fdroid.entity.ActionState
-import com.machiav3lli.fdroid.entity.ProductItem
-import com.machiav3lli.fdroid.network.createIconUri
+import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.database.entity.Installed
+import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.ActionState
+import com.machiav3lli.fdroid.data.entity.ProductItem
+import com.machiav3lli.fdroid.manager.network.createIconUri
 import com.machiav3lli.fdroid.ui.components.appsheet.ReleaseBadge
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
-import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
+import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

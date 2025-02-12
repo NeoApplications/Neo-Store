@@ -13,9 +13,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.machiav3lli.fdroid.pages.MainPage
-import com.machiav3lli.fdroid.pages.PermissionsPage
-import com.machiav3lli.fdroid.pages.PrefsPage
+import com.machiav3lli.fdroid.ui.pages.MainPage
+import com.machiav3lli.fdroid.ui.pages.PermissionsPage
+import com.machiav3lli.fdroid.ui.pages.PrefsPage
 
 @Composable
 fun AppNavHost(

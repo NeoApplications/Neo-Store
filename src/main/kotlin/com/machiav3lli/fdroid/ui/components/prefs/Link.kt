@@ -5,7 +5,7 @@ import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.machiav3lli.fdroid.entity.LinkRef
+import com.machiav3lli.fdroid.data.entity.LinkRef
 
 @Composable
 fun LinkPreference(

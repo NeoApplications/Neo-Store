@@ -23,11 +23,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.database.entity.Release
-import com.machiav3lli.fdroid.entity.DialogKey
+import com.machiav3lli.fdroid.data.database.entity.Release
+import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.FlatActionButton
-import com.machiav3lli.fdroid.utility.extension.android.Android
+import com.machiav3lli.fdroid.utils.extension.android.Android
 
 @Composable
 fun ActionsDialogUI(

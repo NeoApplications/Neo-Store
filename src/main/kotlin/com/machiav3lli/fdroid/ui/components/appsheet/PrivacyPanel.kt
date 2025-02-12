@@ -27,27 +27,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.ANTIFEATURES_WEBSITE
 import com.machiav3lli.fdroid.EXODUS_TRACKER_WEBSITE
-import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TC_INTENT_EXTRA_SEARCH
 import com.machiav3lli.fdroid.TC_PACKAGENAME
 import com.machiav3lli.fdroid.TC_PACKAGENAME_FDROID
-import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.database.entity.Product
-import com.machiav3lli.fdroid.entity.AntiFeature
-import com.machiav3lli.fdroid.entity.PermissionGroup
-import com.machiav3lli.fdroid.entity.PrivacyNote
-import com.machiav3lli.fdroid.entity.SourceInfo
-import com.machiav3lli.fdroid.entity.TrackersGroup.Companion.getTrackersGroup
+import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.entity.AntiFeature
+import com.machiav3lli.fdroid.data.entity.PermissionGroup
+import com.machiav3lli.fdroid.data.entity.PrivacyNote
+import com.machiav3lli.fdroid.data.entity.SourceInfo
+import com.machiav3lli.fdroid.data.entity.TrackersGroup.Companion.getTrackersGroup
 import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
 import com.machiav3lli.fdroid.ui.components.privacy.PrivacyCard
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
-import com.machiav3lli.fdroid.utility.extension.grantedPermissions
-import com.machiav3lli.fdroid.utility.getLabelsAndDescriptions
-import com.machiav3lli.fdroid.utility.openPermissionPage
-import com.machiav3lli.fdroid.utility.privacyPoints
+import com.machiav3lli.fdroid.utils.extension.grantedPermissions
+import com.machiav3lli.fdroid.utils.getLabelsAndDescriptions
+import com.machiav3lli.fdroid.utils.openPermissionPage
+import com.machiav3lli.fdroid.utils.privacyPoints
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import kotlinx.coroutines.Job
 
@@ -62,7 +61,6 @@ fun PrivacyPanel(
     onUriClick: (Uri, Boolean) -> Boolean,
 ) {
     val context = LocalContext.current
-    val neoActivity = context as NeoActivity
     val trackers by viewModel.trackers.collectAsState(emptyList())
     val installed = viewModel.installedItem.collectAsState(null)
     val exodusInfo by viewModel.exodusInfo.collectAsState(null)

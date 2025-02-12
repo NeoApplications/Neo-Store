@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.database.entity.Repository
-import com.machiav3lli.fdroid.entity.ProductItem
-import com.machiav3lli.fdroid.network.createIconUri
+import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.ProductItem
+import com.machiav3lli.fdroid.manager.network.createIconUri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

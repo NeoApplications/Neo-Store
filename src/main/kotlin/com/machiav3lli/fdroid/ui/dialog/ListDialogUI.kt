@@ -19,7 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.MainApplication
+import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.ui.components.ProductItemContent
 import com.machiav3lli.fdroid.ui.compose.utils.blockShadow
@@ -83,10 +83,10 @@ fun ProductsListDialogUI(
     repositoryId: Long,
     title: String,
 ) {
-    val apps by MainApplication.db.getProductDao().productsForRepositoryFlow(repositoryId)
+    val apps by NeoApp.db.getProductDao().productsForRepositoryFlow(repositoryId)
         .mapLatest { prod -> prod.map { it.toItem() } }
         .collectAsState(initial = null)
-    val repo by MainApplication.db.getRepositoryDao().getFlow(repositoryId)
+    val repo by NeoApp.db.getRepositoryDao().getFlow(repositoryId)
         .collectAsState(initial = null)
 
     ListDialogUI(

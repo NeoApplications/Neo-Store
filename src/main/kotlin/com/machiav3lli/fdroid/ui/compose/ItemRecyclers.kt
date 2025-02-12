@@ -31,9 +31,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.database.entity.Repository
-import com.machiav3lli.fdroid.entity.ActionState
-import com.machiav3lli.fdroid.entity.ProductItem
+import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.ActionState
+import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.ui.components.PRODUCT_CARD_HEIGHT
 import com.machiav3lli.fdroid.ui.components.PRODUCT_CAROUSEL_HEIGHT
 import com.machiav3lli.fdroid.ui.components.ProductCard

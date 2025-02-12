@@ -53,7 +53,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.data.content.Preferences
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 

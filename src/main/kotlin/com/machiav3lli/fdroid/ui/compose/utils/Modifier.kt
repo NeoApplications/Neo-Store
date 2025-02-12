@@ -13,7 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.data.content.Preferences
 
 @Composable
 inline fun Modifier.addIf(

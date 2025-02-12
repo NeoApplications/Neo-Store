@@ -1,7 +1,7 @@
 package com.machiav3lli.fdroid.ui.components.prefs
 
 import androidx.compose.runtime.Composable
-import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.data.content.Preferences
 
 @Composable
 fun PrefsBuilder(

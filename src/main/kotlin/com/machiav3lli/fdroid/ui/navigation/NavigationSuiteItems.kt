@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.ui.navigation
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -25,13 +26,12 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.machiav3lli.fdroid.NeoActivity
-import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.data.content.Preferences
 import kotlinx.collections.immutable.ImmutableList
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
@@ -42,8 +42,7 @@ fun NeoNavigationSuiteScaffold(
     onItemClick: (Int) -> Unit,
     content: @Composable () -> Unit
 ) {
-    val context = LocalContext.current
-    val mActivity = context as NeoActivity
+    val mActivity = LocalActivity.current as NeoActivity
 
     val adaptiveInfo = currentWindowAdaptiveInfo()
     val customNavSuiteType = with(adaptiveInfo) {

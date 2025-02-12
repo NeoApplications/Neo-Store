@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import com.machiav3lli.backup.ui.compose.icons.phosphor.Plus
-import com.machiav3lli.fdroid.database.entity.Repository
+import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 

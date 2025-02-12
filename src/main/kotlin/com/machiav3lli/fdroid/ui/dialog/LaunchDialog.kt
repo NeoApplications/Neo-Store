@@ -5,7 +5,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.utility.startLauncherActivity
+import com.machiav3lli.fdroid.utils.startLauncherActivity
 
 class LaunchDialog(val packageName: String) : DialogFragment() { // TODO replace with composable
     companion object {

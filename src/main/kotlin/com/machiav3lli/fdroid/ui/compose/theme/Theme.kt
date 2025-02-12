@@ -12,11 +12,11 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.machiav3lli.fdroid.entity.Contrast
-import com.machiav3lli.fdroid.utility.extension.android.Android
-import com.machiav3lli.fdroid.utility.getGetThemeContrast
-import com.machiav3lli.fdroid.utility.isBlackTheme
-import com.machiav3lli.fdroid.utility.isDynamicColorsTheme
+import com.machiav3lli.fdroid.data.entity.Contrast
+import com.machiav3lli.fdroid.utils.extension.android.Android
+import com.machiav3lli.fdroid.utils.getGetThemeContrast
+import com.machiav3lli.fdroid.utils.isBlackTheme
+import com.machiav3lli.fdroid.utils.isDynamicColorsTheme
 
 @Composable
 fun AppTheme(

@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.POPUP_NONE
 import com.machiav3lli.fdroid.POPUP_SHORT
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.content.Preferences
+import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.ui.components.Tooltip
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowCircleLeft

@@ -29,8 +29,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.entity.ActionState
-import com.machiav3lli.fdroid.entity.ComponentState
+import com.machiav3lli.fdroid.data.entity.ActionState
+import com.machiav3lli.fdroid.data.entity.ComponentState
 
 @Composable
 fun ActionButton(

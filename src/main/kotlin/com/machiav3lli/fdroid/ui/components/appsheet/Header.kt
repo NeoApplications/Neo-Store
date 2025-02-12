@@ -29,9 +29,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.entity.ActionState
-import com.machiav3lli.fdroid.entity.SourceType
-import com.machiav3lli.fdroid.service.worker.DownloadState
+import com.machiav3lli.fdroid.data.entity.ActionState
+import com.machiav3lli.fdroid.data.entity.SourceType
+import com.machiav3lli.fdroid.manager.service.worker.DownloadState
 import com.machiav3lli.fdroid.ui.components.MainActionButton
 import com.machiav3lli.fdroid.ui.components.NetworkImage
 import com.machiav3lli.fdroid.ui.components.PRODUCT_CARD_ICON
@@ -42,8 +42,8 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyleft
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyright
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GlobeSimple
-import com.machiav3lli.fdroid.utility.extension.text.formatDateTime
-import com.machiav3lli.fdroid.utility.extension.text.formatSize
+import com.machiav3lli.fdroid.utils.extension.text.formatDateTime
+import com.machiav3lli.fdroid.utils.extension.text.formatSize
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

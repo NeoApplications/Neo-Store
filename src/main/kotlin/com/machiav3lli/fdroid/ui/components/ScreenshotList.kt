@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.database.entity.Repository
-import com.machiav3lli.fdroid.entity.Screenshot
-import com.machiav3lli.fdroid.network.createScreenshotUri
+import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.Screenshot
+import com.machiav3lli.fdroid.manager.network.createScreenshotUri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

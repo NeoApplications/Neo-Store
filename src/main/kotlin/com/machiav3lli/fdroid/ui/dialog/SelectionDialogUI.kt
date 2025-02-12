@@ -24,17 +24,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.content.NonBooleanPrefsMeta
-import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.content.PrefsEntries
+import com.machiav3lli.fdroid.data.content.NonBooleanPrefsMeta
+import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.content.PrefsEntries
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.DialogNegativeButton
 import com.machiav3lli.fdroid.ui.components.DialogPositiveButton
 import com.machiav3lli.fdroid.ui.components.FlatActionButton
 import com.machiav3lli.fdroid.ui.components.SingleSelectionListItem
 import com.machiav3lli.fdroid.ui.compose.utils.blockShadow
-import com.machiav3lli.fdroid.utility.Utils
-import com.machiav3lli.fdroid.utility.Utils.getLocaleOfCode
+import com.machiav3lli.fdroid.utils.Utils
+import com.machiav3lli.fdroid.utils.Utils.getLocaleOfCode
 
 @Composable
 fun LanguagePrefDialogUI(

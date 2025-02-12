@@ -1,6 +1,6 @@
 package com.machiav3lli.fdroid
 
-import com.machiav3lli.fdroid.entity.PermissionGroup
+import com.machiav3lli.fdroid.data.entity.PermissionGroup
 
 const val NOTIFICATION_CHANNEL_SYNCING = "syncing"
 const val NOTIFICATION_CHANNEL_UPDATES = "updates"

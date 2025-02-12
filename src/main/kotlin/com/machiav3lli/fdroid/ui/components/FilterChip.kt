@@ -38,7 +38,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CheckCircle
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Circle
 import com.machiav3lli.fdroid.ui.compose.utils.addIf
-import com.machiav3lli.fdroid.utility.extension.android.launchView
+import com.machiav3lli.fdroid.utils.extension.android.launchView
 
 private enum class SelectionState { Unselected, Selected }
 

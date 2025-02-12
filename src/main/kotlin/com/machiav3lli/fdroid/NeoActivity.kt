@@ -28,15 +28,15 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.database.DatabaseX
+import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.database.DatabaseX
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.AppNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
-import com.machiav3lli.fdroid.utility.extension.text.nullIfEmpty
-import com.machiav3lli.fdroid.utility.extension.text.pathCropped
-import com.machiav3lli.fdroid.utility.isBiometricLockEnabled
-import com.machiav3lli.fdroid.utility.isDarkTheme
+import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
+import com.machiav3lli.fdroid.utils.extension.text.pathCropped
+import com.machiav3lli.fdroid.utils.isBiometricLockEnabled
+import com.machiav3lli.fdroid.utils.isDarkTheme
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
@@ -82,9 +82,9 @@ class NeoActivity : AppCompatActivity() {
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MainApplication).mActivity = this
+        (application as NeoApp).mActivity = this
         currentTheme = Preferences[Preferences.Key.Theme].resId
-        MainApplication.mainActivity = this
+        NeoApp.mainActivity = this
         super.onCreate(savedInstanceState)
 
         setContent {
@@ -191,7 +191,7 @@ class NeoActivity : AppCompatActivity() {
                 if (!packageName.isNullOrEmpty()) {
                     lifecycleScope.launch {
                         specialIntent.cacheFileName?.let {
-                            MainApplication.installer.install(packageName, it)
+                            NeoApp.installer.install(packageName, it)
                         }
                     }
                 }
@@ -309,7 +309,7 @@ class NeoActivity : AppCompatActivity() {
                 .setConfirmationRequired(true)
                 .setAllowedAuthenticators(
                     BiometricManager.Authenticators.DEVICE_CREDENTIAL or (
-                            if (MainApplication.context.isBiometricLockEnabled()) BiometricManager.Authenticators.BIOMETRIC_WEAK
+                            if (NeoApp.context.isBiometricLockEnabled()) BiometricManager.Authenticators.BIOMETRIC_WEAK
                             else 0
                             )
                 )

@@ -2,20 +2,20 @@ package com.machiav3lli.fdroid.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.machiav3lli.fdroid.MainApplication
-import com.machiav3lli.fdroid.content.Cache
-import com.machiav3lli.fdroid.database.DatabaseX
-import com.machiav3lli.fdroid.database.entity.Downloaded
-import com.machiav3lli.fdroid.database.entity.Extras
-import com.machiav3lli.fdroid.database.entity.IconDetails
-import com.machiav3lli.fdroid.database.entity.Installed
-import com.machiav3lli.fdroid.database.entity.Licenses
-import com.machiav3lli.fdroid.database.entity.Product
-import com.machiav3lli.fdroid.entity.Page
-import com.machiav3lli.fdroid.entity.ProductItem
-import com.machiav3lli.fdroid.entity.Request
-import com.machiav3lli.fdroid.entity.Source
-import com.machiav3lli.fdroid.utility.matchSearchQuery
+import com.machiav3lli.fdroid.NeoApp
+import com.machiav3lli.fdroid.data.content.Cache
+import com.machiav3lli.fdroid.data.database.DatabaseX
+import com.machiav3lli.fdroid.data.database.entity.Downloaded
+import com.machiav3lli.fdroid.data.database.entity.Extras
+import com.machiav3lli.fdroid.data.database.entity.IconDetails
+import com.machiav3lli.fdroid.data.database.entity.Installed
+import com.machiav3lli.fdroid.data.database.entity.Licenses
+import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.entity.Page
+import com.machiav3lli.fdroid.data.entity.ProductItem
+import com.machiav3lli.fdroid.data.entity.Request
+import com.machiav3lli.fdroid.data.entity.Source
+import com.machiav3lli.fdroid.utils.matchSearchQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -225,7 +225,7 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
                 downloaded.repositoryId,
                 downloaded.cacheFileName
             )
-            Cache.eraseDownload(MainApplication.context, downloaded.cacheFileName)
+            Cache.eraseDownload(NeoApp.context, downloaded.cacheFileName)
         }
     }
 

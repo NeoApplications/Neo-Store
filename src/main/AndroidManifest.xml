@@ -20,7 +20,7 @@
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
 
     <application
-        android:name=".MainApplication"
+        android:name=".NeoApp"
         android:allowBackup="false"
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
@@ -114,11 +114,11 @@
         </activity>
 
         <receiver
-            android:name=".service.InstallerReceiver"
+            android:name="com.machiav3lli.fdroid.manager.service.InstallerReceiver"
             android:exported="false" />
 
         <provider
-            android:name=".content.Cache$Provider"
+            android:name="com.machiav3lli.fdroid.data.content.Cache$Provider"
             android:authorities="${applicationId}.provider.cache"
             android:exported="false"
             android:grantUriPermissions="true" />
@@ -134,7 +134,7 @@
         </provider>
 
         <receiver
-            android:name=".service.ActionReceiver"
+            android:name="com.machiav3lli.fdroid.manager.service.ActionReceiver"
             android:exported="false" />
 
         <service

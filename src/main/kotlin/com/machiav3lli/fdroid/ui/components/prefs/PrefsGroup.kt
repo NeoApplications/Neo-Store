@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.machiav3lli.fdroid.content.Preferences
-import com.machiav3lli.fdroid.entity.LinkRef
+import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.entity.LinkRef
 
 @Composable
 fun PreferenceGroup(
