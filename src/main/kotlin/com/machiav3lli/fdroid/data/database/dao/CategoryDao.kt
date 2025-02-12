@@ -28,6 +28,9 @@ interface CategoryDao : BaseDao<Category> {
 
     @Query("DELETE FROM category WHERE repositoryId = :id")
     fun deleteById(id: Long): Int
+
+    @Query("DELETE FROM category")
+    fun emptyTable()
 }
 
 @Dao

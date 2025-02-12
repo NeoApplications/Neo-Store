@@ -17,6 +17,9 @@ interface ReleaseDao : BaseDao<Release> {
 
     @Query("DELETE FROM `release` WHERE repositoryId = :id")
     fun deleteById(id: Long): Int
+
+    @Query("DELETE FROM `release`")
+    fun emptyTable()
 }
 
 @Dao

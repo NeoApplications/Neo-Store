@@ -54,6 +54,9 @@ interface RepositoryDao : BaseDao<Repository> {
     @Query("SELECT id FROM repository WHERE enabled == 0 ORDER BY id ASC")
     fun getAllDisabledIds(): List<Long>
 
+    @Query("UPDATE repository SET lastModified = '', entityTag = ''")
+    fun forgetLastModifications()
+
     // TODO clean up products and other tables afterwards
     @Query("DELETE FROM repository WHERE id = :id")
     fun deleteById(id: Long)

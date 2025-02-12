@@ -84,7 +84,7 @@ import org.koin.dsl.module
         Downloaded::class,
         InstallTask::class,
     ],
-    version = 31,
+    version = 1024,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -197,6 +197,11 @@ import org.koin.dsl.module
             from = 30,
             to = 31,
             spec = DatabaseX.Companion.AutoMigration30to31::class
+        ),
+        AutoMigration(
+            from = 31,
+            to = 1024,
+            spec = DatabaseX.Companion.ProductsCleanup::class
         ),
     ]
 )
@@ -373,6 +378,22 @@ abstract class DatabaseX : RoomDatabase() {
             override fun onPostMigrate(db: SupportSQLiteDatabase) {
                 super.onPostMigrate(db)
                 onPostMigrate(30)
+            }
+        }
+
+        class ProductsCleanup : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                GlobalScope.launch(Dispatchers.IO) {
+                    INSTANCE?.apply {
+                        runInTransaction {
+                            getProductDao().emptyTable()
+                            getCategoryDao().emptyTable()
+                            getReleaseDao().emptyTable()
+                            getRepositoryDao().forgetLastModifications()
+                        }
+                    }
+                }
             }
         }
 

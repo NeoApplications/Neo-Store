@@ -306,6 +306,9 @@ interface ProductDao : BaseDao<Product> {
 
         return SimpleSQLiteQuery(builder.build(), builder.arguments.toTypedArray())
     }
+
+    @Query("DELETE FROM product")
+    fun emptyTable()
 }
 
 @Dao
