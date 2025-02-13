@@ -1,0 +1,8 @@
+Ajout : Téléchargement parallèle et synchronisation
+Ajout : Exportation/importation d'applications et de référentiels installés
+Ajout : +50 nouveaux dépôts
+Ajout : Mode enfants
+Correction : Appeler les adresses Tor
+Mise à jour : Réorganisation de l'intégralité de l'interface utilisateur
+Mise à jour : Amélioration du réglage de la valeur de la boîte de dialogue de préférence
++ bien plus dans plus de 440 commits et 380 contributions de traduction
