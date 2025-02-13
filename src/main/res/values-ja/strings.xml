@@ -296,7 +296,7 @@
     <string name="permission_granted">許可</string>
     <string name="only_on_battery">充電時のみ</string>
     <string name="no_action_possible">可能なアクションがありません</string>
-    <string name="extras_import">データをインポート（お気に入り、無視するアップデートなど）</string>
+    <string name="extras_import">データをインポート (お気に入り、無視するアップデートなど)</string>
     <string name="cancel_all">すべてキャンセル</string>
     <string name="allowed_licenses">許可されたライセンス</string>
     <string name="ignore_vulns">報告されたセキュリティ上の脆弱性を無視する</string>
@@ -335,7 +335,7 @@
     <string name="repos_import">リポジトリをインポート (現在の状態を上書き)</string>
     <string name="light_medium_contrast">ライト (中コントラスト)</string>
     <string name="light_high_contrast">ライト (高コントラスト)</string>
-    <string name="black_medium_contrast">ブラック (コントラスト 中)</string>
+    <string name="black_medium_contrast">ブラック (中コントラスト)</string>
     <string name="dark_medium_contrast">ダーク (中コントラスト)</string>
     <string name="dark_high_contrast">ダーク (高コントラスト)</string>
     <string name="black_high_contrast">ブラック (高コントラスト)</string>
