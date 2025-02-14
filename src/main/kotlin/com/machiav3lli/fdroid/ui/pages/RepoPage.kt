@@ -522,7 +522,7 @@ fun RepoPage(
             ActionsDialogUI(
                 titleText = stringResource(id = R.string.confirmation),
                 messageText = "${repo?.name}: ${stringResource(id = R.string.delete_repository_DESC)}",
-                openDialogCustom = openDeleteDialog,
+                onDismiss = { openDeleteDialog.value = false },
                 primaryText = stringResource(id = R.string.delete),
                 primaryIcon = Phosphor.TrashSimple,
                 primaryAction = {

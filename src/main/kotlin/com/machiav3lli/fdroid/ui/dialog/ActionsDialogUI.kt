@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.ui.dialog
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,13 +34,14 @@ import com.machiav3lli.fdroid.utils.extension.android.Android
 fun ActionsDialogUI(
     titleText: String,
     messageText: String,
-    openDialogCustom: MutableState<Boolean>,
     primaryText: String,
     primaryIcon: ImageVector? = null,
     primaryAction: (() -> Unit) = {},
     secondaryText: String = "",
     secondaryIcon: ImageVector? = null,
     secondaryAction: (() -> Unit)? = null,
+    @StringRes dismissTextId: Int = R.string.cancel,
+    onDismiss: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -71,9 +73,7 @@ fun ActionsDialogUI(
             Row(
                 Modifier.fillMaxWidth()
             ) {
-                FlatActionButton(text = stringResource(id = R.string.cancel)) {
-                    openDialogCustom.value = false
-                }
+                FlatActionButton(text = stringResource(id = dismissTextId), onClick = onDismiss)
                 Spacer(Modifier.weight(1f))
                 if (secondaryAction != null && secondaryText.isNotEmpty()) {
                     ActionButton(
@@ -82,7 +82,7 @@ fun ActionsDialogUI(
                         positive = false
                     ) {
                         secondaryAction()
-                        openDialogCustom.value = false
+                        onDismiss()
                     }
                     Spacer(Modifier.requiredWidth(8.dp))
                 }
@@ -91,7 +91,7 @@ fun ActionsDialogUI(
                     icon = primaryIcon,
                 ) {
                     primaryAction()
-                    openDialogCustom.value = false
+                    onDismiss()
                 }
             }
         }
@@ -127,7 +127,7 @@ fun KeyDialogUI(
                 key.uri
             )
 
-            is DialogKey.Uninstall            -> stringResource(
+            is DialogKey.Uninstall           -> stringResource(
                 id = R.string.confirm_uninstall_DESC_FORMAT,
                 key.label
             )
@@ -193,7 +193,7 @@ fun KeyDialogUI(
 
             else                             -> ""
         }.toString(),
-        openDialogCustom = openDialog,
+        onDismiss = { openDialog.value = false },
         primaryText = when (key) {
             is DialogKey.ReleaseIssue,
             is DialogKey.ReleaseIncompatible,
