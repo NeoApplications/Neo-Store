@@ -560,7 +560,11 @@ fun AppPage(
                         }
                         if (enableScreenshots) { // TODO add optional screenshots button
                             item {
-                                ScreenshotList(screenShots = screenshots) { index ->
+                                ScreenshotList(
+                                    screenShots = screenshots,
+                                    video = product.video,
+                                    onUriClick = { onUriClick(it, true) },
+                                ) { index ->
                                     screenshotPage = index
                                     showScreenshots.value = true
                                 }
