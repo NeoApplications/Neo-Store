@@ -390,6 +390,7 @@ abstract class DatabaseX : RoomDatabase() {
                             getProductDao().emptyTable()
                             getCategoryDao().emptyTable()
                             getReleaseDao().emptyTable()
+                            getDownloadedDao().emptyTable()
                             getRepositoryDao().forgetLastModifications()
                         }
                     }
