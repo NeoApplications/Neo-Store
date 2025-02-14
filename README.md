@@ -75,12 +75,18 @@ To [Iamlooker](https://github.com/Iamlooker), who worked with me on maintaining 
 
 To [Donno](https://github.com/Donnnno) for the new app icon base.
 
+## Contributors
+
+<a href="https://github.com/NeoApplications/Neo-Store/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=NeoApplications/Neo-Store"  alt="Icons of contributors to Neo Store"/>
+</a>
+
 ## Copylefted Libre License :scroll:
 
-Licensed with: [GPLv3+](/COPYING). \
+Licensed under the [GPLv3+](/COPYING). \
 Direct adaptation/modification of [Foxy-Droid](https://github.com/kitsunyan/foxy-droid/).
 
-Copyright © 2023 [Antonios Hazim](https://github.com/machiav3lli) and [contributors](https://github.com/NeoApplications/Neo-Store/graphs/contributors).
+Copyright © 2025 [Antonios Hazim](https://github.com/machiav3lli) and [contributors](https://github.com/NeoApplications/Neo-Store/graphs/contributors).
 
-
+![Star History Chart](https://api.star-history.com/svg?repos=NeoApplications/Neo-Store&type=Date)
 
