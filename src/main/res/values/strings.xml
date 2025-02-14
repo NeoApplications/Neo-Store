@@ -420,4 +420,5 @@
     <string name="about_channel">Channel</string>
     <string name="about_build_FORMAT">%s (Build %s)</string>
     <string name="syncing_batch_FORMAT">Syncing repositories (%d/%d)</string>
+    <string name="initial_sync_repositories">Do you want to sync the preset repositories (The official F-Droid, IzzyOnDroid &amp; Guardian Project)?</string>
 </resources>

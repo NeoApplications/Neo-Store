@@ -104,6 +104,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.TargetSDKInstalled,
         Key.TargetSDKSearch,
         // invisible values
+        Key.InitialSync,
         Key.IgnoreDisableBatteryOptimization,
         Key.IgnoreShowNotifications,
     ).map { Pair(it.name, it) }.toMap()
@@ -527,6 +528,8 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object UpdateNotify : Key<Boolean>("update_notify", Value.BooleanValue(true))
         data object UpdateUnstable : Key<Boolean>("update_unstable", Value.BooleanValue(false))
         data object KidsMode : Key<Boolean>("kids_mode", Value.BooleanValue(false))
+
+        data object InitialSync : Key<Boolean>("initial_sync", Value.BooleanValue(false))
 
         data object IgnoreDisableBatteryOptimization :
             Key<Boolean>("ignore_disable_battery_optimization", Value.BooleanValue(false))

@@ -11,6 +11,7 @@ import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -41,6 +42,8 @@ import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
+import com.machiav3lli.fdroid.ui.dialog.ActionsDialogUI
+import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.ui.navigation.NeoNavigationSuiteScaffold
@@ -61,6 +64,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
         .collectAsState(initial = LatestSyncs(0L, 0L))
 
     val showPopup = remember { mutableIntStateOf(POPUP_NONE) }
+    val openSyncDialog = remember { mutableStateOf(false) }
 
     val pages = persistentListOf(
         NavItem.Latest,
@@ -74,6 +78,11 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
 
     BackHandler {
         mActivity.moveTaskToBack(true)
+    }
+
+    LaunchedEffect(true) {
+        if (!Preferences[Preferences.Key.InitialSync])
+            openSyncDialog.value = true
     }
 
     NeoNavigationSuiteScaffold(
@@ -158,5 +167,24 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
                 }
             }
         )
+    }
+
+    if (openSyncDialog.value) {
+        BaseDialog(openDialogCustom = openSyncDialog) {
+            ActionsDialogUI(
+                titleText = stringResource(id = R.string.confirmation),
+                messageText = stringResource(id = R.string.initial_sync_repositories),
+                primaryText = stringResource(id = R.string.sync_repositories),
+                primaryIcon = Phosphor.ArrowsClockwise,
+                primaryAction = {
+                    scope.launch { BatchSyncWorker.enqueue(SyncRequest.MANUAL) }
+                },
+                onDismiss = {
+                    Preferences[Preferences.Key.InitialSync] = true
+                    openSyncDialog.value = false
+                },
+                dismissTextId = R.string.skip,
+            )
+        }
     }
 }
