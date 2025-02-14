@@ -17,11 +17,11 @@ import androidx.work.WorkManager
 import androidx.work.WorkQuery
 import com.machiav3lli.fdroid.ARG_RESULT_CODE
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
-import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
+import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
@@ -32,19 +32,19 @@ import com.machiav3lli.fdroid.manager.service.worker.InstallWorker
 import com.machiav3lli.fdroid.manager.service.worker.SyncState
 import com.machiav3lli.fdroid.manager.service.worker.SyncWorker
 import com.machiav3lli.fdroid.manager.service.worker.ValidationError
-import com.machiav3lli.fdroid.utils.Utils
-import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.manager.work.DownloadStateHandler
 import com.machiav3lli.fdroid.manager.work.DownloadsTracker
 import com.machiav3lli.fdroid.manager.work.SyncStateHandler
 import com.machiav3lli.fdroid.manager.work.SyncsTracker
 import com.machiav3lli.fdroid.manager.work.WorkStateHolder
+import com.machiav3lli.fdroid.utils.Utils
+import com.machiav3lli.fdroid.utils.extension.android.Android
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -90,15 +90,18 @@ class WorkerManager(appContext: Context) : KoinComponent {
         setupWorkInfoCollection()
         monitorWorkProgress()
         scope.launch {
-            NeoApp.db.getInstallTaskDao()
-                .getAllFlow() // Add similar table for DownloadTasks
-                .distinctUntilChanged()
-                .collectLatest { tasks ->
-                    if (tasks.isNotEmpty()) {
-                        //prune()
-                        enqueueTasks(tasks)
-                    }
-                }
+            combine(
+                NeoApp.db.getInstallTaskDao()
+                    .getAllFlow(),
+                workManager.getWorkInfosFlow(
+                    WorkQuery.Builder
+                        .fromTags(listOf(InstallWorker::class.java.name))
+                        .addStates(listOf(WorkInfo.State.RUNNING, WorkInfo.State.ENQUEUED))
+                        .build()
+                )
+            ) { tasks, works ->
+                enqueueTasks(tasks, works)
+            }.collect()
         }
     }
 
@@ -237,25 +240,20 @@ class WorkerManager(appContext: Context) : KoinComponent {
         }
     }
 
-    private suspend fun enqueueTasks(tasks: List<InstallTask>) = installMutex.withLock {
-        val enqeuedWorks = workManager.getWorkInfos(
-            WorkQuery.Builder
-                .fromTags(listOf(InstallWorker::class.java.name))
-                .addStates(listOf(WorkInfo.State.RUNNING, WorkInfo.State.ENQUEUED))
-                .build()
-        ).get()
-
-        if (enqeuedWorks.isEmpty()) {
-            // No InstallWorker is currently running, so we can start a new one
-            tasks.maxByOrNull { it.added }?.let {
-                InstallWorker.enqueue(
-                    packageName = it.packageName,
-                    label = it.label,
-                    fileName = it.cacheFileName
-                )
+    private suspend fun enqueueTasks(tasks: List<InstallTask>, works: List<WorkInfo>) =
+        installMutex.withLock {
+            if (tasks.isEmpty() || works.isNotEmpty()) return@withLock
+            else {
+                // No InstallWorker is currently running, so we can start a new one
+                tasks.maxByOrNull { it.added }?.let {
+                    InstallWorker.enqueue(
+                        packageName = it.packageName,
+                        label = it.label,
+                        fileName = it.cacheFileName
+                    )
+                }
             }
         }
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannels() {

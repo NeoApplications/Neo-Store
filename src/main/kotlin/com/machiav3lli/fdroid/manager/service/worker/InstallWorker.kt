@@ -40,7 +40,7 @@ class InstallWorker(
     private val installerInstance = NeoApp.installer
     private val installJob = Job()
 
-    override suspend fun doWork(): Result = withContext(Dispatchers.IO + installJob) {
+    override suspend fun doWork(): Result = withContext(Dispatchers.Default + installJob) {
         val label = inputData.getString(ARG_NAME) ?: ""
         val fileName = inputData.getString(ARG_FILE_NAME) ?: ""
 
@@ -72,24 +72,27 @@ class InstallWorker(
                                     launch {
                                         installerInstance.install(label, fileName) {
                                             installState.value = InstallState.Completed
+                                            result = Result.success()
                                         }
                                     }
                                 }
                             } else {
                                 installerInstance.install(label, fileName) {
                                     installState.value = InstallState.Completed
+                                    result = Result.success()
                                 }
                             }
                         } catch (e: Exception) {
                             installState.value =
                                 InstallState.Failed(e.message ?: "Unknown error")
+                            result = Result.failure()
                         }
                     }
                 }
 
                 InstallState.Installing -> {
                     // Wait for installation to complete
-                    delay(1000)
+                    delay(2000)
                 }
 
                 InstallState.Completed  -> {
