@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1024,
-    "identityHash": "cdf73d6b8853095f95d7bae9f90352a2",
+    "identityHash": "02928b4815cb2ef9834297cc422a2d1e",
     "entities": [
       {
         "tableName": "repository",
@@ -117,7 +117,7 @@
       },
       {
         "tableName": "product",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `packageName` TEXT NOT NULL, `label` TEXT NOT NULL, `summary` TEXT NOT NULL, `description` TEXT NOT NULL, `added` INTEGER NOT NULL, `updated` INTEGER NOT NULL, `icon` TEXT NOT NULL, `metadataIcon` TEXT NOT NULL, `releases` BLOB NOT NULL, `categories` BLOB NOT NULL, `antiFeatures` BLOB NOT NULL, `licenses` BLOB NOT NULL, `donates` BLOB NOT NULL, `screenshots` BLOB NOT NULL, `versionCode` INTEGER NOT NULL, `suggestedVersionCode` INTEGER NOT NULL, `signatures` BLOB NOT NULL, `compatible` INTEGER NOT NULL, `author` BLOB NOT NULL, `source` TEXT NOT NULL, `web` TEXT NOT NULL, `tracker` TEXT NOT NULL, `changelog` TEXT NOT NULL, `whatsNew` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `packageName`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `packageName` TEXT NOT NULL, `label` TEXT NOT NULL, `summary` TEXT NOT NULL, `description` TEXT NOT NULL, `added` INTEGER NOT NULL, `updated` INTEGER NOT NULL, `icon` TEXT NOT NULL, `metadataIcon` TEXT NOT NULL, `releases` BLOB NOT NULL, `categories` BLOB NOT NULL, `antiFeatures` BLOB NOT NULL, `licenses` BLOB NOT NULL, `donates` BLOB NOT NULL, `screenshots` BLOB NOT NULL, `versionCode` INTEGER NOT NULL, `suggestedVersionCode` INTEGER NOT NULL, `signatures` BLOB NOT NULL, `compatible` INTEGER NOT NULL, `author` BLOB NOT NULL, `source` TEXT NOT NULL, `web` TEXT NOT NULL, `video` TEXT NOT NULL DEFAULT '', `tracker` TEXT NOT NULL, `changelog` TEXT NOT NULL, `whatsNew` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `packageName`))",
         "fields": [
           {
             "fieldPath": "repositoryId",
@@ -250,6 +250,13 @@
             "columnName": "web",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "video",
+            "columnName": "video",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "tracker",
@@ -731,7 +738,7 @@
       },
       {
         "tableName": "temporary_product",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `packageName` TEXT NOT NULL, `label` TEXT NOT NULL, `summary` TEXT NOT NULL, `description` TEXT NOT NULL, `added` INTEGER NOT NULL, `updated` INTEGER NOT NULL, `icon` TEXT NOT NULL, `metadataIcon` TEXT NOT NULL, `releases` BLOB NOT NULL, `categories` BLOB NOT NULL, `antiFeatures` BLOB NOT NULL, `licenses` BLOB NOT NULL, `donates` BLOB NOT NULL, `screenshots` BLOB NOT NULL, `versionCode` INTEGER NOT NULL, `suggestedVersionCode` INTEGER NOT NULL, `signatures` BLOB NOT NULL, `compatible` INTEGER NOT NULL, `author` BLOB NOT NULL, `source` TEXT NOT NULL, `web` TEXT NOT NULL, `tracker` TEXT NOT NULL, `changelog` TEXT NOT NULL, `whatsNew` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `packageName`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `packageName` TEXT NOT NULL, `label` TEXT NOT NULL, `summary` TEXT NOT NULL, `description` TEXT NOT NULL, `added` INTEGER NOT NULL, `updated` INTEGER NOT NULL, `icon` TEXT NOT NULL, `metadataIcon` TEXT NOT NULL, `releases` BLOB NOT NULL, `categories` BLOB NOT NULL, `antiFeatures` BLOB NOT NULL, `licenses` BLOB NOT NULL, `donates` BLOB NOT NULL, `screenshots` BLOB NOT NULL, `versionCode` INTEGER NOT NULL, `suggestedVersionCode` INTEGER NOT NULL, `signatures` BLOB NOT NULL, `compatible` INTEGER NOT NULL, `author` BLOB NOT NULL, `source` TEXT NOT NULL, `web` TEXT NOT NULL, `video` TEXT NOT NULL DEFAULT '', `tracker` TEXT NOT NULL, `changelog` TEXT NOT NULL, `whatsNew` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `packageName`))",
         "fields": [
           {
             "fieldPath": "repositoryId",
@@ -864,6 +871,13 @@
             "columnName": "web",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "video",
+            "columnName": "video",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "tracker",
@@ -1434,7 +1448,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cdf73d6b8853095f95d7bae9f90352a2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '02928b4815cb2ef9834297cc422a2d1e')"
     ]
   }
 }

@@ -67,6 +67,7 @@ data class IndexV1(
     data class Localized(
         val name: String = "",
         val summary: String = "",
+        val video: String = "",
         val description: String = "",
         val whatsNew: String = "",
         val icon: String = "",

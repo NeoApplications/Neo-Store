@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.data.database.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import com.machiav3lli.fdroid.ROW_ADDED
@@ -59,6 +60,8 @@ open class Product(
     var author: Author = Author()
     var source: String = ""
     var web: String = ""
+    @ColumnInfo(defaultValue = "")
+    var video: String = ""
     var tracker: String = ""
     var changelog: String = ""
     var whatsNew: String = ""
@@ -83,6 +86,7 @@ open class Product(
         author: Author = Author(),
         source: String = "",
         web: String = "",
+        video: String = "",
         tracker: String = "",
         changelog: String = "",
         whatsNew: String = "",
@@ -107,6 +111,7 @@ open class Product(
         this.author = author
         this.source = source
         this.web = web
+        this.video = video
         this.tracker = tracker
         this.changelog = changelog
         this.whatsNew = whatsNew
@@ -232,6 +237,7 @@ class ProductTemp(
     author: Author = Author(),
     source: String = "",
     web: String = "",
+    video: String = "",
     tracker: String = "",
     changelog: String = "",
     whatsNew: String = "",
@@ -255,6 +261,7 @@ class ProductTemp(
     author = author,
     source = source,
     web = web,
+    video = video,
     tracker = tracker,
     changelog = changelog,
     whatsNew = whatsNew
@@ -280,6 +287,7 @@ fun Product.asProductTemp(): ProductTemp = ProductTemp(
     author = author,
     source = source,
     web = web,
+    video = video,
     tracker = tracker,
     changelog = changelog,
     whatsNew = whatsNew

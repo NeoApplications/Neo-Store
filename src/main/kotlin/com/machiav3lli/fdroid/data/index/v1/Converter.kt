@@ -63,6 +63,7 @@ internal fun IndexV1.App.toProduct(repositoryId: Long) = Product(
     author = Author(authorName, authorEmail, authorWebSite),
     source = sourceCode,
     web = webSite,
+    video = localized.findLocalizedString("") { _, localized -> localized.video },
     tracker = issueTracker,
     changelog = changelog,
     whatsNew = localized.findLocalizedString("") { _, localized -> localized.whatsNew }
