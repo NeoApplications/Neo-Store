@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.database.entity.Repository
-import com.machiav3lli.fdroid.manager.service.worker.SyncWorker
+import com.machiav3lli.fdroid.manager.work.SyncWorker
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.BlockText
 import com.machiav3lli.fdroid.ui.components.CheckChip

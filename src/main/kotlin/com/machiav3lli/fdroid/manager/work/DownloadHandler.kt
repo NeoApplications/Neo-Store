@@ -15,10 +15,9 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
+import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.manager.service.InstallerReceiver
-import com.machiav3lli.fdroid.manager.service.worker.DownloadState
-import com.machiav3lli.fdroid.manager.service.worker.DownloadWorker
 import com.machiav3lli.fdroid.utils.downloadNotificationBuilder
 import com.machiav3lli.fdroid.utils.extension.text.formatSize
 import com.machiav3lli.fdroid.utils.updateWithError

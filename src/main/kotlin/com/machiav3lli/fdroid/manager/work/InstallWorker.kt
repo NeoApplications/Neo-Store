@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.manager.service.worker
+package com.machiav3lli.fdroid.manager.work
 
 import android.content.Context
 import android.content.pm.ServiceInfo
@@ -18,6 +18,7 @@ import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
+import com.machiav3lli.fdroid.data.entity.InstallState
 import com.machiav3lli.fdroid.manager.installer.LegacyInstaller
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.installNotificationBuilder

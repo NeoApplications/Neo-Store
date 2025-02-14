@@ -30,10 +30,10 @@ import com.machiav3lli.fdroid.manager.network.Downloader
 import com.machiav3lli.fdroid.manager.network.downloadClientModule
 import com.machiav3lli.fdroid.manager.network.exodusModule
 import com.machiav3lli.fdroid.manager.service.PackageChangedReceiver
-import com.machiav3lli.fdroid.manager.service.WorkerManager
-import com.machiav3lli.fdroid.manager.service.worker.BatchSyncWorker
-import com.machiav3lli.fdroid.manager.service.worker.SyncRequest
-import com.machiav3lli.fdroid.manager.service.workmanagerModule
+import com.machiav3lli.fdroid.manager.work.WorkerManager
+import com.machiav3lli.fdroid.manager.work.BatchSyncWorker
+import com.machiav3lli.fdroid.data.entity.SyncRequest
+import com.machiav3lli.fdroid.manager.work.workmanagerModule
 import com.machiav3lli.fdroid.utils.Utils.setLanguage
 import com.machiav3lli.fdroid.utils.Utils.toInstalledItem
 import com.machiav3lli.fdroid.utils.extension.android.Android

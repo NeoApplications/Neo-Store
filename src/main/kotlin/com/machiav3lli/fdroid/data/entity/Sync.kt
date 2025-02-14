@@ -1,4 +1,6 @@
-package com.machiav3lli.fdroid.manager.service.worker
+package com.machiav3lli.fdroid.data.entity
+
+import com.machiav3lli.fdroid.manager.work.SyncWorker
 
 class SyncTask(
     val repoId: Long,

@@ -39,7 +39,7 @@ import com.machiav3lli.backup.ui.compose.icons.phosphor.Plus
 import com.machiav3lli.fdroid.INTENT_ACTION_BINARY_EYE
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.manager.service.worker.SyncWorker
+import com.machiav3lli.fdroid.manager.work.SyncWorker
 import com.machiav3lli.fdroid.ui.components.RepositoryItem
 import com.machiav3lli.fdroid.ui.components.WideSearchField
 import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroupHeading

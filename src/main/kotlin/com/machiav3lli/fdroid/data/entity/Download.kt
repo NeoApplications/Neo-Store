@@ -1,10 +1,9 @@
-package com.machiav3lli.fdroid.manager.service.worker
+package com.machiav3lli.fdroid.data.entity
 
 import androidx.work.WorkInfo
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
 import com.machiav3lli.fdroid.data.database.entity.Release
-import com.machiav3lli.fdroid.data.entity.ActionState
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlin.math.roundToInt

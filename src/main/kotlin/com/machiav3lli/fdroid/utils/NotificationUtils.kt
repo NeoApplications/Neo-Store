@@ -33,9 +33,9 @@ import com.machiav3lli.fdroid.data.index.RepositoryUpdater
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.manager.service.InstallerReceiver
 import com.machiav3lli.fdroid.manager.service.installIntent
-import com.machiav3lli.fdroid.manager.service.worker.DownloadState
-import com.machiav3lli.fdroid.manager.service.worker.SyncWorker
-import com.machiav3lli.fdroid.manager.service.worker.ValidationError
+import com.machiav3lli.fdroid.data.entity.DownloadState
+import com.machiav3lli.fdroid.manager.work.SyncWorker
+import com.machiav3lli.fdroid.data.entity.ValidationError
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.android.notificationManager
 import com.machiav3lli.fdroid.utils.extension.resources.getColorFromAttr

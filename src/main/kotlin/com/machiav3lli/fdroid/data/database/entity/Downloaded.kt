@@ -6,7 +6,7 @@ import com.machiav3lli.fdroid.FIELD_CACHEFILENAME
 import com.machiav3lli.fdroid.FIELD_VERSION
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.TABLE_DOWNLOADED
-import com.machiav3lli.fdroid.manager.service.worker.DownloadState
+import com.machiav3lli.fdroid.data.entity.DownloadState
 
 @Entity(
     tableName = TABLE_DOWNLOADED,

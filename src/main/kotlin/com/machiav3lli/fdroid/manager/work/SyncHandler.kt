@@ -9,8 +9,7 @@ import androidx.work.Data
 import androidx.work.WorkInfo
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.manager.service.worker.SyncState
-import com.machiav3lli.fdroid.manager.service.worker.SyncWorker
+import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.utils.syncNotificationBuilder
 import com.machiav3lli.fdroid.utils.updateProgress
 import kotlinx.coroutines.CoroutineScope

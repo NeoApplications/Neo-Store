@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.SourceType
-import com.machiav3lli.fdroid.manager.service.worker.DownloadState
+import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.ui.components.MainActionButton
 import com.machiav3lli.fdroid.ui.components.NetworkImage
 import com.machiav3lli.fdroid.ui.components.PRODUCT_CARD_ICON

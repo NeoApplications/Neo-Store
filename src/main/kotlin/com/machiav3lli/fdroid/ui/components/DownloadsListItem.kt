@@ -25,7 +25,7 @@ import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.manager.network.createIconUri
-import com.machiav3lli.fdroid.manager.service.worker.DownloadState
+import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.ui.components.appsheet.DownloadProgress
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Eraser

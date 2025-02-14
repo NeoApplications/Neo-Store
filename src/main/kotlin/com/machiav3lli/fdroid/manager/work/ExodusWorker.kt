@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.manager.service.worker
+package com.machiav3lli.fdroid.manager.work
 
 import android.content.Context
 import android.util.Log

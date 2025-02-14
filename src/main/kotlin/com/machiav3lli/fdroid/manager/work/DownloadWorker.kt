@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.manager.service.worker
+package com.machiav3lli.fdroid.manager.work
 
 import android.app.DownloadManager
 import android.content.Context
@@ -36,6 +36,8 @@ import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.DownloadTask
+import com.machiav3lli.fdroid.data.entity.ValidationError
 import com.machiav3lli.fdroid.manager.network.DownloadSizeException
 import com.machiav3lli.fdroid.manager.network.Downloader
 import com.machiav3lli.fdroid.utils.Utils

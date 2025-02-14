@@ -5,7 +5,7 @@ import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.entity.Author
 import com.machiav3lli.fdroid.data.entity.Donate
 import com.machiav3lli.fdroid.data.entity.Screenshot
-import com.machiav3lli.fdroid.manager.service.worker.DownloadState
+import com.machiav3lli.fdroid.data.entity.DownloadState
 
 object Converters {
     @TypeConverter

@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.manager.service
+package com.machiav3lli.fdroid.manager.work
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -25,18 +25,11 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
+import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.ProductItem
-import com.machiav3lli.fdroid.manager.service.worker.DownloadState
-import com.machiav3lli.fdroid.manager.service.worker.DownloadWorker
-import com.machiav3lli.fdroid.manager.service.worker.InstallWorker
-import com.machiav3lli.fdroid.manager.service.worker.SyncState
-import com.machiav3lli.fdroid.manager.service.worker.SyncWorker
-import com.machiav3lli.fdroid.manager.service.worker.ValidationError
-import com.machiav3lli.fdroid.manager.work.DownloadStateHandler
-import com.machiav3lli.fdroid.manager.work.DownloadsTracker
-import com.machiav3lli.fdroid.manager.work.SyncStateHandler
-import com.machiav3lli.fdroid.manager.work.SyncsTracker
-import com.machiav3lli.fdroid.manager.work.WorkStateHolder
+import com.machiav3lli.fdroid.data.entity.SyncState
+import com.machiav3lli.fdroid.data.entity.ValidationError
+import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.utils.Utils
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import kotlinx.coroutines.CoroutineScope
@@ -246,7 +239,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
             else {
                 // No InstallWorker is currently running, so we can start a new one
                 tasks.maxByOrNull { it.added }?.let {
-                    InstallWorker.enqueue(
+                    InstallWorker.Companion.enqueue(
                         packageName = it.packageName,
                         label = it.label,
                         fileName = it.cacheFileName
@@ -303,7 +296,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
                         NeoApp.context,
                         "<SYNC_ALL>".hashCode(),
                         Intent(NeoApp.context, ActionReceiver::class.java).apply {
-                            action = ActionReceiver.COMMAND_CANCEL_SYNC_ALL
+                            action = ActionReceiver.Companion.COMMAND_CANCEL_SYNC_ALL
                         },
                         PendingIntent.FLAG_IMMUTABLE
                     )
@@ -329,7 +322,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
                         NeoApp.context,
                         "<DOWNLOAD_ALL>".hashCode(),
                         Intent(NeoApp.context, ActionReceiver::class.java).apply {
-                            action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD_ALL
+                            action = ActionReceiver.Companion.COMMAND_CANCEL_DOWNLOAD_ALL
                         },
                         PendingIntent.FLAG_IMMUTABLE
                     )
@@ -371,8 +364,8 @@ class WorkerManager(appContext: Context) : KoinComponent {
                 }
 
                 try {
-                    val task = SyncWorker.getTask(data)
-                    val dataState = SyncWorker.getState(data)
+                    val task = SyncWorker.Companion.getTask(data)
+                    val dataState = SyncWorker.Companion.getState(data)
 
                     when (workInfo.state) {
                         WorkInfo.State.ENQUEUED,
@@ -446,7 +439,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
                 }
 
                 try {
-                    val task = DownloadWorker.getTask(data)
+                    val task = DownloadWorker.Companion.getTask(data)
                     val resultCode = data.getInt(ARG_RESULT_CODE, 0)
                     val validationError = ValidationError.entries[
                         data.getInt(ARG_VALIDATION_ERROR, 0)
@@ -464,7 +457,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
                         )
 
                         WorkInfo.State.RUNNING   -> {
-                            val progress = DownloadWorker.getProgress(data)
+                            val progress = DownloadWorker.Companion.getProgress(data)
                             DownloadState.Downloading(
                                 packageName = task.packageName,
                                 name = task.name,

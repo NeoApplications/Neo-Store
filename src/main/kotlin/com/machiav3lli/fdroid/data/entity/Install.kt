@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.manager.service.worker
+package com.machiav3lli.fdroid.data.entity
 
 sealed class InstallState {
     data object Pending : InstallState()

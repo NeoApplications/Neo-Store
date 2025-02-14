@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.manager.service.worker
+package com.machiav3lli.fdroid.manager.work
 
 import android.app.PendingIntent
 import android.content.Context
@@ -36,6 +36,9 @@ import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.TAG_SYNC_PERIODIC
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.SyncRequest
+import com.machiav3lli.fdroid.data.entity.SyncState
+import com.machiav3lli.fdroid.data.entity.SyncTask
 import com.machiav3lli.fdroid.data.index.RepositoryUpdater
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.utils.extension.android.Android

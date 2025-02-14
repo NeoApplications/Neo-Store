@@ -71,8 +71,8 @@ import com.machiav3lli.fdroid.data.entity.PrivacyNote
 import com.machiav3lli.fdroid.manager.installer.RootInstaller
 import com.machiav3lli.fdroid.manager.network.createIconUri
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
-import com.machiav3lli.fdroid.manager.service.worker.DownloadWorker
-import com.machiav3lli.fdroid.manager.service.worker.ExodusWorker
+import com.machiav3lli.fdroid.manager.work.DownloadWorker
+import com.machiav3lli.fdroid.manager.work.ExodusWorker
 import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
 import com.machiav3lli.fdroid.ui.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.components.SwitchPreference

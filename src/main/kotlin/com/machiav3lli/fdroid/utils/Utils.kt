@@ -37,7 +37,7 @@ import com.machiav3lli.fdroid.data.entity.AndroidVersion
 import com.machiav3lli.fdroid.data.entity.Contrast
 import com.machiav3lli.fdroid.data.entity.LinkType
 import com.machiav3lli.fdroid.data.entity.PermissionGroup
-import com.machiav3lli.fdroid.manager.service.worker.DownloadWorker
+import com.machiav3lli.fdroid.manager.work.DownloadWorker
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.At

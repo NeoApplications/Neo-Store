@@ -33,8 +33,8 @@ import com.machiav3lli.fdroid.POPUP_SHORT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.LatestSyncs
-import com.machiav3lli.fdroid.manager.service.worker.BatchSyncWorker
-import com.machiav3lli.fdroid.manager.service.worker.SyncRequest
+import com.machiav3lli.fdroid.manager.work.BatchSyncWorker
+import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.ui.components.Tooltip
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.components.TopBarAction
