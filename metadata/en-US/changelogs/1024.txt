@@ -1,0 +1,7 @@
+Add: Support for video link, tv & wear screenshots
+Add: Dialog to notify for intial sync on first launch
+Fix: Not showing install on packages from sources without share
+Fix: Parsing and showing litecoin and liberapay links
+Update: Improve installer reliability
+Remove: Flattr donation link parsing
+plus many more in over 20 commits & 80 translation contributions

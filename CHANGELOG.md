@@ -1,6 +1,26 @@
 CHANGELOG
 =========
 
+1.0.7 (14.02.2025) +20 Commits +80 Translations
+------------------
+
+### Function
+
+- Fix: Not showing install on packages from sources without share
+- Fix: Recomposing navigation suite on changing pager state
+- Fix: Parsing and showing litecoin and liberapay links
+- Update: Improve installer reliability
+- Update: Limit parallel running SyncWorks
+- Update: Improve actions flow logic
+- Remove: Flattr donation link parsing
+
+### UI/UX
+
+- Add: Support for tv & wear screenshots
+- Add: Support for video link
+- Add: Dialog to notify for intial sync on first launch
+- Update: Revamp app info cards
+
 1.0.6 (23.01.2025) +140 Commits +100 Translations
 ------------------
 
@@ -231,10 +251,13 @@ CHANGELOG
 - Update: minSDK to 24
 - Update: targetSDK & compileSDK 34
 - Remove: Dependencies of deprecated usage
-- Add Repos: Aniyomi, Koyu, Kuschku, Kvaestiso, Etopa, Metatrans Apps, Gadgetbridge, FUTO, Grobox, Julian Fairfax, spiritCroc Test, Zimbelstern, Cromite, Divolt Repo, Rboard, Cake Wallet (credits @GitGitro)
+- Add Repos: Aniyomi, Koyu, Kuschku, Kvaestiso, Etopa, Metatrans Apps, Gadgetbridge, FUTO, Grobox,
+  Julian Fairfax, spiritCroc Test, Zimbelstern, Cromite, Divolt Repo, Rboard, Cake Wallet (credits
+  @GitGitro)
 - Add Repos: Samourai Wallet Repo (credits @RequestPrivacy)
 - Add Repos: Julian Andres Klode's repo (credits @ishanarora)
-- Add Repos: PurpleI2p, INVISV, Monerujo, iodé, spiritCroc, DivestOS Unofficial, Funkwhale… +28 other
+- Add Repos: PurpleI2p, INVISV, Monerujo, iodé, spiritCroc, DivestOS Unofficial, Funkwhale… +28
+  other
 - Fix Repos: The description for PeterCxy's Shelter repo (credits @ishanarora)
 - Fix Repos: c:geo repository (credits @ishanarora)
 - Fix Repos: Cromite repository address
