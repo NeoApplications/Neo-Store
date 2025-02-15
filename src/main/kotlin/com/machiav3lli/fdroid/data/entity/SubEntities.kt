@@ -179,7 +179,7 @@ class DonateType(donate: Donate, context: Context) : LinkType(
         is Donate.Regular        -> Uri.parse(donate.url)
         is Donate.Bitcoin        -> Uri.parse("bitcoin:${donate.address}")
         is Donate.Litecoin       -> Uri.parse("litecoin:${donate.address}")
-        is Donate.Liberapay      -> Uri.parse("https://liberapay.com/~${donate.id}")
+        is Donate.Liberapay      -> Uri.parse("https://liberapay.com/${donate.id}")
         is Donate.OpenCollective -> Uri.parse("https://opencollective.com/${donate.id}")
     }
 )
