@@ -23,7 +23,7 @@ import com.machiav3lli.fdroid.utils.extension.text.formatSize
 import com.machiav3lli.fdroid.utils.updateWithError
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 
@@ -45,10 +45,9 @@ class DownloadStateHandler(
         }
 
         scope.launch {
-            _downloadEvents.consumeAsFlow()
-                .collect { event ->
-                    updateNotification(event)
-                }
+            _downloadEvents.consumeEach { event ->
+                updateNotification(event)
+            }
         }
     }
 
@@ -100,7 +99,7 @@ class DownloadStateHandler(
         val appContext = NeoApp.context
         val builder = createNotificationBuilder(event.state)
         if (event.state is DownloadState.Success || event.state is DownloadState.Cancel) {
-            NeoApp.wm.notificationManager.cancel(event.key.hashCode())
+            notificationManager.cancel(event.key.hashCode())
         } else if (ActivityCompat.checkSelfPermission(
                 appContext,
                 Manifest.permission.POST_NOTIFICATIONS

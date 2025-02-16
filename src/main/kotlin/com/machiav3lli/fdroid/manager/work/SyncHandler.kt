@@ -14,12 +14,12 @@ import com.machiav3lli.fdroid.utils.syncNotificationBuilder
 import com.machiav3lli.fdroid.utils.updateProgress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 
 class SyncStateHandler(
-    private val scope: CoroutineScope,
+    scope: CoroutineScope,
     private val syncStates: WorkStateHolder<SyncState>,
     private val notificationManager: NotificationManagerCompat
 ) {
@@ -36,10 +36,9 @@ class SyncStateHandler(
         }
 
         scope.launch {
-            _syncEvents.consumeAsFlow()
-                .collect { event ->
-                    updateNotification(event)
-                }
+            _syncEvents.consumeEach { event ->
+                updateNotification(event)
+            }
         }
     }
 
@@ -55,7 +54,7 @@ class SyncStateHandler(
     fun updateState(key: String, state: SyncState?) {
         syncStates.updateState(key, state)
         if (state == null)
-            NeoApp.wm.notificationManager.cancel(key.hashCode())
+            notificationManager.cancel(key.hashCode())
     }
 
     private fun updateNotification(event: UpdateEvent) {
