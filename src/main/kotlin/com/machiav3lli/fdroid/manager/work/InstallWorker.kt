@@ -41,7 +41,7 @@ class InstallWorker(
     private val installerInstance = NeoApp.installer
     private val installJob = Job()
 
-    override suspend fun doWork(): Result = withContext(Dispatchers.Default + installJob) {
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO + installJob) {
         val label = inputData.getString(ARG_NAME) ?: ""
         val fileName = inputData.getString(ARG_FILE_NAME) ?: ""
 

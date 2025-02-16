@@ -59,7 +59,7 @@ class SyncWorker(
     ]
     private var repoName = inputData.getString(ARG_REPOSITORY_NAME) ?: ""
 
-    override suspend fun doWork(): Result = withContext(Dispatchers.Default) {
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         val task = SyncTask(repoId, request, repoName)
 
         return@withContext if (repoId != -1L) {
