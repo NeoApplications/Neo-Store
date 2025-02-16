@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import com.machiav3lli.fdroid.CLIENT_CONNECT_TIMEOUT
 import com.machiav3lli.fdroid.CLIENT_READ_TIMEOUT
+import com.machiav3lli.fdroid.CLIENT_USER_AGENT
 import com.machiav3lli.fdroid.CLIENT_WRITE_TIMEOUT
 import com.machiav3lli.fdroid.HOST_ICON
 import com.machiav3lli.fdroid.HOST_SCREENSHOT
@@ -22,6 +23,7 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.Screenshot
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
+import io.ktor.http.HttpHeaders
 import okhttp3.Cache
 import okhttp3.Call
 import okhttp3.ConnectionPool
@@ -113,11 +115,14 @@ object CoilDownloader {
     }
 
     fun createCall(request: Request.Builder, authentication: String, cache: Cache?): Call {
-        val newRequest = if (authentication.isNotEmpty()) {
-            request.addHeader("Authorization", authentication).build()
-        } else {
-            request.build()
-        }
+        val newRequest = request.removeHeader(HttpHeaders.UserAgent)
+            .addHeader(HttpHeaders.UserAgent, CLIENT_USER_AGENT)
+            .apply {
+                if (authentication.isNotEmpty()) {
+                    request.addHeader("Authorization", authentication)
+                }
+            }
+            .build()
         val client = updateClient(newRequest.url.host, cache)
         return client.newCall(newRequest)
     }

@@ -8,8 +8,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.database.getIntOrNull
 import androidx.core.database.getLongOrNull
 import androidx.core.net.toUri
-import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.CLIENT_CONNECT_TIMEOUT_MS
+import com.machiav3lli.fdroid.CLIENT_USER_AGENT
 import com.machiav3lli.fdroid.POOL_DEFAULT_KEEP_ALIVE_DURATION_M
 import com.machiav3lli.fdroid.POOL_DEFAULT_MAX_IDLE_CONNECTIONS
 import com.machiav3lli.fdroid.data.content.Preferences
@@ -21,6 +21,7 @@ import io.ktor.client.engine.ProxyBuilder
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.engine.resolveAddress
 import io.ktor.client.plugins.BodyProgress
+import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.UserAgent
@@ -353,9 +354,6 @@ private fun initDownloadClient(): HttpClient = HttpClient(OkHttp) {
         logger = Logger.ANDROID
         level = LogLevel.ALL
     }
-    install(UserAgent) {
-        agent = "${BuildConfig.APPLICATION_ID}-${BuildConfig.VERSION_CODE}"
-    }
     install(HttpTimeout) {
         connectTimeoutMillis = CLIENT_CONNECT_TIMEOUT_MS
         socketTimeoutMillis = CLIENT_CONNECT_TIMEOUT_MS
@@ -366,6 +364,9 @@ private fun initDownloadClient(): HttpClient = HttpClient(OkHttp) {
         maxRetries = 5
         delayMillis { retryNr -> (2.0.pow(retryNr) * 1000).toLong() }
         retryOnException(5, true)
+    }
+    install(UserAgent) {
+        agent = CLIENT_USER_AGENT
     }
 }
 

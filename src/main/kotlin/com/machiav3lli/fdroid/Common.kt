@@ -104,6 +104,7 @@ const val TAG_BATCH_SYNC_PERIODIC = "batch_sync_periodic"
 
 const val EXODUS_TRACKERS_SYNC = -22L
 
+const val CLIENT_USER_AGENT = "${BuildConfig.APPLICATION_ID}/${BuildConfig.VERSION_CODE}"
 const val POOL_DEFAULT_MAX_IDLE_CONNECTIONS = 15 // TODO make configurable
 const val POOL_DEFAULT_KEEP_ALIVE_DURATION_M = 5L
 const val CLIENT_CONNECT_TIMEOUT = 30L
