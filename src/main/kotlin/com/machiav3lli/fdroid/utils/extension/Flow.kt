@@ -12,6 +12,7 @@ fun <T> Flow<T>.takeUntilSignal(signal: Flow<Boolean>): Flow<T> = channelFlow {
     }
     try {
         collect { send(it) }
+    } catch (_: Exception) {
     } finally {
         signalJob.cancel()
     }
