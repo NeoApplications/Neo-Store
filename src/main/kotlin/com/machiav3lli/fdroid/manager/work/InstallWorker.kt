@@ -120,6 +120,7 @@ class InstallWorker(
         )
     }
 
+    // TODO replace with setProgressData and make use of it
     override fun setProgressAsync(data: Data): ListenableFuture<Void> {
         return super.setProgressAsync(
             Data.Builder()

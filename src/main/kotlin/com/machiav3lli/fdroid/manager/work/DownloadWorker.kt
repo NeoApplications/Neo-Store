@@ -18,7 +18,6 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.anggrayudi.storage.file.children
 import com.anggrayudi.storage.file.toDocumentFile
-import com.google.common.util.concurrent.ListenableFuture
 import com.machiav3lli.fdroid.ARG_AUTHENTICATION
 import com.machiav3lli.fdroid.ARG_NAME
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
@@ -90,7 +89,7 @@ class DownloadWorker(
 
         val callback: suspend (read: Long, total: Long?, downloadID: Long) -> Unit =
             { read, total, downloadID ->
-                setProgress(
+                setProgressData(
                     workDataOf(
                         ARG_PROGRESS to if (total != null) (100f * read / total).roundToInt() else -1,
                         ARG_READ to read,
@@ -161,8 +160,8 @@ class DownloadWorker(
         )
     }
 
-    override fun setProgressAsync(data: Data): ListenableFuture<Void> {
-        return super.setProgressAsync(
+    fun setProgressData(data: Data) {
+        setProgressAsync(
             Data.Builder()
                 .putAll(data)
                 .putLong(ARG_STARTED, task.started)
