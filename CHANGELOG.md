@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+1.0.8 (16.02.2025) 9 Commits 0 Translations
+------------------
+
+### Function
+
+- Fix: Crash on stopping download
+- Fix: Crash on signal flow closing
+- Fix: Liberapay donation link (credits @leoheitmannruiz)
+- Update: Improve consuming sync and download state updates
+- Add: User agent to calls in all clients
+- Update: Use IO instead of Default dispatcher for workers
+
 1.0.7 (14.02.2025) +20 Commits +80 Translations
 ------------------
 
