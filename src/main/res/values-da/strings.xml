@@ -405,4 +405,20 @@
     <string name="file_size_error_DESC">Filstørrelsen overstiger forventet størrelse.</string>
     <string name="disable_certificate_check">Deaktiver SSL-certifikatkontrol (kræver genstart af appen)</string>
     <string name="disable_certificate_check_summary">Kan være nyttigt i tilfælde af selvsignerede eller ugyldige certifikater (påkrævet for nogle forældede repositories).</string>
+    <string name="downloading_error_FORMAT">Fejl under download af %s</string>
+    <string name="validation_error_FORMAT">Valideringsfejl: %s</string>
+    <string name="installing_error_FORMAT">Fejl under installation af %s</string>
+    <string name="installing_error_incompatible_DESC">Installation inkompatibel.</string>
+    <string name="installing_error_blocked_DESC">Installation blev blokeret.</string>
+    <string name="installing_error_unknown_DESC">Ukendt fejl under installation.</string>
+    <string name="syncing_batch_FORMAT">Synkroniserer repositories (%d/%d)</string>
+    <string name="prefs_layout">Layout</string>
+    <string name="prefs_connection">Internetforbindelse</string>
+    <string name="about_channel">Kanal</string>
+    <string name="prefs_service">Service</string>
+    <string name="installing_error_storage_DESC">Installation mislykkedes grundet lagerproblemer.</string>
+    <string name="installing_error_timeout_DESC">Timeout for installation.</string>
+    <string name="installing_error_invalid_DESC">Ugyldig installation.</string>
+    <string name="installing_error_conflict_DESC">Fejl forårsaget af en konflikt.</string>
+    <string name="about_build_FORMAT">%s (Build %s)</string>
 </resources>
