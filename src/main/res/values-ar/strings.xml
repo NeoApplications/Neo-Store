@@ -413,4 +413,20 @@
     <string name="disable_certificate_check">تعطيل التحقق من شهادة SSL (يتطلب إعادة تشغيل التطبيق)</string>
     <string name="file_size_error_DESC">حجم الملف يتجاوز الحجم المتوقع.</string>
     <string name="disable_certificate_check_summary">يمكن أن تكون مفيدة في حالة الشهادات الموقعة ذاتيًا أو غير الصالحة (مطلوبة لبعض المستودعات المهجورة).</string>
+    <string name="downloading_error_FORMAT">خطأ أثناء تنزيل%s</string>
+    <string name="validation_error_FORMAT">خطأ في التحقق من الصحة: %s</string>
+    <string name="installing_error_FORMAT">خطأ أثناء تثبيت %s</string>
+    <string name="installing_error_storage_DESC">فشل التثبيت بسبب مشكلات في التخزين.</string>
+    <string name="installing_error_timeout_DESC">انتهت مهلة التثبيت.</string>
+    <string name="syncing_batch_FORMAT">مزامنة المستودعات (%d/%d)</string>
+    <string name="prefs_layout">التَخطِيط</string>
+    <string name="prefs_connection">الاتصال بالإنترنت</string>
+    <string name="prefs_service">خدمة</string>
+    <string name="about_channel">القناة</string>
+    <string name="about_build_FORMAT">%s (الإصدار %s)</string>
+    <string name="installing_error_incompatible_DESC">تثبيت غير متوافق.</string>
+    <string name="installing_error_conflict_DESC">خطأ ناتج عن تعارض.</string>
+    <string name="installing_error_invalid_DESC">تثبيت غير صالح.</string>
+    <string name="installing_error_blocked_DESC">تم حظر التثبيت.</string>
+    <string name="installing_error_unknown_DESC">خطأ غير معروف أثناء التثبيت.</string>
 </resources>
