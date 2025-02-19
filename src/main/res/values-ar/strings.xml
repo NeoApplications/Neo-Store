@@ -429,4 +429,5 @@
     <string name="installing_error_invalid_DESC">تثبيت غير صالح.</string>
     <string name="installing_error_blocked_DESC">تم حظر التثبيت.</string>
     <string name="installing_error_unknown_DESC">خطأ غير معروف أثناء التثبيت.</string>
+    <string name="initial_sync_repositories">هل تريد مزامنة المستودعات المحددة مسبقًا (مشروع F - Droid الرسمي و IzzyOnDroid و Guardian )؟</string>
 </resources>
