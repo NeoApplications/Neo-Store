@@ -176,7 +176,7 @@
     <string name="install_after_sync">Automatisch-bijwerken</string>
     <string name="install_after_sync_summary">Installeer alle nieuwe versies na het laden van archieven.</string>
     <string name="prefs_updated_apps">Aantal apps in \"recentelijk bijgewerkt\\</string>
-    <string name="prefs_new_apps">Aantal apps in \"nieuwe apps\\</string>
+    <string name="prefs_new_apps">Aantal apps in \"Nieuwe apps\"</string>
     <string name="new_repository">Nieuw archief</string>
     <string name="default_tab">Standaard tabblad</string>
     <string name="pending">Bezig</string>
@@ -419,4 +419,5 @@
     <string name="installing_error_incompatible_DESC">Installatie incompatibel.</string>
     <string name="installing_error_timeout_DESC">Onderbreking bij installatie.</string>
     <string name="syncing_batch_FORMAT">Archieven synchroniseren (%d/%d)</string>
+    <string name="initial_sync_repositories">Wilt je de vooraf ingestelde archieven synchroniseren (De officiële F-Droid, IzzyOnDroid &amp; Guardian Project)?</string>
 </resources>
