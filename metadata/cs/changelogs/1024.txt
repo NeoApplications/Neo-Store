@@ -1,0 +1,7 @@
+Přidáno: Podpora pro snímky obrazovky propojení, TV a hodinek
+Přidáno: Dialogové okno pro upozornění na počáteční synchronizaci při prvním spuštění
+Oprava: Nezobrazování instalace u balíčků ze zdrojů bez sdílení
+Oprava: Zpracování a zobrazení odkazů na litecoin a liberapay
+Aktualizace: Zlepšení spolehlivosti instalátoru
+Odstraněno: Zpracováno odkazů na dárcovství Flattr
+plus mnoho dalších ve více než 20 revizích a 80 příspěvcích k překladu
