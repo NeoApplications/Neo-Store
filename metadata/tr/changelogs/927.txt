@@ -1,0 +1,8 @@
+Ekle: KDE (Kararlı), C:Geo, Stack Cüzdan ve PeterCxy's Shelter depoları
+Ekle: Harici İndirme klasörü için seçenek
+Ekle: İzinler sayfası
+Ekle: InstalledPage için indirme sayfası (değiştirildi).
+Ekle: Güvenlik açıkları hakkındaki bildirimi yok sayma seçeneği
+Düzeltme: Arka plan (sessiz) yükleyici
+Güncelleme: Tercih iletişim kutusu değer ayarı geliştirildi
++ 40'tan fazla işlem ve 30 çeviri katkısı
