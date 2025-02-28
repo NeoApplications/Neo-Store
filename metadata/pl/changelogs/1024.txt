@@ -1,0 +1,7 @@
+Dodano: Obsługa linków wideo, zrzutów ekranu tv i zużycia
+Dodano: Okno dialogowe powiadamiające o wstępnej synchronizacji przy pierwszym uruchomieniu
+Poprawka: Brak wyświetlania instalacji pakietów ze źródeł bez udziału
+Poprawka: Parsowanie i wyświetlanie linków litecoin i liberapay
+Aktualizacja: Poprawa niezawodności instalatora
+Usunięto: Parsowanie linków do darowizn Flattr
+plus wiele więcej w ponad 20 zmianach i 80 wkładach tłumaczeniowych
