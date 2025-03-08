@@ -185,7 +185,7 @@
     <string name="new_applications">ਨਵੀਨਤਮ ਐਪਾਂ</string>
     <string name="install_after_sync">ਆਟੋ-ਅੱਪਡੇਟ</string>
     <string name="install_after_sync_summary">ਨਵੇਂ ਐਪਸ ਲਈ ਰਿਪੋਜ਼ਟਰੀਆਂ ਸਿੰਕ ਹੋਣ ਤੋਂ ਬਾਅਦ ਸਾਰੇ ਨਵੇਂ ਸੰਸਕਰਣਾਂ ਨੂੰ ਇੰਸਟਾਲ ਕਰੋ।</string>
-    <string name="prefs_updated_apps">\"ਹਾਲ ਹੀ ਅੱਪਡੇਟ\" ਵਿੱਚ ਵਿਖਾਉਣ ਲਈ ਐਪਸ ਦੀ ਸੰਖਿਆ</string>
+    <string name="prefs_updated_apps">\"ਹਾਲ ਹੀ ਅੱਪਡੇਟਡ\" ਵਿੱਚ ਵਿਖਾਉਣ ਲਈ ਐਪਸ ਦੀ ਸੰਖਿਆ</string>
     <string name="prefs_new_apps">\"ਨਵੀਆਂ ਐਪਾਂ\" ਵਿੱਚ ਵਿਖਾਉਣ ਲਈ ਐਪਸ ਦੀ ਸੰਖਿਆ</string>
     <string name="new_repository">ਨਵੀਂ ਰਿਪੋਜ਼ਟਰੀ</string>
     <string name="default_tab">ਡਿਫ਼ਾਲਟ ਟੈਬ</string>
@@ -402,4 +402,24 @@
     <string name="confirm_uninstall_DESC_FORMAT">ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ \'ਤੇ %s ਨੂੰ ਅਣਇੰਸਟਾਲ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
     <string name="all">ਸਾਰੇ</string>
     <string name="erase_all">ਸਾਰੇ ਮਿਟਾਓ</string>
+    <string name="file_size_error_DESC">ਫ਼ਾਈਲ ਦਾ ਆਕਾਰ ਉਮੀਦ ਤੋਂ ਵੱਧ ਹੈ।</string>
+    <string name="disable_certificate_check">SSL ਸਰਟੀਫਿਕੇਟ ਜਾਂਚ ਨੂੰ ਅਯੋਗ ਕਰੋ (ਐਪ ਨੂੰ ਮੁੜ ਚਾਲੂ ਕਰਨ ਦੀ ਲੋੜ ਹੈ)</string>
+    <string name="downloading_error_FORMAT">%s ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨ ਦੌਰਾਨ ਤਰੁੱਟੀ</string>
+    <string name="validation_error_FORMAT">ਪ੍ਰਮਾਣਿਕਤਾ ਤਰੁੱਟੀ: %s</string>
+    <string name="installing_error_FORMAT">%s ਨੂੰ ਇੰਸਟਾਲ ਕਰਨ ਦੌਰਾਨ ਤਰੁੱਟੀ</string>
+    <string name="installing_error_storage_DESC">ਸਟੋਰੇਜ ਸੰਬੰਧੀ ਸਮੱਸਿਆਵਾਂ ਕਰਕੇ ਇੰਸਟਾਲ ਅਸਫਲ ਰਹੀ।</string>
+    <string name="installing_error_incompatible_DESC">ਅਸੰਗਤ ਇੰਸਟਾਲ।</string>
+    <string name="installing_error_timeout_DESC">ਇੰਸਟਾਲ ਟਾਈਮਆਊਟ।</string>
+    <string name="installing_error_conflict_DESC">ਇੱਕ ਟਕਰਾਅ ਕਾਰਨ ਤਰੁੱਟੀ ਹੋਈ।</string>
+    <string name="installing_error_invalid_DESC">ਅਵੈਧ ਇੰਸਟਾਲ।</string>
+    <string name="installing_error_unknown_DESC">ਇੰਸਟਾਲ ਕਰਨ ਦੌਰਾਨ ਅਗਿਆਤ ਖ਼ਾਮੀ ਆਈ।</string>
+    <string name="syncing_batch_FORMAT">ਸਿੰਕ ਰਿਪੋਜ਼ਟਰੀਆਂ (%d/%d)</string>
+    <string name="installing_error_blocked_DESC">ਇੰਸਟਾਲੇਸ਼ਨ ਬਲੌਕ ਹੋ ਗਈ।</string>
+    <string name="disable_certificate_check_summary">ਸਵੈ-ਦਸਤਖਤ ਕੀਤੇ ਜਾਂ ਅਵੈਧ ਸਰਟੀਫਿਕੇਟਾਂ (ਕੁਝ ਨਾਪਸੰਦ ਕੀਤੇ ਰਿਪੋਜ਼ਟਰੀਆਂ ਲਈ ਲੋੜੀਂਦੇ) ਦੇ ਮਾਮਲੇ ਵਿੱਚ ਲਾਭਦਾਇਕ ਹੋ ਸਕਦਾ ਹੈ।</string>
+    <string name="prefs_layout">ਲੇਆਊਟ</string>
+    <string name="prefs_connection">ਇੰਟਰਨੈੱਟ ਕਨੈਕਸ਼ਨ</string>
+    <string name="prefs_service">ਸੇਵਾ</string>
+    <string name="about_channel">ਚੈਨਲ</string>
+    <string name="about_build_FORMAT">%s (ਬਿਲਡ %s)</string>
+    <string name="initial_sync_repositories">ਕੀ ਤੁਸੀਂ ਪ੍ਰੀਸੈਟ ਰਿਪੋਜ਼ਟਰੀਆਂ (ਅਧਿਕਾਰਤ F-Droid, IzzyOnDroid ਅਤੇ ਗਾਰਡੀਅਨ ਪ੍ਰੋਜੈਕਟ) ਨੂੰ ਸਿੰਕ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
 </resources>
