@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
+import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 
 plugins {
     alias(libs.plugins.android.application)
@@ -104,6 +105,9 @@ android {
                 "/META-INF/**.version", // comment out to enable layout inspector
                 "/okhttp3/internal/publicsuffix/*"
             )
+        }
+        kotlinExtension.sourceSets.all {
+            languageSettings.enableLanguageFeature("ExplicitBackingFields")
         }
     }
 
