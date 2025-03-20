@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
@@ -48,14 +49,20 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.ui.navigation.NeoNavigationSuiteScaffold
 import com.machiav3lli.fdroid.ui.navigation.SlidePager
+import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.getLocaleDateString
+import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-fun MainPage(navController: NavHostController, pageIndex: Int) {
+fun MainPage(
+    navController: NavHostController,
+    pageIndex: Int,
+    viewModel: MainVM = koinNeoViewModel()
+) {
     val context = LocalContext.current
     val mActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
@@ -75,6 +82,7 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
     val pagerState = rememberPagerState(initialPage = pageIndex, pageCount = { pages.size })
     val currentPageIndex = remember { derivedStateOf { pagerState.currentPage } }
     val appPackage: MutableState<String?> = remember { mutableStateOf(null) }
+    val navigatorState by viewModel.navigationState.collectAsStateWithLifecycle()
 
     BackHandler {
         mActivity.moveTaskToBack(true)
@@ -83,6 +91,12 @@ fun MainPage(navController: NavHostController, pageIndex: Int) {
     LaunchedEffect(true) {
         if (!Preferences[Preferences.Key.InitialSync])
             openSyncDialog.value = true
+    }
+
+    LaunchedEffect(navigatorState) {
+        scope.launch {
+            mActivity.mainNavigator.navigateTo(navigatorState.first, navigatorState.second)
+        }
     }
 
     NeoNavigationSuiteScaffold(

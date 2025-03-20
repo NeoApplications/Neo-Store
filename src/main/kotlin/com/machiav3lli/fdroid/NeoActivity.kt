@@ -78,6 +78,7 @@ class NeoActivity : AppCompatActivity() {
     val db: DatabaseX by inject()
 
     private var currentTheme by Delegates.notNull<Int>()
+    private val mainViewModel: MainVM by viewModel()
     private val prefsViewModel: PrefsVM by viewModel()
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -283,7 +284,7 @@ class NeoActivity : AppCompatActivity() {
 
     internal fun navigateProduct(packageName: String) {
         cScope.launch {
-            mainNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, packageName)
+            mainViewModel.setNavigatorRole(ListDetailPaneScaffoldRole.Detail, packageName)
         }
     }
 
@@ -293,7 +294,7 @@ class NeoActivity : AppCompatActivity() {
 
     private fun showSearchPage(query: String? = null) {
         mScope.launch {
-            mainNavigator.navigateTo(ListDetailPaneScaffoldRole.List)
+            mainViewModel.setNavigatorRole(ListDetailPaneScaffoldRole.List)
             navController.navigate(NavRoute.Main(Preferences.DefaultTab.Search.index))
         }
         cScope.launch {

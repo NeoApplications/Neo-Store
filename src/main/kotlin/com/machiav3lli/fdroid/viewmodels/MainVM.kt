@@ -1,5 +1,7 @@
 package com.machiav3lli.fdroid.viewmodels
 
+import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldRole
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.NeoApp
@@ -30,6 +32,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
@@ -50,6 +53,8 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
     val sortFilterSearch: StateFlow<String> = _sortFilterSearch
     private val _sortFilterInstalled = MutableStateFlow("")
     val sortFilterInstalled: StateFlow<String> = _sortFilterInstalled
+    val navigationState: StateFlow<Pair<ThreePaneScaffoldRole, String>>
+        private field = MutableStateFlow(Pair(ListDetailPaneScaffoldRole.List, ""))
 
     private val querySearch = MutableStateFlow("")
     private val _sourceExplore = MutableStateFlow(Source.NONE)
@@ -201,6 +206,10 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
 
     fun setSearchQuery(value: String) {
         viewModelScope.launch { querySearch.emit(value) }
+    }
+
+    fun setNavigatorRole(role: ThreePaneScaffoldRole, packageName: String = "") {
+        viewModelScope.launch { navigationState.update { Pair(role, packageName) } }
     }
 
     fun setExploreSource(ns: Source) {
