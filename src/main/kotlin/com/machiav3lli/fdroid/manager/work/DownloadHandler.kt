@@ -209,9 +209,7 @@ class DownloadsTracker {
 
         activeWorks[workInfo.id.toString()] = Pair(currentState, currentProgress)
 
-        if (currentState.isFinished) {
-            activeWorks.remove(workInfo.id.toString())
-        }
+        if (currentState.isFinished) activeWorks.remove(workInfo.id.toString())
 
         return previousState != currentState ||
                 (currentState == WorkInfo.State.RUNNING && previousProgress != currentProgress)

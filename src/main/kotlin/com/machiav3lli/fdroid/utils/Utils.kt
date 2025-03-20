@@ -54,6 +54,7 @@ import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.topjohnwu.superuser.Shell
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -92,13 +93,13 @@ object Utils {
             }
         val releaseFlow = MutableStateFlow(compatibleReleases.firstOrNull())
         if (compatibleReleases.size > 1) {
-            releaseFlow.emit(
+            releaseFlow.update {
                 compatibleReleases
                     .filter { it.platforms.contains(Android.primaryPlatform) }
                     .minByOrNull { it.platforms.size }
                     ?: compatibleReleases.minByOrNull { it.platforms.size }
                     ?: compatibleReleases.firstOrNull()
-            )
+            }
         }
         releaseFlow.collect {
             if (productRepository != null && it != null) {

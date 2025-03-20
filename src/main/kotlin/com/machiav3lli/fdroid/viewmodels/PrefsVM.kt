@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
@@ -61,13 +62,13 @@ class PrefsVM(val db: DatabaseX) : ViewModel() {
     val fingerprint = intentFingerprint as StateFlow<String>
 
     fun setSearchQuery(value: String) {
-        ioScope.launch { _reposSearchQuery.emit(value) }
+        ioScope.launch { _reposSearchQuery.update { value } }
     }
 
     fun setIntent(address: String?, fingerprint: String?) {
         viewModelScope.launch {
-            intentAddress.emit(address ?: "")
-            intentFingerprint.emit(fingerprint ?: "")
+            intentAddress.update { address ?: "" }
+            intentFingerprint.update { fingerprint ?: "" }
         }
     }
 

@@ -44,6 +44,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -289,7 +290,7 @@ class NeoActivity : AppCompatActivity() {
     }
 
     fun setSearchQuery(value: String) {
-        cScope.launch { _searchQuery.emit(value) }
+        cScope.launch { _searchQuery.update { value } }
     }
 
     private fun showSearchPage(query: String? = null) {
@@ -298,7 +299,7 @@ class NeoActivity : AppCompatActivity() {
             navController.navigate(NavRoute.Main(Preferences.DefaultTab.Search.index))
         }
         cScope.launch {
-            query?.let { _searchQuery.emit(it) }
+            query?.let { _searchQuery.update { it } }
         }
     }
 
@@ -322,7 +323,8 @@ class NeoActivity : AppCompatActivity() {
     }
 
     private fun createBiometricPrompt(action: () -> Unit): BiometricPrompt {
-        return BiometricPrompt(this,
+        return BiometricPrompt(
+            this,
             ContextCompat.getMainExecutor(this),
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {

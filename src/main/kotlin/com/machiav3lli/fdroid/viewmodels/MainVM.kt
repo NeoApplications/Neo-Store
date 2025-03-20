@@ -197,15 +197,15 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
 
     fun setSortFilter(page: Page, value: String) = viewModelScope.launch {
         when (page) {
-            Page.EXPLORE   -> _sortFilterExplore.emit(value)
-            Page.SEARCH    -> _sortFilterSearch.emit(value)
-            Page.INSTALLED -> _sortFilterInstalled.emit(value)
-            Page.LATEST    -> _sortFilterLatest.emit(value)
+            Page.EXPLORE   -> _sortFilterExplore.update { value }
+            Page.SEARCH    -> _sortFilterSearch.update { value }
+            Page.INSTALLED -> _sortFilterInstalled.update { value }
+            Page.LATEST    -> _sortFilterLatest.update { value }
         }
     }
 
     fun setSearchQuery(value: String) {
-        viewModelScope.launch { querySearch.emit(value) }
+        viewModelScope.launch { querySearch.update { value } }
     }
 
     fun setNavigatorRole(role: ThreePaneScaffoldRole, packageName: String = "") {
@@ -213,11 +213,11 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
     }
 
     fun setExploreSource(ns: Source) {
-        viewModelScope.launch { _sourceExplore.emit(ns) }
+        viewModelScope.launch { _sourceExplore.update { ns } }
     }
 
     fun setSearchSource(ns: Source) {
-        viewModelScope.launch { _sourceSearch.emit(ns) }
+        viewModelScope.launch { _sourceSearch.update { ns } }
     }
 
     fun eraseDownloaded(downloaded: Downloaded) {

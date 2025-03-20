@@ -199,7 +199,7 @@ dependencies {
 }
 
 // using a task as a preBuild dependency instead of a function that takes some time insures that it runs
-task("detectAndroidLocals") {
+tasks.register("detectAndroidLocals") {
     val langsList: MutableSet<String> = HashSet()
 
     // in /res are (almost) all languages that have a translated string is saved. this is safer and saves some time

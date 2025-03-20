@@ -76,7 +76,7 @@ class AppSheetVM(val db: DatabaseX) : ViewModel() {
     val productRepos: StateFlow<List<Pair<Product, Repository>>> = _productRepos
     fun updateProductRepos(repos: List<Pair<Product, Repository>>) {
         viewModelScope.launch {
-            _productRepos.emit(repos)
+            _productRepos.update { repos }
         }
     }
 
