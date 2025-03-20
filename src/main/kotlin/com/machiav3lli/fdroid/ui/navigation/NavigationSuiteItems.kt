@@ -23,6 +23,7 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +34,7 @@ import androidx.window.core.layout.WindowWidthSizeClass
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.data.content.Preferences
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
@@ -43,6 +45,7 @@ fun NeoNavigationSuiteScaffold(
     content: @Composable () -> Unit
 ) {
     val mActivity = LocalActivity.current as NeoActivity
+    val scope = rememberCoroutineScope()
 
     val adaptiveInfo = currentWindowAdaptiveInfo()
     val customNavSuiteType = with(adaptiveInfo) {
@@ -85,10 +88,13 @@ fun NeoNavigationSuiteScaffold(
                     selected = index == selectedPage.value,
                     itemColors = itemColors,
                     onClick = {
-                        if (customNavSuiteType == NavigationSuiteType.NavigationBar
-                            && pages.contains(NavItem.Latest)
-                        ) mActivity.mainNavigator.navigateTo(ListDetailPaneScaffoldRole.List)
-                        onItemClick(index)
+                        scope.launch {
+                            // TODO re-evaluate its need
+                            if (customNavSuiteType == NavigationSuiteType.NavigationBar
+                                && pages.contains(NavItem.Latest)
+                            ) mActivity.mainNavigator.navigateTo(ListDetailPaneScaffoldRole.List)
+                            onItemClick(index)
+                        }
                     }
                 )
             }

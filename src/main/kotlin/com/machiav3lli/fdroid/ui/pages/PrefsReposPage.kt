@@ -190,10 +190,12 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                 }
                             },
                             onLongClick = { repo ->
-                                paneNavigator.navigateTo(
-                                    ListDetailPaneScaffoldRole.Detail,
-                                    SheetNavigationData(repo.id, false)
-                                )
+                                scope.launch {
+                                    paneNavigator.navigateTo(
+                                        ListDetailPaneScaffoldRole.Detail,
+                                        SheetNavigationData(repo.id, false)
+                                    )
+                                }
                             }
                         )
                     }
@@ -210,10 +212,12 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                 }
                             },
                             onLongClick = { repo ->
-                                paneNavigator.navigateTo(
-                                    ListDetailPaneScaffoldRole.Detail,
-                                    SheetNavigationData(repo.id, false)
-                                )
+                                scope.launch {
+                                    paneNavigator.navigateTo(
+                                        ListDetailPaneScaffoldRole.Detail,
+                                        SheetNavigationData(repo.id, false)
+                                    )
+                                }
                             }
                         )
                     }
@@ -222,7 +226,7 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
         },
         detailPane = {
             sheetData.value = paneNavigator.currentDestination
-                ?.takeIf { it.pane == this.role }?.content
+                ?.takeIf { it.pane == this.paneRole }?.contentKey
                 ?.let { it as? SheetNavigationData }
 
             sheetData.value?.let {
@@ -231,7 +235,9 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                         repositoryId = it.repositoryId,
                         initEditMode = it.editMode,
                         onDismiss = {
-                            paneNavigator.navigateTo(ListDetailPaneScaffoldRole.List)
+                            scope.launch {
+                                paneNavigator.navigateTo(ListDetailPaneScaffoldRole.List)
+                            }
                         }
                     ) { newRepo -> viewModel.updateRepo(newRepo) }
                 }

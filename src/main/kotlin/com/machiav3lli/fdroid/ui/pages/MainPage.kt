@@ -169,7 +169,7 @@ fun MainPage(
             },
             detailPane = {
                 appPackage.value = mActivity.mainNavigator.currentDestination
-                    ?.takeIf { it.pane == this.role }?.content?.toString()
+                    ?.takeIf { it.pane == this.paneRole }?.contentKey?.toString()
                     ?.nullIfEmpty()
 
                 appPackage.value?.let {
