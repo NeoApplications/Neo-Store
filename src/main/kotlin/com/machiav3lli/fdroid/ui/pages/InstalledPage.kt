@@ -70,6 +70,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Eraser
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.collections.immutable.ImmutableList
@@ -77,10 +78,9 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun InstalledPage(viewModel: MainVM = koinViewModel()) {
+fun InstalledPage(viewModel: MainVM = koinNeoViewModel()) {
     val scope = rememberCoroutineScope()
 
     val pages: ImmutableList<@Composable () -> Unit> = persistentListOf(

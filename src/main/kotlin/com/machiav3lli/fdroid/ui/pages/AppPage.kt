@@ -96,6 +96,7 @@ import com.machiav3lli.fdroid.ui.dialog.ActionSelectionDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.utils.Utils.startUpdate
+import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.findSuggestedProduct
 import com.machiav3lli.fdroid.utils.generateLinks
@@ -108,7 +109,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.androidx.compose.koinViewModel
 import kotlin.math.truncate
 
 @OptIn(
@@ -118,7 +118,7 @@ import kotlin.math.truncate
 @Composable
 fun AppPage(
     packageName: String,
-    viewModel: AppSheetVM = koinViewModel(),
+    viewModel: AppSheetVM = koinNeoViewModel(),
 ) {
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity

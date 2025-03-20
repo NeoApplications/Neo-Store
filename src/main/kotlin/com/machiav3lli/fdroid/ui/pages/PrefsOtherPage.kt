@@ -50,13 +50,13 @@ import com.machiav3lli.fdroid.ui.components.LinkChip
 import com.machiav3lli.fdroid.ui.components.prefs.BasePreference
 import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroup
 import com.machiav3lli.fdroid.utils.currentTimestamp
+import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun PrefsOtherPage(viewModel: PrefsVM = koinViewModel()) {
+fun PrefsOtherPage(viewModel: PrefsVM = koinNeoViewModel()) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val hidingCounter = rememberSaveable { mutableIntStateOf(0) }

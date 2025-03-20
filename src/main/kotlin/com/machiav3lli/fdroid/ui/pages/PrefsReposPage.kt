@@ -45,15 +45,15 @@ import com.machiav3lli.fdroid.ui.components.WideSearchField
 import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroupHeading
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.QrCode
+import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import com.machiav3lli.fdroid.viewmodels.SheetNavigationData
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-fun PrefsReposPage(viewModel: PrefsVM = koinViewModel()) {
+fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
     val mActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
     val paneNavigator = rememberListDetailPaneScaffoldNavigator<Any>()

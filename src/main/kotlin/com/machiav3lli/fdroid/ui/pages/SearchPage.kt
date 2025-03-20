@@ -54,16 +54,16 @@ import com.machiav3lli.fdroid.ui.compose.utils.addIfElse
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchPage(viewModel: MainVM = koinViewModel()) {
+fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()

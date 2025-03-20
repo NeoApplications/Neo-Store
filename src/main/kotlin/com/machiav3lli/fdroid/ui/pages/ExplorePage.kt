@@ -56,16 +56,16 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ListBullets
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExplorePage(viewModel: MainVM = koinViewModel()) {
+fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
     // TODO fix crash on closing detailPane when in AnimatedPane
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity
