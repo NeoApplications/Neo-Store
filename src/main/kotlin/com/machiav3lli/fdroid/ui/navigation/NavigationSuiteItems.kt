@@ -122,7 +122,6 @@ fun NavigationSuiteScope.navItem(
             Icon(
                 imageVector = item.icon,
                 contentDescription = stringResource(id = item.title),
-                modifier = Modifier.size(24.dp),
             )
         },
         label = {
@@ -133,7 +132,6 @@ fun NavigationSuiteScope.navItem(
             ) {
                 Text(
                     text = stringResource(id = item.title),
-                    style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
