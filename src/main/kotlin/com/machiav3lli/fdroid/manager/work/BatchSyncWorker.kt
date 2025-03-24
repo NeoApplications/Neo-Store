@@ -1,8 +1,6 @@
 package com.machiav3lli.fdroid.manager.work
 
 import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -29,9 +27,9 @@ import com.machiav3lli.fdroid.ARG_EXCEPTION
 import com.machiav3lli.fdroid.ARG_REPOSITORY_NAME
 import com.machiav3lli.fdroid.ARG_SUCCESS
 import com.machiav3lli.fdroid.ARG_SYNC_REQUEST
-import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NeoActivity
+import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_BATCH_SYNC_ONETIME
 import com.machiav3lli.fdroid.TAG_BATCH_SYNC_PERIODIC
@@ -221,8 +219,6 @@ class BatchSyncWorker(
     }
 
     private fun createForegroundNotification(): Notification {
-        createNotificationChannel()
-
         val contentPendingIntent = PendingIntent.getActivity(
             context, 0,
             Intent(context, NeoActivity::class.java),
@@ -269,20 +265,6 @@ class BatchSyncWorker(
                     setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
             }
             .build()
-    }
-
-    private fun createNotificationChannel() {
-        val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel(
-                NOTIFICATION_CHANNEL_SYNCING,
-                NOTIFICATION_CHANNEL_SYNCING,
-                NotificationManager.IMPORTANCE_HIGH
-            ).let {
-                notificationManager.createNotificationChannel(it)
-            }
-        }
     }
 
     companion object {
