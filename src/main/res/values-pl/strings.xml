@@ -176,7 +176,7 @@
     <string name="prefs_language_title">Język</string>
     <string name="prefs_personalization">Personalizacja</string>
     <string name="prefs_updated_apps">Liczba aplikacji do wyświetlenia w sekcji „Ostatnio zaktualizowane\\</string>
-    <string name="prefs_new_apps">Liczba aplikacji do wyświetlenia w sekcji „Nowe aplikacje\\</string>
+    <string name="prefs_new_apps">Liczba aplikacji do wyświetlenia w sekcji „Nowe aplikacje\"</string>
     <string name="installed_applications">Zainstalowane</string>
     <string name="update_all">Zainstaluj wszystko</string>
     <string name="only_on_wifi_and_battery">Tylko na Wi-Fi podczas ładowania</string>
@@ -425,4 +425,5 @@
     <string name="prefs_layout">Układ</string>
     <string name="prefs_connection">Połączenie internetowe</string>
     <string name="syncing_batch_FORMAT">Synchronizowanie repozytoriów(%d/%d)</string>
+    <string name="initial_sync_repositories">Czy chcesz zsynchronizować wstępnie ustawione repozytoria (oficjalny F-Droid, IzzyOnDroid i Guardian Project)?</string>
 </resources>

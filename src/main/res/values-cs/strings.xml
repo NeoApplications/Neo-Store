@@ -423,4 +423,5 @@
     <string name="about_build_FORMAT">%s (sestavení %s)</string>
     <string name="about_channel">Kanál</string>
     <string name="syncing_batch_FORMAT">Synchronizace repozitářů (%d/%d)</string>
+    <string name="initial_sync_repositories">Chcete synchronizovat výchozí repozitáře (oficiální F-Droid, IzzyOnDroid a Guardian Project)?</string>
 </resources>
