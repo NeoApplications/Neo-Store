@@ -21,7 +21,6 @@ import io.ktor.client.engine.ProxyBuilder
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.engine.resolveAddress
 import io.ktor.client.plugins.BodyProgress
-import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.UserAgent
@@ -352,7 +351,7 @@ private fun initDownloadClient(): HttpClient = HttpClient(OkHttp) {
     }
     install(Logging) {
         logger = Logger.ANDROID
-        level = LogLevel.ALL
+        level = LogLevel.INFO
     }
     install(HttpTimeout) {
         connectTimeoutMillis = CLIENT_CONNECT_TIMEOUT_MS
