@@ -30,6 +30,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.DatabaseX
+import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.AppNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
@@ -48,6 +49,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import kotlin.properties.Delegates
@@ -336,6 +338,7 @@ class NeoActivity : AppCompatActivity() {
 }
 
 val viewModelsModule = module {
+    singleOf(::DownloadedRepository)
     viewModelOf(::MainVM)
     viewModelOf(::PrefsVM)
     viewModelOf(::AppSheetVM)
