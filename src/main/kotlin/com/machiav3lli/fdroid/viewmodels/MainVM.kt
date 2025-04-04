@@ -17,6 +17,7 @@ import com.machiav3lli.fdroid.data.entity.Page
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.Request
 import com.machiav3lli.fdroid.data.entity.Source
+import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.utils.matchSearchQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,7 +42,10 @@ import kotlinx.coroutines.withContext
     ExperimentalCoroutinesApi::class,
     FlowPreview::class,
 )
-open class MainVM(val db: DatabaseX) : ViewModel() {
+open class MainVM(
+    private val db: DatabaseX,
+    private val downloadedRepo: DownloadedRepository,
+) : ViewModel() {
     private val cc = Dispatchers.IO
     private val ioScope = viewModelScope.plus(Dispatchers.IO)
 
@@ -160,7 +164,7 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
             list.map { it.toItem(installed.value[it.packageName]) }
         }
 
-    val downloaded = db.getDownloadedDao().getAllFlow()
+    val downloaded = downloadedRepo.getAllFlow()
         .debounce(250L)
         .distinctUntilChanged()
 
@@ -228,12 +232,7 @@ open class MainVM(val db: DatabaseX) : ViewModel() {
 
     private suspend fun deleteDownloaded(downloaded: Downloaded) {
         withContext(cc) {
-            db.getDownloadedDao().delete(
-                downloaded.packageName,
-                downloaded.version,
-                downloaded.repositoryId,
-                downloaded.cacheFileName
-            )
+            downloadedRepo.delete(downloaded)
             Cache.eraseDownload(NeoApp.context, downloaded.cacheFileName)
         }
     }

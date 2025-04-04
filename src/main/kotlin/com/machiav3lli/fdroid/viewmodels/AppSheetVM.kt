@@ -13,6 +13,7 @@ import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.PrivacyData
 import com.machiav3lli.fdroid.data.entity.toAntiFeature
+import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.utils.findSuggestedProduct
 import com.machiav3lli.fdroid.utils.generatePermissionGroups
 import com.machiav3lli.fdroid.utils.toPrivacyNote
@@ -34,7 +35,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class AppSheetVM(val db: DatabaseX) : ViewModel() {
+class AppSheetVM(
+    private val db: DatabaseX,
+    downloadedRepo: DownloadedRepository,
+) : ViewModel() {
     private val cc = Dispatchers.IO
 
     private val packageName: MutableStateFlow<String> = MutableStateFlow("")
@@ -99,10 +103,7 @@ class AppSheetVM(val db: DatabaseX) : ViewModel() {
         it.toPrivacyNote()
     }
 
-    val downloadingState = packageName
-        .flatMapLatest { pn ->
-            db.getDownloadedDao().getLatestFlow(pn)
-        }
+    val downloadingState = downloadedRepo.getLatestFlow(packageName)
         .mapLatest { it?.state }
         .stateIn(
             viewModelScope,
