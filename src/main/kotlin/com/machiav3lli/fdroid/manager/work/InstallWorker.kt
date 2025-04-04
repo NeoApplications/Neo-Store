@@ -16,6 +16,7 @@ import com.machiav3lli.fdroid.ARG_FILE_NAME
 import com.machiav3lli.fdroid.ARG_NAME
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
+import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
 import com.machiav3lli.fdroid.data.entity.InstallState
@@ -40,6 +41,7 @@ class InstallWorker(
     private val installState = MutableStateFlow<InstallState>(InstallState.Pending)
     private val installerInstance = NeoApp.installer
     private val installJob = Job()
+    private val langContext = ContextWrapperX.wrap(applicationContext)
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO + installJob) {
         val label = inputData.getString(ARG_NAME) ?: ""
@@ -111,7 +113,7 @@ class InstallWorker(
     }
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
-        val notificationBuilder = applicationContext.installNotificationBuilder()
+        val notificationBuilder = langContext.installNotificationBuilder()
         return ForegroundInfo(
             currentTask.key.hashCode(),
             notificationBuilder.build(),

@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.manager.service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.Order
@@ -20,12 +21,13 @@ class PackageChangedReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val packageName =
             intent.data?.let { if (it.scheme == "package") it.schemeSpecificPart else null }
+        val langContext = ContextWrapperX.wrap(context)
         if (packageName != null) {
             when (intent.action.orEmpty()) {
                 Intent.ACTION_PACKAGE_ADDED,
                 Intent.ACTION_PACKAGE_REMOVED,
                 Intent.ACTION_PACKAGE_REPLACED,
-                -> {
+                    -> {
                     val packageInfo = try {
                         context.packageManager.getPackageInfo(
                             packageName,
@@ -42,7 +44,7 @@ class PackageChangedReceiver : BroadcastReceiver() {
                         else NeoApp.db.getInstalledDao().delete(packageName)
 
                         // Update updates notification
-                        if (Preferences[Preferences.Key.UpdateNotify]) context.displayUpdatesNotification(
+                        if (Preferences[Preferences.Key.UpdateNotify]) langContext.displayUpdatesNotification(
                             NeoApp.db.getProductDao()
                                 .queryObject(
                                     installed = true,

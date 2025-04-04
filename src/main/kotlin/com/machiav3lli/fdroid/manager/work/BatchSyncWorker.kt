@@ -27,6 +27,7 @@ import com.machiav3lli.fdroid.ARG_EXCEPTION
 import com.machiav3lli.fdroid.ARG_REPOSITORY_NAME
 import com.machiav3lli.fdroid.ARG_SUCCESS
 import com.machiav3lli.fdroid.ARG_SYNC_REQUEST
+import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
@@ -70,6 +71,7 @@ class BatchSyncWorker(
     private var request = SyncRequest.entries[
         inputData.getInt(ARG_SYNC_REQUEST, 0)
     ]
+    private val langContext = ContextWrapperX.wrap(applicationContext)
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO + scheduleJob) {
         try {
@@ -181,7 +183,7 @@ class BatchSyncWorker(
             .map { it.toItem() }
             .let { result ->
                 if (result.isNotEmpty() && Preferences[Preferences.Key.UpdateNotify])
-                    context.displayUpdatesNotification(
+                    langContext.displayUpdatesNotification(
                         result,
                         true
                     )
@@ -201,7 +203,7 @@ class BatchSyncWorker(
                         && NeoApp.db.getExtrasDao()[product.packageName]?.ignoreVulns != true
             }.let { installedWithVulns ->
                 if (installedWithVulns.isNotEmpty())
-                    context.displayVulnerabilitiesNotification(
+                    langContext.displayVulnerabilitiesNotification(
                         installedWithVulns.map(Product::toItem)
                     )
             }
@@ -235,7 +237,7 @@ class BatchSyncWorker(
             PendingIntent.FLAG_IMMUTABLE
         )
 
-        return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_SYNCING)
+        return NotificationCompat.Builder(langContext, NOTIFICATION_CHANNEL_SYNCING)
             .setGroup(NOTIFICATION_CHANNEL_SYNCING)
             .setGroupSummary(true)
             .setSortKey("0")

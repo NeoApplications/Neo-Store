@@ -258,26 +258,26 @@ class WorkerManager(appContext: Context) : KoinComponent {
     private fun createNotificationChannels() {
         NotificationChannel(
             NOTIFICATION_CHANNEL_DOWNLOADING,
-            context.getString(R.string.downloading),
+            langContext.getString(R.string.downloading),
             NotificationManager.IMPORTANCE_LOW
         )
             .apply { setShowBadge(false) }
             .let(notificationManager::createNotificationChannel)
         NotificationChannel(
             NOTIFICATION_CHANNEL_SYNCING,
-            context.getString(R.string.syncing),
+            langContext.getString(R.string.syncing),
             NotificationManager.IMPORTANCE_LOW
         )
             .apply { setShowBadge(false) }
             .let(notificationManager::createNotificationChannel)
         NotificationChannel(
             NOTIFICATION_CHANNEL_UPDATES,
-            context.getString(R.string.updates), NotificationManager.IMPORTANCE_LOW
+            langContext.getString(R.string.updates), NotificationManager.IMPORTANCE_LOW
         )
             .let(notificationManager::createNotificationChannel)
         NotificationChannel(
             NOTIFICATION_CHANNEL_VULNS,
-            context.getString(R.string.vulnerabilities), NotificationManager.IMPORTANCE_HIGH
+            langContext.getString(R.string.vulnerabilities), NotificationManager.IMPORTANCE_HIGH
         ).let(notificationManager::createNotificationChannel)
     }
 
