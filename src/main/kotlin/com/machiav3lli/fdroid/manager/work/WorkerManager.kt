@@ -17,6 +17,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkQuery
 import com.machiav3lli.fdroid.ARG_RESULT_CODE
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
+import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
@@ -53,10 +54,12 @@ class WorkerManager(appContext: Context) : KoinComponent {
 
     val workManager: WorkManager by inject()
     private val actionReceiver: ActionReceiver by inject()
-    var context: Context = appContext
     val notificationManager: NotificationManagerCompat by inject()
+    private var appContext: Context = appContext
+    private var langContext: Context = ContextWrapperX.wrap(appContext)
     private val syncStateHandler by lazy {
         SyncStateHandler(
+            context = langContext,
             scope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
             syncStates = WorkStateHolder(),
             notificationManager = notificationManager
@@ -72,6 +75,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
     private val installMutex = Mutex()
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    val syncsScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val downloadTracker = DownloadsTracker()
     private val syncTracker = SyncsTracker()
 
@@ -116,7 +120,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
                 }
                 .collect { workInfos ->
                     try {
-                        onSyncProgress(this@WorkerManager, workInfos)
+                        syncsScope.onSyncProgress(this@WorkerManager, workInfos)
                     } catch (e: Exception) {
                         Log.e("WorkerManager", "Error processing sync updates", e)
                     }
@@ -276,80 +280,20 @@ class WorkerManager(appContext: Context) : KoinComponent {
     }
 
     companion object {
-        private val syncNotificationBuilder by lazy {
-            NotificationCompat
-                .Builder(NeoApp.context, NOTIFICATION_CHANNEL_SYNCING)
-                .setGroup(NOTIFICATION_CHANNEL_SYNCING)
-                .setGroupSummary(true)
-                .setSortKey("0")
-                .setSmallIcon(R.drawable.ic_sync)
-                .setContentTitle(NeoApp.context.getString(R.string.syncing))
-                .setOngoing(true)
-                .setSilent(true)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setCategory(NotificationCompat.CATEGORY_PROGRESS)
-                .addAction(
-                    R.drawable.ic_cancel,
-                    NeoApp.context.getString(R.string.cancel_all),
-                    PendingIntent.getBroadcast(
-                        NeoApp.context,
-                        "<SYNC_ALL>".hashCode(),
-                        Intent(NeoApp.context, ActionReceiver::class.java).apply {
-                            action = ActionReceiver.Companion.COMMAND_CANCEL_SYNC_ALL
-                        },
-                        PendingIntent.FLAG_IMMUTABLE
-                    )
-                )
-        }
-
-        private val downloadNotificationBuilder by lazy {
-            NotificationCompat
-                .Builder(NeoApp.context, NOTIFICATION_CHANNEL_DOWNLOADING)
-                .setGroup(NOTIFICATION_CHANNEL_DOWNLOADING)
-                .setGroupSummary(true)
-                .setSortKey("0")
-                .setSmallIcon(android.R.drawable.stat_sys_download)
-                .setOngoing(true)
-                .setSilent(true)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setCategory(NotificationCompat.CATEGORY_PROGRESS)
-                .addAction(
-                    R.drawable.ic_cancel,
-                    NeoApp.context.getString(R.string.cancel_all),
-                    PendingIntent.getBroadcast(
-                        NeoApp.context,
-                        "<DOWNLOAD_ALL>".hashCode(),
-                        Intent(NeoApp.context, ActionReceiver::class.java).apply {
-                            action = ActionReceiver.Companion.COMMAND_CANCEL_DOWNLOAD_ALL
-                        },
-                        PendingIntent.FLAG_IMMUTABLE
-                    )
-                )
-        }
-
-        private var lockSyncProgress = object {}
-        private var lockDownloadProgress = object {}
-
-        private fun onSyncProgress(
+        private fun CoroutineScope.onSyncProgress(
             manager: WorkerManager,
             workInfos: List<WorkInfo>? = null,
-        ) {
-            val ioScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+        ) = launch {
+            runCatching {
+                val syncs = workInfos
+                    ?: manager.workManager
+                        .getWorkInfosByTag(SyncWorker::class.qualifiedName!!)
+                        .get()
+                    ?: return@launch
 
-            ioScope.launch {
-                try {
-                    val syncs = workInfos
-                        ?: manager.workManager
-                            .getWorkInfosByTag(SyncWorker::class.qualifiedName!!)
-                            .get()
-                        ?: return@launch
-
-                    manager.updateSyncsRunning(syncs)
-                } catch (e: Exception) {
-                    Log.e("WorkerManager", "Error in onDownloadProgress", e)
-                }
+                manager.updateSyncsRunning(syncs)
+            }.onFailure { e ->
+                Log.e("WorkerManager", "Error in onDownloadProgress", e)
             }
         }
 
@@ -363,7 +307,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
                     return@forEach // Skip if we've already processed this state
                 }
 
-                try {
+                runCatching {
                     val task = SyncWorker.Companion.getTask(data)
                     val dataState = SyncWorker.Companion.getState(data)
 
@@ -382,7 +326,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
                     }.let { newState ->
                         syncStateHandler.updateState(task.repoId.toString(), newState)
                     }
-                } catch (e: Exception) {
+                }.onFailure { e ->
                     Log.e("WorkerManager", "Error updating download state", e)
                 }
             }

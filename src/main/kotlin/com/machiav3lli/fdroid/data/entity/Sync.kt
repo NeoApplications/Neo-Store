@@ -6,7 +6,10 @@ class SyncTask(
     val repoId: Long,
     val request: SyncRequest,
     val repoName: String,
-)
+) {
+    val key: String
+        get() = "$repoId-$repoName-${request.name}"
+}
 
 sealed class SyncState(
     val repoId: Long,

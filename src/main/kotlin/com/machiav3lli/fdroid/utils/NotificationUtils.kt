@@ -14,7 +14,6 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
-import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_INSTALLER
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
@@ -25,6 +24,7 @@ import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_ID_VULNS
 import com.machiav3lli.fdroid.NeoActivity
+import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Repository
@@ -183,26 +183,39 @@ fun Context.showNotificationError(repository: Repository, exception: Exception) 
     )
 }
 
-fun Context.syncNotificationBuilder() = NotificationCompat
-    .Builder(this, NOTIFICATION_CHANNEL_SYNCING)
-    .setSmallIcon(R.drawable.ic_sync)
-    .setGroup(NOTIFICATION_CHANNEL_SYNCING)
-    .setOngoing(true)
-    .setSilent(true)
-    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-    .setCategory(NotificationCompat.CATEGORY_PROGRESS)
-    .addAction(
-        R.drawable.ic_cancel,
-        NeoApp.context.getString(R.string.cancel_all),
-        PendingIntent.getBroadcast(
-            NeoApp.context,
-            "<SYNC_ALL>".hashCode(),
-            Intent(NeoApp.context, ActionReceiver::class.java).apply {
-                action = ActionReceiver.COMMAND_CANCEL_SYNC_ALL
-            },
-            PendingIntent.FLAG_IMMUTABLE
+fun Context.syncNotificationBuilder(title: String, content: String = "", percent: Int = -1) =
+    NotificationCompat
+        .Builder(this, NOTIFICATION_CHANNEL_SYNCING)
+        .setGroup(NOTIFICATION_CHANNEL_SYNCING)
+        .setSmallIcon(R.drawable.ic_sync)
+        .setContentTitle(title)
+        .setTicker(title)
+        .setContentText(content)
+        .setOngoing(true)
+        .setSilent(true)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+        .setProgress(100, percent, percent == -1)
+        .setContentIntent(
+            PendingIntent.getActivity(
+                this, 0,
+                Intent(this, NeoActivity::class.java),
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
         )
-    )
+
+        .addAction(
+            R.drawable.ic_cancel,
+            NeoApp.context.getString(R.string.cancel_all),
+            PendingIntent.getBroadcast(
+                NeoApp.context,
+                "<SYNC_ALL>".hashCode(),
+                Intent(NeoApp.context, ActionReceiver::class.java).apply {
+                    action = ActionReceiver.COMMAND_CANCEL_SYNC_ALL
+                },
+                PendingIntent.FLAG_IMMUTABLE
+            )
+        )
 
 fun Context.downloadNotificationBuilder() = NotificationCompat
     .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
@@ -223,7 +236,7 @@ fun Context.installNotificationBuilder() = NotificationCompat
     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
     .setCategory(NotificationCompat.CATEGORY_STATUS)
 
-fun NotificationCompat.Builder.updateProgress(
+fun NotificationCompat.Builder.updateSyncProgress(
     context: Context,
     progress: SyncWorker.Progress,
 ): NotificationCompat.Builder = apply {

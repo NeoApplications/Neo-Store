@@ -1,12 +1,9 @@
 package com.machiav3lli.fdroid.manager.work
 
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.util.Log
-import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
@@ -14,6 +11,7 @@ import androidx.work.ForegroundInfo
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.machiav3lli.fdroid.ARG_CHANGED
@@ -26,11 +24,10 @@ import com.machiav3lli.fdroid.ARG_STATE
 import com.machiav3lli.fdroid.ARG_SUCCESS
 import com.machiav3lli.fdroid.ARG_SYNC_REQUEST
 import com.machiav3lli.fdroid.ARG_TOTAL
+import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.EXODUS_TRACKERS_SYNC
-import com.machiav3lli.fdroid.NeoApp
-import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
-import com.machiav3lli.fdroid.NeoActivity
+import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.TAG_SYNC_PERIODIC
@@ -40,13 +37,15 @@ import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.data.entity.SyncTask
 import com.machiav3lli.fdroid.data.index.RepositoryUpdater
-import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.utils.extension.android.Android
+import com.machiav3lli.fdroid.utils.syncNotificationBuilder
+import com.machiav3lli.fdroid.utils.updateSyncProgress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.future.future
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.java.KoinJavaComponent.get
 import kotlin.math.roundToInt
 
 class SyncWorker(
@@ -58,9 +57,11 @@ class SyncWorker(
         inputData.getInt(ARG_SYNC_REQUEST, 0)
     ]
     private var repoName = inputData.getString(ARG_REPOSITORY_NAME) ?: ""
+    private lateinit var task: SyncTask
+    private val langContext = ContextWrapperX.wrap(applicationContext)
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
-        val task = SyncTask(repoId, request, repoName)
+        task = SyncTask(repoId, request, repoName)
 
         return@withContext if (repoId != -1L) {
             handleSync(task)
@@ -75,13 +76,15 @@ class SyncWorker(
         Log.i(this::class.java.simpleName, "sync repository: ${task.repoId}")
         if (repository != null && repository.enabled && task.repoId != EXODUS_TRACKERS_SYNC) {
             launch {
-                setProgressData(
-                    getWorkData(
+                setForegroundAsync(
+                    createForegroundInfo(
                         state = SyncState.Enum.CONNECTING,
                     )
                 )
             }
             val unstable = Preferences[Preferences.Key.UpdateUnstable]
+            var lastPerMille = -1
+            var lastStage: RepositoryUpdater.Stage? = null
 
             try {
                 val changed = future {
@@ -90,9 +93,14 @@ class SyncWorker(
                         repository,
                         unstable
                     ) { stage, progress, total ->
-                        this@handleSync.runCatching {
-                            setProgressData(
-                                getWorkData(
+                        val perMille =
+                            if (total != null) (1000f * progress / total).roundToInt() else -1
+
+                        if (stage != lastStage || perMille != lastPerMille || total == null) this@handleSync.runCatching {
+                            lastPerMille = perMille
+                            lastStage = stage
+                            setForegroundAsync(
+                                createForegroundInfo(
                                     state = SyncState.Enum.SYNCING,
                                     progress = Progress(
                                         stage,
@@ -134,40 +142,45 @@ class SyncWorker(
     }
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
-        val contentPendingIntent = PendingIntent.getActivity(
-            context, 0,
-            Intent(context, NeoActivity::class.java),
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        val title = langContext.getString(
+            R.string.syncing_FORMAT,
+            repoName
         )
-
-        val cancelAllIntent =
-            Intent(NeoApp.context, ActionReceiver::class.java).apply {
-                action = ActionReceiver.COMMAND_CANCEL_SYNC_ALL
-            }
-        val cancelAllPendingIntent = PendingIntent.getBroadcast(
-            NeoApp.context,
-            "<ALL>".hashCode(),
-            cancelAllIntent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_SYNCING)
-            .setContentTitle(context.getString(R.string.syncing))
-            .setSmallIcon(R.drawable.ic_sync)
-            .setOngoing(true)
-            .setSilent(true)
-            .setContentIntent(contentPendingIntent)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setPriority(NotificationCompat.PRIORITY_MAX)
-            .setCategory(NotificationCompat.CATEGORY_PROGRESS)
-            .addAction(
-                R.drawable.ic_cancel,
-                context.getString(R.string.cancel_all),
-                cancelAllPendingIntent
-            )
-            .build()
         return ForegroundInfo(
             NOTIFICATION_ID_SYNCING,
+            langContext.syncNotificationBuilder(title).build(),
+            if (Android.sdk(Build.VERSION_CODES.Q)) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+            else 0
+        )
+    }
+
+    // changes based on https://developer.android.com/develop/background-work/background-tasks/persistent/how-to/long-running
+    private fun createForegroundInfo(
+        state: SyncState.Enum,
+        progress: Progress? = null,
+    ): ForegroundInfo {
+        val title = langContext.getString(
+            R.string.syncing_FORMAT,
+            repoName
+        )
+        val cancel = langContext.getString(R.string.cancel)
+        // TODO consider if it's needed (ActionReceiver-intent already built-in!)
+        val cancelIntent = get<WorkManager>(WorkManager::class.java)
+            .createCancelPendingIntent(id)
+
+        val notification = langContext.syncNotificationBuilder(title)
+            .apply {
+                if (state == SyncState.Enum.CONNECTING)
+                    setContentText(langContext.getString(R.string.connecting))
+                        .setProgress(0, 0, true)
+                else if (progress != null)
+                    updateSyncProgress(langContext, progress)
+            }
+            .addAction(R.drawable.ic_cancel, cancel, cancelIntent) // TODO reconsider
+            .build()
+
+        return ForegroundInfo(
+            task.key.hashCode(),
             notification,
             if (Android.sdk(Build.VERSION_CODES.Q)) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
             else 0
@@ -334,8 +347,8 @@ class SyncWorker(
                 getProgress(data),
             )
 
+            // SyncState.Enum.CONNECTING.ordinal
             else                             -> SyncState.Connecting(
-                // SyncState.Enum.CONNECTING
                 data.getLong(ARG_REPOSITORY_ID, -1L),
                 SyncRequest.entries[
                     data.getInt(ARG_SYNC_REQUEST, 0)

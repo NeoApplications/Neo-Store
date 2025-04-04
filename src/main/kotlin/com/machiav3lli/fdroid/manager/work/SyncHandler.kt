@@ -1,30 +1,27 @@
 package com.machiav3lli.fdroid.manager.work
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.Data
 import androidx.work.WorkInfo
-import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.utils.syncNotificationBuilder
-import com.machiav3lli.fdroid.utils.updateProgress
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 
 class SyncStateHandler(
+    private val context: Context,
     scope: CoroutineScope,
     private val syncStates: WorkStateHolder<SyncState>,
     private val notificationManager: NotificationManagerCompat
 ) {
-    private val _syncEvents = Channel<UpdateEvent>(Channel.BUFFERED)
-
     init {
         scope.launch {
             syncStates.observeStates()
@@ -34,94 +31,52 @@ class SyncStateHandler(
                     }
                 }
         }
-
-        scope.launch {
-            _syncEvents.consumeEach { event ->
-                updateNotification(event)
-            }
-        }
     }
 
     private suspend fun handleSyncState(key: String, state: SyncState) {
-        _syncEvents.send(
-            UpdateEvent(
-                key = key,
-                state = state
-            )
-        )
+        updateNotification(key, state)
     }
 
     fun updateState(key: String, state: SyncState?) {
         syncStates.updateState(key, state)
-        if (state == null)
-            notificationManager.cancel(key.hashCode())
     }
 
-    private fun updateNotification(event: UpdateEvent) {
-        val appContext = NeoApp.context
-        val builder = createNotificationBuilder(event.state)
-        if (ActivityCompat.checkSelfPermission(
-                appContext,
+    private fun updateNotification(key: String, state: SyncState) {
+        val builder = context.createNotificationBuilder(state)
+        if (state == null || state is DownloadState.Success || state is DownloadState.Cancel) {
+            notificationManager.cancel(key.hashCode())
+        } else if (builder != null && ActivityCompat.checkSelfPermission(
+                context,
                 Manifest.permission.POST_NOTIFICATIONS
             ) == PackageManager.PERMISSION_GRANTED
         ) notificationManager.notify(
-            event.key.hashCode(),
-            builder.setOngoing(event.state !is SyncState.Failed)
+            key.hashCode(),
+            builder.setOngoing(state !is SyncState.Failed)
                 .build()
         )
     }
 
-    private fun createNotificationBuilder(state: SyncState): NotificationCompat.Builder {
-        val appContext = NeoApp.context
-        val notificationBuilder = appContext.syncNotificationBuilder()
+    private fun Context.createNotificationBuilder(state: SyncState): NotificationCompat.Builder? {
+        val title = getString(
+            R.string.syncing_FORMAT,
+            state.repoName
+        )
+        val notificationBuilder = syncNotificationBuilder(title)
 
         return when (state) {
-            is SyncState.Connecting -> {
+            is SyncState.Failed    -> {
                 notificationBuilder
-                    .setContentTitle(
-                        appContext.getString(
-                            R.string.syncing_FORMAT,
-                            state.repoName
-                        )
-                    )
-                    .setContentText(appContext.getString(R.string.connecting))
-                    .setProgress(0, 0, true)
-            }
-
-            is SyncState.Syncing    -> {
-                notificationBuilder
-                    .setContentTitle(
-                        appContext.getString(
-                            R.string.syncing_FORMAT,
-                            state.repoName
-                        )
-                    )
-                    .updateProgress(appContext, state.progress)
-            }
-
-            is SyncState.Failed     -> {
-                notificationBuilder
-                    .setContentTitle(
-                        appContext.getString(
-                            R.string.syncing_FORMAT,
-                            state.repoName
-                        )
-                    )
-                    .setContentText(appContext.getString(R.string.action_failed)) // TODO Add error message
+                    .setContentText(getString(R.string.action_failed)) // TODO Add error message
                     .setSmallIcon(R.drawable.ic_new_releases)
             }
 
-            else                    -> {
+            is SyncState.Finishing -> {
                 notificationBuilder
             }
-        }
-    }
 
-    companion object {
-        private data class UpdateEvent(
-            val key: String,
-            val state: SyncState,
-        )
+            // SyncState.Connecting, SyncState.Syncing,
+            else                   -> null
+        }
     }
 }
 
