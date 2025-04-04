@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -119,6 +120,7 @@ import kotlin.math.truncate
 fun AppPage(
     packageName: String,
     viewModel: AppSheetVM = koinNeoViewModel(),
+    onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity
@@ -150,6 +152,10 @@ fun AppPage(
 
     LaunchedEffect(packageName) {
         viewModel.setApp(packageName)
+    }
+
+    BackHandler {
+        onDismiss()
     }
 
     val productRepos = remember {

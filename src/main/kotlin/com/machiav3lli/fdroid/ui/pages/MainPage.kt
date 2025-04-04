@@ -9,10 +9,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
+import androidx.compose.material3.adaptive.navigation.BackNavigationBehavior
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
+import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -65,6 +66,7 @@ fun MainPage(
 ) {
     val context = LocalContext.current
     val mActivity = LocalActivity.current as NeoActivity
+    val panesNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
     val scope = rememberCoroutineScope()
 
     val successfulSyncs by NeoApp.db.getRepositoryDao().latestUpdatesFlow()
@@ -81,7 +83,6 @@ fun MainPage(
     )
     val pagerState = rememberPagerState(initialPage = pageIndex, pageCount = { pages.size })
     val currentPageIndex = remember { derivedStateOf { pagerState.currentPage } }
-    val appPackage: MutableState<String?> = remember { mutableStateOf(null) }
     val navigatorState by viewModel.navigationState.collectAsStateWithLifecycle()
 
     BackHandler {
@@ -95,13 +96,15 @@ fun MainPage(
 
     LaunchedEffect(navigatorState) {
         scope.launch {
-            mActivity.mainNavigator.navigateTo(navigatorState.first, navigatorState.second)
+            if (navigatorState.second != panesNavigator.currentDestination?.contentKey.toString())
+                panesNavigator.navigateTo(navigatorState.first, navigatorState.second)
         }
     }
 
     NeoNavigationSuiteScaffold(
         pages = pages,
         selectedPage = currentPageIndex,
+        panesNavigator = panesNavigator,
         onItemClick = { index ->
             scope.launch {
                 pagerState.animateScrollToPage(index)
@@ -109,7 +112,7 @@ fun MainPage(
         }
     ) {
         NavigableListDetailPaneScaffold(
-            navigator = mActivity.mainNavigator,
+            navigator = panesNavigator,
             listPane = {
                 //AnimatedPane { } TODO re-add when fixing recomposition issue
                 Scaffold(
@@ -168,17 +171,26 @@ fun MainPage(
                 }
             },
             detailPane = {
-                appPackage.value = mActivity.mainNavigator.currentDestination
-                    ?.takeIf { it.pane == this.paneRole }?.contentKey?.toString()
-                    ?.nullIfEmpty()
-
-                appPackage.value?.let {
-                    AnimatedPane {
-                        AppPage(
-                            packageName = it,
-                        )
+                panesNavigator.currentDestination
+                    ?.contentKey
+                    ?.let {
+                        it.toString().nullIfEmpty()?.let {
+                            AnimatedPane {
+                                AppPage(
+                                    packageName = it.toString(),
+                                    onDismiss = {
+                                        scope.launch {
+                                            panesNavigator.navigateBack(BackNavigationBehavior.PopUntilContentChange)
+                                            viewModel.setNavigatorRole(
+                                                panesNavigator.currentDestination!!.pane,
+                                                panesNavigator.currentDestination!!.contentKey.toString()
+                                            )
+                                        }
+                                    }
+                                )
+                            }
+                        }
                     }
-                }
             }
         )
     }

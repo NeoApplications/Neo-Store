@@ -19,8 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
-import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
-import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -71,7 +69,6 @@ class NeoActivity : AppCompatActivity() {
     }
 
     private lateinit var navController: NavHostController
-    lateinit var mainNavigator: ThreePaneScaffoldNavigator<Any>
     private val cScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
     private val mScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 
@@ -114,7 +111,6 @@ class NeoActivity : AppCompatActivity() {
                 }
             ) {
                 navController = rememberNavController()
-                mainNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
 
                 Scaffold(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
