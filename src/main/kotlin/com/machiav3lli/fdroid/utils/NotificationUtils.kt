@@ -28,14 +28,14 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.ProductItem
+import com.machiav3lli.fdroid.data.entity.ValidationError
 import com.machiav3lli.fdroid.data.index.RepositoryUpdater
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.manager.service.InstallerReceiver
 import com.machiav3lli.fdroid.manager.service.installIntent
-import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.manager.work.SyncWorker
-import com.machiav3lli.fdroid.data.entity.ValidationError
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.android.notificationManager
 import com.machiav3lli.fdroid.utils.extension.resources.getColorFromAttr
@@ -217,15 +217,26 @@ fun Context.syncNotificationBuilder(title: String, content: String = "", percent
             )
         )
 
-fun Context.downloadNotificationBuilder() = NotificationCompat
-    .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
-    .setSmallIcon(android.R.drawable.stat_sys_download)
-    .setGroup(NOTIFICATION_CHANNEL_DOWNLOADING)
-    .setOngoing(true)
-    .setSilent(true)
-    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-    .setCategory(NotificationCompat.CATEGORY_PROGRESS)
-    .setProgress(0, 0, true)
+fun Context.downloadNotificationBuilder(title: String, content: String = "", percent: Int = -1) =
+    NotificationCompat
+        .Builder(this, NOTIFICATION_CHANNEL_DOWNLOADING)
+        .setGroup(NOTIFICATION_CHANNEL_DOWNLOADING)
+        .setSmallIcon(android.R.drawable.stat_sys_download)
+        .setContentTitle(title)
+        .setTicker(title)
+        .setContentText(content)
+        .setOngoing(true)
+        .setSilent(true)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+        .setProgress(100, percent, percent == -1)
+        .setContentIntent(
+            PendingIntent.getActivity(
+                this, 0,
+                Intent(this, NeoActivity::class.java).setAction(NeoActivity.ACTION_UPDATES),
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        )
 
 fun Context.installNotificationBuilder() = NotificationCompat
     .Builder(this, NOTIFICATION_CHANNEL_INSTALLER)
@@ -294,6 +305,7 @@ fun NotificationCompat.Builder.updateWithError(
             "${state.name} (${state.version})"
         )
     )
+
     setContentText(
         context.getString(
             R.string.validation_error_FORMAT,

@@ -14,6 +14,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.ForegroundInfo
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.anggrayudi.storage.file.children
@@ -30,13 +31,18 @@ import com.machiav3lli.fdroid.ARG_STARTED
 import com.machiav3lli.fdroid.ARG_TOTAL
 import com.machiav3lli.fdroid.ARG_URL
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
+import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NeoApp
+import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.database.entity.Downloaded
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.DownloadTask
 import com.machiav3lli.fdroid.data.entity.ValidationError
+import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.manager.network.DownloadSizeException
 import com.machiav3lli.fdroid.manager.network.Downloader
 import com.machiav3lli.fdroid.utils.Utils
@@ -45,6 +51,7 @@ import com.machiav3lli.fdroid.utils.downloadNotificationBuilder
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.android.singleSignature
 import com.machiav3lli.fdroid.utils.extension.android.versionCodeCompat
+import com.machiav3lli.fdroid.utils.extension.text.formatSize
 import com.machiav3lli.fdroid.utils.extension.text.hex
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.getDownloadFolder
@@ -53,16 +60,21 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.java.KoinJavaComponent.get
 import java.io.File
 import java.security.MessageDigest
 import kotlin.math.roundToInt
 
 class DownloadWorker(
-    val context: Context,
+    private val context: Context,
     params: WorkerParameters,
-) : CoroutineWorker(context, params) {
+) : CoroutineWorker(context, params), KoinComponent {
     private val packageManager: PackageManager by lazy { context.packageManager }
     private lateinit var task: DownloadTask
+    private val langContext = ContextWrapperX.wrap(applicationContext)
+    private val downloadedRepo: DownloadedRepository by inject()
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         try {
@@ -86,20 +98,58 @@ class DownloadWorker(
     private suspend fun handleDownload(task: DownloadTask): Result = coroutineScope {
         val partialRelease =
             Cache.getPartialReleaseFile(applicationContext, task.release.cacheFileName)
+        val downloaded = Downloaded(
+            packageName = task.packageName,
+            version = task.release.version,
+            repositoryId = task.repoId,
+            cacheFileName = task.release.cacheFileName,
+            changed = System.currentTimeMillis(),
+            state = DownloadState.Downloading(
+                packageName = task.packageName,
+                name = task.name,
+                version = task.release.version,
+                cacheFileName = task.release.cacheFileName,
+                repoId = task.repoId,
+                read = 0L,
+                total = 100L,
+            ),
+        )
+
+        var lastPerMille = -1
 
         val callback: suspend (read: Long, total: Long?, downloadID: Long) -> Unit =
             { read, total, downloadID ->
-                setProgressData(
-                    workDataOf(
-                        ARG_PROGRESS to if (total != null) (100f * read / total).roundToInt() else -1,
-                        ARG_READ to read,
-                        ARG_TOTAL to (total ?: -1L),
-                    )
-                )
+                val perMille = if (total != null) (1000f * read / total).roundToInt() else -1
+                val percent = if (total != null) (100f * read / total).roundToInt() else -1
 
-                if (isStopped && downloadID != -1L) {
-                    ContextCompat.getSystemService(context, DownloadManager::class.java)
-                        ?.remove(downloadID)
+                if (perMille != lastPerMille || total == null) {
+                    lastPerMille = perMille
+
+                    setForegroundAsync(
+                        createForegroundInfo(
+                            "${read.formatSize()} / ${total?.formatSize()}",
+                            percent
+                        )
+                    )
+
+                    downloadedRepo.update(
+                        downloaded.copy(
+                            state = DownloadState.Downloading(
+                                packageName = task.packageName,
+                                name = task.name,
+                                version = task.release.version,
+                                cacheFileName = task.release.cacheFileName,
+                                repoId = task.repoId,
+                                read = read,
+                                total = total,
+                            )
+                        )
+                    )
+
+                    if (isStopped && downloadID != -1L) {
+                        ContextCompat.getSystemService(context, DownloadManager::class.java)
+                            ?.remove(downloadID)
+                    }
                 }
             }
 
@@ -151,10 +201,37 @@ class DownloadWorker(
     }
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
-        val stateNotificationBuilder = applicationContext.downloadNotificationBuilder()
+        val title = langContext.getString(
+            R.string.downloading_FORMAT,
+            "${task.name} (${task.release.version})"
+        )
+        val pending = langContext.getString(R.string.pending)
         return ForegroundInfo(
             task.key.hashCode(),
-            stateNotificationBuilder.build(),
+            langContext.downloadNotificationBuilder(title, pending).build(),
+            if (Android.sdk(Build.VERSION_CODES.Q)) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+            else 0
+        )
+    }
+
+    // changes based on https://developer.android.com/develop/background-work/background-tasks/persistent/how-to/long-running
+    private fun createForegroundInfo(progress: String, percent: Int = -1): ForegroundInfo {
+        val title = langContext.getString(
+            R.string.downloading_FORMAT,
+            "${task.name} (${task.release.version})"
+        )
+        val cancel = langContext.getString(R.string.cancel)
+        // TODO consider ActionReceiver-intent instead
+        val cancelIntent = get<WorkManager>(WorkManager::class.java)
+            .createCancelPendingIntent(id)
+
+        val notification = langContext.downloadNotificationBuilder(title, progress, percent)
+            .addAction(R.drawable.ic_cancel, cancel, cancelIntent)
+            .build()
+
+        return ForegroundInfo(
+            task.key.hashCode(),
+            notification,
             if (Android.sdk(Build.VERSION_CODES.Q)) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
             else 0
         )

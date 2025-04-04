@@ -2,14 +2,11 @@ package com.machiav3lli.fdroid.manager.work
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.Data
 import androidx.work.WorkInfo
@@ -30,6 +27,7 @@ import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.data.entity.ValidationError
+import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.utils.Utils
 import com.machiav3lli.fdroid.utils.extension.android.Android
@@ -54,9 +52,10 @@ class WorkerManager(appContext: Context) : KoinComponent {
 
     val workManager: WorkManager by inject()
     private val actionReceiver: ActionReceiver by inject()
-    val notificationManager: NotificationManagerCompat by inject()
     private var appContext: Context = appContext
     private var langContext: Context = ContextWrapperX.wrap(appContext)
+    private val notificationManager: NotificationManagerCompat by inject()
+    private val downloadedRepo: DownloadedRepository by inject()
     private val syncStateHandler by lazy {
         SyncStateHandler(
             context = langContext,
@@ -67,20 +66,23 @@ class WorkerManager(appContext: Context) : KoinComponent {
     }
     private val downloadStateHandler by lazy {
         DownloadStateHandler(
+            context = langContext,
             scope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
             downloadStates = WorkStateHolder(),
-            notificationManager = notificationManager
+            notificationManager = notificationManager,
+            downloadedRepo = downloadedRepo,
         )
     }
     private val installMutex = Mutex()
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     val syncsScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    val downloadsScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val downloadTracker = DownloadsTracker()
     private val syncTracker = SyncsTracker()
 
     init {
-        context.registerReceiver(actionReceiver, IntentFilter())
+        appContext.registerReceiver(actionReceiver, IntentFilter())
         if (Android.sdk(Build.VERSION_CODES.O)) createNotificationChannels()
 
         workManager.pruneWork()
@@ -103,7 +105,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
     }
 
     fun release(): WorkerManager? {
-        context.unregisterReceiver(actionReceiver)
+        appContext.unregisterReceiver(actionReceiver)
         return null
     }
 
@@ -135,7 +137,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
                 }
                 .collect { workInfos ->
                     try {
-                        onDownloadProgress(workInfos)
+                        downloadsScope.onDownloadProgress(this@WorkerManager, workInfos)
                     } catch (e: Exception) {
                         Log.e("WorkerManager", "Error processing download updates", e)
                     }
@@ -332,43 +334,22 @@ class WorkerManager(appContext: Context) : KoinComponent {
             }
         }
 
-        private fun WorkerManager.onDownloadProgress(
+        private fun CoroutineScope.onDownloadProgress(
+            manager: WorkerManager,
             workInfos: List<WorkInfo>? = null,
-        ) {
-            val ioScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+        ) = launch {
+            runCatching {
+                val downloads = workInfos
+                    ?: manager.workManager
+                        .getWorkInfosByTag(DownloadWorker::class.qualifiedName!!)
+                        .get()
+                    ?: return@launch
 
-            ioScope.launch {
-                try {
-                    val downloads = workInfos
-                        ?: workManager
-                            .getWorkInfosByTag(DownloadWorker::class.qualifiedName!!)
-                            .get()
-                        ?: return@launch
+                manager.updateDownloadsRunning(downloads)
 
-                    updateDownloadsRunning(downloads)
-
-                    prune()
-                    /*downloadNotificationBuilder
-                        .setProgress(totalCount, processedCount, false)
-                        .setContentText("$processedCount / $totalCount")
-                        .apply { // TODO fix pinned notification
-                            setOngoing(totalCount > processedCount)
-                            if (processedCount == totalCount)
-                                setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
-
-                            if (ActivityCompat.checkSelfPermission(
-                                    appContext,
-                                    Manifest.permission.POST_NOTIFICATIONS
-                                ) == PackageManager.PERMISSION_GRANTED && totalCount > 0
-                            ) MainApplication.wm.notificationManager.notify(
-                                NOTIFICATION_CHANNEL_DOWNLOADING,
-                                NOTIFICATION_ID_DOWNLOADING,
-                                this.build()
-                            )
-                        }*/
-                } catch (e: Exception) {
-                    Log.e("WorkerManager", "Error in onDownloadProgress", e)
-                }
+                manager.prune()
+            }.onFailure { e ->
+                Log.e("WorkerManager", "Error in onDownloadProgress", e)
             }
         }
 
@@ -378,11 +359,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
                     ?: workInfo.progress.takeIf { it != Data.EMPTY }
                     ?: return@forEach
 
-                if (!downloadTracker.trackWork(workInfo, data)) {
-                    return@forEach // Skip if we've already processed this state
-                }
-
-                try {
+                if (downloadTracker.trackWork(workInfo, data)) runCatching {
                     val task = DownloadWorker.Companion.getTask(data)
                     val resultCode = data.getInt(ARG_RESULT_CODE, 0)
                     val validationError = ValidationError.entries[
@@ -443,7 +420,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
                     }.let { newState ->
                         downloadStateHandler.updateState(task.key, newState)
                     }
-                } catch (e: Exception) {
+                }.onFailure { e ->
                     Log.e("WorkerManager", "Error updating download state", e)
                 }
             }
