@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
+import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.BackNavigationBehavior
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
@@ -104,7 +105,7 @@ fun MainPage(
     NeoNavigationSuiteScaffold(
         pages = pages,
         selectedPage = currentPageIndex,
-        panesNavigator = panesNavigator,
+        backToPage = { viewModel.setNavigatorRole(ListDetailPaneScaffoldRole.List, "") },
         onItemClick = { index ->
             scope.launch {
                 pagerState.animateScrollToPage(index)

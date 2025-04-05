@@ -13,8 +13,6 @@ import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
-import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
-import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteItemColors
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -38,7 +36,7 @@ fun NeoNavigationSuiteScaffold(
     pages: ImmutableList<NavItem>,
     selectedPage: State<Int>,
     onItemClick: (Int) -> Unit,
-    panesNavigator: ThreePaneScaffoldNavigator<Any>? = null,
+    backToPage: (suspend () -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -86,7 +84,7 @@ fun NeoNavigationSuiteScaffold(
                     onClick = {
                         scope.launch {
                             // TODO re-evaluate its need
-                            panesNavigator?.navigateTo(ListDetailPaneScaffoldRole.List)
+                            backToPage?.invoke()
                             onItemClick(index)
                         }
                     }
