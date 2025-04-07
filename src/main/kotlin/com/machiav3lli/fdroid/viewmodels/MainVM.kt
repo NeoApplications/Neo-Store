@@ -60,7 +60,8 @@ open class MainVM(
     val navigationState: StateFlow<Pair<ThreePaneScaffoldRole, String>>
         private field = MutableStateFlow(Pair(ListDetailPaneScaffoldRole.List, ""))
 
-    private val querySearch = MutableStateFlow("")
+    val querySearch: StateFlow<String>
+        private field = MutableStateFlow("")
     private val _sourceExplore = MutableStateFlow(Source.NONE)
     private val sourceExplore: StateFlow<Source> = _sourceExplore
     private val _sourceSearch = MutableStateFlow(Source.SEARCH)

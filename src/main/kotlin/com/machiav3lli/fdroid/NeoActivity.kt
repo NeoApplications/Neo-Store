@@ -41,9 +41,6 @@ import com.machiav3lli.fdroid.viewmodels.MainVM
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -71,9 +68,6 @@ class NeoActivity : AppCompatActivity() {
     private lateinit var navController: NavHostController
     private val cScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
     private val mScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
-
-    private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery
 
     val db: DatabaseX by inject()
 
@@ -293,17 +287,11 @@ class NeoActivity : AppCompatActivity() {
         }
     }
 
-    fun setSearchQuery(value: String) {
-        cScope.launch { _searchQuery.update { value } }
-    }
-
     private fun showSearchPage(query: String? = null) {
         mScope.launch {
             mainViewModel.setNavigatorRole(ListDetailPaneScaffoldRole.List)
             navController.navigate(NavRoute.Main(Preferences.DefaultTab.Search.index))
-        }
-        cScope.launch {
-            query?.let { _searchQuery.update { it } }
+            mainViewModel.setSearchQuery(query ?: "")
         }
     }
 

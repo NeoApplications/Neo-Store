@@ -77,7 +77,7 @@ fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
         }
     }
     val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
-    val query by neoActivity.searchQuery.collectAsState()
+    val query by viewModel.querySearch.collectAsState()
     val source = viewModel.sourceSearch.collectAsState()
     val currentTab by remember {
         derivedStateOf {
@@ -149,10 +149,10 @@ fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
                     modifier = Modifier.weight(1f),
                     query = query,
                     onClose = {
-                        neoActivity.setSearchQuery("")
+                        viewModel.setSearchQuery("")
                     },
                     onQueryChanged = { newQuery ->
-                        if (newQuery != query) neoActivity.setSearchQuery(newQuery)
+                        if (newQuery != query) viewModel.setSearchQuery(newQuery)
                     },
                     focusOnCompose = false,
                 )
@@ -244,10 +244,6 @@ fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
                 }
             }
         }
-
-    LaunchedEffect(key1 = query) {
-        viewModel.setSearchQuery(query)
-    }
 
     BackHandler(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
         scope.launch { scaffoldState.bottomSheetState.partialExpand() }
