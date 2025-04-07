@@ -208,7 +208,7 @@ class NeoActivity : AppCompatActivity() {
             ?: data?.getQueryParameter("FINGERPRINT")?.uppercase()?.nullIfEmpty()
 
         when (intent?.action) {
-            Intent.ACTION_VIEW -> {
+            Intent.ACTION_VIEW          -> {
                 if (
                     data != null
                     && fingerprintText != null
@@ -244,14 +244,20 @@ class NeoActivity : AppCompatActivity() {
                 }
             }
 
-            ACTION_UPDATES     -> { // TODO Handle EXTRA_UPDATES
+            Intent.ACTION_SHOW_APP_INFO -> {
+                intent.getStringExtra(Intent.EXTRA_PACKAGE_NAME)
+                    ?.takeIf { it.isNotBlank() }
+                    ?.let { navigateProduct(it) }
+            }
+
+            ACTION_UPDATES              -> { // TODO Handle EXTRA_UPDATES
                 if (!intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)) {
                     intent.putExtra(EXTRA_INTENT_HANDLED, true)
                     handleSpecialIntent(SpecialIntent.Updates)
                 }
             }
 
-            ACTION_INSTALL     -> handleSpecialIntent(
+            ACTION_INSTALL              -> handleSpecialIntent(
                 SpecialIntent.Install(
                     intent.packageName,
                     intent.getStringExtra(EXTRA_CACHE_FILE_NAME)
