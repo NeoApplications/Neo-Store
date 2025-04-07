@@ -1,6 +1,26 @@
 CHANGELOG
 =========
 
+1.0.9 (07.04.2025) +20 Commits +20 Translations
+------------------
+
+### Function
+
+- Add: A singleton koinNeoViewModel
+- Update: Improve Main panes navigation logic
+- Update: Migrate DownloadedDao usage to a repository
+- Update: Revamp DownloadWorker logic, notifications and handling
+- Update: Revamp SyncWorker logic, notifications and handling
+- Update: Reduce Ktor logging level
+- Update: Move panes navigation and search query logics to MainVM
+
+### UI/UX
+
+- Add: Handling of opening an app page from system app info
+- Fix: Notification following system language and not the app's
+- Remove: Duplicate sync notification channels
+- Update: Use default navigation icon or text size
+
 1.0.8 (16.02.2025) 9 Commits 0 Translations
 ------------------
 

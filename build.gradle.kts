@@ -20,8 +20,8 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1025
-        versionName = "1.0.8"
+        versionCode = 1026
+        versionName = "1.0.9"
         buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
 
         javaCompileOptions {
@@ -76,7 +76,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             applicationIdSuffix = ".neo"
-            resValue("string", "application_name", "Neo Store")
+            resValue("string", "application_name", "Neo Store - Neo")
         }
         release {
             isMinifyEnabled = true
