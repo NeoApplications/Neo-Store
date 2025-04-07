@@ -99,9 +99,9 @@ class NeoActivity : AppCompatActivity() {
 
             AppTheme(
                 darkTheme = when (Preferences[Preferences.Key.Theme]) {
-                    is Preferences.Theme.System -> isSystemInDarkTheme()
+                    is Preferences.Theme.System      -> isSystemInDarkTheme()
                     is Preferences.Theme.SystemBlack -> isSystemInDarkTheme()
-                    else -> isDarkTheme
+                    else                             -> isDarkTheme
                 }
             ) {
                 navController = rememberNavController()
@@ -136,7 +136,7 @@ class NeoActivity : AppCompatActivity() {
         handleIntent(intent)
     }
 
-    private val Intent.packageName: String?
+    private val Intent.packageNameFromURI: String?
         get() {
             val uri = data
             return when {
@@ -228,11 +228,10 @@ class NeoActivity : AppCompatActivity() {
                     val query = data.getQueryParameter("q")
                     cScope.launch { showSearchPage(query ?: "") }
                 } else {
-                    val packageName = intent.packageName
+                    val packageName = intent.packageNameFromURI
                     cScope.launch {
-                        if (!packageName.isNullOrEmpty()
-                            && db.getProductDao().exists(packageName)
-                        ) navigateProduct(packageName)
+                        if (!packageName.isNullOrEmpty() && db.getProductDao().exists(packageName))
+                            navigateProduct(packageName)
                         else showSearchPage(packageName)
                     }
                 }
@@ -253,7 +252,7 @@ class NeoActivity : AppCompatActivity() {
 
             ACTION_INSTALL              -> handleSpecialIntent(
                 SpecialIntent.Install(
-                    intent.packageName,
+                    intent.packageNameFromURI,
                     intent.getStringExtra(EXTRA_CACHE_FILE_NAME)
                 )
             )

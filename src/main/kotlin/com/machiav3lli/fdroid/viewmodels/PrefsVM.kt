@@ -21,7 +21,7 @@ import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 
-class PrefsVM(val db: DatabaseX) : ViewModel() {
+class PrefsVM(private val db: DatabaseX) : ViewModel() {
     private val cc = Dispatchers.IO
     private val ioScope = viewModelScope.plus(Dispatchers.IO)
 
