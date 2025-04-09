@@ -181,7 +181,7 @@
     <string name="ignore_battery_optimization_message">האפליקציה מתנהגת טוב יותר ללא אופטימיזציה של הסוללה, ומונעת קריסה באנדרואיד 12+.</string>
     <string name="show_screenshots">הצגת צילומי מסך</string>
     <string name="favorite_remove">הסרה מהמועדפים</string>
-    <string name="ignore_battery_optimization_not_supported">התקנת Android שברשותך אינה תומכת בכיבוי אופטימיזציית הסוללה.</string>
+    <string name="ignore_battery_optimization_not_supported">התקנת האנדרואיד שלך לא תומכת בביטול אופטימיזציה של סוללה.</string>
     <string name="dialog_approve">כיבוי</string>
     <string name="no_action_possible">אין פעולה אפשרית</string>
     <string name="show_screenshots_description">הצג צילומי מסך בדף האפליקציה.</string>
@@ -210,4 +210,14 @@
     <string name="permission_physical_data">הרשאה לנתונים פיזיים</string>
     <string name="permission_identification_data">הרשאה לנתוני זיהוי</string>
     <string name="launch">הפעלה</string>
+    <string name="unknown_FORMAT">לא ידוע: %s</string>
+    <string name="upstream_source_code_is_not_free">קוד המקור אינו חופשי</string>
+    <string name="select_mirror">בחר מראה</string>
+    <string name="root_permission_description">השתמש ב-root עבור התקנות ללא אינטראקציה</string>
+    <string name="latest">אחרון</string>
+    <string name="repository_unsigned_DESC">לא ניתן היה לאמת את רשימת האפליקציות הלא חתומות.\nהיזהר בהורדת אפליקציות ממאגרים לא חתומים.</string>
+    <string name="socks_proxy">SOCKS פרוקסי</string>
+    <string name="system_black">מערכת (שחור)</string>
+    <string name="app_installed">הותקן</string>
+    <string name="explore">חקור</string>
 </resources>
