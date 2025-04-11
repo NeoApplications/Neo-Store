@@ -163,7 +163,7 @@
     <string name="prefs_personalization">התאמה אישית</string>
     <string name="not_safe_for_work">ניתן לצנזורה (עשוי להכיל תוכן מטריד)</string>
     <string name="prefs_language_title">שפה</string>
-    <string name="update_all">התקן הכל</string>
+    <string name="update_all">להתקין הכול</string>
     <string name="username">שם משתמש</string>
     <string name="version_FORMAT">גירסה %s</string>
     <string name="versions">גירסאות</string>
@@ -171,18 +171,18 @@
     <string name="show_less">הצג פחות</string>
     <string name="new_applications">אפליקציות חדשות</string>
     <string name="new_repository">מאגר חדש</string>
-    <string name="ignore_battery_optimization_title">אופטימיזציה של סוללה</string>
+    <string name="ignore_battery_optimization_title">מיטוב סוללה</string>
     <string name="dialog_refuse">לשמור</string>
     <string name="installed_applications">מותקן</string>
     <string name="install_after_sync_summary">התקן את כל הגירסאות החדשות לאחר חיפוש במאגרים אחר אפליקציות חדשות.</string>
     <string name="prefs_new_apps">מספר האפליקציות שיוצגו ב\"אפליקציות חדשות\"</string>
     <string name="default_tab">כרטיסיית ברירת מחדל</string>
     <string name="installing">מתקין</string>
-    <string name="ignore_battery_optimization_message">האפליקציה מתנהגת טוב יותר ללא אופטימיזציה של הסוללה, ומונעת קריסה באנדרואיד 12+.</string>
+    <string name="ignore_battery_optimization_message">היישומון מתפקד טוב יותר ללא מיטוב הסוללה, וזה גם מונע קריסה באנדרואיד 12 ומעלה.</string>
     <string name="show_screenshots">הצגת צילומי מסך</string>
     <string name="favorite_remove">הסרה מהמועדפים</string>
-    <string name="ignore_battery_optimization_not_supported">התקנת האנדרואיד שלך לא תומכת בביטול אופטימיזציה של סוללה.</string>
-    <string name="dialog_approve">כיבוי</string>
+    <string name="ignore_battery_optimization_not_supported">התקנת ה־Android שלך לא תומכת בביטול מיטוב סוללה.</string>
+    <string name="dialog_approve">לכבות</string>
     <string name="no_action_possible">אין פעולה אפשרית</string>
     <string name="show_screenshots_description">הצג צילומי מסך בדף האפליקציה.</string>
     <string name="open">פתוח</string>
@@ -214,10 +214,10 @@
     <string name="upstream_source_code_is_not_free">קוד המקור אינו חופשי</string>
     <string name="select_mirror">בחר מראה</string>
     <string name="root_permission_description">השתמש ב-root עבור התקנות ללא אינטראקציה</string>
-    <string name="latest">אחרון</string>
+    <string name="latest">העדכני ביותר</string>
     <string name="repository_unsigned_DESC">לא ניתן היה לאמת את רשימת האפליקציות הלא חתומות.\nהיזהר בהורדת אפליקציות ממאגרים לא חתומים.</string>
     <string name="socks_proxy">SOCKS פרוקסי</string>
     <string name="system_black">מערכת (שחור)</string>
     <string name="app_installed">הותקן</string>
-    <string name="explore">חקור</string>
+    <string name="explore">סיור</string>
 </resources>
