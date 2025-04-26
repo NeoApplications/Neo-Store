@@ -147,6 +147,7 @@ dependencies {
     implementation(libs.zxing.core)
     implementation(libs.ktor.core)
     implementation(libs.ktor.okhttp)
+    implementation(libs.ktor.client.encoding)
     implementation(libs.ktor.logging)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)

@@ -24,6 +24,7 @@ import io.ktor.client.plugins.BodyProgress
 import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.UserAgent
+import io.ktor.client.plugins.compression.ContentEncoding
 import io.ktor.client.plugins.logging.ANDROID
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -121,7 +122,7 @@ object Downloader {
                     headers {
                         append(HttpHeaders.IfModifiedSince, lastModified)
                         append(HttpHeaders.Authorization, authentication)
-                        append(HttpHeaders.AcceptEncoding, "gzip, deflate")
+                        //append(HttpHeaders.AcceptEncoding, "gzip, deflate")
                         append(HttpHeaders.CacheControl, CacheControl.MaxAge(60).toString())
                     }
                     ifNoneMatch(entityTag)
@@ -352,6 +353,10 @@ private fun initDownloadClient(): HttpClient = HttpClient(OkHttp) {
                 hostnameVerifier { _, _ -> true }
             }
         }
+    }
+    install(ContentEncoding) {
+        gzip()
+        deflate()
     }
     install(Logging) {
         logger = Logger.ANDROID
