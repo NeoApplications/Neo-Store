@@ -170,7 +170,7 @@ fun CategoryItem(
                     Icon(
                         modifier = Modifier
                             .sharedElement(
-                                state = rememberSharedContentState(key = "category_icon/$label"),
+                                sharedContentState = rememberSharedContentState(key = "category_icon/$label"),
                                 animatedVisibilityScope = avs,
                             )
                             .addIf(condition = !isExpanded) {
@@ -185,7 +185,7 @@ fun CategoryItem(
                 Text(
                     modifier = Modifier
                         .sharedElement(
-                            state = rememberSharedContentState(key = "category_label/$label"),
+                            sharedContentState = rememberSharedContentState(key = "category_label/$label"),
                             animatedVisibilityScope = avs
                         )
                         .addIf(condition = !isExpanded) {
