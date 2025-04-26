@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.manager.network
 
 import android.net.Uri
 import android.util.Log
+import androidx.core.net.toUri
 import com.machiav3lli.fdroid.CLIENT_CONNECT_TIMEOUT
 import com.machiav3lli.fdroid.CLIENT_READ_TIMEOUT
 import com.machiav3lli.fdroid.CLIENT_USER_AGENT
@@ -203,7 +204,8 @@ fun createScreenshotUri(
     packageName: String,
     screenshot: Screenshot,
 ): Uri {
-    return Uri.Builder().scheme("https").authority(HOST_SCREENSHOT)
+    return if (screenshot.type == null) (repository.address + screenshot.path).toUri()
+    else Uri.Builder().scheme("https").authority(HOST_SCREENSHOT)
         .appendQueryParameter(QUERY_ADDRESS, repository.address)
         .appendQueryParameter(QUERY_AUTHENTICATION, repository.authentication)
         .appendQueryParameter(QUERY_PACKAGE_NAME, packageName)
@@ -221,13 +223,8 @@ fun createScreenshotUri(
         .build()
 }
 
-fun createIconUri(
-    packageName: String, icon: String, metadataIcon: String,
-    address: String?, auth: String?,
-): Uri = Uri.Builder().scheme("https").authority(HOST_ICON)
-    .appendQueryParameter(QUERY_ADDRESS, address)
-    .appendQueryParameter(QUERY_AUTHENTICATION, auth)
-    .appendQueryParameter(QUERY_PACKAGE_NAME, packageName)
-    .appendQueryParameter(QUERY_ICON, icon)
-    .appendQueryParameter(QUERY_METADATA_ICON, metadataIcon)
-    .build()
+fun createIconUri(icon: String, address: String?, auth: String?): Uri =
+    (address + icon).toUri().let {
+        if (auth.isNullOrEmpty()) it
+        else it.buildUpon().appendQueryParameter(QUERY_AUTHENTICATION, auth).build()
+    }

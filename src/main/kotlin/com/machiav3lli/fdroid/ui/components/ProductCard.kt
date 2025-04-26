@@ -36,9 +36,7 @@ fun ProductCard(
     val imageData by produceState<String?>(initialValue = null, product, repo) {
         launch(Dispatchers.IO) {
             value = createIconUri(
-                product.packageName,
                 product.icon,
-                product.metadataIcon,
                 repo?.address,
                 repo?.authentication
             ).toString()

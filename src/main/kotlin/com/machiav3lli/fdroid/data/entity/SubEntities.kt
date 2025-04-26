@@ -94,7 +94,7 @@ sealed class Donate {
 }
 
 @Serializable
-class Screenshot(val locale: String, val type: Type, val path: String) {
+class Screenshot(val locale: String?, val type: Type?, val path: String) {
     enum class Type(val jsonName: String) {
         PHONE("phone"),
         SMALL_TABLET("smallTablet"),
@@ -104,7 +104,7 @@ class Screenshot(val locale: String, val type: Type, val path: String) {
     }
 
     val identifier: String
-        get() = "$locale.${type.name}.$path"
+        get() = "${locale.orEmpty()}.${type?.name.orEmpty()}.$path"
 
     fun toJSON() = Json.encodeToString(this)
 

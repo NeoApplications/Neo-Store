@@ -43,11 +43,9 @@ fun DownloadsListItem(
     val imageData by produceState<String?>(initialValue = null, product, repo) {
         launch(Dispatchers.IO) {
             value = createIconUri(
-                product.packageName,
                 product.icon,
-                product.metadataIcon,
                 repo?.address,
-                repo?.authentication
+                repo?.authentication,
             ).toString()
         }
     }
@@ -111,9 +109,9 @@ fun DownloadedItem(
     val imageData by produceState<String?>(initialValue = null, download, iconDetails, repo) {
         launch(Dispatchers.IO) {
             value = createIconUri(
-                download.packageName,
-                iconDetails?.icon ?: "",
-                iconDetails?.metadataIcon ?: "",
+                iconDetails?.icon
+                    ?: iconDetails?.metadataIcon
+                    ?: "",
                 repo?.address,
                 repo?.authentication
             ).toString()
