@@ -52,7 +52,6 @@ import org.koin.dsl.koinConfiguration
 import java.lang.ref.WeakReference
 import java.net.Proxy
 
-@OptIn(KoinExperimentalAPI::class)
 class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
 
     val db: DatabaseX by inject()
@@ -115,6 +114,7 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
         }
     }
 
+    @KoinExperimentalAPI
     override fun onKoinStartup() = koinConfiguration {
         androidLogger()
         androidContext(this@NeoApp)

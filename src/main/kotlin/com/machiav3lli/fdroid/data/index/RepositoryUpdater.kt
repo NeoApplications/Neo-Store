@@ -134,11 +134,11 @@ object RepositoryUpdater {
 
                 !result.success     -> {
                     file.delete()
-                    if (result.statusCode == HttpStatusCode.NotFound && indexTypes.isNotEmpty()) {
+                    if (result.statusCode == HttpStatusCode.NotFound && indexTypes.size > 1) {
                         update(
                             context,
                             repository,
-                            indexTypes.subList(1, indexTypes.size),
+                            indexTypes.drop(1),
                             unstable,
                             callback
                         )

@@ -104,7 +104,7 @@ internal fun IndexV2.Version.toRelease(
     incompatibilities = emptyList(),
 )
 
-fun <T> Localized<T>?.findLocalized(fallback: T): T =
+internal fun <T> Localized<T>?.findLocalized(fallback: T): T =
     getBestLocale(getLocales(Resources.getSystem().configuration)) ?: fallback
 
 private fun <T> Localized<T>?.getBestLocale(localeList: LocaleListCompat): T? {

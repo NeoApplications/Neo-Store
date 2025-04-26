@@ -81,6 +81,7 @@ open class Product(
         antiFeatures: List<String>,
         licenses: List<String>,
         donates: List<Donate>,
+        // TODO replace this mess with Index-V2 screenshots
         screenshots: List<Screenshot>,
         suggestedVersionCode: Long = 0L,
         author: Author = Author(),
