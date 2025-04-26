@@ -38,6 +38,7 @@ fun PrefsServicePage() {
         Preferences.Key.AutoSync,
         Preferences.Key.AutoSyncInterval,
         Preferences.Key.InstallAfterSync,
+        Preferences.Key.IndexV2,
     )
     val updatesPrefs = listOf(
         Preferences.Key.DownloadManager,
