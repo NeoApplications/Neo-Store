@@ -83,7 +83,7 @@ class SyncWorker(
                 )
             }
             val unstable = Preferences[Preferences.Key.UpdateUnstable]
-            var lastPerMille = -1
+            var lastPerCent = -1
             var lastStage: RepositoryUpdater.Stage? = null
 
             try {
@@ -93,11 +93,11 @@ class SyncWorker(
                         repository,
                         unstable
                     ) { stage, progress, total ->
-                        val perMille =
-                            if (total != null) (1000f * progress / total).roundToInt() else -1
+                        val perCent = if (total != null) (100f * progress / total).roundToInt()
+                        else (progress / 100_000).toInt()
 
-                        if (stage != lastStage || perMille != lastPerMille || total == null) this@handleSync.runCatching {
-                            lastPerMille = perMille
+                        if (stage != lastStage || perCent != lastPerCent) this@handleSync.runCatching {
+                            lastPerCent = perCent
                             lastStage = stage
                             setForegroundAsync(
                                 createForegroundInfo(
