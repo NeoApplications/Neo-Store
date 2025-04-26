@@ -197,6 +197,10 @@ object Downloader {
                             callback
                         )
 
+                        response.status == HttpStatusCode.NotFound -> {
+                            Result(response)
+                        }
+
                         else -> {
                             Log.w(
                                 this.javaClass.name,
