@@ -24,7 +24,9 @@ internal fun IndexV1.App.toProduct(repositoryId: Long) = Product(
         .replace("\n", "<br/>"),
     added = added,
     updated = lastUpdated,
-    icon = if (icon.endsWith(".xml")) "" else icon,
+    icon = localized.findLocalizedString("/icons/$icon") { key, localized ->
+        localized.localeIcon(key).nullIfEmpty()?.let { "/$packageName/$it" } ?: ""
+    },
     metadataIcon = localized.findLocalizedString("") { key, localized -> localized.localeIcon(key) },
     releases = emptyList(),
     categories = categories,
@@ -89,7 +91,7 @@ internal fun IndexV1.Package.toRelease(
     release = apkName,
     hash = hash,
     hashType = hashType,
-    signature = sig,
+    signature = signer,
     obbMain = obbMainFile,
     obbMainHash = obbMainFileSha256,
     obbMainHashType = obbMainFileSha256
@@ -109,7 +111,7 @@ internal fun IndexV1.Package.toRelease(
     incompatibilities = emptyList(),
 )
 
-private fun Map<String, IndexV1.Localized>.findLocalizedString(
+internal fun Map<String, IndexV1.Localized>.findLocalizedString(
     fallback: String,
     callback: (String, IndexV1.Localized) -> String,
 ): String {
