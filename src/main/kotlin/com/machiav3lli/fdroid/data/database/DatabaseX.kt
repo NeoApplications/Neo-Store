@@ -65,6 +65,7 @@ import com.machiav3lli.fdroid.manager.work.SyncWorker.Companion.enableRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -387,11 +388,15 @@ abstract class DatabaseX : RoomDatabase() {
                 GlobalScope.launch(Dispatchers.IO) {
                     INSTANCE?.apply {
                         runInTransaction {
-                            getProductDao().emptyTable()
-                            getCategoryDao().emptyTable()
-                            getReleaseDao().emptyTable()
-                            getDownloadedDao().emptyTable()
-                            getRepositoryDao().forgetLastModifications()
+                            runBlocking {
+                                getProductDao().emptyTable()
+                                getCategoryDao().emptyTable()
+                                getReleaseDao().emptyTable()
+                                getDownloadedDao().emptyTable()
+                                // performClear(false, "product", "category", "release", "downloaded")
+                                getRepositoryDao().forgetLastModifications()
+                                // db.execSQL("UPDATE repository SET lastModified = '', entityTag = ''")
+                            }
                         }
                     }
                 }
@@ -439,11 +444,13 @@ abstract class DatabaseX : RoomDatabase() {
 
     fun cleanUp(vararg pairs: Pair<Long, Boolean>) {
         runInTransaction {
-            pairs.forEach { (id, enabled) ->
-                getProductDao().deleteById(id)
-                getCategoryDao().deleteById(id)
-                getReleaseDao().deleteById(id)
-                if (enabled) getRepositoryDao().deleteById(id)
+            runBlocking {
+                pairs.forEach { (id, enabled) ->
+                    getProductDao().deleteById(id)
+                    getCategoryDao().deleteById(id)
+                    getReleaseDao().deleteById(id)
+                    if (enabled) getRepositoryDao().deleteById(id)
+                }
             }
         }
     }
@@ -452,18 +459,21 @@ abstract class DatabaseX : RoomDatabase() {
 
     fun finishTemporary(repository: Repository, success: Boolean) {
         runInTransaction {
-            if (success) {
-                getProductDao().deleteById(repository.id)
-                getCategoryDao().deleteById(repository.id)
-                getReleaseDao().deleteById(repository.id)
-                getProductDao().insert(*(getProductTempDao().getAll()))
-                getCategoryDao().insert(*(getCategoryTempDao().getAll()))
-                getReleaseDao().insert(*(getReleaseTempDao().getAll()))
-                getRepositoryDao().put(repository)
+            runBlocking {
+                if (success) {
+                    getProductDao().deleteById(repository.id)
+                    getCategoryDao().deleteById(repository.id)
+                    getReleaseDao().deleteById(repository.id)
+                    getProductDao().insert(*(getProductTempDao().getAll()))
+                    getCategoryDao().insert(*(getCategoryTempDao().getAll()))
+                    getReleaseDao().insert(*(getReleaseTempDao().getAll()))
+                    getRepositoryDao().put(repository)
+                }
+                getProductTempDao().emptyTable()
+                getCategoryTempDao().emptyTable()
+                getReleaseTempDao().emptyTable()
+                // performClear(false, "product_temp", "category_temp", "release_temp")
             }
-            getProductTempDao().emptyTable()
-            getCategoryTempDao().emptyTable()
-            getReleaseTempDao().emptyTable()
         }
     }
 }
