@@ -25,8 +25,8 @@ interface InstallTaskDao : BaseDao<InstallTask> {
     fun getFlow(fileName: String): Flow<InstallTask?>
 
     @Query("DELETE FROM install_task WHERE packageName = :packageName")
-    fun delete(packageName: String)
+    suspend fun delete(packageName: String)
 
     @Query("DELETE FROM install_task")
-    fun emptyTable()
+    suspend fun emptyTable()
 }

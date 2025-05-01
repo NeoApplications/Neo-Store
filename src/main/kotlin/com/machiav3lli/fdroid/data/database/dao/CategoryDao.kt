@@ -27,10 +27,10 @@ interface CategoryDao : BaseDao<Category> {
     fun getAllNamesFlow(): Flow<List<String>>
 
     @Query("DELETE FROM category WHERE repositoryId = :id")
-    fun deleteById(id: Long): Int
+    suspend fun deleteById(id: Long): Int
 
     @Query("DELETE FROM category")
-    fun emptyTable()
+    suspend fun emptyTable()
 }
 
 @Dao
@@ -39,5 +39,5 @@ interface CategoryTempDao : BaseDao<CategoryTemp> {
     fun getAll(): Array<CategoryTemp>
 
     @Query("DELETE FROM temporary_category")
-    fun emptyTable()
+    suspend fun emptyTable()
 }

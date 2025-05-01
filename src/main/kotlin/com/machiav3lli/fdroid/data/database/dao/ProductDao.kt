@@ -83,12 +83,11 @@ interface ProductDao : BaseDao<Product> {
     @Query("SELECT packageName, icon, metadataIcon FROM product GROUP BY packageName HAVING 1")
     fun getIconDetails(): List<IconDetails>
 
-
     @Query("SELECT packageName, icon, metadataIcon FROM product GROUP BY packageName HAVING 1")
     fun getIconDetailsFlow(): Flow<List<IconDetails>>
 
     @Query("DELETE FROM product WHERE repositoryId = :id")
-    fun deleteById(id: Long): Int
+    suspend fun deleteById(id: Long)
 
     @Query("SELECT DISTINCT licenses FROM product")
     fun getAllLicenses(): List<Licenses>
@@ -267,24 +266,28 @@ interface ProductDao : BaseDao<Product> {
 
         //// SDK
         targetSdkVersion.takeIf { it > 1 }?.let { minTarget ->
-            whereConditions.add("""
+            whereConditions.add(
+                """
             EXISTS (
                 SELECT 1 FROM $TABLE_RELEASE
                 WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
                 AND $TABLE_RELEASE.targetSdkVersion >= ?
             )
-        """.trimIndent())
+        """.trimIndent()
+            )
             builder.addArgument(minTarget.toString())
         }
 
         minSdkVersion.takeIf { it > 1 }?.let { minMin ->
-            whereConditions.add("""
+            whereConditions.add(
+                """
             EXISTS (
                 SELECT 1 FROM $TABLE_RELEASE
                 WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
                 AND $TABLE_RELEASE.minSdkVersion >= ?
             )
-        """.trimIndent())
+        """.trimIndent()
+            )
             builder.addArgument(minMin.toString())
         }
 
@@ -308,7 +311,7 @@ interface ProductDao : BaseDao<Product> {
     }
 
     @Query("DELETE FROM product")
-    fun emptyTable()
+    suspend fun emptyTable()
 }
 
 @Dao
@@ -317,16 +320,16 @@ interface ProductTempDao : BaseDao<ProductTemp> {
     fun getAll(): Array<ProductTemp>
 
     @Query("DELETE FROM temporary_product")
-    fun emptyTable()
+    suspend fun emptyTable()
 
     @Insert
-    fun insertCategory(vararg product: CategoryTemp)
+    suspend fun insertCategory(vararg product: CategoryTemp)
 
     //@Insert
     //fun insertRelease(vararg product: ReleaseTemp)
 
     @Transaction
-    fun putTemporary(products: List<Product>) {
+    suspend fun putTemporary(products: List<Product>) {
         products.forEach {
             insert(it.asProductTemp())
             it.categories.distinct().forEach { category ->

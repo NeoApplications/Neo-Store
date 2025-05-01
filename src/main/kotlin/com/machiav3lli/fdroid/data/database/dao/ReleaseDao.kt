@@ -16,10 +16,10 @@ interface ReleaseDao : BaseDao<Release> {
     fun get(packageName: String, signature: String): List<Release>
 
     @Query("DELETE FROM `release` WHERE repositoryId = :id")
-    fun deleteById(id: Long): Int
+    suspend fun deleteById(id: Long)
 
     @Query("DELETE FROM `release`")
-    fun emptyTable()
+    suspend fun emptyTable()
 }
 
 @Dao
@@ -28,5 +28,5 @@ interface ReleaseTempDao : BaseDao<ReleaseTemp> {
     fun getAll(): Array<ReleaseTemp>
 
     @Query("DELETE FROM temporary_release")
-    fun emptyTable()
+    suspend fun emptyTable()
 }
