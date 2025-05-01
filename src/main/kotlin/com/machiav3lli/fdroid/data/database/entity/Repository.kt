@@ -25,6 +25,7 @@ data class Repository(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     var address: String = "",
+    // TODO add support for countryCode and isPrimary
     val mirrors: List<String> = emptyList(),
     val name: String = "",
     val description: String = "",
@@ -56,8 +57,8 @@ data class Repository(
         lastModified: String, entityTag: String, timestamp: Long,
     ): Repository = copy(
         mirrors = mirrors,
-        name = name,
-        description = description,
+        name = name.nullIfEmpty() ?: this.name,
+        description = description.nullIfEmpty() ?: this.description,
         version = if (version >= 0) version else this.version,
         lastModified = lastModified,
         entityTag = entityTag,
