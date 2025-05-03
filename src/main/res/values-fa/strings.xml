@@ -134,7 +134,7 @@
     <string name="has_security_vulnerabilities">دارای آسیب پذیری‌های امنیتی</string>
     <string name="http_proxy">پراکسی HTTP</string>
     <string name="add_repository">افزودن مخزن</string>
-    <string name="all_applications_up_to_date">همهٔ برنامه‌های شما به‌روز هستند</string>
+    <string name="all_applications_up_to_date">همهٔ برنامه‌ها به‌روز هستند</string>
     <string name="file_format_error_DESC">قالب پروندهٔ نامعتبر.</string>
     <string name="incompatible_older_DESC">این نسخه قدیمی تر از نسخه ای است که روی دستگاه شما نصب شده است. ابتدا آن را حذف کنید.</string>
     <string name="incompatible_version">نسخهٔ ناسازگار</string>
