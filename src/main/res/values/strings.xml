@@ -187,7 +187,7 @@
     <string name="new_applications">New apps</string>
     <string name="install_after_sync">Auto-update</string>
     <string name="install_after_sync_summary">Install all new versions after looking through repositories for new apps.</string>
-    <string name="prefs_updated_apps">Number of apps to show in \"Recently updated\\</string>
+    <string name="prefs_updated_apps">Number of apps to show in \"Recently updated\"</string>
     <string name="prefs_new_apps">Number of apps to show in \"New apps\"</string>
     <string name="new_repository">New repository</string>
     <string name="default_tab">Default tab</string>
