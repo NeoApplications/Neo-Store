@@ -420,4 +420,6 @@
     <string name="installing_error_timeout_DESC">Onderbreking bij installatie.</string>
     <string name="syncing_batch_FORMAT">Archieven synchroniseren (%d/%d)</string>
     <string name="initial_sync_repositories">Wilt je de vooraf ingestelde archieven synchroniseren (De officiële F-Droid, IzzyOnDroid &amp; Guardian Project)?</string>
+    <string name="index_v2">Index-V2 inschakelen</string>
+    <string name="index_v2_summary">Schakelt verzoek om Index-V2 als de primaire index te gebruiken. Nog experimenteel, met voor- en nadelen.</string>
 </resources>

@@ -426,4 +426,6 @@
     <string name="about_build_FORMAT">%s (сборка %s)</string>
     <string name="syncing_batch_FORMAT">Синхронизация репозиториев (%d/%d)</string>
     <string name="initial_sync_repositories">Синхронизировать предустановленные репозитории (официальный F-Droid, IzzyOnDroid и Guardian)?</string>
+    <string name="index_v2">Использовать Index-V2</string>
+    <string name="index_v2_summary">Запрашивать Index-V2 в качестве основного индекса. Экспериментально, есть как преимущества, так и недостатки.</string>
 </resources>
