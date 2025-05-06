@@ -1,0 +1,7 @@
+Přidáno: Zpracování otevření stránky aplikace ze systémových informací o aplikaci
+Oprava: Oznámení se řídilo systémovým jazykem, nikoli jazykem aplikace
+Aktualizace: Přepracována logika DownloadWorker, oznámení a zpracování
+Aktualizace: Přepracována logika SyncWorker, oznámení a zpracování
+Aktualizace: Použita výchozí navigační ikona nebo velikost textu
+Odstraněno: Duplicitní kanály pro oznámení synchronizace
+a mnoho dalších ve více než 20 revizích a 20 příspěvcích k překladu
