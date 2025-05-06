@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.DatabaseX
-import com.machiav3lli.fdroid.data.database.dao.ExtrasDao
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.Extras
 import com.machiav3lli.fdroid.data.database.entity.Product
@@ -14,6 +13,11 @@ import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.PrivacyData
 import com.machiav3lli.fdroid.data.entity.toAntiFeature
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
+import com.machiav3lli.fdroid.data.repository.ExtrasRepository
+import com.machiav3lli.fdroid.data.repository.InstalledRepository
+import com.machiav3lli.fdroid.data.repository.PrivacyRepository
+import com.machiav3lli.fdroid.data.repository.ProductsRepository
+import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.utils.findSuggestedProduct
 import com.machiav3lli.fdroid.utils.generatePermissionGroups
 import com.machiav3lli.fdroid.utils.toPrivacyNote
@@ -32,12 +36,16 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AppSheetVM(
     private val db: DatabaseX,
     downloadedRepo: DownloadedRepository,
+    private val productsRepo: ProductsRepository,
+    private val extrasRepo: ExtrasRepository,
+    private val installedRepo: InstalledRepository,
+    private val privacyRepo: PrivacyRepository,
+    reposRepo: RepositoriesRepository,
 ) : ViewModel() {
     private val cc = Dispatchers.IO
 
@@ -45,7 +53,7 @@ class AppSheetVM(
 
     val products = packageName
         .flatMapLatest { pn ->
-            db.getProductDao().getFlow(pn)
+            productsRepo.getProduct(pn)
         }
 
     private val developer = products.mapLatest { it.firstOrNull()?.author?.name ?: "" }.stateIn(
@@ -56,19 +64,19 @@ class AppSheetVM(
 
     val exodusInfo = packageName
         .flatMapLatest { pn ->
-            db.getExodusInfoDao().getFlow(pn)
+            privacyRepo.getExodusInfos(pn)
         }
         .mapLatest { it.maxByOrNull(ExodusInfo::version_code) }
 
-    val trackers = exodusInfo.combine(db.getTrackerDao().getAllFlow()) { a, b ->
-        b.filter { it.key in (a?.trackers ?: emptyList()) }
+    val trackers = combine(exodusInfo, privacyRepo.getAllTrackers()) { info, trackers ->
+        trackers.filter { it.key in (info?.trackers ?: emptyList()) }
     }
 
-    val repositories = db.getRepositoryDao().getAllFlow().mapLatest { it }
+    val repositories = reposRepo.getAll().distinctUntilChanged()
 
     val installedItem = packageName
         .flatMapLatest { packageName ->
-            db.getInstalledDao().getFlow(packageName)
+            installedRepo.get(packageName)
         }
         .stateIn(
             viewModelScope,
@@ -76,15 +84,17 @@ class AppSheetVM(
             null
         )
 
-    private val _productRepos = MutableStateFlow<List<Pair<Product, Repository>>>(emptyList())
-    val productRepos: StateFlow<List<Pair<Product, Repository>>> = _productRepos
+    private val _repos = MutableStateFlow<List<Pair<Product, Repository>>>(emptyList())
+    val repos: StateFlow<List<Pair<Product, Repository>>> = _repos
+
+    // TODO rebase to internal only
     fun updateProductRepos(repos: List<Pair<Product, Repository>>) {
         viewModelScope.launch {
-            _productRepos.update { repos }
+            _repos.update { repos }
         }
     }
 
-    val privacyData = combine(installedItem, trackers, productRepos) { ins, trs, prs ->
+    val privacyData = combine(installedItem, trackers, repos) { ins, trs, prs ->
         val suggestedProduct = findSuggestedProduct(prs, ins) { it.first }
         PrivacyData(
             permissions = suggestedProduct?.first?.displayRelease
@@ -114,7 +124,7 @@ class AppSheetVM(
 
     val extras = packageName
         .flatMapLatest { pn ->
-            db.getExtrasDao().getFlow(pn)
+            extrasRepo.get(pn)
         }
         .stateIn(
             viewModelScope,
@@ -125,7 +135,7 @@ class AppSheetVM(
     val authorProducts = combineTransform(
         packageName,
         developer,
-        db.getProductDao().getAuthorPackagesFlow(developer.value),
+        productsRepo.getAuthorList(developer.value),
     ) { pn, dev, prods ->
         if (dev.isNotEmpty()) emit(
             prods
@@ -136,7 +146,7 @@ class AppSheetVM(
     }
 
     private val actions: Flow<Pair<ActionState, Set<ActionState>>> =
-        combine(productRepos, downloadingState, installedItem) { prs, ds, ins ->
+        combine(repos, downloadingState, installedItem) { prs, ds, ins ->
             val product = findSuggestedProduct(prs, ins) { it.first }?.first
             val compatible = product != null && product.selectedReleases.firstOrNull()
                 .let { it != null && it.incompatibilities.isEmpty() }
@@ -195,52 +205,34 @@ class AppSheetVM(
     private fun shouldIgnore(appVersionCode: Long): Boolean =
         extras.value?.ignoredVersion == appVersionCode || extras.value?.ignoreUpdates == true
 
-    private suspend fun saveExtraField(
-        packageName: String,
-        updateFunc: ExtrasDao.(Extras?) -> Unit
-    ) {
-        withContext(cc) {
-            db.getExtrasDao().upsertExtra(packageName, updateFunc)
-        }
-    }
-
     fun setIgnoredVersion(packageName: String, versionCode: Long) {
         viewModelScope.launch {
-            saveExtraField(packageName) {
-                if (it != null) updateIgnoredVersion(packageName, versionCode)
-                else insert(Extras(packageName, ignoredVersion = versionCode))
-            }
+            extrasRepo.setIgnoredVersion(packageName, versionCode)
         }
     }
 
     fun setIgnoreUpdates(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
-            saveExtraField(packageName) {
-                if (it != null) updateIgnoreUpdates(packageName, setBoolean)
-                else insert(Extras(packageName, ignoreUpdates = setBoolean))
-            }
+            extrasRepo.setIgnoreUpdates(packageName, setBoolean)
         }
     }
 
     fun setIgnoreVulns(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
-            saveExtraField(packageName) {
-                if (it != null) updateIgnoreVulns(packageName, setBoolean)
-                else insert(Extras(packageName, ignoreVulns = setBoolean))
-            }
+            extrasRepo.setIgnoreVulns(packageName, setBoolean)
         }
     }
 
     fun setAllowUnstableUpdates(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
-            saveExtraField(packageName) {
+            extrasRepo.upsertExtra(packageName) {
                 if (it != null) updateAllowUnstable(packageName, setBoolean)
                 else insert(Extras(packageName, allowUnstable = setBoolean))
                 val features = NeoApp.context.packageManager.systemAvailableFeatures
                     .asSequence().map { feat -> feat.name }
                     .toSet() + setOf("android.hardware.touchscreen")
-                productRepos.value.forEach { prodRepo ->
-                    db.getProductDao().upsert(
+                productsRepo.upsertProduct(
+                    *repos.value.map { prodRepo ->
                         prodRepo.first.apply {
                             refreshReleases(
                                 features,
@@ -248,18 +240,15 @@ class AppSheetVM(
                             )
                             refreshVariables()
                         }
-                    )
-                }
+                    }.toTypedArray()
+                )
             }
         }
     }
 
     fun setFavorite(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
-            saveExtraField(packageName) {
-                if (it != null) updateFavorite(packageName, setBoolean)
-                else insert(Extras(packageName, favorite = setBoolean))
-            }
+            extrasRepo.setFavorite(packageName, setBoolean)
         }
     }
 }

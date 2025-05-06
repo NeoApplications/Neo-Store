@@ -8,7 +8,6 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.database.DatabaseX
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
-import com.machiav3lli.fdroid.data.database.entity.Extras
 import com.machiav3lli.fdroid.data.database.entity.IconDetails
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.Licenses
@@ -18,6 +17,10 @@ import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.Request
 import com.machiav3lli.fdroid.data.entity.Source
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
+import com.machiav3lli.fdroid.data.repository.ExtrasRepository
+import com.machiav3lli.fdroid.data.repository.InstalledRepository
+import com.machiav3lli.fdroid.data.repository.ProductsRepository
+import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.utils.matchSearchQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,7 +39,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import kotlinx.coroutines.withContext
 
 @OptIn(
     ExperimentalCoroutinesApi::class,
@@ -45,8 +47,11 @@ import kotlinx.coroutines.withContext
 open class MainVM(
     private val db: DatabaseX,
     private val downloadedRepo: DownloadedRepository,
+    private val productsRepo: ProductsRepository,
+    private val extrasRepo: ExtrasRepository,
+    installedRepo: InstalledRepository,
+    reposRepo: RepositoriesRepository,
 ) : ViewModel() {
-    private val cc = Dispatchers.IO
     private val ioScope = viewModelScope.plus(Dispatchers.IO)
 
     private val _sortFilterLatest = MutableStateFlow("")
@@ -80,19 +85,23 @@ open class MainVM(
         Source.NONE             -> Request.None
     }
 
-    val repositories = db.getRepositoryDao().getAllFlow().distinctUntilChanged()
+    val favorites = extrasRepo.getAllFavorites().distinctUntilChanged()
 
-    val categories = db.getCategoryDao().getAllNamesFlow().distinctUntilChanged()
+    val repositories = reposRepo.getAll().distinctUntilChanged()
 
-    val licenses = db.getProductDao().getAllLicensesFlow().distinctUntilChanged().mapLatest {
+    val categories = productsRepo.getAllCategories().distinctUntilChanged()
+
+    val successfulSyncs = reposRepo.getLatestUpdates()
+
+    val licenses = productsRepo.getAllLicenses().distinctUntilChanged().mapLatest {
         it.map(Licenses::licenses).flatten().distinct()
     }
 
-    val iconDetails = db.getProductDao().getIconDetailsFlow().distinctUntilChanged().mapLatest {
+    val iconDetails = productsRepo.getIconDetails().distinctUntilChanged().mapLatest {
         it.associateBy(IconDetails::packageName)
     }
 
-    val installed = db.getInstalledDao().getAllFlow().map {
+    val installed = installedRepo.getAll().map {
         it.associateBy(Installed::packageName)
     }.stateIn(
         scope = ioScope,
@@ -125,8 +134,8 @@ open class MainVM(
     val productsExplore: Flow<List<ProductItem>> = combine(
         requestExplore,
         installed,
-        db.getExtrasDao().getAllFlow().distinctUntilChanged(),
-    ) { req, _, _ -> db.getProductDao().queryFlowList(req) }
+        extrasRepo.getAll().distinctUntilChanged(),
+    ) { req, _, _ -> productsRepo.getProducts(req) }
         .flatMapLatest { it }
         .distinctUntilChanged()
         .mapLatest { list ->
@@ -136,8 +145,8 @@ open class MainVM(
     private val productsSearch: Flow<List<Product>> = combine(
         requestSearch,
         installed,
-        db.getExtrasDao().getAllFlow().distinctUntilChanged(),
-    ) { req, _, _ -> db.getProductDao().queryFlowList(req) }
+        extrasRepo.getAll().distinctUntilChanged(),
+    ) { req, _, _ -> productsRepo.getProducts(req) }
         .flatMapLatest { it }
         .distinctUntilChanged()
 
@@ -157,8 +166,8 @@ open class MainVM(
     val installedProdsInstalled: Flow<List<ProductItem>> = combine(
         sortFilterInstalled,
         installed,
-        db.getExtrasDao().getAllFlow().distinctUntilChanged(),
-    ) { _, _, _ -> db.getProductDao().queryFlowList(Request.Installed) }
+        extrasRepo.getAll().distinctUntilChanged(),
+    ) { _, _, _ -> productsRepo.getProducts(Request.Installed) }
         .flatMapLatest { it }
         .distinctUntilChanged()
         .mapLatest { list ->
@@ -172,8 +181,8 @@ open class MainVM(
     val updatedProdsLatest: Flow<List<ProductItem>> = combine(
         sortFilterLatest,
         installed,
-        db.getExtrasDao().getAllFlow().distinctUntilChanged(),
-    ) { _, _, _ -> db.getProductDao().queryFlowList(Request.Updated) }
+        extrasRepo.getAll().distinctUntilChanged(),
+    ) { _, _, _ -> productsRepo.getProducts(Request.Updated) }
         .flatMapLatest { it }
         .distinctUntilChanged()
         .mapLatest { list ->
@@ -182,8 +191,8 @@ open class MainVM(
 
     val newProdsLatest: Flow<List<ProductItem>> = combine(
         installed,
-        db.getExtrasDao().getAllFlow().distinctUntilChanged(),
-    ) { _, _ -> db.getProductDao().queryFlowList(Request.New) }
+        extrasRepo.getAll().distinctUntilChanged(),
+    ) { _, _ -> productsRepo.getProducts(Request.New) }
         .flatMapLatest { it }
         .distinctUntilChanged()
         .mapLatest { list ->
@@ -192,8 +201,8 @@ open class MainVM(
 
     val updateProdsInstalled: Flow<List<ProductItem>> = combine(
         installed,
-        db.getExtrasDao().getAllFlow(),
-    ) { _, _ -> db.getProductDao().queryFlowList(Request.Updates) }
+        extrasRepo.getAll(),
+    ) { _, _ -> productsRepo.getProducts(Request.Updates) }
         .flatMapLatest { it }
         .distinctUntilChanged()
         .mapLatest { list ->
@@ -227,12 +236,6 @@ open class MainVM(
 
     fun eraseDownloaded(downloaded: Downloaded) {
         viewModelScope.launch {
-            deleteDownloaded(downloaded)
-        }
-    }
-
-    private suspend fun deleteDownloaded(downloaded: Downloaded) {
-        withContext(cc) {
             downloadedRepo.delete(downloaded)
             Cache.eraseDownload(NeoApp.context, downloaded.cacheFileName)
         }
@@ -240,17 +243,7 @@ open class MainVM(
 
     fun setFavorite(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
-            saveFavorite(packageName, setBoolean)
-        }
-    }
-
-    private suspend fun saveFavorite(packageName: String, setBoolean: Boolean) {
-        withContext(cc) {
-            val oldValue = db.getExtrasDao()[packageName]
-            if (oldValue != null) db.getExtrasDao()
-                .upsert(oldValue.copy(favorite = setBoolean))
-            else db.getExtrasDao()
-                .upsert(Extras(packageName, favorite = setBoolean))
+            extrasRepo.setFavorite(packageName, setBoolean)
         }
     }
 }
