@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.data.index
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.ui.util.fastMap
 import androidx.core.net.toUri
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.content.Preferences
@@ -23,6 +24,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.File
 import java.io.InputStream
 import java.security.MessageDigest
@@ -33,7 +36,7 @@ import java.util.Locale
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 
-object RepositoryUpdater {
+object RepositoryUpdater : KoinComponent {
     enum class Stage {
         DOWNLOAD, PROCESS, MERGE, COMMIT
     }
@@ -59,7 +62,7 @@ object RepositoryUpdater {
             this.errorType = errorType
         }
 
-        constructor(errorType: ErrorType, message: String, cause: Exception) : super(
+        constructor(errorType: ErrorType, message: String, cause: Throwable) : super(
             message,
             cause
         ) {
@@ -69,10 +72,9 @@ object RepositoryUpdater {
 
     private val updaterLock = Any()
     private val cleanupLock = Any()
-    lateinit var db: DatabaseX
+    private val db: DatabaseX by inject()
 
-    fun init(context: Context) {
-        db = DatabaseX.getInstance(context)
+    fun init() {
         var lastDisabled = setOf<Long>()
 
         runBlocking(Dispatchers.IO) {
@@ -197,13 +199,12 @@ object RepositoryUpdater {
         }
     }
 
-    private fun processFile(
+    private suspend fun processFile(
         context: Context,
         repository: Repository, indexType: IndexType, unstable: Boolean,
         file: File, lastModified: String, entityTag: String, callback: (Stage, Long, Long?) -> Unit,
     ): Boolean {
         var rollback = true
-        val db = DatabaseX.getInstance(context)
         return synchronized(updaterLock) {
             try {
                 val (jarFile, indexEntry) = if (indexType != IndexType.INDEX_V2) JarFile(file, true)
@@ -334,36 +335,38 @@ object RepositoryUpdater {
             }
 
             override fun onProduct(product: Product) {
-                if (Thread.interrupted()) {
-                    throw InterruptedException()
-                }
+                if (Thread.interrupted()) throw InterruptedException()
+
                 products += product.apply {
                     refreshReleases(features, unstable)
                     refreshVariables()
                 }
-                if (products.size >= 100) {
-                    db.getProductTempDao().putTemporary(products)
-                    db.getReleaseTempDao()
-                        .insert(*(products.flatMap { it.releases }
-                            .map { it.asReleaseTemp() }.toTypedArray()))
-                    products.clear()
+                runBlocking {
+                    if (products.size >= 100) {
+                        db.getProductTempDao().putTemporary(products)
+                        db.getReleaseTempDao()
+                            .insert(*(products.flatMap { it.releases }
+                                .map { it.asReleaseTemp() }.toTypedArray()))
+                        products.clear()
+                    }
                 }
             }
         })
 
-        ProgressInputStream(inputStream) {
-            callback(Stage.PROCESS, it, total)
-        }.use { parser.parse(it) }
+        runBlocking {
+            ProgressInputStream(inputStream) {
+                callback(Stage.PROCESS, it, total)
+            }.use { parser.parse(it) }
 
-        if (Thread.interrupted()) {
-            throw InterruptedException()
-        }
-        if (products.isNotEmpty()) {
-            db.getProductTempDao().putTemporary(products)
-            db.getReleaseTempDao()
-                .insert(*(products.flatMap { it.releases }
-                    .map { it.asReleaseTemp() }.toTypedArray()))
-            products.clear()
+            if (Thread.interrupted()) throw InterruptedException()
+
+            if (products.isNotEmpty()) {
+                db.getProductTempDao().putTemporary(products)
+                db.getReleaseTempDao()
+                    .insert(*(products.flatMap { it.releases }
+                        .map { it.asReleaseTemp() }.toTypedArray()))
+                products.clear()
+            }
         }
         return Pair(changedRepository, certificateFromIndex)
     }
@@ -411,9 +414,8 @@ object RepositoryUpdater {
                             }
 
                             override fun onProduct(product: Product) {
-                                if (Thread.interrupted()) {
-                                    throw InterruptedException()
-                                }
+                                if (Thread.interrupted()) throw InterruptedException()
+
                                 unmergedProducts += product
                                 if (unmergedProducts.size >= 100) {
                                     indexMerger.addProducts(unmergedProducts)
@@ -425,9 +427,8 @@ object RepositoryUpdater {
                                 packageName: String,
                                 releases: List<Release>,
                             ) {
-                                if (Thread.interrupted()) {
-                                    throw InterruptedException()
-                                }
+                                if (Thread.interrupted()) throw InterruptedException()
+
                                 unmergedReleases += Pair(packageName, releases)
                                 if (unmergedReleases.size >= 100) {
                                     indexMerger.addReleases(unmergedReleases)
@@ -437,9 +438,8 @@ object RepositoryUpdater {
                         }
                     ).parse(progressInputStream)
 
-                    if (Thread.interrupted()) {
-                        throw InterruptedException()
-                    }
+                    if (Thread.interrupted()) throw InterruptedException()
+
                     if (unmergedProducts.isNotEmpty()) {
                         indexMerger.addProducts(unmergedProducts)
                         unmergedProducts.clear()
@@ -453,25 +453,27 @@ object RepositoryUpdater {
                         repository.id,
                         100
                     ) { products, totalCount ->
-                        if (Thread.interrupted()) {
-                            throw InterruptedException()
-                        }
+                        if (Thread.interrupted()) throw InterruptedException()
+
                         progress += products.size
                         callback(
                             Stage.MERGE,
                             progress.toLong(),
                             totalCount.toLong()
                         )
-                        products.map {
-                            it.apply {
-                                refreshReleases(features, unstable)
-                                refreshVariables()
+                        runBlocking {
+                            products.map {
+                                it.apply {
+                                    refreshReleases(features, unstable)
+                                    refreshVariables()
+                                }
+                            }.let { updatedProducts ->
+                                db.getProductTempDao().putTemporary(updatedProducts)
+                                db.getReleaseTempDao().insert(
+                                    *(updatedProducts.flatMap { it.releases }
+                                        .fastMap { it.asReleaseTemp() }.toTypedArray())
+                                )
                             }
-                        }.let { updatedProducts ->
-                            db.getProductTempDao().putTemporary(updatedProducts)
-                            db.getReleaseTempDao()
-                                .insert(*(updatedProducts.flatMap { it.releases }
-                                    .map { it.asReleaseTemp() }.toTypedArray()))
                         }
                     }
                 }
@@ -525,9 +527,8 @@ object RepositoryUpdater {
                             }
 
                             override fun onProduct(product: Product) {
-                                if (Thread.interrupted()) {
-                                    throw InterruptedException()
-                                }
+                                if (Thread.interrupted()) throw InterruptedException()
+
                                 unmergedProducts += product
                                 if (unmergedProducts.size >= 100) {
                                     indexMerger.addProducts(unmergedProducts)
@@ -539,9 +540,8 @@ object RepositoryUpdater {
                                 packageName: String,
                                 releases: List<Release>,
                             ) {
-                                if (Thread.interrupted()) {
-                                    throw InterruptedException()
-                                }
+                                if (Thread.interrupted()) throw InterruptedException()
+
                                 unmergedReleases += Pair(packageName, releases)
                                 if (unmergedReleases.size >= 100) {
                                     indexMerger.addReleases(unmergedReleases)
@@ -551,9 +551,8 @@ object RepositoryUpdater {
                         }
                     ).parse(progressInputStream)
 
-                    if (Thread.interrupted()) {
-                        throw InterruptedException()
-                    }
+                    if (Thread.interrupted()) throw InterruptedException()
+
                     if (unmergedProducts.isNotEmpty()) {
                         indexMerger.addProducts(unmergedProducts)
                         unmergedProducts.clear()
@@ -567,25 +566,27 @@ object RepositoryUpdater {
                         repository.id,
                         100
                     ) { products, totalCount ->
-                        if (Thread.interrupted()) {
-                            throw InterruptedException()
-                        }
+                        if (Thread.interrupted()) throw InterruptedException()
+
                         progress += products.size
                         callback(
                             Stage.MERGE,
                             progress.toLong(),
                             totalCount.toLong()
                         )
-                        products.map {
-                            it.apply {
-                                refreshReleases(features, unstable)
-                                refreshVariables()
+                        runBlocking {
+                            products.map {
+                                it.apply {
+                                    refreshReleases(features, unstable)
+                                    refreshVariables()
+                                }
+                            }.let { updatedProducts ->
+                                db.getProductTempDao().putTemporary(updatedProducts)
+                                db.getReleaseTempDao().insert(
+                                    *(updatedProducts.flatMap { it.releases }
+                                        .map { it.asReleaseTemp() }.toTypedArray())
+                                )
                             }
-                        }.let { updatedProducts ->
-                            db.getProductTempDao().putTemporary(updatedProducts)
-                            db.getReleaseTempDao()
-                                .insert(*(updatedProducts.flatMap { it.releases }
-                                    .map { it.asReleaseTemp() }.toTypedArray()))
                         }
                     }
                 }
