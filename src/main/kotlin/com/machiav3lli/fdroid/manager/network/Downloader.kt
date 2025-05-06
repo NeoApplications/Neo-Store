@@ -126,7 +126,7 @@ object Downloader {
                         append(HttpHeaders.CacheControl, CacheControl.MaxAge(60).toString())
                     }
                     ifNoneMatch(entityTag)
-                    if (start != null) header(HttpHeaders.Range, start?.let { "bytes=$it-" })
+                    if (start != null) header(HttpHeaders.Range, start.let { "bytes=$it-" })
                     retry {
                         modifyRequest {
                             start = if (target.exists()) target.length().coerceAtLeast(0L)

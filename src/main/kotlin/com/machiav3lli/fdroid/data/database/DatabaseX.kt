@@ -211,15 +211,17 @@ abstract class DatabaseX : RoomDatabase() {
     abstract fun getRepositoryDao(): RepositoryDao
     abstract fun getProductDao(): ProductDao
     abstract fun getReleaseDao(): ReleaseDao
-    abstract fun getReleaseTempDao(): ReleaseTempDao
-    abstract fun getProductTempDao(): ProductTempDao
     abstract fun getCategoryDao(): CategoryDao
-    abstract fun getCategoryTempDao(): CategoryTempDao
     abstract fun getInstalledDao(): InstalledDao
     abstract fun getExtrasDao(): ExtrasDao
     abstract fun getExodusInfoDao(): ExodusInfoDao
     abstract fun getTrackerDao(): TrackerDao
     abstract fun getDownloadedDao(): DownloadedDao
+
+    // TODO replace external calls
+    abstract fun getReleaseTempDao(): ReleaseTempDao
+    abstract fun getProductTempDao(): ProductTempDao
+    abstract fun getCategoryTempDao(): CategoryTempDao
     abstract fun getInstallTaskDao(): InstallTaskDao
 
     companion object {

@@ -23,6 +23,8 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -70,7 +72,7 @@ object RepositoryUpdater : KoinComponent {
         }
     }
 
-    private val updaterLock = Any()
+    private val updaterMutex = Mutex()
     private val cleanupLock = Any()
     private val db: DatabaseX by inject()
 
@@ -97,8 +99,8 @@ object RepositoryUpdater : KoinComponent {
         }
     }
 
-    fun await() {
-        synchronized(updaterLock) { }
+    suspend fun await() {
+        updaterMutex.withLock { }
     }
 
     suspend fun update(
@@ -205,7 +207,7 @@ object RepositoryUpdater : KoinComponent {
         file: File, lastModified: String, entityTag: String, callback: (Stage, Long, Long?) -> Unit,
     ): Boolean {
         var rollback = true
-        return synchronized(updaterLock) {
+        return updaterMutex.withLock {
             try {
                 val (jarFile, indexEntry) = if (indexType != IndexType.INDEX_V2) JarFile(file, true)
                     .let { Pair(it, it.getEntry(indexType.contentName) as JarEntry?) }
