@@ -4,10 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.machiav3lli.fdroid.ContextWrapperX
-import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.content.Preferences
-import com.machiav3lli.fdroid.data.entity.Order
-import com.machiav3lli.fdroid.data.entity.Section
+import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.utils.Utils.toInstalledItem
 import com.machiav3lli.fdroid.utils.displayUpdatesNotification
 import com.machiav3lli.fdroid.utils.extension.android.Android
@@ -15,8 +13,11 @@ import com.machiav3lli.fdroid.utils.getLaunchActivities
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class PackageChangedReceiver : BroadcastReceiver() {
+class PackageChangedReceiver : BroadcastReceiver(), KoinComponent {
+    private val installedRepo: InstalledRepository by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         val packageName =
@@ -38,21 +39,14 @@ class PackageChangedReceiver : BroadcastReceiver() {
                     }
                     val launcherActivities = context.packageManager.getLaunchActivities(packageName)
                     CoroutineScope(Dispatchers.IO).launch {
-                        if (packageInfo != null) NeoApp.db.getInstalledDao().upsert(
+                        if (packageInfo != null) installedRepo.upsert(
                             packageInfo.toInstalledItem(launcherActivities)
                         )
-                        else NeoApp.db.getInstalledDao().delete(packageName)
+                        else installedRepo.delete(packageName)
 
                         // Update updates notification
                         if (Preferences[Preferences.Key.UpdateNotify]) langContext.displayUpdatesNotification(
-                            NeoApp.db.getProductDao()
-                                .queryObject(
-                                    installed = true,
-                                    updates = true,
-                                    section = Section.All,
-                                    order = Order.NAME,
-                                    ascending = true,
-                                ).map { it.toItem() }
+                            installedRepo.loadInstalledProducts().map { it.toItem() }
                         )
                     }
                 }

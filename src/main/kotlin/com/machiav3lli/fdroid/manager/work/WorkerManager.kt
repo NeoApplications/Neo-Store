@@ -28,6 +28,9 @@ import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.data.entity.ValidationError
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
+import com.machiav3lli.fdroid.data.repository.InstalledRepository
+import com.machiav3lli.fdroid.data.repository.ProductsRepository
+import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.utils.Utils
 import com.machiav3lli.fdroid.utils.extension.android.Android
@@ -56,6 +59,9 @@ class WorkerManager(appContext: Context) : KoinComponent {
     private var langContext: Context = ContextWrapperX.wrap(appContext)
     private val notificationManager: NotificationManagerCompat by inject()
     private val downloadedRepo: DownloadedRepository by inject()
+    private val productRepo: ProductsRepository by inject()
+    private val reposRepo: RepositoriesRepository by inject()
+    private val installedRepo: InstalledRepository by inject()
     private val syncStateHandler by lazy {
         SyncStateHandler(
             context = langContext,
@@ -218,13 +224,13 @@ class WorkerManager(appContext: Context) : KoinComponent {
             productItems.map { productItem ->
                 Triple(
                     productItem.packageName,
-                    NeoApp.db.getInstalledDao().get(productItem.packageName),
-                    NeoApp.db.getRepositoryDao().get(productItem.repositoryId)
+                    installedRepo.load(productItem.packageName),
+                    reposRepo.load(productItem.repositoryId)
                 )
             }
                 .filter { (_, installed, repo) -> (enforce || installed != null) && repo != null }
                 .forEach { (packageName, installed, repo) ->
-                    val productRepository = NeoApp.db.getProductDao().get(packageName)
+                    val productRepository = productRepo.loadProduct(packageName)
                         .filter { product -> product.repositoryId == repo!!.id }
                         .map { product -> Pair(product, repo!!) }
                     scope.launch(Dispatchers.IO) {
