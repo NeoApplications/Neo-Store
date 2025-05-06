@@ -1,0 +1,76 @@
+package com.machiav3lli.fdroid.data.repository
+
+import com.machiav3lli.fdroid.data.database.dao.CategoryDao
+import com.machiav3lli.fdroid.data.database.dao.ProductDao
+import com.machiav3lli.fdroid.data.database.entity.IconDetails
+import com.machiav3lli.fdroid.data.database.entity.Licenses
+import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.entity.Order
+import com.machiav3lli.fdroid.data.entity.Request
+import com.machiav3lli.fdroid.data.entity.Section
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
+
+@OptIn(ExperimentalCoroutinesApi::class)
+class ProductsRepository(
+    private val productsDao: ProductDao,
+    private val categoryDao: CategoryDao,
+) {
+    private val cc = Dispatchers.IO
+    private val jcc = Dispatchers.IO + SupervisorJob()
+
+    suspend fun upsertProduct(vararg product: Product) = withContext(jcc) {
+        productsDao.upsert(*product)
+    }
+
+    fun getProducts(req: Request): Flow<List<Product>> = productsDao.queryFlowList(req)
+        .flowOn(cc)
+
+    fun getProduct(packageName: String): Flow<List<Product>> = productsDao.getFlow(packageName)
+        .flowOn(cc)
+
+    fun getProductsOfRepo(repoId: Long): Flow<List<Product>> =
+        productsDao.productsForRepositoryFlow(repoId)
+            .flowOn(cc)
+
+    fun getAuthorList(author: String): Flow<List<Product>> =
+        productsDao.getAuthorPackagesFlow(author)
+            .flowOn(cc)
+
+    fun getAllLicenses(): Flow<List<Licenses>> = productsDao.getAllLicensesFlow()
+        .flowOn(cc)
+
+    fun getAllCategories(): Flow<List<String>> = categoryDao.getAllNamesFlow()
+        .flowOn(cc)
+
+    fun getIconDetails(): Flow<List<IconDetails>> = productsDao.getIconDetailsFlow()
+        .flowOn(cc)
+
+    suspend fun loadList(
+        installed: Boolean,
+        updates: Boolean,
+        section: Section,
+        order: Order,
+        ascending: Boolean
+    ): List<Product> = withContext(jcc) {
+        productsDao.queryObject(
+            installed = installed,
+            updates = updates,
+            section = section,
+            order = order,
+            ascending = ascending,
+        )
+    }
+
+    suspend fun loadProduct(packageName: String): List<Product> = withContext(jcc) {
+        productsDao.get(packageName)
+    }
+
+    suspend fun productExists(packageName: String): Boolean = withContext(jcc) {
+        productsDao.exists(packageName)
+    }
+}
