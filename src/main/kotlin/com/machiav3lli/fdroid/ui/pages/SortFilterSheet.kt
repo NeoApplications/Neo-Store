@@ -32,13 +32,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
-import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
-import com.machiav3lli.fdroid.data.database.entity.Licenses
 import com.machiav3lli.fdroid.data.entity.AndroidVersion
 import com.machiav3lli.fdroid.data.entity.AntiFeature
-import com.machiav3lli.fdroid.data.index.RepositoryUpdater.db
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ChipsSwitch
 import com.machiav3lli.fdroid.ui.components.DeSelectAll
@@ -50,23 +47,26 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SortAscending
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SortDescending
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
+import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.mapLatest
 
+// TODO add viewmodel
 @OptIn(
     ExperimentalCoroutinesApi::class,
     ExperimentalLayoutApi::class
 )
 @Composable
-fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
+fun SortFilterSheet(
+    navPage: String,
+    viewModel: MainVM = koinNeoViewModel(),
+    onDismiss: () -> Unit,
+) {
     val context = LocalContext.current
     val nestedScrollConnection = rememberNestedScrollInteropConnection()
-    val repos by NeoApp.db.getRepositoryDao().getAllFlow().collectAsState(emptyList())
-    val categories by db.getCategoryDao().getAllNamesFlow().collectAsState(emptyList())
-    val licenses by db.getProductDao().getAllLicensesFlow().mapLatest {
-        it.map(Licenses::licenses).flatten().distinct()
-    }
-        .collectAsState(emptyList())
+    val repos by viewModel.repositories.collectAsState(emptyList())
+    val categories by viewModel.categories.collectAsState(emptyList())
+    val licenses by viewModel.licenses.collectAsState(emptyList())
     val activeRepos by remember(repos) { mutableStateOf(repos.filter { it.enabled }) }
 
     val sortKey = when (navPage) {

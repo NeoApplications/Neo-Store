@@ -45,7 +45,6 @@ import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.Page
 import com.machiav3lli.fdroid.data.entity.Source
 import com.machiav3lli.fdroid.data.entity.appCategoryIcon
-import com.machiav3lli.fdroid.data.index.RepositoryUpdater
 import com.machiav3lli.fdroid.ui.components.CategoriesList
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
@@ -80,9 +79,8 @@ fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
             repositories.value.associateBy { repo -> repo.id }
         }
     }
-    val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
-    val categories by RepositoryUpdater.db.getCategoryDao()
-        .getAllNamesFlow().collectAsState(emptyList())
+    val favorites by viewModel.favorites.collectAsState(emptyArray())
+    val categories by viewModel.categories.collectAsState(emptyList())
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }

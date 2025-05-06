@@ -46,6 +46,7 @@ import com.machiav3lli.fdroid.data.content.SAFFile
 import com.machiav3lli.fdroid.data.database.entity.Extras
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.LinkRef
+import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.ui.components.LinkChip
 import com.machiav3lli.fdroid.ui.components.prefs.BasePreference
 import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroup
@@ -54,9 +55,13 @@ import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 @Composable
-fun PrefsOtherPage(viewModel: PrefsVM = koinNeoViewModel()) {
+fun PrefsOtherPage(
+    viewModel: PrefsVM = koinNeoViewModel(),
+    productRepo: ProductsRepository = koinInject(),
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val hidingCounter = rememberSaveable { mutableIntStateOf(0) }
@@ -163,7 +168,7 @@ fun PrefsOtherPage(viewModel: PrefsVM = koinNeoViewModel()) {
                     ?.filterNot { installed.value.keys.contains(it) }
                     ?.forEach { packageName ->
                         scope.launch(Dispatchers.IO) {
-                            NeoApp.db.getProductDao().get(packageName)
+                            productRepo.loadProduct(packageName)
                                 .maxByOrNull { it.suggestedVersionCode }?.toItem()?.let {
                                     NeoApp.wm.install(it)
                                 }

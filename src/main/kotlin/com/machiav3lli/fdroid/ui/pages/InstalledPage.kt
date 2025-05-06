@@ -182,8 +182,7 @@ fun InstallsPage(viewModel: MainVM) {
             repositories.value.associateBy { repo -> repo.id }
         }
     }
-    val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow()
-        .collectAsState(emptyArray())
+    val favorites by viewModel.favorites.collectAsState(emptyArray())
 
     val updatesAvailable by remember {
         derivedStateOf {

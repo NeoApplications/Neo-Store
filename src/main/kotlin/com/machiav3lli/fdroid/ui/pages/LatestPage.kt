@@ -67,7 +67,7 @@ fun LatestPage(viewModel: MainVM = koinNeoViewModel()) {
             repositories.value.associateBy { repo -> repo.id }
         }
     }
-    val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
+    val favorites by viewModel.favorites.collectAsState(emptyArray())
 
     val scaffoldState = rememberBottomSheetScaffoldState()
     val openDialog = remember { mutableStateOf(false) }

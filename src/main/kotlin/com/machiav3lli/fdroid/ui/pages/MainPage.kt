@@ -29,7 +29,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.machiav3lli.fdroid.NeoActivity
-import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.POPUP_LONG
 import com.machiav3lli.fdroid.POPUP_NONE
 import com.machiav3lli.fdroid.POPUP_SHORT
@@ -70,8 +69,7 @@ fun MainPage(
     val panesNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
     val scope = rememberCoroutineScope()
 
-    val successfulSyncs by NeoApp.db.getRepositoryDao().latestUpdatesFlow()
-        .collectAsState(initial = LatestSyncs(0L, 0L))
+    val successfulSyncs by viewModel.successfulSyncs.collectAsState(initial = LatestSyncs(0L, 0L))
 
     val showPopup = remember { mutableIntStateOf(POPUP_NONE) }
     val openSyncDialog = remember { mutableStateOf(false) }

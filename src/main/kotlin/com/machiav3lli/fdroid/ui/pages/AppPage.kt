@@ -276,7 +276,7 @@ fun AppPage(
 
             else                                                                 -> {
                 val productRepository =
-                    viewModel.productRepos.value.asSequence()
+                    viewModel.repos.value.asSequence()
                         .filter { it.first.releases.any { rel -> rel === release } }
                         .firstOrNull()
                 if (productRepository != null) {
@@ -298,7 +298,7 @@ fun AppPage(
     }
 
     val onActionClick = { action: ActionState? ->
-        val productRepos = viewModel.productRepos.value
+        val productRepos = viewModel.repos.value
         when (action) {
             ActionState.Install,
             ActionState.Update,
