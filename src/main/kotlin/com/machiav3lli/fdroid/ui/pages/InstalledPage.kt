@@ -131,6 +131,7 @@ fun InstalledPage(viewModel: MainVM = koinNeoViewModel()) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
+            space = 24.dp,
         ) {
             SegmentedTabButton(
                 text = stringResource(id = R.string.installed),
