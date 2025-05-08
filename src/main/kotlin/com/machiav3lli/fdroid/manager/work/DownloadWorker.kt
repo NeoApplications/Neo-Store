@@ -45,11 +45,10 @@ import com.machiav3lli.fdroid.data.entity.ValidationError
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.manager.network.DownloadSizeException
 import com.machiav3lli.fdroid.manager.network.Downloader
-import com.machiav3lli.fdroid.utils.Utils
 import com.machiav3lli.fdroid.utils.copyTo
 import com.machiav3lli.fdroid.utils.downloadNotificationBuilder
 import com.machiav3lli.fdroid.utils.extension.android.Android
-import com.machiav3lli.fdroid.utils.extension.android.singleSignature
+import com.machiav3lli.fdroid.utils.extension.android.signerSHA256Signatures
 import com.machiav3lli.fdroid.utils.extension.android.versionCodeCompat
 import com.machiav3lli.fdroid.utils.extension.text.formatSize
 import com.machiav3lli.fdroid.utils.extension.text.hex
@@ -293,7 +292,7 @@ class DownloadWorker(
     }
 
     private fun validatePackage(task: DownloadTask, file: File): ValidationError {
-        val hashType = task.release.hashType.nullIfEmpty() ?: "SHA256"
+        val hashType = task.release.hashType.nullIfEmpty() ?: "SHA-256"
         val hash = try {
             MessageDigest.getInstance(hashType).let { md ->
                 file.inputStream().use { input ->
@@ -325,8 +324,8 @@ class DownloadWorker(
                 ) {
                     ValidationError.METADATA
                 } else {
-                    val signature = singleSignature?.let(Utils::calculateHash).orEmpty()
-                    if ((signature.isEmpty() || signature != task.release.signature)
+                    val signatures = signerSHA256Signatures
+                    if ((signatures.isEmpty() || task.release.signature !in signatures)
                         && !Preferences[Preferences.Key.DisableSignatureCheck]
                     ) {
                         ValidationError.SIGNATURE

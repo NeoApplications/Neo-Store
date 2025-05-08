@@ -192,7 +192,8 @@ fun AppPage(
                         release,
                         repository,
                         when {
-                            installed?.versionCode == release.versionCode && installed?.signature == release.signature
+                            installed?.versionCode == release.versionCode &&
+                                    release.signature in (installed?.signatures ?: emptyList())
                                  -> RELEASE_STATE_INSTALLED
 
                             release.incompatibilities.firstOrNull() == null && release.selected && repository.id == suggestedProductRepo?.second?.id
@@ -268,7 +269,7 @@ fun AppPage(
             }
 
             installedItem != null
-                    && installedItem.signature != release.signature
+                    && release.signature !in installedItem.signatures
                     && !Preferences[Preferences.Key.DisableSignatureCheck]       -> {
                 dialogKey.value = DialogKey.ReleaseIssue(R.string.incompatible_signature_DESC)
                 openDialog.value = true

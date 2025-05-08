@@ -160,7 +160,7 @@ open class Product(
     fun canUpdate(installed: Installed?): Boolean = installed != null &&
             compatible &&
             versionCode > installed.versionCode &&
-            (installed.signature in signatures || Preferences[Preferences.Key.DisableSignatureCheck])
+            (installed.signatures.intersect(signatures).isNotEmpty()  || Preferences[Preferences.Key.DisableSignatureCheck])
 
     fun refreshReleases(
         features: Set<String>,

@@ -47,7 +47,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GlobeSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.User
 import com.machiav3lli.fdroid.ui.dialog.LaunchDialog
 import com.machiav3lli.fdroid.utils.extension.android.Android
-import com.machiav3lli.fdroid.utils.extension.android.singleSignature
+import com.machiav3lli.fdroid.utils.extension.android.signerSHA256Signatures
 import com.machiav3lli.fdroid.utils.extension.android.versionCodeCompat
 import com.machiav3lli.fdroid.utils.extension.text.hex
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
@@ -63,19 +63,18 @@ import kotlin.math.abs
 
 object Utils {
     fun PackageInfo.toInstalledItem(launcherActivities: List<Pair<String, String>> = emptyList()): Installed {
-        val signatureString = singleSignature?.let(Utils::calculateHash).orEmpty()
         return Installed(
             packageName,
             versionName.orEmpty(),
             versionCodeCompat,
-            signatureString,
+            signerSHA256Signatures,
             applicationInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM) == ApplicationInfo.FLAG_SYSTEM,
             launcherActivities
         )
     }
 
-    fun calculateHash(signature: Signature): String {
-        return MessageDigest.getInstance("MD5").digest(signature.toCharsString().toByteArray())
+    fun calculateSHA256(signature: Signature): String {
+        return MessageDigest.getInstance("SHA-256").digest(signature.toByteArray())
             .hex()
     }
 
@@ -88,7 +87,7 @@ object Utils {
         val compatibleReleases = productRepository?.first?.selectedReleases.orEmpty()
             .filter {
                 installed == null ||
-                        installed.signature == it.signature ||
+                        it.signature in installed.signatures ||
                         Preferences[Preferences.Key.DisableSignatureCheck]
             }
         val releaseFlow = MutableStateFlow(compatibleReleases.firstOrNull())
@@ -188,7 +187,8 @@ fun <T> findSuggestedProduct(
             {
                 extract(it).compatible && (
                         installed == null ||
-                                installed.signature in extract(it).signatures ||
+                                installed.signatures.intersect(extract(it).signatures)
+                                    .isNotEmpty() ||
                                 Preferences[Preferences.Key.DisableSignatureCheck]
                         )
             },
