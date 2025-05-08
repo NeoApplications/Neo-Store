@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.data.index.v2
 
-import android.R.attr.maxSdkVersion
 import android.content.res.Resources
 import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.core.os.LocaleListCompat
@@ -82,11 +81,11 @@ internal fun IndexV2.Version.toRelease(
     size = file.size ?: 0L,
     minSdkVersion = manifest.usesSdk?.minSdkVersion ?: 0,
     targetSdkVersion = manifest.usesSdk?.targetSdkVersion ?: 0,
-    maxSdkVersion = maxSdkVersion,
+    maxSdkVersion = 0,
     source = src?.name.orEmpty(),
-    release = file.name,
+    release = file.name.removePrefix("/"),
     hash = file.sha256.orEmpty(),
-    hashType = "sha256",
+    hashType = "SHA-256",
     signature = manifest.signer?.sha256?.first().orEmpty(),
     obbMain = "",
     obbMainHash = "",
