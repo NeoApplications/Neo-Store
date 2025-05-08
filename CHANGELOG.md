@@ -1,6 +1,25 @@
 CHANGELOG
 =========
 
+1.1.0 (XX.XX.2025) +20 Commits +20 Translations
+------------------
+
+### Function
+
+- Add: Initial support for F-Droid's Index-V2
+- Add: Preference to enable Index-V2
+- Add: Ktor ContentEncoding client plugin
+- Add: Repositories interface for better domain management logic
+- Update: Fit icon and screenshot uri generators to fit the new logic
+- Update: Keep name and description if updated repo lack values
+- Update: Make main non-flow Dao functions suspend
+- Remove: Libretro repository
+
+### UI/UX
+
+- Fix: Missing buffer on the bottom of the repos list
+- Update: Revamp selection chips layout
+
 1.0.9 (07.04.2025) +20 Commits +20 Translations
 ------------------
 
