@@ -51,7 +51,7 @@ fun ProductsHorizontalRecycler(
     LazyHorizontalStaggeredGrid(
         modifier = modifier
             .fillMaxWidth()
-            .height(PRODUCT_CARD_HEIGHT * rowsNumber + 8.dp),
+            .height(PRODUCT_CARD_HEIGHT * rowsNumber + 16.dp),
         rows = StaggeredGridCells.Fixed(rowsNumber),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalItemSpacing = 8.dp,

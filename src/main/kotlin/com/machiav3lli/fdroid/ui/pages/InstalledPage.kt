@@ -266,10 +266,12 @@ fun InstallsPage(viewModel: MainVM) {
                     color = cardColor,
                 ) {
                     Column(
-                        Modifier.padding(4.dp),
+                        Modifier.padding(vertical = 6.dp),
                     ) {
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
@@ -287,28 +289,41 @@ fun InstallsPage(viewModel: MainVM) {
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Icon(
-                                    modifier = Modifier.size(18.dp),
                                     imageVector = if (updatesVisible) Phosphor.CaretUp else Phosphor.CaretDown,
                                     contentDescription = stringResource(id = R.string.updates)
                                 )
                             }
                             AnimatedVisibility(updatesVisible) {
-                                ActionChip(
-                                    text = stringResource(id = R.string.update_all),
-                                    icon = Phosphor.Download,
-                                ) {
-                                    val action = {
-                                        NeoApp.wm.update(
-                                            *updates.toTypedArray()
-                                        )
-                                    }
-                                    if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                                        dialogKey.value =
-                                            DialogKey.BatchDownload(
-                                                updates.map(ProductItem::name), action
+                                ElevatedButton(
+                                    colors = ButtonDefaults.elevatedButtonColors(
+                                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    ),
+                                    onClick = {
+                                        val action = {
+                                            NeoApp.wm.update(
+                                                *updates.toTypedArray()
                                             )
-                                        openDialog.value = true
-                                    } else action()
+                                        }
+                                        if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                            dialogKey.value =
+                                                DialogKey.BatchDownload(
+                                                    updates.map(ProductItem::name), action
+                                                )
+                                            openDialog.value = true
+                                        } else action()
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = Phosphor.Download,
+                                        contentDescription = stringResource(id = R.string.update_all)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = stringResource(id = R.string.update_all),
+                                        textAlign = TextAlign.Center,
+                                        style = MaterialTheme.typography.titleSmall
+                                    )
                                 }
                             }
                         }
