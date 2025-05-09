@@ -143,7 +143,7 @@ fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
             Row(
                 modifier = Modifier.padding(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.Bottom,
             ) {
                 WideSearchField(
                     modifier = Modifier.weight(1f),
