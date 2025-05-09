@@ -1,5 +1,8 @@
 package com.machiav3lli.fdroid.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
@@ -17,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -183,7 +187,7 @@ fun WideSearchField(
         mutableStateOf(query)
     }
 
-    TextField(
+    OutlinedTextField(
         value = textFieldValue,
         onValueChange = {
             textFieldValue = it
@@ -191,26 +195,20 @@ fun WideSearchField(
         },
         modifier = modifier
             .focusRequester(textFieldFocusRequester),
-        colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-            unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-        ),
-        shape = MaterialTheme.shapes.extraLarge,
-        leadingIcon = {
-            Icon(
-                imageVector = Phosphor.MagnifyingGlass,
-                contentDescription = stringResource(id = R.string.search),
-            )
-        },
+        shape = MaterialTheme.shapes.large,
         trailingIcon = {
-            TopBarAction(
-                icon = Phosphor.X,
-                description = stringResource(id = R.string.cancel)
+            AnimatedVisibility(
+                visible = textFieldValue.isNotEmpty(),
+                enter = expandHorizontally(expandFrom = Alignment.Start),
+                exit = shrinkHorizontally(shrinkTowards = Alignment.Start),
             ) {
-                textFieldValue = ""
-                onClose()
+                TopBarAction(
+                    icon = Phosphor.X,
+                    description = stringResource(id = R.string.cancel)
+                ) {
+                    textFieldValue = ""
+                    onClose()
+                }
             }
         },
         singleLine = true,
