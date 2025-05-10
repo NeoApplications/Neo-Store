@@ -20,11 +20,12 @@ import com.machiav3lli.fdroid.ROW_IGNORED_VERSION
 import com.machiav3lli.fdroid.ROW_IGNORE_UPDATES
 import com.machiav3lli.fdroid.ROW_LABEL
 import com.machiav3lli.fdroid.ROW_LICENSES
+import com.machiav3lli.fdroid.ROW_MINSDK_VERSION
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
-import com.machiav3lli.fdroid.ROW_RELEASES
 import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
 import com.machiav3lli.fdroid.ROW_SIGNATURE
 import com.machiav3lli.fdroid.ROW_SIGNATURES
+import com.machiav3lli.fdroid.ROW_TARGETSDK_VERSION
 import com.machiav3lli.fdroid.ROW_UPDATED
 import com.machiav3lli.fdroid.ROW_VERSION_CODE
 import com.machiav3lli.fdroid.TABLE_CATEGORY
@@ -178,13 +179,18 @@ interface ProductDao : BaseDao<Product> {
         $TABLE_REPOSITORY.$ROW_ENABLED AS repo_enabled,
         $TABLE_EXTRAS.$ROW_FAVORITE AS is_favorite,
         $TABLE_INSTALLED.$ROW_VERSION_CODE AS installed_version_code,
-        $TABLE_INSTALLED.$ROW_SIGNATURE AS installed_signature,
+        $TABLE_INSTALLED.$ROW_SIGNATURES AS installed_signature,
         MAX(CASE 
             WHEN $TABLE_PRODUCT.$ROW_COMPATIBLE 
-                AND ($TABLE_INSTALLED.$ROW_SIGNATURE IS NULL 
-                    OR ($TABLE_INSTALLED.$ROW_SIGNATURE IS NOT NULL 
-                        AND $TABLE_PRODUCT.$ROW_SIGNATURES LIKE ('%' || $TABLE_INSTALLED.$ROW_SIGNATURE || '%')
-                        AND $TABLE_PRODUCT.$ROW_SIGNATURES != ''))
+                AND ($TABLE_INSTALLED.$ROW_SIGNATURES = ''
+                    OR EXISTS (
+                        SELECT 1 FROM $TABLE_RELEASE 
+                        WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
+                        AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = $TABLE_PRODUCT.$ROW_REPOSITORY_ID
+                        AND $TABLE_INSTALLED.$ROW_SIGNATURES LIKE ('%' || $TABLE_RELEASE.$ROW_SIGNATURE || '%')
+                        AND $TABLE_RELEASE.$ROW_SIGNATURE != ''
+                        AND $TABLE_RELEASE.selected = 1
+                    ))
             THEN $TABLE_PRODUCT.$ROW_VERSION_CODE
             ELSE 0
         END) AS max_compatible_version
@@ -242,7 +248,13 @@ interface ProductDao : BaseDao<Product> {
         when (updateCategory) {
             UpdateCategory.NEW     -> {
                 whereConditions.add("$TABLE_PRODUCT.$ROW_ADDED = $TABLE_PRODUCT.$ROW_UPDATED")
-                whereConditions.add("$TABLE_PRODUCT.$ROW_RELEASES NOT LIKE '%|%'")
+                whereConditions.add(
+                    """
+                (SELECT COUNT(*) 
+                FROM $TABLE_RELEASE 
+                WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME) = 1
+                """.trimIndent()
+                )
             }
 
             UpdateCategory.UPDATED -> whereConditions.add("$TABLE_PRODUCT.$ROW_ADDED < $TABLE_PRODUCT.$ROW_UPDATED")
@@ -256,10 +268,15 @@ interface ProductDao : BaseDao<Product> {
             AND COALESCE($TABLE_EXTRAS.$ROW_IGNORE_UPDATES, 0) = 0
             AND $TABLE_PRODUCT.$ROW_COMPATIBLE != 0
             AND $TABLE_PRODUCT.$ROW_VERSION_CODE > COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff)
-            AND ($TABLE_INSTALLED.$ROW_SIGNATURE IS NULL 
-                OR ($TABLE_INSTALLED.$ROW_SIGNATURE IS NOT NULL 
-                    AND $TABLE_PRODUCT.$ROW_SIGNATURES LIKE ('%' || $TABLE_INSTALLED.$ROW_SIGNATURE || '%')
-                    AND $TABLE_PRODUCT.$ROW_SIGNATURES != ''))
+            AND ($TABLE_INSTALLED.$ROW_SIGNATURES = ''
+                OR EXISTS (
+                    SELECT 1 FROM $TABLE_RELEASE 
+                    WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
+                    AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = $TABLE_PRODUCT.$ROW_REPOSITORY_ID
+                    AND $TABLE_INSTALLED.$ROW_SIGNATURES LIKE ('%' || $TABLE_RELEASE.$ROW_SIGNATURE || '%')
+                    AND $TABLE_RELEASE.$ROW_SIGNATURE != ''
+                    AND $TABLE_RELEASE.selected = 1
+                ))
             """.trimIndent()
             )
         }
@@ -271,7 +288,8 @@ interface ProductDao : BaseDao<Product> {
             EXISTS (
                 SELECT 1 FROM $TABLE_RELEASE
                 WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
-                AND $TABLE_RELEASE.targetSdkVersion >= ?
+                AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = $TABLE_PRODUCT.$ROW_REPOSITORY_ID
+                AND $TABLE_RELEASE.$ROW_TARGETSDK_VERSION >= ?
             )
         """.trimIndent()
             )
@@ -284,7 +302,8 @@ interface ProductDao : BaseDao<Product> {
             EXISTS (
                 SELECT 1 FROM $TABLE_RELEASE
                 WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
-                AND $TABLE_RELEASE.minSdkVersion >= ?
+                AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = $TABLE_PRODUCT.$ROW_REPOSITORY_ID
+                AND $TABLE_RELEASE.$ROW_MINSDK_VERSION >= ?
             )
         """.trimIndent()
             )
