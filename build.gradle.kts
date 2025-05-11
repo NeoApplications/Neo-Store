@@ -12,6 +12,11 @@ plugins {
 
 val jvmVersion = JavaVersion.VERSION_17
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+    arg("room.incremental", "true")
+}
+
 android {
     namespace = "com.machiav3lli.fdroid"
     compileSdk = 35
@@ -23,16 +28,6 @@ android {
         versionCode = 1027
         versionName = "1.1.0-alpha01"
         buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                ksp {
-                    arg("room.schemaLocation", "$projectDir/schemas")
-                    arg("room.incremental", "true")
-                    arg("room.generateKotlin", "true")
-                }
-            }
-        }
     }
 
     sourceSets.forEach { source ->
