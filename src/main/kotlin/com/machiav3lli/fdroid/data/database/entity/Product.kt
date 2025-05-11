@@ -1,8 +1,10 @@
 package com.machiav3lli.fdroid.data.database.entity
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Index
+import androidx.room.Relation
 import com.machiav3lli.fdroid.ROW_ADDED
 import com.machiav3lli.fdroid.ROW_AUTHOR
 import com.machiav3lli.fdroid.ROW_LABEL
@@ -12,17 +14,16 @@ import com.machiav3lli.fdroid.ROW_UPDATED
 import com.machiav3lli.fdroid.TABLE_PRODUCT
 import com.machiav3lli.fdroid.TABLE_PRODUCT_TEMP
 import com.machiav3lli.fdroid.data.content.Preferences
-import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.entity.Author
 import com.machiav3lli.fdroid.data.entity.Donate
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.Screenshot
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
-// TODO Add Product Extras to handle favorite lists etc..
 @Entity(
     tableName = TABLE_PRODUCT,
     primaryKeys = [ROW_REPOSITORY_ID, ROW_PACKAGE_NAME],
@@ -47,19 +48,16 @@ open class Product(
     var updated: Long = 0L
     var icon: String = ""
     var metadataIcon: String = ""
-    var releases: List<Release> = emptyList()
     var categories: List<String> = emptyList()
     var antiFeatures: List<String> = emptyList()
     var licenses: List<String> = emptyList()
     var donates: List<Donate> = emptyList()
     var screenshots: List<Screenshot> = emptyList()
-    var versionCode: Long = 0L
     var suggestedVersionCode: Long = 0L
-    var signatures: List<String> = emptyList()
-    var compatible: Boolean = false
     var author: Author = Author()
     var source: String = ""
     var web: String = ""
+
     @ColumnInfo(defaultValue = "")
     var video: String = ""
     var tracker: String = ""
@@ -76,7 +74,6 @@ open class Product(
         updated: Long,
         icon: String,
         metadataIcon: String,
-        releases: List<Release>,
         categories: List<String>,
         antiFeatures: List<String>,
         licenses: List<String>,
@@ -99,16 +96,12 @@ open class Product(
         this.updated = updated
         this.icon = icon
         this.metadataIcon = metadataIcon
-        this.releases = releases
         this.categories = categories
         this.antiFeatures = antiFeatures
         this.licenses = licenses
         this.donates = donates
         this.screenshots = screenshots
-        this.versionCode = selectedReleases.firstOrNull()?.versionCode ?: 0L
         this.suggestedVersionCode = suggestedVersionCode
-        this.signatures = selectedReleases.mapNotNull { it.signature.nullIfEmpty() }.distinct()
-        this.compatible = selectedReleases.firstOrNull()?.incompatibilities?.isEmpty() == true
         this.author = author
         this.source = source
         this.web = web
@@ -118,104 +111,13 @@ open class Product(
         this.whatsNew = whatsNew
     }
 
-    val selectedReleases: List<Release>
-        get() = releases.filter { it.selected }
-
-    val displayRelease: Release?
-        get() = selectedReleases.firstOrNull() ?: releases.firstOrNull()
-
-    val version: String
-        get() = displayRelease?.version.orEmpty()
-
-    val otherAntiFeatures: List<String>
-        get() = antiFeatures
-            .filterNot {
-                it in listOf(
-                    AntiFeature.NO_SOURCE_SINCE,
-                    AntiFeature.NON_FREE_DEP,
-                    AntiFeature.NON_FREE_ASSETS,
-                    AntiFeature.NON_FREE_UPSTREAM,
-                    AntiFeature.NON_FREE_NET,
-                    AntiFeature.TRACKING
-                ).map(AntiFeature::key)
-            }
-
-    fun toItem(installed: Installed? = null): ProductItem =
-        ProductItem(
-            repositoryId = repositoryId,
-            packageName = packageName,
-            name = label,
-            developer = author.name,
-            summary = summary,
-            icon = icon,
-            metadataIcon = metadataIcon,
-            version = version,
-            installedVersion = installed?.version ?: "",
-            compatible = compatible,
-            canUpdate = canUpdate(installed),
-            launchable = !installed?.launcherActivities.isNullOrEmpty(),
-            matchRank = 0
-        )
-
-    fun canUpdate(installed: Installed?): Boolean = installed != null &&
-            compatible &&
-            versionCode > installed.versionCode &&
-            (installed.signatures.intersect(signatures).isNotEmpty()  || Preferences[Preferences.Key.DisableSignatureCheck])
-
-    fun refreshReleases(
-        features: Set<String>,
-        unstable: Boolean,
-    ) {
-        val releasePairs = releases.distinctBy { it.identifier }
-            .sortedByDescending { it.versionCode }
-            .map { release ->
-                val incompatibilities = mutableListOf<Release.Incompatibility>()
-                if (release.minSdkVersion > 0 && Android.sdk < release.minSdkVersion) {
-                    incompatibilities += Release.Incompatibility.MinSdk
-                }
-                if (release.maxSdkVersion > 0 && Android.sdk > release.maxSdkVersion) {
-                    incompatibilities += Release.Incompatibility.MaxSdk
-                }
-                if (release.platforms.isNotEmpty() && release.platforms.intersect(Android.platforms)
-                        .isEmpty()
-                ) {
-                    incompatibilities += Release.Incompatibility.Platform
-                }
-                incompatibilities += (release.features - features).sorted()
-                    .map { Release.Incompatibility.Feature(it) }
-                Pair(release, incompatibilities as List<Release.Incompatibility>)
-            }.toMutableList()
-
-        val predicate: (Release) -> Boolean = {
-            unstable || suggestedVersionCode <= 0 ||
-                    it.versionCode <= suggestedVersionCode
-        }
-        val firstCompatibleReleaseIndex =
-            releasePairs.indexOfFirst { it.second.isEmpty() && predicate(it.first) }
-        val firstReleaseIndex =
-            if (firstCompatibleReleaseIndex >= 0) firstCompatibleReleaseIndex else
-                releasePairs.indexOfFirst { predicate(it.first) }
-        val firstSelected = if (firstReleaseIndex >= 0) releasePairs[firstReleaseIndex] else null
-
-        releases = releasePairs.map { (release, incompatibilities) ->
-            release
-                .copy(incompatibilities = incompatibilities, selected = firstSelected
-                    ?.let { it.first.versionCode == release.versionCode && it.second == incompatibilities } == true)
-        }
-    }
-
-    fun refreshVariables() {
-        this.versionCode = selectedReleases.firstOrNull()?.versionCode ?: 0L
-        this.signatures = selectedReleases.mapNotNull { it.signature.nullIfEmpty() }.distinct()
-        this.compatible = selectedReleases.firstOrNull()?.incompatibilities?.isEmpty() == true
-    }
-
     fun toJSON() = Json.encodeToString(this)
 
     companion object {
         fun fromJson(json: String) = Json.decodeFromString<Product>(json)
     }
 }
+
 
 @Entity(tableName = TABLE_PRODUCT_TEMP)
 class ProductTemp(
@@ -228,7 +130,6 @@ class ProductTemp(
     updated: Long,
     icon: String,
     metadataIcon: String,
-    releases: List<Release>,
     categories: List<String>,
     antiFeatures: List<String>,
     licenses: List<String>,
@@ -252,7 +153,6 @@ class ProductTemp(
     updated = updated,
     icon = icon,
     metadataIcon = metadataIcon,
-    releases = releases,
     categories = categories,
     antiFeatures = antiFeatures,
     licenses = licenses,
@@ -278,7 +178,6 @@ fun Product.asProductTemp(): ProductTemp = ProductTemp(
     updated = updated,
     icon = icon,
     metadataIcon = metadataIcon,
-    releases = releases,
     categories = categories,
     antiFeatures = antiFeatures,
     licenses = licenses,
@@ -303,3 +202,101 @@ data class IconDetails(
     var icon: String = "",
     var metadataIcon: String = "",
 )
+
+data class EmbeddedProduct(
+    @Embedded val product: Product,
+    @Relation(
+        parentColumn = ROW_PACKAGE_NAME,
+        entityColumn = ROW_PACKAGE_NAME,
+        entity = Release::class
+    )
+    val releases: List<Release>
+) {
+    val selectedReleases: List<Release>
+        get() = releases.filter { it.selected }.distinctBy(Release::identifier)
+
+    val displayRelease: Release?
+        get() = selectedReleases.firstOrNull() ?: releases.firstOrNull()
+
+    val version: String
+        get() = displayRelease?.version.orEmpty()
+
+    val versionCode: Long
+        get() = selectedReleases.firstOrNull()?.versionCode ?: 0L
+
+    val productSignatures: List<String>
+        get() = selectedReleases
+            .filter { it.repositoryId == product.repositoryId }
+            .mapNotNull { it.signature.nullIfEmpty() }
+            .distinct()
+
+    val compatible: Boolean
+        get() = selectedReleases.firstOrNull()?.incompatibilities?.isEmpty() == true
+
+    fun canUpdate(installed: Installed?): Boolean = installed != null &&
+            compatible &&
+            versionCode > installed.versionCode &&
+            (installed.signatures.intersect(productSignatures)
+                .isNotEmpty() || Preferences[Preferences.Key.DisableSignatureCheck])
+
+    fun refreshReleases(
+        features: Set<String>,
+        unstable: Boolean,
+    ): List<Release> {
+        val releasePairs = releases.distinctBy { it.identifier }
+            .sortedByDescending { it.versionCode }
+            .map { release ->
+                val incompatibilities = mutableListOf<Release.Incompatibility>()
+                if (release.minSdkVersion > 0 && Android.sdk < release.minSdkVersion) {
+                    incompatibilities += Release.Incompatibility.MinSdk
+                }
+                if (release.maxSdkVersion > 0 && Android.sdk > release.maxSdkVersion) {
+                    incompatibilities += Release.Incompatibility.MaxSdk
+                }
+                if (release.platforms.isNotEmpty() && release.platforms.intersect(Android.platforms)
+                        .isEmpty()
+                ) {
+                    incompatibilities += Release.Incompatibility.Platform
+                }
+                incompatibilities += (release.features - features).sorted()
+                    .map { Release.Incompatibility.Feature(it) }
+                Pair(release, incompatibilities as List<Release.Incompatibility>)
+            }.toImmutableList()
+
+        val predicate: (Release) -> Boolean = {
+            unstable || product.suggestedVersionCode <= 0 ||
+                    it.versionCode <= product.suggestedVersionCode
+        }
+        val firstCompatibleReleaseIndex =
+            releasePairs.indexOfFirst { it.second.isEmpty() && predicate(it.first) }
+        val firstReleaseIndex =
+            if (firstCompatibleReleaseIndex >= 0) firstCompatibleReleaseIndex else
+                releasePairs.indexOfFirst { predicate(it.first) }
+        val firstSelected = if (firstReleaseIndex >= 0) releasePairs[firstReleaseIndex] else null
+
+        // TODO update releases
+        return releasePairs.map { (release, incompatibilities) ->
+            release
+                .copy(
+                    incompatibilities = incompatibilities, selected = firstSelected
+                        ?.let { it.first.versionCode == release.versionCode && it.second == incompatibilities } == true)
+        }
+    }
+
+    fun toItem(installed: Installed? = null): ProductItem =
+        ProductItem(
+            repositoryId = product.repositoryId,
+            packageName = product.packageName,
+            name = product.label,
+            developer = product.author.name,
+            summary = product.summary,
+            icon = product.icon,
+            metadataIcon = product.metadataIcon,
+            version = version,
+            installedVersion = installed?.version ?: "",
+            compatible = compatible,
+            canUpdate = canUpdate(installed),
+            launchable = !installed?.launcherActivities.isNullOrEmpty(),
+            matchRank = 0
+        )
+}

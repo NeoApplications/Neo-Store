@@ -60,6 +60,8 @@ open class Release(
     val features: List<String>,
     val platforms: List<String>,
     val incompatibilities: List<Incompatibility>,
+    @ColumnInfo(defaultValue = "0")
+    val isCompatible: Boolean,
 ) {
     @Serializable
     sealed class Incompatibility {
@@ -83,7 +85,7 @@ open class Release(
     }
 
     val identifier: String
-        get() = "$versionCode.$hash"
+        get() = "$packageName&$repositoryId#$versionCode%$signature§$platforms.$hash"
 
     fun getDownloadUrl(repository: Repository): String {
         return Uri.parse(repository.address).buildUpon().appendPath(release).build().toString()
@@ -127,6 +129,7 @@ open class Release(
         features,
         platforms,
         incompatibilities,
+        incompatibilities.isEmpty(),
     )
 }
 
@@ -157,6 +160,7 @@ class ReleaseTemp(
     features: List<String>,
     platforms: List<String>,
     incompatibilities: List<Incompatibility>,
+    isCompatible: Boolean,
 ) : Release(
     packageName,
     repositoryId,
@@ -183,6 +187,7 @@ class ReleaseTemp(
     features,
     platforms,
     incompatibilities,
+    isCompatible,
 )
 
 fun Release.asReleaseTemp() = ReleaseTemp(
@@ -211,4 +216,5 @@ fun Release.asReleaseTemp() = ReleaseTemp(
     features = features,
     platforms = platforms,
     incompatibilities = incompatibilities,
+    isCompatible = isCompatible,
 )
