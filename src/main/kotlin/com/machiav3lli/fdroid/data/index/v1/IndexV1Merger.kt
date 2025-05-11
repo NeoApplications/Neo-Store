@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import com.machiav3lli.fdroid.data.database.Converters.toByteArray
 import com.machiav3lli.fdroid.data.database.Converters.toReleases
-import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.utils.extension.android.asSequence
 import com.machiav3lli.fdroid.utils.extension.android.execWithResult
@@ -23,7 +23,7 @@ class IndexV1Merger(file: File) : Closeable {
         db.beginTransaction()
     }
 
-    fun addProducts(products: List<Product>) {
+    fun addProducts(products: List<IndexProduct>) {
         for (product in products) {
             val outputStream = ByteArrayOutputStream()
             outputStream.write(product.toJSON().toByteArray())
@@ -47,7 +47,7 @@ class IndexV1Merger(file: File) : Closeable {
         }
     }
 
-    fun forEach(repositoryId: Long, windowSize: Int, callback: (List<Product>, Int) -> Unit) {
+    fun forEach(repositoryId: Long, windowSize: Int, callback: (List<IndexProduct>, Int) -> Unit) {
         closeTransaction()
         db.rawQuery(
             """SELECT product.description, product.data AS pd, releases.data AS rd FROM product
@@ -55,7 +55,7 @@ class IndexV1Merger(file: File) : Closeable {
         )?.use { cursor ->
             cursor.asSequence().map {
                 val description = it.getString(0)
-                val product = Product.fromJson(String(it.getBlob(1))).apply {
+                val product = IndexProduct.fromJson(String(it.getBlob(1))).apply {
                     this.repositoryId = repositoryId
                     this.description = description
                 }

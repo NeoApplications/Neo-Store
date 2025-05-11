@@ -1,7 +1,7 @@
 package com.machiav3lli.fdroid.data.index.v2
 
 import android.R.attr.version
-import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -49,7 +49,7 @@ class IndexV2Parser(private val repositoryId: Long, private val callback: Callba
             timestamp: Long,
         )
 
-        fun onProduct(product: Product)
+        fun onProduct(product: IndexProduct)
         fun onReleases(packageName: String, releases: List<Release>)
     }
 

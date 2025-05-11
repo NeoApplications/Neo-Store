@@ -3,7 +3,7 @@ package com.machiav3lli.fdroid.data.index.v1
 import android.content.res.Resources
 import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.core.os.LocaleListCompat
-import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.entity.Author
 import com.machiav3lli.fdroid.data.entity.Donate
@@ -14,7 +14,7 @@ import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import okhttp3.internal.toLongOrDefault
 
-internal fun IndexV1.App.toProduct(repositoryId: Long) = Product(
+internal fun IndexV1.App.toProduct(repositoryId: Long) = IndexProduct(
     repositoryId = repositoryId,
     packageName = packageName,
     label = localized.findLocalizedString(name) { _, localized -> localized.name },
@@ -109,6 +109,7 @@ internal fun IndexV1.Package.toRelease(
     features = features,
     platforms = nativecode,
     incompatibilities = emptyList(),
+    isCompatible = true,
 )
 
 internal fun Map<String, IndexV1.Localized>.findLocalizedString(

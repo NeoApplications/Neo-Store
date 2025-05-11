@@ -7,7 +7,7 @@ import androidx.core.net.toUri
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.DatabaseX
-import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.database.entity.asReleaseTemp
@@ -320,7 +320,7 @@ object RepositoryUpdater : KoinComponent {
     ): Pair<Repository?, String?> {
         var changedRepository: Repository? = null
         var certificateFromIndex: String? = null
-        val products = mutableListOf<Product>()
+        val products = mutableListOf<IndexProduct>()
         val features = context.packageManager.systemAvailableFeatures
             .asSequence().map { it.name }.toSet() + setOf("android.hardware.touchscreen")
 
@@ -336,7 +336,7 @@ object RepositoryUpdater : KoinComponent {
                 certificateFromIndex = certificate.lowercase(Locale.US)
             }
 
-            override fun onProduct(product: Product) {
+            override fun onProduct(product: IndexProduct) {
                 if (Thread.interrupted()) throw InterruptedException()
 
                 products += product.apply {
@@ -345,7 +345,7 @@ object RepositoryUpdater : KoinComponent {
                 }
                 runBlocking {
                     if (products.size >= 100) {
-                        db.getProductTempDao().putTemporary(products)
+                        db.getProductTempDao().putTemporary(products.map { it.toV2() })
                         db.getReleaseTempDao()
                             .insert(*(products.flatMap { it.releases }
                                 .map { it.asReleaseTemp() }.toTypedArray()))
@@ -363,7 +363,7 @@ object RepositoryUpdater : KoinComponent {
             if (Thread.interrupted()) throw InterruptedException()
 
             if (products.isNotEmpty()) {
-                db.getProductTempDao().putTemporary(products)
+                db.getProductTempDao().putTemporary(products.map { it.toV2() })
                 db.getReleaseTempDao()
                     .insert(*(products.flatMap { it.releases }
                         .map { it.asReleaseTemp() }.toTypedArray()))
@@ -389,7 +389,7 @@ object RepositoryUpdater : KoinComponent {
 
         val mergerFile = Cache.getTemporaryFile(context)
         try {
-            val unmergedProducts = mutableListOf<Product>()
+            val unmergedProducts = mutableListOf<IndexProduct>()
             val unmergedReleases = mutableListOf<Pair<String, List<Release>>>()
             IndexV1Merger(mergerFile).use { indexMerger ->
                 ProgressInputStream(inputStream) {
@@ -415,7 +415,7 @@ object RepositoryUpdater : KoinComponent {
                                 )
                             }
 
-                            override fun onProduct(product: Product) {
+                            override fun onProduct(product: IndexProduct) {
                                 if (Thread.interrupted()) throw InterruptedException()
 
                                 unmergedProducts += product
@@ -470,7 +470,8 @@ object RepositoryUpdater : KoinComponent {
                                     refreshVariables()
                                 }
                             }.let { updatedProducts ->
-                                db.getProductTempDao().putTemporary(updatedProducts)
+                                db.getProductTempDao()
+                                    .putTemporary(updatedProducts.map { it.toV2() })
                                 db.getReleaseTempDao().insert(
                                     *(updatedProducts.flatMap { it.releases }
                                         .fastMap { it.asReleaseTemp() }.toTypedArray())
@@ -502,7 +503,7 @@ object RepositoryUpdater : KoinComponent {
 
         val mergerFile = Cache.getTemporaryFile(context)
         try {
-            val unmergedProducts = mutableListOf<Product>()
+            val unmergedProducts = mutableListOf<IndexProduct>()
             val unmergedReleases = mutableListOf<Pair<String, List<Release>>>()
             IndexV1Merger(mergerFile).use { indexMerger ->
                 ProgressInputStream(inputStream) {
@@ -528,7 +529,7 @@ object RepositoryUpdater : KoinComponent {
                                 )
                             }
 
-                            override fun onProduct(product: Product) {
+                            override fun onProduct(product: IndexProduct) {
                                 if (Thread.interrupted()) throw InterruptedException()
 
                                 unmergedProducts += product
@@ -583,7 +584,8 @@ object RepositoryUpdater : KoinComponent {
                                     refreshVariables()
                                 }
                             }.let { updatedProducts ->
-                                db.getProductTempDao().putTemporary(updatedProducts)
+                                db.getProductTempDao()
+                                    .putTemporary(updatedProducts.map { it.toV2() })
                                 db.getReleaseTempDao().insert(
                                     *(updatedProducts.flatMap { it.releases }
                                         .map { it.asReleaseTemp() }.toTypedArray())
