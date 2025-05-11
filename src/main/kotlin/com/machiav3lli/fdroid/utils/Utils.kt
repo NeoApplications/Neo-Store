@@ -81,7 +81,7 @@ object Utils {
     suspend fun startUpdate(
         packageName: String,
         installed: Installed?,
-        products: List<Pair<Product, Repository>>,
+        products: List<Pair<EmbeddedProduct, Repository>>,
     ) {
         val productRepository = findSuggestedProduct(products, installed) { it.first }
         val compatibleReleases = productRepository?.first?.selectedReleases.orEmpty()
@@ -104,7 +104,7 @@ object Utils {
             if (productRepository != null && it != null) {
                 DownloadWorker.enqueue(
                     packageName,
-                    productRepository.first.label,
+                    productRepository.first.product.label,
                     productRepository.second,
                     it,
                 )
@@ -180,14 +180,14 @@ object Utils {
 fun <T> findSuggestedProduct(
     products: List<T>,
     installed: Installed?,
-    extract: (T) -> Product,
+    extract: (T) -> EmbeddedProduct,
 ): T? {
     return products.maxWithOrNull(
         compareBy(
             {
                 extract(it).compatible && (
                         installed == null ||
-                                installed.signatures.intersect(extract(it).signatures)
+                                installed.signatures.intersect(extract(it).productSignatures)
                                     .isNotEmpty() ||
                                 Preferences[Preferences.Key.DisableSignatureCheck]
                         )

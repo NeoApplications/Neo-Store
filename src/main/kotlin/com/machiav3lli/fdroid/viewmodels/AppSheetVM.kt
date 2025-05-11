@@ -3,12 +3,13 @@ package com.machiav3lli.fdroid.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.NeoApp
+import com.machiav3lli.fdroid.RELEASE_STATE_INSTALLED
+import com.machiav3lli.fdroid.RELEASE_STATE_NONE
+import com.machiav3lli.fdroid.RELEASE_STATE_SUGGESTED
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.DatabaseX
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.Extras
-import com.machiav3lli.fdroid.data.database.entity.Product
-import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.PrivacyData
 import com.machiav3lli.fdroid.data.entity.toAntiFeature
@@ -31,6 +32,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
@@ -39,6 +41,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AppSheetVM(
+    // TODO
     private val db: DatabaseX,
     downloadedRepo: DownloadedRepository,
     private val productsRepo: ProductsRepository,
@@ -56,11 +59,12 @@ class AppSheetVM(
             productsRepo.getProduct(pn)
         }
 
-    private val developer = products.mapLatest { it.firstOrNull()?.author?.name ?: "" }.stateIn(
-        viewModelScope,
-        SharingStarted.Lazily,
-        ""
-    )
+    private val developer =
+        products.mapLatest { it.firstOrNull()?.product?.author?.name ?: "" }.stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            ""
+        )
 
     val exodusInfo = packageName
         .flatMapLatest { pn ->
@@ -84,23 +88,73 @@ class AppSheetVM(
             null
         )
 
-    private val _repos = MutableStateFlow<List<Pair<Product, Repository>>>(emptyList())
-    val repos: StateFlow<List<Pair<Product, Repository>>> = _repos
-
-    // TODO rebase to internal only
-    fun updateProductRepos(repos: List<Pair<Product, Repository>>) {
-        viewModelScope.launch {
-            _repos.update { repos }
+    val productRepos = combine(
+        products,
+        repositories,
+    ) { prods, repos ->
+        val reposMap = repos.associateBy { it.id }
+        prods.mapNotNull { product ->
+            reposMap[product.product.repositoryId]?.let {
+                Pair(product, it)
+            }
         }
-    }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        emptyList()
+    )
 
-    val privacyData = combine(installedItem, trackers, repos) { ins, trs, prs ->
+    val suggestedProductRepo = combine(productRepos, installedItem) { prodRepos, installed ->
+        findSuggestedProduct(prodRepos, installed) { it.first }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        null
+    )
+
+    val releaseItems = combine(
+        suggestedProductRepo,
+        repositories,
+        installedItem
+    ) { suggestedProductRepo, repos, installed ->
+        val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
+        val reposMap = repos.associateBy { it.id }
+
+        (suggestedProductRepo?.first?.releases ?: emptyList())
+            .filter { includeIncompatible || it.incompatibilities.isEmpty() }
+            .mapNotNull { rel -> reposMap[rel.repositoryId]?.let { Pair(rel, it) } }
+            .map { (release, repository) ->
+                Triple(
+                    release,
+                    repository,
+                    when {
+                        installed?.versionCode == release.versionCode && release.signature in installed.signatures
+                             -> RELEASE_STATE_INSTALLED
+
+                        release.incompatibilities.firstOrNull() == null && release.selected && repository.id == suggestedProductRepo?.second?.id
+                             -> RELEASE_STATE_SUGGESTED
+
+                        else -> RELEASE_STATE_NONE
+                    }
+                )
+            }
+            .sortedByDescending { it.first.versionCode }
+            .toList()
+    }
+        .flowOn(Dispatchers.IO)
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            emptyList(),
+        )
+
+    val privacyData = combine(installedItem, trackers, productRepos) { ins, trs, prs ->
         val suggestedProduct = findSuggestedProduct(prs, ins) { it.first }
         PrivacyData(
             permissions = suggestedProduct?.first?.displayRelease
                 ?.generatePermissionGroups(NeoApp.context) ?: emptyMap(),
             trackers = trs,
-            antiFeatures = suggestedProduct?.first?.antiFeatures?.mapNotNull { it.toAntiFeature() }
+            antiFeatures = suggestedProduct?.first?.product?.antiFeatures?.mapNotNull { it.toAntiFeature() }
                 ?: emptyList()
         )
     }.stateIn(
@@ -139,14 +193,14 @@ class AppSheetVM(
     ) { pn, dev, prods ->
         if (dev.isNotEmpty()) emit(
             prods
-                .filter { it.packageName != pn && it.author.name == dev }
-                .groupBy { it.packageName }
-                .map { it.value.maxByOrNull(Product::added)!! }
+                .filter { it.product.packageName != pn && it.product.author.name == dev }
+                .groupBy { it.product.packageName }
+                .mapNotNull { it.value.maxByOrNull { it.product.added } }
         )
     }
 
     private val actions: Flow<Pair<ActionState, Set<ActionState>>> =
-        combine(repos, downloadingState, installedItem) { prs, ds, ins ->
+        combine(productRepos, downloadingState, installedItem) { prs, ds, ins ->
             val product = findSuggestedProduct(prs, ins) { it.first }?.first
             val compatible = product != null && product.selectedReleases.firstOrNull()
                 .let { it != null && it.incompatibilities.isEmpty() }
@@ -171,11 +225,11 @@ class AppSheetVM(
                 if (canShare) actions += ActionState.Share
             }
             val primaryAction = when {
-                canUpdate -> ActionState.Update
-                canLaunch -> ActionState.Launch
+                canUpdate                                            -> ActionState.Update
+                canLaunch                                            -> ActionState.Launch
                 canInstall && !Preferences[Preferences.Key.KidsMode] -> ActionState.Install
-                canShare -> ActionState.Share
-                else -> ActionState.NoAction
+                canShare                                             -> ActionState.Share
+                else                                                 -> ActionState.NoAction
             }
 
             val mA = if (ds != null && ds.isActive)
@@ -231,15 +285,19 @@ class AppSheetVM(
                 val features = NeoApp.context.packageManager.systemAvailableFeatures
                     .asSequence().map { feat -> feat.name }
                     .toSet() + setOf("android.hardware.touchscreen")
+                /* TODO productsRepo.updateReleases(
+                    features,
+                    setBoolean || Preferences[Preferences.Key.UpdateUnstable],
+                    *repos.value.map { EmbeddedProduct(it.first.toV2(),it.first.releases) }.toList().toTypedArray(),
+                )*/
                 productsRepo.upsertProduct(
-                    *repos.value.map { prodRepo ->
+                    *productRepos.value.map { prodRepo ->
                         prodRepo.first.apply {
                             refreshReleases(
                                 features,
                                 setBoolean || Preferences[Preferences.Key.UpdateUnstable]
                             )
-                            refreshVariables()
-                        }
+                        }.product
                     }.toTypedArray()
                 )
             }
