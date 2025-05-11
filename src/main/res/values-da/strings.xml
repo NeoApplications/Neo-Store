@@ -422,4 +422,6 @@
     <string name="installing_error_conflict_DESC">Fejl forårsaget af en konflikt.</string>
     <string name="about_build_FORMAT">%s (Build %s)</string>
     <string name="initial_sync_repositories">Vil du synkronisere de forudindstillede repositories (den officielle F-Droid, IzzyOnDroid og Guardian Project)?</string>
+    <string name="index_v2">Aktivér Index-V2</string>
+    <string name="index_v2_summary">Muliggør anmodning om Index-V2 som det primære indeks. Det er stadig eksperimentelt og har fordele og ulemper.</string>
 </resources>
