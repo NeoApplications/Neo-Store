@@ -32,7 +32,6 @@ import com.machiav3lli.fdroid.TC_INTENT_EXTRA_SEARCH
 import com.machiav3lli.fdroid.TC_PACKAGENAME
 import com.machiav3lli.fdroid.TC_PACKAGENAME_FDROID
 import com.machiav3lli.fdroid.data.content.Preferences
-import com.machiav3lli.fdroid.data.database.entity.Product
 import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.entity.PermissionGroup
 import com.machiav3lli.fdroid.data.entity.PrivacyNote
@@ -56,7 +55,6 @@ fun PrivacyPanel(
     modifier: Modifier,
     packageName: String,
     viewModel: AppSheetVM,
-    product: Product,
     copyLinkToClipboard: (String) -> Job,
     onUriClick: (Uri, Boolean) -> Boolean,
 ) {
@@ -98,7 +96,7 @@ fun PrivacyPanel(
                     actionText = if (installed.value != null && list.isNotEmpty())
                         stringResource(id = R.string.action_change_permissions)
                     else "",
-                    onAction = { context.openPermissionPage(product.packageName) }
+                    onAction = { context.openPermissionPage(packageName) }
                 ) {
                     if (list.isNotEmpty()) {
                         list.forEach { (group, ps) ->
@@ -155,7 +153,7 @@ fun PrivacyPanel(
                     actionText = if (installed.value != null && list.isNotEmpty())
                         stringResource(id = R.string.action_change_permissions)
                     else "",
-                    onAction = { context.openPermissionPage(product.packageName) }
+                    onAction = { context.openPermissionPage(packageName) }
                 ) {
                     if (list.isNotEmpty()) {
                         list.forEach { (group, ps) ->
@@ -272,7 +270,7 @@ fun PrivacyPanel(
                         } else context.startActivity(
                             tcIntent.putExtra(
                                 TC_INTENT_EXTRA_SEARCH,
-                                product.packageName
+                                packageName
                             )
                         )
                     }
@@ -324,8 +322,8 @@ fun PrivacyPanel(
                             Text(
                                 text = stringResource(
                                     id =
-                                    if (exodusInfo != null) R.string.trackers_none
-                                    else R.string.no_trackers_data_available
+                                        if (exodusInfo != null) R.string.trackers_none
+                                        else R.string.no_trackers_data_available
                                 )
                             )
                         }

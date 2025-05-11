@@ -8,10 +8,10 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.database.DatabaseX
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
+import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.IconDetails
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.Licenses
-import com.machiav3lli.fdroid.data.database.entity.Product
 import com.machiav3lli.fdroid.data.entity.Page
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.Request
@@ -139,10 +139,10 @@ open class MainVM(
         .flatMapLatest { it }
         .distinctUntilChanged()
         .mapLatest { list ->
-            list.map { it.toItem(installed.value[it.packageName]) }
+            list.map { it.toItem(installed.value[it.product.packageName]) }
         }
 
-    private val productsSearch: Flow<List<Product>> = combine(
+    private val productsSearch: Flow<List<EmbeddedProduct>> = combine(
         requestSearch,
         installed,
         extrasRepo.getAll().distinctUntilChanged(),
@@ -156,7 +156,7 @@ open class MainVM(
         installed,
     ) { products, query, installed ->
         products.matchSearchQuery(query)
-            .map { it.toItem(installed[it.packageName]) }
+            .map { it.toItem(installed[it.product.packageName]) }
     }.stateIn(
         scope = ioScope,
         started = SharingStarted.Lazily,
@@ -171,7 +171,7 @@ open class MainVM(
         .flatMapLatest { it }
         .distinctUntilChanged()
         .mapLatest { list ->
-            list.map { it.toItem(installed.value[it.packageName]) }
+            list.map { it.toItem(installed.value[it.product.packageName]) }
         }
 
     val downloaded = downloadedRepo.getAllFlow()
@@ -186,7 +186,7 @@ open class MainVM(
         .flatMapLatest { it }
         .distinctUntilChanged()
         .mapLatest { list ->
-            list.map { it.toItem(installed.value[it.packageName]) }
+            list.map { it.toItem(installed.value[it.product.packageName]) }
         }
 
     val newProdsLatest: Flow<List<ProductItem>> = combine(
@@ -196,7 +196,7 @@ open class MainVM(
         .flatMapLatest { it }
         .distinctUntilChanged()
         .mapLatest { list ->
-            list.map { it.toItem(installed.value[it.packageName]) }
+            list.map { it.toItem(installed.value[it.product.packageName]) }
         }
 
     val updateProdsInstalled: Flow<List<ProductItem>> = combine(
@@ -206,7 +206,7 @@ open class MainVM(
         .flatMapLatest { it }
         .distinctUntilChanged()
         .mapLatest { list ->
-            list.map { it.toItem(installed.value[it.packageName]) }
+            list.map { it.toItem(installed.value[it.product.packageName]) }
         }
 
     fun setSortFilter(page: Page, value: String) = viewModelScope.launch {

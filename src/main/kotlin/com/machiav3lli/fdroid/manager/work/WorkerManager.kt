@@ -231,8 +231,8 @@ class WorkerManager(appContext: Context) : KoinComponent {
                 .filter { (_, installed, repo) -> (enforce || installed != null) && repo != null }
                 .forEach { (packageName, installed, repo) ->
                     val productRepository = productRepo.loadProduct(packageName)
-                        .filter { product -> product.repositoryId == repo!!.id }
-                        .map { product -> Pair(product, repo!!) }
+                        .filter { eProduct -> eProduct.product.repositoryId == repo!!.id }
+                        .map { eProduct -> Pair(eProduct, repo!!) }
                     scope.launch(Dispatchers.IO) {
                         Utils.startUpdate(
                             packageName,

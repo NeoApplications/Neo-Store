@@ -35,7 +35,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_BATCH_SYNC_ONETIME
 import com.machiav3lli.fdroid.TAG_BATCH_SYNC_PERIODIC
 import com.machiav3lli.fdroid.data.content.Preferences
-import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.entity.Order
 import com.machiav3lli.fdroid.data.entity.Section
@@ -206,12 +206,12 @@ class BatchSyncWorker(
                 order = Order.NAME,
                 ascending = true,
             ).filter { product ->
-                product.antiFeatures.contains(AntiFeature.KNOWN_VULN.key)
-                        && extrasRepo.load(product.packageName)?.ignoreVulns != true
+                product.product.antiFeatures.contains(AntiFeature.KNOWN_VULN.key)
+                        && extrasRepo.load(product.product.packageName)?.ignoreVulns != true
             }.let { installedWithVulns ->
                 if (installedWithVulns.isNotEmpty())
                     langContext.displayVulnerabilitiesNotification(
-                        installedWithVulns.map(Product::toItem)
+                        installedWithVulns.map(EmbeddedProduct::toItem)
                     )
             }
     }

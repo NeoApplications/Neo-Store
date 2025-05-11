@@ -29,6 +29,7 @@ import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.Product
 import com.machiav3lli.fdroid.data.database.entity.Release
@@ -474,18 +475,32 @@ fun Context.getLocaleDateString(time: Long): String {
     return DateUtils.formatDateTime(this, date.time, format)
 }
 
-fun Collection<Product>.matchSearchQuery(searchQuery: String): List<Product> {
+fun Collection<EmbeddedProduct>.matchSearchQuery(searchQuery: String): List<EmbeddedProduct> {
     if (searchQuery.isBlank()) return toList()
     val now = System.currentTimeMillis()
     return filter {
-        listOf(it.label, it.packageName, it.author.name, it.summary, it.description)
+        listOf(
+            it.product.label,
+            it.product.packageName,
+            it.product.author.name,
+            it.product.summary,
+            it.product.description
+        )
             .any { literal ->
                 literal.contains(searchQuery, true)
             }
     }.sortedByDescending {
-        (if ("${it.label} ${it.packageName}".contains(searchQuery, true)) 7 else 0) or
-                (if (isDifferenceMoreThanOneYear(it.updated, now)) 0 else 3) or
-                (if ("${it.summary} ${it.author.name}".contains(searchQuery, true)) 1 else 0)
+        (if ("${it.product.label} ${it.product.packageName}".contains(
+                searchQuery,
+                true
+            )
+        ) 7 else 0) or
+                (if (isDifferenceMoreThanOneYear(it.product.updated, now)) 0 else 3) or
+                (if ("${it.product.summary} ${it.product.author.name}".contains(
+                        searchQuery,
+                        true
+                    )
+                ) 1 else 0)
     }
 }
 

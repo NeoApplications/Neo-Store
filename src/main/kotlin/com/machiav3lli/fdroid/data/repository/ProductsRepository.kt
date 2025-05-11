@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.data.repository
 
 import com.machiav3lli.fdroid.data.database.dao.CategoryDao
 import com.machiav3lli.fdroid.data.database.dao.ProductDao
+import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.IconDetails
 import com.machiav3lli.fdroid.data.database.entity.Licenses
 import com.machiav3lli.fdroid.data.database.entity.Product
@@ -27,17 +28,18 @@ class ProductsRepository(
         productsDao.upsert(*product)
     }
 
-    fun getProducts(req: Request): Flow<List<Product>> = productsDao.queryFlowList(req)
+    fun getProducts(req: Request): Flow<List<EmbeddedProduct>> = productsDao.queryFlowList(req)
         .flowOn(cc)
 
-    fun getProduct(packageName: String): Flow<List<Product>> = productsDao.getFlow(packageName)
-        .flowOn(cc)
+    fun getProduct(packageName: String): Flow<List<EmbeddedProduct>> =
+        productsDao.getFlow(packageName)
+            .flowOn(cc)
 
-    fun getProductsOfRepo(repoId: Long): Flow<List<Product>> =
+    fun getProductsOfRepo(repoId: Long): Flow<List<EmbeddedProduct>> =
         productsDao.productsForRepositoryFlow(repoId)
             .flowOn(cc)
 
-    fun getAuthorList(author: String): Flow<List<Product>> =
+    fun getAuthorList(author: String): Flow<List<EmbeddedProduct>> =
         productsDao.getAuthorPackagesFlow(author)
             .flowOn(cc)
 
@@ -56,7 +58,7 @@ class ProductsRepository(
         section: Section,
         order: Order,
         ascending: Boolean
-    ): List<Product> = withContext(jcc) {
+    ): List<EmbeddedProduct> = withContext(jcc) {
         productsDao.queryObject(
             installed = installed,
             updates = updates,
@@ -66,7 +68,7 @@ class ProductsRepository(
         )
     }
 
-    suspend fun loadProduct(packageName: String): List<Product> = withContext(jcc) {
+    suspend fun loadProduct(packageName: String): List<EmbeddedProduct> = withContext(jcc) {
         productsDao.get(packageName)
     }
 
