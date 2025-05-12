@@ -428,4 +428,5 @@
     <string name="initial_sync_repositories">Ви хочете синхронізувати попередньо встановлені репозиторії (офіційний F-Droid, IzzyOnDroid та Guardian Project)?</string>
     <string name="index_v2">Увімкнути Index-V2</string>
     <string name="index_v2_summary">Дозволяє запитувати Index-V2 як основний індекс. Все ще експериментальний, має переваги та недоліки.</string>
+    <string name="action_start">Погнали!</string>
 </resources>
