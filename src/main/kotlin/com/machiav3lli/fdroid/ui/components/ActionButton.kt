@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.FloatingActionButton
@@ -36,6 +37,7 @@ import com.machiav3lli.fdroid.data.entity.ComponentState
 fun ActionButton(
     modifier: Modifier = Modifier,
     text: String,
+    // TODO add neutral using ENUM
     positive: Boolean = true,
     icon: ImageVector? = null,
     enabled: Boolean = true,
@@ -45,24 +47,24 @@ fun ActionButton(
         modifier = modifier,
         colors = ButtonDefaults.elevatedButtonColors(
             contentColor = when {
-                positive -> MaterialTheme.colorScheme.onPrimaryContainer
-                else     -> MaterialTheme.colorScheme.onTertiaryContainer
+                positive -> MaterialTheme.colorScheme.onPrimary
+                else     -> MaterialTheme.colorScheme.onTertiary
             },
             containerColor = when {
-                positive -> MaterialTheme.colorScheme.primaryContainer
-                else     -> MaterialTheme.colorScheme.tertiaryContainer
+                positive -> MaterialTheme.colorScheme.primary
+                else     -> MaterialTheme.colorScheme.tertiary
             }
         ),
         enabled = enabled,
-        onClick = onClick
+        onClick = onClick,
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            if (icon != null) Icon(imageVector = icon, contentDescription = null)
-            Text(text = text)
-        }
+        if (icon != null) Icon(imageVector = icon, contentDescription = text)
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = text,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleSmall,
+        )
     }
 }
 
