@@ -121,7 +121,6 @@ fun ProductItemContent(
                     softWrap = true,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    style = MaterialTheme.typography.titleMedium
                 )
                 if (product.canUpdate) ReleaseBadge(
                     modifier = Modifier.widthIn(max = 200.dp),
@@ -146,7 +145,6 @@ fun ProductItemContent(
         supportingContent = {
             Text(
                 text = product.summary,
-                style = MaterialTheme.typography.bodyMedium,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = if (isExpanded.value) Int.MAX_VALUE else 2,
             )
@@ -214,7 +212,6 @@ fun ProductCarouselItem(
                     softWrap = true,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    style = MaterialTheme.typography.titleMedium,
                 )
                 if (product.canUpdate) ReleaseBadge(
                     modifier = Modifier
@@ -249,7 +246,6 @@ fun ProductCarouselItem(
                 Text(
                     modifier = Modifier.weight(1f),
                     text = product.summary,
-                    style = MaterialTheme.typography.bodyMedium,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -271,8 +267,8 @@ fun ProductCarouselItem(
                     action?.let {
                         IconButton(
                             colors = IconButtonDefaults.iconButtonColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary,
                             ),
                             onClick = { onActionClick(product, action) },
                         ) {

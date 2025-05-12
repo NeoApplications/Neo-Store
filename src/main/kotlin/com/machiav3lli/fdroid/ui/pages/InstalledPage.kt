@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -55,6 +54,7 @@ import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.Page
 import com.machiav3lli.fdroid.data.entity.ProductItem
+import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
@@ -294,36 +294,23 @@ fun InstallsPage(viewModel: MainVM) {
                                 )
                             }
                             AnimatedVisibility(updatesVisible) {
-                                ElevatedButton(
-                                    colors = ButtonDefaults.elevatedButtonColors(
-                                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    ),
-                                    onClick = {
-                                        val action = {
-                                            NeoApp.wm.update(
-                                                *updates.toTypedArray()
-                                            )
-                                        }
-                                        if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                                            dialogKey.value =
-                                                DialogKey.BatchDownload(
-                                                    updates.map(ProductItem::name), action
-                                                )
-                                            openDialog.value = true
-                                        } else action()
-                                    }
+                                ActionButton(
+                                    text = stringResource(R.string.update_all),
+                                    icon = Phosphor.Download,
+                                    positive = true,
                                 ) {
-                                    Icon(
-                                        imageVector = Phosphor.Download,
-                                        contentDescription = stringResource(id = R.string.update_all)
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Text(
-                                        text = stringResource(id = R.string.update_all),
-                                        textAlign = TextAlign.Center,
-                                        style = MaterialTheme.typography.titleSmall
-                                    )
+                                    val action = {
+                                        NeoApp.wm.update(
+                                            *updates.toTypedArray()
+                                        )
+                                    }
+                                    if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                        dialogKey.value =
+                                            DialogKey.BatchDownload(
+                                                updates.map(ProductItem::name), action
+                                            )
+                                        openDialog.value = true
+                                    } else action()
                                 }
                             }
                         }
