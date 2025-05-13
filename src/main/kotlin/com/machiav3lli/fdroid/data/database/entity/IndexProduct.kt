@@ -3,7 +3,6 @@ package com.machiav3lli.fdroid.data.database.entity
 import androidx.room.ColumnInfo
 import com.machiav3lli.fdroid.data.entity.Author
 import com.machiav3lli.fdroid.data.entity.Donate
-import com.machiav3lli.fdroid.data.entity.Screenshot
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import kotlinx.serialization.Serializable
@@ -28,7 +27,7 @@ open class IndexProduct(
     var antiFeatures: List<String> = emptyList()
     var licenses: List<String> = emptyList()
     var donates: List<Donate> = emptyList()
-    var screenshots: List<Screenshot> = emptyList()
+    var screenshots: List<String> = emptyList()
     var versionCode: Long = 0L
     var suggestedVersionCode: Long = 0L
     var signatures: List<String> = emptyList()
@@ -58,7 +57,7 @@ open class IndexProduct(
         antiFeatures: List<String>,
         licenses: List<String>,
         donates: List<Donate>,
-        screenshots: List<Screenshot>,
+        screenshots: List<String>,
         suggestedVersionCode: Long = 0L,
         author: Author = Author(),
         source: String = "",

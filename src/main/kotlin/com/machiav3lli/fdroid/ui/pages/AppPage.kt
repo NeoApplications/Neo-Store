@@ -72,6 +72,7 @@ import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.manager.work.DownloadWorker
 import com.machiav3lli.fdroid.manager.work.ExodusWorker
 import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
+import com.machiav3lli.fdroid.ui.components.ScreenshotItem
 import com.machiav3lli.fdroid.ui.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.components.SwitchPreference
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoChips
@@ -86,7 +87,6 @@ import com.machiav3lli.fdroid.ui.components.appsheet.WarningCard
 import com.machiav3lli.fdroid.ui.components.appsheet.appInfoChips
 import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.components.privacy.MeterIconsBar
-import com.machiav3lli.fdroid.ui.components.toScreenshotItem
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderTop
@@ -360,10 +360,7 @@ fun AppPage(
         val screenshots by remember(product) {
             derivedStateOf {
                 product.screenshots.map {
-                    it.toScreenshotItem(
-                        repository = repo,
-                        packageName = product.packageName
-                    )
+                    ScreenshotItem(it, repo)
                 }
             }
         }

@@ -17,7 +17,6 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.Author
 import com.machiav3lli.fdroid.data.entity.Donate
 import com.machiav3lli.fdroid.data.entity.ProductItem
-import com.machiav3lli.fdroid.data.entity.Screenshot
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import kotlinx.collections.immutable.toImmutableList
@@ -52,7 +51,7 @@ open class Product(
     var antiFeatures: List<String> = emptyList()
     var licenses: List<String> = emptyList()
     var donates: List<Donate> = emptyList()
-    var screenshots: List<Screenshot> = emptyList()
+    var screenshots: List<String> = emptyList()
     var suggestedVersionCode: Long = 0L
     var author: Author = Author()
     var source: String = ""
@@ -78,8 +77,7 @@ open class Product(
         antiFeatures: List<String>,
         licenses: List<String>,
         donates: List<Donate>,
-        // TODO replace this mess with Index-V2 screenshots
-        screenshots: List<Screenshot>,
+        screenshots: List<String>,
         suggestedVersionCode: Long = 0L,
         author: Author = Author(),
         source: String = "",
@@ -134,7 +132,7 @@ class ProductTemp(
     antiFeatures: List<String>,
     licenses: List<String>,
     donates: List<Donate>,
-    screenshots: List<Screenshot>,
+    screenshots: List<String>,
     suggestedVersionCode: Long = 0L,
     author: Author = Author(),
     source: String = "",

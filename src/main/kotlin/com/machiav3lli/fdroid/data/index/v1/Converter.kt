@@ -7,7 +7,6 @@ import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.entity.Author
 import com.machiav3lli.fdroid.data.entity.Donate
-import com.machiav3lli.fdroid.data.entity.Screenshot
 import com.machiav3lli.fdroid.data.index.v0.IndexV0Parser
 import com.machiav3lli.fdroid.utils.extension.Quintuple
 import com.machiav3lli.fdroid.utils.extension.android.Android
@@ -54,11 +53,11 @@ internal fun IndexV1.App.toProduct(repositoryId: Long) = IndexProduct(
                 }
                 ?.let { Pair(key, it) }
         }?.let { (key, screenshots) ->
-            screenshots.first.map { Screenshot(key, Screenshot.Type.PHONE, it) } +
-                    screenshots.second.map { Screenshot(key, Screenshot.Type.SMALL_TABLET, it) } +
-                    screenshots.third.map { Screenshot(key, Screenshot.Type.LARGE_TABLET, it) } +
-                    screenshots.fourth.map { Screenshot(key, Screenshot.Type.TV, it) } +
-                    screenshots.fifth.map { Screenshot(key, Screenshot.Type.WEAR, it) }
+            screenshots.first.map { "/$packageName/$key/phoneScreenshots/$it" } +
+                    screenshots.second.map { "/$packageName/$key/sevenInchScreenshots/$it" } +
+                    screenshots.third.map { "/$packageName/$key/tenInchScreenshots/$it" } +
+                    screenshots.fourth.map { "/$packageName/$key/tvScreenshots/$it" } +
+                    screenshots.fifth.map { "/$packageName/$key/wearScreenshots/$it" }
         }
         .orEmpty().toList(),
     suggestedVersionCode = suggestedVersionCode.toLongOrDefault(0L),
