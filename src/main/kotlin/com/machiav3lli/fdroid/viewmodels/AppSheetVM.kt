@@ -19,6 +19,7 @@ import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
+import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.findSuggestedProduct
 import com.machiav3lli.fdroid.utils.generatePermissionGroups
 import com.machiav3lli.fdroid.utils.toPrivacyNote
@@ -29,8 +30,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -59,12 +60,15 @@ class AppSheetVM(
             productsRepo.getProduct(pn)
         }
 
-    private val developer =
-        products.mapLatest { it.firstOrNull()?.product?.author?.name ?: "" }.stateIn(
-            viewModelScope,
-            SharingStarted.Lazily,
-            ""
-        )
+    private val developer = products.mapLatest {
+        it.firstOrNull()?.product?.author?.let {
+            it.name.nullIfEmpty() ?: it.email.nullIfEmpty() ?: it.web.nullIfEmpty()
+        }.orEmpty()
+    }.distinctUntilChanged()
+
+    private val developerProds = developer.flatMapConcat {
+        productsRepo.getAuthorList(it)
+    }.distinctUntilChanged()
 
     val exodusInfo = packageName
         .flatMapLatest { pn ->
@@ -186,17 +190,16 @@ class AppSheetVM(
             null
         )
 
-    val authorProducts = combineTransform(
+    val authorProducts = combine(
         packageName,
         developer,
-        productsRepo.getAuthorList(developer.value),
+        developerProds,
     ) { pn, dev, prods ->
-        if (dev.isNotEmpty()) emit(
-            prods
-                .filter { it.product.packageName != pn && it.product.author.name == dev }
-                .groupBy { it.product.packageName }
-                .mapNotNull { it.value.maxByOrNull { it.product.added } }
-        )
+        if (dev.isNotEmpty()) prods
+            .filter { it.product.packageName != pn }
+            .groupBy { it.product.packageName }
+            .mapNotNull { it.value.maxByOrNull { it.product.added } }
+        else emptyList()
     }
 
     private val actions: Flow<Pair<ActionState, Set<ActionState>>> =
