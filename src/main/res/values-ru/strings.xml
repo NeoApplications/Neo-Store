@@ -428,4 +428,5 @@
     <string name="initial_sync_repositories">Синхронизировать предустановленные репозитории (официальный F-Droid, IzzyOnDroid и Guardian)?</string>
     <string name="index_v2">Использовать Index-V2</string>
     <string name="index_v2_summary">Запрашивать Index-V2 в качестве основного индекса. Экспериментально, есть как преимущества, так и недостатки.</string>
+    <string name="action_start">Начать!</string>
 </resources>
