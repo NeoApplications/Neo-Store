@@ -128,6 +128,7 @@ interface ProductDao : BaseDao<Product> {
         )
     )
 
+    @Transaction
     @RawQuery(observedEntities = [Product::class, Installed::class, Extras::class, Repository::class, Category::class])
     fun queryFlowList(query: SupportSQLiteQuery): Flow<List<EmbeddedProduct>>
 
