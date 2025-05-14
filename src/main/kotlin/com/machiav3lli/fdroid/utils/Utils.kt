@@ -320,11 +320,11 @@ fun Context.startLauncherActivity(packageName: String, name: String) {
     }
 }
 
-fun Context.shareIntent(packageName: String, appName: String, repository: String) {
+fun Context.shareIntent(packageName: String, appName: String, repoWebUrl: String) {
     val shareIntent = Intent(Intent.ACTION_SEND)
     val extraText = when {
-        repository.contains("IzzyOnDroid")
-            -> "https://apt.izzysoft.de/fdroid/index/apk/$packageName"
+        repoWebUrl.isNotBlank()
+            -> "$repoWebUrl$packageName"
 
         else
             -> "https://f-droid.org/packages/${packageName}/"

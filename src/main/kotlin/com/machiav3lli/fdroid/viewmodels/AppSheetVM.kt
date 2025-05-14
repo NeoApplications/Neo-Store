@@ -215,8 +215,7 @@ class AppSheetVM(
             val canUninstall = product != null && ins != null && !ins.isSystem
             val canLaunch = product != null &&
                     ins != null && ins.launcherActivities.isNotEmpty()
-            val canShare = product != null &&
-                    prs[0].second.name in setOf("F-Droid", "IzzyOnDroid F-Droid Repo")
+            val canShare = product != null && prs[0].second.webBaseUrl.isNotBlank()
 
             val actions = mutableSetOf<ActionState>()
             synchronized(actions) {

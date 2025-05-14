@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.data.database.entity
 
 import android.util.Base64
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -37,6 +38,8 @@ data class Repository(
     val updated: Long = 0L,
     val timestamp: Long = 0L,
     var authentication: String = "",
+    @ColumnInfo(defaultValue = "")
+    val webBaseUrl: String = "",
 ) {
     val intentAddress: String
         get() = "${address.trimEnd('/')}?fingerprint=$fingerprint"
@@ -54,7 +57,7 @@ data class Repository(
 
     fun update(
         mirrors: List<String>, name: String, description: String, version: Int,
-        lastModified: String, entityTag: String, timestamp: Long,
+        lastModified: String, entityTag: String, timestamp: Long, webBaseUrl: String?,
     ): Repository = copy(
         mirrors = mirrors,
         name = name.nullIfEmpty() ?: this.name,
@@ -64,6 +67,7 @@ data class Repository(
         entityTag = entityTag,
         updated = System.currentTimeMillis(),
         timestamp = timestamp,
+        webBaseUrl = webBaseUrl ?: this.webBaseUrl,
     )
 
     fun enable(enabled: Boolean): Repository = copy(
@@ -130,11 +134,11 @@ data class Repository(
         }
 
         private fun defaultRepository(
-            address: String, name: String, description: String,
-            version: Int, enabled: Boolean, fingerprint: String, authentication: String,
+            address: String, name: String, description: String, version: Int,
+            enabled: Boolean, fingerprint: String, authentication: String, webBaseUrl: String = "",
         ): Repository = Repository(
             0, address, emptyList(), name, description, version, enabled,
-            fingerprint, "", "", 0L, 0L, authentication
+            fingerprint, "", "", 0L, 0L, authentication, webBaseUrl,
         )
 
         private val F_DROID = defaultRepository(
@@ -144,8 +148,8 @@ data class Repository(
                     "Everything in this repository is always built from the source code.",
             21,
             true,
-            "43238D512C1E5EB2D6569F4A3AFBF5523418B82E0A3ED1552770ABB9A9C9CCAB",
-            ""
+            "43238D512C1E5EB2D6569F4A3AFBF5523418B82E0A3ED1552770ABB9A9C9CCAB", "",
+            "https://f-droid.org/packages/",
         )
         private val F_DROID_ARCHIVE =
             defaultRepository(
@@ -155,8 +159,7 @@ data class Repository(
                         "Software repository. Apps here are old and can contain known vulnerabilities and security issues!",
                 21,
                 false,
-                "43238D512C1E5EB2D6569F4A3AFBF5523418B82E0A3ED1552770ABB9A9C9CCAB",
-                ""
+                "43238D512C1E5EB2D6569F4A3AFBF5523418B82E0A3ED1552770ABB9A9C9CCAB", "",
             )
         private val GUARDIAN = defaultRepository(
             "https://guardianproject.info/fdroid/repo",
@@ -167,8 +170,7 @@ data class Repository(
                     "the APKs that are released in the Google Play Store.",
             21,
             true,
-            "B7C2EEFD8DAC7806AF67DFCD92EB18126BC08312A7F2D6F3862E46013C7A6135",
-            ""
+            "B7C2EEFD8DAC7806AF67DFCD92EB18126BC08312A7F2D6F3862E46013C7A6135", "",
         )
         private val GUARDIAN_ARCHIVE = defaultRepository(
             "https://guardianproject.info/fdroid/archive",
@@ -178,15 +180,17 @@ data class Repository(
                     "applications from the main repository.",
             21,
             false,
-            "B7C2EEFD8DAC7806AF67DFCD92EB18126BC08312A7F2D6F3862E46013C7A6135",
-            ""
+            "B7C2EEFD8DAC7806AF67DFCD92EB18126BC08312A7F2D6F3862E46013C7A6135", "",
         )
         private val IZZY = defaultRepository(
-            "https://apt.izzysoft.de/fdroid/repo", "IzzyOnDroid F-Droid Repo", "This is a " +
+            "https://apt.izzysoft.de/fdroid/repo", "IzzyOnDroid F-Droid Repo",
+            "This is a " +
                     "repository of apps to be used with F-Droid the original application developers, taken from the resp. " +
                     "repositories (mostly GitHub). At this moment I cannot give guarantees on regular updates for all of them, " +
-                    "though most are checked multiple times a week ", 21, true,
-            "3BF0D6ABFEAE2F401707B6D966BE743BF0EEE49C2561B9BA39073711F628937A", ""
+                    "though most are checked multiple times a week ",
+            21, true,
+            "3BF0D6ABFEAE2F401707B6D966BE743BF0EEE49C2561B9BA39073711F628937A", "",
+            "https://apt.izzysoft.de/fdroid/index/apk/",
         )
         private val MICRO_G = defaultRepository(
             "https://microg.org/fdroid/repo", "MicroG Project",

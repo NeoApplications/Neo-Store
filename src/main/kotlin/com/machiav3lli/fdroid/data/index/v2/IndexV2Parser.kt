@@ -24,7 +24,8 @@ class IndexV2Parser(private val repositoryId: Long, private val callback: Callba
                     name.findLocalized(""),
                     description.findLocalized(""),
                     version,
-                    timestamp
+                    timestamp,
+                    webBaseUrl
                 )
             }
 
@@ -47,6 +48,7 @@ class IndexV2Parser(private val repositoryId: Long, private val callback: Callba
             description: String,
             version: Int,
             timestamp: Long,
+            webBaseUrl: String?,
         )
 
         fun onProduct(product: IndexProduct)

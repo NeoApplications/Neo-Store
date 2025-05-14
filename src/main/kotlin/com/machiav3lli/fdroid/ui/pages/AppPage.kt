@@ -331,7 +331,7 @@ fun AppPage(
                 context.shareIntent(
                     packageName,
                     productRepos[0].first.product.label,
-                    productRepos[0].second.name
+                    productRepos[0].second.webBaseUrl
                 )
             }
 

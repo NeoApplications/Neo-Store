@@ -331,7 +331,7 @@ object RepositoryUpdater : KoinComponent {
             ) {
                 changedRepository = repository.update(
                     mirrors, name, description, version,
-                    lastModified, entityTag, timestamp
+                    lastModified, entityTag, timestamp, null,
                 )
                 certificateFromIndex = certificate.lowercase(Locale.US)
             }
@@ -411,7 +411,7 @@ object RepositoryUpdater : KoinComponent {
                             ) {
                                 changedRepository = repository.update(
                                     mirrors, name, description, version,
-                                    lastModified, entityTag, timestamp
+                                    lastModified, entityTag, timestamp, null,
                                 )
                             }
 
@@ -522,10 +522,11 @@ object RepositoryUpdater : KoinComponent {
                                 description: String,
                                 version: Int,
                                 timestamp: Long,
+                                webBaseUrl: String?,
                             ) {
                                 changedRepository = repository.update(
                                     mirrors, name, description, version,
-                                    lastModified, entityTag, timestamp
+                                    lastModified, entityTag, timestamp, webBaseUrl,
                                 )
                             }
 
