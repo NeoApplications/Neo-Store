@@ -5,7 +5,7 @@ biometric = "1.2.0-alpha05"
 coil = "3.1.0"
 compose-bom = "2025.04.01"
 compose-accompanist = "0.37.2"
-compose-markdown = "0.5.7"
+compose-html = "1.0.4"
 coroutines = "1.10.2"
 immutables = "0.3.8"
 jackson = "2.19.0"
@@ -89,7 +89,7 @@ compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "compose-accompanist" }
-compose-markdown = { module = "com.github.jeziellago:compose-markdown", version.ref = "compose-markdown" }
+compose-html = { module = "be.digitalia.compose.htmlconverter:htmlconverter", version.ref = "compose-html" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
