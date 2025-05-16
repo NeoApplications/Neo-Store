@@ -7,9 +7,11 @@ import androidx.core.net.toUri
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.DatabaseX
+import com.machiav3lli.fdroid.data.database.entity.CategoryTemp
 import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.database.entity.asProductTemp
 import com.machiav3lli.fdroid.data.database.entity.asReleaseTemp
 import com.machiav3lli.fdroid.data.index.v0.IndexV0Parser
 import com.machiav3lli.fdroid.data.index.v1.IndexV1Merger
@@ -345,7 +347,18 @@ object RepositoryUpdater : KoinComponent {
                 }
                 runBlocking {
                     if (products.size >= 100) {
-                        db.getProductTempDao().putTemporary(products.map { it.toV2() })
+                        db.getProductTempDao().insert(*products.map {
+                            it.toV2().asProductTemp()
+                        }.toTypedArray())
+                        db.getCategoryTempDao().insert(*products.flatMap {
+                            it.categories.distinct().map { category ->
+                                CategoryTemp(
+                                    repositoryId = it.repositoryId,
+                                    packageName = it.packageName,
+                                    name = category,
+                                )
+                            }
+                        }.toTypedArray())
                         db.getReleaseTempDao()
                             .insert(*(products.flatMap { it.releases }
                                 .map { it.asReleaseTemp() }.toTypedArray()))
@@ -363,7 +376,18 @@ object RepositoryUpdater : KoinComponent {
             if (Thread.interrupted()) throw InterruptedException()
 
             if (products.isNotEmpty()) {
-                db.getProductTempDao().putTemporary(products.map { it.toV2() })
+                db.getProductTempDao().insert(*products.map {
+                    it.toV2().asProductTemp()
+                }.toTypedArray())
+                db.getCategoryTempDao().insert(*products.flatMap {
+                    it.categories.distinct().map { category ->
+                        CategoryTemp(
+                            repositoryId = it.repositoryId,
+                            packageName = it.packageName,
+                            name = category,
+                        )
+                    }
+                }.toTypedArray())
                 db.getReleaseTempDao()
                     .insert(*(products.flatMap { it.releases }
                         .map { it.asReleaseTemp() }.toTypedArray()))
@@ -470,8 +494,18 @@ object RepositoryUpdater : KoinComponent {
                                     refreshVariables()
                                 }
                             }.let { updatedProducts ->
-                                db.getProductTempDao()
-                                    .putTemporary(updatedProducts.map { it.toV2() })
+                                db.getProductTempDao().insert(*updatedProducts.map {
+                                    it.toV2().asProductTemp()
+                                }.toTypedArray())
+                                db.getCategoryTempDao().insert(*updatedProducts.flatMap {
+                                    it.categories.distinct().map { category ->
+                                        CategoryTemp(
+                                            repositoryId = it.repositoryId,
+                                            packageName = it.packageName,
+                                            name = category,
+                                        )
+                                    }
+                                }.toTypedArray())
                                 db.getReleaseTempDao().insert(
                                     *(updatedProducts.flatMap { it.releases }
                                         .fastMap { it.asReleaseTemp() }.toTypedArray())
@@ -585,8 +619,18 @@ object RepositoryUpdater : KoinComponent {
                                     refreshVariables()
                                 }
                             }.let { updatedProducts ->
-                                db.getProductTempDao()
-                                    .putTemporary(updatedProducts.map { it.toV2() })
+                                db.getProductTempDao().insert(*updatedProducts.map {
+                                    it.toV2().asProductTemp()
+                                }.toTypedArray())
+                                db.getCategoryTempDao().insert(*updatedProducts.flatMap {
+                                    it.categories.distinct().map { category ->
+                                        CategoryTemp(
+                                            repositoryId = it.repositoryId,
+                                            packageName = it.packageName,
+                                            name = category,
+                                        )
+                                    }
+                                }.toTypedArray())
                                 db.getReleaseTempDao().insert(
                                     *(updatedProducts.flatMap { it.releases }
                                         .map { it.asReleaseTemp() }.toTypedArray())
