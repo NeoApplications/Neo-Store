@@ -1,4 +1,4 @@
-# Neo Store <img title="" src="src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" align="left" width="64" style="padding: 12px;">
+# <img title="" src="src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" align="left" width="64" style="padding: 12px;"> Neo Store
 
 ### The modern and feature-rich F-Droid client for everyone!
 
@@ -22,6 +22,10 @@
 * Awesome built-in repositories :toolbox:
 * Easy exploration of new apps :mag:
 * Minimalism with KISS principles :dart:
+
+### Upcoming plans :eyes: [<img align="right" src="get_taiga.svg" alt="Follow our project on Taiga" width="24%" />](https://tree.taiga.io/project/machiav3lli-neo-store/kanban)
+
+We also have a roadmap board on Taiga where you can see our future plans. Feel free to contact us if you'd like to contribute to any of the planned changes.
 
 ## Screenshots :framed_picture:
 
@@ -56,7 +60,7 @@ To [Iamlooker](https://github.com/Iamlooker), who worked with me on maintaining 
 
 To [Donno](https://github.com/Donnnno) for the new app icon base.
 
-### Contributors
+### Contributors :handshake:
 
 <a href="https://github.com/NeoApplications/Neo-Store/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=NeoApplications/Neo-Store"  alt="Icons of contributors to Neo Store"/>
