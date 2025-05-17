@@ -26,6 +26,8 @@ const val TABLE_PRODUCT_TEMP = "temporary_product_v2"
 const val TABLE_RELEASE = "release"
 const val TABLE_RELEASE_TEMP = "temporary_release"
 const val TABLE_REPOSITORY = "repository"
+const val TABLE_REPOCATEGORY = "repo_category"
+const val TABLE_REPOCATEGORY_TEMP = "temporary_repo_category"
 const val TABLE_TRACKER = "tracker"
 
 const val ROW_ADDED = "added"

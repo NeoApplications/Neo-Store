@@ -26,6 +26,8 @@ import com.machiav3lli.fdroid.data.database.dao.ProductDao
 import com.machiav3lli.fdroid.data.database.dao.ProductTempDao
 import com.machiav3lli.fdroid.data.database.dao.ReleaseDao
 import com.machiav3lli.fdroid.data.database.dao.ReleaseTempDao
+import com.machiav3lli.fdroid.data.database.dao.RepoCategoryDao
+import com.machiav3lli.fdroid.data.database.dao.RepoCategoryTempDao
 import com.machiav3lli.fdroid.data.database.dao.RepositoryDao
 import com.machiav3lli.fdroid.data.database.dao.TrackerDao
 import com.machiav3lli.fdroid.data.database.entity.Category
@@ -39,6 +41,8 @@ import com.machiav3lli.fdroid.data.database.entity.Product
 import com.machiav3lli.fdroid.data.database.entity.ProductTemp
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.database.entity.ReleaseTemp
+import com.machiav3lli.fdroid.data.database.entity.RepoCategory
+import com.machiav3lli.fdroid.data.database.entity.RepoCategoryTemp
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV10
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV11
@@ -78,6 +82,8 @@ import org.koin.dsl.module
         ProductTemp::class,
         Category::class,
         CategoryTemp::class,
+        RepoCategory::class,
+        RepoCategoryTemp::class,
         Installed::class,
         Extras::class,
         ExodusInfo::class,
@@ -212,6 +218,7 @@ abstract class DatabaseX : RoomDatabase() {
     abstract fun getProductDao(): ProductDao
     abstract fun getReleaseDao(): ReleaseDao
     abstract fun getCategoryDao(): CategoryDao
+    abstract fun getRepoCategoryDao(): RepoCategoryDao
     abstract fun getInstalledDao(): InstalledDao
     abstract fun getExtrasDao(): ExtrasDao
     abstract fun getExodusInfoDao(): ExodusInfoDao
@@ -222,6 +229,7 @@ abstract class DatabaseX : RoomDatabase() {
     abstract fun getReleaseTempDao(): ReleaseTempDao
     abstract fun getProductTempDao(): ProductTempDao
     abstract fun getCategoryTempDao(): CategoryTempDao
+    abstract fun getRepoCategoryTempDao(): RepoCategoryTempDao
     abstract fun getInstallTaskDao(): InstallTaskDao
 
     companion object {
@@ -489,6 +497,8 @@ val databaseModule = module {
     single { get<DatabaseX>().getProductTempDao() }
     single { get<DatabaseX>().getCategoryDao() }
     single { get<DatabaseX>().getCategoryTempDao() }
+    single { get<DatabaseX>().getRepoCategoryDao() }
+    single { get<DatabaseX>().getRepoCategoryTempDao() }
     single { get<DatabaseX>().getInstalledDao() }
     single { get<DatabaseX>().getExtrasDao() }
     single { get<DatabaseX>().getExodusInfoDao() }
