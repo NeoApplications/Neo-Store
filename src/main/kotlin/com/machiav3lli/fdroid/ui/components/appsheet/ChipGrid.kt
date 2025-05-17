@@ -44,9 +44,9 @@ fun AppInfoChips(
 fun EmbeddedProduct.appInfoChips(installed: Installed?, latestRelease: Release?) = listOfNotNull(
     // TODO remove v when already there
     if (this.canUpdate(installed) && installed != null)
-        "v${installed.version} → v$version"
-    else if (installed != null) "v${installed.version}"
-    else "v$version",
+        "v${installed.version.trimStart('v')} → v${version.trimStart('v')}"
+    else if (installed != null) "v${installed.version.trimStart('v')}"
+    else "v${version.trimStart('v')}",
     displayRelease?.size?.formatSize().orEmpty(),
     DateFormat.getDateInstance().format(Date(product.updated)),
     *product.categories.toTypedArray(),
