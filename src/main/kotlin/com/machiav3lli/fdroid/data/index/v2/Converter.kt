@@ -10,6 +10,7 @@ import com.machiav3lli.fdroid.data.entity.Donate
 import com.machiav3lli.fdroid.data.index.v0.IndexV0Parser
 import com.machiav3lli.fdroid.data.index.v2.IndexV2.File
 import com.machiav3lli.fdroid.utils.extension.android.Android
+import java.util.Locale
 
 internal fun IndexV2.Package.toProduct(repositoryId: Long, packageName: String) = IndexProduct(
     repositoryId = repositoryId,
@@ -106,22 +107,37 @@ internal fun <T> Localized<T>?.findLocalized(fallback: T): T =
 
 private fun <T> Localized<T>?.getBestLocale(localeList: LocaleListCompat): T? {
     if (isNullOrEmpty()) return null
-    val firstMatch = localeList.getFirstMatch(keys.toTypedArray()) ?: return null
-    val tag = firstMatch.toLanguageTag()
-    // try first matched tag first (usually has region tag, e.g. de-DE)
-    return entries.find { it.key == tag }?.value ?: run {
-        // split away stuff like script and try language and region only
-        val langCountryTag = "${firstMatch.language}-${firstMatch.country}"
-        (getOrStartsWith(langCountryTag) ?: run {
-            // split away region tag and try language only
-            val langTag = firstMatch.language
-            // try language, then English and then just take the first of the list
-            getOrStartsWith(langTag)
-                ?: get("en-US")
-                ?: getOrStartsWith("en")
-                ?: entries.first().value
-        })
-    }
+    val defLocale = Locale.getDefault()
+    val defTag = defLocale.toLanguageTag()
+    val sysLocaleMatch = localeList.getFirstMatch(keys.toTypedArray()) ?: return null
+    val sysTag = sysLocaleMatch.toLanguageTag()
+    // try the user-set default language
+    return entries.find { it.key == defTag }?.value
+        ?: run {
+            // split away stuff like script and try language and region only
+            val langCountryTag = "${defLocale.language}-${defLocale.country}"
+            (getOrStartsWith(langCountryTag) ?: run {
+                // split away region tag and try language only
+                val langTag = defLocale.language
+                // try language, then English and then just take the first of the list
+                getOrStartsWith(langTag)
+            })
+        }
+        // now try first matched system tag (usually has region tag, e.g. de-DE)
+        ?: entries.find { it.key == sysTag }?.value
+        ?: run {
+            // split away stuff like script and try language and region only
+            val langCountryTag = "${sysLocaleMatch.language}-${sysLocaleMatch.country}"
+            (getOrStartsWith(langCountryTag) ?: run {
+                // split away region tag and try language only
+                val langTag = sysLocaleMatch.language
+                // try language, then English and then just take the first of the list
+                getOrStartsWith(langTag)
+                    ?: get("en-US")
+                    ?: getOrStartsWith("en")
+                    ?: entries.first().value
+            })
+        }
 }
 
 private fun <T> Map<String, T>.getOrStartsWith(s: String): T? =
