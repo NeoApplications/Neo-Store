@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.data.database.entity
 
-import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Index
@@ -56,8 +55,6 @@ open class Product(
     var author: Author = Author()
     var source: String = ""
     var web: String = ""
-
-    @ColumnInfo(defaultValue = "")
     var video: String = ""
     var tracker: String = ""
     var changelog: String = ""
@@ -206,9 +203,8 @@ data class EmbeddedProduct(
     @Relation(
         parentColumn = ROW_PACKAGE_NAME,
         entityColumn = ROW_PACKAGE_NAME,
-        entity = Release::class
     )
-    val releases: List<Release>
+    val releases: List<Release> = emptyList(),
 ) {
     val selectedReleases: List<Release>
         get() = releases.filter { it.selected }.distinctBy(Release::identifier)

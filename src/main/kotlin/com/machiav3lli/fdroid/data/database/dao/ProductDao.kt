@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Transaction
-import androidx.room.Upsert
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
@@ -20,6 +19,7 @@ import com.machiav3lli.fdroid.ROW_IS_COMPATIBLE
 import com.machiav3lli.fdroid.ROW_LABEL
 import com.machiav3lli.fdroid.ROW_LICENSES
 import com.machiav3lli.fdroid.ROW_MINSDK_VERSION
+import com.machiav3lli.fdroid.ROW_NAME
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
 import com.machiav3lli.fdroid.ROW_SELECTED
@@ -37,16 +37,14 @@ import com.machiav3lli.fdroid.TABLE_RELEASE
 import com.machiav3lli.fdroid.TABLE_REPOSITORY
 import com.machiav3lli.fdroid.data.database.QueryBuilder
 import com.machiav3lli.fdroid.data.database.entity.Category
-import com.machiav3lli.fdroid.data.database.entity.CategoryTemp
 import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.Extras
 import com.machiav3lli.fdroid.data.database.entity.IconDetails
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.Licenses
-import com.machiav3lli.fdroid.data.database.entity.ProductTemp
 import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.ProductTemp
 import com.machiav3lli.fdroid.data.database.entity.Repository
-import com.machiav3lli.fdroid.data.database.entity.asProductTemp
 import com.machiav3lli.fdroid.data.entity.Order
 import com.machiav3lli.fdroid.data.entity.Request
 import com.machiav3lli.fdroid.data.entity.Section
@@ -212,7 +210,7 @@ interface ProductDao : BaseDao<Product> {
         }
 
         if (category != FILTER_CATEGORY_ALL) {
-            whereConditions.add("$TABLE_CATEGORY.$ROW_LABEL = ?")
+            whereConditions.add("$TABLE_CATEGORY.$ROW_NAME = ?")
             builder.addArgument(category)
         }
 
@@ -330,21 +328,4 @@ interface ProductTempDao : BaseDao<ProductTemp> {
 
     @Query("DELETE FROM $TABLE_PRODUCT_TEMP")
     suspend fun emptyTable()
-
-    @Upsert
-    suspend fun insertCategory(vararg product: CategoryTemp)
-
-    @Transaction
-    suspend fun putTemporary(products: List<Product>) {
-        products.forEach {
-            insert(it.asProductTemp())
-            it.categories.distinct().forEach { category ->
-                insertCategory(CategoryTemp().apply {
-                    repositoryId = it.repositoryId
-                    packageName = it.packageName
-                    label = category
-                })
-            }
-        }
-    }
 }

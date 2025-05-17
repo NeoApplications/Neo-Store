@@ -27,6 +27,7 @@ data class Repository(
     val id: Long = 0,
     var address: String = "",
     // TODO add support for countryCode and isPrimary
+    // TODO add support for mirror rotation
     val mirrors: List<String> = emptyList(),
     val name: String = "",
     val description: String = "",

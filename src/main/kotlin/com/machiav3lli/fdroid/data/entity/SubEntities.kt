@@ -93,26 +93,6 @@ sealed class Donate {
     }
 }
 
-@Serializable
-class Screenshot(val locale: String?, val type: Type?, val path: String) {
-    enum class Type(val jsonName: String) {
-        PHONE("phone"),
-        SMALL_TABLET("smallTablet"),
-        LARGE_TABLET("largeTablet"),
-        WEAR("wear"),
-        TV("tv"),
-    }
-
-    val identifier: String
-        get() = "${locale.orEmpty()}.${type?.name.orEmpty()}.$path"
-
-    fun toJSON() = Json.encodeToString(this)
-
-    companion object {
-        fun fromJson(json: String) = Json.decodeFromString<Screenshot>(json)
-    }
-}
-
 enum class AntiFeature(val key: String, @StringRes val titleResId: Int) {
     ADS("Ads", R.string.has_advertising),
     DEBUGGABLE("ApplicationDebuggable", R.string.compiled_for_debugging),

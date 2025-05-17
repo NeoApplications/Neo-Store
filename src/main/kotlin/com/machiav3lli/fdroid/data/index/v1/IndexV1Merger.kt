@@ -62,7 +62,6 @@ class IndexV1Merger(file: File) : Closeable {
                 val releases = it.getBlob(2)?.let(::toReleases).orEmpty()
                 product.apply {
                     this.releases = releases
-                    refreshVariables()
                 }
             }.windowed(windowSize, windowSize, true)
                 .forEach { products -> callback(products, cursor.count) }

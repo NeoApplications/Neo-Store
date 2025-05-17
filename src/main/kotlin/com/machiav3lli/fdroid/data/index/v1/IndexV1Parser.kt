@@ -19,11 +19,11 @@ class IndexV1Parser(private val repositoryId: Long, private val callback: Callba
 
             with(indexV1.repo) {
                 callback.onRepository(
-                    listOf(address).plus(mirrors).distinct(),
-                    name,
-                    description,
-                    version,
-                    timestamp
+                    mirrors = listOf(address).plus(mirrors).distinct(),
+                    name = name,
+                    description = description,
+                    version = version,
+                    timestamp = timestamp
                 )
             }
 

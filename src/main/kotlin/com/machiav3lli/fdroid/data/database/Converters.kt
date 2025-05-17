@@ -4,7 +4,6 @@ import androidx.room.TypeConverter
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.entity.Author
 import com.machiav3lli.fdroid.data.entity.Donate
-import com.machiav3lli.fdroid.data.entity.Screenshot
 import com.machiav3lli.fdroid.data.entity.DownloadState
 
 object Converters {
@@ -96,19 +95,6 @@ object Converters {
     fun toByteArray(incompatibilities: List<Release.Incompatibility>) =
         if (incompatibilities.isNotEmpty())
             incompatibilities.joinToString("|") { it.toJSON() }.toByteArray()
-        else "".toByteArray()
-
-    @TypeConverter
-    @JvmStatic
-    fun toScreenshots(byteArray: ByteArray): List<Screenshot> =
-        if (String(byteArray) == "") emptyList()
-        else String(byteArray).split("|").map { Screenshot.fromJson(it) }
-
-    @JvmName("screenshotsToByteArray")
-    @TypeConverter
-    @JvmStatic
-    fun toByteArray(screenshots: List<Screenshot>) =
-        if (screenshots.isNotEmpty()) screenshots.joinToString("|") { it.toJSON() }.toByteArray()
         else "".toByteArray()
 
     @TypeConverter

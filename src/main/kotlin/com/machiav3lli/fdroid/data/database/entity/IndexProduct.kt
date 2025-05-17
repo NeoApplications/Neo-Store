@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import com.machiav3lli.fdroid.data.entity.Author
 import com.machiav3lli.fdroid.data.entity.Donate
 import com.machiav3lli.fdroid.utils.extension.android.Android
-import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -28,10 +27,7 @@ open class IndexProduct(
     var licenses: List<String> = emptyList()
     var donates: List<Donate> = emptyList()
     var screenshots: List<String> = emptyList()
-    var versionCode: Long = 0L
     var suggestedVersionCode: Long = 0L
-    var signatures: List<String> = emptyList()
-    var compatible: Boolean = false
     var author: Author = Author()
     var source: String = ""
     var web: String = ""
@@ -80,10 +76,7 @@ open class IndexProduct(
         this.licenses = licenses
         this.donates = donates
         this.screenshots = screenshots
-        this.versionCode = selectedReleases.firstOrNull()?.versionCode ?: 0L
         this.suggestedVersionCode = suggestedVersionCode
-        this.signatures = selectedReleases.mapNotNull { it.signature.nullIfEmpty() }.distinct()
-        this.compatible = selectedReleases.firstOrNull()?.incompatibilities?.isEmpty() == true
         this.author = author
         this.source = source
         this.web = web
@@ -92,9 +85,6 @@ open class IndexProduct(
         this.changelog = changelog
         this.whatsNew = whatsNew
     }
-
-    private val selectedReleases: List<Release>
-        get() = releases.filter { it.selected }
 
     fun toV2(): Product = Product(
         repositoryId = repositoryId,
@@ -163,12 +153,6 @@ open class IndexProduct(
                     ?.let { it.first.versionCode == release.versionCode && it.second == incompatibilities } == true,
             )
         }
-    }
-
-    fun refreshVariables() {
-        this.versionCode = selectedReleases.firstOrNull()?.versionCode ?: 0L
-        this.signatures = selectedReleases.mapNotNull { it.signature.nullIfEmpty() }.distinct()
-        this.compatible = selectedReleases.firstOrNull()?.incompatibilities?.isEmpty() == true
     }
 
     fun toJSON() = Json.encodeToString(this)

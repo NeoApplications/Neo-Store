@@ -66,4 +66,7 @@ interface RepositoryDao : BaseDao<Repository> {
 
     @Query("SELECT MAX(updated) AS latest, MIN(updated) AS latestAll FROM repository WHERE enabled != 0")
     fun latestUpdatesFlow(): Flow<LatestSyncs>
+
+    @Query("DELETE FROM repository")
+    suspend fun emptyTable()
 }

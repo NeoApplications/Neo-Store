@@ -61,6 +61,7 @@ internal fun IndexV2.Package.toProduct(repositoryId: Long, packageName: String) 
     video = metadata.video.findLocalized(""),
     tracker = metadata.issueTracker.orEmpty(),
     changelog = metadata.changelog.orEmpty(),
+    // TODO convert usage to Map<VersionCode,Changelog>
     whatsNew = versions.entries
         .maxBy { it.value.added }.value
         .whatsNew.findLocalized(""),

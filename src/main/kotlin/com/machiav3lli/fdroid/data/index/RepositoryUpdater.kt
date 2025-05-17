@@ -347,7 +347,6 @@ object RepositoryUpdater : KoinComponent {
 
                 products += product.apply {
                     refreshReleases(features, unstable)
-                    refreshVariables()
                 }
                 runBlocking {
                     if (products.size >= 100) {
@@ -495,7 +494,6 @@ object RepositoryUpdater : KoinComponent {
                             products.map {
                                 it.apply {
                                     refreshReleases(features, unstable)
-                                    refreshVariables()
                                 }
                             }.let { updatedProducts ->
                                 db.getProductTempDao().insert(*updatedProducts.map {
@@ -632,7 +630,6 @@ object RepositoryUpdater : KoinComponent {
                             products.map {
                                 it.apply {
                                     refreshReleases(features, unstable)
-                                    refreshVariables()
                                 }
                             }.let { updatedProducts ->
                                 db.getProductTempDao().insert(*updatedProducts.map {

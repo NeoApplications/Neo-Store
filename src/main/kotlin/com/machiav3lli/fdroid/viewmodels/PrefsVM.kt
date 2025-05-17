@@ -11,6 +11,7 @@ import com.machiav3lli.fdroid.data.repository.ExtrasRepository
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -66,7 +67,7 @@ class PrefsVM(
     val fingerprint = intentFingerprint as StateFlow<String>
 
     fun setSearchQuery(value: String) {
-        ioScope.launch { _reposSearchQuery.update { value } }
+        viewModelScope.launch { _reposSearchQuery.update { value } }
     }
 
     fun setIntent(address: String?, fingerprint: String?) {
@@ -76,14 +77,17 @@ class PrefsVM(
         }
     }
 
-    suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long =
-        reposRepo.insertReturn(
-            newRepository(
-                fallbackName = "new repository",
-                address = address,
-                fingerprint = fingerprint
+    suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long {
+        return viewModelScope.async {
+            reposRepo.insertReturn(
+                newRepository(
+                    fallbackName = "new repository",
+                    address = address,
+                    fingerprint = fingerprint
+                )
             )
-        )
+        }.await()
+    }
 
     fun updateRepo(newValue: Repository?) {
         newValue?.let {
@@ -100,10 +104,8 @@ class PrefsVM(
     }
 
     fun insertRepos(vararg newValue: Repository) {
-        newValue.let {
-            viewModelScope.launch {
-                reposRepo.insertOrUpdate(*newValue)
-            }
+        viewModelScope.launch {
+            reposRepo.insertOrUpdate(*newValue)
         }
     }
 }
