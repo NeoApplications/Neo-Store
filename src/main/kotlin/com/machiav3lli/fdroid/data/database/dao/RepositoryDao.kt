@@ -15,8 +15,8 @@ interface RepositoryDao : BaseDao<Repository> {
     @Insert
     fun insertReturn(repo: Repository): Long
 
-    suspend fun put(repository: Repository) {
-        repository.let { item ->
+    suspend fun put(vararg repository: Repository) {
+        repository.forEach { item ->
             if (item.id > 0L) update(item)
             else insert(item)
         }

@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.data.database
 
-import android.content.Context
 import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RenameColumn
@@ -12,9 +11,11 @@ import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.machiav3lli.fdroid.ROW_ID
 import com.machiav3lli.fdroid.TABLE_EXODUS_INFO
+import com.machiav3lli.fdroid.TABLE_INSTALLED
 import com.machiav3lli.fdroid.TABLE_INSTALL_TASK
 import com.machiav3lli.fdroid.TABLE_REPOSITORY
 import com.machiav3lli.fdroid.TABLE_TRACKER
+import com.machiav3lli.fdroid.data.database.DatabaseX.Companion.dbCreateCallback
 import com.machiav3lli.fdroid.data.database.dao.AntiFeatureDao
 import com.machiav3lli.fdroid.data.database.dao.AntiFeatureTempDao
 import com.machiav3lli.fdroid.data.database.dao.CategoryDao
@@ -70,12 +71,13 @@ import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedR
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedReposV31
 import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.manager.work.SyncWorker.Companion.enableRepo
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+import org.koin.java.KoinJavaComponent.get
 
 @Database(
     entities = [
@@ -241,30 +243,13 @@ abstract class DatabaseX : RoomDatabase() {
     abstract fun getInstallTaskDao(): InstallTaskDao
 
     companion object {
-        @Volatile
-        private var INSTANCE: DatabaseX? = null
-
-        fun getInstance(context: Context): DatabaseX {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room
-                    .databaseBuilder(
-                        context.applicationContext,
-                        DatabaseX::class.java,
-                        "main_database.db"
-                    )
-                    .fallbackToDestructiveMigration()
-                    .build()
-                instance.let { instance ->
-                    GlobalScope.launch(Dispatchers.IO) {
-                        if (instance.getRepositoryDao()
-                                .getCount() == 0
-                        ) defaultRepositories.forEach {
-                            instance.getRepositoryDao().put(it)
-                        }
-                    }
+        val dbCreateCallback = object : Callback() {
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
+                CoroutineScope(Dispatchers.IO).launch {
+                    val dao = get<RepositoryDao>(RepositoryDao::class.java)
+                    if (dao.getCount() == 0) dao.put(*defaultRepositories.toTypedArray())
                 }
-                INSTANCE = instance
-                instance
             }
         }
 
@@ -404,7 +389,7 @@ abstract class DatabaseX : RoomDatabase() {
             override fun onPostMigrate(db: SupportSQLiteDatabase) {
                 super.onPostMigrate(db)
                 GlobalScope.launch(Dispatchers.IO) {
-                    INSTANCE?.apply {
+                    get<DatabaseX>(DatabaseX::class.java).apply {
                         runInTransaction {
                             runBlocking {
                                 getProductDao().emptyTable()
@@ -448,13 +433,13 @@ abstract class DatabaseX : RoomDatabase() {
                 else -> emptyList()
             }
             GlobalScope.launch(Dispatchers.IO) {
-                addRps.forEach {
-                    INSTANCE?.getRepositoryDao()?.put(it)
-                    if (from == 20) INSTANCE?.getDownloadedDao()?.emptyTable()
-                }
-                rmRps.forEach {
-                    enableRepo(it, false)
-                    INSTANCE?.getRepositoryDao()?.deleteByAddress(it.address)
+                get<DatabaseX>(DatabaseX::class.java).apply {
+                    getRepositoryDao().put(*addRps.toTypedArray())
+                    if (from == 20) getDownloadedDao().emptyTable()
+                    rmRps.forEach {
+                        enableRepo(it, false)
+                        getRepositoryDao().deleteByAddress(it.address)
+                    }
                 }
             }
         }
@@ -503,7 +488,16 @@ abstract class DatabaseX : RoomDatabase() {
 }
 
 val databaseModule = module {
-    single { DatabaseX.getInstance(androidContext()) }
+    single {
+        Room.databaseBuilder(
+            get(),
+            DatabaseX::class.java,
+            "main_database.db"
+        )
+            .addCallback(dbCreateCallback)
+            .fallbackToDestructiveMigration(true)
+            .build()
+    }
     single { get<DatabaseX>().getRepositoryDao() }
     single { get<DatabaseX>().getProductDao() }
     single { get<DatabaseX>().getReleaseDao() }
