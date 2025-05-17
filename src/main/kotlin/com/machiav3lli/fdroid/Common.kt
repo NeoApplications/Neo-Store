@@ -14,6 +14,8 @@ const val NOTIFICATION_ID_DOWNLOADING = 3000
 const val NOTIFICATION_ID_INSTALLER = 4000
 const val NOTIFICATION_ID_VULNS = 5000
 
+const val TABLE_ANTIFEATURE = "antifeature"
+const val TABLE_ANTIFEATURE_TEMP = "temporary_antifeature"
 const val TABLE_CATEGORY = "category_v2"
 const val TABLE_CATEGORY_TEMP = "temporary_category_v2"
 const val TABLE_DOWNLOADED = "downloaded"

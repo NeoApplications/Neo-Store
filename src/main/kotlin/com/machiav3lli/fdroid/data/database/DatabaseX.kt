@@ -15,6 +15,8 @@ import com.machiav3lli.fdroid.TABLE_EXODUS_INFO
 import com.machiav3lli.fdroid.TABLE_INSTALL_TASK
 import com.machiav3lli.fdroid.TABLE_REPOSITORY
 import com.machiav3lli.fdroid.TABLE_TRACKER
+import com.machiav3lli.fdroid.data.database.dao.AntiFeatureDao
+import com.machiav3lli.fdroid.data.database.dao.AntiFeatureTempDao
 import com.machiav3lli.fdroid.data.database.dao.CategoryDao
 import com.machiav3lli.fdroid.data.database.dao.CategoryTempDao
 import com.machiav3lli.fdroid.data.database.dao.DownloadedDao
@@ -30,6 +32,8 @@ import com.machiav3lli.fdroid.data.database.dao.RepoCategoryDao
 import com.machiav3lli.fdroid.data.database.dao.RepoCategoryTempDao
 import com.machiav3lli.fdroid.data.database.dao.RepositoryDao
 import com.machiav3lli.fdroid.data.database.dao.TrackerDao
+import com.machiav3lli.fdroid.data.database.entity.AntiFeature
+import com.machiav3lli.fdroid.data.database.entity.AntiFeatureTemp
 import com.machiav3lli.fdroid.data.database.entity.Category
 import com.machiav3lli.fdroid.data.database.entity.CategoryTemp
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
@@ -90,6 +94,8 @@ import org.koin.dsl.module
         Tracker::class,
         Downloaded::class,
         InstallTask::class,
+        AntiFeature::class,
+        AntiFeatureTemp::class
     ],
     version = 1024,
     exportSchema = true,
@@ -219,6 +225,7 @@ abstract class DatabaseX : RoomDatabase() {
     abstract fun getReleaseDao(): ReleaseDao
     abstract fun getCategoryDao(): CategoryDao
     abstract fun getRepoCategoryDao(): RepoCategoryDao
+    abstract fun getAntiFeatureDao(): AntiFeatureDao
     abstract fun getInstalledDao(): InstalledDao
     abstract fun getExtrasDao(): ExtrasDao
     abstract fun getExodusInfoDao(): ExodusInfoDao
@@ -230,6 +237,7 @@ abstract class DatabaseX : RoomDatabase() {
     abstract fun getProductTempDao(): ProductTempDao
     abstract fun getCategoryTempDao(): CategoryTempDao
     abstract fun getRepoCategoryTempDao(): RepoCategoryTempDao
+    abstract fun getAntiFeatureTempDao(): AntiFeatureTempDao
     abstract fun getInstallTaskDao(): InstallTaskDao
 
     companion object {
@@ -502,6 +510,8 @@ val databaseModule = module {
     single { get<DatabaseX>().getCategoryTempDao() }
     single { get<DatabaseX>().getRepoCategoryDao() }
     single { get<DatabaseX>().getRepoCategoryTempDao() }
+    single { get<DatabaseX>().getAntiFeatureDao() }
+    single { get<DatabaseX>().getAntiFeatureTempDao() }
     single { get<DatabaseX>().getInstalledDao() }
     single { get<DatabaseX>().getExtrasDao() }
     single { get<DatabaseX>().getExodusInfoDao() }
