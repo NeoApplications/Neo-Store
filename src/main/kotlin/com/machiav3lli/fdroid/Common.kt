@@ -134,6 +134,7 @@ const val PREFS_LANGUAGE = "languages"
 const val PREFS_LANGUAGE_DEFAULT = "system"
 
 const val FILTER_CATEGORY_ALL = "All"
+const val FILTER_CATEGORY_FAV = "FAV"
 
 const val EXTRA_REPOSITORY_ID = "repositoryId"
 const val EXTRA_REPOSITORY_EDIT = "editMode"

@@ -37,6 +37,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
+import com.machiav3lli.fdroid.FILTER_CATEGORY_FAV
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
@@ -187,22 +188,26 @@ fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
                 }
             }
             Column {
-                val favString = stringResource(id = R.string.favorite_applications)
                 CategoriesList(
                     items = listOf(
-                        Pair(favString, Phosphor.HeartStraight),
-                    ) + (categories.sorted().map { Pair(it, it.appCategoryIcon) }),
+                        Triple(
+                            FILTER_CATEGORY_FAV,
+                            stringResource(id = R.string.favorite_applications),
+                            Phosphor.HeartStraight
+                        ),
+                    ) + (categories.sortedBy { it.label }
+                        .map { Triple(it.name, it.label, it.name.appCategoryIcon) }),
                     selectedKey = selectedCategory,
                 ) {
                     when (it) {
-                        favString -> {
+                        FILTER_CATEGORY_FAV -> {
                             Preferences[Preferences.Key.CategoriesFilterExplore] =
                                 FILTER_CATEGORY_ALL
-                            selectedCategory.value = favString
+                            selectedCategory.value = FILTER_CATEGORY_FAV
                             viewModel.setExploreSource(Source.FAVORITES)
                         }
 
-                        else      -> {
+                        else                -> {
                             Preferences[Preferences.Key.CategoriesFilterExplore] = it
                             selectedCategory.value = it
                             viewModel.setExploreSource(Source.AVAILABLE)

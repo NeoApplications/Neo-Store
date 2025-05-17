@@ -62,7 +62,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun CategoriesList(
     modifier: Modifier = Modifier,
-    items: List<Pair<String, ImageVector>>,
+    items: List<Triple<String, String, ImageVector>>,
     selectedKey: MutableState<String>,
     onClick: (String) -> Unit,
 ) {
@@ -74,8 +74,8 @@ fun CategoriesList(
         { sts, avs ->
             itemsIndexed(items, key = { i, item -> item.first }) { index, item ->
                 CategoryItem(
-                    icon = item.second,
-                    label = item.first,
+                    icon = item.third,
+                    label = item.second,
                     isExpanded = expanded,
                     isSelected = item.first == selectedKey.value,
                     avs = avs,

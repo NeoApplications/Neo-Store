@@ -2,6 +2,8 @@ package com.machiav3lli.fdroid.data.repository
 
 import com.machiav3lli.fdroid.data.database.dao.CategoryDao
 import com.machiav3lli.fdroid.data.database.dao.ProductDao
+import com.machiav3lli.fdroid.data.database.dao.RepoCategoryDao
+import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
 import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.IconDetails
 import com.machiav3lli.fdroid.data.database.entity.Licenses
@@ -20,6 +22,7 @@ import kotlinx.coroutines.withContext
 class ProductsRepository(
     private val productsDao: ProductDao,
     private val categoryDao: CategoryDao,
+    private val repoCategoryDao: RepoCategoryDao,
 ) {
     private val cc = Dispatchers.IO
     private val jcc = Dispatchers.IO + SupervisorJob()
@@ -48,6 +51,10 @@ class ProductsRepository(
 
     fun getAllCategories(): Flow<List<String>> = categoryDao.getAllNamesFlow()
         .flowOn(cc)
+
+    fun getAllCategoryDetails(): Flow<List<CategoryDetails>> =
+        repoCategoryDao.getAllCategoryDetailsFlow()
+            .flowOn(cc)
 
     fun getIconDetails(): Flow<List<IconDetails>> = productsDao.getIconDetailsFlow()
         .flowOn(cc)

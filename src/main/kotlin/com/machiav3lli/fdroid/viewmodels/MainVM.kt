@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.database.DatabaseX
+import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
 import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.IconDetails
@@ -89,7 +90,16 @@ open class MainVM(
 
     val repositories = reposRepo.getAll().distinctUntilChanged()
 
-    val categories = productsRepo.getAllCategories().distinctUntilChanged()
+    val categories = combine(
+        productsRepo.getAllCategories(),
+        productsRepo.getAllCategoryDetails(),
+    ) { cats, catDetails ->
+        cats.map { cat ->
+            catDetails.find { it.name == cat }
+                ?: CategoryDetails(cat, cat)
+        }
+    }
+        .distinctUntilChanged()
 
     val successfulSyncs = reposRepo.getLatestUpdates()
 
