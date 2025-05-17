@@ -1,7 +1,9 @@
 package com.machiav3lli.fdroid.data.repository
 
+import com.machiav3lli.fdroid.data.database.dao.AntiFeatureDao
 import com.machiav3lli.fdroid.data.database.dao.ProductDao
 import com.machiav3lli.fdroid.data.database.dao.RepositoryDao
+import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.LatestSyncs
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import kotlinx.coroutines.Dispatchers
@@ -13,6 +15,7 @@ import kotlinx.coroutines.withContext
 class RepositoriesRepository(
     private val productsDao: ProductDao,
     private val reposDao: RepositoryDao,
+    private val antiFeatureDao: AntiFeatureDao,
 ) {
     private val cc = Dispatchers.IO
     private val jcc = Dispatchers.IO + SupervisorJob()
@@ -27,6 +30,9 @@ class RepositoriesRepository(
         .flowOn(cc)
 
     fun productsCount(repoId: Long): Flow<Long> = productsDao.countForRepositoryFlow(repoId)
+        .flowOn(cc)
+
+    fun getRepoAntiFeatures(): Flow<List<AntiFeatureDetails>> = antiFeatureDao.getAllAntiFeatureDetailsFlow()
         .flowOn(cc)
 
     suspend fun load(repoId: Long): Repository? = withContext(jcc) {

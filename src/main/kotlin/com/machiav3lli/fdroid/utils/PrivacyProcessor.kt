@@ -6,6 +6,7 @@ import com.machiav3lli.fdroid.LOW_RISK_PERMISSIONS
 import com.machiav3lli.fdroid.MEDIUM_RISK_PERMISSIONS
 import com.machiav3lli.fdroid.NON_FREE_COUNTRIES_TRACKERS
 import com.machiav3lli.fdroid.WIDESPREAD_TRACKERS
+import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.entity.PermissionGroup
@@ -17,13 +18,15 @@ fun PrivacyData.toPrivacyNote(): PrivacyNote {
     val permissionsNote = 100 - permissions.privacyPoints.coerceAtMost(100)
     val trackersNote = 100 - trackers.privacyPoints.coerceAtMost(100)
     val sourceType = SourceType(
-        open = AntiFeature.NO_SOURCE_SINCE !in antiFeatures,
+        open = !antiFeatures.map(AntiFeatureDetails::name)
+            .contains(AntiFeature.NO_SOURCE_SINCE.key),
         free = !antiFeatures.any {
-            it == AntiFeature.NON_FREE_NET ||
-                    it == AntiFeature.NON_FREE_UPSTREAM
+            it.name == AntiFeature.NON_FREE_NET.key ||
+                    it.name == AntiFeature.NON_FREE_UPSTREAM.key
         },
         independent = !antiFeatures.any {
-            it == AntiFeature.NON_FREE_DEP || it == AntiFeature.NON_FREE_ASSETS
+            it.name == AntiFeature.NON_FREE_DEP.key ||
+                    it.name == AntiFeature.NON_FREE_ASSETS.key
         }
     )
     return PrivacyNote(

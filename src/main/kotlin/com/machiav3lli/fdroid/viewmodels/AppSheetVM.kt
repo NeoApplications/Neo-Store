@@ -8,12 +8,12 @@ import com.machiav3lli.fdroid.RELEASE_STATE_NONE
 import com.machiav3lli.fdroid.RELEASE_STATE_SUGGESTED
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.DatabaseX
+import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.Extras
 import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.PrivacyData
-import com.machiav3lli.fdroid.data.entity.toAntiFeature
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
@@ -153,14 +153,32 @@ class AppSheetVM(
             emptyList(),
         )
 
-    val privacyData = combine(installedItem, trackers, productRepos) { ins, trs, prs ->
+    private val antifeatureDetails = combine(
+        suggestedProductRepo,
+        reposRepo.getRepoAntiFeatures(),
+    ) { prod, afs ->
+        val catsMap = afs.associateBy(AntiFeatureDetails::name)
+        prod?.let {
+            it.first.product.antiFeatures.map { catsMap[it] ?: AntiFeatureDetails(it, "") }
+        } ?: emptyList()
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        emptyList(),
+    )
+
+    val privacyData = combine(
+        installedItem,
+        trackers,
+        productRepos,
+        antifeatureDetails,
+    ) { ins, trs, prs, afs ->
         val suggestedProduct = findSuggestedProduct(prs, ins) { it.first }
         PrivacyData(
             permissions = suggestedProduct?.first?.displayRelease
                 ?.generatePermissionGroups(NeoApp.context) ?: emptyMap(),
             trackers = trs,
-            antiFeatures = suggestedProduct?.first?.product?.antiFeatures?.mapNotNull { it.toAntiFeature() }
-                ?: emptyList()
+            antiFeatures = afs,
         )
     }.stateIn(
         viewModelScope,
@@ -193,7 +211,6 @@ class AppSheetVM(
             SharingStarted.Lazily,
             null
         )
-
 
     val extras = packageName
         .flatMapLatest { pn ->

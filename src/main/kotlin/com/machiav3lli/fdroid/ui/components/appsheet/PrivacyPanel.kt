@@ -37,12 +37,14 @@ import com.machiav3lli.fdroid.data.entity.PermissionGroup
 import com.machiav3lli.fdroid.data.entity.PrivacyNote
 import com.machiav3lli.fdroid.data.entity.SourceInfo
 import com.machiav3lli.fdroid.data.entity.TrackersGroup.Companion.getTrackersGroup
+import com.machiav3lli.fdroid.data.entity.toAntiFeature
 import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
 import com.machiav3lli.fdroid.ui.components.privacy.PrivacyCard
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.utils.extension.grantedPermissions
+import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.getLabelsAndDescriptions
 import com.machiav3lli.fdroid.utils.openPermissionPage
 import com.machiav3lli.fdroid.utils.privacyPoints
@@ -366,17 +368,21 @@ fun PrivacyPanel(
                         icon = si.icon,
                     ) {
                         Row(modifier = Modifier.padding(horizontal = 8.dp)) {
-                            val dependencyItems =
-                                privacyData.antiFeatures.intersect(
-                                    listOf(
-                                        AntiFeature.NON_FREE_NET,
-                                        AntiFeature.NON_FREE_UPSTREAM
-                                    )
-                                )
+                            val dependencyItems = privacyData.antiFeatures
+                                .filter {
+                                    it.name == AntiFeature.NON_FREE_UPSTREAM.key ||
+                                            it.name == AntiFeature.NON_FREE_NET.key
+                                }
+
                             Text(
                                 text = "${stringResource(si.descriptionId)}${
                                     dependencyItems
-                                        .map { stringResource(it.titleResId) }
+                                        .map {
+                                            it.label.nullIfEmpty()
+                                                ?: it.name.toAntiFeature()
+                                                    ?.let { stringResource(id = it.titleResId) }
+                                                ?: it.name
+                                        }
                                         .joinToString { "\n\u2023 $it" }
                                 }"
                             )
@@ -389,17 +395,21 @@ fun PrivacyPanel(
                         icon = si.icon,
                     ) {
                         Row(modifier = Modifier.padding(horizontal = 8.dp)) {
-                            val dependencyItems =
-                                privacyData.antiFeatures.intersect(
-                                    listOf(
-                                        AntiFeature.NON_FREE_DEP,
-                                        AntiFeature.NON_FREE_ASSETS
-                                    )
-                                )
+                            val dependencyItems = privacyData.antiFeatures
+                                .filter {
+                                    it.name == AntiFeature.NON_FREE_ASSETS.key ||
+                                            it.name == AntiFeature.NON_FREE_DEP.key
+                                }
+
                             Text(
                                 text = "${stringResource(si.descriptionId)}${
                                     dependencyItems
-                                        .map { stringResource(it.titleResId) }
+                                        .map {
+                                            it.label.nullIfEmpty()
+                                                ?: it.name.toAntiFeature()
+                                                    ?.let { stringResource(id = it.titleResId) }
+                                                ?: it.name
+                                        }
                                         .joinToString { "\n\u2023 $it" }
                                 }"
                             )
@@ -408,7 +418,7 @@ fun PrivacyPanel(
                 }
             }
         }
-        if (privacyData.antiFeatures.isNotEmpty()) { // TODO allow custom AFs after indexV2
+        if (privacyData.antiFeatures.isNotEmpty()) {
             item {
                 PrivacyCard(
                     heading = stringResource(id = R.string.anti_features),
@@ -421,11 +431,16 @@ fun PrivacyPanel(
                                     .fillMaxWidth()
                                     .clickable {
                                         onUriClick(
-                                            Uri.parse("$ANTIFEATURES_WEBSITE${it.key}"),
+                                            Uri.parse("$ANTIFEATURES_WEBSITE${it.name}"),
                                             true
                                         )
                                     },
-                                text = "\u2023 ${stringResource(id = it.titleResId)}"
+                                text = "\u2023 ${
+                                    it.label.nullIfEmpty()
+                                        ?: it.name.toAntiFeature()
+                                            ?.let { stringResource(id = it.titleResId) }
+                                        ?: it.name
+                                }"
                             )
                         }
                     }

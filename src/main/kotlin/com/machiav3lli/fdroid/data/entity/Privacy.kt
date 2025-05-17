@@ -8,6 +8,7 @@ import com.machiav3lli.fdroid.IDENTIFICATION_DATA_PERMISSIONS
 import com.machiav3lli.fdroid.PERMISSION_GROUP_INTERNET
 import com.machiav3lli.fdroid.PHYSICAL_DATA_PERMISSIONS
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.ui.compose.icons.Icon
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -35,7 +36,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserFocus
 class PrivacyData(
     val permissions: Map<PermissionGroup, List<PermissionInfo>>,
     val trackers: List<Tracker>,
-    val antiFeatures: List<AntiFeature>,
+    val antiFeatures: List<AntiFeatureDetails>,
 ) {
     val physicalDataPermissions: Map<PermissionGroup, List<PermissionInfo>>
         get() = permissions.filter { it.key in PHYSICAL_DATA_PERMISSIONS }
