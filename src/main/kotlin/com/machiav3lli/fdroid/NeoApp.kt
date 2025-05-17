@@ -14,7 +14,6 @@ import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.crossfade
-import com.anggrayudi.storage.extension.postToUi
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import com.machiav3lli.fdroid.data.content.Cache
@@ -195,7 +194,9 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
                     }
 
                     Preferences.Key.Theme          -> {
-                        postToUi { mActivity.recreate() }
+                        launch(Dispatchers.Main) {
+                            mActivity.recreate()
+                        }
                     }
 
                     Preferences.Key.Language       -> {
