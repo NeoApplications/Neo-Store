@@ -7,6 +7,7 @@ import androidx.core.net.toUri
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.DatabaseX
+import com.machiav3lli.fdroid.data.database.entity.AntiFeatureTemp
 import com.machiav3lli.fdroid.data.database.entity.CategoryTemp
 import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
@@ -535,6 +536,7 @@ object RepositoryUpdater : KoinComponent {
     ): Pair<Repository?, String?> {
         var changedRepository: Repository? = null
         val repoCategories: MutableSet<RepoCategoryTemp> = mutableSetOf()
+        val repoAntifeatures: MutableSet<AntiFeatureTemp> = mutableSetOf()
         val features = context.packageManager.systemAvailableFeatures
             .asSequence().map { it.name }.toSet() + setOf("android.hardware.touchscreen")
 
@@ -563,13 +565,21 @@ object RepositoryUpdater : KoinComponent {
                                 categories: IdMap<IndexV2.Category>,
                                 antiFeatures: IdMap<IndexV2.AntiFeature>,
                             ) {
-                                // TODO add antiFeatures
                                 repoCategories.addAll(categories.map {
                                     RepoCategoryTemp(
                                         repository.id,
                                         it.key,
                                         it.value.name.findLocalized(""),
-                                        it.value.icon.findLocalized(IndexV2.File("")).name
+                                        it.value.icon.findLocalized(IndexV2.File("")).name,
+                                    )
+                                })
+                                repoAntifeatures.addAll(antiFeatures.map {
+                                    AntiFeatureTemp(
+                                        repository.id,
+                                        it.key,
+                                        it.value.name.findLocalized(""),
+                                        it.value.description.findLocalized(""),
+                                        it.value.icon.findLocalized(IndexV2.File("")).name,
                                     )
                                 })
                                 changedRepository = repository.update(
@@ -653,6 +663,7 @@ object RepositoryUpdater : KoinComponent {
                     }
                     runBlocking {
                         db.getRepoCategoryTempDao().insert(*repoCategories.toTypedArray())
+                        db.getAntiFeatureTempDao().insert(*repoAntifeatures.toTypedArray())
                     }
                 }
             }
