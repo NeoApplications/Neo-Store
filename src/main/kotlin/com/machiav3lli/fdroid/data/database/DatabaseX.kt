@@ -473,14 +473,17 @@ abstract class DatabaseX : RoomDatabase() {
                 if (success) {
                     getProductDao().deleteById(repository.id)
                     getCategoryDao().deleteById(repository.id)
+                    getRepoCategoryDao().deleteByRepoId(repository.id)
                     getReleaseDao().deleteById(repository.id)
                     getProductDao().insert(*(getProductTempDao().getAll()))
                     getCategoryDao().insert(*(getCategoryTempDao().getAll()))
+                    getRepoCategoryDao().insert(*(getRepoCategoryTempDao().getAll()))
                     getReleaseDao().insert(*(getReleaseTempDao().getAll()))
                     getRepositoryDao().put(repository)
                 }
                 getProductTempDao().emptyTable()
                 getCategoryTempDao().emptyTable()
+                getRepoCategoryTempDao().emptyTable()
                 getReleaseTempDao().emptyTable()
                 // performClear(false, "product_temp", "category_temp", "release_temp")
             }

@@ -10,13 +10,17 @@ import com.machiav3lli.fdroid.data.database.DatabaseX
 import com.machiav3lli.fdroid.data.database.entity.CategoryTemp
 import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
+import com.machiav3lli.fdroid.data.database.entity.RepoCategoryTemp
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.database.entity.asProductTemp
 import com.machiav3lli.fdroid.data.database.entity.asReleaseTemp
 import com.machiav3lli.fdroid.data.index.v0.IndexV0Parser
 import com.machiav3lli.fdroid.data.index.v1.IndexV1Merger
 import com.machiav3lli.fdroid.data.index.v1.IndexV1Parser
+import com.machiav3lli.fdroid.data.index.v2.IdMap
+import com.machiav3lli.fdroid.data.index.v2.IndexV2
 import com.machiav3lli.fdroid.data.index.v2.IndexV2Parser
+import com.machiav3lli.fdroid.data.index.v2.findLocalized
 import com.machiav3lli.fdroid.manager.network.Downloader
 import com.machiav3lli.fdroid.utils.CoroutineUtils
 import com.machiav3lli.fdroid.utils.ProgressInputStream
@@ -532,6 +536,7 @@ object RepositoryUpdater : KoinComponent {
         callback: (Stage, Long, Long?) -> Unit
     ): Pair<Repository?, String?> {
         var changedRepository: Repository? = null
+        val repoCategories: MutableSet<RepoCategoryTemp> = mutableSetOf()
         val features = context.packageManager.systemAvailableFeatures
             .asSequence().map { it.name }.toSet() + setOf("android.hardware.touchscreen")
 
@@ -557,7 +562,18 @@ object RepositoryUpdater : KoinComponent {
                                 version: Int,
                                 timestamp: Long,
                                 webBaseUrl: String?,
+                                categories: IdMap<IndexV2.Category>,
+                                antiFeatures: IdMap<IndexV2.AntiFeature>,
                             ) {
+                                // TODO add antiFeatures
+                                repoCategories.addAll(categories.map {
+                                    RepoCategoryTemp(
+                                        repository.id,
+                                        it.key,
+                                        it.value.name.findLocalized(""),
+                                        it.value.icon.findLocalized(IndexV2.File("")).name
+                                    )
+                                })
                                 changedRepository = repository.update(
                                     mirrors, name, description, version,
                                     lastModified, entityTag, timestamp, webBaseUrl,
@@ -637,6 +653,9 @@ object RepositoryUpdater : KoinComponent {
                                 )
                             }
                         }
+                    }
+                    runBlocking {
+                        db.getRepoCategoryTempDao().insert(*repoCategories.toTypedArray())
                     }
                 }
             }

@@ -20,12 +20,14 @@ class IndexV2Parser(private val repositoryId: Long, private val callback: Callba
 
             with(indexV2.repo) {
                 callback.onRepository(
-                    listOf(address).plus(mirrors.map { it.url }).distinct(),
-                    name.findLocalized(""),
-                    description.findLocalized(""),
-                    version,
-                    timestamp,
-                    webBaseUrl
+                    mirrors = listOf(address).plus(mirrors.map { it.url }).distinct(),
+                    name = name.findLocalized(""),
+                    description = description.findLocalized(""),
+                    version = version,
+                    timestamp = timestamp,
+                    categories = categories,
+                    antiFeatures = antiFeatures,
+                    webBaseUrl = webBaseUrl,
                 )
             }
 
@@ -49,6 +51,8 @@ class IndexV2Parser(private val repositoryId: Long, private val callback: Callba
             version: Int,
             timestamp: Long,
             webBaseUrl: String?,
+            categories: IdMap<IndexV2.Category>,
+            antiFeatures: IdMap<IndexV2.AntiFeature>,
         )
 
         fun onProduct(product: IndexProduct)
