@@ -41,15 +41,18 @@ fun AppInfoChips(
 }
 
 @Composable
-fun EmbeddedProduct.appInfoChips(installed: Installed?, latestRelease: Release?) = listOfNotNull(
-    // TODO remove v when already there
+fun EmbeddedProduct.appInfoChips(
+    installed: Installed?,
+    latestRelease: Release?,
+    categories: List<String>,
+) = listOfNotNull(
     if (this.canUpdate(installed) && installed != null)
         "v${installed.version.trimStart('v')} → v${version.trimStart('v')}"
     else if (installed != null) "v${installed.version.trimStart('v')}"
     else "v${version.trimStart('v')}",
     displayRelease?.size?.formatSize().orEmpty(),
     DateFormat.getDateInstance().format(Date(product.updated)),
-    *product.categories.toTypedArray(),
+    *categories.toTypedArray(),
     when {
         Preferences[Preferences.Key.AndroidInsteadOfSDK] && latestRelease != null && latestRelease.minSdkVersion != 0 ->
             "${stringResource(id = R.string.min_android)} ${getAndroidVersionName(latestRelease.minSdkVersion)}"

@@ -143,6 +143,7 @@ fun AppPage(
     val productRepos by viewModel.productRepos.collectAsState(emptyList())
     val releaseItems by viewModel.releaseItems.collectAsState(emptyList())
     val suggestedProductRepo by viewModel.suggestedProductRepo.collectAsState()
+    val categoryDetails by viewModel.categoryDetails.collectAsState()
     val downloadState by viewModel.downloadingState.collectAsState()
     val mainAction by viewModel.mainAction.collectAsState()
     val actions by viewModel.subActions.collectAsState()
@@ -421,7 +422,7 @@ fun AppPage(
                             )
                         },
                     )
-                    AppInfoChips(eProduct.appInfoChips(installed, displayRelease))
+                    AppInfoChips(eProduct.appInfoChips(installed, displayRelease, categoryDetails))
                     MeterIconsBar(
                         modifier = Modifier.fillMaxWidth(),
                         selectedTrackers = trackersRank,

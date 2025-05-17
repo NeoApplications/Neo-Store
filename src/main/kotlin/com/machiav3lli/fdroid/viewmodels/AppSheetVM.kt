@@ -8,6 +8,7 @@ import com.machiav3lli.fdroid.RELEASE_STATE_NONE
 import com.machiav3lli.fdroid.RELEASE_STATE_SUGGESTED
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.DatabaseX
+import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.Extras
 import com.machiav3lli.fdroid.data.entity.ActionState
@@ -170,6 +171,20 @@ class AppSheetVM(
     val privacyNote = privacyData.mapLatest {
         it.toPrivacyNote()
     }
+
+    val categoryDetails = combine(
+        suggestedProductRepo,
+        productsRepo.getAllCategoryDetails(),
+    ) { prod, cats ->
+        val catsMap = cats.associateBy(CategoryDetails::name)
+        prod?.let {
+            it.first.product.categories.map { catsMap[it]?.label ?: it }
+        } ?: emptyList()
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        emptyList(),
+    )
 
     val downloadingState = downloadedRepo.getLatestFlow(packageName)
         .mapLatest { it?.state }
