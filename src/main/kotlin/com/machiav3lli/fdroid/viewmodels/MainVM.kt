@@ -7,12 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.database.DatabaseX
+import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
 import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.IconDetails
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.Licenses
+import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.entity.Page
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.Request
@@ -100,6 +102,18 @@ open class MainVM(
         }
     }
         .distinctUntilChanged()
+
+    val antifeaturePairs = reposRepo.getRepoAntiFeatures().map { afs ->
+        val catsMap = afs.associateBy(AntiFeatureDetails::name)
+        val enumMap = AntiFeature.entries.associateBy { it.key }
+        (catsMap.keys + enumMap.keys).map { name ->
+            catsMap[name]?.let { Pair(it.name, it.label) } ?: Pair(name, "")
+        }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        emptyList(),
+    )
 
     val successfulSyncs = reposRepo.getLatestUpdates()
 
