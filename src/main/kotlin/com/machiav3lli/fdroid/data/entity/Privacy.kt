@@ -139,17 +139,17 @@ open class PermissionGroup(
 
     companion object {
         fun String.getPermissionGroup() = when (this) {
-            android.Manifest.permission_group.CONTACTS -> Contacts
-            android.Manifest.permission_group.CALENDAR -> Calendar
-            android.Manifest.permission_group.SMS -> SMS
-            android.Manifest.permission_group.STORAGE -> Storage
-            android.Manifest.permission_group.PHONE -> Phone
-            android.Manifest.permission_group.MICROPHONE -> Microphone
-            android.Manifest.permission_group.LOCATION -> Location
-            android.Manifest.permission_group.CAMERA -> Camera
+            android.Manifest.permission_group.CONTACTS       -> Contacts
+            android.Manifest.permission_group.CALENDAR       -> Calendar
+            android.Manifest.permission_group.SMS            -> SMS
+            android.Manifest.permission_group.STORAGE        -> Storage
+            android.Manifest.permission_group.PHONE          -> Phone
+            android.Manifest.permission_group.MICROPHONE     -> Microphone
+            android.Manifest.permission_group.LOCATION       -> Location
+            android.Manifest.permission_group.CAMERA         -> Camera
             android.Manifest.permission_group.NEARBY_DEVICES -> NearbyDevices
-            PERMISSION_GROUP_INTERNET -> Internet
-            else -> Other
+            PERMISSION_GROUP_INTERNET                        -> Internet
+            else                                             -> Other
         }
     }
 }
@@ -197,12 +197,12 @@ open class TrackersGroup(
 
     companion object {
         fun String.getTrackersGroup() = when (this) {
-            "Analytics" -> Analytics
-            "Profiling" -> Profiling
+            "Analytics"      -> Analytics
+            "Profiling"      -> Profiling
             "Identification" -> Identification
-            "Advertisement" -> Advertisement
-            "Location" -> Location
-            else -> CrashReporting // "Crash reporting"
+            "Advertisement"  -> Advertisement
+            "Location"       -> Location
+            else             -> CrashReporting // "Crash reporting"
         }
     }
 }

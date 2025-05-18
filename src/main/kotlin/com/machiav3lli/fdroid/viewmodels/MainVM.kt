@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.content.Cache
-import com.machiav3lli.fdroid.data.database.DatabaseX
 import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
@@ -48,7 +47,6 @@ import kotlinx.coroutines.plus
     FlowPreview::class,
 )
 open class MainVM(
-    private val db: DatabaseX,
     private val downloadedRepo: DownloadedRepository,
     private val productsRepo: ProductsRepository,
     private val extrasRepo: ExtrasRepository,
