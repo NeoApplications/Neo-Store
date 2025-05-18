@@ -426,4 +426,7 @@
     <string name="prefs_connection">Połączenie internetowe</string>
     <string name="syncing_batch_FORMAT">Synchronizowanie repozytoriów(%d/%d)</string>
     <string name="initial_sync_repositories">Czy chcesz zsynchronizować wstępnie ustawione repozytoria (oficjalny F-Droid, IzzyOnDroid i Guardian Project)?</string>
+    <string name="index_v2">Włącz indeks-v2</string>
+    <string name="index_v2_summary">Umożliwia żądanie indeks-v2 jako indeksu głównego. Wciąż eksperymentalna funkcja, mająca zalety i wady.</string>
+    <string name="action_start">Zaczynamy!</string>
 </resources>

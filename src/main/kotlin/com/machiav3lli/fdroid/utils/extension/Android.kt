@@ -6,11 +6,11 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
-import android.content.pm.Signature
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Build
 import androidx.core.net.toUri
+import com.machiav3lli.fdroid.utils.Utils
 
 fun Cursor.asSequence(): Sequence<Cursor> {
     return generateSequence { if (moveToNext()) this else null }
@@ -35,16 +35,15 @@ fun Context.launchView(url: String) {
     )
 }
 
-val PackageInfo.singleSignature: Signature?
+@Suppress("DEPRECATION")
+val PackageInfo.signerSHA256Signatures: List<String>
     get() {
-        return if (Android.sdk(Build.VERSION_CODES.P)) {
-            val signingInfo = signingInfo
-            if (signingInfo?.hasMultipleSigners() == false) signingInfo.apkContentsSigners
-                ?.let { if (it.size == 1) it[0] else null } else null
-        } else {
-            @Suppress("DEPRECATION")
-            signatures?.let { if (it.size == 1) it[0] else null }
-        }
+        return when {
+            Android.sdk(Build.VERSION_CODES.P) -> this.signingInfo?.signingCertificateHistory
+            else                               -> this.signatures
+        }?.mapNotNull {
+            it?.let(Utils::calculateSHA256).orEmpty()
+        } ?: emptyList()
     }
 
 object Android {

@@ -59,9 +59,6 @@ import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.RELEASE_STATE_INSTALLED
-import com.machiav3lli.fdroid.RELEASE_STATE_NONE
-import com.machiav3lli.fdroid.RELEASE_STATE_SUGGESTED
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.entity.ActionState
@@ -75,6 +72,7 @@ import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.manager.work.DownloadWorker
 import com.machiav3lli.fdroid.manager.work.ExodusWorker
 import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
+import com.machiav3lli.fdroid.ui.components.ScreenshotItem
 import com.machiav3lli.fdroid.ui.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.components.SwitchPreference
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoChips
@@ -89,7 +87,6 @@ import com.machiav3lli.fdroid.ui.components.appsheet.WarningCard
 import com.machiav3lli.fdroid.ui.components.appsheet.appInfoChips
 import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.components.privacy.MeterIconsBar
-import com.machiav3lli.fdroid.ui.components.toScreenshotItem
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderTop
@@ -125,7 +122,6 @@ fun AppPage(
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
-    val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
     val showScreenshots = rememberSaveable { mutableStateOf(false) }
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
@@ -137,14 +133,17 @@ fun AppPage(
     val isInstalled by remember(installed) {
         mutableStateOf(installed != null)
     }
-    val products = viewModel.products.collectAsState(null)
     val exodusInfo by viewModel.exodusInfo.collectAsState(null)
     val privacyNote = viewModel.privacyNote.collectAsState(PrivacyNote())
     val sourceType by remember { derivedStateOf { privacyNote.value.sourceType } }
     val authorProducts by viewModel.authorProducts
         .mapLatest { list -> list.map { it.toItem() } }
         .collectAsState(emptyList())
-    val repos by viewModel.repositories.collectAsState(null)
+    val repos by viewModel.repositories.collectAsState(emptyList())
+    val productRepos by viewModel.productRepos.collectAsState(emptyList())
+    val releaseItems by viewModel.releaseItems.collectAsState(emptyList())
+    val suggestedProductRepo by viewModel.suggestedProductRepo.collectAsState()
+    val categoryDetails by viewModel.categoryDetails.collectAsState()
     val downloadState by viewModel.downloadingState.collectAsState()
     val mainAction by viewModel.mainAction.collectAsState()
     val actions by viewModel.subActions.collectAsState()
@@ -156,55 +155,6 @@ fun AppPage(
 
     BackHandler {
         onDismiss()
-    }
-
-    val productRepos = remember {
-        derivedStateOf {
-            products.value?.mapNotNull { product ->
-                repos?.firstOrNull { it.id == product.repositoryId }
-                    ?.let { Pair(product, it) }
-            } ?: emptyList()
-        }
-    }
-
-    viewModel.updateProductRepos(productRepos.value)
-    val suggestedProductRepo by remember {
-        derivedStateOf {
-            findSuggestedProduct(productRepos.value, installed) { it.first }
-        }
-    }
-    val compatibleReleasePairs = remember {
-        derivedStateOf {
-            productRepos.value
-                .flatMap { (product, repository) ->
-                    product.releases.asSequence()
-                        .filter { includeIncompatible || it.incompatibilities.isEmpty() }
-                        .map { Pair(it, repository) }
-                }
-                .toList()
-        }
-    }
-    val releaseItems by remember {
-        derivedStateOf {
-            compatibleReleasePairs.value.asSequence()
-                .map { (release, repository) ->
-                    Triple(
-                        release,
-                        repository,
-                        when {
-                            installed?.versionCode == release.versionCode && installed?.signature == release.signature
-                                 -> RELEASE_STATE_INSTALLED
-
-                            release.incompatibilities.firstOrNull() == null && release.selected && repository.id == suggestedProductRepo?.second?.id
-                                 -> RELEASE_STATE_SUGGESTED
-
-                            else -> RELEASE_STATE_NONE
-                        }
-                    )
-                }
-                .sortedByDescending { it.first.versionCode }
-                .toList()
-        }
     }
 
     val enableScreenshots by remember(Preferences[Preferences.Key.ShowScreenshots]) {
@@ -268,28 +218,28 @@ fun AppPage(
             }
 
             installedItem != null
-                    && installedItem.signature != release.signature
+                    && release.signature !in installedItem.signatures
                     && !Preferences[Preferences.Key.DisableSignatureCheck]       -> {
                 dialogKey.value = DialogKey.ReleaseIssue(R.string.incompatible_signature_DESC)
                 openDialog.value = true
             }
 
             else                                                                 -> {
-                val productRepository =
-                    viewModel.productRepos.value.asSequence()
-                        .filter { it.first.releases.any { rel -> rel === release } }
-                        .firstOrNull()
+                val productRepository = productRepos.asSequence()
+                    .filter { it.second.id == release.repositoryId }
+                    .firstOrNull()
                 if (productRepository != null) {
                     val action = {
                         DownloadWorker.enqueue(
                             packageName,
-                            productRepository.first.label,
+                            productRepository.first.product.label,
                             productRepository.second,
                             release
                         )
                     }
                     if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                        dialogKey.value = DialogKey.Download(productRepository.first.label, action)
+                        dialogKey.value =
+                            DialogKey.Download(productRepository.first.product.label, action)
                         openDialog.value = true
                     } else action()
                 }
@@ -298,7 +248,6 @@ fun AppPage(
     }
 
     val onActionClick = { action: ActionState? ->
-        val productRepos = viewModel.productRepos.value
         when (action) {
             ActionState.Install,
             ActionState.Update,
@@ -318,7 +267,7 @@ fun AppPage(
                         findSuggestedProduct(productRepos, installed) { it.first }
                     dialogKey.value =
                         DialogKey.Download(
-                            productRepository?.first?.label ?: packageName,
+                            productRepository?.first?.product?.label ?: packageName,
                             actionJob
                         )
                     openDialog.value = true
@@ -360,7 +309,7 @@ fun AppPage(
                     val productRepository =
                         findSuggestedProduct(productRepos, installed) { it.first }
                     dialogKey.value = DialogKey.Uninstall(
-                        productRepository?.first?.label ?: packageName,
+                        productRepository?.first?.product?.label ?: packageName,
                         actionJob
                     )
                     openDialog.value = true
@@ -382,8 +331,8 @@ fun AppPage(
             ActionState.Share     -> {
                 context.shareIntent(
                     packageName,
-                    productRepos[0].first.label,
-                    productRepos[0].second.name
+                    productRepos[0].first.product.label,
+                    productRepos[0].second.webBaseUrl
                 )
             }
 
@@ -397,7 +346,8 @@ fun AppPage(
         }::class
     }
 
-    suggestedProductRepo?.let { (product, repo) ->
+    suggestedProductRepo?.let { (eProduct, repo) ->
+        val product by derivedStateOf { eProduct.product }
         val imageData by produceState<String?>(initialValue = null, product, repo) {
             launch(Dispatchers.IO) {
                 value = createIconUri(
@@ -411,16 +361,13 @@ fun AppPage(
         val screenshots by remember(product) {
             derivedStateOf {
                 product.screenshots.map {
-                    it.toScreenshotItem(
-                        repository = repo,
-                        packageName = product.packageName
-                    )
+                    ScreenshotItem(it, repo)
                 }
             }
         }
 
         val displayRelease by remember {
-            derivedStateOf { product.displayRelease }
+            derivedStateOf { eProduct.displayRelease }
         }
 
         val trackersRank by remember {
@@ -438,7 +385,7 @@ fun AppPage(
 
         LaunchedEffect(product) {
             withContext(Dispatchers.IO) {
-                ExodusWorker.fetchExodusInfo(product.packageName, product.versionCode)
+                ExodusWorker.fetchExodusInfo(product.packageName, eProduct.versionCode)
             }
         }
 
@@ -475,7 +422,7 @@ fun AppPage(
                             )
                         },
                     )
-                    AppInfoChips(product.appInfoChips(installed, displayRelease))
+                    AppInfoChips(eProduct.appInfoChips(installed, displayRelease, categoryDetails))
                     MeterIconsBar(
                         modifier = Modifier.fillMaxWidth(),
                         selectedTrackers = trackersRank,
@@ -522,14 +469,14 @@ fun AppPage(
                             )
                         }
                         item {
-                            AnimatedVisibility(visible = product.canUpdate(installed)) {
+                            AnimatedVisibility(visible = eProduct.canUpdate(installed)) {
                                 SwitchPreference(
                                     text = stringResource(id = R.string.ignore_this_update),
-                                    initSelected = { extras?.ignoredVersion == product.versionCode },
+                                    initSelected = { extras?.ignoredVersion == eProduct.versionCode },
                                     onCheckedChanged = {
                                         viewModel.setIgnoredVersion(
                                             product.packageName,
-                                            if (it) product.versionCode else 0
+                                            if (it) eProduct.versionCode else 0
                                         )
                                     }
                                 )
@@ -625,8 +572,7 @@ fun AppPage(
                                 ) {
                                     ProductsHorizontalRecycler(
                                         productsList = authorProducts,
-                                        repositories = repos?.associateBy { repo -> repo.id }
-                                            ?: emptyMap(),
+                                        repositories = repos.associateBy { repo -> repo.id },
                                         rowsNumber = 1,
                                     ) { item ->
                                         neoActivity.navigateProduct(item.packageName)
@@ -657,7 +603,7 @@ fun AppPage(
                         }
                         items(
                             items = releaseItems,
-                            key = { "${it.first.identifier}#${it.second.id}" },
+                            key = { it.first.identifier },
                         ) { item ->
                             ReleaseItem(
                                 release = item.first,
@@ -685,7 +631,6 @@ fun AppPage(
                             .fillMaxSize(),
                         packageName,
                         viewModel,
-                        product,
                         copyLinkToClipboard,
                         onUriClick,
                     )

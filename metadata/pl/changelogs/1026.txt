@@ -1,0 +1,6 @@
+Dodano: Obsługa otwierania strony aplikacji z informacji o aplikacji systemowej
+Poprawka: Powiadomienia zgodne z językiem systemu, a nie aplikacji
+Aktualizacja: Zmieniono logikę DownloadWorker, powiadomienia i obsługę
+Aktualizacja: Zmiana logiki, powiadomień i obsługi SyncWorker
+Aktualizacja: Używanie domyślnej ikony nawigacji lub rozmiaru tekstu
+Usunięto: Zduplikowane kanały powiadomień synchronizacji i wiele innych w ponad 20 zatwierdzeniach i 20 tłumaczeniach

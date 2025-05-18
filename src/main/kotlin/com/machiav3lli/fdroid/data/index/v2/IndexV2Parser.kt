@@ -1,7 +1,7 @@
 package com.machiav3lli.fdroid.data.index.v2
 
 import android.R.attr.version
-import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -20,11 +20,14 @@ class IndexV2Parser(private val repositoryId: Long, private val callback: Callba
 
             with(indexV2.repo) {
                 callback.onRepository(
-                    listOf(address).plus(mirrors.map { it.url }).distinct(),
-                    name.findLocalized(""),
-                    description.findLocalized(""),
-                    version,
-                    timestamp
+                    mirrors = listOf(address).plus(mirrors.map { it.url }).distinct(),
+                    name = name.findLocalized(""),
+                    description = description.findLocalized(""),
+                    version = version,
+                    timestamp = timestamp,
+                    categories = categories,
+                    antiFeatures = antiFeatures,
+                    webBaseUrl = webBaseUrl,
                 )
             }
 
@@ -47,9 +50,12 @@ class IndexV2Parser(private val repositoryId: Long, private val callback: Callba
             description: String,
             version: Int,
             timestamp: Long,
+            webBaseUrl: String?,
+            categories: IdMap<IndexV2.Category>,
+            antiFeatures: IdMap<IndexV2.AntiFeature>,
         )
 
-        fun onProduct(product: Product)
+        fun onProduct(product: IndexProduct)
         fun onReleases(packageName: String, releases: List<Release>)
     }
 

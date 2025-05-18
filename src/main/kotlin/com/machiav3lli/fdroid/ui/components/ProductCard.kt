@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.ui.components
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.size
@@ -14,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.data.database.entity.Repository
@@ -46,6 +48,7 @@ fun ProductCard(
     ListItem(
         modifier = Modifier
             .clip(MaterialTheme.shapes.large)
+            .border(2.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.large)
             .clickable { onUserClick(product) }
             .width(IntrinsicSize.Max)
             .widthIn(
@@ -53,7 +56,7 @@ fun ProductCard(
                 max = PRODUCT_CARD_WIDTH,
             ),
         colors = ListItemDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            containerColor = Color.Transparent,
         ),
         leadingContent = {
             NetworkImage(
@@ -64,7 +67,6 @@ fun ProductCard(
         headlineContent = {
             Text(
                 text = product.name,
-                style = MaterialTheme.typography.titleMedium,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
@@ -72,7 +74,6 @@ fun ProductCard(
         supportingContent = {
             Text(
                 text = product.version,
-                style = MaterialTheme.typography.bodyMedium,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )

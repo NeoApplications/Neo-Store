@@ -1,6 +1,6 @@
 package com.machiav3lli.fdroid.data.repository
 
-import com.machiav3lli.fdroid.data.database.DatabaseX
+import com.machiav3lli.fdroid.data.database.dao.DownloadedDao
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -12,27 +12,27 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DownloadedRepository(
-    private val db: DatabaseX
+    private val downloadedDao: DownloadedDao,
 ) {
     private val cc = Dispatchers.IO
     private val jcc = Dispatchers.IO + SupervisorJob()
 
-    fun getAllFlow() = db.getDownloadedDao().getAllFlow()
+    fun getAllFlow() = downloadedDao.getAllFlow()
         .flowOn(cc)
 
     fun getLatestFlow(packageName: Flow<String>) = packageName.flatMapLatest {
-        db.getDownloadedDao().getLatestFlow(it)
+        downloadedDao.getLatestFlow(it)
     }.flowOn(cc)
 
     suspend fun update(value: Downloaded) {
         withContext(jcc) {
-            db.getDownloadedDao().upsert(value)
+            downloadedDao.upsert(value)
         }
     }
 
     suspend fun delete(downloaded: Downloaded) {
         withContext(jcc) {
-            db.getDownloadedDao().delete(
+            downloadedDao.delete(
                 downloaded.packageName,
                 downloaded.version,
                 downloaded.repositoryId,

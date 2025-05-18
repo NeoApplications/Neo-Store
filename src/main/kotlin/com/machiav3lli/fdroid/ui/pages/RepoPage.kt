@@ -40,9 +40,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.manager.work.SyncWorker
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.BlockText
@@ -66,6 +66,7 @@ import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.extension.text.pathCropped
 import com.machiav3lli.fdroid.utils.getLocaleDateString
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 import java.net.URI
 import java.net.URL
 import java.util.Locale
@@ -81,19 +82,18 @@ fun RepoPage(
     repositoryId: Long,
     initEditMode: Boolean,
     onDismiss: () -> Unit,
+    reposRepo: RepositoriesRepository = koinInject(),
     updateRepo: (Repository?) -> Unit,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val repoState = NeoApp.db.getRepositoryDao().getFlow(repositoryId)
-        .collectAsState(initial = null)
+    val repoState = reposRepo.getById(repositoryId).collectAsState(initial = null)
     val repo by remember {
         derivedStateOf {
             repoState.value
         }
     }
-    val appsCount by NeoApp.db.getProductDao().countForRepositoryFlow(repositoryId)
-        .collectAsState(0)
+    val appsCount by reposRepo.productsCount(repositoryId).collectAsState(0)
     var editMode by remember { mutableStateOf(initEditMode) }
     val openDeleteDialog = remember { mutableStateOf(false) }
     val openDialog = remember { mutableStateOf(false) }
@@ -336,9 +336,10 @@ fun RepoPage(
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
-                                Text(text = fingerprintFieldValue
-                                    .windowed(2, 2, false)
-                                    .joinToString(separator = " ") { it.uppercase(Locale.US) + " " }
+                                Text(
+                                    text = fingerprintFieldValue
+                                        .windowed(2, 2, false)
+                                        .joinToString(separator = " ") { it.uppercase(Locale.US) + " " }
                                 )
                             }
                         }

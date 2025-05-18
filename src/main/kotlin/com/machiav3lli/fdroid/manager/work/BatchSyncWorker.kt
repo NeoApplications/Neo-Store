@@ -35,11 +35,14 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_BATCH_SYNC_ONETIME
 import com.machiav3lli.fdroid.TAG_BATCH_SYNC_PERIODIC
 import com.machiav3lli.fdroid.data.content.Preferences
-import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.entity.Order
 import com.machiav3lli.fdroid.data.entity.Section
 import com.machiav3lli.fdroid.data.entity.SyncRequest
+import com.machiav3lli.fdroid.data.repository.ExtrasRepository
+import com.machiav3lli.fdroid.data.repository.ProductsRepository
+import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.manager.service.InstallerReceiver
 import com.machiav3lli.fdroid.utils.displayUpdatesNotification
@@ -55,6 +58,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.koin.java.KoinJavaComponent.get
 import org.koin.java.KoinJavaComponent.inject
 import java.util.concurrent.TimeUnit
@@ -62,7 +67,7 @@ import java.util.concurrent.TimeUnit
 class BatchSyncWorker(
     private val context: Context,
     workerParams: WorkerParameters,
-) : CoroutineWorker(context, workerParams) {
+) : CoroutineWorker(context, workerParams), KoinComponent {
     private val workManager by inject<WorkManager>(WorkManager::class.java)
     private var totalRepositories = 0
     private var completedRepositories = 0
@@ -72,6 +77,9 @@ class BatchSyncWorker(
         inputData.getInt(ARG_SYNC_REQUEST, 0)
     ]
     private val langContext = ContextWrapperX.wrap(applicationContext)
+    private val productRepo: ProductsRepository by inject()
+    private val extrasRepo: ExtrasRepository by inject()
+    private val reposRepo: RepositoriesRepository by inject()
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO + scheduleJob) {
         try {
@@ -88,8 +96,7 @@ class BatchSyncWorker(
 
     private suspend fun handleSync(): Boolean = supervisorScope {
         val finishSignal = MutableStateFlow(false)
-        val selectedRepos = NeoApp.db.getRepositoryDao().getAll()
-            .filter { it.enabled }
+        val selectedRepos = reposRepo.loadAll().filter { it.enabled }
         totalRepositories = selectedRepos.size
 
         if (selectedRepos.isEmpty()) return@supervisorScope true
@@ -170,10 +177,10 @@ class BatchSyncWorker(
         setForeground(getForegroundInfo())
     }
 
-    private fun handleCompletion(errors: String) {
+    private suspend fun handleCompletion(errors: String) {
         Log.e(this::class.java.simpleName, errors)
-        NeoApp.db.getProductDao()
-            .queryObject(
+        productRepo
+            .loadList(
                 installed = true,
                 updates = true,
                 section = Section.All,
@@ -191,20 +198,20 @@ class BatchSyncWorker(
                     NeoApp.wm.update(*result.toTypedArray())
                 }
             }
-        NeoApp.db.getProductDao()
-            .queryObject(
+        productRepo
+            .loadList(
                 installed = true,
                 updates = false,
                 section = Section.All,
                 order = Order.NAME,
                 ascending = true,
             ).filter { product ->
-                product.antiFeatures.contains(AntiFeature.KNOWN_VULN.key)
-                        && NeoApp.db.getExtrasDao()[product.packageName]?.ignoreVulns != true
+                product.product.antiFeatures.contains(AntiFeature.KNOWN_VULN.key)
+                        && extrasRepo.load(product.product.packageName)?.ignoreVulns != true
             }.let { installedWithVulns ->
                 if (installedWithVulns.isNotEmpty())
                     langContext.displayVulnerabilitiesNotification(
-                        installedWithVulns.map(Product::toItem)
+                        installedWithVulns.map(EmbeddedProduct::toItem)
                     )
             }
     }

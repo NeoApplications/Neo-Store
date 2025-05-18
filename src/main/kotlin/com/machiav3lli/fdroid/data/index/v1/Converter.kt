@@ -3,18 +3,18 @@ package com.machiav3lli.fdroid.data.index.v1
 import android.content.res.Resources
 import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.core.os.LocaleListCompat
-import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.entity.Author
 import com.machiav3lli.fdroid.data.entity.Donate
-import com.machiav3lli.fdroid.data.entity.Screenshot
 import com.machiav3lli.fdroid.data.index.v0.IndexV0Parser
 import com.machiav3lli.fdroid.utils.extension.Quintuple
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import okhttp3.internal.toLongOrDefault
+import java.util.Locale
 
-internal fun IndexV1.App.toProduct(repositoryId: Long) = Product(
+internal fun IndexV1.App.toProduct(repositoryId: Long) = IndexProduct(
     repositoryId = repositoryId,
     packageName = packageName,
     label = localized.findLocalizedString(name) { _, localized -> localized.name },
@@ -54,11 +54,11 @@ internal fun IndexV1.App.toProduct(repositoryId: Long) = Product(
                 }
                 ?.let { Pair(key, it) }
         }?.let { (key, screenshots) ->
-            screenshots.first.map { Screenshot(key, Screenshot.Type.PHONE, it) } +
-                    screenshots.second.map { Screenshot(key, Screenshot.Type.SMALL_TABLET, it) } +
-                    screenshots.third.map { Screenshot(key, Screenshot.Type.LARGE_TABLET, it) } +
-                    screenshots.fourth.map { Screenshot(key, Screenshot.Type.TV, it) } +
-                    screenshots.fifth.map { Screenshot(key, Screenshot.Type.WEAR, it) }
+            screenshots.first.map { "/$packageName/$key/phoneScreenshots/$it" } +
+                    screenshots.second.map { "/$packageName/$key/sevenInchScreenshots/$it" } +
+                    screenshots.third.map { "/$packageName/$key/tenInchScreenshots/$it" } +
+                    screenshots.fourth.map { "/$packageName/$key/tvScreenshots/$it" } +
+                    screenshots.fifth.map { "/$packageName/$key/wearScreenshots/$it" }
         }
         .orEmpty().toList(),
     suggestedVersionCode = suggestedVersionCode.toLongOrDefault(0L),
@@ -109,6 +109,7 @@ internal fun IndexV1.Package.toRelease(
     features = features,
     platforms = nativecode,
     incompatibilities = emptyList(),
+    isCompatible = true,
 )
 
 internal fun Map<String, IndexV1.Localized>.findLocalizedString(
@@ -135,22 +136,37 @@ private fun <T> Map<String, IndexV1.Localized>.findLocalized(callback: (String, 
  */
 private fun <T> Map<String, T>?.getBestLocale(localeList: LocaleListCompat): Pair<String, T>? {
     if (isNullOrEmpty()) return null
-    val firstMatch = localeList.getFirstMatch(keys.toTypedArray()) ?: return null
-    val tag = firstMatch.toLanguageTag()
-    // try first matched tag first (usually has region tag, e.g. de-DE)
-    return entries.find { it.key == tag }?.toPair() ?: run {
-        // split away stuff like script and try language and region only
-        val langCountryTag = "${firstMatch.language}-${firstMatch.country}"
-        (getOrStartsWith(langCountryTag) ?: run {
-            // split away region tag and try language only
-            val langTag = firstMatch.language
-            // try language, then English and then just take the first of the list
-            getOrStartsWith(langTag)
-                ?: entries.find { it.key == "en-US" }
-                ?: entries.find { it.key == "en" }
-                ?: entries.first()
-        }).toPair()
-    }
+    val defLocale = Locale.getDefault()
+    val defTag = defLocale.toLanguageTag()
+    val sysLocaleMatch = localeList.getFirstMatch(keys.toTypedArray()) ?: return null
+    val sysTag = sysLocaleMatch.toLanguageTag()
+    // try the user-set default language
+    return entries.find { it.key == defTag }?.toPair()
+        ?: run {
+            // split away stuff like script and try language and region only
+            val langCountryTag = "${defLocale.language}-${defLocale.country}"
+            (getOrStartsWith(langCountryTag) ?: run {
+                // split away region tag and try language only
+                val langTag = defLocale.language
+                // try language, then English and then just take the first of the list
+                getOrStartsWith(langTag)
+            })?.toPair()
+        }
+        // now try first matched system tag (usually has region tag, e.g. de-DE)
+        ?: entries.find { it.key == sysTag }?.toPair()
+        ?: run {
+            // split away stuff like script and try language and region only
+            val langCountryTag = "${sysLocaleMatch.language}-${sysLocaleMatch.country}"
+            (getOrStartsWith(langCountryTag) ?: run {
+                // split away region tag and try language only
+                val langTag = sysLocaleMatch.language
+                // try language, then English and then just take the first of the list
+                getOrStartsWith(langTag)
+                    ?: entries.find { it.key == "en-US" }
+                    ?: entries.find { it.key == "en" }
+                    ?: entries.first()
+            }).toPair()
+        }
 }
 
 /**

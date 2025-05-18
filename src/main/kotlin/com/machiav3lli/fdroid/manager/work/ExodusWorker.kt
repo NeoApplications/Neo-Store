@@ -15,6 +15,7 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.Tracker
+import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.manager.network.RExodusAPI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -28,6 +29,7 @@ class ExodusWorker(
     params: WorkerParameters,
 ) : CoroutineWorker(context, params), KoinComponent {
     private val repoExodusAPI: RExodusAPI by inject()
+    private val privacyRepository: PrivacyRepository by inject()
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         val type = WorkType.entries[
@@ -51,7 +53,7 @@ class ExodusWorker(
                 try {
                     val trackerList = repoExodusAPI.getTrackers()
                     // TODO **conditionally** update DB with the trackers
-                    NeoApp.db.getTrackerDao().upsert(
+                    privacyRepository.upsertTracker(
                         *trackerList.trackers
                             .map { (key, value) ->
                                 Tracker(
@@ -88,7 +90,7 @@ class ExodusWorker(
                         ?: ExodusInfo()
 
                     val exodusInfo = latestExodusApp.toExodusInfo(packageName)
-                    NeoApp.db.getExodusInfoDao().upsert(exodusInfo)
+                    privacyRepository.upsertExodusInfo(exodusInfo)
                 } catch (e: Exception) {
                     Log.e(this::javaClass.name, "Failed fetching exodus info", e)
                 }

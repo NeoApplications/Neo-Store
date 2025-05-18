@@ -1,8 +1,9 @@
 package com.machiav3lli.fdroid.ui.components
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -23,6 +24,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.Permission
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowCircleRight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 
 @Composable
@@ -35,8 +37,7 @@ fun PermissionItem(
     ListItem(
         modifier = modifier
             .fillMaxWidth()
-            .clip(MaterialTheme.shapes.large)
-            .clickable(onClick = onClick),
+            .clip(MaterialTheme.shapes.large),
         colors = ListItemDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
         ),
@@ -72,15 +73,29 @@ fun PermissionItem(
                         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
                     )
                 }
-                if (item.ignorePref != null) {
+                Row(
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    if (item.ignorePref != null) {
+                        ActionButton(
+                            text = stringResource(id = R.string.ignore),
+                            icon = Phosphor.X,
+                            positive = false,
+                            onClick = {
+                                Preferences[item.ignorePref] = true
+                                onIgnore()
+                            }
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
                     ActionButton(
-                        text = stringResource(id = R.string.ignore),
-                        icon = Phosphor.X,
-                        positive = false,
-                        onClick = {
-                            Preferences[item.ignorePref] = true
-                            onIgnore()
-                        }
+                        text = stringResource(id = R.string.action_start),
+                        icon = Phosphor.ArrowCircleRight,
+                        positive = true,
+                        onClick = onClick,
                     )
                 }
             }

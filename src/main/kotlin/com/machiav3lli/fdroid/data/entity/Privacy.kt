@@ -8,6 +8,7 @@ import com.machiav3lli.fdroid.IDENTIFICATION_DATA_PERMISSIONS
 import com.machiav3lli.fdroid.PERMISSION_GROUP_INTERNET
 import com.machiav3lli.fdroid.PHYSICAL_DATA_PERMISSIONS
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.ui.compose.icons.Icon
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -35,7 +36,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserFocus
 class PrivacyData(
     val permissions: Map<PermissionGroup, List<PermissionInfo>>,
     val trackers: List<Tracker>,
-    val antiFeatures: List<AntiFeature>,
+    val antiFeatures: List<AntiFeatureDetails>,
 ) {
     val physicalDataPermissions: Map<PermissionGroup, List<PermissionInfo>>
         get() = permissions.filter { it.key in PHYSICAL_DATA_PERMISSIONS }
@@ -138,17 +139,17 @@ open class PermissionGroup(
 
     companion object {
         fun String.getPermissionGroup() = when (this) {
-            android.Manifest.permission_group.CONTACTS -> Contacts
-            android.Manifest.permission_group.CALENDAR -> Calendar
-            android.Manifest.permission_group.SMS -> SMS
-            android.Manifest.permission_group.STORAGE -> Storage
-            android.Manifest.permission_group.PHONE -> Phone
-            android.Manifest.permission_group.MICROPHONE -> Microphone
-            android.Manifest.permission_group.LOCATION -> Location
-            android.Manifest.permission_group.CAMERA -> Camera
+            android.Manifest.permission_group.CONTACTS       -> Contacts
+            android.Manifest.permission_group.CALENDAR       -> Calendar
+            android.Manifest.permission_group.SMS            -> SMS
+            android.Manifest.permission_group.STORAGE        -> Storage
+            android.Manifest.permission_group.PHONE          -> Phone
+            android.Manifest.permission_group.MICROPHONE     -> Microphone
+            android.Manifest.permission_group.LOCATION       -> Location
+            android.Manifest.permission_group.CAMERA         -> Camera
             android.Manifest.permission_group.NEARBY_DEVICES -> NearbyDevices
-            PERMISSION_GROUP_INTERNET -> Internet
-            else -> Other
+            PERMISSION_GROUP_INTERNET                        -> Internet
+            else                                             -> Other
         }
     }
 }
@@ -196,12 +197,12 @@ open class TrackersGroup(
 
     companion object {
         fun String.getTrackersGroup() = when (this) {
-            "Analytics" -> Analytics
-            "Profiling" -> Profiling
+            "Analytics"      -> Analytics
+            "Profiling"      -> Profiling
             "Identification" -> Identification
-            "Advertisement" -> Advertisement
-            "Location" -> Location
-            else -> CrashReporting // "Crash reporting"
+            "Advertisement"  -> Advertisement
+            "Location"       -> Location
+            else             -> CrashReporting // "Crash reporting"
         }
     }
 }

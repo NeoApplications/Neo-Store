@@ -15,10 +15,10 @@ interface RepositoryDao : BaseDao<Repository> {
     @Insert
     fun insertReturn(repo: Repository): Long
 
-    fun put(repository: Repository): Repository {
-        repository.let { item ->
-            val newId = if (item.id > 0L) update(item).toLong() else returnInsert(item)
-            return if (newId != repository.id) repository.copy(id = newId) else repository
+    suspend fun put(vararg repository: Repository) {
+        repository.forEach { item ->
+            if (item.id > 0L) update(item)
+            else insert(item)
         }
     }
 
@@ -29,9 +29,6 @@ interface RepositoryDao : BaseDao<Repository> {
             else insert(repository.copy(id = 0L))
         }
     }
-
-    @Insert
-    fun returnInsert(product: Repository): Long
 
     @Query("SELECT * FROM repository WHERE id = :id")
     fun get(id: Long): Repository?
@@ -55,18 +52,21 @@ interface RepositoryDao : BaseDao<Repository> {
     fun getAllDisabledIds(): List<Long>
 
     @Query("UPDATE repository SET lastModified = '', entityTag = ''")
-    fun forgetLastModifications()
+    suspend fun forgetLastModifications()
 
     // TODO clean up products and other tables afterwards
     @Query("DELETE FROM repository WHERE id = :id")
-    fun deleteById(id: Long)
+    suspend fun deleteById(id: Long)
 
     @Query("DELETE FROM repository WHERE address = :address")
-    fun deleteByAddress(address: String)
+    suspend fun deleteByAddress(address: String)
 
     @Query("SELECT MAX(id) FROM repository")
     fun latestAddedId(): Long
 
     @Query("SELECT MAX(updated) AS latest, MIN(updated) AS latestAll FROM repository WHERE enabled != 0")
     fun latestUpdatesFlow(): Flow<LatestSyncs>
+
+    @Query("DELETE FROM repository")
+    suspend fun emptyTable()
 }

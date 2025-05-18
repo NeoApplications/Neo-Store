@@ -14,14 +14,16 @@ import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.crossfade
-import com.anggrayudi.storage.extension.postToUi
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.DatabaseX
 import com.machiav3lli.fdroid.data.database.databaseModule
+import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.data.index.RepositoryUpdater
+import com.machiav3lli.fdroid.data.repository.InstalledRepository
+import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.manager.installer.AppInstaller
 import com.machiav3lli.fdroid.manager.installer.BaseInstaller
 import com.machiav3lli.fdroid.manager.installer.installerModule
@@ -30,9 +32,8 @@ import com.machiav3lli.fdroid.manager.network.Downloader
 import com.machiav3lli.fdroid.manager.network.downloadClientModule
 import com.machiav3lli.fdroid.manager.network.exodusModule
 import com.machiav3lli.fdroid.manager.service.PackageChangedReceiver
-import com.machiav3lli.fdroid.manager.work.WorkerManager
 import com.machiav3lli.fdroid.manager.work.BatchSyncWorker
-import com.machiav3lli.fdroid.data.entity.SyncRequest
+import com.machiav3lli.fdroid.manager.work.WorkerManager
 import com.machiav3lli.fdroid.manager.work.workmanagerModule
 import com.machiav3lli.fdroid.utils.Utils.setLanguage
 import com.machiav3lli.fdroid.utils.Utils.toInstalledItem
@@ -58,6 +59,8 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
     lateinit var mActivity: AppCompatActivity
     val wm: WorkerManager by inject()
     val installer: AppInstaller by inject()
+    val installedRepo: InstalledRepository by inject()
+    val reposRepo: RepositoriesRepository by inject()
 
     companion object {
         val enqueuedInstalls: MutableSet<String> = mutableSetOf()
@@ -101,7 +104,7 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
         appRef = WeakReference(this)
 
         Preferences.init(this)
-        RepositoryUpdater.init(this)
+        RepositoryUpdater.init()
         ioScope.launch {
             listenApplications()
             listenPreferences()
@@ -162,8 +165,8 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
             .getInstalledPackages(Android.PackageManager.signaturesFlag)
             .map { it.toInstalledItem(launcherActivitiesMap[it.packageName].orEmpty()) }
         withContext(Dispatchers.IO) {
-            db.getInstalledDao().emptyTable()
-            db.getInstalledDao().put(*installedItems.toTypedArray())
+            installedRepo.emptyTable()
+            installedRepo.upsert(*installedItems.toTypedArray())
         }
     }
 
@@ -191,7 +194,9 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
                     }
 
                     Preferences.Key.Theme          -> {
-                        postToUi { mActivity.recreate() }
+                        launch(Dispatchers.Main) {
+                            mActivity.recreate()
+                        }
                     }
 
                     Preferences.Key.Language       -> {
@@ -291,13 +296,15 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
         }
     }
 
-    private fun forceSyncAll() {
-        db.getRepositoryDao().getAll().forEach {
-            if (it.lastModified.isNotEmpty() || it.entityTag.isNotEmpty()) {
-                db.getRepositoryDao().put(it.copy(lastModified = "", entityTag = ""))
+    private suspend fun forceSyncAll() {
+        withContext(Dispatchers.IO) {
+            reposRepo.loadAll().forEach {
+                if (it.lastModified.isNotEmpty() || it.entityTag.isNotEmpty()) {
+                    reposRepo.upsert(it.copy(lastModified = "", entityTag = ""))
+                }
             }
+            BatchSyncWorker.enqueue(SyncRequest.FORCE)
         }
-        BatchSyncWorker.enqueue(SyncRequest.FORCE)
     }
 
     override fun newImageLoader(context: Context): ImageLoader {

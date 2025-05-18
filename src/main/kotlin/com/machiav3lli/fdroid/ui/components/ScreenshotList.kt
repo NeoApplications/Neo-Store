@@ -24,7 +24,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.data.database.entity.Repository
-import com.machiav3lli.fdroid.data.entity.Screenshot
 import com.machiav3lli.fdroid.manager.network.createScreenshotUri
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.PlayCircle
@@ -32,13 +31,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 data class ScreenshotItem(
-    val screenShot: Screenshot,
+    val screenShot: String,
     val repository: Repository,
-    val packageName: String,
 )
-
-fun Screenshot.toScreenshotItem(packageName: String, repository: Repository) =
-    ScreenshotItem(this, repository, packageName)
 
 @Composable
 fun ScreenshotList(
@@ -79,7 +74,6 @@ fun ScreenshotList(
                 launch(Dispatchers.IO) {
                     value = createScreenshotUri(
                         it.repository,
-                        it.packageName,
                         it.screenShot,
                     ).toString()
                 }

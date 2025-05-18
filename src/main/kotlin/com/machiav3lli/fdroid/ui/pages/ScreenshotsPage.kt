@@ -39,7 +39,6 @@ fun ScreenshotsPage(
                 launch(Dispatchers.IO) {
                     value = createScreenshotUri(
                         screenshot.repository,
-                        screenshot.packageName,
                         screenshot.screenShot,
                     ).toString()
                 }

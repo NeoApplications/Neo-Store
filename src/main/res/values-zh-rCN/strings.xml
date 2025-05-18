@@ -419,4 +419,5 @@
     <string name="about_build_FORMAT">%s (构建 %s)</string>
     <string name="prefs_layout">布局</string>
     <string name="prefs_connection">网络连接</string>
+    <string name="initial_sync_repositories">你想同步预置仓库吗（F-Droid 官方，IzzyOnDroid 及 Guardian Project）？</string>
 </resources>

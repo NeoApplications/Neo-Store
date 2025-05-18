@@ -2,6 +2,13 @@ package com.machiav3lli.fdroid.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import com.machiav3lli.fdroid.ROW_ENABLED
+import com.machiav3lli.fdroid.ROW_ID
+import com.machiav3lli.fdroid.ROW_NAME
+import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
+import com.machiav3lli.fdroid.TABLE_CATEGORY
+import com.machiav3lli.fdroid.TABLE_CATEGORY_TEMP
+import com.machiav3lli.fdroid.TABLE_REPOSITORY
 import com.machiav3lli.fdroid.data.database.entity.Category
 import com.machiav3lli.fdroid.data.database.entity.CategoryTemp
 import kotlinx.coroutines.flow.Flow
@@ -9,35 +16,35 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CategoryDao : BaseDao<Category> {
     @Query(
-        """SELECT DISTINCT category.label
-        FROM category AS category
-        JOIN repository AS repository
-        ON category.repositoryId = repository.id
-        WHERE repository.enabled != 0"""
+        """SELECT DISTINCT $TABLE_CATEGORY.$ROW_NAME
+        FROM $TABLE_CATEGORY
+        JOIN $TABLE_REPOSITORY
+        ON $TABLE_CATEGORY.$ROW_REPOSITORY_ID = $TABLE_REPOSITORY.$ROW_ID
+        WHERE $TABLE_REPOSITORY.$ROW_ENABLED != 0"""
     )
     fun getAllNames(): List<String>
 
     @Query(
-        """SELECT DISTINCT category.label
-        FROM category AS category
-        JOIN repository AS repository
-        ON category.repositoryId = repository.id
-        WHERE repository.enabled != 0"""
+        """SELECT DISTINCT $TABLE_CATEGORY.$ROW_NAME
+        FROM $TABLE_CATEGORY
+        JOIN $TABLE_REPOSITORY
+        ON $TABLE_CATEGORY.$ROW_REPOSITORY_ID = $TABLE_REPOSITORY.$ROW_ID
+        WHERE $TABLE_REPOSITORY.$ROW_ENABLED != 0"""
     )
     fun getAllNamesFlow(): Flow<List<String>>
 
-    @Query("DELETE FROM category WHERE repositoryId = :id")
-    fun deleteById(id: Long): Int
+    @Query("DELETE FROM $TABLE_CATEGORY WHERE $ROW_REPOSITORY_ID = :id")
+    suspend fun deleteById(id: Long): Int
 
-    @Query("DELETE FROM category")
-    fun emptyTable()
+    @Query("DELETE FROM $TABLE_CATEGORY")
+    suspend fun emptyTable()
 }
 
 @Dao
 interface CategoryTempDao : BaseDao<CategoryTemp> {
-    @Query("SELECT * FROM temporary_category")
+    @Query("SELECT * FROM $TABLE_CATEGORY_TEMP")
     fun getAll(): Array<CategoryTemp>
 
-    @Query("DELETE FROM temporary_category")
-    fun emptyTable()
+    @Query("DELETE FROM $TABLE_CATEGORY_TEMP")
+    suspend fun emptyTable()
 }

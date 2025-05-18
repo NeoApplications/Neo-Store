@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -55,6 +54,7 @@ import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.Page
 import com.machiav3lli.fdroid.data.entity.ProductItem
+import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
@@ -131,6 +131,7 @@ fun InstalledPage(viewModel: MainVM = koinNeoViewModel()) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
+            space = 24.dp,
         ) {
             SegmentedTabButton(
                 text = stringResource(id = R.string.installed),
@@ -182,8 +183,7 @@ fun InstallsPage(viewModel: MainVM) {
             repositories.value.associateBy { repo -> repo.id }
         }
     }
-    val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow()
-        .collectAsState(emptyArray())
+    val favorites by viewModel.favorites.collectAsState(emptyArray())
 
     val updatesAvailable by remember {
         derivedStateOf {
@@ -266,10 +266,12 @@ fun InstallsPage(viewModel: MainVM) {
                     color = cardColor,
                 ) {
                     Column(
-                        Modifier.padding(4.dp),
+                        Modifier.padding(vertical = 6.dp),
                     ) {
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
@@ -287,15 +289,15 @@ fun InstallsPage(viewModel: MainVM) {
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Icon(
-                                    modifier = Modifier.size(18.dp),
                                     imageVector = if (updatesVisible) Phosphor.CaretUp else Phosphor.CaretDown,
                                     contentDescription = stringResource(id = R.string.updates)
                                 )
                             }
                             AnimatedVisibility(updatesVisible) {
-                                ActionChip(
-                                    text = stringResource(id = R.string.update_all),
+                                ActionButton(
+                                    text = stringResource(R.string.update_all),
                                     icon = Phosphor.Download,
+                                    positive = true,
                                 ) {
                                     val action = {
                                         NeoApp.wm.update(

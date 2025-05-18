@@ -37,6 +37,7 @@ import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.data.entity.SyncTask
 import com.machiav3lli.fdroid.data.index.RepositoryUpdater
+import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.syncNotificationBuilder
 import com.machiav3lli.fdroid.utils.updateSyncProgress
@@ -45,13 +46,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.future.future
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.koin.java.KoinJavaComponent.get
 import kotlin.math.roundToInt
 
 class SyncWorker(
     private val context: Context,
     workerParams: WorkerParameters,
-) : CoroutineWorker(context, workerParams) {
+) : CoroutineWorker(context, workerParams), KoinComponent {
     private var repoId = inputData.getLong(ARG_REPOSITORY_ID, -1L)
     private var request = SyncRequest.entries[
         inputData.getInt(ARG_SYNC_REQUEST, 0)
@@ -59,6 +62,7 @@ class SyncWorker(
     private var repoName = inputData.getString(ARG_REPOSITORY_NAME) ?: ""
     private lateinit var task: SyncTask
     private val langContext = ContextWrapperX.wrap(applicationContext)
+    private val reposRepo: RepositoriesRepository by inject()
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         task = SyncTask(repoId, request, repoName)
@@ -70,8 +74,8 @@ class SyncWorker(
         )
     }
 
-    private fun CoroutineScope.handleSync(task: SyncTask): Result {
-        val repository = NeoApp.db.getRepositoryDao().get(task.repoId)
+    private suspend fun CoroutineScope.handleSync(task: SyncTask): Result {
+        val repository = reposRepo.load(task.repoId)
 
         Log.i(this::class.java.simpleName, "sync repository: ${task.repoId}")
         if (repository != null && repository.enabled && task.repoId != EXODUS_TRACKERS_SYNC) {
@@ -289,7 +293,8 @@ class SyncWorker(
 
         suspend fun enableRepo(repository: Repository, enabled: Boolean): Boolean =
             withContext(Dispatchers.IO) {
-                NeoApp.db.getRepositoryDao().put(repository.enable(enabled))
+                val reposRepo = get<RepositoriesRepository>(RepositoriesRepository::class.java)
+                reposRepo.upsert(repository.enable(enabled))
                 val isEnabled = !repository.enabled && repository.lastModified.isEmpty()
                 val cooldownedSync = System.currentTimeMillis() -
                         NeoApp.latestSyncs.getOrDefault(repository.id, 0L) >=
@@ -305,10 +310,11 @@ class SyncWorker(
             }
 
         suspend fun deleteRepo(repoId: Long): Boolean = withContext(Dispatchers.IO) {
-            val repository = NeoApp.db.getRepositoryDao().get(repoId)
+            val reposRepo = get<RepositoriesRepository>(RepositoriesRepository::class.java)
+            val repository = reposRepo.load(repoId)
             repository != null && run {
                 enableRepo(repository, false)
-                NeoApp.db.getRepositoryDao().deleteById(repoId)
+                reposRepo.deleteById(repoId)
                 true
             }
         }

@@ -1,0 +1,1603 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1100,
+    "identityHash": "7298b1334e6d009cf867f37cb28a2a4b",
+    "entities": [
+      {
+        "tableName": "repository",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `address` TEXT NOT NULL, `mirrors` BLOB NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `version` INTEGER NOT NULL, `enabled` INTEGER NOT NULL, `fingerprint` TEXT NOT NULL, `lastModified` TEXT NOT NULL, `entityTag` TEXT NOT NULL, `updated` INTEGER NOT NULL, `timestamp` INTEGER NOT NULL, `authentication` TEXT NOT NULL, `webBaseUrl` TEXT NOT NULL DEFAULT '')",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "address",
+            "columnName": "address",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mirrors",
+            "columnName": "mirrors",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "enabled",
+            "columnName": "enabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fingerprint",
+            "columnName": "fingerprint",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastModified",
+            "columnName": "lastModified",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entityTag",
+            "columnName": "entityTag",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated",
+            "columnName": "updated",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "authentication",
+            "columnName": "authentication",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "webBaseUrl",
+            "columnName": "webBaseUrl",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_repository_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_repository_id` ON `${TABLE_NAME}` (`id`)"
+          },
+          {
+            "name": "index_repository_enabled",
+            "unique": false,
+            "columnNames": [
+              "enabled"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_repository_enabled` ON `${TABLE_NAME}` (`enabled`)"
+          }
+        ]
+      },
+      {
+        "tableName": "product_v2",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `packageName` TEXT NOT NULL, `label` TEXT NOT NULL, `summary` TEXT NOT NULL, `description` TEXT NOT NULL, `added` INTEGER NOT NULL, `updated` INTEGER NOT NULL, `icon` TEXT NOT NULL, `metadataIcon` TEXT NOT NULL, `categories` BLOB NOT NULL, `antiFeatures` BLOB NOT NULL, `licenses` BLOB NOT NULL, `donates` BLOB NOT NULL, `screenshots` BLOB NOT NULL, `suggestedVersionCode` INTEGER NOT NULL, `author` BLOB NOT NULL, `source` TEXT NOT NULL, `web` TEXT NOT NULL, `video` TEXT NOT NULL, `tracker` TEXT NOT NULL, `changelog` TEXT NOT NULL, `whatsNew` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `packageName`))",
+        "fields": [
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "summary",
+            "columnName": "summary",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "added",
+            "columnName": "added",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated",
+            "columnName": "updated",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "metadataIcon",
+            "columnName": "metadataIcon",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categories",
+            "columnName": "categories",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "antiFeatures",
+            "columnName": "antiFeatures",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "licenses",
+            "columnName": "licenses",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "donates",
+            "columnName": "donates",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "screenshots",
+            "columnName": "screenshots",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "suggestedVersionCode",
+            "columnName": "suggestedVersionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "author",
+            "columnName": "author",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "web",
+            "columnName": "web",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "video",
+            "columnName": "video",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tracker",
+            "columnName": "tracker",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "changelog",
+            "columnName": "changelog",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "whatsNew",
+            "columnName": "whatsNew",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "repositoryId",
+            "packageName"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_product_v2_packageName",
+            "unique": false,
+            "columnNames": [
+              "packageName"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_product_v2_packageName` ON `${TABLE_NAME}` (`packageName`)"
+          },
+          {
+            "name": "index_product_v2_repositoryId_packageName",
+            "unique": true,
+            "columnNames": [
+              "repositoryId",
+              "packageName"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_product_v2_repositoryId_packageName` ON `${TABLE_NAME}` (`repositoryId`, `packageName`)"
+          },
+          {
+            "name": "index_product_v2_label",
+            "unique": false,
+            "columnNames": [
+              "label"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_product_v2_label` ON `${TABLE_NAME}` (`label`)"
+          },
+          {
+            "name": "index_product_v2_added",
+            "unique": false,
+            "columnNames": [
+              "added"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_product_v2_added` ON `${TABLE_NAME}` (`added`)"
+          },
+          {
+            "name": "index_product_v2_updated",
+            "unique": false,
+            "columnNames": [
+              "updated"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_product_v2_updated` ON `${TABLE_NAME}` (`updated`)"
+          },
+          {
+            "name": "index_product_v2_author",
+            "unique": false,
+            "columnNames": [
+              "author"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_product_v2_author` ON `${TABLE_NAME}` (`author`)"
+          }
+        ]
+      },
+      {
+        "tableName": "release",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `repositoryId` INTEGER NOT NULL DEFAULT 0, `selected` INTEGER NOT NULL, `version` TEXT NOT NULL, `versionCode` INTEGER NOT NULL, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `source` TEXT NOT NULL, `release` TEXT NOT NULL, `hash` TEXT NOT NULL, `hashType` TEXT NOT NULL, `signature` TEXT NOT NULL, `obbMain` TEXT NOT NULL, `obbMainHash` TEXT NOT NULL, `obbMainHashType` TEXT NOT NULL, `obbPatch` TEXT NOT NULL, `obbPatchHash` TEXT NOT NULL, `obbPatchHashType` TEXT NOT NULL, `permissions` BLOB NOT NULL, `features` BLOB NOT NULL, `platforms` BLOB NOT NULL, `incompatibilities` BLOB NOT NULL, `isCompatible` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`packageName`, `repositoryId`, `versionCode`, `signature`, `platforms`, `hash`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "selected",
+            "columnName": "selected",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionCode",
+            "columnName": "versionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "added",
+            "columnName": "added",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "size",
+            "columnName": "size",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "minSdkVersion",
+            "columnName": "minSdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "targetSdkVersion",
+            "columnName": "targetSdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxSdkVersion",
+            "columnName": "maxSdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "release",
+            "columnName": "release",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hash",
+            "columnName": "hash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hashType",
+            "columnName": "hashType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "signature",
+            "columnName": "signature",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbMain",
+            "columnName": "obbMain",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbMainHash",
+            "columnName": "obbMainHash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbMainHashType",
+            "columnName": "obbMainHashType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbPatch",
+            "columnName": "obbPatch",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbPatchHash",
+            "columnName": "obbPatchHash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbPatchHashType",
+            "columnName": "obbPatchHashType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "permissions",
+            "columnName": "permissions",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "features",
+            "columnName": "features",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "platforms",
+            "columnName": "platforms",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "incompatibilities",
+            "columnName": "incompatibilities",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isCompatible",
+            "columnName": "isCompatible",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "packageName",
+            "repositoryId",
+            "versionCode",
+            "signature",
+            "platforms",
+            "hash"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_release_packageName_repositoryId_versionCode_signature_platforms_hash",
+            "unique": true,
+            "columnNames": [
+              "packageName",
+              "repositoryId",
+              "versionCode",
+              "signature",
+              "platforms",
+              "hash"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_release_packageName_repositoryId_versionCode_signature_platforms_hash` ON `${TABLE_NAME}` (`packageName`, `repositoryId`, `versionCode`, `signature`, `platforms`, `hash`)"
+          },
+          {
+            "name": "index_release_packageName_minSdkVersion_targetSdkVersion",
+            "unique": false,
+            "columnNames": [
+              "packageName",
+              "minSdkVersion",
+              "targetSdkVersion"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_release_packageName_minSdkVersion_targetSdkVersion` ON `${TABLE_NAME}` (`packageName`, `minSdkVersion`, `targetSdkVersion`)"
+          },
+          {
+            "name": "index_release_packageName",
+            "unique": false,
+            "columnNames": [
+              "packageName"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_release_packageName` ON `${TABLE_NAME}` (`packageName`)"
+          },
+          {
+            "name": "index_release_minSdkVersion",
+            "unique": false,
+            "columnNames": [
+              "minSdkVersion"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_release_minSdkVersion` ON `${TABLE_NAME}` (`minSdkVersion`)"
+          },
+          {
+            "name": "index_release_targetSdkVersion",
+            "unique": false,
+            "columnNames": [
+              "targetSdkVersion"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_release_targetSdkVersion` ON `${TABLE_NAME}` (`targetSdkVersion`)"
+          }
+        ]
+      },
+      {
+        "tableName": "temporary_release",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `repositoryId` INTEGER NOT NULL DEFAULT 0, `selected` INTEGER NOT NULL, `version` TEXT NOT NULL, `versionCode` INTEGER NOT NULL, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `source` TEXT NOT NULL, `release` TEXT NOT NULL, `hash` TEXT NOT NULL, `hashType` TEXT NOT NULL, `signature` TEXT NOT NULL, `obbMain` TEXT NOT NULL, `obbMainHash` TEXT NOT NULL, `obbMainHashType` TEXT NOT NULL, `obbPatch` TEXT NOT NULL, `obbPatchHash` TEXT NOT NULL, `obbPatchHashType` TEXT NOT NULL, `permissions` BLOB NOT NULL, `features` BLOB NOT NULL, `platforms` BLOB NOT NULL, `incompatibilities` BLOB NOT NULL, `isCompatible` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`packageName`, `repositoryId`, `versionCode`, `signature`, `platforms`, `hash`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "selected",
+            "columnName": "selected",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionCode",
+            "columnName": "versionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "added",
+            "columnName": "added",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "size",
+            "columnName": "size",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "minSdkVersion",
+            "columnName": "minSdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "targetSdkVersion",
+            "columnName": "targetSdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxSdkVersion",
+            "columnName": "maxSdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "release",
+            "columnName": "release",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hash",
+            "columnName": "hash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hashType",
+            "columnName": "hashType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "signature",
+            "columnName": "signature",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbMain",
+            "columnName": "obbMain",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbMainHash",
+            "columnName": "obbMainHash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbMainHashType",
+            "columnName": "obbMainHashType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbPatch",
+            "columnName": "obbPatch",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbPatchHash",
+            "columnName": "obbPatchHash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obbPatchHashType",
+            "columnName": "obbPatchHashType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "permissions",
+            "columnName": "permissions",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "features",
+            "columnName": "features",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "platforms",
+            "columnName": "platforms",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "incompatibilities",
+            "columnName": "incompatibilities",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isCompatible",
+            "columnName": "isCompatible",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "packageName",
+            "repositoryId",
+            "versionCode",
+            "signature",
+            "platforms",
+            "hash"
+          ]
+        }
+      },
+      {
+        "tableName": "temporary_product_v2",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `packageName` TEXT NOT NULL, `label` TEXT NOT NULL, `summary` TEXT NOT NULL, `description` TEXT NOT NULL, `added` INTEGER NOT NULL, `updated` INTEGER NOT NULL, `icon` TEXT NOT NULL, `metadataIcon` TEXT NOT NULL, `categories` BLOB NOT NULL, `antiFeatures` BLOB NOT NULL, `licenses` BLOB NOT NULL, `donates` BLOB NOT NULL, `screenshots` BLOB NOT NULL, `suggestedVersionCode` INTEGER NOT NULL, `author` BLOB NOT NULL, `source` TEXT NOT NULL, `web` TEXT NOT NULL, `video` TEXT NOT NULL, `tracker` TEXT NOT NULL, `changelog` TEXT NOT NULL, `whatsNew` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `packageName`))",
+        "fields": [
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "summary",
+            "columnName": "summary",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "added",
+            "columnName": "added",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated",
+            "columnName": "updated",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "metadataIcon",
+            "columnName": "metadataIcon",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categories",
+            "columnName": "categories",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "antiFeatures",
+            "columnName": "antiFeatures",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "licenses",
+            "columnName": "licenses",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "donates",
+            "columnName": "donates",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "screenshots",
+            "columnName": "screenshots",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "suggestedVersionCode",
+            "columnName": "suggestedVersionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "author",
+            "columnName": "author",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "web",
+            "columnName": "web",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "video",
+            "columnName": "video",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tracker",
+            "columnName": "tracker",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "changelog",
+            "columnName": "changelog",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "whatsNew",
+            "columnName": "whatsNew",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "repositoryId",
+            "packageName"
+          ]
+        }
+      },
+      {
+        "tableName": "category_v2",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `packageName` TEXT NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `packageName`, `name`))",
+        "fields": [
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "repositoryId",
+            "packageName",
+            "name"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_category_v2_repositoryId_packageName_name",
+            "unique": true,
+            "columnNames": [
+              "repositoryId",
+              "packageName",
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_category_v2_repositoryId_packageName_name` ON `${TABLE_NAME}` (`repositoryId`, `packageName`, `name`)"
+          },
+          {
+            "name": "index_category_v2_packageName_name",
+            "unique": false,
+            "columnNames": [
+              "packageName",
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_category_v2_packageName_name` ON `${TABLE_NAME}` (`packageName`, `name`)"
+          }
+        ]
+      },
+      {
+        "tableName": "temporary_category_v2",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `packageName` TEXT NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `packageName`, `name`))",
+        "fields": [
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "repositoryId",
+            "packageName",
+            "name"
+          ]
+        }
+      },
+      {
+        "tableName": "repo_category",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `name` TEXT NOT NULL, `label` TEXT NOT NULL, `icon` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `name`))",
+        "fields": [
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "repositoryId",
+            "name"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_repo_category_name_label",
+            "unique": false,
+            "columnNames": [
+              "name",
+              "label"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_repo_category_name_label` ON `${TABLE_NAME}` (`name`, `label`)"
+          }
+        ]
+      },
+      {
+        "tableName": "temporary_repo_category",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `name` TEXT NOT NULL, `label` TEXT NOT NULL, `icon` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `name`))",
+        "fields": [
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "repositoryId",
+            "name"
+          ]
+        }
+      },
+      {
+        "tableName": "memory_installed",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `version` TEXT NOT NULL, `versionCode` INTEGER NOT NULL, `signatures` BLOB NOT NULL DEFAULT [], `isSystem` INTEGER NOT NULL, `launcherActivities` BLOB NOT NULL, PRIMARY KEY(`packageName`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionCode",
+            "columnName": "versionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "signatures",
+            "columnName": "signatures",
+            "affinity": "BLOB",
+            "notNull": true,
+            "defaultValue": "[]"
+          },
+          {
+            "fieldPath": "isSystem",
+            "columnName": "isSystem",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "launcherActivities",
+            "columnName": "launcherActivities",
+            "affinity": "BLOB",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "packageName"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_memory_installed_packageName",
+            "unique": true,
+            "columnNames": [
+              "packageName"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_memory_installed_packageName` ON `${TABLE_NAME}` (`packageName`)"
+          }
+        ]
+      },
+      {
+        "tableName": "extras",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `favorite` INTEGER NOT NULL, `ignoreUpdates` INTEGER NOT NULL, `ignoredVersion` INTEGER NOT NULL, `ignoreVulns` INTEGER NOT NULL DEFAULT 0, `allowUnstable` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`packageName`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "favorite",
+            "columnName": "favorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ignoreUpdates",
+            "columnName": "ignoreUpdates",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ignoredVersion",
+            "columnName": "ignoredVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ignoreVulns",
+            "columnName": "ignoreVulns",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "allowUnstable",
+            "columnName": "allowUnstable",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "packageName"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_extras_packageName",
+            "unique": true,
+            "columnNames": [
+              "packageName"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_extras_packageName` ON `${TABLE_NAME}` (`packageName`)"
+          },
+          {
+            "name": "index_extras_favorite",
+            "unique": false,
+            "columnNames": [
+              "favorite"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_extras_favorite` ON `${TABLE_NAME}` (`favorite`)"
+          }
+        ]
+      },
+      {
+        "tableName": "exodus_info",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `handle` TEXT NOT NULL, `app_name` TEXT NOT NULL, `uaid` TEXT NOT NULL, `version_name` TEXT NOT NULL, `version_code` TEXT NOT NULL, `source` TEXT NOT NULL, `icon_hash` TEXT NOT NULL, `apk_hash` TEXT NOT NULL, `created` TEXT NOT NULL, `updated` TEXT NOT NULL, `report` INTEGER NOT NULL, `creator` TEXT NOT NULL, `downloads` TEXT NOT NULL, `trackers` BLOB NOT NULL, `permissions` BLOB NOT NULL, PRIMARY KEY(`packageName`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "handle",
+            "columnName": "handle",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "app_name",
+            "columnName": "app_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uaid",
+            "columnName": "uaid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version_name",
+            "columnName": "version_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version_code",
+            "columnName": "version_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icon_hash",
+            "columnName": "icon_hash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "apk_hash",
+            "columnName": "apk_hash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created",
+            "columnName": "created",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated",
+            "columnName": "updated",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "report",
+            "columnName": "report",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creator",
+            "columnName": "creator",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "downloads",
+            "columnName": "downloads",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "trackers",
+            "columnName": "trackers",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "permissions",
+            "columnName": "permissions",
+            "affinity": "BLOB",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "packageName"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_exodus_info_packageName",
+            "unique": false,
+            "columnNames": [
+              "packageName"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_exodus_info_packageName` ON `${TABLE_NAME}` (`packageName`)"
+          }
+        ]
+      },
+      {
+        "tableName": "tracker",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`key` INTEGER NOT NULL, `name` TEXT NOT NULL, `network_signature` TEXT NOT NULL, `code_signature` TEXT NOT NULL, `creation_date` TEXT NOT NULL, `website` TEXT NOT NULL, `description` TEXT NOT NULL, `categories` BLOB NOT NULL, `documentation` BLOB NOT NULL, PRIMARY KEY(`key`))",
+        "fields": [
+          {
+            "fieldPath": "key",
+            "columnName": "key",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "network_signature",
+            "columnName": "network_signature",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "code_signature",
+            "columnName": "code_signature",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creation_date",
+            "columnName": "creation_date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "website",
+            "columnName": "website",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categories",
+            "columnName": "categories",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "documentation",
+            "columnName": "documentation",
+            "affinity": "BLOB",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "key"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_tracker_key",
+            "unique": true,
+            "columnNames": [
+              "key"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_tracker_key` ON `${TABLE_NAME}` (`key`)"
+          }
+        ]
+      },
+      {
+        "tableName": "downloaded",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `version` TEXT NOT NULL, `repositoryId` INTEGER NOT NULL DEFAULT 0, `cacheFileName` TEXT NOT NULL, `changed` INTEGER NOT NULL, `state` BLOB NOT NULL, PRIMARY KEY(`packageName`, `version`, `cacheFileName`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "cacheFileName",
+            "columnName": "cacheFileName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "changed",
+            "columnName": "changed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "BLOB",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "packageName",
+            "version",
+            "cacheFileName"
+          ]
+        }
+      },
+      {
+        "tableName": "install_task",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `repositoryId` INTEGER NOT NULL, `versionCode` INTEGER NOT NULL, `versionName` TEXT NOT NULL, `label` TEXT NOT NULL, `cacheFileName` TEXT NOT NULL, `added` INTEGER NOT NULL, `requireUser` INTEGER NOT NULL, PRIMARY KEY(`packageName`, `repositoryId`, `versionCode`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionCode",
+            "columnName": "versionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionName",
+            "columnName": "versionName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cacheFileName",
+            "columnName": "cacheFileName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "added",
+            "columnName": "added",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "requireUser",
+            "columnName": "requireUser",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "packageName",
+            "repositoryId",
+            "versionCode"
+          ]
+        }
+      },
+      {
+        "tableName": "antifeature",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `name` TEXT NOT NULL, `label` TEXT NOT NULL, `description` TEXT NOT NULL, `icon` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `name`))",
+        "fields": [
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "repositoryId",
+            "name"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_antifeature_name_label",
+            "unique": false,
+            "columnNames": [
+              "name",
+              "label"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_antifeature_name_label` ON `${TABLE_NAME}` (`name`, `label`)"
+          },
+          {
+            "name": "index_antifeature_name_label_description_icon",
+            "unique": false,
+            "columnNames": [
+              "name",
+              "label",
+              "description",
+              "icon"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_antifeature_name_label_description_icon` ON `${TABLE_NAME}` (`name`, `label`, `description`, `icon`)"
+          }
+        ]
+      },
+      {
+        "tableName": "temporary_antifeature",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repositoryId` INTEGER NOT NULL, `name` TEXT NOT NULL, `label` TEXT NOT NULL, `description` TEXT NOT NULL, `icon` TEXT NOT NULL, PRIMARY KEY(`repositoryId`, `name`))",
+        "fields": [
+          {
+            "fieldPath": "repositoryId",
+            "columnName": "repositoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "repositoryId",
+            "name"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7298b1334e6d009cf867f37cb28a2a4b')"
+    ]
+  }
+}

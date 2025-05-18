@@ -32,13 +32,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
-import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
-import com.machiav3lli.fdroid.data.database.entity.Licenses
 import com.machiav3lli.fdroid.data.entity.AndroidVersion
-import com.machiav3lli.fdroid.data.entity.AntiFeature
-import com.machiav3lli.fdroid.data.index.RepositoryUpdater.db
+import com.machiav3lli.fdroid.data.entity.toAntiFeature
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ChipsSwitch
 import com.machiav3lli.fdroid.ui.components.DeSelectAll
@@ -50,23 +47,28 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SortAscending
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SortDescending
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
+import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
+import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.mapLatest
 
+// TODO add viewmodel
 @OptIn(
     ExperimentalCoroutinesApi::class,
     ExperimentalLayoutApi::class
 )
 @Composable
-fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
+fun SortFilterSheet(
+    navPage: String,
+    viewModel: MainVM = koinNeoViewModel(),
+    onDismiss: () -> Unit,
+) {
     val context = LocalContext.current
     val nestedScrollConnection = rememberNestedScrollInteropConnection()
-    val repos by NeoApp.db.getRepositoryDao().getAllFlow().collectAsState(emptyList())
-    val categories by db.getCategoryDao().getAllNamesFlow().collectAsState(emptyList())
-    val licenses by db.getProductDao().getAllLicensesFlow().mapLatest {
-        it.map(Licenses::licenses).flatten().distinct()
-    }
-        .collectAsState(emptyList())
+    val repos by viewModel.repositories.collectAsState(emptyList())
+    val categories by viewModel.categories.collectAsState(emptyList())
+    val antifeaturePairs by viewModel.antifeaturePairs.collectAsState(emptyList())
+    val licenses by viewModel.licenses.collectAsState(emptyList())
     val activeRepos by remember(repos) { mutableStateOf(repos.filter { it.enabled }) }
 
     val sortKey = when (navPage) {
@@ -271,15 +273,17 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        (listOf(FILTER_CATEGORY_ALL) + categories.sorted()).forEach {
-                            SelectChip(
-                                text = it,
-                                checked = it == filterCategory,
-                                alwaysShowIcon = false,
-                            ) {
-                                filterCategory = it
-                            }
-                        }
+                        listOf(Pair(FILTER_CATEGORY_ALL, stringResource(id = R.string.all))) +
+                                (categories.sortedBy { it.label }.map { Pair(it.name, it.label) })
+                                    .forEach {
+                                        SelectChip(
+                                            text = it.second,
+                                            checked = it.first == filterCategory,
+                                            alwaysShowIcon = false,
+                                        ) {
+                                            filterCategory = it.first
+                                        }
+                                    }
                     }
                 }
             }
@@ -330,25 +334,32 @@ fun SortFilterSheet(navPage: String, onDismiss: () -> Unit) {
                     heading = stringResource(id = R.string.allowed_anti_features),
                     preExpanded = filteredAntifeatures.isNotEmpty(),
                 ) {
-                    DeSelectAll(AntiFeature.entries.map(AntiFeature::key), filteredAntifeatures)
+                    DeSelectAll(antifeaturePairs.map { it.first }, filteredAntifeatures)
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        AntiFeature.entries.sortedBy { context.getString(it.titleResId) }
-                            .forEach {
-                                val checked by derivedStateOf {
-                                    !filteredAntifeatures.contains(it.key)
-                                }
-
-                                SelectChip(
-                                    text = stringResource(id = it.titleResId),
-                                    checked = checked
-                                ) {
-                                    if (checked) filteredAntifeatures.add(it.key)
-                                    else filteredAntifeatures.remove(it.key)
-                                }
+                        antifeaturePairs.sortedBy {
+                            it.second.nullIfEmpty()
+                                ?: it.first.toAntiFeature()
+                                    ?.let { context.getString(it.titleResId) }
+                                ?: it.first
+                        }.forEach {
+                            val checked by derivedStateOf {
+                                !filteredAntifeatures.contains(it.first)
                             }
+
+                            SelectChip(
+                                text = it.second.nullIfEmpty()
+                                    ?: it.first.toAntiFeature()
+                                        ?.let { stringResource(id = it.titleResId) }
+                                    ?: it.first,
+                                checked = checked
+                            ) {
+                                if (checked) filteredAntifeatures.add(it.first)
+                                else filteredAntifeatures.remove(it.first)
+                            }
+                        }
                     }
                 }
             }

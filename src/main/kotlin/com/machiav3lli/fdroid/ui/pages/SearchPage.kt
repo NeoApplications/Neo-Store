@@ -76,7 +76,7 @@ fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
             repositories.value.associateBy { repo -> repo.id }
         }
     }
-    val favorites by neoActivity.db.getExtrasDao().getFavoritesFlow().collectAsState(emptyArray())
+    val favorites by viewModel.favorites.collectAsState(emptyArray())
     val query by viewModel.querySearch.collectAsState()
     val source = viewModel.sourceSearch.collectAsState()
     val currentTab by remember {
@@ -143,7 +143,7 @@ fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
             Row(
                 modifier = Modifier.padding(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.Bottom,
             ) {
                 WideSearchField(
                     modifier = Modifier.weight(1f),

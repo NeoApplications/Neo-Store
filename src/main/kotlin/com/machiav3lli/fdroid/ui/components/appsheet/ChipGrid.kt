@@ -11,8 +11,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.Installed
-import com.machiav3lli.fdroid.data.database.entity.Product
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.ui.components.InfoChip
 import com.machiav3lli.fdroid.utils.extension.text.formatSize
@@ -41,13 +41,17 @@ fun AppInfoChips(
 }
 
 @Composable
-fun Product.appInfoChips(installed: Installed?, latestRelease: Release?) = listOfNotNull(
+fun EmbeddedProduct.appInfoChips(
+    installed: Installed?,
+    latestRelease: Release?,
+    categories: List<String>,
+) = listOfNotNull(
     if (this.canUpdate(installed) && installed != null)
-        "v${installed.version} → v$version"
-    else if (installed != null) "v${installed.version}"
-    else "v$version",
+        "v${installed.version.trimStart('v')} → v${version.trimStart('v')}"
+    else if (installed != null) "v${installed.version.trimStart('v')}"
+    else "v${version.trimStart('v')}",
     displayRelease?.size?.formatSize().orEmpty(),
-    DateFormat.getDateInstance().format(Date(updated)),
+    DateFormat.getDateInstance().format(Date(product.updated)),
     *categories.toTypedArray(),
     when {
         Preferences[Preferences.Key.AndroidInsteadOfSDK] && latestRelease != null && latestRelease.minSdkVersion != 0 ->
@@ -71,7 +75,7 @@ fun Product.appInfoChips(installed: Installed?, latestRelease: Release?) = listO
 
         else                                                                                                             -> null
     },
-    if (antiFeatures.isNotEmpty()) stringResource(id = R.string.anti_features)
+    if (product.antiFeatures.isNotEmpty()) stringResource(id = R.string.anti_features)
     else null,
-    *licenses.toTypedArray(),
+    *product.licenses.toTypedArray(),
 ).toImmutableList()

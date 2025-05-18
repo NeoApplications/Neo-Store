@@ -1,7 +1,7 @@
 package com.machiav3lli.fdroid.data.index.v0
 
 import android.util.Xml
-import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.entity.Author
 import com.machiav3lli.fdroid.data.entity.Donate
@@ -38,7 +38,7 @@ class IndexV0Parser(private val repositoryId: Long, private val callback: Callba
             certificate: String, version: Int, timestamp: Long,
         )
 
-        fun onProduct(product: Product)
+        fun onProduct(product: IndexProduct)
     }
 
     internal object DonateComparator : Comparator<Donate> {
@@ -91,7 +91,7 @@ class IndexV0Parser(private val repositoryId: Long, private val callback: Callba
         val donates = mutableListOf<Donate>()
         val releases = mutableListOf<Release>()
 
-        fun build(): Product = Product(
+        fun build(): IndexProduct = IndexProduct(
             repositoryId = repositoryId,
             packageName = packageName,
             label = name,
@@ -168,7 +168,8 @@ class IndexV0Parser(private val repositoryId: Long, private val callback: Callba
                 permissions.toList(),
                 features.toList(),
                 platforms.toList(),
-                emptyList()
+                emptyList(),
+                true,
             )
         }
     }

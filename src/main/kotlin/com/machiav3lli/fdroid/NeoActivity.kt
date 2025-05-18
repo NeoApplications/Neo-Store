@@ -27,8 +27,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.machiav3lli.fdroid.data.content.Preferences
-import com.machiav3lli.fdroid.data.database.DatabaseX
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
+import com.machiav3lli.fdroid.data.repository.ExtrasRepository
+import com.machiav3lli.fdroid.data.repository.InstalledRepository
+import com.machiav3lli.fdroid.data.repository.PrivacyRepository
+import com.machiav3lli.fdroid.data.repository.ProductsRepository
+import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.AppNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
@@ -69,7 +73,7 @@ class NeoActivity : AppCompatActivity() {
     private val cScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
     private val mScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 
-    val db: DatabaseX by inject()
+    val productRepo: ProductsRepository by inject()
 
     private var currentTheme by Delegates.notNull<Int>()
     private val mainViewModel: MainVM by viewModel()
@@ -230,7 +234,7 @@ class NeoActivity : AppCompatActivity() {
                 } else {
                     val packageName = intent.packageNameFromURI
                     cScope.launch {
-                        if (!packageName.isNullOrEmpty() && db.getProductDao().exists(packageName))
+                        if (!packageName.isNullOrEmpty() && productRepo.productExists(packageName))
                             navigateProduct(packageName)
                         else showSearchPage(packageName)
                     }
@@ -327,7 +331,12 @@ class NeoActivity : AppCompatActivity() {
 }
 
 val viewModelsModule = module {
+    singleOf(::RepositoriesRepository)
+    singleOf(::ProductsRepository)
+    singleOf(::InstalledRepository)
     singleOf(::DownloadedRepository)
+    singleOf(::ExtrasRepository)
+    singleOf(::PrivacyRepository)
     viewModelOf(::MainVM)
     viewModelOf(::PrefsVM)
     viewModelOf(::AppSheetVM)

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 // TODO make sure that apps that not uninstalled by Droid-ify still get removed
 @Dao
 interface InstalledDao : BaseDao<Installed> {
-    fun put(vararg installed: Installed) {
+    suspend fun put(vararg installed: Installed) {
         installed.forEach { upsert(it) }
     }
 
@@ -22,8 +22,8 @@ interface InstalledDao : BaseDao<Installed> {
     fun getFlow(packageName: String): Flow<Installed?>
 
     @Query("DELETE FROM memory_installed WHERE packageName = :packageName")
-    fun delete(packageName: String)
+    suspend fun delete(packageName: String)
 
     @Query("DELETE FROM memory_installed")
-    fun emptyTable()
+    suspend fun emptyTable()
 }

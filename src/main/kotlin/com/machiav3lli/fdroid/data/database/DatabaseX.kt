@@ -1,8 +1,9 @@
 package com.machiav3lli.fdroid.data.database
 
-import android.content.Context
 import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.DeleteColumn
+import androidx.room.DeleteTable
 import androidx.room.RenameColumn
 import androidx.room.RenameTable
 import androidx.room.Room
@@ -12,9 +13,13 @@ import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.machiav3lli.fdroid.ROW_ID
 import com.machiav3lli.fdroid.TABLE_EXODUS_INFO
+import com.machiav3lli.fdroid.TABLE_INSTALLED
 import com.machiav3lli.fdroid.TABLE_INSTALL_TASK
 import com.machiav3lli.fdroid.TABLE_REPOSITORY
 import com.machiav3lli.fdroid.TABLE_TRACKER
+import com.machiav3lli.fdroid.data.database.DatabaseX.Companion.dbCreateCallback
+import com.machiav3lli.fdroid.data.database.dao.AntiFeatureDao
+import com.machiav3lli.fdroid.data.database.dao.AntiFeatureTempDao
 import com.machiav3lli.fdroid.data.database.dao.CategoryDao
 import com.machiav3lli.fdroid.data.database.dao.CategoryTempDao
 import com.machiav3lli.fdroid.data.database.dao.DownloadedDao
@@ -26,8 +31,12 @@ import com.machiav3lli.fdroid.data.database.dao.ProductDao
 import com.machiav3lli.fdroid.data.database.dao.ProductTempDao
 import com.machiav3lli.fdroid.data.database.dao.ReleaseDao
 import com.machiav3lli.fdroid.data.database.dao.ReleaseTempDao
+import com.machiav3lli.fdroid.data.database.dao.RepoCategoryDao
+import com.machiav3lli.fdroid.data.database.dao.RepoCategoryTempDao
 import com.machiav3lli.fdroid.data.database.dao.RepositoryDao
 import com.machiav3lli.fdroid.data.database.dao.TrackerDao
+import com.machiav3lli.fdroid.data.database.entity.AntiFeature
+import com.machiav3lli.fdroid.data.database.entity.AntiFeatureTemp
 import com.machiav3lli.fdroid.data.database.entity.Category
 import com.machiav3lli.fdroid.data.database.entity.CategoryTemp
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
@@ -39,6 +48,8 @@ import com.machiav3lli.fdroid.data.database.entity.Product
 import com.machiav3lli.fdroid.data.database.entity.ProductTemp
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.database.entity.ReleaseTemp
+import com.machiav3lli.fdroid.data.database.entity.RepoCategory
+import com.machiav3lli.fdroid.data.database.entity.RepoCategoryTemp
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV10
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV11
@@ -62,11 +73,13 @@ import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedR
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedReposV31
 import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.manager.work.SyncWorker.Companion.enableRepo
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.koin.android.ext.koin.androidContext
+import kotlinx.coroutines.runBlocking
 import org.koin.dsl.module
+import org.koin.java.KoinJavaComponent.get
 
 @Database(
     entities = [
@@ -77,14 +90,18 @@ import org.koin.dsl.module
         ProductTemp::class,
         Category::class,
         CategoryTemp::class,
+        RepoCategory::class,
+        RepoCategoryTemp::class,
         Installed::class,
         Extras::class,
         ExodusInfo::class,
         Tracker::class,
         Downloaded::class,
         InstallTask::class,
+        AntiFeature::class,
+        AntiFeatureTemp::class
     ],
-    version = 1024,
+    version = 1100,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -203,6 +220,11 @@ import org.koin.dsl.module
             to = 1024,
             spec = DatabaseX.Companion.ProductsCleanup::class
         ),
+        AutoMigration(
+            from = 1024,
+            to = 1100,
+            spec = DatabaseX.Companion.RevampProductsToV2::class
+        ),
     ]
 )
 @TypeConverters(Converters::class)
@@ -210,42 +232,31 @@ abstract class DatabaseX : RoomDatabase() {
     abstract fun getRepositoryDao(): RepositoryDao
     abstract fun getProductDao(): ProductDao
     abstract fun getReleaseDao(): ReleaseDao
-    abstract fun getReleaseTempDao(): ReleaseTempDao
-    abstract fun getProductTempDao(): ProductTempDao
     abstract fun getCategoryDao(): CategoryDao
-    abstract fun getCategoryTempDao(): CategoryTempDao
+    abstract fun getRepoCategoryDao(): RepoCategoryDao
+    abstract fun getAntiFeatureDao(): AntiFeatureDao
     abstract fun getInstalledDao(): InstalledDao
     abstract fun getExtrasDao(): ExtrasDao
     abstract fun getExodusInfoDao(): ExodusInfoDao
     abstract fun getTrackerDao(): TrackerDao
     abstract fun getDownloadedDao(): DownloadedDao
+
+    // TODO replace external calls
+    abstract fun getReleaseTempDao(): ReleaseTempDao
+    abstract fun getProductTempDao(): ProductTempDao
+    abstract fun getCategoryTempDao(): CategoryTempDao
+    abstract fun getRepoCategoryTempDao(): RepoCategoryTempDao
+    abstract fun getAntiFeatureTempDao(): AntiFeatureTempDao
     abstract fun getInstallTaskDao(): InstallTaskDao
 
     companion object {
-        @Volatile
-        private var INSTANCE: DatabaseX? = null
-
-        fun getInstance(context: Context): DatabaseX {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room
-                    .databaseBuilder(
-                        context.applicationContext,
-                        DatabaseX::class.java,
-                        "main_database.db"
-                    )
-                    .fallbackToDestructiveMigration()
-                    .build()
-                instance.let { instance ->
-                    GlobalScope.launch(Dispatchers.IO) {
-                        if (instance.getRepositoryDao()
-                                .getCount() == 0
-                        ) defaultRepositories.forEach {
-                            instance.getRepositoryDao().put(it)
-                        }
-                    }
+        val dbCreateCallback = object : Callback() {
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
+                CoroutineScope(Dispatchers.IO).launch {
+                    val dao = get<RepositoryDao>(RepositoryDao::class.java)
+                    if (dao.getCount() == 0) dao.put(*defaultRepositories.toTypedArray())
                 }
-                INSTANCE = instance
-                instance
             }
         }
 
@@ -385,13 +396,38 @@ abstract class DatabaseX : RoomDatabase() {
             override fun onPostMigrate(db: SupportSQLiteDatabase) {
                 super.onPostMigrate(db)
                 GlobalScope.launch(Dispatchers.IO) {
-                    INSTANCE?.apply {
+                    get<DatabaseX>(DatabaseX::class.java).apply {
                         runInTransaction {
-                            getProductDao().emptyTable()
-                            getCategoryDao().emptyTable()
-                            getReleaseDao().emptyTable()
-                            getDownloadedDao().emptyTable()
-                            getRepositoryDao().forgetLastModifications()
+                            runBlocking {
+                                getProductDao().emptyTable()
+                                getCategoryDao().emptyTable()
+                                getReleaseDao().emptyTable()
+                                getDownloadedDao().emptyTable()
+                                // performClear(false, "product", "category", "release", "downloaded")
+                                getRepositoryDao().forgetLastModifications()
+                                // db.execSQL("UPDATE repository SET lastModified = '', entityTag = ''")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        @DeleteColumn(tableName = TABLE_INSTALLED, columnName = "signature")
+        @DeleteTable(tableName = "product")
+        @DeleteTable(tableName = "temporary_product")
+        @DeleteTable(tableName = "category")
+        @DeleteTable(tableName = "temporary_category")
+        class RevampProductsToV2 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                GlobalScope.launch(Dispatchers.IO) {
+                    get<DatabaseX>(DatabaseX::class.java).apply {
+                        runInTransaction {
+                            runBlocking {
+                                getRepositoryDao().emptyTable()
+                                getRepositoryDao().put(*defaultRepositories.toTypedArray())
+                            }
                         }
                     }
                 }
@@ -425,13 +461,13 @@ abstract class DatabaseX : RoomDatabase() {
                 else -> emptyList()
             }
             GlobalScope.launch(Dispatchers.IO) {
-                addRps.forEach {
-                    INSTANCE?.getRepositoryDao()?.put(it)
-                    if (from == 20) INSTANCE?.getDownloadedDao()?.emptyTable()
-                }
-                rmRps.forEach {
-                    enableRepo(it, false)
-                    INSTANCE?.getRepositoryDao()?.deleteByAddress(it.address)
+                get<DatabaseX>(DatabaseX::class.java).apply {
+                    getRepositoryDao().put(*addRps.toTypedArray())
+                    if (from == 20) getDownloadedDao().emptyTable()
+                    rmRps.forEach {
+                        enableRepo(it, false)
+                        getRepositoryDao().deleteByAddress(it.address)
+                    }
                 }
             }
         }
@@ -439,11 +475,13 @@ abstract class DatabaseX : RoomDatabase() {
 
     fun cleanUp(vararg pairs: Pair<Long, Boolean>) {
         runInTransaction {
-            pairs.forEach { (id, enabled) ->
-                getProductDao().deleteById(id)
-                getCategoryDao().deleteById(id)
-                getReleaseDao().deleteById(id)
-                if (enabled) getRepositoryDao().deleteById(id)
+            runBlocking {
+                pairs.forEach { (id, enabled) ->
+                    getProductDao().deleteById(id)
+                    getCategoryDao().deleteById(id)
+                    getReleaseDao().deleteById(id)
+                    if (enabled) getRepositoryDao().deleteById(id)
+                }
             }
         }
     }
@@ -452,24 +490,42 @@ abstract class DatabaseX : RoomDatabase() {
 
     fun finishTemporary(repository: Repository, success: Boolean) {
         runInTransaction {
-            if (success) {
-                getProductDao().deleteById(repository.id)
-                getCategoryDao().deleteById(repository.id)
-                getReleaseDao().deleteById(repository.id)
-                getProductDao().insert(*(getProductTempDao().getAll()))
-                getCategoryDao().insert(*(getCategoryTempDao().getAll()))
-                getReleaseDao().insert(*(getReleaseTempDao().getAll()))
-                getRepositoryDao().put(repository)
+            runBlocking {
+                if (success) {
+                    getProductDao().deleteById(repository.id)
+                    getCategoryDao().deleteById(repository.id)
+                    getRepoCategoryDao().deleteByRepoId(repository.id)
+                    getAntiFeatureDao().deleteByRepoId(repository.id)
+                    getReleaseDao().deleteById(repository.id)
+                    getProductDao().insert(*(getProductTempDao().getAll()))
+                    getCategoryDao().insert(*(getCategoryTempDao().getAll()))
+                    getRepoCategoryDao().insert(*(getRepoCategoryTempDao().getAll()))
+                    getAntiFeatureDao().insert(*(getAntiFeatureTempDao().getAll()))
+                    getReleaseDao().insert(*(getReleaseTempDao().getAll()))
+                    getRepositoryDao().put(repository)
+                }
+                getProductTempDao().emptyTable()
+                getCategoryTempDao().emptyTable()
+                getRepoCategoryTempDao().emptyTable()
+                getAntiFeatureTempDao().emptyTable()
+                getReleaseTempDao().emptyTable()
+                // performClear(false, "product_temp", "category_temp", "release_temp")
             }
-            getProductTempDao().emptyTable()
-            getCategoryTempDao().emptyTable()
-            getReleaseTempDao().emptyTable()
         }
     }
 }
 
 val databaseModule = module {
-    single { DatabaseX.getInstance(androidContext()) }
+    single {
+        Room.databaseBuilder(
+            get(),
+            DatabaseX::class.java,
+            "main_database.db"
+        )
+            .addCallback(dbCreateCallback)
+            .fallbackToDestructiveMigration(true)
+            .build()
+    }
     single { get<DatabaseX>().getRepositoryDao() }
     single { get<DatabaseX>().getProductDao() }
     single { get<DatabaseX>().getReleaseDao() }
@@ -477,6 +533,10 @@ val databaseModule = module {
     single { get<DatabaseX>().getProductTempDao() }
     single { get<DatabaseX>().getCategoryDao() }
     single { get<DatabaseX>().getCategoryTempDao() }
+    single { get<DatabaseX>().getRepoCategoryDao() }
+    single { get<DatabaseX>().getRepoCategoryTempDao() }
+    single { get<DatabaseX>().getAntiFeatureDao() }
+    single { get<DatabaseX>().getAntiFeatureTempDao() }
     single { get<DatabaseX>().getInstalledDao() }
     single { get<DatabaseX>().getExtrasDao() }
     single { get<DatabaseX>().getExodusInfoDao() }

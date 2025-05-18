@@ -1,19 +1,18 @@
 package com.machiav3lli.fdroid.data.index.v2
 
-import android.R.attr.maxSdkVersion
 import android.content.res.Resources
 import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.core.os.LocaleListCompat
-import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.entity.Author
 import com.machiav3lli.fdroid.data.entity.Donate
-import com.machiav3lli.fdroid.data.entity.Screenshot
 import com.machiav3lli.fdroid.data.index.v0.IndexV0Parser
 import com.machiav3lli.fdroid.data.index.v2.IndexV2.File
 import com.machiav3lli.fdroid.utils.extension.android.Android
+import java.util.Locale
 
-internal fun IndexV2.Package.toProduct(repositoryId: Long, packageName: String) = Product(
+internal fun IndexV2.Package.toProduct(repositoryId: Long, packageName: String) = IndexProduct(
     repositoryId = repositoryId,
     packageName = packageName,
     label = metadata.name.findLocalized(packageName),
@@ -49,9 +48,7 @@ internal fun IndexV2.Package.toProduct(repositoryId: Long, packageName: String) 
                 acc
             }
             .findLocalized(emptyList())
-            .map {
-                Screenshot(null, null, it.name)
-            }
+            .map(File::name)
     },
     suggestedVersionCode = 0L,
     author = Author(
@@ -64,6 +61,7 @@ internal fun IndexV2.Package.toProduct(repositoryId: Long, packageName: String) 
     video = metadata.video.findLocalized(""),
     tracker = metadata.issueTracker.orEmpty(),
     changelog = metadata.changelog.orEmpty(),
+    // TODO convert usage to Map<VersionCode,Changelog>
     whatsNew = versions.entries
         .maxBy { it.value.added }.value
         .whatsNew.findLocalized(""),
@@ -82,11 +80,11 @@ internal fun IndexV2.Version.toRelease(
     size = file.size ?: 0L,
     minSdkVersion = manifest.usesSdk?.minSdkVersion ?: 0,
     targetSdkVersion = manifest.usesSdk?.targetSdkVersion ?: 0,
-    maxSdkVersion = maxSdkVersion,
+    maxSdkVersion = 0,
     source = src?.name.orEmpty(),
-    release = file.name,
+    release = file.name.removePrefix("/"),
     hash = file.sha256.orEmpty(),
-    hashType = "sha256",
+    hashType = "SHA-256",
     signature = manifest.signer?.sha256?.first().orEmpty(),
     obbMain = "",
     obbMainHash = "",
@@ -102,6 +100,7 @@ internal fun IndexV2.Version.toRelease(
     features = emptyList(),
     platforms = manifest.nativecode,
     incompatibilities = emptyList(),
+    isCompatible = true,
 )
 
 internal fun <T> Localized<T>?.findLocalized(fallback: T): T =
@@ -109,22 +108,37 @@ internal fun <T> Localized<T>?.findLocalized(fallback: T): T =
 
 private fun <T> Localized<T>?.getBestLocale(localeList: LocaleListCompat): T? {
     if (isNullOrEmpty()) return null
-    val firstMatch = localeList.getFirstMatch(keys.toTypedArray()) ?: return null
-    val tag = firstMatch.toLanguageTag()
-    // try first matched tag first (usually has region tag, e.g. de-DE)
-    return entries.find { it.key == tag }?.value ?: run {
-        // split away stuff like script and try language and region only
-        val langCountryTag = "${firstMatch.language}-${firstMatch.country}"
-        (getOrStartsWith(langCountryTag) ?: run {
-            // split away region tag and try language only
-            val langTag = firstMatch.language
-            // try language, then English and then just take the first of the list
-            getOrStartsWith(langTag)
-                ?: get("en-US")
-                ?: getOrStartsWith("en")
-                ?: entries.first().value
-        })
-    }
+    val defLocale = Locale.getDefault()
+    val defTag = defLocale.toLanguageTag()
+    val sysLocaleMatch = localeList.getFirstMatch(keys.toTypedArray()) ?: return null
+    val sysTag = sysLocaleMatch.toLanguageTag()
+    // try the user-set default language
+    return entries.find { it.key == defTag }?.value
+        ?: run {
+            // split away stuff like script and try language and region only
+            val langCountryTag = "${defLocale.language}-${defLocale.country}"
+            (getOrStartsWith(langCountryTag) ?: run {
+                // split away region tag and try language only
+                val langTag = defLocale.language
+                // try language, then English and then just take the first of the list
+                getOrStartsWith(langTag)
+            })
+        }
+        // now try first matched system tag (usually has region tag, e.g. de-DE)
+        ?: entries.find { it.key == sysTag }?.value
+        ?: run {
+            // split away stuff like script and try language and region only
+            val langCountryTag = "${sysLocaleMatch.language}-${sysLocaleMatch.country}"
+            (getOrStartsWith(langCountryTag) ?: run {
+                // split away region tag and try language only
+                val langTag = sysLocaleMatch.language
+                // try language, then English and then just take the first of the list
+                getOrStartsWith(langTag)
+                    ?: get("en-US")
+                    ?: getOrStartsWith("en")
+                    ?: entries.first().value
+            })
+        }
 }
 
 private fun <T> Map<String, T>.getOrStartsWith(s: String): T? =

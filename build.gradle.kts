@@ -12,6 +12,11 @@ plugins {
 
 val jvmVersion = JavaVersion.VERSION_17
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+    arg("room.incremental", "true")
+}
+
 android {
     namespace = "com.machiav3lli.fdroid"
     compileSdk = 35
@@ -19,20 +24,10 @@ android {
     defaultConfig {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1026
-        versionName = "1.0.9"
+        targetSdk = 35
+        versionCode = 1027
+        versionName = "1.1.0-alpha01"
         buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                ksp {
-                    arg("room.schemaLocation", "$projectDir/schemas")
-                    arg("room.incremental", "true")
-                    arg("room.generateKotlin", "true")
-                }
-            }
-        }
     }
 
     sourceSets.forEach { source ->
@@ -79,8 +74,9 @@ android {
             resValue("string", "application_name", "Neo Store - Neo")
         }
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            // disabled because of a performance issue on minified builds for now
+            isMinifyEnabled = false
+            isShrinkResources = false
             resValue("string", "application_name", "Neo Store")
         }
         all {
@@ -167,7 +163,7 @@ dependencies {
     implementation(libs.jackson.core)
     implementation(libs.serialization.json)
     implementation(libs.markdown)
-    implementation(libs.compose.markdown)
+    implementation(libs.compose.html)
 
     // Storage
     implementation(libs.simple.storage)

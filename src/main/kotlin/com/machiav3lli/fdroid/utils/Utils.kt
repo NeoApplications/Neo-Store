@@ -29,6 +29,7 @@ import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.Product
 import com.machiav3lli.fdroid.data.database.entity.Release
@@ -47,7 +48,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GlobeSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.User
 import com.machiav3lli.fdroid.ui.dialog.LaunchDialog
 import com.machiav3lli.fdroid.utils.extension.android.Android
-import com.machiav3lli.fdroid.utils.extension.android.singleSignature
+import com.machiav3lli.fdroid.utils.extension.android.signerSHA256Signatures
 import com.machiav3lli.fdroid.utils.extension.android.versionCodeCompat
 import com.machiav3lli.fdroid.utils.extension.text.hex
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
@@ -63,32 +64,31 @@ import kotlin.math.abs
 
 object Utils {
     fun PackageInfo.toInstalledItem(launcherActivities: List<Pair<String, String>> = emptyList()): Installed {
-        val signatureString = singleSignature?.let(Utils::calculateHash).orEmpty()
         return Installed(
             packageName,
             versionName.orEmpty(),
             versionCodeCompat,
-            signatureString,
+            signerSHA256Signatures,
             applicationInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM) == ApplicationInfo.FLAG_SYSTEM,
             launcherActivities
         )
     }
 
-    fun calculateHash(signature: Signature): String {
-        return MessageDigest.getInstance("MD5").digest(signature.toCharsString().toByteArray())
+    fun calculateSHA256(signature: Signature): String {
+        return MessageDigest.getInstance("SHA-256").digest(signature.toByteArray())
             .hex()
     }
 
     suspend fun startUpdate(
         packageName: String,
         installed: Installed?,
-        products: List<Pair<Product, Repository>>,
+        products: List<Pair<EmbeddedProduct, Repository>>,
     ) {
         val productRepository = findSuggestedProduct(products, installed) { it.first }
         val compatibleReleases = productRepository?.first?.selectedReleases.orEmpty()
             .filter {
                 installed == null ||
-                        installed.signature == it.signature ||
+                        it.signature in installed.signatures ||
                         Preferences[Preferences.Key.DisableSignatureCheck]
             }
         val releaseFlow = MutableStateFlow(compatibleReleases.firstOrNull())
@@ -105,7 +105,7 @@ object Utils {
             if (productRepository != null && it != null) {
                 DownloadWorker.enqueue(
                     packageName,
-                    productRepository.first.label,
+                    productRepository.first.product.label,
                     productRepository.second,
                     it,
                 )
@@ -181,14 +181,15 @@ object Utils {
 fun <T> findSuggestedProduct(
     products: List<T>,
     installed: Installed?,
-    extract: (T) -> Product,
+    extract: (T) -> EmbeddedProduct,
 ): T? {
     return products.maxWithOrNull(
         compareBy(
             {
                 extract(it).compatible && (
                         installed == null ||
-                                installed.signature in extract(it).signatures ||
+                                installed.signatures.intersect(extract(it).productSignatures)
+                                    .isNotEmpty() ||
                                 Preferences[Preferences.Key.DisableSignatureCheck]
                         )
             },
@@ -319,11 +320,11 @@ fun Context.startLauncherActivity(packageName: String, name: String) {
     }
 }
 
-fun Context.shareIntent(packageName: String, appName: String, repository: String) {
+fun Context.shareIntent(packageName: String, appName: String, repoWebUrl: String) {
     val shareIntent = Intent(Intent.ACTION_SEND)
     val extraText = when {
-        repository.contains("IzzyOnDroid")
-            -> "https://apt.izzysoft.de/fdroid/index/apk/$packageName"
+        repoWebUrl.isNotBlank()
+            -> "$repoWebUrl$packageName"
 
         else
             -> "https://f-droid.org/packages/${packageName}/"
@@ -474,18 +475,32 @@ fun Context.getLocaleDateString(time: Long): String {
     return DateUtils.formatDateTime(this, date.time, format)
 }
 
-fun Collection<Product>.matchSearchQuery(searchQuery: String): List<Product> {
+fun Collection<EmbeddedProduct>.matchSearchQuery(searchQuery: String): List<EmbeddedProduct> {
     if (searchQuery.isBlank()) return toList()
     val now = System.currentTimeMillis()
     return filter {
-        listOf(it.label, it.packageName, it.author.name, it.summary, it.description)
+        listOf(
+            it.product.label,
+            it.product.packageName,
+            it.product.author.name,
+            it.product.summary,
+            it.product.description
+        )
             .any { literal ->
                 literal.contains(searchQuery, true)
             }
     }.sortedByDescending {
-        (if ("${it.label} ${it.packageName}".contains(searchQuery, true)) 7 else 0) or
-                (if (isDifferenceMoreThanOneYear(it.updated, now)) 0 else 3) or
-                (if ("${it.summary} ${it.author.name}".contains(searchQuery, true)) 1 else 0)
+        (if ("${it.product.label} ${it.product.packageName}".contains(
+                searchQuery,
+                true
+            )
+        ) 7 else 0) or
+                (if (isDifferenceMoreThanOneYear(it.product.updated, now)) 0 else 3) or
+                (if ("${it.product.summary} ${it.product.author.name}".contains(
+                        searchQuery,
+                        true
+                    )
+                ) 1 else 0)
     }
 }
 

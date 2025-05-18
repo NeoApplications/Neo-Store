@@ -22,7 +22,6 @@ import com.machiav3lli.fdroid.QUERY_PACKAGE_NAME
 import com.machiav3lli.fdroid.QUERY_SCREENSHOT
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Repository
-import com.machiav3lli.fdroid.data.entity.Screenshot
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import io.ktor.http.HttpHeaders
 import okhttp3.Cache
@@ -201,27 +200,8 @@ object CoilDownloader {
 
 fun createScreenshotUri(
     repository: Repository,
-    packageName: String,
-    screenshot: Screenshot,
-): Uri {
-    return if (screenshot.type == null) (repository.address + screenshot.path).toUri()
-    else Uri.Builder().scheme("https").authority(HOST_SCREENSHOT)
-        .appendQueryParameter(QUERY_ADDRESS, repository.address)
-        .appendQueryParameter(QUERY_AUTHENTICATION, repository.authentication)
-        .appendQueryParameter(QUERY_PACKAGE_NAME, packageName)
-        .appendQueryParameter(QUERY_LOCALE, screenshot.locale)
-        .appendQueryParameter(
-            QUERY_DEVICE, when (screenshot.type) {
-                Screenshot.Type.PHONE        -> "phoneScreenshots"
-                Screenshot.Type.SMALL_TABLET -> "sevenInchScreenshots"
-                Screenshot.Type.LARGE_TABLET -> "tenInchScreenshots"
-                Screenshot.Type.TV           -> "tvScreenshots"
-                Screenshot.Type.WEAR         -> "wearScreenshots"
-            }
-        )
-        .appendQueryParameter(QUERY_SCREENSHOT, screenshot.path)
-        .build()
-}
+    screenshot: String,
+): Uri = (repository.address + screenshot).toUri()
 
 fun createIconUri(icon: String, address: String?, auth: String?): Uri =
     (address + icon).toUri().let {

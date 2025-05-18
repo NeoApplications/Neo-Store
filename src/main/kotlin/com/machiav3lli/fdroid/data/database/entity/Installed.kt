@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.data.database.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -17,7 +18,8 @@ data class Installed(
     var packageName: String = "",
     var version: String = "",
     var versionCode: Long = 0L,
-    var signature: String = "",
+    @ColumnInfo(defaultValue = "[]")
+    val signatures: List<String> = emptyList(),
     var isSystem: Boolean = false,
     val launcherActivities: List<Pair<String, String>> = emptyList()
 )

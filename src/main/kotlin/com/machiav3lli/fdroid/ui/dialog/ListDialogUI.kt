@@ -19,12 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.data.repository.ProductsRepository
+import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.ui.components.ProductItemContent
 import com.machiav3lli.fdroid.ui.compose.utils.blockShadow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.mapLatest
+import org.koin.compose.koinInject
 
 @Composable
 fun <T> ListDialogUI(
@@ -82,12 +84,13 @@ fun <T> ListDialogUI(
 fun ProductsListDialogUI(
     repositoryId: Long,
     title: String,
+    productRepo: ProductsRepository = koinInject(),
+    reposRepo: RepositoriesRepository = koinInject(),
 ) {
-    val apps by NeoApp.db.getProductDao().productsForRepositoryFlow(repositoryId)
+    val apps by productRepo.getProductsOfRepo(repositoryId)
         .mapLatest { prod -> prod.map { it.toItem() } }
         .collectAsState(initial = null)
-    val repo by NeoApp.db.getRepositoryDao().getFlow(repositoryId)
-        .collectAsState(initial = null)
+    val repo by reposRepo.getById(repositoryId).collectAsState(initial = null)
 
     ListDialogUI(
         titleText = title,

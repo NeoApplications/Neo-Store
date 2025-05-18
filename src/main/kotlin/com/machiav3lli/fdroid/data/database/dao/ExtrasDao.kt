@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ExtrasDao : BaseDao<Extras> {
     @Query("DELETE FROM extras WHERE packageName = :packageName")
-    fun delete(packageName: String)
+    suspend fun delete(packageName: String)
 
     @Query("SELECT * FROM extras WHERE packageName = :packageName")
     operator fun get(packageName: String): Extras?
@@ -30,19 +30,19 @@ interface ExtrasDao : BaseDao<Extras> {
     fun getFavoritesFlow(): Flow<Array<String>>
 
     @Query("UPDATE extras SET favorite = :isFavorite WHERE packageName = :packageName")
-    fun updateFavorite(packageName: String, isFavorite: Boolean)
+    suspend fun updateFavorite(packageName: String, isFavorite: Boolean)
 
     @Query("UPDATE extras SET ignoreVulns = :ignoreVulns WHERE packageName = :packageName")
-    fun updateIgnoreVulns(packageName: String, ignoreVulns: Boolean)
+    suspend fun updateIgnoreVulns(packageName: String, ignoreVulns: Boolean)
 
     @Query("UPDATE extras SET ignoreUpdates = :ignoreUpdates WHERE packageName = :packageName")
-    fun updateIgnoreUpdates(packageName: String, ignoreUpdates: Boolean)
+    suspend fun updateIgnoreUpdates(packageName: String, ignoreUpdates: Boolean)
 
     @Query("UPDATE extras SET allowUnstable = :allowUnstable WHERE packageName = :packageName")
-    fun updateAllowUnstable(packageName: String, allowUnstable: Boolean)
+    suspend fun updateAllowUnstable(packageName: String, allowUnstable: Boolean)
 
     @Query("UPDATE extras SET ignoredVersion = :ignoredVersion WHERE packageName = :packageName")
-    fun updateIgnoredVersion(packageName: String, ignoredVersion: Long)
+    suspend fun updateIgnoredVersion(packageName: String, ignoredVersion: Long)
 
     @Transaction
     suspend fun upsertExtra(packageName: String, updateFunc: suspend ExtrasDao.(Extras?) -> Unit) {

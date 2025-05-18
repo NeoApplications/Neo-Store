@@ -423,4 +423,5 @@
     <string name="initial_sync_repositories">Do you want to sync the preset repositories (The official F-Droid, IzzyOnDroid &amp; Guardian Project)?</string>
     <string name="index_v2">Enable Index-V2</string>
     <string name="index_v2_summary">Enables requesting Index-V2 as the primary index. Still experimental, having benefits and drawbacks.</string>
+    <string name="action_start">Let\'s go!</string>
 </resources>

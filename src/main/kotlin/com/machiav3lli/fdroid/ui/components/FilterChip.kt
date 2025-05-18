@@ -5,8 +5,6 @@ import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,13 +15,13 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SelectableChipColors
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -56,7 +54,7 @@ private fun categoryChipTransition(selected: Boolean): CategoryChipTransition {
     )
     val corerRadius = transition.animateDp(label = "chip_corner") { state ->
         when (state) {
-            SelectionState.Unselected -> 8.dp
+            SelectionState.Unselected -> 4.dp
             SelectionState.Selected   -> 16.dp
         }
     }
@@ -203,78 +201,35 @@ fun ChipsSwitch(
     secondTextId: Int,
     secondIcon: ImageVector,
     firstSelected: Boolean = true,
-    colors: SelectableChipColors = FilterChipDefaults.filterChipColors(
-        containerColor = Color.Transparent,
-        labelColor = MaterialTheme.colorScheme.onSurface,
-        iconColor = MaterialTheme.colorScheme.onSurface,
-        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-    ),
     onCheckedChange: (Boolean) -> Unit,
 ) {
-    Row(
-        modifier = Modifier
-            .background(
-                MaterialTheme.colorScheme.surfaceContainerLowest,
-                MaterialTheme.shapes.medium
-            )
-            .padding(horizontal = 6.dp)
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        val (firstSelected, selectFirst) = remember { mutableStateOf(firstSelected) }
+    val (firstSelected, selectFirst) = remember { mutableStateOf(firstSelected) }
 
-        FilterChip(
-            modifier = Modifier.weight(1f),
-            shape = MaterialTheme.shapes.small,
-            border = null,
-            selected = firstSelected,
-            colors = colors,
+    SingleChoiceSegmentedButtonRow(
+        modifier = Modifier
+            .fillMaxWidth(),
+        space = 24.dp,
+    ) {
+        SegmentedTabButton(
+            text = stringResource(id = firstTextId),
+            icon = firstIcon,
+            selected = { firstSelected },
+            index = 0,
+            count = 2,
             onClick = {
                 onCheckedChange(true)
                 selectFirst(true)
-            },
-            leadingIcon = {
-                Icon(
-                    imageVector = firstIcon,
-                    contentDescription = stringResource(id = firstTextId)
-                )
-            },
-            label = {
-                Text(
-                    text = stringResource(id = firstTextId),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(vertical = 8.dp),
-                )
             }
         )
-        FilterChip(
-            modifier = Modifier.weight(1f),
-            shape = MaterialTheme.shapes.small,
-            border = null,
-            selected = !firstSelected,
-            colors = colors,
+        SegmentedTabButton(
+            text = stringResource(id = secondTextId),
+            icon = secondIcon,
+            selected = { !firstSelected },
+            index = 1,
+            count = 2,
             onClick = {
                 onCheckedChange(false)
                 selectFirst(false)
-            },
-            label = {
-                Text(
-                    text = stringResource(id = secondTextId),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(vertical = 8.dp),
-                )
-            },
-            trailingIcon = {
-                Icon(
-                    imageVector = secondIcon,
-                    contentDescription = stringResource(id = secondTextId)
-                )
             }
         )
     }

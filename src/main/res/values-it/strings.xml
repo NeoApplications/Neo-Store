@@ -424,4 +424,7 @@
     <string name="about_channel">Canale</string>
     <string name="syncing_batch_FORMAT">Sincronizzazione repository (%d/%d)</string>
     <string name="initial_sync_repositories">Vuoi sincronizzare i repository preimpostati (F-Droid ufficiale, IzzyOnDroid e Guardian Project)?</string>
+    <string name="index_v2_summary">Permette di richiedere Index-V2 come indice primario. Ancora sperimentale, presenta vantaggi e svantaggi.</string>
+    <string name="index_v2">Abilita Index-V2</string>
+    <string name="action_start">Andiamo!</string>
 </resources>

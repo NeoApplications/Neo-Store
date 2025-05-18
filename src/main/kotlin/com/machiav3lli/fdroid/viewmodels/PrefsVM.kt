@@ -3,12 +3,15 @@ package com.machiav3lli.fdroid.viewmodels
 import android.os.Parcelable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.machiav3lli.fdroid.data.database.DatabaseX
 import com.machiav3lli.fdroid.data.database.entity.Extras
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.newRepository
+import com.machiav3lli.fdroid.data.repository.ExtrasRepository
+import com.machiav3lli.fdroid.data.repository.InstalledRepository
+import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,14 +21,16 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 
-class PrefsVM(private val db: DatabaseX) : ViewModel() {
-    private val cc = Dispatchers.IO
+class PrefsVM(
+    installedRepo: InstalledRepository,
+    private val reposRepo: RepositoriesRepository,
+    private val extrasRepo: ExtrasRepository,
+) : ViewModel() {
     private val ioScope = viewModelScope.plus(Dispatchers.IO)
 
-    val repositories = db.getRepositoryDao().getAllFlow()
+    val repositories = reposRepo.getAll()
         .stateIn(
             ioScope,
             SharingStarted.Lazily,
@@ -46,11 +51,11 @@ class PrefsVM(private val db: DatabaseX) : ViewModel() {
             emptyList()
         )
 
-    val installed = db.getInstalledDao().getAllFlow().map {
+    val installed = installedRepo.getAll().map {
         it.associateBy(Installed::packageName)
     }
 
-    val extras = db.getExtrasDao().getAllFlow().stateIn(
+    val extras = extrasRepo.getAll().stateIn(
         ioScope,
         SharingStarted.Eagerly,
         emptyList()
@@ -62,7 +67,7 @@ class PrefsVM(private val db: DatabaseX) : ViewModel() {
     val fingerprint = intentFingerprint as StateFlow<String>
 
     fun setSearchQuery(value: String) {
-        ioScope.launch { _reposSearchQuery.update { value } }
+        viewModelScope.launch { _reposSearchQuery.update { value } }
     }
 
     fun setIntent(address: String?, fingerprint: String?) {
@@ -72,50 +77,35 @@ class PrefsVM(private val db: DatabaseX) : ViewModel() {
         }
     }
 
-    suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long =
-        withContext(cc) {
-            db.getRepositoryDao().insertReturn(
+    suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long {
+        return viewModelScope.async {
+            reposRepo.insertReturn(
                 newRepository(
                     fallbackName = "new repository",
                     address = address,
                     fingerprint = fingerprint
                 )
             )
-        }
+        }.await()
+    }
 
     fun updateRepo(newValue: Repository?) {
         newValue?.let {
             viewModelScope.launch {
-                update(it)
+                reposRepo.upsert(it)
             }
-        }
-    }
-
-    private suspend fun update(newValue: Repository) {
-        withContext(cc) {
-            db.getRepositoryDao().put(newValue)
         }
     }
 
     fun insertExtras(vararg items: Extras) {
         viewModelScope.launch {
-            insert(*items)
-        }
-    }
-
-    private suspend fun insert(vararg items: Extras) {
-        withContext(cc) {
-            db.getExtrasDao().upsert(*items)
+            extrasRepo.upsert(*items)
         }
     }
 
     fun insertRepos(vararg newValue: Repository) {
-        newValue.let {
-            viewModelScope.launch {
-                withContext(cc) {
-                    db.getRepositoryDao().insertOrUpdate(*newValue)
-                }
-            }
+        viewModelScope.launch {
+            reposRepo.insertOrUpdate(*newValue)
         }
     }
 }
