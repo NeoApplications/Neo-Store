@@ -74,8 +74,9 @@ android {
             resValue("string", "application_name", "Neo Store - Neo")
         }
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            // disabled because of a performance issue on minified builds for now
+            isMinifyEnabled = false
+            isShrinkResources = false
             resValue("string", "application_name", "Neo Store")
         }
         all {
