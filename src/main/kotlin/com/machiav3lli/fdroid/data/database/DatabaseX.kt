@@ -2,6 +2,8 @@ package com.machiav3lli.fdroid.data.database
 
 import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.DeleteColumn
+import androidx.room.DeleteTable
 import androidx.room.RenameColumn
 import androidx.room.RenameTable
 import androidx.room.Room
@@ -99,7 +101,7 @@ import org.koin.java.KoinJavaComponent.get
         AntiFeature::class,
         AntiFeatureTemp::class
     ],
-    version = 1024,
+    version = 1100,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -217,6 +219,11 @@ import org.koin.java.KoinJavaComponent.get
             from = 31,
             to = 1024,
             spec = DatabaseX.Companion.ProductsCleanup::class
+        ),
+        AutoMigration(
+            from = 1024,
+            to = 1100,
+            spec = DatabaseX.Companion.RevampProductsToV2::class
         ),
     ]
 )
@@ -399,6 +406,27 @@ abstract class DatabaseX : RoomDatabase() {
                                 // performClear(false, "product", "category", "release", "downloaded")
                                 getRepositoryDao().forgetLastModifications()
                                 // db.execSQL("UPDATE repository SET lastModified = '', entityTag = ''")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        @DeleteColumn(tableName = TABLE_INSTALLED, columnName = "signature")
+        @DeleteTable(tableName = "product")
+        @DeleteTable(tableName = "temporary_product")
+        @DeleteTable(tableName = "category")
+        @DeleteTable(tableName = "temporary_category")
+        class RevampProductsToV2 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                GlobalScope.launch(Dispatchers.IO) {
+                    get<DatabaseX>(DatabaseX::class.java).apply {
+                        runInTransaction {
+                            runBlocking {
+                                getRepositoryDao().emptyTable()
+                                getRepositoryDao().put(*defaultRepositories.toTypedArray())
                             }
                         }
                     }
