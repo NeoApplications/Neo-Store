@@ -427,6 +427,9 @@ abstract class DatabaseX : RoomDatabase() {
                             runBlocking {
                                 getRepositoryDao().emptyTable()
                                 getRepositoryDao().put(*defaultRepositories.toTypedArray())
+                                getDownloadedDao().emptyTable()
+                                getInstallTaskDao().emptyTable()
+                                getReleaseDao().emptyTable()
                             }
                         }
                     }
