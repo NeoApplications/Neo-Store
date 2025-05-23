@@ -184,8 +184,8 @@
     <string name="only_on_wifi_and_battery">Solo con Wi-Fi e in carica</string>
     <string name="install_after_sync">Aggiornamento automatico</string>
     <string name="install_after_sync_summary">Installa tutte le nuove versioni dopo aver esaminato i repository per le nuove app.</string>
-    <string name="prefs_updated_apps">Numero app in \"Aggiornate di recente\\</string>
-    <string name="prefs_new_apps">Numero app in \"Nuove app\"</string>
+    <string name="prefs_updated_apps">Numero app in \"Aggiornate di recente\"</string>
+    <string name="prefs_new_apps">Numero app da mostrare in \"Nuove app\"</string>
     <string name="new_repository">Nuovo repository</string>
     <string name="default_tab">Scheda predefinita</string>
     <string name="pending">In attesa</string>
