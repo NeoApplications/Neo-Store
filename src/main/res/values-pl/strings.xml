@@ -175,7 +175,7 @@
     <string name="http_proxy">Serwer proxy HTTP</string>
     <string name="prefs_language_title">Język</string>
     <string name="prefs_personalization">Personalizacja</string>
-    <string name="prefs_updated_apps">Liczba aplikacji do wyświetlenia w sekcji „Ostatnio zaktualizowane\\</string>
+    <string name="prefs_updated_apps">Liczba aplikacji do wyświetlenia w sekcji „Ostatnio zaktualizowane\"</string>
     <string name="prefs_new_apps">Liczba aplikacji do wyświetlenia w sekcji „Nowe aplikacje\"</string>
     <string name="installed_applications">Zainstalowane</string>
     <string name="update_all">Zainstaluj wszystko</string>
