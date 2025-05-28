@@ -410,4 +410,8 @@
     <string name="installing_error_incompatible_DESC">安裝不相容。</string>
     <string name="root_allow_downgrades_description">允許使用 root 安裝程式降級應用程式（僅適用於可除錯應用程式版本）。搭配使用「禁用下載版本檢查」效果更好。</string>
     <string name="alt_block_layout_summary">對於帶有邊框的頁面區塊使用替代／舊佈局，而不是彩色表面。</string>
+    <string name="installing_error_storage_DESC">由於儲存問題安裝錯誤。</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="other">(-%d私隱點數)</item>
+    </plurals>
 </resources>
