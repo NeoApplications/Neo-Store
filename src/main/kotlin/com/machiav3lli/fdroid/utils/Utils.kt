@@ -79,6 +79,22 @@ object Utils {
             .hex()
     }
 
+    fun calculateSHA256(hexadecString: String): String {
+        return MessageDigest.getInstance("SHA-256")
+            .digest(
+                hexadecString
+                    .chunked(2)
+                    .mapNotNull { byteStr ->
+                        try {
+                            byteStr.toInt(16).toByte()
+                        } catch (_: NumberFormatException) {
+                            null
+                        }
+                    }
+                    .toByteArray()
+            ).hex()
+    }
+
     suspend fun startUpdate(
         packageName: String,
         installed: Installed?,

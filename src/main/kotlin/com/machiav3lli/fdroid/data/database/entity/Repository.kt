@@ -1,6 +1,8 @@
 package com.machiav3lli.fdroid.data.database.entity
 
 import android.util.Base64
+import android.util.Log
+import android.util.Xml
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
@@ -8,9 +10,14 @@ import androidx.room.PrimaryKey
 import com.machiav3lli.fdroid.ROW_ENABLED
 import com.machiav3lli.fdroid.ROW_ID
 import com.machiav3lli.fdroid.TABLE_REPOSITORY
+import com.machiav3lli.fdroid.data.database.DatabaseX.Companion.TAG
+import com.machiav3lli.fdroid.utils.Utils.calculateSHA256
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.xmlpull.v1.XmlPullParser
+import java.io.File
+import java.io.FileInputStream
 import java.net.URL
 import java.nio.charset.Charset
 
@@ -133,6 +140,70 @@ data class Repository(
                 authentication = authentication
             )
         }
+
+        fun parsePresetReposXML(additionalReposFile: File): List<Repository> = runCatching {
+            val repoItems = mutableListOf<String>()
+            FileInputStream(additionalReposFile).use { input ->
+                val parser: XmlPullParser = Xml.newPullParser()
+                parser.setInput(input, null)
+
+                parser.apply {
+                    var isItem = false
+                    while (next() != XmlPullParser.END_DOCUMENT) {
+                        when (eventType) {
+                            XmlPullParser.START_TAG -> if (name == "item") isItem = true
+                            XmlPullParser.END_TAG   -> isItem = false
+                            XmlPullParser.TEXT      -> if (isItem) repoItems.add(parser.text)
+                        }
+                    }
+                }
+            }
+
+            // additional_repos: each object seems to have 7 items:
+            // name (str), address (str), description (str),
+            // version (int), enabled (0/1), push requests (ignore?), pubkey (hex)
+            return if (repoItems.size % 7 == 0) {
+                repoItems.chunked(7).mapNotNull {
+                    fromXML(repoItems)?.let {
+                        Log.w(
+                            TAG,
+                            ("Preset Repositories: Successfully loaded ${it.name}: ${it.address}")
+                        )
+                        it
+                    }
+                }
+            } else {
+                Log.e(
+                    TAG,
+                    ("Preset Repositories: Invalid source $additionalReposFile with false number of items: ${repoItems.size}")
+                )
+                emptyList()
+            }
+        }.fold(
+            onSuccess = { it },
+            onFailure = {
+                Log.e(
+                    TAG,
+                    ("Preset Repositories: Failed parsing preset repositories from $additionalReposFile: ${it.message}")
+                )
+                emptyList()
+            }
+        )
+
+        fun fromXML(xml: List<String>) = runCatching {
+            defaultRepository(
+                name = xml[0],
+                address = xml[1],
+                description = xml[2].replace(Regex("\\s+"), " ").trim(),
+                version = xml[3].toInt(),
+                enabled = xml[4].toInt() > 0,
+                fingerprint = xml[6].let {
+                    if (it.length > 32) calculateSHA256(it)
+                    else it
+                },
+                authentication = "",
+            )
+        }.getOrNull()
 
         private fun defaultRepository(
             address: String, name: String, description: String, version: Int,

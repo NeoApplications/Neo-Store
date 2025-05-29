@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.data.database
 
+import android.util.Log
 import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.DeleteColumn
@@ -73,6 +74,7 @@ import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedR
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedReposV31
 import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.manager.work.SyncWorker.Companion.enableRepo
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -80,6 +82,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.dsl.module
 import org.koin.java.KoinJavaComponent.get
+import java.io.File
 
 @Database(
     entities = [
@@ -250,15 +253,37 @@ abstract class DatabaseX : RoomDatabase() {
     abstract fun getInstallTaskDao(): InstallTaskDao
 
     companion object {
+        const val TAG = "DatabaseX"
+
         val dbCreateCallback = object : Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 CoroutineScope(Dispatchers.IO).launch {
                     val dao = get<RepositoryDao>(RepositoryDao::class.java)
                     if (dao.getCount() == 0) dao.put(*defaultRepositories.toTypedArray())
+                    loadPresetRepos().let { dao.put(*it.toTypedArray()) }
                 }
             }
         }
+
+        private fun loadPresetRepos(): List<Repository> =
+            persistentListOf("/system", "/product", "/vendor", "/odm", "/oem")
+                .mapNotNull { root ->
+                    // TODO use com.machiav3lli.fdroid or packageName when provided by OEMs
+                    val additionalReposFile =
+                        File("$root/etc/org.fdroid.fdroid/additional_repos.xml")
+                    try {
+                        if (additionalReposFile.isFile())
+                            Repository.parsePresetReposXML(additionalReposFile)
+                        else null
+                    } catch (e: Exception) {
+                        Log.e(
+                            TAG,
+                            "Preset Repositories: Failed loading additional repos from $additionalReposFile: ${e.message}"
+                        )
+                        null
+                    }
+                }.flatten()
 
         class MigrationSpec8to9 : AutoMigrationSpec {
             override fun onPostMigrate(db: SupportSQLiteDatabase) {
