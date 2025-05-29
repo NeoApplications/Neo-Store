@@ -374,12 +374,11 @@ class DownloadWorker(
                 .addTag("download_$packageName")
                 .build()
 
-            NeoApp.wm.workManager
-                .enqueueUniqueWork(
-                    "$packageName-${repository.id}-${release.version}",
-                    ExistingWorkPolicy.REPLACE,
-                    downloadRequest,
-                )
+            NeoApp.wm.enqueueUniqueWork(
+                "$packageName-${repository.id}-${release.version}",
+                ExistingWorkPolicy.REPLACE,
+                downloadRequest,
+            )
         }
 
         fun getTask(data: Data) = DownloadTask(

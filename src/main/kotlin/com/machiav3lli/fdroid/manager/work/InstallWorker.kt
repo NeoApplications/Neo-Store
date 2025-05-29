@@ -159,13 +159,12 @@ class InstallWorker(
                 .addTag("installer")
                 .build()
 
-            NeoApp.wm.workManager
-                .enqueueUniqueWork(
-                    "Installer_$packageName",
-                    if (enforce) ExistingWorkPolicy.REPLACE
-                    else ExistingWorkPolicy.KEEP,
-                    installerRequest,
-                )
+            NeoApp.wm.enqueueUniqueWork(
+                "Installer_$packageName",
+                if (enforce) ExistingWorkPolicy.REPLACE
+                else ExistingWorkPolicy.KEEP,
+                installerRequest,
+            )
         }
     }
 }

@@ -106,7 +106,7 @@ class ExodusWorker(
                 ARG_WORK_TYPE to WorkType.TRACKERS.ordinal,
             )
 
-            NeoApp.wm.workManager.enqueueUniqueWork(
+            NeoApp.wm.enqueueUniqueWork(
                 WorkType.TRACKERS.name,
                 ExistingWorkPolicy.REPLACE,
                 OneTimeWorkRequestBuilder<ExodusWorker>()
@@ -123,7 +123,7 @@ class ExodusWorker(
                 ARG_VERSION_CODE to versionCode,
             )
 
-            NeoApp.wm.workManager.enqueueUniqueWork(
+            NeoApp.wm.enqueueUniqueWork(
                 WorkType.TRACKERS.name,
                 ExistingWorkPolicy.REPLACE,
                 OneTimeWorkRequestBuilder<ExodusWorker>()

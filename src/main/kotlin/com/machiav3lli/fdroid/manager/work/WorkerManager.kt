@@ -9,6 +9,9 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
@@ -21,8 +24,9 @@ import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.TAG_BATCH_SYNC_PERIODIC
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
-import com.machiav3lli.fdroid.data.database.entity.InstallTask
+import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.SyncState
@@ -38,13 +42,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.dsl.module
@@ -53,7 +54,7 @@ import kotlin.coroutines.cancellation.CancellationException
 
 class WorkerManager(appContext: Context) : KoinComponent {
 
-    val workManager: WorkManager by inject()
+    private val workManager: WorkManager by inject()
     private val actionReceiver: ActionReceiver by inject()
     private var appContext: Context = appContext
     private var langContext: Context = ContextWrapperX.wrap(appContext)
@@ -168,6 +169,56 @@ class WorkerManager(appContext: Context) : KoinComponent {
                 delay(TimeUnit.MINUTES.toMillis(5))
             }
         }
+    }
+
+    fun enqueueUniqueWork(
+        uniqueWorkName: String,
+        existingWorkPolicy: ExistingWorkPolicy,
+        request: OneTimeWorkRequest
+    ) = workManager.enqueueUniqueWork(uniqueWorkName, existingWorkPolicy, request)
+
+    internal suspend fun updatePeriodicSyncJob(force: Boolean) = withContext(Dispatchers.IO) {
+        val reschedule =
+            force || workManager.getWorkInfosForUniqueWork(TAG_BATCH_SYNC_PERIODIC).get().isEmpty()
+        if (reschedule) {
+            when (val autoSync = Preferences[Preferences.Key.AutoSync]) {
+                is Preferences.AutoSync.Never,
+                    -> {
+                    workManager.cancelUniqueWork(TAG_BATCH_SYNC_PERIODIC)
+                    Log.i(this::javaClass.name, "Canceled next auto-sync run.")
+                }
+
+                is Preferences.AutoSync.Wifi,
+                is Preferences.AutoSync.WifiBattery,
+                    -> {
+                    autoSync(
+                        connectionType = NetworkType.UNMETERED,
+                        chargingBattery = autoSync is Preferences.AutoSync.WifiBattery,
+                    )
+                }
+
+                is Preferences.AutoSync.Battery,
+                    -> autoSync(
+                    connectionType = NetworkType.CONNECTED,
+                    chargingBattery = true,
+                )
+
+                is Preferences.AutoSync.Always
+                    -> autoSync(
+                    connectionType = NetworkType.CONNECTED
+                )
+            }
+        }
+    }
+
+    private fun autoSync(
+        connectionType: NetworkType,
+        chargingBattery: Boolean = false,
+    ) {
+        BatchSyncWorker.enqueuePeriodic(
+            connectionType = connectionType,
+            chargingBattery = chargingBattery,
+        )
     }
 
     fun cancelSyncAll() {

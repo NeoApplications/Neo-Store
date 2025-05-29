@@ -279,7 +279,7 @@ class SyncWorker(
                         ARG_REPOSITORY_NAME to repoName,
                     )
 
-                    NeoApp.wm.workManager.enqueueUniqueWork(
+                    NeoApp.wm.enqueueUniqueWork(
                         "sync_$repoId",
                         ExistingWorkPolicy.KEEP,
                         OneTimeWorkRequestBuilder<SyncWorker>()

@@ -6,10 +6,8 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.IntentFilter
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.mutableStateOf
-import androidx.work.NetworkType
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
@@ -113,7 +111,7 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
         wm.prune()
         Cache.cleanup(this)
         ioScope.launch {
-            updatePeriodicSyncJob(false)
+            wm.updatePeriodicSyncJob(false)
         }
     }
 
@@ -185,9 +183,7 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
 
                     Preferences.Key.AutoSync,
                     Preferences.Key.AutoSyncInterval,
-                                                   -> {
-                        updatePeriodicSyncJob(true)
-                    }
+                        -> wm.updatePeriodicSyncJob(true)
 
                     Preferences.Key.UpdateUnstable -> {
                         forceSyncAll()
@@ -213,53 +209,6 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
                 }
             }
         }
-    }
-
-    private suspend fun updatePeriodicSyncJob(force: Boolean) = withContext(Dispatchers.IO) {
-        val wm = NeoApp.wm.workManager
-        val reschedule =
-            force || wm.getWorkInfosForUniqueWork(TAG_BATCH_SYNC_PERIODIC).get().isEmpty()
-        if (reschedule) {
-            when (val autoSync = Preferences[Preferences.Key.AutoSync]) {
-                is Preferences.AutoSync.Never  -> {
-                    wm.cancelUniqueWork(TAG_BATCH_SYNC_PERIODIC)
-                    Log.i(this::javaClass.name, "Canceled next auto-sync run.")
-                }
-
-                is Preferences.AutoSync.Wifi,
-                is Preferences.AutoSync.WifiBattery,
-                                               -> {
-                    autoSync(
-                        connectionType = NetworkType.UNMETERED,
-                        chargingBattery = autoSync is Preferences.AutoSync.WifiBattery,
-                    )
-                }
-
-                is Preferences.AutoSync.Battery,
-                                               -> {
-                    autoSync(
-                        connectionType = NetworkType.CONNECTED,
-                        chargingBattery = true,
-                    )
-                }
-
-                is Preferences.AutoSync.Always -> {
-                    autoSync(
-                        connectionType = NetworkType.CONNECTED
-                    )
-                }
-            }
-        }
-    }
-
-    private fun autoSync(
-        connectionType: NetworkType,
-        chargingBattery: Boolean = false,
-    ) {
-        BatchSyncWorker.enqueuePeriodic(
-            connectionType = connectionType,
-            chargingBattery = chargingBattery,
-        )
     }
 
     private fun updateProxy() {
