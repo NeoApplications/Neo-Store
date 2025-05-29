@@ -22,7 +22,6 @@ import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.data.index.RepositoryUpdater
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
-import com.machiav3lli.fdroid.manager.installer.AppInstaller
 import com.machiav3lli.fdroid.manager.installer.BaseInstaller
 import com.machiav3lli.fdroid.manager.installer.installerModule
 import com.machiav3lli.fdroid.manager.network.CoilDownloader
@@ -48,6 +47,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.androix.startup.KoinStartup
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.koinConfiguration
+import org.koin.java.KoinJavaComponent.inject
 import java.lang.ref.WeakReference
 import java.net.Proxy
 
@@ -56,7 +56,6 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
     val db: DatabaseX by inject()
     lateinit var mActivity: AppCompatActivity
     val wm: WorkerManager by inject()
-    val installer: AppInstaller by inject()
     val installedRepo: InstalledRepository by inject()
     val reposRepo: RepositoriesRepository by inject()
 
@@ -78,7 +77,7 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
 
         val wm: WorkerManager get() = neo_store.wm
         val db: DatabaseX get() = neo_store.db
-        val installer: BaseInstaller get() = neo_store.installer.defaultInstaller
+        val installer: BaseInstaller by inject(BaseInstaller::class.java)
 
         private val progress = mutableStateOf(Pair(false, 0f))
 

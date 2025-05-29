@@ -8,48 +8,42 @@ import com.machiav3lli.fdroid.utils.getHasSystemInstallPermission
 import com.machiav3lli.fdroid.utils.shellIsRoot
 import org.koin.dsl.module
 
-abstract class AppInstaller {
-    abstract val defaultInstaller: BaseInstaller
+/**
+ * Factory class for creating the appropriate installer based on user preferences
+ * and device capabilities.
+ */
+object AppInstaller {
+    fun create(context: Context): BaseInstaller {
+        val preferredInstaller = Preferences[Preferences.Key.Installer].installer
 
-    companion object {
-        @Volatile
-        private var INSTANCE: AppInstaller? = null
-        fun getInstance(context: Context): AppInstaller {
-            return INSTANCE ?: synchronized(this) {
-                val instance = object : AppInstaller() {
-                    override val defaultInstaller: BaseInstaller
-                        get() {
-                            val installer = Preferences[Preferences.Key.Installer].installer
-                            return when {
-                                installer == InstallerType.SYSTEM && context.getHasSystemInstallPermission()
-                                     -> SystemInstaller(context)
+        return when (preferredInstaller) {
+            InstallerType.SYSTEM
+                 -> if (context.getHasSystemInstallPermission()) SystemInstaller(context)
+            // Fall back to SESSION if NS doesn't have system permission
+            else SessionInstaller(context)
 
-                                installer == InstallerType.ROOT && shellIsRoot
-                                     -> RootInstaller(context)
+            InstallerType.ROOT
+                 -> if (shellIsRoot) RootInstaller(context)
+            // Fall back to SESSION if root is not available
+            else SessionInstaller(context)
 
-                                installer == InstallerType.LEGACY
-                                     -> LegacyInstaller(context)
+            InstallerType.LEGACY
+                 -> LegacyInstaller(context)
 
-                                installer == InstallerType.AM && context.amInstalled
-                                     -> AppManagerInstaller(context)
+            InstallerType.AM
+                 -> if (context.amInstalled) AppManagerInstaller(context)
+            // Fall back to SESSION if AM is not installed
+            else SessionInstaller(context)
 
-                                else -> SessionInstaller(context)
-                            }
-                        }
-                }
-                INSTANCE = instance
-                instance
-            }
+            else ->
+                // Default to SESSION installer
+                SessionInstaller(context)
         }
     }
 }
 
 
 val installerModule = module {
-    single { AppInstaller.getInstance(get()) }
-    factory { SystemInstaller(get()) }
-    factory { RootInstaller(get()) }
-    factory { LegacyInstaller(get()) }
-    factory { AppManagerInstaller(get()) }
-    factory { SessionInstaller(get()) }
+    factory { AppInstaller.create(get()) }
+    single { InstallQueue() }
 }
