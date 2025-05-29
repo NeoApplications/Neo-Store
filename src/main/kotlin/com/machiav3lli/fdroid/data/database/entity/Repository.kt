@@ -940,26 +940,26 @@ data class Repository(
             GUARDIAN, ONIONSHARE_NIGHTLY, MICRO_G,
             CROMITE, IRONFOX,
             NEWPIPE, BITWARDEN, GITJOURNAL,
-            CALYX_OS, CALYX_OS_TEST,
+            CALYX_OS, CALYX_OS_TEST, IODE,
             KDE_RELEASE, KDE_NIGHTLY, NANODROID, NETSYMS,
-            FEDILAB, NETHUNTER, BEOCODE, INSPORATION,
+            FUTO, KVAESITSO, C_GEO, C_GEO_NIGHTLY, COLLABORA,
             PIXELFED, VIDELIBRI, GADGETBRIDGE,
             THREEMA, SESSION, MOLLY, BRIAR, ANONYMOUS_MESSENGER,
+            FEDILAB, NETHUNTER, BEOCODE, INSPORATION,
             SIMPLEX_CHAT, REVOLT, TWIN_HELIX,
-            PI2P, OFFICIAL_I2P, COLLABORA,
+            PI2P, OFFICIAL_I2P,
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
-            FROSTNERD, F_DROID_CLASSIC,
-            ETOPA, METATRANS_APPS, FUTO, KVAESITSO,
+            F_DROID_CLASSIC,
+            ETOPA, METATRANS_APPS,
             LTTRS, KAFFEEMITKOFFEIN,
             SAUNAREPO, UNOFFICIAL_FIREFOX, PATCHED,
             WIND, UMBRELLA, CRYPTOMATOR,
-            RWTH, TAGESSCHAU, WOZ,
-            C_GEO, C_GEO_NIGHTLY, PETER_CXY,
+            RWTH, TAGESSCHAU, WOZ, PETER_CXY,
             LAGRANGE, ROHIT, LUBLIN, NAILYK, LUBL,
             SYLKEVICIOUS, OBERNBERGER, NUCLEUS,
             XARANTOLUS, TWOBR, OBFUSK, MAXXIS,
             JAK_LINUX, MONERUJO,
-            IODE, SPIRIT_CROC, SPIRIT_CROC_TEST,
+            SPIRIT_CROC, SPIRIT_CROC_TEST,
             ANIYOMI, KOYU, KUSCHKU,
             STACK_WALLET,
             GROBOX, FAIRFAX, ZIMBELSTERN,
@@ -971,7 +971,6 @@ data class Repository(
         val addedReposV9 = listOf(
             SIMPLEX_CHAT,
             ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
-            FROSTNERD,
         )
 
         val addedReposV10 = listOf(
@@ -1033,7 +1032,6 @@ data class Repository(
         val archiveRepos = listOf(
             F_DROID_ARCHIVE,
             GUARDIAN_ARCHIVE,
-            FROSTNERD_ARCHIVE,
         )
 
         val removedReposV28 = listOf(
