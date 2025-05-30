@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.manager.installer
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -109,15 +110,57 @@ class InstallQueue {
     suspend fun onInstallationComplete(result: Result<String>) {
         withContext(Dispatchers.IO) {
             mutex.withLock {
-                currentTask?.callback?.invoke(result)
-                currentTask = null
-                isProcessing.update { false }
-                inUserInteraction.update { "" }
-                if (queue.isNotEmpty()) {
-                    if (isProcessing.value || queue.isEmpty()) return@withLock
+                try {
+                    val currentPackage = currentTask?.packageName
 
-                    currentTask = queue.poll()
-                    isProcessing.update { true }
+                    result.fold(
+                        onSuccess = {
+                            Log.d(
+                                TAG,
+                                "Installation completed successfully for $currentPackage"
+                            )
+                        },
+                        onFailure = { error ->
+                            // Only retry on specific errors
+                            val shouldRetry = error !is InstallationError.UserCancelled &&
+                                    error !is InstallationError.ConflictingSignature &&
+                                    error !is InstallationError.Downgrade &&
+                                    error !is InstallationError.Incompatible
+
+                            Log.w(
+                                TAG,
+                                "Installation failed for $currentPackage: ${error.message}, shouldRetry=$shouldRetry"
+                            )
+
+                            if (shouldRetry && currentTask != null) {
+                                val retryTask = currentTask
+                                // TODO add a retry counter
+                                if (retryTask != null) {
+                                    Log.d(
+                                        TAG,
+                                        "Re-enqueueing installation task for $currentPackage"
+                                    )
+                                    queue.add(retryTask)
+                                }
+                            }
+                        }
+                    )
+
+                    currentTask?.callback?.invoke(result)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error processing installation completion: ${e.message}")
+                } finally {
+                    currentTask = null
+                    isProcessing.update { false }
+                    inUserInteraction.update { "" }
+
+                    if (queue.isEmpty()) {
+                        Log.d(TAG, "No more installation tasks in queue")
+                    } else {
+                        Log.d(TAG, "Processing next installation task, ${queue.size} remaining")
+                        currentTask = queue.poll()
+                        isProcessing.update { true }
+                    }
                 }
             }
         }
@@ -149,5 +192,9 @@ class InstallQueue {
                 inUserInteraction.update { "" }
             }
         }
+    }
+
+    companion object {
+        private const val TAG = "InstallQueue"
     }
 }
