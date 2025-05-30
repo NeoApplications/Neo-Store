@@ -163,8 +163,8 @@ data class Repository(
             // name (str), address (str), description (str),
             // version (int), enabled (0/1), push requests (ignore?), pubkey (hex)
             return if (repoItems.size % 7 == 0) {
-                repoItems.chunked(7).mapNotNull {
-                    fromXML(repoItems)?.let {
+                repoItems.chunked(7).mapNotNull { itemsSet ->
+                    fromXML(itemsSet)?.let {
                         Log.w(
                             TAG,
                             ("Preset Repositories: Successfully loaded ${it.name}: ${it.address}")

@@ -260,8 +260,12 @@ abstract class DatabaseX : RoomDatabase() {
                 super.onCreate(db)
                 CoroutineScope(Dispatchers.IO).launch {
                     val dao = get<RepositoryDao>(RepositoryDao::class.java)
-                    if (dao.getCount() == 0) dao.put(*defaultRepositories.toTypedArray())
-                    loadPresetRepos().let { dao.put(*it.toTypedArray()) }
+                    if (dao.getCount() == 0)
+                        dao.put(
+                            *(defaultRepositories+loadPresetRepos())
+                            .distinctBy(Repository::address)
+                            .toTypedArray()
+                        )
                 }
             }
         }
