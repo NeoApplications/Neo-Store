@@ -54,8 +54,6 @@ import com.machiav3lli.fdroid.utils.extension.text.hex
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.topjohnwu.superuser.Shell
 import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -95,38 +93,45 @@ object Utils {
             ).hex()
     }
 
-    suspend fun startUpdate(
+    fun startUpdate(
         packageName: String,
         installed: Installed?,
         products: List<Pair<EmbeddedProduct, Repository>>,
     ) {
         val productRepository = findSuggestedProduct(products, installed) { it.first }
-        val compatibleReleases = productRepository?.first?.selectedReleases.orEmpty()
+        val compatibleReleases = getCompatibleReleases(productRepository, installed)
+        val selectedRelease = selectBestRelease(compatibleReleases)
+
+        if (productRepository != null && selectedRelease != null) {
+            DownloadWorker.enqueue(
+                packageName,
+                productRepository.first.product.label,
+                productRepository.second,
+                selectedRelease,
+            )
+        }
+    }
+
+    private fun getCompatibleReleases(
+        productRepository: Pair<EmbeddedProduct, Repository>?,
+        installed: Installed?
+    ): List<Release> {
+        return productRepository?.first?.selectedReleases.orEmpty()
             .filter {
                 installed == null ||
                         it.signature in installed.signatures ||
                         Preferences[Preferences.Key.DisableSignatureCheck]
             }
-        val releaseFlow = MutableStateFlow(compatibleReleases.firstOrNull())
-        if (compatibleReleases.size > 1) {
-            releaseFlow.update {
-                compatibleReleases
-                    .filter { it.platforms.contains(Android.primaryPlatform) }
-                    .minByOrNull { it.platforms.size }
-                    ?: compatibleReleases.minByOrNull { it.platforms.size }
-                    ?: compatibleReleases.firstOrNull()
-            }
-        }
-        releaseFlow.collect {
-            if (productRepository != null && it != null) {
-                DownloadWorker.enqueue(
-                    packageName,
-                    productRepository.first.product.label,
-                    productRepository.second,
-                    it,
-                )
-            }
-        }
+    }
+
+    private fun selectBestRelease(compatibleReleases: List<Release>): Release? {
+        if (compatibleReleases.isEmpty()) return null
+        if (compatibleReleases.size == 1) return compatibleReleases.first()
+
+        return compatibleReleases
+            .filter { it.platforms.contains(Android.primaryPlatform) }
+            .minByOrNull { it.platforms.size }
+            ?: compatibleReleases.minByOrNull { it.platforms.size }
     }
 
     fun Context.setLanguage(): Configuration {

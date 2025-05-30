@@ -284,13 +284,11 @@ class WorkerManager(appContext: Context) : KoinComponent {
                     val productRepository = productRepo.loadProduct(packageName)
                         .filter { eProduct -> eProduct.product.repositoryId == repo!!.id }
                         .map { eProduct -> Pair(eProduct, repo!!) }
-                    scope.launch(Dispatchers.IO) {
-                        Utils.startUpdate(
-                            packageName,
-                            installed,
-                            productRepository
-                        )
-                    }
+                    Utils.startUpdate(
+                        packageName,
+                        installed,
+                        productRepository
+                    )
                 }
 
         }

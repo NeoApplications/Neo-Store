@@ -254,13 +254,11 @@ fun AppPage(
                                   -> {
                 val installedItem = viewModel.installedItem.value
                 val actionJob: () -> Unit = {
-                    scope.launch {
-                        startUpdate(
-                            packageName,
-                            installedItem,
-                            productRepos
-                        )
-                    }
+                    startUpdate(
+                        packageName,
+                        installedItem,
+                        productRepos,
+                    )
                 }
                 if (Preferences[Preferences.Key.DownloadShowDialog]) {
                     val productRepository =
