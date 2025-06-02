@@ -53,11 +53,8 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
         installQueue.isInUserInteraction(packageName)
 
     // TODO reconsider where to use this
-    override suspend fun cancelInstall() {
-        val currentTask = installQueue.getCurrentTask()
-        if (currentTask != null) {
-            installQueue.cancel(currentTask.packageName)
-        }
+    override suspend fun cancelInstall(packageName: String) {
+        installQueue.cancel(packageName)
     }
 
     suspend fun reportFailure(error: InstallationError) {

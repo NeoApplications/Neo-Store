@@ -25,8 +25,8 @@ interface InstallationEvents {
     /**
      * Cancels any ongoing installation
      */
-    suspend fun cancelInstall()
-    
+    suspend fun cancelInstall(packageName: String)
+
     /**
      * Initiates an uninstallation process for an app
      *
