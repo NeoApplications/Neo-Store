@@ -68,25 +68,34 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
         installQueue.cancel(packageName)
     }
 
-    suspend fun reportFailure(error: InstallationError) {
-        emitProgress(InstallState.Failed(error))
+    suspend fun reportFailure(error: InstallationError, packageName: String? = null) {
+        val taskPackageName = packageName ?: installQueue.getCurrentTask()?.packageName
+        emitProgress(InstallState.Failed(error), taskPackageName)
+
         val currentTask = installQueue.getCurrentTask()
         if (currentTask != null) {
+            Log.w(TAG, "Installation failed for ${currentTask.packageName}: ${error.message}")
             installQueue.onInstallationComplete(Result.failure(error))
+        } else if (packageName != null) {
+            Log.w(TAG, "Installation failed for $packageName but no current task found")
         }
     }
 
     suspend fun reportSuccess(packageName: String) {
-        emitProgress(InstallState.Success)
+        emitProgress(InstallState.Success, packageName)
+
         val currentTask = installQueue.getCurrentTask()
         if (currentTask != null) {
+            Log.d(TAG, "Installation succeeded for $packageName")
             installQueue.onInstallationComplete(Result.success(packageName))
+        } else {
+            Log.w(TAG, "Installation succeeded for $packageName but no current task found")
         }
     }
 
     suspend fun reportUserInteraction(packageName: String?) {
         installQueue.startUserInteraction(packageName.orEmpty())
-        emitProgress(InstallState.Pending)
+        emitProgress(InstallState.Pending, packageName)
     }
 
     override suspend fun uninstall(packageName: String) {
