@@ -176,25 +176,24 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
                     Preferences.Key.ProxyUrl,
                     Preferences.Key.ProxyHost,
                     Preferences.Key.ProxyPort,
-                                                   -> {
-                        updateProxy()
-                    }
+                        -> updateProxy()
 
                     Preferences.Key.AutoSync,
                     Preferences.Key.AutoSyncInterval,
                         -> wm.updatePeriodicSyncJob(true)
 
-                    Preferences.Key.UpdateUnstable -> {
-                        forceSyncAll()
-                    }
+                    Preferences.Key.UpdateUnstable,
+                        -> forceSyncAll()
 
-                    Preferences.Key.Theme          -> {
+                    Preferences.Key.Theme,
+                        -> {
                         launch(Dispatchers.Main) {
                             mActivity.recreate()
                         }
                     }
 
-                    Preferences.Key.Language       -> {
+                    Preferences.Key.Language,
+                        -> {
                         val refresh = Intent.makeRestartActivityTask(
                             ComponentName(
                                 baseContext,
@@ -204,7 +203,7 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
                         applicationContext.startActivity(refresh)
                     }
 
-                    else                           -> return@collect
+                    else -> return@collect
                 }
             }
         }

@@ -2,12 +2,9 @@ package com.machiav3lli.fdroid.data.content
 
 import android.content.ContentValues
 import android.content.Context
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
-import android.os.Build
 import android.os.ParcelFileDescriptor
 import android.provider.OpenableColumns
 import android.system.Os
@@ -15,7 +12,6 @@ import androidx.core.content.FileProvider
 import androidx.documentfile.provider.DocumentFile
 import com.anggrayudi.storage.file.getAbsolutePath
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.getDownloadFolder
 import com.machiav3lli.fdroid.utils.isDownloadExternal
 import java.io.File
@@ -61,14 +57,6 @@ object Cache {
         val authority = context.applicationContext.packageName + ".provider.files"
         return FileProvider.getUriForFile(context, authority, this)
     }
-
-    fun Context.getPackageArchiveInfo(file: File): PackageInfo? =
-        if (Android.sdk(Build.VERSION_CODES.TIRAMISU))
-            packageManager.getPackageArchiveInfo(
-                file.absolutePath,
-                PackageManager.PackageInfoFlags.of(0)
-            )
-        else packageManager.getPackageArchiveInfo(file.absolutePath, 0)
 
     fun getTemporaryFile(context: Context): File {
         return File(ensureCacheDir(context, "temporary"), UUID.randomUUID().toString())

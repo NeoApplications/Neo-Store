@@ -274,7 +274,7 @@ fun EnumPreference(
                 when (it) {
                     Preferences.Key.Installer -> {
                         prefValue = Preferences[prefKey]
-                        if (Preferences[prefKey] == Preferences.Installer.Root && Shell.isAppGrantedRoot() != true) {
+                        if (prefValue == Preferences.Installer.Root && Shell.isAppGrantedRoot() != true) {
                             Shell.getShell().isRoot
                         }
                     }

@@ -12,8 +12,12 @@ interface InstallationEvents {
      * @param cacheFileName The cache file name containing the APK
      * @param postInstall Callback to be invoked after the installation completes (success or failure)
      */
-    suspend fun install(packageLabel: String, cacheFileName: String, postInstall: (Result<String>) -> Unit = {})
-    
+    suspend fun install(
+        packageLabel: String,
+        cacheFileName: String,
+        postInstall: (Result<String>) -> Unit = {}
+    )
+
     /**
      * Checks if a package is already enqueued for installation
      *
@@ -21,7 +25,7 @@ interface InstallationEvents {
      * @return True if the package is in the installation queue, false otherwise
      */
     suspend fun isEnqueued(packageName: String): Boolean
-    
+
     /**
      * Cancels any ongoing installation
      */

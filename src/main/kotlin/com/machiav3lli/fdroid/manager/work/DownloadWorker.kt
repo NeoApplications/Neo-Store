@@ -328,6 +328,10 @@ class DownloadWorker(
                     if ((signatures.isEmpty() || task.release.signature !in signatures)
                         && !Preferences[Preferences.Key.DisableSignatureCheck]
                     ) {
+                        Log.e(
+                            this::class.java.simpleName,
+                            "Signature check failed\nDownloaded package signatures: $signatures\nExpected signature: ${task.release.signature}"
+                        )
                         ValidationError.SIGNATURE
                     } else {
                         val permissions =

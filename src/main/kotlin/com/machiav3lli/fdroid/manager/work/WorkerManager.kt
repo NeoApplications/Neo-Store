@@ -63,10 +63,17 @@ class WorkerManager(appContext: Context) : KoinComponent {
     private val productRepo: ProductsRepository by inject()
     private val reposRepo: RepositoriesRepository by inject()
     private val installedRepo: InstalledRepository by inject()
+
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    val syncsScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    val downloadsScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    private val downloadTracker = DownloadsTracker()
+    private val syncTracker = SyncsTracker()
+
     private val syncStateHandler by lazy {
         SyncStateHandler(
             context = langContext,
-            scope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
+            scope = syncsScope,
             syncStates = WorkStateHolder(),
             notificationManager = notificationManager
         )
@@ -74,19 +81,12 @@ class WorkerManager(appContext: Context) : KoinComponent {
     private val downloadStateHandler by lazy {
         DownloadStateHandler(
             context = langContext,
-            scope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
+            scope = downloadsScope,
             downloadStates = WorkStateHolder(),
             notificationManager = notificationManager,
             downloadedRepo = downloadedRepo,
         )
     }
-    private val installMutex = Mutex()
-
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    val syncsScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-    val downloadsScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-    private val downloadTracker = DownloadsTracker()
-    private val syncTracker = SyncsTracker()
 
     init {
         appContext.registerReceiver(actionReceiver, IntentFilter())
@@ -95,20 +95,6 @@ class WorkerManager(appContext: Context) : KoinComponent {
         workManager.pruneWork()
         setupWorkInfoCollection()
         monitorWorkProgress()
-        scope.launch {
-            combine(
-                NeoApp.db.getInstallTaskDao()
-                    .getAllFlow(),
-                workManager.getWorkInfosFlow(
-                    WorkQuery.Builder
-                        .fromTags(listOf(InstallWorker::class.java.name))
-                        .addStates(listOf(WorkInfo.State.RUNNING, WorkInfo.State.ENQUEUED))
-                        .build()
-                )
-            ) { tasks, works ->
-                enqueueTasks(tasks, works)
-            }.collect()
-        }
     }
 
     fun release(): WorkerManager? {
@@ -271,7 +257,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
     fun update(vararg product: ProductItem) = batchUpdate(product.toList(), false)
 
     private fun batchUpdate(productItems: List<ProductItem>, enforce: Boolean = false) {
-        scope.launch(Dispatchers.IO) {
+        scope.launch {
             productItems.map { productItem ->
                 Triple(
                     productItem.packageName,
@@ -293,21 +279,6 @@ class WorkerManager(appContext: Context) : KoinComponent {
 
         }
     }
-
-    private suspend fun enqueueTasks(tasks: List<InstallTask>, works: List<WorkInfo>) =
-        installMutex.withLock {
-            if (tasks.isEmpty() || works.isNotEmpty()) return@withLock
-            else {
-                // No InstallWorker is currently running, so we can start a new one
-                tasks.maxByOrNull { it.added }?.let {
-                    InstallWorker.Companion.enqueue(
-                        packageName = it.packageName,
-                        label = it.label,
-                        fileName = it.cacheFileName
-                    )
-                }
-            }
-        }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannels() {
@@ -337,6 +308,8 @@ class WorkerManager(appContext: Context) : KoinComponent {
     }
 
     companion object {
+        const val TAG = "WorkerManager"
+
         private fun CoroutineScope.onSyncProgress(
             manager: WorkerManager,
             workInfos: List<WorkInfo>? = null,
