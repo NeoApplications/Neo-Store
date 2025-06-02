@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.manager.installer
 
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -16,6 +17,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 class InstallQueue {
     private val mutex = Mutex()
     private val queue = ConcurrentLinkedQueue<InstallTask>()
+    private val qcc = Dispatchers.IO + SupervisorJob()
     val isProcessing: StateFlow<Boolean>
         private field = MutableStateFlow(false)
     val inUserInteraction: StateFlow<String>
@@ -41,7 +43,7 @@ class InstallQueue {
     ) {
         val task = InstallTask(packageName, packageLabel, cacheFileName, callback)
 
-        withContext(Dispatchers.IO) {
+        withContext(qcc) {
             queue.add(task)
             processNextIfNeeded()
         }
@@ -51,7 +53,7 @@ class InstallQueue {
      * Register starting user interaction for a specific package
      */
     suspend fun startUserInteraction(packageName: String) {
-        withContext(Dispatchers.IO) {
+        withContext(qcc) {
             inUserInteraction.update { packageName }
         }
     }
@@ -75,7 +77,7 @@ class InstallQueue {
      * Cancels all pending installation tasks for a specific package
      */
     suspend fun cancel(packageName: String) {
-        withContext(Dispatchers.IO) {
+        withContext(qcc) {
             mutex.withLock {
                 queue.removeIf { it.packageName == packageName }
 
@@ -94,7 +96,7 @@ class InstallQueue {
      * Processes the next task in the queue if not already processing
      */
     suspend fun processNextIfNeeded() {
-        withContext(Dispatchers.IO) {
+        withContext(qcc) {
             mutex.withLock {
                 if (isProcessing.value || queue.isEmpty()) return@withLock
 
@@ -108,7 +110,7 @@ class InstallQueue {
      * Called by installers when an installation completes (success or failure)
      */
     suspend fun onInstallationComplete(result: Result<String>) {
-        withContext(Dispatchers.IO) {
+        withContext(qcc) {
             mutex.withLock {
                 try {
                     val currentPackage = currentTask?.packageName
@@ -170,7 +172,7 @@ class InstallQueue {
      * Returns the current task being processed, if any
      */
     suspend fun getCurrentTask(): InstallTask? {
-        return withContext(Dispatchers.IO) {
+        return withContext(qcc) {
             mutex.withLock {
                 currentTask
             }
@@ -181,7 +183,7 @@ class InstallQueue {
      * Clears all pending tasks
      */
     suspend fun clear() {
-        withContext(Dispatchers.IO) {
+        withContext(qcc) {
             mutex.withLock {
                 queue.clear()
                 if (currentTask != null) {
