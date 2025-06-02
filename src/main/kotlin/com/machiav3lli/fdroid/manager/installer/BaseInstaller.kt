@@ -4,24 +4,35 @@ import android.content.Context
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.entity.InstallState
+import com.machiav3lli.fdroid.manager.work.InstallStateHolder
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
 
 abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinComponent {
-    protected val progressFlow = MutableStateFlow<InstallState>(InstallState.Preparing)
-    val progress: StateFlow<InstallState> = progressFlow
+    private val installStateHolder: InstallStateHolder by inject()
     protected val installQueue: InstallQueue by inject()
 
-    protected fun emitProgress(progress: InstallState) {
-        progressFlow.tryEmit(progress)
+    protected fun emitProgress(progress: InstallState, packageName: String? = null) {
+        if (packageName != null) {
+            installStateHolder.updateState(packageName, progress)
+        } else {
+            runBlocking { installQueue.getCurrentTask() }?.let { currentTask ->
+                installStateHolder.updateState(currentTask.packageName, progress)
+            }
+        }
+
+        Log.d(
+            TAG,
+            "Installation state updated for ${packageName ?: "current task"}: ${progress::class.simpleName}"
+        )
     }
 
     override suspend fun install(
@@ -106,6 +117,8 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
     }
 
     companion object {
+        const val TAG = "BaseInstaller"
+
         fun translatePackageInstallerError(status: Int): InstallationError {
             return when (status) {
                 PackageInstaller.STATUS_FAILURE_ABORTED      -> InstallationError.UserCancelled()
