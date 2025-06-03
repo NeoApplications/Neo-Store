@@ -1,8 +1,10 @@
 package com.machiav3lli.fdroid.manager.installer
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import com.machiav3lli.fdroid.data.content.Cache
@@ -98,8 +100,25 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
         emitProgress(InstallState.Pending, packageName)
     }
 
+    // Default; used in Legacy, System & AppManager
     override suspend fun uninstall(packageName: String) {
-        // implementation in concrete classes
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val uri = Uri.fromParts("package", packageName, null)
+                val intent = Intent()
+                intent.data = uri
+
+                @Suppress("DEPRECATION")
+                if (Android.sdk(Build.VERSION_CODES.P)) {
+                    intent.action = Intent.ACTION_DELETE
+                } else {
+                    intent.action = Intent.ACTION_UNINSTALL_PACKAGE
+                    intent.putExtra(Intent.EXTRA_RETURN_RESULT, true)
+                }
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                context.startActivity(intent)
+            } // TODO add reporting failure
+        }
     }
 
     protected fun getApkFile(fileName: String): File? {
