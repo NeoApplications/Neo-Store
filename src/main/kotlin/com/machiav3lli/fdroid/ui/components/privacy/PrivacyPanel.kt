@@ -19,7 +19,8 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ExpandableBlock
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDownUp
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUpDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SlidersHorizontal
 
 @Composable
@@ -60,6 +61,7 @@ fun PrivacyCard(
 fun PrivacyItemHeader(
     heading: String? = null,
     icon: ImageVector? = null,
+    expanded: Boolean = false,
     withIcon: Boolean = true,
 ) {
     var spacerHeight = 0
@@ -86,7 +88,8 @@ fun PrivacyItemHeader(
             )
             if (withIcon) Icon(
                 modifier = Modifier.size(24.dp),
-                imageVector = Phosphor.CaretDown,
+                imageVector = if (expanded) Phosphor.CaretDownUp
+                else Phosphor.CaretUpDown,
                 contentDescription = heading
             )
         }

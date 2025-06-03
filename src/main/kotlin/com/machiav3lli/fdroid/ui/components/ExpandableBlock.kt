@@ -29,7 +29,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.ui.components.privacy.PrivacyItemHeader
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDownUp
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUpDown
 
 @Composable
 fun ExpandableBlock(
@@ -52,7 +53,7 @@ fun ExpandableBlock(
         color = surfaceColor
     ) {
         Column {
-            ExpandableBlockHeader(heading)
+            ExpandableBlockHeader(heading, expanded)
             AnimatedVisibility(visible = expanded) {
                 Column(modifier.padding(bottom = 8.dp)) {
                     content()
@@ -90,7 +91,7 @@ fun ExpandableItemsBlock(
         color = surfaceColor
     ) {
         Column(modifier = modifier) {
-            PrivacyItemHeader(heading, icon)
+            PrivacyItemHeader(heading, icon, expanded)
             AnimatedVisibility(visible = expanded) {
                 Column(
                     Modifier.padding(
@@ -109,6 +110,7 @@ fun ExpandableItemsBlock(
 @Composable
 fun ExpandableBlockHeader(
     heading: String? = null,
+    expanded: Boolean = false,
     positive: Boolean = true,
 ) {
     if (heading != null) {
@@ -130,7 +132,8 @@ fun ExpandableBlockHeader(
                 )
                 Icon(
                     modifier = Modifier.size(24.dp),
-                    imageVector = Phosphor.CaretDown,
+                    imageVector = if (expanded) Phosphor.CaretDownUp
+                    else Phosphor.CaretUpDown,
                     contentDescription = heading
                 )
             }
