@@ -4,10 +4,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import com.machiav3lli.fdroid.BuildConfig
-import com.machiav3lli.fdroid.NeoApp
-import com.machiav3lli.fdroid.data.content.Cache
-import com.machiav3lli.fdroid.data.content.Cache.getPackageArchiveInfo
 import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.entity.InstallState
 import com.machiav3lli.fdroid.utils.Utils.quotePath
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.notifyFinishedInstall
@@ -15,7 +13,9 @@ import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import kotlinx.io.IOException
 import java.io.File
 import java.util.regex.Pattern
 
@@ -97,71 +97,105 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
         ).joinToString(" ")
     }
 
-    override suspend fun install(
-        packageLabel: String,
-        cacheFileName: String,
-        postInstall: () -> Unit
-    ) {
-        val cacheFile = Cache.getReleaseFile(context, cacheFileName)
-        val packageInfo = context.getPackageArchiveInfo(cacheFile)
-        val packageName = packageInfo?.packageName ?: "unknown-package"
+    override suspend fun processNextInstallation() {
+        val task = installQueue.getCurrentTask() ?: return
+        emitProgress(InstallState.Preparing, task.packageName)
 
-        mRootInstaller(packageName, cacheFile, postInstall)
-    }
-
-    override suspend fun isInstalling(packageName: String): Boolean =
-        NeoApp.enqueuedInstalls.contains(packageName)
-
-    override suspend fun uninstall(packageName: String) = mRootUninstaller(packageName)
-
-    private suspend fun mRootInstaller(
-        packageName: String,
-        cacheFile: File,
-        postInstall: () -> Unit
-    ) =
-        withContext(Dispatchers.Default) {
-            NeoApp.enqueuedInstalls.add(packageName)
-            if (Preferences[Preferences.Key.RootSessionInstaller]) {
-                Shell.cmd(cacheFile.sessionInstallCreate())
-                    .submit {
-                        val sessionIdPattern = Pattern.compile("(\\d+)")
-                        val sessionIdMatcher =
-                            if (it.out.isNotEmpty()) sessionIdPattern.matcher(it.out[0])
-                            else null
-                        val found = sessionIdMatcher?.find() ?: false
-
-                        if (found) {
-                            val sessionId = sessionIdMatcher?.group(1)?.toInt() ?: -1
-                            Shell.cmd(cacheFile.sessionInstallWrite(sessionId))
-                                .submit { result ->
-                                    Shell.cmd(sessionInstallCommit(sessionId)).exec()
-                                    if (result.isSuccess)
-                                        Shell.cmd(cacheFile.deletePackage()).submit()
-                                    CoroutineScope(Dispatchers.Default).launch {
-                                        NeoApp.db.getInstallTaskDao().delete(packageName)
-                                        NeoApp.enqueuedInstalls.remove(packageName)
-                                        notifyFinishedInstall(context, packageName)
-                                    }
-                                    postInstall()
-                                }
-                        }
-                    }
-            } else {
-                Shell.cmd(cacheFile.legacyInstall())
-                    .submit { result ->
-                        if (result.isSuccess && Preferences[Preferences.Key.ReleasesCacheRetention] == 0)
-                            Shell.cmd(cacheFile.deletePackage()).submit()
-                        CoroutineScope(Dispatchers.Default).launch {
-                            NeoApp.db.getInstallTaskDao().delete(packageName)
-                            NeoApp.enqueuedInstalls.remove(packageName)
-                            notifyFinishedInstall(context, packageName)
-                        }
-                        postInstall()
-                    }
-            }
+        val apkFile = getApkFile(task.cacheFileName) ?: run {
+            installQueue.onInstallationComplete(
+                Result.failure(InstallationError.Unknown("Installation failed: Failed to get cached APK file ${task.cacheFileName}"))
+            )
+            return
         }
 
-    private suspend fun mRootUninstaller(packageName: String) = withContext(Dispatchers.Default) {
-        Shell.cmd(packageName.uninstall).submit()
+        val packageName = extractPackageNameFromApk(apkFile) ?: task.packageName
+
+        withContext(Dispatchers.IO) {
+            try {
+                installPackage(packageName, apkFile)
+            } catch (e: Exception) {
+                installQueue.onInstallationComplete(
+                    Result.failure(InstallationError.Unknown("Installation failed: ${e.message}"))
+                )
+            }
+        }
+    }
+
+    private suspend fun installPackage(packageName: String, apkFile: File) {
+        withContext(Dispatchers.IO) {
+            emitProgress(InstallState.Preparing, packageName)
+
+            try {
+                if (Preferences[Preferences.Key.RootSessionInstaller]) {
+                    Shell.cmd(apkFile.sessionInstallCreate())
+                        .submit {
+                            val sessionIdPattern = Pattern.compile("(\\d+)")
+                            val sessionIdMatcher =
+                                if (it.out.isNotEmpty()) sessionIdPattern.matcher(it.out[0])
+                                else null
+                            val found = sessionIdMatcher?.find() == true
+                            emitProgress(InstallState.Installing(0.15f), packageName)
+
+                            if (found) {
+                                val sessionId = sessionIdMatcher?.group(1)?.toInt() ?: -1
+                                Shell.cmd(apkFile.sessionInstallWrite(sessionId))
+                                    .submit {
+                                        emitProgress(InstallState.Installing(0.75f), packageName)
+                                        Shell.cmd(sessionInstallCommit(sessionId))
+                                            .submit { result ->
+                                                emitProgress(
+                                                    InstallState.Installing(0.95f),
+                                                    packageName
+                                                )
+                                                runBlocking {
+                                                    if (result.isSuccess) reportSuccess(packageName)
+                                                    else reportFailure(
+                                                        InstallationError.Unknown(
+                                                            result.err.joinToString("\n")
+                                                        ),
+                                                        packageName
+                                                    )
+                                                }
+                                                if (result.isSuccess && Preferences[Preferences.Key.ReleasesCacheRetention] == 0)
+                                                    Shell.cmd(apkFile.deletePackage()).submit()
+                                                CoroutineScope(Dispatchers.Default).launch {
+                                                    notifyFinishedInstall(context, packageName)
+                                                }
+                                            }
+                                    }
+                            }
+                        }
+                } else {
+                    Shell.cmd(apkFile.legacyInstall())
+                        .submit { result ->
+                            if (result.isSuccess && Preferences[Preferences.Key.ReleasesCacheRetention] == 0)
+                                Shell.cmd(apkFile.deletePackage()).submit { result ->
+                                    emitProgress(InstallState.Installing(0.95f), packageName)
+                                    runBlocking {
+                                        if (result.isSuccess) reportSuccess(packageName)
+                                        else reportFailure(
+                                            InstallationError.Unknown(result.err.joinToString("\n")),
+                                            packageName
+                                        )
+                                    }
+                                    CoroutineScope(Dispatchers.Default).launch {
+                                        notifyFinishedInstall(context, packageName)
+                                    }
+                                }
+                        }
+                }
+            } catch (e: IOException) {
+                reportFailure(
+                    InstallationError.Unknown("Installation failed: $e.message"),
+                    packageName
+                )
+            }
+        }
+    }
+
+    override suspend fun uninstall(packageName: String) {
+        withContext(Dispatchers.IO) {
+            Shell.cmd(packageName.uninstall).submit()
+        }
     }
 }
