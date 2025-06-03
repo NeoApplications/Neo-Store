@@ -56,11 +56,28 @@ class DownloadStateHandler(
 
         when (state) {
             is DownloadState.Success -> scope.launch {
-                // TODO update notification
-                NeoApp.db.getInstallTaskDao()
-                    .put(state.toInstallTask())
-                downloadStates.updateState(key, null)
-                updateNotification(key, state)
+                runCatching {
+                    // TODO update notification
+                    Log.d(
+                        TAG,
+                        "Download successful for ${state.packageName}, preparing installation"
+                    )
+                    NeoApp.db.getInstallTaskDao().put(state.toInstallTask())
+                    InstallWorker.enqueue(
+                        packageName = state.packageName,
+                        label = state.name,
+                        fileName = state.cacheFileName,
+                        enforce = true,
+                    )
+                    downloadStates.updateState(key, null)
+                    updateNotification(key, state)
+                }.onFailure { e ->
+                    Log.e(
+                        TAG,
+                        "Error processing successful download for ${state.packageName}: ${e.message}",
+                        e
+                    )
+                }
             }
 
             is DownloadState.Error   -> {
@@ -142,6 +159,10 @@ class DownloadStateHandler(
             // DownloadState.Pending, DownloadState.Connecting, DownloadState.Downloading
             else                     -> null
         }
+    }
+
+    companion object {
+        const val TAG = "DownloadHandler"
     }
 }
 
