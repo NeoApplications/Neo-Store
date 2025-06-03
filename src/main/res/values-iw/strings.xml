@@ -22,7 +22,7 @@
     <string name="tracks_or_reports_your_activity">עוקב אחר הפעילות שלך או מדווח עליה</string>
     <string name="unsigned">לא חתום</string>
     <string name="updates">עדכונים</string>
-    <string name="prefs_updated_apps">מספר האפליקציות שיוצגו ב\"עודכן לאחרונה\\</string>
+    <string name="prefs_updated_apps">מספר היישומונים שיוצגו ב„עודכן לאחרונה”</string>
     <string name="action_failed">הפעולה נכשלה</string>
     <string name="add_repository">הוספת מאגר</string>
     <string name="address">כתובת</string>
@@ -175,7 +175,7 @@
     <string name="dialog_refuse">לשמור</string>
     <string name="installed_applications">מותקן</string>
     <string name="install_after_sync_summary">התקן את כל הגירסאות החדשות לאחר חיפוש במאגרים אחר אפליקציות חדשות.</string>
-    <string name="prefs_new_apps">מספר האפליקציות שיוצגו ב\"אפליקציות חדשות\"</string>
+    <string name="prefs_new_apps">מספר היישומונים שיוצגו ב„יישומונים חדשים”</string>
     <string name="default_tab">כרטיסיית ברירת מחדל</string>
     <string name="installing">מתקין</string>
     <string name="ignore_battery_optimization_message">היישומון מתפקד טוב יותר ללא מיטוב הסוללה, וזה גם מונע קריסה באנדרואיד 12 ומעלה.</string>
@@ -184,7 +184,7 @@
     <string name="ignore_battery_optimization_not_supported">התקנת ה־Android שלך לא תומכת בביטול מיטוב סוללה.</string>
     <string name="dialog_approve">לכבות</string>
     <string name="no_action_possible">אין פעולה אפשרית</string>
-    <string name="show_screenshots_description">הצג צילומי מסך בדף האפליקציה.</string>
+    <string name="show_screenshots_description">הצגת צילומי מסך בדף היישומון.</string>
     <string name="open">פתוח</string>
     <string name="favorite_add">הוספה למועדפים</string>
     <string name="only_on_wifi_and_battery">רק על Wi-Fi ובחיבור</string>
