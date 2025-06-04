@@ -345,7 +345,7 @@ fun Context.shareIntent(packageName: String, appName: String, repoWebUrl: String
     val shareIntent = Intent(Intent.ACTION_SEND)
     val extraText = when {
         repoWebUrl.isNotBlank()
-            -> "$repoWebUrl$packageName"
+            -> "${repoWebUrl.trimEnd('/')}/$packageName"
 
         else
             -> "https://f-droid.org/packages/${packageName}/"
