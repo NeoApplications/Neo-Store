@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -36,6 +37,7 @@ import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.AppNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
+import com.machiav3lli.fdroid.utils.InstallUtils
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.extension.text.pathCropped
 import com.machiav3lli.fdroid.utils.isBiometricLockEnabled
@@ -56,6 +58,7 @@ import kotlin.properties.Delegates
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 class NeoActivity : AppCompatActivity() {
     companion object {
+        private const val TAG = "NeoActivity"
         const val ACTION_UPDATES = "${BuildConfig.APPLICATION_ID}.intent.action.UPDATES"
         const val ACTION_INSTALL = "${BuildConfig.APPLICATION_ID}.intent.action.INSTALL"
         const val EXTRA_UPDATES = "${BuildConfig.APPLICATION_ID}.intent.extra.UPDATES"
@@ -133,6 +136,11 @@ class NeoActivity : AppCompatActivity() {
         super.onResume()
         if (currentTheme != Preferences[Preferences.Key.Theme].resId)
             recreate()
+        lifecycleScope.launch {
+            if (!InstallUtils.restartOrphanedInstallTasks()) {
+                Log.d(TAG, "Install task restart was throttled")
+            }
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
