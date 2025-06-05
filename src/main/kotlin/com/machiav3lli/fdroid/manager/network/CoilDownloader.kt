@@ -7,27 +7,15 @@ import com.machiav3lli.fdroid.CLIENT_CONNECT_TIMEOUT
 import com.machiav3lli.fdroid.CLIENT_READ_TIMEOUT
 import com.machiav3lli.fdroid.CLIENT_USER_AGENT
 import com.machiav3lli.fdroid.CLIENT_WRITE_TIMEOUT
-import com.machiav3lli.fdroid.HOST_ICON
-import com.machiav3lli.fdroid.HOST_SCREENSHOT
 import com.machiav3lli.fdroid.POOL_DEFAULT_KEEP_ALIVE_DURATION_M
 import com.machiav3lli.fdroid.POOL_DEFAULT_MAX_IDLE_CONNECTIONS
-import com.machiav3lli.fdroid.QUERY_ADDRESS
 import com.machiav3lli.fdroid.QUERY_AUTHENTICATION
-import com.machiav3lli.fdroid.QUERY_DEVICE
-import com.machiav3lli.fdroid.QUERY_DPI
-import com.machiav3lli.fdroid.QUERY_ICON
-import com.machiav3lli.fdroid.QUERY_LOCALE
-import com.machiav3lli.fdroid.QUERY_METADATA_ICON
-import com.machiav3lli.fdroid.QUERY_PACKAGE_NAME
-import com.machiav3lli.fdroid.QUERY_SCREENSHOT
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Repository
-import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import io.ktor.http.HttpHeaders
 import okhttp3.Cache
 import okhttp3.Call
 import okhttp3.ConnectionPool
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
@@ -131,69 +119,8 @@ object CoilDownloader {
         private val cache = Cache(cacheDir, 50_000_000L)
 
         override fun newCall(request: Request): Call {
-            return when (request.url.host) {
-                HOST_ICON       -> {
-                    val address = request.url.queryParameter(QUERY_ADDRESS)?.nullIfEmpty()
-                    val authentication = request.url.queryParameter(QUERY_AUTHENTICATION)
-                    val path = run {
-                        val packageName =
-                            request.url.queryParameter(QUERY_PACKAGE_NAME)?.nullIfEmpty()
-                        val icon = request.url.queryParameter(QUERY_ICON)?.nullIfEmpty()
-                        val metadataIcon =
-                            request.url.queryParameter(QUERY_METADATA_ICON)?.nullIfEmpty()
-                        val dpi = request.url.queryParameter(QUERY_DPI)?.nullIfEmpty()
-                        when {
-                            icon != null
-                                 -> "${if (dpi != null) "icons-$dpi" else "icons"}/$icon"
-
-                            packageName != null && metadataIcon != null
-                                 -> "$packageName/$metadataIcon"
-
-                            else -> null
-                        }
-                    }
-                    if (address == null || path == null) {
-                        createCall(Request.Builder(), "", null)
-                    } else {
-                        createCall(
-                            request.newBuilder().url(
-                                address.toHttpUrl()
-                                    .newBuilder()
-                                    .addPathSegments(path)
-                                    .build()
-                            ), authentication.orEmpty(), cache
-                        )
-                    }
-                }
-
-                HOST_SCREENSHOT -> {
-                    val address = request.url.queryParameter(QUERY_ADDRESS)
-                    val authentication = request.url.queryParameter(QUERY_AUTHENTICATION)
-                    val packageName = request.url.queryParameter(QUERY_PACKAGE_NAME)
-                    val locale = request.url.queryParameter(QUERY_LOCALE)
-                    val device = request.url.queryParameter(QUERY_DEVICE)
-                    val screenshot = request.url.queryParameter(QUERY_SCREENSHOT)
-                    if (screenshot.isNullOrEmpty() || address.isNullOrEmpty()) {
-                        createCall(Request.Builder(), "", null)
-                    } else {
-                        createCall(
-                            request.newBuilder().url(
-                                address.toHttpUrl()
-                                    .newBuilder()
-                                    .addPathSegment(packageName.orEmpty())
-                                    .addPathSegment(locale.orEmpty())
-                                    .addPathSegment(device.orEmpty())
-                                    .addPathSegment(screenshot).build()
-                            ),
-                            authentication.orEmpty(), cache
-                        )
-                    }
-                }
-
-                else            -> {
-                    createCall(request.newBuilder(), "", null)
-                }
-            }
+            val authentication = request.url.queryParameter(QUERY_AUTHENTICATION)
+            return createCall(request.newBuilder(), authentication.orEmpty(), cache)
         }
     }
 }
