@@ -60,7 +60,6 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
     val reposRepo: RepositoriesRepository by inject()
 
     companion object {
-        val enqueuedInstalls: MutableSet<String> = mutableSetOf()
         val latestSyncs: MutableMap<Long, Long> = mutableMapOf()
 
         private var appRef: WeakReference<NeoApp> = WeakReference(null)

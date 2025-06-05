@@ -123,7 +123,9 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
 
     protected fun getApkFile(fileName: String): File? {
         return try {
-            Cache.getReleaseFile(context, fileName)
+            Cache.getReleaseFile(context, fileName).takeIf {
+                it.exists() && it.canRead()
+            }
         } catch (e: Exception) {
             emitProgress(InstallState.Failed(InstallationError.Unknown("Installation failed: Error getting apk-file: ${e.message}")))
             null

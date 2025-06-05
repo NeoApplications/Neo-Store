@@ -126,12 +126,14 @@ class DownloadStateHandler(
         val notificationBuilder = downloadNotificationBuilder(title)
 
         return when (state) {
-            is DownloadState.Cancel  -> notificationBuilder
+            is DownloadState.Cancel
+                 -> notificationBuilder
                 .setOngoing(false)
                 .setContentText(getString(R.string.canceled))
                 .setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
 
-            is DownloadState.Success -> notificationBuilder
+            is DownloadState.Success
+                 -> notificationBuilder
                 .setOngoing(false)
                 .setContentTitle(
                     getString(
@@ -151,13 +153,14 @@ class DownloadStateHandler(
                     }
                 }
 
-            is DownloadState.Error   -> notificationBuilder
+            is DownloadState.Error
+                 -> notificationBuilder
                 .setOngoing(false)
                 .updateWithError(this, state, state.validationError)
                 .setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
 
             // DownloadState.Pending, DownloadState.Connecting, DownloadState.Downloading
-            else                     -> null
+            else -> null
         }
     }
 
