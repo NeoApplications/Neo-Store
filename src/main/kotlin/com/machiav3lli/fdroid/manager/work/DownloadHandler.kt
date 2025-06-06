@@ -62,7 +62,7 @@ class DownloadStateHandler(
                         TAG,
                         "Download successful for ${state.packageName}, preparing installation"
                     )
-                    NeoApp.db.getInstallTaskDao().put(state.toInstallTask())
+                    NeoApp.db.getInstallTaskDao().upsert(state.toInstallTask())
                     InstallWorker.enqueue(
                         packageName = state.packageName,
                         label = state.name,
