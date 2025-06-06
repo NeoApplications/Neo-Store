@@ -121,6 +121,7 @@ const val CLIENT_READ_TIMEOUT = 30L
 const val CLIENT_WRITE_TIMEOUT = 30L
 
 const val BUFFER_SIZE = 1024 * 1024 // 1MB buffer
+const val STATEFLOW_SUBSCRIBE_BUFFER = 60_000L // 1 minute buffer
 
 const val HOST_ICON = "icon"
 const val HOST_SCREENSHOT = "screenshot"

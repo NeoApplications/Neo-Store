@@ -5,6 +5,7 @@ import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldRole
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.NeoApp
+import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
@@ -108,9 +109,9 @@ open class MainVM(
             catsMap[name]?.let { Pair(it.name, it.label) } ?: Pair(name, "")
         }
     }.stateIn(
-        viewModelScope,
-        SharingStarted.Lazily,
-        emptyList(),
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        initialValue = emptyList(),
     )
 
     val successfulSyncs = reposRepo.getLatestUpdates()
@@ -127,7 +128,7 @@ open class MainVM(
         it.associateBy(Installed::packageName)
     }.stateIn(
         scope = ioScope,
-        started = SharingStarted.Lazily,
+        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         initialValue = emptyMap()
     )
 
@@ -138,7 +139,7 @@ open class MainVM(
         request(src)
     }.stateIn(
         scope = ioScope,
-        started = SharingStarted.Lazily,
+        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         initialValue = request(Source.NONE)
     )
 
@@ -149,7 +150,7 @@ open class MainVM(
         request(src)
     }.stateIn(
         scope = ioScope,
-        started = SharingStarted.Lazily,
+        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         initialValue = request(Source.SEARCH)
     )
 
@@ -181,7 +182,7 @@ open class MainVM(
             .map { it.toItem(installed[it.product.packageName]) }
     }.stateIn(
         scope = ioScope,
-        started = SharingStarted.Lazily,
+        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         initialValue = emptyList()
     )
 

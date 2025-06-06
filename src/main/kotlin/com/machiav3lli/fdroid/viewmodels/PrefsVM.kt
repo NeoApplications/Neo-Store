@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.viewmodels
 import android.os.Parcelable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
 import com.machiav3lli.fdroid.data.database.entity.Extras
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.Repository
@@ -32,9 +33,9 @@ class PrefsVM(
 
     val repositories = reposRepo.getAll()
         .stateIn(
-            ioScope,
-            SharingStarted.Lazily,
-            emptyList()
+            scope = ioScope,
+            started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+            initialValue = emptyList()
         )
 
     private val _reposSearchQuery = MutableStateFlow("")
@@ -46,9 +47,9 @@ class PrefsVM(
         }
     }
         .stateIn(
-            ioScope,
-            SharingStarted.Lazily,
-            emptyList()
+            scope = ioScope,
+            started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+            initialValue = emptyList()
         )
 
     val installed = installedRepo.getAll().map {
@@ -56,9 +57,9 @@ class PrefsVM(
     }
 
     val extras = extrasRepo.getAll().stateIn(
-        ioScope,
-        SharingStarted.Eagerly,
-        emptyList()
+        scope = ioScope,
+        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        initialValue = emptyList()
     )
 
     private val intentAddress = MutableStateFlow("")

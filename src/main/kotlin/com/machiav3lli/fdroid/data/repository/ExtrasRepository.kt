@@ -52,7 +52,6 @@ class ExtrasRepository(
         upsertExtra(packageName) {
             if (it != null) updateIgnoreVulns(packageName, setBoolean)
             else insert(Extras(packageName, ignoreVulns = setBoolean))
-
         }
 
     suspend fun setFavorite(packageName: String, setBoolean: Boolean) =

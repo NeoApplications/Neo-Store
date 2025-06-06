@@ -6,6 +6,7 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.RELEASE_STATE_INSTALLED
 import com.machiav3lli.fdroid.RELEASE_STATE_NONE
 import com.machiav3lli.fdroid.RELEASE_STATE_SUGGESTED
+import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.DatabaseX
 import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
@@ -89,7 +90,7 @@ class AppSheetVM(
         }
         .stateIn(
             viewModelScope,
-            SharingStarted.Lazily,
+            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
             null
         )
 
@@ -105,7 +106,7 @@ class AppSheetVM(
         }
     }.stateIn(
         viewModelScope,
-        SharingStarted.Lazily,
+        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         emptyList()
     )
 
@@ -113,7 +114,7 @@ class AppSheetVM(
         findSuggestedProduct(prodRepos, installed) { it.first }
     }.stateIn(
         viewModelScope,
-        SharingStarted.Lazily,
+        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         null
     )
 
@@ -149,7 +150,7 @@ class AppSheetVM(
         .flowOn(Dispatchers.IO)
         .stateIn(
             viewModelScope,
-            SharingStarted.Lazily,
+            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
             emptyList(),
         )
 
@@ -163,7 +164,7 @@ class AppSheetVM(
         } ?: emptyList()
     }.stateIn(
         viewModelScope,
-        SharingStarted.Lazily,
+        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         emptyList(),
     )
 
@@ -182,7 +183,7 @@ class AppSheetVM(
         )
     }.stateIn(
         viewModelScope,
-        SharingStarted.Lazily,
+        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         PrivacyData(emptyMap(), emptyList(), emptyList())
     )
 
@@ -200,7 +201,7 @@ class AppSheetVM(
         } ?: emptyList()
     }.stateIn(
         viewModelScope,
-        SharingStarted.Lazily,
+        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         emptyList(),
     )
 
@@ -208,7 +209,7 @@ class AppSheetVM(
         .mapLatest { it?.state }
         .stateIn(
             viewModelScope,
-            SharingStarted.Lazily,
+            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
             null
         )
 
@@ -218,7 +219,7 @@ class AppSheetVM(
         }
         .stateIn(
             viewModelScope,
-            SharingStarted.Lazily,
+            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
             null
         )
 
@@ -275,14 +276,14 @@ class AppSheetVM(
     val mainAction: StateFlow<ActionState> = actions.map { it.first }
         .stateIn(
             viewModelScope,
-            SharingStarted.Lazily,
+            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
             ActionState.Bookmark
         )
 
     val subActions: StateFlow<Set<ActionState>> = actions.map { it.second }
         .stateIn(
             viewModelScope,
-            SharingStarted.Lazily,
+            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
             emptySet()
         )
 
