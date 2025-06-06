@@ -52,7 +52,6 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.AltBlockLayout,
         Key.AndroidInsteadOfSDK,
         Key.BottomSearchBar,
-        Key.SearchApps,
         Key.UpdatedApps,
         Key.NewApps,
         Key.DisableCertificateValidation,
@@ -323,7 +322,6 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object BottomSearchBar : Key<Boolean>("bottom_search_bar", Value.BooleanValue(false))
 
         data object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(150))
-        data object SearchApps : Key<Int>("search_apps_num", Value.IntValue(0))
         data object NewApps : Key<Int>("new_apps", Value.IntValue(30))
 
         data object DisableCertificateValidation :

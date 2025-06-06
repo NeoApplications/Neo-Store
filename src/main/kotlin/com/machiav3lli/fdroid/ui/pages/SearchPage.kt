@@ -116,7 +116,6 @@ fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
                     Preferences.Key.SortOrderAscendingSearch,
                     Preferences.Key.TargetSDKSearch,
                     Preferences.Key.MinSDKSearch,
-                    Preferences.Key.SearchApps,
                         -> viewModel.setSortFilter(
                         Page.SEARCH,
                         listOf(
@@ -128,7 +127,6 @@ fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
                             Preferences[Preferences.Key.SortOrderAscendingSearch],
                             Preferences[Preferences.Key.TargetSDKSearch],
                             Preferences[Preferences.Key.MinSDKSearch],
-                            Preferences[Preferences.Key.SearchApps],
                         ).toString()
                     )
 

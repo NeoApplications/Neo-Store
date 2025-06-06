@@ -226,7 +226,6 @@ data class Request(
                 filteredOutRepos = Preferences[Preferences.Key.ReposFilterSearch],
                 filteredAntiFeatures = Preferences[Preferences.Key.AntifeaturesFilterSearch],
                 filteredLicenses = Preferences[Preferences.Key.LicensesFilterSearch],
-                numberOfItems = Preferences[Preferences.Key.SearchApps],
                 minSDK = Preferences[Preferences.Key.MinSDKSearch].ordinal,
                 targetSDK = Preferences[Preferences.Key.TargetSDKSearch].ordinal,
             )
@@ -261,7 +260,6 @@ data class Request(
                 filteredOutRepos = Preferences[Preferences.Key.ReposFilterSearch],
                 filteredAntiFeatures = Preferences[Preferences.Key.AntifeaturesFilterSearch],
                 filteredLicenses = Preferences[Preferences.Key.LicensesFilterSearch],
-                numberOfItems = Preferences[Preferences.Key.SearchApps],
                 minSDK = Preferences[Preferences.Key.MinSDKSearch].ordinal,
                 targetSDK = Preferences[Preferences.Key.TargetSDKSearch].ordinal,
             )
@@ -331,7 +329,6 @@ data class Request(
                 filteredOutRepos = Preferences[Preferences.Key.ReposFilterSearch],
                 filteredAntiFeatures = Preferences[Preferences.Key.AntifeaturesFilterSearch],
                 filteredLicenses = Preferences[Preferences.Key.LicensesFilterSearch],
-                numberOfItems = Preferences[Preferences.Key.SearchApps],
                 minSDK = Preferences[Preferences.Key.MinSDKSearch].ordinal,
                 targetSDK = Preferences[Preferences.Key.TargetSDKSearch].ordinal,
             )
