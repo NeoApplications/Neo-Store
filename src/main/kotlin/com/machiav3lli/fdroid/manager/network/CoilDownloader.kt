@@ -8,7 +8,6 @@ import com.machiav3lli.fdroid.CLIENT_READ_TIMEOUT
 import com.machiav3lli.fdroid.CLIENT_USER_AGENT
 import com.machiav3lli.fdroid.CLIENT_WRITE_TIMEOUT
 import com.machiav3lli.fdroid.POOL_DEFAULT_KEEP_ALIVE_DURATION_M
-import com.machiav3lli.fdroid.POOL_DEFAULT_MAX_IDLE_CONNECTIONS
 import com.machiav3lli.fdroid.QUERY_AUTHENTICATION
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Repository
@@ -92,7 +91,7 @@ object CoilDownloader {
                 val isOnion = hostUrl.endsWith(".onion")
                 val connectionPool = connectionPools.getOrPut(hostUrl) {
                     ConnectionPool(
-                        POOL_DEFAULT_MAX_IDLE_CONNECTIONS,
+                        Preferences[Preferences.Key.MaxIdleConnections],
                         POOL_DEFAULT_KEEP_ALIVE_DURATION_M,
                         TimeUnit.MINUTES
                     )

@@ -49,6 +49,7 @@ fun PrefsServicePage() {
         Preferences.Key.DisableSignatureCheck,
     )
     val installPrefs = listOfNotNull(
+        Preferences.Key.MaxIdleConnections,
         Preferences.Key.KeepInstallNotification,
         Preferences.Key.Installer,
         Preferences.Key.RootSessionInstaller,
