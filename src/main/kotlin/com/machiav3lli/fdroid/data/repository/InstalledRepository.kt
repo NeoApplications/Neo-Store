@@ -39,7 +39,7 @@ class InstalledRepository(
     }
 
     suspend fun upsert(vararg installed: Installed) = withContext(jcc) {
-        installedDao.put(*installed)
+        installedDao.upsert(*installed)
     }
 
     suspend fun emptyTable() = withContext(jcc) {
