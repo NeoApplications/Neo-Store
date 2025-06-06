@@ -175,7 +175,7 @@
     <string name="new_applications">Nieuwe apps</string>
     <string name="install_after_sync">Automatisch-bijwerken</string>
     <string name="install_after_sync_summary">Installeer alle nieuwe versies na het laden van archieven.</string>
-    <string name="prefs_updated_apps">Aantal apps in \"recentelijk bijgewerkt\\</string>
+    <string name="prefs_updated_apps">Aantal apps in \"recentelijk bijgewerkt\"</string>
     <string name="prefs_new_apps">Aantal apps in \"Nieuwe apps\"</string>
     <string name="new_repository">Nieuw archief</string>
     <string name="default_tab">Standaard tabblad</string>

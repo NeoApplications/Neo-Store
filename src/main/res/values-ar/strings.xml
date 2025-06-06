@@ -188,7 +188,7 @@
     <string name="explore">استكشف</string>
     <string name="update_all">تثبيت الكل</string>
     <string name="install_after_sync_summary">تثبيت جميع الإصدارات الجديدة بعد البحث في المستودعات للتطبيقات الجديدة.</string>
-    <string name="prefs_updated_apps">عدد التطبيقات المراد عرضها في \"تم التحديث مؤخرًا\\</string>
+    <string name="prefs_updated_apps">عدد التطبيقات المراد عرضها في \"تم التحديث مؤخرًا\"</string>
     <string name="new_repository">مستودع جديد</string>
     <string name="default_tab">التبويب الافتراضي</string>
     <string name="pending">قيد الانتظار</string>

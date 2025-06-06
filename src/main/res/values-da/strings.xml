@@ -135,7 +135,7 @@
     <string name="installed_applications">Installeret</string>
     <string name="sort_filter">Sorter og filtrer</string>
     <string name="install_after_sync">Auto-opdater</string>
-    <string name="prefs_updated_apps">Antal apps, der vises i \"Nyligt opdateret\\</string>
+    <string name="prefs_updated_apps">Antal apps, der vises i \"Nyligt opdateret\"</string>
     <string name="prefs_new_apps">Antal apps, der vises i \"Nye apps\"</string>
     <string name="new_repository">Nyt repository</string>
     <string name="default_tab">Standardfane</string>

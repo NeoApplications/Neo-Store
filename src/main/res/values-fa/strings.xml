@@ -179,7 +179,7 @@
     <string name="incompatible_with_FORMAT">ناسازگار با %s</string>
     <string name="only_on_wifi_and_battery">فقط در وای‌فای و به برق وصل‌شده</string>
     <string name="install_after_sync">نصب خودکار بروزرسانی‌ها</string>
-    <string name="prefs_updated_apps">تعداد برنامه‌هایی که در بخش \"به‌تازگی به‌روزرسانی‌شده\" نمایش داده شوند.</string>
+    <string name="prefs_updated_apps">تعداد برنامه‌ هایی که در بخش «به تازگی به‌ روز رسانی‌ شده» نمایش داده می‌ شوند</string>
     <string name="new_repository">مخزن جدید</string>
     <string name="prefs_new_apps">تعداد برنامه‌های جدید برای نمایش</string>
     <string name="default_tab">سربرگ پیشفرض</string>
@@ -418,4 +418,7 @@
     <string name="wait_to_sync">برای همگام سازی دوباره، چند لحظه صبر کنید.</string>
     <string name="prefs_search_apps_description">حداکثر تعداد برنامه‌هایی که باید در نتایج جستجو گنجانده شوند (برای گنجاندن همه برنامه‌ها، مقدار را صفر تنظیم کنید).</string>
     <string name="state_modified">تغییر یافته</string>
+    <string name="index_v2">فعال کردن Index-V2</string>
+    <string name="index_v2_summary">درخواست Index-V2 را به عنوان شاخص اصلی فعال می‌ کند هنوز در مرحله آزمایشی است و مزایا و معایبی دارد.</string>
+    <string name="action_start">بریم</string>
 </resources>
