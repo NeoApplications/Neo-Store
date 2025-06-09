@@ -207,7 +207,10 @@ data class EmbeddedProduct(
     val releases: List<Release> = emptyList(),
 ) {
     val selectedReleases: List<Release>
-        get() = releases.filter { it.selected }.distinctBy(Release::identifier)
+        get() = releases
+            .filter { it.selected }
+            .distinctBy(Release::identifier)
+            .sortedByDescending { it.versionCode }
 
     val displayRelease: Release?
         get() = selectedReleases.firstOrNull() ?: releases.firstOrNull()
