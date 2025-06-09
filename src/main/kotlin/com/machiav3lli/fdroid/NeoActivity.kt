@@ -213,6 +213,7 @@ class NeoActivity : AppCompatActivity() {
         else data?.getQueryParameter("fingerprint")?.uppercase()?.nullIfEmpty()
             ?: data?.getQueryParameter("FINGERPRINT")?.uppercase()?.nullIfEmpty()
 
+        // TODO Handle Intent.ACTION_APPLICATION_PREFERENCES (android.intent.action.APPLICATION_PREFERENCES)
         when (intent?.action) {
             Intent.ACTION_VIEW          -> {
                 if (

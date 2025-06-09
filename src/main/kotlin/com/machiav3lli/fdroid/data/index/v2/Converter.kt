@@ -26,7 +26,6 @@ internal fun IndexV2.Package.toProduct(repositoryId: Long, packageName: String) 
     metadataIcon = metadata.icon.findLocalized(File("")).name,
     releases = emptyList(),
     categories = metadata.categories,
-    // TODO add full anti-features with declarations
     antiFeatures = versions.entries.maxBy { it.value.added }.value.antiFeatures.keys.toList(),
     licenses = metadata.license.split(',').filter { it.isNotEmpty() },
     donates = listOfNotNull(

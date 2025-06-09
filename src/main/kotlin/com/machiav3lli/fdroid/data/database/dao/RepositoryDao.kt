@@ -60,7 +60,6 @@ interface RepositoryDao : BaseDao<Repository> {
     @Query("UPDATE repository SET lastModified = '', entityTag = ''")
     suspend fun forgetLastModifications()
 
-    // TODO clean up products and other tables afterwards
     @Query("DELETE FROM repository WHERE id = :id")
     suspend fun deleteById(id: Long)
 

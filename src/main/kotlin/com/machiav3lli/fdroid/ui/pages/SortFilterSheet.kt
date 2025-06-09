@@ -52,7 +52,7 @@ import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-// TODO add viewmodel
+// TODO add own? viewmodel
 @OptIn(
     ExperimentalCoroutinesApi::class,
     ExperimentalLayoutApi::class

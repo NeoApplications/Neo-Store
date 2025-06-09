@@ -113,7 +113,7 @@ fun MainPage(
         NavigableListDetailPaneScaffold(
             navigator = panesNavigator,
             listPane = {
-                //AnimatedPane { } TODO re-add when fixing recomposition issue
+                //AnimatedPane { } TODO re-add when recomposition issue fixed
                 Scaffold(
                     containerColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,

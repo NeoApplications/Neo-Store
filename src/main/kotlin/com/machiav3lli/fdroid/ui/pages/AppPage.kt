@@ -519,7 +519,7 @@ fun AppPage(
                                 }
                             }
                         }
-                        item { // TODO add markdown parsing
+                        item { // TODO add markdown parsing or not?
                             if ((product.description + product.summary).isNotEmpty()) HtmlTextBlock(
                                 shortText = product.summary,
                                 longText = product.description

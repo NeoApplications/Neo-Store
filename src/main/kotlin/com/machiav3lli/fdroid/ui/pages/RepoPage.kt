@@ -602,7 +602,6 @@ fun RepoPage(
     }
 }
 
-
 private fun invalidateAddress(
     validity: MutableState<Boolean>,
     address: String,
@@ -611,11 +610,9 @@ private fun invalidateAddress(
     validity.value = normalizeAddress(address) != null
 }
 
-
 private fun invalidateFingerprint(validity: MutableState<Boolean>, fingerprint: String) {
     validity.value = fingerprint.isEmpty() || fingerprint.length == 64
 }
-
 
 private fun invalidateAuthentication(
     usernameValidity: MutableState<Boolean>,

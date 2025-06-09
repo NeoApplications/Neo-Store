@@ -5,7 +5,6 @@ import androidx.room.Query
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import kotlinx.coroutines.flow.Flow
 
-// TODO make sure that apps that not uninstalled by Droid-ify still get removed
 @Dao
 interface InstalledDao : BaseDao<Installed> {
     @Query("SELECT * FROM memory_installed")

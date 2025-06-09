@@ -5,7 +5,6 @@ import androidx.room.Query
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
 import kotlinx.coroutines.flow.Flow
 
-// TODO make sure that apps that not uninstalled by Droid-ify still get removed
 @Dao
 interface InstallTaskDao : BaseDao<InstallTask> {
     @Query("SELECT * FROM install_task ORDER BY added DESC")

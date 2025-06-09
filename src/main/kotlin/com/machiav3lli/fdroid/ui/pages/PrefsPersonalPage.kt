@@ -47,7 +47,6 @@ fun PrefsPersonalPage() {
         Preferences.Key.KidsMode,
         Preferences.Key.DownloadShowDialog,
         Preferences.Key.ActionLockDialog,
-        Preferences.Key.SearchApps,
         Preferences.Key.UpdatedApps,
         Preferences.Key.NewApps,
     )
