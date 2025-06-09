@@ -196,7 +196,7 @@ data class Repository(
                 address = xml[1],
                 description = xml[2].replace(Regex("\\s+"), " ").trim(),
                 version = xml[3].toInt(),
-                enabled = xml[4].toInt() > 0,
+                enabled = xml[4].toInt() > 0 && xml[1].startsWith("http"),
                 fingerprint = xml[6].let {
                     if (it.length > 32) calculateSHA256(it)
                     else it
