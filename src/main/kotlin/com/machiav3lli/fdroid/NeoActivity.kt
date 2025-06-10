@@ -25,8 +25,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
@@ -35,8 +35,8 @@ import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
-import com.machiav3lli.fdroid.ui.navigation.AppNavHost
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
+import com.machiav3lli.fdroid.ui.navigation.NavigationRoot
 import com.machiav3lli.fdroid.utils.InstallUtils
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.extension.text.pathCropped
@@ -72,7 +72,7 @@ class NeoActivity : AppCompatActivity() {
         class AddRepo(val address: String?, val fingerprint: String?) : SpecialIntent()
     }
 
-    private lateinit var navController: NavHostController
+    private lateinit var backStack: NavBackStack
     private val cScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
     private val mScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 
@@ -111,21 +111,21 @@ class NeoActivity : AppCompatActivity() {
                     else                             -> isDarkTheme
                 }
             ) {
-                navController = rememberNavController()
+                backStack = rememberNavBackStack(NavRoute.Permissions)
 
                 Scaffold(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                     contentColor = MaterialTheme.colorScheme.onBackground,
                 ) {
-                    LaunchedEffect(key1 = navController) {
+                    LaunchedEffect(key1 = backStack) {
                         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
                             handleIntent(intent)
                         }
                     }
 
-                    AppNavHost(
+                    NavigationRoot(
                         modifier = Modifier.imePadding(),
-                        navController = navController,
+                        backStack = backStack
                     )
                 }
             }
@@ -181,7 +181,7 @@ class NeoActivity : AppCompatActivity() {
         when (specialIntent) {
             is SpecialIntent.Updates -> {
                 // TODO directly update the apps??
-                navController.navigate(NavRoute.Main(Preferences.DefaultTab.Installed.index))
+                backStack.add(NavRoute.Main(Preferences.DefaultTab.Installed.index))
             }
 
             is SpecialIntent.AddRepo -> {
@@ -189,7 +189,7 @@ class NeoActivity : AppCompatActivity() {
                     specialIntent.address,
                     specialIntent.fingerprint,
                 )
-                navController.navigate(NavRoute.Prefs(2))
+                backStack.add(NavRoute.Prefs(2))
             }
 
             is SpecialIntent.Install -> {
@@ -302,7 +302,7 @@ class NeoActivity : AppCompatActivity() {
     private fun showSearchPage(query: String? = null) {
         mScope.launch {
             mainViewModel.setNavigatorRole(ListDetailPaneScaffoldRole.List)
-            navController.navigate(NavRoute.Main(Preferences.DefaultTab.Search.index))
+            backStack.add(NavRoute.Main(Preferences.DefaultTab.Search.index))
             mainViewModel.setSearchQuery(query ?: "")
         }
     }
