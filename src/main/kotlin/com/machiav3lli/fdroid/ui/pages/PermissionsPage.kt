@@ -32,7 +32,6 @@ import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
@@ -51,7 +50,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun PermissionsPage(navController: NavHostController) {
+fun PermissionsPage(navigator: (NavRoute) -> Unit) {
     val context = LocalContext.current
     val activity = LocalActivity.current as NeoActivity
     val mScope = CoroutineScope(Dispatchers.Main)
@@ -74,7 +73,7 @@ fun PermissionsPage(navController: NavHostController) {
                     powerManager,
                     permissionStatePostNotifications,
                 ) {
-                    mScope.launch { navController.navigate(NavRoute.Main()) }
+                    mScope.launch { navigator(NavRoute.Main()) }
                 }
             }
         }
@@ -105,7 +104,7 @@ fun PermissionsPage(navController: NavHostController) {
                         powerManager,
                         permissionStatePostNotifications,
                     ) {
-                        mScope.launch { navController.navigate(NavRoute.Main()) }
+                        mScope.launch { navigator(NavRoute.Main()) }
                     }
                 }
             }
