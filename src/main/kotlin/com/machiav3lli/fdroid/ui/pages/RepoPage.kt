@@ -21,6 +21,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -37,6 +39,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -50,9 +53,10 @@ import com.machiav3lli.fdroid.ui.components.CheckChip
 import com.machiav3lli.fdroid.ui.components.QrCodeImage
 import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.TitleText
+import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowUUpLeft
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TrashSimple
@@ -173,6 +177,29 @@ fun RepoPage(
             modifier = Modifier
                 .fillMaxSize()
         ) {
+            ListItem(
+                colors = ListItemDefaults.colors(
+                    containerColor = Color.Transparent,
+                ),
+                overlineContent = {
+                    Text(text = stringResource(id = R.string.name))
+                },
+                headlineContent = {
+                    Text(
+                        text = repo.name.nullIfEmpty()
+                            ?: stringResource(id = R.string.new_repository)
+                    )
+                },
+                trailingContent = {
+                    TopBarAction(
+                        icon = Phosphor.X,
+                        description = stringResource(id = R.string.dismiss),
+                    ) {
+                        onDismiss()
+                    }
+                }
+            )
+            HorizontalDivider(thickness = 2.dp)
             LazyColumn(
                 modifier = Modifier
                     .weight(1f, true)
@@ -180,16 +207,6 @@ fun RepoPage(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 contentPadding = PaddingValues(16.dp)
             ) {
-                if ((repo.updated) > 0L && !editMode) {
-                    item {
-                        TitleText(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = stringResource(id = R.string.name),
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        BlockText(text = repo.name)
-                    }
-                }
                 if (!editMode && repo.description.isNotEmpty()) {
                     item {
                         TitleText(
@@ -453,30 +470,21 @@ fun RepoPage(
                             SyncWorker.enableRepo(repo, !enabled)
                         }
                     }
-                    ActionButton(
-                        text = stringResource(id = R.string.delete),
-                        icon = Phosphor.TrashSimple,
-                        positive = false
-                    ) {
-                        openDeleteDialog.value = true
-                    }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     ActionButton(
-                        modifier = Modifier.weight(1f),
                         text = stringResource(
-                            id = if (!editMode) R.string.dismiss
+                            id = if (!editMode) R.string.delete
                             else R.string.cancel
                         ),
-                        icon = if (!editMode) Phosphor.CaretDown
-                        else Phosphor.X,
+                        icon = if (!editMode) Phosphor.TrashSimple
+                        else Phosphor.ArrowUUpLeft,
                         positive = false
                     ) {
-                        if (!editMode)
-                            onDismiss()
+                        if (!editMode) openDeleteDialog.value = true
                         else {
                             editMode = false
                             addressFieldValue = repo.address
