@@ -304,11 +304,6 @@ data class Repository(
             "The official Divest OS F-Droid repository.",
             21, false, "E4BE8D6ABFA4D9D4FEEF03CDDA7FF62A73FD64B75566F6DD4E5E577550BE8467", ""
         )
-        private val SHIFT_OS = defaultRepository(
-            "https://fdroid.shiftphones.com/fdroid/repo ", "Shift OS Repo",
-            "The official Shift OS F-Droid repository.",
-            21, false, "938FC0ECF9C86241D73F5BC2656E193135762B3450368896CC803EBBD0360AB8", ""
-        )
         private val COLLABORA = defaultRepository(
             "https://www.collaboraoffice.com/downloads/fdroid/repo", "Collabora Office",
             "Collabora Office is an office suite based on LibreOffice.",
@@ -1016,7 +1011,7 @@ data class Repository(
             GUARDIAN, ONIONSHARE_NIGHTLY, MICRO_G,
             CROMITE, IRONFOX,
             NEWPIPE, BITWARDEN, GITJOURNAL,
-            CALYX_OS, CALYX_OS_TEST, IODE, SHIFT_OS,
+            CALYX_OS, CALYX_OS_TEST, IODE,
             KDE_RELEASE, KDE_NIGHTLY, NANODROID, NETSYMS,
             FUTO, KVAESITSO, C_GEO, C_GEO_NIGHTLY, COLLABORA,
             PIXELFED, VIDELIBRI, GADGETBRIDGE,
