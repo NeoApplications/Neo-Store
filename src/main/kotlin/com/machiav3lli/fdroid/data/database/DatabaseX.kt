@@ -104,7 +104,7 @@ import java.io.File
         AntiFeature::class,
         AntiFeatureTemp::class
     ],
-    version = 1100,
+    version = 1101,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -227,6 +227,10 @@ import java.io.File
             from = 1024,
             to = 1100,
             spec = DatabaseX.Companion.RevampProductsToV2::class
+        ),
+        AutoMigration(
+            from = 1100,
+            to = 1101,
         ),
     ]
 )
