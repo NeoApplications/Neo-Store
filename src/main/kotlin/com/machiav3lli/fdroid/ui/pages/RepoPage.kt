@@ -470,6 +470,13 @@ fun RepoPage(
                             SyncWorker.enableRepo(repo, !enabled)
                         }
                     }
+                    CheckChip(
+                        checked = repo.mirrorRotation,
+                        text = stringResource(id = R.string.mirror_rotation),
+                        fullWidth = false,
+                    ) {
+                        updateRepo(repo.copy(mirrorRotation = !repo.mirrorRotation))
+                    }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth(),

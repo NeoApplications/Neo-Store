@@ -425,4 +425,5 @@
     <string name="index_v2_summary">Enables requesting Index-V2 as the primary index. Still experimental, having benefits and drawbacks.</string>
     <string name="action_start">Let\'s go!</string>
     <string name="max_idle_connections_description">Maximum number of idle connections across all addresses to be kept alive.</string>
+    <string name="mirror_rotation">Mirror rotation</string>
 </resources>
