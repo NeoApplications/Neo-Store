@@ -124,6 +124,7 @@ dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.ksp)
     implementation(libs.preference)
+    implementation(libs.appcompat)
     implementation(libs.activity.compose)
     implementation(libs.collections.immutable)
     //debugImplementation(libs.leakcanary)
@@ -169,6 +170,9 @@ dependencies {
 
     // Coroutines / Lifecycle
     implementation(libs.lifecycle)
+    implementation(libs.lifecycle.compose)
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.lifecycle.nav3)
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
 
@@ -189,6 +193,8 @@ dependencies {
     implementation(libs.compose.adaptive.navigation)
     implementation(libs.compose.animation)
     implementation(libs.compose.navigation)
+    implementation(libs.compose.nav3.runtime)
+    implementation(libs.compose.nav3.ui)
     implementation(libs.accompanist.permissions)
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.tooling.preview)

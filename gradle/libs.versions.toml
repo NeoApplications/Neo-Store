@@ -1,11 +1,13 @@
 [versions]
 activity = "1.10.1"
+appcompat = "1.7.1"
 agp = "8.10.1"
 biometric = "1.2.0-alpha05"
 coil = "3.2.0"
 compose-bom = "2025.06.00"
 compose-accompanist = "0.37.3"
 compose-html = "1.0.4"
+compose-m3-adaptive = "1.2.0-alpha06"
 coroutines = "1.10.2"
 immutables = "0.4.0"
 jackson = "2.19.0"
@@ -20,6 +22,8 @@ lifecycle = "2.9.1"
 markdown = "0.7.3"
 material = "1.12.0"
 navigation = "2.9.0"
+nav3 = "1.0.0-alpha03"
+nav3Lifecycle = "1.0.0-alpha01"
 okhttp = "5.0.0-alpha.16"
 preference = "1.2.1"
 room = "2.7.1"
@@ -33,6 +37,7 @@ kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "
 ksp = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 preference = { module = "androidx.preference:preference-ktx", version.ref = "preference" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "immutables" }
 
@@ -68,6 +73,9 @@ jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref
 markdown = { module = "org.jetbrains:markdown", version.ref = "markdown" }
 
 lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+lifecycle-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+lifecycle-nav3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "nav3Lifecycle" }
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 
@@ -81,13 +89,15 @@ compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-material3-navigationsuite = { module = "androidx.compose.material3:material3-adaptive-navigation-suite" }
-compose-adaptive = { module = "androidx.compose.material3.adaptive:adaptive" }
-compose-adaptive-layout = { module = "androidx.compose.material3.adaptive:adaptive-layout" }
-compose-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation" }
+compose-adaptive = { module = "androidx.compose.material3.adaptive:adaptive", version.ref = "compose-m3-adaptive" }
+compose-adaptive-layout = { module = "androidx.compose.material3.adaptive:adaptive-layout", version.ref = "compose-m3-adaptive" }
+compose-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation", version.ref = "compose-m3-adaptive" }
 compose-animation = { module = "androidx.compose.animation:animation" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+compose-nav3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3" }
+compose-nav3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "compose-accompanist" }
 compose-html = { module = "be.digitalia.compose.htmlconverter:htmlconverter", version.ref = "compose-html" }
 
