@@ -1,6 +1,6 @@
 package com.machiav3lli.fdroid.data.database.entity
 
-import android.net.Uri
+import androidx.core.net.toUri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
@@ -88,7 +88,7 @@ open class Release(
         get() = "$packageName&$repositoryId#$versionCode%$signature§$platforms.$hash"
 
     fun getDownloadUrl(repository: Repository): String {
-        return Uri.parse(repository.address).buildUpon().appendPath(release).build().toString()
+        return repository.downloadAddress.toUri().buildUpon().appendPath(release).build().toString()
     }
 
     val cacheFileName: String

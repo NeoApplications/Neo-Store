@@ -185,7 +185,7 @@ object RepositoryUpdater : KoinComponent {
         val file = Cache.getTemporaryFile(context)
         try {
             val result = Downloader.download(
-                repository.address.toUri().buildUpon()
+                repository.downloadAddress.toUri().buildUpon()
                     .appendPath(
                         if (indexType != IndexType.INDEX_V2) indexType.jarName
                         else indexType.contentName

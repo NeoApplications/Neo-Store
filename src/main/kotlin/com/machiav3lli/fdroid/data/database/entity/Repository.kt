@@ -34,7 +34,6 @@ data class Repository(
     val id: Long = 0,
     var address: String = "",
     // TODO add support for countryCode and isPrimary
-    // TODO add support for mirror rotation
     val mirrors: List<String> = emptyList(),
     val name: String = "",
     val description: String = "",
@@ -118,6 +117,10 @@ data class Repository(
                 ) else null
             }
             ?: Pair(null, null)
+
+    val downloadAddress: String
+        get() = if (!mirrorRotation) address
+        else mirrors.filter { address.contains(".onion/") || !it.contains(".onion/") }.random()
 
     fun toJSON() = Json.encodeToString(this)
 
