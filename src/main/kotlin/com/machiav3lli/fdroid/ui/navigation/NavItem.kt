@@ -21,14 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
-import com.machiav3lli.fdroid.ui.pages.ExplorePage
-import com.machiav3lli.fdroid.ui.pages.InstalledPage
-import com.machiav3lli.fdroid.ui.pages.LatestPage
-import com.machiav3lli.fdroid.ui.pages.PrefsOtherPage
-import com.machiav3lli.fdroid.ui.pages.PrefsPersonalPage
-import com.machiav3lli.fdroid.ui.pages.PrefsReposPage
-import com.machiav3lli.fdroid.ui.pages.PrefsServicePage
-import com.machiav3lli.fdroid.ui.pages.SearchPage
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Compass
@@ -38,6 +30,14 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.House
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MagnifyingGlass
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SlidersHorizontal
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserGear
+import com.machiav3lli.fdroid.ui.pages.ExplorePage
+import com.machiav3lli.fdroid.ui.pages.InstalledPage
+import com.machiav3lli.fdroid.ui.pages.LatestPage
+import com.machiav3lli.fdroid.ui.pages.PrefsOtherPage
+import com.machiav3lli.fdroid.ui.pages.PrefsPersonalPage
+import com.machiav3lli.fdroid.ui.pages.PrefsReposPage
+import com.machiav3lli.fdroid.ui.pages.PrefsServicePage
+import com.machiav3lli.fdroid.ui.pages.SearchPage
 import kotlinx.serialization.Serializable
 
 sealed class NavItem(

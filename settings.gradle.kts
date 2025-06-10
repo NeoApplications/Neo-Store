@@ -1,8 +1,15 @@
 pluginManagement {
     repositories {
         mavenCentral()
-        google()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
         gradlePluginPortal()
+        //maven(url = "https://androidx.dev/snapshots/builds/13508953/artifacts/repository") // FOR jetpack SNAPSHOT ONLY
     }
 }
 dependencyResolutionManagement {
@@ -11,6 +18,7 @@ dependencyResolutionManagement {
         mavenCentral()
         google()
         maven(url = "https://jitpack.io")
+        //maven(url = "https://androidx.dev/snapshots/builds/13508953/artifacts/repository") // FOR jetpack SNAPSHOT ONLY
     }
 }
 rootProject.name = "Neo Store"

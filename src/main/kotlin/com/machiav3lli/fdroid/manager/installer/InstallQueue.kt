@@ -62,8 +62,14 @@ class InstallQueue {
      * Checks if a package is currently in the installation queue
      */
     fun isEnqueued(packageName: String): Boolean {
-        return currentTask?.packageName == packageName ||
-                queue.any { it.packageName == packageName }
+        return (currentTask?.packageName == packageName ||
+                queue.any { it.packageName == packageName }).apply {
+            // TODO remove when more queueing logic is in place
+            if (this) Log.d(
+                "InstallQueue",
+                "$packageName is ${if (currentTask?.packageName == packageName) "the current task" else "already in the queue: ${queue.toArray()}"}"
+            )
+        }
     }
 
     /**
