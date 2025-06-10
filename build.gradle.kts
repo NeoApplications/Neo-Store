@@ -19,7 +19,7 @@ ksp {
 
 android {
     namespace = "com.machiav3lli.fdroid"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.machiav3lli.fdroid"
