@@ -27,14 +27,14 @@ fun AppNavHost(
     startDestination = NavRoute.Permissions,
 ) {
     fadeComposable<NavRoute.Permissions> {
-        PermissionsPage(navController)
+        PermissionsPage { navController.navigate(it) }
     }
     slideInComposable<NavRoute.Main> {
         val args = it.toRoute<NavRoute.Main>()
 
         MainPage(
             pageIndex = args.page,
-            navController = navController,
+            navigator = { navController.navigate(it) },
         )
     }
     slideInComposable<NavRoute.Prefs> {
@@ -42,7 +42,7 @@ fun AppNavHost(
 
         PrefsPage(
             pageIndex = args.page,
-            navController = navController,
+            navigateUp = { navController.navigateUp() },
         )
     }
 }

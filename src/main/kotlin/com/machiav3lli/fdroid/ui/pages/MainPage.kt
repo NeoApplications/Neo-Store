@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.POPUP_LONG
 import com.machiav3lli.fdroid.POPUP_NONE
@@ -60,7 +59,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun MainPage(
-    navController: NavHostController,
+    navigator: (NavRoute) -> Unit,
     pageIndex: Int,
     viewModel: MainVM = koinNeoViewModel()
 ) {
@@ -139,7 +138,7 @@ fun MainPage(
                                 icon = Phosphor.GearSix,
                                 description = stringResource(id = R.string.settings)
                             ) {
-                                navController.navigate(NavRoute.Prefs())
+                                navigator(NavRoute.Prefs())
                             }
 
                             if (showPopup.intValue != POPUP_NONE) {

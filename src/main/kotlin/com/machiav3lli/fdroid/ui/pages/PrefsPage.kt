@@ -15,7 +15,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
 import com.machiav3lli.fdroid.ui.navigation.NavItem
@@ -26,7 +25,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-fun PrefsPage(navController: NavHostController, pageIndex: Int) {
+fun PrefsPage(pageIndex: Int, navigateUp: () -> Unit) {
     val scope = rememberCoroutineScope()
 
     val pages = persistentListOf(
@@ -40,7 +39,7 @@ fun PrefsPage(navController: NavHostController, pageIndex: Int) {
     val currentPage by remember { derivedStateOf { pages[currentPageIndex.value] } }
 
     BackHandler {
-        navController.navigateUp()
+        navigateUp()
     }
 
     NeoNavigationSuiteScaffold(
