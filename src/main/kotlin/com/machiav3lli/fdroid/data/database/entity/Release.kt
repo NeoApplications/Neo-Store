@@ -17,7 +17,6 @@ import com.machiav3lli.fdroid.TABLE_RELEASE_TEMP
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
-// TODO consider denormalizing by adding minSdkVersion and maxSdkVersion columns to Product
 @Entity(
     tableName = TABLE_RELEASE,
     primaryKeys = [ROW_PACKAGE_NAME, ROW_REPOSITORY_ID, ROW_VERSION_CODE, ROW_SIGNATURE, ROW_PLATFORMS, ROW_HASH],

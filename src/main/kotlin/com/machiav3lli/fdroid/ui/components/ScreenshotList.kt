@@ -29,6 +29,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.PlayCircle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.core.net.toUri
 
 data class ScreenshotItem(
     val screenShot: String,
@@ -55,7 +56,7 @@ fun ScreenshotList(
                 shape = MaterialTheme.shapes.large,
                 color = MaterialTheme.colorScheme.surfaceContainerHighest,
                 contentColor = MaterialTheme.colorScheme.onSurface,
-                onClick = { onUriClick(Uri.parse(video)) },
+                onClick = { onUriClick(video.toUri()) },
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,

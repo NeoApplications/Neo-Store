@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.machiav3lli.fdroid.ANTIFEATURES_WEBSITE
 import com.machiav3lli.fdroid.EXODUS_TRACKER_WEBSITE
 import com.machiav3lli.fdroid.R
@@ -266,7 +267,7 @@ fun PrivacyPanel(
                             context.startActivity(
                                 Intent(
                                     Intent.ACTION_VIEW,
-                                    Uri.parse("market://search?q=$TC_PACKAGENAME")
+                                    "market://search?q=$TC_PACKAGENAME".toUri()
                                 )
                             )
                         } else context.startActivity(
@@ -300,7 +301,7 @@ fun PrivacyPanel(
                                                     .combinedClickable(
                                                         onClick = {
                                                             onUriClick(
-                                                                Uri.parse("$EXODUS_TRACKER_WEBSITE${it.key}"),
+                                                                "$EXODUS_TRACKER_WEBSITE${it.key}".toUri(),
                                                                 true
                                                             )
                                                         },
@@ -431,7 +432,7 @@ fun PrivacyPanel(
                                     .fillMaxWidth()
                                     .clickable {
                                         onUriClick(
-                                            Uri.parse("$ANTIFEATURES_WEBSITE${it.name}"),
+                                            "$ANTIFEATURES_WEBSITE${it.name}".toUri(),
                                             true
                                         )
                                     },

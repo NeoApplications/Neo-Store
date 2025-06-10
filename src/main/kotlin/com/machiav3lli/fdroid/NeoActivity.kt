@@ -24,6 +24,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -278,7 +279,7 @@ class NeoActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 val scan = result.data?.getStringExtra("SCAN_RESULT")
                 scan?.replace("fdroidrepo", "http")
-                intent.data = Uri.parse(scan)
+                intent.data = scan?.toUri() ?: Uri.EMPTY
                 intent.action = Intent.ACTION_VIEW
                 handleIntent(intent)
             }

@@ -5,9 +5,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInstaller
-import android.net.Uri
 import android.os.Build
 import android.util.Log
+import androidx.core.net.toUri
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.manager.installer.BaseInstaller
@@ -121,7 +121,7 @@ fun installIntent(context: Context, intent: Intent): PendingIntent {
         0,
         Intent(context, NeoActivity::class.java)
             .setAction(NeoActivity.ACTION_INSTALL)
-            .setData(Uri.parse("package:$name"))
+            .setData("package:$name".toUri())
             .putExtra(Intent.EXTRA_INTENT, promptIntent)
             .putExtra(NeoActivity.EXTRA_CACHE_FILE_NAME, cacheFileName)
             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),

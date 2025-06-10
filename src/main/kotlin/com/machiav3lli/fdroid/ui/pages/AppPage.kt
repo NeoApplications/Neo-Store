@@ -293,7 +293,7 @@ fun AppPage(
             ActionState.Details   -> {
                 context.startActivity(
                     Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                        .setData(Uri.parse("package:$packageName"))
+                        .setData("package:$packageName".toUri())
                 )
             }
 
@@ -407,7 +407,7 @@ fun AppPage(
                                 sourceType = sourceType,
                                 onClick = {
                                     onUriClick(
-                                        Uri.parse(product.source.nullIfEmpty() ?: product.web),
+                                        (product.source.nullIfEmpty() ?: product.web).toUri(),
                                         true
                                     )
                                 },
@@ -524,7 +524,7 @@ fun AppPage(
                                 shortText = product.summary,
                                 longText = product.description
                             ) {
-                                onUriClick(Uri.parse(it), true)
+                                onUriClick(it.toUri(), true)
                             }
                         }
                         val links = product.generateLinks(context)

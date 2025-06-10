@@ -51,6 +51,7 @@ import org.koin.core.component.inject
 import org.koin.java.KoinJavaComponent.get
 import kotlin.math.roundToInt
 
+// TODO Add support for local repositories e.g. Calyx local repository
 class SyncWorker(
     private val context: Context,
     workerParams: WorkerParameters,

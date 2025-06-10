@@ -8,12 +8,12 @@ import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.net.Uri
 import android.os.Build
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
+import androidx.core.net.toUri
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_INSTALLER
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
@@ -416,7 +416,7 @@ fun notifyStatus(context: Context, intent: Intent?) {
                                     0,
                                     Intent(context, NeoActivity::class.java)
                                         .setAction(Intent.ACTION_VIEW)
-                                        .setData(Uri.parse("market://details?id=$packageName")),
+                                        .setData("market://details?id=$packageName".toUri()),
                                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                                 )
                             )

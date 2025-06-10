@@ -22,6 +22,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.biometric.BiometricManager
 import androidx.core.app.ActivityCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.FragmentManager
 import com.machiav3lli.fdroid.AM_PACKAGENAME
 import com.machiav3lli.fdroid.AM_PACKAGENAME_DEBUG
@@ -283,7 +284,7 @@ fun Context.showBatteryOptimizationDialog() {
         .setMessage(R.string.ignore_battery_optimization_message)
         .setPositiveButton(R.string.dialog_approve) { _, _ ->
             val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
-            intent.data = Uri.parse("package:" + this.packageName)
+            intent.data = ("package:" + this.packageName).toUri()
             try {
                 startActivity(intent)
             } catch (e: ActivityNotFoundException) {
@@ -396,7 +397,7 @@ fun Product.generateLinks(context: Context): List<LinkType> {
             LinkType(
                 icon = Phosphor.User,
                 title = author.name,
-                link = author.web.nullIfEmpty()?.let(Uri::parse)
+                link = author.web.nullIfEmpty()?.let(String::toUri)
             )
         )
     }
@@ -405,7 +406,7 @@ fun Product.generateLinks(context: Context): List<LinkType> {
             LinkType(
                 Phosphor.At,
                 context.getString(R.string.author_email),
-                Uri.parse("mailto:$it")
+                "mailto:$it".toUri()
             )
         )
     }
@@ -413,7 +414,7 @@ fun Product.generateLinks(context: Context): List<LinkType> {
         LinkType(
             Phosphor.Copyleft,
             it,
-            Uri.parse("https://spdx.org/licenses/$it.html")
+            "https://spdx.org/licenses/$it.html".toUri()
         )
     })
     tracker.nullIfEmpty()
@@ -422,7 +423,7 @@ fun Product.generateLinks(context: Context): List<LinkType> {
                 LinkType(
                     Phosphor.Bug,
                     context.getString(R.string.bug_tracker),
-                    Uri.parse(it)
+                    it.toUri()
                 )
             )
         }
@@ -431,7 +432,7 @@ fun Product.generateLinks(context: Context): List<LinkType> {
             LinkType(
                 Phosphor.ArrowsClockwise,
                 context.getString(R.string.changelog),
-                Uri.parse(it)
+                it.toUri()
             )
         )
     }
@@ -441,7 +442,7 @@ fun Product.generateLinks(context: Context): List<LinkType> {
                 LinkType(
                     Phosphor.GlobeSimple,
                     context.getString(R.string.project_website),
-                    Uri.parse(it)
+                    it.toUri()
                 )
             )
         }

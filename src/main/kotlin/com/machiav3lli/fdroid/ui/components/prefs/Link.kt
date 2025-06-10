@@ -1,10 +1,10 @@
 package com.machiav3lli.fdroid.ui.components.prefs
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.net.toUri
 import com.machiav3lli.fdroid.data.entity.LinkRef
 
 @Composable
@@ -25,7 +25,7 @@ fun LinkPreference(
             context.startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(link.url)
+                    link.url.toUri()
                 )
             )
         }

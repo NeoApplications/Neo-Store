@@ -2,8 +2,8 @@ package com.machiav3lli.fdroid.utils
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
+import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import com.anggrayudi.storage.callback.SingleFileConflictCallback
 import com.anggrayudi.storage.file.DocumentFileCompat
@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 fun Context.getDownloadFolder(): DocumentFile? = DocumentFileCompat
-    .fromUri(this, Uri.parse(Preferences[Preferences.Key.DownloadDirectory]))
+    .fromUri(this, Preferences[Preferences.Key.DownloadDirectory].toUri())
 
 suspend fun DocumentFile.copyTo(
     context: Context,

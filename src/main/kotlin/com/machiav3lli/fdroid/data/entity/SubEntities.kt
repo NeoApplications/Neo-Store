@@ -6,6 +6,7 @@ import android.content.pm.PermissionInfo
 import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.core.net.toUri
 import com.machiav3lli.backup.ui.compose.icons.phosphor.Plus
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.R
@@ -156,11 +157,11 @@ class DonateType(donate: Donate, context: Context) : LinkType(
         is Donate.OpenCollective -> "Open Collective"
     },
     link = when (donate) {
-        is Donate.Regular        -> Uri.parse(donate.url)
-        is Donate.Bitcoin        -> Uri.parse("bitcoin:${donate.address}")
-        is Donate.Litecoin       -> Uri.parse("litecoin:${donate.address}")
-        is Donate.Liberapay      -> Uri.parse("https://liberapay.com/${donate.id}")
-        is Donate.OpenCollective -> Uri.parse("https://opencollective.com/${donate.id}")
+        is Donate.Regular        -> donate.url.toUri()
+        is Donate.Bitcoin        -> "bitcoin:${donate.address}".toUri()
+        is Donate.Litecoin       -> "litecoin:${donate.address}".toUri()
+        is Donate.Liberapay      -> "https://liberapay.com/${donate.id}".toUri()
+        is Donate.OpenCollective -> "https://opencollective.com/${donate.id}".toUri()
     }
 )
 

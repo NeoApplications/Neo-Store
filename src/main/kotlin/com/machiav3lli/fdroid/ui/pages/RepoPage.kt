@@ -2,7 +2,6 @@ package com.machiav3lli.fdroid.ui.pages
 
 import android.content.ClipboardManager
 import android.content.Context
-import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
@@ -43,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
@@ -133,7 +133,7 @@ fun RepoPage(
                 ?.let { if (it.itemCount > 0) it else null }
                 ?.getItemAt(0)?.text?.toString().orEmpty()
             val (addressText, fingerprintText) = try {
-                val uri = Uri.parse(URL(text.replaceFirst("fdroidrepos:", "https:")).toString())
+                val uri = URL(text.replaceFirst("fdroidrepos:", "https:")).toString().toUri()
                 val fingerprintText =
                     uri.getQueryParameter("fingerprint")?.uppercase()?.nullIfEmpty()
                         ?: uri.getQueryParameter("FINGERPRINT")?.uppercase()?.nullIfEmpty()
