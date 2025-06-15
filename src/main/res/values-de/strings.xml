@@ -415,7 +415,7 @@
     <string name="prefs_connection">Internetverbindung</string>
     <string name="prefs_service">Dienst</string>
     <string name="about_build_FORMAT">%s (Build %s)</string>
-    <string name="installing_error_incompatible_DESC">Die Installation ist nicht kompatibel.</string>
+    <string name="installing_error_incompatible_DESC">Installation inkompatibel.</string>
     <string name="installing_error_invalid_DESC">Ungültige Installation.</string>
     <string name="syncing_batch_FORMAT">Paketquellen synchronisieren (%d/%d)</string>
     <string name="installing_error_timeout_DESC">Zeitüberschreitung bei Installation.</string>
