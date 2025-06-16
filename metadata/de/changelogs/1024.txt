@@ -1,0 +1,7 @@
+Hinzugefügt: Unterstützung für Video-Link, TV & Wear-Screenshots
+Hinzugefügt: Dialog zur Benachrichtigung über die erste Synchronisierung beim ersten Start
+Fix: Keine Anzeige der Installation bei Paketen aus Quellen ohne Freigabe
+Fix: Parsen und Anzeigen von Litecoin- und Liberapay-Links
+Update: Verbesserung der Zuverlässigkeit des Installers
+Entfernen: Parsing von Flattr-Spenden-Links
+und vieles mehr in über 20 Commits und 80 Übersetzungsbeiträgen

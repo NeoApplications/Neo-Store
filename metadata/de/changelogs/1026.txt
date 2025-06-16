@@ -1,0 +1,7 @@
+Hinzugefügt: Handhabung des Öffnens einer App-Seite aus der System-App-Info
+Fix: Benachrichtigung folgt der Systemsprache und nicht der Sprache der App
+Update: Überarbeitung der DownloadWorker-Logik, Benachrichtigungen und Handhabung
+Update: Überarbeitung der SyncWorker-Logik, -Benachrichtigungen und -Behandlung
+Update: Standard-Navigationssymbol oder Textgröße verwenden
+Entfernen: Doppelte Sync-Benachrichtigungskanäle
+und vieles mehr in über 20 Commits und 20 Übersetzungsbeiträgen
