@@ -425,4 +425,6 @@
     <string name="prefs_layout">Layout</string>
     <string name="initial_sync_repositories">Möchtest du die voreingestellten Repositories (The official F-Droid, IzzyOnDroid &amp; Guardian Project) synchronisieren?</string>
     <string name="installing_error_blocked_DESC">Installation wurde blockiert.</string>
+    <string name="max_idle_connections_description">Maximale Anzahl der inaktiven Verbindungen über alle Adressen, die aufrechterhalten werden sollen.</string>
+    <string name="mirror_rotation">Spiegelrotation</string>
 </resources>
