@@ -423,4 +423,6 @@
     <string name="index_v2">Index-V2 inschakelen</string>
     <string name="index_v2_summary">Schakelt verzoek om Index-V2 als de primaire index te gebruiken. Nog experimenteel, met voor- en nadelen.</string>
     <string name="action_start">Laten we beginnen!</string>
+    <string name="max_idle_connections_description">Maximaal aantal inactieve verbindingen op alle adressen die actief moeten blijven.</string>
+    <string name="mirror_rotation">Rotatie spiegelen</string>
 </resources>
