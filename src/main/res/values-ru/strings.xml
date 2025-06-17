@@ -429,4 +429,5 @@
     <string name="index_v2">Использовать Index-V2</string>
     <string name="index_v2_summary">Запрашивать Index-V2 в качестве основного индекса. Экспериментально, есть как преимущества, так и недостатки.</string>
     <string name="action_start">Начать!</string>
+    <string name="max_idle_connections_description">Максимальное количество незанятых подключений по всем адресам, которые должны поддерживаться в рабочем состоянии.</string>
 </resources>
