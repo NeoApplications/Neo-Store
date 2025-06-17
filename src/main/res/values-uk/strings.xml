@@ -429,4 +429,6 @@
     <string name="index_v2">Увімкнути Index-V2</string>
     <string name="index_v2_summary">Дозволяє запитувати Index-V2 як основний індекс. Все ще експериментальний, має переваги та недоліки.</string>
     <string name="action_start">Погнали!</string>
+    <string name="mirror_rotation">Віддзеркалити</string>
+    <string name="max_idle_connections_description">Максимальна кількість неактивних з\'єднань для всіх адрес, які необхідно підтримувати.</string>
 </resources>
