@@ -427,4 +427,6 @@
     <string name="index_v2_summary">Permette di richiedere Index-V2 come indice primario. Ancora sperimentale, presenta vantaggi e svantaggi.</string>
     <string name="index_v2">Abilita Index-V2</string>
     <string name="action_start">Andiamo!</string>
+    <string name="max_idle_connections_description">Numero massimo di connessioni inattive su tutti gli indirizzi da mantenere attivi.</string>
+    <string name="mirror_rotation">Rotazione specchio</string>
 </resources>
