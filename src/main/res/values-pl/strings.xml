@@ -429,4 +429,6 @@
     <string name="index_v2">Włącz indeks-v2</string>
     <string name="index_v2_summary">Umożliwia żądanie indeks-v2 jako indeksu głównego. Wciąż eksperymentalna funkcja, mająca zalety i wady.</string>
     <string name="action_start">Zaczynamy!</string>
+    <string name="mirror_rotation">Obrót lustrzany</string>
+    <string name="max_idle_connections_description">Maksymalna liczba bezczynnych połączeń na wszystkich adresach, które mają być utrzymywane.</string>
 </resources>
