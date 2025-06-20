@@ -425,4 +425,5 @@
     <string name="index_v2">Aktivér Index-V2</string>
     <string name="index_v2_summary">Muliggør anmodning om Index-V2 som det primære indeks. Det er stadig eksperimentelt og har fordele og ulemper.</string>
     <string name="action_start">Lad os komme i gang!</string>
+    <string name="max_idle_connections_description">Maksimalt antal inaktive forbindelser over alle adresser, der skal holdes aktive.</string>
 </resources>
