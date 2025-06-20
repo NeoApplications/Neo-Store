@@ -60,7 +60,7 @@
     <string name="http_proxy">HTTP பதிலாள்</string>
     <string name="ignore_all_updates">அனைத்து புதிய பதிப்புகளையும் புறக்கணிக்கவும்</string>
     <string name="ignore_this_update">இந்த பதிப்பை புறக்கணிக்கவும்</string>
-    <string name="incompatible_api_DESC_FORMAT">உங்கள் %1$s (API பதிப்பு %2 $ D) ஆதரிக்கப்படவில்லை. %3$s</string>
+    <string name="incompatible_api_DESC_FORMAT">உங்கள் %1$s (API பதிப்பு %2$d) ஆதரிக்கப்படவில்லை. %3$s</string>
     <string name="incompatible_api_max_DESC_FORMAT">மேக்ச் பநிஇ பதிப்பு %d.</string>
     <string name="incompatible_api_min_DESC_FORMAT">மின் பநிஇ பதிப்பு %d.</string>
     <string name="incompatible_features_DESC">காணாமல் போன நற்பொருத்தங்கள்.</string>
@@ -416,4 +416,11 @@
     <string name="installing_error_FORMAT">%s ஐ நிறுவும் போது பிழை</string>
     <string name="installing_error_storage_DESC">சேமிப்பக சிக்கல்களில் நிறுவல் தோல்வியுற்றது.</string>
     <string name="installing_error_conflict_DESC">மோதலால் ஏற்படும் பிழை.</string>
+    <string name="syncing_batch_FORMAT">களஞ்சியங்களை ஒத்திசைத்தல் (%d/%d)</string>
+    <string name="index_v2">குறியீட்டு-V2 ஐ இயக்கவும்</string>
+    <string name="index_v2_summary">குறியீட்டு-V2 ஐ முதன்மை குறியீடாகக் கோர உதவுகிறது. இன்னும் சோதனை, நன்மைகள் மற்றும் குறைபாடுகள்.</string>
+    <string name="action_start">போகலாம்!</string>
+    <string name="max_idle_connections_description">அனைத்து முகவரிகளிலும் அதிகபட்ச செயலற்ற இணைப்புகள் உயிருடன் வைக்கப்பட வேண்டும்.</string>
+    <string name="initial_sync_repositories">முன்னமைக்கப்பட்ட களஞ்சியங்களை (அதிகாரப்பூர்வ எஃப்-டிராய்டு, இச்யோண்ட்ராய்டு &amp; கார்டியன் திட்டம்) ஒத்திசைக்க விரும்புகிறீர்களா?</string>
+    <string name="mirror_rotation">கண்ணாடி சுழற்சி</string>
 </resources>
