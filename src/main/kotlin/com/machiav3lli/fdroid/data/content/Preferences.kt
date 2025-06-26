@@ -277,7 +277,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object EnableDownloadDirectory :
             Key<Boolean>("download_directory_enable", Value.BooleanValue(false))
 
-        data object IndexV2 : Key<Boolean>("index_v2", Value.BooleanValue(false))
+        data object IndexV2 : Key<Boolean>("index_v2", Value.BooleanValue(true))
 
         data object DownloadManager :
             Key<Boolean>("download_manager", Value.BooleanValue(true))
