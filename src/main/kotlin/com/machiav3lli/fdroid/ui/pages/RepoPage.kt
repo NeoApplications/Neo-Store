@@ -217,6 +217,18 @@ fun RepoPage(
                         BlockText(text = repo.description.replace("\n", " "))
                     }
                 }
+                if ((repo.timestamp) > 0L && !editMode) {
+                    item {
+                        TitleText(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(id = R.string.repo_index_timestamp),
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        BlockText(
+                            text = context.getLocaleDateString(repo.timestamp)
+                        )
+                    }
+                }
                 if ((repo.updated) > 0L && !editMode) {
                     item {
                         TitleText(

@@ -427,4 +427,5 @@
     <string name="max_idle_connections_description">Maximum number of idle connections across all addresses to be kept alive.</string>
     <string name="mirror_rotation">Mirror rotation</string>
     <string name="notify_channel_debug">Debugging</string>
+    <string name="repo_index_timestamp">Index\'s timestamp</string>
 </resources>
