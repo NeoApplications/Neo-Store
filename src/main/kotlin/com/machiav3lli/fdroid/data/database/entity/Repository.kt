@@ -1022,11 +1022,20 @@ data class Repository(
             "C5E291B5A571F9C8CD9A9799C2C94E02EC9703948893F2CA756D67B94204F904",
             ""
         )
+        private val BRAVE = defaultRepository(
+            "https://brave-browser-apk-release.s3.brave.com/fdroid/repo",
+            "Brave Browser",
+            "The official repository for Brave Browser: A privacy and security-oriented Chromium-based browser for Android.",
+            21,
+            false,
+            "3C60DE135AA19EC949E998469C908F7171885C1E2805F39EB403DDB0F37B4BD2",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, IZZY,
             GUARDIAN, ONIONSHARE_NIGHTLY, MICRO_G,
-            CROMITE, IRONFOX,
+            CROMITE, IRONFOX, BRAVE,
             NEWPIPE, BITWARDEN, GITJOURNAL,
             CALYX_OS, CALYX_OS_TEST, IODE,
             KDE_RELEASE, KDE_NIGHTLY, NANODROID, NETSYMS,
@@ -1140,6 +1149,10 @@ data class Repository(
 
         val removedReposV31 = listOf(
             MOBILSICHER
+        )
+
+        val addedReposV1102 = listOf(
+            BRAVE
         )
     }
 }
