@@ -54,6 +54,7 @@ import com.machiav3lli.fdroid.data.database.entity.RepoCategoryTemp
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV10
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV11
+import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV1102
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV12
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV14
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV15
@@ -104,7 +105,7 @@ import java.io.File
         AntiFeature::class,
         AntiFeatureTemp::class
     ],
-    version = 1101,
+    version = 1102,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -232,6 +233,11 @@ import java.io.File
             from = 1100,
             to = 1101,
         ),
+        AutoMigration(
+            from = 1101,
+            to = 1102,
+            spec = DatabaseX.Companion.AutoMigration1101to1102::class
+        ),
     ]
 )
 @TypeConverters(Converters::class)
@@ -266,9 +272,9 @@ abstract class DatabaseX : RoomDatabase() {
                     val dao = get<RepositoryDao>(RepositoryDao::class.java)
                     if (dao.getCount() == 0)
                         dao.put(
-                            *(defaultRepositories+loadPresetRepos())
-                            .distinctBy(Repository::address)
-                            .toTypedArray()
+                            *(defaultRepositories + loadPresetRepos())
+                                .distinctBy(Repository::address)
+                                .toTypedArray()
                         )
                 }
             }
@@ -425,6 +431,13 @@ abstract class DatabaseX : RoomDatabase() {
             }
         }
 
+        class AutoMigration1101to1102 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(1101)
+            }
+        }
+
         class ProductsCleanup : AutoMigrationSpec {
             override fun onPostMigrate(db: SupportSQLiteDatabase) {
                 super.onPostMigrate(db)
@@ -487,6 +500,7 @@ abstract class DatabaseX : RoomDatabase() {
                 22   -> addedReposV23
                 28   -> addedReposV29
                 29   -> addedReposV30
+                1101 -> addedReposV1102
                 else -> emptyList()
             }
             val rmRps = when (from) {
