@@ -247,7 +247,12 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
         withContext(Dispatchers.IO) {
             reposRepo.loadAll().forEach {
                 if (it.lastModified.isNotEmpty() || it.entityTag.isNotEmpty()) {
-                    reposRepo.upsert(it.copy(lastModified = "", entityTag = ""))
+                    reposRepo.upsert(
+                        it.copy(
+                            lastModified = "", entryLastModified = "",
+                            entityTag = "", entryEntityTag = ""
+                        )
+                    )
                 }
             }
             BatchSyncWorker.enqueue(SyncRequest.FORCE)

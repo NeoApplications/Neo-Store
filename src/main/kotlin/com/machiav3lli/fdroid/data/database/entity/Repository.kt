@@ -41,7 +41,11 @@ data class Repository(
     val enabled: Boolean = false,
     var fingerprint: String = "",
     val lastModified: String = "",
+    @ColumnInfo(defaultValue = "")
+    val entryLastModified: String = "",
     val entityTag: String = "",
+    @ColumnInfo(defaultValue = "")
+    val entryEntityTag: String = "",
     val updated: Long = 0L,
     val timestamp: Long = 0L,
     var authentication: String = "",
@@ -57,7 +61,9 @@ data class Repository(
         val changed = this.address != address || this.fingerprint != fingerprint
         copy(
             lastModified = if (changed) "" else lastModified,
+            entryLastModified = if (changed) "" else entryLastModified,
             entityTag = if (changed) "" else entityTag,
+            entryEntityTag = if (changed) "" else entryEntityTag,
             address = address,
             fingerprint = fingerprint,
             authentication = authentication,
@@ -215,7 +221,8 @@ data class Repository(
             enabled: Boolean, fingerprint: String, authentication: String, webBaseUrl: String = "",
         ): Repository = Repository(
             0, address, emptyList(), name, description, version, enabled,
-            fingerprint, "", "", 0L, 0L, authentication, webBaseUrl,
+            fingerprint, "", "", "", "",
+            0L, 0L, authentication, webBaseUrl,
         )
 
         private val F_DROID = defaultRepository(
