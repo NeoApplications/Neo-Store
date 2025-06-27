@@ -62,12 +62,17 @@ object Cache {
         return File(ensureCacheDir(context, "temporary"), UUID.randomUUID().toString())
     }
 
+    fun getIndexV2File(context: Context, repoId: Long): File {
+        return File(ensureCacheDir(context, "index"), "index-v2-${repoId}.json")
+    }
+
     fun cleanup(context: Context) {
         thread {
             cleanup(
                 context,
                 context.cacheDir,
                 Pair("images", Preferences[Preferences.Key.ImagesCacheRetention] * 24),
+                Pair("index", 14 * 24),
                 Pair("temporary", 1),
                 // in case the external cache was unavailable (maybe only temporary)
                 Pair("partial", 24),

@@ -128,6 +128,11 @@ object RepositoryUpdater : KoinComponent {
         )
     }
 
+    private fun hasCachedIndex(context: Context, repoId: Long): Boolean {
+        val cacheFile = Cache.getIndexV2File(context, repoId)
+        return cacheFile.exists() && cacheFile.length() > 0
+    }
+
     private suspend fun update(
         context: Context,
         repository: Repository, indexTypes: List<IndexType>, unstable: Boolean,
