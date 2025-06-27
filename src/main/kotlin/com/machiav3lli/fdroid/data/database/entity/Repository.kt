@@ -73,13 +73,16 @@ data class Repository(
     fun update(
         mirrors: List<String>, name: String, description: String, version: Int,
         lastModified: String, entityTag: String, timestamp: Long, webBaseUrl: String?,
+        entryLastModified: String?, entryEntityTag: String?,
     ): Repository = copy(
         mirrors = mirrors,
         name = name.nullIfEmpty() ?: this.name,
         description = description.nullIfEmpty() ?: this.description,
         version = if (version >= 0) version else this.version,
         lastModified = lastModified,
+        entryLastModified = entryLastModified ?: this.entryLastModified,
         entityTag = entityTag,
+        entryEntityTag = entryEntityTag ?: this.entryEntityTag,
         updated = System.currentTimeMillis(),
         timestamp = timestamp,
         webBaseUrl = webBaseUrl ?: this.webBaseUrl,
@@ -88,7 +91,9 @@ data class Repository(
     fun enable(enabled: Boolean): Repository = copy(
         enabled = enabled,
         lastModified = "",
+        entryLastModified = "",
         entityTag = "",
+        entryEntityTag = "",
     )
 
     fun setAuthentication(username: String?, password: String?) {
