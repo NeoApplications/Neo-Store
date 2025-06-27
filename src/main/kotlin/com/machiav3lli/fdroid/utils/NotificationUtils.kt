@@ -14,6 +14,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
+import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DEBUG
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_INSTALLER
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
@@ -475,6 +476,40 @@ fun notifyStatus(context: Context, intent: Intent?) {
         }
     }
 }
+
+fun notifyDebugStatus(context: Context, title: String, message: String) =
+    if (context.packageName.endsWith("debug")) {
+        if (Android.sdk(Build.VERSION_CODES.O)) {
+            NotificationChannel(
+                NOTIFICATION_CHANNEL_DEBUG,
+                context.getString(R.string.notify_channel_debug), NotificationManager.IMPORTANCE_LOW
+            )
+                .let(context.notificationManager::createNotificationChannel)
+        }
+
+        val notificationTag = "${InstallerReceiver.NOTIFICATION_TAG_PREFIX}-debug"
+
+        // start building
+        val builder = NotificationCompat
+            .Builder(context, NOTIFICATION_CHANNEL_DEBUG)
+            .setAutoCancel(false)
+            .setColor(
+                ContextThemeWrapper(context, R.style.Theme_Main_Amoled)
+                    .getColorFromAttr(androidx.appcompat.R.attr.colorPrimary).defaultColor
+            )
+
+        val notification = builder
+            .setSmallIcon(android.R.drawable.stat_notify_error)
+            .setContentTitle(title)
+            .setContentText(message)
+            .build()
+        context.notificationManager.notify(
+            notificationTag,
+            NOTIFICATION_ID_INSTALLER,
+            notification
+        )
+    } else {
+    }
 
 fun notifyFinishedInstall(context: Context, packageName: String) {
     val notificationTag = "${InstallerReceiver.NOTIFICATION_TAG_PREFIX}$packageName"
