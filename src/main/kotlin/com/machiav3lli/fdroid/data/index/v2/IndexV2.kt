@@ -1,12 +1,39 @@
 package com.machiav3lli.fdroid.data.index.v2
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
+import java.io.InputStream
 
 @Serializable
 data class IndexV2(
     val repo: Repo,
     val packages: IdMap<Package>
 ) {
+    @Serializable
+    data class Entry(
+        val timestamp: Long,
+        val version: Long,
+        val index: File,
+        val diffs: Map<Long, File>
+    ) {
+        fun getDiff(timestamp: Long): File? {
+            return if (this.timestamp == timestamp) null
+            else diffs[timestamp] ?: index
+        }
+
+        fun toJSON() = Json.encodeToString(this)
+
+        companion object {
+            private val jsonConfig = Json { ignoreUnknownKeys = true }
+
+            @OptIn(ExperimentalSerializationApi::class)
+            fun fromJsonStream(inputStream: InputStream) =
+                jsonConfig.decodeFromStream<Entry>(inputStream)
+        }
+    }
+
     @Serializable
     data class Repo(
         val name: Localized<String> = emptyMap(),
