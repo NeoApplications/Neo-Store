@@ -109,54 +109,75 @@ object Cache {
                     }
                 }
                 if (name == "releases" && isDownloadExternal)
-                    cleanupDir(context, context.getDownloadFolder(), hours)
+                    cleanupDir(context, context.getDownloadFolder(), hours, "apk")
             }
         }
     }
 
-    private fun cleanupDir(dir: File, hours: Int) {
-        dir.listFiles()?.forEach {
+    private fun cleanupDir(dir: File, hours: Int, fileExtension: String? = null) {
+        val olderThan = System.currentTimeMillis() / 1000L - hours * 60 * 60
+        dir.listFiles()?.forEach { file ->
+            if (fileExtension != null && !file.name.endsWith(
+                    ".$fileExtension",
+                    ignoreCase = true
+                )
+            ) {
+                return@forEach
+            }
+
             val older = hours <= 0 || run {
-                val olderThan = System.currentTimeMillis() / 1000L - hours * 60 * 60
                 try {
-                    val stat = Os.lstat(it.path)
+                    val stat = Os.lstat(file.path)
                     stat.st_atime < olderThan
                 } catch (e: Exception) {
                     false
                 }
             }
             if (older) {
-                if (it.isDirectory) {
-                    cleanupDir(it, hours)
-                    if (it.isDirectory) {
-                        it.delete()
+                if (file.isDirectory) {
+                    cleanupDir(file, hours)
+                    if (file.isDirectory) {
+                        file.delete()
                     }
                 } else {
-                    it.delete()
+                    file.delete()
                 }
             }
         }
     }
 
-    private fun cleanupDir(context: Context, dir: DocumentFile?, hours: Int) {
-        dir?.listFiles()?.forEach {
+    private fun cleanupDir(
+        context: Context,
+        dir: DocumentFile?,
+        hours: Int,
+        fileExtension: String? = null
+    ) {
+        val olderThan = System.currentTimeMillis() / 1000L - hours * 60 * 60
+        dir?.listFiles()?.forEach { file ->
+            if (fileExtension != null && file.name?.endsWith(
+                    ".$fileExtension",
+                    ignoreCase = true
+                ) == false
+            ) {
+                return@forEach
+            }
+
             val older = hours <= 0 || run {
-                val olderThan = System.currentTimeMillis() / 1000L - hours * 60 * 60
                 try {
-                    val stat = Os.lstat(it.getAbsolutePath(context))
+                    val stat = Os.lstat(file.getAbsolutePath(context))
                     stat.st_atime < olderThan
                 } catch (e: Exception) {
                     false
                 }
             }
             if (older) {
-                if (it.isDirectory) {
-                    cleanupDir(context, it, hours)
-                    if (it.isDirectory) {
-                        it.delete()
+                if (file.isDirectory) {
+                    cleanupDir(context, file, hours)
+                    if (file.isDirectory) {
+                        file.delete()
                     }
                 } else {
-                    it.delete()
+                    file.delete()
                 }
             }
         }
