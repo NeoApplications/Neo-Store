@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -65,9 +66,11 @@ fun PrefsOtherPage(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val hidingCounter = rememberSaveable { mutableIntStateOf(0) }
-    val installed = viewModel.installed.collectAsState(initial = emptyMap())
+    val extras by viewModel.extras.collectAsState(initial = emptyList())
+    val repos by viewModel.repositories.collectAsState(initial = emptyList())
+    val installed by viewModel.installed.collectAsState(initial = emptyMap())
 
-    val startExportResult =
+    val startExportExtrasResult =
         rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(SAFFile.EXTRAS_MIME_TYPE)) { resultUri ->
             if (resultUri != null) {
                 context.contentResolver.takePersistableUriPermission(
@@ -78,8 +81,7 @@ fun PrefsOtherPage(
                 SAFFile.write(
                     context,
                     resultUri,
-                    viewModel.extras.value
-                        .joinToString(separator = ">") { it.toJSON() }
+                    extras.joinToString(separator = ">") { it.toJSON() }
                 )
                 // TODO add notification about success or failure
             }
@@ -95,8 +97,7 @@ fun PrefsOtherPage(
                 SAFFile.write(
                     context,
                     resultUri,
-                    viewModel.repositories.value
-                        .joinToString(separator = ">") { it.toJSON() }
+                    repos.joinToString(separator = ">") { it.toJSON() }
                 )
                 // TODO add notification about success or failure
             }
@@ -112,12 +113,12 @@ fun PrefsOtherPage(
                 SAFFile.write(
                     context,
                     resultUri,
-                    installed.value.keys.joinToString(separator = ">")
+                    installed.keys.joinToString(separator = ">")
                 )
                 // TODO add notification about success or failure
             }
         }
-    val startImportResult =
+    val startImportExtrasResult =
         rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { resultUri ->
             if (resultUri != null) {
                 context.contentResolver.takePersistableUriPermission(
@@ -165,7 +166,7 @@ fun PrefsOtherPage(
 
                 SAFFile(context, resultUri).read()
                     ?.split(">")
-                    ?.filterNot { installed.value.keys.contains(it) }
+                    ?.filterNot { installed.keys.contains(it) }
                     ?.forEach { packageName ->
                         scope.launch(Dispatchers.IO) {
                             productRepo.loadProduct(packageName)
@@ -279,7 +280,7 @@ fun PrefsOtherPage(
                     index = 0,
                     groupSize = 6,
                     onClick = {
-                        startExportResult
+                        startExportExtrasResult
                             .launch("NS_$currentTimestamp.${SAFFile.EXTRAS_EXTENSION}")
                     }
                 )
@@ -289,7 +290,7 @@ fun PrefsOtherPage(
                     index = 1,
                     groupSize = 6,
                     onClick = {
-                        startImportResult.launch(SAFFile.EXTRAS_MIME_ARRAY)
+                        startImportExtrasResult.launch(SAFFile.EXTRAS_MIME_ARRAY)
                     }
                 )
                 Spacer(modifier = Modifier.height(4.dp))
