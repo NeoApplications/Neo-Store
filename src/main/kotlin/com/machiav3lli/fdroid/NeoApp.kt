@@ -22,12 +22,12 @@ import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.data.index.RepositoryUpdater
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
+import com.machiav3lli.fdroid.data.repository.privacyModule
 import com.machiav3lli.fdroid.manager.installer.BaseInstaller
 import com.machiav3lli.fdroid.manager.installer.installerModule
 import com.machiav3lli.fdroid.manager.network.CoilDownloader
 import com.machiav3lli.fdroid.manager.network.Downloader
 import com.machiav3lli.fdroid.manager.network.downloadClientModule
-import com.machiav3lli.fdroid.manager.network.exodusModule
 import com.machiav3lli.fdroid.manager.service.PackageChangedReceiver
 import com.machiav3lli.fdroid.manager.work.BatchSyncWorker
 import com.machiav3lli.fdroid.manager.work.WorkerManager
@@ -119,12 +119,12 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
         androidLogger()
         androidContext(this@NeoApp)
         modules(
-            exodusModule,
             downloadClientModule,
             workmanagerModule,
             databaseModule,
             viewModelsModule,
             installerModule,
+            privacyModule,
         )
     }
 

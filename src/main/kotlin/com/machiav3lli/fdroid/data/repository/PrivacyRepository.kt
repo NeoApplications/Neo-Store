@@ -14,6 +14,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PrivacyRepository(
@@ -50,4 +52,9 @@ class PrivacyRepository(
             exodusDao.upsert(*infos)
         }
     }
+}
+
+val privacyModule = module {
+    singleOf(::RExodusAPI)
+    singleOf(::RBAPI)
 }
