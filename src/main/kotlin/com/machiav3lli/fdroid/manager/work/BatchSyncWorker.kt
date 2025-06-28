@@ -167,6 +167,7 @@ class BatchSyncWorker(
             ).await()
         }
         ExodusWorker.fetchTrackers()
+        RBWorker.fetchRBLogs()
         withTimeout(TimeUnit.HOURS.toMillis(1)) {
             workJobs.joinAll()
         }

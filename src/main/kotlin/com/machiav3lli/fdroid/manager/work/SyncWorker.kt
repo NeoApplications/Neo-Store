@@ -29,6 +29,7 @@ import com.machiav3lli.fdroid.EXODUS_TRACKERS_SYNC
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.RB_LOGS_SYNC
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.TAG_SYNC_PERIODIC
 import com.machiav3lli.fdroid.data.content.Preferences
@@ -79,7 +80,7 @@ class SyncWorker(
         val repository = reposRepo.load(task.repoId)
 
         Log.i(this::class.java.simpleName, "sync repository: ${task.repoId}")
-        if (repository != null && repository.enabled && task.repoId != EXODUS_TRACKERS_SYNC) {
+        if (repository != null && repository.enabled && task.repoId >= -1) {
             launch {
                 setForegroundAsync(
                     createForegroundInfo(
@@ -273,22 +274,26 @@ class SyncWorker(
         private fun enqueueManual(vararg repos: Pair<Long, String>) {
             repos.map { (repoId, repoName) ->
 
-                if (repoId != EXODUS_TRACKERS_SYNC) {
-                    val data = workDataOf(
-                        ARG_REPOSITORY_ID to repoId,
-                        ARG_SYNC_REQUEST to SyncRequest.MANUAL.ordinal,
-                        ARG_REPOSITORY_NAME to repoName,
-                    )
+                when (repoId) {
+                    EXODUS_TRACKERS_SYNC -> ExodusWorker.fetchTrackers()
+                    RB_LOGS_SYNC         -> RBWorker.fetchRBLogs()
+                    else                 -> {
+                        val data = workDataOf(
+                            ARG_REPOSITORY_ID to repoId,
+                            ARG_SYNC_REQUEST to SyncRequest.MANUAL.ordinal,
+                            ARG_REPOSITORY_NAME to repoName,
+                        )
 
-                    NeoApp.wm.enqueueUniqueWork(
-                        "sync_$repoId",
-                        ExistingWorkPolicy.KEEP,
-                        OneTimeWorkRequestBuilder<SyncWorker>()
-                            .setInputData(data)
-                            .addTag(TAG_SYNC_ONETIME)
-                            .build()
-                    )
-                } else ExodusWorker.fetchTrackers()
+                        NeoApp.wm.enqueueUniqueWork(
+                            "sync_$repoId",
+                            ExistingWorkPolicy.KEEP,
+                            OneTimeWorkRequestBuilder<SyncWorker>()
+                                .setInputData(data)
+                                .addTag(TAG_SYNC_ONETIME)
+                                .build()
+                        )
+                    }
+                }
             }
         }
 
