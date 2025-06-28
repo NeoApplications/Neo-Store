@@ -30,6 +30,7 @@ import com.machiav3lli.fdroid.data.database.dao.InstallTaskDao
 import com.machiav3lli.fdroid.data.database.dao.InstalledDao
 import com.machiav3lli.fdroid.data.database.dao.ProductDao
 import com.machiav3lli.fdroid.data.database.dao.ProductTempDao
+import com.machiav3lli.fdroid.data.database.dao.RBLogDao
 import com.machiav3lli.fdroid.data.database.dao.ReleaseDao
 import com.machiav3lli.fdroid.data.database.dao.ReleaseTempDao
 import com.machiav3lli.fdroid.data.database.dao.RepoCategoryDao
@@ -47,6 +48,7 @@ import com.machiav3lli.fdroid.data.database.entity.InstallTask
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.Product
 import com.machiav3lli.fdroid.data.database.entity.ProductTemp
+import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.database.entity.ReleaseTemp
 import com.machiav3lli.fdroid.data.database.entity.RepoCategory
@@ -103,7 +105,8 @@ import java.io.File
         Downloaded::class,
         InstallTask::class,
         AntiFeature::class,
-        AntiFeatureTemp::class
+        AntiFeatureTemp::class,
+        RBLog::class,
     ],
     version = 1102,
     exportSchema = true,
@@ -253,6 +256,7 @@ abstract class DatabaseX : RoomDatabase() {
     abstract fun getExodusInfoDao(): ExodusInfoDao
     abstract fun getTrackerDao(): TrackerDao
     abstract fun getDownloadedDao(): DownloadedDao
+    abstract fun getRBLogDao(): RBLogDao
 
     // TODO replace external calls
     abstract fun getReleaseTempDao(): ReleaseTempDao
@@ -593,4 +597,5 @@ val databaseModule = module {
     single { get<DatabaseX>().getTrackerDao() }
     single { get<DatabaseX>().getDownloadedDao() }
     single { get<DatabaseX>().getInstallTaskDao() }
+    single { get<DatabaseX>().getRBLogDao() }
 }
