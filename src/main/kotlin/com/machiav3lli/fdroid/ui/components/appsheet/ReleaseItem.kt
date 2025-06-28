@@ -36,12 +36,16 @@ import com.machiav3lli.fdroid.RELEASE_STATE_INSTALLED
 import com.machiav3lli.fdroid.RELEASE_STATE_NONE
 import com.machiav3lli.fdroid.RELEASE_STATE_SUGGESTED
 import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShareNetwork
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldCheck
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldSlash
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldWarning
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.text.formatSize
 import java.time.Instant
@@ -55,6 +59,7 @@ fun ReleaseItem(
     modifier: Modifier = Modifier,
     release: Release,
     repository: Repository,
+    rbLog: RBLog?,
     releaseState: Int = RELEASE_STATE_NONE,
     onDownloadClick: (Release) -> Unit = {},
     onShareClick: (Release) -> Unit = {},
@@ -100,6 +105,19 @@ fun ReleaseItem(
                         text = stringResource(id = badgeText.intValue)
                     )
                 }
+                if (rbLog != null) Icon(
+                    imageVector = when (rbLog.reproducible) {
+                        true  -> Phosphor.ShieldCheck
+                        false -> Phosphor.ShieldSlash
+                        else  -> Phosphor.ShieldWarning
+                    },
+                    contentDescription = stringResource(id = R.string.rb_badge),
+                    tint = when (rbLog.reproducible) {
+                        true  -> MaterialTheme.colorScheme.primary
+                        false -> MaterialTheme.colorScheme.tertiaryContainer
+                        else  -> MaterialTheme.colorScheme.error
+                    }
+                )
             }
         },
         supportingContent = {

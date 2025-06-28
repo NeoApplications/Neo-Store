@@ -428,4 +428,5 @@
     <string name="mirror_rotation">Mirror rotation</string>
     <string name="notify_channel_debug">Debugging</string>
     <string name="repo_index_timestamp">Index\'s timestamp</string>
+    <string name="rb_badge">Reproducible build badge</string>
 </resources>

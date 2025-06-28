@@ -12,6 +12,7 @@ import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.Extras
+import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.PrivacyData
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
@@ -20,6 +21,7 @@ import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
+import com.machiav3lli.fdroid.utils.extension.Quadruple
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.findSuggestedProduct
 import com.machiav3lli.fdroid.utils.generatePermissionGroups
@@ -79,6 +81,21 @@ class AppSheetVM(
         trackers.filter { it.key in (info?.trackers ?: emptyList()) }
     }
 
+    val rbLogs = packageName
+        .flatMapLatest { pn ->
+            privacyRepo.getRBLogs(pn)
+        }
+        .mapLatest {
+            it
+                .groupBy(RBLog::hash)
+                .mapValues { (_, rbDataList) -> rbDataList.maxByOrNull(RBLog::timestamp)!! }
+        }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+            emptyMap()
+        )
+
     val repositories = reposRepo.getAll().distinctUntilChanged()
 
     val installedItem = packageName
@@ -118,8 +135,9 @@ class AppSheetVM(
     val releaseItems = combine(
         suggestedProductRepo,
         repositories,
-        installedItem
-    ) { suggestedProductRepo, repos, installed ->
+        installedItem,
+        rbLogs,
+    ) { suggestedProductRepo, repos, installed, logs ->
         val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
         val reposMap = repos.associateBy { it.id }
 
@@ -127,7 +145,7 @@ class AppSheetVM(
             .filter { includeIncompatible || it.incompatibilities.isEmpty() }
             .mapNotNull { rel -> reposMap[rel.repositoryId]?.let { Pair(rel, it) } }
             .map { (release, repository) ->
-                Triple(
+                Quadruple(
                     release,
                     repository,
                     when {
@@ -138,7 +156,8 @@ class AppSheetVM(
                              -> RELEASE_STATE_SUGGESTED
 
                         else -> RELEASE_STATE_NONE
-                    }
+                    },
+                    logs[release.hash],
                 )
             }
             .sortedByDescending { it.first.versionCode }

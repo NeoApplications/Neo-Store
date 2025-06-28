@@ -607,6 +607,7 @@ fun AppPage(
                                 release = item.first,
                                 repository = item.second,
                                 releaseState = item.third,
+                                rbLog = item.fourth,
                                 onDownloadClick = { release ->
                                     onReleaseClick(release)
                                 },
