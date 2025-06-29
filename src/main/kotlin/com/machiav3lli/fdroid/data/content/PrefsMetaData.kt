@@ -181,7 +181,6 @@ val PrefsEntries = mapOf(
         Preferences.RBProvider.None to R.string.rb_none,
         Preferences.RBProvider.IzzyOnDroid to R.string.rb_izzyondroid,
         Preferences.RBProvider.BG443 to R.string.rb_bg443,
-        Preferences.RBProvider.OBFUSK to R.string.rb_obfusk,
     ),
 )
 

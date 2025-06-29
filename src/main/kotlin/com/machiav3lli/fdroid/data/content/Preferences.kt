@@ -771,7 +771,6 @@ data object Preferences : OnSharedPreferenceChangeListener {
                 None,
                 IzzyOnDroid,
                 BG443,
-                OBFUSK,
             )
 
         abstract val url: String
