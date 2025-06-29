@@ -20,6 +20,7 @@ import com.machiav3lli.fdroid.data.index.v0.IndexV0Parser
 import com.machiav3lli.fdroid.data.index.v1.IndexV1Parser
 import com.machiav3lli.fdroid.data.index.v2.IdMap
 import com.machiav3lli.fdroid.data.index.v2.IndexV2
+import com.machiav3lli.fdroid.data.index.v2.IndexV2Merger
 import com.machiav3lli.fdroid.data.index.v2.IndexV2Parser
 import com.machiav3lli.fdroid.data.index.v2.findLocalized
 import com.machiav3lli.fdroid.manager.network.Downloader
@@ -27,6 +28,7 @@ import com.machiav3lli.fdroid.utils.CoroutineUtils
 import com.machiav3lli.fdroid.utils.ProgressInputStream
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.extension.text.unhex
+import com.machiav3lli.fdroid.utils.notifyDebugStatus
 import io.ktor.http.HttpStatusCode
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
@@ -386,9 +388,13 @@ object RepositoryUpdater : KoinComponent {
         )
         return updaterMutex.withLock {
             try {
-                val (jarFile, indexEntry) = if (indexType != IndexType.INDEX_V2) JarFile(file, true)
-                    .let { Pair(it, it.getEntry(indexType.contentName) as JarEntry?) }
-                else Pair(null, null)
+                val (jarFile, indexEntry) = when (indexType) {
+                    IndexType.INDEX_V2_DIFF,
+                    IndexType.INDEX_V2 -> Pair(null, null)
+
+                    else               -> JarFile(file, true)
+                        .let { Pair(it, it.getEntry(indexType.contentName) as JarEntry?) }
+                }
                 val index =
                     when (indexType) {
                         IndexType.INDEX_V2      -> file
@@ -396,7 +402,17 @@ object RepositoryUpdater : KoinComponent {
                             Cache.getIndexV2File(context, repository.id)
                                 .takeIf { it.exists() && it.length() > 0 }
                                 ?.let { indexFile ->
-                                    // TODO class to merge diff file into index
+                                    IndexV2Merger(indexFile).use { merger ->
+                                        merger.processDiff(
+                                            file.inputStream()
+                                        ).let {
+                                            notifyDebugStatus(
+                                                context,
+                                                "RepositoryUpdater",
+                                                "merged diff file, repoID = ${repository.id}, succcess = $it, indexFile = $indexFile."
+                                            )
+                                        }
+                                    }
                                     indexFile
                                 } ?: file
                         }
