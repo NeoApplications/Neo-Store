@@ -9,6 +9,7 @@ compose-html = "1.1.0"
 coroutines = "1.10.2"
 immutables = "0.4.0"
 jackson = "2.19.1"
+junit-jupiter = "5.13.2"
 koin = "4.1.0"
 koin-ksp = "2.1.0"
 kotlin = "2.2.0"
@@ -90,6 +91,12 @@ compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "compose-accompanist" }
 compose-html = { module = "be.digitalia.compose.htmlconverter:htmlconverter", version.ref = "compose-html" }
+
+# Test
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
+junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
+junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit-jupiter" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
