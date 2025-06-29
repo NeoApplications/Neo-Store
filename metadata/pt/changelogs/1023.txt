@@ -1,0 +1,9 @@
+Adição: Exclui o arquivo baixado ao apagar a entrada de download
+Adição: Filtros Target e MinSDK
+Correção: Carregamento lento de aplicativos instalados
+Correção: Novo aplicativo instalado não está sendo adicionado à tela inicial (créditos @Dhina17)
+Atualização: Torna a interface do usuário em telas amplas mais amigável e a navegação adaptável
+Atualização: Melhora o link de compartilhamento do f-droid (créditos @leoheitmannruiz)
+Atualização: Evita solicitação de permissões de instalação quando INSTALL_PACKAGES é concedido (créditos @tharowt)
+Repositórios: Adiciona Fcitx5, repositórios IronFox (créditos @Integral-Tech, @celenityy)
+e muitos outros em mais de 140 commits e 100 contribuições de tradução
