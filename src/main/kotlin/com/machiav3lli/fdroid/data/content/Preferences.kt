@@ -16,6 +16,7 @@ import com.machiav3lli.fdroid.data.entity.Order
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.getHasSystemInstallPermission
 import com.machiav3lli.fdroid.utils.isBiometricLockAvailable
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -65,6 +66,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.IncompatibleVersions,
         Key.DisableDownloadVersionCheck,
         Key.DisableSignatureCheck,
+        Key.RBProvider,
         // Installation
         Key.KeepInstallNotification,
         Key.Installer,
@@ -314,6 +316,12 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object DisableSignatureCheck :
             Key<Boolean>("disable_signature_check", Value.BooleanValue(false))
+
+        data object RBProvider : Key<Preferences.RBProvider>(
+            "rb_provider", Value.EnumerationValue(
+                Preferences.RBProvider.IzzyOnDroid
+            )
+        )
 
         data object ShowScreenshots :
             Key<Boolean>("show_screenshots", Value.BooleanValue(true))
@@ -754,6 +762,38 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object Explore : DefaultTab("1")
         data object Search : DefaultTab("2")
         data object Installed : DefaultTab("3")
+    }
+
+    sealed class RBProvider(override val valueString: String) : Enumeration<RBProvider> {
+        override val values: List<RBProvider>
+            get() = persistentListOf(
+                None,
+                IzzyOnDroid,
+                BG443,
+                OBFUSK,
+            )
+
+        abstract val url: String
+
+        data object None : RBProvider("none") {
+            override val url: String
+                get() = ""
+        }
+
+        data object IzzyOnDroid : RBProvider("iod") {
+            override val url: String
+                get() = "https://codeberg.org/IzzyOnDroid/rbtlog/raw/branch/izzy/log"
+        }
+
+        data object BG443 : RBProvider("bg443") {
+            override val url: String
+                get() = "https://codeberg.org/bg443/rbtlog/raw/branch/master"
+        }
+
+        data object OBFUSK : RBProvider("obfusk") {
+            override val url: String
+                get() = "https://codeberg.org/obfusk/rbtlog/raw/branch/log"
+        }
     }
 
     operator fun <T> get(key: Key<T>): T {

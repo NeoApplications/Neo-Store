@@ -429,4 +429,9 @@
     <string name="notify_channel_debug">Debugging</string>
     <string name="repo_index_timestamp">Index\'s timestamp</string>
     <string name="rb_badge">Reproducible build badge</string>
+    <string name="rb_provider">Reproducible build logs provider</string>
+    <string name="rb_none">No provider</string>
+    <string name="rb_izzyondroid">IzzyOnDroid</string>
+    <string name="rb_bg443">bg443</string>
+    <string name="rb_obfusk">Obfusk</string>
 </resources>

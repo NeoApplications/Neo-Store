@@ -122,6 +122,7 @@ val NonBooleanPrefsMeta = mapOf(
     Preferences.Key.ProxyHost to R.string.proxy_host,
     Preferences.Key.ProxyPort to R.string.proxy_port,
     Preferences.Key.MaxIdleConnections to R.string.max_idle_connections_description,
+    Preferences.Key.RBProvider to R.string.rb_provider,
 )
 
 val PrefsEntries = mapOf(
@@ -175,6 +176,12 @@ val PrefsEntries = mapOf(
         Preferences.ProxyType.Direct to R.string.no_proxy,
         Preferences.ProxyType.Http to R.string.http_proxy,
         Preferences.ProxyType.Socks to R.string.socks_proxy,
+    ),
+    Preferences.Key.RBProvider to mapOf(
+        Preferences.RBProvider.None to R.string.rb_none,
+        Preferences.RBProvider.IzzyOnDroid to R.string.rb_izzyondroid,
+        Preferences.RBProvider.BG443 to R.string.rb_bg443,
+        Preferences.RBProvider.OBFUSK to R.string.rb_obfusk,
     ),
 )
 
