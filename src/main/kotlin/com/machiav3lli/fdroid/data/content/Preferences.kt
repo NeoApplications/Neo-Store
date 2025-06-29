@@ -117,7 +117,8 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.InitialSync,
         Key.IgnoreDisableBatteryOptimization,
         Key.IgnoreShowNotifications,
-        // TODO add lastModified to trackers and RB calls
+        Key.TrackersLastModified,
+        Key.RBLogsLastModified,
     ).map { Pair(it.name, it) }.toMap()
 
     fun init(context: Context) {
@@ -559,6 +560,12 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object LastManualSyncTime :
             Key<Long>("last_manual_sync_time", Value.LongValue(0L))
+
+        data object RBLogsLastModified :
+            Key<String>("last_modified_rblogs", Value.StringValue(""))
+
+        data object TrackersLastModified :
+            Key<String>("last_modified_trackers", Value.StringValue(""))
     }
 
     sealed class AutoSync(override val valueString: String) : Enumeration<AutoSync> {

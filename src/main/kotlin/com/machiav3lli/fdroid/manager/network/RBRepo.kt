@@ -12,8 +12,10 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
+import io.ktor.client.request.headers
 import io.ktor.client.request.url
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpHeaders
 import io.ktor.http.isSuccess
 import java.net.InetSocketAddress
 import java.net.Proxy
@@ -45,6 +47,12 @@ class RBAPI {
     suspend fun getIndex(): Map<String, List<RBData>> {
         val request = HttpRequestBuilder().apply {
             url("${Preferences[Preferences.Key.RBProvider].url}/index.json")
+            headers {
+                append(
+                    HttpHeaders.IfModifiedSince,
+                    Preferences[Preferences.Key.RBLogsLastModified]
+                )
+            }
         }
 
         val result = client.get(request)
@@ -52,7 +60,12 @@ class RBAPI {
             Log.w(this::javaClass.name, "getIndex() failed: ${result.status}")
 
         return when {
-            result.status.isSuccess() -> RBLogs.fromJson(result.bodyAsText())
+            result.status.isSuccess() -> {
+                Preferences[Preferences.Key.RBLogsLastModified] =
+                    result.headers["Last-Modified"].orEmpty()
+                RBLogs.fromJson(result.bodyAsText())
+            }
+
             else                      -> emptyMap()
         }
     }

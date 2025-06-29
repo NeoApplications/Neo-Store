@@ -5,6 +5,7 @@ import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.CLIENT_CONNECT_TIMEOUT
 import com.machiav3lli.fdroid.CLIENT_READ_TIMEOUT
 import com.machiav3lli.fdroid.CLIENT_WRITE_TIMEOUT
+import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.ExodusData
 import com.machiav3lli.fdroid.data.database.entity.Trackers
 import io.ktor.client.HttpClient
@@ -12,8 +13,10 @@ import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.headers
 import io.ktor.client.request.url
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpHeaders
 import io.ktor.http.isSuccess
 import java.net.InetSocketAddress
 import java.net.Proxy
@@ -51,7 +54,13 @@ class RExodusAPI {
     suspend fun getTrackers(): Trackers {
         val request = HttpRequestBuilder().apply {
             url("$URL_BASE/trackers")
-            header("Authorization", AUTHENTICATION)
+            headers {
+                append(
+                    HttpHeaders.IfModifiedSince,
+                    Preferences[Preferences.Key.TrackersLastModified]
+                )
+                append(HttpHeaders.Authorization, AUTHENTICATION)
+            }
         }
 
         val result = client.get(request)
@@ -59,7 +68,12 @@ class RExodusAPI {
             Log.w(this::javaClass.name, "getTrackers() failed: ${result.status}")
 
         return when {
-            result.status.isSuccess() -> Trackers.fromJson(result.bodyAsText()) ?: Trackers()
+            result.status.isSuccess() -> {
+                Preferences[Preferences.Key.TrackersLastModified] =
+                    result.headers["Last-Modified"].orEmpty()
+                Trackers.fromJson(result.bodyAsText()) ?: Trackers()
+            }
+
             else                      -> Trackers()
         }
     }
