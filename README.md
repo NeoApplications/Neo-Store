@@ -2,25 +2,28 @@
   <img src="src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" alt="Neo Store's icon" width="192" height="192"/>
   <br>
   Neo Store
+  <a href="https://shields.rbtlog.dev/com.machiav3lli.fdroid">
+    <img alt="Reproducible build badge" src="https://shields.rbtlog.dev/simple/com.machiav3lli.fdroid?style=flat&labelColor=A8F8A5&color=98E796"/>
+  </a>
 </h1>
 
 <p align="center"><strong>The modern and feature-rich F-Droid client for everyone!</strong></p>
 
 <p align="center">
   <a href="https://github.com/NeoApplications/Neo-Store/releases/latest">
-    <img src="https://img.shields.io/github/v/release/NeoApplications/Neo-Store?style=flat&labelColor=A8F8A5&color=98E796" alt="Latest stable release version"/>
+    <img alt="Latest stable release version" src="https://img.shields.io/github/v/release/NeoApplications/Neo-Store?style=flat&labelColor=AAFFAA&color=00AA44"/>
   </a>
   <a href="https://github.com/NeoApplications/Neo-Store/releases/">
-    <img alt="Github downloads" src="https://img.shields.io/github/downloads/NeoApplications/Neo-Store/total.svg?style=flat&labelColor=A8F8A5&color=98E796"/>
+    <img alt="Github downloads" src="https://img.shields.io/github/downloads/NeoApplications/Neo-Store/total.svg?style=flat&labelColor=AAFFAA&color=00AA44"/>
   </a>
   <a href="https://github.com/NeoApplications/Neo-Store/stargazers">
-    <img alt="GitHub repo stars" src="https://img.shields.io/github/stars/NeoApplications/Neo-Store?style=flat&labelColor=A8F8A5&color=98E796"/>
+    <img alt="GitHub repo stars" src="https://img.shields.io/github/stars/NeoApplications/Neo-Store?style=flat&labelColor=AAFFAA&color=00AA44"/>
   </a>
   <a href="https://hosted.weblate.org/engage/neo-store">
-    <img src="https://img.shields.io/weblate/progress/neo-store?style=flat&labelColor=A8F8A5&color=98E796" alt="Small translation badge" />
+    <img alt="Small translation badge" src="https://img.shields.io/weblate/progress/neo-store?style=flat&labelColor=AAFFAA&color=00AA44"/>
   </a>
   <a href="./COPYING">
-    <img src="https://img.shields.io/github/license/NeoApplications/Neo-Store?style=flat&labelColor=A8F8A5&color=98E796" alt="Project's License" />
+    <img alt="Project's License" src="https://img.shields.io/github/license/NeoApplications/Neo-Store?style=flat&labelColor=AAFFAA&color=00AA44"/>
   </a>
 </p>
 
