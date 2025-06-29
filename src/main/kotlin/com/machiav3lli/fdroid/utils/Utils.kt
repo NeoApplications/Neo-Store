@@ -100,8 +100,8 @@ object Utils {
         products: List<Pair<EmbeddedProduct, Repository>>,
     ) {
         val productRepository = findSuggestedProduct(products, installed) { it.first }
-        val compatibleReleases = getCompatibleReleases(productRepository, installed)
-        val selectedRelease = selectBestRelease(compatibleReleases)
+        val selectedRelease = getCompatibleReleases(productRepository, installed)
+            .getBestRelease()
 
         if (productRepository != null && selectedRelease != null) {
             DownloadWorker.enqueue(
@@ -117,22 +117,25 @@ object Utils {
         productRepository: Pair<EmbeddedProduct, Repository>?,
         installed: Installed?
     ): List<Release> {
-        return productRepository?.first?.selectedReleases.orEmpty()
+        val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
+
+        return productRepository?.first?.releases.orEmpty()
+            .filter { includeIncompatible || it.incompatibilities.isEmpty() }
             .filter {
                 installed == null ||
                         it.signature in installed.signatures ||
                         Preferences[Preferences.Key.DisableSignatureCheck]
             }
+            .sortedByDescending { it.versionCode }
     }
 
-    private fun selectBestRelease(compatibleReleases: List<Release>): Release? {
-        if (compatibleReleases.isEmpty()) return null
-        if (compatibleReleases.size == 1) return compatibleReleases.first()
+    private fun List<Release>.getBestRelease(): Release? {
+        if (isEmpty()) return null
+        if (size == 1) return first()
 
-        return compatibleReleases
-            .filter { it.platforms.contains(Android.primaryPlatform) }
+        return filter { it.platforms.contains(Android.primaryPlatform) }
             .minByOrNull { it.platforms.size }
-            ?: compatibleReleases.minByOrNull { it.platforms.size }
+            ?: maxByOrNull { it.platforms.size }
     }
 
     fun Context.setLanguage(): Configuration {
@@ -207,6 +210,7 @@ fun <T> findSuggestedProduct(
 ): T? {
     return products.maxWithOrNull(
         compareBy(
+            { extract(it).versionCode },
             {
                 extract(it).compatible && (
                         installed == null ||
@@ -215,7 +219,6 @@ fun <T> findSuggestedProduct(
                                 Preferences[Preferences.Key.DisableSignatureCheck]
                         )
             },
-            { extract(it).versionCode },
         )
     )
 }
