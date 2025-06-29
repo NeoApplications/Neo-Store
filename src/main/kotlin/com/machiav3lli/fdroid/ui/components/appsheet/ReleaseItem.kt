@@ -113,9 +113,9 @@ fun ReleaseItem(
                     },
                     contentDescription = stringResource(id = R.string.rb_badge),
                     tint = when (rbLog.reproducible) {
-                        true  -> MaterialTheme.colorScheme.primary
-                        false -> MaterialTheme.colorScheme.tertiaryContainer
-                        else  -> MaterialTheme.colorScheme.error
+                        true  -> Color.Green//Positive
+                        false -> Color.Red//Negative
+                        else  -> Color.Yellow//Warning
                     }
                 )
             }
