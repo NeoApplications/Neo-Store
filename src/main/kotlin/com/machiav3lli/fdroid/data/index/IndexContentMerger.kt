@@ -1,9 +1,8 @@
-package com.machiav3lli.fdroid.data.index.v1
+package com.machiav3lli.fdroid.data.index
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import com.machiav3lli.fdroid.data.database.Converters.toByteArray
-import com.machiav3lli.fdroid.data.database.Converters.toReleases
+import com.machiav3lli.fdroid.data.database.Converters
 import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.utils.extension.android.asSequence
@@ -12,7 +11,7 @@ import java.io.ByteArrayOutputStream
 import java.io.Closeable
 import java.io.File
 
-class IndexV1Merger(file: File) : Closeable {
+class IndexContentMerger(file: File) : Closeable {
     private val db = SQLiteDatabase.openOrCreateDatabase(file, null)
 
     init {
@@ -39,7 +38,7 @@ class IndexV1Merger(file: File) : Closeable {
         for (pair in pairs) {
             val (packageName, releases) = pair
             val outputStream = ByteArrayOutputStream()
-            outputStream.write(toByteArray(releases))
+            outputStream.write(Converters.toByteArray(releases))
             db.insert("releases", null, ContentValues().apply {
                 put("package_name", packageName)
                 put("data", outputStream.toByteArray())
@@ -59,7 +58,7 @@ class IndexV1Merger(file: File) : Closeable {
                     this.repositoryId = repositoryId
                     this.description = description
                 }
-                val releases = it.getBlob(2)?.let(::toReleases).orEmpty()
+                val releases = it.getBlob(2)?.let(Converters::toReleases).orEmpty()
                 product.apply {
                     this.releases = releases
                 }

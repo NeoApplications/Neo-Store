@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1102,
-    "identityHash": "ed932853257031fe3f1b10a8c962121b",
+    "identityHash": "46845c86e2252f348410930042b259b1",
     "entities": [
       {
         "tableName": "repository",
@@ -1614,11 +1614,124 @@
             "name"
           ]
         }
+      },
+      {
+        "tableName": "rb_log",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`hash` TEXT NOT NULL, `repository` TEXT NOT NULL, `apk_url` TEXT NOT NULL, `packageName` TEXT NOT NULL, `versionCode` INTEGER NOT NULL, `versionName` TEXT NOT NULL, `tag` TEXT NOT NULL, `commit` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `reproducible` INTEGER, `error` TEXT, PRIMARY KEY(`hash`, `packageName`, `timestamp`))",
+        "fields": [
+          {
+            "fieldPath": "hash",
+            "columnName": "hash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repository",
+            "columnName": "repository",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "apk_url",
+            "columnName": "apk_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "appid",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version_code",
+            "columnName": "versionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version_name",
+            "columnName": "versionName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tag",
+            "columnName": "tag",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "commit",
+            "columnName": "commit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reproducible",
+            "columnName": "reproducible",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "error",
+            "columnName": "error",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "hash",
+            "packageName",
+            "timestamp"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_rb_log_hash_packageName_timestamp",
+            "unique": true,
+            "columnNames": [
+              "hash",
+              "packageName",
+              "timestamp"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_rb_log_hash_packageName_timestamp` ON `${TABLE_NAME}` (`hash`, `packageName`, `timestamp`)"
+          },
+          {
+            "name": "index_rb_log_packageName_versionCode_reproducible",
+            "unique": false,
+            "columnNames": [
+              "packageName",
+              "versionCode",
+              "reproducible"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_rb_log_packageName_versionCode_reproducible` ON `${TABLE_NAME}` (`packageName`, `versionCode`, `reproducible`)"
+          },
+          {
+            "name": "index_rb_log_packageName_hash_reproducible",
+            "unique": false,
+            "columnNames": [
+              "packageName",
+              "hash",
+              "reproducible"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_rb_log_packageName_hash_reproducible` ON `${TABLE_NAME}` (`packageName`, `hash`, `reproducible`)"
+          }
+        ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ed932853257031fe3f1b10a8c962121b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '46845c86e2252f348410930042b259b1')"
     ]
   }
 }

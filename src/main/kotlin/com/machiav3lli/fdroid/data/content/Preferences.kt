@@ -117,6 +117,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.InitialSync,
         Key.IgnoreDisableBatteryOptimization,
         Key.IgnoreShowNotifications,
+        // TODO add lastModified to trackers and RB calls
     ).map { Pair(it.name, it) }.toMap()
 
     fun init(context: Context) {

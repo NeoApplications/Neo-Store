@@ -15,7 +15,6 @@ import io.ktor.client.request.header
 import io.ktor.client.request.url
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
-import org.koin.dsl.module
 import java.net.InetSocketAddress
 import java.net.Proxy
 import java.util.concurrent.TimeUnit
@@ -80,8 +79,4 @@ class RExodusAPI {
             else                      -> emptyList()
         }
     }
-}
-
-val exodusModule = module {
-    single { RExodusAPI() }
 }

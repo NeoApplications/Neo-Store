@@ -66,6 +66,7 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
         private val neo_store: NeoApp get() = appRef.get()!!
 
         private var mainActivityRef: WeakReference<NeoActivity> = WeakReference(null)
+
         // TODO consider remove
         var mainActivity: NeoActivity?
             get() = mainActivityRef.get()

@@ -16,7 +16,6 @@ import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.database.entity.asProductTemp
 import com.machiav3lli.fdroid.data.database.entity.asReleaseTemp
 import com.machiav3lli.fdroid.data.index.v0.IndexV0Parser
-import com.machiav3lli.fdroid.data.index.v1.IndexV1Merger
 import com.machiav3lli.fdroid.data.index.v1.IndexV1Parser
 import com.machiav3lli.fdroid.data.index.v2.IdMap
 import com.machiav3lli.fdroid.data.index.v2.IndexV2
@@ -616,7 +615,7 @@ object RepositoryUpdater : KoinComponent {
         try {
             val unmergedProducts = mutableListOf<IndexProduct>()
             val unmergedReleases = mutableListOf<Pair<String, List<Release>>>()
-            IndexV1Merger(mergerFile).use { indexMerger ->
+            IndexContentMerger(mergerFile).use { indexMerger ->
                 ProgressInputStream(inputStream) {
                     callback(
                         Stage.PROCESS,
@@ -751,7 +750,7 @@ object RepositoryUpdater : KoinComponent {
         try {
             val unmergedProducts = mutableListOf<IndexProduct>()
             val unmergedReleases = mutableListOf<Pair<String, List<Release>>>()
-            IndexV1Merger(mergerFile).use { indexMerger ->
+            IndexContentMerger(mergerFile).use { indexMerger ->
                 ProgressInputStream(indexFile.inputStream()) {
                     callback(Stage.PROCESS, it, total)
                 }.use { progressInputStream ->
@@ -886,8 +885,12 @@ object RepositoryUpdater : KoinComponent {
                 e
             )
         } finally {
+            indexFile.copyTo(
+                Cache.getIndexV2File(context, repository.id),
+                true,
+                BUFFER_SIZE,
+            )
             mergerFile.delete()
-            indexFile.renameTo(Cache.getIndexV2File(context, repository.id))
         }
         return Pair(changedRepository, null)
     }
