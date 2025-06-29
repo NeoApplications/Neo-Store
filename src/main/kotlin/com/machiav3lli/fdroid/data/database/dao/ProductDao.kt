@@ -232,7 +232,7 @@ interface ProductDao : BaseDao<Product> {
                 whereConditions.add("$TABLE_PRODUCT.$ROW_ADDED = $TABLE_PRODUCT.$ROW_UPDATED")
                 whereConditions.add(
                     """
-                (SELECT COUNT(*) 
+                (SELECT COUNT(DISTINCT $TABLE_RELEASE.$ROW_VERSION_CODE) 
                 FROM $TABLE_RELEASE 
                 WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME) = 1
                 """.trimIndent()
