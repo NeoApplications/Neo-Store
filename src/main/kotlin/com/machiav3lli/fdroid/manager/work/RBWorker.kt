@@ -12,7 +12,6 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.TAG_SYNC_PERIODIC
 import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.manager.network.RBAPI
-import com.machiav3lli.fdroid.manager.network.RBAPI.Companion.URL_BASE
 import com.machiav3lli.fdroid.manager.network.toLogs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -52,7 +51,7 @@ class RBWorker(
     companion object {
         fun fetchRBLogs() {
             NeoApp.wm.enqueueUniqueWork(
-                "rb_$URL_BASE",
+                "rb_index",
                 ExistingWorkPolicy.REPLACE,
                 OneTimeWorkRequestBuilder<RBWorker>()
                     .addTag(TAG_SYNC_PERIODIC)

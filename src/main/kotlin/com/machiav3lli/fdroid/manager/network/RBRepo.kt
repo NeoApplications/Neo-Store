@@ -4,6 +4,7 @@ import android.util.Log
 import com.machiav3lli.fdroid.CLIENT_CONNECT_TIMEOUT
 import com.machiav3lli.fdroid.CLIENT_READ_TIMEOUT
 import com.machiav3lli.fdroid.CLIENT_WRITE_TIMEOUT
+import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.RBData
 import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.database.entity.RBLogs
@@ -41,14 +42,9 @@ class RBAPI {
         }
     }
 
-    companion object {
-        // TODO make an option in Preferences
-        const val URL_BASE = "https://codeberg.org/IzzyOnDroid/rbtlog/raw/branch/izzy/log"
-    }
-
     suspend fun getIndex(): Map<String, List<RBData>> {
         val request = HttpRequestBuilder().apply {
-            url("$URL_BASE/index.json")
+            url("${Preferences[Preferences.Key.RBProvider].url}/index.json")
         }
 
         val result = client.get(request)

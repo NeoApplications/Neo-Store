@@ -47,6 +47,7 @@ fun PrefsServicePage() {
         Preferences.Key.IncompatibleVersions,
         Preferences.Key.DisableDownloadVersionCheck,
         Preferences.Key.DisableSignatureCheck,
+        Preferences.Key.RBProvider,
     )
     val installPrefs = listOfNotNull(
         Preferences.Key.KeepInstallNotification,
