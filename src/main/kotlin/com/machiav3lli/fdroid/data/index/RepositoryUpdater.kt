@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.ui.util.fastMap
 import androidx.core.net.toUri
+import com.machiav3lli.fdroid.BUFFER_SIZE
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.DatabaseX
@@ -347,9 +348,7 @@ object RepositoryUpdater : KoinComponent {
         callback: (Stage, Long, Long?) -> Unit,
     ): Pair<Downloader.Result, File> = withContext(Dispatchers.IO) {
         val file = Cache.getTemporaryFile(context)
-        val diffUrl = repository.downloadAddress.toUri().buildUpon()
-            .appendPath(diffAddress)
-            .build().toString()
+        val diffUrl = (repository.downloadAddress + diffAddress)
         try {
             val result = Downloader.download(
                 diffUrl,
@@ -381,6 +380,10 @@ object RepositoryUpdater : KoinComponent {
         entityTag: String, entryEntityTag: String?, callback: (Stage, Long, Long?) -> Unit,
     ): Boolean {
         var rollback = true
+        Log.d(
+            "RepositoryUpdater",
+            "processing file, repoID = ${repository.id}, indexType = $indexType, lastModified = $lastModified, entryLastModified = $entryLastModified"
+        )
         return updaterMutex.withLock {
             try {
                 val (jarFile, indexEntry) = if (indexType != IndexType.INDEX_V2) JarFile(file, true)
@@ -408,7 +411,7 @@ object RepositoryUpdater : KoinComponent {
 
                 Log.d(
                     "RepositoryUpdater",
-                    "processing file, repoID = ${repository.id}, indexType = $indexType, total = $total, lastModified = $lastModified, entityTag = $entityTag"
+                    "parsing index file, repoID = ${repository.id}, indexType = $indexType, total = $total, lastModified = $lastModified, entryLastModified = $entryLastModified"
                 )
                 val (changedRepository, certificateFromIndex) = when (indexType) {
                     IndexType.INDEX    -> processIndexV0(

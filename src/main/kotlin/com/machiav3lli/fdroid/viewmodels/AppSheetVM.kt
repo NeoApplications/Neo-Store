@@ -78,7 +78,7 @@ class AppSheetVM(
         .mapLatest { it.maxByOrNull(ExodusInfo::version_code) }
 
     val trackers = combine(exodusInfo, privacyRepo.getAllTrackers()) { info, trackers ->
-        trackers.filter { it.key in (info?.trackers ?: emptyList()) }
+        trackers.filter { it.key in info?.trackers.orEmpty() }
     }
 
     val rbLogs = packageName
@@ -141,7 +141,7 @@ class AppSheetVM(
         val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
         val reposMap = repos.associateBy { it.id }
 
-        (suggestedProductRepo?.first?.releases ?: emptyList())
+        suggestedProductRepo?.first?.releases.orEmpty()
             .filter { includeIncompatible || it.incompatibilities.isEmpty() }
             .mapNotNull { rel -> reposMap[rel.repositoryId]?.let { Pair(rel, it) } }
             .map { (release, repository) ->
@@ -177,7 +177,7 @@ class AppSheetVM(
         val catsMap = afs.associateBy(AntiFeatureDetails::name)
         prod?.let {
             it.first.product.antiFeatures.map { catsMap[it] ?: AntiFeatureDetails(it, "") }
-        } ?: emptyList()
+        }.orEmpty()
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
@@ -200,7 +200,7 @@ class AppSheetVM(
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        PrivacyData(emptyMap(), emptyList(), emptyList())
+        PrivacyData()
     )
 
     val privacyNote = privacyData.mapLatest {
@@ -214,7 +214,7 @@ class AppSheetVM(
         val catsMap = cats.associateBy(CategoryDetails::name)
         prod?.let {
             it.first.product.categories.map { catsMap[it]?.label ?: it }
-        } ?: emptyList()
+        }.orEmpty()
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),

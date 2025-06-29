@@ -43,7 +43,7 @@ val PackageInfo.signerSHA256Signatures: List<String>
             else                               -> this.signatures
         }?.mapNotNull {
             it?.let(Utils::calculateSHA256).orEmpty()
-        } ?: emptyList()
+        }.orEmpty()
     }
 
 object Android {

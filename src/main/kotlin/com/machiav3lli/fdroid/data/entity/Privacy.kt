@@ -34,9 +34,9 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.User
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserFocus
 
 class PrivacyData(
-    val permissions: Map<PermissionGroup, List<PermissionInfo>>,
-    val trackers: List<Tracker>,
-    val antiFeatures: List<AntiFeatureDetails>,
+    val permissions: Map<PermissionGroup, List<PermissionInfo>> = emptyMap(),
+    val trackers: List<Tracker> = emptyList(),
+    val antiFeatures: List<AntiFeatureDetails> = emptyList(),
 ) {
     val physicalDataPermissions: Map<PermissionGroup, List<PermissionInfo>>
         get() = permissions.filter { it.key in PHYSICAL_DATA_PERMISSIONS }

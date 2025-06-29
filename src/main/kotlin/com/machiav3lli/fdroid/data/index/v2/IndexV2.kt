@@ -20,7 +20,7 @@ data class IndexV2(
     ) {
         fun getDiff(timestamp: Long): File? {
             return if (this.timestamp == timestamp) null
-            else diffs[timestamp] ?: index
+            else diffs[timestamp]
         }
 
         fun toJSON() = Json.encodeToString(this)
