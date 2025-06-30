@@ -1,9 +1,9 @@
-Hinzugefügt: Heruntergeladene Datei löschen, Download-Eintrag gelöscht wurde
+Hinzugefügt: Löschen der heruntergeladenen Datei, wenn Download-Eintrag gelöscht
 Hinzugefügt: Target- & MinSDK-Filter
 Fix: Lazy Load von installierten Apps
 Fix: Neu installierte App wird nicht zum Homescreen hinzugefügt (Credits @Dhina17)
 Update: UI für breite Bildschirme und Navigation anpassbar gemacht
 Update: Verbesserung des f-droid Sharing-Links (credits @leoheitmannruiz)
 Update: Anfrage nach Installationsberechtigungen vermeiden, wenn INSTALL_PACKAGES gewährt wird (credits @tharowt)
-Repos: Fcitx5, IronFox Repos hinzugefügt (Dank an @Integral-Tech, @celenityy)
+Repos: Fcitx5, IronFox Repos hinzufügen (Dank an @Integral-Tech, @celenityy)
 und vieles mehr in über 140 Commits und 100 Übersetzungsbeiträgen
