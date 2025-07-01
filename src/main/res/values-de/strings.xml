@@ -427,4 +427,9 @@
     <string name="installing_error_blocked_DESC">Installation wurde blockiert.</string>
     <string name="max_idle_connections_description">Maximale Anzahl der inaktiven Verbindungen über alle Adressen, die aufrechterhalten werden sollen.</string>
     <string name="mirror_rotation">Spiegelrotation</string>
+    <string name="notify_channel_debug">Debugging</string>
+    <string name="repo_index_timestamp">Zeitstempel des Index</string>
+    <string name="rb_izzyondroid">IzzyOnDroid</string>
+    <string name="rb_bg443">bg443</string>
+    <string name="rb_obfusk">Obfusk</string>
 </resources>
