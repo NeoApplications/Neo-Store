@@ -429,4 +429,12 @@
     <string name="action_start">Andiamo!</string>
     <string name="max_idle_connections_description">Numero massimo di connessioni inattive su tutti gli indirizzi da mantenere attivi.</string>
     <string name="mirror_rotation">Rotazione specchio</string>
+    <string name="notify_channel_debug">Debug</string>
+    <string name="repo_index_timestamp">Timestamp indice</string>
+    <string name="rb_badge">Distintivo di build riproducibile</string>
+    <string name="rb_provider">Fornitore di log di build riproducibili</string>
+    <string name="rb_none">Nessun fornitore</string>
+    <string name="rb_izzyondroid">IzzyOnDroid</string>
+    <string name="rb_bg443">bg443</string>
+    <string name="rb_obfusk">Obfusk</string>
 </resources>
