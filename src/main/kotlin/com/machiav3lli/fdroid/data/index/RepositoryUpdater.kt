@@ -22,6 +22,7 @@ import com.machiav3lli.fdroid.data.index.v2.IdMap
 import com.machiav3lli.fdroid.data.index.v2.IndexV2
 import com.machiav3lli.fdroid.data.index.v2.IndexV2Merger
 import com.machiav3lli.fdroid.data.index.v2.IndexV2Parser
+import com.machiav3lli.fdroid.data.index.v2.IndexV2Parser.Companion.hasCachedIndex
 import com.machiav3lli.fdroid.data.index.v2.findLocalized
 import com.machiav3lli.fdroid.manager.network.Downloader
 import com.machiav3lli.fdroid.utils.CoroutineUtils
@@ -135,11 +136,6 @@ object RepositoryUpdater : KoinComponent {
         )
     }
 
-    private fun hasCachedIndex(context: Context, repoId: Long): Boolean {
-        val cacheFile = Cache.getIndexV2File(context, repoId)
-        return cacheFile.exists() && cacheFile.length() > 0
-    }
-
     private suspend fun update(
         context: Context,
         repository: Repository, indexTypes: List<IndexType>, unstable: Boolean,
@@ -187,37 +183,33 @@ object RepositoryUpdater : KoinComponent {
                 else                -> {
                     launch {
                         CoroutineUtils.managedSingle {
+                            val hasCachedIndex = hasCachedIndex(context, repository.id)
                             Log.d(
                                 "RepositoryUpdater",
-                                "downloaded repository file, repoID = ${repository.id}, indexType = $indexType, hasCachedIndex = ${
-                                    hasCachedIndex(
-                                        context,
-                                        repository.id
-                                    )
-                                }"
+                                "downloaded repository file, repoID = ${repository.id}, indexType = $indexType, hasCachedIndex = $hasCachedIndex"
                             )
-                            when {
-                                indexType == IndexType.INDEX_V2_ENTRY &&
-                                        hasCachedIndex(context, repository.id)
-                                     -> downloadIndexV2Diff(
-                                    context, repository, unstable,
-                                    file, result.lastModified.nullIfEmpty(),
-                                    result.entityTag.nullIfEmpty(), callback
-                                )
+                            when (indexType) {
+                                IndexType.INDEX_V2_ENTRY -> {
+                                    if (hasCachedIndex) {
+                                        downloadIndexV2Diff(
+                                            context, repository, unstable,
+                                            file, result.lastModified.nullIfEmpty(),
+                                            result.entityTag.nullIfEmpty(), callback
+                                        )
+                                    } else {
+                                        update(
+                                            context = context,
+                                            repository = repository,
+                                            indexTypes = indexTypes.drop(1),
+                                            unstable = unstable,
+                                            entryLastModified = result.lastModified.nullIfEmpty(),
+                                            entryEntityTag = result.entityTag.nullIfEmpty(),
+                                            callback = callback
+                                        )
+                                    }
+                                }
 
-                                indexType == IndexType.INDEX_V2_ENTRY &&
-                                        !hasCachedIndex(context, repository.id)
-                                     -> update(
-                                    context = context,
-                                    repository = repository,
-                                    indexTypes = indexTypes.drop(1),
-                                    unstable = unstable,
-                                    entryLastModified = result.lastModified.nullIfEmpty(),
-                                    entryEntityTag = result.entityTag.nullIfEmpty(),
-                                    callback = callback
-                                )
-
-                                else -> processFile(
+                                else                     -> processFile(
                                     context, repository, indexType,
                                     unstable, file, result.lastModified, entryLastModified,
                                     result.entityTag, entryEntityTag, callback
@@ -293,22 +285,25 @@ object RepositoryUpdater : KoinComponent {
                 .let { Pair(it, it.getEntry(IndexType.INDEX_V2_ENTRY.contentName) as JarEntry?) }
             jarFile.getInputStream(indexEntry)?.let { entryStream ->
                 val entry = IndexV2.Entry.fromJsonStream(entryStream)
+
+                if (entry.timestamp == repository.timestamp) {
+                    file.delete()
+                    return@withContext false
+                }
+
                 val diffAddress = entry.getDiff(repository.timestamp)?.name
                     ?: return@withContext fallbackUpdate()
+
                 val (result, diffFile) = downloadDiffFile(
                     context, repository,
                     entry.timestamp,
                     diffAddress,
                     callback
                 )
+                val hasCachedIndex = hasCachedIndex(context, repository.id)
                 Log.d(
                     "RepositoryUpdater",
-                    "downloaded diff file, repoID = ${repository.id}, result = ${result.toString()}, hasCachedIndex = ${
-                        hasCachedIndex(
-                            context,
-                            repository.id
-                        )
-                    }"
+                    "downloaded diff file, repoID = ${repository.id}, result.statusCode = ${result.statusCode}, hasCachedIndex = $hasCachedIndex"
                 )
                 when {
                     result.isNotChanged -> {
@@ -330,7 +325,7 @@ object RepositoryUpdater : KoinComponent {
                     else                -> {
                         launch {
                             CoroutineUtils.managedSingle {
-                                if (hasCachedIndex(context, repository.id)) processFile(
+                                if (hasCachedIndex) processFile(
                                     context, repository, IndexType.INDEX_V2_DIFF, unstable,
                                     diffFile, result.lastModified, entryLastModified,
                                     result.entityTag, entryEntityTag, callback,
@@ -395,32 +390,35 @@ object RepositoryUpdater : KoinComponent {
                     else               -> JarFile(file, true)
                         .let { Pair(it, it.getEntry(indexType.contentName) as JarEntry?) }
                 }
-                val index =
-                    when (indexType) {
-                        IndexType.INDEX_V2      -> file
-                        IndexType.INDEX_V2_DIFF -> {
-                            Cache.getIndexV2File(context, repository.id)
-                                .takeIf { it.exists() && it.length() > 0 }
-                                ?.let { indexFile ->
-                                    IndexV2Merger(indexFile).use { merger ->
-                                        merger.processDiff(
-                                            file.inputStream()
-                                        ).let {
-                                            notifyDebugStatus(
-                                                context,
-                                                "RepositoryUpdater",
-                                                "merged diff file, repoID = ${repository.id}, succcess = $it, indexFile = $indexFile."
-                                            )
-                                        }
+                val index = when (indexType) {
+                    IndexType.INDEX_V2      -> file
+                    IndexType.INDEX_V2_DIFF -> {
+                        Cache.getIndexV2File(context, repository.id)
+                            .takeIf { it.exists() && it.length() > 0 }
+                            ?.let { indexFile ->
+                                IndexV2Merger(indexFile).use { merger ->
+                                    merger.processDiff(
+                                        file.inputStream()
+                                    ).let {
+                                        notifyDebugStatus(
+                                            context,
+                                            "RepositoryUpdater",
+                                            "merged diff file, repoID = ${repository.id}, succcess = $it, indexFile = $indexFile."
+                                        )
                                     }
-                                    indexFile
-                                } ?: file
-                        }
-
-                        else                    -> null
+                                }
+                                indexFile
+                            } ?: file
                     }
-                val total = if (indexType != IndexType.INDEX_V2) indexEntry?.size
-                else file.length()
+
+                    else                    -> null
+                }
+                val total = when (indexType) {
+                    IndexType.INDEX_V2_DIFF,
+                    IndexType.INDEX_V2 -> file.length()
+
+                    else               -> indexEntry?.size
+                }
                 db.getProductTempDao().emptyTable()
                 db.getReleaseTempDao().emptyTable()
                 db.getCategoryTempDao().emptyTable()
@@ -471,38 +469,45 @@ object RepositoryUpdater : KoinComponent {
 
                 val workRepository = changedRepository ?: repository
                 // TODO add better validation for Index-V2
-                if (workRepository.timestamp < repository.timestamp) {
-                    throw UpdateException(
-                        ErrorType.VALIDATION, "New index is older than current index: " +
-                                "${workRepository.timestamp} < ${repository.timestamp}"
-                    )
-                } else if (indexType != IndexType.INDEX_V2) {
-                    val fingerprint = run {
-                        val certificateFromJar = validateCertificate(indexEntry)
-                        val fingerprintFromJar = calculateFingerprint(certificateFromJar)
-                        if (indexType.certificateFromIndex) {
-                            val fingerprintFromIndex =
-                                certificateFromIndex?.unhex()?.let(::calculateFingerprint)
-                            if (fingerprintFromIndex == null || fingerprintFromJar != fingerprintFromIndex) {
-                                throw UpdateException(
-                                    ErrorType.VALIDATION,
-                                    "index.xml contains invalid public key"
-                                )
-                            }
-                            fingerprintFromIndex
-                        } else {
-                            fingerprintFromJar
-                        }
+                when {
+                    workRepository.timestamp < repository.timestamp                         -> {
+                        throw UpdateException(
+                            ErrorType.VALIDATION, "New index is older than current index: " +
+                                    "${workRepository.timestamp} < ${repository.timestamp}"
+                        )
                     }
 
-                    commitChanges(workRepository, fingerprint, callback)
-                    rollback = false
-                    true
-                } else {
-                    val valid = workRepository.fingerprint.isNotBlank()
-                    commitChanges(workRepository, workRepository.fingerprint, callback)
-                    rollback = !valid
-                    valid
+                    indexType != IndexType.INDEX_V2
+                            && indexType != IndexType.INDEX_V2_DIFF -> {
+                        val fingerprint = run {
+                            val certificateFromJar = validateCertificate(indexEntry)
+                            val fingerprintFromJar = calculateFingerprint(certificateFromJar)
+                            if (indexType.certificateFromIndex) {
+                                val fingerprintFromIndex =
+                                    certificateFromIndex?.unhex()?.let(::calculateFingerprint)
+                                if (fingerprintFromIndex == null || fingerprintFromJar != fingerprintFromIndex) {
+                                    throw UpdateException(
+                                        ErrorType.VALIDATION,
+                                        "index.xml contains invalid public key"
+                                    )
+                                }
+                                fingerprintFromIndex
+                            } else {
+                                fingerprintFromJar
+                            }
+                        }
+
+                        commitChanges(workRepository, fingerprint, callback)
+                        rollback = false
+                        true
+                    }
+
+                    else                                                                    -> {
+                        val valid = workRepository.fingerprint.isNotBlank()
+                        commitChanges(workRepository, workRepository.fingerprint, callback)
+                        rollback = !valid
+                        valid
+                    }
                 }
             } catch (e: Exception) {
                 throw when (e) {
@@ -904,11 +909,13 @@ object RepositoryUpdater : KoinComponent {
                 e
             )
         } finally {
-            indexFile.copyTo(
-                Cache.getIndexV2File(context, repository.id),
-                true,
-                BUFFER_SIZE,
-            )
+            Cache.getIndexV2File(context, repository.id).let {
+                if (it != indexFile) indexFile.copyTo(
+                    it,
+                    true,
+                    BUFFER_SIZE,
+                )
+            }
             mergerFile.delete()
         }
         return Pair(changedRepository, null)

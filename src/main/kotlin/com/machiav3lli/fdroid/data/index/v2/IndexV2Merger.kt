@@ -8,6 +8,7 @@ import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.decodeFromStream
+import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.longOrNull
 import java.io.File
@@ -20,7 +21,6 @@ class IndexV2Merger(private val baseFile: File) : AutoCloseable {
     private val json = Json {
         ignoreUnknownKeys = true
         explicitNulls = true
-        isLenient = true
     }
 
     @OptIn(ExperimentalSerializationApi::class)

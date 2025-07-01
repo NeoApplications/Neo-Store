@@ -1,6 +1,8 @@
 package com.machiav3lli.fdroid.data.index.v2
 
 import android.R.attr.version
+import android.content.Context
+import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -9,10 +11,6 @@ import kotlinx.serialization.json.decodeFromStream
 import java.io.InputStream
 
 class IndexV2Parser(private val repositoryId: Long, private val callback: Callback) {
-    private val json = Json {
-        ignoreUnknownKeys = true
-    }
-
     @OptIn(ExperimentalSerializationApi::class)
     fun parse(inputStream: InputStream) {
         try {
@@ -60,4 +58,22 @@ class IndexV2Parser(private val repositoryId: Long, private val callback: Callba
     }
 
     class ParsingException(message: String, cause: Throwable? = null) : Exception(message, cause)
+    companion object {
+        private val json = Json {
+            ignoreUnknownKeys = true
+        }
+
+        /*
+         * Checks if the index has been cached and is not empty or corrupted
+         */
+        fun hasCachedIndex(context: Context, repoId: Long): Boolean = runCatching {
+            val cacheFile = Cache.getIndexV2File(context, repoId).apply {
+                val indexBase = json.decodeFromStream<IndexV2>(inputStream())
+            }
+            return cacheFile.exists() && cacheFile.length() > 0
+        }.fold(
+            onSuccess = { it },
+            onFailure = { false }
+        )
+    }
 }
