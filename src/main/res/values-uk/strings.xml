@@ -431,4 +431,12 @@
     <string name="action_start">Погнали!</string>
     <string name="mirror_rotation">Віддзеркалити</string>
     <string name="max_idle_connections_description">Максимальна кількість неактивних з\'єднань для всіх адрес, які необхідно підтримувати.</string>
+    <string name="notify_channel_debug">Налагодження</string>
+    <string name="repo_index_timestamp">Часовий штамп індексу</string>
+    <string name="rb_badge">Відтворюваний значок збірки</string>
+    <string name="rb_provider">Постачальник відтворюваних журналів збірки</string>
+    <string name="rb_none">Немає постачальника</string>
+    <string name="rb_izzyondroid">IzzyOnDroid</string>
+    <string name="rb_bg443">bg443</string>
+    <string name="rb_obfusk">Obfusk</string>
 </resources>
