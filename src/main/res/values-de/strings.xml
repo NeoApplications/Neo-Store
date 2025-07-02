@@ -432,4 +432,7 @@
     <string name="rb_izzyondroid">IzzyOnDroid</string>
     <string name="rb_bg443">bg443</string>
     <string name="rb_obfusk">Obfusk</string>
+    <string name="rb_badge">Reproduzierbare Build Badges</string>
+    <string name="rb_provider">Reproduzierbare Build Log Provider</string>
+    <string name="rb_none">Kein Provider</string>
 </resources>
