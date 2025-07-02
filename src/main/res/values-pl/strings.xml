@@ -431,4 +431,12 @@
     <string name="action_start">Zaczynamy!</string>
     <string name="mirror_rotation">Obrót lustrzany</string>
     <string name="max_idle_connections_description">Maksymalna liczba bezczynnych połączeń na wszystkich adresach, które mają być utrzymywane.</string>
+    <string name="notify_channel_debug">Debugowanie</string>
+    <string name="repo_index_timestamp">Sygnatura czasowa indeksu</string>
+    <string name="rb_badge">Powtarzalny identyfikator kompilacji</string>
+    <string name="rb_provider">Dostawca powtarzalnych dzienników kompilacji</string>
+    <string name="rb_none">Brak dostawcy</string>
+    <string name="rb_izzyondroid">IzzyOnDroid</string>
+    <string name="rb_bg443">bg443</string>
+    <string name="rb_obfusk">Obfusk</string>
 </resources>
