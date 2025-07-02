@@ -425,4 +425,12 @@
     <string name="action_start">Laten we beginnen!</string>
     <string name="max_idle_connections_description">Maximaal aantal inactieve verbindingen op alle adressen die actief moeten blijven.</string>
     <string name="mirror_rotation">Rotatie spiegelen</string>
+    <string name="notify_channel_debug">Foutoplossing</string>
+    <string name="repo_index_timestamp">Tijdstempel van index</string>
+    <string name="rb_badge">Reproduceerbare buildbadge</string>
+    <string name="rb_provider">Reproduceerbare build log provider</string>
+    <string name="rb_none">Geen provider</string>
+    <string name="rb_izzyondroid">IzzyOnDroid</string>
+    <string name="rb_bg443">bg443</string>
+    <string name="rb_obfusk">Obfusk</string>
 </resources>
