@@ -59,6 +59,8 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
 
     protected abstract suspend fun processNextInstallation()
 
+    suspend fun checkQueueHealth(): Boolean = installQueue.checkQueueHealth()
+
     override suspend fun isEnqueued(packageName: String): Boolean =
         installQueue.isEnqueued(packageName)
 

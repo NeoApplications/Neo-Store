@@ -5,8 +5,10 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
 import com.machiav3lli.fdroid.data.repository.InstallsRepository
+import com.machiav3lli.fdroid.manager.installer.BaseInstaller
 import com.machiav3lli.fdroid.manager.work.InstallWorker
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -22,6 +24,7 @@ object InstallUtils : KoinComponent {
     private var lastRestartAttempt = AtomicLong(0L)
     private var restartCount = AtomicInt(0)
     private val installsRepository: InstallsRepository by inject()
+    private val installer: BaseInstaller by inject()
 
     suspend fun verifyAndEnqueueInstallTask(task: InstallTask) {
         withContext(Dispatchers.IO) {
@@ -65,6 +68,15 @@ object InstallUtils : KoinComponent {
             try {
                 lastRestartAttempt.store(currentTime)
                 restartCount.addAndFetch(1)
+
+                val queueCleaned = installer.checkQueueHealth()
+                if (queueCleaned) {
+                    Log.d(
+                        TAG,
+                        "Queue health check performed cleanup before restarting orphaned tasks"
+                    )
+                    delay(500)
+                }
 
                 val tasks = installsRepository.loadAll()
                 Log.d(TAG, "Found ${tasks.size} install tasks to verify and re-enqueue")

@@ -64,6 +64,8 @@ class InstallWorker(
             try {
                 attemptCount++
                 Log.d(TAG, "Installation attempt $attemptCount for $packageName")
+                // Make sure the task is not queued causing a loop
+                installer.cancelInstall(packageName)
 
                 val result = withTimeout(INSTALL_TIMEOUT) {
                     handleInstall(label, fileName)
@@ -88,10 +90,12 @@ class InstallWorker(
                     TAG,
                     "Installation timed out for $packageName (attempt $attemptCount): ${e.message}"
                 )
+                installer.cancelInstall(packageName)
                 if (attemptCount >= maxRetries) return@withContext Result.failure()
                 delay(INITIAL_BACKOFF_MILLIS * (1 shl (attemptCount - 1)))
             } catch (e: CancellationException) {
                 Log.w(TAG, "Installation cancelled for $packageName: ${e.message}")
+                installer.cancelInstall(packageName)
                 return@withContext Result.failure()
             } catch (e: Exception) {
                 Log.e(
@@ -99,6 +103,7 @@ class InstallWorker(
                     "Installation failed for $packageName (attempt $attemptCount): ${e.message}",
                     e
                 )
+                installer.cancelInstall(packageName)
                 if (attemptCount >= maxRetries) return@withContext Result.failure()
                 delay(INITIAL_BACKOFF_MILLIS * (1 shl (attemptCount - 1)))
             }
@@ -119,6 +124,16 @@ class InstallWorker(
                 Log.e(TAG, "No install task found for $fileName")
                 return@coroutineScope Result.failure()
             }
+
+            val queueCleaned = installer.checkQueueHealth()
+            if (queueCleaned) {
+                Log.d(
+                    TAG,
+                    "Queue cleanup performed before starting installation of ${currentTask.packageName}"
+                )
+                delay(500)
+            }
+
             var waitingForQueueTime = 0L
 
             while (installState.value !is InstallState.Success && installState.value !is InstallState.Failed && attemptsCount < maxRetries) {

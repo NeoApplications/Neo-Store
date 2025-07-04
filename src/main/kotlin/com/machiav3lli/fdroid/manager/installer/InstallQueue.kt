@@ -18,6 +18,7 @@ class InstallQueue {
     private val mutex = Mutex()
     private val queue = ConcurrentLinkedQueue<InstallTask>()
     private val qcc = Dispatchers.IO + SupervisorJob()
+    private var processingStartTime: Long = 0
     val isProcessing: StateFlow<Boolean>
         private field = MutableStateFlow(false)
     val inUserInteraction: StateFlow<String>
@@ -70,6 +71,68 @@ class InstallQueue {
                 "InstallQueue",
                 "$packageName is ${if (currentTask?.packageName == packageName) "the current task" else "already in the queue: ${queue.toArray()}"}"
             )
+        }
+    }
+
+    /**
+     * Checks the health of the installation queue and cleans up any stale tasks
+     */
+    suspend fun checkQueueHealth(): Boolean {
+        return withContext(qcc) {
+            mutex.withLock {
+                try {
+                    var cleanupPerformed = false
+
+                    // If there's a current task but processing is false, we have an inconsistency
+                    if (currentTask != null && !isProcessing.value) {
+                        Log.w(
+                            TAG,
+                            "Queue health check: Inconsistent state detected for ${currentTask?.packageName}, cleaning up"
+                        )
+                        currentTask?.callback?.invoke(Result.failure(InstallationError.Unknown("Queue cleanup: inconsistent state")))
+                        currentTask = null
+                        inUserInteraction.update { "" }
+                        cleanupPerformed = true
+                    }
+
+                    // Check for stuck processing based on time
+                    if (isProcessing.value && currentTask != null && processingStartTime > 0) {
+                        val processingTime = System.currentTimeMillis() - processingStartTime
+                        if (processingTime > MAX_PROCESSING_TIME) {
+                            Log.w(
+                                TAG,
+                                "Queue health check: Task ${currentTask?.packageName} has been processing for ${processingTime}ms, forcing cleanup"
+                            )
+                            currentTask?.callback?.invoke(Result.failure(InstallationError.Unknown("Installation timeout")))
+                            currentTask = null
+                            isProcessing.update { false }
+                            inUserInteraction.update { "" }
+                            processingStartTime = 0
+                            cleanupPerformed = true
+                        }
+                    }
+
+                    // Check for empty queue but still processing
+                    if (isProcessing.value && currentTask == null && queue.isEmpty()) {
+                        Log.w(
+                            TAG,
+                            "Queue health check: Processing flag set but no tasks, resetting"
+                        )
+                        isProcessing.update { false }
+                        inUserInteraction.update { "" }
+                        cleanupPerformed = true
+                    }
+
+                    Log.d(
+                        TAG,
+                        "Queue health check completed. Queue size: ${queue.size}, Processing: ${isProcessing.value}, Current task: ${currentTask?.packageName}"
+                    )
+                    cleanupPerformed
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error checking queue health: ${e.message}")
+                    false
+                }
+            }
         }
     }
 
@@ -210,5 +273,6 @@ class InstallQueue {
     companion object {
         private const val TAG = "InstallQueue"
         private const val MAX_RETRIES = 3
+        private const val MAX_PROCESSING_TIME = 5 * 60 * 1000L // 5 minutes
     }
 }

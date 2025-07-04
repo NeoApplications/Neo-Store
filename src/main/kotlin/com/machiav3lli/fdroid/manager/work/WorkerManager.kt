@@ -36,6 +36,7 @@ import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.InstallsRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
+import com.machiav3lli.fdroid.manager.installer.BaseInstaller
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.utils.Utils
 import com.machiav3lli.fdroid.utils.extension.android.Android
@@ -65,6 +66,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
     private val reposRepo: RepositoriesRepository by inject()
     private val installedRepo: InstalledRepository by inject()
     private val installsRepo: InstallsRepository by inject()
+    private val installer: BaseInstaller by inject()
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     val syncsScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -151,6 +153,15 @@ class WorkerManager(appContext: Context) : KoinComponent {
                             .build()
                     ).get().filter { it.runAttemptCount > 5 }.forEach { wi ->
                         workManager.cancelWorkById(wi.id)
+                    }
+
+                    try {
+                        val healthCheckCleaned = installer.checkQueueHealth()
+                        if (healthCheckCleaned) {
+                            Log.d("WorkerManager", "Periodic queue health check performed cleanup")
+                        }
+                    } catch (e: Exception) {
+                        Log.e("WorkerManager", "Error during periodic queue health check", e)
                     }
                 } catch (e: Exception) {
                     Log.e("WorkerManager", "Error in work monitoring", e)
