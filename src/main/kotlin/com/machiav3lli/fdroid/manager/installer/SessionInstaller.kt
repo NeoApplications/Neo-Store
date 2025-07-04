@@ -200,7 +200,7 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
                         Log.w(TAG, "Installation failed: ${e.message}")
                         if (sessionInstaller.mySessions.size >= 50) {
                             sessionInstaller.mySessions
-                                .filter { it.isActive && it.appPackageName == context.packageName }
+                                .filter { it.installerPackageName == context.packageName }
                                 .forEach {
                                     try {
                                         sessionInstaller.abandonSession(it.sessionId)
