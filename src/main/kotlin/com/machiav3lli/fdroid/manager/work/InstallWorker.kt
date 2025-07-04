@@ -117,11 +117,13 @@ class InstallWorker(
                 Log.e(TAG, "No install task found for $fileName")
                 return@coroutineScope Result.failure()
             }
+            var waitingForQueueTime = 0L
 
             while (installState.value !is InstallState.Success && installState.value !is InstallState.Failed && attemptsCount < maxRetries) {
                 when (installState.value) {
                     is InstallState.Preparing -> {
                         if (!installer.isEnqueued(currentTask.packageName)) {
+                            waitingForQueueTime = 0
                             installState.value = InstallState.Installing(0.05f)
 
                             val installCallback = { result: kotlin.Result<String> ->
@@ -160,6 +162,18 @@ class InstallWorker(
                                 "${currentTask.packageName} is already enqueued, waiting..."
                             )
                             delay(1000)
+                            waitingForQueueTime += 1000
+
+                            if (waitingForQueueTime >= PREPARATION_TIMEOUT) {
+                                Log.w(
+                                    TAG,
+                                    "Queue wait timeout for ${currentTask.packageName}, forcing cleanup"
+                                )
+                                installer.cancelInstall(currentTask.packageName)
+                                delay(1000) // Give time for cleanup
+                                attemptsCount++
+                                waitingForQueueTime = 0
+                            }
                         }
                     }
 
@@ -266,6 +280,7 @@ class InstallWorker(
     companion object {
         private const val TAG = "InstallWorker"
         private const val INSTALL_TIMEOUT = 10 * 60 * 1000L // 10 minutes
+        private const val PREPARATION_TIMEOUT = 60 * 1000L // 1 minute
         private const val INITIAL_BACKOFF_MILLIS = 1000L
 
         /**
