@@ -417,7 +417,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
                                 cacheFileName = task.release.cacheFileName,
                                 repoId = task.repoId,
                                 read = progress.read,
-                                total = progress.total,
+                                total = progress.total.takeIf { it > 0 },
                             )
                         }
 

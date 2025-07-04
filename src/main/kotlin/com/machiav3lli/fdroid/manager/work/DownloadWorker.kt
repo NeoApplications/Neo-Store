@@ -140,7 +140,7 @@ class DownloadWorker(
                                 cacheFileName = task.release.cacheFileName,
                                 repoId = task.repoId,
                                 read = read,
-                                total = total,
+                                total = total?.takeIf { it > 0 },
                             )
                         )
                     )
