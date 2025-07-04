@@ -33,6 +33,7 @@ import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.data.entity.ValidationError
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
+import com.machiav3lli.fdroid.data.repository.InstallsRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
@@ -63,6 +64,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
     private val productRepo: ProductsRepository by inject()
     private val reposRepo: RepositoriesRepository by inject()
     private val installedRepo: InstalledRepository by inject()
+    private val installsRepo: InstallsRepository by inject()
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     val syncsScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -85,6 +87,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
             downloadStates = WorkStateHolder(),
             notificationManager = notificationManager,
             downloadedRepo = downloadedRepo,
+            installsRepo = installsRepo,
         )
     }
 
@@ -246,7 +249,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
         DownloadWorker::class.qualifiedName?.let {
             workManager.cancelUniqueWork("Installer_$packageName")
             scope.launch {
-                NeoApp.db.getInstallTaskDao().delete(packageName)
+                installsRepo.delete(packageName)
             }
             //prune()
         }

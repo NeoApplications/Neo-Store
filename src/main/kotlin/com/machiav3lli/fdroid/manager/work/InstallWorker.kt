@@ -21,6 +21,7 @@ import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
 import com.machiav3lli.fdroid.data.entity.InstallState
+import com.machiav3lli.fdroid.data.repository.InstallsRepository
 import com.machiav3lli.fdroid.manager.installer.BaseInstaller
 import com.machiav3lli.fdroid.manager.installer.InstallationError
 import com.machiav3lli.fdroid.manager.installer.LegacyInstaller
@@ -46,6 +47,7 @@ class InstallWorker(
     private lateinit var currentTask: InstallTask
     private val installState = MutableStateFlow<InstallState>(InstallState.Preparing)
     private val installer: BaseInstaller by inject()
+    private val installsRepository: InstallsRepository by inject()
     private val installJob = Job()
     private val langContext = ContextWrapperX.wrap(applicationContext)
 
@@ -113,7 +115,7 @@ class InstallWorker(
         try {
             var attemptsCount = 0
             val maxRetries = 3
-            currentTask = NeoApp.db.getInstallTaskDao().get(fileName) ?: run {
+            currentTask = installsRepository.load(fileName) ?: run {
                 Log.e(TAG, "No install task found for $fileName")
                 return@coroutineScope Result.failure()
             }
@@ -209,7 +211,7 @@ class InstallWorker(
                 if (this@InstallWorker::currentTask.isInitialized) {
                     Log.d(TAG, "Cleaning up install task for ${currentTask.packageName}")
                     if (installResult == Result.success() || installLaunched) {
-                        NeoApp.db.getInstallTaskDao().delete(currentTask.packageName)
+                        installsRepository.delete(currentTask.packageName)
                     }
                 }
             }.onFailure { e ->

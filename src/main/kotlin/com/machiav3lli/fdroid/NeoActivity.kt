@@ -32,6 +32,7 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
+import com.machiav3lli.fdroid.data.repository.InstallsRepository
 import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
@@ -344,6 +345,7 @@ val viewModelsModule = module {
     singleOf(::RepositoriesRepository)
     singleOf(::ProductsRepository)
     singleOf(::InstalledRepository)
+    singleOf(::InstallsRepository)
     singleOf(::DownloadedRepository)
     singleOf(::ExtrasRepository)
     singleOf(::PrivacyRepository)

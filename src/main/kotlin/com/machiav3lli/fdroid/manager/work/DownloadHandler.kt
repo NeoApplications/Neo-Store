@@ -9,12 +9,12 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.Data
 import androidx.work.WorkInfo
-import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
 import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
+import com.machiav3lli.fdroid.data.repository.InstallsRepository
 import com.machiav3lli.fdroid.manager.service.InstallerReceiver
 import com.machiav3lli.fdroid.utils.downloadNotificationBuilder
 import com.machiav3lli.fdroid.utils.updateWithError
@@ -28,6 +28,7 @@ class DownloadStateHandler(
     private val downloadStates: WorkStateHolder<DownloadState>,
     private val notificationManager: NotificationManagerCompat,
     private val downloadedRepo: DownloadedRepository,
+    private val installsRepo: InstallsRepository,
 ) {
     init {
         scope.launch {
@@ -62,7 +63,7 @@ class DownloadStateHandler(
                         TAG,
                         "Download successful for ${state.packageName}, preparing installation"
                     )
-                    NeoApp.db.getInstallTaskDao().upsert(state.toInstallTask())
+                    installsRepo.upsert(state.toInstallTask())
                     InstallWorker.enqueue(
                         packageName = state.packageName,
                         label = state.name,
