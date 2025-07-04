@@ -115,7 +115,7 @@ fun MainActionButton(
                                     -> MaterialTheme.colorScheme.tertiary
 
             is ActionState.NoAction -> MaterialTheme.colorScheme.inverseSurface
-            else                    -> MaterialTheme.colorScheme.primaryContainer
+            else                    -> MaterialTheme.colorScheme.primary
         }, label = "containerColor"
     )
     val contentColor by animateColorAsState(
@@ -126,7 +126,7 @@ fun MainActionButton(
                                     -> MaterialTheme.colorScheme.onTertiary
 
             is ActionState.NoAction -> MaterialTheme.colorScheme.inverseOnSurface
-            else                    -> MaterialTheme.colorScheme.onPrimaryContainer
+            else                    -> MaterialTheme.colorScheme.onPrimary
         }, label = "contentColor"
     )
 
@@ -195,8 +195,8 @@ fun SecondaryActionButton(
     FloatingActionButton(
         modifier = modifier,
         shape = MaterialTheme.shapes.extraLarge,
-        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        containerColor = MaterialTheme.colorScheme.secondary,
+        contentColor = MaterialTheme.colorScheme.onSecondary,
         elevation = FloatingActionButtonDefaults.elevation(0.dp),
         onClick = onClick
     ) {
