@@ -29,6 +29,7 @@ class InstallQueue {
         val packageName: String,
         val packageLabel: String,
         val cacheFileName: String,
+        val retryCount: Int = 0,
         val callback: (Result<String>) -> Unit
     )
 
@@ -41,7 +42,7 @@ class InstallQueue {
         cacheFileName: String,
         callback: (Result<String>) -> Unit
     ) {
-        val task = InstallTask(packageName, packageLabel, cacheFileName, callback)
+        val task = InstallTask(packageName, packageLabel, cacheFileName, 0, callback)
 
         withContext(qcc) {
             queue.add(task)
@@ -142,13 +143,17 @@ class InstallQueue {
 
                             if (shouldRetry && currentTask != null) {
                                 val retryTask = currentTask
-                                // TODO add a retry counter
-                                if (retryTask != null) {
+                                if (retryTask != null && retryTask.retryCount < MAX_RETRIES) { // Max 3 retries
                                     Log.d(
                                         TAG,
                                         "Re-enqueueing installation task for $currentPackage"
                                     )
-                                    queue.add(retryTask)
+                                    queue.add(retryTask.copy(retryCount = retryTask.retryCount + 1))
+                                } else {
+                                    Log.w(
+                                        TAG,
+                                        "Max retries reached for $currentPackage, not re-enqueueing"
+                                    )
                                 }
                             }
                         }
@@ -204,5 +209,6 @@ class InstallQueue {
 
     companion object {
         private const val TAG = "InstallQueue"
+        private const val MAX_RETRIES = 3
     }
 }
