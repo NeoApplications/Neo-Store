@@ -72,7 +72,7 @@ jobs:
           body: ${{ steps.read_changelog.outputs.changelog }}
           tag_name: ${{ github.ref }}
           name: Release ${{ github.ref }}
-          files: ${{steps.sign_app.outputs.signedReleaseFile}}
+          files: ./build/outputs/apk/release/
           draft: true
           prerelease: false
 
