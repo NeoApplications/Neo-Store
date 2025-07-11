@@ -46,10 +46,22 @@ jobs:
       - name: Checks
         run: find . -type f -name "*.apk"
 
+      - uses: r0adkll/sign-android-release@v1
+        name: Signing APK
+        id: sign_app
+        with:
+          releaseDirectory: ./build/outputs/apk/release/
+          signingKeyBase64: ${{ secrets.KEY_BASE64 }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASS }}
+          keyPassword: ${{ secrets.KEYSTORE_PASS }}
+        env:
+          BUILD_TOOLS_VERSION: "35.0.0"
+
       - name: Extract Version Code
         id: extract_version
         run: |
-          VERSION_CODE=$(grep -oP 'versionCode\s*=\s*\K\d+' build.gradle.kts)
+          VERSION_CODE=$(grep -oP 'versionCode\s*=\s*\K\d+' app/build.gradle.kts)
           echo "::set-output name=version_code::$VERSION_CODE"
           echo "Version Code: $VERSION_CODE"
 
@@ -72,7 +84,7 @@ jobs:
           body: ${{ steps.read_changelog.outputs.changelog }}
           tag_name: ${{ github.ref }}
           name: Release ${{ github.ref }}
-          files: ./build/outputs/apk/release/
+          files: ${{steps.sign_app.outputs.signedReleaseFile}}
           draft: true
           prerelease: false
 
