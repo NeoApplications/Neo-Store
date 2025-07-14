@@ -46,7 +46,6 @@ import com.machiav3lli.fdroid.utils.displayUpdatesNotification
 import com.machiav3lli.fdroid.utils.displayVulnerabilitiesNotification
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.syncNotificationBuilder
-import com.machiav3lli.fdroid.utils.updateSyncProgress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.future.future
@@ -212,34 +211,6 @@ class SyncWorker(
         )
     }
 
-    // changes based on https://developer.android.com/develop/background-work/background-tasks/persistent/how-to/long-running
-    private fun createForegroundInfo(
-        state: SyncState.Enum,
-        progress: Progress? = null,
-    ): ForegroundInfo {
-        val title = langContext.getString(
-            R.string.syncing_FORMAT,
-            repoName
-        )
-
-        val notification = langContext.syncNotificationBuilder(title)
-            .apply {
-                if (state == SyncState.Enum.CONNECTING)
-                    setContentText(langContext.getString(R.string.connecting))
-                        .setProgress(0, 0, true)
-                else if (progress != null)
-                    updateSyncProgress(langContext, progress)
-            }
-            .build()
-
-        return ForegroundInfo(
-            task.key.hashCode(),
-            notification,
-            if (Android.sdk(Build.VERSION_CODES.Q)) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
-            else 0
-        )
-    }
-
     private fun getWorkData(
         state: SyncState.Enum? = null,
         succeeded: Boolean = false,
@@ -360,58 +331,5 @@ class SyncWorker(
                 true
             }
         }
-
-        fun getTask(data: Data) = SyncTask(
-            data.getLong(ARG_REPOSITORY_ID, -1L),
-            SyncRequest.entries[
-                data.getInt(ARG_SYNC_REQUEST, 0)
-            ],
-            data.getString(ARG_REPOSITORY_NAME) ?: "",
-        )
-
-        fun getState(data: Data): SyncState = when (data.getInt(ARG_STATE, 0)) {
-            SyncState.Enum.FAILED.ordinal -> SyncState.Failed(
-                data.getLong(ARG_REPOSITORY_ID, -1L),
-                SyncRequest.entries[
-                    data.getInt(ARG_SYNC_REQUEST, 0)
-                ],
-                data.getString(ARG_REPOSITORY_NAME) ?: "",
-                data.getString(ARG_EXCEPTION) ?: "",
-            )
-
-            SyncState.Enum.FINISHING.ordinal -> SyncState.Finishing(
-                data.getLong(ARG_REPOSITORY_ID, -1L),
-                SyncRequest.entries[
-                    data.getInt(ARG_SYNC_REQUEST, 0)
-                ],
-                data.getString(ARG_REPOSITORY_NAME) ?: "",
-            )
-
-            SyncState.Enum.SYNCING.ordinal -> SyncState.Syncing(
-                data.getLong(ARG_REPOSITORY_ID, -1L),
-                SyncRequest.entries[
-                    data.getInt(ARG_SYNC_REQUEST, 0)
-                ],
-                data.getString(ARG_REPOSITORY_NAME) ?: "",
-                getProgress(data),
-            )
-
-            // SyncState.Enum.CONNECTING.ordinal
-            else -> SyncState.Connecting(
-                data.getLong(ARG_REPOSITORY_ID, -1L),
-                SyncRequest.entries[
-                    data.getInt(ARG_SYNC_REQUEST, 0)
-                ],
-                data.getString(ARG_REPOSITORY_NAME) ?: "",
-            )
-        }
-
-        private fun getProgress(data: Data) = Progress(
-            RepositoryUpdater.Stage.entries[
-                data.getInt(ARG_STAGE, 0)
-            ],
-            data.getLong(ARG_READ, 0L),
-            data.getLong(ARG_TOTAL, -1L),
-        )
     }
 }

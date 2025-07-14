@@ -15,7 +15,11 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
+import com.machiav3lli.fdroid.ARG_EXCEPTION
+import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
+import com.machiav3lli.fdroid.ARG_REPOSITORY_NAME
 import com.machiav3lli.fdroid.ARG_RESULT_CODE
+import com.machiav3lli.fdroid.ARG_SYNC_REQUEST
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
@@ -29,6 +33,7 @@ import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.ProductItem
+import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.data.entity.ValidationError
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
@@ -40,6 +45,7 @@ import com.machiav3lli.fdroid.manager.installer.BaseInstaller
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.utils.Utils
 import com.machiav3lli.fdroid.utils.extension.android.Android
+import com.machiav3lli.fdroid.utils.reportSyncFail
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -50,6 +56,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.cancellation.CancellationException
@@ -69,19 +76,8 @@ class WorkerManager(appContext: Context) : KoinComponent {
     private val installer: BaseInstaller by inject()
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    val syncsScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     val downloadsScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val downloadTracker = DownloadsTracker()
-    private val syncTracker = SyncsTracker()
-
-    private val syncStateHandler by lazy {
-        SyncStateHandler(
-            context = langContext,
-            scope = syncsScope,
-            syncStates = WorkStateHolder(),
-            notificationManager = notificationManager
-        )
-    }
     private val downloadStateHandler by lazy {
         DownloadStateHandler(
             context = langContext,
@@ -119,9 +115,32 @@ class WorkerManager(appContext: Context) : KoinComponent {
                     cause !is CancellationException
                 }
                 .collect { workInfos ->
-                    try {
-                        syncsScope.onSyncProgress(this@WorkerManager, workInfos)
-                    } catch (e: Exception) {
+                    runCatching {
+                        workInfos.forEach { workInfo ->
+                            val data = workInfo.outputData.takeIf { it != Data.EMPTY }
+                                ?: workInfo.progress.takeIf { it != Data.EMPTY }
+                                ?: return@forEach
+
+                            runCatching {
+                                when (workInfo.state) {
+                                    WorkInfo.State.FAILED -> SyncState.Failed(
+                                        data.getLong(ARG_REPOSITORY_ID, -1L),
+                                        SyncRequest.entries[
+                                            data.getInt(ARG_SYNC_REQUEST, 0)
+                                        ],
+                                        data.getString(ARG_REPOSITORY_NAME) ?: "",
+                                        data.getString(ARG_EXCEPTION) ?: "",
+                                    )
+
+                                    else                  -> null
+                                }?.let { newState ->
+                                    langContext.reportSyncFail(newState.repoId, newState)
+                                }
+                            }.onFailure { e ->
+                                Log.e("WorkerManager", "Error updating download state", e)
+                            }
+                        }
+                    }.onFailure { e ->
                         Log.e("WorkerManager", "Error processing sync updates", e)
                     }
                 }
@@ -324,58 +343,6 @@ class WorkerManager(appContext: Context) : KoinComponent {
     companion object {
         const val TAG = "WorkerManager"
 
-        private fun CoroutineScope.onSyncProgress(
-            manager: WorkerManager,
-            workInfos: List<WorkInfo>? = null,
-        ) = launch {
-            runCatching {
-                val syncs = workInfos
-                    ?: manager.workManager
-                        .getWorkInfosByTag(SyncWorker::class.qualifiedName!!)
-                        .get()
-                    ?: return@launch
-
-                manager.updateSyncsRunning(syncs)
-            }.onFailure { e ->
-                Log.e("WorkerManager", "Error in onDownloadProgress", e)
-            }
-        }
-
-        private fun WorkerManager.updateSyncsRunning(workers: List<WorkInfo>) {
-            workers.forEach { workInfo ->
-                val data = workInfo.outputData.takeIf { it != Data.EMPTY }
-                    ?: workInfo.progress.takeIf { it != Data.EMPTY }
-                    ?: return@forEach
-
-                if (!syncTracker.trackWork(workInfo, data)) {
-                    return@forEach // Skip if we've already processed this state
-                }
-
-                runCatching {
-                    val task = SyncWorker.Companion.getTask(data)
-                    val dataState = SyncWorker.Companion.getState(data)
-
-                    when (workInfo.state) {
-                        WorkInfo.State.ENQUEUED,
-                        WorkInfo.State.BLOCKED,
-                        WorkInfo.State.SUCCEEDED,
-                        WorkInfo.State.CANCELLED,
-                            -> null
-
-                        WorkInfo.State.RUNNING,
-                            -> dataState
-
-                        WorkInfo.State.FAILED,
-                            -> SyncState.Failed(task.repoId, task.request, task.repoName)
-                    }.let { newState ->
-                        syncStateHandler.updateState(task.repoId.toString(), newState)
-                    }
-                }.onFailure { e ->
-                    Log.e("WorkerManager", "Error updating download state", e)
-                }
-            }
-        }
-
         private fun CoroutineScope.onDownloadProgress(
             manager: WorkerManager,
             workInfos: List<WorkInfo>? = null,
@@ -475,4 +442,5 @@ val workmanagerModule = module {
     single { WorkManager.getInstance(get()) }
     single { ActionReceiver() }
     single { NotificationManagerCompat.from(get()) }
+    singleOf(::SyncNotificationManager)
 }

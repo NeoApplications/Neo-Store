@@ -23,9 +23,6 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.await
 import androidx.work.workDataOf
-import com.machiav3lli.fdroid.ARG_EXCEPTION
-import com.machiav3lli.fdroid.ARG_REPOSITORY_NAME
-import com.machiav3lli.fdroid.ARG_SUCCESS
 import com.machiav3lli.fdroid.ARG_SYNC_REQUEST
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
@@ -35,29 +32,15 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_BATCH_SYNC_ONETIME
 import com.machiav3lli.fdroid.TAG_BATCH_SYNC_PERIODIC
 import com.machiav3lli.fdroid.data.content.Preferences
-import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
-import com.machiav3lli.fdroid.data.entity.AntiFeature
-import com.machiav3lli.fdroid.data.entity.Order
-import com.machiav3lli.fdroid.data.entity.Section
 import com.machiav3lli.fdroid.data.entity.SyncRequest
-import com.machiav3lli.fdroid.data.repository.ExtrasRepository
-import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.manager.service.InstallerReceiver
-import com.machiav3lli.fdroid.utils.displayUpdatesNotification
-import com.machiav3lli.fdroid.utils.displayVulnerabilitiesNotification
 import com.machiav3lli.fdroid.utils.extension.android.Android
-import com.machiav3lli.fdroid.utils.extension.takeUntilSignal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeout
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.java.KoinJavaComponent.get
@@ -72,13 +55,10 @@ class BatchSyncWorker(
     private var totalRepositories = 0
     private var completedRepositories = 0
     private val scheduleJob = SupervisorJob()
-    private var notification: Notification? = null
     private var request = SyncRequest.entries[
         inputData.getInt(ARG_SYNC_REQUEST, 0)
     ]
     private val langContext = ContextWrapperX.wrap(applicationContext)
-    private val productRepo: ProductsRepository by inject()
-    private val extrasRepo: ExtrasRepository by inject()
     private val reposRepo: RepositoriesRepository by inject()
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO + scheduleJob) {
@@ -95,7 +75,6 @@ class BatchSyncWorker(
     }
 
     private suspend fun handleSync(): Boolean = supervisorScope {
-        val finishSignal = MutableStateFlow(false)
         val selectedRepos = reposRepo.loadAll().filter { it.enabled }
         totalRepositories = selectedRepos.size
 
@@ -103,58 +82,13 @@ class BatchSyncWorker(
 
         val worksList = mutableListOf<OneTimeWorkRequest>()
 
-        var errors = ""
-        var resultsSuccess = true
-        val completionStatus = selectedRepos.associate { it.id to false }.toMutableMap()
-
-        val workJobs = selectedRepos.map { repo ->
+        selectedRepos.forEach { repo ->
             val oneTimeWorkRequest = SyncWorker.Request(
                 repoId = repo.id,
                 request = request,
                 repoName = repo.name,
             )
             worksList.add(oneTimeWorkRequest)
-
-            launch {
-                workManager.getWorkInfoByIdFlow(
-                    oneTimeWorkRequest.id
-                )
-                    .takeUntilSignal(finishSignal)
-                    .collect { workInfo ->
-                        when (workInfo?.state) {
-                            androidx.work.WorkInfo.State.SUCCEEDED,
-                            androidx.work.WorkInfo.State.FAILED,
-                            androidx.work.WorkInfo.State.CANCELLED -> {
-                                completedRepositories++
-                                val repoName =
-                                    workInfo.outputData.getString(ARG_REPOSITORY_NAME) ?: ""
-                                val succeeded =
-                                    workInfo.outputData.getBoolean(ARG_SUCCESS, false)
-                                val errorMessage =
-                                    workInfo.outputData.getString(ARG_EXCEPTION) ?: ""
-
-                                if (errorMessage.isNotEmpty()) {
-                                    errors = "$errors$repoName: $errorMessage\n"
-                                }
-                                resultsSuccess = resultsSuccess && succeeded
-
-                                updateNotification()
-
-                                completionStatus[repo.id] = true
-                                if (completionStatus.values.all { it }) {
-                                    handleCompletion(errors)
-                                    finishSignal.update { true }
-                                }
-                            }
-
-                            else                                   -> {
-                                updateNotification()
-                                if (workInfo == null && completionStatus[repo.id] == true) // For some edge cases
-                                    finishSignal.update { true }
-                            }
-                        }
-                    }
-            }
         }
 
         if (worksList.isEmpty()) return@supervisorScope true
@@ -169,53 +103,7 @@ class BatchSyncWorker(
         ExodusWorker.fetchTrackers()
         if (Preferences[Preferences.Key.RBProvider] != Preferences.RBProvider.None)
             RBWorker.fetchRBLogs()
-        withTimeout(TimeUnit.HOURS.toMillis(1)) {
-            workJobs.joinAll()
-        }
         true
-    }
-
-    private suspend fun updateNotification() {
-        setForeground(getForegroundInfo())
-    }
-
-    private suspend fun handleCompletion(errors: String) {
-        Log.e(this::class.java.simpleName, errors)
-        productRepo
-            .loadList(
-                installed = true,
-                updates = true,
-                section = Section.All,
-                order = Order.NAME,
-                ascending = true,
-            )
-            .map { it.toItem() }
-            .let { result ->
-                if (result.isNotEmpty() && Preferences[Preferences.Key.UpdateNotify])
-                    langContext.displayUpdatesNotification(
-                        result,
-                        true
-                    )
-                if (Preferences[Preferences.Key.InstallAfterSync]) {
-                    NeoApp.wm.update(*result.toTypedArray())
-                }
-            }
-        productRepo
-            .loadList(
-                installed = true,
-                updates = false,
-                section = Section.All,
-                order = Order.NAME,
-                ascending = true,
-            ).filter { product ->
-                product.product.antiFeatures.contains(AntiFeature.KNOWN_VULN.key)
-                        && extrasRepo.load(product.product.packageName)?.ignoreVulns != true
-            }.let { installedWithVulns ->
-                if (installedWithVulns.isNotEmpty())
-                    langContext.displayVulnerabilitiesNotification(
-                        installedWithVulns.map(EmbeddedProduct::toItem)
-                    )
-            }
     }
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
@@ -253,8 +141,7 @@ class BatchSyncWorker(
             .setContentTitle(context.getString(R.string.syncing))
             .setContentText(
                 context.getString(
-                    R.string.syncing_batch_FORMAT,
-                    completedRepositories,
+                    R.string.syncing_repositories_FORMAT,
                     totalRepositories
                 )
             )

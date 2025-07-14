@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.utils
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -12,6 +13,7 @@ import android.os.Build
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DEBUG
@@ -20,6 +22,7 @@ import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_INSTALLER
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
+import com.machiav3lli.fdroid.NOTIFICATION_ID_DEBUG
 import com.machiav3lli.fdroid.NOTIFICATION_ID_INSTALLER
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_UPDATES
@@ -31,6 +34,7 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.ProductItem
+import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.data.entity.ValidationError
 import com.machiav3lli.fdroid.data.index.RepositoryUpdater
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
@@ -294,6 +298,27 @@ fun NotificationCompat.Builder.updateSyncProgress(
     }
 }
 
+fun Context.reportSyncFail(repoId: Long, state: SyncState.Failed) {
+    val title = getString(
+        R.string.syncing_FORMAT,
+        state.repoName
+    )
+    val builder = syncNotificationBuilder(title)
+        .setContentText("${getString(R.string.action_failed)}:\n${state.error}")
+        .setSmallIcon(R.drawable.ic_new_releases)
+        .setOngoing(false)
+
+    if (ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED
+    ) notificationManager.notify(
+        "$NOTIFICATION_CHANNEL_SYNCING$repoId".hashCode(),
+        builder.setOngoing(true)
+            .build()
+    )
+}
+
 fun NotificationCompat.Builder.updateWithError(
     context: Context,
     state: DownloadState,
@@ -505,7 +530,7 @@ fun notifyDebugStatus(context: Context, title: String, message: String) =
             .build()
         context.notificationManager.notify(
             notificationTag,
-            NOTIFICATION_ID_INSTALLER,
+            NOTIFICATION_ID_DEBUG,
             notification
         )
     } else {
