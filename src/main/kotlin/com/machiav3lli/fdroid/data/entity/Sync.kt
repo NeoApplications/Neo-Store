@@ -26,6 +26,7 @@ sealed class SyncState(
         repoId: Long,
         request: SyncRequest,
         repoName: String,
+        val error: String,
     ) : SyncState(repoId, request, repoName)
 
     class Finishing(

@@ -75,6 +75,10 @@ class ProductsRepository(
         )
     }
 
+    suspend fun loadListWithVulns(repoId: Long): List<EmbeddedProduct> = withContext(jcc) {
+        productsDao.getInstalledProductsWithVulnerabilities(repoId)
+    }
+
     suspend fun loadProduct(packageName: String): List<EmbeddedProduct> = withContext(jcc) {
         productsDao.get(packageName)
     }

@@ -11,7 +11,6 @@ import androidx.work.ForegroundInfo
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
-import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.machiav3lli.fdroid.ARG_CHANGED
@@ -33,12 +32,18 @@ import com.machiav3lli.fdroid.RB_LOGS_SYNC
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.TAG_SYNC_PERIODIC
 import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.Order
+import com.machiav3lli.fdroid.data.entity.Section
 import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.data.entity.SyncTask
 import com.machiav3lli.fdroid.data.index.RepositoryUpdater
+import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
+import com.machiav3lli.fdroid.utils.displayUpdatesNotification
+import com.machiav3lli.fdroid.utils.displayVulnerabilitiesNotification
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.syncNotificationBuilder
 import com.machiav3lli.fdroid.utils.updateSyncProgress
@@ -65,14 +70,24 @@ class SyncWorker(
     private lateinit var task: SyncTask
     private val langContext = ContextWrapperX.wrap(applicationContext)
     private val reposRepo: RepositoriesRepository by inject()
+    private val productRepo: ProductsRepository by inject()
+    private val notificationManager: SyncNotificationManager by inject()
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         task = SyncTask(repoId, request, repoName)
 
-        return@withContext if (repoId != -1L) {
+        return@withContext runCatching {
             handleSync(task)
-        } else Result.success(
-            getWorkData(succeeded = true)
+        }.fold(
+            onSuccess = {
+                handleCompletion()
+                it
+            },
+            onFailure = { e ->
+                Log.e(TAG_SYNC_ONETIME, "Sync failed: ${e.message}")
+                notificationManager.removeSyncProgress(repoId)
+                Result.failure(workDataOf(ARG_EXCEPTION to e.message))
+            }
         )
     }
 
@@ -80,14 +95,12 @@ class SyncWorker(
         val repository = reposRepo.load(task.repoId)
 
         Log.i(this::class.java.simpleName, "sync repository: ${task.repoId}")
-        if (repository != null && repository.enabled && task.repoId >= -1) {
-            launch {
-                setForegroundAsync(
-                    createForegroundInfo(
-                        state = SyncState.Enum.CONNECTING,
-                    )
-                )
-            }
+        if (repository != null && repository.enabled && task.repoId >= 0L) {
+            notificationManager.updateSyncProgress(
+                repoId = task.repoId,
+                repoName = task.repoName,
+                state = SyncState.Enum.CONNECTING
+            )
             val unstable = Preferences[Preferences.Key.UpdateUnstable]
             var lastPerCent = -1
             var lastStage: RepositoryUpdater.Stage? = null
@@ -105,19 +118,22 @@ class SyncWorker(
                         if (stage != lastStage || perCent != lastPerCent) this@handleSync.runCatching {
                             lastPerCent = perCent
                             lastStage = stage
-                            setForegroundAsync(
-                                createForegroundInfo(
+                            launch {
+                                notificationManager.updateSyncProgress(
+                                    repoId = task.repoId,
+                                    repoName = task.repoName,
                                     state = SyncState.Enum.SYNCING,
-                                    progress = Progress(
-                                        stage,
-                                        progress,
-                                        total ?: -1L,
-                                    )
+                                    progress = Progress(stage, progress, total ?: -1L)
                                 )
-                            )
+                            }
                         }
                     }
                 }.join()
+                notificationManager.updateSyncProgress(
+                    repoId = task.repoId,
+                    repoName = task.repoName,
+                    state = SyncState.Enum.FINISHING
+                )
                 return Result.success(
                     getWorkData(
                         state = SyncState.Enum.FINISHING,
@@ -128,6 +144,11 @@ class SyncWorker(
                 )
             } catch (throwable: Throwable) {
                 throwable.printStackTrace()
+                notificationManager.updateSyncProgress(
+                    repoId = task.repoId,
+                    repoName = task.repoName,
+                    state = SyncState.Enum.FAILED
+                )
                 return Result.failure(
                     getWorkData(
                         state = SyncState.Enum.FAILED,
@@ -144,6 +165,37 @@ class SyncWorker(
                     changed = false,
                 )
             )
+        }
+    }
+
+    private suspend fun handleCompletion() {
+        // TODO add a products query specific for this
+        productRepo
+            .loadList(
+                installed = true,
+                updates = true,
+                section = Section.All,
+                order = Order.NAME,
+                ascending = true,
+            )
+            .map { it.toItem() }
+            .filter { it.repositoryId == repoId }
+            .let { result ->
+                // TODO change to avoid overriding notifications
+                if (result.isNotEmpty() && Preferences[Preferences.Key.UpdateNotify])
+                    langContext.displayUpdatesNotification(
+                        result,
+                        true
+                    )
+                if (Preferences[Preferences.Key.InstallAfterSync]) {
+                    NeoApp.wm.update(*result.toTypedArray())
+                }
+            }
+        productRepo.loadListWithVulns(repoId).let { installedWithVulns ->
+            if (installedWithVulns.isNotEmpty())
+                langContext.displayVulnerabilitiesNotification(
+                    installedWithVulns.map(EmbeddedProduct::toItem)
+                )
         }
     }
 
@@ -169,10 +221,6 @@ class SyncWorker(
             R.string.syncing_FORMAT,
             repoName
         )
-        val cancel = langContext.getString(R.string.cancel)
-        // TODO consider if it's needed (ActionReceiver-intent already built-in!)
-        val cancelIntent = get<WorkManager>(WorkManager::class.java)
-            .createCancelPendingIntent(id)
 
         val notification = langContext.syncNotificationBuilder(title)
             .apply {
@@ -182,7 +230,6 @@ class SyncWorker(
                 else if (progress != null)
                     updateSyncProgress(langContext, progress)
             }
-            .addAction(R.drawable.ic_cancel, cancel, cancelIntent) // TODO reconsider
             .build()
 
         return ForegroundInfo(
@@ -190,17 +237,6 @@ class SyncWorker(
             notification,
             if (Android.sdk(Build.VERSION_CODES.Q)) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
             else 0
-        )
-    }
-
-    private fun setProgressData(data: Data) {
-        setProgressAsync(
-            Data.Builder()
-                .putAll(data)
-                .putLong(ARG_REPOSITORY_ID, repoId)
-                .putInt(ARG_SYNC_REQUEST, request.ordinal)
-                .putString(ARG_REPOSITORY_NAME, repoName)
-                .build()
         )
     }
 
@@ -334,12 +370,13 @@ class SyncWorker(
         )
 
         fun getState(data: Data): SyncState = when (data.getInt(ARG_STATE, 0)) {
-            SyncState.Enum.FAILED.ordinal    -> SyncState.Failed(
+            SyncState.Enum.FAILED.ordinal -> SyncState.Failed(
                 data.getLong(ARG_REPOSITORY_ID, -1L),
                 SyncRequest.entries[
                     data.getInt(ARG_SYNC_REQUEST, 0)
                 ],
                 data.getString(ARG_REPOSITORY_NAME) ?: "",
+                data.getString(ARG_EXCEPTION) ?: "",
             )
 
             SyncState.Enum.FINISHING.ordinal -> SyncState.Finishing(
@@ -350,7 +387,7 @@ class SyncWorker(
                 data.getString(ARG_REPOSITORY_NAME) ?: "",
             )
 
-            SyncState.Enum.SYNCING.ordinal   -> SyncState.Syncing(
+            SyncState.Enum.SYNCING.ordinal -> SyncState.Syncing(
                 data.getLong(ARG_REPOSITORY_ID, -1L),
                 SyncRequest.entries[
                     data.getInt(ARG_SYNC_REQUEST, 0)
@@ -360,7 +397,7 @@ class SyncWorker(
             )
 
             // SyncState.Enum.CONNECTING.ordinal
-            else                             -> SyncState.Connecting(
+            else -> SyncState.Connecting(
                 data.getLong(ARG_REPOSITORY_ID, -1L),
                 SyncRequest.entries[
                     data.getInt(ARG_SYNC_REQUEST, 0)
