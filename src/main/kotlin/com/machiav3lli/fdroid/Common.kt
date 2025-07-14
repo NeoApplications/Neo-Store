@@ -14,6 +14,8 @@ const val NOTIFICATION_ID_UPDATES = 2000
 const val NOTIFICATION_ID_DOWNLOADING = 3000
 const val NOTIFICATION_ID_INSTALLER = 4000
 const val NOTIFICATION_ID_VULNS = 5000
+const val NOTIFICATION_ID_DEBUG = 6000
+const val NOTIFICATION_ID_BATCH_SYNCING = 7000
 
 const val TABLE_ANTIFEATURE = "antifeature"
 const val TABLE_ANTIFEATURE_TEMP = "temporary_antifeature"
@@ -50,6 +52,7 @@ const val ROW_ICON = "icon"
 const val ROW_ID = "id"
 const val ROW_IGNORED_VERSION = "ignoredVersion"
 const val ROW_IGNORE_UPDATES = "ignoreUpdates"
+const val ROW_IGNORE_VULNS = "ignoreVulns"
 const val ROW_INCOMPATIBILITIES = "incompatibilities"
 const val ROW_IS_COMPATIBLE = "isCompatible"
 const val ROW_KEY = "key"

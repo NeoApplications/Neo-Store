@@ -15,6 +15,7 @@ import com.machiav3lli.fdroid.ROW_FAVORITE
 import com.machiav3lli.fdroid.ROW_ID
 import com.machiav3lli.fdroid.ROW_IGNORED_VERSION
 import com.machiav3lli.fdroid.ROW_IGNORE_UPDATES
+import com.machiav3lli.fdroid.ROW_IGNORE_VULNS
 import com.machiav3lli.fdroid.ROW_IS_COMPATIBLE
 import com.machiav3lli.fdroid.ROW_LABEL
 import com.machiav3lli.fdroid.ROW_LICENSES
@@ -45,6 +46,7 @@ import com.machiav3lli.fdroid.data.database.entity.Licenses
 import com.machiav3lli.fdroid.data.database.entity.Product
 import com.machiav3lli.fdroid.data.database.entity.ProductTemp
 import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.entity.Order
 import com.machiav3lli.fdroid.data.entity.Request
 import com.machiav3lli.fdroid.data.entity.Section
@@ -200,8 +202,8 @@ interface ProductDao : BaseDao<Product> {
                           AND $TABLE_PRODUCT.$ROW_REPOSITORY_ID = ranked_products.$ROW_REPOSITORY_ID
                           AND ranked_products.rn = 1
         JOIN $TABLE_REPOSITORY ON $TABLE_PRODUCT.$ROW_REPOSITORY_ID = $TABLE_REPOSITORY.$ROW_ID
-        LEFT JOIN $TABLE_EXTRAS ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_EXTRAS.$ROW_PACKAGE_NAME
         ${if (!installed && !updates) "LEFT " else ""}JOIN $TABLE_INSTALLED ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_INSTALLED.$ROW_PACKAGE_NAME
+        LEFT JOIN $TABLE_EXTRAS ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_EXTRAS.$ROW_PACKAGE_NAME
         LEFT JOIN $TABLE_CATEGORY ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_CATEGORY.$ROW_PACKAGE_NAME
         """
 
@@ -333,6 +335,23 @@ interface ProductDao : BaseDao<Product> {
 
         return SimpleSQLiteQuery(builder.build(), builder.arguments.toTypedArray())
     }
+
+    @Transaction
+    fun getInstalledProductsWithVulnerabilities(repoId: Long): List<EmbeddedProduct> = queryObject(
+        SimpleSQLiteQuery(
+            """
+                SELECT $TABLE_PRODUCT.*
+                FROM $TABLE_PRODUCT
+                JOIN $TABLE_INSTALLED ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_INSTALLED.$ROW_PACKAGE_NAME
+                LEFT JOIN $TABLE_EXTRAS ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_EXTRAS.$ROW_PACKAGE_NAME
+                WHERE $TABLE_PRODUCT.$ROW_REPOSITORY_ID = $repoId
+                AND $TABLE_PRODUCT.$ROW_ANTIFEATURES LIKE '%${AntiFeature.KNOWN_VULN.key}%'
+                AND COALESCE($TABLE_EXTRAS.$ROW_IGNORE_VULNS, 0) = 0
+                GROUP BY $TABLE_PRODUCT.$ROW_PACKAGE_NAME
+                ORDER BY $TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ASC
+            """.trimIndent()
+        )
+    )
 
     @Query("DELETE FROM $TABLE_PRODUCT")
     suspend fun emptyTable()
