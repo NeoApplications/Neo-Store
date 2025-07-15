@@ -20,12 +20,10 @@ import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DEBUG
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_INSTALLER
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
-import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
 import com.machiav3lli.fdroid.NOTIFICATION_ID_DEBUG
 import com.machiav3lli.fdroid.NOTIFICATION_ID_INSTALLER
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
-import com.machiav3lli.fdroid.NOTIFICATION_ID_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_ID_VULNS
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
@@ -40,77 +38,12 @@ import com.machiav3lli.fdroid.data.index.RepositoryUpdater
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.manager.service.InstallerReceiver
 import com.machiav3lli.fdroid.manager.service.installIntent
-import com.machiav3lli.fdroid.manager.work.SyncWorker
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.android.notificationManager
 import com.machiav3lli.fdroid.utils.extension.resources.getColorFromAttr
-import com.machiav3lli.fdroid.utils.extension.text.formatSize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
-/**
- * Displays summary of available updates.
- *
- * @param productItems list of apps pending updates
- */
-fun Context.displayUpdatesNotification(
-    productItems: List<ProductItem>,
-    enforceNotify: Boolean = false,
-) {
-    val maxUpdates = 5
-    fun <T> T.applyHack(callback: T.() -> Unit): T = apply(callback)
-    if (productItems.isNotEmpty() || enforceNotify)
-        notificationManager.notify(
-            NOTIFICATION_ID_UPDATES, NotificationCompat
-                .Builder(this, NOTIFICATION_CHANNEL_UPDATES)
-                .setSmallIcon(R.drawable.ic_new_releases)
-                .setContentTitle(getString(if (productItems.isNotEmpty()) R.string.new_updates_available else R.string.no_updates_available))
-                .setContentText(
-                    if (productItems.isNotEmpty())
-                        resources.getQuantityString(
-                            R.plurals.new_updates_DESC_FORMAT,
-                            productItems.size, productItems.size
-                        )
-                    else null
-                )
-                .setColor(
-                    ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
-                        .getColorFromAttr(android.R.attr.colorPrimary).defaultColor
-                )
-                .setContentIntent(
-                    PendingIntent.getActivity(
-                        this,
-                        0,
-                        Intent(this, NeoActivity::class.java)
-                            .setAction(NeoActivity.ACTION_UPDATES)
-                            .putExtra(
-                                NeoActivity.EXTRA_UPDATES,
-                                productItems.map { it.packageName }.toTypedArray()
-                            ),
-                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                    )
-                )
-                .setStyle(NotificationCompat.InboxStyle().applyHack {
-                    for (productItem in productItems.take(maxUpdates)) {
-                        val builder = SpannableStringBuilder(productItem.name)
-                        builder.setSpan(
-                            ForegroundColorSpan(Color.BLACK), 0, builder.length,
-                            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                        builder.append(' ').append(productItem.version)
-                        addLine(builder)
-                    }
-                    if (productItems.size > maxUpdates) {
-                        val summary =
-                            getString(R.string.plus_more_FORMAT, productItems.size - maxUpdates)
-                        addLine(summary)
-                    }
-                })
-                .build()
-        )
-    else notificationManager.cancel(NOTIFICATION_ID_UPDATES)
-}
 
 fun Context.displayVulnerabilitiesNotification(
     productItems: List<ProductItem>,
@@ -208,7 +141,6 @@ fun Context.syncNotificationBuilder(title: String, content: String = "", percent
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
         )
-
         .addAction(
             R.drawable.ic_cancel,
             NeoApp.context.getString(R.string.cancel_all),
@@ -251,52 +183,6 @@ fun Context.installNotificationBuilder() = NotificationCompat
     .setSilent(true)
     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
     .setCategory(NotificationCompat.CATEGORY_STATUS)
-
-fun NotificationCompat.Builder.updateSyncProgress(
-    context: Context,
-    progress: SyncWorker.Progress,
-): NotificationCompat.Builder = apply {
-    when (progress.stage) {
-        RepositoryUpdater.Stage.DOWNLOAD -> {
-            if (progress.total >= 0) {
-                setContentText("${progress.read.formatSize()} / ${progress.total.formatSize()}")
-                setProgress(
-                    100,
-                    progress.percentage,
-                    false
-                )
-            } else {
-                setContentText(progress.read.formatSize())
-                setProgress(0, 0, true)
-            }
-        }
-
-        RepositoryUpdater.Stage.PROCESS  -> {
-            setContentText(
-                context.getString(
-                    R.string.processing_FORMAT,
-                    "${progress.percentage}%"
-                )
-            )
-            setProgress(100, progress.percentage, progress == null)
-        }
-
-        RepositoryUpdater.Stage.MERGE    -> {
-            setContentText(
-                context.getString(
-                    R.string.merging_FORMAT,
-                    "${progress.read} / ${progress.total}"
-                )
-            )
-            setProgress(100, progress.percentage, false)
-        }
-
-        RepositoryUpdater.Stage.COMMIT   -> {
-            setContentText(context.getString(R.string.saving_details))
-            setProgress(0, 0, true)
-        }
-    }
-}
 
 fun Context.reportSyncFail(repoId: Long, state: SyncState.Failed) {
     val title = getString(

@@ -12,7 +12,6 @@ import androidx.core.app.NotificationManagerCompat
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_BATCH_SYNCING
 import com.machiav3lli.fdroid.NeoActivity
-import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.data.index.RepositoryUpdater
@@ -84,11 +83,11 @@ class SyncNotificationManager(
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        val cancelAllIntent = Intent(NeoApp.context, ActionReceiver::class.java).apply {
+        val cancelAllIntent = Intent(context, ActionReceiver::class.java).apply {
             action = ActionReceiver.COMMAND_CANCEL_SYNC_ALL
         }
         val cancelAllPendingIntent = PendingIntent.getBroadcast(
-            NeoApp.context,
+            context,
             "consolidated_sync".hashCode(),
             cancelAllIntent,
             PendingIntent.FLAG_IMMUTABLE

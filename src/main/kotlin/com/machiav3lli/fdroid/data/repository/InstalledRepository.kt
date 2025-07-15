@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.data.repository
 
 import com.machiav3lli.fdroid.data.database.dao.InstalledDao
 import com.machiav3lli.fdroid.data.database.dao.ProductDao
+import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.entity.Order
 import com.machiav3lli.fdroid.data.entity.Section
@@ -28,7 +29,7 @@ class InstalledRepository(
         installedDao.get(packageName)
     }
 
-    suspend fun loadInstalledProducts() = withContext(jcc) {
+    suspend fun loadUpdatedProducts() = withContext(jcc) {
         productsDao.queryObject(
             installed = true,
             updates = true,
@@ -36,6 +37,10 @@ class InstalledRepository(
             order = Order.NAME,
             ascending = true,
         )
+    }
+
+    suspend fun loadListWithVulns(repoId: Long): List<EmbeddedProduct> = withContext(jcc) {
+        productsDao.getInstalledProductsWithVulnerabilities(repoId)
     }
 
     suspend fun upsert(vararg installed: Installed) = withContext(jcc) {

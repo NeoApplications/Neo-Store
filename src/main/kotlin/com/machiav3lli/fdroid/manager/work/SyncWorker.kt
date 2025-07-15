@@ -69,7 +69,7 @@ class SyncWorker(
     private lateinit var task: SyncTask
     private val langContext = ContextWrapperX.wrap(applicationContext)
     private val reposRepo: RepositoriesRepository by inject()
-    private val productRepo: ProductsRepository by inject()
+    private val installedRepo: InstalledRepository by inject()
     private val notificationManager: SyncNotificationManager by inject()
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
@@ -168,15 +168,7 @@ class SyncWorker(
     }
 
     private suspend fun handleCompletion() {
-        // TODO add a products query specific for this
-        productRepo
-            .loadList(
-                installed = true,
-                updates = true,
-                section = Section.All,
-                order = Order.NAME,
-                ascending = true,
-            )
+        installedRepo.loadUpdatedProducts()
             .map { it.toItem() }
             .filter { it.repositoryId == repoId }
             .let { result ->
@@ -194,7 +186,7 @@ class SyncWorker(
                     )
                 }
             }
-        productRepo.loadListWithVulns(repoId).let { installedWithVulns ->
+        installedRepo.loadListWithVulns(repoId).let { installedWithVulns ->
             if (installedWithVulns.isNotEmpty())
                 langContext.displayVulnerabilitiesNotification(
                     installedWithVulns.map(EmbeddedProduct::toItem)
