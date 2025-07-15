@@ -227,7 +227,11 @@ fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
                         installed = installedList[item.packageName],
                         onActionClick = {
                             val installed = installedList[it.packageName]
-                            val action = { NeoApp.wm.install(it) }
+                            val action = {
+                                NeoApp.wm.install(
+                                    Pair(it.packageName, it.repositoryId)
+                                )
+                            }
                             if (installed != null && installed.launcherActivities.isNotEmpty())
                                 context.onLaunchClick(
                                     installed,

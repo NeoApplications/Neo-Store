@@ -179,7 +179,11 @@ fun LatestPage(viewModel: MainVM = koinNeoViewModel()) {
                             },
                             onActionClick = { item, action ->
                                 val installed = installedList[item.packageName]
-                                val installFun = { NeoApp.wm.install(item) }
+                                val installFun = {
+                                    NeoApp.wm.install(
+                                        Pair(item.packageName, item.repositoryId)
+                                    )
+                                }
 
                                 when (action) {
                                     is ActionState.Install -> {
@@ -243,7 +247,11 @@ fun LatestPage(viewModel: MainVM = koinNeoViewModel()) {
                     installed = installedList[item.packageName],
                     onActionClick = {
                         val installed = installedList[it.packageName]
-                        val action = { NeoApp.wm.install(it) }
+                        val action = {
+                            NeoApp.wm.install(
+                                Pair(it.packageName, it.repositoryId)
+                            )
+                        }
                         if (installed != null && installed.launcherActivities.isNotEmpty())
                             context.onLaunchClick(
                                 installed,

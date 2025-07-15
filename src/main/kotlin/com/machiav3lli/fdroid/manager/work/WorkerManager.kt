@@ -32,7 +32,6 @@ import com.machiav3lli.fdroid.TAG_BATCH_SYNC_PERIODIC
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DownloadState
-import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.data.entity.ValidationError
@@ -285,17 +284,17 @@ class WorkerManager(appContext: Context) : KoinComponent {
         }
     }
 
-    fun install(vararg product: ProductItem) = batchUpdate(product.toList(), true)
+    fun install(vararg product: Pair<String, Long>) = batchUpdate(product.toList(), true)
 
-    fun update(vararg product: ProductItem) = batchUpdate(product.toList(), false)
+    fun update(vararg product: Pair<String, Long>) = batchUpdate(product.toList(), false)
 
-    private fun batchUpdate(productItems: List<ProductItem>, enforce: Boolean = false) {
+    private fun batchUpdate(productItems: List<Pair<String, Long>>, enforce: Boolean = false) {
         scope.launch {
             productItems.map { productItem ->
                 Triple(
-                    productItem.packageName,
-                    installedRepo.load(productItem.packageName),
-                    reposRepo.load(productItem.repositoryId)
+                    productItem.first,
+                    installedRepo.load(productItem.first),
+                    reposRepo.load(productItem.second)
                 )
             }
                 .filter { (_, installed, repo) -> (enforce || installed != null) && repo != null }

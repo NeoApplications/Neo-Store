@@ -301,7 +301,9 @@ fun InstallsPage(viewModel: MainVM) {
                                 ) {
                                     val action = {
                                         NeoApp.wm.update(
-                                            *updates.toTypedArray()
+                                            *updates
+                                                .map { Pair(it.packageName, it.repositoryId) }
+                                                .toTypedArray()
                                         )
                                     }
                                     if (Preferences[Preferences.Key.DownloadShowDialog]) {
@@ -377,7 +379,11 @@ fun InstallsPage(viewModel: MainVM) {
                     installed = installedList[item.packageName],
                     onActionClick = {
                         val installed = installedList[it.packageName]
-                        val action = { NeoApp.wm.install(it) }
+                        val action = {
+                            NeoApp.wm.install(
+                                Pair(it.packageName, it.repositoryId)
+                            )
+                        }
                         if (installed != null && installed.launcherActivities.isNotEmpty())
                             context.onLaunchClick(
                                 installed,

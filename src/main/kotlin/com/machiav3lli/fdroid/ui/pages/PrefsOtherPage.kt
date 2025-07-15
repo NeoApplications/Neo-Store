@@ -171,7 +171,9 @@ fun PrefsOtherPage(
                         scope.launch(Dispatchers.IO) {
                             productRepo.loadProduct(packageName)
                                 .maxByOrNull { it.product.suggestedVersionCode }?.toItem()?.let {
-                                    NeoApp.wm.install(it)
+                                    NeoApp.wm.install(
+                                        Pair(it.packageName, it.repositoryId)
+                                    )
                                 }
                         }
                     }

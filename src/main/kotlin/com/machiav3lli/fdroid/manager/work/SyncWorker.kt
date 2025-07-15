@@ -187,7 +187,11 @@ class SyncWorker(
                         true
                     )
                 if (Preferences[Preferences.Key.InstallAfterSync]) {
-                    NeoApp.wm.update(*result.toTypedArray())
+                    NeoApp.wm.update(
+                        *result.map {
+                            Pair(it.packageName, it.repositoryId)
+                        }.toTypedArray()
+                    )
                 }
             }
         productRepo.loadListWithVulns(repoId).let { installedWithVulns ->
