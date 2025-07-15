@@ -34,15 +34,12 @@ import com.machiav3lli.fdroid.TAG_SYNC_PERIODIC
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.Repository
-import com.machiav3lli.fdroid.data.entity.Order
-import com.machiav3lli.fdroid.data.entity.Section
 import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.data.entity.SyncTask
 import com.machiav3lli.fdroid.data.index.RepositoryUpdater
-import com.machiav3lli.fdroid.data.repository.ProductsRepository
+import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
-import com.machiav3lli.fdroid.utils.displayUpdatesNotification
 import com.machiav3lli.fdroid.utils.displayVulnerabilitiesNotification
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.syncNotificationBuilder
@@ -71,6 +68,7 @@ class SyncWorker(
     private val reposRepo: RepositoriesRepository by inject()
     private val installedRepo: InstalledRepository by inject()
     private val notificationManager: SyncNotificationManager by inject()
+    private val updatesManager: UpdatesNotificationManager by inject()
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         task = SyncTask(repoId, request, repoName)
@@ -172,12 +170,8 @@ class SyncWorker(
             .map { it.toItem() }
             .filter { it.repositoryId == repoId }
             .let { result ->
-                // TODO change to avoid overriding notifications
                 if (result.isNotEmpty() && Preferences[Preferences.Key.UpdateNotify])
-                    langContext.displayUpdatesNotification(
-                        result,
-                        true
-                    )
+                    updatesManager.addUpdates(*result.toTypedArray())
                 if (Preferences[Preferences.Key.InstallAfterSync]) {
                     NeoApp.wm.update(
                         *result.map {

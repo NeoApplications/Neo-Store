@@ -3,11 +3,10 @@ package com.machiav3lli.fdroid.manager.service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
+import com.machiav3lli.fdroid.manager.work.UpdatesNotificationManager
 import com.machiav3lli.fdroid.utils.Utils.toInstalledItem
-import com.machiav3lli.fdroid.utils.displayUpdatesNotification
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.getLaunchActivities
 import kotlinx.coroutines.CoroutineScope
@@ -18,11 +17,11 @@ import org.koin.core.component.inject
 
 class PackageChangedReceiver : BroadcastReceiver(), KoinComponent {
     private val installedRepo: InstalledRepository by inject()
+    private val updatesManager: UpdatesNotificationManager by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         val packageName =
             intent.data?.let { if (it.scheme == "package") it.schemeSpecificPart else null }
-        val langContext = ContextWrapperX.wrap(context)
         if (packageName != null) {
             when (intent.action.orEmpty()) {
                 Intent.ACTION_PACKAGE_ADDED,
@@ -45,8 +44,8 @@ class PackageChangedReceiver : BroadcastReceiver(), KoinComponent {
                         else installedRepo.delete(packageName)
 
                         // Update updates notification
-                        if (Preferences[Preferences.Key.UpdateNotify]) langContext.displayUpdatesNotification(
-                            installedRepo.loadInstalledProducts().map { it.toItem() }
+                        if (Preferences[Preferences.Key.UpdateNotify]) updatesManager.replaceUpdates(
+                            *installedRepo.loadUpdatedProducts().map { it.toItem() }.toTypedArray()
                         )
                     }
                 }
