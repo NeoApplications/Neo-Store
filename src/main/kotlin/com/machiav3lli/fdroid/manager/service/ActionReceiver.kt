@@ -4,7 +4,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
+import com.machiav3lli.fdroid.ARG_PACKAGE_NAMES
 import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
+import com.machiav3lli.fdroid.ARG_REPOSITORY_IDS
 import com.machiav3lli.fdroid.manager.installer.BaseInstaller
 import com.machiav3lli.fdroid.manager.work.WorkerManager
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +23,7 @@ class ActionReceiver : BroadcastReceiver(), KoinComponent {
         const val COMMAND_CANCEL_DOWNLOAD = "cancel_download"
         const val COMMAND_CANCEL_DOWNLOAD_ALL = "cancel_download_all"
         const val COMMAND_CANCEL_INSTALL = "cancel_install"
+        const val COMMAND_BATCH_UPDATE = "batch_update"
     }
 
     private val receiveJob = Job()
@@ -35,6 +38,14 @@ class ActionReceiver : BroadcastReceiver(), KoinComponent {
                 COMMAND_CANCEL_DOWNLOAD     -> {
                     val packageName = intent.getStringExtra(ARG_PACKAGE_NAME)
                     wm.cancelDownload(packageName)
+                }
+
+                COMMAND_BATCH_UPDATE        -> {
+                    val packageNames: Array<String> =
+                        intent.getStringArrayExtra(ARG_PACKAGE_NAMES) ?: emptyArray()
+                    val repoIds: Array<Long> =
+                        intent.getLongArrayExtra(ARG_REPOSITORY_IDS)?.toTypedArray() ?: emptyArray()
+                    wm.update(*packageNames.zip(repoIds).toTypedArray())
                 }
 
                 COMMAND_CANCEL_DOWNLOAD_ALL -> {
