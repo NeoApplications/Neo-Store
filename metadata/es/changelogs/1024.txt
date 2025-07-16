@@ -1,7 +1,7 @@
-Añadido: Support for video link, tv & wear screenshots
-Añadido: Dialog to notify for intial sync on first launch
-Corrección: Not showing install on packages from sources without share
-Corrección: Parsing and showing litecoin and liberapay links
-Actualización: Improve installer reliability
-Eliminación: Flattr donation link parsing
-plus many more in over 20 commits & 80 translation contributions
+Añadido: Soporte para pantallazos de enlace a vídeo, tv y wear
+Añadido: Diálogo para notificar la sincronización inicial en la primera ejecución
+Corrección: No mostrar instalar en paquetes de fuentes no compartidas
+Corrección: Parsear y mostrar enlaces de litecoin y liberapay
+Actualización: Mejorar la confiabilidad del instalador
+Eliminación: Parseo del enlace de donación de Flattr
+y mucho más en más de 20 commits y 80 contribuciones de traducción
