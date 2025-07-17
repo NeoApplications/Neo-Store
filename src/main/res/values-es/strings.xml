@@ -437,4 +437,5 @@
     <string name="rb_izzyondroid">IzzyOnDroid</string>
     <string name="rb_bg443">bg443</string>
     <string name="rb_obfusk">Obfusk</string>
+    <string name="syncing_repositories_FORMAT">Sincronizando %d repositorios</string>
 </resources>
