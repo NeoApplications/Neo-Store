@@ -1,0 +1,9 @@
+Añadido: Borrar el fichero descargado al eliminar la entrada de la descarga
+Añadido: Filtros Target- y MinSDK
+Corrección: Lazy load de las apps instaladas
+Corrección: La nueva app instalada no se añade a la pantalla de inicio (créditos a @Dhina17)
+Actualización: Hacer la UI amigable para pantallas anchas y adaptable a la navegación
+Actualización: Mejorar la compartición de enlaces de F-Droid (créditos a @leoheitmannruiz)
+Actualización: Evitar la petición de permisos de instalación cuando INSTALL_PACKAGES está concedido (créditos @tharowt)
+Repositorios: Añadidos los repos Fcitx5, IronFox (créditos a @Integral-Tech, @celenityy)
+y mucho más en más de 140 commits y 100 contribuciones de traducción

@@ -1,0 +1,7 @@
+Añadido: Soporte para pantallazos de enlace a vídeo, tv y wear
+Añadido: Diálogo para notificar la sincronización inicial en la primera ejecución
+Corrección: No mostrar instalar en paquetes de fuentes no compartidas
+Corrección: Parsear y mostrar enlaces de litecoin y liberapay
+Actualización: Mejorar la confiabilidad del instalador
+Eliminación: Parseo del enlace de donación de Flattr
+y mucho más en más de 20 commits y 80 contribuciones de traducción
