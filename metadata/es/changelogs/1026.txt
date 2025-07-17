@@ -1,0 +1,7 @@
+Añadido: Handling of opening an app page from system app info
+Corrección: Notification following system language and not the app's
+Actualización: Revamp DownloadWorker logic, notifications and handling
+Actualización: Revamp SyncWorker logic, notifications and handling
+Actualización: Use default navigation icon or text size
+Eliminación: Duplicate sync notification channels
+plus many more in over 20 commits & 20 translation contributions
