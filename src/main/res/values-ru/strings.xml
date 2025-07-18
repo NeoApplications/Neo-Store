@@ -430,4 +430,13 @@
     <string name="index_v2_summary">Запрашивать Index-V2 в качестве основного индекса. Экспериментально, есть как преимущества, так и недостатки.</string>
     <string name="action_start">Начать!</string>
     <string name="max_idle_connections_description">Максимальное количество незанятых подключений по всем адресам, которые должны поддерживаться в рабочем состоянии.</string>
+    <string name="mirror_rotation">Чередование зеркал</string>
+    <string name="notify_channel_debug">Отладка</string>
+    <string name="rb_provider">Поставщик журналов повторяемых сборок</string>
+    <string name="rb_none">Не выбран</string>
+    <string name="rb_izzyondroid">IzzyOnDroid</string>
+    <string name="rb_bg443">bg443</string>
+    <string name="rb_obfusk">Obfusk</string>
+    <string name="repo_index_timestamp">Время обновления индекса</string>
+    <string name="rb_badge">Значок повторяемых сборок</string>
 </resources>
