@@ -9,24 +9,15 @@
 
 <p align="center"><strong>The modern and feature-rich F-Droid client for everyone!</strong></p>
 
-<p align="center">
-  <a href="https://github.com/NeoApplications/Neo-Store/releases/latest">
-    <img alt="Latest stable release version" src="https://img.shields.io/github/v/release/NeoApplications/Neo-Store?style=flat&labelColor=AAFFAA&color=00AA44"/>
-  </a>
-  <a href="https://github.com/NeoApplications/Neo-Store/releases/">
-    <img alt="Github downloads" src="https://img.shields.io/github/downloads/NeoApplications/Neo-Store/total.svg?style=flat&labelColor=AAFFAA&color=00AA44"/>
-  </a>
-  <a href="https://github.com/NeoApplications/Neo-Store/stargazers">
-    <img alt="GitHub repo stars" src="https://img.shields.io/github/stars/NeoApplications/Neo-Store?style=flat&labelColor=AAFFAA&color=00AA44"/>
-  </a>
-  <a href="https://hosted.weblate.org/engage/neo-store">
-    <img alt="Small translation badge" src="https://img.shields.io/weblate/progress/neo-store?style=flat&labelColor=AAFFAA&color=00AA44"/>
-  </a>
-  <a href="./COPYING">
-    <img alt="Project's License" src="https://img.shields.io/github/license/NeoApplications/Neo-Store?style=flat&labelColor=AAFFAA&color=00AA44"/>
-  </a>
-</p>
+<div align="center">
+  
+[![Latest stable release version](https://img.shields.io/github/v/release/NeoApplications/Neo-Store?style=flat&labelColor=AAFFAA&color=00AA44)](https://github.com/NeoApplications/Neo-Store/releases/latest)
+[![Github downloads](https://img.shields.io/github/downloads/NeoApplications/Neo-Store/total.svg?style=flat&labelColor=AAFFAA&color=00AA44)](https://github.com/NeoApplications/Neo-Store/releases/)
+[![GitHub repo stars](https://img.shields.io/github/stars/NeoApplications/Neo-Store?style=flat&labelColor=AAFFAA&color=00AA44)](https://github.com/NeoApplications/Neo-Store/stargazers)
+[![Small translation badge](https://img.shields.io/weblate/progress/neo-store?style=flat&labelColor=AAFFAA&color=00AA44)](https://hosted.weblate.org/engage/neo-store)
+[![Project's License](https://img.shields.io/github/license/NeoApplications/Neo-Store?style=flat&labelColor=AAFFAA&color=00AA44)](./COPYING)
 
+</div>
 
 [<img src="get_iod.svg" alt="Get it on IzzyOnDroid" width="24%" align="center">](https://apt.izzysoft.de/fdroid/index/apk/com.machiav3lli.fdroid)
 [<img src="get_fdroid.svg" alt="Get it on F-Droid" width="24%" align="center">](https://f-droid.org/packages/com.machiav3lli.fdroid)
