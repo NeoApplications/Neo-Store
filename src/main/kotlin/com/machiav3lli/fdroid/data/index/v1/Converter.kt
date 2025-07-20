@@ -17,7 +17,8 @@ import java.util.Locale
 internal fun IndexV1.App.toProduct(repositoryId: Long) = IndexProduct(
     repositoryId = repositoryId,
     packageName = packageName,
-    label = localized.findLocalizedString(name) { _, localized -> localized.name },
+    label = name.nullIfEmpty()
+        ?: localized.findLocalizedString(name) { _, localized -> localized.name },
     summary = localized.findLocalizedString(summary) { _, localized -> localized.summary },
     description = localized.findLocalizedString(description) { _, localized -> localized.description }
         .removeSurrounding("\n")
