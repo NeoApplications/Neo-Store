@@ -92,7 +92,7 @@ class UpdatesNotificationManager(
 
         val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_UPDATES)
             .setSortKey("0")
-            .setSmallIcon(R.drawable.ic_new_releases)
+            .setSmallIcon(android.R.drawable.stat_sys_upload_done)
             .setOngoing(false)
             .setContentTitle(
                 langContext.getString(
