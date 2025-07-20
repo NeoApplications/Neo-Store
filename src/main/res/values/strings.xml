@@ -194,7 +194,7 @@
     <string name="pending">Pending</string>
     <string name="installing">Installing</string>
     <string name="ignore_battery_optimization_title">Battery Optimization</string>
-    <string name="ignore_battery_optimization_message">The app behaves better without battery optimization, and prevents crashing on Android 12+.</string>
+    <string name="ignore_battery_optimization_message">The app performs better when battery optimization is disabled, and it no longer crashes on Android 12+.</string>
     <string name="ignore_battery_optimization_not_supported">Your Android installation does not support disabling battery optimization.</string>
     <string name="dialog_refuse">Keep</string>
     <string name="dialog_approve">Turn off</string>
@@ -312,7 +312,7 @@
     <string name="ignore_vulns">Ignore reported security vulnerabilities</string>
     <string name="downloads">Downloads</string>
     <string name="ignore">Ignore</string>
-    <string name="warning_disable_battery_optimization">Starting Android 12, the app requires battery optimization to do background processes like syncing and downloading. If you ignore this permission, you\'re left on your own, and your crash reports will be ignored.</string>
+    <string name="warning_disable_battery_optimization">From Android 12 onwards, the app requires battery optimization to be disabled in order to perform background processes such as syncing and downloading. If you ignore this permission, you will be left on your own and your crash reports will be ignored.</string>
     <string name="warning_show_notification">Starting Android 13, the app requires this permission to be notify you on the different processes. If you ignore this permission, you won\'t get any notifications.</string>
     <string name="disable_signature_check">Disable signature check</string>
     <string name="disable_signature_check_summary">Don\'t check if the downloaded APK has the same signature as the installed app.</string>
