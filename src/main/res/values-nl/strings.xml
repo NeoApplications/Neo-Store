@@ -182,7 +182,7 @@
     <string name="pending">Bezig</string>
     <string name="installing">Installeren</string>
     <string name="ignore_battery_optimization_title">Batterij Optimisatie</string>
-    <string name="ignore_battery_optimization_message">De app werkt beter zonder batterij optimisatie, en voorkomt crashing op Android 12+.</string>
+    <string name="ignore_battery_optimization_message">De app werkt beter als batterij-optimisatie is uitgeschakeld, en het voorkomt crashes op Android 12+.</string>
     <string name="ignore_battery_optimization_not_supported">Jouw Android-installatie ondersteund het uitschakelen van de batterijoptimalisatie niet.</string>
     <string name="dialog_refuse">Bewaar</string>
     <string name="dialog_approve">Zet uit</string>
@@ -327,7 +327,7 @@
     <string name="permissions_note_2">Heeft niet zo veel toestemmingen nodig</string>
     <string name="source_proprietary">Niet open source</string>
     <string name="permission_granted">Toegekend</string>
-    <string name="warning_disable_battery_optimization">Sinds Android 12 moet de app toestemming hebben voor batterij-optimalisatie om achtergrondprocessen uit te voeren zoals synchronisatie en downloaden. Als je deze toestemming negeert, ben je op jezelf aangewezen en worden crashrapporten genegeerd.</string>
+    <string name="warning_disable_battery_optimization">Vanaf Android 12 vereist de app dat batterij-optimalisatie is uitgeschakeld om achtergrondprocessen uit te voeren zoals synchronisatie en downloaden. Als je deze toestemming negeert, ben je op jezelf aangewezen en worden crashrapporten genegeerd.</string>
     <plurals name="privacy_points_FORMAT">
         <item quantity="one">(-%d privacypunt)</item>
         <item quantity="other">(-%d privacypunten)</item>
