@@ -13,6 +13,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -75,6 +76,7 @@ import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
 import com.machiav3lli.fdroid.ui.components.ScreenshotItem
 import com.machiav3lli.fdroid.ui.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.components.SwitchPreference
+import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoChips
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoHeader
 import com.machiav3lli.fdroid.ui.components.appsheet.HtmlTextBlock
@@ -88,6 +90,8 @@ import com.machiav3lli.fdroid.ui.components.appsheet.appInfoChips
 import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.components.privacy.MeterIconsBar
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderTop
 import com.machiav3lli.fdroid.ui.dialog.ActionSelectionDialogUI
@@ -404,21 +408,28 @@ fun AppPage(
                         icon = imageData,
                         state = downloadState,
                         actions = {
-                            SourceCodeButton(
-                                sourceType = sourceType,
-                                onClick = {
-                                    onUriClick(
-                                        (product.source.nullIfEmpty() ?: product.web).toUri(),
-                                        true
-                                    )
-                                },
-                                onLongClick = {
-                                    product.source.let { link ->
-                                        if (link.isNotEmpty()) copyLinkToClipboard(link)
-
+                            Row {
+                                SourceCodeButton(
+                                    sourceType = sourceType,
+                                    onClick = {
+                                        onUriClick(
+                                            (product.source.nullIfEmpty() ?: product.web).toUri(),
+                                            true
+                                        )
+                                    },
+                                    onLongClick = {
+                                        product.source.let { link ->
+                                            if (link.isNotEmpty()) copyLinkToClipboard(link)
+                                        }
                                     }
+                                )
+                                TopBarAction(
+                                    icon = Phosphor.X,
+                                    description = stringResource(id = R.string.cancel),
+                                ) {
+                                    onDismiss()
                                 }
-                            )
+                            }
                         },
                     )
                     AppInfoChips(eProduct.appInfoChips(installed, displayRelease, categoryDetails))
