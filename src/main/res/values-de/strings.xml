@@ -192,7 +192,7 @@
     <string name="dialog_refuse">Behalten</string>
     <string name="ignore_battery_optimization_not_supported">Dein Android-Betriebssystem erlaubt kein Abschalten der Akkulaufzeitverbesserungen.</string>
     <string name="ignore_battery_optimization_title">Akkulaufzeitverbesserung</string>
-    <string name="ignore_battery_optimization_message">Die Anwendung verhält sich ohne Batterieoptimierung besser und verhindert Abstürze unter Android 12+.</string>
+    <string name="ignore_battery_optimization_message">Die Anwendung funktioniert zuverlässiger, wenn die Batterieoptimierung deaktiviert ist, und es verhindert Abstürze unter Android 12+.</string>
     <string name="dialog_approve">Ausschalten</string>
     <string name="root_session_installer">Root-Session-Installateur verwenden</string>
     <string name="root_session_installer_description">Langsamer, vermeidet aber Probleme mit installierten Apps auf Android 13+.</string>
@@ -320,7 +320,7 @@
     <string name="keep_install_notification_summary">Benachrichtigung über die erfolgreiche Installation einer Anwendung erhalten.</string>
     <string name="cancel_all">Alle abbrechen</string>
     <string name="disable_download_version_check">Überprüfung der Download-Version deaktivieren</string>
-    <string name="warning_disable_battery_optimization">Ab Android 12 benötigt die App eine Ausnahme der Akku-Optimierung, um Hintergrundprozesse wie das Synchronisieren und Herunterladen durchzuführen. Wird dies nicht erteilt, bist du auf dich allein gestellt und deine Absturzberichte werden ignoriert.</string>
+    <string name="warning_disable_battery_optimization">Ab Android 12 und aufwärts benötigt die App eine Ausnahme der Akku-Optimierung, um Hintergrundprozesse wie das Synchronisieren und Herunterladen durchzuführen. Wird dies nicht erteilt, wirst du auf dich allein gestellt sein und deine Absturzberichte werden ignoriert.</string>
     <string name="warning_show_notification">Ab Android 13 benötigt die App diese Berechtigung, um dich über verschiedene Prozesse zu benachrichtigen. Wenn du diese Erlaubnis ignorierst, wirst du keine Benachrichtigungen erhalten.</string>
     <string name="disable_download_version_check_summary">Ermöglicht das Herunterladen älterer Versionen installierter Anwendungen. Kann in Kombination mit dem „letmedowngrade“-Patch von Magisk verwendet werden.</string>
     <string name="disable_signature_check_summary">Nicht überprüfen, wenn die heruntergeladene APK dieselbe Signatur wie die bereits installierte App hat.</string>
