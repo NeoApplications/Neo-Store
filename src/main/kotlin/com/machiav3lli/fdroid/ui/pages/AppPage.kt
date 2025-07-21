@@ -154,7 +154,8 @@ fun AppPage(
     }
 
     BackHandler {
-        onDismiss()
+        if (currentPage > 0) scope.launch { pagerState.animateScrollToPage(0) }
+        else onDismiss()
     }
 
     val enableScreenshots by remember(Preferences[Preferences.Key.ShowScreenshots]) {
