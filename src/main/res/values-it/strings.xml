@@ -193,7 +193,7 @@
     <string name="ignore_battery_optimization_not_supported">L\'installazione di Android non supporta la disattivazione dell\'ottimizzazione della batteria.</string>
     <string name="dialog_approve">Spegni</string>
     <string name="ignore_battery_optimization_title">Ottimizzazione della batteria</string>
-    <string name="ignore_battery_optimization_message">L\'app si comporta meglio senza ottimizzazione della batteria e previene arresti anomali su Android 12+.</string>
+    <string name="ignore_battery_optimization_message">L\'app funziona meglio quando l\'ottimizzazione della batteria è disattivata e non si blocca più su Android 12+.</string>
     <string name="dialog_refuse">Mantieni</string>
     <string name="root_session_installer">Usa installer della sessione root</string>
     <string name="root_session_installer_description">Più lento, ma evita i problemi con le app installate su Android 13+.</string>
@@ -312,7 +312,7 @@
     <string name="downloads">Scaricate</string>
     <string name="ignore_vulns">Ignora vulnerabilità di sicurezza segnalate</string>
     <string name="ignore">Ignora</string>
-    <string name="warning_disable_battery_optimization">A partire da Android 12, l\'app richiede l\'ottimizzazione della batteria per processi in secondo piano come la sincronizzazione e il download. Se ignori questa autorizzazione, te la dovrai sbrigare da solo e le tue segnalazioni di errore verranno ignorate.</string>
+    <string name="warning_disable_battery_optimization">Da Android 12 in poi, l\'app richiede la disattivazione dell\'ottimizzazione della batteria per poter eseguire processi in background come la sincronizzazione e il download. Se ignori questa autorizzazione, non dovrai più preoccuparti di nulla e le segnalazioni di crash verranno ignorate.</string>
     <string name="warning_show_notification">A partire da Android 13, l\'app richiede questa autorizzazione per ricevere notifiche sui diversi processi. Se ignori questa autorizzazione, non riceverai alcuna notifica.</string>
     <string name="disable_signature_check">Disabilita controllo firma</string>
     <string name="keep_install_notification">Mantieni notifica installazione</string>
