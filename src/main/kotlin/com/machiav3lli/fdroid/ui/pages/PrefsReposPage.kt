@@ -186,12 +186,12 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                         RepositoryItem(
                             modifier = Modifier.animateItem(),
                             repository = it,
-                            onClick = { repo ->
+                            onSwitch = { repo ->
                                 viewModel.viewModelScope.launch {
                                     SyncWorker.enableRepo(repo, !repo.enabled)
                                 }
                             },
-                            onLongClick = { repo ->
+                            onClick = { repo ->
                                 scope.launch {
                                     paneNavigator.navigateTo(
                                         ListDetailPaneScaffoldRole.Detail,
@@ -208,12 +208,12 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                         RepositoryItem(
                             modifier = Modifier.animateItem(),
                             repository = it,
-                            onClick = { repo ->
+                            onSwitch = { repo ->
                                 viewModel.viewModelScope.launch {
                                     SyncWorker.enableRepo(repo, !repo.enabled)
                                 }
                             },
-                            onLongClick = { repo ->
+                            onClick = { repo ->
                                 scope.launch {
                                     paneNavigator.navigateTo(
                                         ListDetailPaneScaffoldRole.Detail,
