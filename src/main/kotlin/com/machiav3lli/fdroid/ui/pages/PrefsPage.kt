@@ -65,6 +65,7 @@ fun PrefsPage(pageIndex: Int, navigateUp: () -> Unit) {
                     .fillMaxSize(),
                 pagerState = pagerState,
                 pageItems = pages,
+                preComposePages = 0,
             )
         }
     }
