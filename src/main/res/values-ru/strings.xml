@@ -195,7 +195,7 @@
     <string name="dialog_refuse">Оставить</string>
     <string name="dialog_approve">Выключить</string>
     <string name="ignore_battery_optimization_title">Экономия заряда батареи</string>
-    <string name="ignore_battery_optimization_message">Приложение ведёт себя лучше без включённой экономии заряда батареи и предотвращаются сбои на Android 12+.</string>
+    <string name="ignore_battery_optimization_message">Приложение работает лучше при отключённой экономии заряда батареи, что также предотвращает сбои на Android 12+.</string>
     <string name="root_session_installer">Использовать установщик root session</string>
     <string name="root_session_installer_description">Медленнее, но позволяет избежать проблем с установленными приложениями на Android 13+.</string>
     <string name="not_safe_for_work">Цензура (может содержать непристойные материалы)</string>
@@ -312,7 +312,7 @@
     <string name="post_notifications_permission_message">Начиная с Android 13 для показа уведомлений приложениям требуется это разрешение.</string>
     <string name="ignore_vulns">Игнорировать известные уязвимости безопасности</string>
     <string name="downloads">Загрузки</string>
-    <string name="warning_disable_battery_optimization">Начиная с Android 12, приложению требуется разрешение на оптимизацию энергопотребления для выполнения фоновых процессов, таких как синхронизация и загрузка. Если вы проигнорируете это разрешение, вы останетесь один, и ваши отчеты о сбоях будут игнорироваться.</string>
+    <string name="warning_disable_battery_optimization">Начиная с Android 12 приложению требуется отключение оптимизации энергопотребления для выполнения фоновых процессов, таких как синхронизация и загрузка. Если вы проигнорируете данное требование, то будете предоставлены сами себе и ваши отчёты о сбоях не будут рассматриваться.</string>
     <string name="disable_signature_check_summary">Не проверять, имеет ли загруженный APK ту же подпись, что и установленное приложение.</string>
     <string name="disable_download_version_check_summary">Разрешается загружать старые версии установленных приложений. Может использоваться в сочетании с патчем Magisk \"letmedowngrade\".</string>
     <string name="ignore">Игнорировать</string>
@@ -439,4 +439,5 @@
     <string name="rb_obfusk">Obfusk</string>
     <string name="repo_index_timestamp">Время обновления индекса</string>
     <string name="rb_badge">Значок повторяемых сборок</string>
+    <string name="syncing_repositories_FORMAT">Синхронизация %d репозиториев</string>
 </resources>
