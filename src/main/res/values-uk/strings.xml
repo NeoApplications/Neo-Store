@@ -195,7 +195,7 @@
     <string name="dialog_approve">Вимкнути</string>
     <string name="dialog_refuse">Залишити</string>
     <string name="ignore_battery_optimization_not_supported">Ваша версія Android не підтримує вимкнення оптимізації батареї.</string>
-    <string name="ignore_battery_optimization_message">Застосунок поводиться краще без увімкненої оптимізації батареї і запобігає вильоту на Android 12+.</string>
+    <string name="ignore_battery_optimization_message">Заатосунок працює краще, коли оптимізація батареї вимкнена, і більше не вилітає на Android 12+.</string>
     <string name="root_session_installer">Використати установник сеансу root</string>
     <string name="root_session_installer_description">Повільніше, але дозволяє уникнути проблем зі встановленими застосунками на Android 13+.</string>
     <string name="not_safe_for_work">Цензура (може містити непристойні матеріали)</string>
@@ -318,7 +318,7 @@
     <string name="allowed_licenses">Дозволені ліцензії</string>
     <string name="cancel_all">Скасувати все</string>
     <string name="disable_download_version_check">Вимкнути перевірку версії завантаження</string>
-    <string name="warning_disable_battery_optimization">Починаючи з Android 12, застосунок вимагає оптимізації батареї, щоб зробити фонові процеси, такі як синхронізація та завантаження. Якщо ви ігноруєте цей дозвіл, ви залишені самостійно, і ваші звіти про збої будуть проігноровані.</string>
+    <string name="warning_disable_battery_optimization">Починаючи з Android 12, для виконання фонових процесів, таких як синхронізація та завантаження, у застосунку необхідно вимкнути оптимізацію батареї. Якщо ви проігноруєте цей дозвіл, ви залишитеся наодинці, а ваші звіти про збій будуть проігноровані.</string>
     <string name="warning_show_notification">Починаючи з Android 13, застосунок вимагає цього дозволу, щоб повідомити вас про різні процеси. Якщо ви ігноруєте цей дозвіл, ви не отримаєте жодних повідомлень.</string>
     <string name="disable_download_version_check_summary">Дозволяє завантажувати старіші версії встановлених застосунків. Може використовуватися у поєднанні з патчем Magisk \"letmedowngrade\".</string>
     <string name="keep_install_notification">Отримувати сповіщення про встановлення</string>
