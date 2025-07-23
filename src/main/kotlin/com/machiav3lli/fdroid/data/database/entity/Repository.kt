@@ -1031,6 +1031,15 @@ data class Repository(
             "3C60DE135AA19EC949E998469C908F7171885C1E2805F39EB403DDB0F37B4BD2",
             ""
         )
+        private val BREEZY = defaultRepository(
+            "https://breezy-weather.github.io/fdroid-repo/fdroid/repo",
+            "Breezy Weather",
+            "The F-Droid repo for Breezy Weather.",
+            21,
+            false,
+            "3480A7BB2A296D8F98CB90D2309199B5B9519C1B31978DBCD877ADB102AF35EE",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, IZZY,
@@ -1040,7 +1049,7 @@ data class Repository(
             CALYX_OS, CALYX_OS_TEST, IODE,
             KDE_RELEASE, KDE_NIGHTLY, NANODROID, NETSYMS,
             FUTO, KVAESITSO, C_GEO, C_GEO_NIGHTLY, COLLABORA,
-            PIXELFED, VIDELIBRI, GADGETBRIDGE,
+            PIXELFED, VIDELIBRI, GADGETBRIDGE, BREEZY,
             THREEMA, SESSION, MOLLY, BRIAR, ANONYMOUS_MESSENGER,
             FEDILAB, NETHUNTER, BEOCODE, INSPORATION,
             SIMPLEX_CHAT, REVOLT, TWIN_HELIX,
@@ -1152,7 +1161,7 @@ data class Repository(
         )
 
         val addedReposV1102 = listOf(
-            BRAVE
+            BRAVE, BREEZY
         )
     }
 }
