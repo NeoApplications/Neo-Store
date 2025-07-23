@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-1.1.0 (XX.07.2025) +180 Commits +70 Translations
+1.1.0 (XX.07.2025) +180 Commits +90 Translations
 ------------------
 
 ### Function
@@ -23,11 +23,14 @@ CHANGELOG
 - Add: Index-v2 merger test suite
 - Add: Pull trackers or rb-logs only if modified since last sync
 - Add: Debug notification utility
+- Add: Command for batch updates
+- Add: Products query for packages with vulnerabilities
 - Fix: Selected releases order of EmbeddedProducts
 - Fix: Crashes on update where some releases, tasks or downloads stuck in the database
 - Fix: Improve update logic of getting compatible releases and preferred one for update
 - Fix: Returning products of the repo with lowest id instead of highest versionCode
 - Fix: Exporting extras
+- Fix: Overriding package label in index-v1
 - Update: Revamp InstallWorker improving its failure handling
 - Update: Refactor BaseInstaller to use InstallQueue and InstallStateHolder providing common logic for all installers
 - Update: Revamp all installers improving their robustness
@@ -52,8 +55,10 @@ CHANGELOG
 - Update: Default to enabling Index-v2
 - Update: Improve installs queueing with checks, timeouts and retry counters
 - Update: Remove specific file types from cache where possible (fixes deleting external download folder)
+- Update: Reduce unneeded recompositions
+- Update: Lazy composition of prefs pages
 - Remove: Preference for number of searched apps
-- Add repository: Brave browser
+- Add repository: Brave browser, Breezy weather
 - Remove repository: Frostnerd, Frostnerd-archive and Libretro
 - TargetSDK 35
 - CompileSDK 36
@@ -63,11 +68,13 @@ CHANGELOG
 - Add: Baklava android version name
 - Add: Clear positive action on permission cards
 - Add: Index's real timestamp to repository page
+- Add: Cancel button to app page
 - Fix: Missing buffer on the bottom of the repos list
 - Fix: Respect set app language first, then system when parsing localized index values
 - Fix: Double v's in the version name chip in app page
 - Fix: Showing Error on the progress bar when starting download
 - Fix: Showing apps with one release but different arch as new too
+- Fix: Backing up from edit mode
 - Update: Revamp selection chips layout
 - Update: Show localized categories and anti-features (index-v2)
 - Update: Revamp search bar layout
@@ -77,6 +84,11 @@ CHANGELOG
 - Update: Use double carets for expandable cards
 - Update: Revamp repository page layout
 - Update: Default theme primary and secondary colors
+- Update: Unify updates notifications using updates notification manager
+- Update: Unify sync notifications using sync notification manager
+- Update: Scroll back to main app details page when pressing back in the privacy panel
+- Update: Change update notification's icon
+- Update: Replace x/+ icon of repository item with a switch and click behavior
 
 1.0.9 (07.04.2025) +20 Commits +20 Translations
 ------------------
