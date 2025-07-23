@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.ui.pages
 
 import android.content.ClipboardManager
 import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
@@ -164,6 +165,10 @@ fun RepoPage(
             usernameFieldValue,
             passwordFieldValue,
         )
+    }
+
+    BackHandler(editMode) {
+        editMode = false
     }
 
     repo?.let { repo ->
