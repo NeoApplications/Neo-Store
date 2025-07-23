@@ -353,6 +353,9 @@ class DownloadWorker(
         val total: Long = -1L,
     )
 
+    // TODO fun onSuccess(data: Data) : Result {}
+    // TODO fun onFailure(data: Data) : Result {}
+
     companion object {
         fun enqueue(
             packageName: String,

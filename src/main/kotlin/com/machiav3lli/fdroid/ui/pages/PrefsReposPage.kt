@@ -95,17 +95,51 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
     NavigableListDetailPaneScaffold(
         navigator = paneNavigator,
         listPane = {
-            //AnimatedPane { } TODO re-add when recomposition issue fixed
-            Scaffold(
-                containerColor = Color.Transparent,
-                contentColor = MaterialTheme.colorScheme.onBackground,
-                floatingActionButton = {
-                    if (Intent(INTENT_ACTION_BINARY_EYE).resolveActivity(mActivity.packageManager) != null) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 4.dp),
-                            horizontalArrangement = Arrangement.spacedBy(4.dp)
-                        ) {
-                            FloatingActionButton(
+            AnimatedPane {
+                Scaffold(
+                    containerColor = Color.Transparent,
+                    contentColor = MaterialTheme.colorScheme.onBackground,
+                    floatingActionButton = {
+                        if (Intent(INTENT_ACTION_BINARY_EYE).resolveActivity(mActivity.packageManager) != null) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 4.dp),
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                FloatingActionButton(
+                                    shape = MaterialTheme.shapes.extraLarge,
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    onClick = {
+                                        scope.launch {
+                                            paneNavigator.navigateTo(
+                                                ListDetailPaneScaffoldRole.Detail,
+                                                SheetNavigationData(
+                                                    viewModel.addNewRepository(),
+                                                    true
+                                                )
+                                            )
+                                        }
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = Phosphor.Plus,
+                                        contentDescription = stringResource(id = R.string.add_repository)
+                                    )
+                                }
+                                FloatingActionButton(
+                                    shape = MaterialTheme.shapes.extraLarge,
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    onClick = mActivity::openScanner
+                                ) {
+                                    Icon(
+                                        imageVector = Phosphor.QrCode,
+                                        contentDescription = stringResource(id = R.string.scan_qr_code)
+                                    )
+                                }
+                            }
+                        } else {
+                            ExtendedFloatingActionButton(
                                 shape = MaterialTheme.shapes.extraLarge,
                                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -126,109 +160,76 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                     contentDescription = stringResource(id = R.string.add_repository)
                                 )
                             }
-                            FloatingActionButton(
-                                shape = MaterialTheme.shapes.extraLarge,
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                onClick = mActivity::openScanner
-                            ) {
-                                Icon(
-                                    imageVector = Phosphor.QrCode,
-                                    contentDescription = stringResource(id = R.string.scan_qr_code)
-                                )
-                            }
                         }
-                    } else {
-                        ExtendedFloatingActionButton(
-                            shape = MaterialTheme.shapes.extraLarge,
-                            containerColor = MaterialTheme.colorScheme.primaryContainer,
-                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            onClick = {
-                                scope.launch {
-                                    paneNavigator.navigateTo(
-                                        ListDetailPaneScaffoldRole.Detail,
-                                        SheetNavigationData(
-                                            viewModel.addNewRepository(),
-                                            true
-                                        )
-                                    )
+                    }
+                ) { _ ->
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        item {
+                            WideSearchField(
+                                modifier = Modifier.fillMaxWidth(),
+                                query = query,
+                                focusOnCompose = false,
+                                onClose = { viewModel.setSearchQuery("") },
+                                onQueryChanged = { newQuery ->
+                                    if (newQuery != query) viewModel.setSearchQuery(newQuery)
                                 }
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Phosphor.Plus,
-                                contentDescription = stringResource(id = R.string.add_repository)
                             )
                         }
-                    }
-                }
-            ) { _ ->
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    item {
-                        WideSearchField(
-                            modifier = Modifier.fillMaxWidth(),
-                            query = query,
-                            focusOnCompose = false,
-                            onClose = { viewModel.setSearchQuery("") },
-                            onQueryChanged = { newQuery ->
-                                if (newQuery != query) viewModel.setSearchQuery(newQuery)
-                            }
-                        )
-                    }
-                    item {
-                        PreferenceGroupHeading(heading = stringResource(id = R.string.enabled))
-                    }
-                    items(items = partedRepos.first, key = { it.id }) {
-                        RepositoryItem(
-                            modifier = Modifier.animateItem(),
-                            repository = it,
-                            onSwitch = { repo ->
-                                viewModel.viewModelScope.launch {
-                                    SyncWorker.enableRepo(repo, !repo.enabled)
+                        item {
+                            PreferenceGroupHeading(heading = stringResource(id = R.string.enabled))
+                        }
+                        items(items = partedRepos.first, key = { it.id }) {
+                            RepositoryItem(
+                                modifier = Modifier.animateItem(),
+                                repository = it,
+                                onSwitch = { repo ->
+                                    viewModel.viewModelScope.launch {
+                                        SyncWorker.enableRepo(repo, !repo.enabled)
+                                    }
+                                },
+                                onClick = { repo ->
+                                    scope.launch {
+                                        paneNavigator.navigateTo(
+                                            ListDetailPaneScaffoldRole.Detail,
+                                            SheetNavigationData(repo.id, false)
+                                        )
+                                    }
                                 }
-                            },
-                            onClick = { repo ->
-                                scope.launch {
-                                    paneNavigator.navigateTo(
-                                        ListDetailPaneScaffoldRole.Detail,
-                                        SheetNavigationData(repo.id, false)
-                                    )
+                            )
+                        }
+                        item {
+                            PreferenceGroupHeading(heading = stringResource(id = R.string.disabled))
+                        }
+                        items(items = partedRepos.second, key = { it.id }) {
+                            RepositoryItem(
+                                modifier = Modifier.animateItem(),
+                                repository = it,
+                                onSwitch = { repo ->
+                                    viewModel.viewModelScope.launch {
+                                        SyncWorker.enableRepo(repo, !repo.enabled)
+                                    }
+                                },
+                                onClick = { repo ->
+                                    scope.launch {
+                                        paneNavigator.navigateTo(
+                                            ListDetailPaneScaffoldRole.Detail,
+                                            SheetNavigationData(repo.id, false)
+                                        )
+                                    }
                                 }
-                            }
-                        )
-                    }
-                    item {
-                        PreferenceGroupHeading(heading = stringResource(id = R.string.disabled))
-                    }
-                    items(items = partedRepos.second, key = { it.id }) {
-                        RepositoryItem(
-                            modifier = Modifier.animateItem(),
-                            repository = it,
-                            onSwitch = { repo ->
-                                viewModel.viewModelScope.launch {
-                                    SyncWorker.enableRepo(repo, !repo.enabled)
-                                }
-                            },
-                            onClick = { repo ->
-                                scope.launch {
-                                    paneNavigator.navigateTo(
-                                        ListDetailPaneScaffoldRole.Detail,
-                                        SheetNavigationData(repo.id, false)
-                                    )
-                                }
-                            }
-                        )
-                    }
-                    item {
-                        Spacer(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(64.dp)
-                        )
+                            )
+                        }
+                        item {
+                            Spacer(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(64.dp)
+                            )
+                        }
                     }
                 }
             }

@@ -117,6 +117,7 @@ class SyncNotificationManager(
 
         // Use InboxStyle to show multiple repositories
         val inboxStyle = NotificationCompat.InboxStyle()
+        // TODO improve its formatting
         activeSyncsList.forEach { syncInfo ->
             val line = buildSyncLine(syncInfo)
             inboxStyle.addLine(line)
