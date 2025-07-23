@@ -142,7 +142,8 @@ fun LatestPage(viewModel: MainVM = koinNeoViewModel()) {
             contentPadding = PaddingValues(vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            if (!Preferences[Preferences.Key.HideNewApps]) item {
+            // TODO merge into one items-block
+            if (!Preferences[Preferences.Key.HideNewApps]) item(key = "newAppsTitle") {
                 Row(
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -153,7 +154,7 @@ fun LatestPage(viewModel: MainVM = koinNeoViewModel()) {
                     )
                 }
             }
-            if (!Preferences[Preferences.Key.HideNewApps]) item {
+            if (!Preferences[Preferences.Key.HideNewApps]) item(key = "newAppsCard") {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -211,7 +212,7 @@ fun LatestPage(viewModel: MainVM = koinNeoViewModel()) {
                     }
                 }
             }
-            item {
+            item(key = "updatedAppsTitle") {
                 Row(
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically

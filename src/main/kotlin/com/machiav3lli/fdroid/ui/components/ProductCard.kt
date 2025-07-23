@@ -12,7 +12,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -21,8 +22,6 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.manager.network.createIconUri
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 val PRODUCT_CARD_ICON = 48.dp
 val PRODUCT_CARD_HEIGHT = 64.dp
@@ -35,14 +34,14 @@ fun ProductCard(
     repo: Repository? = null,
     onUserClick: (ProductItem) -> Unit = {},
 ) {
-    val imageData by produceState<String?>(initialValue = null, product, repo) {
-        launch(Dispatchers.IO) {
-            value = createIconUri(
+    val imageData by remember(product, repo) {
+        mutableStateOf(
+            createIconUri(
                 product.icon,
                 repo?.address,
                 repo?.authentication
             ).toString()
-        }
+        )
     }
 
     ListItem(

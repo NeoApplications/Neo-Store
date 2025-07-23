@@ -9,7 +9,8 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -18,8 +19,6 @@ import com.machiav3lli.fdroid.manager.network.createScreenshotUri
 import com.machiav3lli.fdroid.ui.components.NetworkImage
 import com.machiav3lli.fdroid.ui.components.ScreenshotItem
 import com.machiav3lli.fdroid.ui.compose.CarouselIndicators
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 fun ScreenshotsPage(
@@ -35,13 +34,13 @@ fun ScreenshotsPage(
     ) {
         HorizontalPager(state = pagerState, beyondViewportPageCount = 3) { page ->
             val screenshot = screenshots[page]
-            val image by produceState<String?>(initialValue = null, screenshot) {
-                launch(Dispatchers.IO) {
-                    value = createScreenshotUri(
+            val image by remember(screenshot) {
+                mutableStateOf(
+                    createScreenshotUri(
                         screenshot.repository,
                         screenshot.screenShot,
                     ).toString()
-                }
+                )
             }
 
             NetworkImage(

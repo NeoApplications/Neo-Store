@@ -22,7 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,8 +44,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 fun ProductsListItem(
@@ -88,14 +86,14 @@ fun ProductItemContent(
     installed: Installed? = null,
     isExpanded: MutableState<Boolean> = mutableStateOf(false),
 ) {
-    val imageData by produceState<String?>(initialValue = null, product, repo) {
-        launch(Dispatchers.IO) {
-            value = createIconUri(
+    val imageData by remember(product, repo) {
+        mutableStateOf(
+            createIconUri(
                 product.icon,
                 repo?.address,
                 repo?.authentication
             ).toString()
-        }
+        )
     }
 
     ListItem(
@@ -161,14 +159,14 @@ fun ProductCarouselItem(
     onActionClick: (ProductItem, ActionState) -> Unit = { _, _ -> },
     onUserClick: (ProductItem) -> Unit = {},
 ) {
-    val imageData by produceState<String?>(initialValue = null, product, repo) {
-        launch(Dispatchers.IO) {
-            value = createIconUri(
+    val imageData by remember(product, repo) {
+        mutableStateOf(
+            createIconUri(
                 product.icon,
                 repo?.address,
                 repo?.authentication
             ).toString()
-        }
+        )
     }
 
     val action = when {

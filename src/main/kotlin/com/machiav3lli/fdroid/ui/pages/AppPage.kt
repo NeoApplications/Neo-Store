@@ -42,7 +42,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -351,14 +350,14 @@ fun AppPage(
 
     suggestedProductRepo?.let { (eProduct, repo) ->
         val product by derivedStateOf { eProduct.product }
-        val imageData by produceState<String?>(initialValue = null, product, repo) {
-            launch(Dispatchers.IO) {
-                value = createIconUri(
+        val imageData by remember(product, repo) {
+            mutableStateOf(
+                createIconUri(
                     product.icon,
                     repo.address,
                     repo.authentication
                 ).toString()
-            }
+            )
         }
 
         val screenshots by remember(product) {

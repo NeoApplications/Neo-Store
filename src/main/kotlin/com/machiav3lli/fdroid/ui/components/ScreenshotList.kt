@@ -17,19 +17,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.manager.network.createScreenshotUri
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.PlayCircle
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import androidx.core.net.toUri
 
 data class ScreenshotItem(
     val screenShot: String,
@@ -71,13 +70,13 @@ fun ScreenshotList(
             }
         }
         itemsIndexed(screenShots, key = { _, it -> it.screenShot.toString() }) { index, it ->
-            val image by produceState<String?>(initialValue = null, it) {
-                launch(Dispatchers.IO) {
-                    value = createScreenshotUri(
+            val image by remember(it) {
+                mutableStateOf(
+                    createScreenshotUri(
                         it.repository,
                         it.screenShot,
                     ).toString()
-                }
+                )
             }
 
             NetworkImage(

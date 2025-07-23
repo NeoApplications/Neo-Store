@@ -250,7 +250,8 @@ fun InstallsPage(viewModel: MainVM) {
             contentPadding = PaddingValues(vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            if (updatesAvailable) item {
+            // TODO merge into one items-block
+            if (updatesAvailable) item(key = "updatesCard") {
                 val cardColor by animateColorAsState(
                     targetValue = if (updatesVisible) MaterialTheme.colorScheme.surfaceContainerHighest
                     else Color.Transparent,
@@ -329,7 +330,7 @@ fun InstallsPage(viewModel: MainVM) {
                 }
             }
             if (isDownloading) {
-                item {
+                item(key = "downloadsTitle") {
                     Text(
                         modifier = Modifier.padding(8.dp),
                         text = stringResource(id = R.string.downloading)
@@ -346,7 +347,7 @@ fun InstallsPage(viewModel: MainVM) {
                     }
                 }
             }
-            item {
+            item(key = "installedTitle") {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -470,7 +471,7 @@ fun DownloadedPage(viewModel: MainVM) {
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        item {
+        item(key = "downloadedTitle") {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
