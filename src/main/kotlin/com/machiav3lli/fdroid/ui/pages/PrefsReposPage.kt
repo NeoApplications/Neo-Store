@@ -245,7 +245,7 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                         initEditMode = it.editMode,
                         onDismiss = {
                             scope.launch {
-                                paneNavigator.navigateTo(ListDetailPaneScaffoldRole.List)
+                                paneNavigator.navigateBack()
                             }
                         }
                     ) { newRepo -> viewModel.updateRepo(newRepo) }
