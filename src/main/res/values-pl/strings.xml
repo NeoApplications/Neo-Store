@@ -193,7 +193,7 @@
     <string name="installing">Instalacja</string>
     <string name="ignore_battery_optimization_not_supported">Twoja instalacja systemu Androida nie obsługuje wyłączenia optymalizacji baterii.</string>
     <string name="ignore_battery_optimization_title">Optymalizacja baterii</string>
-    <string name="ignore_battery_optimization_message">Aplikacja działa lepiej bez optymalizacji baterii i zapobiega awariom na Androidzie 12+.</string>
+    <string name="ignore_battery_optimization_message">Aplikacja działa lepiej, gdy optymalizacja baterii jest wyłączona, i nie ulega już awariom w systemie Android 12+.</string>
     <string name="dialog_refuse">Zachowaj</string>
     <string name="dialog_approve">Wyłącz</string>
     <string name="root_session_installer">Użyj instalatora sesji root</string>
@@ -325,7 +325,7 @@
     <string name="allowed_licenses">Dozwolone licencje</string>
     <string name="ignore_vulns">Ignoruj zgłoszone błędy w zabezpieczeniach</string>
     <string name="keep_install_notification_summary">Pokazuj powiadomienie po zainstalowaniu aplikacji.</string>
-    <string name="warning_disable_battery_optimization">Począwszy od Androida 12, aplikacja wymaga optymalizacji baterii, aby wykonać procesy w tle, takie jak synchronizacja i pobieranie. Jeśli zignorujesz to pozwolenie, jesteś pozostawiony sam sobie, a twoje raporty o awariach zostaną zignorowane.</string>
+    <string name="warning_disable_battery_optimization">Od wersji Android 12 aplikacja wymaga wyłączenia optymalizacji baterii, aby móc wykonywać procesy w tle, takie jak synchronizacja i pobieranie. Jeśli zignorujesz to uprawnienie, twoje raporty o awariach będą ignorowane.</string>
     <string name="repos_export">Wyeksportuj repozytoria</string>
     <string name="proxy_url">Adres URL</string>
     <string name="enabled">Włączone</string>
