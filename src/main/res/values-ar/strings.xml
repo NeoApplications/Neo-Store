@@ -194,7 +194,7 @@
     <string name="pending">قيد الانتظار</string>
     <string name="installing">التثبيت</string>
     <string name="ignore_battery_optimization_title">تحسين البطارية</string>
-    <string name="ignore_battery_optimization_message">يتصرف التطبيق بشكل أفضل دون تحسين البطارية ، ويمنع التعطل على Android 12+.</string>
+    <string name="ignore_battery_optimization_message">يعمل التطبيق بشكل أفضل عند تعطيل تحسين أداء البطارية، ولم يعد يتعطل على نظام Android 12+.</string>
     <string name="dialog_approve">إيقاف تشغيل توفير البطارية</string>
     <string name="ignore_battery_optimization_not_supported">لا يدعم تثبيت Android إيقاف تشغيل تحسين البطارية.</string>
     <string name="dialog_refuse">أبقه كما هو</string>
@@ -316,7 +316,7 @@
     <string name="ignore_vulns">تجاهل الثغرات الأمنية المبلغ عنها</string>
     <string name="disable_download_version_check_summary">يسمح بتنزيل الإصدارات القديمة من التطبيقات المثبتة. يمكن استخدامه مع رقعة \"letmedowngrade\" من Magisk.</string>
     <string name="ignore">تجاهل</string>
-    <string name="warning_disable_battery_optimization">بدءًا من Android 12 ، يتطلب التطبيق تحسين البطارية للقيام بعمليات في الخلفية مثل المزامنة والتنزيل. إذا تجاهلت هذا الإذن ، فستترك لوحدك وسيتم تجاهل تقارير الأعطال الخاصة بك.</string>
+    <string name="warning_disable_battery_optimization">بدءًا من Android 12 فصاعدًا، يتطلب التطبيق تعطيل تحسين البطارية من أجل تنفيذ عمليات الخلفية مثل المزامنة والتنزيل. إذا تجاهلت هذا الإذن، فستُترك لوحدك وسيتم تجاهل تقارير الأعطال الخاصة بك.</string>
     <string name="warning_show_notification">بدءا من Android 13 ، يتطلب التطبيق هذا الإذن لإعلامك بالعمليات المختلفة. إذا تجاهلت هذا الإذن، فلن تتلقى أي إشعارات.</string>
     <string name="disable_signature_check_summary">لا تتحقق مما إذا كان APK الذي تم تنزيله له نفس توقيع التطبيق المثبت.</string>
     <string name="disable_signature_check">تعطيل التحقق من التوقيع</string>
@@ -435,4 +435,13 @@
     <string name="action_start">هيا بنا!</string>
     <string name="mirror_rotation">تدوير المرايا</string>
     <string name="max_idle_connections_description">الحد الأقصى لعدد الاتصالات الخاملة عبر جميع العناوين التي سيتم الاحتفاظ بها نشطة.</string>
+    <string name="notify_channel_debug">التصحيح</string>
+    <string name="repo_index_timestamp">طابع زمن الفهرس</string>
+    <string name="rb_badge">شارة بناء قابلة للتكرار</string>
+    <string name="rb_provider">موفر سجلات البناء القابلة للتكرار</string>
+    <string name="rb_none">لايوجد موفر</string>
+    <string name="rb_izzyondroid">IzzOnDroid</string>
+    <string name="rb_bg443">bg443</string>
+    <string name="rb_obfusk">Obfusk</string>
+    <string name="syncing_repositories_FORMAT">مزامنة %d المستودعات</string>
 </resources>

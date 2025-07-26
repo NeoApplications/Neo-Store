@@ -182,7 +182,7 @@
     <string name="only_on_wifi_and_battery">仅在连接 Wi-Fi 且充电时</string>
     <string name="install_after_sync">自动更新</string>
     <string name="install_after_sync_summary">在浏览新的应用程序存储库后，安装所有新的版本。</string>
-    <string name="prefs_updated_apps">在“最近更新”下显示的应用数量\\</string>
+    <string name="prefs_updated_apps">在“最近更新”下显示的应用数量</string>
     <string name="prefs_new_apps">在“新应用”下显示的应用数量</string>
     <string name="new_repository">新仓库</string>
     <string name="default_tab">默认标签页</string>
