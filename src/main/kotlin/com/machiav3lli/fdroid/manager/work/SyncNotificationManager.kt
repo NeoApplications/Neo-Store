@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_BATCH_SYNCING
 import com.machiav3lli.fdroid.NeoActivity
@@ -19,13 +20,15 @@ import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.utils.extension.text.formatSize
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import java.util.concurrent.ConcurrentHashMap
 
 class SyncNotificationManager(
     private val context: Context,
     private val notificationManager: NotificationManagerCompat,
 ) {
     private val mutex = Mutex()
-    private val activeSyncs = mutableMapOf<Long, SyncProgressInfo>()
+    private val activeSyncs = ConcurrentHashMap<Long, SyncProgressInfo>()
+    private val langContext = ContextWrapperX.wrap(context)
 
     data class SyncProgressInfo(
         val repoId: Long,
@@ -99,7 +102,7 @@ class SyncNotificationManager(
             .setSortKey("0")
             .setSmallIcon(R.drawable.ic_sync)
             .setContentTitle(
-                context.getString(
+                langContext.getString(
                     R.string.syncing_repositories_FORMAT,
                     totalSyncs
                 )
@@ -111,18 +114,23 @@ class SyncNotificationManager(
             .setCategory(NotificationCompat.CATEGORY_PROGRESS)
             .addAction(
                 R.drawable.ic_cancel,
-                context.getString(R.string.cancel_all),
+                langContext.getString(R.string.cancel_all),
                 cancelAllPendingIntent
             )
 
         // Use InboxStyle to show multiple repositories
         val inboxStyle = NotificationCompat.InboxStyle()
-        // TODO improve its formatting
-        activeSyncsList.forEach { syncInfo ->
+        for (syncInfo in activeSyncsList.take(SYNC_MAX_LINES)) {
             val line = buildSyncLine(syncInfo)
             inboxStyle.addLine(line)
         }
-
+        if (activeSyncsList.size > SYNC_MAX_LINES) {
+            val summary = langContext.getString(
+                R.string.plus_more_FORMAT,
+                activeSyncsList.size - SYNC_MAX_LINES
+            )
+            inboxStyle.addLine(summary)
+        }
         builder.setStyle(inboxStyle)
 
         return builder.build()
@@ -131,7 +139,7 @@ class SyncNotificationManager(
     private fun buildSyncLine(syncInfo: SyncProgressInfo): String {
         return when (syncInfo.state) {
             SyncState.Enum.CONNECTING -> {
-                "${syncInfo.repoName}: ${context.getString(R.string.connecting)}"
+                "${syncInfo.repoName}: ${langContext.getString(R.string.connecting)}"
             }
 
             SyncState.Enum.SYNCING    -> {
@@ -147,25 +155,30 @@ class SyncNotificationManager(
                             }
                         }
 
-                        RepositoryUpdater.Stage.PROCESS  -> context.getString(
+                        RepositoryUpdater.Stage.PROCESS  -> langContext.getString(
                             R.string.processing_FORMAT,
                             "${progress.percentage}%"
                         )
 
-                        RepositoryUpdater.Stage.MERGE    -> context.getString(
+                        RepositoryUpdater.Stage.MERGE    -> langContext.getString(
                             R.string.merging_FORMAT,
                             "${progress.read} / ${progress.total}"
                         )
 
-                        RepositoryUpdater.Stage.COMMIT   -> context.getString(R.string.saving_details)
+                        RepositoryUpdater.Stage.COMMIT   -> langContext.getString(R.string.saving_details)
                     }
                     "${syncInfo.repoName}: $progressText"
                 } else {
-                    "${syncInfo.repoName}: ${context.getString(R.string.syncing)}"
+                    "${syncInfo.repoName}: ${langContext.getString(R.string.syncing)}"
                 }
             }
 
-            else                      -> "${syncInfo.repoName}: ${context.getString(R.string.syncing)}"
+            else                      -> "${syncInfo.repoName}: ${langContext.getString(R.string.syncing)}"
         }
+    }
+
+    companion object {
+        private const val SYNC_NOTIFICATION_TIMEOUT: Long = 5000
+        private const val SYNC_MAX_LINES: Int = 5
     }
 }

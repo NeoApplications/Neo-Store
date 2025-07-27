@@ -21,6 +21,7 @@ import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
+import io.ktor.util.collections.ConcurrentSet
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -29,7 +30,7 @@ class UpdatesNotificationManager(
     private val notificationManager: NotificationManagerCompat,
 ) {
     private val mutex = Mutex()
-    private val possibleUpdates = mutableSetOf<ProductItem>()
+    private val possibleUpdates = ConcurrentSet<ProductItem>()
     private val langContext = ContextWrapperX.wrap(context)
 
     suspend fun addUpdates(vararg products: ProductItem) = mutex.withLock {
@@ -63,7 +64,6 @@ class UpdatesNotificationManager(
     }
 
     private fun createSyncNotification(): Notification {
-        val maxUpdates = 5
         val possibleUpdatesList = possibleUpdates.toList()
         val totalUpdates = possibleUpdatesList.size
 
@@ -118,7 +118,7 @@ class UpdatesNotificationManager(
             )
 
         val inboxStyle = NotificationCompat.InboxStyle()
-        for (productItem in possibleUpdatesList.take(maxUpdates)) {
+        for (productItem in possibleUpdatesList.take(UPDATES_MAX_LINES)) {
             val stringBuilder = SpannableStringBuilder(productItem.name)
             stringBuilder.setSpan(
                 ForegroundColorSpan(Color.BLACK), 0, stringBuilder.length,
@@ -127,15 +127,19 @@ class UpdatesNotificationManager(
             stringBuilder.append(' ').append(productItem.version)
             inboxStyle.addLine(stringBuilder)
         }
-        if (totalUpdates > maxUpdates) {
+        if (totalUpdates > UPDATES_MAX_LINES) {
             val summary = langContext.getString(
                 R.string.plus_more_FORMAT,
-                totalUpdates - maxUpdates
+                totalUpdates - UPDATES_MAX_LINES
             )
             inboxStyle.addLine(summary)
         }
         builder.setStyle(inboxStyle)
 
         return builder.build()
+    }
+
+    companion object {
+        private const val UPDATES_MAX_LINES: Int = 5
     }
 }
