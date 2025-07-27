@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.data.database.dao
 
+import android.os.Build
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.RawQuery
@@ -51,6 +52,7 @@ import com.machiav3lli.fdroid.data.entity.Order
 import com.machiav3lli.fdroid.data.entity.Request
 import com.machiav3lli.fdroid.data.entity.Section
 import com.machiav3lli.fdroid.data.entity.UpdateCategory
+import com.machiav3lli.fdroid.utils.extension.android.Android
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -187,6 +189,8 @@ interface ProductDao : BaseDao<Product> {
         JOIN (
             SELECT p2.$ROW_PACKAGE_NAME,
                    p2.$ROW_REPOSITORY_ID,
+                   ${
+            if (Android.sdk(Build.VERSION_CODES.R)) """
                    ROW_NUMBER() OVER (
                        PARTITION BY p2.$ROW_PACKAGE_NAME 
                        ORDER BY COALESCE(
@@ -196,9 +200,48 @@ interface ProductDao : BaseDao<Product> {
                             AND rel.$ROW_REPOSITORY_ID = p2.$ROW_REPOSITORY_ID), 
                            0
                        ) DESC
-                   ) as rn
+                   ) as rn""" else """
+                   (SELECT COUNT(*)
+                    FROM $TABLE_PRODUCT p3
+                    JOIN $TABLE_REPOSITORY r3 ON p3.$ROW_REPOSITORY_ID = r3.$ROW_ID
+                    WHERE p3.$ROW_PACKAGE_NAME = p2.$ROW_PACKAGE_NAME
+                    AND r3.$ROW_ENABLED = 1
+                    AND p3.$ROW_REPOSITORY_ID NOT LIKE '%[^0-9]%'
+                    ${
+                if (filteredOutRepos.isNotEmpty()) "AND p3.$ROW_REPOSITORY_ID NOT IN (${
+                    filteredOutRepos.joinToString(
+                        ","
+                    )
+                })" else ""
+            }
+                    AND COALESCE(
+                        (SELECT MAX(rel.$ROW_VERSION_CODE) 
+                         FROM $TABLE_RELEASE rel 
+                         WHERE rel.$ROW_PACKAGE_NAME = p3.$ROW_PACKAGE_NAME 
+                         AND rel.$ROW_REPOSITORY_ID = p3.$ROW_REPOSITORY_ID), 
+                        0
+                    ) > COALESCE(
+                        (SELECT MAX(rel.$ROW_VERSION_CODE) 
+                         FROM $TABLE_RELEASE rel 
+                         WHERE rel.$ROW_PACKAGE_NAME = p2.$ROW_PACKAGE_NAME 
+                         AND rel.$ROW_REPOSITORY_ID = p2.$ROW_REPOSITORY_ID), 
+                        0
+                    )
+                   ) + 1 as rn
+                   """
+        }
             FROM $TABLE_PRODUCT p2
-        ) ranked_products ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = ranked_products.$ROW_PACKAGE_NAME 
+            JOIN $TABLE_REPOSITORY r2 ON p2.$ROW_REPOSITORY_ID = r2.$ROW_ID
+            WHERE r2.$ROW_ENABLED = 1
+            AND p2.$ROW_REPOSITORY_ID NOT LIKE '%[^0-9]%'
+            ${
+            if (filteredOutRepos.isNotEmpty()) "AND p2.$ROW_REPOSITORY_ID NOT IN (${
+                filteredOutRepos.joinToString(
+                    ","
+                )
+            })" else ""
+        }
+        ) ranked_products ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = ranked_products.$ROW_PACKAGE_NAME
                           AND $TABLE_PRODUCT.$ROW_REPOSITORY_ID = ranked_products.$ROW_REPOSITORY_ID
                           AND ranked_products.rn = 1
         JOIN $TABLE_REPOSITORY ON $TABLE_PRODUCT.$ROW_REPOSITORY_ID = $TABLE_REPOSITORY.$ROW_ID
@@ -209,8 +252,6 @@ interface ProductDao : BaseDao<Product> {
 
         // Filtering
         val whereConditions = mutableListOf<String>()
-        whereConditions.add("$TABLE_REPOSITORY.$ROW_ENABLED = 1")
-        whereConditions.add("$TABLE_PRODUCT.$ROW_REPOSITORY_ID NOT LIKE '%[^0-9]%'")
 
         if (author.isNotEmpty()) {
             whereConditions.add("$TABLE_PRODUCT.$ROW_AUTHOR = ?")
@@ -218,16 +259,6 @@ interface ProductDao : BaseDao<Product> {
         }
 
         //// Groups
-        if (filteredOutRepos.isNotEmpty()) {
-            whereConditions.add(
-                "$TABLE_PRODUCT.$ROW_REPOSITORY_ID NOT IN (${
-                    filteredOutRepos.joinToString(
-                        ","
-                    )
-                })"
-            )
-        }
-
         if (category != FILTER_CATEGORY_ALL) {
             whereConditions.add("$TABLE_CATEGORY.$ROW_NAME = ?")
             builder.addArgument(category)
@@ -317,7 +348,9 @@ interface ProductDao : BaseDao<Product> {
             builder.addArgument(minMin.toString())
         }
 
-        builder += "WHERE ${whereConditions.joinToString(" AND ")}"
+        if (whereConditions.isNotEmpty()) {
+            builder += "WHERE ${whereConditions.joinToString(" AND ")}"
+        }
 
         // Group By
         builder += "GROUP BY $TABLE_PRODUCT.$ROW_PACKAGE_NAME"
