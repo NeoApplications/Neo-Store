@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.manager.work
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.ServiceInfo
 import android.os.Build
@@ -70,6 +71,7 @@ class SyncWorker(
     private val notificationManager: SyncNotificationManager by inject()
     private val updatesManager: UpdatesNotificationManager by inject()
 
+    @SuppressLint("RestrictedApi")
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         task = SyncTask(repoId, request, repoName)
 
@@ -78,12 +80,24 @@ class SyncWorker(
         }.fold(
             onSuccess = {
                 handleCompletion()
+                notificationManager.updateSyncProgress(
+                    repoId = task.repoId,
+                    repoName = task.repoName,
+                    state = if (it is Result.Success) SyncState.Enum.FINISHING
+                    else SyncState.Enum.FAILED
+                )
                 it
             },
             onFailure = { e ->
                 Log.e(TAG_SYNC_ONETIME, "Sync failed: ${e.message}")
                 notificationManager.removeSyncProgress(repoId)
-                Result.failure(workDataOf(ARG_EXCEPTION to e.message))
+                Result.failure(
+                    getWorkData(
+                        state = SyncState.Enum.FAILED,
+                        succeeded = false,
+                        message = e.message ?: "",
+                    )
+                )
             }
         )
     }
@@ -126,11 +140,6 @@ class SyncWorker(
                         }
                     }
                 }.join()
-                notificationManager.updateSyncProgress(
-                    repoId = task.repoId,
-                    repoName = task.repoName,
-                    state = SyncState.Enum.FINISHING
-                )
                 return Result.success(
                     getWorkData(
                         state = SyncState.Enum.FINISHING,
@@ -141,11 +150,6 @@ class SyncWorker(
                 )
             } catch (throwable: Throwable) {
                 throwable.printStackTrace()
-                notificationManager.updateSyncProgress(
-                    repoId = task.repoId,
-                    repoName = task.repoName,
-                    state = SyncState.Enum.FAILED
-                )
                 return Result.failure(
                     getWorkData(
                         state = SyncState.Enum.FAILED,

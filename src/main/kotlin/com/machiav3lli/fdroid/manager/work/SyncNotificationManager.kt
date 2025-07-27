@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -42,7 +43,12 @@ class SyncNotificationManager(
         repoName: String,
         state: SyncState.Enum,
         progress: SyncWorker.Progress? = null
-    ) = mutex.withLock {
+    ) {
+        Log.d(
+            TAG,
+            "Update sync progress - Repo ID: $repoId, State: $state, Progress: ${progress?.percentage}%"
+        )
+
         when (state) {
             SyncState.Enum.CONNECTING,
             SyncState.Enum.SYNCING -> {
@@ -54,12 +60,21 @@ class SyncNotificationManager(
                 activeSyncs.remove(repoId)
             }
         }
-        updateNotification()
+
+        val currentActiveSyncs = ConcurrentHashMap(activeSyncs)
+
+        mutex.withLock {
+            if (currentActiveSyncs != activeSyncs) updateNotification()
+            else Log.d(TAG, "No need to update notification - Active syncs unchanged")
+        }
     }
 
-    suspend fun removeSyncProgress(repoId: Long) = mutex.withLock {
+    suspend fun removeSyncProgress(repoId: Long) {
+        Log.d(TAG, "Removing sync notification - Repo ID: $repoId")
         activeSyncs.remove(repoId)
-        updateNotification()
+        mutex.withLock {
+            updateNotification()
+        }
     }
 
     private fun updateNotification() {
@@ -112,6 +127,7 @@ class SyncNotificationManager(
             .setContentIntent(contentPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+            .setTimeoutAfter(SYNC_NOTIFICATION_TIMEOUT)
             .addAction(
                 R.drawable.ic_cancel,
                 langContext.getString(R.string.cancel_all),
@@ -178,6 +194,7 @@ class SyncNotificationManager(
     }
 
     companion object {
+        private const val TAG = "SyncNotificationManager"
         private const val SYNC_NOTIFICATION_TIMEOUT: Long = 5000
         private const val SYNC_MAX_LINES: Int = 5
     }
