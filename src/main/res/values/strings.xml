@@ -435,4 +435,8 @@
     <string name="rb_bg443">bg443</string>
     <string name="rb_obfusk">Obfusk</string>
     <string name="syncing_repositories_FORMAT">Syncing %d repositories</string>
+    <string name="new_sensitive_permission_title">New Sensitive Permission</string>
+    <string name="sensitive_permission_detected">App %1$s requests new sensitive permission</string>
+    <string name="sensitive_permission_detected_list">New sensitive permissions detected:</string>
+    <string name="sensitive_permission_error_DESC">Sensitive permission error</string>
 </resources>
