@@ -390,7 +390,7 @@
     <string name="hide_new_apps_description">Połącz nowe i ostatnio zaktualizowane aplikacje na pionowej liście karty „najnowsze”.</string>
     <string name="root_allow_installing_old_apps_description">Począwszy od Androida 14, nie jest już możliwe instalowanie aplikacji ukierunkowanych na znacznie starsze wersje Androida (Android 5.1 lub wcześniejsze). Ta opcja pozwala zastąpić to zachowanie.</string>
     <string name="download_show_dialog_summary">Wyświetlaj okna dialogowego z pytaniem, czy na pewno chcesz pobrać aplikację (przed rozpoczęciem pobierania).</string>
-    <string name="install_packages_permission_title">Uprawnienie do instalowania pakietów</string>
+    <string name="install_packages_permission_title">Pozwolenie na instalację aplikacji</string>
     <string name="install_packages_permission_message">Począwszy od Androida 8, aplikacje wymagają tego uprawnienia, aby móc instalować pakiety.</string>
     <string name="dark_high_contrast">Ciemny (wysoki kontrast)</string>
     <string name="black_medium_contrast">Czarny (średni kontrast)</string>
