@@ -53,8 +53,7 @@
     <string name="incompatible_features_DESC">缺少的功能。</string>
     <string name="incompatible_older_DESC">此版本比你设备上安装的版本旧。 请先卸载你已有的版本。</string>
     <string name="incompatible_platforms_DESC_FORMAT">你的 %1$s 平台不受支持。 支持的平台：%2$s。</string>
-    <string name="incompatible_signature_DESC">此版本和你设备上安装的版本使用了不同的证书来签名。
-\n请先卸载你已有的版本。</string>
+    <string name="incompatible_signature_DESC">此版本和你设备上安装的版本使用了不同的证书来签名。\n请先卸载你已有的版本。</string>
     <string name="incompatible_version">不兼容的版本</string>
     <string name="incompatible_versions">不兼容的版本</string>
     <string name="incompatible_versions_summary">显示与设备不兼容的版本。</string>
@@ -189,13 +188,13 @@
     <string name="pending">待定</string>
     <string name="installing">安装</string>
     <string name="ignore_battery_optimization_title">电池优化</string>
-    <string name="ignore_battery_optimization_message">在没有电池优化的情况下该应用程序表现更好，并且可以防止在 Android 12+上崩溃。</string>
+    <string name="ignore_battery_optimization_message">该应用程序在禁用电池优化时表现更好，并且不会在 Android 12+ 上崩溃。</string>
     <string name="ignore_battery_optimization_not_supported">您的 Android 不支持禁用电池优化。</string>
     <string name="dialog_refuse">不变</string>
     <string name="dialog_approve">关闭</string>
     <string name="root_session_installer_description">会话安装程序的性能比默认安装程序稍差，但避免了在 Android 13+ 中安装应用程序时出现问题。</string>
     <string name="root_session_installer">使用 root 会话安装程序</string>
-    <string name="not_safe_for_work">NSFW (可能包含令人不安的内容）</string>
+    <string name="not_safe_for_work">NSFW（可能包含令人不安的内容）</string>
     <string name="no_permissions_identified">没有请求的权限标识</string>
     <string name="no_action_possible">无法采取任何行动</string>
     <string name="show_screenshots">显示屏幕截图</string>
@@ -217,7 +216,7 @@
     <string name="group_telegram">我们的 Telegram 群组</string>
     <string name="group_matrix">我们的 Matrix 群组</string>
     <string name="min_sdk">最低 SDK 版本</string>
-    <string name="system_black">系统(黑色)</string>
+    <string name="system_black">系统（黑色）</string>
     <string name="categories">类别</string>
     <string name="sort_descending">下降</string>
     <string name="sort_ascending">上升</string>
@@ -312,7 +311,7 @@
     <string name="disable_signature_check_summary">不要检查下载的 APK 是否与已安装的应用具有相同的签名。</string>
     <string name="disable_download_version_check_summary">允许下载旧版本的已安装应用程序。可与 Magisk 的“letmedowngrade”补丁结合使用。</string>
     <string name="ignore">忽略</string>
-    <string name="warning_disable_battery_optimization">从 Android 12 开始，此应用需要电池优化才能执行同步和下载等后台进程。如果您不授予此权限，您就只能依靠自己了，您的崩溃报告将被忽略。</string>
+    <string name="warning_disable_battery_optimization">从 Android 12 开始，此应用需要禁用电池优化才能执行同步和下载等后台进程。如果您不授予此权限，您就只能依靠自己了，您的崩溃报告将被忽略。</string>
     <string name="disable_signature_check">禁用签名检查</string>
     <string name="keep_install_notification">保留安装通知</string>
     <string name="keep_install_notification_summary">保留成功安装应用的通知。</string>
@@ -395,18 +394,17 @@
     <string name="android_instead_of_sdk_summary">对于最低 SDK 版本和目标 SDK 版本，显示 Android 版本名称而不是 SDK 数字。</string>
     <string name="android_instead_of_sdk">显示 Android 版本而不是 SDK 版本</string>
     <string name="enable">启用</string>
-    <string name="last_successful_sync">最近更新：%s
-\n所有仓库：%s</string>
+    <string name="last_successful_sync">最近更新：%s\n所有仓库：%s</string>
     <string name="confirm_uninstall_DESC_FORMAT">您确定要卸载 %s 吗？</string>
     <string name="all">全部</string>
     <string name="erase_all">全部删除</string>
     <string name="file_size_error_DESC">文件大小超出预期大小。</string>
-    <string name="disable_certificate_check">禁用SSL证书检查（需要重启应用）</string>
+    <string name="disable_certificate_check">禁用 SSL 证书检查（需要重启应用）</string>
     <string name="disable_certificate_check_summary">在自签名或证书无效的情况下可能会有用（某些弃用的存储库需要）。</string>
     <string name="downloading_error_FORMAT">下载 %s 时发生错误</string>
     <string name="validation_error_FORMAT">验证错误：%s</string>
     <string name="installing_error_FORMAT">安装 %s 时发生错误</string>
-    <string name="installing_error_incompatible_DESC">安装存在不相容。</string>
+    <string name="installing_error_incompatible_DESC">安装不兼容。</string>
     <string name="installing_error_blocked_DESC">安装被停止。</string>
     <string name="installing_error_timeout_DESC">安装超时。</string>
     <string name="installing_error_invalid_DESC">无效的安装。</string>
@@ -419,5 +417,17 @@
     <string name="about_build_FORMAT">%s (构建 %s)</string>
     <string name="prefs_layout">布局</string>
     <string name="prefs_connection">网络连接</string>
-    <string name="initial_sync_repositories">你想同步预置仓库吗（F-Droid 官方，IzzyOnDroid 及 Guardian Project）？</string>
+    <string name="initial_sync_repositories">你想同步预置存储库吗（F-Droid 官方，IzzyOnDroid 及 Guardian Project）？</string>
+    <string name="action_start">开始！</string>
+    <string name="max_idle_connections_description">所有地址上需要保持活跃的空闲连接的最大数量。</string>
+    <string name="mirror_rotation">镜像旋转</string>
+    <string name="notify_channel_debug">调试</string>
+    <string name="repo_index_timestamp">索引时间戳</string>
+    <string name="rb_badge">可重复构建标志</string>
+    <string name="rb_provider">可重复构建日志提供方</string>
+    <string name="rb_none">无提供方</string>
+    <string name="rb_izzyondroid">IzzyOnDroid</string>
+    <string name="syncing_repositories_FORMAT">正同步 %d 个存储库</string>
+    <string name="index_v2">启用第二代索引（Index-V2）</string>
+    <string name="index_v2_summary">允许请求第二代索引（Index-V2）作为主索引。目前仍处于实验阶段，有利有弊。</string>
 </resources>
