@@ -58,6 +58,9 @@ class IndexV2Parser(private val repositoryId: Long, private val callback: Callba
     }
 
     class ParsingException(message: String, cause: Throwable? = null) : Exception(message, cause)
+    class BaseParsingException : Throwable("Exception while parsing the base index")
+    class DiffParsingException : Throwable("Exception while parsing the index diff")
+
     companion object {
         private val json = Json {
             ignoreUnknownKeys = true

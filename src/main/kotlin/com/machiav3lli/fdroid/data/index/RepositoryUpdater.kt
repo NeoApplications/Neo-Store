@@ -25,6 +25,7 @@ import com.machiav3lli.fdroid.data.index.v2.IndexV2Parser
 import com.machiav3lli.fdroid.data.index.v2.IndexV2Parser.Companion.hasCachedIndex
 import com.machiav3lli.fdroid.data.index.v2.findLocalized
 import com.machiav3lli.fdroid.manager.network.Downloader
+import com.machiav3lli.fdroid.manager.work.SyncWorker
 import com.machiav3lli.fdroid.utils.CoroutineUtils
 import com.machiav3lli.fdroid.utils.ProgressInputStream
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
@@ -510,9 +511,35 @@ object RepositoryUpdater : KoinComponent {
                     }
                 }
             } catch (e: Exception) {
-                throw when (e) {
-                    is UpdateException, is InterruptedException -> e
-                    else                                        -> UpdateException(
+                when (e) {
+                    is UpdateException,
+                    is InterruptedException,
+                         -> throw e
+
+                    is IndexV2Parser.ParsingException,
+                         -> when (e.cause) {
+                        is IndexV2Parser.BaseParsingException -> {
+                            Cache.getIndexV2File(context, repository.id).delete()
+                            SyncWorker.enqueueManual(Pair(repository.id, repository.name))
+                            false
+                        }
+
+                        is IndexV2Parser.DiffParsingException -> {
+                            throw UpdateException(
+                                ErrorType.PARSING,
+                                e.message.orEmpty(),
+                                e.cause ?: e
+                            )
+                        }
+
+                        else                                  -> throw UpdateException(
+                            ErrorType.PARSING,
+                            e.message.orEmpty(),
+                            e.cause ?: e
+                        )
+                    }
+
+                    else -> throw UpdateException(
                         ErrorType.PARSING,
                         "Error parsing index",
                         e

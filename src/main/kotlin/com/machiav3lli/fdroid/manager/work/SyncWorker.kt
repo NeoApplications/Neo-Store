@@ -272,7 +272,7 @@ class SyncWorker(
             return builder.build()
         }
 
-        private fun enqueueManual(vararg repos: Pair<Long, String>) {
+        fun enqueueManual(vararg repos: Pair<Long, String>) {
             repos.map { (repoId, repoName) ->
 
                 when (repoId) {
