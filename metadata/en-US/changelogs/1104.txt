@@ -1,0 +1,7 @@
+Add: Support for F-Droid's Index-V2 and incremental updates
+Add: Support for OEM/ROM-preset repositories
+Add: RB badges to release items
+Fix: Exporting extras
+Update: Improve performance of the main products' query
+Update: Unify sync notifications using sync notification manager
+plus many more in over 210 commits & 100 translation contributions

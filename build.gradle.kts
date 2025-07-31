@@ -29,8 +29,8 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1103
-        versionName = "1.1.0-rc01"
+        versionCode = 1104
+        versionName = "1.1.0"
         buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
         buildConfigField("String[]", "DETECTED_LOCALES", langsListString)
     }
