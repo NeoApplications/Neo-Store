@@ -8,7 +8,6 @@ import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.decodeFromStream
-import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.longOrNull
 import java.io.File
@@ -30,8 +29,7 @@ class IndexV2Merger(private val baseFile: File) : AutoCloseable {
         diffStream: InputStream,
     ): Boolean {
         val baseJson = baseFile.readText()
-        val diffJson = diffStream.bufferedReader().use { it.readText() }
-        val mergedJson = merge(baseJson, diffJson)
+        val mergedJson = merge(baseFile, diffStream)
 
         // Save the merged result
         Log.d("IndexV2Merger", "Merged a diff JSON into the base: ${mergedJson != baseJson}")
@@ -42,21 +40,41 @@ class IndexV2Merger(private val baseFile: File) : AutoCloseable {
         return mergedJson != baseJson
     }
 
-    fun merge(baseJson: String, diffJson: String): String {
-        val baseElement = json.parseToJsonElement(baseJson)
-        val diffElement = json.parseToJsonElement(diffJson)
+    fun merge(baseFile: File, diffJson: InputStream): String {
+        val baseJson = baseFile.inputStream()
+        val baseElement = runCatching { json.decodeFromStream<JsonElement>(baseJson) }
+            .fold(
+                onSuccess = { it },
+                onFailure = {
+                    throw IndexV2Parser.ParsingException(
+                        it.message.orEmpty(),
+                        IndexV2Parser.BaseParsingException()
+                    )
+                }
+            )
+        val diffElement = runCatching { json.decodeFromStream<JsonElement>(diffJson) }
+            .fold(
+                onSuccess = { it },
+                onFailure = {
+                    throw IndexV2Parser.ParsingException(
+                        it.message.orEmpty(),
+                        IndexV2Parser.DiffParsingException()
+                    )
+                }
+            )
 
         // No need to apply a diff older or same as base
         val baseTimestamp = getTimestamp(baseElement)
         val diffTimestamp = getTimestamp(diffElement)
-        if (diffTimestamp <= baseTimestamp) return baseJson
+        if (diffTimestamp <= baseTimestamp) return baseFile.readText()
 
         // Apply the merge patch
         val mergedElement = mergePatch(baseElement, diffElement)
 
         // Ensure the timestamp is updated
         val mergedObj = mergedElement.jsonObject.toMutableMap()
-        val repoObj = (mergedObj["repo"] as? JsonObject)?.toMutableMap() ?: return baseJson
+        val repoObj =
+            (mergedObj["repo"] as? JsonObject)?.toMutableMap() ?: return baseFile.readText()
         repoObj["timestamp"] = JsonPrimitive(diffTimestamp)
 
         return json.encodeToString(JsonObject(mergedObj + ("repo" to JsonObject(repoObj))))
@@ -79,7 +97,7 @@ class IndexV2Merger(private val baseFile: File) : AutoCloseable {
 
             when (value) {
                 // Remove null objects
-                is JsonNull   -> {
+                is JsonNull -> {
                     result.remove(key)
                 }
 
@@ -95,7 +113,7 @@ class IndexV2Merger(private val baseFile: File) : AutoCloseable {
                 }
 
                 // Replace primitive values entirely
-                else          -> {
+                else -> {
                     result[key] = value
                 }
             }

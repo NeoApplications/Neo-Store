@@ -2,9 +2,11 @@ package com.machiav3lli.fdroid.data.index.v2
 
 import android.R.attr.version
 import android.content.Context
+import android.util.Log
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
+import com.machiav3lli.fdroid.utils.getLocaleDateString
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -71,7 +73,12 @@ class IndexV2Parser(private val repositoryId: Long, private val callback: Callba
          */
         fun hasCachedIndex(context: Context, repoId: Long): Boolean = runCatching {
             val cacheFile = Cache.getIndexV2File(context, repoId).apply {
-                val indexBase = json.decodeFromStream<IndexV2>(inputStream())
+                json.decodeFromStream<IndexV2>(inputStream()).let {
+                    Log.d(
+                        "IndexV2Parser",
+                        "Current existing index timestamp ${context.getLocaleDateString(it.repo.timestamp)}"
+                    )
+                }
             }
             return cacheFile.exists() && cacheFile.length() > 0
         }.fold(
