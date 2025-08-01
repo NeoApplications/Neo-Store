@@ -205,6 +205,42 @@ fun Context.reportSyncFail(repoId: Long, state: SyncState.Failed) {
     )
 }
 
+fun Context.notifySensitivePermissionsChanged(packageName: String, newPermissions: Set<String>) {
+    val intent = Intent(this, NeoActivity::class.java).apply {
+        action = NeoActivity.ACTION_UPDATES
+        putExtra("EXTRA_SENSITIVE_PERMISSIONS", newPermissions.toTypedArray())
+        putExtra("EXTRA_PACKAGE_NAME", packageName)
+    }
+
+    val pendingIntent = PendingIntent.getActivity(
+        this,
+        packageName.hashCode(),
+        intent,
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+
+    val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_INSTALLER)
+        .setSmallIcon(R.drawable.ic_new_releases)
+        .setContentTitle(getString(R.string.new_sensitive_permission_title))
+        .setContentText(getString(R.string.sensitive_permission_detected, packageName))
+        .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setColor(
+            ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
+                .getColorFromAttr(android.R.attr.textColorTertiary).defaultColor
+        )
+        .setAutoCancel(true)
+        .setContentIntent(pendingIntent)
+        .setStyle(
+            NotificationCompat.InboxStyle().also { style ->
+            style.addLine(getString(R.string.sensitive_permission_detected_list))
+            newPermissions.forEach { style.addLine("• $it") }
+         }
+        )
+        .build()
+
+    notificationManager.notify("SENSITIVE-$packageName", NOTIFICATION_ID_INSTALLER + 99, notification)
+}
+
 fun NotificationCompat.Builder.updateWithError(
     context: Context,
     state: DownloadState,
@@ -229,6 +265,7 @@ fun NotificationCompat.Builder.updateWithError(
                     ValidationError.SIGNATURE   -> R.string.invalid_signature_error_DESC
                     ValidationError.PERMISSIONS -> R.string.invalid_permissions_error_DESC
                     ValidationError.FILE_SIZE   -> R.string.file_size_error_DESC
+                    ValidationError.SENSITIVE_PERMISSION -> R.string.sensitive_permission_error_DESC
                     ValidationError.UNKNOWN     -> R.string.unknown_error_DESC
                     ValidationError.NONE        -> -1
                 }

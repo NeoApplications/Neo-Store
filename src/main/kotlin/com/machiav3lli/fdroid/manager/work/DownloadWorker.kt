@@ -55,6 +55,7 @@ import com.machiav3lli.fdroid.utils.extension.text.hex
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.getDownloadFolder
 import com.machiav3lli.fdroid.utils.isDownloadExternal
+import com.machiav3lli.fdroid.utils.notifySensitivePermissionsChanged
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -160,7 +161,7 @@ class DownloadWorker(
             }
 
             if (!result.success) {
-                Log.i(this::javaClass.name, "Worker failure by error ${result.statusCode}")
+                Log.i("DownloadWorker", "Worker failure by error ${result.statusCode}")
                 return@coroutineScope Result.failure(getWorkData(task, result))
             }
 
@@ -169,18 +170,18 @@ class DownloadWorker(
                 val releaseFile =
                     Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
                 partialRelease.renameTo(releaseFile)
-                Log.i(this::javaClass.name, "Worker success with result: $result")
+                Log.i("DownloadWorker", "Worker success with result: $result")
                 finalize(task)
                 Result.success(getWorkData(task, result))
             } else {
                 partialRelease.delete()
-                Log.i(this::javaClass.name, "Worker failure by validation error: $validationError")
+                Log.i("DownloadWorker", "Worker failure by validation error: $validationError")
                 Result.failure(getWorkData(task, result, validationError))
             }
         } catch (e: DownloadSizeException) {
-            Log.e(this::javaClass.name, "Download size error: ${e.message}")
+            Log.e("DownloadWorker", "Download size error: ${e.message}", e)
             partialRelease.delete()
-            Result.failure(
+            return@coroutineScope Result.failure(
                 getWorkData(
                     task,
                     Downloader.Result(HttpStatusCode.BadRequest, "", ""),
@@ -188,8 +189,8 @@ class DownloadWorker(
                 )
             )
         } catch (e: Exception) {
-            Log.e(this::javaClass.name, "Download error: ${e.message}")
-            Result.failure(
+            Log.e("DownloadWorker", "Download error: ${e.message}", e)
+            return@coroutineScope Result.failure(
                 getWorkData(
                     task,
                     Downloader.Result(HttpStatusCode.InternalServerError, "", ""),
@@ -316,7 +317,8 @@ class DownloadWorker(
                             PackageManager.GET_RECEIVERS or
                             PackageManager.GET_INSTRUMENTATION or
                             PackageManager.GET_SIGNATURES or
-                            PackageManager.GET_SIGNING_CERTIFICATES
+                            PackageManager.GET_SIGNING_CERTIFICATES or
+                            PackageManager.GET_PERMISSIONS
                 )
             }.getOrNull()?.run {
                 if (packageName != task.packageName ||
@@ -334,11 +336,34 @@ class DownloadWorker(
                         )
                         ValidationError.SIGNATURE
                     } else {
-                        val permissions =
-                            permissions?.asSequence().orEmpty().map { it.name }.toSet()
+                        val permissions = permissions
+                            ?.asSequence()
+                            .orEmpty()
+                            .map { it.name }
+                            .filter { it.startsWith("android.permission.") }
+                            .toSet()
                         if (!task.release.permissions.containsAll(permissions)) {
                             ValidationError.PERMISSIONS
                         } else {
+                            val oldPermissions = try {
+                                val installedInfo = packageManager.getPackageInfo(task.packageName, PackageManager.GET_PERMISSIONS)
+                                installedInfo.requestedPermissions
+                                    ?.toSet()
+                                    .orEmpty()
+                                    .toSet()
+                            } catch (e: PackageManager.NameNotFoundException) {
+                                emptySet()
+                            }
+
+                            val addedPermissions = task.release.permissions.minus(oldPermissions)
+                            val addedSensitivePermissions = addedPermissions.intersect(SENSITIVE_PERMISSIONS)
+
+                            if (addedSensitivePermissions.isNotEmpty()) {
+                                Log.i("DownloadWorker", "New sensitive permissions detected: $addedSensitivePermissions")
+                                langContext.notifySensitivePermissionsChanged(task.packageName, addedSensitivePermissions)
+                                // return ValidationError.SENSITIVE_PERMISSION
+                            }
+
                             null
                         }
                     }
@@ -357,6 +382,19 @@ class DownloadWorker(
     // TODO fun onFailure(data: Data) : Result {}
 
     companion object {
+        val SENSITIVE_PERMISSIONS = setOf(
+            android.Manifest.permission.CAMERA,
+            android.Manifest.permission.RECORD_AUDIO,
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.READ_CONTACTS,
+            android.Manifest.permission.SEND_SMS,
+            android.Manifest.permission.READ_PHONE_STATE,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.READ_CALL_LOG,
+            android.Manifest.permission.BODY_SENSORS,
+        )
+
         fun enqueue(
             packageName: String,
             label: String,

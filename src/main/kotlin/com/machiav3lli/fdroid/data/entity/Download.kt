@@ -150,7 +150,7 @@ sealed class DownloadState {
     }
 }
 
-enum class ValidationError { NONE, INTEGRITY, FORMAT, METADATA, SIGNATURE, PERMISSIONS, FILE_SIZE, UNKNOWN }
+enum class ValidationError { NONE, INTEGRITY, FORMAT, METADATA, SIGNATURE, PERMISSIONS, FILE_SIZE, SENSITIVE_PERMISSION, UNKNOWN }
 
 sealed class ErrorType {
     data object Network : ErrorType()
