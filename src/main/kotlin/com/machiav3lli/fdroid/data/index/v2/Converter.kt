@@ -100,6 +100,7 @@ internal fun IndexV2.Version.toRelease(
     platforms = manifest.nativecode,
     incompatibilities = emptyList(),
     isCompatible = true,
+    releaseChannels = releaseChannels,
 )
 
 internal fun <T> Localized<T>?.findLocalized(fallback: T): T =
