@@ -61,6 +61,8 @@ open class Release(
     val incompatibilities: List<Incompatibility>,
     @ColumnInfo(defaultValue = "0")
     val isCompatible: Boolean,
+    @ColumnInfo(defaultValue = "[]")
+    val releaseChannels: List<String> = emptyList(),
 ) {
     @Serializable
     sealed class Incompatibility {
@@ -129,6 +131,7 @@ open class Release(
         platforms = platforms,
         incompatibilities = incompatibilities,
         isCompatible = incompatibilities.isEmpty(),
+        releaseChannels = releaseChannels,
     )
 }
 
@@ -160,6 +163,7 @@ class ReleaseTemp(
     platforms: List<String>,
     incompatibilities: List<Incompatibility>,
     isCompatible: Boolean,
+    releaseChannels: List<String>,
 ) : Release(
     packageName = packageName,
     repositoryId = repositoryId,
@@ -187,6 +191,7 @@ class ReleaseTemp(
     platforms = platforms,
     incompatibilities = incompatibilities,
     isCompatible = isCompatible,
+    releaseChannels = releaseChannels,
 )
 
 fun Release.asReleaseTemp() = ReleaseTemp(
@@ -216,4 +221,5 @@ fun Release.asReleaseTemp() = ReleaseTemp(
     platforms = platforms,
     incompatibilities = incompatibilities,
     isCompatible = isCompatible,
+    releaseChannels = releaseChannels,
 )

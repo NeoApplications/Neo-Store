@@ -93,6 +93,7 @@ data class IndexV2(
         val manifest: Manifest,
         val whatsNew: Localized<String>? = null,
         val antiFeatures: IdMap<Localized<String>> = emptyMap(),
+        val releaseChannels: List<String> = emptyList(),
     )
 
     @Serializable
