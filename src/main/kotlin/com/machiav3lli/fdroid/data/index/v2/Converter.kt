@@ -120,7 +120,8 @@ private fun <T> Localized<T>?.getBestLocale(localeList: LocaleListCompat): T? {
                 // split away region tag and try language only
                 val langTag = defLocale.language
                 // try language, then English and then just take the first of the list
-                getOrStartsWith(langTag)
+                if (langTag == "en") get("en-US") ?: get("en-GB") ?: getOrStartsWith(langTag)
+                else getOrStartsWith(langTag)
             })
         }
         // now try first matched system tag (usually has region tag, e.g. de-DE)
@@ -134,6 +135,7 @@ private fun <T> Localized<T>?.getBestLocale(localeList: LocaleListCompat): T? {
                 // try language, then English and then just take the first of the list
                 getOrStartsWith(langTag)
                     ?: get("en-US")
+                    ?: get("en-GB")
                     ?: getOrStartsWith("en")
                     ?: entries.first().value
             })
