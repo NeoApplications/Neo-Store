@@ -595,7 +595,12 @@ fun AppPage(
                                     heading = stringResource(id = R.string.changes),
                                     preExpanded = true,
                                 ) {
-                                    HtmlTextBlock(shortText = product.whatsNew)
+                                    Text(
+                                        product.whatsNew.trim { it <= ' ' },
+                                        modifier = Modifier
+                                            .padding(12.dp)
+                                            .fillMaxWidth()
+                                    )
                                 }
                             }
 
