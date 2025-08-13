@@ -19,10 +19,14 @@
 
 </div>
 
+<div align="center">
+
 [<img src="get_iod.svg" alt="Get it on IzzyOnDroid" width="24%" align="center">](https://apt.izzysoft.de/fdroid/index/apk/com.machiav3lli.fdroid)
 [<img src="get_fdroid.svg" alt="Get it on F-Droid" width="24%" align="center">](https://f-droid.org/packages/com.machiav3lli.fdroid)
 [<img src="get_codeberg.svg" alt="Get it on Codeberg" width="24%" align="center">](https://codeberg.org/NeoApplications/Neo-Store/releases)
 [<img src="get_github.svg" alt="Get it on GitHub" width="24%" align="center">](https://github.com/NeoApplications/Neo-Store/releases)
+
+</div>
 
 [![Neo Applications Banner](neo_banner.png)](https://github.com/NeoApplications)
 
