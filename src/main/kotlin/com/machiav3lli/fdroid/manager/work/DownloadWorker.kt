@@ -371,6 +371,7 @@ class DownloadWorker(
                                     )
                                     langContext.notifySensitivePermissionsChanged(
                                         task.packageName,
+                                        task.name,
                                         addedSensitivePermissions
                                     )
                                     // TODO consider blocking install till confirmed by user

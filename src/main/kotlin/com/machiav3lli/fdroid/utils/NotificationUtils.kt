@@ -205,11 +205,14 @@ fun Context.reportSyncFail(repoId: Long, state: SyncState.Failed) {
     )
 }
 
-fun Context.notifySensitivePermissionsChanged(packageName: String, newPermissions: Set<String>) {
+fun Context.notifySensitivePermissionsChanged(
+    packageName: String,
+    label: String,
+    newPermissions: Set<String>
+) {
     val intent = Intent(this, NeoActivity::class.java).apply {
-        action = NeoActivity.ACTION_UPDATES
-        putExtra("EXTRA_SENSITIVE_PERMISSIONS", newPermissions.toTypedArray())
-        putExtra("EXTRA_PACKAGE_NAME", packageName)
+        action = Intent.ACTION_SHOW_APP_INFO
+        putExtra(Intent.EXTRA_PACKAGE_NAME, packageName)
     }
 
     val pendingIntent = PendingIntent.getActivity(
@@ -220,9 +223,9 @@ fun Context.notifySensitivePermissionsChanged(packageName: String, newPermission
     )
 
     val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_INSTALLER)
-        .setSmallIcon(R.drawable.ic_new_releases)
-        .setContentTitle(getString(R.string.new_sensitive_permission_title))
-        .setContentText(getString(R.string.sensitive_permission_detected, packageName))
+        .setSmallIcon(android.R.drawable.stat_sys_warning)
+        .setContentTitle(label)
+        .setContentText(getString(R.string.sensitive_permission_detected_FORMAT, label))
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setColor(
             ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
@@ -232,13 +235,17 @@ fun Context.notifySensitivePermissionsChanged(packageName: String, newPermission
         .setContentIntent(pendingIntent)
         .setStyle(
             NotificationCompat.InboxStyle().also { style ->
-            style.addLine(getString(R.string.sensitive_permission_detected_list))
-            newPermissions.forEach { style.addLine("• $it") }
-         }
+                style.addLine(getString(R.string.sensitive_permission_detected_list))
+                newPermissions.forEach { style.addLine("• $it") }
+            }
         )
         .build()
 
-    notificationManager.notify("SENSITIVE-$packageName", NOTIFICATION_ID_INSTALLER + 99, notification)
+    notificationManager.notify(
+        "SENSITIVE-$packageName",
+        NOTIFICATION_ID_INSTALLER + 99,
+        notification
+    )
 }
 
 fun NotificationCompat.Builder.updateWithError(
