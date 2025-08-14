@@ -356,7 +356,7 @@ class DownloadWorker(
                                         .orEmpty()
                                         .toSet()
                                 } catch (e: PackageManager.NameNotFoundException) {
-                                    emptySet()
+                                    return@run null
                                 }
 
                                 val addedPermissions =
