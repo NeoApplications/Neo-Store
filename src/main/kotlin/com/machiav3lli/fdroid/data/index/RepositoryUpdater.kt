@@ -471,7 +471,7 @@ object RepositoryUpdater : KoinComponent {
                 val workRepository = changedRepository ?: repository
                 // TODO add better validation for Index-V2
                 when {
-                    workRepository.timestamp < repository.timestamp                         -> {
+                    workRepository.timestamp < repository.timestamp -> {
                         throw UpdateException(
                             ErrorType.VALIDATION, "New index is older than current index: " +
                                     "${workRepository.timestamp} < ${repository.timestamp}"
@@ -503,7 +503,7 @@ object RepositoryUpdater : KoinComponent {
                         true
                     }
 
-                    else                                                                    -> {
+                    else                                            -> {
                         val valid = workRepository.fingerprint.isNotBlank()
                         commitChanges(workRepository, workRepository.fingerprint, callback)
                         rollback = !valid

@@ -81,7 +81,7 @@ class DownloadWorker(
             task = getTask(inputData)
 
             if (Cache.getReleaseFile(applicationContext, task.release.cacheFileName).exists()) {
-                Log.i(this::javaClass.name, "Running publish success from fun enqueue")
+                Log.i(TAG, "Running publish success from fun enqueue")
                 finalize(task)
                 return@withContext Result.success(getWorkData(task, null))
             }
@@ -89,7 +89,7 @@ class DownloadWorker(
             val result = handleDownload(task)
             result
         } catch (e: Exception) {
-            Log.i(this::javaClass.name, e.message ?: "download failed")
+            Log.i(TAG, e.message ?: "download failed")
             val result = Result.failure() // TODO (workDataOf(ARG_ERROR_MESSAGE to e.message))
             result
         }
@@ -161,7 +161,7 @@ class DownloadWorker(
             }
 
             if (!result.success) {
-                Log.i("DownloadWorker", "Worker failure by error ${result.statusCode}")
+                Log.i(TAG, "Worker failure by error ${result.statusCode}")
                 return@coroutineScope Result.failure(getWorkData(task, result))
             }
 
@@ -170,16 +170,16 @@ class DownloadWorker(
                 val releaseFile =
                     Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
                 partialRelease.renameTo(releaseFile)
-                Log.i("DownloadWorker", "Worker success with result: $result")
+                Log.i(TAG, "Worker success with result: $result")
                 finalize(task)
                 Result.success(getWorkData(task, result))
             } else {
                 partialRelease.delete()
-                Log.i("DownloadWorker", "Worker failure by validation error: $validationError")
+                Log.i(TAG, "Worker failure by validation error: $validationError")
                 Result.failure(getWorkData(task, result, validationError))
             }
         } catch (e: DownloadSizeException) {
-            Log.e("DownloadWorker", "Download size error: ${e.message}", e)
+            Log.e(TAG, "Download size error: ${e.message}", e)
             partialRelease.delete()
             return@coroutineScope Result.failure(
                 getWorkData(
@@ -189,7 +189,7 @@ class DownloadWorker(
                 )
             )
         } catch (e: Exception) {
-            Log.e("DownloadWorker", "Download error: ${e.message}", e)
+            Log.e(TAG, "Download error: ${e.message}", e)
             return@coroutineScope Result.failure(
                 getWorkData(
                     task,
@@ -331,7 +331,7 @@ class DownloadWorker(
                         && !Preferences[Preferences.Key.DisableSignatureCheck]
                     ) {
                         Log.e(
-                            this::class.java.simpleName,
+                            TAG,
                             "Signature check failed\nDownloaded package signatures: $signatures\nExpected signature: ${task.release.signature}"
                         )
                         ValidationError.SIGNATURE

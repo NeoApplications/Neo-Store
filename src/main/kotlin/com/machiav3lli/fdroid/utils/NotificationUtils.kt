@@ -266,15 +266,15 @@ fun NotificationCompat.Builder.updateWithError(
             R.string.validation_error_FORMAT,
             context.getString(
                 when (errorType) {
-                    ValidationError.INTEGRITY   -> R.string.integrity_check_error_DESC
-                    ValidationError.FORMAT      -> R.string.file_format_error_DESC
-                    ValidationError.METADATA    -> R.string.invalid_metadata_error_DESC
-                    ValidationError.SIGNATURE   -> R.string.invalid_signature_error_DESC
-                    ValidationError.PERMISSIONS -> R.string.invalid_permissions_error_DESC
-                    ValidationError.FILE_SIZE   -> R.string.file_size_error_DESC
+                    ValidationError.INTEGRITY            -> R.string.integrity_check_error_DESC
+                    ValidationError.FORMAT               -> R.string.file_format_error_DESC
+                    ValidationError.METADATA             -> R.string.invalid_metadata_error_DESC
+                    ValidationError.SIGNATURE            -> R.string.invalid_signature_error_DESC
+                    ValidationError.PERMISSIONS          -> R.string.invalid_permissions_error_DESC
+                    ValidationError.FILE_SIZE            -> R.string.file_size_error_DESC
                     ValidationError.SENSITIVE_PERMISSION -> R.string.sensitive_permission_error_DESC
-                    ValidationError.UNKNOWN     -> R.string.unknown_error_DESC
-                    ValidationError.NONE        -> -1
+                    ValidationError.UNKNOWN              -> R.string.unknown_error_DESC
+                    ValidationError.NONE                 -> -1
                 }
             )
         )
