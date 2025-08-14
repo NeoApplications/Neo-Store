@@ -342,29 +342,47 @@ class DownloadWorker(
                             .map { it.name }
                             .filter { it.startsWith("android.permission.") }
                             .toSet()
-                        if (!task.release.permissions.containsAll(permissions)) {
-                            ValidationError.PERMISSIONS
-                        } else {
-                            val oldPermissions = try {
-                                val installedInfo = packageManager.getPackageInfo(task.packageName, PackageManager.GET_PERMISSIONS)
-                                installedInfo.requestedPermissions
-                                    ?.toSet()
-                                    .orEmpty()
-                                    .toSet()
-                            } catch (e: PackageManager.NameNotFoundException) {
-                                emptySet()
+                        when {
+                            Preferences[Preferences.Key.DisablePermissionsCheck] -> null
+
+                            task.release.permissions.containsAll(permissions)    -> {
+                                val oldPermissions = try {
+                                    val installedInfo = packageManager.getPackageInfo(
+                                        task.packageName,
+                                        PackageManager.GET_PERMISSIONS
+                                    )
+                                    installedInfo.requestedPermissions
+                                        ?.toSet()
+                                        .orEmpty()
+                                        .toSet()
+                                } catch (e: PackageManager.NameNotFoundException) {
+                                    emptySet()
+                                }
+
+                                val addedPermissions =
+                                    task.release.permissions.minus(oldPermissions)
+                                val addedSensitivePermissions =
+                                    addedPermissions.intersect(SENSITIVE_PERMISSIONS)
+
+                                if (addedSensitivePermissions.isNotEmpty()) {
+                                    Log.i(
+                                        TAG,
+                                        "New sensitive permissions detected: $addedSensitivePermissions"
+                                    )
+                                    langContext.notifySensitivePermissionsChanged(
+                                        task.packageName,
+                                        addedSensitivePermissions
+                                    )
+                                    // TODO consider blocking install till confirmed by user
+                                    //  return ValidationError.SENSITIVE_PERMISSION
+                                }
+
+                                null
                             }
 
-                            val addedPermissions = task.release.permissions.minus(oldPermissions)
-                            val addedSensitivePermissions = addedPermissions.intersect(SENSITIVE_PERMISSIONS)
-
-                            if (addedSensitivePermissions.isNotEmpty()) {
-                                Log.i("DownloadWorker", "New sensitive permissions detected: $addedSensitivePermissions")
-                                langContext.notifySensitivePermissionsChanged(task.packageName, addedSensitivePermissions)
-                                // return ValidationError.SENSITIVE_PERMISSION
+                            else                                                 -> {
+                                ValidationError.PERMISSIONS
                             }
-
-                            null
                         }
                     }
                 }
@@ -382,6 +400,7 @@ class DownloadWorker(
     // TODO fun onFailure(data: Data) : Result {}
 
     companion object {
+        private const val TAG = "DownloadWorker"
         val SENSITIVE_PERMISSIONS = setOf(
             android.Manifest.permission.CAMERA,
             android.Manifest.permission.RECORD_AUDIO,

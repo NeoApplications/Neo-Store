@@ -66,6 +66,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.IncompatibleVersions,
         Key.DisableDownloadVersionCheck,
         Key.DisableSignatureCheck,
+        Key.DisablePermissionsCheck,
         Key.RBProvider,
         // Installation
         Key.KeepInstallNotification,
@@ -318,6 +319,9 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object DisableSignatureCheck :
             Key<Boolean>("disable_signature_check", Value.BooleanValue(false))
+
+        data object DisablePermissionsCheck :
+            Key<Boolean>("disable_permissions_check", Value.BooleanValue(false))
 
         data object RBProvider : Key<Preferences.RBProvider>(
             "rb_provider", Value.EnumerationValue(

@@ -439,4 +439,6 @@
     <string name="sensitive_permission_detected">App %1$s requests new sensitive permission</string>
     <string name="sensitive_permission_detected_list">New sensitive permissions detected:</string>
     <string name="sensitive_permission_error_DESC">Sensitive permission error</string>
+    <string name="disable_permissions_check">Disable permissions check</string>
+    <string name="disable_permissions_check_summary">Don\'t check if the downloaded APK has the same or new permissions as the installed app.</string>
 </resources>

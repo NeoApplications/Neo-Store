@@ -61,6 +61,10 @@ val BooleanPrefsMeta = mapOf(
         R.string.disable_signature_check,
         R.string.disable_signature_check_summary
     ),
+    Preferences.Key.DisablePermissionsCheck to Pair(
+        R.string.disable_permissions_check,
+        R.string.disable_permissions_check_summary
+    ),
     Preferences.Key.RootSessionInstaller to Pair(
         R.string.root_session_installer,
         R.string.root_session_installer_description
