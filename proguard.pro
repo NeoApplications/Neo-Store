@@ -20,3 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -dontwarn okhttp3.internal.Util
+
+# Do not obfuscate source code
+-dontobfuscate
