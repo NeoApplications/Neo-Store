@@ -192,7 +192,7 @@
     <string name="pending">Pendientes</string>
     <string name="not_safe_for_work">Censurable (puede contener contenido perturbador)</string>
     <string name="ignore_battery_optimization_title">Optimización de Batería</string>
-    <string name="ignore_battery_optimization_message">La aplicación funciona mejor sin optimización de batería, y previene cierres inesperados en Android 12+.</string>
+    <string name="ignore_battery_optimization_message">La aplicación funciona mejor cuando la optimización de batería está desactivada, y ya no se cierra inesperadamente en Android 12 o superior.</string>
     <string name="ignore_battery_optimization_not_supported">Tu instalación de Android no admite la desactivación de la optimización de la batería.</string>
     <string name="dialog_approve">Desactivar</string>
     <string name="root_session_installer">Usar el instalador de sesión de root</string>
@@ -313,7 +313,7 @@
     <string name="ignore_vulns">Ignorar las vulnerabilidades de seguridad notificadas</string>
     <string name="disable_download_version_check_summary">Permite descargar versiones anteriores de aplicaciones instaladas. Se puede usar en combinación con el parche \"letmedowngrade\" de Magisk.</string>
     <string name="ignore">Ignorar</string>
-    <string name="warning_disable_battery_optimization">A partir de Android 12, la aplicación requiere la optimización de la batería para realizar procesos en segundo plano como la sincronización y la descarga. Si ignoras este permiso, te quedarás solo y tus informes de bloqueos serán ignorados.</string>
+    <string name="warning_disable_battery_optimization">A partir de Android 12, la aplicación requiere que la optimización de la batería esté desactivada para realizar procesos en segundo plano como sincronizaciones o descargas. Si ignoras este permiso, te quedarás solo y tus informes de cierres inesperados serán ignorados.</string>
     <string name="keep_install_notification_summary">Mantén la notificación de haber instalado correctamente una aplicación.</string>
     <string name="allowed_licenses">Licencias autorizadas</string>
     <string name="cancel_all">Cancelar todo</string>
