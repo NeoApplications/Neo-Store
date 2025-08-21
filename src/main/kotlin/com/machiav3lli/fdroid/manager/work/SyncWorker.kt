@@ -123,8 +123,9 @@ class SyncWorker(
                         repository,
                         unstable
                     ) { stage, progress, total ->
-                        val perCent = if (total != null) (100f * progress / total).roundToInt()
-                        else (progress / 100_000).toInt()
+                        val perCent =
+                            if (total != null && total != 0L) (100f * progress / total).roundToInt()
+                            else (progress / 100_000).toInt()
 
                         if (stage != lastStage || perCent != lastPerCent) this@handleSync.runCatching {
                             lastPerCent = perCent
@@ -245,7 +246,7 @@ class SyncWorker(
         val total: Long,
     ) {
         val percentage: Int
-            get() = (100f * read / total).roundToInt()
+            get() = if (total != 0L) (100f * read / total).roundToInt() else (read / 100_000).toInt()
     }
 
     companion object {
