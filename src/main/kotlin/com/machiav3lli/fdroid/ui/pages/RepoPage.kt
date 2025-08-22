@@ -182,6 +182,7 @@ fun RepoPage(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(horizontal = 8.dp),
         ) {
             ListItem(
                 colors = ListItemDefaults.colors(
@@ -211,7 +212,7 @@ fun RepoPage(
                     .weight(1f, true)
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(16.dp)
+                contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp)
             ) {
                 if (!editMode && repo.description.isNotEmpty()) {
                     item {
@@ -469,7 +470,7 @@ fun RepoPage(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
+                    .padding(horizontal = 8.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 if (!editMode) Row(
