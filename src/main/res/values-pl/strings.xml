@@ -440,4 +440,10 @@
     <string name="rb_bg443">bg443</string>
     <string name="rb_obfusk">Obfusk</string>
     <string name="syncing_repositories_FORMAT">Synchronizacja %d repozytoriów</string>
+    <string name="new_sensitive_permission_title">Nowe wrażliwe uprawnienie</string>
+    <string name="sensitive_permission_detected_FORMAT">Aplikacja %1$s prosi o nowe uprawnienia dotyczące danych wrażliwych</string>
+    <string name="sensitive_permission_detected_list">Wykryto nowe wrażliwe uprawnienia:</string>
+    <string name="sensitive_permission_error_DESC">Błąd dotyczący uprawnień wrażliwych</string>
+    <string name="disable_permissions_check">Wyłącz sprawdzanie uprawnień</string>
+    <string name="disable_permissions_check_summary">Nie sprawdzaj, czy pobrany plik APK ma takie same lub nowe uprawnienia jak zainstalowana aplikacja.</string>
 </resources>
