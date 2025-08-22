@@ -14,14 +14,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -170,7 +173,7 @@ fun MainActionButton(
         }, label = "contentColor"
     )
 
-    FloatingActionButton(
+    ExtendedFloatingActionButton(
         modifier = modifier,
         shape = MaterialTheme.shapes.extraLarge,
         containerColor = containerColor,
@@ -232,12 +235,16 @@ fun SecondaryActionButton(
     description: String,
     onClick: () -> Unit,
 ) {
-    FloatingActionButton(
-        modifier = modifier,
+    OutlinedIconButton(
+        modifier = modifier.size(56.dp),
         shape = MaterialTheme.shapes.extraLarge,
-        containerColor = MaterialTheme.colorScheme.secondary,
-        contentColor = MaterialTheme.colorScheme.onSecondary,
-        elevation = FloatingActionButtonDefaults.elevation(0.dp),
+        colors = IconButtonDefaults.outlinedIconButtonColors(
+            contentColor = MaterialTheme.colorScheme.secondary,
+        ),
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.secondary,
+        ),
         onClick = onClick
     ) {
         Icon(
