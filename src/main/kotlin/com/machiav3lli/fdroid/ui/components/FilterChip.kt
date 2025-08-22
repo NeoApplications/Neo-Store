@@ -1,8 +1,7 @@
 package com.machiav3lli.fdroid.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +17,6 @@ import androidx.compose.material3.SelectableChipColors
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,39 +27,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CheckCircle
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Circle
 import com.machiav3lli.fdroid.ui.compose.utils.addIf
 import com.machiav3lli.fdroid.utils.extension.android.launchView
-
-private enum class SelectionState { Unselected, Selected }
-
-private class CategoryChipTransition(
-    cornerRadius: State<Dp>,
-) {
-    val cornerRadius by cornerRadius
-}
-
-@Composable
-private fun categoryChipTransition(selected: Boolean): CategoryChipTransition {
-    val transition = updateTransition(
-        targetState = if (selected) SelectionState.Selected else SelectionState.Unselected,
-        label = "chip_transition"
-    )
-    val corerRadius = transition.animateDp(label = "chip_corner") { state ->
-        when (state) {
-            SelectionState.Unselected -> 4.dp
-            SelectionState.Selected   -> 16.dp
-        }
-    }
-    return remember(transition) {
-        CategoryChipTransition(corerRadius)
-    }
-}
 
 @Composable
 fun InfoChip(
@@ -106,7 +77,12 @@ fun SelectChip(
     alwaysShowIcon: Boolean = true,
     onSelected: () -> Unit = {},
 ) {
-    val categoryChipTransitionState = categoryChipTransition(selected = checked)
+    val selectionCornerRadius by animateDpAsState(
+        when {
+            checked -> 4.dp
+            else    -> 16.dp
+        }
+    )
     val icon by remember(checked) {
         mutableStateOf(
             if (checked) Phosphor.CheckCircle
@@ -117,7 +93,7 @@ fun SelectChip(
     FilterChip(
         modifier = modifier,
         colors = colors,
-        shape = RoundedCornerShape(categoryChipTransitionState.cornerRadius),
+        shape = RoundedCornerShape(selectionCornerRadius),
         border = null,
         selected = checked,
         leadingIcon = {
@@ -147,7 +123,6 @@ fun SelectChip(
 fun CheckChip(
     modifier: Modifier = Modifier,
     text: String,
-    icon: ImageVector = Phosphor.Check,
     checked: Boolean = false,
     colors: SelectableChipColors = FilterChipDefaults.filterChipColors(
         labelColor = MaterialTheme.colorScheme.onBackground,
@@ -160,24 +135,26 @@ fun CheckChip(
     fullWidth: Boolean,
     onSelected: () -> Unit = {},
 ) {
-    val categoryChipTransitionState = categoryChipTransition(selected = checked)
+    val selectionCornerRadius by animateDpAsState(
+        when {
+            checked -> 4.dp
+            else    -> 28.dp
+        }
+    )
 
     FilterChip(
         modifier = modifier,
         colors = colors,
-        shape = RoundedCornerShape(categoryChipTransitionState.cornerRadius),
+        shape = RoundedCornerShape(selectionCornerRadius),
         selected = checked,
         leadingIcon = {
-            AnimatedVisibility(
-                visible = checked,
-                enter = scaleIn(),
-                exit = scaleOut(),
-            ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                )
-            }
+            Icon(
+                imageVector = when {
+                    checked -> Phosphor.CheckCircle
+                    else    -> Phosphor.Circle
+                },
+                contentDescription = null,
+            )
         },
         onClick = { onSelected() },
         label = {
