@@ -87,15 +87,15 @@ fun OutlinedActionButton(
         modifier = modifier,
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = when {
-                positive -> MaterialTheme.colorScheme.onPrimaryContainer
-                else     -> MaterialTheme.colorScheme.onTertiaryContainer
+                positive -> MaterialTheme.colorScheme.primary
+                else     -> MaterialTheme.colorScheme.tertiary
             },
         ),
         border = BorderStroke(
             width = 1.dp,
             color = when {
-                positive -> MaterialTheme.colorScheme.onPrimaryContainer
-                else     -> MaterialTheme.colorScheme.onTertiaryContainer
+                positive -> MaterialTheme.colorScheme.primary
+                else     -> MaterialTheme.colorScheme.tertiary
             },
         ),
         enabled = enabled,
@@ -155,10 +155,10 @@ fun MainActionButton(
             is ActionState.CancelPending,
             is ActionState.CancelConnecting,
             is ActionState.CancelDownloading,
-                                    -> MaterialTheme.colorScheme.tertiary
+                                    -> MaterialTheme.colorScheme.tertiaryContainer
 
             is ActionState.NoAction -> MaterialTheme.colorScheme.inverseSurface
-            else                    -> MaterialTheme.colorScheme.primary
+            else                    -> MaterialTheme.colorScheme.primaryContainer
         }, label = "containerColor"
     )
     val contentColor by animateColorAsState(
@@ -166,10 +166,10 @@ fun MainActionButton(
             is ActionState.CancelPending,
             is ActionState.CancelConnecting,
             is ActionState.CancelDownloading,
-                                    -> MaterialTheme.colorScheme.onTertiary
+                                    -> MaterialTheme.colorScheme.onTertiaryContainer
 
             is ActionState.NoAction -> MaterialTheme.colorScheme.inverseOnSurface
-            else                    -> MaterialTheme.colorScheme.onPrimary
+            else                    -> MaterialTheme.colorScheme.onPrimaryContainer
         }, label = "contentColor"
     )
 

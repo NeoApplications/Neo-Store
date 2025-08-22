@@ -51,8 +51,8 @@ fun SortFilterButton(
     ) {
         FloatingActionButton(
             shape = FloatingActionButtonDefaults.smallShape,
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
             elevation = FloatingActionButtonDefaults.elevation(0.dp),
             onClick = onClick
         ) {

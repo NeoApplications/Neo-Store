@@ -49,25 +49,25 @@ fun NeoNavigationSuiteScaffold(
     }
     val itemColors = NavigationSuiteDefaults.itemColors(
         navigationBarItemColors = NavigationBarItemDefaults.colors(
-            selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            selectedIconColor = MaterialTheme.colorScheme.onPrimary,
             unselectedIconColor = MaterialTheme.colorScheme.onBackground,
-            selectedTextColor = MaterialTheme.colorScheme.primaryContainer,
+            selectedTextColor = MaterialTheme.colorScheme.primary,
             unselectedTextColor = MaterialTheme.colorScheme.onBackground,
-            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+            indicatorColor = MaterialTheme.colorScheme.primary,
         ),
         navigationRailItemColors = NavigationRailItemDefaults.colors(
-            selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            selectedIconColor = MaterialTheme.colorScheme.onPrimary,
             unselectedIconColor = MaterialTheme.colorScheme.onBackground,
-            selectedTextColor = MaterialTheme.colorScheme.primaryContainer,
+            selectedTextColor = MaterialTheme.colorScheme.primary,
             unselectedTextColor = MaterialTheme.colorScheme.onBackground,
-            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+            indicatorColor = MaterialTheme.colorScheme.primary,
         ),
         navigationDrawerItemColors = NavigationDrawerItemDefaults.colors(
-            selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            selectedIconColor = MaterialTheme.colorScheme.onPrimary,
             unselectedIconColor = MaterialTheme.colorScheme.onBackground,
-            selectedTextColor = MaterialTheme.colorScheme.primaryContainer,
+            selectedTextColor = MaterialTheme.colorScheme.primary,
             unselectedTextColor = MaterialTheme.colorScheme.onBackground,
-            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            selectedContainerColor = MaterialTheme.colorScheme.primary,
         ),
     )
 
