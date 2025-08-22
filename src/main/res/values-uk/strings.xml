@@ -440,4 +440,10 @@
     <string name="rb_bg443">bg443</string>
     <string name="rb_obfusk">Obfusk</string>
     <string name="syncing_repositories_FORMAT">Синхронізація %d репозиторії</string>
+    <string name="new_sensitive_permission_title">Новий конфіденційний дозвіл</string>
+    <string name="sensitive_permission_detected_FORMAT">Застосунок %1$s запитує новий конфіденційний дозвіл</string>
+    <string name="sensitive_permission_detected_list">Виявлено нові конфіденційні дозволи:</string>
+    <string name="sensitive_permission_error_DESC">Помилка конфіденційного дозволу</string>
+    <string name="disable_permissions_check">Вимкнути перевірку дозволів</string>
+    <string name="disable_permissions_check_summary">Не перевіряти, чи завантажений APK-файл має ті ж або нові дозволи, що й встановлений застосунок.</string>
 </resources>
