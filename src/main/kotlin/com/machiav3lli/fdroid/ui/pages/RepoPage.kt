@@ -51,6 +51,7 @@ import com.machiav3lli.fdroid.manager.work.SyncWorker
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.BlockText
 import com.machiav3lli.fdroid.ui.components.CheckChip
+import com.machiav3lli.fdroid.ui.components.OutlinedActionButton
 import com.machiav3lli.fdroid.ui.components.QrCodeImage
 import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.TitleText
@@ -499,14 +500,14 @@ fun RepoPage(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    ActionButton(
+                    OutlinedActionButton(
                         text = stringResource(
                             id = if (!editMode) R.string.delete
                             else R.string.cancel
                         ),
                         icon = if (!editMode) Phosphor.TrashSimple
                         else Phosphor.ArrowUUpLeft,
-                        positive = false
+                        positive = false,
                     ) {
                         if (!editMode) openDeleteDialog.value = true
                         else {

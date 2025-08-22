@@ -80,7 +80,7 @@ fun PermissionItem(
                     horizontalArrangement = Arrangement.End,
                 ) {
                     if (item.ignorePref != null) {
-                        ActionButton(
+                        OutlinedActionButton(
                             text = stringResource(id = R.string.ignore),
                             icon = Phosphor.X,
                             positive = false,

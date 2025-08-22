@@ -40,6 +40,7 @@ import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ChipsSwitch
 import com.machiav3lli.fdroid.ui.components.DeSelectAll
 import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
+import com.machiav3lli.fdroid.ui.components.OutlinedActionButton
 import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowUUpLeft
@@ -159,11 +160,11 @@ fun SortFilterSheet(
                         .padding(12.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    ActionButton(
+                    OutlinedActionButton(
                         modifier = Modifier.weight(1f),
                         text = stringResource(id = R.string.action_reset),
                         icon = Phosphor.ArrowUUpLeft,
-                        positive = false
+                        positive = false,
                     ) {
                         Preferences[sortKey] = sortKey.default.value
                         Preferences[sortAscendingKey] = sortAscendingKey.default.value
