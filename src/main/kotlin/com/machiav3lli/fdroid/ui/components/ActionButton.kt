@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -54,6 +56,44 @@ fun ActionButton(
                 positive -> MaterialTheme.colorScheme.primary
                 else     -> MaterialTheme.colorScheme.tertiary
             }
+        ),
+        enabled = enabled,
+        onClick = onClick,
+    ) {
+        if (icon != null) Icon(imageVector = icon, contentDescription = text)
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = text,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleSmall,
+        )
+    }
+}
+
+@Composable
+fun OutlinedActionButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    // TODO add neutral using ENUM
+    positive: Boolean = true,
+    icon: ImageVector? = null,
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+) {
+    OutlinedButton(
+        modifier = modifier,
+        colors = ButtonDefaults.outlinedButtonColors(
+            contentColor = when {
+                positive -> MaterialTheme.colorScheme.onPrimaryContainer
+                else     -> MaterialTheme.colorScheme.onTertiaryContainer
+            },
+        ),
+        border = BorderStroke(
+            width = 1.dp,
+            color = when {
+                positive -> MaterialTheme.colorScheme.onPrimaryContainer
+                else     -> MaterialTheme.colorScheme.onTertiaryContainer
+            },
         ),
         enabled = enabled,
         onClick = onClick,
