@@ -108,7 +108,7 @@ import java.io.File
         AntiFeatureTemp::class,
         RBLog::class,
     ],
-    version = 1103,
+    version = 1105,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -243,7 +243,7 @@ import java.io.File
         ),
         AutoMigration(
             from = 1102,
-            to = 1103,
+            to = 1105,
         ),
     ]
 )

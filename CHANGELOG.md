@@ -1,6 +1,25 @@
 CHANGELOG
 =========
 
+1.1.1 (22.08.2025) +20 Commits 1 Translations
+------------------
+
+### Function
+
+- Fix: Suggested release in index-V2 (credits @Red54)
+- Fix: Division by zero if index v2 is not supported in SyncWorker (credits @amartinz)
+- Fix: F-droid repo sync causing silent memory crash
+- Update: proguard: do not obfuscate source code (credits @amartinz)
+
+### UI/UX
+
+- Add: Icons for f-droid's new categories 
+- Add: Notify of new required sensitive permissions on updates (credits @aba2222)
+- Add: Option to disable permissions' check on download
+- Fix: App's changelog being parsed as markdown although it's standardized as text
+- Fix: Parsing en-SHAW localized items on non-en-US locales
+- Update: First layout and coloring revamps towards Material 3 Expressive
+
 1.1.0 (31.07.2025) +210 Commits +100 Translations
 ------------------
 
