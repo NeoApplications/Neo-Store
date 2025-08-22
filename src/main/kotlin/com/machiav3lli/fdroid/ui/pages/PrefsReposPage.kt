@@ -10,14 +10,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
@@ -99,14 +99,14 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                 Scaffold(
                     containerColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
+                    floatingActionButtonPosition = FabPosition.Center,
                     floatingActionButton = {
                         if (Intent(INTENT_ACTION_BINARY_EYE).resolveActivity(mActivity.packageManager) != null) {
                             Row(
-                                modifier = Modifier.padding(horizontal = 4.dp),
-                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                horizontalArrangement = Arrangement.spacedBy(2.dp)
                             ) {
-                                FloatingActionButton(
-                                    shape = MaterialTheme.shapes.extraLarge,
+                                ExtendedFloatingActionButton(
+                                    shape = SegmentedButtonDefaults.itemShape(0, 2),
                                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                                     onClick = {
@@ -126,10 +126,10 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                         contentDescription = stringResource(id = R.string.add_repository)
                                     )
                                 }
-                                FloatingActionButton(
-                                    shape = MaterialTheme.shapes.extraLarge,
-                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                ExtendedFloatingActionButton(
+                                    shape = SegmentedButtonDefaults.itemShape(1, 2),
+                                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                                     onClick = mActivity::openScanner
                                 ) {
                                     Icon(
