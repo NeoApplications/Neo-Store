@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -45,16 +45,16 @@ fun ActionButton(
     enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
-    ElevatedButton(
+    FilledTonalButton(
         modifier = modifier,
-        colors = ButtonDefaults.elevatedButtonColors(
+        colors = ButtonDefaults.filledTonalButtonColors(
             contentColor = when {
-                positive -> MaterialTheme.colorScheme.onPrimary
-                else     -> MaterialTheme.colorScheme.onTertiary
+                positive -> MaterialTheme.colorScheme.onPrimaryContainer
+                else     -> MaterialTheme.colorScheme.onTertiaryContainer
             },
             containerColor = when {
-                positive -> MaterialTheme.colorScheme.primary
-                else     -> MaterialTheme.colorScheme.tertiary
+                positive -> MaterialTheme.colorScheme.primaryContainer
+                else     -> MaterialTheme.colorScheme.tertiaryContainer
             }
         ),
         enabled = enabled,
