@@ -1,6 +1,6 @@
 [versions]
 activity = "1.10.1"
-agp = "8.11.1"
+agp = "8.12.1"
 biometric = "1.2.0-alpha05"
 coil = "3.3.0"
 compose-bom = "2025.07.00"
