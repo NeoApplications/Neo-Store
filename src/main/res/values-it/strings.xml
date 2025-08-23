@@ -438,4 +438,10 @@
     <string name="rb_bg443">bg443</string>
     <string name="rb_obfusk">Obfusk</string>
     <string name="syncing_repositories_FORMAT">Sincronizzazione di %d repository</string>
+    <string name="new_sensitive_permission_title">Nuova autorizzazione sensibile</string>
+    <string name="sensitive_permission_detected_FORMAT">L\'app %1$s richiede una nuova autorizzazione sensibile</string>
+    <string name="sensitive_permission_detected_list">Rilevate nuove autorizzazioni sensibili:</string>
+    <string name="sensitive_permission_error_DESC">Errore di autorizzazione sensibile</string>
+    <string name="disable_permissions_check">Disabilita il controllo delle autorizzazioni</string>
+    <string name="disable_permissions_check_summary">Non controllare se l\'APK scaricato ha le stesse autorizzazioni o autorizzazioni nuove dell\'app installata.</string>
 </resources>
