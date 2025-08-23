@@ -570,6 +570,9 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object TrackersLastModified :
             Key<String>("last_modified_trackers", Value.StringValue(""))
+
+        data object DownloadStatsLastModified :
+            Key<String>("last_modified_downloadstats", Value.StringValue(""))
     }
 
     sealed class AutoSync(override val valueString: String) : Enumeration<AutoSync> {

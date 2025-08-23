@@ -25,6 +25,7 @@ import com.machiav3lli.fdroid.ARG_SUCCESS
 import com.machiav3lli.fdroid.ARG_SYNC_REQUEST
 import com.machiav3lli.fdroid.ARG_TOTAL
 import com.machiav3lli.fdroid.ContextWrapperX
+import com.machiav3lli.fdroid.DOWNLOAD_STATS_SYNC
 import com.machiav3lli.fdroid.EXODUS_TRACKERS_SYNC
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.NeoApp
@@ -279,6 +280,7 @@ class SyncWorker(
                 when (repoId) {
                     EXODUS_TRACKERS_SYNC -> ExodusWorker.fetchTrackers()
                     RB_LOGS_SYNC         -> RBWorker.fetchRBLogs()
+                    DOWNLOAD_STATS_SYNC  -> DownloadStatsWorker.fetchDownloadStats()
                     else                 -> {
                         val data = workDataOf(
                             ARG_REPOSITORY_ID to repoId,

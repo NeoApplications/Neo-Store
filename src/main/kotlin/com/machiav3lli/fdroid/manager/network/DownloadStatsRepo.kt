@@ -46,6 +46,7 @@ class DownloadStatsAPI {
 
     suspend fun getIndex(): Map<String, Map<String, ClientCounts>> {
         val request = HttpRequestBuilder().apply {
+            // TODO update when stats server is stable
             url("https://codeberg.org/IzzyOnDroid/iod-stats-collector/raw/branch/pages/stats/upstream/yearly/_all.json")
             headers {
                 append(

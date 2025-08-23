@@ -1,11 +1,14 @@
 package com.machiav3lli.fdroid.data.repository
 
+import com.machiav3lli.fdroid.data.database.dao.DownloadStatsDao
 import com.machiav3lli.fdroid.data.database.dao.ExodusInfoDao
 import com.machiav3lli.fdroid.data.database.dao.RBLogDao
 import com.machiav3lli.fdroid.data.database.dao.TrackerDao
+import com.machiav3lli.fdroid.data.database.entity.DownloadStats
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.database.entity.Tracker
+import com.machiav3lli.fdroid.manager.network.DownloadStatsAPI
 import com.machiav3lli.fdroid.manager.network.RBAPI
 import com.machiav3lli.fdroid.manager.network.RExodusAPI
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +25,7 @@ class PrivacyRepository(
     private val trackerDao: TrackerDao,
     private val rbDao: RBLogDao,
     private val exodusDao: ExodusInfoDao,
+    private val downloadStatsDao: DownloadStatsDao,
 ) {
     private val cc = Dispatchers.IO
     private val jcc = Dispatchers.IO + SupervisorJob()
@@ -34,6 +38,10 @@ class PrivacyRepository(
 
     fun getRBLogs(packageName: String): Flow<List<RBLog>> = rbDao.getFlow(packageName)
         .flowOn(cc)
+
+    fun getDownloadStats(packageName: String): Flow<List<DownloadStats>> =
+        downloadStatsDao.getFlow(packageName)
+            .flowOn(cc)
 
     suspend fun upsertTracker(vararg trackers: Tracker) {
         withContext(jcc) {
@@ -52,9 +60,16 @@ class PrivacyRepository(
             exodusDao.upsert(*infos)
         }
     }
+
+    suspend fun upsertDownloadStats(vararg downloadStats: DownloadStats) {
+        withContext(jcc) {
+            downloadStatsDao.upsert(*downloadStats)
+        }
+    }
 }
 
 val privacyModule = module {
     singleOf(::RExodusAPI)
     singleOf(::RBAPI)
+    singleOf(::DownloadStatsAPI)
 }
