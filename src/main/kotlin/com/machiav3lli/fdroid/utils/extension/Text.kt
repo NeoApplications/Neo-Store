@@ -3,6 +3,11 @@
 package com.machiav3lli.fdroid.utils.extension.text
 
 import android.util.Log
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DatePeriod
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
+import kotlinx.datetime.toLocalDateTime
 import java.text.DateFormat
 import java.util.Date
 import java.util.Locale
@@ -31,6 +36,10 @@ fun Long.formatDateTime(): String {
     return if (nowDate == mDate) DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(this))
     else mDate
 }
+
+fun getIsoDateOfMonthsAgo(months: Int): String = Clock.System.now()
+    .toLocalDateTime(TimeZone.currentSystemDefault()).date
+    .minus(DatePeriod(months = months, days = 1)).toString()
 
 val String.pathCropped: String
     get() {
