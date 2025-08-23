@@ -23,6 +23,7 @@ import com.machiav3lli.fdroid.data.database.dao.AntiFeatureDao
 import com.machiav3lli.fdroid.data.database.dao.AntiFeatureTempDao
 import com.machiav3lli.fdroid.data.database.dao.CategoryDao
 import com.machiav3lli.fdroid.data.database.dao.CategoryTempDao
+import com.machiav3lli.fdroid.data.database.dao.DownloadStatsDao
 import com.machiav3lli.fdroid.data.database.dao.DownloadedDao
 import com.machiav3lli.fdroid.data.database.dao.ExodusInfoDao
 import com.machiav3lli.fdroid.data.database.dao.ExtrasDao
@@ -41,6 +42,7 @@ import com.machiav3lli.fdroid.data.database.entity.AntiFeature
 import com.machiav3lli.fdroid.data.database.entity.AntiFeatureTemp
 import com.machiav3lli.fdroid.data.database.entity.Category
 import com.machiav3lli.fdroid.data.database.entity.CategoryTemp
+import com.machiav3lli.fdroid.data.database.entity.DownloadStats
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.Extras
@@ -107,8 +109,9 @@ import java.io.File
         AntiFeature::class,
         AntiFeatureTemp::class,
         RBLog::class,
+        DownloadStats::class,
     ],
-    version = 1105,
+    version = 1106,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -245,6 +248,10 @@ import java.io.File
             from = 1102,
             to = 1105,
         ),
+        AutoMigration(
+            from = 1105,
+            to = 1106,
+        ),
     ]
 )
 @TypeConverters(Converters::class)
@@ -261,6 +268,7 @@ abstract class DatabaseX : RoomDatabase() {
     abstract fun getTrackerDao(): TrackerDao
     abstract fun getDownloadedDao(): DownloadedDao
     abstract fun getRBLogDao(): RBLogDao
+    abstract fun getDownloadStatsDao(): DownloadStatsDao
 
     // TODO replace external calls
     abstract fun getReleaseTempDao(): ReleaseTempDao
@@ -602,4 +610,5 @@ val databaseModule = module {
     single { get<DatabaseX>().getDownloadedDao() }
     single { get<DatabaseX>().getInstallTaskDao() }
     single { get<DatabaseX>().getRBLogDao() }
+    single { get<DatabaseX>().getDownloadStatsDao() }
 }
