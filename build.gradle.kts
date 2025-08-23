@@ -170,6 +170,8 @@ dependencies {
     implementation(libs.serialization.json)
     implementation(libs.markdown)
     implementation(libs.compose.html)
+    implementation(libs.vico.compose)
+    implementation(libs.vico.compose.m3)
 
     // Storage
     implementation(libs.simple.storage)

@@ -26,6 +26,7 @@ preference = "1.2.1"
 room = "2.7.2"
 serialization = "1.9.0"
 simple-storage = "2.2.0"
+vico = "2.1.3"
 work = "2.10.3"
 zxing = "3.5.3"
 
@@ -91,6 +92,8 @@ compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "compose-accompanist" }
 compose-html = { module = "be.digitalia.compose.htmlconverter:htmlconverter", version.ref = "compose-html" }
+vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
+vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
 
 # Test
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
