@@ -4,7 +4,8 @@ package com.machiav3lli.fdroid.utils.extension.text
 
 import android.util.Log
 import java.text.DateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 
 val RE_jumpChars = Regex("""[\t]""")
@@ -57,6 +58,32 @@ fun String?.trimBefore(char: Char, repeated: Int): String? {
         }
     }
     return null
+}
+
+fun String.isoDateToInt(): Int {
+    val parts = split("-")
+    return when (parts.size) {
+        // YYYY-MM-DD
+        3    -> (parts[0] + parts[1] + parts[2]).toInt()
+        // YYYY-MM
+        2    -> (parts[0] + parts[1] + "00").toInt()
+        // YYYY
+        1    -> (parts[0] + "0000").toInt()
+        else -> throw IllegalArgumentException("Invalid date format")
+    }
+}
+
+fun Int.intToIsoDate(): String {
+    val s = toString()
+    return when (s.length) {
+        // YYYYMMDD -> YYYY-MM-DD
+        8    -> "${s.substring(0, 4)}-${s.substring(4, 6)}-${s.substring(6, 8)}"
+        // YYYYMM00 -> YYYY-MM-00
+        6    -> "${s.substring(0, 4)}-${s.substring(4, 6)}-00"
+        // YYYY0000 -> YYYY-00-00
+        4    -> "$s-00-00"
+        else -> throw IllegalArgumentException("Invalid int date format")
+    }
 }
 
 fun Char.halfByte(): Int {
