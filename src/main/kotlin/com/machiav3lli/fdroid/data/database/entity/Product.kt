@@ -232,9 +232,9 @@ data class EmbeddedProduct(
 
     fun canUpdate(installed: Installed?): Boolean = installed != null &&
             compatible &&
-            versionCode > installed.versionCode &&
-            (installed.signatures.intersect(productSignatures)
-                .isNotEmpty() || Preferences[Preferences.Key.DisableSignatureCheck])
+            (selectedReleases.filter { it.signature in installed.signatures }
+                .any { it.versionCode > installed.versionCode } ||
+                    (versionCode > installed.versionCode && Preferences[Preferences.Key.DisableSignatureCheck]))
 
     fun refreshReleases(
         features: Set<String>,
