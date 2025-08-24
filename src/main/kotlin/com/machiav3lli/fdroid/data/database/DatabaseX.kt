@@ -42,12 +42,15 @@ import com.machiav3lli.fdroid.data.database.entity.AntiFeature
 import com.machiav3lli.fdroid.data.database.entity.AntiFeatureTemp
 import com.machiav3lli.fdroid.data.database.entity.Category
 import com.machiav3lli.fdroid.data.database.entity.CategoryTemp
+import com.machiav3lli.fdroid.data.database.entity.ClientPackageSum
 import com.machiav3lli.fdroid.data.database.entity.DownloadStats
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.Extras
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
 import com.machiav3lli.fdroid.data.database.entity.Installed
+import com.machiav3lli.fdroid.data.database.entity.MonthlyPackageSum
+import com.machiav3lli.fdroid.data.database.entity.PackageSum
 import com.machiav3lli.fdroid.data.database.entity.Product
 import com.machiav3lli.fdroid.data.database.entity.ProductTemp
 import com.machiav3lli.fdroid.data.database.entity.RBLog
@@ -113,6 +116,11 @@ import java.io.File
     ],
     version = 1106,
     exportSchema = true,
+    views = [
+        PackageSum::class,
+        ClientPackageSum::class,
+        MonthlyPackageSum::class,
+    ],
     autoMigrations = [
         AutoMigration(
             from = 8,

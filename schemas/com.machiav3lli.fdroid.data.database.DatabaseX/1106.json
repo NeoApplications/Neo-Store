@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1106,
-    "identityHash": "b634d612d14c40fa185064cd74103217",
+    "identityHash": "2bc2d3b410982fea68f019674ed137d6",
     "entities": [
       {
         "tableName": "repository",
@@ -1830,9 +1830,23 @@
         ]
       }
     ],
+    "views": [
+      {
+        "viewName": "PackageSum",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT packageName AS packageName,\n               SUM(count)          AS totalCount\n        FROM   download_stats\n        WHERE client = '_total'\n        GROUP BY packageName"
+      },
+      {
+        "viewName": "ClientPackageSum",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT packageName    AS packageName,\n               client               AS client,\n               SUM(count)           AS totalCount\n        FROM   download_stats\n        GROUP BY packageName, client"
+      },
+      {
+        "viewName": "MonthlyPackageSum",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT packageName      AS packageName,\n               (isoDate / 100)  AS yearMonth,\n               SUM(count)             AS totalCount\n        FROM   download_stats\n        WHERE client = '_total'\n        GROUP BY packageName, yearMonth"
+      }
+    ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b634d612d14c40fa185064cd74103217')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2bc2d3b410982fea68f019674ed137d6')"
     ]
   }
 }

@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.data.database.entity
 
 import androidx.room.ColumnInfo
+import androidx.room.DatabaseView
 import androidx.room.Entity
 import androidx.room.Index
 import com.machiav3lli.fdroid.ROW_CLIENT
@@ -22,6 +23,7 @@ import java.io.InputStream
         Index(value = [ROW_PACKAGE_NAME, ROW_ISO_DATE, ROW_CLIENT, ROW_SOURCE], unique = true),
         Index(value = [ROW_PACKAGE_NAME, ROW_ISO_DATE]),
         Index(value = [ROW_PACKAGE_NAME]),
+        Index(value = [ROW_CLIENT]),
         Index(value = [ROW_ISO_DATE]),
     ]
 )
@@ -101,3 +103,49 @@ fun Map<String, Map<String, ClientCounts>>.toDownloadStats(): Set<DownloadStats>
 
     return result
 }
+
+@DatabaseView(
+    """
+        SELECT $ROW_PACKAGE_NAME   AS packageName,
+               SUM(count)          AS totalCount
+        FROM   download_stats
+        WHERE client = '_total'
+        GROUP BY $ROW_PACKAGE_NAME
+    """
+)
+data class PackageSum(
+    val packageName: String,
+    val totalCount: String
+)
+
+@DatabaseView(
+    """
+        SELECT $ROW_PACKAGE_NAME   AS packageName,
+               client              AS client,
+               SUM(count)          AS totalCount
+        FROM   download_stats
+        GROUP BY $ROW_PACKAGE_NAME, client
+    """
+)
+data class ClientPackageSum(
+    val packageName: String,
+    val client: String,
+    val totalCount: Long
+)
+
+@DatabaseView(
+    """
+        SELECT $ROW_PACKAGE_NAME      AS packageName,
+               ($ROW_ISO_DATE / 100)  AS yearMonth,
+               SUM(count)             AS totalCount
+        FROM   download_stats
+        WHERE client = '_total'
+        GROUP BY $ROW_PACKAGE_NAME, yearMonth
+    """
+)
+data class MonthlyPackageSum(
+    val packageName: String,
+    // formatted from iso as YYYYMM
+    val yearMonth: Int,
+    val totalCount: Long
+)
