@@ -21,7 +21,7 @@ interface DownloadStatsDao : BaseDao<DownloadStats> {
     @Query("SELECT * FROM download_stats WHERE packageName = :packageName")
     fun getFlow(packageName: String): Flow<List<DownloadStats>>
 
-    @Query("SELECT * FROM download_stats WHERE packageName = :packageName AND isoDate >= :since")
+    @Query("SELECT * FROM download_stats WHERE packageName = :packageName AND $ROW_ISO_DATE >= :since")
     fun getFlowSince(packageName: String, since: Int): Flow<List<DownloadStats>>
 
     @Query("SELECT * FROM packagesum WHERE $ROW_PACKAGE_NAME = :packageName")
@@ -65,9 +65,10 @@ interface DownloadStatsDao : BaseDao<DownloadStats> {
 
     @Query(
         """
-        SELECT *
-        FROM   packagesum
-        WHERE  $ROW_ISO_DATE >= :startDateInclusive
+        SELECT $ROW_PACKAGE_NAME   AS packageName,
+               SUM(count)          AS totalCount
+        FROM   download_stats
+        WHERE  client = '_total' AND $ROW_ISO_DATE >= :startDateInclusive
         GROUP BY $ROW_PACKAGE_NAME
         ORDER BY totalCount DESC
         LIMIT :limit

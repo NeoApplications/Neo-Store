@@ -170,6 +170,25 @@ open class MainVM(
             }
         }
 
+    val productsTopDownloaded = productsRepo.getRecentTopApps().flatMapLatest { tops ->
+        productsRepo.getSpecificProducts(tops.map { it.packageName }.toSet())
+            .map {
+                it.sortedBy { prd ->
+                    tops.indexOfFirst { top ->
+                        top.packageName == prd.product.packageName
+                    }
+                }
+            }
+    }.mapLatest { list ->
+        list.map { it.toItem(installed.value[it.product.packageName]) }.apply {
+            Log.d(TAG, "Explore products list size: ${this.size}")
+        }
+    }.stateIn(
+        scope = ioScope,
+        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        initialValue = emptyList()
+    )
+
     private val productsSearch: Flow<List<EmbeddedProduct>> = combine(
         requestSearch,
         installed,

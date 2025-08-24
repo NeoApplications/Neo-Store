@@ -152,6 +152,18 @@ interface ProductDao : BaseDao<Product> {
         )
     )
 
+    fun queryFlowOfPackages(pkgs: Set<String>): Flow<List<EmbeddedProduct>> = queryFlowList(
+        buildProductQuery(
+            installed = false,
+            updates = false,
+            section = Section.All,
+            specificPackages = pkgs,
+            order = Order.LAST_UPDATE,
+            ascending = false,
+            numberOfItems = pkgs.size,
+        )
+    )
+
     fun buildProductQuery(
         installed: Boolean,
         updates: Boolean,
@@ -160,6 +172,7 @@ interface ProductDao : BaseDao<Product> {
         category: String = FILTER_CATEGORY_ALL,
         filteredAntiFeatures: Set<String> = emptySet(),
         filteredLicenses: Set<String> = emptySet(),
+        specificPackages: Set<String> = emptySet(),
         order: Order,
         ascending: Boolean = false,
         numberOfItems: Int = 0,
@@ -252,6 +265,14 @@ interface ProductDao : BaseDao<Product> {
 
         // Filtering
         val whereConditions = mutableListOf<String>()
+
+        if (specificPackages.isNotEmpty()) {
+            whereConditions.add(
+                "$TABLE_PRODUCT.$ROW_PACKAGE_NAME IN (${
+                    specificPackages.joinToString(",", transform = { "'$it'" })
+                })"
+            )
+        }
 
         if (author.isNotEmpty()) {
             whereConditions.add("$TABLE_PRODUCT.$ROW_AUTHOR = ?")
