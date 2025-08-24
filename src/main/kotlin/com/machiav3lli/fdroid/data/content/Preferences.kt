@@ -285,7 +285,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object IndexV2 : Key<Boolean>("index_v2", Value.BooleanValue(true))
 
         data object DownloadManager :
-            Key<Boolean>("download_manager", Value.BooleanValue(true))
+            Key<Boolean>("system_download_manager", Value.BooleanValue(false))
 
         data object DownloadDirectory :
             Key<String>("download_directory_value", Value.StringValue(""))
