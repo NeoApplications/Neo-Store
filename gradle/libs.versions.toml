@@ -7,7 +7,8 @@ compose-bom = "2025.08.00"
 compose-accompanist = "0.37.3"
 compose-html = "1.1.0"
 coroutines = "1.10.2"
-datetime = "0.4.0"
+datetime = "0.7.1"
+desugar = "2.1.5"
 immutables = "0.4.0"
 jackson = "2.19.2"
 junit-jupiter = "5.13.4"
@@ -33,6 +34,7 @@ zxing = "3.5.3"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+jdk-desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar" }
 ksp = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 preference = { module = "androidx.preference:preference-ktx", version.ref = "preference" }

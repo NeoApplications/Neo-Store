@@ -45,6 +45,7 @@ android {
     compileOptions {
         sourceCompatibility = jvmVersion
         targetCompatibility = jvmVersion
+        isCoreLibraryDesugaringEnabled = true
     }
 
     buildFeatures {
@@ -134,6 +135,7 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.collections.immutable)
     implementation(libs.datetime)
+    coreLibraryDesugaring(libs.jdk.desugar)
     //debugImplementation(libs.leakcanary)
 
     // use the new WorkInfo.stopReason (report stopReason), setNextScheduleTimeOverride (Precise scheduling), Configuration.Builder.setContentUriTriggerWorkersLimit (limit for content uri workers)
@@ -213,7 +215,8 @@ dependencies {
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
-        freeCompilerArgs = listOf("-Xjvm-default=all-compatibility", "-XXLanguage:+ExplicitBackingFields")
+        freeCompilerArgs =
+            listOf("-Xjvm-default=all-compatibility", "-XXLanguage:+ExplicitBackingFields")
     }
 }
 
