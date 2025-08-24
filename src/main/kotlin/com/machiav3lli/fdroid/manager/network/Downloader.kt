@@ -243,6 +243,7 @@ object Downloader {
             .apply {
                 addRequestHeader(HttpHeaders.Authorization, task.authentication)
                 addRequestHeader(HttpHeaders.AcceptEncoding, "gzip, deflate")
+                addRequestHeader(HttpHeaders.UserAgent, CLIENT_USER_AGENT)
             }
         val downloadManager =
             ContextCompat.getSystemService(context, DownloadManager::class.java)
