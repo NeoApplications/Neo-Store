@@ -1,0 +1,7 @@
+Dodano: Obsługę indeksu F-Droid Index-V2 i aktualizacji przyrostowych
+Dodano: Obsługę repozytoriów OEM/ROM-preset
+Dodano: Odznaki RB do elementów wydania
+Poprawiono: Eksportowanie dodatków
+Aktualizacja: Poprawiono wydajność zapytań dotyczących głównych produktów
+Aktualizacja: Ujednolicono powiadomienia o synchronizacji za pomocą menedżera powiadomień o synchronizacji
+Oraz wiele innych zmian w ponad 210 poprawkach i 100 tłumaczeniach
