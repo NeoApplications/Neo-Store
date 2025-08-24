@@ -136,15 +136,16 @@ data class ClientPackageSum(
 @DatabaseView(
     """
         SELECT $ROW_PACKAGE_NAME      AS packageName,
+               client                 AS client,
                ($ROW_ISO_DATE / 100)  AS yearMonth,
                SUM(count)             AS totalCount
         FROM   download_stats
-        WHERE client = '_total'
-        GROUP BY $ROW_PACKAGE_NAME, yearMonth
+        GROUP BY $ROW_PACKAGE_NAME, client, yearMonth
     """
 )
 data class MonthlyPackageSum(
     val packageName: String,
+    val client : String,
     // formatted from iso as YYYYMM
     val yearMonth: Int,
     val totalCount: Long
