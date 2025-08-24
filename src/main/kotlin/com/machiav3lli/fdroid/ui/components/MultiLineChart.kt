@@ -2,12 +2,15 @@ package com.machiav3lli.fdroid.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.R
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
@@ -105,6 +108,70 @@ fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Mo
                                 )
                             )
                         }
+                    },
+                ),
+            ),
+        )
+    }
+}
+
+@Composable
+fun SimpleLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val modelProducer = remember { CartesianChartModelProducer() }
+    val legendItemLabelComponent = rememberTextComponent(vicoTheme.textColor)
+    val dates = data.keys.sorted()
+    val lineKeys = data.values.flatMap { it.keys }.distinct().sorted()
+    val entriesPerLine: Map<String, List<Long>> = lineKeys.mapIndexed { index, key ->
+        key to dates.mapIndexed { idx, date ->
+            data[date]?.get(key) ?: 0
+        }
+    }.toMap()
+    val lineColor = MaterialTheme.colorScheme.primary
+
+    LaunchedEffect(Unit) {
+        modelProducer.runTransaction {
+            entriesPerLine["_total"]?.let { stats ->
+                lineSeries {
+                    series(stats)
+                }
+            }
+        }
+    }
+
+    ProvideVicoTheme(rememberM3VicoTheme()) {
+        CartesianChartHost(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(300.dp),
+            modelProducer = modelProducer,
+            scrollState = rememberVicoScrollState(scrollEnabled = false),
+            chart = rememberCartesianChart(
+                rememberLineCartesianLayer(
+                    lineProvider = LineCartesianLayer.LineProvider.series(
+                        LineCartesianLayer.rememberLine(
+                            fill = LineCartesianLayer.LineFill.single(fill(lineColor)),
+                            areaFill = null,
+                        )
+                    )
+                ),
+                startAxis = VerticalAxis.rememberStart(),
+                bottomAxis = HorizontalAxis.rememberBottom(
+                    valueFormatter = CartesianValueFormatter { _, index, _ ->
+                        dates.getOrNull(index.toInt())?.let {
+                            DateFormat.getDateInstance().format(Date.valueOf(it))
+                        } ?: index.toString()
+                    },
+                ),
+                legend = rememberHorizontalLegend(
+                    items = { extraStore ->
+                        add(
+                            LegendItem(
+                                shapeComponent(fill(lineColor), CorneredShape.Pill),
+                                legendItemLabelComponent,
+                                context.getString(R.string.total_downloads),
+                            )
+                        )
                     },
                 ),
             ),
