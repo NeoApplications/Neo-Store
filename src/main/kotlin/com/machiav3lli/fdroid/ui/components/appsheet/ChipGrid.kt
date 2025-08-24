@@ -46,7 +46,7 @@ fun EmbeddedProduct.appInfoChips(
     latestRelease: Release?,
     categories: List<String>,
 ) = listOfNotNull(
-    if (this.canUpdate(installed) && installed != null)
+    if (installed != null && this.canUpdate(installed))
         "v${installed.version.trimStart('v')} → v${version.trimStart('v')}"
     else if (installed != null) "v${installed.version.trimStart('v')}"
     else "v${version.trimStart('v')}",

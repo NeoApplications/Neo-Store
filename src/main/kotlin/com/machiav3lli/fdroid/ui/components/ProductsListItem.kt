@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
@@ -121,24 +122,26 @@ fun ProductItemContent(
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                 )
-                if (product.canUpdate) ReleaseBadge(
-                    modifier = Modifier.widthIn(max = 200.dp),
-                    text = "${product.installedVersion} → ${product.version}",
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    onColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
-                else if (product.installedVersion.isNotEmpty()) ReleaseBadge(
-                    modifier = Modifier.widthIn(max = 200.dp),
-                    text = product.installedVersion,
-                )
-                else Text(
-                    modifier = Modifier.widthIn(max = 200.dp),
-                    text = installed?.version ?: product.version,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.End,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.labelMedium,
-                )
+                when {
+                    product.canUpdate                     -> ReleaseBadge(
+                        modifier = Modifier.widthIn(max = 200.dp),
+                        text = "${product.installedVersion} → ${product.version}",
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        onColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
+                    product.installedVersion.isNotEmpty() -> ReleaseBadge(
+                        modifier = Modifier.widthIn(max = 200.dp),
+                        text = product.installedVersion,
+                    )
+                    else                                  -> Text(
+                        modifier = Modifier.widthIn(max = 200.dp),
+                        text = installed?.version ?: product.version,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.End,
+                        maxLines = 1,
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
             }
         },
         supportingContent = {
@@ -322,7 +325,7 @@ fun ExpandedItemContent(
     }
 }
 
-//@Preview
+@Preview
 @Composable
 fun ProductsListItemPreview() {
     ProductsListItem(ProductItem())

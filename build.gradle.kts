@@ -203,7 +203,7 @@ dependencies {
     implementation(libs.compose.navigation)
     implementation(libs.accompanist.permissions)
     debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.ui.tooling.preview)
 
     // Test
     testImplementation(libs.kotlin.test)
