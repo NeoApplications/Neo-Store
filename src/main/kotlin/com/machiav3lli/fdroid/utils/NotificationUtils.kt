@@ -41,6 +41,7 @@ import com.machiav3lli.fdroid.manager.service.installIntent
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.android.notificationManager
 import com.machiav3lli.fdroid.utils.extension.resources.getColorFromAttr
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -250,7 +251,7 @@ fun Context.notifySensitivePermissionsChanged(
 
 fun NotificationCompat.Builder.updateWithError(
     context: Context,
-    state: DownloadState,
+    state: DownloadState.Error,
     errorType: ValidationError,
 ) = apply {
     setSmallIcon(android.R.drawable.stat_sys_warning)
@@ -264,19 +265,25 @@ fun NotificationCompat.Builder.updateWithError(
     setContentText(
         context.getString(
             R.string.validation_error_FORMAT,
-            context.getString(
-                when (errorType) {
-                    ValidationError.INTEGRITY            -> R.string.integrity_check_error_DESC
-                    ValidationError.FORMAT               -> R.string.file_format_error_DESC
-                    ValidationError.METADATA             -> R.string.invalid_metadata_error_DESC
-                    ValidationError.SIGNATURE            -> R.string.invalid_signature_error_DESC
-                    ValidationError.PERMISSIONS          -> R.string.invalid_permissions_error_DESC
-                    ValidationError.FILE_SIZE            -> R.string.file_size_error_DESC
-                    ValidationError.SENSITIVE_PERMISSION -> R.string.sensitive_permission_error_DESC
-                    ValidationError.UNKNOWN              -> R.string.unknown_error_DESC
-                    ValidationError.NONE                 -> -1
-                }
-            )
+            when (errorType) {
+                ValidationError.INTEGRITY            -> context.getString(R.string.integrity_check_error_DESC)
+                ValidationError.FORMAT               -> context.getString(R.string.file_format_error_DESC)
+                ValidationError.METADATA             -> context.getString(R.string.invalid_metadata_error_DESC)
+                ValidationError.SIGNATURE            -> context.getString(R.string.invalid_signature_error_DESC)
+                ValidationError.PERMISSIONS          -> context.getString(R.string.invalid_permissions_error_DESC)
+                ValidationError.FILE_SIZE            -> context.getString(R.string.file_size_error_DESC)
+                ValidationError.SENSITIVE_PERMISSION -> context.getString(R.string.sensitive_permission_error_DESC)
+                ValidationError.UNKNOWN              -> context.getString(R.string.unknown_error_DESC)
+                ValidationError.CONNECTION           -> HttpStatusCode.fromValue(state.resultCode)
+                    .let {
+                        context.getString(
+                            R.string.connection_error_FORMAT,
+                            it.value.toString(), it.description
+                        )
+                    }
+
+                ValidationError.NONE                 -> context.getString(R.string.no_validation_error)
+            }
         )
     )
 }

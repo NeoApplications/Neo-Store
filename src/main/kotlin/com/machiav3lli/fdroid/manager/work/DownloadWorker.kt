@@ -162,7 +162,13 @@ class DownloadWorker(
 
             if (!result.success) {
                 Log.i(TAG, "Worker failure by error ${result.statusCode}")
-                return@coroutineScope Result.failure(getWorkData(task, result))
+                return@coroutineScope Result.failure(
+                    getWorkData(
+                        task,
+                        result,
+                        ValidationError.CONNECTION
+                    )
+                )
             }
 
             val validationError = validatePackage(task, partialRelease)
@@ -255,7 +261,7 @@ class DownloadWorker(
     private fun getWorkData(
         task: DownloadTask,
         result: Downloader.Result? = null,
-        validationError: ValidationError? = null,
+        validationError: ValidationError = ValidationError.NONE,
     ): Data = if (result == null)
         workDataOf(
             ARG_STARTED to task.started,
@@ -275,7 +281,7 @@ class DownloadWorker(
         ARG_REPOSITORY_ID to task.repoId,
         ARG_AUTHENTICATION to task.authentication,
         ARG_RESULT_CODE to result.statusCode.value,
-        ARG_VALIDATION_ERROR to validationError?.ordinal,
+        ARG_VALIDATION_ERROR to validationError.ordinal,
     )
 
     private suspend fun finalize(task: DownloadTask) {
