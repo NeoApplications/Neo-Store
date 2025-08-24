@@ -6,11 +6,14 @@ import com.machiav3lli.fdroid.data.database.dao.RBLogDao
 import com.machiav3lli.fdroid.data.database.dao.TrackerDao
 import com.machiav3lli.fdroid.data.database.entity.DownloadStats
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
+import com.machiav3lli.fdroid.data.database.entity.MonthlyPackageSum
 import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.manager.network.DownloadStatsAPI
 import com.machiav3lli.fdroid.manager.network.RBAPI
 import com.machiav3lli.fdroid.manager.network.RExodusAPI
+import com.machiav3lli.fdroid.utils.extension.text.getIsoDateOfMonthsAgo
+import com.machiav3lli.fdroid.utils.extension.text.isoDateToInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
@@ -41,6 +44,14 @@ class PrivacyRepository(
 
     fun getDownloadStats(packageName: String): Flow<List<DownloadStats>> =
         downloadStatsDao.getFlow(packageName)
+            .flowOn(cc)
+
+    fun getLatestDownloadStats(packageName: String): Flow<List<DownloadStats>> =
+        downloadStatsDao.getFlowSince(packageName, getIsoDateOfMonthsAgo(3).isoDateToInt())
+            .flowOn(cc)
+
+    fun getMonthlyDownloadStats(packageName: String): Flow<List<MonthlyPackageSum>> =
+        downloadStatsDao.getFlowMonthlySumForPackage(packageName)
             .flowOn(cc)
 
     suspend fun upsertTracker(vararg trackers: Tracker) {

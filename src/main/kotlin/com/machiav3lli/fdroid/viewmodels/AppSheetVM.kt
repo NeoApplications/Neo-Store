@@ -10,8 +10,10 @@ import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
+import com.machiav3lli.fdroid.data.database.entity.DownloadStats
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.Extras
+import com.machiav3lli.fdroid.data.database.entity.MonthlyPackageSum
 import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.PrivacyData
@@ -22,6 +24,7 @@ import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.utils.extension.Quadruple
+import com.machiav3lli.fdroid.utils.extension.text.intToIsoDate
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.findSuggestedProduct
 import com.machiav3lli.fdroid.utils.generatePermissionGroups
@@ -90,6 +93,42 @@ class AppSheetVM(
                 .groupBy(RBLog::hash)
                 .mapValues { (_, rbDataList) -> rbDataList.maxByOrNull(RBLog::timestamp)!! }
         }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+            emptyMap()
+        )
+
+    val downloadStats = packageName
+        .flatMapLatest { pn ->
+            privacyRepo.getLatestDownloadStats(pn)
+        }
+
+    val downloadStatsMonthly = packageName
+        .flatMapLatest { pn ->
+            privacyRepo.getMonthlyDownloadStats(pn)
+        }
+
+    val downloadStatsMap = downloadStats.map {
+        it.groupBy { stats -> stats.date.intToIsoDate() }
+            .mapValues { entry ->
+                entry.value.groupBy(DownloadStats::client)
+                    .mapValues { stats -> stats.value.sumOf { stat -> stat.count } }
+            }
+    }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+            emptyMap()
+        )
+
+    val downloadStatsMonthlyMap = downloadStatsMonthly.map {
+        it.groupBy { stats -> stats.yearMonth.intToIsoDate() }
+            .mapValues { entry ->
+                entry.value.groupBy(MonthlyPackageSum::client)
+                    .mapValues { stats -> stats.value.sumOf { stat -> stat.totalCount } }
+            }
+    }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
