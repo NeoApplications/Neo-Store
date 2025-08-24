@@ -60,6 +60,7 @@ data class Repository(
     fun edit(address: String, fingerprint: String, authentication: String): Repository = let {
         val changed = this.address != address || this.fingerprint != fingerprint
         copy(
+            timestamp = if (changed) 0L else timestamp,
             lastModified = if (changed) "" else lastModified,
             entryLastModified = if (changed) "" else entryLastModified,
             entityTag = if (changed) "" else entityTag,
@@ -90,6 +91,7 @@ data class Repository(
 
     fun enable(enabled: Boolean): Repository = copy(
         enabled = enabled,
+        timestamp = 0L,
         lastModified = "",
         entryLastModified = "",
         entityTag = "",

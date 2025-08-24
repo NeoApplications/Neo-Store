@@ -250,6 +250,7 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
                 if (it.lastModified.isNotEmpty() || it.entityTag.isNotEmpty()) {
                     reposRepo.upsert(
                         it.copy(
+                            timestamp = 0L,
                             lastModified = "", entryLastModified = "",
                             entityTag = "", entryEntityTag = ""
                         )
