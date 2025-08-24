@@ -16,9 +16,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.SheetValue
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,6 +29,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -35,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.FILTER_CATEGORY_FAV
@@ -49,8 +54,11 @@ import com.machiav3lli.fdroid.data.entity.appCategoryIcon
 import com.machiav3lli.fdroid.ui.components.CategoriesList
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
+import com.machiav3lli.fdroid.ui.components.TabButton
 import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Asterisk
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ListBullets
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
@@ -69,10 +77,12 @@ fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
-    val listState = rememberLazyListState()
+    val catsListState = rememberLazyListState()
+    val topsListState = rememberLazyListState()
 
     val installedList by viewModel.installed.collectAsState(emptyMap())
     val filteredProducts by viewModel.productsExplore.collectAsState(emptyList())
+    val topProducts by viewModel.productsTopDownloaded.collectAsState(emptyList())
     val repositories = viewModel.repositories.collectAsState(emptyList())
     val repositoriesMap by remember {
         derivedStateOf {
@@ -84,6 +94,7 @@ fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }
+    val exploreTab = rememberSaveable { mutableIntStateOf(0) }
 
     val scaffoldState = rememberBottomSheetScaffoldState()
     val openDialog = remember { mutableStateOf(false) }
@@ -144,6 +155,28 @@ fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
         sheetDragHandle = null,
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground,
+        topBar = {
+            PrimaryTabRow(
+                containerColor = Color.Transparent,
+                selectedTabIndex = exploreTab.intValue,
+                divider = {}
+            ) {
+                TabButton(
+                    text = stringResource(id = R.string.categories),
+                    icon = Phosphor.CirclesFour,
+                    onClick = {
+                        exploreTab.intValue = 0
+                    }
+                )
+                TabButton(
+                    text = stringResource(id = R.string.top_apps),
+                    icon = Phosphor.Asterisk,
+                    onClick = {
+                        exploreTab.intValue = 1
+                    }
+                )
+            }
+        },
         sheetContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         sheetShape = MaterialTheme.shapes.extraSmall,
         sheetContent = {
@@ -154,76 +187,138 @@ fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
             }
         }
     ) {
-        Column(
-            Modifier
-                .background(Color.Transparent)
-                .fillMaxSize(),
-        ) {
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                AnimatedVisibility(selectedCategory.value.isNotEmpty()) {
-                    TopBarAction(
-                        icon = Phosphor.ListBullets,
-                        description = stringResource(id = R.string.categories)
-                    ) {
-                        Preferences[Preferences.Key.CategoriesFilterExplore] = ""
-                        selectedCategory.value = ""
-                        viewModel.setExploreSource(Source.NONE)
-                    }
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                SortFilterChip(
-                    notModified = notModifiedSortFilter,
-                    fullWidth = true,
+        when (exploreTab.intValue) {
+            0 -> {
+                Column(
+                    Modifier
+                        .background(Color.Transparent)
+                        .fillMaxSize(),
                 ) {
-                    scope.launch {
-                        scaffoldState.bottomSheetState.expand()
+                    Row(
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        AnimatedVisibility(selectedCategory.value.isNotEmpty()) {
+                            TopBarAction(
+                                icon = Phosphor.ListBullets,
+                                description = stringResource(id = R.string.categories)
+                            ) {
+                                Preferences[Preferences.Key.CategoriesFilterExplore] = ""
+                                selectedCategory.value = ""
+                                viewModel.setExploreSource(Source.NONE)
+                            }
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
+                        SortFilterChip(
+                            notModified = notModifiedSortFilter,
+                            fullWidth = true,
+                        ) {
+                            scope.launch {
+                                scaffoldState.bottomSheetState.expand()
+                            }
+                        }
+                    }
+                    Column {
+                        CategoriesList(
+                            items = listOf(
+                                Triple(
+                                    FILTER_CATEGORY_FAV,
+                                    stringResource(id = R.string.favorite_applications),
+                                    Phosphor.HeartStraight
+                                ),
+                            ) + (categories.sortedBy { it.label }
+                                .map { Triple(it.name, it.label, it.name.appCategoryIcon) }),
+                            selectedKey = selectedCategory,
+                        ) {
+                            when (it) {
+                                FILTER_CATEGORY_FAV -> {
+                                    Preferences[Preferences.Key.CategoriesFilterExplore] =
+                                        FILTER_CATEGORY_ALL
+                                    selectedCategory.value = FILTER_CATEGORY_FAV
+                                    viewModel.setExploreSource(Source.FAVORITES)
+                                }
+
+                                else                -> {
+                                    Preferences[Preferences.Key.CategoriesFilterExplore] = it
+                                    selectedCategory.value = it
+                                    viewModel.setExploreSource(Source.AVAILABLE)
+                                }
+                            }
+                            scope.launch {
+                                catsListState.animateScrollToItem(0)
+                            }
+                        }
+
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                            state = catsListState,
+                            contentPadding = PaddingValues(vertical = 8.dp),
+                        ) {
+                            items(items = filteredProducts, key = { it.packageName }) { item ->
+                                ProductsListItem(
+                                    item = item,
+                                    repo = repositoriesMap[item.repositoryId],
+                                    isFavorite = favorites.contains(item.packageName),
+                                    onUserClick = {
+                                        neoActivity.navigateProduct(it.packageName)
+                                    },
+                                    onFavouriteClick = {
+                                        viewModel.setFavorite(
+                                            it.packageName,
+                                            !favorites.contains(it.packageName)
+                                        )
+                                    },
+                                    installed = installedList[item.packageName],
+                                    onActionClick = {
+                                        val installed = installedList[it.packageName]
+                                        val action = {
+                                            NeoApp.wm.install(
+                                                Pair(it.packageName, it.repositoryId)
+                                            )
+                                        }
+                                        if (installed != null && installed.launcherActivities.isNotEmpty())
+                                            context.onLaunchClick(
+                                                installed,
+                                                neoActivity.supportFragmentManager
+                                            )
+                                        else if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                            dialogKey.value = DialogKey.Download(it.name, action)
+                                            openDialog.value = true
+                                        } else action()
+                                    }
+                                )
+                            }
+                        }
                     }
                 }
             }
-            Column {
-                CategoriesList(
-                    items = listOf(
-                        Triple(
-                            FILTER_CATEGORY_FAV,
-                            stringResource(id = R.string.favorite_applications),
-                            Phosphor.HeartStraight
-                        ),
-                    ) + (categories.sortedBy { it.label }
-                        .map { Triple(it.name, it.label, it.name.appCategoryIcon) }),
-                    selectedKey = selectedCategory,
-                ) {
-                    when (it) {
-                        FILTER_CATEGORY_FAV -> {
-                            Preferences[Preferences.Key.CategoriesFilterExplore] =
-                                FILTER_CATEGORY_ALL
-                            selectedCategory.value = FILTER_CATEGORY_FAV
-                            viewModel.setExploreSource(Source.FAVORITES)
-                        }
 
-                        else                -> {
-                            Preferences[Preferences.Key.CategoriesFilterExplore] = it
-                            selectedCategory.value = it
-                            viewModel.setExploreSource(Source.AVAILABLE)
-                        }
-                    }
-                    scope.launch {
-                        listState.animateScrollToItem(0)
-                    }
-                }
-
+            1 -> {
+                // TODO add modes' action chips
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
-                    state = listState,
+                    state = topsListState,
                     contentPadding = PaddingValues(vertical = 8.dp),
                 ) {
-                    items(items = filteredProducts, key = { it.packageName }) { item ->
+                    item {
+                        Card(
+                            modifier = Modifier.padding(8.dp)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.top_apps_notice),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp),
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                    }
+                    items(items = topProducts, key = { it.packageName }) { item ->
                         ProductsListItem(
                             item = item,
                             repo = repositoriesMap[item.repositoryId],
@@ -259,7 +354,6 @@ fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
                     }
                 }
             }
-
         }
     }
 

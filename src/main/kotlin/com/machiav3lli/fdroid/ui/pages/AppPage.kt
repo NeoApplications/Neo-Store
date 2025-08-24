@@ -606,34 +606,35 @@ fun AppPage(
                                     heading = stringResource(id = R.string.download_stats_iod),
                                     preExpanded = false,
                                 ) {
+                                    // TODO add info chips on download numbers
                                     PrimaryTabRow(
                                         containerColor = Color.Transparent,
-                                        selectedTabIndex = statsTab.value,
+                                        selectedTabIndex = statsTab.intValue,
                                         divider = {}
                                     ) {
                                         TabButton(
                                             text = stringResource(id = R.string.total),
                                             icon = Phosphor.Download,
                                             onClick = {
-                                                statsTab.value = 0
+                                                statsTab.intValue = 0
                                             }
                                         )
                                         TabButton(
                                             text = stringResource(id = R.string.clients),
                                             icon = Phosphor.CirclesFour,
                                             onClick = {
-                                                statsTab.value = 1
+                                                statsTab.intValue = 1
                                             }
                                         )
                                         TabButton(
                                             text = stringResource(id = R.string.monthly),
                                             icon = Phosphor.Calendar,
                                             onClick = {
-                                                statsTab.value = 2
+                                                statsTab.intValue = 2
                                             }
                                         )
                                     }
-                                    when (statsTab.value) {
+                                    when (statsTab.intValue) {
                                         0 -> SimpleLineChart(downloadStats)
                                         1 -> MultiLineChart(downloadStats)
                                         2 -> MonthlyLineChart(monthlyDownloadStats)

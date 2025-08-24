@@ -447,4 +447,6 @@
     <string name="total_downloads">Total downloads</string>
     <string name="clients">Clients</string>
     <string name="monthly">Monthly</string>
+    <string name="top_apps">Top apps</string>
+    <string name="top_apps_notice">Currently, the download statistics are only provided by IzzyOnDroid, so the top apps are limited to those in the repository.</string>
 </resources>
