@@ -441,4 +441,10 @@
     <string name="sensitive_permission_error_DESC">Sensitive permission error</string>
     <string name="disable_permissions_check">Disable permissions check</string>
     <string name="disable_permissions_check_summary">Don\'t check if the downloaded APK has the same or new permissions as the installed app.</string>
+    <string name="download_stats">Download stats</string>
+    <string name="download_stats_iod">Download stats (from IzzyOnDroid)</string>
+    <string name="total">Total</string>
+    <string name="total_downloads">Total downloads</string>
+    <string name="clients">Clients</string>
+    <string name="monthly">Monthly</string>
 </resources>

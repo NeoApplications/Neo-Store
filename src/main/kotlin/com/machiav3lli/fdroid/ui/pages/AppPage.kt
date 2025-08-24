@@ -26,6 +26,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -72,9 +73,13 @@ import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.manager.work.DownloadWorker
 import com.machiav3lli.fdroid.manager.work.ExodusWorker
 import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
+import com.machiav3lli.fdroid.ui.components.MonthlyLineChart
+import com.machiav3lli.fdroid.ui.components.MultiLineChart
 import com.machiav3lli.fdroid.ui.components.ScreenshotItem
 import com.machiav3lli.fdroid.ui.components.ScreenshotList
+import com.machiav3lli.fdroid.ui.components.SimpleLineChart
 import com.machiav3lli.fdroid.ui.components.SwitchPreference
+import com.machiav3lli.fdroid.ui.components.TabButton
 import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoChips
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoHeader
@@ -90,6 +95,9 @@ import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.components.privacy.MeterIconsBar
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Calendar
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderTop
@@ -126,6 +134,7 @@ fun AppPage(
     val neoActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
     val showScreenshots = rememberSaveable { mutableStateOf(false) }
+    val statsTab = rememberSaveable { mutableIntStateOf(0) }
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
     val pagerState = rememberPagerState(pageCount = { 2 })
@@ -138,6 +147,8 @@ fun AppPage(
     }
     val exodusInfo by viewModel.exodusInfo.collectAsState(null)
     val privacyNote = viewModel.privacyNote.collectAsState(PrivacyNote())
+    val downloadStats by viewModel.downloadStatsMap.collectAsState()
+    val monthlyDownloadStats by viewModel.downloadStatsMonthlyMap.collectAsState()
     val sourceType by remember { derivedStateOf { privacyNote.value.sourceType } }
     val authorProducts by viewModel.authorProducts
         .mapLatest { list -> list.map { it.toItem() } }
@@ -585,6 +596,47 @@ fun AppPage(
                                         rowsNumber = 1,
                                     ) { item ->
                                         neoActivity.navigateProduct(item.packageName)
+                                    }
+                                }
+                            }
+                        }
+                        if (downloadStats.isNotEmpty()) {
+                            item {
+                                ExpandableItemsBlock(
+                                    heading = stringResource(id = R.string.download_stats_iod),
+                                    preExpanded = false,
+                                ) {
+                                    PrimaryTabRow(
+                                        containerColor = Color.Transparent,
+                                        selectedTabIndex = statsTab.value,
+                                        divider = {}
+                                    ) {
+                                        TabButton(
+                                            text = stringResource(id = R.string.total),
+                                            icon = Phosphor.Download,
+                                            onClick = {
+                                                statsTab.value = 0
+                                            }
+                                        )
+                                        TabButton(
+                                            text = stringResource(id = R.string.clients),
+                                            icon = Phosphor.CirclesFour,
+                                            onClick = {
+                                                statsTab.value = 1
+                                            }
+                                        )
+                                        TabButton(
+                                            text = stringResource(id = R.string.monthly),
+                                            icon = Phosphor.Calendar,
+                                            onClick = {
+                                                statsTab.value = 2
+                                            }
+                                        )
+                                    }
+                                    when (statsTab.value) {
+                                        0 -> SimpleLineChart(downloadStats)
+                                        1 -> MultiLineChart(downloadStats)
+                                        2 -> MonthlyLineChart(monthlyDownloadStats)
                                     }
                                 }
                             }
