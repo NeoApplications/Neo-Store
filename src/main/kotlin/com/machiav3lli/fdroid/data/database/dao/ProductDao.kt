@@ -37,6 +37,7 @@ import com.machiav3lli.fdroid.TABLE_PRODUCT
 import com.machiav3lli.fdroid.TABLE_PRODUCT_TEMP
 import com.machiav3lli.fdroid.TABLE_RELEASE
 import com.machiav3lli.fdroid.TABLE_REPOSITORY
+import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.QueryBuilder
 import com.machiav3lli.fdroid.data.database.entity.Category
 import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
@@ -333,9 +334,12 @@ interface ProductDao : BaseDao<Product> {
                     WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
                     AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = $TABLE_PRODUCT.$ROW_REPOSITORY_ID
                     AND $TABLE_RELEASE.$ROW_SELECTED = 1
+                    ${
+                    if (Preferences[Preferences.Key.DisableSignatureCheck]) "" else """
                     AND $TABLE_INSTALLED.$ROW_SIGNATURES LIKE ('%' || $TABLE_RELEASE.$ROW_SIGNATURE || '%')
                     AND $TABLE_RELEASE.$ROW_SIGNATURE != ''
-                ))
+                    """
+                }))
             """.trimIndent()
             )
         }
