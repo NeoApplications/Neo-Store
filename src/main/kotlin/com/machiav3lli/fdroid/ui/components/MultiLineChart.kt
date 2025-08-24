@@ -37,9 +37,87 @@ import com.patrykandpatrick.vico.core.common.shape.CorneredShape
 import kotlinx.collections.immutable.persistentListOf
 import java.sql.Date
 import java.text.DateFormat
+import java.time.YearMonth
 
 @Composable
 fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modifier) {
+    val modelProducer = remember { CartesianChartModelProducer() }
+    val legendItemLabelComponent = rememberTextComponent(vicoTheme.textColor)
+    val dates = data.keys.sorted()
+    val lineKeys = data.values.flatMap { it.keys }.distinct().sorted()
+    val entriesPerLine: Map<String, List<Long>> = lineKeys.mapIndexed { index, client ->
+        client to dates.mapIndexed { idx, date ->
+            data[date]?.get(client) ?: 0
+        }
+    }.toMap()
+
+    val colors = persistentListOf(
+        Color.Green,    // Droid-ify
+        Color.Blue,     // F-Droid
+        Color.Red,      // F-Droid Classic
+        Color.Cyan,     // Neo Store
+        Color.Magenta,  // _total
+        Color.Yellow,   // _unknown
+    )
+
+
+    LaunchedEffect(Unit) {
+        modelProducer.runTransaction {
+            lineSeries {
+                entriesPerLine.forEach { (key, vals) ->
+                    series(vals)
+                }
+            }
+        }
+    }
+
+    ProvideVicoTheme(rememberM3VicoTheme()) {
+        CartesianChartHost(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(300.dp),
+            modelProducer = modelProducer,
+            scrollState = rememberVicoScrollState(scrollEnabled = false),
+            chart = rememberCartesianChart(
+                rememberLineCartesianLayer(
+                    lineProvider = LineCartesianLayer.LineProvider.series(
+                        colors.map { color ->
+                            LineCartesianLayer.rememberLine(
+                                fill = LineCartesianLayer.LineFill.single(fill(color)),
+                                areaFill = null,
+                            )
+                        }
+                    )
+                ),
+                layerPadding = { cartesianLayerPadding() },
+                startAxis = VerticalAxis.rememberStart(),
+                bottomAxis = HorizontalAxis.rememberBottom(
+                    valueFormatter = CartesianValueFormatter { _, index, _ ->
+                        dates.getOrNull(index.toInt())?.let {
+                            DateFormat.getDateInstance().format(Date.valueOf(it))
+                        } ?: index.toString()
+                    },
+                ),
+                legend = rememberHorizontalLegend(
+                    items = { extraStore ->
+                        entriesPerLine.keys.forEachIndexed { index, label ->
+                            add(
+                                LegendItem(
+                                    shapeComponent(fill(colors[index]), CorneredShape.Pill),
+                                    legendItemLabelComponent,
+                                    label,
+                                )
+                            )
+                        }
+                    },
+                ),
+            ),
+        )
+    }
+}
+
+@Composable
+fun MonthlyLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modifier) {
     val modelProducer = remember { CartesianChartModelProducer() }
     val legendItemLabelComponent = rememberTextComponent(vicoTheme.textColor)
     val dates = data.keys.sorted()
@@ -93,7 +171,7 @@ fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Mo
                 bottomAxis = HorizontalAxis.rememberBottom(
                     valueFormatter = CartesianValueFormatter { _, index, _ ->
                         dates.getOrNull(index.toInt())?.let {
-                            DateFormat.getDateInstance().format(Date.valueOf(it))
+                            YearMonth.parse(it.removeSuffix("-00")).toString()
                         } ?: index.toString()
                     },
                 ),
