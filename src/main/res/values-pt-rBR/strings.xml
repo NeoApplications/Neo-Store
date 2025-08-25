@@ -423,4 +423,9 @@
     <string name="prefs_service">Serviço</string>
     <string name="about_channel">Canal</string>
     <string name="about_build_FORMAT">%s (Build %s)</string>
+    <string name="initial_sync_repositories">Você deseja sincronizar os repositórios predefinidos (F-Droid official, IzzyOnDroid &amp; Guardian Project)?</string>
+    <string name="index_v2">Habilitar Index-V2</string>
+    <string name="index_v2_summary">Habilita solicitar o Index-V2 como índice primário. Ainda experimental, com vantagens e desvantagens.</string>
+    <string name="action_start">Vamos lá!</string>
+    <string name="max_idle_connections_description">Número máximo de conexões ociosas entre todos os endereços a serem mantidas ativas.</string>
 </resources>
