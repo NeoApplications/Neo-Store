@@ -446,4 +446,12 @@
     <string name="sensitive_permission_error_DESC">Помилка конфіденційного дозволу</string>
     <string name="disable_permissions_check">Вимкнути перевірку дозволів</string>
     <string name="disable_permissions_check_summary">Не перевіряти, чи завантажений APK-файл має ті ж або нові дозволи, що й встановлений застосунок.</string>
+    <string name="download_stats">Завантажити статистику</string>
+    <string name="download_stats_iod">Завантажити статистику (з IzzyOnDroid)</string>
+    <string name="total">Усього</string>
+    <string name="total_downloads">Усього завантажень</string>
+    <string name="clients">Клієнти</string>
+    <string name="monthly">Щомісячно</string>
+    <string name="top_apps">Найпопулярніші застосунки</string>
+    <string name="top_apps_notice">Наразі статистика завантажень надається лише IzzyOnDroid, тому список найпопулярніших застосунків обмежується тими, що є в репозиторії.</string>
 </resources>
