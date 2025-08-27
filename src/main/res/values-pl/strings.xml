@@ -446,4 +446,12 @@
     <string name="sensitive_permission_error_DESC">Błąd dotyczący uprawnień wrażliwych</string>
     <string name="disable_permissions_check">Wyłącz sprawdzanie uprawnień</string>
     <string name="disable_permissions_check_summary">Nie sprawdzaj, czy pobrany plik APK ma takie same lub nowe uprawnienia jak zainstalowana aplikacja.</string>
+    <string name="download_stats">Statystyki pobierania</string>
+    <string name="download_stats_iod">Statystyki pobierania (z IzzyOnDroid)</string>
+    <string name="total">Łącznie</string>
+    <string name="total_downloads">Łączna liczba pobrań</string>
+    <string name="clients">Klienci</string>
+    <string name="monthly">Miesięcznie</string>
+    <string name="top_apps">Najpopularniejsze aplikacje</string>
+    <string name="top_apps_notice">Obecnie statystyki pobierania są dostarczane wyłącznie przez IzzyOnDroid, więc lista najpopularniejszych aplikacji ogranicza się do tych znajdujących się w repozytorium.</string>
 </resources>
