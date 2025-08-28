@@ -1,5 +1,5 @@
-* Menambahkan Tema AMOLED
-* Menambahkan Instalasi Root Senyap
-* Menambahkan Bahasa Berikut: -
+* Tambah Tema AMOLED
+* Tambah Pemasang Root Senyap
+* Tambah Bahasa Berikut: -
      * Portugis
      * Cina

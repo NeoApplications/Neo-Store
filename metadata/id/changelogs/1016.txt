@@ -1,0 +1,5 @@
+Tambah: Indeks ke entitas Ruang
+Tambah: Tidak Ada Sumber & Permintaan
+Perbaikan: Kebocoran memori
+Pembaruan: Perombakan Permintaan
+Hapus: Semua dari halaman jelajahi
