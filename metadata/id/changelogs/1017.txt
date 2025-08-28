@@ -1,0 +1,5 @@
+Tambah: Dialog konfirmasi pada pencopotan root juga
+Tambah: Ketuk lama tombol sinkronisasi untuk informasi sinkronisasi terbaru yang berhasil
+Perbaikan: SortFilter lembar di seluruh halaman
+Hapus: Semua repositori arsip
++ lebih banyak lagi di lebih dari 10 komitmen & 10 kontribusi terjemahan

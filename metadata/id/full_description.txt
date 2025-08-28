@@ -7,5 +7,5 @@ Klien F-Droid cepat yang kaya fitur:
 
 Adaptasi/modifikasi langsung dari Foxy-Droid
 
-Perangkat lunak bebas copylefted, berlisensi GPLv3+. \
-Gunakan, pelajari, ubah, dan bagikan; dengan semua orang.
+Perangkat lunak bebas copyleft, berlisensi GPLv3+. \
+Gunakan, pelajari, ubah, dan bagikan; dengan semua.

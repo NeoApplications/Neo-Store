@@ -1,0 +1,7 @@
+Tambah: Tab filter pencarian khusus
+Tambah: Indikator bahwa aplikasi telah diinstal untuk menampilkan item
+Perbaikan: Mogok saat menggunakan kunci yang sama untuk item rilis lambat
+Perbaikan: Membuka halaman preferensi yang berbeda ketika halaman default diubah
+Pembaruan: Mengonversi Cari kembali ke halaman
+Pembaruan: Merombak carrousel aplikasi dan membatasi panjang nama versi
++ lebih banyak lagi dalam lebih dari 10 komitmen & 30 kontribusi terjemahan

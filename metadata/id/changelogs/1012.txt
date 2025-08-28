@@ -1,7 +1,7 @@
-Tambahkan: Pengunduhan dan sinkronisasi paralel
-Tambahkan: Ekspor-impor aplikasi dan repositori yang diinstal
-Tambahkan: +50 repo baru
-Tambahkan: Mode anak
+Tambah: Pengunduhan dan sinkronisasi paralel
+Tambah: Ekspor-impor aplikasi dan repositori yang diinstal
+Tambah: +50 repositori baru
+Tambah: Mode anak
 Perbaiki: Memanggil alamat Tor
 Pembaruan: Ubah seluruh UI
 Pembaruan: Tingkatkan pengaturan nilai dialog preferensi
