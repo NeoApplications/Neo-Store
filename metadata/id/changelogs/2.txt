@@ -1,4 +1,4 @@
-* Perubahan UI Misc
-* Memformat seluruh basis kode
+* Perubahan UI lainnya
+* Pemformatan ulang seluruh basis kode
 * Dependensi Diperbarui
 * Mengganti nama Preferensi menjadi Pengaturan

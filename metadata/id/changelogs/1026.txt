@@ -1,0 +1,7 @@
+Tambah: Penanganan pembukaan halaman aplikasi dari info aplikasi sistem
+Perbaikan: Notifikasi mengikuti bahasa sistem, bukan bahasa aplikasi
+Pembaruan: Perombakan logika, notifikasi, dan penanganan DownloadWorker
+Pembaruan: Perombakan logika, notifikasi, dan penanganan SyncWorker
+Pembaruan: Gunakan ikon navigasi atau ukuran teks default
+Hapus: Saluran notifikasi sinkronisasi duplikat
+dan masih banyak lagi dalam lebih dari 20 komitmen & 20 kontribusi terjemahan

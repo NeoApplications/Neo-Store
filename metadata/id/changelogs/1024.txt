@@ -1,0 +1,7 @@
+Tambah: Dukungan untuk tautan video, tangkapan layar tv & wear
+Tambah: Dialog untuk notifikasi sinkronisasi awal saat peluncuran pertama
+Perbaikan: Tidak menampilkan instalasi pada paket dari sumber tanpa berbagi
+Perbaikan: Parsing dan menampilkan tautan litecoin dan liberapay
+Pembaruan: Meningkatkan keandalan pemasang
+Hapus: Parsing tautan donasi flattr
+dan masih banyak lagi dalam lebih dari 20 komitmen & 80 kontribusi terjemahan
