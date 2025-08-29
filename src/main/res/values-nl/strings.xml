@@ -434,4 +434,18 @@
     <string name="rb_bg443">bg443</string>
     <string name="rb_obfusk">Obfusk</string>
     <string name="syncing_repositories_FORMAT">%d archieven synchroniseren</string>
+    <string name="new_sensitive_permission_title">Nieuw gevoelig recht</string>
+    <string name="sensitive_permission_detected_FORMAT">De app %1$s vraagt om nieuw gevoelig recht</string>
+    <string name="sensitive_permission_detected_list">Nieuwe gevoelige rechten gevonden:</string>
+    <string name="sensitive_permission_error_DESC">Gevoelige rechten-fout</string>
+    <string name="disable_permissions_check">Schakel rechtencontrole uit</string>
+    <string name="disable_permissions_check_summary">Controleer niet of de gedownloade APK dezelfde of nieuwe rechten heeft als de geïnstalleerde app.</string>
+    <string name="download_stats">Statistieken downloaden</string>
+    <string name="download_stats_iod">Statistieken downloaden (van IzzyOnDroid)</string>
+    <string name="total">Totaal</string>
+    <string name="total_downloads">Totale downloads</string>
+    <string name="clients">Clients</string>
+    <string name="monthly">Maandelijks</string>
+    <string name="top_apps">Top apps</string>
+    <string name="top_apps_notice">Momenteel worden de downloadstatistieken alleen door IzzyOnDroid verstrekt. De top-apps zijn dus beperkt tot de apps in het archief.</string>
 </resources>

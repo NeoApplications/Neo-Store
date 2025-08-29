@@ -440,4 +440,18 @@
     <string name="rb_bg443">bg443</string>
     <string name="rb_obfusk">Obfusk</string>
     <string name="syncing_repositories_FORMAT">Synchronizacja %d repozytoriów</string>
+    <string name="new_sensitive_permission_title">Nowe wrażliwe uprawnienie</string>
+    <string name="sensitive_permission_detected_FORMAT">Aplikacja %1$s prosi o nowe uprawnienia dotyczące danych wrażliwych</string>
+    <string name="sensitive_permission_detected_list">Wykryto nowe wrażliwe uprawnienia:</string>
+    <string name="sensitive_permission_error_DESC">Błąd dotyczący uprawnień wrażliwych</string>
+    <string name="disable_permissions_check">Wyłącz sprawdzanie uprawnień</string>
+    <string name="disable_permissions_check_summary">Nie sprawdzaj, czy pobrany plik APK ma takie same lub nowe uprawnienia jak zainstalowana aplikacja.</string>
+    <string name="download_stats">Statystyki pobierania</string>
+    <string name="download_stats_iod">Statystyki pobierania (z IzzyOnDroid)</string>
+    <string name="total">Łącznie</string>
+    <string name="total_downloads">Łączna liczba pobrań</string>
+    <string name="clients">Klienci</string>
+    <string name="monthly">Miesięcznie</string>
+    <string name="top_apps">Najpopularniejsze aplikacje</string>
+    <string name="top_apps_notice">Obecnie statystyki pobierania są dostarczane wyłącznie przez IzzyOnDroid, więc lista najpopularniejszych aplikacji ogranicza się do tych znajdujących się w repozytorium.</string>
 </resources>
