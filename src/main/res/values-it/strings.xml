@@ -444,4 +444,12 @@
     <string name="sensitive_permission_error_DESC">Errore di autorizzazione sensibile</string>
     <string name="disable_permissions_check">Disabilita il controllo delle autorizzazioni</string>
     <string name="disable_permissions_check_summary">Non controllare se l\'APK scaricato ha le stesse autorizzazioni o autorizzazioni nuove dell\'app installata.</string>
+    <string name="top_apps_notice">Attualmente, le statistiche di download sono fornite solo da IzzyOnDroid, quindi le app più popolari sono limitate a quelle presenti nel repository.</string>
+    <string name="download_stats">Statistiche download</string>
+    <string name="download_stats_iod">Statistiche download (da IzzyOnDroid)</string>
+    <string name="total">Totale</string>
+    <string name="total_downloads">Download totali</string>
+    <string name="clients">Clienti</string>
+    <string name="monthly">Mensile</string>
+    <string name="top_apps">Le migliori app</string>
 </resources>
