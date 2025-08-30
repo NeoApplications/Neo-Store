@@ -1,0 +1,7 @@
+Tambah: Dukungan untuk F-Droid Index-V2 dan pembaruan inkremental
+Tambah: Dukungan untuk repositori OEM/ROM yang telah ditetapkan
+Tambah: Lencana RB untuk item rilis
+Perbaikan: Mengekspor ekstra
+Pembaruan: Meningkatkan kinerja kueri produk utama
+Pembaruan: Menyatukan notifikasi sinkronisasi menggunakan pengelola notifikasi sinkronisasi
+dan masih banyak lagi dalam lebih dari 210 komitmen & 100 kontribusi terjemahan

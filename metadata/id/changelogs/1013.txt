@@ -1,0 +1,8 @@
+Tambah: Perlindungan untuk menghindari spam sinkronisasi
+Tambah: Opsi untuk membatasi aplikasi yang dimuat untuk pencarian
+Tambah: Dukung build yang dapat direproduksi
+Tambah: Indikator jika urutan/filter kustom diterapkan
+Perbaikan: Memuat aplikasi tanpa kategori (misalnya Total Commander)
+Perbaikan: Rekomposisi konstan sebagian besar UI (mengurangi Mogok)
+Perbaikan: Menangani lokal dengan tiga huruf sebagai kode bahasa
++ banyak lagi dalam lebih dari 30 komitmen & 20 kontribusi terjemahan

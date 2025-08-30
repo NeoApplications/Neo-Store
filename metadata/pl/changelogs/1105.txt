@@ -1,0 +1,8 @@
+Dodano: Ikony dla nowych kategorii f-droid
+Dodano: Powiadomienia o nowych wymaganych uprawnieniach dotyczących danych wrażliwych podczas aktualizacji (podziękowania dla @aba2222)
+Poprawka: Sugerowane wydanie w indeksie V2 (podziękowania dla @Red54)
+Poprawka: Dzielenie przez zero, jeśli indeks v2 nie jest obsługiwany w SyncWorker (podziękowania dla @amartinz)
+Poprawka: Synchronizacja repozytorium F-droid powodująca cichą awarię pamięci
+Poprawka: Analiza elementów zlokalizowanych en-SHAW w lokalizacjach innych niż en-US
+Aktualizacja: Pierwsza zmiana układu i kolorystyki w kierunku Material 3 Expressive
+oraz wiele innych zmian w ponad 20 poprawkach i 1 tłumaczeniu

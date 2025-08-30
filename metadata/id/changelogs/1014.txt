@@ -1,0 +1,6 @@
+Tambah: Bilah pencarian ke halaman repo
+Tambah: Opsi untuk menampilkan nama versi Android, bukan SDK (diaktifkan secara default)
+Tambah: Dialog saat mengklik tautan dari deskripsi aplikasi atau changelog
+Perbaikan: Notifikasi kerusakan saat mengetuk pemasang sesi
+Pembaruan: Tambahkan tombol aktifkan dan tutup ke RepoSheet
++ lebih banyak lagi di lebih dari 10 komitmen & 50 kontribusi terjemahan
