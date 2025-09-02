@@ -426,4 +426,17 @@
     <string name="index_v2_summary">Muliggør anmodning om Index-V2 som det primære indeks. Det er stadig eksperimentelt og har fordele og ulemper.</string>
     <string name="action_start">Lad os komme i gang!</string>
     <string name="max_idle_connections_description">Maksimalt antal inaktive forbindelser over alle adresser, der skal holdes aktive.</string>
+    <string name="notify_channel_debug">Fejlfinding</string>
+    <string name="rb_none">Ingen udbyder</string>
+    <string name="rb_izzyondroid">IzzyOnDroid</string>
+    <string name="rb_bg443">bg443</string>
+    <string name="rb_obfusk">Obfusk</string>
+    <string name="syncing_repositories_FORMAT">Synkroniserer %d repositories</string>
+    <string name="new_sensitive_permission_title">Ny følsom tilladelse</string>
+    <string name="sensitive_permission_detected_FORMAT">Appen %1$s anmoder om ny følsom tilladelse</string>
+    <string name="sensitive_permission_detected_list">Nye følsomme tilladelser registreret:</string>
+    <string name="disable_permissions_check">Deaktiver tilladelsestjek</string>
+    <string name="disable_permissions_check_summary">Tjek ikke, om den downloadede APK har de samme eller nye tilladelser som den installerede app.</string>
+    <string name="clients">Klienter</string>
+    <string name="monthly">Månedligt</string>
 </resources>
