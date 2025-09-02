@@ -25,7 +25,7 @@ interface DownloadStatsFileDao : BaseDao<DownloadStatsFileMetadata> {
             >
 
     @Transaction
-    suspend fun multipleUpserts(updates: List<DownloadStatsFileMetadata>) {
+    suspend fun multipleUpserts(updates: Collection<DownloadStatsFileMetadata>) {
         updates.forEach { metadata ->
             upsert(metadata)
         }

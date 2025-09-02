@@ -94,7 +94,7 @@ class DownloadStatsWorker(
         result.data?.let { data ->
             try {
                 val downloadStats = data.toDownloadStats()
-                privacyRepository.upsertDownloadStats(*downloadStats.toTypedArray())
+                privacyRepository.upsertDownloadStats(downloadStats)
                 result.lastModified?.let { lastModified ->
                     privacyRepository.upsertDownloadStatsFileMetadata(
                         fileName = result.fileName,

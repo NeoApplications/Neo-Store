@@ -1,10 +1,12 @@
 package com.machiav3lli.fdroid.data.repository
 
 import com.machiav3lli.fdroid.data.database.dao.DownloadStatsDao
+import com.machiav3lli.fdroid.data.database.dao.DownloadStatsFileDao
 import com.machiav3lli.fdroid.data.database.dao.ExodusInfoDao
 import com.machiav3lli.fdroid.data.database.dao.RBLogDao
 import com.machiav3lli.fdroid.data.database.dao.TrackerDao
 import com.machiav3lli.fdroid.data.database.entity.DownloadStats
+import com.machiav3lli.fdroid.data.database.entity.DownloadStatsFileMetadata
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.MonthlyPackageSum
 import com.machiav3lli.fdroid.data.database.entity.RBLog
@@ -29,6 +31,7 @@ class PrivacyRepository(
     private val rbDao: RBLogDao,
     private val exodusDao: ExodusInfoDao,
     private val downloadStatsDao: DownloadStatsDao,
+    private val dsFileDao: DownloadStatsFileDao,
 ) {
     private val cc = Dispatchers.IO
     private val jcc = Dispatchers.IO + SupervisorJob()
@@ -54,27 +57,56 @@ class PrivacyRepository(
         downloadStatsDao.getFlowMonthlySumForPackage(packageName)
             .flowOn(cc)
 
-    suspend fun upsertTracker(vararg trackers: Tracker) {
+    suspend fun loadDownloadStatsModifiedMap(): Map<String, String> = withContext(jcc) {
+        dsFileDao.getLastModifiedDates()
+    }
+
+    suspend fun upsertTracker(trackers: Collection<Tracker>) {
         withContext(jcc) {
-            trackerDao.upsert(*trackers)
+            trackerDao.multipleUpserts(trackers.toList())
         }
     }
 
-    suspend fun upsertRBLogs(vararg logs: RBLog) {
+    suspend fun upsertRBLogs(logs: Collection<RBLog>) {
         withContext(jcc) {
-            rbDao.upsert(*logs)
+            rbDao.multipleUpserts(logs.toList())
         }
     }
 
-    suspend fun upsertExodusInfo(vararg infos: ExodusInfo) {
+    suspend fun upsertExodusInfo(infos: ExodusInfo) {
         withContext(jcc) {
-            exodusDao.upsert(*infos)
+            exodusDao.upsert(infos)
         }
     }
 
-    suspend fun upsertDownloadStats(vararg downloadStats: DownloadStats) {
+    suspend fun upsertDownloadStats(downloadStats: Collection<DownloadStats>) {
         withContext(jcc) {
-            downloadStatsDao.upsert(*downloadStats)
+            downloadStatsDao.multipleUpserts(downloadStats)
+        }
+    }
+
+    suspend fun upsertDownloadStatsFileMetadata(metadata: Collection<DownloadStatsFileMetadata>) {
+        withContext(jcc) {
+            dsFileDao.multipleUpserts(metadata)
+        }
+    }
+
+    suspend fun upsertDownloadStatsFileMetadata(
+        fileName: String,
+        lastModified: String,
+        fileSize: Long? = null,
+        recordsCount: Int? = null
+    ) {
+        withContext(jcc) {
+            val metadata = DownloadStatsFileMetadata(
+                fileName = fileName,
+                lastModified = lastModified,
+                lastFetched = System.currentTimeMillis(),
+                fetchSuccess = true,
+                fileSize = fileSize,
+                recordsCount = recordsCount
+            )
+            dsFileDao.upsert(metadata)
         }
     }
 }

@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import com.machiav3lli.fdroid.ROW_ISO_DATE
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.data.database.entity.ClientPackageSum
@@ -75,4 +76,11 @@ interface DownloadStatsDao : BaseDao<DownloadStats> {
         """
     )
     fun getFlowRecentTopApps(startDateInclusive: Int, limit: Int): Flow<List<PackageSum>>
+
+    @Transaction
+    suspend fun multipleUpserts(updates: Collection<DownloadStats>) {
+        updates.forEach { metadata ->
+            upsert(metadata)
+        }
+    }
 }

@@ -44,7 +44,7 @@ class RBWorker(
     private suspend fun fetchLogs() {
         withContext(Dispatchers.IO) {
             val logs = rbAPI.getIndex()
-            privacyRepository.upsertRBLogs(*logs.toLogs().toTypedArray())
+            privacyRepository.upsertRBLogs(logs.toLogs())
         }
     }
 

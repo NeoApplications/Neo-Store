@@ -54,7 +54,7 @@ class ExodusWorker(
                     val trackerList = repoExodusAPI.getTrackers()
                     // TODO **conditionally** update DB with the trackers
                     privacyRepository.upsertTracker(
-                        *trackerList.trackers
+                        trackerList.trackers
                             .map { (key, value) ->
                                 Tracker(
                                     key.toInt(),
@@ -66,7 +66,7 @@ class ExodusWorker(
                                     value.description,
                                     value.categories
                                 )
-                            }.toTypedArray()
+                            }
                     )
                 } catch (e: Exception) {
                     Log.e(this::javaClass.name, "Failed fetching exodus trackers", e)
