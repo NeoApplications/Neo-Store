@@ -34,7 +34,6 @@ import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
 import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.core.common.LegendItem
 import com.patrykandpatrick.vico.core.common.shape.CorneredShape
-import kotlinx.collections.immutable.persistentListOf
 import java.sql.Date
 import java.text.DateFormat
 import java.time.YearMonth
@@ -51,15 +50,15 @@ fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Mo
         }
     }.toMap()
 
-    val colors = persistentListOf(
-        Color.Green,    // Droid-ify
-        Color.Blue,     // F-Droid
-        Color.Red,      // F-Droid Classic
-        Color.Cyan,     // Neo Store
-        Color.Magenta,  // _total
-        Color.Yellow,   // _unknown
-    )
-
+    val colors = buildList {
+        if ("Droid-ify" in entriesPerLine.keys) add(Color.Green)
+        if ("F-Droid" in entriesPerLine.keys) add(Color.Blue)
+        if ("F-Droid Classic" in entriesPerLine.keys) add(Color.Red)
+        if ("Flicky" in entriesPerLine.keys) add(Color.Magenta)
+        if ("Neo Store" in entriesPerLine.keys) add(Color.Cyan)
+        if ("_total" in entriesPerLine.keys) add(MaterialTheme.colorScheme.primary)
+        if ("_unknown" in entriesPerLine.keys) add(Color.Yellow)
+    }
 
     LaunchedEffect(Unit) {
         modelProducer.runTransaction {
@@ -122,21 +121,21 @@ fun MonthlyLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = 
     val legendItemLabelComponent = rememberTextComponent(vicoTheme.textColor)
     val dates = data.keys.sorted()
     val lineKeys = data.values.flatMap { it.keys }.distinct().sorted()
-    val entriesPerLine: Map<String, List<Long>> = lineKeys.mapIndexed { index, key ->
-        key to dates.mapIndexed { idx, date ->
-            data[date]?.get(key) ?: 0
+    val entriesPerLine: Map<String, List<Long>> = lineKeys.mapIndexed { index, client ->
+        client to dates.mapIndexed { idx, date ->
+            data[date]?.get(client) ?: 0
         }
     }.toMap()
 
-    val colors = persistentListOf(
-        Color.Green,    // Droid-ify
-        Color.Blue,     // F-Droid
-        Color.Red,      // F-Droid Classic
-        Color.Cyan,     // Neo Store
-        Color.Magenta,  // _total
-        Color.Yellow,   // _unknown
-    )
-
+    val colors = buildList {
+        if ("Droid-ify" in entriesPerLine.keys) add(Color.Green)
+        if ("F-Droid" in entriesPerLine.keys) add(Color.Blue)
+        if ("F-Droid Classic" in entriesPerLine.keys) add(Color.Red)
+        if ("Flicky" in entriesPerLine.keys) add(Color.Magenta)
+        if ("Neo Store" in entriesPerLine.keys) add(Color.Cyan)
+        if ("_total" in entriesPerLine.keys) add(MaterialTheme.colorScheme.primary)
+        if ("_unknown" in entriesPerLine.keys) add(Color.Yellow)
+    }
 
     LaunchedEffect(Unit) {
         modelProducer.runTransaction {
