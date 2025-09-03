@@ -430,4 +430,18 @@
     <string name="syncing_repositories_FORMAT">正同步 %d 个存储库</string>
     <string name="index_v2">启用第二代索引（Index-V2）</string>
     <string name="index_v2_summary">允许请求第二代索引（Index-V2）作为主索引。目前仍处于实验阶段，有利有弊。</string>
+    <string name="new_sensitive_permission_title">新的敏感权限</string>
+    <string name="sensitive_permission_detected_FORMAT">应用 %1$s 请求新的敏感权限</string>
+    <string name="sensitive_permission_detected_list">检测到新的敏感权限：</string>
+    <string name="sensitive_permission_error_DESC">敏感权限错误</string>
+    <string name="disable_permissions_check">禁用敏感权限检查</string>
+    <string name="disable_permissions_check_summary">不要检查下载的安装包是否具有与已安装应用不同的权限。</string>
+    <string name="download_stats">下载统计</string>
+    <string name="download_stats_iod">下载统计（来自 IzzyOnDroid）</string>
+    <string name="total">总计</string>
+    <string name="total_downloads">总的下载</string>
+    <string name="clients">客户端</string>
+    <string name="monthly">月度</string>
+    <string name="top_apps">热门应用</string>
+    <string name="top_apps_notice">目前，下载统计数据只由 IzzyOnDroid 提供，因此热门应用仅限于该存储库中。</string>
 </resources>
