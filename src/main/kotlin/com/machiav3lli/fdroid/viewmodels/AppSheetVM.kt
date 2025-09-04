@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.viewmodels
 
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.NeoApp
@@ -24,6 +25,7 @@ import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.utils.extension.Quadruple
+import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.text.intToIsoDate
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.findSuggestedProduct
@@ -103,6 +105,28 @@ class AppSheetVM(
         .flatMapLatest { pn ->
             privacyRepo.getLatestDownloadStats(pn)
         }
+
+    val downloadStatsInfo = packageName
+        .flatMapLatest { pn ->
+            combine(
+                privacyRepo.getClientSumDownloadStats(pn),
+                if (!Android.sdk(Build.VERSION_CODES.R))
+                    privacyRepo.getSumDownloadOrder(pn)
+                else privacyRepo.getSumDownloadOrderLegacy(pn)
+            ) { stats, order ->
+                Triple(
+                    stats.find { it.client == "_total" }?.totalCount ?: 0,
+                    stats.filterNot { it.client == "_total" || it.client == "_unknown" }
+                        .maxBy { it.totalCount }.client ?: "",
+                    order
+                )
+            }
+        }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+            Triple(0L, "", 9999)
+        )
 
     val downloadStatsMonthly = packageName
         .flatMapLatest { pn ->

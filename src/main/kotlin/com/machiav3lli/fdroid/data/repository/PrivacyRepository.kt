@@ -5,10 +5,12 @@ import com.machiav3lli.fdroid.data.database.dao.DownloadStatsFileDao
 import com.machiav3lli.fdroid.data.database.dao.ExodusInfoDao
 import com.machiav3lli.fdroid.data.database.dao.RBLogDao
 import com.machiav3lli.fdroid.data.database.dao.TrackerDao
+import com.machiav3lli.fdroid.data.database.entity.ClientPackageSum
 import com.machiav3lli.fdroid.data.database.entity.DownloadStats
 import com.machiav3lli.fdroid.data.database.entity.DownloadStatsFileMetadata
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.MonthlyPackageSum
+import com.machiav3lli.fdroid.data.database.entity.PackageSum
 import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.manager.network.DownloadStatsAPI
@@ -51,6 +53,22 @@ class PrivacyRepository(
 
     fun getLatestDownloadStats(packageName: String): Flow<List<DownloadStats>> =
         downloadStatsDao.getFlowSince(packageName, getIsoDateOfMonthsAgo(3).isoDateToInt())
+            .flowOn(cc)
+
+    fun getSumDownloadStats(packageName: String): Flow<PackageSum> =
+        downloadStatsDao.getFlowPackageSum(packageName)
+            .flowOn(cc)
+
+    fun getSumDownloadOrder(packageName: String): Flow<Int> =
+        downloadStatsDao.getFlowPackageSumOrder(packageName)
+            .flowOn(cc)
+
+    fun getSumDownloadOrderLegacy(packageName: String): Flow<Int> =
+        downloadStatsDao.getFlowPackageSumOrderLegacy(packageName)
+            .flowOn(cc)
+
+    fun getClientSumDownloadStats(packageName: String): Flow<List<ClientPackageSum>> =
+        downloadStatsDao.getFlowClientSumForPackage(packageName)
             .flowOn(cc)
 
     fun getMonthlyDownloadStats(packageName: String): Flow<List<MonthlyPackageSum>> =
