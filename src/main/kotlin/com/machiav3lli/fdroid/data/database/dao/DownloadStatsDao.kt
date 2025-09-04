@@ -28,6 +28,31 @@ interface DownloadStatsDao : BaseDao<DownloadStats> {
     @Query("SELECT * FROM packagesum WHERE $ROW_PACKAGE_NAME = :packageName")
     fun getFlowPackageSum(packageName: String): Flow<PackageSum>
 
+    @Query(
+        """
+        SELECT rowNumber
+        FROM (
+            SELECT ROW_NUMBER() OVER (ORDER BY totalCount DESC) AS rowNumber, packageName
+            FROM packagesum
+        ) sub
+        WHERE packageName = :packageName
+        """
+    )
+    fun getFlowPackageSumOrder(packageName: String): Flow<Int>
+
+    @Query(
+        """
+        SELECT (
+            SELECT COUNT(*) 
+            FROM packagesum AS p2
+            WHERE p2.totalCount >= p1.totalCount
+        ) AS rowNumber
+        FROM packagesum AS p1
+        WHERE p1.packageName = :packageName
+        """
+    )
+    fun getFlowPackageSumOrderLegacy(packageName: String): Flow<Int>
+
     @Query("SELECT * FROM clientpackagesum WHERE $ROW_PACKAGE_NAME = :packageName ORDER BY totalCount DESC")
     fun getFlowClientSumForPackage(packageName: String): Flow<List<ClientPackageSum>>
 
