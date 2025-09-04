@@ -454,5 +454,5 @@
     <string name="search_for_repository">Search for repository</string>
     <string name="downloads_total_FORMAT">Total downloads: %s</string>
     <string name="downloads_top_client_FORMAT">Preferred client: %s</string>
-    <string name="downloads_top_ranking_FORMAT">Downloads ranking: %s</string>
+    <string name="downloads_top_ranking_FORMAT">All-time download ranking: %s</string>
 </resources>
