@@ -16,16 +16,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -35,9 +33,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,8 +58,8 @@ import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
-import com.machiav3lli.fdroid.ui.components.SegmentedTabButton
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
+import com.machiav3lli.fdroid.ui.components.TabButton
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
@@ -73,22 +73,15 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.MainVM
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstalledPage(viewModel: MainVM = koinNeoViewModel()) {
     val scope = rememberCoroutineScope()
-
-    val pages: ImmutableList<@Composable () -> Unit> = persistentListOf(
-        { InstallsPage(viewModel) },
-        { DownloadedPage(viewModel) }
-    )
-    val pagerState = rememberPagerState { pages.size }
-    val currentPage by remember { derivedStateOf { pagerState.currentPage } }
+    val installedTab = rememberSaveable { mutableIntStateOf(0) }
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.Default) {
@@ -127,42 +120,30 @@ fun InstalledPage(viewModel: MainVM = koinNeoViewModel()) {
             .background(Color.Transparent)
             .fillMaxSize(),
     ) {
-        SingleChoiceSegmentedButtonRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            space = 24.dp,
+        PrimaryTabRow(
+            containerColor = Color.Transparent,
+            selectedTabIndex = installedTab.intValue,
+            divider = {}
         ) {
-            SegmentedTabButton(
+            TabButton(
                 text = stringResource(id = R.string.installed),
                 icon = Phosphor.ArrowSquareOut,
-                selected = { currentPage == 0 },
-                index = 0,
-                count = 2,
                 onClick = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(0)
-                    }
+                    installedTab.intValue = 0
                 }
             )
-            SegmentedTabButton(
+            TabButton(
                 text = stringResource(id = R.string.downloads),
                 icon = Phosphor.Download,
-                selected = { currentPage == 1 },
-                index = 1,
-                count = 2,
                 onClick = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(1)
-                    }
+                    installedTab.intValue = 1
                 }
             )
         }
-        HorizontalPager(
-            state = pagerState,
-            beyondViewportPageCount = 1
-        ) { index ->
-            pages[index].invoke()
+
+        when (installedTab.intValue) {
+            0 -> InstallsPage(viewModel)
+            1 -> DownloadedPage(viewModel)
         }
     }
 }
