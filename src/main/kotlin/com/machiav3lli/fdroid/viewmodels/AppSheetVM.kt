@@ -117,7 +117,7 @@ class AppSheetVM(
                 Triple(
                     stats.find { it.client == "_total" }?.totalCount ?: 0,
                     stats.filterNot { it.client == "_total" || it.client == "_unknown" }
-                        .maxBy { it.totalCount }.client ?: "",
+                        .maxByOrNull { it.totalCount }?.client ?: "",
                     order
                 )
             }
