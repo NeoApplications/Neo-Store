@@ -91,6 +91,7 @@ import com.machiav3lli.fdroid.ui.components.appsheet.SourceCodeButton
 import com.machiav3lli.fdroid.ui.components.appsheet.TopBarHeader
 import com.machiav3lli.fdroid.ui.components.appsheet.WarningCard
 import com.machiav3lli.fdroid.ui.components.appsheet.appInfoChips
+import com.machiav3lli.fdroid.ui.components.appsheet.downloadInfoChips
 import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.components.privacy.MeterIconsBar
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
@@ -147,6 +148,7 @@ fun AppPage(
     }
     val exodusInfo by viewModel.exodusInfo.collectAsState(null)
     val privacyNote = viewModel.privacyNote.collectAsState(PrivacyNote())
+    val downloadStatsInfo by viewModel.downloadStatsInfo.collectAsState()
     val downloadStats by viewModel.downloadStatsMap.collectAsState()
     val monthlyDownloadStats by viewModel.downloadStatsMonthlyMap.collectAsState()
     val sourceType by remember { derivedStateOf { privacyNote.value.sourceType } }
@@ -606,7 +608,7 @@ fun AppPage(
                                     heading = stringResource(id = R.string.download_stats_iod),
                                     preExpanded = false,
                                 ) {
-                                    // TODO add info chips on download numbers
+                                    AppInfoChips(downloadStatsInfo.downloadInfoChips())
                                     PrimaryTabRow(
                                         containerColor = Color.Transparent,
                                         selectedTabIndex = statsTab.intValue,

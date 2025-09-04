@@ -451,4 +451,8 @@
     <string name="top_apps_notice">Currently, the download statistics are only provided by IzzyOnDroid, so the top apps are limited to those in the repository.</string>
     <string name="connection_error_FORMAT">Invalid server response with code: %s %s</string>
     <string name="no_validation_error">No validation error.</string>
+    <string name="search_for_repository">Search for repository</string>
+    <string name="downloads_total_FORMAT">Total downloads: %s</string>
+    <string name="downloads_top_client_FORMAT">Preferred client: %s</string>
+    <string name="downloads_top_ranking_FORMAT">Downloads ranking: %s</string>
 </resources>
