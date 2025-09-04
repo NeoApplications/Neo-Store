@@ -36,6 +36,7 @@ fun NeoNavigationSuiteScaffold(
     pages: ImmutableList<NavItem>,
     selectedPage: State<Int>,
     onItemClick: (Int) -> Unit,
+    hideNavigation: Boolean = false,
     backToPage: (suspend () -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
@@ -76,7 +77,7 @@ fun NeoNavigationSuiteScaffold(
         contentColor = MaterialTheme.colorScheme.onBackground,
         layoutType = customNavSuiteType,
         navigationSuiteItems = {
-            pages.forEachIndexed { index, it ->
+            if (!hideNavigation) pages.forEachIndexed { index, it ->
                 navItem(
                     item = it,
                     selected = index == selectedPage.value,
