@@ -454,4 +454,6 @@
     <string name="monthly">Miesięcznie</string>
     <string name="top_apps">Najpopularniejsze aplikacje</string>
     <string name="top_apps_notice">Obecnie statystyki pobierania są dostarczane wyłącznie przez IzzyOnDroid, więc lista najpopularniejszych aplikacji ogranicza się do tych znajdujących się w repozytorium.</string>
+    <string name="connection_error_FORMAT">Nieprawidłowa odpowiedź serwera z kodem: %s %s</string>
+    <string name="no_validation_error">Błąd braku weryfikacji.</string>
 </resources>
