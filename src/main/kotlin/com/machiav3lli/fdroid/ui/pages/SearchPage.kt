@@ -43,9 +43,8 @@ import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.Page
 import com.machiav3lli.fdroid.data.entity.Source
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
-import com.machiav3lli.fdroid.ui.components.SortFilterButton
+import com.machiav3lli.fdroid.ui.components.SortFilterChip
 import com.machiav3lli.fdroid.ui.components.TabButton
-import com.machiav3lli.fdroid.ui.components.WideSearchField
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
@@ -143,18 +142,10 @@ fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.Bottom,
             ) {
-                WideSearchField(
-                    modifier = Modifier.weight(1f),
-                    query = query,
-                    onClose = {
-                        viewModel.setSearchQuery("")
-                    },
-                    onQueryChanged = { newQuery ->
-                        if (newQuery != query) viewModel.setSearchQuery(newQuery)
-                    },
-                    focusOnCompose = false,
-                )
-                SortFilterButton(notModified = notModifiedSortFilter) {
+                SortFilterChip(
+                    notModified = notModifiedSortFilter,
+                    fullWidth = true,
+                ) {
                     scope.launch {
                         scaffoldState.bottomSheetState.expand()
                     }
