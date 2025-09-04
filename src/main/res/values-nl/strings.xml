@@ -448,4 +448,6 @@
     <string name="monthly">Maandelijks</string>
     <string name="top_apps">Top apps</string>
     <string name="top_apps_notice">Momenteel worden de downloadstatistieken alleen door IzzyOnDroid verstrekt. De top-apps zijn dus beperkt tot de apps in het archief.</string>
+    <string name="connection_error_FORMAT">Ongeldige serverreactie met code: %s%s</string>
+    <string name="no_validation_error">Geen validatiefout</string>
 </resources>
