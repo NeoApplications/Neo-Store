@@ -57,7 +57,8 @@ fun Modifier.blockBorderTop(altStyle: Boolean = !Preferences[Preferences.Key.Alt
         this
             .padding(2.dp)
             .clip(BlockTopShape)
-            .addIfElse(altStyle,
+            .addIfElse(
+                altStyle,
                 factory = {
                     border(
                         width = 0.5.dp,
@@ -75,13 +76,14 @@ fun Modifier.blockBorderBottom(altStyle: Boolean = !Preferences[Preferences.Key.
     composed {
         this
             .padding(2.dp)
-            .clip(BlockBottomShape)
-            .addIfElse(altStyle,
+            .clip(MaterialTheme.shapes.extraLarge)
+            .addIfElse(
+                altStyle,
                 factory = {
                     border(
                         width = 0.5.dp,
                         color = MaterialTheme.colorScheme.outlineVariant,
-                        shape = BlockBottomShape,
+                        shape = MaterialTheme.shapes.extraLarge,
                     )
                 },
                 elseFactory = {
@@ -93,7 +95,8 @@ fun Modifier.blockBorderBottom(altStyle: Boolean = !Preferences[Preferences.Key.
 fun Modifier.blockShadow(altStyle: Boolean = !Preferences[Preferences.Key.AltBlockLayout]) =
     composed {
         this
-            .addIfElse(altStyle,
+            .addIfElse(
+                altStyle,
                 factory = {
                     border(
                         width = 0.5.dp,
