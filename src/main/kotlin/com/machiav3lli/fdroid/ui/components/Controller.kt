@@ -39,7 +39,7 @@ fun SwitchPreference(
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val (selected, select) = remember { mutableStateOf(initSelected()) }
+        val (selected, select) = remember(initSelected()) { mutableStateOf(initSelected()) }
         Text(
             modifier = Modifier.weight(1f, true),
             text = text,
