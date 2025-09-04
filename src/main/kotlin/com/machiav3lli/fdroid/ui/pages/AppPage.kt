@@ -101,7 +101,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
-import com.machiav3lli.fdroid.ui.compose.utils.blockBorderTop
 import com.machiav3lli.fdroid.ui.dialog.ActionSelectionDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
@@ -411,7 +410,6 @@ fun AppPage(
                 Column(
                     modifier = Modifier
                         .windowInsetsPadding(TopAppBarDefaults.windowInsets)
-                        .blockBorderTop()
                         .padding(bottom = 8.dp),
                 ) {
                     TopBarHeader(

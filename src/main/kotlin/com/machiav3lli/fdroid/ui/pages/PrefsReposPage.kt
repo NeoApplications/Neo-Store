@@ -170,8 +170,9 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                     ) {
                         item {
                             WideSearchField(
-                                modifier = Modifier.fillMaxWidth(),
                                 query = query,
+                                modifier = Modifier.fillMaxWidth(),
+                                label = stringResource(R.string.search_for_repository),
                                 focusOnCompose = false,
                                 onClose = { viewModel.setSearchQuery("") },
                                 onQueryChanged = { newQuery ->

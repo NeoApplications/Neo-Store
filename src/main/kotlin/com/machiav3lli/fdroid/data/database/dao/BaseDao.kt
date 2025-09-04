@@ -10,6 +10,7 @@ interface BaseDao<T> {
     @Insert
     suspend fun insert(vararg product: T)
 
+    // TODO replace upsert() with multipleUpserts() where it makes sense
     @Upsert
     suspend fun upsert(vararg product: T)
 
