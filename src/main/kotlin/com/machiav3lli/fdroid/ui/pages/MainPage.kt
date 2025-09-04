@@ -2,6 +2,8 @@ package com.machiav3lli.fdroid.ui.pages
 
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
+import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
@@ -22,10 +24,13 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.POPUP_LONG
@@ -36,6 +41,7 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.LatestSyncs
 import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.manager.work.BatchSyncWorker
+import com.machiav3lli.fdroid.ui.components.ExpandedSearchView
 import com.machiav3lli.fdroid.ui.components.Tooltip
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.components.TopBarAction
@@ -65,6 +71,7 @@ fun MainPage(
 ) {
     val context = LocalContext.current
     val mActivity = LocalActivity.current as NeoActivity
+    val focusManager = LocalFocusManager.current
     val panesNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
     val scope = rememberCoroutineScope()
 
@@ -76,15 +83,22 @@ fun MainPage(
     val pages = persistentListOf(
         NavItem.Latest,
         NavItem.Explore,
-        NavItem.Search,
         NavItem.Installed,
     )
     val pagerState = rememberPagerState(initialPage = pageIndex, pageCount = { pages.size })
     val currentPageIndex = remember { derivedStateOf { pagerState.currentPage } }
     val navigatorState by viewModel.navigationState.collectAsStateWithLifecycle()
+    val inSearchMode = rememberSaveable { mutableStateOf(false) }
+    val query by viewModel.querySearch.collectAsState()
 
     BackHandler {
         mActivity.moveTaskToBack(true)
+    }
+
+    BackHandler(inSearchMode.value) {
+        viewModel.setSearchQuery("")
+        inSearchMode.value = false
+        focusManager.clearFocus()
     }
 
     LaunchedEffect(true) {
@@ -102,6 +116,7 @@ fun MainPage(
     NeoNavigationSuiteScaffold(
         pages = pages,
         selectedPage = currentPageIndex,
+        hideNavigation = inSearchMode.value,
         backToPage = { viewModel.setNavigatorRole(ListDetailPaneScaffoldRole.List, "") },
         onItemClick = { index ->
             scope.launch {
@@ -117,8 +132,19 @@ fun MainPage(
                     containerColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
                     topBar = {
-                        TopBar(title = stringResource(id = R.string.application_name)) {
+                        TopBar {
+                            ExpandedSearchView(
+                                query = query,
+                                expanded = inSearchMode,
+                                onQueryChanged = { newQuery ->
+                                    if (newQuery != query) viewModel.setSearchQuery(newQuery)
+                                },
+                                onClose = {
+                                    viewModel.setSearchQuery("")
+                                },
+                            )
                             TopBarAction(
+                                modifier = Modifier.padding(top = 8.dp),
                                 icon = Phosphor.ArrowsClockwise,
                                 description = stringResource(id = R.string.sync_repositories),
                                 onLongClick = {
@@ -135,6 +161,7 @@ fun MainPage(
                                 }
                             )
                             TopBarAction(
+                                modifier = Modifier.padding(top = 8.dp),
                                 icon = Phosphor.GearSix,
                                 description = stringResource(id = R.string.settings)
                             ) {
@@ -158,14 +185,29 @@ fun MainPage(
                         }
                     }
                 ) { paddingValues ->
-                    SlidePager(
-                        modifier = Modifier
-                            .padding(paddingValues)
-                            .blockBorderBottom()
-                            .fillMaxSize(),
-                        pagerState = pagerState,
-                        pageItems = pages,
-                    )
+                    Crossfade(inSearchMode) { searching ->
+                        when {
+                            searching.value -> {
+                                Box(
+                                    modifier = Modifier
+                                        .padding(paddingValues)
+                                        .blockBorderBottom()
+                                        .fillMaxSize(),
+                                ) {
+                                    SearchPage()
+                                }
+                            }
+
+                            else            -> SlidePager(
+                                modifier = Modifier
+                                    .padding(paddingValues)
+                                    .blockBorderBottom()
+                                    .fillMaxSize(),
+                                pagerState = pagerState,
+                                pageItems = pages,
+                            )
+                        }
+                    }
                 }
             },
             detailPane = {
