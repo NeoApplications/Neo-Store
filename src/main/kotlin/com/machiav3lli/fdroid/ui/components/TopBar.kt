@@ -5,27 +5,23 @@ import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -38,7 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -50,30 +46,34 @@ import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MagnifyingGlass
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import com.machiav3lli.fdroid.ui.compose.utils.HorizontalExpandingVisibility
-import com.machiav3lli.fdroid.ui.compose.utils.blockBorderTop
+import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    title: String,
-    actions: @Composable (() -> Unit) = {},
+    title: String = "",
+    navigationAction: @Composable (() -> Unit) = {},
+    actions: @Composable (RowScope.() -> Unit) = {},
 ) {
-    ListItem(
+    Row(
         modifier = Modifier
             .windowInsetsPadding(TopAppBarDefaults.windowInsets)
-            .heightIn(min = 72.dp)
-            .blockBorderTop()
+            .height(72.dp)
+            .padding(horizontal = 8.dp)
             .fillMaxWidth(),
-        colors = ListItemDefaults.colors(
-            containerColor = Color.Transparent,
-        ),
-        headlineContent = {
-            Text(text = title, style = MaterialTheme.typography.headlineSmall)
-        },
-        trailingContent = {
-            Row { actions() }
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        navigationAction()
+        title.nullIfEmpty()?.let { title ->
+            Text(
+                text = title,
+                modifier = Modifier.padding(top = 8.dp),
+                style = MaterialTheme.typography.titleLarge,
+            )
         }
-    )
+        actions()
+    }
 }
 
 @Composable
@@ -89,11 +89,11 @@ fun ExpandableSearchAction(
     HorizontalExpandingVisibility(
         expanded = isExpanded,
         expandedView = {
-            ExpandedSearchView(
+            WideSearchField(
                 query = query,
                 modifier = modifier,
                 onClose = onClose,
-                onExpanded = onExpanded,
+                //onExpanded = onExpanded,
                 onQueryChanged = onQueryChanged
             )
         },
@@ -117,64 +117,66 @@ fun CollapsedSearchView(
 }
 
 @Composable
-fun ExpandedSearchView(
+fun RowScope.ExpandedSearchView(
     query: String,
+    expanded: MutableState<Boolean>,
     modifier: Modifier = Modifier,
     onClose: () -> Unit,
-    onExpanded: (Boolean) -> Unit,
     onQueryChanged: (String) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     val textFieldFocusRequester = remember { FocusRequester() }
-    LaunchedEffect(textFieldFocusRequester) { textFieldFocusRequester.requestFocus() }
+    val hasFocus = remember { mutableStateOf(false) }
+    val (isExpanded, onExpanded) = remember { expanded }
 
     var textFieldValue by remember {
         mutableStateOf(query)
     }
 
-    TextField(
+    OutlinedTextField(
         value = textFieldValue,
         onValueChange = {
             textFieldValue = it
             onQueryChanged(it)
         },
         modifier = modifier
-            .fillMaxWidth()
-            .focusRequester(textFieldFocusRequester),
-        colors = TextFieldDefaults.colors(
-            unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-        ),
+            .weight(1f)
+            .focusRequester(textFieldFocusRequester)
+            .onFocusChanged { focusState ->
+                when {
+                    focusState.isFocused && !hasFocus.value -> {
+                        hasFocus.value = true
+                        onExpanded(true)
+                    }
+
+                    !focusState.isFocused                   -> {
+                        hasFocus.value = false
+                    }
+                }
+            },
         shape = MaterialTheme.shapes.extraLarge,
-        leadingIcon = {
-            Icon(
-                modifier = Modifier.size(24.dp),
-                imageVector = Phosphor.MagnifyingGlass,
-                contentDescription = stringResource(id = R.string.search),
-            )
-        },
-        trailingIcon = {
-            TopBarAction(
-                icon = Phosphor.X,
-                description = stringResource(id = R.string.cancel)
-            ) {
-                textFieldValue = ""
-                focusManager.clearFocus()
-                onExpanded(false)
-                onClose()
-            }
-        },
         singleLine = true,
         label = { Text(text = stringResource(id = R.string.search)) },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
     )
+    if (query.isNotEmpty() || hasFocus.value || isExpanded) TopBarAction(
+        modifier = Modifier.padding(top = 8.dp),
+        icon = Phosphor.X,
+        description = stringResource(id = R.string.cancel)
+    ) {
+        textFieldValue = ""
+        focusManager.clearFocus()
+        onExpanded(false)
+        onClose()
+    }
 }
 
 @Composable
 fun WideSearchField(
-    modifier: Modifier = Modifier,
     query: String,
+    modifier: Modifier = Modifier,
+    label: String = stringResource(id = R.string.search),
     focusOnCompose: Boolean = true,
     onClose: () -> Unit,
     onQueryChanged: (String) -> Unit,
@@ -195,7 +197,7 @@ fun WideSearchField(
         },
         modifier = modifier
             .focusRequester(textFieldFocusRequester),
-        shape = MaterialTheme.shapes.large,
+        shape = MaterialTheme.shapes.extraLarge,
         trailingIcon = {
             AnimatedVisibility(
                 visible = textFieldValue.isNotEmpty(),
@@ -212,7 +214,7 @@ fun WideSearchField(
             }
         },
         singleLine = true,
-        label = { Text(text = stringResource(id = R.string.search)) },
+        label = { Text(text = label) },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
     )
@@ -222,13 +224,13 @@ fun WideSearchField(
 @Composable
 fun TopBarAction(
     icon: ImageVector,
+    modifier: Modifier = Modifier,
     description: String = "",
     onLongClick: (() -> Unit) = {},
     onClick: (() -> Unit),
 ) {
     Box(
-        modifier = Modifier
-            .minimumInteractiveComponentSize()
+        modifier = modifier
             .clip(CircleShape)
             .combinedClickable(role = Role.Button, onClick = onClick, onLongClick = onLongClick)
             .padding(8.dp),
