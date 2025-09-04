@@ -94,13 +94,13 @@ interface DownloadStatsDao : BaseDao<DownloadStats> {
         SELECT $ROW_PACKAGE_NAME   AS packageName,
                SUM(count)          AS totalCount
         FROM   download_stats
-        WHERE  client = '_total' AND $ROW_ISO_DATE >= :startDateInclusive
+        WHERE  client = :client AND $ROW_ISO_DATE >= :startDateInclusive
         GROUP BY $ROW_PACKAGE_NAME
         ORDER BY totalCount DESC
         LIMIT :limit
         """
     )
-    fun getFlowRecentTopApps(startDateInclusive: Int, limit: Int): Flow<List<PackageSum>>
+    fun getFlowRecentTopApps(startDateInclusive: Int, limit: Int, client: String = "_total"): Flow<List<PackageSum>>
 
     @Transaction
     suspend fun multipleUpserts(updates: Collection<DownloadStats>) {

@@ -51,8 +51,12 @@ class ProductsRepository(
         productsDao.queryFlowOfPackages(pkgs)
             .flowOn(cc)
 
-    fun getRecentTopApps(): Flow<List<PackageSum>> =
-        downloadStatsDao.getFlowRecentTopApps(getIsoDateOfMonthsAgo(3).isoDateToInt(), 50)
+    fun getRecentTopApps(client : String): Flow<List<PackageSum>> =
+        downloadStatsDao.getFlowRecentTopApps(getIsoDateOfMonthsAgo(3).isoDateToInt(), 50, client)
+            .flowOn(cc)
+
+    fun getAllTimeTopApps(): Flow<List<PackageSum>> =
+        downloadStatsDao.getFlowRecentTopApps(getIsoDateOfMonthsAgo(100).isoDateToInt(), 50)
             .flowOn(cc)
 
     fun getAuthorList(author: String): Flow<List<EmbeddedProduct>> =
