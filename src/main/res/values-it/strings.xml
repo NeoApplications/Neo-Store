@@ -452,4 +452,6 @@
     <string name="clients">Clienti</string>
     <string name="monthly">Mensile</string>
     <string name="top_apps">Le migliori app</string>
+    <string name="connection_error_FORMAT">Risposta del server non valida con codice: %s %s</string>
+    <string name="no_validation_error">Nessun errore di convalida.</string>
 </resources>
