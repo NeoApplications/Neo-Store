@@ -116,9 +116,9 @@ fun MainPage(
     NeoNavigationSuiteScaffold(
         pages = pages,
         selectedPage = currentPageIndex,
-        hideNavigation = inSearchMode.value,
         backToPage = { viewModel.setNavigatorRole(ListDetailPaneScaffoldRole.List, "") },
         onItemClick = { index ->
+            if (inSearchMode.value) inSearchMode.value = false
             scope.launch {
                 pagerState.animateScrollToPage(index)
             }
