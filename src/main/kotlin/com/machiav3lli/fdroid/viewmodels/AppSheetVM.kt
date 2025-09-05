@@ -110,7 +110,7 @@ class AppSheetVM(
         .flatMapLatest { pn ->
             combine(
                 privacyRepo.getClientSumDownloadStats(pn),
-                if (!Android.sdk(Build.VERSION_CODES.R))
+                if (Android.sdk(Build.VERSION_CODES.R))
                     privacyRepo.getSumDownloadOrder(pn)
                 else privacyRepo.getSumDownloadOrderLegacy(pn)
             ) { stats, order ->
