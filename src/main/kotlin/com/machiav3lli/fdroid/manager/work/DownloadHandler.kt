@@ -42,7 +42,7 @@ class DownloadStateHandler(
     }
 
     private fun handleDownloadState(key: String, state: DownloadState) {
-        scope.launch {
+        if (state !is DownloadState.Downloading) scope.launch {
             downloadedRepo.update(
                 Downloaded(
                     packageName = state.packageName,
