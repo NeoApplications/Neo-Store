@@ -175,7 +175,7 @@ fun InstallsPage(viewModel: MainVM) {
     val downloaded = viewModel.downloaded.collectAsState(emptyList())
     val downloads = remember {
         derivedStateOf {
-            downloaded.value.filter { it.state is DownloadState.Downloading }
+            downloaded.value.filter { it.state is DownloadState.Downloading && it.changed + 600_000L > System.currentTimeMillis() }
         }
     }
     val isDownloading by remember {
