@@ -444,10 +444,22 @@
     <string name="download_stats_iod">Statistieken downloaden (van IzzyOnDroid)</string>
     <string name="total">Totaal</string>
     <string name="total_downloads">Totale downloads</string>
-    <string name="clients">Clients</string>
+    <string name="clients">Clienten</string>
     <string name="monthly">Maandelijks</string>
     <string name="top_apps">Top apps</string>
     <string name="top_apps_notice">Momenteel worden de downloadstatistieken alleen door IzzyOnDroid verstrekt. De top-apps zijn dus beperkt tot de apps in het archief.</string>
     <string name="connection_error_FORMAT">Ongeldige serverreactie met code: %s%s</string>
     <string name="no_validation_error">Geen validatiefout</string>
+    <string name="search_for_repository">Archief zoeken</string>
+    <string name="downloads_total_FORMAT">Totaal aantal downloads: %s</string>
+    <string name="downloads_top_client_FORMAT">Clientvoorkeur: %s</string>
+    <string name="downloads_top_ranking_FORMAT">Meeste downloads aller tijden: %s</string>
+    <string name="total_recent_downloads">Top downloads recent</string>
+    <string name="total_alltime_downloads">Top downloads aller-tijden</string>
+    <string name="trending_from_unknown">Trending op onbekende clienten</string>
+    <string name="trending_from_droidify">Trending op Droid-ify</string>
+    <string name="trending_from_fdroid">Trending op F-Droid</string>
+    <string name="trending_from_fdroid_classic">Trending op F-Droid Classic</string>
+    <string name="trending_from_flicky">Trending op Flicky</string>
+    <string name="trending_from_neostore">Trending op Neo Store</string>
 </resources>
