@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.BottomSheetScaffold
@@ -41,6 +43,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.FILTER_CATEGORY_FAV
 import com.machiav3lli.fdroid.NeoActivity
@@ -50,9 +53,11 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.Page
 import com.machiav3lli.fdroid.data.entity.Source
+import com.machiav3lli.fdroid.data.entity.TopDownloadType
 import com.machiav3lli.fdroid.data.entity.appCategoryIcon
 import com.machiav3lli.fdroid.ui.components.CategoriesList
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
+import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
 import com.machiav3lli.fdroid.ui.components.TabButton
 import com.machiav3lli.fdroid.ui.components.TopBarAction
@@ -82,6 +87,7 @@ fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
 
     val installedList by viewModel.installed.collectAsState(emptyMap())
     val filteredProducts by viewModel.productsExplore.collectAsState(emptyList())
+    val topAppType by viewModel.topAppType.collectAsStateWithLifecycle()
     val topProducts by viewModel.productsTopDownloaded.collectAsState(emptyList())
     val repositories = viewModel.repositories.collectAsState(emptyList())
     val repositoriesMap by remember {
@@ -305,6 +311,23 @@ fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
                     state = topsListState,
                     contentPadding = PaddingValues(vertical = 8.dp),
                 ) {
+                    item {
+                        LazyRow(
+                            modifier = Modifier.height(54.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            contentPadding = PaddingValues(8.dp)
+                        ) {
+                            items(items = TopDownloadType.entries, key = { it.key }) { type ->
+                                SelectChip(
+                                    text = stringResource(type.displayString),
+                                    checked = topAppType == type,
+                                    alwaysShowIcon = false,
+                                ) {
+                                    viewModel.setTopAppsType(type)
+                                }
+                            }
+                        }
+                    }
                     item {
                         Card(
                             modifier = Modifier.padding(8.dp)

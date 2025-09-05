@@ -20,6 +20,7 @@ import com.machiav3lli.fdroid.data.entity.Page
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.Request
 import com.machiav3lli.fdroid.data.entity.Source
+import com.machiav3lli.fdroid.data.entity.TopDownloadType
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
@@ -67,6 +68,8 @@ open class MainVM(
     val sortFilterInstalled: StateFlow<String> = _sortFilterInstalled
     val navigationState: StateFlow<Pair<ThreePaneScaffoldRole, String>>
         private field = MutableStateFlow(Pair(ListDetailPaneScaffoldRole.List, ""))
+    val topAppType: StateFlow<TopDownloadType>
+        private field = MutableStateFlow(TopDownloadType.TOTAL_RECENT)
 
     val querySearch: StateFlow<String>
         private field = MutableStateFlow("")
@@ -170,7 +173,14 @@ open class MainVM(
             }
         }
 
-    val productsTopDownloaded = productsRepo.getRecentTopApps().flatMapLatest { tops ->
+    val topApps = topAppType.flatMapLatest {
+        when (it) {
+            TopDownloadType.TOTAL_ALLTIME -> productsRepo.getAllTimeTopApps()
+            else                          -> productsRepo.getRecentTopApps(it.key)
+        }
+    }
+
+    val productsTopDownloaded = topApps.flatMapLatest { tops ->
         productsRepo.getSpecificProducts(tops.map { it.packageName }.toSet())
             .map {
                 it.sortedBy { prd ->
@@ -273,6 +283,10 @@ open class MainVM(
             Page.INSTALLED -> _sortFilterInstalled.update { value }
             Page.LATEST    -> _sortFilterLatest.update { value }
         }
+    }
+
+    fun setTopAppsType(type: TopDownloadType) = viewModelScope.launch {
+        topAppType.update { type }
     }
 
     fun setSearchQuery(value: String) {
