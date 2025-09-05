@@ -313,7 +313,7 @@ fun InstallsPage(viewModel: MainVM) {
             if (isDownloading) {
                 item(key = "downloadsTitle") {
                     Text(
-                        modifier = Modifier.padding(8.dp),
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                         text = stringResource(id = R.string.downloading)
                     )
                 }
@@ -336,7 +336,10 @@ fun InstallsPage(viewModel: MainVM) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    Text(text = stringResource(id = R.string.installed_applications))
+                    Text(
+                        text = stringResource(id = R.string.installed_applications),
+                        modifier = Modifier.padding(start = 8.dp),
+                    )
                     SortFilterChip(notModified = notModifiedSortFilter) {
                         scope.launch {
                             scaffoldState.bottomSheetState.expand()
@@ -460,7 +463,10 @@ fun DownloadedPage(viewModel: MainVM) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                Text(text = stringResource(id = R.string.downloads))
+                Text(
+                    text = stringResource(id = R.string.downloads),
+                    modifier = Modifier.padding(start = 8.dp),
+                )
                 AnimatedVisibility(visible = sortedDownloaded.isNotEmpty()) {
                     ActionChip(
                         text = stringResource(id = R.string.erase_all),

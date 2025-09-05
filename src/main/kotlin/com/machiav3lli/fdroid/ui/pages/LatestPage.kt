@@ -150,7 +150,9 @@ fun LatestPage(viewModel: MainVM = koinNeoViewModel()) {
                 ) {
                     Text(
                         text = stringResource(id = R.string.new_applications),
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 8.dp),
                     )
                 }
             }
@@ -219,7 +221,9 @@ fun LatestPage(viewModel: MainVM = koinNeoViewModel()) {
                 ) {
                     Text(
                         text = stringResource(id = R.string.recently_updated),
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 8.dp),
                     )
                     SortFilterChip(notModified = notModifiedSortFilter) {
                         scope.launch {
