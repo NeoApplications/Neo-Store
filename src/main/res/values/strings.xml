@@ -455,4 +455,12 @@
     <string name="downloads_total_FORMAT">Total downloads: %s</string>
     <string name="downloads_top_client_FORMAT">Preferred client: %s</string>
     <string name="downloads_top_ranking_FORMAT">All-time download ranking: %s</string>
+    <string name="total_recent_downloads">Top recent downloads</string>
+    <string name="total_alltime_downloads">Top all-time downloads</string>
+    <string name="trending_from_unknown">Trending on unknown clients</string>
+    <string name="trending_from_droidify">Trending on Droid-ify</string>
+    <string name="trending_from_fdroid">Trending on F-Droid</string>
+    <string name="trending_from_fdroid_classic">Trending on F-Droid Classic</string>
+    <string name="trending_from_flicky">Trending on Flicky</string>
+    <string name="trending_from_neostore">Trending on Neo Store</string>
 </resources>

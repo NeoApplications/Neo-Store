@@ -105,6 +105,18 @@ enum class AndroidVersion(override val valueString: String) : Preferences.EnumEn
     Baklava("16"),
 }
 
+
+enum class TopDownloadType(val key: String, @StringRes val displayString: Int) {
+    TOTAL_RECENT("_total", R.string.total_recent_downloads),
+    TOTAL_ALLTIME("_total_alltime", R.string.total_alltime_downloads),
+    NEO_STORE("Neo Store", R.string.trending_from_neostore),
+    DROIDIFY("Droid-ify", R.string.trending_from_droidify),
+    FDROID("F-Droid", R.string.trending_from_fdroid),
+    FDROID_CLASSIC("F-Droid Classic", R.string.trending_from_fdroid_classic),
+    FLICKY("Flicky", R.string.trending_from_flicky),
+    UNKNOWN("_unknown", R.string.trending_from_unknown),
+}
+
 enum class Source {
     AVAILABLE,
     FAVORITES,
