@@ -139,6 +139,7 @@ fun RowScope.ExpandedSearchView(
             textFieldValue = it
             onQueryChanged(it)
         },
+        enabled = isExpanded || !hasFocus.value,
         modifier = modifier
             .weight(1f)
             .focusRequester(textFieldFocusRequester)
@@ -160,7 +161,7 @@ fun RowScope.ExpandedSearchView(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
     )
-    if (query.isNotEmpty() || hasFocus.value || isExpanded) TopBarAction(
+    if ((query.isNotEmpty() || hasFocus.value) && isExpanded) TopBarAction(
         modifier = Modifier.padding(top = 8.dp),
         icon = Phosphor.X,
         description = stringResource(id = R.string.cancel)
