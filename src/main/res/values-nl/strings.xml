@@ -452,13 +452,13 @@
     <string name="no_validation_error">Geen validatiefout</string>
     <string name="search_for_repository">Archief zoeken</string>
     <string name="downloads_total_FORMAT">Totaal aantal downloads: %s</string>
-    <string name="downloads_top_client_FORMAT">Clientvoorkeur: %s</string>
+    <string name="downloads_top_client_FORMAT">Meest populaire client: %s</string>
     <string name="downloads_top_ranking_FORMAT">Meeste downloads aller tijden: %s</string>
     <string name="total_recent_downloads">Top downloads recent</string>
     <string name="total_alltime_downloads">Top downloads aller-tijden</string>
     <string name="trending_from_unknown">Trending op onbekende clienten</string>
     <string name="trending_from_droidify">Trending op Droid-ify</string>
-    <string name="trending_from_fdroid">Trending op F-Droid</string>
+    <string name="trending_from_fdroid">Trending op F-Droid-client</string>
     <string name="trending_from_fdroid_classic">Trending op F-Droid Classic</string>
     <string name="trending_from_flicky">Trending op Flicky</string>
     <string name="trending_from_neostore">Trending op Neo Store</string>
