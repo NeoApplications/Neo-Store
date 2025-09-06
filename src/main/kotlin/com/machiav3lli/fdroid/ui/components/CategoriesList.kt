@@ -24,6 +24,8 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -166,7 +168,11 @@ fun CategoryItem(
             colors = colors,
             onClick = onClick,
             leadingIcon = {
-                AnimatedVisibility(isSelected || !isExpanded) {
+                AnimatedVisibility(
+                    visible = isSelected || !isExpanded,
+                    enter = scaleIn(),
+                    exit = scaleOut(),
+                ) {
                     Icon(
                         modifier = Modifier
                             .sharedElement(
