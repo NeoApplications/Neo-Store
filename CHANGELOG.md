@@ -1,6 +1,39 @@
 CHANGELOG
 =========
 
+1.1.2 (06.09.2025) +50 Commits +20 Translations
+------------------
+
+### Function
+
+- Add: Support for download stats from IzzyOnDroid
+- Add: UserAgent to system download manger requests
+- Fix: Resetting repository on enabling/disabling
+- Fix: Falsely showing possible update in app page
+- Fix: Ignoring applicable updates when signature check is disabled
+- Fix: Showing suggested label on unfitting releases
+- Fix: Avoid retro updating download progress
+- Fix: Qr-code scanning to add repository
+- Update: Enable jdk desugaring
+- Update: Default to using NS's download manager
+- Update: Improve error reporting message or failed download
+- Update: Improve upsert logics of PrivacyRepository
+- Add repos: Thunderbird, AXP.OS
+- Remove repos: Lublin, Fairfax, Wind, InvizBox, Aniyomi, koyu, unofficial firefox, Unofficial
+  Element (F-Droid & G-Play), BeoCode
+- TargetSDK 36
+
+### UI/UX
+
+- Add: Download stats info chips and charts in app page
+- Add: Top downloaded apps from IzzyOnDroid in Explore page
+- Add: Back home button to prefs page
+- Add: Search bar as launcher for the new search page
+- Fix: Maintaining switch state from previous opened app (closes #800)
+- Update: Revamp top bar and search bar layouts
+- Update: Revamp installed and downloads tabs layout
+- Update: Hide downloads which weren't active for the last ten minutes
+
 1.1.1 (22.08.2025) +20 Commits 1 Translations
 ------------------
 
@@ -13,7 +46,7 @@ CHANGELOG
 
 ### UI/UX
 
-- Add: Icons for f-droid's new categories 
+- Add: Icons for f-droid's new categories
 - Add: Notify of new required sensitive permissions on updates (credits @aba2222)
 - Add: Option to disable permissions' check on download
 - Fix: App's changelog being parsed as markdown although it's standardized as text
@@ -32,7 +65,7 @@ CHANGELOG
 - Add: Support index-v2's webBaseUrl for the respective repos
 - Add: RB badge to release items
 - Add: Preference to enable Index-V2
-- Add: Preference for RB logs provider 
+- Add: Preference for RB logs provider
 - Add: Repositories interface for better domain management logic
 - Add: Ktor ContentEncoding client plugin
 - Add: Preference for maximal number of idle connections
@@ -51,7 +84,8 @@ CHANGELOG
 - Update: Improve performance of the main products' query
 - Update: Revamp Product and its DAO to v2
 - Update: Revamp all installers improving their robustness
-- Update: Refactor BaseInstaller to use InstallQueue and InstallStateHolder providing common logic for all installers
+- Update: Refactor BaseInstaller to use InstallQueue and InstallStateHolder providing common logic
+  for all installers
 - Update: Simplify startUpdate() logic
 - Update: Fit icon and screenshot uri generators to fit the new logic
 - Update: Keep name and description if updated repo lack values
@@ -69,7 +103,8 @@ CHANGELOG
 - Update: Clean most DAOs logics
 - Update: Simplify coil call handler logic and caching
 - Update: Improve installs queueing with checks, timeouts and retry counters
-- Update: Remove specific file types from cache where possible (fixes deleting external download folder)
+- Update: Remove specific file types from cache where possible (fixes deleting external download
+  folder)
 - Update: Lazy composition of prefs pages
 - Update: Reduce unneeded recompositions
 - Update: Change default auto sync interval to 6 hours

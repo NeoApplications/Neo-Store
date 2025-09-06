@@ -1,0 +1,7 @@
+Add: Download stats info chips and charts from IzzyOnDroid in app page
+Add: Top downloaded apps from IzzyOnDroid in Explore page
+Add: Search bar as launcher for the new search page
+Fix: Qr-code scanning to add repository
+Fix: Showing suggested label on unfitting releases
+Update: Second batch of layout and coloring revamps towards Material 3 Expressive
+plus many more in over 50 commits & 20 translation contributions
