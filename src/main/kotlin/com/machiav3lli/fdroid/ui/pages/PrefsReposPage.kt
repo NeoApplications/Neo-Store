@@ -1,8 +1,12 @@
 package com.machiav3lli.fdroid.ui.pages
 
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.net.Uri
 import androidx.activity.compose.LocalActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -24,7 +28,7 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -36,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.backup.ui.compose.icons.phosphor.Plus
 import com.machiav3lli.fdroid.INTENT_ACTION_BINARY_EYE
@@ -48,6 +53,7 @@ import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroupHeading
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.QrCode
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
+import com.machiav3lli.fdroid.utils.extension.text.toAddressFingerprint
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import com.machiav3lli.fdroid.viewmodels.SheetNavigationData
 import kotlinx.coroutines.launch
@@ -69,26 +75,48 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
 
     val query by viewModel.reposSearchQuery.collectAsState()
     val sheetData: MutableState<SheetNavigationData?> = remember { mutableStateOf(null) }
-    val intentAddress = viewModel.address.collectAsState()
-    val intentFingerprint = viewModel.fingerprint.collectAsState()
+    val intentAddressFingerprint by viewModel.addressFingerprint.collectAsState()
 
-    DisposableEffect(key1 = intentAddress.value, key2 = intentFingerprint.value) {
-        if (intentAddress.value.isNotEmpty()) {
+    val scanLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val scan = result.data?.getStringExtra("SCAN_RESULT")
+            scan?.replaceFirst("fdroidrepo", "http")
+            (scan?.toUri() ?: Uri.EMPTY).toAddressFingerprint()
+                .takeUnless { it.first.isEmpty() }
+                ?.let { (address, fingerprint) ->
+                    scope.launch {
+                        paneNavigator.navigateTo(
+                            ListDetailPaneScaffoldRole.Detail,
+                            SheetNavigationData(
+                                viewModel.addNewRepository(
+                                    address = address,
+                                    fingerprint = fingerprint,
+                                ),
+                                true
+                            )
+                        )
+                    }
+                }
+        }
+    }
+
+    LaunchedEffect(intentAddressFingerprint) {
+        if (intentAddressFingerprint.first.isNotEmpty()) {
             scope.launch {
                 paneNavigator.navigateTo(
                     ListDetailPaneScaffoldRole.Detail,
                     SheetNavigationData(
                         viewModel.addNewRepository(
-                            address = intentAddress.value,
-                            fingerprint = intentFingerprint.value
+                            address = intentAddressFingerprint.first,
+                            fingerprint = intentAddressFingerprint.second,
                         ),
                         true
                     )
                 )
+                viewModel.setIntent("", "")
             }
-        }
-        onDispose {
-            if (intentAddress.value.isNotEmpty()) viewModel.setIntent("", "")
         }
     }
 
@@ -130,7 +158,7 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                     shape = SegmentedButtonDefaults.itemShape(1, 2),
                                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
                                     contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                                    onClick = mActivity::openScanner
+                                    onClick = { scanLauncher.launch(Intent(INTENT_ACTION_BINARY_EYE)) }
                                 ) {
                                     Icon(
                                         imageVector = Phosphor.QrCode,

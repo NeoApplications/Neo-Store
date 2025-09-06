@@ -4,13 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
@@ -24,7 +22,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -187,11 +184,11 @@ class NeoActivity : AppCompatActivity() {
             }
 
             is SpecialIntent.AddRepo -> {
+                navController.navigate(NavRoute.Prefs(2))
                 prefsViewModel.setIntent(
                     specialIntent.address,
                     specialIntent.fingerprint,
                 )
-                navController.navigate(NavRoute.Prefs(2))
             }
 
             is SpecialIntent.Install -> {
@@ -272,23 +269,6 @@ class NeoActivity : AppCompatActivity() {
                 )
             )
         }
-    }
-
-
-    private val resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val scan = result.data?.getStringExtra("SCAN_RESULT")
-                scan?.replace("fdroidrepo", "http")
-                intent.data = scan?.toUri() ?: Uri.EMPTY
-                intent.action = Intent.ACTION_VIEW
-                handleIntent(intent)
-            }
-        }
-
-    fun openScanner() {
-        intent.putExtra(EXTRA_INTENT_HANDLED, false)
-        resultLauncher.launch(Intent(INTENT_ACTION_BINARY_EYE))
     }
 
     override fun attachBaseContext(newBase: Context) {

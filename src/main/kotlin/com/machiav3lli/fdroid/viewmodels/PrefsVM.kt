@@ -62,10 +62,8 @@ class PrefsVM(
         initialValue = emptyList()
     )
 
-    private val intentAddress = MutableStateFlow("")
-    val address = intentAddress as StateFlow<String>
-    private val intentFingerprint = MutableStateFlow("")
-    val fingerprint = intentFingerprint as StateFlow<String>
+    val addressFingerprint: StateFlow<Pair<String, String>>
+        private field = MutableStateFlow(Pair("", ""))
 
     fun setSearchQuery(value: String) {
         viewModelScope.launch { _reposSearchQuery.update { value } }
@@ -73,8 +71,9 @@ class PrefsVM(
 
     fun setIntent(address: String?, fingerprint: String?) {
         viewModelScope.launch {
-            intentAddress.update { address ?: "" }
-            intentFingerprint.update { fingerprint ?: "" }
+            addressFingerprint.update {
+                Pair(address ?: "", fingerprint ?: "")
+            }
         }
     }
 

@@ -2,6 +2,7 @@
 
 package com.machiav3lli.fdroid.utils.extension.text
 
+import android.net.Uri
 import android.util.Log
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.TimeZone
@@ -36,6 +37,19 @@ fun Long.formatDateTime(): String {
     val mDate = DateFormat.getDateInstance().format(Date(this))
     return if (nowDate == mDate) DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(this))
     else mDate
+}
+
+fun Uri.toAddressFingerprint() = try {
+    val uri = buildUpon()
+        .scheme("https")
+        .path(path?.pathCropped)
+        .query(null).fragment(null).build().toString()
+    val fingerprintText = if (isOpaque) null
+    else getQueryParameter("fingerprint")?.uppercase()?.nullIfEmpty()
+        ?: getQueryParameter("FINGERPRINT")?.uppercase()?.nullIfEmpty()
+    Pair(uri, fingerprintText ?: "")
+} catch (e: Exception) {
+    Pair("", "")
 }
 
 @OptIn(ExperimentalTime::class)
