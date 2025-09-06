@@ -64,6 +64,7 @@ import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV10
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV11
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV1102
+import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV1107
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV12
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV14
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV15
@@ -79,6 +80,7 @@ import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedRep
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV9
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.archiveRepos
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.defaultRepositories
+import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedReposV1107
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedReposV28
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedReposV29
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedReposV31
@@ -266,6 +268,7 @@ import java.io.File
         AutoMigration(
             from = 1106,
             to = 1107,
+            spec = DatabaseX.Companion.AutoMigration1106to1107::class
         ),
     ]
 )
@@ -470,6 +473,13 @@ abstract class DatabaseX : RoomDatabase() {
             }
         }
 
+        class AutoMigration1106to1107 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(1106)
+            }
+        }
+
         class ProductsCleanup : AutoMigrationSpec {
             override fun onPostMigrate(db: SupportSQLiteDatabase) {
                 super.onPostMigrate(db)
@@ -533,6 +543,7 @@ abstract class DatabaseX : RoomDatabase() {
                 28   -> addedReposV29
                 29   -> addedReposV30
                 1101 -> addedReposV1102
+                1106 -> addedReposV1107
                 else -> emptyList()
             }
             val rmRps = when (from) {
@@ -540,6 +551,7 @@ abstract class DatabaseX : RoomDatabase() {
                 27   -> removedReposV28
                 28   -> removedReposV29
                 30   -> removedReposV31
+                1106 -> removedReposV1107
                 else -> emptyList()
             }
             GlobalScope.launch(Dispatchers.IO) {

@@ -1042,43 +1042,59 @@ data class Repository(
             "3480A7BB2A296D8F98CB90D2309199B5B9519C1B31978DBCD877ADB102AF35EE",
             ""
         )
+        private val THUNDERBIRD = defaultRepository(
+            "https://thunderbird.github.io/fdroid-thunderbird/repo",
+            "Thunderbird F-Droid repository",
+            "This repository hosts Android Apps provided by Thunderbird.",
+            21,
+            false,
+            "8B86E5D48983F0875F7EB7A1B2F91B225EE5B997E463E3D63D0E2556E53666BE",
+            ""
+        )
+        private val AXPOS = defaultRepository(
+            "https://apps.axpos.org/repo/",
+            "AXP.OS",
+            "Out-of-band updates, for the AOSmium based System Webview but also provide other apps build/made by the AXP.OS project.",
+            21,
+            false,
+            "569A3FA3E603D68F214A468FB8A368FFBE5F281F57C6CD4B836057318BC37798",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, IZZY,
             GUARDIAN, ONIONSHARE_NIGHTLY, MICRO_G,
-            CROMITE, IRONFOX, BRAVE,
+            CROMITE, IRONFOX, BRAVE, THUNDERBIRD,
             NEWPIPE, BITWARDEN, GITJOURNAL,
-            CALYX_OS, CALYX_OS_TEST, IODE,
+            CALYX_OS, CALYX_OS_TEST, IODE, AXPOS,
             KDE_RELEASE, KDE_NIGHTLY, NANODROID, NETSYMS,
             FUTO, KVAESITSO, C_GEO, C_GEO_NIGHTLY, COLLABORA,
             PIXELFED, VIDELIBRI, GADGETBRIDGE, BREEZY,
             THREEMA, SESSION, MOLLY, BRIAR, ANONYMOUS_MESSENGER,
-            FEDILAB, NETHUNTER, BEOCODE, INSPORATION,
+            FEDILAB, NETHUNTER, INSPORATION,
             SIMPLEX_CHAT, REVOLT, TWIN_HELIX,
             PI2P, OFFICIAL_I2P,
-            ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
             F_DROID_CLASSIC,
             ETOPA, METATRANS_APPS,
             LTTRS, KAFFEEMITKOFFEIN,
-            SAUNAREPO, UNOFFICIAL_FIREFOX, PATCHED,
-            WIND, UMBRELLA, CRYPTOMATOR,
+            SAUNAREPO, PATCHED,
+            UMBRELLA, CRYPTOMATOR,
             RWTH, TAGESSCHAU, WOZ, PETER_CXY,
-            LAGRANGE, ROHIT, LUBLIN, NAILYK, LUBL,
+            LAGRANGE, ROHIT, NAILYK, LUBL,
             SYLKEVICIOUS, OBERNBERGER, NUCLEUS,
             XARANTOLUS, TWOBR, OBFUSK, MAXXIS,
             JAK_LINUX, MONERUJO,
             SPIRIT_CROC, SPIRIT_CROC_TEST,
-            ANIYOMI, KOYU, KUSCHKU,
+            KUSCHKU,
             STACK_WALLET,
-            GROBOX, FAIRFAX, ZIMBELSTERN,
-            LIBRECHURCH, JUWELERKASSA, INVIZBOX,
+            GROBOX, ZIMBELSTERN,
+            LIBRECHURCH, JUWELERKASSA,
             CLOUDBURST, HUIZENGEK,
             F5A,
         )
 
         val addedReposV9 = listOf(
             SIMPLEX_CHAT,
-            ELEMENT_DEV_FDROID, ELEMENT_DEV_GPLAY,
         )
 
         val addedReposV10 = listOf(
@@ -1094,7 +1110,7 @@ data class Repository(
         )
 
         val addedReposV14 = listOf(
-            BEOCODE, ANONYMOUS_MESSENGER
+            ANONYMOUS_MESSENGER
         )
 
         val addedReposV15 = listOf(
@@ -1114,9 +1130,9 @@ data class Repository(
         )
 
         val addedReposV20 = listOf(
-            SPIRIT_CROC_TEST, ANIYOMI, KOYU, KUSCHKU, KVAESITSO,
+            SPIRIT_CROC_TEST, KUSCHKU, KVAESITSO,
             ETOPA, METATRANS_APPS, GADGETBRIDGE, FUTO,
-            GROBOX, FAIRFAX, ZIMBELSTERN, PI2P,
+            GROBOX, ZIMBELSTERN, PI2P,
         )
 
         val addedReposV21 = listOf(
@@ -1124,13 +1140,13 @@ data class Repository(
         )
 
         val addedReposV22 = listOf(
-            LAGRANGE, ROHIT, TAGESSCHAU, LUBLIN,
+            LAGRANGE, ROHIT, TAGESSCHAU,
             LTTRS, KAFFEEMITKOFFEIN, OFFICIAL_I2P, F_DROID_CLASSIC,
             RWTH, INSPORATION, SYLKEVICIOUS, OBERNBERGER,
             NUCLEUS, ONIONSHARE_NIGHTLY, XARANTOLUS, TWOBR,
             OBFUSK, MAXXIS, NAILYK, WOZ,
             VIDELIBRI, PIXELFED, LUBL,
-            SAUNAREPO, INVIZBOX, LIBRECHURCH, JUWELERKASSA,
+            SAUNAREPO, LIBRECHURCH, JUWELERKASSA,
         )
 
         val addedReposV23 = listOf(
@@ -1164,6 +1180,16 @@ data class Repository(
 
         val addedReposV1102 = listOf(
             BRAVE, BREEZY
+        )
+
+        val addedReposV1107 = listOf(
+            THUNDERBIRD, AXPOS
+        )
+
+        val removedReposV1107 = listOf(
+            LUBLIN, FAIRFAX, BEOCODE,
+            WIND, INVIZBOX, ANIYOMI, KOYU,
+            UNOFFICIAL_FIREFOX, ELEMENT_DEV_GPLAY, ELEMENT_DEV_FDROID,
         )
     }
 }
