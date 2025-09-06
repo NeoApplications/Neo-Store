@@ -1,8 +1,10 @@
 package com.machiav3lli.fdroid.ui.pages
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +14,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -433,6 +437,7 @@ fun InstallsPage(viewModel: MainVM) {
     }
 }
 
+@SuppressLint("UnusedCrossfadeTargetStateParameter")
 @Composable
 fun DownloadedPage(viewModel: MainVM) {
     val neoActivity = LocalActivity.current as NeoActivity
@@ -454,11 +459,13 @@ fun DownloadedPage(viewModel: MainVM) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(2.dp),
+        contentPadding = PaddingValues(vertical = 8.dp),
     ) {
         item(key = "downloadedTitle") {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .heightIn(min = 56.dp)
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -467,8 +474,8 @@ fun DownloadedPage(viewModel: MainVM) {
                     text = stringResource(id = R.string.downloads),
                     modifier = Modifier.padding(start = 8.dp),
                 )
-                AnimatedVisibility(visible = sortedDownloaded.isNotEmpty()) {
-                    ActionChip(
+                Crossfade(sortedDownloaded.isNotEmpty()) { isNotEmpty ->
+                    if (isNotEmpty) ActionChip(
                         text = stringResource(id = R.string.erase_all),
                         icon = Phosphor.Eraser,
                     ) {
