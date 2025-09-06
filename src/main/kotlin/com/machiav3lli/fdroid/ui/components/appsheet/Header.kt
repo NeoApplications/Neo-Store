@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.ui.components.appsheet
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
@@ -27,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.entity.ActionState
@@ -36,6 +39,7 @@ import com.machiav3lli.fdroid.ui.components.MainActionButton
 import com.machiav3lli.fdroid.ui.components.NetworkImage
 import com.machiav3lli.fdroid.ui.components.PRODUCT_CARD_ICON
 import com.machiav3lli.fdroid.ui.components.SecondaryActionButton
+import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.icon.Opensource
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
@@ -158,16 +162,15 @@ fun CardButton(
 ) {
     Box(
         modifier = modifier
-            .minimumInteractiveComponentSize()
-            .clip(MaterialTheme.shapes.extraLarge)
-            .combinedClickable(onClick = onClick, onLongClick = onLongClick)
+            .clip(MaterialTheme.shapes.medium)
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .combinedClickable(role = Role.Button, onClick = onClick, onLongClick = onLongClick)
             .padding(8.dp),
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            modifier = Modifier.size(PRODUCT_CARD_ICON - 16.dp),
             imageVector = icon,
-            contentDescription = description,
+            contentDescription = description
         )
     }
 }

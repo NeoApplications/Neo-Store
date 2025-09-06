@@ -418,7 +418,9 @@ fun AppPage(
                         icon = imageData,
                         state = downloadState,
                         actions = {
-                            Row {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            ) {
                                 SourceCodeButton(
                                     sourceType = sourceType,
                                     onClick = {
