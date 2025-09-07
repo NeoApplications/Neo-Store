@@ -458,13 +458,13 @@
     <string name="no_validation_error">Błąd braku weryfikacji.</string>
     <string name="search_for_repository">Wyszukaj repozytorium</string>
     <string name="downloads_total_FORMAT">Łączna liczba pobrań: %s</string>
-    <string name="downloads_top_client_FORMAT">Zalecany klient: %s</string>
+    <string name="downloads_top_client_FORMAT">Najpopularniejszy klient: %s</string>
     <string name="downloads_top_ranking_FORMAT">Ranking pobrań ogółem: %s</string>
     <string name="total_recent_downloads">Najczęściej pobierane</string>
     <string name="total_alltime_downloads">Najpopularniejsze pobrania ogółem</string>
     <string name="trending_from_unknown">Popularność wśród nieznanych klientów</string>
     <string name="trending_from_droidify">Popularność na Droid-ify</string>
-    <string name="trending_from_fdroid">Popularność na F-Droid</string>
+    <string name="trending_from_fdroid">Popularność na kliencie F-Droid</string>
     <string name="trending_from_fdroid_classic">Popularność na F-Droid Classic</string>
     <string name="trending_from_flicky">Popularność na Flicky</string>
     <string name="trending_from_neostore">Popularność na Neo Store</string>
