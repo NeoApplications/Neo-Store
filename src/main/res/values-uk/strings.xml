@@ -454,4 +454,18 @@
     <string name="monthly">Щомісячно</string>
     <string name="top_apps">Найпопулярніші застосунки</string>
     <string name="top_apps_notice">Наразі статистика завантажень надається лише IzzyOnDroid, тому список найпопулярніших застосунків обмежується тими, що є в репозиторії.</string>
+    <string name="connection_error_FORMAT">Недійсна відповідь сервера з кодом: %s %s</string>
+    <string name="no_validation_error">Немає помилки перевірки.</string>
+    <string name="search_for_repository">Знайти репозиторій</string>
+    <string name="downloads_total_FORMAT">Усього завантажень: %s</string>
+    <string name="downloads_top_client_FORMAT">Найпопулярніший клієнт: %s</string>
+    <string name="downloads_top_ranking_FORMAT">Рейтинг завантажень за весь час: %s</string>
+    <string name="total_recent_downloads">Найпопулярніші нещодавні завантаження</string>
+    <string name="total_alltime_downloads">Найпопулярніші завантаження за весь час</string>
+    <string name="trending_from_unknown">У тренді на невідомих клієнтах</string>
+    <string name="trending_from_droidify">У тренді в Droid-ify</string>
+    <string name="trending_from_fdroid">У тренді в клієнті F-Droid</string>
+    <string name="trending_from_fdroid_classic">У тренді в класичному F-Droid</string>
+    <string name="trending_from_flicky">У тренді у Flicky</string>
+    <string name="trending_from_neostore">У тренді в Neo Store</string>
 </resources>
