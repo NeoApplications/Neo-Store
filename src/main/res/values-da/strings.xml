@@ -439,4 +439,22 @@
     <string name="disable_permissions_check_summary">Tjek ikke, om den downloadede APK har de samme eller nye tilladelser som den installerede app.</string>
     <string name="clients">Klienter</string>
     <string name="monthly">Månedligt</string>
+    <string name="trending_from_neostore">Populært på Neo Store</string>
+    <string name="trending_from_flicky">Populært på Flicky</string>
+    <string name="trending_from_fdroid_classic">Populært på F-Droid Classic</string>
+    <string name="trending_from_fdroid">Populært på F-Droid client</string>
+    <string name="trending_from_droidify">Populært på Droid-ify</string>
+    <string name="trending_from_unknown">Populært på ukendte klienter</string>
+    <string name="total_alltime_downloads">Mest downloadede nogensinde</string>
+    <string name="total_recent_downloads">Seneste populære downloads</string>
+    <string name="downloads_top_client_FORMAT">Mest populære klient: %s</string>
+    <string name="downloads_total_FORMAT">Downloads i alt: %s</string>
+    <string name="search_for_repository">Søg efter repository</string>
+    <string name="connection_error_FORMAT">Ugyldigt serversvar med kode: %s %s</string>
+    <string name="top_apps_notice">I øjeblikket leveres downloadstatistikkerne kun af IzzyOnDroid, så de mest populære apps er begrænset til dem i repositoriet.</string>
+    <string name="top_apps">Populære apps</string>
+    <string name="total_downloads">Downloads i alt</string>
+    <string name="total">I alt</string>
+    <string name="download_stats_iod">Downloadstatistikker (fra IzzyOnDroid)</string>
+    <string name="download_stats">Downloadstatistikker</string>
 </resources>
