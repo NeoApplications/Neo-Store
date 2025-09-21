@@ -9,4 +9,9 @@
     <string name="cancel">අවලංගු</string>
     <string name="all_applications_up_to_date">සියළුම යෙදුම් යාවත්කාලීනයි</string>
     <string name="application">යෙදුම</string>
+    <string name="application_not_found">සොයාගැනීමට නොහැකි විය</string>
+    <string name="changelog">සිදුකළ වෙනස්කම්</string>
+    <string name="changes">වෙනස්කම්</string>
+    <string name="delete">මකා දමන්න</string>
+    <string name="description">විස්තරය</string>
 </resources>
