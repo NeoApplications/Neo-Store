@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Translate Neo Store
+    url: https://hosted.weblate.org/engage/neo-store/
+    about: Help translate Neo Store on Weblate
+  - name: Matrix Community
+    url: https://matrix.to/#/#neo-store:matrix.org
+    about: 'Join our Matrix community group!'
+  - name: Telegram Community
+    url: https://t.me/neo_android_store
+    about: 'Join our Telegram community group!'

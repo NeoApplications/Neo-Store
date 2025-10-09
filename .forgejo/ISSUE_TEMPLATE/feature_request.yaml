@@ -1,0 +1,57 @@
+name: Feature request
+description: Suggest an idea for Neo Store
+title: "[Feature Request] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **README: Before You Submit Your Issue**
+        - Issues are not a place to go ask support questions or start discussions.
+        - Please ask support questions in our [Telegram](https://t.me/neo_android_store) or [Matrix](https://matrix.to/#/#neo-store:matrix.org) groups.
+  - type: checkboxes
+    attributes:
+      label: Guidelines
+      description: Please ensure you've completed all of the following.
+      options:
+          - label: I have searched the issue tracker for [open](https://codeberg.org/NeoApplications/Neo-Store/issues) and [closed](https://codeberg.org/NeoApplications/Neo-Store/issues?q=is%3Aissue+is%3Aclosed) issues that are similar to the feature request I want to file, without success.
+            required: true
+          - label: I'm on the latest version.
+            required: true
+          - label: I'm not using a test build (alpha/beta/release-candidate).
+            required: true
+          - label: This issue contains only one feature request.
+            required: true
+  - type: textarea
+    attributes:
+      label: Problem Description
+      description: Please add a clear and concise description of the problem you are seeking to solve with this feature request.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Alternatives Considered
+      description: Describe alternatives you've considered.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Relevant information
+      description: |
+        Feel free to add any other context or media about the feature request here.
+      value: |
+        - Device:
+        - Android Version:
+        - ROM: (AOSP, CalyxOS, MIUI, GOS...)
+        - App's Version:
+        - Disabled battery optimization for Neo Store?
+        - What is your selected installer?
+  - type: markdown
+    attributes:
+      value: |
+        **Thanks for contributing ideas!**
