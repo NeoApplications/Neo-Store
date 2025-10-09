@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.manager.installer
+package com.machiav3lli.fdroid.manager.installer.type
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,9 @@ import android.os.Build
 import android.util.Log
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.entity.InstallState
+import com.machiav3lli.fdroid.manager.installer.InstallQueue
+import com.machiav3lli.fdroid.manager.installer.InstallationError
+import com.machiav3lli.fdroid.manager.installer.InstallationEvents
 import com.machiav3lli.fdroid.manager.work.InstallStateHolder
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import kotlinx.coroutines.Dispatchers

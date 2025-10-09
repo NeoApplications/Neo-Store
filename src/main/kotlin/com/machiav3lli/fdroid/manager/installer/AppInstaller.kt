@@ -3,6 +3,12 @@ package com.machiav3lli.fdroid.manager.installer
 import android.content.Context
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.InstallerType
+import com.machiav3lli.fdroid.manager.installer.type.AppManagerInstaller
+import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
+import com.machiav3lli.fdroid.manager.installer.type.LegacyInstaller
+import com.machiav3lli.fdroid.manager.installer.type.RootInstaller
+import com.machiav3lli.fdroid.manager.installer.type.SessionInstaller
+import com.machiav3lli.fdroid.manager.installer.type.SystemInstaller
 import com.machiav3lli.fdroid.manager.work.InstallStateHolder
 import com.machiav3lli.fdroid.utils.amInstalled
 import com.machiav3lli.fdroid.utils.getHasSystemInstallPermission

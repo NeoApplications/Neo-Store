@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.manager.installer
+package com.machiav3lli.fdroid.manager.installer.type
 
 import android.app.PendingIntent
 import android.content.Context
@@ -11,6 +11,7 @@ import android.util.Log
 import com.machiav3lli.fdroid.BUFFER_SIZE
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.InstallState
+import com.machiav3lli.fdroid.manager.installer.InstallationError
 import com.machiav3lli.fdroid.manager.service.InstallerReceiver
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import kotlinx.coroutines.Dispatchers
@@ -42,9 +43,15 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
             if (Android.sdk(Build.VERSION_CODES.O)) {
                 setInstallReason(PackageManager.INSTALL_REASON_USER)
             }
-            if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) {
+            if (Android.sdk(Build.VERSION_CODES.S)) {
                 setRequireUserAction(SessionParams.USER_ACTION_NOT_REQUIRED)
+            }
+            if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) {
                 setPackageSource(PackageInstaller.PACKAGE_SOURCE_STORE)
+            }
+            if (Android.sdk(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)) {
+                setRequestUpdateOwnership(true)
+                setApplicationEnabledSettingPersistent()
             }
         }
     }

@@ -22,9 +22,9 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
 import com.machiav3lli.fdroid.data.entity.InstallState
 import com.machiav3lli.fdroid.data.repository.InstallsRepository
-import com.machiav3lli.fdroid.manager.installer.BaseInstaller
+import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
 import com.machiav3lli.fdroid.manager.installer.InstallationError
-import com.machiav3lli.fdroid.manager.installer.LegacyInstaller
+import com.machiav3lli.fdroid.manager.installer.type.LegacyInstaller
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.installNotificationBuilder
 import kotlinx.coroutines.Dispatchers

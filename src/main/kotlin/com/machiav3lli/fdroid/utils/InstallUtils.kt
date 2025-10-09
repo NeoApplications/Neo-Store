@@ -5,7 +5,7 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
 import com.machiav3lli.fdroid.data.repository.InstallsRepository
-import com.machiav3lli.fdroid.manager.installer.BaseInstaller
+import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
 import com.machiav3lli.fdroid.manager.work.InstallWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

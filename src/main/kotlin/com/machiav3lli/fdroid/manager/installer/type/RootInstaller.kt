@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.manager.installer
+package com.machiav3lli.fdroid.manager.installer.type
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -6,6 +6,7 @@ import android.os.Build
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.InstallState
+import com.machiav3lli.fdroid.manager.installer.InstallationError
 import com.machiav3lli.fdroid.utils.Utils.quotePath
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.notifyFinishedInstall

@@ -1,4 +1,4 @@
-package com.machiav3lli.fdroid.manager.installer
+package com.machiav3lli.fdroid.manager.installer.type
 
 import android.app.PendingIntent
 import android.content.Context
@@ -9,6 +9,7 @@ import com.machiav3lli.fdroid.BUFFER_SIZE
 import com.machiav3lli.fdroid.data.content.Cache.getReleaseFileUri
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.InstallState
+import com.machiav3lli.fdroid.manager.installer.InstallationError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.io.IOException

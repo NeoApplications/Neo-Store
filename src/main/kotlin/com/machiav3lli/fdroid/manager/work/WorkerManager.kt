@@ -40,7 +40,7 @@ import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.InstallsRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
-import com.machiav3lli.fdroid.manager.installer.BaseInstaller
+import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.utils.Utils
 import com.machiav3lli.fdroid.utils.extension.android.Android

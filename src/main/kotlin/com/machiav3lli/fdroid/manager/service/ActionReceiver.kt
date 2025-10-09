@@ -7,7 +7,7 @@ import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAMES
 import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
 import com.machiav3lli.fdroid.ARG_REPOSITORY_IDS
-import com.machiav3lli.fdroid.manager.installer.BaseInstaller
+import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
 import com.machiav3lli.fdroid.manager.work.WorkerManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

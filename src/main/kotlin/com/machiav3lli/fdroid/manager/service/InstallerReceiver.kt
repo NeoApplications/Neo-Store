@@ -10,8 +10,8 @@ import android.util.Log
 import androidx.core.net.toUri
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.NeoActivity
-import com.machiav3lli.fdroid.manager.installer.BaseInstaller
-import com.machiav3lli.fdroid.manager.installer.BaseInstaller.Companion.translatePackageInstallerError
+import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
+import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller.Companion.translatePackageInstallerError
 import com.machiav3lli.fdroid.utils.Utils
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.notifyStatus

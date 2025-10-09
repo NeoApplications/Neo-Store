@@ -1,9 +1,10 @@
-package com.machiav3lli.fdroid.manager.installer
+package com.machiav3lli.fdroid.manager.installer.type
 
 import android.content.Context
 import android.content.Intent
 import com.machiav3lli.fdroid.data.content.Cache.getReleaseFileUri
 import com.machiav3lli.fdroid.data.entity.InstallState
+import com.machiav3lli.fdroid.manager.installer.InstallationError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
