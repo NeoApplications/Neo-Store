@@ -7,10 +7,8 @@ import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.LatestSyncs
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 
 class RepositoriesRepository(
     private val productsDao: ProductDao,
@@ -18,7 +16,6 @@ class RepositoriesRepository(
     private val antiFeatureDao: AntiFeatureDao,
 ) {
     private val cc = Dispatchers.IO
-    private val jcc = Dispatchers.IO + SupervisorJob()
 
     fun getById(repoId: Long): Flow<Repository?> = reposDao.getFlow(repoId)
         .flowOn(cc)
@@ -32,30 +29,19 @@ class RepositoriesRepository(
     fun productsCount(repoId: Long): Flow<Long> = productsDao.countForRepositoryFlow(repoId)
         .flowOn(cc)
 
-    fun getRepoAntiFeatures(): Flow<List<AntiFeatureDetails>> = antiFeatureDao.getAllAntiFeatureDetailsFlow()
-        .flowOn(cc)
+    fun getRepoAntiFeatures(): Flow<List<AntiFeatureDetails>> =
+        antiFeatureDao.getAllAntiFeatureDetailsFlow()
+            .flowOn(cc)
 
-    suspend fun load(repoId: Long): Repository? = withContext(jcc) {
-        reposDao.get(repoId)
-    }
+    suspend fun load(repoId: Long): Repository? = reposDao.get(repoId)
 
-    suspend fun loadAll(): List<Repository> = withContext(jcc) {
-        reposDao.getAll()
-    }
+    suspend fun loadAll(): List<Repository> = reposDao.getAll()
 
-    suspend fun upsert(repo: Repository) = withContext(jcc) {
-        reposDao.put(repo)
-    }
+    suspend fun upsert(repo: Repository) = reposDao.put(repo)
 
-    suspend fun insertReturn(repository: Repository) = withContext(jcc) {
-        reposDao.insertReturn(repository)
-    }
+    suspend fun insertReturn(repository: Repository) = reposDao.insertReturn(repository)
 
-    suspend fun insertOrUpdate(vararg repository: Repository) = withContext(jcc) {
-        reposDao.insertOrUpdate(*repository)
-    }
+    suspend fun insertOrUpdate(vararg repository: Repository) = reposDao.insertOrUpdate(*repository)
 
-    suspend fun deleteById(repoId: Long) = withContext(jcc) {
-        reposDao.deleteById(repoId)
-    }
+    suspend fun deleteById(repoId: Long) = reposDao.deleteById(repoId)
 }

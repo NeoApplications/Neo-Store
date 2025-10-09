@@ -11,7 +11,7 @@ interface InstalledDao : BaseDao<Installed> {
     fun getAllFlow(): Flow<List<Installed>>
 
     @Query("SELECT * FROM memory_installed WHERE packageName = :packageName")
-    fun get(packageName: String): Installed?
+    suspend fun get(packageName: String): Installed?
 
     @Query("SELECT * FROM memory_installed WHERE packageName = :packageName")
     fun getFlow(packageName: String): Flow<Installed?>

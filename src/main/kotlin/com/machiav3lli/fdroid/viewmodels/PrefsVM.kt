@@ -11,8 +11,6 @@ import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.newRepos
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +19,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 import kotlinx.parcelize.Parcelize
 
 class PrefsVM(
@@ -29,11 +26,10 @@ class PrefsVM(
     private val reposRepo: RepositoriesRepository,
     private val extrasRepo: ExtrasRepository,
 ) : ViewModel() {
-    private val ioScope = viewModelScope.plus(Dispatchers.IO)
 
     val repositories = reposRepo.getAll()
         .stateIn(
-            scope = ioScope,
+            scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
             initialValue = emptyList()
         )
@@ -47,17 +43,21 @@ class PrefsVM(
         }
     }
         .stateIn(
-            scope = ioScope,
+            scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
             initialValue = emptyList()
         )
 
     val installed = installedRepo.getAll().map {
         it.associateBy(Installed::packageName)
-    }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        initialValue = emptyMap()
+    )
 
     val extras = extrasRepo.getAll().stateIn(
-        scope = ioScope,
+        scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         initialValue = emptyList()
     )
@@ -78,15 +78,13 @@ class PrefsVM(
     }
 
     suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long {
-        return viewModelScope.async {
-            reposRepo.insertReturn(
-                newRepository(
-                    fallbackName = "new repository",
-                    address = address,
-                    fingerprint = fingerprint
-                )
+        return reposRepo.insertReturn(
+            newRepository(
+                fallbackName = "new repository",
+                address = address,
+                fingerprint = fingerprint
             )
-        }.await()
+        )
     }
 
     fun updateRepo(newValue: Repository?) {

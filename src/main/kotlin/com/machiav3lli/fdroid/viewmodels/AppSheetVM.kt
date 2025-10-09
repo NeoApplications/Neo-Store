@@ -31,7 +31,6 @@ import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.findSuggestedProduct
 import com.machiav3lli.fdroid.utils.generatePermissionGroups
 import com.machiav3lli.fdroid.utils.toPrivacyNote
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,7 +40,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
@@ -57,8 +55,6 @@ class AppSheetVM(
     private val privacyRepo: PrivacyRepository,
     reposRepo: RepositoriesRepository,
 ) : ViewModel() {
-    private val cc = Dispatchers.IO
-
     private val packageName: MutableStateFlow<String> = MutableStateFlow("")
 
     val products = packageName
@@ -227,7 +223,6 @@ class AppSheetVM(
             .sortedByDescending { it.first.versionCode }
             .toList()
     }
-        .flowOn(Dispatchers.IO)
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),

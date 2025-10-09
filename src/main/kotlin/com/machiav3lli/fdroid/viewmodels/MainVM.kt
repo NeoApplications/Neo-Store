@@ -27,7 +27,6 @@ import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.utils.matchSearchQuery
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -43,7 +42,6 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 
 @OptIn(
     ExperimentalCoroutinesApi::class,
@@ -56,8 +54,6 @@ open class MainVM(
     installedRepo: InstalledRepository,
     reposRepo: RepositoriesRepository,
 ) : ViewModel() {
-    private val ioScope = viewModelScope.plus(Dispatchers.IO)
-
     private val _sortFilterLatest = MutableStateFlow("")
     val sortFilterLatest: StateFlow<String> = _sortFilterLatest
     private val _sortFilterExplore = MutableStateFlow("")
@@ -133,7 +129,7 @@ open class MainVM(
             Log.d(TAG, "Installed list size: ${this.size}")
         }
     }.stateIn(
-        scope = ioScope,
+        scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         initialValue = emptyMap()
     )
@@ -144,7 +140,7 @@ open class MainVM(
     ) { _, src ->
         request(src)
     }.stateIn(
-        scope = ioScope,
+        scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         initialValue = request(Source.NONE)
     )
@@ -155,7 +151,7 @@ open class MainVM(
     ) { _, src ->
         request(src)
     }.stateIn(
-        scope = ioScope,
+        scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         initialValue = request(Source.SEARCH)
     )
@@ -176,7 +172,8 @@ open class MainVM(
     val topApps = topAppType.flatMapLatest {
         when (it) {
             TopDownloadType.TOTAL_ALLTIME -> productsRepo.getAllTimeTopApps()
-            else                          -> productsRepo.getRecentTopApps(it.key)
+            TopDownloadType.TOTAL_RECENT  -> productsRepo.getRecentTopApps(it.key, 3)
+            else                          -> productsRepo.getRecentTopApps(it.key, 1)
         }
     }
 
@@ -194,7 +191,7 @@ open class MainVM(
             Log.d(TAG, "Explore products list size: ${this.size}")
         }
     }.stateIn(
-        scope = ioScope,
+        scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         initialValue = emptyList()
     )
@@ -217,7 +214,7 @@ open class MainVM(
                 Log.d(TAG, "Search products list size: ${this.size}")
             }
     }.stateIn(
-        scope = ioScope,
+        scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
         initialValue = emptyList()
     )

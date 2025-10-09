@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RepositoryDao : BaseDao<Repository> {
     @Query("SELECT COUNT(id) FROM repository")
-    fun getCount(): Int
+    suspend fun getCount(): Int
 
     @Insert
-    fun insertReturn(repo: Repository): Long
+    suspend fun insertReturn(repo: Repository): Long
 
     suspend fun put(vararg repository: Repository) {
         val (toUpdate, toInsert) = repository.partition { it.id > 0L }
@@ -34,13 +34,13 @@ interface RepositoryDao : BaseDao<Repository> {
     }
 
     @Query("SELECT * FROM repository WHERE id = :id")
-    fun get(id: Long): Repository?
+    suspend fun get(id: Long): Repository?
 
     @Query("SELECT * FROM repository WHERE id = :id")
     fun getFlow(id: Long): Flow<Repository?>
 
     @Query("SELECT * FROM repository ORDER BY id ASC")
-    fun getAll(): List<Repository>
+    suspend fun getAll(): List<Repository>
 
     @Query("SELECT * FROM repository ORDER BY id ASC")
     fun getAllFlow(): Flow<List<Repository>>
@@ -49,13 +49,13 @@ interface RepositoryDao : BaseDao<Repository> {
     suspend fun getByAddress(address: String): Repository?
 
     @Query("SELECT name FROM repository WHERE id = :id")
-    fun getRepoName(id: Long): String
+    suspend fun getRepoName(id: Long): String
 
     @Query("SELECT id FROM repository WHERE enabled != 0 ORDER BY id ASC")
-    fun getAllEnabledIds(): List<Long>
+    suspend fun getAllEnabledIds(): List<Long>
 
     @Query("SELECT id FROM repository WHERE enabled == 0 ORDER BY id ASC")
-    fun getAllDisabledIds(): List<Long>
+    suspend fun getAllDisabledIds(): List<Long>
 
     @Query("UPDATE repository SET timestamp = '', lastModified = '', entryLastModified = '', entityTag = '', entryEntityTag = ''")
     suspend fun forgetLastModifications()
@@ -67,7 +67,7 @@ interface RepositoryDao : BaseDao<Repository> {
     suspend fun deleteByAddress(address: String)
 
     @Query("SELECT MAX(id) FROM repository")
-    fun latestAddedId(): Long
+    suspend fun latestAddedId(): Long
 
     @Query("SELECT MAX(updated) AS latest, MIN(updated) AS latestAll FROM repository WHERE enabled != 0")
     fun latestUpdatesFlow(): Flow<LatestSyncs>

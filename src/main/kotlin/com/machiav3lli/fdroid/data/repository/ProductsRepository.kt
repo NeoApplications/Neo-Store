@@ -17,10 +17,8 @@ import com.machiav3lli.fdroid.utils.extension.text.getIsoDateOfMonthsAgo
 import com.machiav3lli.fdroid.utils.extension.text.isoDateToInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ProductsRepository(
@@ -30,11 +28,8 @@ class ProductsRepository(
     private val downloadStatsDao: DownloadStatsDao,
 ) {
     private val cc = Dispatchers.IO
-    private val jcc = Dispatchers.IO + SupervisorJob()
 
-    suspend fun upsertProduct(vararg product: Product) = withContext(jcc) {
-        productsDao.upsert(*product)
-    }
+    suspend fun upsertProduct(vararg product: Product) = productsDao.upsert(*product)
 
     fun getProducts(req: Request): Flow<List<EmbeddedProduct>> = productsDao.queryFlowList(req)
         .flowOn(cc)
@@ -51,8 +46,8 @@ class ProductsRepository(
         productsDao.queryFlowOfPackages(pkgs)
             .flowOn(cc)
 
-    fun getRecentTopApps(client : String): Flow<List<PackageSum>> =
-        downloadStatsDao.getFlowRecentTopApps(getIsoDateOfMonthsAgo(3).isoDateToInt(), 50, client)
+    fun getRecentTopApps(client: String, numMonths: Int = 3): Flow<List<PackageSum>> =
+        downloadStatsDao.getFlowRecentTopApps(getIsoDateOfMonthsAgo(numMonths).isoDateToInt(), 50, client)
             .flowOn(cc)
 
     fun getAllTimeTopApps(): Flow<List<PackageSum>> =
@@ -82,21 +77,16 @@ class ProductsRepository(
         section: Section,
         order: Order,
         ascending: Boolean
-    ): List<EmbeddedProduct> = withContext(jcc) {
-        productsDao.queryObject(
-            installed = installed,
-            updates = updates,
-            section = section,
-            order = order,
-            ascending = ascending,
-        )
-    }
+    ): List<EmbeddedProduct> = productsDao.queryObject(
+        installed = installed,
+        updates = updates,
+        section = section,
+        order = order,
+        ascending = ascending,
+    )
 
-    suspend fun loadProduct(packageName: String): List<EmbeddedProduct> = withContext(jcc) {
+    suspend fun loadProduct(packageName: String): List<EmbeddedProduct> =
         productsDao.get(packageName)
-    }
 
-    suspend fun productExists(packageName: String): Boolean = withContext(jcc) {
-        productsDao.exists(packageName)
-    }
+    suspend fun productExists(packageName: String): Boolean = productsDao.exists(packageName)
 }

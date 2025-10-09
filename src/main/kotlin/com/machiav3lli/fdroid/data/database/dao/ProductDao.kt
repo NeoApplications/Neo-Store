@@ -59,31 +59,36 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ProductDao : BaseDao<Product> {
     @Query("SELECT COUNT(*) FROM $TABLE_PRODUCT WHERE repositoryId = :id")
-    fun countForRepository(id: Long): Long
+    suspend fun countForRepository(id: Long): Long
 
     @Query("SELECT COUNT(*) FROM $TABLE_PRODUCT WHERE repositoryId = :id")
     fun countForRepositoryFlow(id: Long): Flow<Long>
 
+    @Transaction
     @Query("SELECT * FROM $TABLE_PRODUCT WHERE repositoryId = :repoId ORDER BY label")
     fun productsForRepositoryFlow(repoId: Long): Flow<List<EmbeddedProduct>>
 
     @Query("SELECT EXISTS(SELECT 1 FROM $TABLE_PRODUCT WHERE packageName = :packageName)")
-    fun exists(packageName: String): Boolean
+    suspend fun exists(packageName: String): Boolean
 
+    @Transaction
     @Query("SELECT * FROM $TABLE_PRODUCT WHERE packageName = :packageName")
-    fun get(packageName: String): List<EmbeddedProduct>
+    suspend fun get(packageName: String): List<EmbeddedProduct>
 
+    @Transaction
     @Query("SELECT * FROM $TABLE_PRODUCT WHERE packageName = :packageName")
     fun getFlow(packageName: String): Flow<List<EmbeddedProduct>>
 
+    @Transaction
     @Query("SELECT * FROM $TABLE_PRODUCT WHERE packageName = :packageName AND repositoryId = :repoId")
-    fun get(packageName: String, repoId: Long): EmbeddedProduct?
+    suspend fun get(packageName: String, repoId: Long): EmbeddedProduct?
 
+    @Transaction
     @Query("SELECT * FROM $TABLE_PRODUCT WHERE packageName = :packageName AND repositoryId = :repoId")
     fun getFlow(packageName: String, repoId: Long): Flow<EmbeddedProduct?>
 
     @Query("SELECT packageName, icon, metadataIcon FROM $TABLE_PRODUCT GROUP BY packageName HAVING 1")
-    fun getIconDetails(): List<IconDetails>
+    suspend fun getIconDetails(): List<IconDetails>
 
     @Query("SELECT packageName, icon, metadataIcon FROM $TABLE_PRODUCT GROUP BY packageName HAVING 1")
     fun getIconDetailsFlow(): Flow<List<IconDetails>>
@@ -92,19 +97,20 @@ interface ProductDao : BaseDao<Product> {
     suspend fun deleteById(id: Long)
 
     @Query("SELECT DISTINCT licenses FROM $TABLE_PRODUCT")
-    fun getAllLicenses(): List<Licenses>
+    suspend fun getAllLicenses(): List<Licenses>
 
     @Query("SELECT DISTINCT licenses FROM $TABLE_PRODUCT")
     fun getAllLicensesFlow(): Flow<List<Licenses>>
 
+    @Transaction
     @Query("SELECT * FROM $TABLE_PRODUCT WHERE author LIKE '%' || :author || '%' ")
     fun getAuthorPackagesFlow(author: String): Flow<List<EmbeddedProduct>>
 
     @RawQuery
-    fun queryObject(query: SupportSQLiteQuery): List<EmbeddedProduct>
+    suspend fun queryObject(query: SupportSQLiteQuery): List<EmbeddedProduct>
 
     @Transaction
-    fun queryObject(
+    suspend fun queryObject(
         installed: Boolean, updates: Boolean,
         section: Section, filteredOutRepos: Set<String> = emptySet(),
         category: String = FILTER_CATEGORY_ALL, filteredAntiFeatures: Set<String> = emptySet(),
@@ -395,9 +401,10 @@ interface ProductDao : BaseDao<Product> {
     }
 
     @Transaction
-    fun getInstalledProductsWithVulnerabilities(repoId: Long): List<EmbeddedProduct> = queryObject(
-        SimpleSQLiteQuery(
-            """
+    suspend fun getInstalledProductsWithVulnerabilities(repoId: Long): List<EmbeddedProduct> =
+        queryObject(
+            SimpleSQLiteQuery(
+                """
                 SELECT $TABLE_PRODUCT.*
                 FROM $TABLE_PRODUCT
                 JOIN $TABLE_INSTALLED ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_INSTALLED.$ROW_PACKAGE_NAME
@@ -408,8 +415,8 @@ interface ProductDao : BaseDao<Product> {
                 GROUP BY $TABLE_PRODUCT.$ROW_PACKAGE_NAME
                 ORDER BY $TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ASC
             """.trimIndent()
+            )
         )
-    )
 
     @Query("DELETE FROM $TABLE_PRODUCT")
     suspend fun emptyTable()
@@ -418,7 +425,7 @@ interface ProductDao : BaseDao<Product> {
 @Dao
 interface ProductTempDao : BaseDao<ProductTemp> {
     @Query("SELECT * FROM $TABLE_PRODUCT_TEMP")
-    fun getAll(): Array<ProductTemp>
+    suspend fun getAll(): Array<ProductTemp>
 
     @Query("DELETE FROM $TABLE_PRODUCT_TEMP")
     suspend fun emptyTable()

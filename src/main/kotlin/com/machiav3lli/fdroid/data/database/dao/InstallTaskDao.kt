@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface InstallTaskDao : BaseDao<InstallTask> {
     @Query("SELECT * FROM install_task ORDER BY added DESC")
-    fun getAll(): List<InstallTask>
+    suspend fun getAll(): List<InstallTask>
 
     @Query("SELECT * FROM install_task ORDER BY added DESC")
     fun getAllFlow(): Flow<List<InstallTask>>
 
     @Query("SELECT * FROM install_task WHERE cacheFileName = :fileName ORDER BY added ASC")
-    fun get(fileName: String): InstallTask?
+    suspend fun get(fileName: String): InstallTask?
 
     @Query("SELECT * FROM install_task WHERE cacheFileName = :fileName ORDER BY added ASC")
     fun getFlow(fileName: String): Flow<InstallTask?>
