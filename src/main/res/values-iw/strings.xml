@@ -220,4 +220,6 @@
     <string name="system_black">מערכת (שחור)</string>
     <string name="app_installed">הותקן</string>
     <string name="explore">סיור</string>
+    <string name="total_alltime_downloads">ההורדות המובילות בכל הזמנים</string>
+    <string name="trending_from_unknown">מובילים בלקוחות לא ידועים</string>
 </resources>
