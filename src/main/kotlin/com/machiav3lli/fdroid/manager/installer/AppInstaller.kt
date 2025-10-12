@@ -9,7 +9,6 @@ import com.machiav3lli.fdroid.manager.installer.type.LegacyInstaller
 import com.machiav3lli.fdroid.manager.installer.type.RootInstaller
 import com.machiav3lli.fdroid.manager.installer.type.SessionInstaller
 import com.machiav3lli.fdroid.manager.installer.type.SystemInstaller
-import com.machiav3lli.fdroid.manager.work.InstallStateHolder
 import com.machiav3lli.fdroid.utils.amInstalled
 import com.machiav3lli.fdroid.utils.getHasSystemInstallPermission
 import com.machiav3lli.fdroid.utils.shellIsRoot
@@ -53,5 +52,4 @@ object AppInstaller {
 val installerModule = module {
     factory { AppInstaller.create(get()) }
     single { InstallQueue() }
-    single { InstallStateHolder() }
 }

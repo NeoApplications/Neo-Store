@@ -1,41 +1,84 @@
 package com.machiav3lli.fdroid.manager.installer
 
 import android.util.Log
+import com.machiav3lli.fdroid.data.entity.InstallState
+import com.machiav3lli.fdroid.data.entity.StateHolderFlow
+import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import java.util.concurrent.ConcurrentLinkedQueue
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Manages the queue of installation tasks to ensure they run sequentially
  */
-class InstallQueue {
+class InstallQueue : KoinComponent {
     private val mutex = Mutex()
-    private val queue = ConcurrentLinkedQueue<InstallTask>()
-    private val qcc = Dispatchers.IO + SupervisorJob()
+    private val queueScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var processingStartTime: Long = 0
+    private val installer: BaseInstaller by inject()
+    private val installStateHolder by lazy {
+        StateHolderFlow<InstallState>()
+    }
+
+    private val queue = Channel<InstallTask>(UNLIMITED)
+    private val queuedPackages = ConcurrentHashMap.newKeySet<String>()
     val isProcessing: StateFlow<Boolean>
         private field = MutableStateFlow(false)
     val inUserInteraction: StateFlow<String>
         private field = MutableStateFlow("")
 
     private var currentTask: InstallTask? = null
-
-    data class InstallTask(
-        val packageName: String,
-        val packageLabel: String,
-        val cacheFileName: String,
-        val retryCount: Int = 0,
-        val callback: (Result<String>) -> Unit
-    )
+    private var processorJob = queueScope.launch { processTasksFromChannel() }
 
     /**
-     * Enqueues an installation task and starts processing if not already running
+     * Reactively handles enqueued installs
+     */
+    private suspend fun processTasksFromChannel() {
+        queue.consumeEach { task ->
+            mutex.withLock {
+                currentTask = task
+                isProcessing.update { true }
+                processingStartTime = System.currentTimeMillis()
+            }
+
+            if (!installStateHolder.isHeld(task.packageName)
+                && queuedPackages.contains(task.packageName)
+            ) {
+                emitProgress(InstallState.Preparing, task.packageName)
+                // start notification
+                installer.runInstall(task) { e ->
+                    Log.e(
+                        BaseInstaller.Companion.TAG,
+                        "Unexpected error during installation of ${task.packageName}",
+                        e
+                    )
+                    onInstallationComplete(
+                        Result.failure(InstallationError.Unknown("Installation failed: ${e.message}"))
+                    )
+                }
+                // remove notification
+                queuedPackages.remove(task.packageName)
+            }
+            queuedPackages.remove(task.packageName)
+        }
+    }
+
+    /**
+     * Enqueues an installation task
      */
     suspend fun enqueue(
         packageName: String,
@@ -43,19 +86,44 @@ class InstallQueue {
         cacheFileName: String,
         callback: (Result<String>) -> Unit
     ) {
-        val task = InstallTask(packageName, packageLabel, cacheFileName, 0, callback)
-
-        withContext(qcc) {
-            queue.add(task)
-            processNextIfNeeded()
+        mutex.withLock {
+            // Check if already queued or processing
+            if (queuedPackages.contains(packageName) || currentTask?.packageName == packageName) {
+                Log.d(TAG, "$packageName is already queued or processing")
+                callback(Result.failure(InstallationError.Unknown("Package already in installation queue")))
+                return
+            }
+            queuedPackages.add(packageName)
         }
+
+        val task = InstallTask(packageName, packageLabel, cacheFileName, 0, callback)
+        queue.send(task)
+        Log.d(TAG, "Enqueued installation task for $packageName")
+    }
+
+    /**
+     * Report progress stat to the states holder.
+     */
+    fun emitProgress(progress: InstallState, packageName: String? = null) {
+        if (packageName != null) {
+            installStateHolder.updateState(packageName, progress)
+        } else {
+            currentTask?.let { task ->
+                installStateHolder.updateState(task.packageName, progress)
+            }
+        }
+
+        Log.d(
+            BaseInstaller.TAG,
+            "Installation state updated for ${packageName ?: "current task"}: ${progress::class.simpleName}"
+        )
     }
 
     /**
      * Register starting user interaction for a specific package
      */
     suspend fun startUserInteraction(packageName: String) {
-        withContext(qcc) {
+        withContext(queueScope.coroutineContext) {
             inUserInteraction.update { packageName }
         }
     }
@@ -64,12 +132,11 @@ class InstallQueue {
      * Checks if a package is currently in the installation queue
      */
     fun isEnqueued(packageName: String): Boolean {
-        return (currentTask?.packageName == packageName ||
-                queue.any { it.packageName == packageName }).apply {
+        return (currentTask?.packageName == packageName || queuedPackages.contains(packageName)).apply {
             // TODO remove when more queueing logic is in place
             if (this) Log.d(
-                "InstallQueue",
-                "$packageName is ${if (currentTask?.packageName == packageName) "the current task" else "already in the queue: ${queue.toArray()}"}"
+                TAG,
+                "$packageName is ${if (currentTask?.packageName == packageName) "the current task" else "in the queue"}"
             )
         }
     }
@@ -77,8 +144,9 @@ class InstallQueue {
     /**
      * Checks the health of the installation queue and cleans up any stale tasks
      */
+    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun checkQueueHealth(): Boolean {
-        return withContext(qcc) {
+        return withContext(queueScope.coroutineContext) {
             mutex.withLock {
                 try {
                     var cleanupPerformed = false
@@ -113,7 +181,7 @@ class InstallQueue {
                     }
 
                     // Check for empty queue but still processing
-                    if (isProcessing.value && currentTask == null && queue.isEmpty()) {
+                    if (isProcessing.value && currentTask == null && queue.isEmpty) {
                         Log.w(
                             TAG,
                             "Queue health check: Processing flag set but no tasks, resetting"
@@ -125,7 +193,7 @@ class InstallQueue {
 
                     Log.d(
                         TAG,
-                        "Queue health check completed. Queue size: ${queue.size}, Processing: ${isProcessing.value}, Current task: ${currentTask?.packageName}"
+                        "Queue health check completed. Queued packages: ${queuedPackages.size}, Processing: ${isProcessing.value}, Current task: ${currentTask?.packageName}"
                     )
                     cleanupPerformed
                 } catch (e: Exception) {
@@ -147,9 +215,9 @@ class InstallQueue {
      * Cancels all pending installation tasks for a specific package
      */
     suspend fun cancel(packageName: String) {
-        withContext(qcc) {
+        withContext(queueScope.coroutineContext) {
             mutex.withLock {
-                queue.removeIf { it.packageName == packageName }
+                queuedPackages.remove(packageName)
 
                 // If current task is for this package, report cancellation
                 if (currentTask?.packageName == packageName) {
@@ -163,24 +231,10 @@ class InstallQueue {
     }
 
     /**
-     * Processes the next task in the queue if not already processing
-     */
-    suspend fun processNextIfNeeded() {
-        withContext(qcc) {
-            mutex.withLock {
-                if (isProcessing.value || queue.isEmpty()) return@withLock
-
-                currentTask = queue.poll()
-                isProcessing.update { true }
-            }
-        }
-    }
-
-    /**
      * Called by installers when an installation completes (success or failure)
      */
     suspend fun onInstallationComplete(result: Result<String>) {
-        withContext(qcc) {
+        withContext(queueScope.coroutineContext) {
             mutex.withLock {
                 try {
                     val currentPackage = currentTask?.packageName
@@ -211,7 +265,11 @@ class InstallQueue {
                                         TAG,
                                         "Re-enqueueing installation task for $currentPackage"
                                     )
-                                    queue.add(retryTask.copy(retryCount = retryTask.retryCount + 1))
+                                    // Re-add to queued packages and send to channel
+                                    queuedPackages.add(retryTask.packageName)
+                                    queueScope.launch {
+                                        queue.send(retryTask.copy(retryCount = retryTask.retryCount + 1))
+                                    }
                                 } else {
                                     Log.w(
                                         TAG,
@@ -229,13 +287,12 @@ class InstallQueue {
                     currentTask = null
                     isProcessing.update { false }
                     inUserInteraction.update { "" }
+                    processingStartTime = 0
 
-                    if (queue.isEmpty()) {
+                    if (queue.isEmpty && queuedPackages.isEmpty()) {
                         Log.d(TAG, "No more installation tasks in queue")
                     } else {
-                        Log.d(TAG, "Processing next installation task, ${queue.size} remaining")
-                        currentTask = queue.poll()
-                        isProcessing.update { true }
+                        Log.d(TAG, "Queue has ${queuedPackages.size} tasks waiting")
                     }
                 }
             }
@@ -246,7 +303,7 @@ class InstallQueue {
      * Returns the current task being processed, if any
      */
     suspend fun getCurrentTask(): InstallTask? {
-        return withContext(qcc) {
+        return withContext(queueScope.coroutineContext) {
             mutex.withLock {
                 currentTask
             }
@@ -257,15 +314,19 @@ class InstallQueue {
      * Clears all pending tasks
      */
     suspend fun clear() {
-        withContext(qcc) {
+        withContext(queueScope.coroutineContext) {
             mutex.withLock {
-                queue.clear()
+                queue.cancel()
+                queuedPackages.clear()
                 if (currentTask != null) {
                     currentTask?.callback?.invoke(Result.failure(InstallationError.UserCancelled()))
                     currentTask = null
                 }
                 isProcessing.update { false }
                 inUserInteraction.update { "" }
+                // Restart the processor with a fresh channel
+                processorJob.cancel()
+                processorJob = queueScope.launch { processTasksFromChannel() }
             }
         }
     }
@@ -274,5 +335,13 @@ class InstallQueue {
         private const val TAG = "InstallQueue"
         private const val MAX_RETRIES = 3
         private const val MAX_PROCESSING_TIME = 5 * 60 * 1000L // 5 minutes
+
+        data class InstallTask(
+            val packageName: String,
+            val packageLabel: String,
+            val cacheFileName: String,
+            val retryCount: Int = 0,
+            val callback: (Result<String>) -> Unit
+        )
     }
 }

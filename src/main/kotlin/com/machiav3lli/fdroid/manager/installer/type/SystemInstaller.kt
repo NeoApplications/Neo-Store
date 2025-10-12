@@ -30,31 +30,7 @@ class SystemInstaller(context: Context) : BaseInstaller(context) {
 
     private val packageInstaller = context.packageManager.packageInstaller
 
-    override suspend fun processNextInstallation() {
-        val task = installQueue.getCurrentTask() ?: return
-        emitProgress(InstallState.Preparing, task.packageName)
-
-        val apkFile = getApkFile(task.cacheFileName) ?: run {
-            installQueue.onInstallationComplete(
-                Result.failure(InstallationError.Unknown("Installation failed: Failed to get APK file"))
-            )
-            return
-        }
-
-        val packageName = extractPackageNameFromApk(apkFile) ?: task.packageName
-
-        withContext(Dispatchers.IO) {
-            try {
-                installPackage(packageName, apkFile)
-            } catch (e: Exception) {
-                installQueue.onInstallationComplete(
-                    Result.failure(InstallationError.Unknown("Installation failed: ${e.message}"))
-                )
-            }
-        }
-    }
-
-    private suspend fun installPackage(packageName: String, apkFile: File) {
+    override suspend fun installPackage(packageName: String, apkFile: File) {
         withContext(Dispatchers.IO) {
             runCatching {
                 val packageUri = apkFile.getReleaseFileUri(context)
@@ -91,7 +67,7 @@ class SystemInstaller(context: Context) : BaseInstaller(context) {
                     )
                     val statusReceiver = pendingIntent.intentSender
 
-                    emitProgress(InstallState.Installing(0.95f), packageName)
+                    installQueue.emitProgress(InstallState.Installing(0.95f), packageName)
                     session.commit(statusReceiver)
                     if (Preferences[Preferences.Key.ReleasesCacheRetention] == 0) apkFile.delete()
                     // TODO add receiver to track status

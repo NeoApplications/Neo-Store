@@ -59,31 +59,7 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
     private val sessionInstaller = context.packageManager.packageInstaller
     private val intent = Intent(context, InstallerReceiver::class.java)
 
-    override suspend fun processNextInstallation() {
-        val task = installQueue.getCurrentTask() ?: return
-        emitProgress(InstallState.Preparing, task.packageName)
-
-        val apkFile = getApkFile(task.cacheFileName) ?: run {
-            installQueue.onInstallationComplete(
-                Result.failure(InstallationError.Unknown("Installation failed: Failed to get APK file"))
-            )
-            return
-        }
-
-        val packageName = extractPackageNameFromApk(apkFile) ?: task.packageName
-
-        withContext(Dispatchers.IO) {
-            try {
-                installPackage(packageName, apkFile)
-            } catch (e: Exception) {
-                installQueue.onInstallationComplete(
-                    Result.failure(InstallationError.Unknown("Installation failed: ${e.message}"))
-                )
-            }
-        }
-    }
-
-    private suspend fun installPackage(packageName: String, apkFile: File) {
+    override suspend fun installPackage(packageName: String, apkFile: File) {
         withContext(Dispatchers.IO) {
             var sessionId = -1
             runCatching {
@@ -120,7 +96,10 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
                                     // Calculate and emit progress
                                     val progress = bytesWritten.toFloat() / totalBytes
                                     if (progress - lastProgress >= 0.05f) { // Update progress in 5% increments
-                                        emitProgress(InstallState.Installing(progress), packageName)
+                                        installQueue.emitProgress(
+                                            InstallState.Installing(progress),
+                                            packageName
+                                        )
                                         lastProgress = progress
                                     }
                                 }
@@ -142,7 +121,7 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
                             flags,
                         )
 
-                        emitProgress(InstallState.Installing(0.98f), packageName)
+                        installQueue.emitProgress(InstallState.Installing(0.98f), packageName)
                         // Commit the session
                         session.commit(pendingIntent.intentSender)
                         if (Preferences[Preferences.Key.ReleasesCacheRetention] == 0) {
@@ -179,7 +158,7 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
                 }
 
                 val errorMessage = when (e) {
-                    is SecurityException     -> {
+                    is SecurityException -> {
                         Log.w(
                             TAG,
                             "Installation failed: Attempted to use a destroyed or sealed session when installing.\n${e.message}"
@@ -195,7 +174,7 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
                         "Installation failed: Cache file does not seem to exist.\n${e.message}"
                     }
 
-                    is IOException           -> {
+                    is IOException -> {
                         Log.w(
                             TAG,
                             "Installation failed: I/O error due to a bad pipe.\n${e.message}"
@@ -226,7 +205,7 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
                         }
                     }
 
-                    else                     -> {
+                    else -> {
                         Log.e(
                             TAG,
                             "Unexpected error during installation: ${e.javaClass.simpleName} - ${e.message}"

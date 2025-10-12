@@ -98,34 +98,8 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
         ).joinToString(" ")
     }
 
-    override suspend fun processNextInstallation() {
-        val task = installQueue.getCurrentTask() ?: return
-        emitProgress(InstallState.Preparing, task.packageName)
-
-        val apkFile = getApkFile(task.cacheFileName) ?: run {
-            installQueue.onInstallationComplete(
-                Result.failure(InstallationError.Unknown("Installation failed: Failed to get cached APK file ${task.cacheFileName}"))
-            )
-            return
-        }
-
-        val packageName = extractPackageNameFromApk(apkFile) ?: task.packageName
-
+    override suspend fun installPackage(packageName: String, apkFile: File) {
         withContext(Dispatchers.IO) {
-            try {
-                installPackage(packageName, apkFile)
-            } catch (e: Exception) {
-                installQueue.onInstallationComplete(
-                    Result.failure(InstallationError.Unknown("Installation failed: ${e.message}"))
-                )
-            }
-        }
-    }
-
-    private suspend fun installPackage(packageName: String, apkFile: File) {
-        withContext(Dispatchers.IO) {
-            emitProgress(InstallState.Preparing, packageName)
-
             try {
                 if (Preferences[Preferences.Key.RootSessionInstaller]) {
                     Shell.cmd(apkFile.sessionInstallCreate())
@@ -135,16 +109,19 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
                                 if (it.out.isNotEmpty()) sessionIdPattern.matcher(it.out[0])
                                 else null
                             val found = sessionIdMatcher?.find() == true
-                            emitProgress(InstallState.Installing(0.15f), packageName)
+                            installQueue.emitProgress(InstallState.Installing(0.15f), packageName)
 
                             if (found) {
                                 val sessionId = sessionIdMatcher?.group(1)?.toInt() ?: -1
                                 Shell.cmd(apkFile.sessionInstallWrite(sessionId))
                                     .submit {
-                                        emitProgress(InstallState.Installing(0.75f), packageName)
+                                        installQueue.emitProgress(
+                                            InstallState.Installing(0.75f),
+                                            packageName
+                                        )
                                         Shell.cmd(sessionInstallCommit(sessionId))
                                             .submit { result ->
-                                                emitProgress(
+                                                installQueue.emitProgress(
                                                     InstallState.Installing(0.95f),
                                                     packageName
                                                 )
@@ -171,7 +148,10 @@ class RootInstaller(context: Context) : BaseInstaller(context) {
                         .submit { result ->
                             if (result.isSuccess && Preferences[Preferences.Key.ReleasesCacheRetention] == 0)
                                 Shell.cmd(apkFile.deletePackage()).submit { result ->
-                                    emitProgress(InstallState.Installing(0.95f), packageName)
+                                    installQueue.emitProgress(
+                                        InstallState.Installing(0.95f),
+                                        packageName
+                                    )
                                     runBlocking {
                                         if (result.isSuccess) reportSuccess(packageName)
                                         else reportFailure(

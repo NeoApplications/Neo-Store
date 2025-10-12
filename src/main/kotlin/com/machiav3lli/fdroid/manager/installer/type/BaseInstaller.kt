@@ -10,35 +10,18 @@ import android.util.Log
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.entity.InstallState
 import com.machiav3lli.fdroid.manager.installer.InstallQueue
+import com.machiav3lli.fdroid.manager.installer.InstallQueue.Companion.InstallTask
 import com.machiav3lli.fdroid.manager.installer.InstallationError
 import com.machiav3lli.fdroid.manager.installer.InstallationEvents
-import com.machiav3lli.fdroid.manager.work.InstallStateHolder
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
 
 abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinComponent {
-    private val installStateHolder: InstallStateHolder by inject()
     protected val installQueue: InstallQueue by inject()
-
-    protected fun emitProgress(progress: InstallState, packageName: String? = null) {
-        if (packageName != null) {
-            installStateHolder.updateState(packageName, progress)
-        } else {
-            runBlocking { installQueue.getCurrentTask() }?.let { currentTask ->
-                installStateHolder.updateState(currentTask.packageName, progress)
-            }
-        }
-
-        Log.d(
-            TAG,
-            "Installation state updated for ${packageName ?: "current task"}: ${progress::class.simpleName}"
-        )
-    }
 
     override suspend fun install(
         packageLabel: String,
@@ -54,13 +37,29 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
         val packageName = extractPackageNameFromApk(apkFile) ?: packageLabel
 
         installQueue.enqueue(packageName, packageLabel, cacheFileName, postInstall)
+    }
 
+    suspend fun runInstall(task: InstallTask, onFailure: suspend (Throwable) -> Unit) {
         withContext(Dispatchers.IO) {
-            processNextInstallation()
+            val apkFile = getApkFile(task.cacheFileName)
+            if (apkFile == null) {
+                installQueue.onInstallationComplete(
+                    Result.failure(InstallationError.Unknown("Installation failed: Failed to get cached APK file ${task.cacheFileName}"))
+                )
+                return@withContext
+            }
+
+            val packageName = extractPackageNameFromApk(apkFile) ?: task.packageName
+
+            runCatching {
+                installPackage(packageName, apkFile)
+            }.onFailure { e ->
+                onFailure(e)
+            }
         }
     }
 
-    protected abstract suspend fun processNextInstallation()
+    protected abstract suspend fun installPackage(packageName: String, apkFile: File)
 
     suspend fun checkQueueHealth(): Boolean = installQueue.checkQueueHealth()
 
@@ -77,7 +76,7 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
 
     suspend fun reportFailure(error: InstallationError, packageName: String? = null) {
         val taskPackageName = packageName ?: installQueue.getCurrentTask()?.packageName
-        emitProgress(InstallState.Failed(error), taskPackageName)
+        installQueue.emitProgress(InstallState.Failed(error), taskPackageName)
 
         val currentTask = installQueue.getCurrentTask()
         if (currentTask != null) {
@@ -89,7 +88,7 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
     }
 
     suspend fun reportSuccess(packageName: String) {
-        emitProgress(InstallState.Success, packageName)
+        installQueue.emitProgress(InstallState.Success, packageName)
 
         val currentTask = installQueue.getCurrentTask()
         if (currentTask != null) {
@@ -102,7 +101,7 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
 
     suspend fun reportUserInteraction(packageName: String?) {
         installQueue.startUserInteraction(packageName.orEmpty())
-        emitProgress(InstallState.Pending, packageName)
+        installQueue.emitProgress(InstallState.Pending, packageName)
     }
 
     // Default; used in Legacy, System & AppManager
@@ -132,7 +131,7 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
                 it.exists() && it.canRead()
             }
         } catch (e: Exception) {
-            emitProgress(InstallState.Failed(InstallationError.Unknown("Installation failed: Error getting apk-file: ${e.message}")))
+            installQueue.emitProgress(InstallState.Failed(InstallationError.Unknown("Installation failed: Error getting apk-file: ${e.message}")))
             null
         }
     }

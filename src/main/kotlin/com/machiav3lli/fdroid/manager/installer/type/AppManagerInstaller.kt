@@ -11,31 +11,7 @@ import java.io.File
 
 class AppManagerInstaller(context: Context) : BaseInstaller(context) {
 
-    override suspend fun processNextInstallation() {
-        val task = installQueue.getCurrentTask() ?: return
-        emitProgress(InstallState.Preparing, task.packageName)
-
-        val apkFile = getApkFile(task.cacheFileName) ?: run {
-            installQueue.onInstallationComplete(
-                Result.failure(InstallationError.Unknown("Installation failed: Failed to get APK file"))
-            )
-            return
-        }
-
-        val packageName = extractPackageNameFromApk(apkFile) ?: task.packageName
-
-        withContext(Dispatchers.IO) {
-            runCatching {
-                installPackage(packageName, apkFile)
-            }.onFailure { e ->
-                installQueue.onInstallationComplete(
-                    Result.failure(InstallationError.Unknown("Installation failed: ${e.message}"))
-                )
-            }
-        }
-    }
-
-    private suspend fun installPackage(packageName: String, apkFile: File) {
+    override suspend fun installPackage(packageName: String, apkFile: File) {
         withContext(Dispatchers.IO) {
             runCatching {
                 val intent = Intent(Intent.ACTION_INSTALL_PACKAGE).apply {
@@ -54,7 +30,7 @@ class AppManagerInstaller(context: Context) : BaseInstaller(context) {
                 }
 
                 // Can't track actual progress
-                emitProgress(InstallState.Installing(0.1f), packageName)
+                installQueue.emitProgress(InstallState.Installing(0.1f), packageName)
                 context.startActivity(intent)
                 reportSuccess(packageName)
             }
