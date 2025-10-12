@@ -6,7 +6,10 @@ import androidx.room.Index
 import androidx.room.Relation
 import com.machiav3lli.fdroid.ROW_ADDED
 import com.machiav3lli.fdroid.ROW_AUTHOR
+import com.machiav3lli.fdroid.ROW_ICON
 import com.machiav3lli.fdroid.ROW_LABEL
+import com.machiav3lli.fdroid.ROW_LICENSES
+import com.machiav3lli.fdroid.ROW_METADATA_ICON
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
 import com.machiav3lli.fdroid.ROW_UPDATED
@@ -32,6 +35,8 @@ import kotlinx.serialization.json.Json
         Index(value = [ROW_ADDED]),
         Index(value = [ROW_UPDATED]),
         Index(value = [ROW_AUTHOR]),
+        Index(value = [ROW_PACKAGE_NAME, ROW_ICON, ROW_METADATA_ICON]),
+        Index(value = [ROW_LICENSES]),
     ]
 )
 @Serializable

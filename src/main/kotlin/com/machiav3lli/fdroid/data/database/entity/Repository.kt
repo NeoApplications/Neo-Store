@@ -7,8 +7,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.machiav3lli.fdroid.ROW_ADDRESS
 import com.machiav3lli.fdroid.ROW_ENABLED
 import com.machiav3lli.fdroid.ROW_ID
+import com.machiav3lli.fdroid.ROW_UPDATED
 import com.machiav3lli.fdroid.TABLE_REPOSITORY
 import com.machiav3lli.fdroid.data.database.DatabaseX.Companion.TAG
 import com.machiav3lli.fdroid.utils.Utils.calculateSHA256
@@ -26,6 +28,8 @@ import java.nio.charset.Charset
     indices = [
         Index(value = [ROW_ID], unique = true),
         Index(value = [ROW_ENABLED]),
+        Index(value = [ROW_ADDRESS]),
+        Index(value = [ROW_UPDATED, ROW_ENABLED]),
     ]
 )
 @Serializable

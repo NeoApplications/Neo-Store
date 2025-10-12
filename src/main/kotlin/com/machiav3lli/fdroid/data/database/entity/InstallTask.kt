@@ -1,6 +1,9 @@
 package com.machiav3lli.fdroid.data.database.entity
 
 import androidx.room.Entity
+import androidx.room.Index
+import com.machiav3lli.fdroid.ROW_ADDED
+import com.machiav3lli.fdroid.ROW_CACHE_FILE_NAME
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
 import com.machiav3lli.fdroid.ROW_VERSION_CODE
@@ -12,6 +15,12 @@ import kotlinx.serialization.json.Json
 @Entity(
     tableName = TABLE_INSTALL_TASK,
     primaryKeys = [ROW_PACKAGE_NAME, ROW_REPOSITORY_ID, ROW_VERSION_CODE],
+    indices = [
+        Index(value = [ROW_PACKAGE_NAME, ROW_REPOSITORY_ID, ROW_VERSION_CODE], unique = true),
+        Index(value = [ROW_PACKAGE_NAME]),
+        Index(value = [ROW_ADDED]),
+        Index(value = [ROW_CACHE_FILE_NAME]),
+    ]
 )
 data class InstallTask(
     val packageName: String,

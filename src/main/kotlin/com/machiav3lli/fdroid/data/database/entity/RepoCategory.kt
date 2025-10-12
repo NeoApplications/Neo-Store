@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.data.database.entity
 
 import androidx.room.Entity
 import androidx.room.Index
+import com.machiav3lli.fdroid.ROW_ICON
 import com.machiav3lli.fdroid.ROW_LABEL
 import com.machiav3lli.fdroid.ROW_NAME
 import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
@@ -12,7 +13,11 @@ import com.machiav3lli.fdroid.TABLE_REPOCATEGORY_TEMP
     tableName = TABLE_REPOCATEGORY,
     primaryKeys = [ROW_REPOSITORY_ID, ROW_NAME],
     indices = [
+        Index(value = [ROW_REPOSITORY_ID, ROW_NAME], unique = true),
         Index(value = [ROW_NAME, ROW_LABEL]),
+        Index(value = [ROW_NAME, ROW_LABEL, ROW_ICON]),
+        Index(value = [ROW_REPOSITORY_ID]),
+        Index(value = [ROW_NAME]),
     ]
 )
 open class RepoCategory(

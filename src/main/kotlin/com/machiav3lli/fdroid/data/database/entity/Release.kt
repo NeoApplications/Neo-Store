@@ -29,6 +29,8 @@ import kotlinx.serialization.json.Json
         Index(value = [ROW_PACKAGE_NAME]),
         Index(value = [ROW_MINSDK_VERSION]),
         Index(value = [ROW_TARGETSDK_VERSION]),
+        Index(value = [ROW_PACKAGE_NAME, ROW_SIGNATURE]),
+        Index(value = [ROW_REPOSITORY_ID]),
     ]
 )
 @Serializable

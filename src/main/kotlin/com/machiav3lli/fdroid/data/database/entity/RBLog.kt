@@ -19,7 +19,8 @@ import kotlinx.serialization.json.Json
     indices = [
         Index(value = [ROW_HASH, ROW_PACKAGE_NAME, ROW_TIMESTAMP], unique = true),
         Index(value = [ROW_PACKAGE_NAME, ROW_VERSION_CODE, ROW_REPRODUCIBLE]),
-        Index(value = [ROW_PACKAGE_NAME, ROW_HASH, ROW_REPRODUCIBLE])
+        Index(value = [ROW_PACKAGE_NAME, ROW_HASH, ROW_REPRODUCIBLE]),
+        Index(value = [ROW_PACKAGE_NAME])
     ]
 )
 data class RBLog(

@@ -13,7 +13,9 @@ import com.machiav3lli.fdroid.TABLE_CATEGORY_TEMP
     primaryKeys = [ROW_REPOSITORY_ID, ROW_PACKAGE_NAME, ROW_NAME],
     indices = [
         Index(value = [ROW_REPOSITORY_ID, ROW_PACKAGE_NAME, ROW_NAME], unique = true),
-        Index(value = [ROW_PACKAGE_NAME, ROW_NAME])
+        Index(value = [ROW_PACKAGE_NAME, ROW_NAME]),
+        Index(value = [ROW_NAME]),
+        Index(value = [ROW_REPOSITORY_ID]),
     ]
 )
 open class Category(

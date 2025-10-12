@@ -15,7 +15,9 @@ import com.machiav3lli.fdroid.TABLE_ANTIFEATURE_TEMP
     primaryKeys = [ROW_REPOSITORY_ID, ROW_NAME],
     indices = [
         Index(value = [ROW_NAME, ROW_LABEL]),
-        Index(value = [ROW_NAME, ROW_LABEL, ROW_DESCRIPTION, ROW_ICON])
+        Index(value = [ROW_NAME, ROW_LABEL, ROW_DESCRIPTION, ROW_ICON]),
+        Index(value = [ROW_NAME]),
+        Index(value = [ROW_REPOSITORY_ID]),
     ]
 )
 open class AntiFeature(
