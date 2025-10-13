@@ -1,0 +1,8 @@
+Add: Proteção para evitar sincronização indesejada
+Add: Opção para limitar apps carregados para pesquisa
+Add: Suporte para compilações reproduzíveis
+Add: Indicador se uma classificação/filtro personalizado for aplicado
+Correção: Carregamento de aplicativos sem categorias
+Correção: Recomposição constante da maior parte da UI (reduz instabilidade/atraso)
+Correção: Tratamento de locais com três letras como código de idioma.
++ muito mais, além das 30 commits e 20 contribuições de tradução

@@ -1,0 +1,7 @@
+Adicionado: Suporte a abrir página de app pelas informações de app do sistema.
+Corrigido: Notificação seguindo idioma do sistema, e não o do app.
+Atualizada: Lógica, notificações e tratamento do DownloadWorker reestruturados
+Atualizada: Lógica, notificações e tratamento do SyncWorker reestruturados
+Atualizado: Uso de ícone de navegação ou tamanho de texto padrão.
+Removidos: Canais de notificação de sincronização duplicados.
+e muitas outras em mais de 20 commits e 20 contribuições de tradução

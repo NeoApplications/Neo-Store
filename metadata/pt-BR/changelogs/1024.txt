@@ -1,0 +1,7 @@
+Adicionado: Suporte a screenshots de links de vídeo, TV e wearables.
+Adicionado: Diálogo para notificar sobre sincronização inicial no primeiro lançamento.
+Corrigido: Não exibida a instalação em pacotes de fontes sem compartilhamento.
+Corrigido: Análise (parsing) e exibição de links do Litecoin e Liberapay.
+Atualizada: Confiabilidade do instalador melhorada.
+Removido: Análise (parsing) do link de doação Flattr.
+e muitas outras em mais de 20 commits e 80 contribuições de tradução

@@ -1,0 +1,9 @@
+Adicionado: Exclusão de arquivo ao apagar download.
+Adicionados: Filtros SDK Alvo e SDK Mínimo.
+Corrigido: Carregamento lazy de apps.
+Corrigido: App novo não adicionado à tela inicial (@Dhina17).
+Atualizada: UI adaptada para telas largas.
+Atualizado: Link de compartilhamento F-Droid (@leoheitmannruiz).
+Atualizado: Evitada requisição de permissões de instalação (@tharowt).
+Repo: Adicionados Fcitx5 e IronFox (@Integral-Tech, @celenityy).
+e muito mais em 140 commits e 100 contribuições de tradução.
