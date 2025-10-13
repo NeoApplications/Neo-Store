@@ -1,0 +1,5 @@
+Adicionado: Indexação às entidades Room
+Adicionado: Fonte e Requisição "Nenhuma"
+Correção: Um vazamento de memória
+Atualizar: Reformular solicitação
+Removido: Tudo da página explorar

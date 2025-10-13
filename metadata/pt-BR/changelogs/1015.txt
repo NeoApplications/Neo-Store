@@ -1,0 +1,7 @@
+Adicionado: guias especiais de filtro de pesquisa
+Adicionado: indicador de que um aplicativo está instalado para listar itens
+Corrigido: falha ao usar a mesma tecla para itens de liberação tardia
+Corrigido: abertura de página de preferências diferente quando a página padrão é alterada
+Atualizado: conversão da pesquisa, de volta para uma página
+Atualizado: reformulação do carrossel de apps e limitação do comprimento do nome da versão
++ e mais em mais de 10 commits e 30 contribuições de tradução

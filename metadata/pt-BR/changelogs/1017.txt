@@ -1,0 +1,5 @@
+Adicionado: Diálogo de confirmação também no desinstalador root
+Adicionado: Toque longo no botão de sincronização para informações da última sincronização bem-sucedida
+Correção: Folhas de Classificação/Filtro em todas as páginas
+Removido: Todos os repositórios arquivados
++ e muito mais em mais de 10 commits e 10 contribuições de tradução

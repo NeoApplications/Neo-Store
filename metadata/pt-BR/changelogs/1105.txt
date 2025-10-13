@@ -1,0 +1,8 @@
+Add: Ícones para novas categorias F-Droid
+Add: Notificação de novas permissões sensíveis em atualizações (@aba2222)
+Fix: Lançamento sugerido no Index-V2 (@Red54)
+Fix: Divisão por zero caso Index-V2 não suportado no SyncWorker (@amartinz)
+Fix: Sinc repo F-Droid causando falha de memória silenciosa
+Fix: Análise itens localizados en-SHAW em localidades não en-US
+Att: Primeira reformulação de layout e cores para Material 3 Expressive
+e muitas outras em mais de 20 commits e 1 contribuição de tradução

@@ -1,0 +1,7 @@
+Adicionado: Suporte ao Index-V2 e atualizações incrementais do F-Droid
+Adicionado: Suporte a repositórios predefinidos por OEM/ROM
+Adicionadas: Insígnias RB aos itens de lançamento
+Corrigido: Exportação de itens extras
+Atualizada: Performance da consulta dos produtos principais melhorada
+Atualizada: Notificações de sincronização unificadas usando o gerenciador de notificação de sincronização
+e muitas outras novidades em mais de 210 commits e 100 contribuições de tradução
