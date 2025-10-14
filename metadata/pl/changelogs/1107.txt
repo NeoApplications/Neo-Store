@@ -1,0 +1,7 @@
+Dodano: Pobieranie statystyk i wykresów z IzzyOnDroid na stronie aplikacji.
+Dodano: Najczęściej pobierane aplikacje z IzzyOnDroid na stronie Eksploruj.
+Dodano: Pasek wyszukiwania jako uruchamianie nowej strony wyszukiwania.
+Poprawiono: Skanowanie kodów QR w celu dodania repozytorium.
+Poprawiono: Wyświetlanie sugerowanych etykiet na niepasujących wydaniach.
+Aktualizacja: Druga partia zmian układu i kolorystyki w kierunku Material 3 Expressive
+oraz wiele innych zmian w ponad 50 aktualizacjach i 20 tłumaczeniach
