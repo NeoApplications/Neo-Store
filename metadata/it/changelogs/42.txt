@@ -1,6 +1,6 @@
 - Più di Material Design 3
-- Corretto: root e programma di installazione predefinito
-- Corretto: elimina file memorizzati nella cache dopo la disinstallazione
-- Corretto: arresto anomalo durante la pressione del download in modalità offline
+- Corretto: Root e programma di installazione predefinito
+- Corretto: Elimina file memorizzati nella cache dopo la disinstallazione
+- Corretto: Arresto anomalo durante la pressione del download in modalità offline
 - Aggiornate le traduzioni di oltre 17 lingue
 - Molte piccole correzioni e modifiche…

@@ -1,6 +1,6 @@
-Aggiunto: barra di ricerca nella pagina dei repository
-Aggiunto: opzione per mostrare il nome della versione Android anziché l'SDK (abilitata di default)
-Aggiunto: finestra di dialogo in cui è possibile fare clic sui collegamenti dalle descrizioni delle app o dai changelog
-Corretto: crash quando si tocca la notifica di installazione del programma di installazione della sessione
-Aggiornato: aggiungi pulsanti abilita e ignora a RepoSheet
-+ altro in più di 10 commit e 50 contributi di traduzione
+Aggiunto: Barra di ricerca nella pagina dei repository
+Aggiunto: Opzione per mostrare il nome della versione Android anziché l'SDK (abilitata di default)
+Aggiunto: Finestra di dialogo in cui è possibile fare clic sui collegamenti dalle descrizioni delle app o dai changelog
+Corretto: Crash quando si tocca la notifica di installazione del programma di installazione della sessione
+Aggiornato: Aggiungi pulsanti abilita e ignora a RepoSheet
+e molto altro in più di 10 commit e 50 contributi di traduzione

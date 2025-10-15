@@ -4,4 +4,4 @@ Corretto: Non mostra l'installazione sui pacchetti da fonti senza condivisione
 Corretto: Analisi e visualizzazione dei link litecoin e liberapay
 Aggiornato: Migliora l'affidabilità dell'installer
 Rimosso: Analisi del link di donazione Flattr
-e molti altri in oltre 20 commit e 80 contributi di traduzione
+e molto altro in più di 20 commit e 80 contributi di traduzione

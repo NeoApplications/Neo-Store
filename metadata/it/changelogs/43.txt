@@ -1,4 +1,4 @@
-- Corretto: icona segnaposto per screenshot
-- Corretto: arresto anomalo graduale all'avvio di AppDetails
-- Corretto: esegui solo un'istanza del programma di installazione root
-- Corretto: programma di installazione root
+- Corretto: Icona segnaposto per screenshot
+- Corretto: Arresto anomalo graduale all'avvio di AppDetails
+- Corretto: Esegui solo un'istanza del programma di installazione root
+- Corretto: Programma di installazione root

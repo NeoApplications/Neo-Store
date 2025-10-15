@@ -1,9 +1,9 @@
-- Aggiunto: tema dinamico del sistema
+- Aggiunto: Tema dinamico del sistema
 - Aggiunto: 7 nuovi repository preimpostati
-- Aggiunto: etichetta dell'architettura sui rilasci per un'architettura specifica
-- Rimosso: repository UnifiedPush 
-- Corretto: fastidiosa notifica di 0 aggiornamenti
+- Aggiunto: Etichetta dell'architettura sui rilasci per un'architettura specifica
+- Rimosso: Repository UnifiedPush 
+- Corretto: Fastidiosa notifica di 0 aggiornamenti
 - Corretto: Nascondi link al sito Web dell'autore quando non disponibile
-- Corretto: analisi del contenuto degli appunti per l'URI del repository
-- Corretto: collegamenti nelle impostazioni
-- Corretto: non viene visualizzata l'azione di aggiornamento
+- Corretto: Analisi del contenuto degli appunti per l'URI del repository
+- Corretto: Collegamenti nelle impostazioni
+- Corretto: Non viene visualizzata l'azione di aggiornamento

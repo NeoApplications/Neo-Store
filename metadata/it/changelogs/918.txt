@@ -1,7 +1,7 @@
-Aggiunto: supporto per fdroidrepo(s) uri
-Aggiunto: supporto per market://search? intenti
-Aggiunto: opzione di condivisione per le app IzzyOnDroid
+Aggiunto: Supporto per fdroidrepo(s) uri
+Aggiunto: Supporto per market://search? intenti
+Aggiunto: Opzione di condivisione per le app IzzyOnDroid
 Aggiunto: GitJournal & Revolt ai repository preimpostati
 Aggiornato: Revamp ReleaseItems
-Rimosso: repository preimpostato di Alefvanoon
+Rimosso: Repository preimpostato di Alefvanoon
 Per maggiori dettagli controlla il changelog completo…

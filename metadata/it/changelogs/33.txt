@@ -1,6 +1,6 @@
-- Aggiornato: nuova icona dell'app
-- Aggiornato: l'interfaccia utente nella pagina dell'app
-- Aggiornato: rendi l'animazione dell'elenco opzionale
-- Corretto: mostra la dimensione reale dell'apk
-- Corretto: collegamento al progetto nelle preferenze
-- Corretto: schermata iniziale a seconda del tema del sistema
+- Aggiornato: Nuova icona dell'app
+- Aggiornato: L'interfaccia utente nella pagina dell'app
+- Aggiornato: Rendi l'animazione dell'elenco opzionale
+- Corretto: Mostra la dimensione reale dell'apk
+- Corretto: Collegamento al progetto nelle preferenze
+- Corretto: Schermata iniziale a seconda del tema del sistema

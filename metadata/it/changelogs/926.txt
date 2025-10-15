@@ -1,7 +1,7 @@
-Corretto: mancato rilevamento dell'autorizzazione di root
-Corretto: arresti anomali relativi a Sync- & DownloadService
+Corretto: Mancato rilevamento dell'autorizzazione di root
+Corretto: Arresti anomali relativi a Sync- & DownloadService
 Aggiornato: Revamp InstalledPage
-Aggiunto: opzione per disabilitare l'ottenimento/la visualizzazione dei tracker
+Aggiunto: Opzione per disabilitare l'ottenimento/la visualizzazione dei tracker
 Aggiunto: FluffyChat nightly, Anonymous Messenger e BeoCode ai repository predefiniti
-Corretto: mancato aggiornamento dell'elenco delle app installate durante la (dis)installazione delle app
-+ più di 80 traduzioni e altri contributi
+Corretto: Mancato aggiornamento dell'elenco delle app installate durante la (dis)installazione delle app
+e molto altro in più di 80 contributi di traduzione e altri contributi

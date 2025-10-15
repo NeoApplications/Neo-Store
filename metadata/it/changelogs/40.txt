@@ -1,5 +1,5 @@
-- Aggiunto: preferenza della lingua
-- Aggiornato: schermate a scorrimento orizzontale
-- Corretto: programma di installazione root in background
-- Aggiunto: chiedi il root solo quando selezionato
-- Tonnellate di modifiche all'interfaccia utente/UX
+- Aggiunto: Preferenza della lingua
+- Aggiornato: Screenshot a scorrimento orizzontale
+- Corretto: Programma di installazione root in background
+- Aggiunto: Chiedi il root solo quando selezionato
+- Tonnellate di modifiche all'UI/UX

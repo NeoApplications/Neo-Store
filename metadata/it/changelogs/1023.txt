@@ -1,9 +1,9 @@
-Aggiunto: elimina il file scaricato quando si cancella la voce di download
-Aggiunto: filtri Target e MinSDK
-Corretto: caricamento lento delle app installate
-Corretto: la nuova app installata non viene aggiunta alla schermata iniziale
-Aggiornato: rendi le schermate ampie UI compatibili e la navigazione adattiva
-Aggiornato: migliora il collegamento di condivisione f-droid
+Aggiunto: Elimina il file scaricato quando si cancella la voce di download
+Aggiunto: Filtri Target e MinSDK
+Corretto: Caricamento lento delle app installate
+Corretto: La nuova app installata non viene aggiunta alla schermata iniziale
+Aggiornato: Rendi le schermate ampie UI compatibili e la navigazione adattiva
+Aggiornato: Migliora il collegamento di condivisione f-droid
 Aggiornato: Evita la richiesta di autorizzazioni di installazione quando INSTALL_PACKAGES è concesso
 Repository: Aggiungi repository Fcitx5, IronFox 
-e molti altri in oltre 140 commit e 100 contributi di traduzione
+e molto altro in più di 140 commit e 100 contributi di traduzione

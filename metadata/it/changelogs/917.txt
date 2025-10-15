@@ -1,7 +1,7 @@
-Aggiunto: altre applicazioni dello sviluppatore
-Aggiunto: barra superiore scorrevole
-Corretto: alcuni problemi di colorazione del tema dinamico
-Aggiornato: nuovo visualizzatore di screenshot (corregge i problemi precedenti e consente lo zoom)
-Aggiornato: molti layout
-Aggiornato: rinnovamento del backend dei temi (corregge alcuni aspetti visivi)
-Per maggiori dettagli, consultate il changelog completo…
+Aggiunto: Altre applicazioni dello sviluppatore
+Aggiunto: Barra superiore scorrevole
+Corretto: Alcuni problemi di colorazione del tema dinamico
+Aggiornato: Nuovo visualizzatore di screenshot (corregge i problemi precedenti e consente lo zoom)
+Aggiornato: Molti layout
+Aggiornato: Rinnovamento del backend dei temi (corregge alcuni aspetti visivi)
+Per maggiori dettagli controlla il changelog completo…

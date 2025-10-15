@@ -1,8 +1,8 @@
-Aggiunto: icone per le nuove categorie di f-droid
-Aggiunto: notifica sulle nuove autorizzazioni sensibili richieste per gli aggiornamenti
-Corretto: suggerimento di versione in index-V2
-Corretto: divisione per zero se l'indice v2 non è supportato in SyncWorker
-Corretto: la sincronizzazione del repository F-droid causa un arresto anomalo della memoria silenzioso
-Corretto: analisi degli elementi localizzati en-SHAW su lingue diverse da en-US
-Aggiornato: prime revisioni del layout e dei colori verso Material 3 Expressive
-...e molti altri in oltre 20 commit e 1 contributo di traduzione
+Aggiunto: Icone per le nuove categorie di f-droid
+Aggiunto: Notifica sulle nuove autorizzazioni sensibili richieste per gli aggiornamenti
+Corretto: Suggerimento di versione in index-V2
+Corretto: Divisione per zero se l'indice v2 non è supportato in SyncWorker
+Corretto: La sincronizzazione del repository F-droid causa un arresto anomalo della memoria silenzioso
+Corretto: Analisi degli elementi localizzati en-SHAW su lingue diverse da en-US
+Aggiornato: Prime revisioni del layout e dei colori verso Material 3 Expressive
+e molto altro in più di 20 commit e 1 contributo di traduzione
