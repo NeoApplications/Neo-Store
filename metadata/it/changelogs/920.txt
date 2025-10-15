@@ -1,5 +1,5 @@
-Aggiunto: icona dell'app basata sul tema di sistema
-Aggiunto: preferenza del tipo di installatore (inclusa la modalità Legacy per lo sciocco MIUI)
-Corretto: navigazione dopo l'avvio dalla notifica degli aggiornamenti
-Corretto: la barra dei download non rifletteva l'avanzamento reale
+Aggiunto: Icona dell'app basata sul tema di sistema
+Aggiunto: Preferenza del tipo di installatore (inclusa la modalità Legacy per lo sciocco MIUI)
+Corretto: Navigazione dopo l'avvio dalla notifica degli aggiornamenti
+Corretto: La barra dei download non rifletteva l'avanzamento reale
 Un altro paio di cose nella cronologia completa…

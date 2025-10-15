@@ -5,4 +5,4 @@ Aggiunto: Indicatore se è applicato un ordine/filtro personalizzato
 Corretto: Caricamento app senza categorie (es. Total Commander Android)
 Corretto: Ricomposizione costante della maggior parte dell'interfaccia utente (riduce jitter/lag)
 Corretto: Gestione delle lingue con codice di 3 lettere
-+ di 30 commit e 20 contributi di traduzione
+e molto altro in più di 30 commit e 20 contributi di traduzione

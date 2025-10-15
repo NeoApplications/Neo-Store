@@ -4,4 +4,4 @@ Aggiornato: La logica, le notifiche e la gestione di DownloadWorker
 Aggiornato: La logica, le notifiche e la gestione di SyncWorker
 Aggiornato: Usa l'icona di navigazione o la dimensione del testo predefinite
 Rimosso: Canali di notifica di sincronizzazione duplicati
-e molto altro in oltre 20 commit e 20 contributi di traduzione
+e molto altro in più di 20 commit e 20 contributi di traduzione

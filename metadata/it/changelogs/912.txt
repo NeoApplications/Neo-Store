@@ -1,6 +1,6 @@
-Corretto: l'impostazione di ignora gli aggiornamenti non nasconde gli aggiornamenti
-Corretto: ordinamento alfabetico di Installato
-Corretto: scorrimento nidificato di AppSheet
-Corretto: mostra l'azione di installazione durante il download
-Corretto: visibilità delle icone StatusBar sul tema dei colori dinamici
+Corretto: L'impostazione di ignora gli aggiornamenti non nasconde gli aggiornamenti
+Corretto: Ordinamento alfabetico di Installato
+Corretto: Scorrimento nidificato di AppSheet
+Corretto: Mostra l'azione di installazione durante il download
+Corretto: Visibilità delle icone StatusBar sul tema dei colori dinamici
 Aggiornato: traduzioni

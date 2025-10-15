@@ -1,0 +1,7 @@
+Aggiunto: Scarica grafici e chip di statistiche da IzzyOnDroid nella pagina dell'app
+Aggiunto: App più scaricate da IzzyOnDroid nella pagina Esplora
+Aggiunto: Barra di ricerca come launcher per la nuova pagina di ricerca
+Corretto: Scansione del codice QR per aggiungere repository
+Corretto: Visualizzazione dell'etichetta suggerita per le release non idonee
+Aggiornato: Seconda serie di modifiche al layout e ai colori in direzione di Material 3 Expressive
+e molto altro in più di 50 commit e 20 contributi di traduzione

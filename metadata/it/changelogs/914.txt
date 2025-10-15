@@ -1,5 +1,5 @@
-Corretto: mostra la notifica degli aggiornamenti anche se disabilitata
+Corretto: Mostra la notifica degli aggiornamenti anche se disabilitata
 Aggiunto: Threema, Stable Calyx OS e Session a repository preimpostati
-Corretto (prova): programma di installazione in background
-Aggiunto: rilascia apk e opzioni di conservazione della cache delle immagini
+Corretto (prova): Programma di installazione in background
+Aggiunto: Rilascia apk e opzioni di conservazione della cache delle immagini
 Aggiornate traduzioni

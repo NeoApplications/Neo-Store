@@ -1,7 +1,7 @@
-Aggiornato: rinnova l'interfaccia utente di AppSheet
-Aggiornato: migra completamente la navigazione su Componi
-Aggiornato: migra le preferenze su Componi
-Aggiornato: consente di impostare un numero più alto per il riciclo delle app aggiornate/nuove e l'intervallo di sincronizzazione
-Aggiunto: link utili in Prefs
-Corretto: visibilità di ActionButtons
-Corretto: mostra la descrizione del repository prima della prima sincronizzazione
+Aggiornato: Rinnova l'interfaccia utente di AppSheet
+Aggiornato: Migra completamente la navigazione su Componi
+Aggiornato: Migra le preferenze su Componi
+Aggiornato: Consente di impostare un numero più alto per il riciclo delle app aggiornate/nuove e l'intervallo di sincronizzazione
+Aggiunto: Link utili in Prefs
+Corretto: Visibilità di ActionButtons
+Corretto: Mostra la descrizione del repository prima della prima sincronizzazione

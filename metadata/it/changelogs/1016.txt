@@ -1,5 +1,5 @@
-Aggiunto: indici alle entità Room
+Aggiunto: Indici alle entità Room
 Aggiunto: Nessuno Origine e richiesta
-Corretto: una perdita di memoria
-Aggiornato: richiesta di rinnovamento
-Rimosso: tutto dalla pagina Esplora
+Corretto: Una perdita di memoria
+Aggiornato: Richiesta di rinnovamento
+Rimosso: Tutto dalla pagina Esplora

@@ -4,4 +4,4 @@ Aggiunto: Badge RB agli elementi di rilascio
 Corretto: Esportazione di extra
 Aggiornato: Miglioramento delle prestazioni della query principale dei prodotti
 Aggiornato: Unificazione delle notifiche di sincronizzazione tramite il gestore delle notifiche di sincronizzazione
-e molti altri miglioramenti in oltre 210 commit e 100 contributi di traduzione
+e molto altro in più di 210 commit e 100 contributi di traduzione
