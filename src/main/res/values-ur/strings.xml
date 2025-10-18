@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_failed">کارروائی ناکام ہوگئی</string>
+    <string name="add_repository">ذخیرہ شامل کریں۔</string>
+    <string name="address">پتہ</string>
 </resources>
