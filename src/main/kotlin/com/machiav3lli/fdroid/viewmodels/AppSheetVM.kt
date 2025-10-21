@@ -16,6 +16,7 @@ import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.Extras
 import com.machiav3lli.fdroid.data.database.entity.MonthlyPackageSum
 import com.machiav3lli.fdroid.data.database.entity.RBLog
+import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.PrivacyData
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
@@ -171,7 +172,7 @@ class AppSheetVM(
         products,
         repositories,
     ) { prods, repos ->
-        val reposMap = repos.associateBy { it.id }
+        val reposMap = repos.associateBy(Repository::id)
         prods.mapNotNull { product ->
             reposMap[product.product.repositoryId]?.let {
                 Pair(product, it)
@@ -198,7 +199,7 @@ class AppSheetVM(
         rbLogs,
     ) { suggestedProductRepo, repos, installed, logs ->
         val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
-        val reposMap = repos.associateBy { it.id }
+        val reposMap = repos.associateBy(Repository::id)
 
         suggestedProductRepo?.first?.releases.orEmpty()
             .filter { includeIncompatible || it.incompatibilities.isEmpty() }

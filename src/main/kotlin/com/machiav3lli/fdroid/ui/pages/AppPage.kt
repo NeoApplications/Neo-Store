@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
@@ -62,6 +63,7 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Release
+import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.entity.DialogKey
@@ -263,11 +265,12 @@ fun AppPage(
         }
     }
 
-    val onActionClick = { action: ActionState? ->
+    val onActionClick: (ActionState) -> Unit = { action: ActionState ->
+        Log.d("AppPage", "onClickAction: ${action::class.java}")
         when (action) {
             ActionState.Install,
             ActionState.Update,
-                                  -> {
+                 -> {
                 val installedItem = viewModel.installedItem.value
                 val actionJob: () -> Unit = {
                     startUpdate(
@@ -286,34 +289,30 @@ fun AppPage(
                         )
                     openDialog.value = true
                 } else actionJob()
-                Unit
             }
 
-            ActionState.Launch    -> {
-                viewModel.installedItem.value?.let { installed ->
-                    if (installed.launcherActivities.size >= 2) {
-                        dialogKey.value = DialogKey.Launch(
-                            installed.packageName,
-                            installed.launcherActivities,
-                        )
-                        openDialog.value = true
-                    } else {
-                        installed.launcherActivities.firstOrNull()
-                            ?.let { context.startLauncherActivity(installed.packageName, it.first) }
-                    }
+            ActionState.Launch
+                 -> viewModel.installedItem.value?.let { installed ->
+                if (installed.launcherActivities.size >= 2) {
+                    dialogKey.value = DialogKey.Launch(
+                        installed.packageName,
+                        installed.launcherActivities,
+                    )
+                    openDialog.value = true
+                } else {
+                    installed.launcherActivities.firstOrNull()
+                        ?.let { context.startLauncherActivity(installed.packageName, it.first) }
                 }
-
-                Unit
             }
 
-            ActionState.Details   -> {
-                context.startActivity(
-                    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                        .setData("package:$packageName".toUri())
-                )
-            }
+            ActionState.Details
+                 -> context.startActivity(
+                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    .setData("package:$packageName".toUri())
+            )
 
-            ActionState.Uninstall -> {
+            ActionState.Uninstall
+                 -> {
                 val actionJob: () -> Unit = {
                     scope.launch {
                         NeoApp.installer.uninstall(packageName)
@@ -328,13 +327,12 @@ fun AppPage(
                     )
                     openDialog.value = true
                 } else actionJob()
-                Unit
             }
 
             is ActionState.CancelPending,
             is ActionState.CancelConnecting,
             is ActionState.CancelDownloading,
-                                  -> {
+                 -> {
                 val cancelIntent = Intent(context, ActionReceiver::class.java).apply {
                     this.action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD
                     putExtra(ARG_PACKAGE_NAME, packageName)
@@ -342,22 +340,19 @@ fun AppPage(
                 neoActivity.sendBroadcast(cancelIntent)
             }
 
-            ActionState.Share     -> {
-                context.shareIntent(
-                    packageName,
-                    productRepos[0].first.product.label,
-                    productRepos[0].second.webBaseUrl
-                )
-            }
+            ActionState.Share
+                 -> context.shareIntent(
+                packageName,
+                productRepos[0].first.product.label,
+                productRepos[0].second.webBaseUrl
+            )
 
             ActionState.Bookmark,
             ActionState.Bookmarked,
-                                  -> {
-                viewModel.setFavorite(packageName, action is ActionState.Bookmark)
-            }
+                 -> viewModel.setFavorite(packageName, action is ActionState.Bookmark)
 
-            else                  -> Unit
-        }::class
+            else -> {}
+        }
     }
 
     suggestedProductRepo?.let { (eProduct, repo) ->
@@ -487,7 +482,7 @@ fun AppPage(
                                 mainAction = mainAction,
                                 possibleActions = actions,
                                 favState = { extras?.favorite == true },
-                                onAction = { onActionClick(it) }
+                                onAction = onActionClick
                             )
                         }
                         item {
@@ -594,7 +589,7 @@ fun AppPage(
                                 ) {
                                     ProductsHorizontalRecycler(
                                         productsList = authorProducts,
-                                        repositories = repos.associateBy { repo -> repo.id },
+                                        repositories = repos.associateBy(Repository::id),
                                         rowsNumber = 1,
                                     ) { item ->
                                         neoActivity.navigateProduct(item.packageName)

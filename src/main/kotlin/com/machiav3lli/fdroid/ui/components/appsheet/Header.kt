@@ -56,7 +56,7 @@ fun AppInfoHeader(
     favState: () -> Boolean,
     possibleActions: Set<ActionState>,
     modifier: Modifier = Modifier,
-    onAction: (ActionState?) -> Unit = { },
+    onAction: (ActionState) -> Unit = { },
 ) {
     Column(
         modifier = modifier
