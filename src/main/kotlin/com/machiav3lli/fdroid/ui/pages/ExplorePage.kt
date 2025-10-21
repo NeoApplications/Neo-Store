@@ -51,7 +51,6 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DialogKey
-import com.machiav3lli.fdroid.data.entity.Page
 import com.machiav3lli.fdroid.data.entity.Source
 import com.machiav3lli.fdroid.data.entity.TopDownloadType
 import com.machiav3lli.fdroid.data.entity.appCategoryIcon
@@ -71,6 +70,7 @@ import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
+import com.machiav3lli.fdroid.viewmodels.ExploreVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -78,7 +78,10 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
+fun ExplorePage(
+    viewModel: ExploreVM = koinNeoViewModel(),
+    mainState: MainVM = koinNeoViewModel(),
+) {
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
@@ -86,16 +89,11 @@ fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
     val topsListState = rememberLazyListState()
 
     val installedList by viewModel.installed.collectAsState(emptyMap())
-    val filteredProducts by viewModel.productsExplore.collectAsState(emptyList())
+    val filteredProducts by viewModel.products.collectAsState(emptyList())
     val topAppType by viewModel.topAppType.collectAsStateWithLifecycle()
-    val topProducts by viewModel.productsTopDownloaded.collectAsState(emptyList())
-    val repositories = viewModel.repositories.collectAsState(emptyList())
-    val repositoriesMap by remember {
-        derivedStateOf {
-            repositories.value.associateBy { repo -> repo.id }
-        }
-    }
-    val favorites by viewModel.favorites.collectAsState(emptyArray())
+    val topProducts by viewModel.topDownloadedProducts.collectAsState(emptyList())
+    val repositoriesMap by mainState.reposMap.collectAsState()
+    val favorites by mainState.favorites.collectAsState(emptyArray())
     val categories by viewModel.categories.collectAsState(emptyList())
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
@@ -106,7 +104,7 @@ fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
 
-    val sortFilter by viewModel.sortFilterExplore.collectAsState()
+    val sortFilter by viewModel.sortFilter.collectAsState()
     val notModifiedSortFilter by remember(sortFilter) {
         derivedStateOf {
             Preferences[Preferences.Key.SortOrderExplore] == Preferences.Key.SortOrderExplore.default.value &&
@@ -132,7 +130,6 @@ fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
                     Preferences.Key.TargetSDKExplore,
                     Preferences.Key.MinSDKExplore,
                         -> viewModel.setSortFilter(
-                        Page.EXPLORE,
                         listOf(
                             Preferences[Preferences.Key.ReposFilterExplore],
                             Preferences[Preferences.Key.CategoriesFilterExplore],
@@ -273,7 +270,7 @@ fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
                                         neoActivity.navigateProduct(it.packageName)
                                     },
                                     onFavouriteClick = {
-                                        viewModel.setFavorite(
+                                        mainState.setFavorite(
                                             it.packageName,
                                             !favorites.contains(it.packageName)
                                         )
@@ -350,7 +347,7 @@ fun ExplorePage(viewModel: MainVM = koinNeoViewModel()) {
                                 neoActivity.navigateProduct(it.packageName)
                             },
                             onFavouriteClick = {
-                                viewModel.setFavorite(
+                                mainState.setFavorite(
                                     it.packageName,
                                     !favorites.contains(it.packageName)
                                 )

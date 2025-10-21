@@ -23,6 +23,9 @@ class RepositoriesRepository(
     fun getAll(): Flow<List<Repository>> = reposDao.getAllFlow()
         .flowOn(cc)
 
+    fun getAllEnabled(): Flow<List<Repository>> = reposDao.getAllEnabledFlow()
+        .flowOn(cc)
+
     fun getLatestUpdates(): Flow<LatestSyncs> = reposDao.latestUpdatesFlow()
         .flowOn(cc)
 

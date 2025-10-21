@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -56,7 +55,6 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.DownloadState
-import com.machiav3lli.fdroid.data.entity.Page
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ActionChip
@@ -76,6 +74,7 @@ import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
+import com.machiav3lli.fdroid.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -83,7 +82,10 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InstalledPage(viewModel: MainVM = koinNeoViewModel()) {
+fun InstalledPage(
+    viewModel: InstalledVM = koinNeoViewModel(),
+    mainVM: MainVM = koinNeoViewModel(),
+) {
     val scope = rememberCoroutineScope()
     val installedTab = rememberSaveable { mutableIntStateOf(0) }
 
@@ -100,7 +102,6 @@ fun InstalledPage(viewModel: MainVM = koinNeoViewModel()) {
                     Preferences.Key.TargetSDKInstalled,
                     Preferences.Key.MinSDKInstalled,
                          -> viewModel.setSortFilter(
-                        Page.INSTALLED,
                         listOf(
                             Preferences[Preferences.Key.ReposFilterInstalled],
                             Preferences[Preferences.Key.CategoriesFilterInstalled],
@@ -146,36 +147,31 @@ fun InstalledPage(viewModel: MainVM = koinNeoViewModel()) {
         }
 
         when (installedTab.intValue) {
-            0 -> InstallsPage(viewModel)
-            1 -> DownloadedPage(viewModel)
+            0 -> InstallsPage(viewModel, mainVM)
+            1 -> DownloadedPage(viewModel, mainVM)
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InstallsPage(viewModel: MainVM) {
+fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
 
     val installedList by viewModel.installed.collectAsState(emptyMap())
-    val updates by viewModel.updateProdsInstalled.collectAsState(emptyList())
-    val installedItems by viewModel.installedProdsInstalled.collectAsState(emptyList())
-    val repositories = viewModel.repositories.collectAsState(emptyList())
-    val repositoriesMap by remember {
-        derivedStateOf {
-            repositories.value.associateBy { repo -> repo.id }
-        }
-    }
-    val favorites by viewModel.favorites.collectAsState(emptyArray())
+    val updates by viewModel.updateProducts.collectAsState(emptyList())
+    val installedItems by viewModel.installedProducts.collectAsState(emptyList())
+    val repositoriesMap by mainVM.reposMap.collectAsState()
+    val favorites by mainVM.favorites.collectAsState(emptyArray())
 
     val updatesAvailable by remember {
         derivedStateOf {
             updates.isNotEmpty()
         }
     }
-    val iconDetails by viewModel.iconDetails.collectAsState(emptyMap())
+    val iconDetails by mainVM.iconDetails.collectAsState(emptyMap())
     val downloaded = viewModel.downloaded.collectAsState(emptyList())
     val downloads = remember {
         derivedStateOf {
@@ -196,7 +192,7 @@ fun InstallsPage(viewModel: MainVM) {
     val scaffoldState = rememberBottomSheetScaffoldState()
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
-    val sortFilter by viewModel.sortFilterInstalled.collectAsState()
+    val sortFilter by viewModel.sortFilter.collectAsState()
     val notModifiedSortFilter by remember(sortFilter) {
         derivedStateOf {
             Preferences[Preferences.Key.SortOrderInstalled] == Preferences.Key.SortOrderInstalled.default.value &&
@@ -360,7 +356,7 @@ fun InstallsPage(viewModel: MainVM) {
                         neoActivity.navigateProduct(it.packageName)
                     },
                     onFavouriteClick = { pi ->
-                        viewModel.setFavorite(
+                        mainVM.setFavorite(
                             pi.packageName,
                             !favorites.contains(pi.packageName)
                         )
@@ -439,16 +435,11 @@ fun InstallsPage(viewModel: MainVM) {
 
 @SuppressLint("UnusedCrossfadeTargetStateParameter")
 @Composable
-fun DownloadedPage(viewModel: MainVM) {
+fun DownloadedPage(viewModel: InstalledVM, mainVM: MainVM) {
     val neoActivity = LocalActivity.current as NeoActivity
 
-    val repositories by viewModel.repositories.collectAsState(null)
-    val repositoriesMap by remember {
-        derivedStateOf {
-            repositories?.associateBy { repo -> repo.id } ?: emptyMap()
-        }
-    }
-    val iconDetails by viewModel.iconDetails.collectAsState(emptyMap())
+    val repositoriesMap by mainVM.reposMap.collectAsState()
+    val iconDetails by mainVM.iconDetails.collectAsState(emptyMap())
     val downloaded = viewModel.downloaded.collectAsState(emptyList())
     val sortedDownloaded by remember {
         derivedStateOf {

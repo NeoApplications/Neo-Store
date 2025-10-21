@@ -66,11 +66,10 @@ fun SortFilterSheet(
 ) {
     val context = LocalContext.current
     val nestedScrollConnection = rememberNestedScrollInteropConnection()
-    val repos by viewModel.repositories.collectAsState(emptyList())
+    val activeRepos by viewModel.enabledRepos.collectAsState(emptyList())
     val categories by viewModel.categories.collectAsState(emptyList())
     val antifeaturePairs by viewModel.antifeaturePairs.collectAsState(emptyList())
     val licenses by viewModel.licenses.collectAsState(emptyList())
-    val activeRepos by remember(repos) { mutableStateOf(repos.filter { it.enabled }) }
 
     val sortKey = when (navPage) {
         NavItem.Latest.destination    -> Preferences.Key.SortOrderLatest

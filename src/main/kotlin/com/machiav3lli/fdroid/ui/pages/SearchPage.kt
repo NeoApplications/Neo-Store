@@ -40,7 +40,6 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DialogKey
-import com.machiav3lli.fdroid.data.entity.Page
 import com.machiav3lli.fdroid.data.entity.Source
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
@@ -56,28 +55,33 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.MainVM
+import com.machiav3lli.fdroid.viewmodels.SearchVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
+fun SearchPage(
+    viewModel: SearchVM = koinNeoViewModel(),
+    mainVM: MainVM = koinNeoViewModel(),
+) {
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
+    val scaffoldState = rememberBottomSheetScaffoldState()
+    val openDialog = remember { mutableStateOf(false) }
+    val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
+
     val listState = rememberLazyListState()
     val installedList by viewModel.installed.collectAsState(emptyMap())
-    val filteredProducts by viewModel.filteredProdsSearch.collectAsState(emptyList())
-    val repositories = viewModel.repositories.collectAsState(emptyList())
-    val repositoriesMap by remember {
-        derivedStateOf {
-            repositories.value.associateBy { repo -> repo.id }
-        }
-    }
-    val favorites by viewModel.favorites.collectAsState(emptyArray())
-    val query by viewModel.querySearch.collectAsState()
-    val source = viewModel.sourceSearch.collectAsState()
+    val filteredProducts by viewModel.filteredProducts.collectAsState(emptyList())
+    val query by viewModel.query.collectAsState()
+    val source = viewModel.source.collectAsState()
+    val sortFilter by viewModel.sortFilter.collectAsState()
+    val repositoriesMap by mainVM.reposMap.collectAsState()
+    val favorites by mainVM.favorites.collectAsState(emptyArray())
+
     val currentTab by remember {
         derivedStateOf {
             listOf(Source.SEARCH, Source.SEARCH_INSTALLED, Source.SEARCH_NEW)
@@ -85,11 +89,6 @@ fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
         }
     }
 
-    val scaffoldState = rememberBottomSheetScaffoldState()
-    val openDialog = remember { mutableStateOf(false) }
-    val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
-
-    val sortFilter by viewModel.sortFilterSearch.collectAsState()
     val notModifiedSortFilter by remember(sortFilter) {
         derivedStateOf {
             Preferences[Preferences.Key.SortOrderSearch] == Preferences.Key.SortOrderSearch.default.value &&
@@ -116,7 +115,6 @@ fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
                     Preferences.Key.TargetSDKSearch,
                     Preferences.Key.MinSDKSearch,
                         -> viewModel.setSortFilter(
-                        Page.SEARCH,
                         listOf(
                             Preferences[Preferences.Key.ReposFilterSearch],
                             Preferences[Preferences.Key.CategoriesFilterSearch],
@@ -210,7 +208,7 @@ fun SearchPage(viewModel: MainVM = koinNeoViewModel()) {
                             neoActivity.navigateProduct(it.packageName)
                         },
                         onFavouriteClick = {
-                            viewModel.setFavorite(
+                            mainVM.setFavorite(
                                 it.packageName,
                                 !favorites.contains(it.packageName)
                             )

@@ -59,6 +59,7 @@ import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.getLocaleDateString
 import com.machiav3lli.fdroid.viewmodels.MainVM
+import com.machiav3lli.fdroid.viewmodels.SearchVM
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
@@ -67,7 +68,8 @@ import kotlinx.coroutines.launch
 fun MainPage(
     navigator: (NavRoute) -> Unit,
     pageIndex: Int,
-    viewModel: MainVM = koinNeoViewModel()
+    viewModel: MainVM = koinNeoViewModel(),
+    searchVM: SearchVM = koinNeoViewModel(),
 ) {
     val context = LocalContext.current
     val mActivity = LocalActivity.current as NeoActivity
@@ -89,14 +91,14 @@ fun MainPage(
     val currentPageIndex = remember { derivedStateOf { pagerState.currentPage } }
     val navigatorState by viewModel.navigationState.collectAsStateWithLifecycle()
     val inSearchMode = rememberSaveable { mutableStateOf(false) }
-    val query by viewModel.querySearch.collectAsState()
+    val query by searchVM.query.collectAsState()
 
     BackHandler {
         mActivity.moveTaskToBack(true)
     }
 
     BackHandler(inSearchMode.value) {
-        viewModel.setSearchQuery("")
+        searchVM.setSearchQuery("")
         inSearchMode.value = false
         focusManager.clearFocus()
     }
@@ -137,10 +139,10 @@ fun MainPage(
                                 query = query,
                                 expanded = inSearchMode,
                                 onQueryChanged = { newQuery ->
-                                    if (newQuery != query) viewModel.setSearchQuery(newQuery)
+                                    if (newQuery != query) searchVM.setSearchQuery(newQuery)
                                 },
                                 onClose = {
-                                    viewModel.setSearchQuery("")
+                                    searchVM.setSearchQuery("")
                                 },
                             )
                             TopBarAction(

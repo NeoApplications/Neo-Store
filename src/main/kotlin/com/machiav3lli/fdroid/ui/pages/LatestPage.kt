@@ -36,7 +36,6 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.DialogKey
-import com.machiav3lli.fdroid.data.entity.Page
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
 import com.machiav3lli.fdroid.ui.compose.ProductsCarousel
@@ -46,6 +45,7 @@ import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
+import com.machiav3lli.fdroid.viewmodels.LatestVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,26 +53,24 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LatestPage(viewModel: MainVM = koinNeoViewModel()) {
+fun LatestPage(
+    viewModel: LatestVM = koinNeoViewModel(),
+    mainVM: MainVM = koinNeoViewModel(),
+) {
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
 
     val installedList by viewModel.installed.collectAsState(emptyMap())
-    val secondaryList by viewModel.newProdsLatest.collectAsState(emptyList())
-    val primaryList by viewModel.updatedProdsLatest.collectAsState(emptyList())
-    val repositories = viewModel.repositories.collectAsState(emptyList())
-    val repositoriesMap by remember {
-        derivedStateOf {
-            repositories.value.associateBy { repo -> repo.id }
-        }
-    }
+    val secondaryList by viewModel.newProducts.collectAsState(emptyList())
+    val primaryList by viewModel.updatedProducts.collectAsState(emptyList())
+    val repositoriesMap by mainVM.reposMap.collectAsState()
     val favorites by viewModel.favorites.collectAsState(emptyArray())
 
     val scaffoldState = rememberBottomSheetScaffoldState()
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
-    val sortFilter by viewModel.sortFilterLatest.collectAsState()
+    val sortFilter by viewModel.sortFilter.collectAsState()
     val notModifiedSortFilter by remember(sortFilter) {
         derivedStateOf {
             Preferences[Preferences.Key.SortOrderAscendingLatest] == Preferences.Key.SortOrderAscendingLatest.default.value &&
@@ -98,7 +96,6 @@ fun LatestPage(viewModel: MainVM = koinNeoViewModel()) {
                     Preferences.Key.TargetSDKLatest,
                     Preferences.Key.MinSDKLatest,
                         -> viewModel.setSortFilter(
-                        Page.LATEST,
                         listOf(
                             Preferences[Preferences.Key.ReposFilterLatest],
                             Preferences[Preferences.Key.CategoriesFilterLatest],
@@ -175,7 +172,7 @@ fun LatestPage(viewModel: MainVM = koinNeoViewModel()) {
                             repositories = repositoriesMap,
                             favorites = favorites,
                             onFavouriteClick = {
-                                viewModel.setFavorite(
+                                mainVM.setFavorite(
                                     it.packageName,
                                     !favorites.contains(it.packageName)
                                 )
@@ -244,7 +241,7 @@ fun LatestPage(viewModel: MainVM = koinNeoViewModel()) {
                         neoActivity.navigateProduct(it.packageName)
                     },
                     onFavouriteClick = {
-                        viewModel.setFavorite(
+                        mainVM.setFavorite(
                             it.packageName,
                             !favorites.contains(it.packageName)
                         )

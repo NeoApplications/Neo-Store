@@ -45,6 +45,9 @@ interface RepositoryDao : BaseDao<Repository> {
     @Query("SELECT * FROM repository ORDER BY id ASC")
     fun getAllFlow(): Flow<List<Repository>>
 
+    @Query("SELECT * FROM repository WHERE enabled != 0 ORDER BY id ASC")
+    fun getAllEnabledFlow(): Flow<List<Repository>>
+
     @Query("SELECT * FROM repository WHERE address = :address")
     suspend fun getByAddress(address: String): Repository?
 

@@ -42,8 +42,12 @@ import com.machiav3lli.fdroid.utils.extension.text.pathCropped
 import com.machiav3lli.fdroid.utils.isBiometricLockEnabled
 import com.machiav3lli.fdroid.utils.isDarkTheme
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
+import com.machiav3lli.fdroid.viewmodels.ExploreVM
+import com.machiav3lli.fdroid.viewmodels.InstalledVM
+import com.machiav3lli.fdroid.viewmodels.LatestVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
+import com.machiav3lli.fdroid.viewmodels.SearchVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -79,6 +83,7 @@ class NeoActivity : AppCompatActivity() {
 
     private var currentTheme by Delegates.notNull<Int>()
     private val mainViewModel: MainVM by viewModel()
+    private val searchViewModel: SearchVM by viewModel()
     private val prefsViewModel: PrefsVM by viewModel()
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -285,7 +290,7 @@ class NeoActivity : AppCompatActivity() {
         mScope.launch {
             mainViewModel.setNavigatorRole(ListDetailPaneScaffoldRole.List)
             navController.navigate(NavRoute.Main(Preferences.DefaultTab.Search.index))
-            mainViewModel.setSearchQuery(query ?: "")
+            searchViewModel.setSearchQuery(query ?: "")
         }
     }
 
@@ -330,6 +335,10 @@ val viewModelsModule = module {
     singleOf(::ExtrasRepository)
     singleOf(::PrivacyRepository)
     viewModelOf(::MainVM)
+    viewModelOf(::LatestVM)
+    viewModelOf(::ExploreVM)
+    viewModelOf(::SearchVM)
+    viewModelOf(::InstalledVM)
     viewModelOf(::PrefsVM)
     viewModelOf(::AppSheetVM)
 }
