@@ -97,10 +97,9 @@
     <string name="links">קישורים</string>
     <string name="network_error_DESC">שגיאת רשת.</string>
     <plurals name="new_updates_DESC_FORMAT">
-        <item quantity="one">יש גרסה חדשה לאפליקציה אחת.</item>
-        <item quantity="two">יש גרסאות חדשות עבור שתי אפליקציות.</item>
-        <item quantity="many">יש גרסאות חדשות עבור %d אפליקציות.</item>
-        <item quantity="other"/>
+        <item quantity="one">יש גרסה חדשה ליישומון אחד.</item>
+        <item quantity="two">יש גרסאות חדשות לשני יישומונים.</item>
+        <item quantity="other">יש גרסאות חדשות ל־%d יישומונים.</item>
     </plurals>
     <string name="invalid_fingerprint_format">תצורת טביעת האצבע שגויה</string>
     <string name="list_animation">הנפשות רשימה</string>
@@ -178,7 +177,7 @@
     <string name="prefs_new_apps">מספר היישומונים שיוצגו ב„יישומונים חדשים”</string>
     <string name="default_tab">כרטיסיית ברירת מחדל</string>
     <string name="installing">מתקין</string>
-    <string name="ignore_battery_optimization_message">היישומון מתפקד טוב יותר ללא מיטוב הסוללה, וזה גם מונע קריסה באנדרואיד 12 ומעלה.</string>
+    <string name="ignore_battery_optimization_message">היישומון מתפקד טוב יותר כשמיטוב הסוללה כבוי, ואינו קורס עוד ב־Android 12 ומעלה.</string>
     <string name="show_screenshots">הצגת צילומי מסך</string>
     <string name="favorite_remove">הסרה מהמועדפים</string>
     <string name="ignore_battery_optimization_not_supported">התקנת ה־Android שלך לא תומכת בביטול מיטוב סוללה.</string>
@@ -222,4 +221,15 @@
     <string name="explore">סיור</string>
     <string name="total_alltime_downloads">ההורדות המובילות בכל הזמנים</string>
     <string name="trending_from_unknown">מובילים בלקוחות לא ידועים</string>
+    <string name="trending_from_droidify">מובילים ב־Droid-ify</string>
+    <string name="trending_from_fdroid">מובילים בלקוח F-Droid</string>
+    <string name="trending_from_fdroid_classic">מובילים ב־F-Droid הקלסי</string>
+    <string name="trending_from_flicky">מובילים ב־Flicky</string>
+    <string name="trending_from_neostore">מובילים ב־Neo Store</string>
+    <plurals name="privacy_points_FORMAT">
+        <item quantity="one">(‎-%d נקודת פרטיות)</item>
+        <item quantity="two">(‎-%d נקודות פרטיות)</item>
+        <item quantity="other">(‎-%d נקודות פרטיות)</item>
+    </plurals>
+    <string name="pending">בהמתנה</string>
 </resources>
