@@ -1,6 +1,22 @@
 CHANGELOG
 =========
 
+1.1.3 (25.10.2025) +10 Commits +10 Translations
+------------------
+
+### Function
+
+- Add: Shizuku Installer
+- Add: Extend the indices of the DB entities
+- Update: revamp InstallQueue and BaseInstaller for re-active handling of installs
+- Update: Break MainVM down into multiple page-related VMs
+- Update: Replace codeberg mirror with izzyondroid's one for download stats
+- Update: Reduce flow coroutine context switches on DAO→Repo→VM
+
+### UI/UX
+
+- Remove: Search as default tab option
+
 1.1.2 (06.09.2025) +50 Commits +20 Translations
 ------------------
 

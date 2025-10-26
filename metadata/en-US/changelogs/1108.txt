@@ -1,0 +1,5 @@
+Add: Shizuku Installer
+Update: revamp InstallQueue and BaseInstaller for re-active handling of installs
+Update: Break MainVM down into multiple page-related VMs
+Update: Replace codeberg mirror with izzyondroid's one for download stats
+plus many more in over 20 commits & 10 translation contributions
