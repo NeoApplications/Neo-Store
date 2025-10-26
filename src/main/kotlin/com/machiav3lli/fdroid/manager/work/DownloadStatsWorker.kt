@@ -44,6 +44,7 @@ class DownloadStatsWorker(
         )
     }
 
+    // TODO add progress indication
     private suspend fun fetchData(): Int = withContext(Dispatchers.IO) {
         val existingModifiedDates = getExistingModifiedDates()
         val monthlyResults = dsAPI.getMonthlyStats(existingModifiedDates)
@@ -58,9 +59,6 @@ class DownloadStatsWorker(
                     processMonthlyData(result)
                     filesProcessed++
                     filesUpdated++
-
-                    saveLastModifiedDate(result.fileName, result.lastModified)
-
                     Log.d(this::class.java.simpleName, "Processed updated file: ${result.fileName}")
                 }
 
@@ -114,29 +112,6 @@ class DownloadStatsWorker(
                     e
                 )
                 throw e
-            }
-        }
-    }
-
-    private suspend fun saveLastModifiedDate(fileName: String, lastModified: String?) {
-        withContext(Dispatchers.IO) {
-            lastModified?.let { modifiedDate ->
-                try {
-                    privacyRepository.upsertDownloadStatsFileMetadata(
-                        fileName = fileName,
-                        lastModified = modifiedDate
-                    )
-                    Log.d(
-                        this::class.java.simpleName,
-                        "Saved lastModified for $fileName: $modifiedDate"
-                    )
-                } catch (e: Exception) {
-                    Log.e(
-                        this::class.java.simpleName,
-                        "Failed to save lastModified for $fileName",
-                        e
-                    )
-                }
             }
         }
     }

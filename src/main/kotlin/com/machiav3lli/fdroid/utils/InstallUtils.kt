@@ -1,12 +1,19 @@
 package com.machiav3lli.fdroid.utils
 
+import android.content.Context
+import android.os.Build
 import android.util.Log
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.content.Cache
+import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
+import com.machiav3lli.fdroid.data.entity.InstallerType
 import com.machiav3lli.fdroid.data.repository.InstallsRepository
 import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
 import com.machiav3lli.fdroid.manager.work.InstallWorker
+import com.machiav3lli.fdroid.utils.extension.android.Android
+import com.machiav3lli.fdroid.utils.extension.isInstalled
+import com.machiav3lli.fdroid.utils.extension.isNSPackageUpdateOwner
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -85,6 +92,41 @@ object InstallUtils : KoinComponent {
             } catch (e: Exception) {
                 Log.e(TAG, "Error checking for orphaned install tasks: ${e.message}")
                 false
+            }
+        }
+    }
+
+    fun canInstallSilently(
+        context: Context,
+        packageName: String,
+        packageTargetSdk: Int
+    ): Boolean {
+        return when (Preferences[Preferences.Key.Installer].installer) {
+            InstallerType.ROOT    -> shellIsRoot
+            InstallerType.SYSTEM  -> context.getHasSystemInstallPermission()
+
+            InstallerType.SHIZUKU -> context.hasShizukuOrSui && hasShizukuPermission()
+
+            InstallerType.AM, // No API from AM for this
+            InstallerType.LEGACY  -> false
+
+            InstallerType.DEFAULT -> {
+                if (
+                    !context.packageManager.isInstalled(packageName) || // not installed
+                    !context.packageManager.isNSPackageUpdateOwner(packageName) // updates not owned
+                ) return false
+
+                // https://developer.android.com/reference/android/content/pm/PackageInstaller.SessionParams#setRequireUserAction(int)
+                Android.sdk(
+                    mapOf(
+                        // TODO add as soon as new SDK version is published
+                        Build.VERSION_CODES.BAKLAVA to { packageTargetSdk >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE },
+                        Build.VERSION_CODES.VANILLA_ICE_CREAM to { packageTargetSdk >= Build.VERSION_CODES.TIRAMISU },
+                        Build.VERSION_CODES.UPSIDE_DOWN_CAKE to { packageTargetSdk >= Build.VERSION_CODES.S },
+                        Build.VERSION_CODES.TIRAMISU to { packageTargetSdk >= Build.VERSION_CODES.R },
+                        Build.VERSION_CODES.S to { packageTargetSdk >= Build.VERSION_CODES.Q },
+                    )
+                )
             }
         }
     }

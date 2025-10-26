@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.util.Log
 import com.machiav3lli.fdroid.data.content.Cache
+import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.InstallState
 import com.machiav3lli.fdroid.manager.installer.InstallQueue
 import com.machiav3lli.fdroid.manager.installer.InstallQueue.Companion.InstallTask
@@ -133,6 +134,18 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
         } catch (e: Exception) {
             installQueue.emitProgress(InstallState.Failed(InstallationError.Unknown("Installation failed: Error getting apk-file: ${e.message}")))
             null
+        }
+    }
+
+    protected suspend fun cleanupApkIfNeeded(apkFile: File) {
+        if (Preferences[Preferences.Key.ReleasesCacheRetention] == 0) {
+            withContext(Dispatchers.IO) {
+                if (apkFile.delete()) {
+                    Log.d(TAG, "Deleted APK file: ${apkFile.absolutePath}")
+                } else {
+                    Log.w(TAG, "Failed to delete APK file: ${apkFile.absolutePath}")
+                }
+            }
         }
     }
 
