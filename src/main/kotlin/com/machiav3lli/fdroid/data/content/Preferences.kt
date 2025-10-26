@@ -776,14 +776,13 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
     sealed class DefaultTab(override val valueString: String) : Enumeration<DefaultTab> {
         override val values: List<DefaultTab>
-            get() = listOf(Latest, Explore, Search, Installed)
+            get() = listOf(Latest, Explore, Installed)
 
         val index get() = valueString.toInt()
 
         data object Latest : DefaultTab("0")
         data object Explore : DefaultTab("1")
-        data object Search : DefaultTab("2")
-        data object Installed : DefaultTab("3")
+        data object Installed : DefaultTab("2")
     }
 
     sealed class RBProvider(override val valueString: String) : Enumeration<RBProvider> {

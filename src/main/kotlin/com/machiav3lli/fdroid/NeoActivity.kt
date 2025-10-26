@@ -289,7 +289,6 @@ class NeoActivity : AppCompatActivity() {
     private fun showSearchPage(query: String? = null) {
         mScope.launch {
             mainViewModel.setNavigatorRole(ListDetailPaneScaffoldRole.List)
-            navController.navigate(NavRoute.Main(Preferences.DefaultTab.Search.index))
             searchViewModel.setSearchQuery(query ?: "")
         }
     }
