@@ -59,7 +59,7 @@ class DownloadStatsAPI {
         lastModified: String?
     ): MonthlyFileResult {
         val request = HttpRequestBuilder().apply {
-            url("https://codeberg.org/IzzyOnDroid/iod-stats-collector/raw/branch/pages/stats/upstream/monthly-in-days/$fileName")
+            url("https://dlstats.izzyondroid.org/iod-stats-collector/stats/upstream/monthly-in-days/$fileName")
             headers {
                 if (!lastModified.isNullOrEmpty()) {
                     append(HttpHeaders.IfModifiedSince, lastModified)
