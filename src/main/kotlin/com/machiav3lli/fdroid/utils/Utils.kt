@@ -16,6 +16,7 @@ import android.content.pm.PermissionInfo
 import android.content.pm.Signature
 import android.content.res.Configuration
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.text.format.DateUtils
 import android.widget.Toast
@@ -51,10 +52,14 @@ import com.machiav3lli.fdroid.ui.dialog.LaunchDialog
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.android.signerSHA256Signatures
 import com.machiav3lli.fdroid.utils.extension.android.versionCodeCompat
+import com.machiav3lli.fdroid.utils.extension.isInstalled
 import com.machiav3lli.fdroid.utils.extension.text.hex
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.topjohnwu.superuser.Shell
 import io.ktor.http.HttpStatusCode
+import rikka.shizuku.Shizuku
+import rikka.shizuku.ShizukuProvider
+import rikka.sui.Sui
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -550,6 +555,15 @@ val shellIsRoot: Boolean
 val Context.amInstalled: Boolean
     get() = (packageManager.getLaunchIntentForPackage(AM_PACKAGENAME)
         ?: packageManager.getLaunchIntentForPackage(AM_PACKAGENAME_DEBUG)) != null
+
+val Context.hasShizukuOrSui: Boolean
+    get() = Android.sdk(Build.VERSION_CODES.O) &&
+            (packageManager.isInstalled(ShizukuProvider.MANAGER_APPLICATION_ID) || Sui.isSui())
+
+fun hasShizukuPermission(): Boolean =
+    Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED
+
+fun isShizukuRunning() = Shizuku.pingBinder()
 
 fun Context.getHasSystemInstallPermission(): Boolean =
     ActivityCompat.checkSelfPermission(this, Manifest.permission.INSTALL_PACKAGES) ==

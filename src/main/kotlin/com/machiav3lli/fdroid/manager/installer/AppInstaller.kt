@@ -8,9 +8,13 @@ import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
 import com.machiav3lli.fdroid.manager.installer.type.LegacyInstaller
 import com.machiav3lli.fdroid.manager.installer.type.RootInstaller
 import com.machiav3lli.fdroid.manager.installer.type.SessionInstaller
+import com.machiav3lli.fdroid.manager.installer.type.ShizukuInstaller
 import com.machiav3lli.fdroid.manager.installer.type.SystemInstaller
 import com.machiav3lli.fdroid.utils.amInstalled
 import com.machiav3lli.fdroid.utils.getHasSystemInstallPermission
+import com.machiav3lli.fdroid.utils.hasShizukuOrSui
+import com.machiav3lli.fdroid.utils.hasShizukuPermission
+import com.machiav3lli.fdroid.utils.isShizukuRunning
 import com.machiav3lli.fdroid.utils.shellIsRoot
 import org.koin.dsl.module
 
@@ -39,6 +43,12 @@ object AppInstaller {
             InstallerType.AM
                  -> if (context.amInstalled) AppManagerInstaller(context)
             // Fall back to SESSION if AM is not installed
+            else SessionInstaller(context)
+
+            InstallerType.SHIZUKU
+                 -> if (context.hasShizukuOrSui && hasShizukuPermission() && isShizukuRunning())
+                ShizukuInstaller(context)
+            // Fall back to SESSION if Shizuku/Sui is not installed, permission not granted or not running
             else SessionInstaller(context)
 
             else ->

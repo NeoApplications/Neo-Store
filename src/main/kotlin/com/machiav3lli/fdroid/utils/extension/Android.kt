@@ -63,6 +63,9 @@ object Android {
         return Build.VERSION.SDK_INT >= sdk
     }
 
+    fun sdk(map: Map<Int, () -> Boolean>): Boolean =
+        map.get(Build.VERSION.SDK_INT)?.invoke() ?: false
+
     object PackageManager {
         // GET_SIGNATURES should always present for getPackageArchiveInfo
         val signaturesFlag: Int

@@ -13,8 +13,10 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.entity.AndroidVersion
 import com.machiav3lli.fdroid.data.entity.InstallerType
 import com.machiav3lli.fdroid.data.entity.Order
+import com.machiav3lli.fdroid.utils.amInstalled
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.getHasSystemInstallPermission
+import com.machiav3lli.fdroid.utils.hasShizukuOrSui
 import com.machiav3lli.fdroid.utils.isBiometricLockAvailable
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
@@ -609,9 +611,13 @@ data object Preferences : OnSharedPreferenceChangeListener {
     sealed class Installer(override val valueString: String, val installer: InstallerType) :
         Enumeration<Installer> {
         override val values: List<Installer>
-            get() = mutableListOf(Default, Root, AM, Legacy).apply {
+            get() = mutableListOf(Default, Root, Legacy).apply {
+                if (NeoApp.context.amInstalled)
+                    add(AM)
                 if (NeoApp.context.getHasSystemInstallPermission())
                     add(System)
+                if (NeoApp.context.hasShizukuOrSui)
+                    add(Shizuku)
             }
 
         data object Default : Installer("session", InstallerType.DEFAULT)
@@ -619,6 +625,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object AM : Installer("app_manager", InstallerType.AM)
         data object Legacy : Installer("legacy", InstallerType.LEGACY)
         data object System : Installer("system", InstallerType.SYSTEM)
+        data object Shizuku : Installer("shizuku", InstallerType.SHIZUKU)
     }
 
     sealed class ActionLock(override val valueString: String, val order: Order) :

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.mutableStateOf
 import coil3.ImageLoader
@@ -48,6 +49,7 @@ import org.koin.androix.startup.KoinStartup
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.koinConfiguration
 import org.koin.java.KoinJavaComponent.inject
+import org.lsposed.hiddenapibypass.HiddenApiBypass
 import java.lang.ref.WeakReference
 import java.net.Proxy
 
@@ -99,6 +101,8 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
                 .setPrecondition { _, _ -> Preferences[Preferences.Key.Theme] == Preferences.Theme.Dynamic }
                 .build()
         )
+        if (Android.sdk(Build.VERSION_CODES.P))
+            HiddenApiBypass.addHiddenApiExemptions("I", "L")
         appRef = WeakReference(this)
 
         Preferences.init(this)
