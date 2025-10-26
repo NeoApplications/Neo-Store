@@ -207,6 +207,7 @@ fun MainPage(
                                     .fillMaxSize(),
                                 pagerState = pagerState,
                                 pageItems = pages,
+                                preComposePages = 0
                             )
                         }
                     }
