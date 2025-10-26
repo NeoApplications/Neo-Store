@@ -444,4 +444,18 @@
     <string name="monthly">月度</string>
     <string name="top_apps">热门应用</string>
     <string name="top_apps_notice">目前，下载统计数据只由 IzzyOnDroid 提供，因此热门应用仅限于该存储库中。</string>
+    <string name="connection_error_FORMAT">无效的服务器响应码：%s %s</string>
+    <string name="no_validation_error">没有验证错误。</string>
+    <string name="search_for_repository">搜索存储库</string>
+    <string name="downloads_total_FORMAT">总下载：%s</string>
+    <string name="downloads_top_client_FORMAT">最受欢迎的客户端：%s</string>
+    <string name="downloads_top_ranking_FORMAT">全时长下载排行：%s</string>
+    <string name="total_recent_downloads">近期热门下载</string>
+    <string name="total_alltime_downloads">全时长热门下载</string>
+    <string name="trending_from_unknown">未知客户端上的趋势</string>
+    <string name="trending_from_fdroid">F-Droid 客户端上的趋势</string>
+    <string name="trending_from_fdroid_classic">F-Droid 经典版上的趋势</string>
+    <string name="trending_from_flicky">Flicky 上的趋势</string>
+    <string name="trending_from_neostore">Neo Store 上的趋势</string>
+    <string name="trending_from_droidify">Droid-ify 上的趋势</string>
 </resources>
