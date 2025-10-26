@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.shizuku.refine)
 }
 
 val jvmVersion = JavaVersion.VERSION_17
@@ -169,6 +170,11 @@ dependencies {
 
     // JSON, Markdown, LibSu
     implementation(libs.libsu.core)
+    implementation(libs.shizuku.api)
+    implementation(libs.shizuku.provider)
+    implementation(libs.shizuku.refine)
+    compileOnly(libs.shizuku.hidden)
+    implementation(libs.hiddenapi.bypass)
     implementation(libs.jackson.core)
     implementation(libs.serialization.json)
     implementation(libs.markdown)
