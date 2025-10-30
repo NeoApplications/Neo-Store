@@ -458,4 +458,5 @@
     <string name="trending_from_flicky">Flicky 上的趋势</string>
     <string name="trending_from_neostore">Neo Store 上的趋势</string>
     <string name="trending_from_droidify">Droid-ify 上的趋势</string>
+    <string name="shizuku_installer">Shizuku 安装器</string>
 </resources>
