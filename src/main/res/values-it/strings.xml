@@ -466,4 +466,5 @@
     <string name="trending_from_fdroid_classic">Di tendenza su F-Droid Classic</string>
     <string name="trending_from_flicky">Di tendenza su Flicky</string>
     <string name="trending_from_neostore">Di tendenza su Neo Store</string>
+    <string name="shizuku_installer">Installer Shizuku</string>
 </resources>

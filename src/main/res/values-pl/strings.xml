@@ -468,4 +468,5 @@
     <string name="trending_from_fdroid_classic">Popularność na F-Droid Classic</string>
     <string name="trending_from_flicky">Popularność na Flicky</string>
     <string name="trending_from_neostore">Popularność na Neo Store</string>
+    <string name="shizuku_installer">Instalator Shizuku</string>
 </resources>
