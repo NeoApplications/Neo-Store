@@ -10,8 +10,11 @@ import com.machiav3lli.fdroid.ROW_TIMESTAMP
 import com.machiav3lli.fdroid.ROW_VERSION_CODE
 import com.machiav3lli.fdroid.ROW_VERSION_NAME
 import com.machiav3lli.fdroid.TABLE_RB_LOG
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
+import java.io.InputStream
 
 @Entity(
     tableName = TABLE_RB_LOG,
@@ -70,5 +73,9 @@ class RBLogs {
     companion object {
         private val jsonConfig = Json { ignoreUnknownKeys = true }
         fun fromJson(json: String) = jsonConfig.decodeFromString<Map<String, List<RBData>>>(json)
+
+        @OptIn(ExperimentalSerializationApi::class)
+        fun fromStream(inst: InputStream) =
+            jsonConfig.decodeFromStream<Map<String, List<RBData>>>(inst)
     }
 }
