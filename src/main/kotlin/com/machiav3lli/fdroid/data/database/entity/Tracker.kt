@@ -5,8 +5,11 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.machiav3lli.fdroid.ROW_KEY
 import com.machiav3lli.fdroid.TABLE_TRACKER
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
+import java.io.InputStream
 
 @Entity(
     tableName = TABLE_TRACKER,
@@ -57,5 +60,8 @@ data class Trackers(
     companion object {
         private val jsonConfig = Json { ignoreUnknownKeys = true }
         fun fromJson(json: String) = jsonConfig.decodeFromString<Trackers>(json)
+
+        @OptIn(ExperimentalSerializationApi::class)
+        fun fromStream(inst: InputStream) = jsonConfig.decodeFromStream<Trackers>(inst)
     }
 }

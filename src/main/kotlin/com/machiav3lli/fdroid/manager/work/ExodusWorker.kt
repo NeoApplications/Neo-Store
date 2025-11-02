@@ -11,12 +11,16 @@ import androidx.work.workDataOf
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.ARG_VERSION_CODE
 import com.machiav3lli.fdroid.ARG_WORK_TYPE
+import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.NeoApp
+import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.database.entity.ExodusData
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.Tracker
+import com.machiav3lli.fdroid.data.database.entity.Trackers
 import com.machiav3lli.fdroid.data.repository.PrivacyRepository
-import com.machiav3lli.fdroid.manager.network.RExodusAPI
+import com.machiav3lli.fdroid.manager.network.Downloader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.android.annotation.KoinWorker
@@ -25,10 +29,9 @@ import org.koin.core.component.inject
 
 @KoinWorker
 class ExodusWorker(
-    context: Context,
+    private val context: Context,
     params: WorkerParameters,
 ) : CoroutineWorker(context, params), KoinComponent {
-    private val repoExodusAPI: RExodusAPI by inject()
     private val privacyRepository: PrivacyRepository by inject()
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
@@ -50,26 +53,61 @@ class ExodusWorker(
     private suspend fun fetchTrackers() {
         if (Preferences[Preferences.Key.ShowTrackers]) {
             withContext(Dispatchers.IO) {
-                try {
-                    val trackerList = repoExodusAPI.getTrackers()
-                    // TODO **conditionally** update DB with the trackers
-                    privacyRepository.upsertTracker(
-                        trackerList.trackers
-                            .map { (key, value) ->
-                                Tracker(
-                                    key.toInt(),
-                                    value.name,
-                                    value.network_signature,
-                                    value.code_signature,
-                                    value.creation_date,
-                                    value.website,
-                                    value.description,
-                                    value.categories
-                                )
+                runCatching {
+                    val url = "${EXODUS_API_BASE}/trackers"
+                    val tempFile = Cache.getTemporaryFile(context)
+                    try {
+                        val result = Downloader.download(
+                            url = url,
+                            target = tempFile,
+                            lastModified = Preferences[Preferences.Key.TrackersLastModified],
+                            entityTag = "",
+                            authentication = EXODUS_AUTHENTICATION,
+                            callback = { _, _, _ -> }
+                        )
+
+                        when {
+                            result.isNotChanged -> {
+                                Log.i(TAG, "Trackers not modified, skipping update")
                             }
-                    )
-                } catch (e: Exception) {
-                    Log.e(this::javaClass.name, "Failed fetching exodus trackers", e)
+
+                            result.success      -> {
+                                if (!result.isNotChanged) {
+                                    val trackerList = Trackers.fromStream(tempFile.inputStream())
+
+                                    // Update last modified timestamp
+                                    Preferences[Preferences.Key.TrackersLastModified] =
+                                        result.lastModified
+
+                                    // Update DB with the trackers
+                                    privacyRepository.upsertTracker(
+                                        trackerList.trackers
+                                            .map { (key, value) ->
+                                                Tracker(
+                                                    key.toInt(),
+                                                    value.name,
+                                                    value.network_signature,
+                                                    value.code_signature,
+                                                    value.creation_date,
+                                                    value.website,
+                                                    value.description,
+                                                    value.categories
+                                                )
+                                            }
+                                    )
+                                } else {
+                                }
+                            }
+
+                            else                -> {
+                                Log.w(TAG, "Failed to fetch trackers: ${result.statusCode}")
+                            }
+                        }
+                    } finally {
+                        tempFile.delete()
+                    }
+                }.onFailure { e ->
+                    Log.e(TAG, "Failed fetching exodus trackers", e)
                 }
             }
         }
@@ -78,21 +116,46 @@ class ExodusWorker(
     private suspend fun fetchExodusData(packageName: String, versionCode: Long) {
         if (Preferences[Preferences.Key.ShowTrackers]) {
             withContext(Dispatchers.IO) {
-                try {
-                    val sourceFiltered = repoExodusAPI.getExodusInfo(packageName).let {
-                        it.fastFilter { info -> info.source == "fdroid" }
-                            .ifEmpty { it }
-                    }
-                    val latestExodusApp = sourceFiltered
-                        .fastFilter { it.version_code.toLong() == versionCode }
-                        .firstOrNull()
-                        ?: sourceFiltered.maxByOrNull { it.version_code.toLong() }
-                        ?: ExodusInfo()
+                runCatching {
+                    val url = "${EXODUS_API_BASE}/search/$packageName/details"
+                    val tempFile = Cache.getTemporaryFile(context)
 
-                    val exodusInfo = latestExodusApp.toExodusInfo(packageName)
-                    privacyRepository.upsertExodusInfo(exodusInfo)
-                } catch (e: Exception) {
-                    Log.e(this::javaClass.name, "Failed fetching exodus info", e)
+                    try {
+                        val result = Downloader.download(
+                            url = url,
+                            target = tempFile,
+                            lastModified = "",
+                            entityTag = "",
+                            authentication = EXODUS_AUTHENTICATION,
+                            callback = { _, _, _ -> }
+                        )
+
+                        if (result.success) {
+                            val exodusDataList = ExodusData.listFromStream(tempFile.inputStream())
+
+                            val sourceFiltered = exodusDataList.let {
+                                it.fastFilter { info -> info.source == "fdroid" }
+                                    .ifEmpty { it }
+                            }
+                            val latestExodusApp = sourceFiltered
+                                .fastFilter { it.version_code.toLong() == versionCode }
+                                .firstOrNull()
+                                ?: sourceFiltered.maxByOrNull { it.version_code.toLong() }
+                                ?: ExodusInfo()
+
+                            val exodusInfo = latestExodusApp.toExodusInfo(packageName)
+                            privacyRepository.upsertExodusInfo(exodusInfo)
+                        } else {
+                            Log.w(
+                                TAG,
+                                "Failed to fetch exodus data for $packageName: ${result.statusCode}"
+                            )
+                        }
+                    } finally {
+                        tempFile.delete()
+                    }
+                }.onFailure { e ->
+                    Log.e(TAG, "Failed fetching exodus info", e)
                 }
             }
         }
@@ -101,6 +164,10 @@ class ExodusWorker(
     enum class WorkType { TRACKERS, DATA }
 
     companion object {
+        private const val TAG = "ExodusWorker"
+        private const val EXODUS_API_BASE = "https://reports.exodus-privacy.eu.org/api"
+        private const val EXODUS_AUTHENTICATION = "Token ${BuildConfig.KEY_API_EXODUS}"
+
         fun fetchTrackers() {
             val data = workDataOf(
                 ARG_WORK_TYPE to WorkType.TRACKERS.ordinal,

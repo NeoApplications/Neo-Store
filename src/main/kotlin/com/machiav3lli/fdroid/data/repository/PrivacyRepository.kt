@@ -13,14 +13,12 @@ import com.machiav3lli.fdroid.data.database.entity.MonthlyPackageSum
 import com.machiav3lli.fdroid.data.database.entity.PackageSum
 import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.database.entity.Tracker
-import com.machiav3lli.fdroid.manager.network.RExodusAPI
 import com.machiav3lli.fdroid.utils.extension.text.getIsoDateOfMonthsAgo
 import com.machiav3lli.fdroid.utils.extension.text.isoDateToInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -112,5 +110,4 @@ class PrivacyRepository(
 }
 
 val privacyModule = module {
-    singleOf(::RExodusAPI)
 }

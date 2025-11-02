@@ -5,8 +5,11 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.TABLE_EXODUS_INFO
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
+import java.io.InputStream
 
 @Entity(
     tableName = TABLE_EXODUS_INFO,
@@ -66,5 +69,8 @@ open class ExodusData(
         private val jsonConfig = Json { ignoreUnknownKeys = true }
         fun fromJson(json: String) = jsonConfig.decodeFromString<ExodusData>(json)
         fun listFromJson(json: String) = jsonConfig.decodeFromString<List<ExodusData>>(json)
+
+        @OptIn(ExperimentalSerializationApi::class)
+        fun listFromStream(inst: InputStream) = jsonConfig.decodeFromStream<List<ExodusData>>(inst)
     }
 }
