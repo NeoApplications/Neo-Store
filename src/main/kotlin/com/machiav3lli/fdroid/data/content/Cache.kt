@@ -53,6 +53,10 @@ object Cache {
         return File(ensureExtCacheDir(context, "releases"), cacheFileName)
     }
 
+    fun getDownloadStatsFile(context: Context, cacheFileName: String): File {
+        return File(ensureExtCacheDir(context, "download_stats"), cacheFileName)
+    }
+
     fun File.getReleaseFileUri(context: Context): Uri {
         val authority = context.applicationContext.packageName + ".provider.files"
         return FileProvider.getUriForFile(context, authority, this)
@@ -74,7 +78,8 @@ object Cache {
                 Pair("images", Preferences[Preferences.Key.ImagesCacheRetention] * 24),
                 Pair("index", 14 * 24),
                 Pair("temporary", 1),
-                // in case the external cache was unavailable (maybe only temporary)
+                Pair("download_stats", 1),
+                // in case the external cache was unavailable (maybe only temporarily)
                 Pair("partial", 24),
                 Pair("releases", Preferences[Preferences.Key.ReleasesCacheRetention] * 24),
             )

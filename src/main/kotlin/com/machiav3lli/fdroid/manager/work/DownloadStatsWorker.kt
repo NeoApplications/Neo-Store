@@ -11,22 +11,34 @@ import com.machiav3lli.fdroid.ARG_EXCEPTION
 import com.machiav3lli.fdroid.ARG_FORCE_WORK
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.TAG_SYNC_PERIODIC
+import com.machiav3lli.fdroid.data.content.Cache
+import com.machiav3lli.fdroid.data.database.entity.ClientCounts
+import com.machiav3lli.fdroid.data.database.entity.DownloadStatsData
 import com.machiav3lli.fdroid.data.database.entity.toDownloadStats
 import com.machiav3lli.fdroid.data.repository.PrivacyRepository
-import com.machiav3lli.fdroid.manager.network.DownloadStatsAPI
-import com.machiav3lli.fdroid.manager.network.MonthlyFileResult
+import com.machiav3lli.fdroid.manager.network.Downloader
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.YearMonth
+import kotlinx.datetime.plusMonth
+import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.yearMonth
 import org.koin.android.annotation.KoinWorker
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.io.File
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 @KoinWorker
 class DownloadStatsWorker(
-    context: Context,
+    private val context: Context,
     params: WorkerParameters,
 ) : CoroutineWorker(context, params), KoinComponent {
-    private val dsAPI: DownloadStatsAPI by inject()
     private val privacyRepository: PrivacyRepository by inject()
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
@@ -47,7 +59,7 @@ class DownloadStatsWorker(
     // TODO add progress indication
     private suspend fun fetchData(): Int = withContext(Dispatchers.IO) {
         val existingModifiedDates = getExistingModifiedDates()
-        val monthlyResults = dsAPI.getMonthlyStats(existingModifiedDates)
+        val monthlyResults = fetchMonthlyStats(existingModifiedDates)
 
         var filesProcessed = 0
         var filesUpdated = 0
@@ -88,6 +100,117 @@ class DownloadStatsWorker(
         return@withContext filesProcessed
     }
 
+    private suspend fun fetchMonthlyStats(
+        existingModifiedDates: Map<String, String>
+    ): List<MonthlyFileResult> = coroutineScope {
+        val fileNames = generateMonthlyFileNames()
+        Log.d(TAG, "Fetching ${fileNames.size} monthly files")
+
+        fileNames.map { fileName ->
+            async {
+                fetchMonthlyFile(fileName, existingModifiedDates[fileName])
+            }
+        }.awaitAll()
+    }
+
+    /**
+     * Generates list of monthly file names from start date to current month
+     * Format: YYYY-MM.json
+     */
+    @OptIn(ExperimentalTime::class)
+    private fun generateMonthlyFileNames(): List<String> {
+        val current =
+            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.yearMonth
+        val start = YearMonth(2024, 12) // year and month of first report
+
+        val fileNames = mutableListOf<String>()
+        var ym = start
+        while (ym <= current) {
+            fileNames.add("$ym.json")
+            ym = ym.plusMonth()
+        }
+        return fileNames
+    }
+
+    private suspend fun fetchMonthlyFile(
+        fileName: String,
+        lastModified: String?
+    ): MonthlyFileResult {
+        val url =
+            "https://dlstats.izzyondroid.org/iod-stats-collector/stats/upstream/monthly-in-days/$fileName"
+        val tempFile = Cache.getDownloadStatsFile(context, fileName)
+
+        return try {
+            // TODO add download progress notification
+            val callback: suspend (Long, Long?, Long) -> Unit = { _, _, _ -> }
+
+            val result = Downloader.download(
+                url = url,
+                target = tempFile,
+                lastModified = lastModified ?: "",
+                entityTag = "",
+                authentication = "",
+                callback = callback
+            )
+
+            when {
+                result.isNotChanged -> {
+                    Log.d(TAG, "File download_stats/$fileName not modified since last fetch")
+                    MonthlyFileResult(
+                        fileName = fileName,
+                        data = null,
+                        lastModified = lastModified,
+                        success = true
+                    )
+                }
+
+                result.success      -> {
+                    val data = parseStatsFile(tempFile)
+                    tempFile.delete()
+
+                    Log.d(TAG, "Successfully fetched download_stats/$fileName")
+                    MonthlyFileResult(
+                        fileName = fileName,
+                        data = data,
+                        lastModified = result.lastModified.ifEmpty { null },
+                        success = true
+                    )
+                }
+
+                else                -> {
+                    tempFile.delete()
+                    Log.w(TAG, "Failed to fetch download_stats/$fileName: ${result.statusCode}")
+                    MonthlyFileResult(
+                        fileName = fileName,
+                        data = null,
+                        lastModified = null,
+                        success = false
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            tempFile.delete()
+            Log.e(TAG, "Exception fetching $fileName", e)
+            MonthlyFileResult(
+                fileName = fileName,
+                data = null,
+                lastModified = null,
+                success = false
+            )
+        }
+    }
+
+    private fun parseStatsFile(file: File): Map<String, Map<String, ClientCounts>>? {
+        return try {
+            file.inputStream().use { stream ->
+                DownloadStatsData.fromStream(stream)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to parse stats file", e)
+            null
+        }
+    }
+
     private suspend fun processMonthlyData(result: MonthlyFileResult) {
         result.data?.let { data ->
             try {
@@ -113,6 +236,7 @@ class DownloadStatsWorker(
                 )
                 throw e
             }
+            // TODO add clean up call?
         }
     }
 
@@ -125,6 +249,13 @@ class DownloadStatsWorker(
                 emptyMap()
             }
         }
+
+    data class MonthlyFileResult(
+        val fileName: String,
+        val data: Map<String, Map<String, ClientCounts>>?,
+        val lastModified: String?,
+        val success: Boolean
+    )
 
     companion object {
         private const val TAG = "DownloadStatsWorker"
