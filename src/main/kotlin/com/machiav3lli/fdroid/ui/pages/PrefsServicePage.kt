@@ -59,6 +59,7 @@ fun PrefsServicePage() {
         else null,
     )
     val connectionPrefs = listOf(
+        Preferences.Key.MaxParallelDownloads,
         Preferences.Key.MaxIdleConnections,
         Preferences.Key.DisableCertificateValidation,
         Preferences.Key.ProxyType,

@@ -79,6 +79,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         // Internet
         Key.DisableCertificateValidation,
         Key.MaxIdleConnections,
+        Key.MaxParallelDownloads,
         Key.ProxyType,
         Key.ProxyUrl,
         Key.ProxyHost,
@@ -349,6 +350,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object NewApps : Key<Int>("new_apps", Value.IntValue(30))
 
         data object MaxIdleConnections : Key<Int>("max_num_idle_connections", Value.IntValue(10))
+        data object MaxParallelDownloads : Key<Int>("max_num_parallel_downloads", Value.IntValue(5))
 
         data object DisableCertificateValidation :
             Key<Boolean>("disable_certificate_validation", Value.BooleanValue(false))

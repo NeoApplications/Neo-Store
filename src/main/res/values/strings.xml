@@ -464,4 +464,5 @@
     <string name="trending_from_flicky">Trending on Flicky</string>
     <string name="trending_from_neostore">Trending on Neo Store</string>
     <string name="shizuku_installer">Shizuku installer</string>
+    <string name="max_parallel_downloads">Maximum number of parallel downloads when Neo Store\'s download manager is used.</string>
 </resources>

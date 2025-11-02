@@ -126,6 +126,7 @@ val NonBooleanPrefsMeta = mapOf(
     Preferences.Key.ProxyHost to R.string.proxy_host,
     Preferences.Key.ProxyPort to R.string.proxy_port,
     Preferences.Key.MaxIdleConnections to R.string.max_idle_connections_description,
+    Preferences.Key.MaxParallelDownloads to R.string.max_parallel_downloads,
     Preferences.Key.RBProvider to R.string.rb_provider,
 )
 
@@ -197,6 +198,7 @@ val IntPrefsRanges = mapOf(
     Preferences.Key.ImagesCacheRetention to 0..365,
     Preferences.Key.ProxyPort to 1..65535,
     Preferences.Key.MaxIdleConnections to 1..32,
+    Preferences.Key.MaxParallelDownloads to 1..32,
 )
 
 val PrefsDependencies = mapOf(
