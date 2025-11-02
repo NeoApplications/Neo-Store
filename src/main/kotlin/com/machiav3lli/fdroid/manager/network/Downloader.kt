@@ -47,10 +47,12 @@ import io.ktor.http.isSuccess
 import io.ktor.util.network.hostname
 import io.ktor.util.network.port
 import io.ktor.utils.io.jvm.javaio.toInputStream
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import okhttp3.ConnectionPool
 import okhttp3.ConnectionSpec
 import org.koin.dsl.module
@@ -60,17 +62,19 @@ import java.io.FileOutputStream
 import java.net.Proxy
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 import javax.net.ssl.SSLContext
 import javax.net.ssl.X509TrustManager
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.pow
 
 object Downloader {
-
+    private const val TAG = "Downloader"
     private val client: HttpClient by getKoin().inject()
-
-    private val retries = mutableMapOf<String, AtomicInteger>()
+    private val retries = ConcurrentHashMap<String, AtomicInteger>()
+    private val downloadSemaphore = Semaphore(Preferences[Preferences.Key.MaxParallelDownloads])
 
     var proxy: Proxy? = null
         set(value) {
@@ -98,7 +102,6 @@ object Downloader {
         if (onion) ProxyBuilder.socks("localhost", 9050)
         else proxy
 
-
     suspend fun download(
         url: String,
         target: File,
@@ -106,122 +109,139 @@ object Downloader {
         entityTag: String,
         authentication: String,
         callback: suspend (read: Long, total: Long?, downloadID: Long) -> Unit,
-    ): Result {
-        return coroutineScope {
-            var start = if (target.exists()) target.length().coerceAtLeast(0L)
-            else null
-            Log.i(this.javaClass.name, "download start byte = $start")
+    ): Result = downloadSemaphore.withPermit {
+        Log.i(
+            TAG,
+            "Entering download of $url.\nPermissions left for parallel downloads: ${downloadSemaphore.availablePermits}"
+        )
+        permittedDownload(url, target, lastModified, entityTag, authentication, callback)
+    }
 
-            try {
-                client.prepareGet {
-                    url(url)
-                    getProxy(url.endsWith(".onion"))?.resolveAddress()?.let {
-                        this.host = it.hostname
-                        this.port = it.port
-                    }
-                    headers {
-                        append(HttpHeaders.IfModifiedSince, lastModified)
-                        append(HttpHeaders.Authorization, authentication)
-                        //append(HttpHeaders.AcceptEncoding, "gzip, deflate")
-                        append(HttpHeaders.CacheControl, CacheControl.MaxAge(60).toString())
-                    }
-                    ifNoneMatch(entityTag)
-                    if (start != null) header(HttpHeaders.Range, start.let { "bytes=$it-" })
-                    retry {
-                        modifyRequest {
-                            start = if (target.exists()) target.length().coerceAtLeast(0L)
-                            else null
-                            if (start != null) header(
-                                HttpHeaders.Range,
-                                start?.let { "bytes=$it-" })
-                        }
-                    }
-                    this.onDownload { read, total ->
-                        val progressStart = start ?: 0L
-                        val progressTotal = total?.let { progressStart + total }
+    private suspend fun permittedDownload(
+        url: String,
+        target: File,
+        lastModified: String,
+        entityTag: String,
+        authentication: String,
+        callback: suspend (read: Long, total: Long?, downloadID: Long) -> Unit,
+    ): Result = coroutineScope {
+        ensureActive()
 
-                        if (Thread.interrupted()) {
-                            throw InterruptedException()
-                        }
+        var start = if (target.exists()) target.length().coerceAtLeast(0L)
+        else null
+        Log.i(TAG, "download start byte = $start")
 
-                        // Check if downloaded size exceeds total size
-                        if (total != null && total > 0 && progressStart + read > total) {
-                            throw DownloadSizeException("Downloaded size exceeds expected total size")
-                        }
-
-                        CoroutineScope(Dispatchers.IO).launch {
-                            callback.invoke(progressStart + read, progressTotal, -1L)
-                        }
-                    }
-                }.execute { response ->
-                    when {
-                        response.status == HttpStatusCode.NotModified
-                            -> {
-                            retries.remove(url)
-                            Result(response.status, lastModified, entityTag)
-                        }
-
-                        response.status.isSuccess()
-                            -> {
-                            val append = start != null && response.headers["Content-Range"] != null
-                            val channel = response.bodyAsChannel().toInputStream()
-
-                            channel.use { input ->
-                                val outputStream = FileOutputStream(target, append)
-                                outputStream.use { output ->
-                                    input.copyTo(output, BUFFER_SIZE)
-                                    output.fd.sync()
-                                }
-                            }
-
-                            retries.remove(url)
-                            Result(response)
-                        }
-
-                        response.status == HttpStatusCode.RequestedRangeNotSatisfiable
-                            -> {
-                            Log.w(
-                                this.javaClass.name,
-                                "Failed to download file ($url) with Range: ${start?.let { "bytes=$it-" }}."
-                            )
-                            target.delete()
-                            download(url, target, lastModified, entityTag, authentication, callback)
-                        }
-
-                        response.status == HttpStatusCode.GatewayTimeout || response.status == HttpStatusCode.RequestTimeout
-                            -> download(
-                            url,
-                            target,
-                            lastModified,
-                            entityTag,
-                            authentication,
-                            callback
-                        )
-
-                        response.status == HttpStatusCode.NotFound -> {
-                            Result(response)
-                        }
-
-                        else -> {
-                            Log.w(
-                                this.javaClass.name,
-                                "Failed to download file ($url). Response code ${response.status.value}:${response.status.description}."
-                            )
-                            throw Exception("Failed to download file. Response code ${response.status.value}:${response.status.description}")
-                        }
+        try {
+            client.prepareGet {
+                url(url)
+                getProxy(url.endsWith(".onion"))?.resolveAddress()?.let {
+                    this.host = it.hostname
+                    this.port = it.port
+                }
+                headers {
+                    append(HttpHeaders.IfModifiedSince, lastModified)
+                    append(HttpHeaders.Authorization, authentication)
+                    //append(HttpHeaders.AcceptEncoding, "gzip, deflate")
+                    append(HttpHeaders.CacheControl, CacheControl.MaxAge(60).toString())
+                }
+                ifNoneMatch(entityTag)
+                if (start != null) header(HttpHeaders.Range, start.let { "bytes=$it-" })
+                retry {
+                    modifyRequest {
+                        ensureActive()
+                        start = if (target.exists()) target.length().coerceAtLeast(0L)
+                        else null
+                        if (start != null) header(
+                            HttpHeaders.Range,
+                            start?.let { "bytes=$it-" })
                     }
                 }
-            } catch (e: Exception) {
-                val leftRetries = retries.getOrPut(url) { AtomicInteger(10) }
-                Log.w(
-                    this.javaClass.name,
-                    "Download ($url) faced exception. Tries left: $leftRetries. Exception: ${e.message}.\nStack trace: ${e.stackTrace}."
-                )
-                if (leftRetries.decrementAndGet() > 0) {
-                    retries[url] = leftRetries
-                    download(url, target, lastModified, entityTag, authentication, callback)
-                } else throw e
+                this.onDownload { read, total ->
+                    ensureActive()
+
+                    val progressStart = start ?: 0L
+                    val progressTotal = total?.let { progressStart + total }
+
+                    // Check if downloaded size exceeds total size
+                    if (total != null && total > 0 && progressStart + read > total) {
+                        throw DownloadSizeException("Downloaded size exceeds expected total size")
+                    }
+
+                    this@coroutineScope.launch {
+                        callback.invoke(progressStart + read, progressTotal, -1L)
+                    }
+                }
+            }.execute { response ->
+                when {
+                    response.status == HttpStatusCode.NotModified
+                        -> {
+                        retries.remove(url)
+                        Result(response.status, lastModified, entityTag)
+                    }
+
+                    response.status.isSuccess()
+                        -> {
+                        val append = start != null && response.headers["Content-Range"] != null
+                        val channel = response.bodyAsChannel().toInputStream()
+
+                        channel.use { input ->
+                            val outputStream = FileOutputStream(target, append)
+                            outputStream.use { output ->
+                                input.copyTo(output, BUFFER_SIZE)
+                                output.fd.sync()
+                            }
+                        }
+
+                        retries.remove(url)
+                        Result(response)
+                    }
+
+                    response.status == HttpStatusCode.RequestedRangeNotSatisfiable
+                        -> {
+                        Log.w(
+                            TAG,
+                            "Failed to download file ($url) with Range: ${start?.let { "bytes=$it-" }}."
+                        )
+                        target.delete()
+                        download(url, target, lastModified, entityTag, authentication, callback)
+                    }
+
+                    response.status == HttpStatusCode.GatewayTimeout || response.status == HttpStatusCode.RequestTimeout
+                        -> download(
+                        url,
+                        target,
+                        lastModified,
+                        entityTag,
+                        authentication,
+                        callback
+                    )
+
+                    response.status == HttpStatusCode.NotFound -> {
+                        Result(response)
+                    }
+
+                    else -> {
+                        Log.w(
+                            TAG,
+                            "Failed to download file ($url). Response code ${response.status.value}:${response.status.description}."
+                        )
+                        throw Exception("Failed to download file. Response code ${response.status.value}:${response.status.description}")
+                    }
+                }
             }
+        } catch (e: CancellationException) {
+            retries.remove(url)
+            throw e
+        } catch (e: Exception) {
+            val leftRetries = retries.getOrPut(url) { AtomicInteger(10) }
+            Log.w(
+                TAG,
+                "Download ($url) faced exception. Tries left: $leftRetries. Exception: ${e.message}.\nStack trace: ${e.stackTrace}."
+            )
+            if (leftRetries.decrementAndGet() > 0) {
+                retries[url] = leftRetries
+                download(url, target, lastModified, entityTag, authentication, callback)
+            } else throw e
         }
     }
 
@@ -287,7 +307,7 @@ object Downloader {
 
             response = responseStatus?.dmReasonToHttpResponse() ?: HttpStatusCode.OK
 
-            CoroutineScope(Dispatchers.IO).launch {
+            this.launch {
                 callback.invoke(progressStart + progressRead, progressTotal, downloadID)
             }
 
@@ -298,6 +318,7 @@ object Downloader {
             }
 
             cursor.close()
+            if (isDownloading) delay(100L) // avoid busy-waiting
         } while (isDownloading)
 
         // Final check after download completion
