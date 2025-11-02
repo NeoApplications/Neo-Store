@@ -39,7 +39,7 @@ class RBWorker(
                 Result.success()
             },
             onFailure = {
-                Log.e(this::javaClass.name, "Failed fetching exodus trackers", it)
+                Log.e(TAG, "Failed fetching exodus trackers", it)
                 Result.failure(workDataOf(ARG_EXCEPTION to it.message))
             }
         )
@@ -65,7 +65,7 @@ class RBWorker(
 
                 when {
                     result.isNotChanged -> {
-                        Log.i(this::javaClass.name, "RB index not modified")
+                        Log.i(TAG, "RB index not modified")
                     }
 
                     result.success      -> {
@@ -76,14 +76,11 @@ class RBWorker(
                         val logsMap = RBLogs.fromStream(tempFile.inputStream())
                         privacyRepository.upsertRBLogs(logsMap.toLogs())
 
-                        Log.i(this::javaClass.name, "Successfully fetched ${logsMap.size} RB logs")
+                        Log.i(TAG, "Successfully fetched ${logsMap.size} RB logs")
                     }
 
                     else                -> {
-                        Log.w(
-                            this::javaClass.name,
-                            "Failed to fetch RB index: ${result.statusCode}"
-                        )
+                        Log.w(TAG, "Failed to fetch RB index: ${result.statusCode}")
                     }
                 }
             } finally {
@@ -94,6 +91,9 @@ class RBWorker(
     }
 
     companion object {
+        private const val TAG = "RBWorker"
+
+        // TODO Make periodic instead of sync-bound
         fun fetchRBLogs() {
             NeoApp.wm.enqueueUniqueWork(
                 "rb_index",

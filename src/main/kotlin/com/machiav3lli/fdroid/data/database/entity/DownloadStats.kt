@@ -10,6 +10,7 @@ import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_SOURCE
 import com.machiav3lli.fdroid.TABLE_DOWNLOAD_STATS
 import com.machiav3lli.fdroid.utils.extension.text.isoDateToInt
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -69,6 +70,7 @@ class DownloadStatsData {
         fun fromJson(json: String) =
             jsonConfig.decodeFromString<Map<String, Map<String, ClientCounts>>>(json)
 
+        @OptIn(ExperimentalSerializationApi::class)
         fun fromStream(inst: InputStream) =
             jsonConfig.decodeFromStream<Map<String, Map<String, ClientCounts>>>(inst)
     }

@@ -71,30 +71,30 @@ class DownloadStatsWorker(
                     processMonthlyData(result)
                     filesProcessed++
                     filesUpdated++
-                    Log.d(this::class.java.simpleName, "Processed updated file: ${result.fileName}")
+                    Log.d(TAG, "Processed updated file: ${result.fileName}")
                 }
 
                 // File not modified
                 result.success && result.data == null -> {
                     filesProcessed++
-                    Log.d(this::class.java.simpleName, "File not modified: ${result.fileName}")
+                    Log.d(TAG, "File not modified: ${result.fileName}")
                 }
 
                 else                                  -> {
                     failedFiles.add(result.fileName)
-                    Log.w(this::class.java.simpleName, "Failed to fetch: ${result.fileName}")
+                    Log.w(TAG, "Failed to fetch: ${result.fileName}")
                 }
             }
         }
 
         Log.i(
-            this::class.java.simpleName,
+            TAG,
             "Monthly data fetch complete: $filesUpdated updated, " +
                     "${filesProcessed - filesUpdated} unchanged, ${failedFiles.size} failed"
         )
 
         if (failedFiles.isNotEmpty()) {
-            Log.w(this::class.java.simpleName, "Failed files: ${failedFiles.joinToString()}")
+            Log.w(TAG, "Failed files: ${failedFiles.joinToString()}")
         }
 
         return@withContext filesProcessed
@@ -225,12 +225,12 @@ class DownloadStatsWorker(
                 }
 
                 Log.d(
-                    this::class.java.simpleName,
+                    TAG,
                     "Saved ${downloadStats.size} download stat records from ${result.fileName}"
                 )
             } catch (e: Exception) {
                 Log.e(
-                    this::class.java.simpleName,
+                    TAG,
                     "Failed to process data from ${result.fileName}",
                     e
                 )
@@ -245,7 +245,7 @@ class DownloadStatsWorker(
             try {
                 privacyRepository.loadDownloadStatsModifiedMap()
             } catch (e: Exception) {
-                Log.e(this::class.java.simpleName, "Failed to get existing modified dates", e)
+                Log.e(TAG, "Failed to get existing modified dates", e)
                 emptyMap()
             }
         }
@@ -260,6 +260,7 @@ class DownloadStatsWorker(
     companion object {
         private const val TAG = "DownloadStatsWorker"
 
+        // TODO Make periodic instead of sync-bound
         fun fetchDownloadStats(force: Boolean = false) {
             NeoApp.wm.enqueueUniqueWork(
                 "download_stats",
