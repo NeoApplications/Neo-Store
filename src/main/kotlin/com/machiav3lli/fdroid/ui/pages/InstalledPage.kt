@@ -54,7 +54,6 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DialogKey
-import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ActionChip
@@ -160,38 +159,14 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
     val neoActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
 
-    val installedList by viewModel.installed.collectAsState(emptyMap())
-    val updates by viewModel.updateProducts.collectAsState(emptyList())
-    val installedItems by viewModel.installedProducts.collectAsState(emptyList())
+    val pageState by viewModel.installedPageState.collectAsState()
     val dataState by mainVM.dataState.collectAsState()
-
-    val updatesAvailable by remember {
-        derivedStateOf {
-            updates.isNotEmpty()
-        }
-    }
-    val downloaded = viewModel.downloaded.collectAsState(emptyList())
-    val downloads = remember {
-        derivedStateOf {
-            downloaded.value.filter { it.state is DownloadState.Downloading && it.changed + 600_000L > System.currentTimeMillis() }
-        }
-    }
-    val isDownloading by remember {
-        derivedStateOf { downloads.value.isNotEmpty() }
-    }
-
-    val sortedDownloads by remember {
-        derivedStateOf { downloads.value.sortedBy { it.state.name } }
-    }
-
-
     var updatesVisible by remember { mutableStateOf(true) }
 
     val scaffoldState = rememberBottomSheetScaffoldState()
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
-    val sortFilter by viewModel.sortFilter.collectAsState()
-    val notModifiedSortFilter by remember(sortFilter) {
+    val notModifiedSortFilter by remember(pageState.sortFilter) {
         derivedStateOf {
             Preferences[Preferences.Key.SortOrderInstalled] == Preferences.Key.SortOrderInstalled.default.value &&
                     Preferences[Preferences.Key.SortOrderAscendingInstalled] == Preferences.Key.SortOrderAscendingInstalled.default.value &&
@@ -230,7 +205,7 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             // TODO merge into one items-block
-            if (updatesAvailable) item(key = "updatesCard") {
+            if (pageState.updatesAvailable) item(key = "updatesCard") {
                 val cardColor by animateColorAsState(
                     targetValue = if (updatesVisible) MaterialTheme.colorScheme.surfaceContainerHighest
                     else Color.Transparent,
@@ -281,7 +256,7 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
                                 ) {
                                     val action = {
                                         NeoApp.wm.update(
-                                            *updates
+                                            *pageState.updates
                                                 .map { Pair(it.packageName, it.repositoryId) }
                                                 .toTypedArray()
                                         )
@@ -289,7 +264,7 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
                                     if (Preferences[Preferences.Key.DownloadShowDialog]) {
                                         dialogKey.value =
                                             DialogKey.BatchDownload(
-                                                updates.map(ProductItem::name), action
+                                                pageState.updates.map(ProductItem::name), action
                                             )
                                         openDialog.value = true
                                     } else action()
@@ -298,9 +273,9 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
                         }
                         AnimatedVisibility(updatesVisible) {
                             ProductsHorizontalRecycler(
-                                productsList = updates,
+                                productsList = pageState.updates,
                                 repositories = dataState.reposMap,
-                                rowsNumber = updates.size.coerceIn(1, 2),
+                                rowsNumber = pageState.updates.size.coerceIn(1, 2),
                             ) { item ->
                                 neoActivity.navigateProduct(item.packageName)
                             }
@@ -308,14 +283,14 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
                     }
                 }
             }
-            if (isDownloading) {
+            if (pageState.isDownloading) {
                 item(key = "downloadsTitle") {
                     Text(
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                         text = stringResource(id = R.string.downloading)
                     )
                 }
-                items(sortedDownloads, key = { it.itemKey }) { item ->
+                items(pageState.activeDownloads, key = { it.itemKey }) { item ->
                     DownloadedItem(
                         download = item,
                         iconDetails = dataState.iconDetails[item.packageName],
@@ -345,7 +320,7 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
                     }
                 }
             }
-            items(installedItems, key = { it.packageName }) { item ->
+            items(pageState.installedProducts, key = { it.packageName }) { item ->
                 ProductsListItem(
                     item = item,
                     repo = dataState.reposMap[item.repositoryId],
@@ -359,9 +334,9 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
                             !dataState.favorites.contains(pi.packageName)
                         )
                     },
-                    installed = installedList[item.packageName],
+                    installed = pageState.installedMap[item.packageName],
                     onActionClick = {
-                        val installed = installedList[it.packageName]
+                        val installed = pageState.installedMap[it.packageName]
                         val action = {
                             NeoApp.wm.install(
                                 Pair(it.packageName, it.repositoryId)
@@ -437,12 +412,7 @@ fun DownloadedPage(viewModel: InstalledVM, mainVM: MainVM) {
     val neoActivity = LocalActivity.current as NeoActivity
 
     val dataState by mainVM.dataState.collectAsState()
-    val downloaded = viewModel.downloaded.collectAsState(emptyList())
-    val sortedDownloaded by remember {
-        derivedStateOf {
-            downloaded.value.sortedByDescending { it.changed / 20_000L }
-        }
-    }
+    val sortedDownloaded by viewModel.sortedDownloads.collectAsState(emptyList())
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),

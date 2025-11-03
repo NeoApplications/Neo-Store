@@ -8,6 +8,7 @@ import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
 import com.machiav3lli.fdroid.data.database.entity.Installed
+import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.Request
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
@@ -39,10 +40,10 @@ class InstalledVM(
     extrasRepo: ExtrasRepository,
     installedRepo: InstalledRepository,
 ) : ViewModel() {
-    val sortFilter: StateFlow<String>
+    private val sortFilter: StateFlow<String>
         private field = MutableStateFlow("")
 
-    val installed = installedRepo.getAll().map {
+    private val installed = installedRepo.getAll().map {
         it.associateBy(Installed::packageName).apply {
             Log.d(TAG, "Installed list size: ${this.size}")
         }
@@ -52,7 +53,7 @@ class InstalledVM(
         initialValue = emptyMap()
     )
 
-    val installedProducts: StateFlow<List<ProductItem>> = combine(
+    private val installedProducts: StateFlow<List<ProductItem>> = combine(
         sortFilter,
         installed,
         extrasRepo.getAll().distinctUntilChanged(),
@@ -70,7 +71,7 @@ class InstalledVM(
             initialValue = emptyList()
         )
 
-    val updateProducts: StateFlow<List<ProductItem>> = combine(
+    private val updateProducts = combine(
         installed,
         extrasRepo.getAll(),
     ) { _, _ -> productsRepo.getProducts(Request.Updates) }
@@ -81,20 +82,42 @@ class InstalledVM(
                 Log.d(TAG, "Update products list size: ${this.size}")
             }
         }
+
+    private val downloaded = downloadedRepo.getAllFlow()
+        .debounce(250L)
+
+    val sortedDownloads = downloaded
+        .mapLatest { it.sortedByDescending { it.changed / 20_000L } }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
             initialValue = emptyList()
         )
 
-    val downloaded = downloadedRepo.getAllFlow()
-        .debounce(250L)
-        .distinctUntilChanged()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            initialValue = emptyList()
+    val installedPageState: StateFlow<InstalledPageState> = combine(
+        installed,
+        installedProducts,
+        updateProducts,
+        downloaded,
+        sortFilter,
+    ) { installed, installedProducts, updateProducts, downloaded, sortFilter ->
+        val sortedActiveDownloads = downloaded
+            .filter { it.state is DownloadState.Downloading && it.changed + 600_000L > System.currentTimeMillis() }
+            .sortedBy { it.state.name }
+        InstalledPageState(
+            installedMap = installed,
+            installedProducts = installedProducts,
+            updates = updateProducts,
+            activeDownloads = sortedActiveDownloads,
+            updatesAvailable = updateProducts.isNotEmpty(),
+            isDownloading = sortedActiveDownloads.isNotEmpty(),
+            sortFilter = sortFilter
         )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        initialValue = InstalledPageState()
+    )
 
     fun setSortFilter(value: String) = viewModelScope.launch {
         sortFilter.update { value }
@@ -109,3 +132,13 @@ class InstalledVM(
         private const val TAG = "InstalledVM"
     }
 }
+
+data class InstalledPageState(
+    val installedMap: Map<String, Installed> = emptyMap(),
+    val installedProducts: List<ProductItem> = emptyList(),
+    val updates: List<ProductItem> = emptyList(),
+    val activeDownloads: List<Downloaded> = emptyList(),
+    val updatesAvailable: Boolean = false,
+    val isDownloading: Boolean = false,
+    val sortFilter: String = ""
+)
