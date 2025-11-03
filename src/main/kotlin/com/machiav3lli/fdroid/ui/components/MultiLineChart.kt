@@ -41,7 +41,7 @@ import java.time.YearMonth
 @Composable
 fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modifier) {
     val modelProducer = remember { CartesianChartModelProducer() }
-    val legendItemLabelComponent = rememberTextComponent(vicoTheme.textColor)
+    val legendItemLabelComponent = rememberTextComponent(MaterialTheme.colorScheme.onSurface)
     val dates = data.keys.sorted()
     val lineKeys = data.values.flatMap { it.keys }.distinct().sorted()
     val entriesPerLine: Map<String, List<Long>> = lineKeys.mapIndexed { index, client ->
@@ -54,8 +54,8 @@ fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Mo
         if ("Droid-ify" in entriesPerLine.keys) add(Color.Green)
         if ("F-Droid" in entriesPerLine.keys) add(Color.Blue)
         if ("F-Droid Classic" in entriesPerLine.keys) add(Color.Red)
-        if ("Flicky" in entriesPerLine.keys) add(Color.Magenta)
-        if ("Neo Store" in entriesPerLine.keys) add(Color.Cyan)
+        if ("Flicky" in entriesPerLine.keys) add(Color.Cyan)
+        if ("Neo Store" in entriesPerLine.keys) add(Color.Magenta)
         if ("_total" in entriesPerLine.keys) add(MaterialTheme.colorScheme.primary)
         if ("_unknown" in entriesPerLine.keys) add(Color.Yellow)
     }
@@ -118,7 +118,7 @@ fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Mo
 @Composable
 fun MonthlyLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modifier) {
     val modelProducer = remember { CartesianChartModelProducer() }
-    val legendItemLabelComponent = rememberTextComponent(vicoTheme.textColor)
+    val legendItemLabelComponent = rememberTextComponent(MaterialTheme.colorScheme.onSurface)
     val dates = data.keys.sorted()
     val lineKeys = data.values.flatMap { it.keys }.distinct().sorted()
     val entriesPerLine: Map<String, List<Long>> = lineKeys.mapIndexed { index, client ->
@@ -131,8 +131,8 @@ fun MonthlyLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = 
         if ("Droid-ify" in entriesPerLine.keys) add(Color.Green)
         if ("F-Droid" in entriesPerLine.keys) add(Color.Blue)
         if ("F-Droid Classic" in entriesPerLine.keys) add(Color.Red)
-        if ("Flicky" in entriesPerLine.keys) add(Color.Magenta)
-        if ("Neo Store" in entriesPerLine.keys) add(Color.Cyan)
+        if ("Flicky" in entriesPerLine.keys) add(Color.Cyan)
+        if ("Neo Store" in entriesPerLine.keys) add(Color.Magenta)
         if ("_total" in entriesPerLine.keys) add(MaterialTheme.colorScheme.primary)
         if ("_unknown" in entriesPerLine.keys) add(Color.Yellow)
     }
@@ -196,7 +196,7 @@ fun MonthlyLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = 
 fun SimpleLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val modelProducer = remember { CartesianChartModelProducer() }
-    val legendItemLabelComponent = rememberTextComponent(vicoTheme.textColor)
+    val legendItemLabelComponent = rememberTextComponent(MaterialTheme.colorScheme.onSurface)
     val dates = data.keys.sorted()
     val lineKeys = data.values.flatMap { it.keys }.distinct().sorted()
     val entriesPerLine: Map<String, List<Long>> = lineKeys.mapIndexed { index, key ->
