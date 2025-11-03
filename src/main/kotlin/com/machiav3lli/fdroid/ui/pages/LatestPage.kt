@@ -61,16 +61,13 @@ fun LatestPage(
     val neoActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
 
-    val installedList by viewModel.installed.collectAsState(emptyMap())
-    val secondaryList by viewModel.newProducts.collectAsState(emptyList())
-    val primaryList by viewModel.updatedProducts.collectAsState(emptyList())
+    val pageState by viewModel.pageState.collectAsState()
     val dataState by mainVM.dataState.collectAsState()
 
     val scaffoldState = rememberBottomSheetScaffoldState()
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
-    val sortFilter by viewModel.sortFilter.collectAsState()
-    val notModifiedSortFilter by remember(sortFilter) {
+    val notModifiedSortFilter by remember(pageState.sortFilter) {
         derivedStateOf {
             Preferences[Preferences.Key.SortOrderAscendingLatest] == Preferences.Key.SortOrderAscendingLatest.default.value &&
                     Preferences[Preferences.Key.ReposFilterLatest] == Preferences.Key.ReposFilterLatest.default.value &&
@@ -159,7 +156,7 @@ fun LatestPage(
                     if (Preferences[Preferences.Key.AltNewApps]) {
                         ProductsHorizontalRecycler(
                             modifier = Modifier.weight(1f),
-                            productsList = secondaryList,
+                            productsList = pageState.newProducts,
                             repositories = dataState.reposMap,
                         ) { item ->
                             neoActivity.navigateProduct(item.packageName)
@@ -167,7 +164,7 @@ fun LatestPage(
                     } else {
                         ProductsCarousel(
                             modifier = Modifier.weight(1f),
-                            productsList = secondaryList,
+                            productsList = pageState.newProducts,
                             repositories = dataState.reposMap,
                             favorites = dataState.favorites,
                             onFavouriteClick = {
@@ -177,7 +174,7 @@ fun LatestPage(
                                 )
                             },
                             onActionClick = { item, action ->
-                                val installed = installedList[item.packageName]
+                                val installed = pageState.installedMap[item.packageName]
                                 val installFun = {
                                     NeoApp.wm.install(
                                         Pair(item.packageName, item.repositoryId)
@@ -229,7 +226,7 @@ fun LatestPage(
                 }
             }
             items(
-                items = primaryList,
+                items = pageState.updatedProducts,
                 key = { it.packageName },
             ) { item ->
                 ProductsListItem(
@@ -245,9 +242,9 @@ fun LatestPage(
                             !dataState.favorites.contains(it.packageName)
                         )
                     },
-                    installed = installedList[item.packageName],
+                    installed = pageState.installedMap[item.packageName],
                     onActionClick = {
-                        val installed = installedList[it.packageName]
+                        val installed = pageState.installedMap[it.packageName]
                         val action = {
                             NeoApp.wm.install(
                                 Pair(it.packageName, it.repositoryId)

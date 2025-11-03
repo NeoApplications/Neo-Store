@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
@@ -10,15 +9,14 @@ import com.machiav3lli.fdroid.data.entity.Request
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
+import com.machiav3lli.fdroid.utils.extension.Quadruple
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -29,55 +27,42 @@ class LatestVM(
     extrasRepo: ExtrasRepository,
     installedRepo: InstalledRepository,
 ) : ViewModel() {
-    val sortFilter: StateFlow<String>
+    private val sortFilter: StateFlow<String>
         private field = MutableStateFlow("")
 
-    val favorites = extrasRepo.getAllFavorites().distinctUntilChanged()
-
-    val installed = installedRepo.getAll().map {
-        it.associateBy(Installed::packageName).apply {
-            Log.d(TAG, "Installed list size: ${this.size}")
+    // TODO simplify
+    val pageState: StateFlow<LatestPageState> = combine(
+        sortFilter,
+        installedRepo.getAll()
+            .map { list ->
+                list.associateBy(Installed::packageName)
+            },
+        extrasRepo.getAll(),
+    ) { sortFilter, installed, extras ->
+        Triple(sortFilter, installed, extras)
+    }.flatMapLatest { (sortFilter, installed, _) ->
+        combine(
+            productsRepo.getProducts(Request.Updated),
+            productsRepo.getProducts(Request.New),
+        ) { updated, new ->
+            Quadruple(sortFilter, installed, updated, new)
         }
+    }.map { (sortFilter, installed, updatedList, newList) ->
+        LatestPageState(
+            sortFilter = sortFilter,
+            installedMap = installed,
+            updatedProducts = updatedList.map {
+                it.toItem(installed[it.product.packageName])
+            },
+            newProducts = newList.map {
+                it.toItem(installed[it.product.packageName])
+            },
+        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        initialValue = emptyMap()
+        initialValue = LatestPageState()
     )
-
-    val updatedProducts: StateFlow<List<ProductItem>> = combine(
-        sortFilter,
-        installed,
-        extrasRepo.getAll().distinctUntilChanged(),
-    ) { _, _, _ -> productsRepo.getProducts(Request.Updated) }
-        .flatMapLatest { it }
-        .distinctUntilChanged()
-        .mapLatest { list ->
-            list.map { it.toItem(installed.value[it.product.packageName]) }.apply {
-                Log.d(TAG, "Updated products list size: ${this.size}")
-            }
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            initialValue = emptyList()
-        )
-
-    val newProducts: StateFlow<List<ProductItem>> = combine(
-        installed,
-        extrasRepo.getAll().distinctUntilChanged(),
-    ) { _, _ -> productsRepo.getProducts(Request.New) }
-        .flatMapLatest { it }
-        .distinctUntilChanged()
-        .mapLatest { list ->
-            list.map { it.toItem(installed.value[it.product.packageName]) }.apply {
-                Log.d(TAG, "New products list size: ${this.size}")
-            }
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            initialValue = emptyList()
-        )
 
     fun setSortFilter(value: String) = viewModelScope.launch {
         sortFilter.update { value }
@@ -87,3 +72,10 @@ class LatestVM(
         private const val TAG = "LatestVM"
     }
 }
+
+data class LatestPageState(
+    val sortFilter: String = "",
+    val installedMap: Map<String, Installed> = emptyMap(),
+    val updatedProducts: List<ProductItem> = emptyList(),
+    val newProducts: List<ProductItem> = emptyList(),
+)
