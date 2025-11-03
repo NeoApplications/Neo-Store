@@ -68,7 +68,7 @@ fun ProductsCarousel(
     modifier: Modifier = Modifier,
     productsList: List<ProductItem>,
     repositories: Map<Long, Repository>,
-    favorites: Array<String>,
+    favorites: List<String>,
     onFavouriteClick: (ProductItem) -> Unit,
     onActionClick: (ProductItem, ActionState) -> Unit = { _, _ -> },
     onUserClick: (ProductItem) -> Unit = {},

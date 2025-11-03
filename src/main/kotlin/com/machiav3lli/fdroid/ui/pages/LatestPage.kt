@@ -64,8 +64,7 @@ fun LatestPage(
     val installedList by viewModel.installed.collectAsState(emptyMap())
     val secondaryList by viewModel.newProducts.collectAsState(emptyList())
     val primaryList by viewModel.updatedProducts.collectAsState(emptyList())
-    val repositoriesMap by mainVM.reposMap.collectAsState()
-    val favorites by viewModel.favorites.collectAsState(emptyArray())
+    val dataState by mainVM.dataState.collectAsState()
 
     val scaffoldState = rememberBottomSheetScaffoldState()
     val openDialog = remember { mutableStateOf(false) }
@@ -161,7 +160,7 @@ fun LatestPage(
                         ProductsHorizontalRecycler(
                             modifier = Modifier.weight(1f),
                             productsList = secondaryList,
-                            repositories = repositoriesMap,
+                            repositories = dataState.reposMap,
                         ) { item ->
                             neoActivity.navigateProduct(item.packageName)
                         }
@@ -169,12 +168,12 @@ fun LatestPage(
                         ProductsCarousel(
                             modifier = Modifier.weight(1f),
                             productsList = secondaryList,
-                            repositories = repositoriesMap,
-                            favorites = favorites,
+                            repositories = dataState.reposMap,
+                            favorites = dataState.favorites,
                             onFavouriteClick = {
                                 mainVM.setFavorite(
                                     it.packageName,
-                                    !favorites.contains(it.packageName)
+                                    !dataState.favorites.contains(it.packageName)
                                 )
                             },
                             onActionClick = { item, action ->
@@ -235,15 +234,15 @@ fun LatestPage(
             ) { item ->
                 ProductsListItem(
                     item = item,
-                    repo = repositoriesMap[item.repositoryId],
-                    isFavorite = favorites.contains(item.packageName),
+                    repo = dataState.reposMap[item.repositoryId],
+                    isFavorite = dataState.favorites.contains(item.packageName),
                     onUserClick = {
                         neoActivity.navigateProduct(it.packageName)
                     },
                     onFavouriteClick = {
                         mainVM.setFavorite(
                             it.packageName,
-                            !favorites.contains(it.packageName)
+                            !dataState.favorites.contains(it.packageName)
                         )
                     },
                     installed = installedList[item.packageName],

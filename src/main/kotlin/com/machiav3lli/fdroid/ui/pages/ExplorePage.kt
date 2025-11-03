@@ -92,8 +92,7 @@ fun ExplorePage(
     val filteredProducts by viewModel.products.collectAsState(emptyList())
     val topAppType by viewModel.topAppType.collectAsStateWithLifecycle()
     val topProducts by viewModel.topDownloadedProducts.collectAsState(emptyList())
-    val repositoriesMap by mainState.reposMap.collectAsState()
-    val favorites by mainState.favorites.collectAsState(emptyArray())
+    val dataState by mainState.dataState.collectAsState()
     val categories by viewModel.categories.collectAsState(emptyList())
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
@@ -264,15 +263,15 @@ fun ExplorePage(
                             items(items = filteredProducts, key = { it.packageName }) { item ->
                                 ProductsListItem(
                                     item = item,
-                                    repo = repositoriesMap[item.repositoryId],
-                                    isFavorite = favorites.contains(item.packageName),
+                                    repo = dataState.reposMap[item.repositoryId],
+                                    isFavorite = dataState.favorites.contains(item.packageName),
                                     onUserClick = {
                                         neoActivity.navigateProduct(it.packageName)
                                     },
                                     onFavouriteClick = {
                                         mainState.setFavorite(
                                             it.packageName,
-                                            !favorites.contains(it.packageName)
+                                            !dataState.favorites.contains(it.packageName)
                                         )
                                     },
                                     installed = installedList[item.packageName],
@@ -341,15 +340,15 @@ fun ExplorePage(
                     items(items = topProducts, key = { it.packageName }) { item ->
                         ProductsListItem(
                             item = item,
-                            repo = repositoriesMap[item.repositoryId],
-                            isFavorite = favorites.contains(item.packageName),
+                            repo = dataState.reposMap[item.repositoryId],
+                            isFavorite = dataState.favorites.contains(item.packageName),
                             onUserClick = {
                                 neoActivity.navigateProduct(it.packageName)
                             },
                             onFavouriteClick = {
                                 mainState.setFavorite(
                                     it.packageName,
-                                    !favorites.contains(it.packageName)
+                                    !dataState.favorites.contains(it.packageName)
                                 )
                             },
                             installed = installedList[item.packageName],

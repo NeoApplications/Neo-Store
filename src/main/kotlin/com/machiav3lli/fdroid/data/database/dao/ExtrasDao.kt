@@ -30,10 +30,10 @@ interface ExtrasDao : BaseDao<Extras> {
     fun getAllFlow(): Flow<List<Extras>>
 
     @Query("SELECT $ROW_PACKAGE_NAME FROM extras WHERE $ROW_FAVORITE != 0")
-    suspend fun getFavorites(): Array<String>
+    suspend fun getFavorites(): List<String>
 
     @Query("SELECT $ROW_PACKAGE_NAME FROM extras WHERE $ROW_FAVORITE != 0")
-    fun getFavoritesFlow(): Flow<Array<String>>
+    fun getFavoritesFlow(): Flow<List<String>>
 
     @Query("UPDATE extras SET $ROW_FAVORITE = :isFavorite WHERE $ROW_PACKAGE_NAME = :packageName")
     suspend fun updateFavorite(packageName: String, isFavorite: Boolean)

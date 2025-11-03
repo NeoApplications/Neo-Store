@@ -17,7 +17,7 @@ class ExtrasRepository(
     fun getAll(): Flow<List<Extras>> = extrasDao.getAllFlow()
         .flowOn(cc)
 
-    fun getAllFavorites(): Flow<Array<String>> = extrasDao.getFavoritesFlow()
+    fun getAllFavorites(): Flow<List<String>> = extrasDao.getFavoritesFlow()
         .flowOn(cc)
 
     suspend fun load(packageName: String): Extras? = extrasDao[packageName]

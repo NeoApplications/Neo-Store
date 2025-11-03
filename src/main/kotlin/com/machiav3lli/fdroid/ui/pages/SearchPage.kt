@@ -79,8 +79,7 @@ fun SearchPage(
     val query by viewModel.query.collectAsState()
     val source = viewModel.source.collectAsState()
     val sortFilter by viewModel.sortFilter.collectAsState()
-    val repositoriesMap by mainVM.reposMap.collectAsState()
-    val favorites by mainVM.favorites.collectAsState(emptyArray())
+    val dataState by mainVM.dataState.collectAsState()
 
     val currentTab by remember {
         derivedStateOf {
@@ -202,15 +201,15 @@ fun SearchPage(
                 ) { item ->
                     ProductsListItem(
                         item = item,
-                        repo = repositoriesMap[item.repositoryId],
-                        isFavorite = favorites.contains(item.packageName),
+                        repo = dataState.reposMap[item.repositoryId],
+                        isFavorite = dataState.favorites.contains(item.packageName),
                         onUserClick = {
                             neoActivity.navigateProduct(it.packageName)
                         },
                         onFavouriteClick = {
                             mainVM.setFavorite(
                                 it.packageName,
-                                !favorites.contains(it.packageName)
+                                !dataState.favorites.contains(it.packageName)
                             )
                         },
                         installed = installedList[item.packageName],

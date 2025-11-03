@@ -39,49 +39,62 @@ open class MainVM(
     val navigationState: StateFlow<Pair<ThreePaneScaffoldRole, String>>
         private field = MutableStateFlow(Pair(ListDetailPaneScaffoldRole.List, ""))
 
-    val favorites = extrasRepo.getAllFavorites()
-    val enabledRepos = reposRepo.getAllEnabled()
-
-    val reposMap = reposRepo.getAll().mapLatest {
-        it.associateBy(Repository::id)
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        initialValue = emptyMap(),
-    )
-
-    val categories = combine(
-        productsRepo.getAllCategories(),
-        productsRepo.getAllCategoryDetails(),
-    ) { cats, catDetails ->
-        cats.map { cat ->
-            catDetails.find { it.name == cat }
-                ?: CategoryDetails(cat, cat)
-        }
-    }
-        .distinctUntilChanged()
-
-    val antifeaturePairs = reposRepo.getRepoAntiFeatures().map { afs ->
-        val catsMap = afs.associateBy(AntiFeatureDetails::name)
-        val enumMap = AntiFeature.entries.associateBy(AntiFeature::key)
-        (catsMap.keys + enumMap.keys).map { name ->
-            catsMap[name]?.let { Pair(it.name, it.label) } ?: Pair(name, "")
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        initialValue = emptyList(),
-    )
-
     val successfulSyncs = reposRepo.getLatestUpdates()
 
-    val licenses = productsRepo.getAllLicenses().distinctUntilChanged().mapLatest {
-        it.map(Licenses::licenses).flatten().distinct()
-    }
+    val dataState: StateFlow<DataState> = combine(
+        reposRepo.getAll().mapLatest { it.associateBy(Repository::id) },
+        extrasRepo.getAllFavorites(),
+        // TODO simplify
+        productsRepo.getIconDetails().distinctUntilChanged()
+            .mapLatest { it.associateBy(IconDetails::packageName) },
+    ) { reposMap, favorites, iconDetails ->
+        DataState(
+            reposMap = reposMap,
+            favorites = favorites,
+            iconDetails = iconDetails,
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        initialValue = DataState(),
+    )
 
-    val iconDetails = productsRepo.getIconDetails().distinctUntilChanged().mapLatest {
-        it.associateBy(IconDetails::packageName)
-    }
+    val sortFilterState: StateFlow<SortFilterState> = combine(
+        reposRepo.getAllEnabled(),
+        // TODO merge the two calls into one
+        combine(
+            productsRepo.getAllCategories(),
+            productsRepo.getAllCategoryDetails(),
+        ) { cats, catDetails ->
+            cats.map { cat ->
+                catDetails.find { it.name == cat }
+                    ?: CategoryDetails(cat, cat)
+            }
+        },
+        // TODO simplify
+        reposRepo.getRepoAntiFeatures().map { afs ->
+            val catsMap = afs.associateBy(AntiFeatureDetails::name)
+            val enumMap = AntiFeature.entries.associateBy(AntiFeature::key)
+            (catsMap.keys + enumMap.keys).map { name ->
+                catsMap[name]?.let { Pair(it.name, it.label) } ?: Pair(name, "")
+            }
+        },
+        // TODO simplify
+        productsRepo.getAllLicenses().distinctUntilChanged().mapLatest {
+            it.map(Licenses::licenses).flatten().distinct()
+        },
+    ) { enabledRepos, categories, antifeaturePairs, licenses ->
+        SortFilterState(
+            enabledRepos = enabledRepos,
+            categories = categories,
+            antifeaturePairs = antifeaturePairs,
+            licenses = licenses,
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        initialValue = SortFilterState(),
+    )
 
     fun setNavigatorRole(role: ThreePaneScaffoldRole, packageName: String = "") {
         viewModelScope.launch { navigationState.update { Pair(role, packageName) } }
@@ -97,3 +110,16 @@ open class MainVM(
         const val TAG = "MainVM"
     }
 }
+
+data class DataState(
+    val reposMap: Map<Long, Repository> = emptyMap(),
+    val favorites: List<String> = emptyList(),
+    val iconDetails: Map<String, IconDetails> = emptyMap(),
+)
+
+data class SortFilterState(
+    val enabledRepos: List<Repository> = emptyList(),
+    val categories: List<CategoryDetails> = emptyList(),
+    val antifeaturePairs: List<Pair<String, String>> = emptyList(),
+    val licenses: List<String> = emptyList(),
+)

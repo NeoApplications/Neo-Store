@@ -163,15 +163,13 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
     val installedList by viewModel.installed.collectAsState(emptyMap())
     val updates by viewModel.updateProducts.collectAsState(emptyList())
     val installedItems by viewModel.installedProducts.collectAsState(emptyList())
-    val repositoriesMap by mainVM.reposMap.collectAsState()
-    val favorites by mainVM.favorites.collectAsState(emptyArray())
+    val dataState by mainVM.dataState.collectAsState()
 
     val updatesAvailable by remember {
         derivedStateOf {
             updates.isNotEmpty()
         }
     }
-    val iconDetails by mainVM.iconDetails.collectAsState(emptyMap())
     val downloaded = viewModel.downloaded.collectAsState(emptyList())
     val downloads = remember {
         derivedStateOf {
@@ -301,7 +299,7 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
                         AnimatedVisibility(updatesVisible) {
                             ProductsHorizontalRecycler(
                                 productsList = updates,
-                                repositories = repositoriesMap,
+                                repositories = dataState.reposMap,
                                 rowsNumber = updates.size.coerceIn(1, 2),
                             ) { item ->
                                 neoActivity.navigateProduct(item.packageName)
@@ -320,8 +318,8 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
                 items(sortedDownloads, key = { it.itemKey }) { item ->
                     DownloadedItem(
                         download = item,
-                        iconDetails = iconDetails[item.packageName],
-                        repo = repositoriesMap[item.state.repoId],
+                        iconDetails = dataState.iconDetails[item.packageName],
+                        repo = dataState.reposMap[item.state.repoId],
                         state = item.state,
                     ) {
                         neoActivity.navigateProduct(item.packageName)
@@ -350,15 +348,15 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
             items(installedItems, key = { it.packageName }) { item ->
                 ProductsListItem(
                     item = item,
-                    repo = repositoriesMap[item.repositoryId],
-                    isFavorite = favorites.contains(item.packageName),
+                    repo = dataState.reposMap[item.repositoryId],
+                    isFavorite = dataState.favorites.contains(item.packageName),
                     onUserClick = {
                         neoActivity.navigateProduct(it.packageName)
                     },
                     onFavouriteClick = { pi ->
                         mainVM.setFavorite(
                             pi.packageName,
-                            !favorites.contains(pi.packageName)
+                            !dataState.favorites.contains(pi.packageName)
                         )
                     },
                     installed = installedList[item.packageName],
@@ -438,8 +436,7 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
 fun DownloadedPage(viewModel: InstalledVM, mainVM: MainVM) {
     val neoActivity = LocalActivity.current as NeoActivity
 
-    val repositoriesMap by mainVM.reposMap.collectAsState()
-    val iconDetails by mainVM.iconDetails.collectAsState(emptyMap())
+    val dataState by mainVM.dataState.collectAsState()
     val downloaded = viewModel.downloaded.collectAsState(emptyList())
     val sortedDownloaded by remember {
         derivedStateOf {
@@ -484,8 +481,8 @@ fun DownloadedPage(viewModel: InstalledVM, mainVM: MainVM) {
 
             DownloadedItem(
                 download = item,
-                iconDetails = iconDetails[item.packageName],
-                repo = repositoriesMap[state.repoId],
+                iconDetails = dataState.iconDetails[item.packageName],
+                repo = dataState.reposMap[state.repoId],
                 state = state,
                 onUserClick = { neoActivity.navigateProduct(item.packageName) },
                 onEraseClick = { viewModel.eraseDownloaded(item) },

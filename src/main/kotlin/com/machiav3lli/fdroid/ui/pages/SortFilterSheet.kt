@@ -66,10 +66,7 @@ fun SortFilterSheet(
 ) {
     val context = LocalContext.current
     val nestedScrollConnection = rememberNestedScrollInteropConnection()
-    val activeRepos by viewModel.enabledRepos.collectAsState(emptyList())
-    val categories by viewModel.categories.collectAsState(emptyList())
-    val antifeaturePairs by viewModel.antifeaturePairs.collectAsState(emptyList())
-    val licenses by viewModel.licenses.collectAsState(emptyList())
+    val sortFilterState by viewModel.sortFilterState.collectAsState()
 
     val sortKey = when (navPage) {
         NavItem.Latest.destination    -> Preferences.Key.SortOrderLatest
@@ -243,12 +240,15 @@ fun SortFilterSheet(
                     heading = stringResource(id = R.string.repositories),
                     preExpanded = filteredOutRepos.isNotEmpty(),
                 ) {
-                    DeSelectAll(activeRepos.map { it.id.toString() }, filteredOutRepos)
+                    DeSelectAll(
+                        sortFilterState.enabledRepos.map { it.id.toString() },
+                        filteredOutRepos
+                    )
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        activeRepos.sortedBy { it.name }.forEach {
+                        sortFilterState.enabledRepos.sortedBy { it.name }.forEach {
                             val checked by derivedStateOf {
                                 !filteredOutRepos.contains(it.id.toString())
                             }
@@ -274,7 +274,8 @@ fun SortFilterSheet(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         listOf(Pair(FILTER_CATEGORY_ALL, stringResource(id = R.string.all))) +
-                                (categories.sortedBy { it.label }.map { Pair(it.name, it.label) })
+                                (sortFilterState.categories.sortedBy { it.label }
+                                    .map { Pair(it.name, it.label) })
                                     .forEach {
                                         SelectChip(
                                             text = it.second,
@@ -334,12 +335,15 @@ fun SortFilterSheet(
                     heading = stringResource(id = R.string.allowed_anti_features),
                     preExpanded = filteredAntifeatures.isNotEmpty(),
                 ) {
-                    DeSelectAll(antifeaturePairs.map { it.first }, filteredAntifeatures)
+                    DeSelectAll(
+                        sortFilterState.antifeaturePairs.map { it.first },
+                        filteredAntifeatures
+                    )
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        antifeaturePairs.sortedBy {
+                        sortFilterState.antifeaturePairs.sortedBy {
                             it.second.nullIfEmpty()
                                 ?: it.first.toAntiFeature()
                                     ?.let { context.getString(it.titleResId) }
@@ -368,12 +372,12 @@ fun SortFilterSheet(
                     heading = stringResource(id = R.string.allowed_licenses),
                     preExpanded = filteredLicenses.isNotEmpty(),
                 ) {
-                    DeSelectAll(licenses, filteredLicenses)
+                    DeSelectAll(sortFilterState.licenses, filteredLicenses)
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        licenses.sorted().forEach {
+                        sortFilterState.licenses.sorted().forEach {
                             val checked by derivedStateOf {
                                 !filteredLicenses.contains(it)
                             }
