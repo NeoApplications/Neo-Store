@@ -464,4 +464,5 @@
     <string name="trending_from_fdroid_classic">Beliebt auf F-Droid Classic</string>
     <string name="trending_from_flicky">Beliebt auf Flicky</string>
     <string name="trending_from_neostore">Beliebt im Neo Store</string>
+    <string name="shizuku_installer">Shizuku Installer</string>
 </resources>
