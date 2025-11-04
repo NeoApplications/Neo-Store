@@ -244,7 +244,7 @@
     <string name="permission_physical_data">Permisos para sensores corporales</string>
     <string name="permission_identification_data">Permisos para datos de identificación</string>
     <string name="trackers">Rastreadores</string>
-    <string name="trackers_identification">Indentificación de los rastreadores</string>
+    <string name="trackers_identification">Rastreadores de identificación</string>
     <string name="trackers_analytics">Rastreadores analíticos</string>
     <string name="trackers_analytics_description">Rastreadores utilizados para recopilar estadísticas sobre su uso de las aplicaciones, por ejemplo, pulsaciones y clics.</string>
     <string name="trackers_ads">Rastreadores para publicidad</string>
