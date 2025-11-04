@@ -43,7 +43,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.FILTER_CATEGORY_FAV
 import com.machiav3lli.fdroid.NeoActivity
@@ -88,12 +87,9 @@ fun ExplorePage(
     val catsListState = rememberLazyListState()
     val topsListState = rememberLazyListState()
 
-    val installedList by viewModel.installed.collectAsState(emptyMap())
-    val filteredProducts by viewModel.products.collectAsState(emptyList())
-    val topAppType by viewModel.topAppType.collectAsStateWithLifecycle()
-    val topProducts by viewModel.topDownloadedProducts.collectAsState(emptyList())
+    val categoryProductsState by viewModel.categoryProductsState.collectAsState()
+    val topProductsState by viewModel.topProductsState.collectAsState()
     val dataState by mainState.dataState.collectAsState()
-    val categories by viewModel.categories.collectAsState(emptyList())
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }
@@ -103,8 +99,7 @@ fun ExplorePage(
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
 
-    val sortFilter by viewModel.sortFilter.collectAsState()
-    val notModifiedSortFilter by remember(sortFilter) {
+    val notModifiedSortFilter by remember(categoryProductsState.sortFilter) {
         derivedStateOf {
             Preferences[Preferences.Key.SortOrderExplore] == Preferences.Key.SortOrderExplore.default.value &&
                     Preferences[Preferences.Key.SortOrderAscendingExplore] == Preferences.Key.SortOrderAscendingExplore.default.value &&
@@ -231,7 +226,7 @@ fun ExplorePage(
                                     stringResource(id = R.string.favorite_applications),
                                     Phosphor.HeartStraight
                                 ),
-                            ) + (categories.sortedBy { it.label }
+                            ) + (categoryProductsState.categories.sortedBy { it.label }
                                 .map { Triple(it.name, it.label, it.name.appCategoryIcon) }),
                             selectedKey = selectedCategory,
                         ) {
@@ -260,7 +255,9 @@ fun ExplorePage(
                             state = catsListState,
                             contentPadding = PaddingValues(vertical = 8.dp),
                         ) {
-                            items(items = filteredProducts, key = { it.packageName }) { item ->
+                            items(
+                                items = categoryProductsState.items,
+                                key = { it.packageName }) { item ->
                                 ProductsListItem(
                                     item = item,
                                     repo = dataState.reposMap[item.repositoryId],
@@ -274,9 +271,10 @@ fun ExplorePage(
                                             !dataState.favorites.contains(it.packageName)
                                         )
                                     },
-                                    installed = installedList[item.packageName],
+                                    installed = categoryProductsState.installedMap[item.packageName],
                                     onActionClick = {
-                                        val installed = installedList[it.packageName]
+                                        val installed =
+                                            categoryProductsState.installedMap[it.packageName]
                                         val action = {
                                             NeoApp.wm.install(
                                                 Pair(it.packageName, it.repositoryId)
@@ -316,7 +314,7 @@ fun ExplorePage(
                             items(items = TopDownloadType.entries, key = { it.key }) { type ->
                                 SelectChip(
                                     text = stringResource(type.displayString),
-                                    checked = topAppType == type,
+                                    checked = topProductsState.topAppType == type,
                                     alwaysShowIcon = false,
                                 ) {
                                     viewModel.setTopAppsType(type)
@@ -337,7 +335,7 @@ fun ExplorePage(
                             )
                         }
                     }
-                    items(items = topProducts, key = { it.packageName }) { item ->
+                    items(items = topProductsState.items, key = { it.packageName }) { item ->
                         ProductsListItem(
                             item = item,
                             repo = dataState.reposMap[item.repositoryId],
@@ -351,9 +349,9 @@ fun ExplorePage(
                                     !dataState.favorites.contains(it.packageName)
                                 )
                             },
-                            installed = installedList[item.packageName],
+                            installed = topProductsState.installedMap[item.packageName],
                             onActionClick = {
-                                val installed = installedList[it.packageName]
+                                val installed = topProductsState.installedMap[it.packageName]
                                 val action = {
                                     NeoApp.wm.install(
                                         Pair(it.packageName, it.repositoryId)
