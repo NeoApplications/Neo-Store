@@ -32,6 +32,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Phone
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.User
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserFocus
+import kotlin.math.truncate
 
 class PrivacyData(
     val permissions: Map<PermissionGroup, List<PermissionInfo>> = emptyMap(),
@@ -47,11 +48,17 @@ class PrivacyData(
 
 }
 
+// TODO rename or merge into PrivacyData
 class PrivacyNote(
     val permissionsNote: Int = 100,
     val trackersNote: Int = 100,
     val sourceType: SourceType = SourceType(),
-)
+) {
+    val trackersRank
+        get() = truncate((trackersNote - 1) / 20f).toInt()
+    val permissionsRank
+        get() = truncate((permissionsNote - 1) / 20f).toInt()
+}
 
 class SourceType(
     val open: Boolean = true,

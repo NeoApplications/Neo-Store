@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
-import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.ui.components.InfoChip
 import com.machiav3lli.fdroid.utils.extension.text.formatSize
@@ -42,14 +41,17 @@ fun AppInfoChips(
 
 @Composable
 fun EmbeddedProduct.appInfoChips(
-    installed: Installed?,
+    canUpdate: Boolean,
+    isInstalled: Boolean,
+    installedVersion: String,
     latestRelease: Release?,
     categories: List<String>,
 ) = listOfNotNull(
-    if (installed != null && this.canUpdate(installed))
-        "v${installed.version.trimStart('v')} → v${version.trimStart('v')}"
-    else if (installed != null) "v${installed.version.trimStart('v')}"
-    else "v${version.trimStart('v')}",
+    when {
+        isInstalled && canUpdate -> "v${installedVersion.trimStart('v')} → v${version.trimStart('v')}"
+        isInstalled              -> "v${installedVersion.trimStart('v')}"
+        else                     -> "v${version.trimStart('v')}"
+    },
     displayRelease?.size?.formatSize().orEmpty(),
     DateFormat.getDateInstance().format(Date(product.updated)),
     *categories.toTypedArray(),

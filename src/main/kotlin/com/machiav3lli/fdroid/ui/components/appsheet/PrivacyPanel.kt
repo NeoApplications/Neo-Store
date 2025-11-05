@@ -35,7 +35,6 @@ import com.machiav3lli.fdroid.TC_PACKAGENAME_FDROID
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.entity.PermissionGroup
-import com.machiav3lli.fdroid.data.entity.PrivacyNote
 import com.machiav3lli.fdroid.data.entity.SourceInfo
 import com.machiav3lli.fdroid.data.entity.TrackersGroup.Companion.getTrackersGroup
 import com.machiav3lli.fdroid.data.entity.toAntiFeature
@@ -62,11 +61,7 @@ fun PrivacyPanel(
     onUriClick: (Uri, Boolean) -> Boolean,
 ) {
     val context = LocalContext.current
-    val trackers by viewModel.trackers.collectAsState(emptyList())
-    val installed = viewModel.installedItem.collectAsState(null)
-    val exodusInfo by viewModel.exodusInfo.collectAsState(null)
-    val privacyData by viewModel.privacyData.collectAsState()
-    val privacyNote by viewModel.privacyNote.collectAsState(PrivacyNote())
+    val panelState by viewModel.privacyPanelState.collectAsState()
 
     LazyColumn(
         modifier = modifier,
@@ -75,7 +70,7 @@ fun PrivacyPanel(
     ) {
         val requestedPermissions by derivedStateOf {
             try {
-                if (installed.value != null) context.packageManager.getPackageInfo(
+                if (panelState.isInstalled) context.packageManager.getPackageInfo(
                     packageName,
                     PackageManager.GET_PERMISSIONS
                 ).grantedPermissions else emptyMap()
@@ -85,7 +80,7 @@ fun PrivacyPanel(
         }
 
         item {
-            privacyData.physicalDataPermissions.let { list ->
+            panelState.privacyData.physicalDataPermissions.let { list ->
                 val privacyPoints = list.privacyPoints
                 PrivacyCard(
                     heading = stringResource(id = R.string.permission_physical_data) + if (list.isNotEmpty()) " ${
@@ -96,7 +91,7 @@ fun PrivacyPanel(
                         )
                     }" else "",
                     preExpanded = true,
-                    actionText = if (installed.value != null && list.isNotEmpty())
+                    actionText = if (panelState.isInstalled && list.isNotEmpty())
                         stringResource(id = R.string.action_change_permissions)
                     else "",
                     onAction = { context.openPermissionPage(packageName) }
@@ -114,7 +109,7 @@ fun PrivacyPanel(
                                         text = ps
                                             .mapIndexed { index, perm ->
                                                 "\u2023 ${
-                                                    if (installed.value != null) "(${
+                                                    if (panelState.isInstalled) "(${
                                                         stringResource(
                                                             if (requestedPermissions[perm.name] == true) R.string.permission_granted
                                                             else if (perm.name !in requestedPermissions.keys) R.string.permission_not_present
@@ -142,7 +137,7 @@ fun PrivacyPanel(
             }
         }
         item {
-            privacyData.identificationDataPermissions.let { list ->
+            panelState.privacyData.identificationDataPermissions.let { list ->
                 val privacyPoints = list.privacyPoints
                 PrivacyCard(
                     heading = stringResource(id = R.string.permission_identification_data) + if (list.isNotEmpty()) " ${
@@ -153,7 +148,7 @@ fun PrivacyPanel(
                         )
                     }" else "",
                     preExpanded = true,
-                    actionText = if (installed.value != null && list.isNotEmpty())
+                    actionText = if (panelState.isInstalled && list.isNotEmpty())
                         stringResource(id = R.string.action_change_permissions)
                     else "",
                     onAction = { context.openPermissionPage(packageName) }
@@ -171,7 +166,7 @@ fun PrivacyPanel(
                                         text = ps
                                             .mapIndexed { index, perm ->
                                                 "\u2023 ${
-                                                    if (installed.value != null) "(${
+                                                    if (panelState.isInstalled) "(${
                                                         stringResource(
                                                             if (requestedPermissions[perm.name] == true) R.string.permission_granted
                                                             else if (perm.name !in requestedPermissions.keys) R.string.permission_not_present
@@ -198,9 +193,9 @@ fun PrivacyPanel(
                 }
             }
         }
-        if (privacyData.otherPermissions.isNotEmpty()) {
+        if (panelState.privacyData.otherPermissions.isNotEmpty()) {
             item {
-                privacyData.otherPermissions.let { list ->
+                panelState.privacyData.otherPermissions.let { list ->
                     val privacyPoints = list.privacyPoints
                     PrivacyCard(
                         heading = stringResource(id = R.string.permission_other) + if (list.isNotEmpty()) " ${
@@ -219,7 +214,7 @@ fun PrivacyPanel(
                                     text = ps
                                         .mapIndexed { index, perm ->
                                             "\u2023 ${
-                                                if (installed.value != null) "(${
+                                                if (panelState.isInstalled) "(${
                                                     stringResource(
                                                         if (requestedPermissions[perm.name] == true) R.string.permission_granted
                                                         else if (perm.name !in requestedPermissions.keys) R.string.permission_not_present
@@ -243,12 +238,12 @@ fun PrivacyPanel(
                     .getLaunchIntentForPackage(TC_PACKAGENAME)
                     ?: context.packageManager
                         .getLaunchIntentForPackage(TC_PACKAGENAME_FDROID)
-                val privacyPoints = trackers.privacyPoints
+                val privacyPoints = panelState.trackers.privacyPoints
                 PrivacyCard(
                     heading = stringResource(
                         id = R.string.trackers_in,
-                        exodusInfo?.version_name.orEmpty()
-                    ) + if (trackers.isNotEmpty()) " ${
+                        panelState.exodusInfo?.version_name.orEmpty()
+                    ) + if (panelState.trackers.isNotEmpty()) " ${
                         pluralStringResource(
                             id = R.plurals.privacy_points_FORMAT,
                             privacyPoints,
@@ -256,7 +251,7 @@ fun PrivacyPanel(
                         )
                     }" else "",
                     preExpanded = true,
-                    actionText = if (installed.value != null) stringResource(
+                    actionText = if (panelState.isInstalled) stringResource(
                         id = if (tcIntent == null) R.string.action_install_tc
                         else R.string.action_open_tc
                     ) else "",
@@ -278,12 +273,12 @@ fun PrivacyPanel(
                         )
                     }
                 ) {
-                    if (trackers.isNotEmpty()) {
-                        trackers
+                    if (panelState.trackers.isNotEmpty()) {
+                        panelState.trackers
                             .map { it.categories }
                             .flatten()
                             .distinct()
-                            .associateWith { group -> trackers.filter { group in it.categories } }
+                            .associateWith { group -> panelState.trackers.filter { group in it.categories } }
                             .forEach { (group, groupTrackers) ->
                                 val groupItem = group.getTrackersGroup()
                                 ExpandableItemsBlock(
@@ -325,7 +320,7 @@ fun PrivacyPanel(
                             Text(
                                 text = stringResource(
                                     id =
-                                        if (exodusInfo != null) R.string.trackers_none
+                                        if (panelState.exodusInfo != null) R.string.trackers_none
                                         else R.string.no_trackers_data_available
                                 )
                             )
@@ -339,7 +334,7 @@ fun PrivacyPanel(
                 heading = stringResource(id = R.string.source_code),
                 preExpanded = true,
             ) {
-                (if (privacyNote.sourceType.open) SourceInfo.Open else SourceInfo.Proprietary).let {
+                (if (panelState.privacyNote.sourceType.open) SourceInfo.Open else SourceInfo.Proprietary).let {
                     ExpandableItemsBlock(
                         heading = stringResource(id = it.labelId),
                         icon = it.icon,
@@ -351,7 +346,7 @@ fun PrivacyPanel(
                         }
                     }
                 }
-                if (privacyNote.sourceType.free) SourceInfo.Copyleft.let {
+                if (panelState.privacyNote.sourceType.free) SourceInfo.Copyleft.let {
                     ExpandableItemsBlock(
                         heading = stringResource(id = it.labelId),
                         icon = it.icon,
@@ -369,7 +364,7 @@ fun PrivacyPanel(
                         icon = si.icon,
                     ) {
                         Row(modifier = Modifier.padding(horizontal = 8.dp)) {
-                            val dependencyItems = privacyData.antiFeatures
+                            val dependencyItems = panelState.privacyData.antiFeatures
                                 .filter {
                                     it.name == AntiFeature.NON_FREE_UPSTREAM.key ||
                                             it.name == AntiFeature.NON_FREE_NET.key
@@ -390,13 +385,13 @@ fun PrivacyPanel(
                         }
                     }
                 }
-                if (!privacyNote.sourceType.independent) SourceInfo.Dependency.let { si ->
+                if (!panelState.privacyNote.sourceType.independent) SourceInfo.Dependency.let { si ->
                     ExpandableItemsBlock(
                         heading = stringResource(id = si.labelId),
                         icon = si.icon,
                     ) {
                         Row(modifier = Modifier.padding(horizontal = 8.dp)) {
-                            val dependencyItems = privacyData.antiFeatures
+                            val dependencyItems = panelState.privacyData.antiFeatures
                                 .filter {
                                     it.name == AntiFeature.NON_FREE_ASSETS.key ||
                                             it.name == AntiFeature.NON_FREE_DEP.key
@@ -419,14 +414,14 @@ fun PrivacyPanel(
                 }
             }
         }
-        if (privacyData.antiFeatures.isNotEmpty()) {
+        if (panelState.privacyData.antiFeatures.isNotEmpty()) {
             item {
                 PrivacyCard(
                     heading = stringResource(id = R.string.anti_features),
                     preExpanded = false
                 ) {
                     Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-                        privacyData.antiFeatures.forEach {
+                        panelState.privacyData.antiFeatures.forEach {
                             Text(
                                 modifier = Modifier
                                     .fillMaxWidth()

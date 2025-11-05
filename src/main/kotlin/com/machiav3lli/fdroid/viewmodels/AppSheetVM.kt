@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.viewmodels
 
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,13 +13,20 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
 import com.machiav3lli.fdroid.data.database.entity.DownloadStats
+import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.Extras
+import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.MonthlyPackageSum
 import com.machiav3lli.fdroid.data.database.entity.RBLog
+import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.data.entity.ActionState
+import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.PrivacyData
+import com.machiav3lli.fdroid.data.entity.PrivacyNote
+import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
@@ -27,6 +35,8 @@ import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.utils.extension.Quadruple
 import com.machiav3lli.fdroid.utils.extension.android.Android
+import com.machiav3lli.fdroid.utils.extension.combine
+import com.machiav3lli.fdroid.utils.extension.grantedPermissions
 import com.machiav3lli.fdroid.utils.extension.text.intToIsoDate
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.findSuggestedProduct
@@ -39,7 +49,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
@@ -56,34 +65,24 @@ class AppSheetVM(
     private val privacyRepo: PrivacyRepository,
     reposRepo: RepositoriesRepository,
 ) : ViewModel() {
-    private val packageName: MutableStateFlow<String> = MutableStateFlow("")
+    private val packageName = MutableStateFlow("")
 
-    val products = packageName
+    private val products = packageName
         .flatMapLatest { pn ->
             productsRepo.getProduct(pn)
-        }
+        }.distinctUntilChanged()
 
-    private val developer = products.mapLatest {
-        it.firstOrNull()?.product?.author?.let {
-            it.name.nullIfEmpty() ?: it.email.nullIfEmpty() ?: it.web.nullIfEmpty()
-        }.orEmpty()
-    }.distinctUntilChanged()
+    private val developer = products
+        .mapLatest {
+            it.firstOrNull()?.product?.author?.let {
+                it.name.nullIfEmpty() ?: it.email.nullIfEmpty() ?: it.web.nullIfEmpty()
+            }.orEmpty()
+        }.distinctUntilChanged()
 
-    private val developerProds = developer.flatMapConcat {
-        productsRepo.getAuthorList(it)
-    }.distinctUntilChanged()
+    private val repositories = reposRepo.getAll().distinctUntilChanged()
 
-    val exodusInfo = packageName
-        .flatMapLatest { pn ->
-            privacyRepo.getExodusInfos(pn)
-        }
-        .mapLatest { it.maxByOrNull(ExodusInfo::version_code) }
-
-    val trackers = combine(exodusInfo, privacyRepo.getAllTrackers()) { info, trackers ->
-        trackers.filter { it.key in info?.trackers.orEmpty() }
-    }
-
-    val rbLogs = packageName
+    // TODO simplify
+    private val rbLogs = packageName
         .flatMapLatest { pn ->
             privacyRepo.getRBLogs(pn)
         }
@@ -92,12 +91,215 @@ class AppSheetVM(
                 .groupBy(RBLog::hash)
                 .mapValues { (_, rbDataList) -> rbDataList.maxByOrNull(RBLog::timestamp)!! }
         }
+        .distinctUntilChanged()
+
+    private val installedItem = packageName
+        .flatMapLatest { packageName ->
+            installedRepo.get(packageName)
+        }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            emptyMap()
+            null
         )
 
+    private val productRepos = combine(
+        products,
+        repositories,
+    ) { prods, repos ->
+        val reposMap = repos.associateBy(Repository::id)
+        prods.mapNotNull { product ->
+            reposMap[product.product.repositoryId]?.let {
+                Pair(product, it)
+            }
+        }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        emptyList()
+    )
+
+    private val suggestedProductRepo =
+        combine(productRepos, installedItem) { prodRepos, installed ->
+            findSuggestedProduct(prodRepos, installed) { it.first }
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+            null
+        )
+
+    private val releaseItems = combine(
+        suggestedProductRepo,
+        repositories,
+        installedItem,
+        rbLogs,
+    ) { suggestedProductRepo, repos, installed, logs ->
+        val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
+        val reposMap = repos.associateBy(Repository::id)
+
+        suggestedProductRepo?.first?.releases.orEmpty()
+            .filter { includeIncompatible || it.incompatibilities.isEmpty() }
+            .mapNotNull { rel -> reposMap[rel.repositoryId]?.let { Pair(rel, it) } }
+            .map { (release, repository) ->
+                Quadruple(
+                    release,
+                    repository,
+                    when {
+                        installed?.versionCode == release.versionCode && release.signature in installed.signatures
+                             -> RELEASE_STATE_INSTALLED
+
+                        release.incompatibilities.isEmpty() && release.selected && release.versionCode >= installed?.versionCode ?: 0
+                                && (installed?.signatures?.contains(release.signature) ?: true || Preferences[Preferences.Key.DisableSignatureCheck])
+                             -> RELEASE_STATE_SUGGESTED
+
+                        else -> RELEASE_STATE_NONE
+                    },
+                    logs[release.hash],
+                )
+            }
+            .sortedByDescending { it.first.versionCode }
+            .toList()
+    }
+
+    val coreAppState: StateFlow<CoreAppState> = combine(
+        suggestedProductRepo,
+        installedItem,
+        releaseItems,
+        productRepos,
+    ) { suggested, installed, releases, prodRepos ->
+        CoreAppState(
+            suggestedProductRepo = suggested,
+            releaseItems = releases,
+            productRepos = prodRepos,
+            installed = installed,
+            isInstalled = installed != null,
+            canUpdate = suggested?.first?.canUpdate(installed) ?: false,
+            installedVersion = installed?.version ?: "",
+        )
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        CoreAppState()
+    )
+
+    // Extra state
+    private val categoryDetails = combine(
+        suggestedProductRepo,
+        productsRepo.getAllCategoryDetails(),
+    ) { prod, cats ->
+        val catsMap = cats.associateBy(CategoryDetails::name)
+        prod?.let {
+            it.first.product.categories.map { catsMap[it]?.label ?: it }
+        }.orEmpty()
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        emptyList(),
+    )
+
+    private val downloadingState = downloadedRepo.getLatestFlow(packageName)
+        .mapLatest { it?.state }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+            null
+        )
+
+    private val extras = packageName
+        .flatMapLatest { pn ->
+            extrasRepo.get(pn)
+        }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+            null
+        )
+
+    private val authorProducts = combine(
+        packageName,
+        developer,
+        developer.flatMapLatest {
+            productsRepo.getAuthorList(it)
+        },
+    ) { pn, dev, prods ->
+        if (dev.isNotEmpty()) prods
+            .filter { it.product.packageName != pn }
+            .groupBy { it.product.packageName }
+            .mapNotNull { it.value.maxByOrNull { it.product.added } }
+            .map { it.toItem() }
+        else emptyList()
+    }.distinctUntilChanged()
+
+    // Privacy data
+    private val requestedPermissions = combine(
+        packageName,
+        installedItem,
+    ) { pn, inst ->
+        runCatching {
+            if (inst != null) NeoApp.context.packageManager.getPackageInfo(
+                pn,
+                PackageManager.GET_PERMISSIONS
+            ).grantedPermissions else emptyMap()
+        }.fold(
+            onSuccess = { it },
+            onFailure = { emptyMap() }
+        )
+    }.distinctUntilChanged()
+
+    private val exodusInfo = packageName
+        .flatMapLatest { pn ->
+            privacyRepo.getExodusInfos(pn)
+        }
+        .mapLatest { it.maxByOrNull(ExodusInfo::version_code) }
+
+    private val trackers = combine(exodusInfo, privacyRepo.getAllTrackers()) { info, trackers ->
+        trackers.filter { it.key in info?.trackers.orEmpty() }
+    }
+
+    private val privacyData = combine(
+        suggestedProductRepo,
+        trackers,
+        reposRepo.getRepoAntiFeatures(),
+    ) { suggestedProduct, trs, afs ->
+        val afsMap = afs.associateBy(AntiFeatureDetails::name)
+        PrivacyData(
+            permissions = suggestedProduct?.first?.displayRelease
+                ?.generatePermissionGroups(NeoApp.context) ?: emptyMap(),
+            trackers = trs,
+            antiFeatures = suggestedProduct?.let {
+                it.first.product.antiFeatures.map { af -> afsMap[af] ?: AntiFeatureDetails(af, "") }
+            }.orEmpty(),
+        )
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        PrivacyData()
+    )
+
+    val privacyPanelState: StateFlow<PrivacyPanelState> = combine(
+        trackers,
+        installedItem,
+        requestedPermissions,
+        exodusInfo,
+        privacyData,
+        rbLogs,
+    ) { trackers, installed, permissions, exodus, privacy, logs ->
+        PrivacyPanelState(
+            trackers = trackers,
+            isInstalled = installed != null,
+            requestedPermissions = permissions,
+            exodusInfo = exodus,
+            privacyData = privacy,
+            privacyNote = privacy.toPrivacyNote(),
+            rbLogs = logs,
+        )
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        PrivacyPanelState()
+    )
+
+    // Download stats
     val downloadStats = packageName
         .flatMapLatest { pn ->
             privacyRepo.getLatestDownloadStats(pn)
@@ -156,216 +358,88 @@ class AppSheetVM(
             emptyMap()
         )
 
-    val repositories = reposRepo.getAll().distinctUntilChanged()
-
-    val installedItem = packageName
-        .flatMapLatest { packageName ->
-            installedRepo.get(packageName)
-        }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            null
+    val downloadStatsState: StateFlow<DownloadStatsState> = combine(
+        downloadStatsInfo,
+        downloadStatsMap,
+        downloadStatsMonthlyMap,
+    ) { info, daily, monthly ->
+        DownloadStatsState(
+            info = info,
+            dailyMap = daily,
+            monthlyMap = monthly,
         )
-
-    val productRepos = combine(
-        products,
-        repositories,
-    ) { prods, repos ->
-        val reposMap = repos.associateBy(Repository::id)
-        prods.mapNotNull { product ->
-            reposMap[product.product.repositoryId]?.let {
-                Pair(product, it)
-            }
-        }
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        emptyList()
+        DownloadStatsState()
     )
 
-    val suggestedProductRepo = combine(productRepos, installedItem) { prodRepos, installed ->
-        findSuggestedProduct(prodRepos, installed) { it.first }
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        null
-    )
-
-    val releaseItems = combine(
-        suggestedProductRepo,
-        repositories,
-        installedItem,
-        rbLogs,
-    ) { suggestedProductRepo, repos, installed, logs ->
-        val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
-        val reposMap = repos.associateBy(Repository::id)
-
-        suggestedProductRepo?.first?.releases.orEmpty()
-            .filter { includeIncompatible || it.incompatibilities.isEmpty() }
-            .mapNotNull { rel -> reposMap[rel.repositoryId]?.let { Pair(rel, it) } }
-            .map { (release, repository) ->
-                Quadruple(
-                    release,
-                    repository,
-                    when {
-                        installed?.versionCode == release.versionCode && release.signature in installed.signatures
-                             -> RELEASE_STATE_INSTALLED
-
-                        release.incompatibilities.isEmpty() && release.selected && release.versionCode >= installed?.versionCode ?: 0
-                                && (installed?.signatures?.contains(release.signature) ?: true || Preferences[Preferences.Key.DisableSignatureCheck])
-                             -> RELEASE_STATE_SUGGESTED
-
-                        else -> RELEASE_STATE_NONE
-                    },
-                    logs[release.hash],
-                )
-            }
-            .sortedByDescending { it.first.versionCode }
-            .toList()
-    }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            emptyList(),
-        )
-
-    private val antifeatureDetails = combine(
-        suggestedProductRepo,
-        reposRepo.getRepoAntiFeatures(),
-    ) { prod, afs ->
-        val catsMap = afs.associateBy(AntiFeatureDetails::name)
-        prod?.let {
-            it.first.product.antiFeatures.map { catsMap[it] ?: AntiFeatureDetails(it, "") }
-        }.orEmpty()
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        emptyList(),
-    )
-
-    val privacyData = combine(
-        installedItem,
-        trackers,
+    private val actions: Flow<Pair<ActionState, Set<ActionState>>> = combine(
         productRepos,
-        antifeatureDetails,
-    ) { ins, trs, prs, afs ->
-        val suggestedProduct = findSuggestedProduct(prs, ins) { it.first }
-        PrivacyData(
-            permissions = suggestedProduct?.first?.displayRelease
-                ?.generatePermissionGroups(NeoApp.context) ?: emptyMap(),
-            trackers = trs,
-            antiFeatures = afs,
-        )
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        PrivacyData()
-    )
-
-    val privacyNote = privacyData.mapLatest {
-        it.toPrivacyNote()
-    }
-
-    val categoryDetails = combine(
+        installedItem,
         suggestedProductRepo,
-        productsRepo.getAllCategoryDetails(),
-    ) { prod, cats ->
-        val catsMap = cats.associateBy(CategoryDetails::name)
-        prod?.let {
-            it.first.product.categories.map { catsMap[it]?.label ?: it }
-        }.orEmpty()
+        downloadingState,
+    ) { prods, ins, sgst, ds ->
+        val product = sgst?.first
+        val compatible = product != null && product.selectedReleases.firstOrNull()
+            .let { it != null && it.incompatibilities.isEmpty() }
+        val canInstall =
+            product != null && ins == null && compatible && ds?.isActive != true
+        val canUpdate =
+            product != null && compatible && product.canUpdate(ins) &&
+                    !shouldIgnore(product.versionCode) && ds?.isActive != true
+        val canUninstall = product != null && ins != null && !ins.isSystem
+        val canLaunch = product != null &&
+                ins != null && ins.launcherActivities.isNotEmpty()
+        val canShare = product != null && prods.any { it.second.webBaseUrl.isNotBlank() }
+
+        val actions = mutableSetOf<ActionState>()
+        synchronized(actions) {
+            if (canUpdate) actions += ActionState.Update
+            else if (canInstall && !Preferences[Preferences.Key.KidsMode]) actions += ActionState.Install
+            if (canLaunch) actions += ActionState.Launch
+            if (ins != null) actions += ActionState.Details
+            if (canUninstall) actions += ActionState.Uninstall
+            if (canShare) actions += ActionState.Share
+        }
+        val primaryAction = when {
+            canUpdate                                            -> ActionState.Update
+            canLaunch                                            -> ActionState.Launch
+            canInstall && !Preferences[Preferences.Key.KidsMode] -> ActionState.Install
+            canShare                                             -> ActionState.Share
+            else                                                 -> ActionState.NoAction
+        }
+
+        val mA = if (ds != null && ds.isActive)
+            ds.toActionState() ?: primaryAction
+        else primaryAction
+        mA to actions.minus(mA)
+    }.distinctUntilChanged()
+
+    val extraAppState: StateFlow<ExtraAppState> = combine(
+        repositories,
+        authorProducts,
+        categoryDetails,
+        downloadingState,
+        actions,
+        extras,
+    ) { repos, authorProds, categories, downloading, acts, ext ->
+        ExtraAppState(
+            repositories = repos,
+            authorProducts = authorProds,
+            categoryDetails = categories,
+            downloadingState = downloading,
+            mainAction = acts.first,
+            subActions = acts.second,
+            extras = ext,
+        )
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        emptyList(),
+        ExtraAppState()
     )
 
-    val downloadingState = downloadedRepo.getLatestFlow(packageName)
-        .mapLatest { it?.state }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            null
-        )
-
-    val extras = packageName
-        .flatMapLatest { pn ->
-            extrasRepo.get(pn)
-        }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            null
-        )
-
-    val authorProducts = combine(
-        packageName,
-        developer,
-        developerProds,
-    ) { pn, dev, prods ->
-        if (dev.isNotEmpty()) prods
-            .filter { it.product.packageName != pn }
-            .groupBy { it.product.packageName }
-            .mapNotNull { it.value.maxByOrNull { it.product.added } }
-        else emptyList()
-    }
-
-    private val actions: Flow<Pair<ActionState, Set<ActionState>>> =
-        combine(productRepos, downloadingState, installedItem) { prs, ds, ins ->
-            val product = findSuggestedProduct(prs, ins) { it.first }?.first
-            val compatible = product != null && product.selectedReleases.firstOrNull()
-                .let { it != null && it.incompatibilities.isEmpty() }
-            val canInstall =
-                product != null && ins == null && compatible && ds?.isActive != true
-            val canUpdate =
-                product != null && compatible && product.canUpdate(ins) &&
-                        !shouldIgnore(product.versionCode) && ds?.isActive != true
-            val canUninstall = product != null && ins != null && !ins.isSystem
-            val canLaunch = product != null &&
-                    ins != null && ins.launcherActivities.isNotEmpty()
-            val canShare = product != null && prs[0].second.webBaseUrl.isNotBlank()
-
-            val actions = mutableSetOf<ActionState>()
-            synchronized(actions) {
-                if (canUpdate) actions += ActionState.Update
-                else if (canInstall && !Preferences[Preferences.Key.KidsMode]) actions += ActionState.Install
-                if (canLaunch) actions += ActionState.Launch
-                if (ins != null) actions += ActionState.Details
-                if (canUninstall) actions += ActionState.Uninstall
-                if (canShare) actions += ActionState.Share
-            }
-            val primaryAction = when {
-                canUpdate                                            -> ActionState.Update
-                canLaunch                                            -> ActionState.Launch
-                canInstall && !Preferences[Preferences.Key.KidsMode] -> ActionState.Install
-                canShare                                             -> ActionState.Share
-                else                                                 -> ActionState.NoAction
-            }
-
-            val mA = if (ds != null && ds.isActive)
-                ds.toActionState() ?: primaryAction
-            else primaryAction
-            Pair(mA, actions.minus(mA))
-        }.distinctUntilChanged()
-
-    val mainAction: StateFlow<ActionState> = actions.map { it.first }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            ActionState.Bookmark
-        )
-
-    val subActions: StateFlow<Set<ActionState>> = actions.map { it.second }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            emptySet()
-        )
-
-    fun setApp(pn: String) {
-        viewModelScope.launch { packageName.update { pn } }
-    }
+    fun setApp(pn: String) = packageName.update { pn }
 
     private fun shouldIgnore(appVersionCode: Long): Boolean =
         extras.value?.ignoredVersion == appVersionCode || extras.value?.ignoreUpdates == true
@@ -421,3 +495,39 @@ class AppSheetVM(
         }
     }
 }
+
+data class PrivacyPanelState(
+    val trackers: List<Tracker> = emptyList(),
+    val isInstalled: Boolean = false,
+    val requestedPermissions: Map<String, Boolean> = emptyMap(),
+    val exodusInfo: ExodusInfo? = null,
+    val privacyData: PrivacyData = PrivacyData(),
+    val privacyNote: PrivacyNote = PrivacyNote(),
+    val rbLogs: Map<String, RBLog> = emptyMap(),
+)
+
+data class DownloadStatsState(
+    val info: Triple<Long, String, Int> = Triple(0L, "", 9999),
+    val dailyMap: Map<String, Map<String, Long>> = emptyMap(),
+    val monthlyMap: Map<String, Map<String, Long>> = emptyMap(),
+)
+
+data class CoreAppState(
+    val suggestedProductRepo: Pair<EmbeddedProduct, Repository>? = null,
+    val releaseItems: List<Quadruple<Release, Repository, Int, RBLog?>> = emptyList(),
+    val productRepos: List<Pair<EmbeddedProduct, Repository>> = emptyList(),
+    val installed: Installed? = null,
+    val isInstalled: Boolean = false,
+    val canUpdate: Boolean = false,
+    val installedVersion: String = "",
+)
+
+data class ExtraAppState(
+    val repositories: List<Repository> = emptyList(),
+    val authorProducts: List<ProductItem> = emptyList(),
+    val categoryDetails: List<String> = emptyList(),
+    val downloadingState: DownloadState? = null,
+    val mainAction: ActionState = ActionState.Bookmark,
+    val subActions: Set<ActionState> = emptySet(),
+    val extras: Extras? = null,
+)

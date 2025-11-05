@@ -68,7 +68,6 @@ import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.DonateType
-import com.machiav3lli.fdroid.data.entity.PrivacyNote
 import com.machiav3lli.fdroid.manager.installer.type.RootInstaller
 import com.machiav3lli.fdroid.manager.network.createIconUri
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
@@ -109,7 +108,6 @@ import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.utils.Utils.startUpdate
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
-import com.machiav3lli.fdroid.utils.findSuggestedProduct
 import com.machiav3lli.fdroid.utils.generateLinks
 import com.machiav3lli.fdroid.utils.shareIntent
 import com.machiav3lli.fdroid.utils.shareReleaseIntent
@@ -117,10 +115,8 @@ import com.machiav3lli.fdroid.utils.startLauncherActivity
 import com.machiav3lli.fdroid.viewmodels.AppSheetVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.math.truncate
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -143,28 +139,10 @@ fun AppPage(
     val currentPage by remember { derivedStateOf { pagerState.currentPage } }
     var screenshotPage by rememberSaveable { mutableIntStateOf(0) }
     val screenshotsPageState = rememberModalBottomSheetState(true)
-    val installed by viewModel.installedItem.collectAsState(null)
-    val isInstalled by remember(installed) {
-        mutableStateOf(installed != null)
-    }
-    val exodusInfo by viewModel.exodusInfo.collectAsState(null)
-    val privacyNote = viewModel.privacyNote.collectAsState(PrivacyNote())
-    val downloadStatsInfo by viewModel.downloadStatsInfo.collectAsState()
-    val downloadStats by viewModel.downloadStatsMap.collectAsState()
-    val monthlyDownloadStats by viewModel.downloadStatsMonthlyMap.collectAsState()
-    val sourceType by remember { derivedStateOf { privacyNote.value.sourceType } }
-    val authorProducts by viewModel.authorProducts
-        .mapLatest { list -> list.map { it.toItem() } }
-        .collectAsState(emptyList())
-    val repos by viewModel.repositories.collectAsState(emptyList())
-    val productRepos by viewModel.productRepos.collectAsState(emptyList())
-    val releaseItems by viewModel.releaseItems.collectAsState(emptyList())
-    val suggestedProductRepo by viewModel.suggestedProductRepo.collectAsState()
-    val categoryDetails by viewModel.categoryDetails.collectAsState()
-    val downloadState by viewModel.downloadingState.collectAsState()
-    val mainAction by viewModel.mainAction.collectAsState()
-    val actions by viewModel.subActions.collectAsState()
-    val extras by viewModel.extras.collectAsState()
+    val appState by viewModel.coreAppState.collectAsState()
+    val extraState by viewModel.extraAppState.collectAsState()
+    val privacyState by viewModel.privacyPanelState.collectAsState()
+    val downloadStatsState by viewModel.downloadStatsState.collectAsState()
 
     LaunchedEffect(packageName) {
         viewModel.setApp(packageName)
@@ -218,7 +196,7 @@ fun AppPage(
     }
 
     val onReleaseClick = { release: Release ->
-        val installedItem = viewModel.installedItem.value
+        val installedItem = appState.installed
         when {
             release.incompatibilities.isNotEmpty()                               -> {
                 dialogKey.value = DialogKey.ReleaseIncompatible(
@@ -243,7 +221,7 @@ fun AppPage(
             }
 
             else                                                                 -> {
-                val productRepository = productRepos.asSequence()
+                val productRepository = appState.productRepos.asSequence()
                     .filter { it.second.id == release.repositoryId }
                     .firstOrNull()
                 if (productRepository != null) {
@@ -271,20 +249,17 @@ fun AppPage(
             ActionState.Install,
             ActionState.Update,
                  -> {
-                val installedItem = viewModel.installedItem.value
                 val actionJob: () -> Unit = {
                     startUpdate(
                         packageName,
-                        installedItem,
-                        productRepos,
+                        appState.installed,
+                        appState.productRepos,
                     )
                 }
                 if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                    val productRepository =
-                        findSuggestedProduct(productRepos, installed) { it.first }
                     dialogKey.value =
                         DialogKey.Download(
-                            productRepository?.first?.product?.label ?: packageName,
+                            appState.suggestedProductRepo?.first?.product?.label ?: packageName,
                             actionJob
                         )
                     openDialog.value = true
@@ -292,7 +267,7 @@ fun AppPage(
             }
 
             ActionState.Launch
-                 -> viewModel.installedItem.value?.let { installed ->
+                 -> appState.installed?.let { installed ->
                 if (installed.launcherActivities.size >= 2) {
                     dialogKey.value = DialogKey.Launch(
                         installed.packageName,
@@ -319,10 +294,8 @@ fun AppPage(
                     }
                 }
                 if (NeoApp.installer is RootInstaller) {
-                    val productRepository =
-                        findSuggestedProduct(productRepos, installed) { it.first }
                     dialogKey.value = DialogKey.Uninstall(
-                        productRepository?.first?.product?.label ?: packageName,
+                        appState.suggestedProductRepo?.first?.product?.label ?: packageName,
                         actionJob
                     )
                     openDialog.value = true
@@ -341,11 +314,14 @@ fun AppPage(
             }
 
             ActionState.Share
-                 -> context.shareIntent(
-                packageName,
-                productRepos[0].first.product.label,
-                productRepos[0].second.webBaseUrl
-            )
+                 -> {
+                val prodRepo = appState.productRepos.first { it.second.webBaseUrl.isNotBlank() }
+                context.shareIntent(
+                    packageName,
+                    prodRepo.first.product.label,
+                    prodRepo.second.webBaseUrl,
+                )
+            }
 
             ActionState.Bookmark,
             ActionState.Bookmarked,
@@ -355,7 +331,7 @@ fun AppPage(
         }
     }
 
-    suggestedProductRepo?.let { (eProduct, repo) ->
+    appState.suggestedProductRepo?.let { (eProduct, repo) ->
         val product by derivedStateOf { eProduct.product }
         val imageData by remember(product, repo) {
             mutableStateOf(
@@ -379,19 +355,6 @@ fun AppPage(
             derivedStateOf { eProduct.displayRelease }
         }
 
-        val trackersRank by remember {
-            derivedStateOf {
-                if (exodusInfo != null) truncate((privacyNote.value.trackersNote - 1) / 20f).toInt()
-                else null
-            }
-        }
-        val permissionsRank by remember {
-            derivedStateOf {
-                truncate((privacyNote.value.permissionsNote - 1) / 20f).toInt()
-            }
-        }
-
-
         LaunchedEffect(product) {
             withContext(Dispatchers.IO) {
                 ExodusWorker.fetchExodusInfo(product.packageName, eProduct.versionCode)
@@ -411,13 +374,13 @@ fun AppPage(
                         appName = product.label,
                         packageName = product.packageName,
                         icon = imageData,
-                        state = downloadState,
+                        state = extraState.downloadingState,
                         actions = {
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                             ) {
                                 SourceCodeButton(
-                                    sourceType = sourceType,
+                                    sourceType = privacyState.privacyNote.sourceType,
                                     onClick = {
                                         onUriClick(
                                             (product.source.nullIfEmpty() ?: product.web).toUri(),
@@ -439,11 +402,20 @@ fun AppPage(
                             }
                         },
                     )
-                    AppInfoChips(eProduct.appInfoChips(installed, displayRelease, categoryDetails))
+                    AppInfoChips(
+                        eProduct.appInfoChips(
+                            appState.canUpdate,
+                            privacyState.isInstalled,
+                            appState.installedVersion,
+                            displayRelease,
+                            extraState.categoryDetails
+                        )
+                    )
                     MeterIconsBar(
                         modifier = Modifier.fillMaxWidth(),
-                        selectedTrackers = trackersRank,
-                        selectedPermissions = permissionsRank,
+                        selectedTrackers = if (privacyState.exodusInfo != null) privacyState.privacyNote.trackersRank
+                        else null,
+                        selectedPermissions = privacyState.privacyNote.permissionsRank,
                         currentPage = currentPage,
                     ) {
                         scope.launch {
@@ -479,17 +451,17 @@ fun AppPage(
                         }
                         item {
                             AppInfoHeader(
-                                mainAction = mainAction,
-                                possibleActions = actions,
-                                favState = { extras?.favorite == true },
+                                mainAction = extraState.mainAction,
+                                possibleActions = extraState.subActions,
+                                favState = { extraState.extras?.favorite == true },
                                 onAction = onActionClick
                             )
                         }
                         item {
-                            AnimatedVisibility(visible = eProduct.canUpdate(installed)) {
+                            AnimatedVisibility(visible = appState.canUpdate) {
                                 SwitchPreference(
                                     text = stringResource(id = R.string.ignore_this_update),
-                                    initSelected = { extras?.ignoredVersion == eProduct.versionCode },
+                                    initSelected = { extraState.extras?.ignoredVersion == eProduct.versionCode },
                                     onCheckedChanged = {
                                         viewModel.setIgnoredVersion(
                                             product.packageName,
@@ -498,28 +470,28 @@ fun AppPage(
                                     }
                                 )
                             }
-                            AnimatedVisibility(visible = isInstalled) {
+                            AnimatedVisibility(visible = privacyState.isInstalled) {
                                 SwitchPreference(
                                     text = stringResource(id = R.string.ignore_all_updates),
-                                    initSelected = { extras?.ignoreUpdates == true },
+                                    initSelected = { extraState.extras?.ignoreUpdates == true },
                                     onCheckedChanged = {
                                         viewModel.setIgnoreUpdates(product.packageName, it)
                                     }
                                 )
                             }
-                            AnimatedVisibility(visible = isInstalled) {
+                            AnimatedVisibility(visible = privacyState.isInstalled) {
                                 SwitchPreference(
                                     text = stringResource(id = R.string.ignore_vulns),
-                                    initSelected = { extras?.ignoreVulns == true },
+                                    initSelected = { extraState.extras?.ignoreVulns == true },
                                     onCheckedChanged = {
                                         viewModel.setIgnoreVulns(product.packageName, it)
                                     }
                                 )
                             }
-                            AnimatedVisibility(visible = isInstalled) {
+                            AnimatedVisibility(visible = privacyState.isInstalled) {
                                 SwitchPreference(
                                     text = stringResource(id = R.string.allow_unstable_updates),
-                                    initSelected = { extras?.allowUnstable == true },
+                                    initSelected = { extraState.extras?.allowUnstable == true },
                                     onCheckedChanged = {
                                         viewModel.setAllowUnstableUpdates(product.packageName, it)
                                     }
@@ -580,7 +552,7 @@ fun AppPage(
                             }
                         }
                         item {
-                            if (authorProducts.isNotEmpty()) {
+                            if (extraState.authorProducts.isNotEmpty()) {
                                 ExpandableItemsBlock(
                                     heading = stringResource(
                                         id = R.string.other_apps_by,
@@ -588,8 +560,10 @@ fun AppPage(
                                     ),
                                 ) {
                                     ProductsHorizontalRecycler(
-                                        productsList = authorProducts,
-                                        repositories = repos.associateBy(Repository::id),
+                                        productsList = extraState.authorProducts,
+                                        repositories = extraState.repositories.associateBy(
+                                            Repository::id
+                                        ),
                                         rowsNumber = 1,
                                     ) { item ->
                                         neoActivity.navigateProduct(item.packageName)
@@ -597,13 +571,13 @@ fun AppPage(
                                 }
                             }
                         }
-                        if (downloadStats.isNotEmpty()) {
+                        if (downloadStatsState.dailyMap.isNotEmpty()) {
                             item {
                                 ExpandableItemsBlock(
                                     heading = stringResource(id = R.string.download_stats_iod),
                                     preExpanded = false,
                                 ) {
-                                    AppInfoChips(downloadStatsInfo.downloadInfoChips())
+                                    AppInfoChips(downloadStatsState.info.downloadInfoChips())
                                     PrimaryTabRow(
                                         containerColor = Color.Transparent,
                                         selectedTabIndex = statsTab.intValue,
@@ -632,9 +606,9 @@ fun AppPage(
                                         )
                                     }
                                     when (statsTab.intValue) {
-                                        0 -> SimpleLineChart(downloadStats)
-                                        1 -> MultiLineChart(downloadStats)
-                                        2 -> MonthlyLineChart(monthlyDownloadStats)
+                                        0 -> SimpleLineChart(downloadStatsState.dailyMap)
+                                        1 -> MultiLineChart(downloadStatsState.dailyMap)
+                                        2 -> MonthlyLineChart(downloadStatsState.monthlyMap)
                                     }
                                 }
                             }
@@ -658,7 +632,7 @@ fun AppPage(
                         item {
                             Text(
                                 text = stringResource(
-                                    id = if (releaseItems.isEmpty()) R.string.no_releases
+                                    id = if (appState.releaseItems.isEmpty()) R.string.no_releases
                                     else R.string.releases
                                 ),
                                 style = MaterialTheme.typography.titleMedium,
@@ -666,7 +640,7 @@ fun AppPage(
                             )
                         }
                         items(
-                            items = releaseItems,
+                            items = appState.releaseItems,
                             key = { it.first.identifier },
                         ) { item ->
                             ReleaseItem(
