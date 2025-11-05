@@ -469,4 +469,5 @@
     <string name="trending_from_flicky">У тренді у Flicky</string>
     <string name="trending_from_neostore">У тренді в Neo Store</string>
     <string name="shizuku_installer">Встановлювач Shizuku</string>
+    <string name="max_parallel_downloads">Максимальна кількість паралельних завантажень при використанні менеджера завантажень Neo Store.</string>
 </resources>
