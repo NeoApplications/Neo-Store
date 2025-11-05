@@ -469,4 +469,5 @@
     <string name="trending_from_flicky">Popularność na Flicky</string>
     <string name="trending_from_neostore">Popularność na Neo Store</string>
     <string name="shizuku_installer">Instalator Shizuku</string>
+    <string name="max_parallel_downloads">Maksymalna liczba równoległych pobrań przy użyciu menedżera pobierania Neo Store została wykorzystana.</string>
 </resources>
