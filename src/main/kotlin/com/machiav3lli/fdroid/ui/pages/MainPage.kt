@@ -91,7 +91,7 @@ fun MainPage(
     val currentPageIndex = remember { derivedStateOf { pagerState.currentPage } }
     val navigatorState by viewModel.navigationState.collectAsStateWithLifecycle()
     val inSearchMode = rememberSaveable { mutableStateOf(false) }
-    val query by searchVM.query.collectAsState()
+    val searchState by searchVM.pageState.collectAsState()
 
     BackHandler {
         mActivity.moveTaskToBack(true)
@@ -136,10 +136,11 @@ fun MainPage(
                     topBar = {
                         TopBar {
                             ExpandedSearchView(
-                                query = query,
+                                query = searchState.query,
                                 expanded = inSearchMode,
                                 onQueryChanged = { newQuery ->
-                                    if (newQuery != query) searchVM.setSearchQuery(newQuery)
+                                    if (newQuery != searchState.query)
+                                        searchVM.setSearchQuery(newQuery)
                                 },
                                 onClose = {
                                     searchVM.setSearchQuery("")

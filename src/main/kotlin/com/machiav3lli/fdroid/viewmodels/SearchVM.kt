@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
@@ -24,7 +23,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 @OptIn(
     ExperimentalCoroutinesApi::class,
@@ -35,74 +33,70 @@ class SearchVM(
     extrasRepo: ExtrasRepository,
     installedRepo: InstalledRepository,
 ) : ViewModel() {
-    val sortFilter: StateFlow<String>
-        private field = MutableStateFlow("")
-    val query: StateFlow<String>
-        private field = MutableStateFlow("")
-    val source: StateFlow<Source>
-        private field = MutableStateFlow(Source.SEARCH)
+    private val _searchInput = MutableStateFlow(SearchInput())
 
-    val installed = installedRepo.getAll().map {
-        it.associateBy(Installed::packageName).apply {
-            Log.d(TAG, "Installed list size: ${this.size}")
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        initialValue = emptyMap()
-    )
-
-    private val request: StateFlow<Request> = combine(
-        sortFilter,
-        source,
-    ) { _, src ->
-        when (src) {
-            Source.SEARCH_INSTALLED -> Request.SearchInstalled
-            Source.SEARCH_NEW       -> Request.SearchNew
-            else                    -> Request.Search
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        initialValue = Request.Search
-    )
+    private val installed = installedRepo.getAll()
+        .map { it.associateBy(Installed::packageName) }
 
     private val productsSource = combine(
-        request,
+        _searchInput.debounce { 400 },
         installed,
         extrasRepo.getAll().distinctUntilChanged(),
-    ) { req, _, _ -> productsRepo.getProducts(req) }
+    ) { input, _, _ ->
+        productsRepo.getProducts(
+            when (input.source) {
+                Source.SEARCH_INSTALLED -> Request.SearchInstalled
+                Source.SEARCH_NEW       -> Request.SearchNew
+                else                    -> Request.Search
+            }
+        )
+    }
         .flatMapLatest { it }
         .distinctUntilChanged()
 
-    val filteredProducts: StateFlow<List<ProductItem>> = combine(
-        productsSource,
-        query.debounce(400),
+    val pageState: StateFlow<SearchPageState> = combine(
+        _searchInput.debounce { 400 },
         installed,
-    ) { products, searchQuery, installedMap ->
-        products.matchSearchQuery(searchQuery)
-            .map { it.toItem(installedMap[it.product.packageName]) }.apply {
-                Log.d(TAG, "Search products list size: ${this.size}")
-            }
+        productsSource,
+    ) { input, installedMap, products ->
+        val filtered = products
+            .matchSearchQuery(input.query)
+            .map { it.toItem(installedMap[it.product.packageName]) }
+
+        SearchPageState(
+            sortFilter = input.sortFilter,
+            query = input.query,
+            source = input.source,
+            installedMap = installedMap,
+            filteredProducts = filtered,
+        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        initialValue = emptyList()
+        initialValue = SearchPageState()
     )
 
-    fun setSortFilter(value: String) = viewModelScope.launch {
-        sortFilter.update { value }
-    }
+    fun setSortFilter(value: String) = _searchInput.update { it.copy(sortFilter = value) }
 
-    fun setSearchQuery(value: String) = viewModelScope.launch {
-        query.update { value }
-    }
+    fun setSearchQuery(value: String) = _searchInput.update { it.copy(query = value) }
 
-    fun setSearchSource(newSource: Source) = viewModelScope.launch {
-        source.update { newSource }
-    }
+    fun setSearchSource(newSource: Source) = _searchInput.update { it.copy(source = newSource) }
+
+    private data class SearchInput(
+        val sortFilter: String = "",
+        val query: String = "",
+        val source: Source = Source.SEARCH,
+    )
 
     companion object {
         private const val TAG = "SearchVM"
     }
 }
+
+data class SearchPageState(
+    val sortFilter: String = "",
+    val query: String = "",
+    val source: Source = Source.SEARCH,
+    val installedMap: Map<String, Installed> = emptyMap(),
+    val filteredProducts: List<ProductItem> = emptyList(),
+)

@@ -74,21 +74,17 @@ fun SearchPage(
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
 
     val listState = rememberLazyListState()
-    val installedList by viewModel.installed.collectAsState(emptyMap())
-    val filteredProducts by viewModel.filteredProducts.collectAsState(emptyList())
-    val query by viewModel.query.collectAsState()
-    val source = viewModel.source.collectAsState()
-    val sortFilter by viewModel.sortFilter.collectAsState()
+    val pageState by viewModel.pageState.collectAsState()
     val dataState by mainVM.dataState.collectAsState()
 
     val currentTab by remember {
         derivedStateOf {
             listOf(Source.SEARCH, Source.SEARCH_INSTALLED, Source.SEARCH_NEW)
-                .indexOf(source.value)
+                .indexOf(pageState.source)
         }
     }
 
-    val notModifiedSortFilter by remember(sortFilter) {
+    val notModifiedSortFilter by remember(pageState.sortFilter) {
         derivedStateOf {
             Preferences[Preferences.Key.SortOrderSearch] == Preferences.Key.SortOrderSearch.default.value &&
                     Preferences[Preferences.Key.SortOrderAscendingSearch] == Preferences.Key.SortOrderAscendingSearch.default.value &&
@@ -196,7 +192,7 @@ fun SearchPage(
                 state = listState,
             ) {
                 items(
-                    items = filteredProducts,
+                    items = pageState.filteredProducts,
                     key = { it.packageName },
                 ) { item ->
                     ProductsListItem(
@@ -212,9 +208,9 @@ fun SearchPage(
                                 !dataState.favorites.contains(it.packageName)
                             )
                         },
-                        installed = installedList[item.packageName],
+                        installed = pageState.installedMap[item.packageName],
                         onActionClick = {
-                            val installed = installedList[it.packageName]
+                            val installed = pageState.installedMap[it.packageName]
                             val action = {
                                 NeoApp.wm.install(
                                     Pair(it.packageName, it.repositoryId)
@@ -275,7 +271,7 @@ fun SearchPage(
                 }
             },
         ) { paddingValues ->
-            if (filteredProducts.isEmpty() && query.isNotBlank())
+            if (pageState.filteredProducts.isEmpty() && pageState.query.isNotBlank())
                 Column(
                     modifier = Modifier
                         .addIfElse(
