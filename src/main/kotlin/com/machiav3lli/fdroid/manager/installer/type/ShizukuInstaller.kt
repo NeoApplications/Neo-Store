@@ -8,6 +8,7 @@ import android.content.pm.IPackageInstallerSession
 import android.content.pm.IPackageManager
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageInstallerHidden
+import android.content.pm.PackageManagerHidden
 import android.os.Build
 import android.os.IBinder
 import android.os.IInterface
@@ -106,6 +107,9 @@ class ShizukuInstaller(context: Context) : BaseInstaller(context) {
                     PackageInstaller.SessionParams.MODE_FULL_INSTALL
                 ).apply {
                     setAppPackageName(packageName)
+                    Refine.unsafeCast<PackageInstallerHidden.SessionParamsHidden>(this).apply {
+                        installFlags = installFlags or PackageManagerHidden.INSTALL_REPLACE_EXISTING
+                    }
                 }
 
                 runCatching {
