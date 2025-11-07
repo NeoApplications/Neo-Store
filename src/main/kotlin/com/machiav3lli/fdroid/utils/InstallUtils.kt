@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.utils
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.content.Preferences
@@ -38,7 +39,9 @@ object InstallUtils : KoinComponent {
             try {
                 // Check if the APK file exists
                 val apkFile = Cache.getReleaseFile(NeoApp.context, task.cacheFileName)
-                if (!apkFile.exists() || !apkFile.canRead()) {
+                if (!apkFile.exists() || !apkFile.canRead()
+                    // Fixes: Trying to re-install NS after update
+                    || (task.packageName == BuildConfig.APPLICATION_ID && task.versionCode.toInt() == BuildConfig.VERSION_CODE)) {
                     Log.w(
                         TAG,
                         "APK file missing or unreadable for ${task.packageName}: ${task.cacheFileName}"
