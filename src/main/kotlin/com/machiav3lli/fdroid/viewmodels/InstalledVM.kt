@@ -43,15 +43,12 @@ class InstalledVM(
     private val sortFilter: StateFlow<String>
         private field = MutableStateFlow("")
 
-    private val installed = installedRepo.getAll().map {
-        it.associateBy(Installed::packageName).apply {
-            Log.d(TAG, "Installed list size: ${this.size}")
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        initialValue = emptyMap()
-    )
+    private val installed = installedRepo.getMap()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+            initialValue = emptyMap()
+        )
 
     private val installedProducts: StateFlow<List<ProductItem>> = combine(
         sortFilter,

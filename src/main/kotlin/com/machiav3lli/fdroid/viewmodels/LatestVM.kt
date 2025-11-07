@@ -30,13 +30,13 @@ class LatestVM(
     private val sortFilter: StateFlow<String>
         private field = MutableStateFlow("")
 
+    private val installed = installedRepo.getMap()
+        .distinctUntilChanged()
+
     // TODO simplify
     val pageState: StateFlow<LatestPageState> = combine(
         sortFilter,
-        installedRepo.getAll()
-            .map { list ->
-                list.associateBy(Installed::packageName)
-            },
+        installed,
         extrasRepo.getAll(),
     ) { sortFilter, installed, extras ->
         Triple(sortFilter, installed, extras)

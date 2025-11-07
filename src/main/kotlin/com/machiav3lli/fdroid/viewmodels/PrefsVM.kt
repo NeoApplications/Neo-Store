@@ -37,8 +37,7 @@ class PrefsVM(
             initialValue = emptyList()
         )
 
-    private val installed = installedRepo.getAll()
-        .map { it.associateBy(Installed::packageName) }
+    private val installed = installedRepo.getMap()
         .distinctUntilChanged()
 
     private val extras = extrasRepo.getAll().distinctUntilChanged()

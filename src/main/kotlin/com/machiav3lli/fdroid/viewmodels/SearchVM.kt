@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
@@ -35,8 +34,12 @@ class SearchVM(
 ) : ViewModel() {
     private val _searchInput = MutableStateFlow(SearchInput())
 
-    private val installed = installedRepo.getAll()
-        .map { it.associateBy(Installed::packageName) }
+    private val installed = installedRepo.getMap()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+            initialValue = emptyMap()
+        )
 
     private val productsSource = combine(
         _searchInput.debounce { 400 },

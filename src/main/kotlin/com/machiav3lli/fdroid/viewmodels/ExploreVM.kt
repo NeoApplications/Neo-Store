@@ -38,9 +38,12 @@ class ExploreVM(
     private val topAppType: StateFlow<TopDownloadType>
         private field = MutableStateFlow(TopDownloadType.TOTAL_RECENT)
 
-    private val installed = installedRepo.getAll().map {
-        it.associateBy(Installed::packageName)
-    }
+    private val installed = installedRepo.getMap()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+            initialValue = emptyMap()
+        )
 
     private val topApps = topAppType.flatMapLatest {
         when (it) {
