@@ -139,7 +139,9 @@ class AppSheetVM(
                         installed?.versionCode == release.versionCode && release.signature in installed.signatures
                              -> RELEASE_STATE_INSTALLED
 
-                        release.incompatibilities.isEmpty() && release.selected && release.versionCode >= installed?.versionCode ?: 0
+                        release.incompatibilities.isEmpty()
+                                && release.selected
+                                && release.versionCode >= (installed?.versionCode ?: 0)
                                 && (installed?.signatures?.contains(release.signature) ?: true || Preferences[Preferences.Key.DisableSignatureCheck])
                              -> RELEASE_STATE_SUGGESTED
 

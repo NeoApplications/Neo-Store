@@ -167,9 +167,7 @@ object Downloader {
                         throw DownloadSizeException("Downloaded size exceeds expected total size")
                     }
 
-                    this@coroutineScope.launch {
-                        callback.invoke(progressStart + read, progressTotal, -1L)
-                    }
+                    callback.invoke(progressStart + read, progressTotal, -1L)
                 }
             }.execute { response ->
                 when {
@@ -307,9 +305,7 @@ object Downloader {
 
             response = responseStatus?.dmReasonToHttpResponse() ?: HttpStatusCode.OK
 
-            this.launch {
-                callback.invoke(progressStart + progressRead, progressTotal, downloadID)
-            }
+            callback.invoke(progressStart + progressRead, progressTotal, downloadID)
 
             when (downloadStatus) {
                 DownloadManager.STATUS_SUCCESSFUL,

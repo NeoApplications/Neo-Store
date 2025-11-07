@@ -48,7 +48,11 @@ class ProductsRepository(
             .flowOn(cc)
 
     fun getRecentTopApps(client: String, numMonths: Int = 3): Flow<List<PackageSum>> =
-        downloadStatsDao.getFlowRecentTopApps(getIsoDateOfMonthsAgo(numMonths).isoDateToInt(), 50, client)
+        downloadStatsDao.getFlowRecentTopApps(
+            getIsoDateOfMonthsAgo(numMonths).isoDateToInt(),
+            50,
+            client
+        )
             .flowOn(cc)
 
     fun getAllTimeTopApps(): Flow<List<PackageSum>> =
