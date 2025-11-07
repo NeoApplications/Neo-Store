@@ -48,7 +48,7 @@ import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.getLabelsAndDescriptions
 import com.machiav3lli.fdroid.utils.openPermissionPage
 import com.machiav3lli.fdroid.utils.privacyPoints
-import com.machiav3lli.fdroid.viewmodels.AppSheetVM
+import com.machiav3lli.fdroid.viewmodels.AppPageVM
 import kotlinx.coroutines.Job
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -56,7 +56,7 @@ import kotlinx.coroutines.Job
 fun PrivacyPanel(
     modifier: Modifier,
     packageName: String,
-    viewModel: AppSheetVM,
+    viewModel: AppPageVM,
     copyLinkToClipboard: (String) -> Job,
     onUriClick: (Uri, Boolean) -> Boolean,
 ) {

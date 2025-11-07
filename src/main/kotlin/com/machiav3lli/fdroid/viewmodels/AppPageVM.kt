@@ -57,7 +57,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class AppSheetVM(
+class AppPageVM(
     downloadedRepo: DownloadedRepository,
     private val productsRepo: ProductsRepository,
     private val extrasRepo: ExtrasRepository,

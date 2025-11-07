@@ -41,7 +41,7 @@ import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.extension.text.pathCropped
 import com.machiav3lli.fdroid.utils.isBiometricLockEnabled
 import com.machiav3lli.fdroid.utils.isDarkTheme
-import com.machiav3lli.fdroid.viewmodels.AppSheetVM
+import com.machiav3lli.fdroid.viewmodels.AppPageVM
 import com.machiav3lli.fdroid.viewmodels.ExploreVM
 import com.machiav3lli.fdroid.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.viewmodels.LatestVM
@@ -339,5 +339,5 @@ val viewModelsModule = module {
     viewModelOf(::SearchVM)
     viewModelOf(::InstalledVM)
     viewModelOf(::PrefsVM)
-    viewModelOf(::AppSheetVM)
+    viewModelOf(::AppPageVM)
 }

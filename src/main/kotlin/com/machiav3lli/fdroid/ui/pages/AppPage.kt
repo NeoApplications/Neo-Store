@@ -112,7 +112,7 @@ import com.machiav3lli.fdroid.utils.generateLinks
 import com.machiav3lli.fdroid.utils.shareIntent
 import com.machiav3lli.fdroid.utils.shareReleaseIntent
 import com.machiav3lli.fdroid.utils.startLauncherActivity
-import com.machiav3lli.fdroid.viewmodels.AppSheetVM
+import com.machiav3lli.fdroid.viewmodels.AppPageVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -125,7 +125,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun AppPage(
     packageName: String,
-    viewModel: AppSheetVM = koinNeoViewModel(),
+    viewModel: AppPageVM = koinNeoViewModel(),
     onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
