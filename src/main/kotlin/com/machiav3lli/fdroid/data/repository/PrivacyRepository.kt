@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.mapLatest
 import org.koin.dsl.module
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -38,6 +39,13 @@ class PrivacyRepository(
         .flowOn(cc)
 
     fun getRBLogs(packageName: String): Flow<List<RBLog>> = rbDao.getFlow(packageName)
+        .flowOn(cc)
+
+    fun getRBLogsMap(packageName: String): Flow<Map<String, RBLog>> = rbDao.getFlow(packageName)
+        .mapLatest { list ->
+            list.groupBy(RBLog::hash)
+                .mapValues { (_, rbDataList) -> rbDataList.maxByOrNull(RBLog::timestamp)!! }
+        }
         .flowOn(cc)
 
     fun getDownloadStats(packageName: String): Flow<List<DownloadStats>> =

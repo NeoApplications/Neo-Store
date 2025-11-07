@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.mapLatest
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ProductsRepository(
@@ -61,6 +62,12 @@ class ProductsRepository(
     fun getAllLicenses(): Flow<List<Licenses>> = productsDao.getAllLicensesFlow()
         .flowOn(cc)
 
+    fun getAllLicensesDistinct(): Flow<List<String>> = productsDao.getAllLicensesFlow()
+        .mapLatest {
+            it.map(Licenses::licenses).flatten().distinct()
+        }
+        .flowOn(cc)
+
     fun getAllCategories(): Flow<List<String>> = categoryDao.getAllNamesFlow()
         .flowOn(cc)
 
@@ -69,6 +76,10 @@ class ProductsRepository(
             .flowOn(cc)
 
     fun getIconDetails(): Flow<List<IconDetails>> = productsDao.getIconDetailsFlow()
+        .flowOn(cc)
+
+    fun getIconDetailsMap(): Flow<Map<String, IconDetails>> = productsDao.getIconDetailsFlow()
+        .mapLatest { it.associateBy(IconDetails::packageName) }
         .flowOn(cc)
 
     suspend fun loadList(

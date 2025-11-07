@@ -6,9 +6,12 @@ import com.machiav3lli.fdroid.data.database.dao.RepositoryDao
 import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.LatestSyncs
 import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.AntiFeature
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.mapLatest
+import kotlin.collections.associateBy
 
 class RepositoriesRepository(
     private val productsDao: ProductDao,
@@ -34,6 +37,24 @@ class RepositoriesRepository(
 
     fun getRepoAntiFeatures(): Flow<List<AntiFeatureDetails>> =
         antiFeatureDao.getAllAntiFeatureDetailsFlow()
+            .flowOn(cc)
+
+    fun getRepoAntiFeaturesMap(): Flow<Map<String,AntiFeatureDetails>> =
+        antiFeatureDao.getAllAntiFeatureDetailsFlow()
+            .mapLatest {
+                it.associateBy(AntiFeatureDetails::name)
+            }
+            .flowOn(cc)
+
+    fun getRepoAntiFeaturePairs(): Flow<List<Pair<String, String>>> =
+        antiFeatureDao.getAllAntiFeatureDetailsFlow()
+            .mapLatest { afs ->
+                val detailsMap = afs.associateBy(AntiFeatureDetails::name)
+                val enumMap = AntiFeature.entries.associateBy(AntiFeature::key)
+                (detailsMap.keys + enumMap.keys).map { name ->
+                    detailsMap[name]?.let { Pair(it.name, it.label) } ?: Pair(name, "")
+                }
+            }
             .flowOn(cc)
 
     suspend fun load(repoId: Long): Repository? = reposDao.get(repoId)
