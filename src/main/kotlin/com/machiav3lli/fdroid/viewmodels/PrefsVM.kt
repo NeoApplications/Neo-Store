@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -26,55 +27,63 @@ class PrefsVM(
     private val reposRepo: RepositoriesRepository,
     private val extrasRepo: ExtrasRepository,
 ) : ViewModel() {
+    private val addressFingerprint = MutableStateFlow(Pair("", ""))
+    private val reposSearchQuery = MutableStateFlow("")
 
-    val repositories = reposRepo.getAll()
+    private val repositories = reposRepo.getAll()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
             initialValue = emptyList()
         )
 
-    private val _reposSearchQuery = MutableStateFlow("")
-    val reposSearchQuery: StateFlow<String> = _reposSearchQuery
+    private val installed = installedRepo.getAll()
+        .map { it.associateBy(Installed::packageName) }
+        .distinctUntilChanged()
 
-    val filteredRepositories = repositories.combine(reposSearchQuery) { repos, query ->
-        repos.filter {
+    private val extras = extrasRepo.getAll().distinctUntilChanged()
+
+    val reposState: StateFlow<ReposPageState> = combine(
+        repositories,
+        reposSearchQuery,
+        addressFingerprint,
+    ) { repos, query, auth ->
+        val (enabledRepos, disabledRepo) = repos.filter {
             "${it.address} ${it.name} ${it.description}".contains(query, ignoreCase = true)
-        }
-    }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            initialValue = emptyList()
-        )
+        }.partition { it.enabled }
 
-    val installed = installedRepo.getAll().map {
-        it.associateBy(Installed::packageName)
+        ReposPageState(
+            enabledRepos = enabledRepos,
+            disabledRepo = disabledRepo,
+            query = query,
+            auth = auth,
+        )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        initialValue = emptyMap()
+        started = SharingStarted.Lazily,
+        initialValue = ReposPageState()
     )
 
-    val extras = extrasRepo.getAll().stateIn(
+    val otherPrefsState: StateFlow<OtherPrefsState> = combine(
+        repositories,
+        extras,
+        installed,
+    ) { repos, extras, installed ->
+        OtherPrefsState(
+            repos = repos,
+            extras = extras,
+            installedMap = installed,
+        )
+    }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        initialValue = emptyList()
+        started = SharingStarted.Lazily,
+        initialValue = OtherPrefsState()
     )
 
-    val addressFingerprint: StateFlow<Pair<String, String>>
-        private field = MutableStateFlow(Pair("", ""))
+    fun setSearchQuery(value: String) = reposSearchQuery.update { value }
 
-    fun setSearchQuery(value: String) {
-        viewModelScope.launch { _reposSearchQuery.update { value } }
-    }
-
-    fun setIntent(address: String?, fingerprint: String?) {
-        viewModelScope.launch {
-            addressFingerprint.update {
-                Pair(address ?: "", fingerprint ?: "")
-            }
-        }
+    fun setIntent(address: String?, fingerprint: String?) = addressFingerprint.update {
+        Pair(address ?: "", fingerprint ?: "")
     }
 
     suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long {
@@ -113,3 +122,17 @@ data class SheetNavigationData(
     val repositoryId: Long = 0L,
     val editMode: Boolean = false,
 ) : Parcelable
+
+
+data class ReposPageState(
+    val enabledRepos: List<Repository> = emptyList(),
+    val disabledRepo: List<Repository> = emptyList(),
+    val query: String = "",
+    val auth: Pair<String, String> = Pair("", ""),
+)
+
+data class OtherPrefsState(
+    val repos: List<Repository> = emptyList(),
+    val extras: List<Extras> = emptyList(),
+    val installedMap: Map<String, Installed> = emptyMap(),
+)

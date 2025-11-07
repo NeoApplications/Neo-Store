@@ -66,9 +66,7 @@ fun PrefsOtherPage(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val hidingCounter = rememberSaveable { mutableIntStateOf(0) }
-    val extras by viewModel.extras.collectAsState(initial = emptyList())
-    val repos by viewModel.repositories.collectAsState(initial = emptyList())
-    val installed by viewModel.installed.collectAsState(initial = emptyMap())
+    val pageState by viewModel.otherPrefsState.collectAsState()
 
     val startExportExtrasResult =
         rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(SAFFile.EXTRAS_MIME_TYPE)) { resultUri ->
@@ -81,7 +79,7 @@ fun PrefsOtherPage(
                 SAFFile.write(
                     context,
                     resultUri,
-                    extras.joinToString(separator = ">") { it.toJSON() }
+                    pageState.extras.joinToString(separator = ">") { it.toJSON() }
                 )
                 // TODO add notification about success or failure
             }
@@ -97,7 +95,7 @@ fun PrefsOtherPage(
                 SAFFile.write(
                     context,
                     resultUri,
-                    repos.joinToString(separator = ">") { it.toJSON() }
+                    pageState.repos.joinToString(separator = ">") { it.toJSON() }
                 )
                 // TODO add notification about success or failure
             }
@@ -113,7 +111,7 @@ fun PrefsOtherPage(
                 SAFFile.write(
                     context,
                     resultUri,
-                    installed.keys.joinToString(separator = ">")
+                    pageState.installedMap.keys.joinToString(separator = ">")
                 )
                 // TODO add notification about success or failure
             }
@@ -166,7 +164,7 @@ fun PrefsOtherPage(
 
                 SAFFile(context, resultUri).read()
                     ?.split(">")
-                    ?.filterNot { installed.keys.contains(it) }
+                    ?.filterNot { pageState.installedMap.keys.contains(it) }
                     ?.forEach { packageName ->
                         scope.launch(Dispatchers.IO) {
                             productRepo.loadProduct(packageName)

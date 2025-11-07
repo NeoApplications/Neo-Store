@@ -31,7 +31,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -65,17 +64,8 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
     val mActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
     val paneNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
-
-    val repos by viewModel.filteredRepositories.collectAsState()
-    val partedRepos by remember {
-        derivedStateOf {
-            repos.partition { it.enabled }
-        }
-    }
-
-    val query by viewModel.reposSearchQuery.collectAsState()
+    val pageState by viewModel.reposState.collectAsState()
     val sheetData: MutableState<SheetNavigationData?> = remember { mutableStateOf(null) }
-    val intentAddressFingerprint by viewModel.addressFingerprint.collectAsState()
 
     val scanLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -102,15 +92,15 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
         }
     }
 
-    LaunchedEffect(intentAddressFingerprint) {
-        if (intentAddressFingerprint.first.isNotEmpty()) {
+    LaunchedEffect(pageState.auth) {
+        if (pageState.auth.first.isNotEmpty()) {
             scope.launch {
                 paneNavigator.navigateTo(
                     ListDetailPaneScaffoldRole.Detail,
                     SheetNavigationData(
                         viewModel.addNewRepository(
-                            address = intentAddressFingerprint.first,
-                            fingerprint = intentAddressFingerprint.second,
+                            address = pageState.auth.first,
+                            fingerprint = pageState.auth.second,
                         ),
                         true
                     )
@@ -198,20 +188,22 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                     ) {
                         item {
                             WideSearchField(
-                                query = query,
+                                query = pageState.query,
                                 modifier = Modifier.fillMaxWidth(),
                                 label = stringResource(R.string.search_for_repository),
                                 focusOnCompose = false,
                                 onClose = { viewModel.setSearchQuery("") },
                                 onQueryChanged = { newQuery ->
-                                    if (newQuery != query) viewModel.setSearchQuery(newQuery)
+                                    if (newQuery != pageState.query) viewModel.setSearchQuery(
+                                        newQuery
+                                    )
                                 }
                             )
                         }
                         item {
                             PreferenceGroupHeading(heading = stringResource(id = R.string.enabled))
                         }
-                        items(items = partedRepos.first, key = { it.id }) {
+                        items(items = pageState.enabledRepos, key = { it.id }) {
                             RepositoryItem(
                                 modifier = Modifier.animateItem(),
                                 repository = it,
@@ -233,7 +225,7 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                         item {
                             PreferenceGroupHeading(heading = stringResource(id = R.string.disabled))
                         }
-                        items(items = partedRepos.second, key = { it.id }) {
+                        items(items = pageState.disabledRepo, key = { it.id }) {
                             RepositoryItem(
                                 modifier = Modifier.animateItem(),
                                 repository = it,
