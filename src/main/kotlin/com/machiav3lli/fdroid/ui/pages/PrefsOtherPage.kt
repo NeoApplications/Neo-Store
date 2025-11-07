@@ -6,7 +6,6 @@ import android.graphics.Canvas
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -181,21 +180,15 @@ fun PrefsOtherPage(
 
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp),
     ) {
         item {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(4.dp)
-                    .background(
-                        MaterialTheme.colorScheme.surfaceContainerHighest,
-                        MaterialTheme.shapes.extraLarge
-                    )
-                    .clip(MaterialTheme.shapes.extraLarge),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                    .padding(vertical = 4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 ListItem(
@@ -221,7 +214,7 @@ fun PrefsOtherPage(
                                 bitmap = bitmap.asImageBitmap(),
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .requiredSize(84.dp)
+                                    .requiredSize(72.dp)
                                     .clip(MaterialTheme.shapes.large)
                             )
                         }

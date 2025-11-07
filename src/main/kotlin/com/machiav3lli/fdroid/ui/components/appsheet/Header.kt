@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
@@ -21,7 +20,6 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,13 +31,12 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.entity.ActionState
-import com.machiav3lli.fdroid.data.entity.SourceType
 import com.machiav3lli.fdroid.data.entity.DownloadState
+import com.machiav3lli.fdroid.data.entity.SourceType
 import com.machiav3lli.fdroid.ui.components.MainActionButton
 import com.machiav3lli.fdroid.ui.components.NetworkImage
 import com.machiav3lli.fdroid.ui.components.PRODUCT_CARD_ICON
 import com.machiav3lli.fdroid.ui.components.SecondaryActionButton
-import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.icon.Opensource
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
@@ -222,14 +219,12 @@ fun DownloadProgress(
                         id = if (totalSize == 0L) R.string.canceled
                         else R.string.error
                     ),
-                    style = MaterialTheme.typography.bodySmall,
                 )
             }
 
             downloaded == totalSize && totalSize == 1L -> {
                 Text(
                     text = "${stringResource(id = R.string.finished)} ${finishedTime.formatDateTime()}",
-                    style = MaterialTheme.typography.bodySmall,
                 )
             }
 

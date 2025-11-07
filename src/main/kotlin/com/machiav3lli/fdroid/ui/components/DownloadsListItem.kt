@@ -142,7 +142,6 @@ fun DownloadedItem(
                     softWrap = true,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    style = MaterialTheme.typography.titleSmall
                 )
                 Text(
                     text = state.version,
