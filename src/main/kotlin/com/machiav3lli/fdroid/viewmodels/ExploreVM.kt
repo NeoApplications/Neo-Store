@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ExploreVM(
@@ -31,12 +30,9 @@ class ExploreVM(
     extrasRepo: ExtrasRepository,
     installedRepo: InstalledRepository,
 ) : ViewModel() {
-    private val sortFilter: StateFlow<String>
-        private field = MutableStateFlow("")
-    private val source: StateFlow<Source>
-        private field = MutableStateFlow(Source.NONE)
-    private val topAppType: StateFlow<TopDownloadType>
-        private field = MutableStateFlow(TopDownloadType.TOTAL_RECENT)
+    private val sortFilter = MutableStateFlow("")
+    private val source = MutableStateFlow(Source.NONE)
+    private val topAppType = MutableStateFlow(TopDownloadType.TOTAL_RECENT)
 
     private val installed = installedRepo.getMap()
         .stateIn(
@@ -92,20 +88,20 @@ class ExploreVM(
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        started = SharingStarted.Lazily,
         initialValue = CategoryProductsState()
     )
 
     val topProductsState: StateFlow<TopProductsState> = combine(
         topAppType,
         topApps.flatMapLatest { tops ->
+            val packageToIndex = tops.mapIndexed { index, top ->
+                top.packageName to index
+            }.toMap()
+
             productsRepo.getSpecificProducts(tops.map { it.packageName }.toSet())
-                .map {
-                    it.sortedBy { prd ->
-                        tops.indexOfFirst { top ->
-                            top.packageName == prd.product.packageName
-                        }
-                    }
+                .map { products ->
+                    products.sortedBy { packageToIndex[it.product.packageName] ?: Int.MAX_VALUE }
                 }
         },
         installed,
@@ -117,21 +113,15 @@ class ExploreVM(
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        started = SharingStarted.Lazily,
         initialValue = TopProductsState()
     )
 
-    fun setSortFilter(value: String) = viewModelScope.launch {
-        sortFilter.update { value }
-    }
+    fun setSortFilter(value: String) = sortFilter.update { value }
 
-    fun setTopAppsType(type: TopDownloadType) = viewModelScope.launch {
-        topAppType.update { type }
-    }
+    fun setTopAppsType(type: TopDownloadType) = topAppType.update { type }
 
-    fun setExploreSource(newSource: Source) = viewModelScope.launch {
-        source.update { newSource }
-    }
+    fun setExploreSource(newSource: Source) = source.update { newSource }
 
     companion object {
         private const val TAG = "ExploreVM"

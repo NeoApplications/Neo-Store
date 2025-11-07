@@ -2,7 +2,6 @@ package com.machiav3lli.fdroid.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.Request
@@ -15,11 +14,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LatestVM(
@@ -27,13 +26,11 @@ class LatestVM(
     extrasRepo: ExtrasRepository,
     installedRepo: InstalledRepository,
 ) : ViewModel() {
-    private val sortFilter: StateFlow<String>
-        private field = MutableStateFlow("")
+    private val sortFilter = MutableStateFlow("")
 
     private val installed = installedRepo.getMap()
         .distinctUntilChanged()
 
-    // TODO simplify
     val pageState: StateFlow<LatestPageState> = combine(
         sortFilter,
         installed,
@@ -45,28 +42,31 @@ class LatestVM(
             productsRepo.getProducts(Request.Updated),
             productsRepo.getProducts(Request.New),
         ) { updated, new ->
-            Quadruple(sortFilter, installed, updated, new)
+            Quadruple(
+                sortFilter,
+                installed,
+                updated.map {
+                    it.toItem(installed[it.product.packageName])
+                },
+                new.map {
+                    it.toItem(installed[it.product.packageName])
+                },
+            )
         }
     }.map { (sortFilter, installed, updatedList, newList) ->
         LatestPageState(
             sortFilter = sortFilter,
             installedMap = installed,
-            updatedProducts = updatedList.map {
-                it.toItem(installed[it.product.packageName])
-            },
-            newProducts = newList.map {
-                it.toItem(installed[it.product.packageName])
-            },
+            updatedProducts = updatedList,
+            newProducts = newList,
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        started = SharingStarted.Lazily,
         initialValue = LatestPageState()
     )
 
-    fun setSortFilter(value: String) = viewModelScope.launch {
-        sortFilter.update { value }
-    }
+    fun setSortFilter(value: String) = sortFilter.update { value }
 
     companion object {
         private const val TAG = "LatestVM"

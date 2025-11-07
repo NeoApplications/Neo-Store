@@ -75,7 +75,7 @@ class SearchVM(
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        started = SharingStarted.Lazily,
         initialValue = SearchPageState()
     )
 

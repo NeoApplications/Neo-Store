@@ -4,13 +4,9 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldRole
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
-import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
 import com.machiav3lli.fdroid.data.database.entity.IconDetails
-import com.machiav3lli.fdroid.data.database.entity.Licenses
 import com.machiav3lli.fdroid.data.database.entity.Repository
-import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
@@ -21,7 +17,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -43,10 +38,8 @@ open class MainVM(
 
     val dataState: StateFlow<DataState> = combine(
         reposRepo.getAll().mapLatest { it.associateBy(Repository::id) },
-        extrasRepo.getAllFavorites(),
-        // TODO simplify
-        productsRepo.getIconDetails().distinctUntilChanged()
-            .mapLatest { it.associateBy(IconDetails::packageName) },
+        extrasRepo.getAllFavorites().distinctUntilChanged(),
+        productsRepo.getIconDetailsMap().distinctUntilChanged(),
     ) { reposMap, favorites, iconDetails ->
         DataState(
             reposMap = reposMap,
@@ -55,7 +48,7 @@ open class MainVM(
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        started = SharingStarted.Lazily,
         initialValue = DataState(),
     )
 
@@ -70,19 +63,9 @@ open class MainVM(
                 catDetails.find { it.name == cat }
                     ?: CategoryDetails(cat, cat)
             }
-        },
-        // TODO simplify
-        reposRepo.getRepoAntiFeatures().map { afs ->
-            val catsMap = afs.associateBy(AntiFeatureDetails::name)
-            val enumMap = AntiFeature.entries.associateBy(AntiFeature::key)
-            (catsMap.keys + enumMap.keys).map { name ->
-                catsMap[name]?.let { Pair(it.name, it.label) } ?: Pair(name, "")
-            }
-        },
-        // TODO simplify
-        productsRepo.getAllLicenses().distinctUntilChanged().mapLatest {
-            it.map(Licenses::licenses).flatten().distinct()
-        },
+        }.distinctUntilChanged(),
+        reposRepo.getRepoAntiFeaturePairs().distinctUntilChanged(),
+        productsRepo.getAllLicensesDistinct().distinctUntilChanged(),
     ) { enabledRepos, categories, antifeaturePairs, licenses ->
         SortFilterState(
             enabledRepos = enabledRepos,
@@ -92,13 +75,12 @@ open class MainVM(
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        started = SharingStarted.Lazily,
         initialValue = SortFilterState(),
     )
 
-    fun setNavigatorRole(role: ThreePaneScaffoldRole, packageName: String = "") {
-        viewModelScope.launch { navigationState.update { Pair(role, packageName) } }
-    }
+    fun setNavigatorRole(role: ThreePaneScaffoldRole, packageName: String = "") =
+        navigationState.update { Pair(role, packageName) }
 
     fun setFavorite(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {

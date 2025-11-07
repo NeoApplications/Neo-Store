@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.NeoApp
@@ -24,7 +23,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -40,8 +38,7 @@ class InstalledVM(
     extrasRepo: ExtrasRepository,
     installedRepo: InstalledRepository,
 ) : ViewModel() {
-    private val sortFilter: StateFlow<String>
-        private field = MutableStateFlow("")
+    private val sortFilter = MutableStateFlow("")
 
     private val installed = installedRepo.getMap()
         .stateIn(
@@ -50,75 +47,65 @@ class InstalledVM(
             initialValue = emptyMap()
         )
 
-    private val installedProducts: StateFlow<List<ProductItem>> = combine(
+    val productsPair = combine(
         sortFilter,
         installed,
-        extrasRepo.getAll().distinctUntilChanged(),
-    ) { _, _, _ -> productsRepo.getProducts(Request.Installed) }
-        .flatMapLatest { it }
-        .distinctUntilChanged()
-        .mapLatest { list ->
-            list.map { it.toItem(installed.value[it.product.packageName]) }.apply {
-                Log.d(TAG, "Installed products list size: ${this.size}")
-            }
+        extrasRepo.getAll(),
+    ) { sortFilter, installed, extras ->
+        Triple(sortFilter, installed, extras)
+    }.flatMapLatest { (_, installed, _) ->
+        combine(
+            productsRepo.getProducts(Request.Installed),
+            productsRepo.getProducts(Request.Updates),
+        ) { installedProds, updatedProds ->
+            ProductsState(
+                installedProds.map { it.toItem(installed[it.product.packageName]) },
+                updatedProds.map { it.toItem(installed[it.product.packageName]) },
+            )
         }
+    }.distinctUntilChanged()
+
+    private val downloaded = downloadedRepo.getAllFlow()
+        .debounce(250L)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
             initialValue = emptyList()
         )
-
-    private val updateProducts = combine(
-        installed,
-        extrasRepo.getAll(),
-    ) { _, _ -> productsRepo.getProducts(Request.Updates) }
-        .flatMapLatest { it }
-        .distinctUntilChanged()
-        .mapLatest { list ->
-            list.map { it.toItem(installed.value[it.product.packageName]) }.apply {
-                Log.d(TAG, "Update products list size: ${this.size}")
-            }
-        }
-
-    private val downloaded = downloadedRepo.getAllFlow()
-        .debounce(250L)
 
     val sortedDownloads = downloaded
         .mapLatest { it.sortedByDescending { it.changed / 20_000L } }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+            started = SharingStarted.Lazily,
             initialValue = emptyList()
         )
 
     val installedPageState: StateFlow<InstalledPageState> = combine(
         installed,
-        installedProducts,
-        updateProducts,
+        productsPair,
         downloaded,
         sortFilter,
-    ) { installed, installedProducts, updateProducts, downloaded, sortFilter ->
+    ) { installed, products, downloaded, sortFilter ->
         val sortedActiveDownloads = downloaded
-            .filter { it.state is DownloadState.Downloading && it.changed + 600_000L > System.currentTimeMillis() }
+            .filter { it.state is DownloadState.Downloading && it.changed + 300_000L > System.currentTimeMillis() }
             .sortedBy { it.state.name }
         InstalledPageState(
             installedMap = installed,
-            installedProducts = installedProducts,
-            updates = updateProducts,
+            installedProducts = products.installedProducts,
+            updates = products.updatedProducts,
             activeDownloads = sortedActiveDownloads,
-            updatesAvailable = updateProducts.isNotEmpty(),
+            updatesAvailable = products.updatedProducts.isNotEmpty(),
             isDownloading = sortedActiveDownloads.isNotEmpty(),
             sortFilter = sortFilter
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        started = SharingStarted.Lazily,
         initialValue = InstalledPageState()
     )
 
-    fun setSortFilter(value: String) = viewModelScope.launch {
-        sortFilter.update { value }
-    }
+    fun setSortFilter(value: String) = sortFilter.update { value }
 
     fun eraseDownloaded(downloaded: Downloaded) = viewModelScope.launch {
         downloadedRepo.delete(downloaded)
@@ -138,4 +125,9 @@ data class InstalledPageState(
     val updatesAvailable: Boolean = false,
     val isDownloading: Boolean = false,
     val sortFilter: String = ""
+)
+
+data class ProductsState(
+    val installedProducts: List<ProductItem>,
+    val updatedProducts: List<ProductItem>,
 )

@@ -61,16 +61,15 @@ class AppSheetVM(
     downloadedRepo: DownloadedRepository,
     private val productsRepo: ProductsRepository,
     private val extrasRepo: ExtrasRepository,
-    private val installedRepo: InstalledRepository,
-    private val privacyRepo: PrivacyRepository,
+    installedRepo: InstalledRepository,
+    privacyRepo: PrivacyRepository,
     reposRepo: RepositoriesRepository,
 ) : ViewModel() {
     private val packageName = MutableStateFlow("")
 
     private val products = packageName
-        .flatMapLatest { pn ->
-            productsRepo.getProduct(pn)
-        }.distinctUntilChanged()
+        .flatMapLatest { pn -> productsRepo.getProduct(pn) }
+        .distinctUntilChanged()
 
     private val developer = products
         .mapLatest {
@@ -81,22 +80,12 @@ class AppSheetVM(
 
     private val repositories = reposRepo.getAll().distinctUntilChanged()
 
-    // TODO simplify
     private val rbLogs = packageName
-        .flatMapLatest { pn ->
-            privacyRepo.getRBLogs(pn)
-        }
-        .mapLatest {
-            it
-                .groupBy(RBLog::hash)
-                .mapValues { (_, rbDataList) -> rbDataList.maxByOrNull(RBLog::timestamp)!! }
-        }
+        .flatMapLatest { pn -> privacyRepo.getRBLogsMap(pn) }
         .distinctUntilChanged()
 
     private val installedItem = packageName
-        .flatMapLatest { packageName ->
-            installedRepo.get(packageName)
-        }
+        .flatMapLatest { packageName -> installedRepo.get(packageName) }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
@@ -119,14 +108,16 @@ class AppSheetVM(
         emptyList()
     )
 
-    private val suggestedProductRepo =
-        combine(productRepos, installedItem) { prodRepos, installed ->
-            findSuggestedProduct(prodRepos, installed) { it.first }
-        }.stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            null
-        )
+    private val suggestedProductRepo = combine(
+        productRepos,
+        installedItem,
+    ) { prodRepos, installed ->
+        findSuggestedProduct(prodRepos, installed) { it.first }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        null
+    )
 
     private val releaseItems = combine(
         suggestedProductRepo,
@@ -178,7 +169,7 @@ class AppSheetVM(
         )
     }.stateIn(
         viewModelScope,
-        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        SharingStarted.Lazily,
         CoreAppState()
     )
 
@@ -191,11 +182,7 @@ class AppSheetVM(
         prod?.let {
             it.first.product.categories.map { catsMap[it]?.label ?: it }
         }.orEmpty()
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        emptyList(),
-    )
+    }.distinctUntilChanged()
 
     private val downloadingState = downloadedRepo.getLatestFlow(packageName)
         .mapLatest { it?.state }
@@ -206,9 +193,7 @@ class AppSheetVM(
         )
 
     private val extras = packageName
-        .flatMapLatest { pn ->
-            extrasRepo.get(pn)
-        }
+        .flatMapLatest { pn -> extrasRepo.get(pn) }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
@@ -225,12 +210,11 @@ class AppSheetVM(
         if (dev.isNotEmpty()) prods
             .filter { it.product.packageName != pn }
             .groupBy { it.product.packageName }
-            .mapNotNull { it.value.maxByOrNull { it.product.added } }
-            .map { it.toItem() }
+            .mapNotNull { it.value.maxByOrNull { embdProd -> embdProd.product.added }?.toItem() }
         else emptyList()
     }.distinctUntilChanged()
 
-    // Privacy data
+    // Privacy state
     private val requestedPermissions = combine(
         packageName,
         installedItem,
@@ -259,22 +243,19 @@ class AppSheetVM(
     private val privacyData = combine(
         suggestedProductRepo,
         trackers,
-        reposRepo.getRepoAntiFeatures(),
-    ) { suggestedProduct, trs, afs ->
-        val afsMap = afs.associateBy(AntiFeatureDetails::name)
+        reposRepo.getRepoAntiFeaturesMap().distinctUntilChanged(),
+    ) { suggestedProduct, trs, afsMap ->
         PrivacyData(
             permissions = suggestedProduct?.first?.displayRelease
                 ?.generatePermissionGroups(NeoApp.context) ?: emptyMap(),
             trackers = trs,
             antiFeatures = suggestedProduct?.let {
-                it.first.product.antiFeatures.map { af -> afsMap[af] ?: AntiFeatureDetails(af, "") }
+                it.first.product.antiFeatures.map { af ->
+                    afsMap[af] ?: AntiFeatureDetails(af, "")
+                }
             }.orEmpty(),
         )
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        PrivacyData()
-    )
+    }.distinctUntilChanged()
 
     val privacyPanelState: StateFlow<PrivacyPanelState> = combine(
         trackers,
@@ -295,17 +276,12 @@ class AppSheetVM(
         )
     }.stateIn(
         viewModelScope,
-        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        SharingStarted.Lazily,
         PrivacyPanelState()
     )
 
     // Download stats
-    val downloadStats = packageName
-        .flatMapLatest { pn ->
-            privacyRepo.getLatestDownloadStats(pn)
-        }
-
-    val downloadStatsInfo = packageName
+    private val downloadStatsInfo = packageName
         .flatMapLatest { pn ->
             combine(
                 privacyRepo.getClientSumDownloadStats(pn),
@@ -320,47 +296,32 @@ class AppSheetVM(
                     order
                 )
             }
-        }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            Triple(0L, "", 9999)
-        )
+        }.distinctUntilChanged()
 
-    val downloadStatsMonthly = packageName
+    private val downloadStatsDailyMap = packageName
         .flatMapLatest { pn ->
-            privacyRepo.getMonthlyDownloadStats(pn)
-        }
+            privacyRepo.getLatestDownloadStats(pn)
+        }.map {
+            it.groupBy { stats -> stats.date.intToIsoDate() }
+                .mapValues { entry ->
+                    entry.value.groupBy(DownloadStats::client)
+                        .mapValues { stats -> stats.value.sumOf { stat -> stat.count } }
+                }
+        }.distinctUntilChanged()
 
-    val downloadStatsMap = downloadStats.map {
-        it.groupBy { stats -> stats.date.intToIsoDate() }
-            .mapValues { entry ->
-                entry.value.groupBy(DownloadStats::client)
-                    .mapValues { stats -> stats.value.sumOf { stat -> stat.count } }
-            }
-    }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            emptyMap()
-        )
-
-    val downloadStatsMonthlyMap = downloadStatsMonthly.map {
-        it.groupBy { stats -> stats.yearMonth.intToIsoDate() }
-            .mapValues { entry ->
-                entry.value.groupBy(MonthlyPackageSum::client)
-                    .mapValues { stats -> stats.value.sumOf { stat -> stat.totalCount } }
-            }
-    }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            emptyMap()
-        )
+    private val downloadStatsMonthlyMap = packageName
+        .flatMapLatest { pn -> privacyRepo.getMonthlyDownloadStats(pn) }
+        .map {
+            it.groupBy { stats -> stats.yearMonth.intToIsoDate() }
+                .mapValues { entry ->
+                    entry.value.groupBy(MonthlyPackageSum::client)
+                        .mapValues { stats -> stats.value.sumOf { stat -> stat.totalCount } }
+                }
+        }.distinctUntilChanged()
 
     val downloadStatsState: StateFlow<DownloadStatsState> = combine(
         downloadStatsInfo,
-        downloadStatsMap,
+        downloadStatsDailyMap,
         downloadStatsMonthlyMap,
     ) { info, daily, monthly ->
         DownloadStatsState(
@@ -370,7 +331,7 @@ class AppSheetVM(
         )
     }.stateIn(
         viewModelScope,
-        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        SharingStarted.Lazily,
         DownloadStatsState()
     )
 
@@ -379,7 +340,8 @@ class AppSheetVM(
         installedItem,
         suggestedProductRepo,
         downloadingState,
-    ) { prods, ins, sgst, ds ->
+        extras,
+    ) { prods, ins, sgst, ds, extras ->
         val product = sgst?.first
         val compatible = product != null && product.selectedReleases.firstOrNull()
             .let { it != null && it.incompatibilities.isEmpty() }
@@ -387,7 +349,7 @@ class AppSheetVM(
             product != null && ins == null && compatible && ds?.isActive != true
         val canUpdate =
             product != null && compatible && product.canUpdate(ins) &&
-                    !shouldIgnore(product.versionCode) && ds?.isActive != true
+                    !shouldIgnore(product.versionCode, extras) && ds?.isActive != true
         val canUninstall = product != null && ins != null && !ins.isSystem
         val canLaunch = product != null &&
                 ins != null && ins.launcherActivities.isNotEmpty()
@@ -435,14 +397,14 @@ class AppSheetVM(
         )
     }.stateIn(
         viewModelScope,
-        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        SharingStarted.Lazily,
         ExtraAppState()
     )
 
     fun setApp(pn: String) = packageName.update { pn }
 
-    private fun shouldIgnore(appVersionCode: Long): Boolean =
-        extras.value?.ignoredVersion == appVersionCode || extras.value?.ignoreUpdates == true
+    private fun shouldIgnore(appVersionCode: Long, extras: Extras?): Boolean =
+        extras?.ignoredVersion == appVersionCode || extras?.ignoreUpdates == true
 
     fun setIgnoredVersion(packageName: String, versionCode: Long) {
         viewModelScope.launch {
