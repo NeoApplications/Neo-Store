@@ -280,7 +280,7 @@ class SyncWorker(
                 when (repoId) {
                     EXODUS_TRACKERS_SYNC -> ExodusWorker.fetchTrackers()
                     RB_LOGS_SYNC         -> RBWorker.fetchRBLogs()
-                    DOWNLOAD_STATS_SYNC  -> DownloadStatsWorker.fetchDownloadStats()
+                    DOWNLOAD_STATS_SYNC  -> DownloadStatsWorker.enqueuePeriodic()
                     else                 -> {
                         val data = workDataOf(
                             ARG_REPOSITORY_ID to repoId,

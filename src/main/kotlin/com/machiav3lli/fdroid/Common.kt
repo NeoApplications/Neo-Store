@@ -132,6 +132,7 @@ const val TAG_SYNC_ONETIME = "sync_onetime"
 const val TAG_SYNC_PERIODIC = "sync_periodic"
 const val TAG_BATCH_SYNC_ONETIME = "batch_sync_onetime"
 const val TAG_BATCH_SYNC_PERIODIC = "batch_sync_periodic"
+const val TAG_DOWNLOAD_STATS_PERIODIC = "download_stats_periodic"
 
 const val EXODUS_TRACKERS_SYNC = -22L
 const val RB_LOGS_SYNC = -23L

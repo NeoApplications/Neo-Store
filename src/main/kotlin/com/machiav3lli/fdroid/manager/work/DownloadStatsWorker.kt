@@ -2,16 +2,24 @@ package com.machiav3lli.fdroid.manager.work
 
 import android.content.Context
 import android.util.Log
+import androidx.work.Constraints
 import androidx.work.CoroutineWorker
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.machiav3lli.fdroid.ARG_EXCEPTION
 import com.machiav3lli.fdroid.ARG_FORCE_WORK
 import com.machiav3lli.fdroid.NeoApp
+import com.machiav3lli.fdroid.TAG_DOWNLOAD_STATS_PERIODIC
 import com.machiav3lli.fdroid.TAG_SYNC_PERIODIC
 import com.machiav3lli.fdroid.data.content.Cache
+import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.ClientCounts
 import com.machiav3lli.fdroid.data.database.entity.DownloadStatsData
 import com.machiav3lli.fdroid.data.database.entity.toDownloadStats
@@ -30,7 +38,9 @@ import kotlinx.datetime.yearMonth
 import org.koin.android.annotation.KoinWorker
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.java.KoinJavaComponent.get
 import java.io.File
+import java.util.concurrent.TimeUnit
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -229,11 +239,7 @@ class DownloadStatsWorker(
                     "Saved ${downloadStats.size} download stat records from ${result.fileName}"
                 )
             } catch (e: Exception) {
-                Log.e(
-                    TAG,
-                    "Failed to process data from ${result.fileName}",
-                    e
-                )
+                Log.e(TAG, "Failed to process data from ${result.fileName}", e)
                 throw e
             }
             // TODO add clean up call?
@@ -260,7 +266,6 @@ class DownloadStatsWorker(
     companion object {
         private const val TAG = "DownloadStatsWorker"
 
-        // TODO Make periodic instead of sync-bound
         fun fetchDownloadStats(force: Boolean = false) {
             NeoApp.wm.enqueueUniqueWork(
                 "download_stats",
@@ -269,6 +274,39 @@ class DownloadStatsWorker(
                     .addTag(TAG_SYNC_PERIODIC)
                     .setInputData(workDataOf(ARG_FORCE_WORK to force))
                     .build()
+            )
+        }
+
+        private fun PeriodicRequest(
+            networkType: NetworkType = NetworkType.CONNECTED,
+            requiresCharging: Boolean = false,
+        ): PeriodicWorkRequest = PeriodicWorkRequestBuilder<DownloadStatsWorker>(
+            24L,
+            TimeUnit.HOURS,
+        )
+            .setInitialDelay(
+                1L,
+                TimeUnit.MINUTES,
+            )
+            .setInputData(workDataOf(ARG_FORCE_WORK to false))
+            .setConstraints(
+                Constraints.Builder()
+                    .setRequiredNetworkType(networkType)
+                    .setRequiresCharging(requiresCharging)
+                    .build()
+            )
+            .addTag(TAG_DOWNLOAD_STATS_PERIODIC)
+            .build()
+
+        fun enqueuePeriodic() {
+            val autoSyncPref = Preferences[Preferences.Key.AutoSync]
+            get<WorkManager>(WorkManager::class.java).enqueueUniquePeriodicWork(
+                TAG_DOWNLOAD_STATS_PERIODIC,
+                ExistingPeriodicWorkPolicy.UPDATE,
+                PeriodicRequest(
+                    autoSyncPref.connectionType(),
+                    autoSyncPref.requireBattery(),
+                ),
             )
         }
     }

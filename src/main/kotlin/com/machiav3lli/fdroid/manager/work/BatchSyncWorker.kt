@@ -102,7 +102,7 @@ class BatchSyncWorker(
         ExodusWorker.fetchTrackers()
         if (Preferences[Preferences.Key.RBProvider] != Preferences.RBProvider.None)
             RBWorker.fetchRBLogs()
-        DownloadStatsWorker.fetchDownloadStats()
+        DownloadStatsWorker.enqueuePeriodic()
         true
     }
 
