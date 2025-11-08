@@ -1,0 +1,5 @@
+Aggiunto: Installer di Shizuku
+Aggiornato: Ristrutturazione di InstallQueue e BaseInstaller per una gestione re-attiva delle installazioni
+Aggiornato: Suddivisione di MainVM in molteplici VM (ViewModel) relative alle pagine
+Aggiornato: Sostituito il mirror di Codeberg con quello di IzzyOnDroid per le statistiche di download
+e molto altro in più di 20 commit e 10 contributi di traduzione
