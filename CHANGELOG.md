@@ -1,6 +1,26 @@
 CHANGELOG
 =========
 
+1.1.4 (08.11.2025) +20 Commits +10 Translations
+------------------
+
+### Function
+
+- Add: Preference for parallel downloads limit
+- Fix: Randomly need to clean cache after updating self
+- Fix: Shizuku installer failing to update apps
+- Update: Improve repository-viewmodel calls
+- Update: Bundle flows into specialized states in all viewmodels
+- Update: Improve downloads management, omiting extra API classes
+- Update: Improve performance of inserting DownloadStats
+- Update: Make default auto-sync interval 8 hours
+- Update: Make DownloadStatsWorker run periodic instead of on each sync
+
+### UI/UX
+
+- Update: Improve charts colors
+- Update: Small UI changes here and there
+
 1.1.3 (25.10.2025) +10 Commits +10 Translations
 ------------------
 
