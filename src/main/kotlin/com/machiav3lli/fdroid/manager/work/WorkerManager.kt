@@ -206,25 +206,16 @@ class WorkerManager(appContext: Context) : KoinComponent {
                     Log.i(this::javaClass.name, "Canceled next auto-sync run.")
                 }
 
+                is Preferences.AutoSync.Always,
                 is Preferences.AutoSync.Wifi,
                 is Preferences.AutoSync.WifiBattery,
+                is Preferences.AutoSync.Battery,
                     -> {
                     autoSync(
-                        connectionType = NetworkType.UNMETERED,
-                        chargingBattery = autoSync is Preferences.AutoSync.WifiBattery,
+                        connectionType = autoSync.connectionType(),
+                        chargingBattery = autoSync.requireBattery(),
                     )
                 }
-
-                is Preferences.AutoSync.Battery,
-                    -> autoSync(
-                    connectionType = NetworkType.CONNECTED,
-                    chargingBattery = true,
-                )
-
-                is Preferences.AutoSync.Always
-                    -> autoSync(
-                    connectionType = NetworkType.CONNECTED
-                )
             }
         }
     }

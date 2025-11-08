@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.work.NetworkType
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.PREFS_LANGUAGE
@@ -588,6 +589,15 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object WifiBattery : AutoSync("wifi-battery")
         data object Battery : AutoSync("battery")
         data object Always : AutoSync("always")
+
+        fun requireBattery() = this is Battery || this is WifiBattery
+        fun connectionType() = when (this) {
+            Wifi,
+            WifiBattery,
+                 -> NetworkType.UNMETERED
+
+            else -> NetworkType.CONNECTED
+        }
     }
 
     sealed class ProxyType(override val valueString: String, val proxyType: Proxy.Type) :
