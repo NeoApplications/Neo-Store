@@ -92,7 +92,7 @@ class PrivacyRepository(
     }
 
     suspend fun upsertDownloadStats(downloadStats: Collection<DownloadStats>) {
-        downloadStatsDao.multipleUpserts(downloadStats)
+        downloadStatsDao.upsert(*downloadStats.toTypedArray())
     }
 
     suspend fun upsertDownloadStatsFileMetadata(metadata: Collection<DownloadStatsFileMetadata>) {
