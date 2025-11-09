@@ -371,7 +371,7 @@
     <string name="root_allow_downgrades_description">Consenti il downgrade delle applicazioni usando il programma di installazione root (si applica solo alle versioni delle applicazioni di cui è possibile eseguire il debug). È meglio usarlo in combinazione con \"Disattiva controllo versione di download\".</string>
     <string name="root_allow_installing_old_apps_description">A partire da Android 14, non è più possibile installare applicazioni destinate a versioni Android molto precedenti (Android 5.1 o precedenti). Questa opzione ti consente di ignorare questo comportamento.</string>
     <string name="alt_block_layout">Usa disposizione alternativa per blocchi di pagina</string>
-    <string name="alt_block_layout_summary">Usa disposizione alternativa/vecchia per i blocchi di pagina con bordi anziché superfici colorate.</string>
+    <string name="alt_block_layout_summary">Usa una disposizione alternativa/vecchia per i blocchi di pagina con bordi anziché superfici colorate.</string>
     <string name="confirm_download_DESC_FORMAT">Sei sicuro di voler scaricare %s?</string>
     <string name="download_show_dialog">Mostra finestra download</string>
     <string name="download_show_dialog_summary">Mostra una finestra di dialogo che ti chiede se sei sicuro di voler scaricare un\'app (prima di iniziare il download).</string>
