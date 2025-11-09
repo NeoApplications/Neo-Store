@@ -1,0 +1,6 @@
+Aggiunto: Preferenza per il limite del numero di download paralleli
+Corretto: Necessità casuale di pulire la cache dopo l'aggiornamento automatico
+Corretto: Il programma di installazione di Shizuku non riesce ad aggiornare le app
+Aggiornato: Esecuzione periodica di DownloadStatsWorker anziché a ogni sincronizzazione
+Aggiornato: Miglioramento delle chiamate repository-viewmodel
+e molto altro in oltre 20 commit e 10 contributi di traduzione
