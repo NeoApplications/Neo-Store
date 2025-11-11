@@ -144,7 +144,7 @@ object Downloader {
                     //append(HttpHeaders.AcceptEncoding, "gzip, deflate")
                     append(HttpHeaders.CacheControl, CacheControl.MaxAge(60).toString())
                 }
-                ifNoneMatch(entityTag)
+                if (entityTag.isNotEmpty()) ifNoneMatch(entityTag)
                 if (start != null) header(HttpHeaders.Range, start.let { "bytes=$it-" })
                 retry {
                     modifyRequest {
