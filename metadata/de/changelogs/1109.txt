@@ -1,0 +1,6 @@
+Hinzugefügt: Präferenz für die Begrenzung der Anzahl paralleler Downloads
+Behoben: Nach der Selbstaktualisierung muss der Cache gelegentlich geleert werden.
+Behoben: Shizuku-Installationsprogramm konnte Apps nicht aktualisieren.
+Aktualisiert: DownloadStatsWorker wird nun regelmäßig statt bei jeder Synchronisierung ausgeführt.
+Aktualisiert: Repository-Viewmodel-Aufrufe wurden verbessert.
+sowie viele weitere Änderungen in über 20 Commits und 10 Übersetzungsbeiträgen
