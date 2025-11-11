@@ -25,6 +25,7 @@ import com.machiav3lli.fdroid.data.database.entity.DownloadStatsData
 import com.machiav3lli.fdroid.data.database.entity.toDownloadStats
 import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.manager.network.Downloader
+import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -69,58 +70,61 @@ class DownloadStatsWorker(
     // TODO add progress indication
     private suspend fun fetchData(): Int = withContext(Dispatchers.IO) {
         val existingModifiedDates = getExistingModifiedDates()
-        val monthlyResults = fetchMonthlyStats(existingModifiedDates)
-
-        var filesProcessed = 0
-        var filesUpdated = 0
-        val failedFiles = mutableListOf<String>()
-
-        monthlyResults.forEach { result ->
-            when {
-                result.success && result.data != null -> {
-                    processMonthlyData(result)
-                    filesProcessed++
-                    filesUpdated++
-                    Log.d(TAG, "Processed updated file: ${result.fileName}")
-                }
-
-                // File not modified
-                result.success && result.data == null -> {
-                    filesProcessed++
-                    Log.d(TAG, "File not modified: ${result.fileName}")
-                }
-
-                else                                  -> {
-                    failedFiles.add(result.fileName)
-                    Log.w(TAG, "Failed to fetch: ${result.fileName}")
-                }
-            }
-        }
+        val (nFilesProcessed, nFilesUpdated, filesFailed) =
+            fetchAndProcessMonthlyStats(existingModifiedDates)
 
         Log.i(
             TAG,
-            "Monthly data fetch complete: $filesUpdated updated, " +
-                    "${filesProcessed - filesUpdated} unchanged, ${failedFiles.size} failed"
+            "Monthly data fetch complete: $nFilesUpdated updated, " +
+                    "${nFilesProcessed - nFilesUpdated} unchanged, ${filesFailed.size} failed"
         )
 
-        if (failedFiles.isNotEmpty()) {
-            Log.w(TAG, "Failed files: ${failedFiles.joinToString()}")
+        if (filesFailed.isNotEmpty()) {
+            Log.w(TAG, "Failed files: ${filesFailed.joinToString()}")
         }
 
-        return@withContext filesProcessed
+        return@withContext nFilesProcessed
     }
 
-    private suspend fun fetchMonthlyStats(
+    private suspend fun fetchAndProcessMonthlyStats(
         existingModifiedDates: Map<String, String>
-    ): List<MonthlyFileResult> = coroutineScope {
+    ): Triple<Int, Int, List<String>> = coroutineScope {
         val fileNames = generateMonthlyFileNames()
         Log.d(TAG, "Fetching ${fileNames.size} monthly files")
 
+        var filesProcessed = 0
+        var filesUpdated = 0
+        val filesFailed = mutableListOf<String>()
+
         fileNames.map { fileName ->
             async {
-                fetchMonthlyFile(fileName, existingModifiedDates[fileName])
+                fetchMonthlyFile(
+                    fileName = fileName,
+                    lastModified = existingModifiedDates[fileName]
+                ).let { result ->
+                    when {
+                        result.success && result.data != null -> {
+                            processMonthlyData(result)
+                            filesProcessed++
+                            filesUpdated++
+                            Log.d(TAG, "Processed updated file: ${result.fileName}")
+                        }
+
+                        // File not modified
+                        result.success && result.data == null -> {
+                            filesProcessed++
+                            Log.d(TAG, "File not modified: ${result.fileName}")
+                        }
+
+                        else                                  -> {
+                            filesFailed.add(result.fileName)
+                            Log.w(TAG, "Failed to fetch: ${result.fileName}")
+                        }
+                    }
+                }
             }
         }.awaitAll()
+        Triple(filesProcessed, filesUpdated, filesFailed)
     }
 
     /**
@@ -164,7 +168,7 @@ class DownloadStatsWorker(
             )
 
             when {
-                result.isNotChanged -> {
+                result.isNotModified -> {
                     Log.d(TAG, "File download_stats/$fileName not modified since last fetch")
                     MonthlyFileResult(
                         fileName = fileName,
@@ -174,7 +178,7 @@ class DownloadStatsWorker(
                     )
                 }
 
-                result.success      -> {
+                result.success       -> {
                     val data = parseStatsFile(tempFile)
                     tempFile.delete()
 
@@ -182,12 +186,12 @@ class DownloadStatsWorker(
                     MonthlyFileResult(
                         fileName = fileName,
                         data = data,
-                        lastModified = result.lastModified.ifEmpty { null },
+                        lastModified = result.lastModified.nullIfEmpty(),
                         success = true
                     )
                 }
 
-                else                -> {
+                else                 -> {
                     tempFile.delete()
                     Log.w(TAG, "Failed to fetch download_stats/$fileName: ${result.statusCode}")
                     MonthlyFileResult(
@@ -230,17 +234,16 @@ class DownloadStatsWorker(
                     privacyRepository.upsertDownloadStatsFileMetadata(
                         fileName = result.fileName,
                         lastModified = lastModified,
-                        recordsCount = downloadStats.size
+                        recordsCount = downloadStats.size,
                     )
                 }
 
-                Log.d(
+                Log.i(
                     TAG,
                     "Saved ${downloadStats.size} download stat records from ${result.fileName}"
                 )
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to process data from ${result.fileName}", e)
-                throw e
             }
             // TODO add clean up call?
         }
@@ -284,10 +287,6 @@ class DownloadStatsWorker(
             24L,
             TimeUnit.HOURS,
         )
-            .setInitialDelay(
-                1L,
-                TimeUnit.MINUTES,
-            )
             .setInputData(workDataOf(ARG_FORCE_WORK to false))
             .setConstraints(
                 Constraints.Builder()
