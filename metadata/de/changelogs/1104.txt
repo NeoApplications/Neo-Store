@@ -1,0 +1,7 @@
+Hinzugefügt: Unterstützung für F-Droid's Index-V2 und inkrementelle Updates.
+Hinzugefügt: Unterstützung für OEM/ROM-voreingestellte Repositorys.
+Hinzugefügt: RB-Badges für Release-Elemente.
+Behoben: Exportieren von Extras.
+Aktualisiert: Verbesserung der Leistung der Abfrage der Hauptprodukte.
+Aktualisiert: Vereinheitlichung der Synchronisierungsbenachrichtigungen mithilfe des Synchronisierungsbenachrichtigungsmanagers.
+Und vieles mehr in über 210 Commits und 100 Übersetzungsbeiträgen

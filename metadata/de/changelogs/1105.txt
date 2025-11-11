@@ -1,0 +1,8 @@
+Hinzugefügt: Symbole für die neuen Kategorien von F-Droid.
+Hinzugefügt: Benachrichtigung über neue erforderliche sensible Berechtigungen bei Updates (Dank an @aba2222).
+Behoben: Vorgeschlagene Veröffentlichung in Index-V2 (Dank an @Red54).
+Korrektur: Division durch Null, wenn Index v2 in SyncWorker nicht unterstützt wird (Credits @amartinz)
+Korrektur: F-Droid-Repo-Synchronisierung verursacht stillen Speicherabsturz
+Korrektur: Parsen von en-SHAW-lokalisierten Elementen in Nicht-en-US-Locales
+Update: Erste Überarbeitung des Layouts und der Farbgebung in Richtung Material 3 Expressive
+plus vieles mehr in über 20 Commits und 1 Übersetzungsbeitrag
