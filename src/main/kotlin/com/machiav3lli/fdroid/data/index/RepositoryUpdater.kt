@@ -158,7 +158,7 @@ object RepositoryUpdater : KoinComponent {
             )
 
             when {
-                result.isNotChanged -> {
+                result.isNotModified -> {
                     file.delete()
                     false
                 }
@@ -233,16 +233,16 @@ object RepositoryUpdater : KoinComponent {
         val file = Cache.getTemporaryFile(context)
         try {
             val result = Downloader.download(
-                repository.downloadAddress.toUri().buildUpon()
+                url = repository.downloadAddress.toUri().buildUpon()
                     .appendPath(
                         if (indexType != IndexType.INDEX_V2) indexType.jarName
                         else indexType.contentName
                     )
                     .build().toString(),
-                file,
-                lastModified,
-                entityTag,
-                repository.authentication
+                target = file,
+                lastModified = lastModified,
+                entityTag = entityTag,
+                authentication = repository.authentication
             ) { read, total, _ -> callback(Stage.DOWNLOAD, read, total) }
             Pair(result, file)
         } catch (e: Exception) {
@@ -307,7 +307,7 @@ object RepositoryUpdater : KoinComponent {
                     "downloaded diff file, repoID = ${repository.id}, result.statusCode = ${result.statusCode}, hasCachedIndex = $hasCachedIndex"
                 )
                 when {
-                    result.isNotChanged -> {
+                    result.isNotModified -> {
                         diffFile.delete()
                         false
                     }
@@ -349,11 +349,11 @@ object RepositoryUpdater : KoinComponent {
         val diffUrl = (repository.downloadAddress + diffAddress)
         try {
             val result = Downloader.download(
-                diffUrl,
-                file,
-                "",
-                "",
-                repository.authentication
+                url = diffUrl,
+                target = file,
+                lastModified = "",
+                entityTag = "",
+                authentication = repository.authentication
             ) { read, total, _ -> callback(Stage.DOWNLOAD, read, total) }
             Log.d(
                 "RepositoryUpdater",

@@ -111,7 +111,7 @@ class PrivacyRepository(
             lastFetched = System.currentTimeMillis(),
             fetchSuccess = true,
             fileSize = fileSize,
-            recordsCount = recordsCount
+            recordsCount = recordsCount,
         )
         dsFileDao.upsert(metadata)
     }

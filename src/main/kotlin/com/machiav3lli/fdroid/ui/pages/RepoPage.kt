@@ -91,6 +91,7 @@ fun RepoPage(
     reposRepo: RepositoriesRepository = koinInject(),
     updateRepo: (Repository?) -> Unit,
 ) {
+    // TODO add viewmodel
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val repoState = reposRepo.getById(repositoryId).collectAsState(initial = null)

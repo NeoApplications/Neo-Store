@@ -63,7 +63,7 @@ class RBWorker(
                 )
 
                 when {
-                    result.isNotChanged -> {
+                    result.isNotModified -> {
                         Log.i(TAG, "RB index not modified")
                     }
 

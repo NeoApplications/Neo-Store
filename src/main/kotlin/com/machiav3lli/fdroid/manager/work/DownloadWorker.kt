@@ -157,7 +157,14 @@ class DownloadWorker(
             val result = if (Preferences[Preferences.Key.DownloadManager]) {
                 Downloader.dmDownload(context, task, partialRelease, callback)
             } else {
-                Downloader.download(task.url, partialRelease, "", "", task.authentication, callback)
+                Downloader.download(
+                    url = task.url,
+                    target = partialRelease,
+                    lastModified = "",
+                    entityTag = "",
+                    authentication = task.authentication,
+                    callback = callback
+                )
             }
 
             if (!result.success) {

@@ -67,12 +67,12 @@ class ExodusWorker(
                         )
 
                         when {
-                            result.isNotChanged -> {
+                            result.isNotModified -> {
                                 Log.i(TAG, "Trackers not modified, skipping update")
                             }
 
-                            result.success      -> {
-                                if (!result.isNotChanged) {
+                            result.success       -> {
+                                if (!result.isNotModified) {
                                     val trackerList = Trackers.fromStream(tempFile.inputStream())
 
                                     // Update last modified timestamp

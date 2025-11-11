@@ -50,7 +50,6 @@ import io.ktor.utils.io.jvm.javaio.toInputStream
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import okhttp3.ConnectionPool
@@ -88,13 +87,13 @@ object Downloader {
         val success: Boolean
             get() = statusCode.isSuccess()
 
-        val isNotChanged: Boolean
+        val isNotModified: Boolean
             get() = statusCode == HttpStatusCode.NotModified
 
         constructor(response: HttpResponse) : this(
             response.status,
-            response.headers["Last-Modified"].orEmpty(),
-            response.headers["ETag"].orEmpty()
+            response.headers[HttpHeaders.LastModified].orEmpty(),
+            response.headers[HttpHeaders.ETag].orEmpty(),
         )
     }
 
@@ -139,7 +138,9 @@ object Downloader {
                     this.port = it.port
                 }
                 headers {
-                    append(HttpHeaders.IfModifiedSince, lastModified)
+                    if (!lastModified.isNullOrEmpty()) {
+                        append(HttpHeaders.IfModifiedSince, lastModified)
+                    }
                     append(HttpHeaders.Authorization, authentication)
                     //append(HttpHeaders.AcceptEncoding, "gzip, deflate")
                     append(HttpHeaders.CacheControl, CacheControl.MaxAge(60).toString())
@@ -179,7 +180,8 @@ object Downloader {
 
                     response.status.isSuccess()
                         -> {
-                        val append = start != null && response.headers["Content-Range"] != null
+                        val append =
+                            start != null && response.headers[HttpHeaders.ContentRange] != null
                         val channel = response.bodyAsChannel().toInputStream()
 
                         channel.use { input ->
@@ -205,14 +207,9 @@ object Downloader {
                     }
 
                     response.status == HttpStatusCode.GatewayTimeout || response.status == HttpStatusCode.RequestTimeout
-                        -> download(
-                        url,
-                        target,
-                        lastModified,
-                        entityTag,
-                        authentication,
-                        callback
-                    )
+                        -> {
+                        download(url, target, lastModified, entityTag, authentication, callback)
+                    }
 
                     response.status == HttpStatusCode.NotFound -> {
                         Result(response)
