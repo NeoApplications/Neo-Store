@@ -1,0 +1,2 @@
+Fix: Not respecting lastModified when missing entity-tag in downloads
+Update: Process download stats as soon as fetched

@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+1.1.5 (11.11.2025) 5 Commits 2 Translations
+------------------
+
+### Function
+
+- Fix: Not respecting lastModified when missing entity-tag in downloads
+- Update: Process download stats as soon as fetched
+
 1.1.4 (08.11.2025) +20 Commits +10 Translations
 ------------------
 
