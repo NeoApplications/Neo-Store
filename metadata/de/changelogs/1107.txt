@@ -1,0 +1,7 @@
+Hinzugefügt: Download-Statistiken und Diagramme von IzzyOnDroid auf der App-Seite
+Hinzugefügt: Die am häufigsten heruntergeladenen Apps von IzzyOnDroid auf der Seite „Entdecken“
+Hinzugefügt: Suchleiste als Startpunkt für die neue Suchseite
+Behoben: Scannen von QR-Codes zum Hinzufügen von Repositorys
+Behoben: Anzeige von vorgeschlagenen Labels bei nicht passenden Releases
+Aktualisierung: Zweite Reihe von Layout- und Farbüberarbeitungen in Richtung Material 3 Expressive
+sowie vieles mehr in über 50 Commits und 20 Übersetzungsbeiträgen
