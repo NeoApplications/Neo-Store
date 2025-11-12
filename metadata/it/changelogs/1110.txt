@@ -1,0 +1,2 @@
+Corretto: Mancato rispetto di lastModified quando manca il tag entità nei download
+Aggiornato: Elabora le statistiche di download non appena vengono recuperate
