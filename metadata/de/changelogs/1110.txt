@@ -1,0 +1,2 @@
+Fix: Nichtbeachtung von lastModified bei fehlendem Entity-Tag in Downloads
+Update: Download-Statistiken sofort nach dem Abruf verarbeiten
