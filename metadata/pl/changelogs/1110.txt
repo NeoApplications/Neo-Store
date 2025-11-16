@@ -1,0 +1,2 @@
+Poprawka: Nie uwzględnianie "ostatnio zmodyfikowano" w przypadku braku tagu encji w plikach do pobrania
+Aktualizacja: Przetwarzanie statystyk pobierania zaraz po ich pobraniu

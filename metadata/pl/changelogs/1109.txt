@@ -1,0 +1,6 @@
+Dodano: Preferencje dotyczące limitu liczby równoległych pobrań
+Naprawiono: Losowa konieczność czyszczenia pamięci podręcznej po aktualizacji
+Naprawiono: Instalator Shizuku nie aktualizował aplikacji
+Aktualizacja: Uruchamianie DownloadStatsWorker okresowo zamiast przy każdej synchronizacji
+Aktualizacja: Ulepszenie wywołań repository-viewmodel
+Oraz wiele innych zmian w ponad 20 aktualizacjach i 10 tłumaczeniach

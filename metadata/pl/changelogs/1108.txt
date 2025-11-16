@@ -1,0 +1,5 @@
+Dodano: Instalator Shizuku
+Aktualizacja: przebudowa InstallQueue i BaseInstaller w celu ponownego uruchomienia obsługi instalacji
+Aktualizacja: Podział MainVM na wiele maszyn wirtualnych powiązanych ze stronami
+Aktualizacja: Zastąpienie kopii lustrzanej codeberg kopią izzyondroid w celu uzyskania statystyk pobierania
+oraz wiele innych zmian w ponad 20 aktualizacjach i 10 tłumaczeniach
