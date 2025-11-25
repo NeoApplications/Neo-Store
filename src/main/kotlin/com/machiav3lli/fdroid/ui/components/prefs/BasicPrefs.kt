@@ -134,7 +134,7 @@ fun SwitchPreference(
 
     SideEffect {
         CoroutineScope(Dispatchers.Default).launch {
-            Preferences.subject.collect {
+            Preferences.addPreferencesChangeListener {
                 when (it) {
                     dependency?.first -> isEnabled = Preferences[it] in dependency.second
                     else              -> {}
@@ -189,7 +189,7 @@ fun LanguagePreference(
 
     SideEffect {
         CoroutineScope(Dispatchers.Default).launch {
-            Preferences.subject.collect {
+            Preferences.addPreferencesChangeListener {
                 when (it) {
                     dependency?.first -> isEnabled = Preferences[it] in dependency.second
                     else              -> {}
@@ -230,7 +230,7 @@ fun LaunchPreference(
 
     SideEffect {
         CoroutineScope(Dispatchers.Default).launch {
-            Preferences.subject.collect {
+            Preferences.addPreferencesChangeListener {
                 when (it) {
                     prefKey           -> prefValue = Preferences[prefKey]
                     dependency?.first -> isEnabled = Preferences[it] in dependency.second
@@ -270,7 +270,7 @@ fun EnumPreference(
     }
     SideEffect {
         CoroutineScope(Dispatchers.Default).launch {
-            Preferences.subject.collect {
+            Preferences.addPreferencesChangeListener {
                 when (it) {
                     Preferences.Key.Installer -> {
                         prefValue = Preferences[prefKey]
@@ -317,7 +317,7 @@ fun IntPreference(
     }
     SideEffect {
         CoroutineScope(Dispatchers.Default).launch {
-            Preferences.subject.collect {
+            Preferences.addPreferencesChangeListener {
                 when (it) {
                     prefKey           -> prefValue = Preferences[prefKey]
                     dependency?.first -> isEnabled = Preferences[it] in dependency.second
@@ -357,7 +357,7 @@ fun StringPreference(
     }
     SideEffect {
         CoroutineScope(Dispatchers.Default).launch {
-            Preferences.subject.collect {
+            Preferences.addPreferencesChangeListener {
                 when (it) {
                     prefKey           -> prefValue = Preferences[prefKey]
                     dependency?.first -> isEnabled = Preferences[it] in dependency.second

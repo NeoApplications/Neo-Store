@@ -75,9 +75,7 @@ import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,32 +87,30 @@ fun InstalledPage(
     val installedTab = rememberSaveable { mutableIntStateOf(0) }
 
     LaunchedEffect(Unit) {
-        withContext(Dispatchers.Default) {
-            Preferences.subject.collect {
-                when (it) {
-                    Preferences.Key.ReposFilterInstalled,
-                    Preferences.Key.CategoriesFilterInstalled,
-                    Preferences.Key.AntifeaturesFilterInstalled,
-                    Preferences.Key.LicensesFilterInstalled,
-                    Preferences.Key.SortOrderInstalled,
-                    Preferences.Key.SortOrderAscendingInstalled,
-                    Preferences.Key.TargetSDKInstalled,
-                    Preferences.Key.MinSDKInstalled,
-                         -> viewModel.setSortFilter(
-                        listOf(
-                            Preferences[Preferences.Key.ReposFilterInstalled],
-                            Preferences[Preferences.Key.CategoriesFilterInstalled],
-                            Preferences[Preferences.Key.AntifeaturesFilterInstalled],
-                            Preferences[Preferences.Key.LicensesFilterInstalled],
-                            Preferences[Preferences.Key.SortOrderInstalled],
-                            Preferences[Preferences.Key.SortOrderAscendingInstalled],
-                            Preferences[Preferences.Key.TargetSDKInstalled],
-                            Preferences[Preferences.Key.MinSDKInstalled],
-                        ).toString()
-                    )
+        Preferences.addPreferencesChangeListener {
+            when (it) {
+                Preferences.Key.ReposFilterInstalled,
+                Preferences.Key.CategoriesFilterInstalled,
+                Preferences.Key.AntifeaturesFilterInstalled,
+                Preferences.Key.LicensesFilterInstalled,
+                Preferences.Key.SortOrderInstalled,
+                Preferences.Key.SortOrderAscendingInstalled,
+                Preferences.Key.TargetSDKInstalled,
+                Preferences.Key.MinSDKInstalled,
+                     -> viewModel.setSortFilter(
+                    listOf(
+                        Preferences[Preferences.Key.ReposFilterInstalled],
+                        Preferences[Preferences.Key.CategoriesFilterInstalled],
+                        Preferences[Preferences.Key.AntifeaturesFilterInstalled],
+                        Preferences[Preferences.Key.LicensesFilterInstalled],
+                        Preferences[Preferences.Key.SortOrderInstalled],
+                        Preferences[Preferences.Key.SortOrderAscendingInstalled],
+                        Preferences[Preferences.Key.TargetSDKInstalled],
+                        Preferences[Preferences.Key.MinSDKInstalled],
+                    ).toString()
+                )
 
-                    else -> {}
-                }
+                else -> {}
             }
         }
     }

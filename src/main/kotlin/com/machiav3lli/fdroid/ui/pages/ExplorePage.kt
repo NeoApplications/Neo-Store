@@ -71,9 +71,7 @@ import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.ExploreVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -112,32 +110,30 @@ fun ExplorePage(
     }
 
     LaunchedEffect(Unit) {
-        withContext(Dispatchers.Default) {
-            Preferences.subject.collect {
-                when (it) {
-                    Preferences.Key.ReposFilterExplore,
-                    Preferences.Key.CategoriesFilterExplore,
-                    Preferences.Key.AntifeaturesFilterExplore,
-                    Preferences.Key.LicensesFilterExplore,
-                    Preferences.Key.SortOrderExplore,
-                    Preferences.Key.SortOrderAscendingExplore,
-                    Preferences.Key.TargetSDKExplore,
-                    Preferences.Key.MinSDKExplore,
-                        -> viewModel.setSortFilter(
-                        listOf(
-                            Preferences[Preferences.Key.ReposFilterExplore],
-                            Preferences[Preferences.Key.CategoriesFilterExplore],
-                            Preferences[Preferences.Key.AntifeaturesFilterExplore],
-                            Preferences[Preferences.Key.LicensesFilterExplore],
-                            Preferences[Preferences.Key.SortOrderExplore],
-                            Preferences[Preferences.Key.SortOrderAscendingExplore],
-                            Preferences[Preferences.Key.TargetSDKExplore],
-                            Preferences[Preferences.Key.MinSDKExplore],
-                        ).toString()
-                    )
+        Preferences.addPreferencesChangeListener {
+            when (it) {
+                Preferences.Key.ReposFilterExplore,
+                Preferences.Key.CategoriesFilterExplore,
+                Preferences.Key.AntifeaturesFilterExplore,
+                Preferences.Key.LicensesFilterExplore,
+                Preferences.Key.SortOrderExplore,
+                Preferences.Key.SortOrderAscendingExplore,
+                Preferences.Key.TargetSDKExplore,
+                Preferences.Key.MinSDKExplore,
+                    -> viewModel.setSortFilter(
+                    listOf(
+                        Preferences[Preferences.Key.ReposFilterExplore],
+                        Preferences[Preferences.Key.CategoriesFilterExplore],
+                        Preferences[Preferences.Key.AntifeaturesFilterExplore],
+                        Preferences[Preferences.Key.LicensesFilterExplore],
+                        Preferences[Preferences.Key.SortOrderExplore],
+                        Preferences[Preferences.Key.SortOrderAscendingExplore],
+                        Preferences[Preferences.Key.TargetSDKExplore],
+                        Preferences[Preferences.Key.MinSDKExplore],
+                    ).toString()
+                )
 
-                    else -> {}
-                }
+                else -> {}
             }
         }
     }

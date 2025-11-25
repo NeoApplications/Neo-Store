@@ -29,9 +29,7 @@ import java.net.Proxy
 
 data object Preferences : OnSharedPreferenceChangeListener {
     private lateinit var preferences: SharedPreferences
-
-    private val mutableSubject = MutableSharedFlow<Key<*>>()
-    val subject = mutableSubject.asSharedFlow()
+    private val subject = MutableSharedFlow<Key<*>>()
 
     private val keys = sequenceOf(
         // Personalization
@@ -138,8 +136,14 @@ data object Preferences : OnSharedPreferenceChangeListener {
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         CoroutineScope(Dispatchers.Default).launch {
             keys[key]?.let {
-                mutableSubject.emit(it)
+                subject.emit(it)
             }
+        }
+    }
+
+    suspend fun addPreferencesChangeListener(listener: suspend (Key<*>) -> Unit) {
+        subject.collect {
+            listener(it)
         }
     }
 

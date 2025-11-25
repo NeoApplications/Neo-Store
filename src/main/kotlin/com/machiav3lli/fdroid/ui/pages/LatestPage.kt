@@ -47,9 +47,7 @@ import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.LatestVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -80,32 +78,30 @@ fun LatestPage(
     }
 
     LaunchedEffect(Unit) {
-        withContext(Dispatchers.Default) {
-            Preferences.subject.collect {
-                when (it) {
-                    Preferences.Key.ReposFilterLatest,
-                    Preferences.Key.CategoriesFilterLatest,
-                    Preferences.Key.AntifeaturesFilterLatest,
-                    Preferences.Key.LicensesFilterLatest,
-                    Preferences.Key.SortOrderLatest,
-                    Preferences.Key.SortOrderAscendingLatest,
-                    Preferences.Key.TargetSDKLatest,
-                    Preferences.Key.MinSDKLatest,
-                        -> viewModel.setSortFilter(
-                        listOf(
-                            Preferences[Preferences.Key.ReposFilterLatest],
-                            Preferences[Preferences.Key.CategoriesFilterLatest],
-                            Preferences[Preferences.Key.AntifeaturesFilterLatest],
-                            Preferences[Preferences.Key.LicensesFilterLatest],
-                            Preferences[Preferences.Key.SortOrderLatest],
-                            Preferences[Preferences.Key.SortOrderAscendingLatest],
-                            Preferences[Preferences.Key.TargetSDKLatest],
-                            Preferences[Preferences.Key.MinSDKLatest],
-                        ).toString()
-                    )
+        Preferences.addPreferencesChangeListener {
+            when (it) {
+                Preferences.Key.ReposFilterLatest,
+                Preferences.Key.CategoriesFilterLatest,
+                Preferences.Key.AntifeaturesFilterLatest,
+                Preferences.Key.LicensesFilterLatest,
+                Preferences.Key.SortOrderLatest,
+                Preferences.Key.SortOrderAscendingLatest,
+                Preferences.Key.TargetSDKLatest,
+                Preferences.Key.MinSDKLatest,
+                    -> viewModel.setSortFilter(
+                    listOf(
+                        Preferences[Preferences.Key.ReposFilterLatest],
+                        Preferences[Preferences.Key.CategoriesFilterLatest],
+                        Preferences[Preferences.Key.AntifeaturesFilterLatest],
+                        Preferences[Preferences.Key.LicensesFilterLatest],
+                        Preferences[Preferences.Key.SortOrderLatest],
+                        Preferences[Preferences.Key.SortOrderAscendingLatest],
+                        Preferences[Preferences.Key.TargetSDKLatest],
+                        Preferences[Preferences.Key.MinSDKLatest],
+                    ).toString()
+                )
 
-                    else -> {}
-                }
+                else -> {}
             }
         }
     }

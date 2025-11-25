@@ -56,9 +56,7 @@ import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import com.machiav3lli.fdroid.viewmodels.SearchVM
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,32 +96,30 @@ fun SearchPage(
     }
 
     LaunchedEffect(Unit) {
-        withContext(Dispatchers.Default) {
-            Preferences.subject.collect {
-                when (it) {
-                    Preferences.Key.ReposFilterSearch,
-                    Preferences.Key.CategoriesFilterSearch,
-                    Preferences.Key.AntifeaturesFilterSearch,
-                    Preferences.Key.LicensesFilterSearch,
-                    Preferences.Key.SortOrderSearch,
-                    Preferences.Key.SortOrderAscendingSearch,
-                    Preferences.Key.TargetSDKSearch,
-                    Preferences.Key.MinSDKSearch,
-                        -> viewModel.setSortFilter(
-                        listOf(
-                            Preferences[Preferences.Key.ReposFilterSearch],
-                            Preferences[Preferences.Key.CategoriesFilterSearch],
-                            Preferences[Preferences.Key.AntifeaturesFilterSearch],
-                            Preferences[Preferences.Key.LicensesFilterSearch],
-                            Preferences[Preferences.Key.SortOrderSearch],
-                            Preferences[Preferences.Key.SortOrderAscendingSearch],
-                            Preferences[Preferences.Key.TargetSDKSearch],
-                            Preferences[Preferences.Key.MinSDKSearch],
-                        ).toString()
-                    )
+        Preferences.addPreferencesChangeListener {
+            when (it) {
+                Preferences.Key.ReposFilterSearch,
+                Preferences.Key.CategoriesFilterSearch,
+                Preferences.Key.AntifeaturesFilterSearch,
+                Preferences.Key.LicensesFilterSearch,
+                Preferences.Key.SortOrderSearch,
+                Preferences.Key.SortOrderAscendingSearch,
+                Preferences.Key.TargetSDKSearch,
+                Preferences.Key.MinSDKSearch,
+                    -> viewModel.setSortFilter(
+                    listOf(
+                        Preferences[Preferences.Key.ReposFilterSearch],
+                        Preferences[Preferences.Key.CategoriesFilterSearch],
+                        Preferences[Preferences.Key.AntifeaturesFilterSearch],
+                        Preferences[Preferences.Key.LicensesFilterSearch],
+                        Preferences[Preferences.Key.SortOrderSearch],
+                        Preferences[Preferences.Key.SortOrderAscendingSearch],
+                        Preferences[Preferences.Key.TargetSDKSearch],
+                        Preferences[Preferences.Key.MinSDKSearch],
+                    ).toString()
+                )
 
-                    else -> {}
-                }
+                else -> {}
             }
         }
     }
