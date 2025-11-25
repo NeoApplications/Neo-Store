@@ -353,7 +353,7 @@
     <string name="dark_medium_contrast">Dunkel (mittlerer Kontrast)</string>
     <string name="dark_high_contrast">Dunkel (hoher Kontrast)</string>
     <string name="black_medium_contrast">Schwarz (mittlerer Kontrast)</string>
-    <string name="installed_import">Importiere und installiere eine Liste von Apps (wird von aktivierten Repositorien bezogen, wenn vorhanden)</string>
+    <string name="installed_import">Eine Liste von Apps importieren und installieren (wird von aktivierten Repositorien bezogen, wenn vorhanden)</string>
     <string name="root_allow_downgrades">Downgraden von Anwendungen erlauben</string>
     <string name="root_allow_downgrades_description">Erlaubt Downgrade von Anwendungen mithilfe des Root-Installers (gilt nur für debuggbare Anwendungsversionen). Besser in Kombination mit „Versionsprüfung beim Herunterladen deaktivieren“ verwenden.</string>
     <string name="root_allow_installing_old_apps_description">Ab Android 14 ist es nicht mehr möglich, Anwendungen zu installieren, die auf viel ältere Android-Versionen (Android 5.1 oder früher) abzielen. Diese Option ermöglicht es dir, dieses Verhalten zu umgehen.</string>
