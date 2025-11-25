@@ -6,26 +6,19 @@ import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.entity.Order
 import com.machiav3lli.fdroid.data.entity.Section
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class InstalledRepository(
     private val productsDao: ProductDao,
     private val installedDao: InstalledDao,
 ) {
-    private val cc = Dispatchers.IO
-
     fun get(packageName: String): Flow<Installed?> = installedDao.getFlow(packageName)
-        .flowOn(cc)
 
     fun getAll(): Flow<List<Installed>> = installedDao.getAllFlow()
-        .flowOn(cc)
 
     fun getMap(): Flow<Map<String, Installed>> = installedDao.getAllFlow()
         .map { it.associateBy(Installed::packageName) }
-        .flowOn(cc)
 
     suspend fun load(packageName: String): Installed? = installedDao.get(packageName)
 

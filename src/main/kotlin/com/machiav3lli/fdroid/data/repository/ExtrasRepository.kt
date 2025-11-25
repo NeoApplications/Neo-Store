@@ -2,23 +2,16 @@ package com.machiav3lli.fdroid.data.repository
 
 import com.machiav3lli.fdroid.data.database.dao.ExtrasDao
 import com.machiav3lli.fdroid.data.database.entity.Extras
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 
 class ExtrasRepository(
     private val extrasDao: ExtrasDao,
 ) {
-    private val cc = Dispatchers.IO
-
     fun get(packageName: String): Flow<Extras?> = extrasDao.getFlow(packageName)
-        .flowOn(cc)
 
     fun getAll(): Flow<List<Extras>> = extrasDao.getAllFlow()
-        .flowOn(cc)
 
     fun getAllFavorites(): Flow<List<String>> = extrasDao.getFavoritesFlow()
-        .flowOn(cc)
 
     suspend fun load(packageName: String): Extras? = extrasDao[packageName]
 

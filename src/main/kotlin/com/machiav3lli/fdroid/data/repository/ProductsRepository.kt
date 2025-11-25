@@ -15,10 +15,8 @@ import com.machiav3lli.fdroid.data.entity.Request
 import com.machiav3lli.fdroid.data.entity.Section
 import com.machiav3lli.fdroid.utils.extension.text.getIsoDateOfMonthsAgo
 import com.machiav3lli.fdroid.utils.extension.text.isoDateToInt
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapLatest
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -28,24 +26,18 @@ class ProductsRepository(
     private val repoCategoryDao: RepoCategoryDao,
     private val downloadStatsDao: DownloadStatsDao,
 ) {
-    private val cc = Dispatchers.IO
-
     suspend fun upsertProduct(vararg product: Product) = productsDao.upsert(*product)
 
     fun getProducts(req: Request): Flow<List<EmbeddedProduct>> = productsDao.queryFlowList(req)
-        .flowOn(cc)
 
     fun getProduct(packageName: String): Flow<List<EmbeddedProduct>> =
         productsDao.getFlow(packageName)
-            .flowOn(cc)
 
     fun getProductsOfRepo(repoId: Long): Flow<List<EmbeddedProduct>> =
         productsDao.productsForRepositoryFlow(repoId)
-            .flowOn(cc)
 
     fun getSpecificProducts(pkgs: Set<String>): Flow<List<EmbeddedProduct>> =
         productsDao.queryFlowOfPackages(pkgs)
-            .flowOn(cc)
 
     fun getRecentTopApps(client: String, numMonths: Int = 3): Flow<List<PackageSum>> =
         downloadStatsDao.getFlowRecentTopApps(
@@ -53,38 +45,29 @@ class ProductsRepository(
             50,
             client
         )
-            .flowOn(cc)
 
     fun getAllTimeTopApps(): Flow<List<PackageSum>> =
         downloadStatsDao.getFlowRecentTopApps(getIsoDateOfMonthsAgo(100).isoDateToInt(), 50)
-            .flowOn(cc)
 
     fun getAuthorList(author: String): Flow<List<EmbeddedProduct>> =
         productsDao.getAuthorPackagesFlow(author)
-            .flowOn(cc)
 
     fun getAllLicenses(): Flow<List<Licenses>> = productsDao.getAllLicensesFlow()
-        .flowOn(cc)
 
     fun getAllLicensesDistinct(): Flow<List<String>> = productsDao.getAllLicensesFlow()
         .mapLatest {
             it.map(Licenses::licenses).flatten().distinct()
         }
-        .flowOn(cc)
 
     fun getAllCategories(): Flow<List<String>> = categoryDao.getAllNamesFlow()
-        .flowOn(cc)
 
     fun getAllCategoryDetails(): Flow<List<CategoryDetails>> =
         repoCategoryDao.getAllCategoryDetailsFlow()
-            .flowOn(cc)
 
     fun getIconDetails(): Flow<List<IconDetails>> = productsDao.getIconDetailsFlow()
-        .flowOn(cc)
 
     fun getIconDetailsMap(): Flow<Map<String, IconDetails>> = productsDao.getIconDetailsFlow()
         .mapLatest { it.associateBy(IconDetails::packageName) }
-        .flowOn(cc)
 
     suspend fun loadList(
         installed: Boolean,

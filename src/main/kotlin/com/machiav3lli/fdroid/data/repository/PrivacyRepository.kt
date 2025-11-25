@@ -15,10 +15,8 @@ import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.utils.extension.text.getIsoDateOfMonthsAgo
 import com.machiav3lli.fdroid.utils.extension.text.isoDateToInt
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapLatest
 import org.koin.dsl.module
 
@@ -30,51 +28,38 @@ class PrivacyRepository(
     private val downloadStatsDao: DownloadStatsDao,
     private val dsFileDao: DownloadStatsFileDao,
 ) {
-    private val cc = Dispatchers.IO
-
     fun getAllTrackers() = trackerDao.getAllFlow()
-        .flowOn(cc)
 
     fun getExodusInfos(packageName: String): Flow<List<ExodusInfo>> = exodusDao.getFlow(packageName)
-        .flowOn(cc)
 
     fun getRBLogs(packageName: String): Flow<List<RBLog>> = rbDao.getFlow(packageName)
-        .flowOn(cc)
 
     fun getRBLogsMap(packageName: String): Flow<Map<String, RBLog>> = rbDao.getFlow(packageName)
         .mapLatest { list ->
             list.groupBy(RBLog::hash)
                 .mapValues { (_, rbDataList) -> rbDataList.maxByOrNull(RBLog::timestamp)!! }
         }
-        .flowOn(cc)
 
     fun getDownloadStats(packageName: String): Flow<List<DownloadStats>> =
         downloadStatsDao.getFlow(packageName)
-            .flowOn(cc)
 
     fun getLatestDownloadStats(packageName: String): Flow<List<DownloadStats>> =
         downloadStatsDao.getFlowSince(packageName, getIsoDateOfMonthsAgo(3).isoDateToInt())
-            .flowOn(cc)
 
     fun getSumDownloadStats(packageName: String): Flow<PackageSum> =
         downloadStatsDao.getFlowPackageSum(packageName)
-            .flowOn(cc)
 
     fun getSumDownloadOrder(packageName: String): Flow<Int> =
         downloadStatsDao.getFlowPackageSumOrder(packageName)
-            .flowOn(cc)
 
     fun getSumDownloadOrderLegacy(packageName: String): Flow<Int> =
         downloadStatsDao.getFlowPackageSumOrderLegacy(packageName)
-            .flowOn(cc)
 
     fun getClientSumDownloadStats(packageName: String): Flow<List<ClientPackageSum>> =
         downloadStatsDao.getFlowClientSumForPackage(packageName)
-            .flowOn(cc)
 
     fun getMonthlyDownloadStats(packageName: String): Flow<List<MonthlyPackageSum>> =
         downloadStatsDao.getFlowMonthlySumForPackage(packageName)
-            .flowOn(cc)
 
     suspend fun loadDownloadStatsModifiedMap(): Map<String, String> =
         dsFileDao.getLastModifiedDates()
