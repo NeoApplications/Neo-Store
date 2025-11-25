@@ -273,18 +273,18 @@ fun SortFilterSheet(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        listOf(Pair(FILTER_CATEGORY_ALL, stringResource(id = R.string.all))) +
-                                (sortFilterState.categories.sortedBy { it.label }
+                        (listOf(Pair(FILTER_CATEGORY_ALL, stringResource(id = R.string.all))) +
+                                sortFilterState.categories.sortedBy { it.label }
                                     .map { Pair(it.name, it.label) })
-                                    .forEach {
-                                        SelectChip(
-                                            text = it.second,
-                                            checked = it.first == filterCategory,
-                                            alwaysShowIcon = false,
-                                        ) {
-                                            filterCategory = it.first
-                                        }
-                                    }
+                            .forEach {
+                                SelectChip(
+                                    text = it.second,
+                                    checked = it.first == filterCategory,
+                                    alwaysShowIcon = false,
+                                ) {
+                                    filterCategory = it.first
+                                }
+                            }
                     }
                 }
             }
