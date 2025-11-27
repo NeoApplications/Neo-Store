@@ -17,18 +17,20 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.concurrent.atomics.AtomicLong
+import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
 /**
  * Manages the queue of installation tasks to ensure they run sequentially
  */
+@OptIn(ExperimentalAtomicApi::class)
 class InstallQueue : KoinComponent {
     private val mutex = Mutex()
     private val queueScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-    private var processingStartTime: Long = 0
+    private val processingStartTime = AtomicLong(0)
     private val installer: BaseInstaller by inject()
     private val installStateHolder by lazy {
         StateHolderFlow<InstallState>()
@@ -48,32 +50,38 @@ class InstallQueue : KoinComponent {
      * Reactively handles enqueued installs
      */
     private suspend fun processTasksFromChannel() {
-        queue.consumeEach { task ->
+        for (task in queue) {
             mutex.withLock {
                 currentTask = task
                 isProcessing.update { true }
-                processingStartTime = System.currentTimeMillis()
+                processingStartTime.store(System.currentTimeMillis())
             }
 
-            if (!installStateHolder.isHeld(task.packageName)
-                && queuedPackages.contains(task.packageName)
-            ) {
-                emitProgress(InstallState.Preparing, task.packageName)
-                // start notification
-                installer.runInstall(task) { e ->
-                    Log.e(
-                        BaseInstaller.Companion.TAG,
-                        "Unexpected error during installation of ${task.packageName}",
-                        e
-                    )
+            try {
+                if (!installStateHolder.isHeld(task.packageName)) {
+                    emitProgress(InstallState.Preparing, task.packageName)
+                    // start notification
+                    installer.runInstall(task) { e ->
+                        Log.e(
+                            TAG,
+                            "Unexpected error during installation of ${task.packageName}",
+                            e
+                        )
+                        queueScope.launch {
+                            onInstallationComplete(
+                                Result.failure(InstallationError.Unknown("Installation failed: ${e.message}"))
+                            )
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "Installation already held for ${task.packageName}, skipping")
                     onInstallationComplete(
-                        Result.failure(InstallationError.Unknown("Installation failed: ${e.message}"))
+                        Result.failure(InstallationError.Unknown("Installation already in progress"))
                     )
                 }
-                // remove notification
+            } finally {
                 queuedPackages.remove(task.packageName)
             }
-            queuedPackages.remove(task.packageName)
         }
     }
 
@@ -86,6 +94,13 @@ class InstallQueue : KoinComponent {
         cacheFileName: String,
         callback: (Result<String>) -> Unit
     ) {
+        // Quick check without lock
+        if (isEnqueued(packageName)) {
+            Log.d(TAG, "$packageName is already queued or processing")
+            callback(Result.failure(InstallationError.Unknown("Package already in installation queue")))
+            return
+        }
+
         mutex.withLock {
             // Check if already queued or processing
             if (queuedPackages.contains(packageName) || currentTask?.packageName == packageName) {
@@ -105,27 +120,22 @@ class InstallQueue : KoinComponent {
      * Report progress stat to the states holder.
      */
     fun emitProgress(progress: InstallState, packageName: String? = null) {
-        if (packageName != null) {
-            installStateHolder.updateState(packageName, progress)
-        } else {
-            currentTask?.let { task ->
-                installStateHolder.updateState(task.packageName, progress)
-            }
-        }
+        val targetPackage = packageName ?: currentTask?.packageName
 
-        Log.d(
-            BaseInstaller.TAG,
-            "Installation state updated for ${packageName ?: "current task"}: ${progress::class.simpleName}"
-        )
+        if (targetPackage != null) {
+            installStateHolder.updateState(targetPackage, progress)
+            Log.d(
+                BaseInstaller.TAG,
+                "Installation state updated for $targetPackage: ${progress::class.simpleName}"
+            )
+        }
     }
 
     /**
      * Register starting user interaction for a specific package
      */
-    suspend fun startUserInteraction(packageName: String) {
-        withContext(queueScope.coroutineContext) {
-            inUserInteraction.update { packageName }
-        }
+    fun startUserInteraction(packageName: String) {
+        inUserInteraction.update { packageName }
     }
 
     /**
@@ -146,61 +156,57 @@ class InstallQueue : KoinComponent {
      */
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun checkQueueHealth(): Boolean {
-        return withContext(queueScope.coroutineContext) {
-            mutex.withLock {
-                try {
-                    var cleanupPerformed = false
+        return mutex.withLock {
+            var cleanupPerformed = false
 
-                    // If there's a current task but processing is false, we have an inconsistency
-                    if (currentTask != null && !isProcessing.value) {
+            // If there's a current task but processing is false, we have an inconsistency
+            if (currentTask != null && !isProcessing.value) {
+                Log.w(
+                    TAG,
+                    "Queue health check: Inconsistent state detected for ${currentTask?.packageName}, cleaning up"
+                )
+                currentTask?.callback?.invoke(Result.failure(InstallationError.Unknown("Queue cleanup: inconsistent state")))
+                currentTask = null
+                inUserInteraction.update { "" }
+                cleanupPerformed = true
+            }
+
+            // Check for stuck processing based on time
+            if (isProcessing.value && currentTask != null) {
+                val startTime = processingStartTime.load()
+                if (startTime > 0) {
+                    val processingTime = System.currentTimeMillis() - startTime
+                    if (processingTime > MAX_PROCESSING_TIME) {
                         Log.w(
                             TAG,
-                            "Queue health check: Inconsistent state detected for ${currentTask?.packageName}, cleaning up"
+                            "Queue health check: Task ${currentTask?.packageName} has been processing for ${processingTime}ms, forcing cleanup"
                         )
-                        currentTask?.callback?.invoke(Result.failure(InstallationError.Unknown("Queue cleanup: inconsistent state")))
+                        currentTask?.callback?.invoke(Result.failure(InstallationError.Unknown("Installation timeout")))
                         currentTask = null
-                        inUserInteraction.update { "" }
-                        cleanupPerformed = true
-                    }
-
-                    // Check for stuck processing based on time
-                    if (isProcessing.value && currentTask != null && processingStartTime > 0) {
-                        val processingTime = System.currentTimeMillis() - processingStartTime
-                        if (processingTime > MAX_PROCESSING_TIME) {
-                            Log.w(
-                                TAG,
-                                "Queue health check: Task ${currentTask?.packageName} has been processing for ${processingTime}ms, forcing cleanup"
-                            )
-                            currentTask?.callback?.invoke(Result.failure(InstallationError.Unknown("Installation timeout")))
-                            currentTask = null
-                            isProcessing.update { false }
-                            inUserInteraction.update { "" }
-                            processingStartTime = 0
-                            cleanupPerformed = true
-                        }
-                    }
-
-                    // Check for empty queue but still processing
-                    if (isProcessing.value && currentTask == null && queue.isEmpty) {
-                        Log.w(
-                            TAG,
-                            "Queue health check: Processing flag set but no tasks, resetting"
-                        )
                         isProcessing.update { false }
                         inUserInteraction.update { "" }
+                        processingStartTime.store(0)
                         cleanupPerformed = true
                     }
-
-                    Log.d(
-                        TAG,
-                        "Queue health check completed. Queued packages: ${queuedPackages.size}, Processing: ${isProcessing.value}, Current task: ${currentTask?.packageName}"
-                    )
-                    cleanupPerformed
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error checking queue health: ${e.message}")
-                    false
                 }
             }
+
+            // Check for empty queue but still processing
+            if (isProcessing.value && currentTask == null && queue.isEmpty) {
+                Log.w(
+                    TAG,
+                    "Queue health check: Processing flag set but no tasks, resetting"
+                )
+                isProcessing.update { false }
+                inUserInteraction.update { "" }
+                cleanupPerformed = true
+            }
+
+            Log.d(
+                TAG,
+                "Queue health check completed. Queued packages: ${queuedPackages.size}, Processing: ${isProcessing.value}, Current task: ${currentTask?.packageName}"
+            )
+            cleanupPerformed
         }
     }
 
@@ -215,17 +221,15 @@ class InstallQueue : KoinComponent {
      * Cancels all pending installation tasks for a specific package
      */
     suspend fun cancel(packageName: String) {
-        withContext(queueScope.coroutineContext) {
-            mutex.withLock {
-                queuedPackages.remove(packageName)
+        mutex.withLock {
+            queuedPackages.remove(packageName)
 
-                // If current task is for this package, report cancellation
-                if (currentTask?.packageName == packageName) {
-                    currentTask?.callback?.invoke(Result.failure(InstallationError.UserCancelled()))
-                    currentTask = null
-                    isProcessing.update { false }
-                    inUserInteraction.update { "" }
-                }
+            // If current task is for this package, report cancellation
+            if (currentTask?.packageName == packageName) {
+                currentTask?.callback?.invoke(Result.failure(InstallationError.UserCancelled()))
+                currentTask = null
+                isProcessing.update { false }
+                inUserInteraction.update { "" }
             }
         }
     }
@@ -234,33 +238,29 @@ class InstallQueue : KoinComponent {
      * Called by installers when an installation completes (success or failure)
      */
     suspend fun onInstallationComplete(result: Result<String>) {
-        withContext(queueScope.coroutineContext) {
-            mutex.withLock {
-                try {
-                    val currentPackage = currentTask?.packageName
+        mutex.withLock {
+            try {
+                val currentPackage = currentTask?.packageName
 
-                    result.fold(
-                        onSuccess = {
-                            Log.d(
-                                TAG,
-                                "Installation completed successfully for $currentPackage"
-                            )
-                        },
-                        onFailure = { error ->
-                            // Only retry on specific errors
-                            val shouldRetry = error !is InstallationError.UserCancelled &&
-                                    error !is InstallationError.ConflictingSignature &&
-                                    error !is InstallationError.Downgrade &&
-                                    error !is InstallationError.Incompatible
+                result.fold(
+                    onSuccess = {
+                        Log.d(TAG, "Installation completed successfully for $currentPackage")
+                    },
+                    onFailure = { error ->
+                        // Only retry on specific errors
+                        val shouldRetry = error !is InstallationError.UserCancelled &&
+                                error !is InstallationError.ConflictingSignature &&
+                                error !is InstallationError.Downgrade &&
+                                error !is InstallationError.Incompatible
 
-                            Log.w(
-                                TAG,
-                                "Installation failed for $currentPackage: ${error.message}, shouldRetry=$shouldRetry"
-                            )
+                        Log.w(
+                            TAG,
+                            "Installation failed for $currentPackage: ${error.message}, shouldRetry=$shouldRetry"
+                        )
 
-                            if (shouldRetry && currentTask != null) {
-                                val retryTask = currentTask
-                                if (retryTask != null && retryTask.retryCount < MAX_RETRIES) { // Max 3 retries
+                        if (shouldRetry) {
+                            currentTask?.let { retryTask ->
+                                if (retryTask.retryCount < MAX_RETRIES) {
                                     Log.d(
                                         TAG,
                                         "Re-enqueueing installation task for $currentPackage"
@@ -278,22 +278,22 @@ class InstallQueue : KoinComponent {
                                 }
                             }
                         }
-                    )
-
-                    currentTask?.callback?.invoke(result)
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error processing installation completion: ${e.message}")
-                } finally {
-                    currentTask = null
-                    isProcessing.update { false }
-                    inUserInteraction.update { "" }
-                    processingStartTime = 0
-
-                    if (queue.isEmpty && queuedPackages.isEmpty()) {
-                        Log.d(TAG, "No more installation tasks in queue")
-                    } else {
-                        Log.d(TAG, "Queue has ${queuedPackages.size} tasks waiting")
                     }
+                )
+
+                currentTask?.callback?.invoke(result)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error processing installation completion: ${e.message}")
+            } finally {
+                currentTask = null
+                isProcessing.update { false }
+                inUserInteraction.update { "" }
+                processingStartTime.store(0)
+
+                if (queue.isEmpty && queuedPackages.isEmpty()) {
+                    Log.d(TAG, "No more installation tasks in queue")
+                } else {
+                    Log.d(TAG, "Queue has ${queuedPackages.size} tasks waiting")
                 }
             }
         }
@@ -303,31 +303,29 @@ class InstallQueue : KoinComponent {
      * Returns the current task being processed, if any
      */
     suspend fun getCurrentTask(): InstallTask? {
-        return withContext(queueScope.coroutineContext) {
-            mutex.withLock {
-                currentTask
-            }
-        }
+        return mutex.withLock { currentTask }
     }
 
     /**
      * Clears all pending tasks
      */
     suspend fun clear() {
-        withContext(queueScope.coroutineContext) {
-            mutex.withLock {
-                queue.cancel()
-                queuedPackages.clear()
-                if (currentTask != null) {
-                    currentTask?.callback?.invoke(Result.failure(InstallationError.UserCancelled()))
-                    currentTask = null
-                }
-                isProcessing.update { false }
-                inUserInteraction.update { "" }
-                // Restart the processor with a fresh channel
-                processorJob.cancel()
-                processorJob = queueScope.launch { processTasksFromChannel() }
+        mutex.withLock {
+            queue.cancel()
+            // TODO consider recreating queue = Channel(Channel.UNLIMITED)
+            queuedPackages.clear()
+            currentTask?.let {
+                it.callback(Result.failure(InstallationError.UserCancelled()))
             }
+            currentTask = null
+
+            isProcessing.update { false }
+            inUserInteraction.update { "" }
+            processingStartTime.store(0)
+
+            // Restart the processor with a fresh channel
+            processorJob.cancel()
+            processorJob = queueScope.launch { processTasksFromChannel() }
         }
     }
 
