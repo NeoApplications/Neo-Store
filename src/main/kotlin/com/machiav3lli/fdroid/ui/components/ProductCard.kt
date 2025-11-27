@@ -64,16 +64,16 @@ fun ProductCard(
                 data = imageData
             )
         },
-        headlineContent = {
+        overlineContent = {
             Text(
-                text = product.name,
+                text = product.version,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
         },
-        supportingContent = {
+        headlineContent = {
             Text(
-                text = product.version,
+                text = product.name,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
