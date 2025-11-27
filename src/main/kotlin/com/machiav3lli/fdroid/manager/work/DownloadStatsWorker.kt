@@ -26,11 +26,9 @@ import com.machiav3lli.fdroid.data.database.entity.toDownloadStats
 import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.manager.network.Downloader
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.YearMonth
 import kotlinx.datetime.plusMonth
@@ -52,8 +50,8 @@ class DownloadStatsWorker(
 ) : CoroutineWorker(context, params), KoinComponent {
     private val privacyRepository: PrivacyRepository by inject()
 
-    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
-        runCatching {
+    override suspend fun doWork(): Result {
+        return runCatching {
             fetchData()
         }.fold(
             onSuccess = { filesProcessed ->
@@ -68,7 +66,7 @@ class DownloadStatsWorker(
     }
 
     // TODO add progress indication
-    private suspend fun fetchData(): Int = withContext(Dispatchers.IO) {
+    private suspend fun fetchData(): Int {
         val existingModifiedDates = getExistingModifiedDates()
         val (nFilesProcessed, nFilesUpdated, filesFailed) =
             fetchAndProcessMonthlyStats(existingModifiedDates)
@@ -83,7 +81,7 @@ class DownloadStatsWorker(
             Log.w(TAG, "Failed files: ${filesFailed.joinToString()}")
         }
 
-        return@withContext nFilesProcessed
+        return nFilesProcessed
     }
 
     private suspend fun fetchAndProcessMonthlyStats(
@@ -249,15 +247,12 @@ class DownloadStatsWorker(
         }
     }
 
-    private suspend fun getExistingModifiedDates(): Map<String, String> =
-        withContext(Dispatchers.IO) {
-            try {
-                privacyRepository.loadDownloadStatsModifiedMap()
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to get existing modified dates", e)
-                emptyMap()
-            }
-        }
+    private suspend fun getExistingModifiedDates(): Map<String, String> = try {
+        privacyRepository.loadDownloadStatsModifiedMap()
+    } catch (e: Exception) {
+        Log.e(TAG, "Failed to get existing modified dates", e)
+        emptyMap()
+    }
 
     data class MonthlyFileResult(
         val fileName: String,

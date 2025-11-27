@@ -45,11 +45,9 @@ import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.utils.displayVulnerabilitiesNotification
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.syncNotificationBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.future.future
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.coroutineScope
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.java.KoinJavaComponent.get
@@ -73,10 +71,10 @@ class SyncWorker(
     private val updatesManager: UpdatesNotificationManager by inject()
 
     @SuppressLint("RestrictedApi")
-    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+    override suspend fun doWork(): Result {
         task = SyncTask(repoId, request, repoName)
 
-        return@withContext runCatching {
+        return runCatching {
             handleSync(task)
         }.fold(
             onSuccess = {
@@ -103,7 +101,7 @@ class SyncWorker(
         )
     }
 
-    private suspend fun CoroutineScope.handleSync(task: SyncTask): Result {
+    private suspend fun handleSync(task: SyncTask): Result = coroutineScope {
         val repository = reposRepo.load(task.repoId)
 
         Log.i(this::class.java.simpleName, "sync repository: ${task.repoId}")
@@ -114,35 +112,40 @@ class SyncWorker(
                 state = SyncState.Enum.CONNECTING
             )
             val unstable = Preferences[Preferences.Key.UpdateUnstable]
+            val progressChannel = Channel<Progress>(Channel.CONFLATED)
+
+            val progressJob = async {
+                for (progress in progressChannel) {
+                    notificationManager.updateSyncProgress(
+                        repoId = task.repoId,
+                        repoName = task.repoName,
+                        state = SyncState.Enum.SYNCING,
+                        progress = progress
+                    )
+                }
+            }
+
             var lastPerCent = -1
             var lastStage: RepositoryUpdater.Stage? = null
 
             try {
-                val changed = future {
-                    RepositoryUpdater.update(
-                        context,
-                        repository,
-                        unstable
-                    ) { stage, progress, total ->
-                        val perCent =
-                            if (total != null && total != 0L) (100f * progress / total).roundToInt()
-                            else (progress / 100_000).toInt()
+                val changed = RepositoryUpdater.update(
+                    context,
+                    repository,
+                    unstable
+                ) { stage, progress, total ->
+                    val perCent =
+                        if (total != null && total != 0L) (100f * progress / total).roundToInt()
+                        else (progress / 100_000).toInt()
 
-                        if (stage != lastStage || perCent != lastPerCent) this@handleSync.runCatching {
-                            lastPerCent = perCent
-                            lastStage = stage
-                            launch {
-                                notificationManager.updateSyncProgress(
-                                    repoId = task.repoId,
-                                    repoName = task.repoName,
-                                    state = SyncState.Enum.SYNCING,
-                                    progress = Progress(stage, progress, total ?: -1L)
-                                )
-                            }
-                        }
+                    if (stage != lastStage || perCent != lastPerCent) this.runCatching {
+                        lastPerCent = perCent
+                        lastStage = stage
+                        progressChannel.trySend(Progress(stage, progress, total ?: -1L))
                     }
-                }.join()
-                return Result.success(
+                }
+
+                Result.success(
                     getWorkData(
                         state = SyncState.Enum.FINISHING,
                         succeeded = true,
@@ -152,16 +155,19 @@ class SyncWorker(
                 )
             } catch (throwable: Throwable) {
                 throwable.printStackTrace()
-                return Result.failure(
+                Result.failure(
                     getWorkData(
                         state = SyncState.Enum.FAILED,
                         succeeded = false,
                         message = throwable.message ?: "",
                     )
                 )
+            } finally {
+                progressChannel.close()
+                progressJob.join()
             }
         } else {
-            return Result.success(
+            Result.success(
                 getWorkData(
                     state = SyncState.Enum.FINISHING,
                     succeeded = true,
@@ -171,26 +177,31 @@ class SyncWorker(
         }
     }
 
-    private suspend fun handleCompletion() {
-        installedRepo.loadUpdatedProducts()
-            .map { it.toItem() }
-            .filter { it.repositoryId == repoId }
-            .let { result ->
-                if (result.isNotEmpty() && Preferences[Preferences.Key.UpdateNotify])
-                    updatesManager.addUpdates(*result.toTypedArray())
-                if (Preferences[Preferences.Key.InstallAfterSync]) {
-                    NeoApp.wm.update(
-                        *result.map {
-                            Pair(it.packageName, it.repositoryId)
-                        }.toTypedArray()
-                    )
-                }
-            }
-        installedRepo.loadListWithVulns(repoId).let { installedWithVulns ->
-            if (installedWithVulns.isNotEmpty())
-                langContext.displayVulnerabilitiesNotification(
-                    installedWithVulns.map(EmbeddedProduct::toItem)
-                )
+    private suspend fun handleCompletion() = coroutineScope {
+        val updatesDeferred = async {
+            installedRepo.loadUpdatedProducts()
+                .map { it.toItem() }
+                .filter { it.repositoryId == repoId }
+        }
+
+        val vulnsDeferred = async {
+            installedRepo.loadListWithVulns(repoId)
+        }
+
+        val updates = updatesDeferred.await()
+        if (updates.isNotEmpty() && Preferences[Preferences.Key.UpdateNotify]) {
+            updatesManager.addUpdates(*updates.toTypedArray())
+        }
+        if (Preferences[Preferences.Key.InstallAfterSync]) {
+            NeoApp.wm.update(
+                *updates.map { Pair(it.packageName, it.repositoryId) }.toTypedArray()
+            )
+        }
+        val installedWithVulns = vulnsDeferred.await()
+        if (installedWithVulns.isNotEmpty()) {
+            langContext.displayVulnerabilitiesNotification(
+                installedWithVulns.map(EmbeddedProduct::toItem)
+            )
         }
     }
 
@@ -301,28 +312,27 @@ class SyncWorker(
             }
         }
 
-        suspend fun enableRepo(repository: Repository, enabled: Boolean): Boolean =
-            withContext(Dispatchers.IO) {
-                val reposRepo = get<RepositoriesRepository>(RepositoriesRepository::class.java)
-                reposRepo.upsert(repository.enable(enabled))
-                val isEnabled = !repository.enabled && repository.lastModified.isEmpty()
-                val cooldownedSync = System.currentTimeMillis() -
-                        NeoApp.latestSyncs.getOrDefault(repository.id, 0L) >=
-                        10_000L
-                if (enabled && isEnabled && cooldownedSync) {
-                    NeoApp.latestSyncs[repository.id] = System.currentTimeMillis()
-                    enqueueManual(Pair(repository.id, repository.name))
-                } else {
-                    NeoApp.wm.cancelSync(repository.id)
-                    NeoApp.db.cleanUp(Pair(repository.id, false))
-                }
-                true
+        suspend fun enableRepo(repository: Repository, enabled: Boolean): Boolean {
+            val reposRepo = get<RepositoriesRepository>(RepositoriesRepository::class.java)
+            reposRepo.upsert(repository.enable(enabled))
+            val isEnabled = !repository.enabled && repository.lastModified.isEmpty()
+            val cooldownedSync = System.currentTimeMillis() -
+                    NeoApp.latestSyncs.getOrDefault(repository.id, 0L) >=
+                    10_000L
+            if (enabled && isEnabled && cooldownedSync) {
+                NeoApp.latestSyncs[repository.id] = System.currentTimeMillis()
+                enqueueManual(Pair(repository.id, repository.name))
+            } else {
+                NeoApp.wm.cancelSync(repository.id)
+                NeoApp.db.cleanUp(Pair(repository.id, false))
             }
+            return true
+        }
 
-        suspend fun deleteRepo(repoId: Long): Boolean = withContext(Dispatchers.IO) {
+        suspend fun deleteRepo(repoId: Long): Boolean {
             val reposRepo = get<RepositoriesRepository>(RepositoriesRepository::class.java)
             val repository = reposRepo.load(repoId)
-            repository != null && run {
+            return repository != null && run {
                 enableRepo(repository, false)
                 reposRepo.deleteById(repoId)
                 true

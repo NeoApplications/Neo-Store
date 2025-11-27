@@ -57,9 +57,6 @@ import com.machiav3lli.fdroid.utils.getDownloadFolder
 import com.machiav3lli.fdroid.utils.isDownloadExternal
 import com.machiav3lli.fdroid.utils.notifySensitivePermissionsChanged
 import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.java.KoinJavaComponent.get
@@ -76,26 +73,24 @@ class DownloadWorker(
     private val langContext = ContextWrapperX.wrap(applicationContext)
     private val downloadedRepo: DownloadedRepository by inject()
 
-    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+    override suspend fun doWork(): Result {
         try {
             task = getTask(inputData)
 
             if (Cache.getReleaseFile(applicationContext, task.release.cacheFileName).exists()) {
                 Log.i(TAG, "Running publish success from fun enqueue")
                 finalize(task)
-                return@withContext Result.success(getWorkData(task, null))
+                return Result.success(getWorkData(task, null))
             }
 
-            val result = handleDownload(task)
-            result
+            return handleDownload(task)
         } catch (e: Exception) {
             Log.i(TAG, e.message ?: "download failed")
-            val result = Result.failure() // TODO (workDataOf(ARG_ERROR_MESSAGE to e.message))
-            result
+            return Result.failure() // TODO (workDataOf(ARG_ERROR_MESSAGE to e.message))
         }
     }
 
-    private suspend fun handleDownload(task: DownloadTask): Result = coroutineScope {
+    private suspend fun handleDownload(task: DownloadTask): Result {
         val partialRelease =
             Cache.getPartialReleaseFile(applicationContext, task.release.cacheFileName)
         val downloaded = Downloaded(
@@ -169,7 +164,7 @@ class DownloadWorker(
 
             if (!result.success) {
                 Log.i(TAG, "Worker failure by error ${result.statusCode}")
-                return@coroutineScope Result.failure(
+                return Result.failure(
                     getWorkData(
                         task,
                         result,
@@ -179,7 +174,7 @@ class DownloadWorker(
             }
 
             val validationError = validatePackage(task, partialRelease)
-            if (validationError == ValidationError.NONE) {
+            return if (validationError == ValidationError.NONE) {
                 val releaseFile =
                     Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
                 partialRelease.renameTo(releaseFile)
@@ -194,7 +189,7 @@ class DownloadWorker(
         } catch (e: DownloadSizeException) {
             Log.e(TAG, "Download size error: ${e.message}", e)
             partialRelease.delete()
-            return@coroutineScope Result.failure(
+            return Result.failure(
                 getWorkData(
                     task,
                     Downloader.Result(HttpStatusCode.BadRequest, "", ""),
@@ -203,7 +198,7 @@ class DownloadWorker(
             )
         } catch (e: Exception) {
             Log.e(TAG, "Download error: ${e.message}", e)
-            return@coroutineScope Result.failure(
+            return Result.failure(
                 getWorkData(
                     task,
                     Downloader.Result(HttpStatusCode.InternalServerError, "", ""),
@@ -297,9 +292,7 @@ class DownloadWorker(
                 val cacheFile = Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
                     .toDocumentFile(applicationContext)
                 if (downloadFolder.children.none { it.name == task.release.cacheFileName }) {
-                    withContext(Dispatchers.IO) {
-                        cacheFile?.copyTo(context, downloadFolder)
-                    }
+                    cacheFile?.copyTo(context, downloadFolder)
                 }
             }
         }

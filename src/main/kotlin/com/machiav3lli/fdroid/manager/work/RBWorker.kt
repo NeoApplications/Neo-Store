@@ -17,8 +17,6 @@ import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.database.entity.RBLogs
 import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.manager.network.Downloader
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.koin.android.annotation.KoinWorker
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -30,8 +28,8 @@ class RBWorker(
 ) : CoroutineWorker(context, params), KoinComponent {
     private val privacyRepository: PrivacyRepository by inject()
 
-    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
-        runCatching {
+    override suspend fun doWork(): Result {
+        return runCatching {
             fetchLogs()
         }.fold(
             onSuccess = {
@@ -45,47 +43,45 @@ class RBWorker(
     }
 
     private suspend fun fetchLogs() {
-        withContext(Dispatchers.IO) {
-            val url = "${Preferences[Preferences.Key.RBProvider].url}/index.json"
-            val lastModified = Preferences[Preferences.Key.RBLogsLastModified]
+        val url = "${Preferences[Preferences.Key.RBProvider].url}/index.json"
+        val lastModified = Preferences[Preferences.Key.RBLogsLastModified]
 
-            // Create temporary file for download
-            val tempFile = Cache.getTemporaryFile(context)
+        // Create temporary file for download
+        val tempFile = Cache.getTemporaryFile(context)
 
-            try {
-                val result = Downloader.download(
-                    url = url,
-                    target = tempFile,
-                    lastModified = lastModified,
-                    entityTag = "",
-                    authentication = "",
-                    callback = { _, _, _ -> }
-                )
+        try {
+            val result = Downloader.download(
+                url = url,
+                target = tempFile,
+                lastModified = lastModified,
+                entityTag = "",
+                authentication = "",
+                callback = { _, _, _ -> }
+            )
 
-                when {
-                    result.isNotModified -> {
-                        Log.i(TAG, "RB index not modified")
-                    }
-
-                    result.success      -> {
-                        // Update last modified preference
-                        Preferences[Preferences.Key.RBLogsLastModified] = result.lastModified
-
-                        // Parse and store logs
-                        val logsMap = RBLogs.fromStream(tempFile.inputStream())
-                        privacyRepository.upsertRBLogs(logsMap.toLogs())
-
-                        Log.i(TAG, "Successfully fetched ${logsMap.size} RB logs")
-                    }
-
-                    else                -> {
-                        Log.w(TAG, "Failed to fetch RB index: ${result.statusCode}")
-                    }
+            when {
+                result.isNotModified -> {
+                    Log.i(TAG, "RB index not modified")
                 }
-            } finally {
-                // Clean up temporary file
-                tempFile.delete()
+
+                result.success       -> {
+                    // Update last modified preference
+                    Preferences[Preferences.Key.RBLogsLastModified] = result.lastModified
+
+                    // Parse and store logs
+                    val logsMap = RBLogs.fromStream(tempFile.inputStream())
+                    privacyRepository.upsertRBLogs(logsMap.toLogs())
+
+                    Log.i(TAG, "Successfully fetched ${logsMap.size} RB logs")
+                }
+
+                else                 -> {
+                    Log.w(TAG, "Failed to fetch RB index: ${result.statusCode}")
+                }
             }
+        } finally {
+            // Clean up temporary file
+            tempFile.delete()
         }
     }
 

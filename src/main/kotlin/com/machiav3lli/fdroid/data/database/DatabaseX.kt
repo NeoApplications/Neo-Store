@@ -11,6 +11,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.AutoMigrationSpec
+import androidx.room.withTransaction
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.machiav3lli.fdroid.ROW_ID
 import com.machiav3lli.fdroid.TABLE_EXODUS_INFO
@@ -571,20 +572,18 @@ abstract class DatabaseX : RoomDatabase() {
         }
     }
 
-    fun cleanUp(vararg pairs: Pair<Long, Boolean>) {
-        runInTransaction {
-            runBlocking {
-                pairs.forEach { (id, enabled) ->
-                    getProductDao().deleteById(id)
-                    getCategoryDao().deleteById(id)
-                    getReleaseDao().deleteById(id)
-                    if (enabled) getRepositoryDao().deleteById(id)
-                }
+    suspend fun cleanUp(vararg pairs: Pair<Long, Boolean>) {
+        withTransaction {
+            pairs.forEach { (id, enabled) ->
+                getProductDao().deleteById(id)
+                getCategoryDao().deleteById(id)
+                getReleaseDao().deleteById(id)
+                if (enabled) getRepositoryDao().deleteById(id)
             }
         }
     }
 
-    fun cleanUp(pairs: Set<Pair<Long, Boolean>>) = cleanUp(*pairs.toTypedArray())
+    suspend fun cleanUp(pairs: Set<Pair<Long, Boolean>>) = cleanUp(*pairs.toTypedArray())
 
     fun finishTemporary(repository: Repository, success: Boolean) {
         runInTransaction {

@@ -21,8 +21,6 @@ import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.data.database.entity.Trackers
 import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.manager.network.Downloader
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.koin.android.annotation.KoinWorker
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -34,7 +32,7 @@ class ExodusWorker(
 ) : CoroutineWorker(context, params), KoinComponent {
     private val privacyRepository: PrivacyRepository by inject()
 
-    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+    override suspend fun doWork(): Result {
         val type = WorkType.entries[
             inputData.getInt(ARG_WORK_TYPE, 0)
         ]
@@ -47,116 +45,112 @@ class ExodusWorker(
             )
         }
 
-        Result.success()
+        return Result.success()
     }
 
     private suspend fun fetchTrackers() {
         if (Preferences[Preferences.Key.ShowTrackers]) {
-            withContext(Dispatchers.IO) {
-                runCatching {
-                    val url = "${EXODUS_API_BASE}/trackers"
-                    val tempFile = Cache.getTemporaryFile(context)
-                    try {
-                        val result = Downloader.download(
-                            url = url,
-                            target = tempFile,
-                            lastModified = Preferences[Preferences.Key.TrackersLastModified],
-                            entityTag = "",
-                            authentication = EXODUS_AUTHENTICATION,
-                            callback = { _, _, _ -> }
-                        )
+            runCatching {
+                val url = "${EXODUS_API_BASE}/trackers"
+                val tempFile = Cache.getTemporaryFile(context)
+                try {
+                    val result = Downloader.download(
+                        url = url,
+                        target = tempFile,
+                        lastModified = Preferences[Preferences.Key.TrackersLastModified],
+                        entityTag = "",
+                        authentication = EXODUS_AUTHENTICATION,
+                        callback = { _, _, _ -> }
+                    )
 
-                        when {
-                            result.isNotModified -> {
-                                Log.i(TAG, "Trackers not modified, skipping update")
-                            }
+                    when {
+                        result.isNotModified -> {
+                            Log.i(TAG, "Trackers not modified, skipping update")
+                        }
 
-                            result.success       -> {
-                                if (!result.isNotModified) {
-                                    val trackerList = Trackers.fromStream(tempFile.inputStream())
+                        result.success       -> {
+                            if (!result.isNotModified) {
+                                val trackerList = Trackers.fromStream(tempFile.inputStream())
 
-                                    // Update last modified timestamp
-                                    Preferences[Preferences.Key.TrackersLastModified] =
-                                        result.lastModified
+                                // Update last modified timestamp
+                                Preferences[Preferences.Key.TrackersLastModified] =
+                                    result.lastModified
 
-                                    // Update DB with the trackers
-                                    privacyRepository.upsertTracker(
-                                        trackerList.trackers
-                                            .map { (key, value) ->
-                                                Tracker(
-                                                    key.toInt(),
-                                                    value.name,
-                                                    value.network_signature,
-                                                    value.code_signature,
-                                                    value.creation_date,
-                                                    value.website,
-                                                    value.description,
-                                                    value.categories
-                                                )
-                                            }
-                                    )
-                                } else {
-                                }
-                            }
-
-                            else                -> {
-                                Log.w(TAG, "Failed to fetch trackers: ${result.statusCode}")
+                                // Update DB with the trackers
+                                privacyRepository.upsertTracker(
+                                    trackerList.trackers
+                                        .map { (key, value) ->
+                                            Tracker(
+                                                key.toInt(),
+                                                value.name,
+                                                value.network_signature,
+                                                value.code_signature,
+                                                value.creation_date,
+                                                value.website,
+                                                value.description,
+                                                value.categories
+                                            )
+                                        }
+                                )
+                            } else {
                             }
                         }
-                    } finally {
-                        tempFile.delete()
+
+                        else                 -> {
+                            Log.w(TAG, "Failed to fetch trackers: ${result.statusCode}")
+                        }
                     }
-                }.onFailure { e ->
-                    Log.e(TAG, "Failed fetching exodus trackers", e)
+                } finally {
+                    tempFile.delete()
                 }
+            }.onFailure { e ->
+                Log.e(TAG, "Failed fetching exodus trackers", e)
             }
         }
     }
 
     private suspend fun fetchExodusData(packageName: String, versionCode: Long) {
         if (Preferences[Preferences.Key.ShowTrackers]) {
-            withContext(Dispatchers.IO) {
-                runCatching {
-                    val url = "${EXODUS_API_BASE}/search/$packageName/details"
-                    val tempFile = Cache.getTemporaryFile(context)
+            runCatching {
+                val url = "${EXODUS_API_BASE}/search/$packageName/details"
+                val tempFile = Cache.getTemporaryFile(context)
 
-                    try {
-                        val result = Downloader.download(
-                            url = url,
-                            target = tempFile,
-                            lastModified = "",
-                            entityTag = "",
-                            authentication = EXODUS_AUTHENTICATION,
-                            callback = { _, _, _ -> }
-                        )
+                try {
+                    val result = Downloader.download(
+                        url = url,
+                        target = tempFile,
+                        lastModified = "",
+                        entityTag = "",
+                        authentication = EXODUS_AUTHENTICATION,
+                        callback = { _, _, _ -> }
+                    )
 
-                        if (result.success) {
-                            val exodusDataList = ExodusData.listFromStream(tempFile.inputStream())
+                    if (result.success) {
+                        val exodusDataList = ExodusData.listFromStream(tempFile.inputStream())
 
-                            val sourceFiltered = exodusDataList.let {
-                                it.fastFilter { info -> info.source == "fdroid" }
-                                    .ifEmpty { it }
-                            }
-                            val latestExodusApp = sourceFiltered
-                                .fastFilter { it.version_code.toLong() == versionCode }
-                                .firstOrNull()
-                                ?: sourceFiltered.maxByOrNull { it.version_code.toLong() }
-                                ?: ExodusInfo()
-
-                            val exodusInfo = latestExodusApp.toExodusInfo(packageName)
-                            privacyRepository.upsertExodusInfo(exodusInfo)
-                        } else {
-                            Log.w(
-                                TAG,
-                                "Failed to fetch exodus data for $packageName: ${result.statusCode}"
-                            )
+                        val sourceFiltered = exodusDataList.let {
+                            it.fastFilter { info -> info.source == "fdroid" }
+                                .ifEmpty { it }
                         }
-                    } finally {
-                        tempFile.delete()
+                        val latestExodusApp = sourceFiltered
+                            .fastFilter { it.version_code.toLong() == versionCode }
+                            .firstOrNull()
+                            ?: sourceFiltered.maxByOrNull { it.version_code.toLong() }
+                            ?: ExodusInfo()
+
+                        val exodusInfo = latestExodusApp.toExodusInfo(packageName)
+                        privacyRepository.upsertExodusInfo(exodusInfo)
+                    } else {
+                        Log.w(
+                            TAG,
+                            "Failed to fetch exodus data for $packageName: ${result.statusCode}"
+                        )
                     }
-                }.onFailure { e ->
-                    Log.e(TAG, "Failed fetching exodus info", e)
+                } finally {
+                    tempFile.delete()
                 }
+            }.onFailure { e ->
+                Log.e(TAG, "Failed fetching exodus info", e)
             }
         }
     }
