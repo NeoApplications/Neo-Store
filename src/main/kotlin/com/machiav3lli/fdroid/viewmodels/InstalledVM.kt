@@ -7,13 +7,13 @@ import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
 import com.machiav3lli.fdroid.data.database.entity.Installed
-import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.Request
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
+import com.machiav3lli.fdroid.utils.extension.sortedLocalized
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -66,7 +66,7 @@ class InstalledVM(
     }.distinctUntilChanged()
 
     private val downloaded = downloadedRepo.getAllFlow()
-        .debounce(250L)
+        .debounce(100L)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
@@ -74,29 +74,32 @@ class InstalledVM(
         )
 
     val sortedDownloads = downloaded
-        .mapLatest { it.sortedByDescending { it.changed / 20_000L } }
+        .map { it.sortedByDescending { it.changed / 10_000L } }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,
             initialValue = emptyList()
         )
 
+    private val activeDownloads = downloaded
+        .map {
+            it.filter { it.state.isActive }
+                .sortedLocalized { state.name }
+        }
+
     val installedPageState: StateFlow<InstalledPageState> = combine(
         installed,
         productsPair,
-        downloaded,
+        activeDownloads,
         sortFilter,
-    ) { installed, products, downloaded, sortFilter ->
-        val sortedActiveDownloads = downloaded
-            .filter { it.state is DownloadState.Downloading && it.changed + 300_000L > System.currentTimeMillis() }
-            .sortedBy { it.state.name }
+    ) { installed, products, activeDownloads, sortFilter ->
         InstalledPageState(
             installedMap = installed,
             installedProducts = products.installedProducts,
             updates = products.updatedProducts,
-            activeDownloads = sortedActiveDownloads,
+            activeDownloads = activeDownloads,
             updatesAvailable = products.updatedProducts.isNotEmpty(),
-            isDownloading = sortedActiveDownloads.isNotEmpty(),
+            isDownloading = activeDownloads.isNotEmpty(),
             sortFilter = sortFilter
         )
     }.stateIn(
