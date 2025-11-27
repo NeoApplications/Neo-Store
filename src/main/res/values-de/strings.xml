@@ -326,7 +326,7 @@
     <string name="disable_signature_check_summary">Nicht überprüfen, wenn die heruntergeladene APK dieselbe Signatur wie die bereits installierte App hat.</string>
     <string name="canceled">Abgebrochen</string>
     <string name="list_apps">Apps der Paketquelle anzeigen</string>
-    <string name="finished">Erledigt</string>
+    <string name="finished">Beendet</string>
     <string name="next">Nächste</string>
     <string name="error">Fehler</string>
     <string name="previous">Vorherige</string>
