@@ -56,7 +56,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.module.dsl.singleOf
@@ -64,11 +63,10 @@ import org.koin.dsl.module
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.cancellation.CancellationException
 
-class WorkerManager(appContext: Context) : KoinComponent {
+class WorkerManager(private val appContext: Context) : KoinComponent {
 
     private val workManager: WorkManager by inject()
     private val actionReceiver: ActionReceiver by inject()
-    private var appContext: Context = appContext
     private var langContext: Context = ContextWrapperX.wrap(appContext)
     private val notificationManager: NotificationManagerCompat by inject()
     private val downloadedRepo: DownloadedRepository by inject()
@@ -276,7 +274,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
         request: OneTimeWorkRequest
     ) = workManager.enqueueUniqueWork(uniqueWorkName, existingWorkPolicy, request)
 
-    internal suspend fun updatePeriodicSyncJob(force: Boolean) = withContext(Dispatchers.IO) {
+    internal fun updatePeriodicSyncJob(force: Boolean) {
         val reschedule =
             force || workManager.getWorkInfosForUniqueWork(TAG_BATCH_SYNC_PERIODIC).get().isEmpty()
         if (reschedule) {

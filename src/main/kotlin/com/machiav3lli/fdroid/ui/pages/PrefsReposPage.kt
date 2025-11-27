@@ -208,7 +208,7 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                 modifier = Modifier.animateItem(),
                                 repository = it,
                                 onSwitch = { repo ->
-                                    viewModel.viewModelScope.launch {
+                                    scope.launch {
                                         SyncWorker.enableRepo(repo, !repo.enabled)
                                     }
                                 },
@@ -230,7 +230,7 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                 modifier = Modifier.animateItem(),
                                 repository = it,
                                 onSwitch = { repo ->
-                                    viewModel.viewModelScope.launch {
+                                    scope.launch {
                                         SyncWorker.enableRepo(repo, !repo.enabled)
                                     }
                                 },

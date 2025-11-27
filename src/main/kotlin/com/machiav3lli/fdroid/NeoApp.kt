@@ -40,6 +40,7 @@ import io.ktor.client.engine.ProxyBuilder
 import io.ktor.http.Url
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -113,7 +114,7 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
 
         wm.prune()
         Cache.cleanup(this)
-        ioScope.launch {
+        ioScope.async {
             wm.updatePeriodicSyncJob(false)
         }
     }

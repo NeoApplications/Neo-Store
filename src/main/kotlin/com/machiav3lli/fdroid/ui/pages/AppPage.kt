@@ -113,10 +113,9 @@ import com.machiav3lli.fdroid.utils.shareIntent
 import com.machiav3lli.fdroid.utils.shareReleaseIntent
 import com.machiav3lli.fdroid.utils.startLauncherActivity
 import com.machiav3lli.fdroid.viewmodels.AppPageVM
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -356,7 +355,7 @@ fun AppPage(
         }
 
         LaunchedEffect(product) {
-            withContext(Dispatchers.IO) {
+            async {
                 ExodusWorker.fetchExodusInfo(product.packageName, eProduct.versionCode)
             }
         }

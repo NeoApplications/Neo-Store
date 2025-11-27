@@ -22,12 +22,11 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
 import com.machiav3lli.fdroid.data.entity.InstallState
 import com.machiav3lli.fdroid.data.repository.InstallsRepository
-import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
 import com.machiav3lli.fdroid.manager.installer.InstallationError
+import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
 import com.machiav3lli.fdroid.manager.installer.type.LegacyInstaller
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.installNotificationBuilder
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.coroutineScope
@@ -51,7 +50,7 @@ class InstallWorker(
     private val installJob = Job()
     private val langContext = ContextWrapperX.wrap(applicationContext)
 
-    override suspend fun doWork(): Result = withContext(Dispatchers.IO + installJob) {
+    override suspend fun doWork(): Result = withContext(installJob) {
         val label = inputData.getString(ARG_NAME) ?: ""
         val fileName = inputData.getString(ARG_FILE_NAME) ?: ""
         val packageName = inputData.getString(ARG_PACKAGE_NAME) ?: ""

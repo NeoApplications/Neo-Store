@@ -59,7 +59,7 @@ class BatchSyncWorker(
     private val langContext = ContextWrapperX.wrap(applicationContext)
     private val reposRepo: RepositoriesRepository by inject()
 
-    override suspend fun doWork(): Result = withContext(Dispatchers.IO + scheduleJob) {
+    override suspend fun doWork(): Result = withContext(scheduleJob) {
         try {
             val result = handleSync()
             if (!result) {
