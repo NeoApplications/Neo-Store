@@ -18,14 +18,18 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -58,14 +62,19 @@ import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
+import com.machiav3lli.fdroid.ui.components.DownloadsCard
+import com.machiav3lli.fdroid.ui.components.ExpandingFadingCard
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
 import com.machiav3lli.fdroid.ui.components.TabButton
+import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDownUp
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUp
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUpDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Eraser
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
@@ -148,6 +157,7 @@ fun InstalledPage(
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
@@ -158,6 +168,7 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
     val pageState by viewModel.installedPageState.collectAsState()
     val dataState by mainVM.dataState.collectAsState()
     var updatesVisible by remember { mutableStateOf(true) }
+    var downloadsExpanded by remember { mutableStateOf(false) }
 
     val scaffoldState = rememberBottomSheetScaffoldState()
     val openDialog = remember { mutableStateOf(false) }
@@ -195,160 +206,204 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
             }
         }
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-            // TODO merge into one items-block
-            if (pageState.updatesAvailable) item(key = "updatesCard") {
-                val cardColor by animateColorAsState(
-                    targetValue = if (updatesVisible) MaterialTheme.colorScheme.surfaceContainerHighest
-                    else Color.Transparent,
-                    label = "cardColor"
-                )
-
-                Surface(
-                    modifier = Modifier.padding(
-                        horizontal = 8.dp,
-                        vertical = 4.dp
-                    ),
-                    shape = MaterialTheme.shapes.large,
-                    color = cardColor,
-                ) {
-                    Column(
-                        Modifier.padding(vertical = 6.dp),
+        Scaffold(
+            containerColor = Color.Transparent,
+            floatingActionButton = {
+                if (pageState.isDownloading) {
+                    Row(
+                        modifier = Modifier.padding(start = 28.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            ElevatedButton(
-                                colors = ButtonDefaults.elevatedButtonColors(
-                                    containerColor = MaterialTheme.colorScheme.surface,
-                                    contentColor = MaterialTheme.colorScheme.primary
-                                ),
-                                onClick = { updatesVisible = !updatesVisible }
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.updates),
-                                    textAlign = TextAlign.Center,
-                                    style = MaterialTheme.typography.titleSmall
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Icon(
-                                    imageVector = if (updatesVisible) Phosphor.CaretUp else Phosphor.CaretDown,
-                                    contentDescription = stringResource(id = R.string.updates)
+                        ExpandingFadingCard(
+                            expanded = downloadsExpanded,
+                            expandedView = {
+                                Column {
+                                    Row(
+                                        modifier = Modifier.padding(4.dp),
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        TopBarAction(
+                                            description = stringResource(R.string.downloading),
+                                            icon = Phosphor.CaretDownUp,
+                                            onClick = { downloadsExpanded = !downloadsExpanded }
+                                        )
+                                        LazyRow(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.Absolute.spacedBy(4.dp),
+                                            contentPadding = PaddingValues(vertical = 4.dp, horizontal = 4.dp),
+                                        ) {
+                                            items(items = pageState.activeDownloads, key = {it.itemKey}) { item ->
+                                                DownloadsCard(
+                                                    download = item,
+                                                    iconDetails = dataState.iconDetails[item.packageName],
+                                                    repo = dataState.reposMap[item.state.repoId],
+                                                    state = item.state,
+                                                ) {
+                                                    neoActivity.navigateProduct(item.packageName)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            collapsedView = {
+                                ExtendedFloatingActionButton(
+                                    text = { Text(text = stringResource(R.string.downloading)) },
+                                    icon = {
+                                        Icon(
+                                            imageVector = Phosphor.CaretUpDown,
+                                            contentDescription = stringResource(R.string.downloading)
+                                        )
+                                    },
+                                    elevation = FloatingActionButtonDefaults.elevation(
+                                        0.dp
+                                    ),
+                                    onClick = { downloadsExpanded = !downloadsExpanded }
                                 )
                             }
-                            AnimatedVisibility(updatesVisible) {
-                                ActionButton(
-                                    text = stringResource(R.string.update_all),
-                                    icon = Phosphor.Download,
-                                    positive = true,
+                        )
+                    }
+                }
+            }
+        ) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                // TODO merge into one items-block
+                if (pageState.updatesAvailable) item(key = "updatesCard") {
+                    val cardColor by animateColorAsState(
+                        targetValue = if (updatesVisible) MaterialTheme.colorScheme.surfaceContainerHighest
+                        else Color.Transparent,
+                        label = "cardColor"
+                    )
+
+                    Surface(
+                        modifier = Modifier.padding(
+                            horizontal = 8.dp,
+                            vertical = 4.dp
+                        ),
+                        shape = MaterialTheme.shapes.large,
+                        color = cardColor,
+                    ) {
+                        Column(
+                            Modifier.padding(vertical = 6.dp),
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                            ) {
+                                ElevatedButton(
+                                    colors = ButtonDefaults.elevatedButtonColors(
+                                        containerColor = MaterialTheme.colorScheme.surface,
+                                        contentColor = MaterialTheme.colorScheme.primary
+                                    ),
+                                    onClick = { updatesVisible = !updatesVisible }
                                 ) {
-                                    val action = {
-                                        NeoApp.wm.update(
-                                            *pageState.updates
-                                                .map { Pair(it.packageName, it.repositoryId) }
-                                                .toTypedArray()
-                                        )
-                                    }
-                                    if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                                        dialogKey.value =
-                                            DialogKey.BatchDownload(
-                                                pageState.updates.map(ProductItem::name), action
+                                    Text(
+                                        text = stringResource(id = R.string.updates),
+                                        textAlign = TextAlign.Center,
+                                        style = MaterialTheme.typography.titleSmall
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Icon(
+                                        imageVector = if (updatesVisible) Phosphor.CaretUp else Phosphor.CaretDown,
+                                        contentDescription = stringResource(id = R.string.updates)
+                                    )
+                                }
+                                AnimatedVisibility(updatesVisible) {
+                                    ActionButton(
+                                        text = stringResource(R.string.update_all),
+                                        icon = Phosphor.Download,
+                                        positive = true,
+                                    ) {
+                                        val action = {
+                                            NeoApp.wm.update(
+                                                *pageState.updates
+                                                    .map { Pair(it.packageName, it.repositoryId) }
+                                                    .toTypedArray()
                                             )
-                                        openDialog.value = true
-                                    } else action()
+                                        }
+                                        if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                            dialogKey.value =
+                                                DialogKey.BatchDownload(
+                                                    pageState.updates.map(ProductItem::name), action
+                                                )
+                                            openDialog.value = true
+                                        } else action()
+                                    }
+                                }
+                            }
+                            AnimatedVisibility(updatesVisible) {
+                                ProductsHorizontalRecycler(
+                                    productsList = pageState.updates,
+                                    repositories = dataState.reposMap,
+                                    rowsNumber = pageState.updates.size.coerceIn(1, 2),
+                                ) { item ->
+                                    neoActivity.navigateProduct(item.packageName)
                                 }
                             }
                         }
-                        AnimatedVisibility(updatesVisible) {
-                            ProductsHorizontalRecycler(
-                                productsList = pageState.updates,
-                                repositories = dataState.reposMap,
-                                rowsNumber = pageState.updates.size.coerceIn(1, 2),
-                            ) { item ->
-                                neoActivity.navigateProduct(item.packageName)
+                    }
+                }
+                item(key = "installedTitle") {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.installed_applications),
+                            modifier = Modifier.padding(start = 8.dp),
+                        )
+                        SortFilterChip(notModified = notModifiedSortFilter) {
+                            scope.launch {
+                                scaffoldState.bottomSheetState.expand()
                             }
                         }
                     }
                 }
-            }
-            if (pageState.isDownloading) {
-                item(key = "downloadsTitle") {
-                    Text(
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                        text = stringResource(id = R.string.downloading)
+                items(pageState.installedProducts, key = { it.packageName }) { item ->
+                    ProductsListItem(
+                        item = item,
+                        repo = dataState.reposMap[item.repositoryId],
+                        isFavorite = dataState.favorites.contains(item.packageName),
+                        onUserClick = {
+                            neoActivity.navigateProduct(it.packageName)
+                        },
+                        onFavouriteClick = { pi ->
+                            mainVM.setFavorite(
+                                pi.packageName,
+                                !dataState.favorites.contains(pi.packageName)
+                            )
+                        },
+                        installed = pageState.installedMap[item.packageName],
+                        onActionClick = {
+                            val installed = pageState.installedMap[it.packageName]
+                            val action = {
+                                NeoApp.wm.install(
+                                    Pair(it.packageName, it.repositoryId)
+                                )
+                            }
+                            if (installed != null && installed.launcherActivities.isNotEmpty())
+                                context.onLaunchClick(
+                                    installed,
+                                    neoActivity.supportFragmentManager
+                                )
+                            else if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                dialogKey.value = DialogKey.Download(it.name, action)
+                                openDialog.value = true
+                            } else action()
+                        }
                     )
                 }
-                items(pageState.activeDownloads, key = { it.itemKey }) { item ->
-                    DownloadedItem(
-                        download = item,
-                        iconDetails = dataState.iconDetails[item.packageName],
-                        repo = dataState.reposMap[item.state.repoId],
-                        state = item.state,
-                    ) {
-                        neoActivity.navigateProduct(item.packageName)
-                    }
-                }
-            }
-            item(key = "installedTitle") {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.installed_applications),
-                        modifier = Modifier.padding(start = 8.dp),
-                    )
-                    SortFilterChip(notModified = notModifiedSortFilter) {
-                        scope.launch {
-                            scaffoldState.bottomSheetState.expand()
-                        }
-                    }
-                }
-            }
-            items(pageState.installedProducts, key = { it.packageName }) { item ->
-                ProductsListItem(
-                    item = item,
-                    repo = dataState.reposMap[item.repositoryId],
-                    isFavorite = dataState.favorites.contains(item.packageName),
-                    onUserClick = {
-                        neoActivity.navigateProduct(it.packageName)
-                    },
-                    onFavouriteClick = { pi ->
-                        mainVM.setFavorite(
-                            pi.packageName,
-                            !dataState.favorites.contains(pi.packageName)
-                        )
-                    },
-                    installed = pageState.installedMap[item.packageName],
-                    onActionClick = {
-                        val installed = pageState.installedMap[it.packageName]
-                        val action = {
-                            NeoApp.wm.install(
-                                Pair(it.packageName, it.repositoryId)
-                            )
-                        }
-                        if (installed != null && installed.launcherActivities.isNotEmpty())
-                            context.onLaunchClick(
-                                installed,
-                                neoActivity.supportFragmentManager
-                            )
-                        else if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                            dialogKey.value = DialogKey.Download(it.name, action)
-                            openDialog.value = true
-                        } else action()
-                    }
-                )
             }
         }
     }
