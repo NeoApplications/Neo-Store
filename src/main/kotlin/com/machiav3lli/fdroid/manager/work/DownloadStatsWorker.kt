@@ -29,6 +29,8 @@ import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.YearMonth
 import kotlinx.datetime.plusMonth
@@ -49,6 +51,7 @@ class DownloadStatsWorker(
     params: WorkerParameters,
 ) : CoroutineWorker(context, params), KoinComponent {
     private val privacyRepository: PrivacyRepository by inject()
+    private val downloadSemaphore = Semaphore(3)
 
     override suspend fun doWork(): Result {
         return runCatching {
@@ -95,28 +98,30 @@ class DownloadStatsWorker(
         val filesFailed = mutableListOf<String>()
 
         fileNames.map { fileName ->
-            async {
-                fetchMonthlyFile(
-                    fileName = fileName,
-                    lastModified = existingModifiedDates[fileName]
-                ).let { result ->
-                    when {
-                        result.success && result.data != null -> {
-                            processMonthlyData(result)
-                            filesProcessed++
-                            filesUpdated++
-                            Log.d(TAG, "Processed updated file: ${result.fileName}")
-                        }
+            downloadSemaphore.withPermit {
+                async {
+                    fetchMonthlyFile(
+                        fileName = fileName,
+                        lastModified = existingModifiedDates[fileName]
+                    ).let { result ->
+                        when {
+                            result.success && result.data != null -> {
+                                processMonthlyData(result)
+                                filesProcessed++
+                                filesUpdated++
+                                Log.d(TAG, "Processed updated file: ${result.fileName}")
+                            }
 
-                        // File not modified
-                        result.success && result.data == null -> {
-                            filesProcessed++
-                            Log.d(TAG, "File not modified: ${result.fileName}")
-                        }
+                            // File not modified
+                            result.success && result.data == null -> {
+                                filesProcessed++
+                                Log.d(TAG, "File not modified: ${result.fileName}")
+                            }
 
-                        else                                  -> {
-                            filesFailed.add(result.fileName)
-                            Log.w(TAG, "Failed to fetch: ${result.fileName}")
+                            else                                  -> {
+                                filesFailed.add(result.fileName)
+                                Log.w(TAG, "Failed to fetch: ${result.fileName}")
+                            }
                         }
                     }
                 }
