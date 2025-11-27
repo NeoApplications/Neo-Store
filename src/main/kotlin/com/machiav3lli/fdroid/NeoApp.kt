@@ -24,8 +24,8 @@ import com.machiav3lli.fdroid.data.index.RepositoryUpdater
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.data.repository.privacyModule
-import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
 import com.machiav3lli.fdroid.manager.installer.installerModule
+import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
 import com.machiav3lli.fdroid.manager.network.CoilDownloader
 import com.machiav3lli.fdroid.manager.network.Downloader
 import com.machiav3lli.fdroid.manager.network.downloadClientModule
@@ -41,7 +41,6 @@ import io.ktor.http.Url
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -123,6 +122,7 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
     override fun onKoinStartup() = koinConfiguration {
         androidLogger()
         androidContext(this@NeoApp)
+        //analytics()
         modules(
             downloadClientModule,
             workmanagerModule,
@@ -166,50 +166,46 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
         val installedItems = packageManager
             .getInstalledPackages(Android.PackageManager.signaturesFlag)
             .map { it.toInstalledItem(launcherActivitiesMap[it.packageName].orEmpty()) }
-        withContext(Dispatchers.IO) {
-            installedRepo.emptyTable()
-            installedRepo.upsert(*installedItems.toTypedArray())
-        }
+        installedRepo.emptyTable()
+        installedRepo.upsert(*installedItems.toTypedArray())
     }
 
-    private suspend fun listenPreferences() {
+    private suspend fun CoroutineScope.listenPreferences() {
         updateProxy()
-        withContext(Dispatchers.Default) {
-            Preferences.subject.collect {
-                when (it) {
-                    Preferences.Key.ProxyType,
-                    Preferences.Key.ProxyUrl,
-                    Preferences.Key.ProxyHost,
-                    Preferences.Key.ProxyPort,
-                        -> updateProxy()
+        Preferences.addPreferencesChangeListener {
+            when (it) {
+                Preferences.Key.ProxyType,
+                Preferences.Key.ProxyUrl,
+                Preferences.Key.ProxyHost,
+                Preferences.Key.ProxyPort,
+                    -> updateProxy()
 
-                    Preferences.Key.AutoSync,
-                    Preferences.Key.AutoSyncInterval,
-                        -> wm.updatePeriodicSyncJob(true)
+                Preferences.Key.AutoSync,
+                Preferences.Key.AutoSyncInterval,
+                    -> wm.updatePeriodicSyncJob(true)
 
-                    Preferences.Key.UpdateUnstable,
-                        -> forceSyncAll()
+                Preferences.Key.UpdateUnstable,
+                    -> forceSyncAll()
 
-                    Preferences.Key.Theme,
-                        -> {
-                        launch(Dispatchers.Main) {
-                            mActivity.recreate()
-                        }
+                Preferences.Key.Theme,
+                    -> {
+                    launch(Dispatchers.Main) {
+                        mActivity.recreate()
                     }
-
-                    Preferences.Key.Language,
-                        -> {
-                        val refresh = Intent.makeRestartActivityTask(
-                            ComponentName(
-                                baseContext,
-                                NeoActivity::class.java
-                            )
-                        )
-                        applicationContext.startActivity(refresh)
-                    }
-
-                    else -> return@collect
                 }
+
+                Preferences.Key.Language,
+                    -> {
+                    val refresh = Intent.makeRestartActivityTask(
+                        ComponentName(
+                            baseContext,
+                            NeoActivity::class.java
+                        )
+                    )
+                    applicationContext.startActivity(refresh)
+                }
+
+                else -> return@addPreferencesChangeListener
             }
         }
     }
@@ -249,20 +245,18 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
     }
 
     private suspend fun forceSyncAll() {
-        withContext(Dispatchers.IO) {
-            reposRepo.loadAll().forEach {
-                if (it.lastModified.isNotEmpty() || it.entityTag.isNotEmpty()) {
-                    reposRepo.upsert(
-                        it.copy(
-                            timestamp = 0L,
-                            lastModified = "", entryLastModified = "",
-                            entityTag = "", entryEntityTag = ""
-                        )
+        reposRepo.loadAll().forEach {
+            if (it.lastModified.isNotEmpty() || it.entityTag.isNotEmpty()) {
+                reposRepo.upsert(
+                    it.copy(
+                        timestamp = 0L,
+                        lastModified = "", entryLastModified = "",
+                        entityTag = "", entryEntityTag = ""
                     )
-                }
+                )
             }
-            BatchSyncWorker.enqueue(SyncRequest.FORCE)
         }
+        BatchSyncWorker.enqueue(SyncRequest.FORCE)
     }
 
     override fun newImageLoader(context: Context): ImageLoader {
