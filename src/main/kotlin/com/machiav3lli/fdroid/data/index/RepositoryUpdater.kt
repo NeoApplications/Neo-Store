@@ -88,7 +88,7 @@ object RepositoryUpdater : KoinComponent {
     }
 
     private val updaterMutex = Mutex()
-    private val cleanupLock = Any()
+    private val cleanupMutex = Mutex()
     private val db: DatabaseX by inject()
 
     fun init() {
@@ -106,7 +106,7 @@ object RepositoryUpdater : KoinComponent {
                 if (disabled.isNotEmpty()) {
                     val pairs = disabled.asSequence().map { Pair(it, false) }.toSet()
 
-                    synchronized(cleanupLock) {
+                    cleanupMutex.withLock {
                         db.cleanUp(pairs)
                     }
                 }
@@ -163,7 +163,7 @@ object RepositoryUpdater : KoinComponent {
                     false
                 }
 
-                !result.success     -> {
+                !result.success      -> {
                     file.delete()
                     if (result.statusCode == HttpStatusCode.NotFound && indexTypes.size > 1) {
                         update(
@@ -181,7 +181,7 @@ object RepositoryUpdater : KoinComponent {
                     }
                 }
 
-                else                -> {
+                else                 -> {
                     launch {
                         CoroutineUtils.managedSingle {
                             val hasCachedIndex = hasCachedIndex(context, repository.id)
@@ -312,7 +312,7 @@ object RepositoryUpdater : KoinComponent {
                         false
                     }
 
-                    !result.success     -> {
+                    !result.success      -> {
                         diffFile.delete()
                         if (result.statusCode == HttpStatusCode.NotFound) fallbackUpdate()
                         else {
@@ -323,7 +323,7 @@ object RepositoryUpdater : KoinComponent {
                         }
                     }
 
-                    else                -> {
+                    else                 -> {
                         launch {
                             CoroutineUtils.managedSingle {
                                 if (hasCachedIndex) processFile(

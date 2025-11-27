@@ -92,7 +92,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.koin.dsl.module
 import org.koin.java.KoinJavaComponent.get
 import java.io.File
@@ -490,16 +489,14 @@ abstract class DatabaseX : RoomDatabase() {
                 super.onPostMigrate(db)
                 GlobalScope.launch(Dispatchers.IO) {
                     get<DatabaseX>(DatabaseX::class.java).apply {
-                        runInTransaction {
-                            runBlocking {
-                                getProductDao().emptyTable()
-                                getCategoryDao().emptyTable()
-                                getReleaseDao().emptyTable()
-                                getDownloadedDao().emptyTable()
-                                // performClear(false, "product", "category", "release", "downloaded")
-                                getRepositoryDao().forgetLastModifications()
-                                // db.execSQL("UPDATE repository SET lastModified = '', entityTag = ''")
-                            }
+                        withTransaction {
+                            getProductDao().emptyTable()
+                            getCategoryDao().emptyTable()
+                            getReleaseDao().emptyTable()
+                            getDownloadedDao().emptyTable()
+                            // performClear(false, "product", "category", "release", "downloaded")
+                            getRepositoryDao().forgetLastModifications()
+                            // db.execSQL("UPDATE repository SET lastModified = '', entityTag = ''")
                         }
                     }
                 }
@@ -516,14 +513,12 @@ abstract class DatabaseX : RoomDatabase() {
                 super.onPostMigrate(db)
                 GlobalScope.launch(Dispatchers.IO) {
                     get<DatabaseX>(DatabaseX::class.java).apply {
-                        runInTransaction {
-                            runBlocking {
-                                getRepositoryDao().emptyTable()
-                                getRepositoryDao().put(*defaultRepositories.toTypedArray())
-                                getDownloadedDao().emptyTable()
-                                getInstallTaskDao().emptyTable()
-                                getReleaseDao().emptyTable()
-                            }
+                        withTransaction {
+                            getRepositoryDao().emptyTable()
+                            getRepositoryDao().put(*defaultRepositories.toTypedArray())
+                            getDownloadedDao().emptyTable()
+                            getInstallTaskDao().emptyTable()
+                            getReleaseDao().emptyTable()
                         }
                     }
                 }
@@ -585,29 +580,27 @@ abstract class DatabaseX : RoomDatabase() {
 
     suspend fun cleanUp(pairs: Set<Pair<Long, Boolean>>) = cleanUp(*pairs.toTypedArray())
 
-    fun finishTemporary(repository: Repository, success: Boolean) {
-        runInTransaction {
-            runBlocking {
-                if (success) {
-                    getProductDao().deleteById(repository.id)
-                    getCategoryDao().deleteById(repository.id)
-                    getRepoCategoryDao().deleteByRepoId(repository.id)
-                    getAntiFeatureDao().deleteByRepoId(repository.id)
-                    getReleaseDao().deleteById(repository.id)
-                    getProductDao().insert(*(getProductTempDao().getAll()))
-                    getCategoryDao().insert(*(getCategoryTempDao().getAll()))
-                    getRepoCategoryDao().insert(*(getRepoCategoryTempDao().getAll()))
-                    getAntiFeatureDao().insert(*(getAntiFeatureTempDao().getAll()))
-                    getReleaseDao().insert(*(getReleaseTempDao().getAll()))
-                    getRepositoryDao().put(repository)
-                }
-                getProductTempDao().emptyTable()
-                getCategoryTempDao().emptyTable()
-                getRepoCategoryTempDao().emptyTable()
-                getAntiFeatureTempDao().emptyTable()
-                getReleaseTempDao().emptyTable()
-                // performClear(false, "product_temp", "category_temp", "release_temp")
+    suspend fun finishTemporary(repository: Repository, success: Boolean) {
+        withTransaction {
+            if (success) {
+                getProductDao().deleteById(repository.id)
+                getCategoryDao().deleteById(repository.id)
+                getRepoCategoryDao().deleteByRepoId(repository.id)
+                getAntiFeatureDao().deleteByRepoId(repository.id)
+                getReleaseDao().deleteById(repository.id)
+                getProductDao().insert(*(getProductTempDao().getAll()))
+                getCategoryDao().insert(*(getCategoryTempDao().getAll()))
+                getRepoCategoryDao().insert(*(getRepoCategoryTempDao().getAll()))
+                getAntiFeatureDao().insert(*(getAntiFeatureTempDao().getAll()))
+                getReleaseDao().insert(*(getReleaseTempDao().getAll()))
+                getRepositoryDao().put(repository)
             }
+            getProductTempDao().emptyTable()
+            getCategoryTempDao().emptyTable()
+            getRepoCategoryTempDao().emptyTable()
+            getAntiFeatureTempDao().emptyTable()
+            getReleaseTempDao().emptyTable()
+            // performClear(false, "product_temp", "category_temp", "release_temp")
         }
     }
 }

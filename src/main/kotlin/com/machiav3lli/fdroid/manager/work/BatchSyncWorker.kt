@@ -34,7 +34,6 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
-import com.machiav3lli.fdroid.manager.service.InstallerReceiver
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -68,7 +67,7 @@ class BatchSyncWorker(
             }
             Result.success()
         } catch (e: Exception) {
-            Log.e(this::class.java.simpleName, e.message, e)
+            Log.e(TAG, e.message, e)
             Result.failure()
         }
     }
@@ -159,14 +158,18 @@ class BatchSyncWorker(
                 cancelAllPendingIntent
             )
             .apply {
-                if (completedRepositories >= totalRepositories)
-                    setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
+                if (completedRepositories >= totalRepositories) {
+                    setTimeoutAfter(NOTIFICATION_TIMEOUT)
+                    Log.i(TAG, "Setting sync notification progress to timeout")
+                }
             }
             .build()
     }
 
     companion object {
+        private const val TAG = "BatchSyncWorker"
         private const val NOTIFICATION_ID_BATCH_SYNCING = 12345
+        private const val NOTIFICATION_TIMEOUT = 10_000L
 
         private fun Request(request: SyncRequest): OneTimeWorkRequest {
             return OneTimeWorkRequestBuilder<BatchSyncWorker>()

@@ -100,7 +100,7 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
         }
     }
 
-    suspend fun reportUserInteraction(packageName: String?) {
+    fun reportUserInteraction(packageName: String?) {
         installQueue.startUserInteraction(packageName.orEmpty())
         installQueue.emitProgress(InstallState.Pending, packageName)
     }

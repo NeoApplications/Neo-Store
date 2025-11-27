@@ -146,7 +146,7 @@ fun DownloadedItem(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(
-                    text = download.state.name,
+                    text = state.name,
                     modifier = Modifier
                         .weight(1f),
                     softWrap = true,
