@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.expandIn
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerBasedShape
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -83,5 +85,35 @@ fun BlockCard(
             ExpandableBlockHeader(heading)
             content()
         }
+    }
+}
+
+@Composable
+fun ExpandingFadingCard(
+    expanded: Boolean = false,
+    expandedView: @Composable (AnimatedVisibilityScope.() -> Unit),
+    collapsedView: @Composable (AnimatedVisibilityScope.() -> Unit),
+) {
+    val bgColor by animateColorAsState(
+        if (expanded) MaterialTheme.colorScheme.surfaceContainerHigh
+        else FloatingActionButtonDefaults.containerColor,
+        label = "bgColor"
+    )
+
+    Surface(
+        modifier = Modifier
+            .animateContentSize(),
+        shape = MaterialTheme.shapes.large,
+        color = bgColor,
+    ) {
+        StatefulAnimatedVisibility(
+            currentState = expanded,
+            enterPositive = fadeIn() + expandIn(),
+            exitPositive = fadeOut() + shrinkOut(),
+            enterNegative = fadeIn() + expandIn(),
+            exitNegative = fadeOut() + shrinkOut(),
+            collapsedView = collapsedView,
+            expandedView = expandedView
+        )
     }
 }
