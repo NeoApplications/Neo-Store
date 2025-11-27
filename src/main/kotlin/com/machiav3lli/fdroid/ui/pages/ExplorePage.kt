@@ -68,6 +68,7 @@ import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
+import com.machiav3lli.fdroid.utils.extension.sortedLocalized
 import com.machiav3lli.fdroid.utils.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.ExploreVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
@@ -222,7 +223,7 @@ fun ExplorePage(
                                     stringResource(id = R.string.favorite_applications),
                                     Phosphor.HeartStraight
                                 ),
-                            ) + (categoryProductsState.categories.sortedBy { it.label }
+                            ) + (categoryProductsState.categories.sortedLocalized { label }
                                 .map { Triple(it.name, it.label, it.name.appCategoryIcon) }),
                             selectedKey = selectedCategory,
                         ) {
