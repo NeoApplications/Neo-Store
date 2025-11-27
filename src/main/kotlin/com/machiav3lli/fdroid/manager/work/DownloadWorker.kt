@@ -57,6 +57,8 @@ import com.machiav3lli.fdroid.utils.getDownloadFolder
 import com.machiav3lli.fdroid.utils.isDownloadExternal
 import com.machiav3lli.fdroid.utils.notifySensitivePermissionsChanged
 import io.ktor.http.HttpStatusCode
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.java.KoinJavaComponent.get
@@ -72,6 +74,10 @@ class DownloadWorker(
     private lateinit var task: DownloadTask
     private val langContext = ContextWrapperX.wrap(applicationContext)
     private val downloadedRepo: DownloadedRepository by inject()
+
+    @Deprecated("")
+    override val coroutineContext: CoroutineDispatcher
+        get() = Dispatchers.IO
 
     override suspend fun doWork(): Result {
         try {

@@ -35,10 +35,7 @@ import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.utils.extension.android.Android
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.supervisorScope
-import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.java.KoinJavaComponent.get
@@ -52,18 +49,17 @@ class BatchSyncWorker(
     private val workManager by inject<WorkManager>(WorkManager::class.java)
     private var totalRepositories = 0
     private var completedRepositories = 0
-    private val scheduleJob = SupervisorJob()
     private var request = SyncRequest.entries[
         inputData.getInt(ARG_SYNC_REQUEST, 0)
     ]
     private val langContext = ContextWrapperX.wrap(applicationContext)
     private val reposRepo: RepositoriesRepository by inject()
 
-    override suspend fun doWork(): Result = withContext(scheduleJob) {
-        try {
+    override suspend fun doWork(): Result {
+        return try {
             val result = handleSync()
             if (!result) {
-                return@withContext Result.failure()
+                return Result.failure()
             }
             Result.success()
         } catch (e: Exception) {

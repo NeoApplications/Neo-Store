@@ -45,6 +45,8 @@ import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.utils.displayVulnerabilitiesNotification
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.syncNotificationBuilder
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
@@ -69,6 +71,10 @@ class SyncWorker(
     private val installedRepo: InstalledRepository by inject()
     private val notificationManager: SyncNotificationManager by inject()
     private val updatesManager: UpdatesNotificationManager by inject()
+
+    @Deprecated("")
+    override val coroutineContext: CoroutineDispatcher
+        get() = Dispatchers.IO
 
     @SuppressLint("RestrictedApi")
     override suspend fun doWork(): Result {

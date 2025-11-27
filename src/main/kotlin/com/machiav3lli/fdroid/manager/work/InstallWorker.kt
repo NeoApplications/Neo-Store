@@ -27,13 +27,13 @@ import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
 import com.machiav3lli.fdroid.manager.installer.type.LegacyInstaller
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.installNotificationBuilder
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -47,10 +47,13 @@ class InstallWorker(
     private val installState = MutableStateFlow<InstallState>(InstallState.Preparing)
     private val installer: BaseInstaller by inject()
     private val installsRepository: InstallsRepository by inject()
-    private val installJob = Job()
     private val langContext = ContextWrapperX.wrap(applicationContext)
 
-    override suspend fun doWork(): Result = withContext(installJob) {
+    @Deprecated("")
+    override val coroutineContext: CoroutineDispatcher
+        get() = Dispatchers.IO
+
+    override suspend fun doWork(): Result {
         val label = inputData.getString(ARG_NAME) ?: ""
         val fileName = inputData.getString(ARG_FILE_NAME) ?: ""
         val packageName = inputData.getString(ARG_PACKAGE_NAME) ?: ""
@@ -75,7 +78,7 @@ class InstallWorker(
                         TAG,
                         "Installation successful for $packageName after $attemptCount attempts"
                     )
-                    return@withContext result
+                    return result
                 }
 
                 if (attemptCount < maxRetries) {
@@ -90,12 +93,12 @@ class InstallWorker(
                     "Installation timed out for $packageName (attempt $attemptCount): ${e.message}"
                 )
                 installer.cancelInstall(packageName)
-                if (attemptCount >= maxRetries) return@withContext Result.failure()
+                if (attemptCount >= maxRetries) return Result.failure()
                 delay(INITIAL_BACKOFF_MILLIS * (1 shl (attemptCount - 1)))
             } catch (e: CancellationException) {
                 Log.w(TAG, "Installation cancelled for $packageName: ${e.message}")
                 installer.cancelInstall(packageName)
-                return@withContext Result.failure()
+                return Result.failure()
             } catch (e: Exception) {
                 Log.e(
                     TAG,
@@ -103,13 +106,13 @@ class InstallWorker(
                     e
                 )
                 installer.cancelInstall(packageName)
-                if (attemptCount >= maxRetries) return@withContext Result.failure()
+                if (attemptCount >= maxRetries) return Result.failure()
                 delay(INITIAL_BACKOFF_MILLIS * (1 shl (attemptCount - 1)))
             }
         }
 
         Log.e(TAG, "Installation failed for $packageName after $maxRetries attempts")
-        Result.failure()
+        return Result.failure()
     }
 
     private suspend fun handleInstall(label: String, fileName: String): Result = coroutineScope {
