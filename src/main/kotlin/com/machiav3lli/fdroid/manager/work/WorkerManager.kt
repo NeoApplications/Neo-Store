@@ -48,7 +48,11 @@ import com.machiav3lli.fdroid.utils.reportSyncFail
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -75,7 +79,8 @@ class WorkerManager(appContext: Context) : KoinComponent {
     private val installer: BaseInstaller by inject()
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    val downloadsScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    val downloadsScope = CoroutineScope(scope.coroutineContext + SupervisorJob())
+
     private val downloadTracker = DownloadsTracker()
     private val downloadStateHandler by lazy {
         DownloadStateHandler(
@@ -99,6 +104,7 @@ class WorkerManager(appContext: Context) : KoinComponent {
 
     fun release(): WorkerManager? {
         appContext.unregisterReceiver(actionReceiver)
+        scope.cancel()
         return null
     }
 
@@ -108,54 +114,26 @@ class WorkerManager(appContext: Context) : KoinComponent {
 
     private fun setupWorkInfoCollection() {
         scope.launch {
-            workManager.getWorkInfosByTagFlow(SyncWorker::class.qualifiedName!!)
+            combine(
+                workManager.getWorkInfosByTagFlow(SyncWorker::class.qualifiedName!!),
+                workManager.getWorkInfosByTagFlow(DownloadWorker::class.qualifiedName!!),
+            ) { syncInfos, downloadInfos ->
+                syncInfos to downloadInfos
+            }
                 .retryWhen { cause, attempt ->
                     delay(attempt * 1_000L)
                     cause !is CancellationException
                 }
-                .collect { workInfos ->
+                .collect { (syncInfos, downloadInfos) ->
                     runCatching {
-                        workInfos.forEach { workInfo ->
-                            val data = workInfo.outputData.takeIf { it != Data.EMPTY }
-                                ?: workInfo.progress.takeIf { it != Data.EMPTY }
-                                ?: return@forEach
-
-                            runCatching {
-                                when (workInfo.state) {
-                                    WorkInfo.State.FAILED -> SyncState.Failed(
-                                        data.getLong(ARG_REPOSITORY_ID, -1L),
-                                        SyncRequest.entries[
-                                            data.getInt(ARG_SYNC_REQUEST, 0)
-                                        ],
-                                        data.getString(ARG_REPOSITORY_NAME) ?: "",
-                                        data.getString(ARG_EXCEPTION) ?: "",
-                                    )
-
-                                    else                  -> null
-                                }?.let { newState ->
-                                    langContext.reportSyncFail(newState.repoId, newState)
-                                }
-                            }.onFailure { e ->
-                                Log.e("WorkerManager", "Error updating download state", e)
-                            }
-                        }
+                        onSyncProgress(syncInfos)
                     }.onFailure { e ->
-                        Log.e("WorkerManager", "Error processing sync updates", e)
+                        Log.e(TAG, "Error processing sync updates", e)
                     }
-                }
-        }
-
-        scope.launch {
-            workManager.getWorkInfosByTagFlow(DownloadWorker::class.qualifiedName!!)
-                .retryWhen { cause, attempt ->
-                    delay(attempt * 1_000L)
-                    cause !is CancellationException
-                }
-                .collect { workInfos ->
-                    try {
-                        downloadsScope.onDownloadProgress(this@WorkerManager, workInfos)
-                    } catch (e: Exception) {
-                        Log.e("WorkerManager", "Error processing download updates", e)
+                    runCatching {
+                        onDownloadProgress(downloadInfos)
+                    }.onFailure { e ->
+                        Log.e(TAG, "Error processing download progress", e)
                     }
                 }
         }
@@ -176,17 +154,120 @@ class WorkerManager(appContext: Context) : KoinComponent {
                     try {
                         val healthCheckCleaned = installer.checkQueueHealth()
                         if (healthCheckCleaned) {
-                            Log.d("WorkerManager", "Periodic queue health check performed cleanup")
+                            Log.d(TAG, "Periodic queue health check performed cleanup")
                         }
                     } catch (e: Exception) {
-                        Log.e("WorkerManager", "Error during periodic queue health check", e)
+                        Log.e(TAG, "Error during periodic queue health check", e)
                     }
                 } catch (e: Exception) {
-                    Log.e("WorkerManager", "Error in work monitoring", e)
+                    Log.e(TAG, "Error in work monitoring", e)
                 }
                 delay(TimeUnit.MINUTES.toMillis(5))
             }
         }
+    }
+
+
+    private fun onSyncProgress(workInfos: List<WorkInfo>) {
+        workInfos.forEach { workInfo ->
+            val data = workInfo.outputData.takeIf { it != Data.EMPTY }
+                ?: workInfo.progress.takeIf { it != Data.EMPTY }
+                ?: return@forEach
+
+            runCatching {
+                when (workInfo.state) {
+                    WorkInfo.State.FAILED -> SyncState.Failed(
+                        data.getLong(ARG_REPOSITORY_ID, -1L),
+                        SyncRequest.entries[
+                            data.getInt(ARG_SYNC_REQUEST, 0)
+                        ],
+                        data.getString(ARG_REPOSITORY_NAME) ?: "",
+                        data.getString(ARG_EXCEPTION) ?: "",
+                    )
+
+                    else                  -> null
+                }?.let { newState ->
+                    langContext.reportSyncFail(newState.repoId, newState)
+                }
+            }.onFailure { e ->
+                Log.e(TAG, "Error updating sync state", e)
+            }
+        }
+    }
+
+    private fun onDownloadProgress(workInfos: List<WorkInfo>) {
+        workInfos.forEach { workInfo ->
+            val data = workInfo.outputData.takeIf { it != Data.EMPTY }
+                ?: workInfo.progress.takeIf { it != Data.EMPTY }
+                ?: return@forEach
+
+            if (downloadTracker.trackWork(workInfo, data)) runCatching {
+                val task = DownloadWorker.getTask(data)
+                val resultCode = data.getInt(ARG_RESULT_CODE, 0)
+                val validationError = ValidationError.entries[
+                    data.getInt(ARG_VALIDATION_ERROR, 0)
+                ]
+
+                when (workInfo.state) {
+                    WorkInfo.State.ENQUEUED,
+                    WorkInfo.State.BLOCKED   -> DownloadState.Pending(
+                        packageName = task.packageName,
+                        name = task.name,
+                        version = task.release.version,
+                        cacheFileName = task.release.cacheFileName,
+                        repoId = task.repoId,
+                        blocked = workInfo.state == WorkInfo.State.BLOCKED
+                    )
+
+                    WorkInfo.State.RUNNING   -> {
+                        val progress = DownloadWorker.getProgress(data)
+                        DownloadState.Downloading(
+                            packageName = task.packageName,
+                            name = task.name,
+                            version = task.release.version,
+                            cacheFileName = task.release.cacheFileName,
+                            repoId = task.repoId,
+                            read = progress.read,
+                            total = progress.total.takeIf { it > 0 },
+                        )
+                    }
+
+                    WorkInfo.State.CANCELLED -> DownloadState.Cancel(
+                        packageName = task.packageName,
+                        name = task.name,
+                        version = task.release.version,
+                        cacheFileName = task.release.cacheFileName,
+                        repoId = task.repoId,
+                    )
+
+                    WorkInfo.State.SUCCEEDED -> DownloadState.Success(
+                        packageName = task.packageName,
+                        name = task.name,
+                        version = task.release.version,
+                        cacheFileName = task.release.cacheFileName,
+                        repoId = task.repoId,
+                        release = task.release,
+                    )
+
+                    WorkInfo.State.FAILED    -> DownloadState.Error(
+                        packageName = task.packageName,
+                        name = task.name,
+                        version = task.release.version,
+                        cacheFileName = task.release.cacheFileName,
+                        repoId = task.repoId,
+                        resultCode = resultCode,
+                        validationError = validationError,
+                        stopReason = workInfo.stopReason
+                    )
+                }.let { newState ->
+                    downloadStateHandler.updateState(task.key, newState)
+                }
+            }.onFailure { e ->
+                Log.e(TAG, "Error updating download state", e)
+            }
+        }
+
+        prune()
     }
 
     fun enqueueUniqueWork(
@@ -281,25 +362,27 @@ class WorkerManager(appContext: Context) : KoinComponent {
 
     private fun batchUpdate(productItems: List<Pair<String, Long>>, enforce: Boolean = false) {
         scope.launch {
-            productItems.map { productItem ->
-                Triple(
-                    productItem.first,
-                    installedRepo.load(productItem.first),
-                    reposRepo.load(productItem.second)
-                )
-            }
-                .filter { (_, installed, repo) -> (enforce || installed != null) && repo != null }
+            productItems.map { (packageName, repoId) ->
+                async {
+                    val installed = installedRepo.load(packageName)
+                    val repo = reposRepo.load(repoId)
+
+                    if ((enforce || installed != null) && repo != null) {
+                        Triple(packageName, installed, repo)
+                    } else null
+                }
+            }.awaitAll()
+                .filterNotNull()
                 .forEach { (packageName, installed, repo) ->
                     val productRepository = productRepo.loadProduct(packageName)
-                        .filter { eProduct -> eProduct.product.repositoryId == repo!!.id }
-                        .map { eProduct -> Pair(eProduct, repo!!) }
+                        .filter { eProduct -> eProduct.product.repositoryId == repo.id }
+                        .map { eProduct -> Pair(eProduct, repo) }
                     Utils.startUpdate(
                         packageName,
                         installed,
                         productRepository
                     )
                 }
-
         }
     }
 
@@ -332,98 +415,6 @@ class WorkerManager(appContext: Context) : KoinComponent {
 
     companion object {
         const val TAG = "WorkerManager"
-
-        private fun CoroutineScope.onDownloadProgress(
-            manager: WorkerManager,
-            workInfos: List<WorkInfo>? = null,
-        ) = launch {
-            runCatching {
-                val downloads = workInfos
-                    ?: manager.workManager
-                        .getWorkInfosByTag(DownloadWorker::class.qualifiedName!!)
-                        .get()
-                    ?: return@launch
-
-                manager.updateDownloadsRunning(downloads)
-
-                manager.prune()
-            }.onFailure { e ->
-                Log.e("WorkerManager", "Error in onDownloadProgress", e)
-            }
-        }
-
-        private fun WorkerManager.updateDownloadsRunning(workInfos: List<WorkInfo>) {
-            workInfos.forEach { workInfo ->
-                val data = workInfo.outputData.takeIf { it != Data.EMPTY }
-                    ?: workInfo.progress.takeIf { it != Data.EMPTY }
-                    ?: return@forEach
-
-                if (downloadTracker.trackWork(workInfo, data)) runCatching {
-                    val task = DownloadWorker.Companion.getTask(data)
-                    val resultCode = data.getInt(ARG_RESULT_CODE, 0)
-                    val validationError = ValidationError.entries[
-                        data.getInt(ARG_VALIDATION_ERROR, 0)
-                    ]
-
-                    when (workInfo.state) {
-                        WorkInfo.State.ENQUEUED,
-                        WorkInfo.State.BLOCKED   -> DownloadState.Pending(
-                            packageName = task.packageName,
-                            name = task.name,
-                            version = task.release.version,
-                            cacheFileName = task.release.cacheFileName,
-                            repoId = task.repoId,
-                            blocked = workInfo.state == WorkInfo.State.BLOCKED
-                        )
-
-                        WorkInfo.State.RUNNING   -> {
-                            val progress = DownloadWorker.Companion.getProgress(data)
-                            DownloadState.Downloading(
-                                packageName = task.packageName,
-                                name = task.name,
-                                version = task.release.version,
-                                cacheFileName = task.release.cacheFileName,
-                                repoId = task.repoId,
-                                read = progress.read,
-                                total = progress.total.takeIf { it > 0 },
-                            )
-                        }
-
-                        WorkInfo.State.CANCELLED -> DownloadState.Cancel(
-                            packageName = task.packageName,
-                            name = task.name,
-                            version = task.release.version,
-                            cacheFileName = task.release.cacheFileName,
-                            repoId = task.repoId,
-                        )
-
-                        WorkInfo.State.SUCCEEDED -> DownloadState.Success(
-                            packageName = task.packageName,
-                            name = task.name,
-                            version = task.release.version,
-                            cacheFileName = task.release.cacheFileName,
-                            repoId = task.repoId,
-                            release = task.release,
-                        )
-
-                        WorkInfo.State.FAILED    -> DownloadState.Error(
-                            packageName = task.packageName,
-                            name = task.name,
-                            version = task.release.version,
-                            cacheFileName = task.release.cacheFileName,
-                            repoId = task.repoId,
-                            resultCode = resultCode,
-                            validationError = validationError,
-                            stopReason = workInfo.stopReason
-                        )
-                    }.let { newState ->
-                        downloadStateHandler.updateState(task.key, newState)
-                    }
-                }.onFailure { e ->
-                    Log.e("WorkerManager", "Error updating download state", e)
-                }
-            }
-        }
     }
 }
 
