@@ -15,9 +15,7 @@ import com.machiav3lli.fdroid.manager.work.InstallWorker
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.isInstalled
 import com.machiav3lli.fdroid.utils.extension.isNSPackageUpdateOwner
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.concurrent.atomics.AtomicInt
@@ -35,31 +33,30 @@ object InstallUtils : KoinComponent {
     private val installer: BaseInstaller by inject()
 
     suspend fun verifyAndEnqueueInstallTask(task: InstallTask) {
-        withContext(Dispatchers.IO) {
-            try {
-                // Check if the APK file exists
-                val apkFile = Cache.getReleaseFile(NeoApp.context, task.cacheFileName)
-                if (!apkFile.exists() || !apkFile.canRead()
-                    // Fixes: Trying to re-install NS after update
-                    || (task.packageName == BuildConfig.APPLICATION_ID && task.versionCode.toInt() == BuildConfig.VERSION_CODE)) {
-                    Log.w(
-                        TAG,
-                        "APK file missing or unreadable for ${task.packageName}: ${task.cacheFileName}"
-                    )
-                    // Delete the invalid task
-                    installsRepository.delete(task.packageName)
-                    return@withContext
-                }
-
-                InstallWorker.enqueue(
-                    packageName = task.packageName,
-                    label = task.label,
-                    fileName = task.cacheFileName,
-                    enforce = true
+        try {
+            // Check if the APK file exists
+            val apkFile = Cache.getReleaseFile(NeoApp.context, task.cacheFileName)
+            if (!apkFile.exists() || !apkFile.canRead()
+                // Fixes: Trying to re-install NS after update
+                || (task.packageName == BuildConfig.APPLICATION_ID && task.versionCode.toInt() == BuildConfig.VERSION_CODE)
+            ) {
+                Log.w(
+                    TAG,
+                    "APK file missing or unreadable for ${task.packageName}: ${task.cacheFileName}"
                 )
-            } catch (e: Exception) {
-                Log.e(TAG, "Error verifying install task for ${task.packageName}: ${e.message}")
+                // Delete the invalid task
+                installsRepository.delete(task.packageName)
+                return
             }
+
+            InstallWorker.enqueue(
+                packageName = task.packageName,
+                label = task.label,
+                fileName = task.cacheFileName,
+                enforce = true
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "Error verifying install task for ${task.packageName}: ${e.message}")
         }
     }
 
@@ -74,28 +71,26 @@ object InstallUtils : KoinComponent {
             return false
         }
 
-        return withContext(Dispatchers.IO) {
-            try {
-                lastRestartAttempt.store(currentTime)
-                restartCount.addAndFetch(1)
+        return try {
+            lastRestartAttempt.store(currentTime)
+            restartCount.addAndFetch(1)
 
-                val queueCleaned = installer.checkQueueHealth()
-                if (queueCleaned) {
-                    Log.d(
-                        TAG,
-                        "Queue health check performed cleanup before restarting orphaned tasks"
-                    )
-                    delay(500)
-                }
-
-                val tasks = installsRepository.loadAll()
-                Log.d(TAG, "Found ${tasks.size} install tasks to verify and re-enqueue")
-                tasks.forEach { task -> verifyAndEnqueueInstallTask(task) }
-                true
-            } catch (e: Exception) {
-                Log.e(TAG, "Error checking for orphaned install tasks: ${e.message}")
-                false
+            val queueCleaned = installer.checkQueueHealth()
+            if (queueCleaned) {
+                Log.d(
+                    TAG,
+                    "Queue health check performed cleanup before restarting orphaned tasks"
+                )
+                delay(500)
             }
+
+            val tasks = installsRepository.loadAll()
+            Log.d(TAG, "Found ${tasks.size} install tasks to verify and re-enqueue")
+            tasks.forEach { task -> verifyAndEnqueueInstallTask(task) }
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking for orphaned install tasks: ${e.message}")
+            false
         }
     }
 
