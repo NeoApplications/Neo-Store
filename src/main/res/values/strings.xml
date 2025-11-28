@@ -465,4 +465,7 @@
     <string name="trending_from_neostore">Trending on Neo Store</string>
     <string name="shizuku_installer">Shizuku installer</string>
     <string name="max_parallel_downloads">Maximum number of parallel downloads when Neo Store\'s download manager is used.</string>
+    <string name="download_stats_notification_title">Updating download stats</string>
+    <string name="download_stats_notification_pending">Preparing to fetch download stats</string>
+    <string name="download_stats_notification_message">Monthly data fetch running: %1$d/%2$d\n%3$d updated, %4$d unchanged, %5$d failed</string>
 </resources>

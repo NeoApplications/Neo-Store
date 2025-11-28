@@ -18,6 +18,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DEBUG
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
+import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOAD_STATS
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_INSTALLER
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
@@ -175,6 +176,20 @@ fun Context.downloadNotificationBuilder(title: String, content: String = "", per
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
         )
+
+fun Context.downloadStatsNotificationBuilder(total: Int = 1, done: Int = -1) =
+    NotificationCompat
+        .Builder(this, NOTIFICATION_CHANNEL_DOWNLOAD_STATS)
+        .setGroup(NOTIFICATION_CHANNEL_DOWNLOAD_STATS)
+        .setSmallIcon(android.R.drawable.stat_sys_download)
+        .setContentTitle(getString(R.string.download_stats_notification_title))
+        .setTicker(getString(R.string.download_stats_notification_title))
+        .setContentText(getString(R.string.download_stats_notification_pending))
+        .setOngoing(true)
+        .setSilent(true)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+        .setProgress(total, done, done == -1)
 
 fun Context.installNotificationBuilder() = NotificationCompat
     .Builder(this, NOTIFICATION_CHANNEL_INSTALLER)

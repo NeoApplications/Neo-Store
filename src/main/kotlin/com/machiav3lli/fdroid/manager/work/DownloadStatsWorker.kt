@@ -1,11 +1,14 @@
 package com.machiav3lli.fdroid.manager.work
 
 import android.content.Context
+import android.content.pm.ServiceInfo
+import android.os.Build
 import android.util.Log
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
+import androidx.work.ForegroundInfo
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
@@ -15,7 +18,10 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.machiav3lli.fdroid.ARG_EXCEPTION
 import com.machiav3lli.fdroid.ARG_FORCE_WORK
+import com.machiav3lli.fdroid.ContextWrapperX
+import com.machiav3lli.fdroid.NOTIFICATION_ID_DOWNLOAD_STATS
 import com.machiav3lli.fdroid.NeoApp
+import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_DOWNLOAD_STATS_PERIODIC
 import com.machiav3lli.fdroid.TAG_SYNC_PERIODIC
 import com.machiav3lli.fdroid.data.content.Cache
@@ -25,6 +31,8 @@ import com.machiav3lli.fdroid.data.database.entity.DownloadStatsData
 import com.machiav3lli.fdroid.data.database.entity.toDownloadStats
 import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.manager.network.Downloader
+import com.machiav3lli.fdroid.utils.downloadStatsNotificationBuilder
+import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -42,6 +50,9 @@ import org.koin.core.component.inject
 import org.koin.java.KoinJavaComponent.get
 import java.io.File
 import java.util.concurrent.TimeUnit
+import kotlin.concurrent.atomics.AtomicInt
+import kotlin.concurrent.atomics.ExperimentalAtomicApi
+import kotlin.concurrent.atomics.incrementAndFetch
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -52,6 +63,7 @@ class DownloadStatsWorker(
 ) : CoroutineWorker(context, params), KoinComponent {
     private val privacyRepository: PrivacyRepository by inject()
     private val downloadSemaphore = Semaphore(3)
+    private val langContext = ContextWrapperX.wrap(applicationContext)
 
     override suspend fun doWork(): Result {
         return runCatching {
@@ -68,7 +80,6 @@ class DownloadStatsWorker(
         )
     }
 
-    // TODO add progress indication
     private suspend fun fetchData(): Int {
         val existingModifiedDates = getExistingModifiedDates()
         val (nFilesProcessed, nFilesUpdated, filesFailed) =
@@ -77,7 +88,7 @@ class DownloadStatsWorker(
         Log.i(
             TAG,
             "Monthly data fetch complete: $nFilesUpdated updated, " +
-                    "${nFilesProcessed - nFilesUpdated} unchanged, ${filesFailed.size} failed"
+                    "${nFilesProcessed - nFilesUpdated - filesFailed.size} unchanged, ${filesFailed.size} failed"
         )
 
         if (filesFailed.isNotEmpty()) {
@@ -87,14 +98,15 @@ class DownloadStatsWorker(
         return nFilesProcessed
     }
 
+    @OptIn(ExperimentalAtomicApi::class)
     private suspend fun fetchAndProcessMonthlyStats(
         existingModifiedDates: Map<String, String>
     ): Triple<Int, Int, List<String>> = coroutineScope {
         val fileNames = generateMonthlyFileNames()
         Log.d(TAG, "Fetching ${fileNames.size} monthly files")
 
-        var filesProcessed = 0
-        var filesUpdated = 0
+        val filesProcessed = AtomicInt(0)
+        val filesUpdated = AtomicInt(0)
         val filesFailed = mutableListOf<String>()
 
         fileNames.map { fileName ->
@@ -107,27 +119,48 @@ class DownloadStatsWorker(
                         when {
                             result.success && result.data != null -> {
                                 processMonthlyData(result)
-                                filesProcessed++
-                                filesUpdated++
                                 Log.d(TAG, "Processed updated file: ${result.fileName}")
+                                setForeground(
+                                    createForegroundInfo(
+                                        fileNames.size,
+                                        filesProcessed.incrementAndFetch(),
+                                        filesUpdated.incrementAndFetch(),
+                                        filesFailed.size
+                                    )
+                                )
                             }
 
                             // File not modified
                             result.success && result.data == null -> {
-                                filesProcessed++
                                 Log.d(TAG, "File not modified: ${result.fileName}")
+                                setForeground(
+                                    createForegroundInfo(
+                                        fileNames.size,
+                                        filesProcessed.incrementAndFetch(),
+                                        filesUpdated.load(),
+                                        filesFailed.size
+                                    )
+                                )
                             }
 
                             else                                  -> {
                                 filesFailed.add(result.fileName)
                                 Log.w(TAG, "Failed to fetch: ${result.fileName}")
+                                setForeground(
+                                    createForegroundInfo(
+                                        fileNames.size,
+                                        filesProcessed.incrementAndFetch(),
+                                        filesUpdated.load(),
+                                        filesFailed.size
+                                    )
+                                )
                             }
                         }
                     }
                 }
             }
         }.awaitAll()
-        Triple(filesProcessed, filesUpdated, filesFailed)
+        Triple(filesProcessed.load(), filesUpdated.load(), filesFailed)
     }
 
     /**
@@ -158,7 +191,6 @@ class DownloadStatsWorker(
         val tempFile = Cache.getDownloadStatsFile(context, fileName)
 
         return try {
-            // TODO add download progress notification
             val callback: suspend (Long, Long?, Long) -> Unit = { _, _, _ -> }
 
             val result = Downloader.download(
@@ -257,6 +289,44 @@ class DownloadStatsWorker(
     } catch (e: Exception) {
         Log.e(TAG, "Failed to get existing modified dates", e)
         emptyMap()
+    }
+
+    private val notificationBuilder by lazy {
+        langContext.downloadStatsNotificationBuilder()
+    }
+
+    override suspend fun getForegroundInfo(): ForegroundInfo {
+        return ForegroundInfo(
+            NOTIFICATION_ID_DOWNLOAD_STATS,
+            notificationBuilder.build(),
+            if (Android.sdk(Build.VERSION_CODES.Q)) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+            else 0
+        )
+    }
+
+    private fun createForegroundInfo(
+        total: Int = 1,
+        done: Int = -1,
+        updated: Int = 0,
+        failed: Int = 0,
+    ): ForegroundInfo {
+        // TODO add cancel intent
+        val notification = notificationBuilder
+            .setProgress(total, done, false)
+            .setContentText(
+                context.getString(
+                    R.string.download_stats_notification_message,
+                    done, total, updated, done - updated - failed, failed,
+                )
+            )
+            .build()
+
+        return ForegroundInfo(
+            NOTIFICATION_ID_DOWNLOAD_STATS,
+            notification,
+            if (Android.sdk(Build.VERSION_CODES.Q)) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+            else 0
+        )
     }
 
     data class MonthlyFileResult(

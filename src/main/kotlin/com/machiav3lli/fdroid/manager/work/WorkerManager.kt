@@ -23,6 +23,7 @@ import com.machiav3lli.fdroid.ARG_SYNC_REQUEST
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
+import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOAD_STATS
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
@@ -403,12 +404,18 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
         NotificationChannel(
             NOTIFICATION_CHANNEL_UPDATES,
             langContext.getString(R.string.updates), NotificationManager.IMPORTANCE_LOW
-        )
-            .let(notificationManager::createNotificationChannel)
+        ).let(notificationManager::createNotificationChannel)
         NotificationChannel(
             NOTIFICATION_CHANNEL_VULNS,
             langContext.getString(R.string.vulnerabilities), NotificationManager.IMPORTANCE_HIGH
         ).let(notificationManager::createNotificationChannel)
+        NotificationChannel(
+            NOTIFICATION_CHANNEL_DOWNLOAD_STATS,
+            langContext.getString(R.string.download_stats),
+            NotificationManager.IMPORTANCE_LOW,
+        )
+            .apply { setShowBadge(false) }
+            .let(notificationManager::createNotificationChannel)
     }
 
     companion object {
