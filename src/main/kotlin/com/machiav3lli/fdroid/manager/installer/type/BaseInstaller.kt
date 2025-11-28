@@ -15,8 +15,6 @@ import com.machiav3lli.fdroid.manager.installer.InstallQueue.Companion.InstallTa
 import com.machiav3lli.fdroid.manager.installer.InstallationError
 import com.machiav3lli.fdroid.manager.installer.InstallationEvents
 import com.machiav3lli.fdroid.utils.extension.android.Android
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
@@ -41,22 +39,20 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
     }
 
     suspend fun runInstall(task: InstallTask, onFailure: suspend (Throwable) -> Unit) {
-        withContext(Dispatchers.IO) {
-            val apkFile = getApkFile(task.cacheFileName)
-            if (apkFile == null) {
-                installQueue.onInstallationComplete(
-                    Result.failure(InstallationError.Unknown("Installation failed: Failed to get cached APK file ${task.cacheFileName}"))
-                )
-                return@withContext
-            }
+        val apkFile = getApkFile(task.cacheFileName)
+        if (apkFile == null) {
+            installQueue.onInstallationComplete(
+                Result.failure(InstallationError.Unknown("Installation failed: Failed to get cached APK file ${task.cacheFileName}"))
+            )
+            return
+        }
 
-            val packageName = extractPackageNameFromApk(apkFile) ?: task.packageName
+        val packageName = extractPackageNameFromApk(apkFile) ?: task.packageName
 
-            runCatching {
-                installPackage(packageName, apkFile)
-            }.onFailure { e ->
-                onFailure(e)
-            }
+        runCatching {
+            installPackage(packageName, apkFile)
+        }.onFailure { e ->
+            onFailure(e)
         }
     }
 
@@ -105,24 +101,26 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
         installQueue.emitProgress(InstallState.Pending, packageName)
     }
 
-    // Default; used in Legacy, System & AppManager
+    // Default: used in Legacy, System, AppManager & Shizuku
     override suspend fun uninstall(packageName: String) {
-        withContext(Dispatchers.IO) {
-            runCatching {
-                val uri = Uri.fromParts("package", packageName, null)
-                val intent = Intent()
-                intent.data = uri
+        runCatching {
+            val uri = Uri.fromParts("package", packageName, null)
+            val intent = Intent()
+            intent.data = uri
 
-                @Suppress("DEPRECATION")
-                if (Android.sdk(Build.VERSION_CODES.P)) {
-                    intent.action = Intent.ACTION_DELETE
-                } else {
-                    intent.action = Intent.ACTION_UNINSTALL_PACKAGE
-                    intent.putExtra(Intent.EXTRA_RETURN_RESULT, true)
-                }
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                context.startActivity(intent)
-            } // TODO add reporting failure
+            @Suppress("DEPRECATION")
+            if (Android.sdk(Build.VERSION_CODES.P)) {
+                intent.action = Intent.ACTION_DELETE
+            } else {
+                intent.action = Intent.ACTION_UNINSTALL_PACKAGE
+                intent.putExtra(Intent.EXTRA_RETURN_RESULT, true)
+            }
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+
+            context.startActivity(intent)
+        }.onFailure { e ->
+            // TODO add reporting failure
+            Log.e(TAG, "Failed to start uninstall activity: ${e.message}")
         }
     }
 
@@ -137,14 +135,16 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
         }
     }
 
-    protected suspend fun cleanupApkIfNeeded(apkFile: File) {
+    protected fun cleanupApkIfNeeded(apkFile: File) {
         if (Preferences[Preferences.Key.ReleasesCacheRetention] == 0) {
-            withContext(Dispatchers.IO) {
+            runCatching {
                 if (apkFile.delete()) {
                     Log.d(TAG, "Deleted APK file: ${apkFile.absolutePath}")
                 } else {
                     Log.w(TAG, "Failed to delete APK file: ${apkFile.absolutePath}")
                 }
+            }.onFailure { e ->
+                Log.e(TAG, "Exception while deleting APK file: ${e.message}")
             }
         }
     }
