@@ -106,8 +106,8 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
         appRef = WeakReference(this)
 
         Preferences.init(this)
-        RepositoryUpdater.init()
         ioScope.launch {
+            RepositoryUpdater.init()
             listenApplications()
             listenPreferences()
         }

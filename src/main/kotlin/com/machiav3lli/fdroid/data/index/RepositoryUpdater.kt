@@ -2,7 +2,6 @@ package com.machiav3lli.fdroid.data.index
 
 import android.content.Context
 import android.util.Log
-import androidx.compose.ui.util.fastMap
 import androidx.core.net.toUri
 import com.machiav3lli.fdroid.BUFFER_SIZE
 import com.machiav3lli.fdroid.data.content.Cache
@@ -26,7 +25,6 @@ import com.machiav3lli.fdroid.data.index.v2.IndexV2Parser.Companion.hasCachedInd
 import com.machiav3lli.fdroid.data.index.v2.findLocalized
 import com.machiav3lli.fdroid.manager.network.Downloader
 import com.machiav3lli.fdroid.manager.work.SyncWorker
-import com.machiav3lli.fdroid.utils.CoroutineUtils
 import com.machiav3lli.fdroid.utils.ProgressInputStream
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.extension.text.unhex
@@ -34,11 +32,9 @@ import com.machiav3lli.fdroid.utils.notifyDebugStatus
 import io.ktor.http.HttpStatusCode
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
@@ -51,6 +47,7 @@ import java.util.Locale
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 
+// TODO remove unneeded Coroutine context switches
 object RepositoryUpdater : KoinComponent {
     enum class Stage {
         DOWNLOAD, PROCESS, MERGE, COMMIT
@@ -91,24 +88,19 @@ object RepositoryUpdater : KoinComponent {
     private val cleanupMutex = Mutex()
     private val db: DatabaseX by inject()
 
-    fun init() {
+    suspend fun init() {
         var lastDisabled = setOf<Long>()
 
         runBlocking(Dispatchers.IO) {
-            launch {
-                val newDisabled = CoroutineUtils.querySingle {
-                    db.getRepositoryDao().getAllDisabledIds()
-                }.toSet()
+            val newDisabled = db.getRepositoryDao().getAllDisabledIds().toSet()
+            val disabled = newDisabled - lastDisabled
+            lastDisabled = newDisabled
 
-                val disabled = newDisabled - lastDisabled
-                lastDisabled = newDisabled
+            if (disabled.isNotEmpty()) {
+                val pairs = disabled.asSequence().map { Pair(it, false) }.toSet()
 
-                if (disabled.isNotEmpty()) {
-                    val pairs = disabled.asSequence().map { Pair(it, false) }.toSet()
-
-                    cleanupMutex.withLock {
-                        db.cleanUp(pairs)
-                    }
+                cleanupMutex.withLock {
+                    db.cleanUp(pairs)
                 }
             }
         }
@@ -145,81 +137,75 @@ object RepositoryUpdater : KoinComponent {
         callback: (Stage, Long, Long?) -> Unit,
     ): Boolean {
         val indexType = indexTypes[0]
-        return withContext(Dispatchers.IO) {
-            val (result, file) = downloadIndex(
-                context = context,
-                repository = repository,
-                indexType = indexType,
-                lastModified = if (indexType == IndexType.INDEX_V2_ENTRY) repository.entryLastModified
-                else repository.lastModified,
-                entityTag = if (indexType == IndexType.INDEX_V2_ENTRY) repository.entryEntityTag
-                else repository.entityTag,
-                callback = callback
-            )
+        val (result, file) = downloadIndex(
+            context = context,
+            repository = repository,
+            indexType = indexType,
+            lastModified = if (indexType == IndexType.INDEX_V2_ENTRY) repository.entryLastModified
+            else repository.lastModified,
+            entityTag = if (indexType == IndexType.INDEX_V2_ENTRY) repository.entryEntityTag
+            else repository.entityTag,
+            callback = callback
+        )
 
-            when {
-                result.isNotModified -> {
-                    file.delete()
-                    false
+        return when {
+            result.isNotModified -> {
+                file.delete()
+                false
+            }
+
+            !result.success      -> {
+                file.delete()
+                if (result.statusCode == HttpStatusCode.NotFound && indexTypes.size > 1) {
+                    update(
+                        context = context,
+                        repository = repository,
+                        indexTypes = indexTypes.drop(1),
+                        unstable = unstable,
+                        callback = callback
+                    )
+                } else {
+                    throw UpdateException(
+                        ErrorType.HTTP,
+                        "Invalid response: HTTP ${result.statusCode}"
+                    )
                 }
+            }
 
-                !result.success      -> {
-                    file.delete()
-                    if (result.statusCode == HttpStatusCode.NotFound && indexTypes.size > 1) {
-                        update(
-                            context = context,
-                            repository = repository,
-                            indexTypes = indexTypes.drop(1),
-                            unstable = unstable,
-                            callback = callback
-                        )
-                    } else {
-                        throw UpdateException(
-                            ErrorType.HTTP,
-                            "Invalid response: HTTP ${result.statusCode}"
-                        )
-                    }
-                }
-
-                else                 -> {
-                    launch {
-                        CoroutineUtils.managedSingle {
-                            val hasCachedIndex = hasCachedIndex(context, repository.id)
-                            Log.d(
-                                "RepositoryUpdater",
-                                "downloaded repository file, repoID = ${repository.id}, indexType = $indexType, hasCachedIndex = $hasCachedIndex"
+            else                 -> {
+                val hasCachedIndex = hasCachedIndex(context, repository.id)
+                Log.d(
+                    "RepositoryUpdater",
+                    "downloaded repository file, repoID = ${repository.id}, indexType = $indexType, hasCachedIndex = $hasCachedIndex"
+                )
+                when (indexType) {
+                    IndexType.INDEX_V2_ENTRY -> {
+                        if (hasCachedIndex) {
+                            downloadIndexV2Diff(
+                                context, repository, unstable,
+                                file, result.lastModified.nullIfEmpty(),
+                                result.entityTag.nullIfEmpty(), callback
                             )
-                            when (indexType) {
-                                IndexType.INDEX_V2_ENTRY -> {
-                                    if (hasCachedIndex) {
-                                        downloadIndexV2Diff(
-                                            context, repository, unstable,
-                                            file, result.lastModified.nullIfEmpty(),
-                                            result.entityTag.nullIfEmpty(), callback
-                                        )
-                                    } else {
-                                        update(
-                                            context = context,
-                                            repository = repository,
-                                            indexTypes = indexTypes.drop(1),
-                                            unstable = unstable,
-                                            entryLastModified = result.lastModified.nullIfEmpty(),
-                                            entryEntityTag = result.entityTag.nullIfEmpty(),
-                                            callback = callback
-                                        )
-                                    }
-                                }
-
-                                else                     -> processFile(
-                                    context, repository, indexType,
-                                    unstable, file, result.lastModified, entryLastModified,
-                                    result.entityTag, entryEntityTag, callback
-                                )
-                            }
+                        } else {
+                            update(
+                                context = context,
+                                repository = repository,
+                                indexTypes = indexTypes.drop(1),
+                                unstable = unstable,
+                                entryLastModified = result.lastModified.nullIfEmpty(),
+                                entryEntityTag = result.entityTag.nullIfEmpty(),
+                                callback = callback
+                            )
                         }
                     }
-                    true
+
+                    else                     -> processFile(
+                        context, repository, indexType,
+                        unstable, file, result.lastModified, entryLastModified,
+                        result.entityTag, entryEntityTag, callback
+                    )
                 }
+                true
             }
         }
     }
@@ -229,9 +215,9 @@ object RepositoryUpdater : KoinComponent {
         repository: Repository, indexType: IndexType,
         lastModified: String, entityTag: String,
         callback: (Stage, Long, Long?) -> Unit,
-    ): Pair<Downloader.Result, File> = withContext(Dispatchers.IO) {
+    ): Pair<Downloader.Result, File> {
         val file = Cache.getTemporaryFile(context)
-        try {
+        return try {
             val result = Downloader.download(
                 url = repository.downloadAddress.toUri().buildUpon()
                     .appendPath(
@@ -281,74 +267,66 @@ object RepositoryUpdater : KoinComponent {
                 callback = callback
             )
         }
+        val (jarFile, indexEntry) = JarFile(file, true)
+            .let { Pair(it, it.getEntry(IndexType.INDEX_V2_ENTRY.contentName) as JarEntry?) }
+        return jarFile.getInputStream(indexEntry)?.let { entryStream ->
+            val entry = IndexV2.Entry.fromJsonStream(entryStream)
 
-        return withContext(Dispatchers.IO) {
-            val (jarFile, indexEntry) = JarFile(file, true)
-                .let { Pair(it, it.getEntry(IndexType.INDEX_V2_ENTRY.contentName) as JarEntry?) }
-            jarFile.getInputStream(indexEntry)?.let { entryStream ->
-                val entry = IndexV2.Entry.fromJsonStream(entryStream)
+            if (entry.timestamp == repository.timestamp) {
+                file.delete()
+                return false
+            }
 
-                if (entry.timestamp == repository.timestamp) {
-                    file.delete()
-                    return@withContext false
+            val diffAddress = entry.getDiff(repository.timestamp)?.name
+                ?: return fallbackUpdate()
+
+            val (result, diffFile) = downloadDiffFile(
+                context, repository,
+                entry.timestamp,
+                diffAddress,
+                callback
+            )
+            val hasCachedIndex = hasCachedIndex(context, repository.id)
+            Log.d(
+                "RepositoryUpdater",
+                "downloaded diff file, repoID = ${repository.id}, result.statusCode = ${result.statusCode}, hasCachedIndex = $hasCachedIndex"
+            )
+            when {
+                result.isNotModified -> {
+                    diffFile.delete()
+                    false
                 }
 
-                val diffAddress = entry.getDiff(repository.timestamp)?.name
-                    ?: return@withContext fallbackUpdate()
-
-                val (result, diffFile) = downloadDiffFile(
-                    context, repository,
-                    entry.timestamp,
-                    diffAddress,
-                    callback
-                )
-                val hasCachedIndex = hasCachedIndex(context, repository.id)
-                Log.d(
-                    "RepositoryUpdater",
-                    "downloaded diff file, repoID = ${repository.id}, result.statusCode = ${result.statusCode}, hasCachedIndex = $hasCachedIndex"
-                )
-                when {
-                    result.isNotModified -> {
-                        diffFile.delete()
-                        false
-                    }
-
-                    !result.success      -> {
-                        diffFile.delete()
-                        if (result.statusCode == HttpStatusCode.NotFound) fallbackUpdate()
-                        else {
-                            throw UpdateException(
-                                ErrorType.HTTP,
-                                "Invalid response: HTTP ${result.statusCode}"
-                            )
-                        }
-                    }
-
-                    else                 -> {
-                        launch {
-                            CoroutineUtils.managedSingle {
-                                if (hasCachedIndex) processFile(
-                                    context, repository, IndexType.INDEX_V2_DIFF, unstable,
-                                    diffFile, result.lastModified, entryLastModified,
-                                    result.entityTag, entryEntityTag, callback,
-                                ) else fallbackUpdate()
-                            }
-                        }
-                        true
+                !result.success      -> {
+                    diffFile.delete()
+                    if (result.statusCode == HttpStatusCode.NotFound) fallbackUpdate()
+                    else {
+                        throw UpdateException(
+                            ErrorType.HTTP,
+                            "Invalid response: HTTP ${result.statusCode}"
+                        )
                     }
                 }
-            } ?: fallbackUpdate()
-        }
+
+                else                 -> {
+                    if (hasCachedIndex) processFile(
+                        context, repository, IndexType.INDEX_V2_DIFF, unstable,
+                        diffFile, result.lastModified, entryLastModified,
+                        result.entityTag, entryEntityTag, callback,
+                    ) else fallbackUpdate()
+                }
+            }
+        } ?: fallbackUpdate()
     }
 
     private suspend fun downloadDiffFile(
         context: Context, repository: Repository,
         entryTimestamp: Long, diffAddress: String,
         callback: (Stage, Long, Long?) -> Unit,
-    ): Pair<Downloader.Result, File> = withContext(Dispatchers.IO) {
+    ): Pair<Downloader.Result, File> {
         val file = Cache.getTemporaryFile(context)
         val diffUrl = (repository.downloadAddress + diffAddress)
-        try {
+        return try {
             val result = Downloader.download(
                 url = diffUrl,
                 target = file,
@@ -598,30 +576,16 @@ object RepositoryUpdater : KoinComponent {
                 products += product.apply {
                     refreshReleases(features, unstable)
                 }
-                runBlocking {
-                    if (products.size >= 100) {
-                        db.getProductTempDao().insert(*products.map {
-                            it.toV2().asProductTemp()
-                        }.toTypedArray())
-                        db.getCategoryTempDao().insert(*products.flatMap {
-                            it.categories.distinct().map { category ->
-                                CategoryTemp(
-                                    repositoryId = it.repositoryId,
-                                    packageName = it.packageName,
-                                    name = category,
-                                )
-                            }
-                        }.toTypedArray())
-                        db.getReleaseTempDao()
-                            .insert(*(products.flatMap { it.releases }
-                                .map { it.asReleaseTemp() }.toTypedArray()))
+                if (products.size >= 100) {
+                    runBlocking(Dispatchers.IO) {
+                        insertProductBatch(products)
                         products.clear()
                     }
                 }
             }
         })
 
-        runBlocking {
+        runBlocking(Dispatchers.IO) {
             ProgressInputStream(inputStream) {
                 callback(Stage.PROCESS, it, total)
             }.use { parser.parse(it) }
@@ -629,21 +593,7 @@ object RepositoryUpdater : KoinComponent {
             if (Thread.interrupted()) throw InterruptedException()
 
             if (products.isNotEmpty()) {
-                db.getProductTempDao().insert(*products.map {
-                    it.toV2().asProductTemp()
-                }.toTypedArray())
-                db.getCategoryTempDao().insert(*products.flatMap {
-                    it.categories.distinct().map { category ->
-                        CategoryTemp(
-                            repositoryId = it.repositoryId,
-                            packageName = it.packageName,
-                            name = category,
-                        )
-                    }
-                }.toTypedArray())
-                db.getReleaseTempDao()
-                    .insert(*(products.flatMap { it.releases }
-                        .map { it.asReleaseTemp() }.toTypedArray()))
+                insertProductBatch(products)
                 products.clear()
             }
         }
@@ -748,28 +698,13 @@ object RepositoryUpdater : KoinComponent {
                             progress.toLong(),
                             totalCount.toLong()
                         )
-                        runBlocking {
+                        runBlocking(Dispatchers.IO) {
                             products.map {
                                 it.apply {
                                     refreshReleases(features, unstable)
                                 }
                             }.let { updatedProducts ->
-                                db.getProductTempDao().insert(*updatedProducts.map {
-                                    it.toV2().asProductTemp()
-                                }.toTypedArray())
-                                db.getCategoryTempDao().insert(*updatedProducts.flatMap {
-                                    it.categories.distinct().map { category ->
-                                        CategoryTemp(
-                                            repositoryId = it.repositoryId,
-                                            packageName = it.packageName,
-                                            name = category,
-                                        )
-                                    }
-                                }.toTypedArray())
-                                db.getReleaseTempDao().insert(
-                                    *(updatedProducts.flatMap { it.releases }
-                                        .fastMap { it.asReleaseTemp() }.toTypedArray())
-                                )
+                                insertProductBatch(updatedProducts)
                             }
                         }
                     }
@@ -899,32 +834,17 @@ object RepositoryUpdater : KoinComponent {
                             progress.toLong(),
                             totalCount.toLong()
                         )
-                        runBlocking {
+                        runBlocking(Dispatchers.IO) {
                             products.map {
                                 it.apply {
                                     refreshReleases(features, unstable)
                                 }
                             }.let { updatedProducts ->
-                                db.getProductTempDao().insert(*updatedProducts.map {
-                                    it.toV2().asProductTemp()
-                                }.toTypedArray())
-                                db.getCategoryTempDao().insert(*updatedProducts.flatMap {
-                                    it.categories.distinct().map { category ->
-                                        CategoryTemp(
-                                            repositoryId = it.repositoryId,
-                                            packageName = it.packageName,
-                                            name = category,
-                                        )
-                                    }
-                                }.toTypedArray())
-                                db.getReleaseTempDao().insert(
-                                    *(updatedProducts.flatMap { it.releases }
-                                        .map { it.asReleaseTemp() }.toTypedArray())
-                                )
+                                insertProductBatch(updatedProducts)
                             }
                         }
                     }
-                    runBlocking {
+                    runBlocking(Dispatchers.IO) {
                         db.getRepoCategoryTempDao().insert(*repoCategories.toTypedArray())
                         db.getAntiFeatureTempDao().insert(*repoAntifeatures.toTypedArray())
                     }
@@ -948,6 +868,26 @@ object RepositoryUpdater : KoinComponent {
             mergerFile.delete()
         }
         return Pair(changedRepository, null)
+    }
+
+    private suspend fun insertProductBatch(products: List<IndexProduct>) {
+        db.getProductTempDao().insert(
+            *products.map { it.toV2().asProductTemp() }.toTypedArray()
+        )
+        db.getCategoryTempDao().insert(
+            *products.flatMap {
+                it.categories.distinct().map { category ->
+                    CategoryTemp(
+                        repositoryId = it.repositoryId,
+                        packageName = it.packageName,
+                        name = category,
+                    )
+                }
+            }.toTypedArray()
+        )
+        db.getReleaseTempDao().insert(
+            *products.flatMap { it.releases }.map { it.asReleaseTemp() }.toTypedArray()
+        )
     }
 
     private fun validateCertificate(indexEntry: JarEntry?): X509Certificate {
@@ -999,7 +939,7 @@ object RepositoryUpdater : KoinComponent {
         workRepository: Repository,
         fingerprint: String,
         callback: (Stage, Long, Long?) -> Unit,
-    ): Boolean = runBlocking {
+    ): Boolean {
         val commitRepository = if (workRepository.fingerprint != fingerprint) {
             if (workRepository.fingerprint.isEmpty()) {
                 workRepository.copy(fingerprint = fingerprint)
@@ -1016,7 +956,9 @@ object RepositoryUpdater : KoinComponent {
             throw InterruptedException()
         }
         callback(Stage.COMMIT, 0, null)
-        db.finishTemporary(commitRepository, true)
-        true
+        runBlocking(Dispatchers.IO) {
+            db.finishTemporary(commitRepository, true)
+        }
+        return true
     }
 }
