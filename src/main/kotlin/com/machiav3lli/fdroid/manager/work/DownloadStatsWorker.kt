@@ -199,6 +199,7 @@ class DownloadStatsWorker(
                 lastModified = lastModified ?: "",
                 entityTag = "",
                 authentication = "",
+                rated = false,
                 callback = callback
             )
 

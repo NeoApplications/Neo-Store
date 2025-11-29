@@ -60,6 +60,7 @@ class ExodusWorker(
                         lastModified = Preferences[Preferences.Key.TrackersLastModified],
                         entityTag = "",
                         authentication = EXODUS_AUTHENTICATION,
+                        rated = false,
                         callback = { _, _, _ -> }
                     )
 
@@ -122,6 +123,7 @@ class ExodusWorker(
                         lastModified = "",
                         entityTag = "",
                         authentication = EXODUS_AUTHENTICATION,
+                        rated = false,
                         callback = { _, _, _ -> }
                     )
 

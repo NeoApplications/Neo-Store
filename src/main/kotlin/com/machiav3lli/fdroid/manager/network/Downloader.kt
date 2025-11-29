@@ -107,14 +107,15 @@ object Downloader {
         lastModified: String,
         entityTag: String,
         authentication: String,
+        rated: Boolean = true,
         callback: suspend (read: Long, total: Long?, downloadID: Long) -> Unit,
-    ): Result = downloadSemaphore.withPermit {
+    ): Result = if (rated) downloadSemaphore.withPermit {
         Log.i(
             TAG,
             "Entering download of $url.\nPermissions left for parallel downloads: ${downloadSemaphore.availablePermits}"
         )
         permittedDownload(url, target, lastModified, entityTag, authentication, callback)
-    }
+    } else permittedDownload(url, target, lastModified, entityTag, authentication, callback)
 
     private suspend fun permittedDownload(
         url: String,
@@ -203,12 +204,28 @@ object Downloader {
                             "Failed to download file ($url) with Range: ${start?.let { "bytes=$it-" }}."
                         )
                         target.delete()
-                        download(url, target, lastModified, entityTag, authentication, callback)
+                        download(
+                            url = url,
+                            target = target,
+                            lastModified = lastModified,
+                            entityTag = entityTag,
+                            authentication = authentication,
+                            rated = true,
+                            callback = callback,
+                        )
                     }
 
                     response.status == HttpStatusCode.GatewayTimeout || response.status == HttpStatusCode.RequestTimeout
                         -> {
-                        download(url, target, lastModified, entityTag, authentication, callback)
+                        download(
+                            url = url,
+                            target = target,
+                            lastModified = lastModified,
+                            entityTag = entityTag,
+                            authentication = authentication,
+                            rated = true,
+                            callback = callback,
+                        )
                     }
 
                     response.status == HttpStatusCode.NotFound -> {
@@ -235,7 +252,15 @@ object Downloader {
             )
             if (leftRetries.decrementAndGet() > 0) {
                 retries[url] = leftRetries
-                download(url, target, lastModified, entityTag, authentication, callback)
+                download(
+                    url = url,
+                    target = target,
+                    lastModified = lastModified,
+                    entityTag = entityTag,
+                    authentication = authentication,
+                    rated = true,
+                    callback = callback,
+                )
             } else throw e
         }
     }

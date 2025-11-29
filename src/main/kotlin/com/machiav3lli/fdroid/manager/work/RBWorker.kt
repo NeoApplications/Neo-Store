@@ -56,6 +56,7 @@ class RBWorker(
                 lastModified = lastModified,
                 entityTag = "",
                 authentication = "",
+                rated = false,
                 callback = { _, _, _ -> }
             )
 

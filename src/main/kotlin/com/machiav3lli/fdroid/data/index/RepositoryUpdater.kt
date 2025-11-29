@@ -242,7 +242,8 @@ object RepositoryUpdater : KoinComponent {
                 target = file,
                 lastModified = lastModified,
                 entityTag = entityTag,
-                authentication = repository.authentication
+                authentication = repository.authentication,
+                rated = true,
             ) { read, total, _ -> callback(Stage.DOWNLOAD, read, total) }
             Pair(result, file)
         } catch (e: Exception) {
@@ -353,7 +354,8 @@ object RepositoryUpdater : KoinComponent {
                 target = file,
                 lastModified = "",
                 entityTag = "",
-                authentication = repository.authentication
+                authentication = repository.authentication,
+                rated = true,
             ) { read, total, _ -> callback(Stage.DOWNLOAD, read, total) }
             Log.d(
                 "RepositoryUpdater",
