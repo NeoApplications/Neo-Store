@@ -123,13 +123,13 @@ object Utils {
         installed: Installed?
     ): List<Release> {
         val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
+        val ignoreSigCheck = Preferences[Preferences.Key.DisableSignatureCheck]
 
         return productRepository?.first?.releases.orEmpty()
-            .filter { includeIncompatible || it.incompatibilities.isEmpty() }
             .filter {
-                installed == null ||
-                        it.signature in installed.signatures ||
-                        Preferences[Preferences.Key.DisableSignatureCheck]
+                it.repositoryId == productRepository?.second?.id
+                        && (includeIncompatible || it.incompatibilities.isEmpty())
+                        && (installed == null || it.signature in installed.signatures || ignoreSigCheck)
             }
             .sortedByDescending { it.versionCode }
     }
@@ -215,15 +215,15 @@ fun <T> findSuggestedProduct(
 ): T? {
     return products.maxWithOrNull(
         compareBy(
-            { extract(it).versionCode },
             {
                 extract(it).compatible && (
                         installed == null ||
-                                installed.signatures.intersect(extract(it).productSignatures)
+                                installed.signatures.intersect(extract(it).productSignatures.toSet())
                                     .isNotEmpty() ||
                                 Preferences[Preferences.Key.DisableSignatureCheck]
                         )
             },
+            { extract(it).versionCode },
         )
     )
 }
