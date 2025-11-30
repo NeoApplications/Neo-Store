@@ -175,7 +175,7 @@ fun SearchPage(
             LazyColumn(
                 modifier = Modifier
                     .addIfElse(
-                        Preferences[Preferences.Key.BottomSearchBar],
+                        false,//Preferences[Preferences.Key.BottomSearchBar],
                         factory = {
                             padding(bottom = paddingValues.calculateBottomPadding())
                         },
@@ -251,27 +251,27 @@ fun SearchPage(
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
             topBar = {
-                if (!Preferences[Preferences.Key.BottomSearchBar]) {
+                if (true ) {//!Preferences[Preferences.Key.BottomSearchBar]) {
                     Column {
                         searchBar()
                         HorizontalDivider(thickness = 0.5.dp)
                     }
                 }
             },
-            bottomBar = {
+            /*bottomBar = {
                 if (Preferences[Preferences.Key.BottomSearchBar]) {
                     Column {
                         HorizontalDivider(thickness = 0.5.dp)
                         searchBar()
                     }
                 }
-            },
+            },*/
         ) { paddingValues ->
             if (pageState.filteredProducts.isEmpty() && pageState.query.isNotBlank())
                 Column(
                     modifier = Modifier
                         .addIfElse(
-                            Preferences[Preferences.Key.BottomSearchBar],
+                            false, //Preferences[Preferences.Key.BottomSearchBar],
                             factory = {
                                 padding(bottom = paddingValues.calculateBottomPadding())
                             },
