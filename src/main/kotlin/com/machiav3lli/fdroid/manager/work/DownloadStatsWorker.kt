@@ -110,8 +110,8 @@ class DownloadStatsWorker(
         val filesFailed = mutableListOf<String>()
 
         fileNames.map { fileName ->
-            downloadSemaphore.withPermit {
-                async {
+            async {
+                downloadSemaphore.withPermit {
                     fetchMonthlyFile(
                         fileName = fileName,
                         lastModified = existingModifiedDates[fileName]

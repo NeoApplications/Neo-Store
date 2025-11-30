@@ -19,6 +19,8 @@ import com.machiav3lli.fdroid.manager.service.InstallerReceiver
 import com.machiav3lli.fdroid.utils.downloadNotificationBuilder
 import com.machiav3lli.fdroid.utils.updateWithError
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 
@@ -31,14 +33,12 @@ class DownloadStateHandler(
     private val installsRepo: InstallsRepository,
 ) {
     init {
-        scope.launch {
-            downloadStates.observeStates()
-                .collect { states ->
-                    states.forEach { (key, state) ->
-                        handleDownloadState(key, state)
-                    }
+        downloadStates.observeStates()
+            .map { states ->
+                states.forEach { (key, state) ->
+                    handleDownloadState(key, state)
                 }
-        }
+            }.launchIn(scope)
     }
 
     private fun handleDownloadState(key: String, state: DownloadState) {

@@ -188,8 +188,9 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
                     // non-blocking progress report
                     launch(Dispatchers.Default) {
                         installQueue.emitProgress(
-                            InstallState.Installing(progress),
-                            packageName
+                            // copying is considered 90% of the process
+                            InstallState.Installing(progress * 0.9f),
+                            packageName,
                         )
                     }
                     lastEmittedBytes = bytesWritten

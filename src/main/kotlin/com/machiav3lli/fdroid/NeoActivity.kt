@@ -48,10 +48,9 @@ import com.machiav3lli.fdroid.viewmodels.LatestVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import com.machiav3lli.fdroid.viewmodels.SearchVM
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
+import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -76,10 +75,6 @@ class NeoActivity : AppCompatActivity() {
     }
 
     private lateinit var navController: NavHostController
-    private val cScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
-    private val mScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
-
-    val productRepo: ProductsRepository by inject()
 
     private var currentTheme by Delegates.notNull<Int>()
     private val mainViewModel: MainVM by viewModel()
@@ -243,11 +238,11 @@ class NeoActivity : AppCompatActivity() {
                     )
                 } else if (host == "search") {
                     val query = data.getQueryParameter("q")
-                    cScope.launch { showSearchPage(query ?: "") }
+                    showSearchPage(query ?: "")
                 } else {
                     val packageName = intent.packageNameFromURI
-                    cScope.launch {
-                        if (!packageName.isNullOrEmpty() && productRepo.productExists(packageName))
+                    runBlocking(Dispatchers.IO) {
+                        if (!packageName.isNullOrEmpty() && mainViewModel.productExist(packageName))
                             navigateProduct(packageName)
                         else showSearchPage(packageName)
                     }
@@ -281,16 +276,12 @@ class NeoActivity : AppCompatActivity() {
     }
 
     internal fun navigateProduct(packageName: String) {
-        cScope.launch {
-            mainViewModel.setNavigatorRole(ListDetailPaneScaffoldRole.Detail, packageName)
-        }
+        mainViewModel.setNavigatorRole(ListDetailPaneScaffoldRole.Detail, packageName)
     }
 
     private fun showSearchPage(query: String? = null) {
-        mScope.launch {
-            mainViewModel.setNavigatorRole(ListDetailPaneScaffoldRole.List)
-            searchViewModel.setSearchQuery(query ?: "")
-        }
+        mainViewModel.setNavigatorRole(ListDetailPaneScaffoldRole.List)
+        searchViewModel.setSearchQuery(query ?: "")
     }
 
     fun launchLockPrompt(action: () -> Unit) {

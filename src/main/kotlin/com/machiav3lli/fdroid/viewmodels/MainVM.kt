@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 )
 open class MainVM(
     private val extrasRepo: ExtrasRepository,
-    productsRepo: ProductsRepository,
+    private val productsRepo: ProductsRepository,
     reposRepo: RepositoriesRepository,
 ) : ViewModel() {
     val navigationState: StateFlow<Pair<ThreePaneScaffoldRole, String>>
@@ -87,6 +87,8 @@ open class MainVM(
             extrasRepo.setFavorite(packageName, setBoolean)
         }
     }
+
+    suspend fun productExist(packageName: String): Boolean = productsRepo.productExists(packageName)
 
     companion object {
         const val TAG = "MainVM"

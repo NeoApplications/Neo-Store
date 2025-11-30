@@ -54,6 +54,8 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -112,30 +114,28 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
     }
 
     private fun setupWorkInfoCollection() {
-        scope.launch {
-            combine(
-                workManager.getWorkInfosByTagFlow(SyncWorker::class.qualifiedName!!),
-                workManager.getWorkInfosByTagFlow(DownloadWorker::class.qualifiedName!!),
-            ) { syncInfos, downloadInfos ->
-                syncInfos to downloadInfos
-            }
-                .retryWhen { cause, attempt ->
-                    delay(attempt * 1_000L)
-                    cause !is CancellationException
-                }
-                .collect { (syncInfos, downloadInfos) ->
-                    runCatching {
-                        onSyncProgress(syncInfos)
-                    }.onFailure { e ->
-                        Log.e(TAG, "Error processing sync updates", e)
-                    }
-                    runCatching {
-                        onDownloadProgress(downloadInfos)
-                    }.onFailure { e ->
-                        Log.e(TAG, "Error processing download progress", e)
-                    }
-                }
+        combine(
+            workManager.getWorkInfosByTagFlow(SyncWorker::class.qualifiedName!!),
+            workManager.getWorkInfosByTagFlow(DownloadWorker::class.qualifiedName!!),
+        ) { syncInfos, downloadInfos ->
+            syncInfos to downloadInfos
         }
+            .retryWhen { cause, attempt ->
+                delay(attempt * 1_000L)
+                cause !is CancellationException
+            }
+            .map { (syncInfos, downloadInfos) ->
+                runCatching {
+                    onSyncProgress(syncInfos)
+                }.onFailure { e ->
+                    Log.e(TAG, "Error processing sync updates", e)
+                }
+                runCatching {
+                    onDownloadProgress(downloadInfos)
+                }.onFailure { e ->
+                    Log.e(TAG, "Error processing download progress", e)
+                }
+            }.launchIn(scope)
     }
 
     private fun monitorWorkProgress() {

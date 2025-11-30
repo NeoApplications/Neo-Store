@@ -10,8 +10,8 @@ import com.anggrayudi.storage.file.DocumentFileCompat
 import com.anggrayudi.storage.file.copyFileTo
 import com.anggrayudi.storage.result.SingleFileResult
 import com.machiav3lli.fdroid.data.content.Preferences
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+
+private const val TAG = "util.Storage"
 
 fun Context.getDownloadFolder(): DocumentFile? = DocumentFileCompat
     .fromUri(this, Preferences[Preferences.Key.DownloadDirectory].toUri())
@@ -28,62 +28,35 @@ suspend fun DocumentFile.copyTo(
                 destinationFile: DocumentFile,
                 action: FileConflictAction
             ) {
-                Log.d(this.toString(), "onFileConflict: $action")
+                Log.d(TAG, "onFileConflict: $action")
                 super.onFileConflict(destinationFile, action)
             }
         }
     ).collect { result ->
         when (result) {
             is SingleFileResult.Validating
-            -> Log.d(
-                this::javaClass.name,
-                "Validating..."
-            )
+                -> Log.d(TAG, "Validating...")
 
             is SingleFileResult.Preparing
-            -> Log.d(
-                this::javaClass.name,
-                "Preparing..."
-            )
+                -> Log.d(TAG, "Preparing...")
 
             is SingleFileResult.CountingFiles
-            -> Log.d(
-                this::javaClass.name,
-                "Counting files..."
-            )
+                -> Log.d(TAG, "Counting files...")
 
             is SingleFileResult.DeletingConflictedFile
-            -> Log.d(
-                this::javaClass.name,
-                "Deleting conflicted files..."
-            )
+                -> Log.d(TAG, "Deleting conflicted files...")
 
             is SingleFileResult.Starting
-            -> Log.d(
-                this::javaClass.name,
-                "Starting..."
-            )
+                -> Log.d(TAG, "Starting...")
 
             is SingleFileResult.InProgress
-            -> Log.d(
-                this::javaClass.name,
-                "Progress: ${result.progress.toInt()}%"
-            )
+                -> Log.d(TAG, "Progress: ${result.progress.toInt()}%")
 
             is SingleFileResult.Completed
-            -> Log.d(
-                this::javaClass.name,
-                "Completed result: ${result.result}"
-            )
+                -> Log.d(TAG, "Completed result: ${result.result}")
 
             is SingleFileResult.Error
-            -> withContext(Dispatchers.IO) {
-                Log.e(
-                    this::javaClass.name,
-                    result.errorCode.name
-                )
-                // add notification
-            }
+                -> Log.e(TAG, result.errorCode.name) // TODO add notification
         }
     }
 }
