@@ -27,7 +27,6 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
 
     companion object {
         private const val TAG = "SessionInstaller"
-        private const val MAX_RETRY_ATTEMPTS = 5
 
         private val flags = when {
             // For Android 14+, use FLAG_IMMUTABLE for implicit intents for security

@@ -165,6 +165,7 @@ abstract class BaseInstaller(val context: Context) : InstallationEvents, KoinCom
 
     companion object {
         const val TAG = "BaseInstaller"
+        internal const val MAX_RETRY_ATTEMPTS = 5
 
         fun translatePackageInstallerError(status: Int): InstallationError {
             return when (status) {
