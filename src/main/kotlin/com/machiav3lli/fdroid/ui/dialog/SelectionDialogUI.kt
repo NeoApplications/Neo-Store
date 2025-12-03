@@ -110,7 +110,8 @@ fun EnumSelectionPrefDialogUI(
     openDialogCustom: MutableState<Boolean>,
 ) {
     var selected by remember { mutableStateOf(Preferences[prefKey]) }
-    val entryPairs = PrefsEntries[prefKey]?.entries?.toList().orEmpty()
+    val possibleValues = prefKey.default.value.values
+    val entryPairs = PrefsEntries[prefKey]?.entries?.filter { it.key in possibleValues }.orEmpty()
 
     Card(
         shape = MaterialTheme.shapes.extraLarge,

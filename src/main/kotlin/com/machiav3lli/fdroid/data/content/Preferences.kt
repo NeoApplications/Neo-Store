@@ -23,7 +23,6 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import java.net.Proxy
 
@@ -627,7 +626,8 @@ data object Preferences : OnSharedPreferenceChangeListener {
     sealed class Installer(override val valueString: String, val installer: InstallerType) :
         Enumeration<Installer> {
         override val values: List<Installer>
-            get() = mutableListOf(Default, Root, Legacy).apply {
+            get() = buildList {
+                addAll(listOf(Default, Root, Legacy))
                 if (NeoApp.context.amInstalled)
                     add(AM)
                 if (NeoApp.context.getHasSystemInstallPermission())
@@ -647,7 +647,8 @@ data object Preferences : OnSharedPreferenceChangeListener {
     sealed class ActionLock(override val valueString: String, val order: Order) :
         Enumeration<ActionLock> {
         override val values: List<ActionLock>
-            get() = mutableListOf(None, Device).apply {
+            get() = buildList {
+                addAll(listOf(None, Device))
                 if (NeoApp.context.isBiometricLockAvailable())
                     add(Biometric)
             }
@@ -659,17 +660,20 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
     sealed class Theme(override val valueString: String) : Enumeration<Theme> {
         override val values: List<Theme>
-            get() = mutableListOf(
-                Light,
-                Dark,
-                Black,
-                LightMediumContrast,
-                DarkMediumContrast,
-                BlackMediumContrast,
-                LightHighContrast,
-                DarkHighContrast,
-                BlackHighContrast,
-            ).apply {
+            get() = buildList {
+                addAll(
+                    listOf(
+                        Light,
+                        Dark,
+                        Black,
+                        LightMediumContrast,
+                        DarkMediumContrast,
+                        BlackMediumContrast,
+                        LightHighContrast,
+                        DarkHighContrast,
+                        BlackHighContrast,
+                    )
+                )
                 if (Android.sdk(Build.VERSION_CODES.S)) addAll(
                     listOf(
                         Dynamic,
