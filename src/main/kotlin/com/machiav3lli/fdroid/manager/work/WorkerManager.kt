@@ -41,7 +41,7 @@ import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.InstallsRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
-import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
+import com.machiav3lli.fdroid.manager.installer.AppInstaller
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.utils.Utils
 import com.machiav3lli.fdroid.utils.extension.android.Android
@@ -77,7 +77,7 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
     private val reposRepo: RepositoriesRepository by inject()
     private val installedRepo: InstalledRepository by inject()
     private val installsRepo: InstallsRepository by inject()
-    private val installer: BaseInstaller by inject()
+    private val installer: AppInstaller by inject()
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     val downloadsScope = CoroutineScope(scope.coroutineContext + SupervisorJob())

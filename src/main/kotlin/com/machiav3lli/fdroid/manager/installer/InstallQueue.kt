@@ -3,14 +3,12 @@ package com.machiav3lli.fdroid.manager.installer
 import android.util.Log
 import com.machiav3lli.fdroid.data.entity.InstallState
 import com.machiav3lli.fdroid.data.entity.StateHolderFlow
-import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
-import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -31,7 +29,7 @@ class InstallQueue : KoinComponent {
     private val mutex = Mutex()
     private val queueScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val processingStartTime = AtomicLong(0)
-    private val installer: BaseInstaller by inject()
+    private val installer: AppInstaller by inject()
     private val installStateHolder by lazy {
         StateHolderFlow<InstallState>()
     }
@@ -125,7 +123,7 @@ class InstallQueue : KoinComponent {
         if (targetPackage != null) {
             installStateHolder.updateState(targetPackage, progress)
             Log.d(
-                BaseInstaller.TAG,
+                TAG,
                 "Installation state updated for $targetPackage: ${progress::class.simpleName}"
             )
         }

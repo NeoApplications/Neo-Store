@@ -22,9 +22,8 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
 import com.machiav3lli.fdroid.data.entity.InstallState
 import com.machiav3lli.fdroid.data.repository.InstallsRepository
+import com.machiav3lli.fdroid.manager.installer.AppInstaller
 import com.machiav3lli.fdroid.manager.installer.InstallationError
-import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
-import com.machiav3lli.fdroid.manager.installer.type.LegacyInstaller
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.installNotificationBuilder
 import kotlinx.coroutines.CoroutineDispatcher
@@ -45,7 +44,7 @@ class InstallWorker(
 ) : CoroutineWorker(context, params), KoinComponent {
     private lateinit var currentTask: InstallTask
     private val installState = MutableStateFlow<InstallState>(InstallState.Preparing)
-    private val installer: BaseInstaller by inject()
+    private val installer: AppInstaller by inject()
     private val installsRepository: InstallsRepository by inject()
     private val langContext = ContextWrapperX.wrap(applicationContext)
 
@@ -156,7 +155,7 @@ class InstallWorker(
                             }
                             try {
                                 installLaunched = true
-                                if (installer is LegacyInstaller && NeoApp.mainActivity != null) {
+                                if (installer.isLegacy() && NeoApp.mainActivity != null) {
                                     NeoApp.mainActivity?.withResumed {
                                         launch {
                                             installer.install(label, fileName, installCallback)

@@ -10,7 +10,7 @@ import android.util.Log
 import androidx.core.net.toUri
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.NeoActivity
-import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
+import com.machiav3lli.fdroid.manager.installer.AppInstaller
 import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller.Companion.translatePackageInstallerError
 import com.machiav3lli.fdroid.utils.Utils
 import com.machiav3lli.fdroid.utils.extension.android.Android
@@ -44,7 +44,7 @@ class InstallerReceiver : BroadcastReceiver(), KoinComponent {
     override fun onReceive(context: Context, intent: Intent?) {
         val status = intent?.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
         val sessionId = intent?.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, -1) ?: 0
-        val installer: BaseInstaller by inject()
+        val installer: AppInstaller by inject()
 
         // get package information from session
         val sessionInstaller = context.packageManager.packageInstaller

@@ -7,7 +7,7 @@ import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAMES
 import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
 import com.machiav3lli.fdroid.ARG_REPOSITORY_IDS
-import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
+import com.machiav3lli.fdroid.manager.installer.AppInstaller
 import com.machiav3lli.fdroid.manager.work.WorkerManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,7 +30,7 @@ class ActionReceiver : BroadcastReceiver(), KoinComponent {
 
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent == null) return
-        val installer: BaseInstaller by inject()
+        val installer: AppInstaller by inject()
         val wm: WorkerManager by inject()
 
         runBlocking(Dispatchers.IO + receiveJob) {

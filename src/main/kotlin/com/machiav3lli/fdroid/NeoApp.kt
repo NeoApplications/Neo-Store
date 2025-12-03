@@ -24,8 +24,8 @@ import com.machiav3lli.fdroid.data.index.RepositoryUpdater
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.data.repository.privacyModule
+import com.machiav3lli.fdroid.manager.installer.AppInstaller
 import com.machiav3lli.fdroid.manager.installer.installerModule
-import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
 import com.machiav3lli.fdroid.manager.network.CoilDownloader
 import com.machiav3lli.fdroid.manager.network.Downloader
 import com.machiav3lli.fdroid.manager.network.downloadClientModule
@@ -80,7 +80,7 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
 
         val wm: WorkerManager get() = neo_store.wm
         val db: DatabaseX get() = neo_store.db
-        val installer: BaseInstaller by inject(BaseInstaller::class.java)
+        val installer: AppInstaller by inject(AppInstaller::class.java)
 
         private val progress = mutableStateOf(Pair(false, 0f))
 
@@ -204,6 +204,10 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
                         )
                     )
                     applicationContext.startActivity(refresh)
+                }
+
+                Preferences.Key.Installer -> {
+                    installer.recreateInstaller()
                 }
 
                 else -> return@addPreferencesChangeListener

@@ -68,7 +68,6 @@ import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.DonateType
-import com.machiav3lli.fdroid.manager.installer.type.RootInstaller
 import com.machiav3lli.fdroid.manager.network.createIconUri
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.manager.work.DownloadWorker
@@ -292,7 +291,7 @@ fun AppPage(
                         NeoApp.installer.uninstall(packageName)
                     }
                 }
-                if (NeoApp.installer is RootInstaller) {
+                if (NeoApp.installer.isRoot()) {
                     dialogKey.value = DialogKey.Uninstall(
                         appState.suggestedProductRepo?.first?.product?.label ?: packageName,
                         actionJob

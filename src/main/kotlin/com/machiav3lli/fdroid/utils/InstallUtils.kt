@@ -10,7 +10,7 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
 import com.machiav3lli.fdroid.data.entity.InstallerType
 import com.machiav3lli.fdroid.data.repository.InstallsRepository
-import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller
+import com.machiav3lli.fdroid.manager.installer.AppInstaller
 import com.machiav3lli.fdroid.manager.work.InstallWorker
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.isInstalled
@@ -30,7 +30,7 @@ object InstallUtils : KoinComponent {
     private var lastRestartAttempt = AtomicLong(0L)
     private var restartCount = AtomicInt(0)
     private val installsRepository: InstallsRepository by inject()
-    private val installer: BaseInstaller by inject()
+    private val installer: AppInstaller by inject()
 
     suspend fun verifyAndEnqueueInstallTask(task: InstallTask) {
         try {
