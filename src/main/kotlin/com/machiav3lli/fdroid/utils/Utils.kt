@@ -552,9 +552,12 @@ val currentTimestamp: String
 val shellIsRoot: Boolean
     get() = Shell.getCachedShell()?.isRoot ?: Shell.getShell().isRoot
 
+val Context.installedAM: Intent?
+    get() = packageManager.getLaunchIntentForPackage(AM_PACKAGENAME)
+        ?: packageManager.getLaunchIntentForPackage(AM_PACKAGENAME_DEBUG)
+
 val Context.amInstalled: Boolean
-    get() = (packageManager.getLaunchIntentForPackage(AM_PACKAGENAME)
-        ?: packageManager.getLaunchIntentForPackage(AM_PACKAGENAME_DEBUG)) != null
+    get() = installedAM != null
 
 val Context.hasShizukuOrSui: Boolean
     get() = Android.sdk(Build.VERSION_CODES.O) &&
