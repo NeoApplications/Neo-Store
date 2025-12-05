@@ -29,7 +29,6 @@ import com.machiav3lli.fdroid.DOWNLOAD_STATS_SYNC
 import com.machiav3lli.fdroid.EXODUS_TRACKERS_SYNC
 import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.NeoApp
-import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.RB_LOGS_SYNC
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.TAG_SYNC_PERIODIC
@@ -42,9 +41,9 @@ import com.machiav3lli.fdroid.data.entity.SyncTask
 import com.machiav3lli.fdroid.data.index.RepositoryUpdater
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
+import com.machiav3lli.fdroid.utils.createSyncNotification
 import com.machiav3lli.fdroid.utils.displayVulnerabilitiesNotification
 import com.machiav3lli.fdroid.utils.extension.android.Android
-import com.machiav3lli.fdroid.utils.syncNotificationBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -69,7 +68,7 @@ class SyncWorker(
     private val langContext = ContextWrapperX.wrap(applicationContext)
     private val reposRepo: RepositoriesRepository by inject()
     private val installedRepo: InstalledRepository by inject()
-    private val notificationManager: SyncNotificationManager by inject()
+    private val groupedNotificationManager: SyncNotificationManager by inject()
     private val updatesManager: UpdatesNotificationManager by inject()
 
     @Deprecated("")
@@ -85,17 +84,12 @@ class SyncWorker(
         }.fold(
             onSuccess = {
                 handleCompletion()
-                notificationManager.updateSyncProgress(
-                    repoId = task.repoId,
-                    repoName = task.repoName,
-                    state = if (it is Result.Success) SyncState.Enum.FINISHING
-                    else SyncState.Enum.FAILED
-                )
+                groupedNotificationManager.removeSyncProgress(repoId)
                 it
             },
             onFailure = { e ->
                 Log.e(TAG_SYNC_ONETIME, "Sync failed: ${e.message}")
-                notificationManager.removeSyncProgress(repoId)
+                groupedNotificationManager.removeSyncProgress(repoId)
                 Result.failure(
                     getWorkData(
                         state = SyncState.Enum.FAILED,
@@ -112,22 +106,26 @@ class SyncWorker(
 
         Log.i(this::class.java.simpleName, "sync repository: ${task.repoId}")
         if (repository != null && repository.enabled && task.repoId >= 0L) {
-            notificationManager.updateSyncProgress(
+            setForeground(createForegroundInfo(SyncState.Enum.CONNECTING, null))
+            groupedNotificationManager.updateSyncProgress(
                 repoId = task.repoId,
                 repoName = task.repoName,
-                state = SyncState.Enum.CONNECTING
+                state = SyncState.Enum.CONNECTING,
             )
             val unstable = Preferences[Preferences.Key.UpdateUnstable]
             val progressChannel = Channel<Progress>(Channel.CONFLATED)
 
             val progressJob = async {
                 for (progress in progressChannel) {
-                    notificationManager.updateSyncProgress(
-                        repoId = task.repoId,
-                        repoName = task.repoName,
-                        state = SyncState.Enum.SYNCING,
-                        progress = progress
-                    )
+                    runCatching {
+                        setForeground(createForegroundInfo(SyncState.Enum.SYNCING, progress))
+                        groupedNotificationManager.updateSyncProgress(
+                            repoId = task.repoId,
+                            repoName = task.repoName,
+                            state = SyncState.Enum.SYNCING,
+                            progress = progress,
+                        )
+                    }
                 }
             }
 
@@ -212,13 +210,18 @@ class SyncWorker(
     }
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
-        val title = langContext.getString(
-            R.string.syncing_FORMAT,
-            repoName
-        )
+        return createForegroundInfo(SyncState.Enum.CONNECTING, null)
+    }
+
+    private fun createForegroundInfo(
+        state: SyncState.Enum,
+        progress: Progress?
+    ): ForegroundInfo {
+        val notification = langContext.createSyncNotification(repoId, repoName, state, progress)
+
         return ForegroundInfo(
-            NOTIFICATION_ID_SYNCING,
-            langContext.syncNotificationBuilder(title).build(),
+            NOTIFICATION_ID_SYNCING + repoId.toInt(),
+            notification,
             if (Android.sdk(Build.VERSION_CODES.Q)) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
             else 0
         )

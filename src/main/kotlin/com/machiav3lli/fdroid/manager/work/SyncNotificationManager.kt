@@ -61,11 +61,8 @@ class SyncNotificationManager(
             }
         }
 
-        val currentActiveSyncs = ConcurrentHashMap(activeSyncs)
-
         mutex.withLock {
-            if (currentActiveSyncs != activeSyncs) updateNotification()
-            else Log.d(TAG, "No need to update notification - Active syncs unchanged")
+            updateGroupSummaryNotification()
         }
     }
 
@@ -73,17 +70,17 @@ class SyncNotificationManager(
         Log.d(TAG, "Removing sync notification - Repo ID: $repoId")
         activeSyncs.remove(repoId)
         mutex.withLock {
-            updateNotification()
+            updateGroupSummaryNotification()
         }
     }
 
-    private fun updateNotification() {
+    private fun updateGroupSummaryNotification() {
         if (activeSyncs.isEmpty()) {
             notificationManager.cancel(NOTIFICATION_ID_BATCH_SYNCING)
             return
         }
 
-        val notification = createSyncNotification()
+        val notification = createGroupSummaryNotification()
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.POST_NOTIFICATIONS
@@ -91,7 +88,7 @@ class SyncNotificationManager(
         ) notificationManager.notify(NOTIFICATION_ID_BATCH_SYNCING, notification)
     }
 
-    private fun createSyncNotification(): Notification {
+    private fun createGroupSummaryNotification(): Notification {
         val activeSyncsList = activeSyncs.values.toList()
         val totalSyncs = activeSyncsList.size
 
@@ -112,9 +109,10 @@ class SyncNotificationManager(
         )
 
         val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_SYNCING)
-            //.setGroup(NOTIFICATION_CHANNEL_SYNCING)
-            //.setGroupSummary(true)
-            .setSortKey("0")
+            // This IS the group summary
+            .setGroup(NOTIFICATION_CHANNEL_SYNCING)
+            .setGroupSummary(true)
+            .setSortKey("0")  // Ensure it appears first
             .setSmallIcon(R.drawable.ic_sync)
             .setContentTitle(
                 langContext.getString(
@@ -127,7 +125,6 @@ class SyncNotificationManager(
             .setContentIntent(contentPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_PROGRESS)
-            .setTimeoutAfter(SYNC_NOTIFICATION_TIMEOUT)
             .addAction(
                 R.drawable.ic_cancel,
                 langContext.getString(R.string.cancel_all),
@@ -135,6 +132,7 @@ class SyncNotificationManager(
             )
 
         // Use InboxStyle to show multiple repositories
+        // TODO re-consider as such lines get hid when grouped
         val inboxStyle = NotificationCompat.InboxStyle()
         for (syncInfo in activeSyncsList.take(SYNC_MAX_LINES)) {
             val line = buildSyncLine(syncInfo)
