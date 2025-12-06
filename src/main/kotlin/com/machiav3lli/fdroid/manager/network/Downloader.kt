@@ -204,13 +204,12 @@ object Downloader {
                             "Failed to download file ($url) with Range: ${start?.let { "bytes=$it-" }}."
                         )
                         target.delete()
-                        download(
+                        permittedDownload(
                             url = url,
                             target = target,
                             lastModified = lastModified,
                             entityTag = entityTag,
                             authentication = authentication,
-                            rated = true,
                             callback = callback,
                         )
                     }
@@ -244,13 +243,12 @@ object Downloader {
             )
             if (leftRetries.decrementAndGet() > 0) {
                 retries[url] = leftRetries
-                download(
+                permittedDownload(
                     url = url,
                     target = target,
                     lastModified = lastModified,
                     entityTag = entityTag,
                     authentication = authentication,
-                    rated = true,
                     callback = callback,
                 )
             } else throw e
