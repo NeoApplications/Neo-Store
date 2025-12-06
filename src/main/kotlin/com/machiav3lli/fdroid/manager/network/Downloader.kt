@@ -217,15 +217,7 @@ object Downloader {
 
                     response.status == HttpStatusCode.GatewayTimeout || response.status == HttpStatusCode.RequestTimeout
                         -> {
-                        download(
-                            url = url,
-                            target = target,
-                            lastModified = lastModified,
-                            entityTag = entityTag,
-                            authentication = authentication,
-                            rated = true,
-                            callback = callback,
-                        )
+                        throw Exception("Failed to download file. Response code ${response.status.value}:${response.status.description}")
                     }
 
                     response.status == HttpStatusCode.NotFound -> {
@@ -245,7 +237,7 @@ object Downloader {
             retries.remove(url)
             throw e
         } catch (e: Exception) {
-            val leftRetries = retries.getOrPut(url) { AtomicInteger(10) }
+            val leftRetries = retries.getOrPut(url) { AtomicInteger(5) }
             Log.w(
                 TAG,
                 "Download ($url) faced exception. Tries left: $leftRetries. Exception: ${e.message}.\nStack trace: ${e.stackTrace}."
@@ -409,9 +401,8 @@ private fun initDownloadClient(): HttpClient = HttpClient(OkHttp) {
     }
     install(BodyProgress)
     install(HttpRequestRetry) {
-        maxRetries = 5
+        retryOnException(2, true)
         delayMillis { retryNr -> (2.0.pow(retryNr) * 1000).toLong() }
-        retryOnException(5, true)
     }
     install(UserAgent) {
         agent = CLIENT_USER_AGENT
