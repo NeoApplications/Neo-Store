@@ -67,7 +67,7 @@ object RepositoryUpdater : KoinComponent {
     }
 
     enum class ErrorType {
-        NETWORK, HTTP, VALIDATION, PARSING
+        NONE, NETWORK, HTTP, VALIDATION, PARSING
     }
 
     class UpdateException : Exception {

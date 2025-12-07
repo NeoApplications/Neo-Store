@@ -153,22 +153,16 @@ class BatchSyncWorker(
                                     activeSyncs.values.toList(),
                                 )
                             )
-
-                            if (result.changed) {
-                                handleRepositoryCompletion(repo.id)
-                            }
                         }
 
                         else           -> {
                             reposFailed.add(repo.id)
                             Log.w(TAG, "Failed to sync repository: ${repo.name}")
                             langContext.reportSyncFail(
-                                repo.id, SyncState.Failed(
-                                    repo.id,
-                                    request,
-                                    repo.name,
-                                    result.error ?: "",
-                                )
+                                repo.id,
+                                repo.name,
+                                result.error ?: "",
+                                result.errorType,
                             )
                             setForeground(
                                 createForegroundInfo(
@@ -179,8 +173,11 @@ class BatchSyncWorker(
                             )
                         }
                     }
-
                     removeSyncProgress(repo.id)
+
+                    if (result.changed) {
+                        handleRepositoryCompletion(repo.id)
+                    }
                 }
             }
         }.awaitAll()
@@ -252,7 +249,14 @@ class BatchSyncWorker(
             progressJob.join()
 
             Log.e(TAG, "Repository sync failed: ${repository.name}", throwable)
-            SyncResult(success = false, changed = false, error = throwable.message)
+            if (throwable is RepositoryUpdater.UpdateException)
+                SyncResult(
+                    success = false,
+                    changed = false,
+                    error = throwable.message,
+                    errorType = throwable.errorType
+                )
+            else SyncResult(success = false, changed = false, error = throwable.message)
         }
     }
 
@@ -445,6 +449,7 @@ class BatchSyncWorker(
         val success: Boolean,
         val changed: Boolean,
         val error: String? = null,
+        val errorType: RepositoryUpdater.ErrorType = RepositoryUpdater.ErrorType.NONE,
     )
 
     companion object {

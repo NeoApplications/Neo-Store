@@ -243,15 +243,46 @@ fun Context.installNotificationBuilder() = NotificationCompat
     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
     .setCategory(NotificationCompat.CATEGORY_STATUS)
 
-fun Context.reportSyncFail(repoId: Long, state: SyncState.Failed) {
+fun Context.reportSyncFail(
+    repoId: Long,
+    repoName: String,
+    error: String,
+    errorType: RepositoryUpdater.ErrorType
+) {
     val title = getString(
         R.string.syncing_FORMAT,
-        state.repoName
+        repoName
     )
-    val builder = syncNotificationBuilder(title)
-        .setContentText("${getString(R.string.action_failed)}:\n${state.error}")
-        .setSmallIcon(R.drawable.ic_new_releases)
+
+    val builder = NotificationCompat
+        .Builder(this, NOTIFICATION_CHANNEL_SYNCING)
+        .setGroup(NOTIFICATION_CHANNEL_SYNCING)
+        .setSmallIcon(android.R.drawable.stat_sys_warning)
+        .setContentTitle(title)
+        .setContentText(
+            "${
+                getString(
+                    when (errorType) {
+                        RepositoryUpdater.ErrorType.NETWORK    -> R.string.network_error_DESC
+                        RepositoryUpdater.ErrorType.HTTP       -> R.string.http_error_DESC
+                        RepositoryUpdater.ErrorType.VALIDATION -> R.string.validation_index_error_DESC
+                        RepositoryUpdater.ErrorType.PARSING    -> R.string.parsing_index_error_DESC
+                        else                                   -> R.string.unknown_error_DESC // RepositoryUpdater.ErrorType.NONE
+                    }
+                )
+            }\n$error"
+        )
+        .setTicker(title)
         .setOngoing(false)
+        .setSilent(true)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setContentIntent(
+            PendingIntent.getActivity(
+                this, 0,
+                Intent(this, NeoActivity::class.java),
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        )
 
     if (ActivityCompat.checkSelfPermission(
             this,
@@ -259,8 +290,7 @@ fun Context.reportSyncFail(repoId: Long, state: SyncState.Failed) {
         ) == PackageManager.PERMISSION_GRANTED
     ) notificationManager.notify(
         "$NOTIFICATION_CHANNEL_SYNCING$repoId".hashCode(),
-        builder.setOngoing(true)
-            .build()
+        builder.build()
     )
 }
 
