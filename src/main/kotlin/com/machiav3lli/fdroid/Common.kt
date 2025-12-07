@@ -195,6 +195,12 @@ const val TC_INTENT_EXTRA_SEARCH = "Search"
 const val NAV_MAIN = 0
 const val NAV_PREFS = 1
 
+enum class ColoringVariant {
+    NEUTRAL,
+    POSITIVE,
+    NEGATIVE,
+}
+
 const val POPUP_NONE = 0
 const val POPUP_SHORT = 1
 const val POPUP_LONG = 2

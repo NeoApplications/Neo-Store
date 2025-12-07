@@ -2,7 +2,6 @@ package com.machiav3lli.fdroid.ui.components.appsheet
 
 import android.os.Build
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,14 +9,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Badge
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ShapeDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.ColoringVariant
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.RELEASE_STATE_INSTALLED
 import com.machiav3lli.fdroid.RELEASE_STATE_NONE
@@ -207,22 +205,41 @@ fun ReleaseItemBottomText(
 
 @Composable
 fun ReleaseBadge(
-    modifier: Modifier = Modifier,
     text: String,
-    color: Color = MaterialTheme.colorScheme.inverseSurface,
-    onColor: Color = MaterialTheme.colorScheme.inverseOnSurface,
+    modifier: Modifier = Modifier,
+    coloringVariant: ColoringVariant = ColoringVariant.NEUTRAL,
 ) {
-    Surface(
-        modifier = modifier
-            .background(color, ShapeDefaults.Large)
-            .padding(6.dp, 2.dp),
-        color = color,
+    val containerColor by animateColorAsState(
+        targetValue = when (coloringVariant) {
+            ColoringVariant.POSITIVE
+                 -> MaterialTheme.colorScheme.primaryContainer
+
+            ColoringVariant.NEGATIVE
+                 -> MaterialTheme.colorScheme.tertiaryContainer
+
+            else -> MaterialTheme.colorScheme.inverseSurface // ColoringState.NEUTRAL
+        },
+        label = "containerColor"
+    )
+    val contentColor by animateColorAsState(
+        targetValue = when (coloringVariant) {
+            ColoringVariant.POSITIVE
+                 -> MaterialTheme.colorScheme.onPrimaryContainer
+
+            ColoringVariant.NEGATIVE
+                 -> MaterialTheme.colorScheme.onTertiaryContainer
+
+            else -> MaterialTheme.colorScheme.inverseOnSurface // ColoringState.NEUTRAL
+        },
+        label = "contentColor"
+    )
+
+
+    Badge(
+        modifier = modifier,
+        containerColor = containerColor,
+        contentColor = contentColor,
     ) {
-        Text(
-            text = text,
-            color = onColor,
-            style = MaterialTheme.typography.labelMedium,
-            maxLines = 1,
-        )
+        Text(text = text)
     }
 }

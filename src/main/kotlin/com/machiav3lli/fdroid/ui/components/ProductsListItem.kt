@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.ColoringVariant
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Installed
@@ -126,13 +127,14 @@ fun ProductItemContent(
                     product.canUpdate                     -> ReleaseBadge(
                         modifier = Modifier.widthIn(max = 200.dp),
                         text = "${product.installedVersion} → ${product.version}",
-                        color = MaterialTheme.colorScheme.primaryContainer,
-                        onColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        coloringVariant = ColoringVariant.POSITIVE,
                     )
+
                     product.installedVersion.isNotEmpty() -> ReleaseBadge(
                         modifier = Modifier.widthIn(max = 200.dp),
                         text = product.installedVersion,
                     )
+
                     else                                  -> Text(
                         modifier = Modifier.widthIn(max = 200.dp),
                         text = installed?.version ?: product.version,
@@ -175,10 +177,10 @@ fun ProductCarouselItem(
 
     val action = when {
         product.installedVersion.isEmpty() && !Preferences[Preferences.Key.KidsMode]
-            -> ActionState.Install
+             -> ActionState.Install
 
         product.launchable
-            -> ActionState.Launch
+             -> ActionState.Launch
 
         else -> null
     }
@@ -220,8 +222,7 @@ fun ProductCarouselItem(
                         .wrapContentWidth()
                         .widthIn(max = 200.dp),
                     text = "${product.installedVersion} → ${product.version}",
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    onColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    coloringVariant = ColoringVariant.POSITIVE,
                 )
                 else if (product.installedVersion.isNotEmpty()) ReleaseBadge(
                     modifier = Modifier
