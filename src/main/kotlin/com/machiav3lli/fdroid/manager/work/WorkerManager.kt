@@ -15,11 +15,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
-import com.machiav3lli.fdroid.ARG_EXCEPTION
-import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
-import com.machiav3lli.fdroid.ARG_REPOSITORY_NAME
 import com.machiav3lli.fdroid.ARG_RESULT_CODE
-import com.machiav3lli.fdroid.ARG_SYNC_REQUEST
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
@@ -33,8 +29,6 @@ import com.machiav3lli.fdroid.TAG_BATCH_SYNC_PERIODIC
 import com.machiav3lli.fdroid.TAG_SYNC_ONETIME
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DownloadState
-import com.machiav3lli.fdroid.data.entity.SyncRequest
-import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.data.entity.ValidationError
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
@@ -45,7 +39,6 @@ import com.machiav3lli.fdroid.manager.installer.AppInstaller
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.utils.Utils
 import com.machiav3lli.fdroid.utils.extension.android.Android
-import com.machiav3lli.fdroid.utils.reportSyncFail
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -53,7 +46,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.retryWhen
@@ -114,22 +106,12 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
     }
 
     private fun setupWorkInfoCollection() {
-        combine(
-            workManager.getWorkInfosByTagFlow(SyncWorker::class.qualifiedName!!),
-            workManager.getWorkInfosByTagFlow(DownloadWorker::class.qualifiedName!!),
-        ) { syncInfos, downloadInfos ->
-            syncInfos to downloadInfos
-        }
+        workManager.getWorkInfosByTagFlow(DownloadWorker::class.qualifiedName!!)
             .retryWhen { cause, attempt ->
                 delay(attempt * 1_000L)
                 cause !is CancellationException
             }
-            .map { (syncInfos, downloadInfos) ->
-                runCatching {
-                    onSyncProgress(syncInfos)
-                }.onFailure { e ->
-                    Log.e(TAG, "Error processing sync updates", e)
-                }
+            .map { downloadInfos ->
                 runCatching {
                     onDownloadProgress(downloadInfos)
                 }.onFailure { e ->
@@ -162,34 +144,6 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
                     Log.e(TAG, "Error in work monitoring", e)
                 }
                 delay(TimeUnit.MINUTES.toMillis(5))
-            }
-        }
-    }
-
-
-    private fun onSyncProgress(workInfos: List<WorkInfo>) {
-        workInfos.forEach { workInfo ->
-            val data = workInfo.outputData.takeIf { it != Data.EMPTY }
-                ?: workInfo.progress.takeIf { it != Data.EMPTY }
-                ?: return@forEach
-
-            runCatching {
-                when (workInfo.state) {
-                    WorkInfo.State.FAILED -> SyncState.Failed(
-                        data.getLong(ARG_REPOSITORY_ID, -1L),
-                        SyncRequest.entries[
-                            data.getInt(ARG_SYNC_REQUEST, 0)
-                        ],
-                        data.getString(ARG_REPOSITORY_NAME) ?: "",
-                        data.getString(ARG_EXCEPTION) ?: "",
-                    )
-
-                    else                  -> null
-                }?.let { newState ->
-                    langContext.reportSyncFail(newState.repoId, newState)
-                }
-            }.onFailure { e ->
-                Log.e(TAG, "Error updating sync state", e)
             }
         }
     }

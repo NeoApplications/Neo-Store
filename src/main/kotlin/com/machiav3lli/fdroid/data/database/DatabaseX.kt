@@ -86,7 +86,7 @@ import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedR
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedReposV29
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedReposV31
 import com.machiav3lli.fdroid.data.database.entity.Tracker
-import com.machiav3lli.fdroid.manager.work.SyncWorker.Companion.enableRepo
+import com.machiav3lli.fdroid.manager.work.SyncWorker.enableRepo
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

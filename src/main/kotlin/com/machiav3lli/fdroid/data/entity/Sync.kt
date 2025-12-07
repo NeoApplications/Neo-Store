@@ -1,6 +1,6 @@
 package com.machiav3lli.fdroid.data.entity
 
-import com.machiav3lli.fdroid.manager.work.SyncWorker
+import com.machiav3lli.fdroid.manager.work.BatchSyncWorker
 
 class SyncTask(
     val repoId: Long,
@@ -39,7 +39,7 @@ sealed class SyncState(
         repoId: Long,
         request: SyncRequest,
         repoName: String,
-        val progress: SyncWorker.Progress
+        val progress: BatchSyncWorker.SyncProgress
     ) : SyncState(repoId, request, repoName)
 
     val isRunning: Boolean

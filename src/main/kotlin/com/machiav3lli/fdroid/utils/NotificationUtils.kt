@@ -1,7 +1,6 @@
 package com.machiav3lli.fdroid.utils
 
 import android.Manifest
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -17,7 +16,6 @@ import android.view.ContextThemeWrapper
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
-import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DEBUG
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOAD_STATS
@@ -41,7 +39,7 @@ import com.machiav3lli.fdroid.data.index.RepositoryUpdater
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.manager.service.InstallerReceiver
 import com.machiav3lli.fdroid.manager.service.installIntent
-import com.machiav3lli.fdroid.manager.work.SyncWorker
+import com.machiav3lli.fdroid.manager.work.BatchSyncWorker
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.android.notificationManager
 import com.machiav3lli.fdroid.utils.extension.resources.getColorFromAttr
@@ -160,60 +158,14 @@ fun Context.syncNotificationBuilder(title: String, content: String = "", percent
             )
         )
 
-fun Context.createSyncNotification(
-    repoId: Long,
-    repoName: String,
-    state: SyncState.Enum,
-    progress: SyncWorker.Progress?
-): Notification {
-    val contentPendingIntent = PendingIntent.getActivity(
-        this, 0,
-        Intent(this, NeoActivity::class.java),
-        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-    )
-
-    // Create cancel action for this specific sync
-    val cancelIntent = Intent(this, ActionReceiver::class.java).apply {
-        action = ActionReceiver.COMMAND_CANCEL_SYNC
-        putExtra(ARG_REPOSITORY_ID, repoId)
-    }
-    val cancelPendingIntent = PendingIntent.getBroadcast(
-        this,
-        repoId.toInt(),
-        cancelIntent,
-        PendingIntent.FLAG_IMMUTABLE
-    )
-
-    val builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_SYNCING)
-        .setGroup(NOTIFICATION_CHANNEL_SYNCING)
-        .setGroupSummary(false)
-        .setSortKey("1_$repoId")
-        .setSmallIcon(R.drawable.ic_sync)
-        .setContentIntent(contentPendingIntent)
-        .setOngoing(true)
-        .setSilent(true)
-        .setPriority(NotificationCompat.PRIORITY_MIN)
-        .setCategory(NotificationCompat.CATEGORY_PROGRESS)
-        .addAction(
-            R.drawable.ic_cancel,
-            getString(R.string.cancel),
-            cancelPendingIntent
-        )
-
-    when (state) {
+fun Context.buildSyncLine(syncInfo: BatchSyncWorker.SyncProgressInfo): String {
+    return when (syncInfo.state) {
         SyncState.Enum.CONNECTING -> {
-            builder.setContentTitle(
-                getString(R.string.syncing_FORMAT, repoName)
-            )
-            builder.setContentText(getString(R.string.connecting))
-            builder.setProgress(0, 0, true)  // Indeterminate progress
+            "${syncInfo.repoName}: ${getString(R.string.connecting)}"
         }
 
         SyncState.Enum.SYNCING    -> {
-            builder.setContentTitle(
-                getString(R.string.syncing_FORMAT, repoName)
-            )
-
+            val progress = syncInfo.progress
             if (progress != null) {
                 val progressText = when (progress.stage) {
                     RepositoryUpdater.Stage.DOWNLOAD -> {
@@ -221,6 +173,7 @@ fun Context.createSyncNotification(
                             "${progress.read.formatSize()} / ${progress.total.formatSize()}"
                         } else {
                             progress.read.formatSize()
+                            //context.getString(R.string.downloading)
                         }
                     }
 
@@ -236,30 +189,14 @@ fun Context.createSyncNotification(
 
                     RepositoryUpdater.Stage.COMMIT   -> getString(R.string.saving_details)
                 }
-                builder.setContentText(progressText)
-
-                // Show determinate progress for stages that have total
-                if (progress.total > 0) {
-                    builder.setProgress(100, progress.percentage, false)
-                } else {
-                    builder.setProgress(0, 0, true)
-                }
+                "${syncInfo.repoName}: $progressText"
             } else {
-                builder.setContentText(getString(R.string.syncing))
-                builder.setProgress(0, 0, true)
+                "${syncInfo.repoName}: ${getString(R.string.syncing)}"
             }
         }
 
-        else                      -> {
-            // FINISHING/FAILED: shouldn't be displayed
-            builder.setContentTitle(
-                getString(R.string.syncing_FORMAT, repoName)
-            )
-            builder.setContentText(getString(R.string.syncing))
-        }
+        else                      -> "${syncInfo.repoName}: ${getString(R.string.syncing)}"
     }
-
-    return builder.build()
 }
 
 fun Context.downloadNotificationBuilder(title: String, content: String = "", percent: Int = -1) =
