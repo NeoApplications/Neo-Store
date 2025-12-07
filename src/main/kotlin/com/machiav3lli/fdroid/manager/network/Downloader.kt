@@ -22,6 +22,7 @@ import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.engine.resolveAddress
 import io.ktor.client.plugins.BodyProgress
 import io.ktor.client.plugins.HttpRequestRetry
+import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.UserAgent
 import io.ktor.client.plugins.compression.ContentEncoding
@@ -216,7 +217,10 @@ object Downloader {
 
                     response.status == HttpStatusCode.GatewayTimeout || response.status == HttpStatusCode.RequestTimeout
                         -> {
-                        throw Exception("Failed to download file. Response code ${response.status.value}:${response.status.description}")
+                        throw HttpResponseException(
+                            "Failed to download file.",
+                            response.status,
+                        )
                     }
 
                     response.status == HttpStatusCode.NotFound -> {
@@ -228,7 +232,10 @@ object Downloader {
                             TAG,
                             "Failed to download file ($url). Response code ${response.status.value}:${response.status.description}."
                         )
-                        throw Exception("Failed to download file. Response code ${response.status.value}:${response.status.description}")
+                        throw HttpResponseException(
+                            "Failed to download file.",
+                            response.status,
+                        )
                     }
                 }
             }
@@ -251,7 +258,13 @@ object Downloader {
                     authentication = authentication,
                     callback = callback,
                 )
-            } else throw e
+            } else if (e is HttpRequestTimeoutException)
+                throw HttpResponseException(
+                    e.message ?: "Network Error",
+                    HttpStatusCode.RequestTimeout,
+                    e
+                )
+            else throw e
         }
     }
 
@@ -412,3 +425,8 @@ val downloadClientModule = module {
 }
 
 class DownloadSizeException(message: String, cause: Throwable? = null) : Exception(message, cause)
+class HttpResponseException(
+    message: String,
+    val responseStatus: HttpStatusCode,
+    cause: Throwable? = null
+) : Exception(message, cause)

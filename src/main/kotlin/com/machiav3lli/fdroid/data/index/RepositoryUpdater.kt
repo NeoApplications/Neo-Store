@@ -24,6 +24,7 @@ import com.machiav3lli.fdroid.data.index.v2.IndexV2Parser
 import com.machiav3lli.fdroid.data.index.v2.IndexV2Parser.Companion.hasCachedIndex
 import com.machiav3lli.fdroid.data.index.v2.findLocalized
 import com.machiav3lli.fdroid.manager.network.Downloader
+import com.machiav3lli.fdroid.manager.network.HttpResponseException
 import com.machiav3lli.fdroid.manager.work.SyncWorker
 import com.machiav3lli.fdroid.utils.ProgressInputStream
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
@@ -235,9 +236,13 @@ object RepositoryUpdater : KoinComponent {
         } catch (e: Exception) {
             // onErrorResumeNext replacement?
             file.delete()
-            throw UpdateException(
+            if (e is HttpResponseException) throw UpdateException(
+                ErrorType.HTTP,
+                "Invalid response ${e.responseStatus.value}: ${e.responseStatus.description}.\n${e.message}",
+                e
+            ) else throw UpdateException(
                 ErrorType.NETWORK,
-                "Network error",
+                e.message ?: "Network error",
                 e
             )
         }
@@ -343,9 +348,13 @@ object RepositoryUpdater : KoinComponent {
         } catch (e: Exception) {
             // onErrorResumeNext replacement?
             file.delete()
-            throw UpdateException(
+            if (e is HttpResponseException) throw UpdateException(
+                ErrorType.HTTP,
+                "Invalid response ${e.responseStatus.value}: ${e.responseStatus.description}.\n${e.message}",
+                e
+            ) else throw UpdateException(
                 ErrorType.NETWORK,
-                "Network error",
+                e.message ?: "Network error",
                 e
             )
         }
