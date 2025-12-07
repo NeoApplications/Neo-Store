@@ -469,4 +469,7 @@
     <string name="download_stats_notification_pending">Preparing to fetch download stats</string>
     <string name="download_stats_notification_message">Monthly data fetch running: %1$d/%2$d\n%3$d updated, %4$d unchanged, %5$d failed</string>
     <string name="batch_sync_progress_FORMAT">Syncing repositories: %1$d/%2$d</string>
+    <string name="dlstats_provider">Download stats provider</string>
+    <string name="dlstats_none">No provider</string>
+    <string name="dlstats_izzyondroid">IzzyOnDroid</string>
 </resources>

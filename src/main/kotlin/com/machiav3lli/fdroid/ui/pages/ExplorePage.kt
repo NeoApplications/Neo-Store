@@ -162,7 +162,7 @@ fun ExplorePage(
                         exploreTab.intValue = 0
                     }
                 )
-                TabButton(
+                if (Preferences[Preferences.Key.DLStatsProvider] != Preferences.DLStatsProvider.None) TabButton(
                     text = stringResource(id = R.string.top_apps),
                     icon = Phosphor.Asterisk,
                     onClick = {

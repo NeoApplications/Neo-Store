@@ -39,6 +39,8 @@ fun PrefsServicePage() {
         Preferences.Key.AutoSyncInterval,
         Preferences.Key.InstallAfterSync,
         Preferences.Key.IndexV2,
+        Preferences.Key.DLStatsProvider,
+        Preferences.Key.RBProvider,
     )
     val updatesPrefs = listOf(
         Preferences.Key.DownloadManager,
@@ -48,7 +50,6 @@ fun PrefsServicePage() {
         Preferences.Key.DisableDownloadVersionCheck,
         Preferences.Key.DisableSignatureCheck,
         Preferences.Key.DisablePermissionsCheck,
-        Preferences.Key.RBProvider,
     )
     val installPrefs = listOfNotNull(
         Preferences.Key.KeepInstallNotification,

@@ -91,13 +91,15 @@ class RBWorker(
 
         // TODO Make periodic instead of sync-bound
         fun fetchRBLogs() {
-            NeoApp.wm.enqueueUniqueWork(
-                "rb_index",
-                ExistingWorkPolicy.REPLACE,
-                OneTimeWorkRequestBuilder<RBWorker>()
-                    .addTag(TAG_SYNC_PERIODIC)
-                    .build()
-            )
+            if (Preferences[Preferences.Key.RBProvider] != Preferences.RBProvider.None) {
+                NeoApp.wm.enqueueUniqueWork(
+                    "rb_index",
+                    ExistingWorkPolicy.REPLACE,
+                    OneTimeWorkRequestBuilder<RBWorker>()
+                        .addTag(TAG_SYNC_PERIODIC)
+                        .build()
+                )
+            }
         }
     }
 }

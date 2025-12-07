@@ -128,6 +128,7 @@ val NonBooleanPrefsMeta = mapOf(
     Preferences.Key.MaxIdleConnections to R.string.max_idle_connections_description,
     Preferences.Key.MaxParallelDownloads to R.string.max_parallel_downloads,
     Preferences.Key.RBProvider to R.string.rb_provider,
+    Preferences.Key.DLStatsProvider to R.string.dlstats_provider,
 )
 
 val PrefsEntries = mapOf(
@@ -187,6 +188,10 @@ val PrefsEntries = mapOf(
         Preferences.RBProvider.None to R.string.rb_none,
         Preferences.RBProvider.IzzyOnDroid to R.string.rb_izzyondroid,
         Preferences.RBProvider.BG443 to R.string.rb_bg443,
+    ),
+    Preferences.Key.DLStatsProvider to mapOf(
+        Preferences.DLStatsProvider.None to R.string.dlstats_none,
+        Preferences.DLStatsProvider.IzzyOnDroid to R.string.dlstats_izzyondroid,
     ),
 )
 

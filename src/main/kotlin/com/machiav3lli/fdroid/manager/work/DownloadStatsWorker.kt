@@ -187,7 +187,7 @@ class DownloadStatsWorker(
         lastModified: String?
     ): MonthlyFileResult {
         val url =
-            "https://dlstats.izzyondroid.org/iod-stats-collector/stats/upstream/monthly-in-days/$fileName"
+            "${Preferences[Preferences.Key.DLStatsProvider].url}/stats/upstream/monthly-in-days/$fileName"
         val tempFile = Cache.getDownloadStatsFile(context, fileName)
 
         return try {
@@ -369,15 +369,19 @@ class DownloadStatsWorker(
             .build()
 
         fun enqueuePeriodic() {
-            val autoSyncPref = Preferences[Preferences.Key.AutoSync]
-            get<WorkManager>(WorkManager::class.java).enqueueUniquePeriodicWork(
-                TAG_DOWNLOAD_STATS_PERIODIC,
-                ExistingPeriodicWorkPolicy.UPDATE,
-                PeriodicRequest(
-                    autoSyncPref.connectionType(),
-                    autoSyncPref.requireBattery(),
-                ),
-            )
+            if (Preferences[Preferences.Key.DLStatsProvider] != Preferences.DLStatsProvider.None) {
+                val autoSyncPref = Preferences[Preferences.Key.AutoSync]
+                get<WorkManager>(WorkManager::class.java)
+                    .enqueueUniquePeriodicWork(
+                        TAG_DOWNLOAD_STATS_PERIODIC,
+                        ExistingPeriodicWorkPolicy.UPDATE,
+                        PeriodicRequest(
+                            autoSyncPref.connectionType(),
+                            autoSyncPref.requireBattery(),
+                        ),
+                    )
+            } else get<WorkManager>(WorkManager::class.java)
+                .cancelUniqueWork(TAG_DOWNLOAD_STATS_PERIODIC)
         }
     }
 }

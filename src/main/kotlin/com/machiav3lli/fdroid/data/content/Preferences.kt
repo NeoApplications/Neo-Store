@@ -68,6 +68,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.DisableSignatureCheck,
         Key.DisablePermissionsCheck,
         Key.RBProvider,
+        Key.DLStatsProvider,
         // Installation
         Key.KeepInstallNotification,
         Key.Installer,
@@ -333,6 +334,12 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object RBProvider : Key<Preferences.RBProvider>(
             "rb_provider", Value.EnumerationValue(
                 Preferences.RBProvider.IzzyOnDroid
+            )
+        )
+
+        data object DLStatsProvider : Key<Preferences.DLStatsProvider>(
+            "dlstats_provider", Value.EnumerationValue(
+                Preferences.DLStatsProvider.IzzyOnDroid
             )
         )
 
@@ -833,6 +840,26 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object OBFUSK : RBProvider("obfusk") {
             override val url: String
                 get() = "https://codeberg.org/obfusk/rbtlog/raw/branch/log"
+        }
+    }
+
+    sealed class DLStatsProvider(override val valueString: String) : Enumeration<DLStatsProvider> {
+        override val values: List<DLStatsProvider>
+            get() = persistentListOf(
+                None,
+                IzzyOnDroid,
+            )
+
+        abstract val url: String
+
+        data object None : DLStatsProvider("none") {
+            override val url: String
+                get() = ""
+        }
+
+        data object IzzyOnDroid : DLStatsProvider("iod") {
+            override val url: String
+                get() = "https://dlstats.izzyondroid.org/iod-stats-collector"
         }
     }
 
