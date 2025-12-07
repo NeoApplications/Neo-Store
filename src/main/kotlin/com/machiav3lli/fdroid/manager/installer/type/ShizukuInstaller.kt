@@ -36,18 +36,20 @@ class ShizukuInstaller(context: Context) : BaseInstaller(context) {
     companion object {
         const val TAG = "ShizukuInstaller"
 
-        private val flags = when {
-            Android.sdk(Build.VERSION_CODES.UPSIDE_DOWN_CAKE) ->
-                // For Android 14+, use FLAG_IMMUTABLE for implicit intents for security
-                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT or
-                        PendingIntent.FLAG_ALLOW_UNSAFE_IMPLICIT_INTENT
+        private val flags by lazy {
+            when {
+                Android.sdk(Build.VERSION_CODES.UPSIDE_DOWN_CAKE) ->
+                    // For Android 14+, use FLAG_IMMUTABLE for implicit intents for security
+                    PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT or
+                            PendingIntent.FLAG_ALLOW_UNSAFE_IMPLICIT_INTENT
 
 
-            Android.sdk(Build.VERSION_CODES.S)                ->
-                // For Android 12+, but below 14, can use FLAG_MUTABLE
-                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                Android.sdk(Build.VERSION_CODES.S)                ->
+                    // For Android 12+, but below 14, can use FLAG_MUTABLE
+                    PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 
-            else                                              -> PendingIntent.FLAG_UPDATE_CURRENT
+                else                                              -> PendingIntent.FLAG_UPDATE_CURRENT
+            }
         }
 
         private val bufferPool = object {
@@ -186,21 +188,16 @@ class ShizukuInstaller(context: Context) : BaseInstaller(context) {
         apkFile: File,
         packageName: String
     ) {
-        val buffer = bufferPool.acquire()
-        try {
-            // Write the APK to the session
-            val writeMode = "$packageName-${System.currentTimeMillis()}"
-            session.openWrite(writeMode, 0, apkFile.length()).use { out ->
-                apkFile.inputStream().use { input ->
-                    copyWithProgress(input, out, apkFile.length(), packageName)
-                }
-
-                // Ensure the stream is flushed and synced
-                out.flush()
-                session.fsync(out)
+        // Write the APK to the session
+        val writeMode = "$packageName-${System.currentTimeMillis()}"
+        session.openWrite(writeMode, 0, apkFile.length()).use { out ->
+            apkFile.inputStream().use { input ->
+                copyWithProgress(input, out, apkFile.length(), packageName)
             }
-        } finally {
-            bufferPool.release(buffer)
+
+            // Ensure the stream is flushed and synced
+            out.flush()
+            session.fsync(out)
         }
     }
 

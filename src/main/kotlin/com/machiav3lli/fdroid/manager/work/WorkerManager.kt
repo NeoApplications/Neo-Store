@@ -382,6 +382,5 @@ val workmanagerModule = module {
     single { WorkManager.getInstance(get()) }
     single { ActionReceiver() }
     single { NotificationManagerCompat.from(get()) }
-    singleOf(::SyncNotificationManager)
     singleOf(::UpdatesNotificationManager)
 }

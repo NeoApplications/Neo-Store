@@ -89,7 +89,7 @@ object RepositoryUpdater : KoinComponent {
     private val cleanupMutex = Mutex()
     private val db: DatabaseX by inject()
 
-    suspend fun init() {
+    fun init() {
         var lastDisabled = setOf<Long>()
 
         runBlocking(Dispatchers.IO) {

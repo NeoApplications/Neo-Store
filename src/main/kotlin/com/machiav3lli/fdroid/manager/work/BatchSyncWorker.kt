@@ -47,7 +47,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import org.koin.core.component.KoinComponent
@@ -70,8 +69,7 @@ class BatchSyncWorker(
     private val reposRepo: RepositoriesRepository by inject()
     private val installedRepo: InstalledRepository by inject()
     private val updatesManager: UpdatesNotificationManager by inject()
-    private val syncSemaphore = Semaphore(3) // TODO add it as option to prefs
-    private val notificationMutex = Mutex()
+    private val syncSemaphore = Semaphore(5) // TODO add it as option to prefs
     private val activeSyncs = ConcurrentHashMap<Long, SyncProgressInfo>()
 
     // TODO consider if still needed
@@ -99,9 +97,7 @@ class BatchSyncWorker(
                 // Run additional sync tasks
                 if (succeeded > 0) {
                     ExodusWorker.fetchTrackers()
-                    if (Preferences[Preferences.Key.RBProvider] != Preferences.RBProvider.None) {
-                        RBWorker.fetchRBLogs()
-                    }
+                    RBWorker.fetchRBLogs()
                     DownloadStatsWorker.enqueuePeriodic()
                 }
 
@@ -195,7 +191,7 @@ class BatchSyncWorker(
         updateSyncProgress(
             repoId = repository.id,
             repoName = repository.name,
-            state = SyncState.Enum.CONNECTING,
+            state = SyncState.CONNECTING,
         )
 
         val unstable = Preferences[Preferences.Key.UpdateUnstable]
@@ -207,7 +203,7 @@ class BatchSyncWorker(
                     updateSyncProgress(
                         repoId = repository.id,
                         repoName = repository.name,
-                        state = SyncState.Enum.SYNCING,
+                        state = SyncState.SYNCING,
                         progress = SyncProgress(
                             progress.stage,
                             progress.read,
@@ -388,7 +384,7 @@ class BatchSyncWorker(
     private suspend fun updateSyncProgress(
         repoId: Long,
         repoName: String,
-        state: SyncState.Enum,
+        state: SyncState,
         progress: SyncProgress? = null
     ) {
         Log.d(
@@ -397,13 +393,13 @@ class BatchSyncWorker(
         )
 
         when (state) {
-            SyncState.Enum.CONNECTING,
-            SyncState.Enum.SYNCING -> {
+            SyncState.CONNECTING,
+            SyncState.SYNCING -> {
                 activeSyncs[repoId] = SyncProgressInfo(repoId, repoName, state, progress)
             }
 
-            SyncState.Enum.FINISHING,
-            SyncState.Enum.FAILED  -> {
+            SyncState.FINISHING,
+            SyncState.FAILED  -> {
                 activeSyncs.remove(repoId)
             }
         }
@@ -441,7 +437,7 @@ class BatchSyncWorker(
     data class SyncProgressInfo(
         val repoId: Long,
         val repoName: String,
-        val state: SyncState.Enum,
+        val state: SyncState,
         val progress: SyncProgress? = null
     )
 

@@ -28,31 +28,36 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
     companion object {
         private const val TAG = "SessionInstaller"
 
-        private val flags = when {
-            // For Android 14+, use FLAG_IMMUTABLE for implicit intents for security
-            Android.sdk(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-                 -> PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT or
-                    PendingIntent.FLAG_ALLOW_UNSAFE_IMPLICIT_INTENT
+        private val flags by lazy {
+            when {
+                // For Android 14+, use FLAG_IMMUTABLE for implicit intents for security
+                Android.sdk(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+                     -> PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT or
+                        PendingIntent.FLAG_ALLOW_UNSAFE_IMPLICIT_INTENT
 
-            // For Android 12+, but below 14, can use FLAG_MUTABLE
-            Android.sdk(Build.VERSION_CODES.S)
-                 -> PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                // For Android 12+, but below 14, can use FLAG_MUTABLE
+                Android.sdk(Build.VERSION_CODES.S)
+                     -> PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 
-            else -> PendingIntent.FLAG_UPDATE_CURRENT
+                else -> PendingIntent.FLAG_UPDATE_CURRENT
+            }
         }
-        private val params = SessionParams(SessionParams.MODE_FULL_INSTALL).apply {
-            if (Android.sdk(Build.VERSION_CODES.O)) {
-                setInstallReason(PackageManager.INSTALL_REASON_USER)
-            }
-            if (Android.sdk(Build.VERSION_CODES.S)) {
-                setRequireUserAction(SessionParams.USER_ACTION_NOT_REQUIRED)
-            }
-            if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) {
-                setPackageSource(PackageInstaller.PACKAGE_SOURCE_STORE)
-            }
-            if (Android.sdk(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)) {
-                setRequestUpdateOwnership(true)
-                setApplicationEnabledSettingPersistent()
+
+        private val params by lazy {
+            SessionParams(SessionParams.MODE_FULL_INSTALL).apply {
+                if (Android.sdk(Build.VERSION_CODES.O)) {
+                    setInstallReason(PackageManager.INSTALL_REASON_USER)
+                }
+                if (Android.sdk(Build.VERSION_CODES.S)) {
+                    setRequireUserAction(SessionParams.USER_ACTION_NOT_REQUIRED)
+                }
+                if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) {
+                    setPackageSource(PackageInstaller.PACKAGE_SOURCE_STORE)
+                }
+                if (Android.sdk(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)) {
+                    setRequestUpdateOwnership(true)
+                    setApplicationEnabledSettingPersistent()
+                }
             }
         }
 
@@ -149,20 +154,15 @@ class SessionInstaller(context: Context) : BaseInstaller(context) {
         apkFile: File,
         packageName: String
     ) {
-        val buffer = bufferPool.acquire()
-        try {
-            // Write the APK to the session
-            val writeMode = "package-${System.currentTimeMillis()}"
-            session.openWrite(writeMode, 0, apkFile.length()).use { out ->
-                apkFile.inputStream().use { input ->
-                    copyWithProgress(input, out, apkFile.length(), packageName)
-                }
-
-                // Make sure the stream is flushed
-                out.flush()
+        // Write the APK to the session
+        val writeMode = "package-${System.currentTimeMillis()}"
+        session.openWrite(writeMode, 0, apkFile.length()).use { out ->
+            apkFile.inputStream().use { input ->
+                copyWithProgress(input, out, apkFile.length(), packageName)
             }
-        } finally {
-            bufferPool.release(buffer)
+
+            // Make sure the stream is flushed
+            out.flush()
         }
     }
 

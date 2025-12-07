@@ -24,19 +24,16 @@ import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
 import com.machiav3lli.fdroid.NOTIFICATION_ID_DEBUG
 import com.machiav3lli.fdroid.NOTIFICATION_ID_INSTALLER
-import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_VULNS
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
-import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.data.entity.ValidationError
 import com.machiav3lli.fdroid.data.index.RepositoryUpdater
-import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.manager.service.InstallerReceiver
 import com.machiav3lli.fdroid.manager.service.installIntent
 import com.machiav3lli.fdroid.manager.work.BatchSyncWorker
@@ -97,74 +94,13 @@ fun Context.displayVulnerabilitiesNotification(
     else notificationManager.cancel(NOTIFICATION_ID_VULNS)
 }
 
-fun Context.showNotificationError(repository: Repository, exception: Exception) {
-    notificationManager.notify(
-        "repository-${repository.id}", NOTIFICATION_ID_SYNCING, NotificationCompat
-            .Builder(this, NOTIFICATION_CHANNEL_SYNCING)
-            .setSmallIcon(android.R.drawable.stat_sys_warning)
-            .setColor(
-                ContextThemeWrapper(this, R.style.Theme_Main_Amoled)
-                    .getColorFromAttr(android.R.attr.colorPrimary).defaultColor
-            )
-            .setContentTitle(getString(R.string.could_not_sync_FORMAT, repository.name))
-            .setContentText(
-                getString(
-                    when (exception) {
-                        is RepositoryUpdater.UpdateException -> when (exception.errorType) {
-                            RepositoryUpdater.ErrorType.NETWORK    -> R.string.network_error_DESC
-                            RepositoryUpdater.ErrorType.HTTP       -> R.string.http_error_DESC
-                            RepositoryUpdater.ErrorType.VALIDATION -> R.string.validation_index_error_DESC
-                            RepositoryUpdater.ErrorType.PARSING    -> R.string.parsing_index_error_DESC
-                        }
-
-                        else                                 -> R.string.unknown_error_DESC
-                    }
-                )
-            )
-            .build()
-    )
-}
-
-fun Context.syncNotificationBuilder(title: String, content: String = "", percent: Int = -1) =
-    NotificationCompat
-        .Builder(this, NOTIFICATION_CHANNEL_SYNCING)
-        .setGroup(NOTIFICATION_CHANNEL_SYNCING)
-        .setSmallIcon(R.drawable.ic_sync)
-        .setContentTitle(title)
-        .setTicker(title)
-        .setContentText(content)
-        .setOngoing(true)
-        .setSilent(true)
-        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        .setCategory(NotificationCompat.CATEGORY_PROGRESS)
-        .setProgress(100, percent, percent == -1)
-        .setContentIntent(
-            PendingIntent.getActivity(
-                this, 0,
-                Intent(this, NeoActivity::class.java),
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-            )
-        )
-        .addAction(
-            R.drawable.ic_cancel,
-            NeoApp.context.getString(R.string.cancel_all),
-            PendingIntent.getBroadcast(
-                NeoApp.context,
-                "<SYNC_ALL>".hashCode(),
-                Intent(NeoApp.context, ActionReceiver::class.java).apply {
-                    action = ActionReceiver.COMMAND_CANCEL_SYNC_ALL
-                },
-                PendingIntent.FLAG_IMMUTABLE
-            )
-        )
-
 fun Context.buildSyncLine(syncInfo: BatchSyncWorker.SyncProgressInfo): String {
     return when (syncInfo.state) {
-        SyncState.Enum.CONNECTING -> {
+        SyncState.CONNECTING -> {
             "${syncInfo.repoName}: ${getString(R.string.connecting)}"
         }
 
-        SyncState.Enum.SYNCING    -> {
+        SyncState.SYNCING    -> {
             val progress = syncInfo.progress
             if (progress != null) {
                 val progressText = when (progress.stage) {
@@ -195,7 +131,7 @@ fun Context.buildSyncLine(syncInfo: BatchSyncWorker.SyncProgressInfo): String {
             }
         }
 
-        else                      -> "${syncInfo.repoName}: ${getString(R.string.syncing)}"
+        else                 -> "${syncInfo.repoName}: ${getString(R.string.syncing)}"
     }
 }
 
