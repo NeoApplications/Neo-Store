@@ -38,7 +38,7 @@ object SyncWorker {
             NeoApp.latestSyncs[repository.id] = System.currentTimeMillis()
             BatchSyncWorker.enqueue(SyncRequest.MANUAL, setOf(repository.id))
         } else {
-            NeoApp.wm.cancelSync(repository.id)
+            NeoApp.wm.cancelSyncAll()
             NeoApp.db.cleanUp(Pair(repository.id, false))
         }
         return true

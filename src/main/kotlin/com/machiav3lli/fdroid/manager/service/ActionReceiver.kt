@@ -54,7 +54,7 @@ class ActionReceiver : BroadcastReceiver(), KoinComponent {
 
                 COMMAND_CANCEL_SYNC         -> {
                     val repoId = intent.getLongExtra(ARG_REPOSITORY_ID, -1)
-                    wm.cancelSync(repoId)
+                    wm.cancelSyncAll()
                 }
 
                 COMMAND_CANCEL_SYNC_ALL     -> {

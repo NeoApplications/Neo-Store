@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.mutableStateOf
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
@@ -81,15 +80,6 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
         val wm: WorkerManager get() = neo_store.wm
         val db: DatabaseX get() = neo_store.db
         val installer: AppInstaller by inject(AppInstaller::class.java)
-
-        private val progress = mutableStateOf(Pair(false, 0f))
-
-        fun setProgress(now: Int = 0, max: Int = 0) {
-            if (max <= 0)
-                progress.value = Pair(false, 0f)
-            else
-                progress.value = Pair(true, 1f * now / max)
-        }
     }
 
     override fun onCreate() {
