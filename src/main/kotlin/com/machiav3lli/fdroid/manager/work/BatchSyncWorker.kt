@@ -38,7 +38,6 @@ import com.machiav3lli.fdroid.data.entity.SyncState
 import com.machiav3lli.fdroid.data.index.RepositoryUpdater
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
-import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.utils.buildSyncLine
 import com.machiav3lli.fdroid.utils.displayVulnerabilitiesNotification
 import com.machiav3lli.fdroid.utils.extension.android.Android
@@ -318,15 +317,7 @@ class BatchSyncWorker(
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        val cancelAllIntent = Intent(context, ActionReceiver::class.java).apply {
-            action = ActionReceiver.COMMAND_CANCEL_SYNC_ALL
-        }
-        val cancelAllPendingIntent = PendingIntent.getBroadcast(
-            context,
-            "batch_sync_all".hashCode(),
-            cancelAllIntent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
+        val cancelIntent = get<WorkManager>(WorkManager::class.java).createCancelPendingIntent(id)
 
         val builder = NotificationCompat.Builder(langContext, NOTIFICATION_CHANNEL_SYNCING)
             //.setGroup(NOTIFICATION_CHANNEL_SYNCING)
@@ -343,7 +334,7 @@ class BatchSyncWorker(
             .addAction(
                 R.drawable.ic_cancel,
                 langContext.getString(R.string.cancel_all),
-                cancelAllPendingIntent
+                cancelIntent
             )
 
 
@@ -502,8 +493,8 @@ class BatchSyncWorker(
             repositoryIds: Set<Long> = emptySet()
         ) {
             get<WorkManager>(WorkManager::class.java).enqueueUniqueWork(
-                TAG_BATCH_SYNC_ONETIME,
-                ExistingWorkPolicy.REPLACE,
+                "${TAG_BATCH_SYNC_ONETIME}_${repositoryIds.joinToString(separator = "_") { it.toString() }}",
+                ExistingWorkPolicy.APPEND_OR_REPLACE,
                 Request(request, repositoryIds),
             )
         }
