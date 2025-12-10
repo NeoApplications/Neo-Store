@@ -470,4 +470,11 @@
     <string name="trending_from_neostore">Popularność na Neo Store</string>
     <string name="shizuku_installer">Instalator Shizuku</string>
     <string name="max_parallel_downloads">Maksymalna liczba równoległych pobrań przy użyciu menedżera pobierania Neo Store została wykorzystana.</string>
+    <string name="download_stats_notification_title">Aktualizacja statystyk pobierania</string>
+    <string name="download_stats_notification_pending">Przygotowanie do pobrania statystyk pobierania</string>
+    <string name="download_stats_notification_message">Miesięczne pobieranie danych w toku: %1$d/%2$d\n%3$d zaktualizowano, %4$d bez zmian, %5$d nie powiodło się</string>
+    <string name="batch_sync_progress_FORMAT">Synchronizacja repozytoriów: %1$d/%2$d</string>
+    <string name="dlstats_provider">Dostawca statystyk pobierania</string>
+    <string name="dlstats_none">Brak dostawcy</string>
+    <string name="dlstats_izzyondroid">IzzyOnDroid</string>
 </resources>
