@@ -54,5 +54,7 @@ class RepositoriesRepository(
 
     suspend fun insertOrUpdate(vararg repository: Repository) = reposDao.insertOrUpdate(*repository)
 
+    suspend fun isDuplicateAddress(address: String) = reposDao.isDuplicateAddress(address)
+
     suspend fun deleteById(repoId: Long) = reposDao.deleteById(repoId)
 }

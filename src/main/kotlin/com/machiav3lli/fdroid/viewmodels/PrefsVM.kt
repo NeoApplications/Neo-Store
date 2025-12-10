@@ -85,6 +85,9 @@ class PrefsVM(
         Pair(address ?: "", fingerprint ?: "")
     }
 
+    suspend fun isDuplicateAddress(address: String): Boolean =
+        address.isNotEmpty() && reposRepo.isDuplicateAddress(address)
+
     suspend fun addNewRepository(address: String = "", fingerprint: String = ""): Long {
         return reposRepo.insertReturn(
             newRepository(
