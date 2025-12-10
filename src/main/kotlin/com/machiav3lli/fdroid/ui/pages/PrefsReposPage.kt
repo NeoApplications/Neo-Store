@@ -40,7 +40,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import androidx.lifecycle.viewModelScope
 import com.machiav3lli.backup.ui.compose.icons.phosphor.Plus
 import com.machiav3lli.fdroid.INTENT_ACTION_BINARY_EYE
 import com.machiav3lli.fdroid.NeoActivity
@@ -53,6 +52,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.QrCode
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.extension.text.toAddressFingerprint
+import com.machiav3lli.fdroid.utils.notifyDuplicateRepoAddress
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import com.machiav3lli.fdroid.viewmodels.SheetNavigationData
 import kotlinx.coroutines.launch
@@ -77,7 +77,7 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                 .takeUnless { it.first.isEmpty() }
                 ?.let { (address, fingerprint) ->
                     scope.launch {
-                        paneNavigator.navigateTo(
+                        if (!viewModel.isDuplicateAddress(address)) paneNavigator.navigateTo(
                             ListDetailPaneScaffoldRole.Detail,
                             SheetNavigationData(
                                 viewModel.addNewRepository(
@@ -86,26 +86,32 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                 ),
                                 true
                             )
-                        )
+                        ) else {
+                            mActivity.notifyDuplicateRepoAddress(address)
+                        }
                     }
                 }
         }
     }
 
     LaunchedEffect(pageState.auth) {
-        if (pageState.auth.first.isNotEmpty()) {
-            scope.launch {
-                paneNavigator.navigateTo(
-                    ListDetailPaneScaffoldRole.Detail,
-                    SheetNavigationData(
-                        viewModel.addNewRepository(
-                            address = pageState.auth.first,
-                            fingerprint = pageState.auth.second,
-                        ),
-                        true
-                    )
-                )
-                viewModel.setIntent("", "")
+        pageState.auth.let { (address, fingerprint) ->
+            if (address.isNotEmpty()) {
+                scope.launch {
+                    if (!viewModel.isDuplicateAddress(address)) paneNavigator.navigateTo(
+                        ListDetailPaneScaffoldRole.Detail,
+                        SheetNavigationData(
+                            viewModel.addNewRepository(
+                                address = address,
+                                fingerprint = fingerprint,
+                            ),
+                            true
+                        )
+                    ) else {
+                        mActivity.notifyDuplicateRepoAddress(address)
+                    }
+                    viewModel.setIntent("", "")
+                }
             }
         }
     }

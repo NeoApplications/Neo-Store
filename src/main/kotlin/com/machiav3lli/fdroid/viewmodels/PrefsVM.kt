@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -96,14 +95,6 @@ class PrefsVM(
                 fingerprint = fingerprint
             )
         )
-    }
-
-    fun updateRepo(newValue: Repository?) {
-        newValue?.let {
-            viewModelScope.launch {
-                reposRepo.upsert(it)
-            }
-        }
     }
 
     fun insertExtras(vararg items: Extras) {

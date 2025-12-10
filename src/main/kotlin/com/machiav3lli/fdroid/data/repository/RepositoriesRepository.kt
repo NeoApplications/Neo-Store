@@ -50,7 +50,7 @@ class RepositoriesRepository(
 
     suspend fun upsert(repo: Repository) = reposDao.put(repo)
 
-    suspend fun insertReturn(repository: Repository) = reposDao.insertReturn(repository)
+    suspend fun insertReturn(repository: Repository): Long = reposDao.insertReturn(repository)
 
     suspend fun insertOrUpdate(vararg repository: Repository) = reposDao.insertOrUpdate(*repository)
 
