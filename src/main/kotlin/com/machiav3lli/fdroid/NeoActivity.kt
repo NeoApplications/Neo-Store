@@ -47,6 +47,7 @@ import com.machiav3lli.fdroid.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.viewmodels.LatestVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
+import com.machiav3lli.fdroid.viewmodels.RepoPageVM
 import com.machiav3lli.fdroid.viewmodels.SearchVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -331,4 +332,5 @@ val viewModelsModule = module {
     viewModelOf(::InstalledVM)
     viewModelOf(::PrefsVM)
     viewModelOf(::AppPageVM)
+    viewModelOf(::RepoPageVM)
 }
