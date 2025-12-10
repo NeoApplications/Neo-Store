@@ -270,7 +270,7 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                 paneNavigator.navigateBack()
                             }
                         }
-                    ) { newRepo -> viewModel.updateRepo(newRepo) }
+                    )
                 }
             }
         }

@@ -27,10 +27,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -46,7 +46,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.database.entity.Repository
-import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.manager.work.SyncWorker
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.BlockText
@@ -68,11 +67,12 @@ import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.DIALOG_NONE
 import com.machiav3lli.fdroid.ui.dialog.ProductsListDialogUI
 import com.machiav3lli.fdroid.ui.dialog.StringInputDialogUI
+import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.extension.text.pathCropped
 import com.machiav3lli.fdroid.utils.getLocaleDateString
+import com.machiav3lli.fdroid.viewmodels.RepoPageVM
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
 import java.net.URI
 import java.net.URL
 import java.util.Locale
@@ -87,20 +87,12 @@ const val DIALOG_PRODUCTS = 5
 fun RepoPage(
     repositoryId: Long,
     initEditMode: Boolean,
+    viewModel: RepoPageVM = koinNeoViewModel(),
     onDismiss: () -> Unit,
-    reposRepo: RepositoriesRepository = koinInject(),
-    updateRepo: (Repository?) -> Unit,
 ) {
-    // TODO add viewmodel
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val repoState = reposRepo.getById(repositoryId).collectAsState(initial = null)
-    val repo by remember {
-        derivedStateOf {
-            repoState.value
-        }
-    }
-    val appsCount by reposRepo.productsCount(repositoryId).collectAsState(0)
+    val state by viewModel.repoPageState.collectAsState()
     var editMode by remember { mutableStateOf(initEditMode) }
     val openDeleteDialog = remember { mutableStateOf(false) }
     val openDialog = remember { mutableStateOf(false) }
@@ -108,17 +100,17 @@ fun RepoPage(
         mutableIntStateOf(DIALOG_NONE)
     }
 
-    var addressFieldValue by remember(repo) {
-        mutableStateOf(repo?.address.orEmpty())
+    var addressFieldValue by remember(state.repo) {
+        mutableStateOf(state.repo?.address.orEmpty())
     }
-    var fingerprintFieldValue by remember(repo) {
-        mutableStateOf(repo?.fingerprint.orEmpty())
+    var fingerprintFieldValue by remember(state.repo) {
+        mutableStateOf(state.repo?.fingerprint.orEmpty())
     }
-    var usernameFieldValue by remember(repo) {
-        mutableStateOf(repo?.authenticationPair?.first.orEmpty())
+    var usernameFieldValue by remember(state.repo) {
+        mutableStateOf(state.repo?.authenticationPair?.first.orEmpty())
     }
-    var passwordFieldValue by remember(repo) {
-        mutableStateOf(repo?.authenticationPair?.second.orEmpty())
+    var passwordFieldValue by remember(state.repo) {
+        mutableStateOf(state.repo?.authenticationPair?.second.orEmpty())
     }
 
     val addressValidity = remember { mutableStateOf(false) }
@@ -128,8 +120,12 @@ fun RepoPage(
     val validations =
         listOf(addressValidity, fingerprintValidity, usernameValidity, passwordValidity)
 
+    LaunchedEffect(repositoryId) {
+        viewModel.setRepo(repositoryId)
+    }
+
     SideEffect {
-        if (editMode && repo?.address.isNullOrEmpty()) {
+        if (editMode && state.repo?.address.isNullOrEmpty()) {
             val clipboardManager =
                 context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val text = clipboardManager.primaryClip
@@ -173,13 +169,7 @@ fun RepoPage(
         editMode = false
     }
 
-    repo?.let { repo ->
-        val enabled by remember {
-            derivedStateOf {
-                repoState.value?.enabled ?: false
-            }
-        }
-
+    state.repo?.let { repo ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -249,7 +239,7 @@ fun RepoPage(
                         )
                     }
                 }
-                if (!editMode && enabled &&
+                if (!editMode && repo.enabled &&
                     (repo.lastModified.isNotEmpty() ||
                             repo.entityTag.isNotEmpty())
                 ) {
@@ -269,7 +259,7 @@ fun RepoPage(
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
                             BlockText(
-                                text = appsCount.toString()
+                                text = state.productsCount.toString()
                             )
                             Icon(
                                 imageVector = Phosphor.ArrowSquareOut,
@@ -385,7 +375,7 @@ fun RepoPage(
                 if (!editMode) {
                     item {
                         TitleText(
-                            modifier = Modifier,
+                            modifier = Modifier.fillMaxWidth(),
                             text = stringResource(id = R.string.repo_qr_code),
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -439,12 +429,7 @@ fun RepoPage(
                         )
 
                         TitleText(
-                            modifier = Modifier
-                                .clickable {
-                                    dialogProps.intValue = DIALOG_PASSWORD
-                                    openDialog.value = true
-                                }
-                                .fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth(),
                             text = stringResource(id = R.string.password),
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -479,15 +464,15 @@ fun RepoPage(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     CheckChip(
-                        checked = enabled,
+                        checked = repo.enabled,
                         text = stringResource(
-                            id = if (enabled) R.string.enabled
+                            id = if (repo.enabled) R.string.enabled
                             else R.string.enable
                         ),
                         fullWidth = false,
                     ) {
                         scope.launch {
-                            SyncWorker.enableRepo(repo, !enabled)
+                            SyncWorker.enableRepo(repo, !repo.enabled)
                         }
                     }
                     CheckChip(
@@ -495,7 +480,7 @@ fun RepoPage(
                         text = stringResource(id = R.string.mirror_rotation),
                         fullWidth = false,
                     ) {
-                        updateRepo(repo.copy(mirrorRotation = !repo.mirrorRotation))
+                        viewModel.updateRepo(repo.copy(mirrorRotation = !repo.mirrorRotation))
                     }
                 }
                 Row(
@@ -533,15 +518,16 @@ fun RepoPage(
                         onClick = {
                             if (!editMode) editMode = true
                             else {
-                                // TODO show readable error
-                                updateRepo(repo.apply {
-                                    address = addressFieldValue
-                                    fingerprint = fingerprintFieldValue.uppercase()
-                                    setAuthentication(
-                                        usernameFieldValue,
-                                        passwordFieldValue,
+                                viewModel.updateRepo(
+                                    repo.copy(
+                                        address = addressFieldValue,
+                                        fingerprint = fingerprintFieldValue.uppercase(),
+                                        authentication = Repository.authentication(
+                                            usernameFieldValue,
+                                            passwordFieldValue,
+                                        )
                                     )
-                                })
+                                )
                                 // TODO sync a new when is already active
                                 editMode = false
                             }
@@ -557,7 +543,7 @@ fun RepoPage(
         BaseDialog(openDialogCustom = openDeleteDialog) {
             ActionsDialogUI(
                 titleText = stringResource(id = R.string.confirmation),
-                messageText = "${repo?.name}: ${stringResource(id = R.string.delete_repository_DESC)}",
+                messageText = "${state.repo?.name}: ${stringResource(id = R.string.delete_repository_DESC)}",
                 onDismiss = { openDeleteDialog.value = false },
                 primaryText = stringResource(id = R.string.delete),
                 primaryIcon = Phosphor.TrashSimple,
@@ -630,7 +616,7 @@ fun RepoPage(
 
                 DIALOG_PRODUCTS -> ProductsListDialogUI(
                     repositoryId = repositoryId,
-                    title = repo?.name.orEmpty(),
+                    title = state.repo?.name.orEmpty(),
                 )
             }
         }

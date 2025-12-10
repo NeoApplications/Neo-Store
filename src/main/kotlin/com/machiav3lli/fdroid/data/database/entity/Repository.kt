@@ -36,14 +36,14 @@ import java.nio.charset.Charset
 data class Repository(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    var address: String = "",
+    val address: String = "",
     // TODO add support for countryCode and isPrimary
     val mirrors: List<String> = emptyList(),
     val name: String = "",
     val description: String = "",
     val version: Int = 21,
     val enabled: Boolean = false,
-    var fingerprint: String = "",
+    val fingerprint: String = "",
     val lastModified: String = "",
     @ColumnInfo(defaultValue = "")
     val entryLastModified: String = "",
@@ -52,7 +52,7 @@ data class Repository(
     val entryEntityTag: String = "",
     val updated: Long = 0L,
     val timestamp: Long = 0L,
-    var authentication: String = "",
+    val authentication: String = "",
     @ColumnInfo(defaultValue = "")
     val webBaseUrl: String = "",
     @ColumnInfo(defaultValue = "0")
@@ -102,19 +102,6 @@ data class Repository(
         entryEntityTag = "",
     )
 
-    fun setAuthentication(username: String?, password: String?) {
-        this.authentication = username?.let { u ->
-            password
-                ?.let { p ->
-                    Base64.encodeToString(
-                        "$u:$p".toByteArray(Charset.defaultCharset()),
-                        Base64.NO_WRAP
-                    )
-                }
-        }
-            ?.let { "Basic $it" }.orEmpty()
-    }
-
     val authenticationPair: Pair<String?, String?>
         get() = authentication.nullIfEmpty()
             ?.let { if (it.startsWith("Basic ")) it.substring(6) else null }
@@ -143,6 +130,17 @@ data class Repository(
 
     companion object {
         fun fromJson(json: String) = Json.decodeFromString<Repository>(json)
+
+        fun authentication(username: String?, password: String?) = username?.let { u ->
+            password
+                ?.let { p ->
+                    Base64.encodeToString(
+                        "$u:$p".toByteArray(Charset.defaultCharset()),
+                        Base64.NO_WRAP
+                    )
+                }
+        }
+            ?.let { "Basic $it" }.orEmpty()
 
         fun newRepository(
             address: String = "",
