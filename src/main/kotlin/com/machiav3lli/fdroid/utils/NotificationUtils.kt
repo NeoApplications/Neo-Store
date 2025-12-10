@@ -24,6 +24,7 @@ import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
 import com.machiav3lli.fdroid.NOTIFICATION_ID_DEBUG
 import com.machiav3lli.fdroid.NOTIFICATION_ID_INSTALLER
+import com.machiav3lli.fdroid.NOTIFICATION_ID_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_ID_VULNS
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
@@ -269,6 +270,24 @@ fun Context.notifySensitivePermissionsChanged(
     notificationManager.notify(
         "SENSITIVE-$packageName",
         NOTIFICATION_ID_INSTALLER + 99,
+        notification
+    )
+}
+
+fun Context.notifyDuplicateRepoAddress(
+    address: String,
+) {
+    val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_SYNCING)
+        .setSmallIcon(android.R.drawable.ic_dialog_alert)
+        .setContentTitle(getString(R.string.duplicate_repo_address_title))
+        .setContentText(getString(R.string.duplicate_repo_address_FORMAT, address))
+        .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setAutoCancel(true)
+        .build()
+
+    notificationManager.notify(
+        "Duplicate-$address",
+        NOTIFICATION_ID_SYNCING - 1,
         notification
     )
 }
