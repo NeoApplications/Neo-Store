@@ -464,4 +464,11 @@
     <string name="trending_from_neostore">Trending op Neo Store</string>
     <string name="shizuku_installer">Shizuku installateur</string>
     <string name="max_parallel_downloads">Maximaal aantal parallele downloads wanneer het downloadbeheer van Neo Store wordt gebruikt.</string>
+    <string name="download_stats_notification_title">Downloadstatistieken verversen</string>
+    <string name="download_stats_notification_pending">Voorbereiden om downloadstatistieken op te halen</string>
+    <string name="download_stats_notification_message">Maandelijkse data ophalen: %1$d/%2$d\n%3$d geüpdatet, %4$d onveranderd, %5$d mislukt</string>
+    <string name="batch_sync_progress_FORMAT">Archieven synchroniseren: %1$d/%2$d</string>
+    <string name="dlstats_provider">Downloadstatistiekendienst</string>
+    <string name="dlstats_none">Geen dienst</string>
+    <string name="dlstats_izzyondroid">IzzyOnDroid</string>
 </resources>
