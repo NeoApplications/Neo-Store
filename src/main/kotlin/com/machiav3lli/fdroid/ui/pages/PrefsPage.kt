@@ -43,10 +43,6 @@ fun PrefsPage(pageIndex: Int, navigateUp: () -> Unit) {
     val currentPageIndex = remember { derivedStateOf { pagerState.currentPage } }
     val currentPage by remember { derivedStateOf { pages[currentPageIndex.value] } }
 
-    BackHandler {
-        navigateUp()
-    }
-
     NeoNavigationSuiteScaffold(
         pages = pages,
         selectedPage = currentPageIndex,
@@ -66,7 +62,7 @@ fun PrefsPage(pageIndex: Int, navigateUp: () -> Unit) {
                         TopBarAction(
                             modifier = Modifier.padding(top = 8.dp),
                             icon = Phosphor.House,
-                            description = stringResource(id = R.string.settings)
+                            description = stringResource(id = R.string.main_page)
                         ) {
                             navigateUp()
                         }

@@ -72,43 +72,42 @@ fun CategoriesList(
     val expanded by remember(selectedKey.value) { mutableStateOf(selectedKey.value.isNotEmpty()) }
     val scrollState = rememberLazyListState()
 
-    val categories: LazyListScope.(SharedTransitionScope, AnimatedVisibilityScope) -> Unit =
-        { sts, avs ->
-            itemsIndexed(items, key = { i, item -> item.first }) { index, item ->
-                CategoryItem(
-                    icon = item.third,
-                    label = item.second,
-                    isExpanded = expanded,
-                    isSelected = item.first == selectedKey.value,
-                    avs = avs,
-                    sts = sts,
-                    onClick = {
-                        selectedKey.value = item.first
-                        onClick(item.first)
-                        scrollState.layoutInfo.visibleItemsInfo.none { it.index == index }.let {
-                            scope.launch {
-                                scrollState.animateScrollToItem((index - 1).coerceAtLeast(0))
-                            }
-                        }
-                    }
-                )
-            }
-        }
-
     SharedTransitionLayout {
         AnimatedContent(
-            expanded,
+            targetState = expanded,
             modifier = modifier.fillMaxWidth(),
             label = "categories_list"
-        ) { expanded ->
-            if (expanded) {
+        ) { isExpanded ->
+            val categories: LazyListScope.() -> Unit = {
+                itemsIndexed(items, key = { _, item -> item.first }) { index, item ->
+                    CategoryItem(
+                        icon = item.third,
+                        label = item.second,
+                        isExpanded = isExpanded,
+                        isSelected = item.first == selectedKey.value,
+                        avs = this@AnimatedContent,
+                        sts = this@SharedTransitionLayout,
+                        onClick = {
+                            selectedKey.value = item.first
+                            onClick(item.first)
+                            scrollState.layoutInfo.visibleItemsInfo.none { it.index == index }.let {
+                                scope.launch {
+                                    scrollState.animateScrollToItem((index - 1).coerceAtLeast(0))
+                                }
+                            }
+                        }
+                    )
+                }
+            }
+
+            if (isExpanded) {
                 Column {
                     LazyRow(
                         modifier = modifier.fillMaxWidth(),
                         state = scrollState,
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        content = { categories(this@SharedTransitionLayout, this@AnimatedContent) },
+                        content = categories,
                     )
                     HorizontalDivider()
                 }
@@ -120,7 +119,7 @@ fun CategoriesList(
                     state = scrollState,
                     contentPadding = PaddingValues(vertical = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
-                    content = { categories(this@SharedTransitionLayout, this@AnimatedContent) },
+                    content = categories,
                 )
             }
         }

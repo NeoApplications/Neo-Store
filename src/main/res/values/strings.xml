@@ -474,4 +474,5 @@
     <string name="dlstats_izzyondroid">IzzyOnDroid</string>
     <string name="duplicate_repo_address_title">Failed adding a repository</string>
     <string name="duplicate_repo_address_FORMAT">The address %1$s is a duplicate of an already existing repo.</string>
+    <string name="main_page">Main page</string>
 </resources>
