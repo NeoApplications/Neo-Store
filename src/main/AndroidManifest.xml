@@ -108,7 +108,7 @@
                 <data android:scheme="fdroidrepos" />
             </intent-filter>
 
-            <intent-filter> <!--TODO handle opening prefs directly-->
+            <intent-filter>
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

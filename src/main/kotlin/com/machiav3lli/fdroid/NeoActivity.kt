@@ -257,6 +257,10 @@ class NeoActivity : AppCompatActivity() {
                     ?.let { navigateProduct(it) }
             }
 
+            Intent.ACTION_APPLICATION_PREFERENCES -> {
+                navStack.navigateUnique(NavRoute.Prefs())
+            }
+
             ACTION_UPDATES                        -> { // TODO Handle EXTRA_UPDATES
                 if (!intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)) {
                     intent.putExtra(EXTRA_INTENT_HANDLED, true)
