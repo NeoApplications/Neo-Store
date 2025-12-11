@@ -19,6 +19,7 @@ package com.machiav3lli.fdroid.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation3.runtime.NavKey
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -88,7 +89,7 @@ sealed class NavItem(
 }
 
 @Serializable
-open class NavRoute {
+sealed class NavRoute : NavKey {
     @Serializable
     data object Permissions : NavRoute()
 
