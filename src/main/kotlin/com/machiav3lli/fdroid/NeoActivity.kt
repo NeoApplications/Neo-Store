@@ -23,8 +23,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
@@ -34,8 +34,9 @@ import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
-import com.machiav3lli.fdroid.ui.navigation.AppNavHost
+import com.machiav3lli.fdroid.ui.navigation.AppNavDisplay
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
+import com.machiav3lli.fdroid.ui.navigation.navigateUnique
 import com.machiav3lli.fdroid.utils.InstallUtils
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.extension.text.pathCropped
@@ -75,7 +76,7 @@ class NeoActivity : AppCompatActivity() {
         class AddRepo(val address: String?, val fingerprint: String?) : SpecialIntent()
     }
 
-    private lateinit var navController: NavHostController
+    private lateinit var navStack: NavBackStack<NavRoute>
 
     private var currentTheme by Delegates.notNull<Int>()
     private val mainViewModel: MainVM by viewModel()
@@ -111,21 +112,21 @@ class NeoActivity : AppCompatActivity() {
                     else                             -> isDarkTheme
                 }
             ) {
-                navController = rememberNavController()
+                navStack = rememberNavBackStack(NavRoute.Permissions) as NavBackStack<NavRoute>
 
                 Scaffold(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                     contentColor = MaterialTheme.colorScheme.onBackground,
                 ) {
-                    LaunchedEffect(key1 = navController) {
+                    LaunchedEffect(key1 = navStack) {
                         if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
                             handleIntent(intent)
                         }
                     }
 
-                    AppNavHost(
+                    AppNavDisplay(
+                        backStack = navStack,
                         modifier = Modifier.imePadding(),
-                        navController = navController,
                     )
                 }
             }
@@ -181,11 +182,11 @@ class NeoActivity : AppCompatActivity() {
         when (specialIntent) {
             is SpecialIntent.Updates -> {
                 // TODO directly update the apps??
-                navController.navigate(NavRoute.Main(Preferences.DefaultTab.Installed.index))
+                navStack.navigateUnique(NavRoute.Main(Preferences.DefaultTab.Installed.index))
             }
 
             is SpecialIntent.AddRepo -> {
-                navController.navigate(NavRoute.Prefs(2))
+                navStack.navigateUnique(NavRoute.Prefs(2))
                 prefsViewModel.setIntent(
                     specialIntent.address,
                     specialIntent.fingerprint,
@@ -215,7 +216,7 @@ class NeoActivity : AppCompatActivity() {
 
         // TODO Handle Intent.ACTION_APPLICATION_PREFERENCES (android.intent.action.APPLICATION_PREFERENCES)
         when (intent?.action) {
-            Intent.ACTION_VIEW          -> {
+            Intent.ACTION_VIEW                    -> {
                 if (
                     data != null
                     && fingerprintText != null
@@ -250,20 +251,20 @@ class NeoActivity : AppCompatActivity() {
                 }
             }
 
-            Intent.ACTION_SHOW_APP_INFO -> {
+            Intent.ACTION_SHOW_APP_INFO           -> {
                 intent.getStringExtra(Intent.EXTRA_PACKAGE_NAME)
                     ?.takeIf { it.isNotBlank() }
                     ?.let { navigateProduct(it) }
             }
 
-            ACTION_UPDATES              -> { // TODO Handle EXTRA_UPDATES
+            ACTION_UPDATES                        -> { // TODO Handle EXTRA_UPDATES
                 if (!intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)) {
                     intent.putExtra(EXTRA_INTENT_HANDLED, true)
                     handleSpecialIntent(SpecialIntent.Updates)
                 }
             }
 
-            ACTION_INSTALL              -> handleSpecialIntent(
+            ACTION_INSTALL                        -> handleSpecialIntent(
                 SpecialIntent.Install(
                     intent.packageNameFromURI,
                     intent.getStringExtra(EXTRA_CACHE_FILE_NAME)
