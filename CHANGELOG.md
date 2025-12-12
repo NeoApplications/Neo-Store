@@ -1,6 +1,45 @@
 CHANGELOG
 =========
 
+1.2.0 (11.12.2025) 60+ Commits 19 Translations
+------------------
+
+### Function
+
+- Add: Preference for download stats provider or to disable it
+- Add: Progress notification to download-stats worker
+- Add: Duplicate address check on adding new repo
+- Add: Own viewmodel to RepoPage
+- Fix: Downloads deadlock in a semaphore one retries
+- Fix: Apply installer changes directly
+- Fix: Randomly mixing selected releases with wrong repositories for installs
+- Update: Replace AppNavHost with Nav3-based AppNavDisplay
+- Update: Combine Sync workers into one that handles all syncs
+- Update: Revamp Sync notifications handling to improve reliability
+- Update: Improve download exceptions handling
+- Update: Reduce number of implicit download retries
+- Update: Clean up base installer logic for better performance
+- Update: Revamp all installers improving reliability and performance
+- Update: Revamp RepositoryUpdater, simplifying logic and improving performance
+- Update: Differentiate between downloads that are rated or not
+- Update: Reduce coroutine context switches in all relevant worker, install and app classes
+- Update: Improve handling of Workers' progress in WorkerManager
+- Update: Limit number of parallel running download-stats downloads to 3
+- Update: Remove unneeded change of flow's dispatcher in repositories
+
+### UI/UX
+
+- Add: New download card layout
+- Add: Icons for new/renamed categories
+- Add: Handling for settings shortcut from system's app info
+- Fix: All categories filter option
+- Fix: Showing only possible theme/installer/locking options
+- Update: Improve reporting failure of syncs
+- Update: Localized sort of categories in Explore page
+- Update: Replace current downloads list with expanding fading card
+- Update: Revamp product card and releases layout
+- Remove: Hide option for bottom search bar (need to be redesigned)
+
 1.1.5 (11.11.2025) 5 Commits 2 Translations
 ------------------
 

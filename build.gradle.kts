@@ -30,17 +30,10 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1110
-        versionName = "1.1.5"
+        versionCode = 1200
+        versionName = "1.2.0-rc08"
         buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
         buildConfigField("String[]", "DETECTED_LOCALES", langsListString)
-    }
-
-    sourceSets.forEach { source ->
-        val javaDir = source.java.srcDirs.find { it.name == "java" }
-        source.java {
-            srcDir(File(javaDir?.parentFile, "kotlin"))
-        }
     }
 
     compileOptions {

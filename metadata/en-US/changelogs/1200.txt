@@ -1,0 +1,8 @@
+Add: Preference for download stats provider or to disable it
+Add: Progress notification to download-stats worker
+Fix: Apply installer changes directly
+Fix: Showing only possible theme/installer/locking options
+Update: Revamp all backend workers, repositories and installers for far better performance
+Update: Improve reporting failure of syncs or downloads
+Update: Localized sort of categories in Explore page
+plus many more in over 60 commits & 19 translation contributions
