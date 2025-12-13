@@ -49,14 +49,14 @@ inline fun <reified K : NavRoute> EntryProviderScope<NavRoute>.slideInEntry(
 ) {
     entry<K>(
         metadata = NavDisplay.transitionSpec {
-            slideInHorizontally(tween(1000)) { it } togetherWith
-                    slideOutHorizontally(tween(1000)) { -it }
+            slideInHorizontally(tween(600)) { it } togetherWith
+                    slideOutHorizontally(tween(600)) { -it }
         } + NavDisplay.popTransitionSpec {
-            slideInHorizontally(tween(1000)) { -it } togetherWith
-                    slideOutHorizontally(tween(1000)) { it }
+            slideInHorizontally(tween(600)) { -it } togetherWith
+                    slideOutHorizontally(tween(600)) { it }
         } + NavDisplay.predictivePopTransitionSpec {
-            slideInHorizontally(tween(1000)) { -it } togetherWith
-                    slideOutHorizontally(tween(1000)) { it }
+            slideInHorizontally(tween(600)) { -it } togetherWith
+                    slideOutHorizontally(tween(600)) { it }
         }
     ) {
         content(it)
@@ -68,14 +68,14 @@ inline fun <reified K : NavRoute> EntryProviderScope<NavRoute>.fadeInEntry(
 ) {
     entry<K>(
         metadata = NavDisplay.transitionSpec {
-            fadeIn(tween(1000), 0.3f) togetherWith
-                    fadeOut(tween(1000), 0.3f)
+            fadeIn(tween(600), 0.3f) togetherWith
+                    fadeOut(tween(600), 0.3f)
         } + NavDisplay.popTransitionSpec {
-            fadeIn(tween(1000), 0.3f) togetherWith
-                    fadeOut(tween(1000), 0.3f)
+            fadeIn(tween(600), 0.3f) togetherWith
+                    fadeOut(tween(600), 0.3f)
         } + NavDisplay.predictivePopTransitionSpec {
-            fadeIn(tween(1000), 0.3f) togetherWith
-                    fadeOut(tween(1000), 0.3f)
+            fadeIn(tween(600), 0.3f) togetherWith
+                    fadeOut(tween(600), 0.3f)
         }
     ) {
         content(it)
