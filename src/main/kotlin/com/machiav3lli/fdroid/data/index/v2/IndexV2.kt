@@ -62,7 +62,7 @@ data class IndexV2(
         val summary: Localized<String>? = null,
         val description: Localized<String>? = null,
         val icon: Localized<File>? = null,
-        val categories: List<String>,
+        val categories: List<String> = emptyList(),
         val changelog: String? = null,
         val issueTracker: String? = null,
         val lastUpdated: Long = 0,
