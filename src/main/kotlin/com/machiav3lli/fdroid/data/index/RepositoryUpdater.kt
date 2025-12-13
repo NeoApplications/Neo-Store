@@ -242,7 +242,7 @@ object RepositoryUpdater : KoinComponent {
                 e
             ) else throw UpdateException(
                 ErrorType.NETWORK,
-                e.message ?: "Network error",
+                "Network error: ${e.message}\n${e.cause?.message}",
                 e
             )
         }
@@ -354,7 +354,7 @@ object RepositoryUpdater : KoinComponent {
                 e
             ) else throw UpdateException(
                 ErrorType.NETWORK,
-                e.message ?: "Network error",
+                "Network error: ${e.message}\n${e.cause?.message}",
                 e
             )
         }
@@ -507,30 +507,30 @@ object RepositoryUpdater : KoinComponent {
 
                     is IndexV2Parser.ParsingException,
                          -> when (e.cause) {
-                        is IndexV2Parser.BaseParsingException -> {
+                        is IndexV2Parser.BaseParsingException
+                             -> {
                             Cache.getIndexV2File(context, repository.id).delete()
                             SyncWorker.enqueueManual(Pair(repository.id, repository.name))
                             false
                         }
 
-                        is IndexV2Parser.DiffParsingException -> {
-                            throw UpdateException(
-                                ErrorType.PARSING,
-                                e.message.orEmpty(),
-                                e.cause ?: e
-                            )
-                        }
-
-                        else                                  -> throw UpdateException(
+                        is IndexV2Parser.DiffParsingException
+                             -> throw UpdateException(
                             ErrorType.PARSING,
-                            e.message.orEmpty(),
+                            "Error parsing index: ${e.message}\n${e.cause?.message}",
+                            e.cause ?: e
+                        )
+
+                        else -> throw UpdateException(
+                            ErrorType.PARSING,
+                            "Error parsing index: ${e.message}\n${e.cause?.message}",
                             e.cause ?: e
                         )
                     }
 
                     else -> throw UpdateException(
                         ErrorType.PARSING,
-                        "Error parsing index",
+                        "Error parsing index: ${e.message}\n${e.cause?.message}",
                         e
                     )
                 }
@@ -863,7 +863,7 @@ object RepositoryUpdater : KoinComponent {
             Log.e("RepositoryUpdater", "Error processing index-v2", e)
             throw UpdateException(
                 ErrorType.PARSING,
-                "Error processing index-v2: ${e.message}",
+                "Error processing index-v2: ${e.message}\n${e.cause?.message}",
                 e
             )
         } finally {

@@ -209,6 +209,22 @@ fun Context.reportSyncFail(
                 )
             }\n$error"
         )
+        .setStyle(
+            NotificationCompat.InboxStyle().also { style ->
+                style.addLine(
+                    getString(
+                        when (errorType) {
+                            RepositoryUpdater.ErrorType.NETWORK    -> R.string.network_error_DESC
+                            RepositoryUpdater.ErrorType.HTTP       -> R.string.http_error_DESC
+                            RepositoryUpdater.ErrorType.VALIDATION -> R.string.validation_index_error_DESC
+                            RepositoryUpdater.ErrorType.PARSING    -> R.string.parsing_index_error_DESC
+                            else                                   -> R.string.unknown_error_DESC // RepositoryUpdater.ErrorType.NONE
+                        }
+                    )
+                )
+                error.split("\n").forEach { style.addLine(it) }
+            }
+        )
         .setTicker(title)
         .setOngoing(false)
         .setSilent(true)
