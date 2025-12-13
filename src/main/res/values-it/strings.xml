@@ -475,4 +475,7 @@
     <string name="dlstats_provider">Scarica provider di statistiche</string>
     <string name="dlstats_none">Nessun provider</string>
     <string name="dlstats_izzyondroid">IzzyOnDroid</string>
+    <string name="duplicate_repo_address_title">Aggiunta di un repository non riuscita</string>
+    <string name="duplicate_repo_address_FORMAT">L\'indirizzo %1$s è un duplicato di un repository già esistente.</string>
+    <string name="main_page">Pagina principale</string>
 </resources>
