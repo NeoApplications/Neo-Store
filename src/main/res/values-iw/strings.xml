@@ -232,4 +232,5 @@
         <item quantity="other">(‎-%d נקודות פרטיות)</item>
     </plurals>
     <string name="pending">בהמתנה</string>
+    <string name="main_page">העמוד הראשי</string>
 </resources>
