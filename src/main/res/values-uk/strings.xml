@@ -470,4 +470,14 @@
     <string name="trending_from_neostore">У тренді в Neo Store</string>
     <string name="shizuku_installer">Встановлювач Shizuku</string>
     <string name="max_parallel_downloads">Максимальна кількість паралельних завантажень при використанні менеджера завантажень Neo Store.</string>
+    <string name="download_stats_notification_title">Оновлення статистики завантажень</string>
+    <string name="download_stats_notification_pending">Підготовка до отримання статистики завантажень</string>
+    <string name="download_stats_notification_message">Щомісячне отримання даних виконується: %1$d / %2$d\n%3$d оновлено, %4$d не змінено, %5$d не вдалося</string>
+    <string name="batch_sync_progress_FORMAT">Синхронізація репозиторіїв: %1$d / %2$d</string>
+    <string name="dlstats_provider">Завантажити статистику постачальника</string>
+    <string name="dlstats_none">Немає постачальника</string>
+    <string name="dlstats_izzyondroid">IzzyOnDroid</string>
+    <string name="duplicate_repo_address_title">Не вдалося додати репозиторій</string>
+    <string name="duplicate_repo_address_FORMAT">Адреса %1$s є дублікатом вже наявного репозиторію.</string>
+    <string name="main_page">Головна сторінка</string>
 </resources>
