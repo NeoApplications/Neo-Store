@@ -428,7 +428,6 @@
     <string name="rb_badge">Yeniden üretilebilir derleme rozeti</string>
     <string name="rb_provider">Yeniden üretilebilir derleme kayıtları sağlayıcısı</string>
     <string name="rb_none">Sağlayıcı yok</string>
-    <string name="rb_izzyondroid"></string>
     <string name="syncing_repositories_FORMAT">%d depoları eşitleniyor</string>
     <string name="new_sensitive_permission_title">Yeni Hassas İzin</string>
     <string name="sensitive_permission_detected_FORMAT">%1$s uygulaması yeni hassas izin talep ediyor</string>
