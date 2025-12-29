@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.SystemBarStyle
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -37,6 +38,7 @@ import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.AppNavDisplay
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
+import com.machiav3lli.fdroid.ui.navigation.navigate
 import com.machiav3lli.fdroid.ui.navigation.navigateUnique
 import com.machiav3lli.fdroid.utils.InstallUtils
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
@@ -114,6 +116,10 @@ class NeoActivity : AppCompatActivity() {
                 }
             ) {
                 navStack = rememberNavBackStack(NavRoute.Permissions) as NavBackStack<NavRoute>
+
+                BackHandler(navStack.size == 1) {
+                    moveTaskToBack(true)
+                }
 
                 Scaffold(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
@@ -283,7 +289,7 @@ class NeoActivity : AppCompatActivity() {
     }
 
     internal fun navigateProduct(packageName: String) {
-        mainViewModel.setNavigatorRole(ListDetailPaneScaffoldRole.Detail, packageName)
+        navStack.navigate(NavRoute.App(packageName))
     }
 
     internal fun navigateSortFilterSheet(page: NavItem) {

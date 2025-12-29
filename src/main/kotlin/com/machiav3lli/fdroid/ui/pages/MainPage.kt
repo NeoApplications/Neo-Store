@@ -10,11 +10,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
-import androidx.compose.material3.adaptive.navigation.BackNavigationBehavior
-import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
-import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -31,7 +27,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.POPUP_LONG
 import com.machiav3lli.fdroid.POPUP_NONE
@@ -56,7 +51,6 @@ import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.ui.navigation.NeoNavigationSuiteScaffold
 import com.machiav3lli.fdroid.ui.navigation.SlidePager
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
-import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.getLocaleDateString
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import com.machiav3lli.fdroid.viewmodels.SearchVM
@@ -74,7 +68,6 @@ fun MainPage(
     val context = LocalContext.current
     val mActivity = LocalActivity.current as NeoActivity
     val focusManager = LocalFocusManager.current
-    val panesNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
     val scope = rememberCoroutineScope()
 
     val successfulSyncs by viewModel.successfulSyncs.collectAsState(initial = LatestSyncs(0L, 0L))
@@ -89,13 +82,8 @@ fun MainPage(
     )
     val pagerState = rememberPagerState(initialPage = pageIndex, pageCount = { pages.size })
     val currentPageIndex = remember { derivedStateOf { pagerState.currentPage } }
-    val navigatorState by viewModel.navigationState.collectAsStateWithLifecycle()
     val inSearchMode = rememberSaveable { mutableStateOf(false) }
     val searchState by searchVM.pageState.collectAsState()
-
-    BackHandler {
-        mActivity.moveTaskToBack(true)
-    }
 
     BackHandler(inSearchMode.value) {
         searchVM.setSearchQuery("")
@@ -108,17 +96,9 @@ fun MainPage(
             openSyncDialog.value = true
     }
 
-    LaunchedEffect(navigatorState) {
-        scope.launch {
-            if (navigatorState.second != panesNavigator.currentDestination?.contentKey.toString())
-                panesNavigator.navigateTo(navigatorState.first, navigatorState.second)
-        }
-    }
-
     NeoNavigationSuiteScaffold(
         pages = pages,
         selectedPage = currentPageIndex,
-        backToPage = { viewModel.setNavigatorRole(ListDetailPaneScaffoldRole.List, "") },
         onItemClick = { index ->
             if (inSearchMode.value) inSearchMode.value = false
             scope.launch {
@@ -126,117 +106,89 @@ fun MainPage(
             }
         }
     ) {
-        NavigableListDetailPaneScaffold(
-            navigator = panesNavigator,
-            listPane = {
-                //AnimatedPane { } TODO re-add when recomposition issue fixed
-                Scaffold(
-                    containerColor = Color.Transparent,
-                    contentColor = MaterialTheme.colorScheme.onBackground,
-                    topBar = {
-                        TopBar {
-                            ExpandedSearchView(
-                                query = searchState.query,
-                                expanded = inSearchMode,
-                                onQueryChanged = { newQuery ->
-                                    if (newQuery != searchState.query)
-                                        searchVM.setSearchQuery(newQuery)
-                                },
-                                onClose = {
-                                    searchVM.setSearchQuery("")
-                                },
-                            )
-                            TopBarAction(
-                                modifier = Modifier.padding(top = 8.dp),
-                                icon = Phosphor.ArrowsClockwise,
-                                description = stringResource(id = R.string.sync_repositories),
-                                onLongClick = {
-                                    showPopup.intValue = POPUP_LONG
-                                },
-                                onClick = {
-                                    if (System.currentTimeMillis() - Preferences[Preferences.Key.LastManualSyncTime] >= 10_000L) {
-                                        Preferences[Preferences.Key.LastManualSyncTime] =
-                                            System.currentTimeMillis()
-                                        scope.launch { BatchSyncWorker.enqueue(SyncRequest.MANUAL) }
-                                    } else {
-                                        showPopup.intValue = POPUP_SHORT
-                                    }
-                                }
-                            )
-                            TopBarAction(
-                                modifier = Modifier.padding(top = 8.dp),
-                                icon = Phosphor.GearSix,
-                                description = stringResource(id = R.string.settings)
-                            ) {
-                                navigator(NavRoute.Prefs())
-                            }
-
-                            if (showPopup.intValue != POPUP_NONE) {
-                                Tooltip(
-                                    when (showPopup.intValue) {
-                                        POPUP_LONG -> stringResource(
-                                            id = R.string.last_successful_sync,
-                                            context.getLocaleDateString(successfulSyncs.latest),
-                                            context.getLocaleDateString(successfulSyncs.latestAll),
-                                        )
-
-                                        else       -> stringResource(id = R.string.wait_to_sync)
-                                    },
-                                    showPopup
-                                )
+        Scaffold(
+            containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onBackground,
+            topBar = {
+                TopBar {
+                    ExpandedSearchView(
+                        query = searchState.query,
+                        expanded = inSearchMode,
+                        onQueryChanged = { newQuery ->
+                            if (newQuery != searchState.query)
+                                searchVM.setSearchQuery(newQuery)
+                        },
+                        onClose = {
+                            searchVM.setSearchQuery("")
+                        },
+                    )
+                    TopBarAction(
+                        modifier = Modifier.padding(top = 8.dp),
+                        icon = Phosphor.ArrowsClockwise,
+                        description = stringResource(id = R.string.sync_repositories),
+                        onLongClick = {
+                            showPopup.intValue = POPUP_LONG
+                        },
+                        onClick = {
+                            if (System.currentTimeMillis() - Preferences[Preferences.Key.LastManualSyncTime] >= 10_000L) {
+                                Preferences[Preferences.Key.LastManualSyncTime] =
+                                    System.currentTimeMillis()
+                                scope.launch { BatchSyncWorker.enqueue(SyncRequest.MANUAL) }
+                            } else {
+                                showPopup.intValue = POPUP_SHORT
                             }
                         }
+                    )
+                    TopBarAction(
+                        modifier = Modifier.padding(top = 8.dp),
+                        icon = Phosphor.GearSix,
+                        description = stringResource(id = R.string.settings)
+                    ) {
+                        navigator(NavRoute.Prefs())
                     }
-                ) { paddingValues ->
-                    Crossfade(inSearchMode) { searching ->
-                        when {
-                            searching.value -> {
-                                Box(
-                                    modifier = Modifier
-                                        .padding(paddingValues)
-                                        .blockBorderBottom()
-                                        .fillMaxSize(),
-                                ) {
-                                    SearchPage()
-                                }
-                            }
 
-                            else            -> SlidePager(
-                                modifier = Modifier
-                                    .padding(paddingValues)
-                                    .blockBorderBottom()
-                                    .fillMaxSize(),
-                                pagerState = pagerState,
-                                pageItems = pages,
-                                preComposePages = 0
-                            )
-                        }
+                    if (showPopup.intValue != POPUP_NONE) {
+                        Tooltip(
+                            when (showPopup.intValue) {
+                                POPUP_LONG -> stringResource(
+                                    id = R.string.last_successful_sync,
+                                    context.getLocaleDateString(successfulSyncs.latest),
+                                    context.getLocaleDateString(successfulSyncs.latestAll),
+                                )
+
+                                else       -> stringResource(id = R.string.wait_to_sync)
+                            },
+                            showPopup
+                        )
                     }
                 }
-            },
-            detailPane = {
-                panesNavigator.currentDestination
-                    ?.contentKey
-                    ?.let {
-                        it.toString().nullIfEmpty()?.let {
-                            AnimatedPane {
-                                AppPage(
-                                    packageName = it.toString(),
-                                    onDismiss = {
-                                        scope.launch {
-                                            panesNavigator.navigateBack(BackNavigationBehavior.PopUntilContentChange)
-                                            viewModel.setNavigatorRole(
-                                                panesNavigator.currentDestination!!.pane,
-                                                panesNavigator.currentDestination!!.contentKey.toString()
-                                            )
-                                        }
-                                    }
-                                )
-                            }
+            }
+        ) { paddingValues ->
+            Crossfade(inSearchMode) { searching ->
+                when {
+                    searching.value -> {
+                        Box(
+                            modifier = Modifier
+                                .padding(paddingValues)
+                                .blockBorderBottom()
+                                .fillMaxSize(),
+                        ) {
+                            SearchPage()
                         }
                     }
+
+                    else            -> SlidePager(
+                        modifier = Modifier
+                            .padding(paddingValues)
+                            .blockBorderBottom()
+                            .fillMaxSize(),
+                        pagerState = pagerState,
+                        pageItems = pages,
+                        preComposePages = 0
+                    )
+                }
             }
-        )
+        }
     }
 
     if (openSyncDialog.value) {
