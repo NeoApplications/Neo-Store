@@ -98,5 +98,11 @@ sealed class NavRoute : NavKey {
         NavRoute()
 
     @Serializable
+    data class App(val packageName: String) : NavRoute()
+
+    @Serializable
+    data class SortFilter(val page: String) : NavRoute()
+
+    @Serializable
     data class Prefs(val page: Int = 0) : NavRoute()
 }
