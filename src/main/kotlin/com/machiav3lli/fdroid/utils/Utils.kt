@@ -378,6 +378,16 @@ fun Context.shareReleaseIntent(appName: String, address: String) {
     startActivity(Intent.createChooser(shareIntent, "Where to share?"))
 }
 
+fun Context.shareText(title: String, content: String) {
+    val shareIntent = Intent(Intent.ACTION_SEND)
+    shareIntent.type = "text/plain"
+    shareIntent.putExtra(Intent.EXTRA_TITLE, title)
+    shareIntent.putExtra(Intent.EXTRA_SUBJECT, title)
+    shareIntent.putExtra(Intent.EXTRA_TEXT, content)
+
+    startActivity(Intent.createChooser(shareIntent, "Where to share?"))
+}
+
 fun Int.dmReasonToHttpResponse() = when (this) {
     DownloadManager.ERROR_UNKNOWN             -> HttpStatusCode.NotImplemented
     DownloadManager.ERROR_FILE_ERROR          -> HttpStatusCode.Conflict

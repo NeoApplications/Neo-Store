@@ -60,6 +60,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowUUpLeft
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Check
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShareNetwork
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TrashSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import com.machiav3lli.fdroid.ui.dialog.ActionsDialogUI
@@ -71,6 +72,7 @@ import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.extension.text.pathCropped
 import com.machiav3lli.fdroid.utils.getLocaleDateString
+import com.machiav3lli.fdroid.utils.shareText
 import com.machiav3lli.fdroid.viewmodels.RepoPageVM
 import kotlinx.coroutines.launch
 import java.net.URI
@@ -189,11 +191,19 @@ fun RepoPage(
                     )
                 },
                 trailingContent = {
-                    TopBarAction(
-                        icon = Phosphor.X,
-                        description = stringResource(id = R.string.dismiss),
-                    ) {
-                        onDismiss()
+                    Row {
+                        TopBarAction(
+                            icon = Phosphor.ShareNetwork,
+                            description = stringResource(id = R.string.share),
+                        ) {
+                            context.shareText(repo.name, repo.intentAddress)
+                        }
+                        TopBarAction(
+                            icon = Phosphor.X,
+                            description = stringResource(id = R.string.dismiss),
+                        ) {
+                            onDismiss()
+                        }
                     }
                 }
             )
