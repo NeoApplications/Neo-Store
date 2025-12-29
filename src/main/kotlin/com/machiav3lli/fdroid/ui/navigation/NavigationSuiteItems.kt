@@ -37,7 +37,6 @@ fun NeoNavigationSuiteScaffold(
     selectedPage: State<Int>,
     onItemClick: (Int) -> Unit,
     hideNavigation: Boolean = false,
-    backToPage: (suspend () -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -84,8 +83,6 @@ fun NeoNavigationSuiteScaffold(
                     itemColors = itemColors,
                     onClick = {
                         scope.launch {
-                            // TODO re-evaluate its need
-                            backToPage?.invoke()
                             onItemClick(index)
                         }
                     }

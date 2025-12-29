@@ -61,7 +61,7 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
 
     private val workManager: WorkManager by inject()
     private val actionReceiver: ActionReceiver by inject()
-    private var langContext: Context = ContextWrapperX.wrap(appContext)
+    private val langContext: Context = ContextWrapperX.wrap(appContext)
     private val notificationManager: NotificationManagerCompat by inject()
     private val downloadedRepo: DownloadedRepository by inject()
     private val productRepo: ProductsRepository by inject()

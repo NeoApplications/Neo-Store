@@ -82,7 +82,7 @@ fun BlockCard(
         color = MaterialTheme.colorScheme.surfaceContainerLowest
     ) {
         Column(modifier = modifier.padding(8.dp)) {
-            ExpandableBlockHeader(heading)
+            ExpandablePrivacyHeader(heading)
             content()
         }
     }

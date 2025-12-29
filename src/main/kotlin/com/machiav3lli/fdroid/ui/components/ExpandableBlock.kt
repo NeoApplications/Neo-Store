@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -27,13 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.machiav3lli.fdroid.ui.components.privacy.PrivacyItemHeader
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDownUp
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUpDown
 
 @Composable
-fun ExpandableBlock(
+fun ExpandablePrivacyBlock(
     modifier: Modifier = Modifier,
     heading: String? = null,
     preExpanded: Boolean = false,
@@ -53,7 +54,7 @@ fun ExpandableBlock(
         color = surfaceColor
     ) {
         Column {
-            ExpandableBlockHeader(heading, expanded)
+            ExpandablePrivacyHeader(heading, expanded)
             AnimatedVisibility(visible = expanded) {
                 Column(modifier.padding(bottom = 8.dp)) {
                     content()
@@ -91,7 +92,7 @@ fun ExpandableItemsBlock(
         color = surfaceColor
     ) {
         Column(modifier = modifier) {
-            PrivacyItemHeader(heading, icon, expanded)
+            ExpandableItemsHeader(heading, icon, expanded)
             AnimatedVisibility(visible = expanded) {
                 Column(
                     Modifier.padding(
@@ -108,7 +109,7 @@ fun ExpandableItemsBlock(
 }
 
 @Composable
-fun ExpandableBlockHeader(
+fun ExpandablePrivacyHeader(
     heading: String? = null,
     expanded: Boolean = false,
     positive: Boolean = true,
@@ -137,6 +138,45 @@ fun ExpandableBlockHeader(
                     contentDescription = heading
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun ExpandableItemsHeader(
+    heading: String? = null,
+    icon: ImageVector? = null,
+    expanded: Boolean = false,
+    withIcon: Boolean = true,
+) {
+    var spacerHeight = 0
+    if (heading == null) spacerHeight += 8
+    Spacer(modifier = Modifier.requiredHeight(spacerHeight.dp))
+    if (heading != null) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            icon?.let {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = heading
+                )
+            }
+            Text(
+                modifier = Modifier.weight(1f),
+                text = heading,
+                style = MaterialTheme.typography.titleSmall,
+            )
+            if (withIcon) Icon(
+                modifier = Modifier.size(24.dp),
+                imageVector = if (expanded) Phosphor.CaretDownUp
+                else Phosphor.CaretUpDown,
+                contentDescription = heading
+            )
         }
     }
 }

@@ -20,13 +20,13 @@ import com.machiav3lli.fdroid.data.entity.DownloadState
     ]
 )
 data class Downloaded(
-    var packageName: String = "",
-    var version: String = "",
+    val packageName: String = "",
+    val version: String = "",
     @ColumnInfo(defaultValue = "0")
-    var repositoryId: Long = 0L,
-    var cacheFileName: String = "",
-    var changed: Long = 0L,
-    var state: DownloadState,
+    val repositoryId: Long = 0L,
+    val cacheFileName: String = "",
+    val changed: Long = 0L,
+    val state: DownloadState,
 ) {
     val itemKey: String
         get() = "$packageName-$repositoryId-$version-$cacheFileName"

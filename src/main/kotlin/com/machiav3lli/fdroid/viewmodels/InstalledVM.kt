@@ -65,27 +65,21 @@ class InstalledVM(
         }
     }.distinctUntilChanged()
 
-    private val downloaded = downloadedRepo.getAllFlow()
-        .debounce(100L)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            initialValue = emptyList()
-        )
-
-    val sortedDownloads = downloaded
+    val sortedDownloads = downloadedRepo.getAllFlow()
         .map { it.sortedByDescending { it.changed / 10_000L } }
+        .debounce(100L)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,
             initialValue = emptyList()
         )
 
-    private val activeDownloads = downloaded
+    private val activeDownloads = downloadedRepo.getAllFlow()
         .map {
             it.filter { it.state.isActive }
                 .sortedLocalized { state.name }
         }
+        .debounce(100L)
 
     val installedPageState: StateFlow<InstalledPageState> = combine(
         installed,
