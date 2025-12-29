@@ -68,14 +68,14 @@ inline fun <reified K : NavRoute> EntryProviderScope<NavRoute>.fadeInEntry(
 ) {
     entry<K>(
         metadata = NavDisplay.transitionSpec {
-            fadeIn(tween(600), 0.3f) togetherWith
-                    fadeOut(tween(600), 0.3f)
+            fadeIn(tween(400), 0.3f) togetherWith
+                    fadeOut(tween(400), 0.3f)
         } + NavDisplay.popTransitionSpec {
-            fadeIn(tween(600), 0.3f) togetherWith
-                    fadeOut(tween(600), 0.3f)
+            fadeIn(tween(400), 0.3f) togetherWith
+                    fadeOut(tween(400), 0.3f)
         } + NavDisplay.predictivePopTransitionSpec {
-            fadeIn(tween(600), 0.3f) togetherWith
-                    fadeOut(tween(600), 0.3f)
+            fadeIn(tween(400), 0.3f) togetherWith
+                    fadeOut(tween(400), 0.3f)
         }
     ) {
         content(it)
