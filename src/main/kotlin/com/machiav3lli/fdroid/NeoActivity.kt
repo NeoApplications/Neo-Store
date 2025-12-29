@@ -35,6 +35,7 @@ import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.AppNavDisplay
+import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.ui.navigation.navigateUnique
 import com.machiav3lli.fdroid.utils.InstallUtils
@@ -283,6 +284,10 @@ class NeoActivity : AppCompatActivity() {
 
     internal fun navigateProduct(packageName: String) {
         mainViewModel.setNavigatorRole(ListDetailPaneScaffoldRole.Detail, packageName)
+    }
+
+    internal fun navigateSortFilterSheet(page: NavItem) {
+        navStack.navigateUnique(NavRoute.SortFilter(page.destination))
     }
 
     private fun showSearchPage(query: String? = null) {

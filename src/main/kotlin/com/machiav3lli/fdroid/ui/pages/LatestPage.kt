@@ -1,6 +1,6 @@
 package com.machiav3lli.fdroid.ui.pages
 
-import androidx.activity.compose.BackHandler
+import android.annotation.SuppressLint
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,12 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -26,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -47,8 +42,8 @@ import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.LatestVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
-import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LatestPage(
@@ -62,7 +57,6 @@ fun LatestPage(
     val pageState by viewModel.pageState.collectAsState()
     val dataState by mainVM.dataState.collectAsState()
 
-    val scaffoldState = rememberBottomSheetScaffoldState()
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
     val notModifiedSortFilter by remember(pageState.sortFilter) {
@@ -106,158 +100,135 @@ fun LatestPage(
         }
     }
 
-    BackHandler(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
-        scope.launch { scaffoldState.bottomSheetState.partialExpand() }
-    }
-
-    BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        sheetPeekHeight = 0.dp,
-        sheetDragHandle = null,
-        containerColor = Color.Transparent,
-        contentColor = MaterialTheme.colorScheme.onBackground,
-        sheetContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-        sheetShape = MaterialTheme.shapes.extraSmall,
-        sheetContent = {
-            SortFilterSheet(NavItem.Latest.destination) {
-                scope.launch {
-                    scaffoldState.bottomSheetState.partialExpand()
-                }
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        // TODO merge into one items-block
+        if (!Preferences[Preferences.Key.HideNewApps]) item(key = "newAppsTitle") {
+            Row(
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = R.string.new_applications),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(start = 8.dp),
+                )
             }
         }
-    ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-            // TODO merge into one items-block
-            if (!Preferences[Preferences.Key.HideNewApps]) item(key = "newAppsTitle") {
-                Row(
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.new_applications),
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(start = 8.dp),
-                    )
-                }
-            }
-            if (!Preferences[Preferences.Key.HideNewApps]) item(key = "newAppsCard") {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    if (Preferences[Preferences.Key.AltNewApps]) {
-                        ProductsHorizontalRecycler(
-                            modifier = Modifier.weight(1f),
-                            productsList = pageState.newProducts,
-                            repositories = dataState.reposMap,
-                        ) { item ->
-                            neoActivity.navigateProduct(item.packageName)
-                        }
-                    } else {
-                        ProductsCarousel(
-                            modifier = Modifier.weight(1f),
-                            productsList = pageState.newProducts,
-                            repositories = dataState.reposMap,
-                            favorites = dataState.favorites,
-                            onFavouriteClick = {
-                                mainVM.setFavorite(
-                                    it.packageName,
-                                    !dataState.favorites.contains(it.packageName)
+        if (!Preferences[Preferences.Key.HideNewApps]) item(key = "newAppsCard") {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if (Preferences[Preferences.Key.AltNewApps]) {
+                    ProductsHorizontalRecycler(
+                        modifier = Modifier.weight(1f),
+                        productsList = pageState.newProducts,
+                        repositories = dataState.reposMap,
+                    ) { item ->
+                        neoActivity.navigateProduct(item.packageName)
+                    }
+                } else {
+                    ProductsCarousel(
+                        modifier = Modifier.weight(1f),
+                        productsList = pageState.newProducts,
+                        repositories = dataState.reposMap,
+                        favorites = dataState.favorites,
+                        onFavouriteClick = {
+                            mainVM.setFavorite(
+                                it.packageName,
+                                !dataState.favorites.contains(it.packageName)
+                            )
+                        },
+                        onActionClick = { item, action ->
+                            val installed = pageState.installedMap[item.packageName]
+                            val installFun = {
+                                NeoApp.wm.install(
+                                    Pair(item.packageName, item.repositoryId)
                                 )
-                            },
-                            onActionClick = { item, action ->
-                                val installed = pageState.installedMap[item.packageName]
-                                val installFun = {
-                                    NeoApp.wm.install(
-                                        Pair(item.packageName, item.repositoryId)
+                            }
+
+                            when (action) {
+                                is ActionState.Install -> {
+                                    if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                        dialogKey.value =
+                                            DialogKey.Download(item.name, installFun)
+                                        openDialog.value = true
+                                    } else installFun()
+                                }
+
+                                is ActionState.Launch  -> installed?.let {
+                                    context.onLaunchClick(
+                                        it,
+                                        neoActivity.supportFragmentManager
                                     )
                                 }
 
-                                when (action) {
-                                    is ActionState.Install -> {
-                                        if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                                            dialogKey.value =
-                                                DialogKey.Download(item.name, installFun)
-                                            openDialog.value = true
-                                        } else installFun()
-                                    }
-
-                                    is ActionState.Launch  -> installed?.let {
-                                        context.onLaunchClick(
-                                            it,
-                                            neoActivity.supportFragmentManager
-                                        )
-                                    }
-
-                                    else                   -> {}
-                                }
-                            },
-                            onUserClick = { item ->
-                                neoActivity.navigateProduct(item.packageName)
-                            },
-                        )
-                    }
-                }
-            }
-            item(key = "updatedAppsTitle") {
-                Row(
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.recently_updated),
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(start = 8.dp),
+                                else                   -> {}
+                            }
+                        },
+                        onUserClick = { item ->
+                            neoActivity.navigateProduct(item.packageName)
+                        },
                     )
-                    SortFilterChip(notModified = notModifiedSortFilter) {
-                        scope.launch {
-                            scaffoldState.bottomSheetState.expand()
-                        }
-                    }
                 }
             }
-            items(
-                items = pageState.updatedProducts,
-                key = { it.packageName },
-            ) { item ->
-                ProductsListItem(
-                    item = item,
-                    repo = dataState.reposMap[item.repositoryId],
-                    isFavorite = dataState.favorites.contains(item.packageName),
-                    onUserClick = {
-                        neoActivity.navigateProduct(it.packageName)
-                    },
-                    onFavouriteClick = {
-                        mainVM.setFavorite(
-                            it.packageName,
-                            !dataState.favorites.contains(it.packageName)
-                        )
-                    },
-                    installed = pageState.installedMap[item.packageName],
-                    onActionClick = {
-                        val installed = pageState.installedMap[it.packageName]
-                        val action = {
-                            NeoApp.wm.install(
-                                Pair(it.packageName, it.repositoryId)
-                            )
-                        }
-                        if (installed != null && installed.launcherActivities.isNotEmpty())
-                            context.onLaunchClick(
-                                installed,
-                                neoActivity.supportFragmentManager
-                            )
-                        else if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                            dialogKey.value = DialogKey.Download(it.name, action)
-                            openDialog.value = true
-                        } else action()
-                    }
+        }
+        item(key = "updatedAppsTitle") {
+            Row(
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = R.string.recently_updated),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(start = 8.dp),
                 )
+                SortFilterChip(notModified = notModifiedSortFilter) {
+                    neoActivity.navigateSortFilterSheet(NavItem.Latest)
+                }
             }
+        }
+        items(
+            items = pageState.updatedProducts,
+            key = { it.packageName },
+        ) { item ->
+            ProductsListItem(
+                item = item,
+                repo = dataState.reposMap[item.repositoryId],
+                isFavorite = dataState.favorites.contains(item.packageName),
+                onUserClick = {
+                    neoActivity.navigateProduct(it.packageName)
+                },
+                onFavouriteClick = {
+                    mainVM.setFavorite(
+                        it.packageName,
+                        !dataState.favorites.contains(it.packageName)
+                    )
+                },
+                installed = pageState.installedMap[item.packageName],
+                onActionClick = {
+                    val installed = pageState.installedMap[it.packageName]
+                    val action = {
+                        NeoApp.wm.install(
+                            Pair(it.packageName, it.repositoryId)
+                        )
+                    }
+                    if (installed != null && installed.launcherActivities.isNotEmpty())
+                        context.onLaunchClick(
+                            installed,
+                            neoActivity.supportFragmentManager
+                        )
+                    else if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                        dialogKey.value = DialogKey.Download(it.name, action)
+                        openDialog.value = true
+                    } else action()
+                }
+            )
         }
     }
 

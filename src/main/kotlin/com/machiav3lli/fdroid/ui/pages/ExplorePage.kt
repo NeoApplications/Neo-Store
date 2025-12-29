@@ -1,9 +1,7 @@
 package com.machiav3lli.fdroid.ui.pages
 
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,14 +15,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -94,7 +88,6 @@ fun ExplorePage(
     }
     val exploreTab = rememberSaveable { mutableIntStateOf(0) }
 
-    val scaffoldState = rememberBottomSheetScaffoldState()
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
 
@@ -139,156 +132,127 @@ fun ExplorePage(
         }
     }
 
-    BackHandler(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
-        scope.launch { scaffoldState.bottomSheetState.partialExpand() }
-    }
-
-    BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        sheetPeekHeight = 0.dp,
-        sheetDragHandle = null,
-        containerColor = Color.Transparent,
-        contentColor = MaterialTheme.colorScheme.onBackground,
-        topBar = {
-            PrimaryTabRow(
-                containerColor = Color.Transparent,
-                selectedTabIndex = exploreTab.intValue,
-                divider = {}
-            ) {
-                TabButton(
-                    text = stringResource(id = R.string.categories),
-                    icon = Phosphor.CirclesFour,
-                    onClick = {
-                        exploreTab.intValue = 0
-                    }
-                )
-                if (Preferences[Preferences.Key.DLStatsProvider] != Preferences.DLStatsProvider.None) TabButton(
-                    text = stringResource(id = R.string.top_apps),
-                    icon = Phosphor.Asterisk,
-                    onClick = {
-                        exploreTab.intValue = 1
-                    }
-                )
-            }
-        },
-        sheetContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-        sheetShape = MaterialTheme.shapes.extraSmall,
-        sheetContent = {
-            SortFilterSheet(NavItem.Explore.destination) {
-                scope.launch {
-                    scaffoldState.bottomSheetState.partialExpand()
+    Column {
+        PrimaryTabRow(
+            containerColor = Color.Transparent,
+            selectedTabIndex = exploreTab.intValue,
+            divider = {}
+        ) {
+            TabButton(
+                text = stringResource(id = R.string.categories),
+                icon = Phosphor.CirclesFour,
+                onClick = {
+                    exploreTab.intValue = 0
                 }
-            }
+            )
+            if (Preferences[Preferences.Key.DLStatsProvider] != Preferences.DLStatsProvider.None) TabButton(
+                text = stringResource(id = R.string.top_apps),
+                icon = Phosphor.Asterisk,
+                onClick = {
+                    exploreTab.intValue = 1
+                }
+            )
         }
-    ) {
         when (exploreTab.intValue) {
             0 -> {
-                Column(
-                    Modifier
-                        .background(Color.Transparent)
-                        .fillMaxSize(),
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        AnimatedVisibility(selectedCategory.value.isNotEmpty()) {
-                            TopBarAction(
-                                icon = Phosphor.ListBullets,
-                                description = stringResource(id = R.string.categories)
-                            ) {
-                                Preferences[Preferences.Key.CategoriesFilterExplore] = ""
-                                selectedCategory.value = ""
-                                viewModel.setExploreSource(Source.NONE)
-                            }
-                        }
-                        Spacer(modifier = Modifier.weight(1f))
-                        SortFilterChip(
-                            notModified = notModifiedSortFilter,
-                            fullWidth = true,
+                    AnimatedVisibility(selectedCategory.value.isNotEmpty()) {
+                        TopBarAction(
+                            icon = Phosphor.ListBullets,
+                            description = stringResource(id = R.string.categories)
                         ) {
-                            scope.launch {
-                                scaffoldState.bottomSheetState.expand()
-                            }
+                            Preferences[Preferences.Key.CategoriesFilterExplore] = ""
+                            selectedCategory.value = ""
+                            viewModel.setExploreSource(Source.NONE)
                         }
                     }
-                    Column {
-                        CategoriesList(
-                            items = listOf(
-                                Triple(
-                                    FILTER_CATEGORY_FAV,
-                                    stringResource(id = R.string.favorite_applications),
-                                    Phosphor.HeartStraight
-                                ),
-                            ) + (categoryProductsState.categories.sortedLocalized { label }
-                                .map { Triple(it.name, it.label, it.name.appCategoryIcon) }),
-                            selectedKey = selectedCategory,
-                        ) {
-                            when (it) {
-                                FILTER_CATEGORY_FAV -> {
-                                    Preferences[Preferences.Key.CategoriesFilterExplore] =
-                                        FILTER_CATEGORY_ALL
-                                    selectedCategory.value = FILTER_CATEGORY_FAV
-                                    viewModel.setExploreSource(Source.FAVORITES)
-                                }
-
-                                else                -> {
-                                    Preferences[Preferences.Key.CategoriesFilterExplore] = it
-                                    selectedCategory.value = it
-                                    viewModel.setExploreSource(Source.AVAILABLE)
-                                }
+                    Spacer(modifier = Modifier.weight(1f))
+                    SortFilterChip(
+                        notModified = notModifiedSortFilter,
+                        fullWidth = true,
+                    ) {
+                        neoActivity.navigateSortFilterSheet(NavItem.Explore)
+                    }
+                }
+                Column {
+                    CategoriesList(
+                        items = listOf(
+                            Triple(
+                                FILTER_CATEGORY_FAV,
+                                stringResource(id = R.string.favorite_applications),
+                                Phosphor.HeartStraight
+                            ),
+                        ) + (categoryProductsState.categories.sortedLocalized { label }
+                            .map { Triple(it.name, it.label, it.name.appCategoryIcon) }),
+                        selectedKey = selectedCategory,
+                    ) {
+                        when (it) {
+                            FILTER_CATEGORY_FAV -> {
+                                Preferences[Preferences.Key.CategoriesFilterExplore] =
+                                    FILTER_CATEGORY_ALL
+                                selectedCategory.value = FILTER_CATEGORY_FAV
+                                viewModel.setExploreSource(Source.FAVORITES)
                             }
-                            scope.launch {
-                                catsListState.animateScrollToItem(0)
+
+                            else                -> {
+                                Preferences[Preferences.Key.CategoriesFilterExplore] = it
+                                selectedCategory.value = it
+                                viewModel.setExploreSource(Source.AVAILABLE)
                             }
                         }
+                        scope.launch {
+                            catsListState.animateScrollToItem(0)
+                        }
+                    }
 
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.spacedBy(4.dp),
-                            state = catsListState,
-                            contentPadding = PaddingValues(vertical = 8.dp),
-                        ) {
-                            items(
-                                items = categoryProductsState.items,
-                                key = { it.packageName }) { item ->
-                                ProductsListItem(
-                                    item = item,
-                                    repo = dataState.reposMap[item.repositoryId],
-                                    isFavorite = dataState.favorites.contains(item.packageName),
-                                    onUserClick = {
-                                        neoActivity.navigateProduct(it.packageName)
-                                    },
-                                    onFavouriteClick = {
-                                        mainState.setFavorite(
-                                            it.packageName,
-                                            !dataState.favorites.contains(it.packageName)
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        state = catsListState,
+                        contentPadding = PaddingValues(vertical = 8.dp),
+                    ) {
+                        items(
+                            items = categoryProductsState.items,
+                            key = { it.packageName }) { item ->
+                            ProductsListItem(
+                                item = item,
+                                repo = dataState.reposMap[item.repositoryId],
+                                isFavorite = dataState.favorites.contains(item.packageName),
+                                onUserClick = {
+                                    neoActivity.navigateProduct(it.packageName)
+                                },
+                                onFavouriteClick = {
+                                    mainState.setFavorite(
+                                        it.packageName,
+                                        !dataState.favorites.contains(it.packageName)
+                                    )
+                                },
+                                installed = categoryProductsState.installedMap[item.packageName],
+                                onActionClick = {
+                                    val installed =
+                                        categoryProductsState.installedMap[it.packageName]
+                                    val action = {
+                                        NeoApp.wm.install(
+                                            Pair(it.packageName, it.repositoryId)
                                         )
-                                    },
-                                    installed = categoryProductsState.installedMap[item.packageName],
-                                    onActionClick = {
-                                        val installed =
-                                            categoryProductsState.installedMap[it.packageName]
-                                        val action = {
-                                            NeoApp.wm.install(
-                                                Pair(it.packageName, it.repositoryId)
-                                            )
-                                        }
-                                        if (installed != null && installed.launcherActivities.isNotEmpty())
-                                            context.onLaunchClick(
-                                                installed,
-                                                neoActivity.supportFragmentManager
-                                            )
-                                        else if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                                            dialogKey.value = DialogKey.Download(it.name, action)
-                                            openDialog.value = true
-                                        } else action()
                                     }
-                                )
-                            }
+                                    if (installed != null && installed.launcherActivities.isNotEmpty())
+                                        context.onLaunchClick(
+                                            installed,
+                                            neoActivity.supportFragmentManager
+                                        )
+                                    else if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                        dialogKey.value = DialogKey.Download(it.name, action)
+                                        openDialog.value = true
+                                    } else action()
+                                }
+                            )
                         }
                     }
                 }
@@ -297,7 +261,8 @@ fun ExplorePage(
             1 -> {
                 // TODO add modes' action chips
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                     state = topsListState,
                     contentPadding = PaddingValues(vertical = 8.dp),

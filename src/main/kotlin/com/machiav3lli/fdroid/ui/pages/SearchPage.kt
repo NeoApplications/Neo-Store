@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.ui.pages
 
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,15 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -28,7 +24,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -56,7 +51,6 @@ import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import com.machiav3lli.fdroid.viewmodels.SearchVM
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,8 +60,6 @@ fun SearchPage(
 ) {
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity
-    val scope = rememberCoroutineScope()
-    val scaffoldState = rememberBottomSheetScaffoldState()
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
 
@@ -135,9 +127,7 @@ fun SearchPage(
                     notModified = notModifiedSortFilter,
                     fullWidth = true,
                 ) {
-                    scope.launch {
-                        scaffoldState.bottomSheetState.expand()
-                    }
+                    neoActivity.navigateSortFilterSheet(NavItem.Search)
                 }
             }
             PrimaryTabRow(
@@ -227,69 +217,48 @@ fun SearchPage(
             }
         }
 
-    BackHandler(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
-        scope.launch { scaffoldState.bottomSheetState.partialExpand() }
-    }
-
-    BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        sheetPeekHeight = 0.dp,
-        sheetDragHandle = null,
+    Scaffold(
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground,
-        sheetContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-        sheetShape = MaterialTheme.shapes.extraSmall,
-        sheetContent = {
-            SortFilterSheet(NavItem.Search.destination) {
-                scope.launch {
-                    scaffoldState.bottomSheetState.partialExpand()
+        topBar = {
+            if (true) {//!Preferences[Preferences.Key.BottomSearchBar]) {
+                Column {
+                    searchBar()
+                    HorizontalDivider(thickness = 0.5.dp)
                 }
             }
-        }
-    ) {
-        Scaffold(
-            containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.onBackground,
-            topBar = {
-                if (true ) {//!Preferences[Preferences.Key.BottomSearchBar]) {
-                    Column {
-                        searchBar()
-                        HorizontalDivider(thickness = 0.5.dp)
-                    }
+        },
+        /*bottomBar = {
+            if (Preferences[Preferences.Key.BottomSearchBar]) {
+                Column {
+                    HorizontalDivider(thickness = 0.5.dp)
+                    searchBar()
                 }
-            },
-            /*bottomBar = {
-                if (Preferences[Preferences.Key.BottomSearchBar]) {
-                    Column {
-                        HorizontalDivider(thickness = 0.5.dp)
-                        searchBar()
-                    }
-                }
-            },*/
-        ) { paddingValues ->
-            if (pageState.filteredProducts.isEmpty() && pageState.query.isNotBlank())
-                Column(
-                    modifier = Modifier
-                        .addIfElse(
-                            false, //Preferences[Preferences.Key.BottomSearchBar],
-                            factory = {
-                                padding(bottom = paddingValues.calculateBottomPadding())
-                            },
-                            elseFactory = {
-                                padding(top = paddingValues.calculateTopPadding())
-                            }
-                        )
-                        .fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.application_not_found)
+            }
+        },*/
+    ) { paddingValues ->
+        if (pageState.filteredProducts.isEmpty() && pageState.query.isNotBlank())
+            Column(
+                modifier = Modifier
+                    .addIfElse(
+                        false, //Preferences[Preferences.Key.BottomSearchBar],
+                        factory = {
+                            padding(bottom = paddingValues.calculateBottomPadding())
+                        },
+                        elseFactory = {
+                            padding(top = paddingValues.calculateTopPadding())
+                        }
                     )
-                }
-            else
-                productsList(paddingValues)
-        }
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(id = R.string.application_not_found)
+                )
+            }
+        else
+            productsList(paddingValues)
     }
 
     if (openDialog.value) {
