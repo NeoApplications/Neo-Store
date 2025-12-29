@@ -88,3 +88,10 @@ fun MutableList<NavRoute>.navigateUnique(key: NavRoute) {
     removeAll { existing -> existing::class == key::class }
     add(key)
 }
+
+fun MutableList<NavRoute>.navigate(key: NavRoute) {
+    val lastKey = lastOrNull()
+    if (lastKey != null && lastKey == key) return
+    remove(key)
+    add(key)
+}
