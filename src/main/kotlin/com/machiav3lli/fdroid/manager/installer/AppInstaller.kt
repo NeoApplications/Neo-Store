@@ -30,7 +30,7 @@ import org.koin.dsl.module
  */
 class AppInstaller(private val context: Context) : KoinComponent, InstallationEvents {
     val currentInstaller: StateFlow<BaseInstaller>
-        private field = MutableStateFlow(create())
+        field = MutableStateFlow(create())
 
     fun recreateInstaller() {
         currentInstaller.update { create() }

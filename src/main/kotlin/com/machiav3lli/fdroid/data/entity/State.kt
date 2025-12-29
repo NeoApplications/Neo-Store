@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap
 class StateHolderFlow<T> {
     private val map = ConcurrentHashMap<String, T>()
     val flow: StateFlow<Map<String, T>>
-        private field = MutableStateFlow<Map<String, T>>(emptyMap())
+        field = MutableStateFlow<Map<String, T>>(emptyMap())
 
     fun updateState(key: String, state: T?) {
         if (state == null) {

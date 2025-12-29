@@ -37,9 +37,9 @@ class InstallQueue : KoinComponent {
     private val queue = Channel<InstallTask>(UNLIMITED)
     private val queuedPackages = ConcurrentHashMap.newKeySet<String>()
     val isProcessing: StateFlow<Boolean>
-        private field = MutableStateFlow(false)
+        field = MutableStateFlow(false)
     val inUserInteraction: StateFlow<String>
-        private field = MutableStateFlow("")
+        field = MutableStateFlow("")
 
     private var currentTask: InstallTask? = null
     private var processorJob = queueScope.launch { processTasksFromChannel() }
