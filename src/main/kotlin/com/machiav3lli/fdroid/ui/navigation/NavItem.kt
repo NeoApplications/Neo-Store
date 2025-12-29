@@ -64,7 +64,7 @@ sealed class NavItem(
 
     data object Search :
         NavItem(R.string.search, Phosphor.MagnifyingGlass, "main_search", {
-            SearchPage()
+            SearchPage {}
         })
 
     data object PersonalPrefs :
@@ -102,6 +102,9 @@ sealed class NavRoute : NavKey {
 
     @Serializable
     data class SortFilter(val page: String) : NavRoute()
+
+    @Serializable
+    data object Search : NavRoute()
 
     @Serializable
     data class Prefs(val page: Int = 0) : NavRoute()

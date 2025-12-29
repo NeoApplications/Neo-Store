@@ -1,7 +1,5 @@
 package com.machiav3lli.fdroid.viewmodels
 
-import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
-import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldRole
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
@@ -12,14 +10,12 @@ import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @OptIn(
@@ -31,9 +27,6 @@ open class MainVM(
     private val productsRepo: ProductsRepository,
     reposRepo: RepositoriesRepository,
 ) : ViewModel() {
-    val navigationState: StateFlow<Pair<ThreePaneScaffoldRole, String>>
-        private field = MutableStateFlow(Pair(ListDetailPaneScaffoldRole.List, ""))
-
     val successfulSyncs = reposRepo.getLatestUpdates()
 
     val dataState: StateFlow<DataState> = combine(
@@ -78,9 +71,6 @@ open class MainVM(
         started = SharingStarted.Lazily,
         initialValue = SortFilterState(),
     )
-
-    fun setNavigatorRole(role: ThreePaneScaffoldRole, packageName: String = "") =
-        navigationState.update { Pair(role, packageName) }
 
     fun setFavorite(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {

@@ -36,9 +36,11 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.Source
+import com.machiav3lli.fdroid.ui.components.ExpandedSearchView
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
 import com.machiav3lli.fdroid.ui.components.TabButton
+import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
@@ -47,6 +49,7 @@ import com.machiav3lli.fdroid.ui.compose.utils.addIfElse
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.MainVM
@@ -57,6 +60,7 @@ import com.machiav3lli.fdroid.viewmodels.SearchVM
 fun SearchPage(
     viewModel: SearchVM = koinNeoViewModel(),
     mainVM: MainVM = koinNeoViewModel(),
+    onDismiss: () -> Unit ,
 ) {
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity
@@ -118,6 +122,20 @@ fun SearchPage(
 
     val searchBar: @Composable (() -> Unit) = {
         Column {
+            TopBar {
+                ExpandedSearchView(
+                    query = pageState.query,
+                    expanded = mutableStateOf(true),
+                    onQueryChanged = { newQuery ->
+                        if (newQuery != pageState.query)
+                            viewModel.setSearchQuery(newQuery)
+                    },
+                    onClose = {
+                        viewModel.setSearchQuery("")
+                        onDismiss()
+                    },
+                )
+            }
             Row(
                 modifier = Modifier.padding(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),

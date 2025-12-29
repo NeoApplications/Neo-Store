@@ -18,6 +18,7 @@ import com.machiav3lli.fdroid.ui.pages.AppPage
 import com.machiav3lli.fdroid.ui.pages.MainPage
 import com.machiav3lli.fdroid.ui.pages.PermissionsPage
 import com.machiav3lli.fdroid.ui.pages.PrefsPage
+import com.machiav3lli.fdroid.ui.pages.SearchPage
 import com.machiav3lli.fdroid.ui.pages.SortFilterSheet
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalMaterial3Api::class)
@@ -33,6 +34,18 @@ fun AppNavDisplay(
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
         sceneStrategy = listDetailStrategy,
+        transitionSpec = {
+            slideInHorizontally(tween(600)) { it } togetherWith
+                    slideOutHorizontally(tween(600)) { -it }
+        },
+        popTransitionSpec = {
+            slideInHorizontally(tween(600)) { -it } togetherWith
+                    slideOutHorizontally(tween(600)) { it }
+        },
+        predictivePopTransitionSpec = {
+            slideInHorizontally(tween(600)) { -it } togetherWith
+                    slideOutHorizontally(tween(600)) { it }
+        },
         entryProvider = entryProvider {
             // TODO add conditional to avoid PermissionsPage when not needed
             fadeInEntry<NavRoute.Permissions> {
@@ -66,6 +79,13 @@ fun AppNavDisplay(
                 metadata = BottomSheetScene.bottomSheet()
             ) { key ->
                 SortFilterSheet(key.page) {
+                    backStack.removeLastOrNull()
+                }
+            }
+            slideInEntry<NavRoute.Search>(
+                metadata = ListDetailScene.listPane()
+            ) {
+                SearchPage {
                     backStack.removeLastOrNull()
                 }
             }

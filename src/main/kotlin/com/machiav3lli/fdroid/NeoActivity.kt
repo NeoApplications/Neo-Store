@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -296,8 +295,8 @@ class NeoActivity : AppCompatActivity() {
         navStack.navigateUnique(NavRoute.SortFilter(page.destination))
     }
 
-    private fun showSearchPage(query: String? = null) {
-        mainViewModel.setNavigatorRole(ListDetailPaneScaffoldRole.List)
+    fun showSearchPage(query: String? = null) {
+        navStack.navigateUnique(NavRoute.Search)
         searchViewModel.setSearchQuery(query ?: "")
     }
 

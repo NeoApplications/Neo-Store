@@ -68,7 +68,9 @@ fun TopBar(
         title.nullIfEmpty()?.let { title ->
             Text(
                 text = title,
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .weight(1f),
                 style = MaterialTheme.typography.titleLarge,
             )
         }

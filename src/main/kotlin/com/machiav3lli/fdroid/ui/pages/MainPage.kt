@@ -1,16 +1,12 @@
 package com.machiav3lli.fdroid.ui.pages
 
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
-import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -20,11 +16,9 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.NeoActivity
@@ -36,13 +30,13 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.LatestSyncs
 import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.manager.work.BatchSyncWorker
-import com.machiav3lli.fdroid.ui.components.ExpandedSearchView
 import com.machiav3lli.fdroid.ui.components.Tooltip
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MagnifyingGlass
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
 import com.machiav3lli.fdroid.ui.dialog.ActionsDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
@@ -53,7 +47,6 @@ import com.machiav3lli.fdroid.ui.navigation.SlidePager
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.getLocaleDateString
 import com.machiav3lli.fdroid.viewmodels.MainVM
-import com.machiav3lli.fdroid.viewmodels.SearchVM
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
@@ -63,11 +56,9 @@ fun MainPage(
     navigator: (NavRoute) -> Unit,
     pageIndex: Int,
     viewModel: MainVM = koinNeoViewModel(),
-    searchVM: SearchVM = koinNeoViewModel(),
 ) {
     val context = LocalContext.current
     val mActivity = LocalActivity.current as NeoActivity
-    val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
 
     val successfulSyncs by viewModel.successfulSyncs.collectAsState(initial = LatestSyncs(0L, 0L))
@@ -82,14 +73,7 @@ fun MainPage(
     )
     val pagerState = rememberPagerState(initialPage = pageIndex, pageCount = { pages.size })
     val currentPageIndex = remember { derivedStateOf { pagerState.currentPage } }
-    val inSearchMode = rememberSaveable { mutableStateOf(false) }
-    val searchState by searchVM.pageState.collectAsState()
-
-    BackHandler(inSearchMode.value) {
-        searchVM.setSearchQuery("")
-        inSearchMode.value = false
-        focusManager.clearFocus()
-    }
+    val currentPage by remember { derivedStateOf { pages[currentPageIndex.value] } }
 
     LaunchedEffect(true) {
         if (!Preferences[Preferences.Key.InitialSync])
@@ -100,7 +84,6 @@ fun MainPage(
         pages = pages,
         selectedPage = currentPageIndex,
         onItemClick = { index ->
-            if (inSearchMode.value) inSearchMode.value = false
             scope.launch {
                 pagerState.animateScrollToPage(index)
             }
@@ -110,18 +93,16 @@ fun MainPage(
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
             topBar = {
-                TopBar {
-                    ExpandedSearchView(
-                        query = searchState.query,
-                        expanded = inSearchMode,
-                        onQueryChanged = { newQuery ->
-                            if (newQuery != searchState.query)
-                                searchVM.setSearchQuery(newQuery)
-                        },
-                        onClose = {
-                            searchVM.setSearchQuery("")
-                        },
-                    )
+                TopBar(
+                    title = stringResource(id = currentPage.title),
+                ) {
+                    TopBarAction(
+                        modifier = Modifier.padding(top = 8.dp),
+                        icon = Phosphor.MagnifyingGlass,
+                        description = stringResource(id = R.string.search)
+                    ) {
+                        mActivity.showSearchPage()
+                    }
                     TopBarAction(
                         modifier = Modifier.padding(top = 8.dp),
                         icon = Phosphor.ArrowsClockwise,
@@ -164,30 +145,15 @@ fun MainPage(
                 }
             }
         ) { paddingValues ->
-            Crossfade(inSearchMode) { searching ->
-                when {
-                    searching.value -> {
-                        Box(
-                            modifier = Modifier
-                                .padding(paddingValues)
-                                .blockBorderBottom()
-                                .fillMaxSize(),
-                        ) {
-                            SearchPage()
-                        }
-                    }
-
-                    else            -> SlidePager(
-                        modifier = Modifier
-                            .padding(paddingValues)
-                            .blockBorderBottom()
-                            .fillMaxSize(),
-                        pagerState = pagerState,
-                        pageItems = pages,
-                        preComposePages = 0
-                    )
-                }
-            }
+            SlidePager(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .blockBorderBottom()
+                    .fillMaxSize(),
+                pagerState = pagerState,
+                pageItems = pages,
+                preComposePages = 0
+            )
         }
     }
 
