@@ -169,7 +169,10 @@ class DownloadWorker(
             }
 
             if (!result.success) {
-                Log.i(TAG, "Worker failure by error ${result.statusCode}")
+                Log.i(
+                    TAG,
+                    "[ValidationError] Download connection failed with HTTP status code: ${result.statusCode}"
+                )
                 return Result.failure(
                     getWorkData(
                         task,
@@ -193,7 +196,13 @@ class DownloadWorker(
                 Result.failure(getWorkData(task, result, validationError))
             }
         } catch (e: DownloadSizeException) {
-            Log.e(TAG, "Download size error: ${e.message}", e)
+            Log.e(
+                TAG,
+                "[ValidationError] Failed on unexpected download size: ${
+                    partialRelease.length().formatSize()
+                }\n${e.message}",
+                e
+            )
             partialRelease.delete()
             return Result.failure(
                 getWorkData(
@@ -203,7 +212,10 @@ class DownloadWorker(
                 )
             )
         } catch (e: Exception) {
-            Log.e(TAG, "Download error: ${e.message}", e)
+            Log.e(
+                TAG,
+                "[ValidationError] Failed with unexpected error: ${e.message}", e
+            )
             return Result.failure(
                 getWorkData(
                     task,
@@ -316,11 +328,27 @@ class DownloadWorker(
                 md.digest().hex()
             }
         } catch (e: Exception) {
+            Log.e(
+                TAG,
+                "[ValidationError] Failed getting the hash of downloaded file.\nException: ${e.message}",
+                e
+            )
             ""
         }
         return when {
-            hash.isEmpty() || hash != task.release.hash -> ValidationError.INTEGRITY
-            else                                        -> runCatching {
+            hash.isEmpty()            -> {
+                ValidationError.HASHING
+            }
+
+            hash != task.release.hash -> {
+                Log.e(
+                    TAG,
+                    "[ValidationError] Failed hash integrity check\nDownloaded package: $hash\nExpected package: ${task.release.hash}"
+                )
+                ValidationError.INTEGRITY
+            }
+
+            else                      -> runCatching {
                 packageManager.getPackageArchiveInfo(
                     file.path,
                     PackageManager.GET_ACTIVITIES or
@@ -336,6 +364,10 @@ class DownloadWorker(
                 if (packageName != task.packageName ||
                     versionCodeCompat != task.release.versionCode
                 ) {
+                    Log.e(
+                        TAG,
+                        "[ValidationError] Metadata check failed\nDownloaded package: $packageName, $versionCodeCompat\nExpected package: ${task.packageName}, ${task.release.versionCode}"
+                    )
                     ValidationError.METADATA
                 } else {
                     val signatures = signerSHA256Signatures
@@ -344,7 +376,7 @@ class DownloadWorker(
                     ) {
                         Log.e(
                             TAG,
-                            "Signature check failed\nDownloaded package signatures: $signatures\nExpected signature: ${task.release.signature}"
+                            "[ValidationError] Signature check failed\nDownloaded package signatures: $signatures\nExpected signature: ${task.release.signature}"
                         )
                         ValidationError.SIGNATURE
                     } else {
@@ -394,6 +426,10 @@ class DownloadWorker(
                             }
 
                             else                                                 -> {
+                                Log.e(
+                                    TAG,
+                                    "[ValidationError] Permissions check failed\nDownloaded package permissions: $permissions\nExpected permissions: ${task.release.permissions}"
+                                )
                                 ValidationError.PERMISSIONS
                             }
                         }

@@ -325,9 +325,10 @@ fun NotificationCompat.Builder.updateWithError(
         context.getString(
             R.string.validation_error_FORMAT,
             when (errorType) {
-                ValidationError.INTEGRITY            -> context.getString(R.string.integrity_check_error_DESC)
+                ValidationError.INTEGRITY            -> context.getString(R.string.integrity_check_failed)
+                ValidationError.HASHING              -> context.getString(R.string.integrity_check_hashing)
                 ValidationError.FORMAT               -> context.getString(R.string.file_format_error_DESC)
-                ValidationError.METADATA             -> context.getString(R.string.invalid_metadata_error_DESC)
+                ValidationError.METADATA             -> context.getString(R.string.invalid_metadata_error)
                 ValidationError.SIGNATURE            -> context.getString(R.string.invalid_signature_error_DESC)
                 ValidationError.PERMISSIONS          -> context.getString(R.string.invalid_permissions_error_DESC)
                 ValidationError.FILE_SIZE            -> context.getString(R.string.file_size_error_DESC)
