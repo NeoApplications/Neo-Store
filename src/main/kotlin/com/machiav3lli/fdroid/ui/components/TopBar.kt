@@ -23,6 +23,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -43,6 +44,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowUUpLeft
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MagnifyingGlass
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import com.machiav3lli.fdroid.ui.compose.utils.HorizontalExpandingVisibility
@@ -94,7 +96,7 @@ fun ExpandableSearchAction(
             WideSearchField(
                 query = query,
                 modifier = modifier,
-                onClose = onClose,
+                onCleanQuery = onClose,
                 //onExpanded = onExpanded,
                 onQueryChanged = onQueryChanged
             )
@@ -181,7 +183,9 @@ fun WideSearchField(
     modifier: Modifier = Modifier,
     label: String = stringResource(id = R.string.search),
     focusOnCompose: Boolean = true,
-    onClose: () -> Unit,
+    showCloseButton: Boolean = false,
+    onClose: () -> Unit = {},
+    onCleanQuery: () -> Unit,
     onQueryChanged: (String) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
@@ -192,35 +196,50 @@ fun WideSearchField(
         mutableStateOf(query)
     }
 
-    OutlinedTextField(
-        value = textFieldValue,
-        onValueChange = {
-            textFieldValue = it
-            onQueryChanged(it)
-        },
-        modifier = modifier
-            .focusRequester(textFieldFocusRequester),
-        shape = MaterialTheme.shapes.extraLarge,
-        trailingIcon = {
-            AnimatedVisibility(
-                visible = textFieldValue.isNotEmpty(),
-                enter = expandHorizontally(expandFrom = Alignment.Start),
-                exit = shrinkHorizontally(shrinkTowards = Alignment.Start),
-            ) {
-                TopBarAction(
-                    icon = Phosphor.X,
-                    description = stringResource(id = R.string.cancel)
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        OutlinedTextField(
+            value = textFieldValue,
+            onValueChange = {
+                textFieldValue = it
+                onQueryChanged(it)
+            },
+            modifier = Modifier
+                .weight(1f)
+                .focusRequester(textFieldFocusRequester),
+            shape = MaterialTheme.shapes.extraLarge,
+            trailingIcon = {
+                AnimatedVisibility(
+                    visible = textFieldValue.isNotEmpty(),
+                    enter = expandHorizontally(expandFrom = Alignment.Start),
+                    exit = shrinkHorizontally(shrinkTowards = Alignment.Start),
                 ) {
-                    textFieldValue = ""
-                    onClose()
+                    TopBarAction(
+                        icon = Phosphor.ArrowUUpLeft,
+                        description = stringResource(id = R.string.cancel)
+                    ) {
+                        textFieldValue = ""
+                        onCleanQuery()
+                    }
                 }
-            }
-        },
-        singleLine = true,
-        label = { Text(text = label) },
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-    )
+            },
+            singleLine = true,
+            label = { Text(text = label) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+        )
+        if (showCloseButton) TopBarAction(
+            modifier = Modifier.padding(top = 8.dp),
+            icon = Phosphor.X,
+            description = stringResource(id = R.string.cancel)
+        ) {
+            textFieldValue = ""
+            onCleanQuery()
+            onClose()
+        }
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)

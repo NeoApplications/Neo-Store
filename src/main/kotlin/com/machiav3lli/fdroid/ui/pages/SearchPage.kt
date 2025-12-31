@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,17 +30,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.Source
-import com.machiav3lli.fdroid.ui.components.ExpandedSearchView
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
 import com.machiav3lli.fdroid.ui.components.TabButton
 import com.machiav3lli.fdroid.ui.components.TopBar
+import com.machiav3lli.fdroid.ui.components.WideSearchField
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
@@ -49,7 +50,6 @@ import com.machiav3lli.fdroid.ui.compose.utils.addIfElse
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
-import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
 import com.machiav3lli.fdroid.viewmodels.MainVM
@@ -60,7 +60,7 @@ import com.machiav3lli.fdroid.viewmodels.SearchVM
 fun SearchPage(
     viewModel: SearchVM = koinNeoViewModel(),
     mainVM: MainVM = koinNeoViewModel(),
-    onDismiss: () -> Unit ,
+    onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity
@@ -68,8 +68,8 @@ fun SearchPage(
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
 
     val listState = rememberLazyListState()
-    val pageState by viewModel.pageState.collectAsState()
-    val dataState by mainVM.dataState.collectAsState()
+    val pageState by viewModel.pageState.collectAsStateWithLifecycle()
+    val dataState by mainVM.dataState.collectAsStateWithLifecycle()
 
     val currentTab by remember {
         derivedStateOf {
@@ -123,17 +123,18 @@ fun SearchPage(
     val searchBar: @Composable (() -> Unit) = {
         Column {
             TopBar {
-                ExpandedSearchView(
+                WideSearchField(
                     query = pageState.query,
-                    expanded = mutableStateOf(true),
+                    modifier = Modifier.fillMaxWidth(),
+                    showCloseButton = true,
                     onQueryChanged = { newQuery ->
                         if (newQuery != pageState.query)
                             viewModel.setSearchQuery(newQuery)
                     },
-                    onClose = {
+                    onCleanQuery = {
                         viewModel.setSearchQuery("")
-                        onDismiss()
                     },
+                    onClose = onDismiss
                 )
             }
             Row(

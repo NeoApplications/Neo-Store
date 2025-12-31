@@ -198,7 +198,7 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                 modifier = Modifier.fillMaxWidth(),
                                 label = stringResource(R.string.search_for_repository),
                                 focusOnCompose = false,
-                                onClose = { viewModel.setSearchQuery("") },
+                                onCleanQuery = { viewModel.setSearchQuery("") },
                                 onQueryChanged = { newQuery ->
                                     if (newQuery != pageState.query) viewModel.setSearchQuery(
                                         newQuery
