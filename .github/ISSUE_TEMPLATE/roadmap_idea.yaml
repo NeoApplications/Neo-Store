@@ -1,0 +1,29 @@
+name: Roadmap proposal
+description: Suggest a new roadmap item
+title: "[Roadmap] <short title>"
+labels:
+  - roadmap
+body:
+  - type: markdown
+    attributes:
+      value: "## Summary\nBriefly describe the initiative and who benefits."
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Problem/Related Issue"
+      description: "What problem or opportunity does this address? Link of the related issue."
+  - type: textarea
+    id: approach
+    attributes:
+      label: "Approach"
+      description: "High-level idea of how to solve it."
+  - type: textarea
+    id: milestones
+    attributes:
+      label: "Milestones"
+      description: "e.g. expected release version"
+  - type: textarea
+    id: risks
+    attributes:
+      label: "Risks / Dependencies"
+      description: "Key risks, unknowns, and dependencies."
