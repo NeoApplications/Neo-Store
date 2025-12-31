@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.ui.pages
 
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -130,6 +131,12 @@ fun ExplorePage(
                 else -> {}
             }
         }
+    }
+
+    BackHandler(selectedCategory.value != "") {
+        Preferences[Preferences.Key.CategoriesFilterExplore] = ""
+        selectedCategory.value = ""
+        viewModel.setExploreSource(Source.NONE)
     }
 
     Column {
