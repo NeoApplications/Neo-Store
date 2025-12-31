@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -46,7 +48,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
-import com.machiav3lli.fdroid.ui.compose.utils.addIfElse
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
@@ -122,7 +123,9 @@ fun SearchPage(
 
     val searchBar: @Composable (() -> Unit) = {
         Column {
-            TopBar {
+            TopBar(
+                withTopBarInsets = !Preferences[Preferences.Key.BottomSearchBar],
+            ) {
                 WideSearchField(
                     query = pageState.query,
                     modifier = Modifier.fillMaxWidth(),
@@ -183,15 +186,7 @@ fun SearchPage(
         { paddingValues: PaddingValues ->
             LazyColumn(
                 modifier = Modifier
-                    .addIfElse(
-                        false,//Preferences[Preferences.Key.BottomSearchBar],
-                        factory = {
-                            padding(bottom = paddingValues.calculateBottomPadding())
-                        },
-                        elseFactory = {
-                            padding(top = paddingValues.calculateTopPadding())
-                        }
-                    )
+                    .padding(paddingValues)
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 state = listState,
@@ -240,34 +235,28 @@ fun SearchPage(
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground,
         topBar = {
-            if (true) {//!Preferences[Preferences.Key.BottomSearchBar]) {
+            if (!Preferences[Preferences.Key.BottomSearchBar]) {
                 Column {
                     searchBar()
                     HorizontalDivider(thickness = 0.5.dp)
                 }
             }
         },
-        /*bottomBar = {
+        bottomBar = {
             if (Preferences[Preferences.Key.BottomSearchBar]) {
-                Column {
+                Column(
+                    modifier = Modifier.windowInsetsPadding(BottomAppBarDefaults.windowInsets)
+                ) {
                     HorizontalDivider(thickness = 0.5.dp)
                     searchBar()
                 }
             }
-        },*/
+        },
     ) { paddingValues ->
         if (pageState.filteredProducts.isEmpty() && pageState.query.isNotBlank())
             Column(
                 modifier = Modifier
-                    .addIfElse(
-                        false, //Preferences[Preferences.Key.BottomSearchBar],
-                        factory = {
-                            padding(bottom = paddingValues.calculateBottomPadding())
-                        },
-                        elseFactory = {
-                            padding(top = paddingValues.calculateTopPadding())
-                        }
-                    )
+                    .padding(paddingValues)
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally

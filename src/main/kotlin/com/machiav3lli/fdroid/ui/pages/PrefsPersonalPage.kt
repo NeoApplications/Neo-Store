@@ -55,7 +55,7 @@ fun PrefsPersonalPage() {
         Preferences.Key.AltNavBarItem,
         Preferences.Key.AltNewApps,
         Preferences.Key.HideNewApps,
-        //Preferences.Key.BottomSearchBar,
+        Preferences.Key.BottomSearchBar,
         Preferences.Key.ShowScreenshots,
         Preferences.Key.ShowTrackers,
         Preferences.Key.AndroidInsteadOfSDK,

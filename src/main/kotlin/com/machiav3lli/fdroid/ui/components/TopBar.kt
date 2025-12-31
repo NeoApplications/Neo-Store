@@ -48,18 +48,22 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowUUpLeft
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MagnifyingGlass
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import com.machiav3lli.fdroid.ui.compose.utils.HorizontalExpandingVisibility
+import com.machiav3lli.fdroid.ui.compose.utils.addIf
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
     title: String = "",
+    withTopBarInsets: Boolean = true,
     navigationAction: @Composable (() -> Unit) = {},
     actions: @Composable (RowScope.() -> Unit) = {},
 ) {
     Row(
         modifier = Modifier
-            .windowInsetsPadding(TopAppBarDefaults.windowInsets)
+            .addIf(withTopBarInsets) {
+                windowInsetsPadding(TopAppBarDefaults.windowInsets)
+            }
             .height(72.dp)
             .padding(horizontal = 8.dp)
             .fillMaxWidth(),
