@@ -141,6 +141,7 @@ class BatchSyncWorker(
                     when {
                         result.success -> {
                             Log.d(TAG, "Successfully synced repository: ${repo.name}")
+                            if (result.changed) reposSucceeded.incrementAndFetch()
                             setForeground(
                                 createForegroundInfo(
                                     totalRepos,
