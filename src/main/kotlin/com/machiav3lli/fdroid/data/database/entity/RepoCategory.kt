@@ -21,10 +21,10 @@ import com.machiav3lli.fdroid.TABLE_REPOCATEGORY_TEMP
     ]
 )
 open class RepoCategory(
-    var repositoryId: Long = 0,
-    var name: String = "", // map key in index-v2
-    var label: String = "", // name in index-v2
-    var icon: String = "",
+    val repositoryId: Long = 0,
+    val name: String = "", // map key in index-v2
+    val label: String = "", // name in index-v2
+    val icon: String = "",
 )
 
 @Entity(tableName = TABLE_REPOCATEGORY_TEMP)
@@ -32,7 +32,7 @@ class RepoCategoryTemp(repositoryId: Long, name: String, label: String, icon: St
     RepoCategory(repositoryId, name, label, icon)
 
 data class CategoryDetails(
-    var name: String,
-    var label: String,
-    var icon: String = "",
+    val name: String,
+    val label: String,
+    val icon: String = "",
 )

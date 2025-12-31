@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -37,6 +36,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.FILTER_CATEGORY_FAV
 import com.machiav3lli.fdroid.NeoActivity
@@ -80,9 +80,9 @@ fun ExplorePage(
     val catsListState = rememberLazyListState()
     val topsListState = rememberLazyListState()
 
-    val categoryProductsState by viewModel.categoryProductsState.collectAsState()
-    val topProductsState by viewModel.topProductsState.collectAsState()
-    val dataState by mainState.dataState.collectAsState()
+    val categoryProductsState by viewModel.categoryProductsState.collectAsStateWithLifecycle()
+    val topProductsState by viewModel.topProductsState.collectAsStateWithLifecycle()
+    val dataState by mainState.dataState.collectAsStateWithLifecycle()
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }

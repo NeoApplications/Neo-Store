@@ -1197,6 +1197,6 @@ data class Repository(
 }
 
 data class LatestSyncs(
-    var latest: Long,
-    var latestAll: Long,
+    val latest: Long = 0L,
+    val latestAll: Long = 0L,
 )

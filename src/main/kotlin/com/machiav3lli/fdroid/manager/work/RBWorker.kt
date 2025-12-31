@@ -36,7 +36,7 @@ class RBWorker(
                 Result.success()
             },
             onFailure = {
-                Log.e(TAG, "Failed fetching exodus trackers", it)
+                Log.e(TAG, "Failed fetching reproducible build logs", it)
                 Result.failure(workDataOf(ARG_EXCEPTION to it.message))
             }
         )

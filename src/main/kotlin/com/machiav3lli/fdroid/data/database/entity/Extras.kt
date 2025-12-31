@@ -28,14 +28,14 @@ import kotlinx.serialization.json.Json
 @Serializable
 data class Extras(
     @PrimaryKey
-    var packageName: String = "",
-    var favorite: Boolean = false,
-    var ignoreUpdates: Boolean = false,
-    var ignoredVersion: Long = 0L,
+    val packageName: String = "",
+    val favorite: Boolean = false,
+    val ignoreUpdates: Boolean = false,
+    val ignoredVersion: Long = 0L,
     @ColumnInfo(defaultValue = "0")
-    var ignoreVulns: Boolean = false,
+    val ignoreVulns: Boolean = false,
     @ColumnInfo(defaultValue = "0")
-    var allowUnstable: Boolean = false,
+    val allowUnstable: Boolean = false,
 ) {
     fun toJSON() = Json.encodeToString(this)
 

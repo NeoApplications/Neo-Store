@@ -41,9 +41,10 @@ import kotlinx.serialization.json.Json
 )
 @Serializable
 open class Product(
-    var repositoryId: Long,
-    var packageName: String,
+    val repositoryId: Long,
+    val packageName: String,
 ) {
+    // TODO make all vals
     var label: String = ""
     var summary: String = ""
     var description: String = ""
@@ -198,9 +199,9 @@ data class Licenses(
 )
 
 data class IconDetails(
-    var packageName: String,
-    var icon: String = "",
-    var metadataIcon: String = "",
+    val packageName: String,
+    val icon: String = "",
+    val metadataIcon: String = "",
 )
 
 data class EmbeddedProduct(

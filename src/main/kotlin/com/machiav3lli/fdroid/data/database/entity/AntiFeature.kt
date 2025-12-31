@@ -21,11 +21,11 @@ import com.machiav3lli.fdroid.TABLE_ANTIFEATURE_TEMP
     ]
 )
 open class AntiFeature(
-    var repositoryId: Long = 0,
-    var name: String = "", // map key in index-v2
-    var label: String = "", // name in index-v2
-    var description: String = "",
-    var icon: String = "",
+    val repositoryId: Long = 0,
+    val name: String = "", // map key in index-v2
+    val label: String = "", // name in index-v2
+    val description: String = "",
+    val icon: String = "",
 )
 
 @Entity(tableName = TABLE_ANTIFEATURE_TEMP)
@@ -38,8 +38,8 @@ class AntiFeatureTemp(
 ) : AntiFeature(repositoryId, name, label, description, icon)
 
 data class AntiFeatureDetails(
-    var name: String,
-    var label: String,
-    var description: String = "",
-    var icon: String = "",
+    val name: String,
+    val label: String,
+    val description: String = "",
+    val icon: String = "",
 )

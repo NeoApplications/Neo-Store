@@ -15,11 +15,11 @@ import com.machiav3lli.fdroid.TABLE_INSTALLED
 )
 data class Installed(
     @PrimaryKey
-    var packageName: String = "",
-    var version: String = "",
-    var versionCode: Long = 0L,
+    val packageName: String = "",
+    val version: String = "",
+    val versionCode: Long = 0L,
     @ColumnInfo(defaultValue = "[]")
     val signatures: List<String> = emptyList(),
-    var isSystem: Boolean = false,
+    val isSystem: Boolean = false,
     val launcherActivities: List<Pair<String, String>> = emptyList()
 )

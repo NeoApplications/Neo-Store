@@ -9,7 +9,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -21,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.POPUP_LONG
 import com.machiav3lli.fdroid.POPUP_NONE
@@ -61,7 +61,7 @@ fun MainPage(
     val mActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
 
-    val successfulSyncs by viewModel.successfulSyncs.collectAsState(initial = LatestSyncs(0L, 0L))
+    val successfulSyncs by viewModel.successfulSyncs.collectAsStateWithLifecycle(LatestSyncs())
 
     val showPopup = remember { mutableIntStateOf(POPUP_NONE) }
     val openSyncDialog = remember { mutableStateOf(false) }

@@ -39,7 +39,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -57,6 +56,7 @@ import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
@@ -137,10 +137,10 @@ fun AppPage(
     val currentPage by remember { derivedStateOf { pagerState.currentPage } }
     var screenshotPage by rememberSaveable { mutableIntStateOf(0) }
     val screenshotsPageState = rememberModalBottomSheetState(true)
-    val appState by viewModel.coreAppState.collectAsState()
-    val extraState by viewModel.extraAppState.collectAsState()
-    val privacyState by viewModel.privacyPanelState.collectAsState()
-    val downloadStatsState by viewModel.downloadStatsState.collectAsState()
+    val appState by viewModel.coreAppState.collectAsStateWithLifecycle()
+    val extraState by viewModel.extraAppState.collectAsStateWithLifecycle()
+    val privacyState by viewModel.privacyPanelState.collectAsStateWithLifecycle()
+    val downloadStatsState by viewModel.downloadStatsState.collectAsStateWithLifecycle()
 
     LaunchedEffect(packageName) {
         viewModel.setApp(packageName)

@@ -30,7 +30,6 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.backup.ui.compose.icons.phosphor.Plus
 import com.machiav3lli.fdroid.INTENT_ACTION_BINARY_EYE
 import com.machiav3lli.fdroid.NeoActivity
@@ -64,7 +64,7 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
     val mActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
     val paneNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
-    val pageState by viewModel.reposState.collectAsState()
+    val pageState by viewModel.reposState.collectAsStateWithLifecycle()
     val sheetData: MutableState<SheetNavigationData?> = remember { mutableStateOf(null) }
 
     val scanLauncher = rememberLauncherForActivityResult(

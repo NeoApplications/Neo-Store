@@ -33,7 +33,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -49,6 +48,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
@@ -160,8 +160,8 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
     val neoActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
 
-    val pageState by viewModel.installedPageState.collectAsState()
-    val dataState by mainVM.dataState.collectAsState()
+    val pageState by viewModel.installedPageState.collectAsStateWithLifecycle()
+    val dataState by mainVM.dataState.collectAsStateWithLifecycle()
     var updatesVisible by remember { mutableStateOf(true) }
     var downloadsExpanded by remember { mutableStateOf(false) }
 
@@ -438,8 +438,8 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
 fun DownloadedPage(viewModel: InstalledVM, mainVM: MainVM) {
     val neoActivity = LocalActivity.current as NeoActivity
 
-    val dataState by mainVM.dataState.collectAsState()
-    val sortedDownloaded by viewModel.sortedDownloads.collectAsState(emptyList())
+    val dataState by mainVM.dataState.collectAsStateWithLifecycle()
+    val sortedDownloaded by viewModel.sortedDownloads.collectAsStateWithLifecycle(emptyList())
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),

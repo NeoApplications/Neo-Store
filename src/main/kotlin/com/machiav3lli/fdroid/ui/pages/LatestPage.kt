@@ -14,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
@@ -54,8 +54,8 @@ fun LatestPage(
     val neoActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
 
-    val pageState by viewModel.pageState.collectAsState()
-    val dataState by mainVM.dataState.collectAsState()
+    val pageState by viewModel.pageState.collectAsStateWithLifecycle()
+    val dataState by mainVM.dataState.collectAsStateWithLifecycle()
 
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
