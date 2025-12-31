@@ -44,15 +44,20 @@ We also have a roadmap board on Taiga where you can see our future plans. Feel f
 
 ## Screenshots :framed_picture:
 
-### Beautiful light :sun_with_face: and dark :new_moon_with_face: themes. Also with higher contrast…
+### Available in beautiful light :sun_with_face: and dark :new_moon_with_face: themes. Also with higher contrast or dynamic colors…
 
 | <img title="" src="metadata/en-US/images/phoneScreenshots/light.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/dark.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/black.png" alt="" width="330" align="center"> |
 |:-------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------:|
 
-### Privacy panel, rich filters & around 100 built-in repos :toolbox:
+### Top downloaded apps, extensive filters & around 100 built-in repos :toolbox:
 
-| <img title="" src="metadata/en-US/images/phoneScreenshots/privacy_panel.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/filters.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/repos.png" alt="" width="330" align="center"> |
-|:-----------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------:| -------------------------------------------------------------------------------------------------------:|
+| <img title="" src="metadata/en-US/images/phoneScreenshots/top_downloads.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/filters.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/repos.png" alt="" width="330" align="center"> |
+|:-------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------:|
+
+### Reproducible build labels, privacy panel & comprehensive control over your repos
+
+| <img title="" src="metadata/en-US/images/phoneScreenshots/rb.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/privacy_panel.png" alt="" width="330" align="center"> | <img title="" src="metadata/en-US/images/phoneScreenshots/repo.png" alt="" width="330" align="center"> |
+|:----------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------:| -------------------------------------------------------------------------------------------------------:|
 
 ## Community :speech_balloon:
 
