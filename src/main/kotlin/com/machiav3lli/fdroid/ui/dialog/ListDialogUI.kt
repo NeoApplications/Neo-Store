@@ -13,20 +13,17 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
-import com.machiav3lli.fdroid.data.repository.ProductsRepository
-import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
+import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.ui.components.ProductItemContent
 import com.machiav3lli.fdroid.ui.compose.utils.blockShadow
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.mapLatest
-import org.koin.compose.koinInject
 
 @Composable
 fun <T> ListDialogUI(
@@ -82,16 +79,10 @@ fun <T> ListDialogUI(
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun ProductsListDialogUI(
-    repositoryId: Long,
     title: String,
-    productRepo: ProductsRepository = koinInject(),
-    reposRepo: RepositoriesRepository = koinInject(),
+    repo: Repository,
+    apps: PersistentList<ProductItem>,
 ) {
-    val apps by productRepo.getProductsOfRepo(repositoryId)
-        .mapLatest { prod -> prod.map { it.toItem() } }
-        .collectAsState(initial = null)
-    val repo by reposRepo.getById(repositoryId).collectAsState(initial = null)
-
     ListDialogUI(
         titleText = title,
         items = apps,

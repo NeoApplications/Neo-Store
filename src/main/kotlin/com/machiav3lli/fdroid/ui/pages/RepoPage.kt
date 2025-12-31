@@ -30,7 +30,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +43,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.manager.work.SyncWorker
@@ -94,7 +94,7 @@ fun RepoPage(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val state by viewModel.repoPageState.collectAsState()
+    val state by viewModel.repoPageState.collectAsStateWithLifecycle()
     var editMode by remember { mutableStateOf(initEditMode) }
     val openDeleteDialog = remember { mutableStateOf(false) }
     val openDialog = remember { mutableStateOf(false) }
@@ -625,8 +625,9 @@ fun RepoPage(
                 }
 
                 DIALOG_PRODUCTS -> ProductsListDialogUI(
-                    repositoryId = repositoryId,
                     title = state.repo?.name.orEmpty(),
+                    repo = state.repo ?: Repository(),
+                    apps = state.products,
                 )
             }
         }

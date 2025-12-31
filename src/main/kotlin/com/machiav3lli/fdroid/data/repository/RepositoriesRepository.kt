@@ -4,6 +4,7 @@ import com.machiav3lli.fdroid.data.database.dao.AntiFeatureDao
 import com.machiav3lli.fdroid.data.database.dao.ProductDao
 import com.machiav3lli.fdroid.data.database.dao.RepositoryDao
 import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
+import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.LatestSyncs
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.AntiFeature
@@ -24,6 +25,8 @@ class RepositoriesRepository(
     fun getLatestUpdates(): Flow<LatestSyncs> = reposDao.latestUpdatesFlow()
 
     fun productsCount(repoId: Long): Flow<Long> = productsDao.countForRepositoryFlow(repoId)
+
+    fun getProducts(repoId: Long): Flow<List<EmbeddedProduct>> = productsDao.productsForRepositoryFlow(repoId)
 
     fun getRepoAntiFeatures(): Flow<List<AntiFeatureDetails>> =
         antiFeatureDao.getAllAntiFeatureDetailsFlow()
