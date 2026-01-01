@@ -38,9 +38,9 @@
 * Easy exploration of new apps :mag:
 * Minimalism with KISS principles :dart:
 
-### Upcoming plans :eyes: [<img align="right" src="get_taiga.svg" alt="Follow our project on Taiga" width="24%" />](https://tree.taiga.io/project/machiav3lli-neo-store/kanban)
+### Upcoming plans :eyes: [<img align="right" src="check_codeberg.svg" alt="Follow our project on Codeberg" width="20%" />](https://codeberg.org/NeoApplications/Neo-Store/projects/29321)
 
-We also have a roadmap board on Taiga where you can see our future plans. Feel free to contact us if you'd like to contribute to any of the planned changes.
+We now have a roadmap board on Codeberg, where you can see our future plans, comment them and see if you'd like to contribute to any of them.
 
 ## Screenshots :framed_picture:
 
