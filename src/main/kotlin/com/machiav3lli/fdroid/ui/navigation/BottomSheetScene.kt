@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.ui.navigation
 
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -23,6 +24,7 @@ internal class BottomSheetScene<T : Any>(
         ModalBottomSheet(
             onDismissRequest = onBack,
             properties = modalBottomSheetProperties,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
             sheetState = rememberModalBottomSheetState(true)
         ) {
             entry.Content()
