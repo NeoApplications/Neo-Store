@@ -478,4 +478,6 @@
     <string name="integrity_check_failed">Failed integrity check with non-matching hash.</string>
     <string name="integrity_check_hashing">Failed getting hash of downloaded file.</string>
     <string name="invalid_metadata_error">Non-matching metadata of downloaded build.</string>
+    <string name="trusted_repo">Trusted repo</string>
+    <string name="trusted_label">Trusted</string>
 </resources>
