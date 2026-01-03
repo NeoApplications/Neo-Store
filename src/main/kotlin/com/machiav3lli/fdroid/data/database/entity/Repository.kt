@@ -125,7 +125,7 @@ data class Repository(
             ?: Pair(null, null)
 
     val downloadAddress: String
-        get() = if (!mirrorRotation) address
+        get() = if (!mirrorRotation || mirrors.isEmpty()) address
         else mirrors.filter { address.contains(".onion/") || !it.contains(".onion/") }.random()
 
     fun toJSON() = Json.encodeToString(this)
