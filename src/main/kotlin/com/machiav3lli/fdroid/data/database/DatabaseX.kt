@@ -82,9 +82,11 @@ import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedRep
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.archiveRepos
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.defaultRepositories
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedReposV1107
+import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedReposV1201
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedReposV28
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedReposV29
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.removedReposV31
+import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.updatedReposV1201
 import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.manager.work.SyncWorker.enableRepo
 import kotlinx.collections.immutable.persistentListOf
@@ -119,7 +121,7 @@ import java.io.File
         DownloadStats::class,
         DownloadStatsFileMetadata::class,
     ],
-    version = 1108,
+    version = 1201,
     exportSchema = true,
     views = [
         PackageSum::class,
@@ -273,6 +275,11 @@ import java.io.File
         AutoMigration(
             from = 1107,
             to = 1108,
+        ),
+        AutoMigration(
+            from = 1108,
+            to = 1201,
+            spec = DatabaseX.Companion.AutoMigration1108to1201::class
         ),
     ]
 )
@@ -484,6 +491,13 @@ abstract class DatabaseX : RoomDatabase() {
             }
         }
 
+        class AutoMigration1108to1201 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(1108)
+            }
+        }
+
         class ProductsCleanup : AutoMigrationSpec {
             override fun onPostMigrate(db: SupportSQLiteDatabase) {
                 super.onPostMigrate(db)
@@ -544,6 +558,7 @@ abstract class DatabaseX : RoomDatabase() {
                 29   -> addedReposV30
                 1101 -> addedReposV1102
                 1106 -> addedReposV1107
+                1108 -> updatedReposV1201
                 else -> emptyList()
             }
             val rmRps = when (from) {
@@ -552,16 +567,17 @@ abstract class DatabaseX : RoomDatabase() {
                 28   -> removedReposV29
                 30   -> removedReposV31
                 1106 -> removedReposV1107
+                1108 -> updatedReposV1201 + removedReposV1201
                 else -> emptyList()
             }
             GlobalScope.launch(Dispatchers.IO) {
                 get<DatabaseX>(DatabaseX::class.java).apply {
-                    getRepositoryDao().put(*addRps.toTypedArray())
-                    if (from == 20) getDownloadedDao().emptyTable()
                     rmRps.forEach {
                         enableRepo(it, false)
                         getRepositoryDao().deleteByAddress(it.address)
                     }
+                    getRepositoryDao().put(*addRps.toTypedArray())
+                    if (from == 20) getDownloadedDao().emptyTable()
                 }
             }
         }
