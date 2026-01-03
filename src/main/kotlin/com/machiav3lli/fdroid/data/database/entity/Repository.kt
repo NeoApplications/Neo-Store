@@ -918,9 +918,9 @@ data class Repository(
             "5E9181C818BD1D28E8642821971C569438DF632E671505FD6E9DB6940722B56F",
             ""
         )
-        private val SYLKEVICIOUS = defaultRepository(
+        private val SILKEVICIOUS = defaultRepository(
             "https://codeberg.org/silkevicious/apkrepo/raw/branch/master/fdroid/repo",
-            "Sylke Vicious's F-Droid Repo",
+            "Silke Vicious's F-Droid Repo",
             "This is silkevicious's personal F-Droid repository.",
             21,
             false,
@@ -1078,29 +1078,29 @@ data class Repository(
             CROMITE, IRONFOX, BRAVE, THUNDERBIRD,
             NEWPIPE, BITWARDEN, GITJOURNAL,
             CALYX_OS, CALYX_OS_TEST, IODE, AXPOS,
-            KDE_RELEASE, KDE_NIGHTLY, NANODROID, NETSYMS,
+            KDE_RELEASE, KDE_NIGHTLY, NETSYMS,
             FUTO, KVAESITSO, C_GEO, C_GEO_NIGHTLY, COLLABORA,
             PIXELFED, VIDELIBRI, GADGETBRIDGE, BREEZY,
-            THREEMA, SESSION, MOLLY, BRIAR, ANONYMOUS_MESSENGER,
+            THREEMA, SESSION, MOLLY, BRIAR,
             FEDILAB, NETHUNTER, INSPORATION,
-            SIMPLEX_CHAT, REVOLT, TWIN_HELIX,
+            SIMPLEX_CHAT, TWIN_HELIX,
             PI2P, OFFICIAL_I2P,
             F_DROID_CLASSIC,
             ETOPA, METATRANS_APPS,
             LTTRS, KAFFEEMITKOFFEIN,
             SAUNAREPO, PATCHED,
-            UMBRELLA, CRYPTOMATOR,
+            CRYPTOMATOR,
             RWTH, TAGESSCHAU, WOZ, PETER_CXY,
             LAGRANGE, ROHIT, NAILYK, LUBL,
-            SYLKEVICIOUS, OBERNBERGER, NUCLEUS,
-            XARANTOLUS, TWOBR, OBFUSK, MAXXIS,
-            JAK_LINUX, MONERUJO,
+            SILKEVICIOUS, OBERNBERGER, NUCLEUS,
+            XARANTOLUS, OBFUSK, MAXXIS,
+            MONERUJO,
             SPIRIT_CROC, SPIRIT_CROC_TEST,
             KUSCHKU,
             STACK_WALLET,
             GROBOX, ZIMBELSTERN,
             LIBRECHURCH, JUWELERKASSA,
-            CLOUDBURST, HUIZENGEK,
+            HUIZENGEK,
             F5A,
         )
 
@@ -1113,16 +1113,14 @@ data class Repository(
         )
 
         val addedReposV11 = listOf(
-            REVOLT, GITJOURNAL,
+            GITJOURNAL,
         )
 
         val addedReposV12 = listOf(
             CRYPTOMATOR, TWIN_HELIX
         )
 
-        val addedReposV14 = listOf(
-            ANONYMOUS_MESSENGER
-        )
+        val addedReposV14 = emptyList<Repository>()
 
         val addedReposV15 = listOf(
             KDE_RELEASE, STACK_WALLET,
@@ -1130,7 +1128,7 @@ data class Repository(
         )
 
         val addedReposV17 = listOf(
-            JAK_LINUX, C_GEO, C_GEO_NIGHTLY,
+            C_GEO, C_GEO_NIGHTLY,
         )
         val addedReposV18 = listOf(
             MONERUJO, IODE, SPIRIT_CROC,
@@ -1153,15 +1151,15 @@ data class Repository(
         val addedReposV22 = listOf(
             LAGRANGE, ROHIT, TAGESSCHAU,
             LTTRS, KAFFEEMITKOFFEIN, OFFICIAL_I2P, F_DROID_CLASSIC,
-            RWTH, INSPORATION, SYLKEVICIOUS, OBERNBERGER,
-            NUCLEUS, ONIONSHARE_NIGHTLY, XARANTOLUS, TWOBR,
+            RWTH, INSPORATION, SILKEVICIOUS, OBERNBERGER,
+            NUCLEUS, ONIONSHARE_NIGHTLY, XARANTOLUS,
             OBFUSK, MAXXIS, NAILYK, WOZ,
             VIDELIBRI, PIXELFED, LUBL,
             SAUNAREPO, LIBRECHURCH, JUWELERKASSA,
         )
 
         val addedReposV23 = listOf(
-            CLOUDBURST, HUIZENGEK,
+            HUIZENGEK,
         )
 
         val archiveRepos = listOf(
@@ -1197,10 +1195,19 @@ data class Repository(
             THUNDERBIRD, AXPOS
         )
 
+        val updatedReposV1201 = listOf(
+            F_DROID, GUARDIAN, IZZY, MICRO_G, KDE_RELEASE
+        )
+
         val removedReposV1107 = listOf(
             LUBLIN, FAIRFAX, BEOCODE,
             WIND, INVIZBOX, ANIYOMI, KOYU,
             UNOFFICIAL_FIREFOX, ELEMENT_DEV_GPLAY, ELEMENT_DEV_FDROID,
+        )
+
+        val removedReposV1201 = listOf(
+            CLOUDBURST, NANODROID, ANONYMOUS_MESSENGER,
+            REVOLT, TWOBR, JAK_LINUX, UMBRELLA,
         )
     }
 }
