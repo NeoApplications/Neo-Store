@@ -1,0 +1,8 @@
+Add: Trusted-label to repository items
+Add: Share button for repo
+Fix: Failing to parse when an app is missing categories
+Update: Enable mirror-rotation by default for F-Droid and IzzyOnDroid
+Update: Improve sync failure cause reporting
+Update: Restore bottom search bar option
+Remove repos: C10udburst, NanoDroid, Anonymous Messenger, Revolt, 2BR, J.A.K's, Umbrella
+plus many more in over 30 commits & 10 translation contributions

@@ -1,6 +1,33 @@
 CHANGELOG
 =========
 
+1.2.1 (04.01.2026) +30 Commits +10 Translations
+------------------
+
+### Function
+
+- Add: Nav3 scenes strategy to manage detail-list, bottomSheet scenes
+- Add: Trusted parameter to respective repositories
+- Update: Replace special scaffolds with NavDisplay scenes
+- Fix: Failing to parse when an app is missing categories
+- Fix: Reporting successful syncing
+- Fix: First sync when mirror-rotation is active but no mirrors are stored
+- Update: Enable mirror-rotation by default for F-Droid and IzzyOnDroid
+- Update: Improve sync failure cause reporting
+- Update: Improve repo app lists handling
+- Update: Improve logging and reporting of validation errors of downloads
+- Remove repos: C10udburst, NanoDroid, Anonymous Messenger, Revolt, 2BR, Julian Andres Klode's, Umbrella
+
+### UI/UX
+
+- Add: Trusted-label to repository items
+- Add: Share button for repo
+- Add: Back handling for when a category is open
+- Update: Re-enbale bottom search bar option
+- Update: Revamp search bar layout
+- Update: Increase transition animation pace
+- Update: Improve bottom sheet's contrast to its contents
+
 1.2.0 (11.12.2025) 60+ Commits 19 Translations
 ------------------
 
