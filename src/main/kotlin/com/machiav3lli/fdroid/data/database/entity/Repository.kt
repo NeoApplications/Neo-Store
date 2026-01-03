@@ -57,6 +57,8 @@ data class Repository(
     val webBaseUrl: String = "",
     @ColumnInfo(defaultValue = "0")
     val mirrorRotation: Boolean = false,
+    @ColumnInfo(defaultValue = "0")
+    val trusted: Boolean = false,
 ) {
     val intentAddress: String
         get() = "${address.trimEnd('/')}?fingerprint=$fingerprint"
