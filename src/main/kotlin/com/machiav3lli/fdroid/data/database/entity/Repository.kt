@@ -230,10 +230,12 @@ data class Repository(
         private fun defaultRepository(
             address: String, name: String, description: String, version: Int,
             enabled: Boolean, fingerprint: String, authentication: String, webBaseUrl: String = "",
+            mirrorRotation: Boolean = false, trusted: Boolean = false,
         ): Repository = Repository(
             0, address, emptyList(), name, description, version, enabled,
             fingerprint, "", "", "", "",
             0L, 0L, authentication, webBaseUrl,
+            mirrorRotation = mirrorRotation, trusted = trusted,
         )
 
         private val F_DROID = defaultRepository(
@@ -245,6 +247,7 @@ data class Repository(
             true,
             "43238D512C1E5EB2D6569F4A3AFBF5523418B82E0A3ED1552770ABB9A9C9CCAB", "",
             "https://f-droid.org/packages/",
+            mirrorRotation = true, trusted = true,
         )
         private val F_DROID_ARCHIVE =
             defaultRepository(
@@ -258,7 +261,7 @@ data class Repository(
             )
         private val GUARDIAN = defaultRepository(
             "https://guardianproject.info/fdroid/repo",
-            "Guardian Project Official Releases",
+            "Guardian Project",
             "The " +
                     "official repository of The Guardian Project apps for use with the F-Droid client. Applications in this " +
                     "repository are official binaries built by the original application developers and signed by the same key as " +
@@ -266,6 +269,7 @@ data class Repository(
             21,
             true,
             "B7C2EEFD8DAC7806AF67DFCD92EB18126BC08312A7F2D6F3862E46013C7A6135", "",
+            mirrorRotation = false, trusted = true,
         )
         private val GUARDIAN_ARCHIVE = defaultRepository(
             "https://guardianproject.info/fdroid/archive",
@@ -286,11 +290,13 @@ data class Repository(
             21, true,
             "3BF0D6ABFEAE2F401707B6D966BE743BF0EEE49C2561B9BA39073711F628937A", "",
             "https://apt.izzysoft.de/fdroid/index/apk/",
+            mirrorRotation = true, trusted = true,
         )
         private val MICRO_G = defaultRepository(
             "https://microg.org/fdroid/repo", "MicroG Project",
             "Official repository of the open-source implementation of Google Play Services.",
-            21, false, "9BD06727E62796C0130EB6DAB39B73157451582CBD138E86C468ACC395D14165", ""
+            21, false, "9BD06727E62796C0130EB6DAB39B73157451582CBD138E86C468ACC395D14165", "",
+            trusted = true,
         )
         private val BROMITE = defaultRepository(
             "https://fdroid.bromite.org/fdroid/repo", "Bromite",
@@ -310,7 +316,8 @@ data class Repository(
         private val KDE_RELEASE = defaultRepository(
             "https://cdn.kde.org/android/stable-releases/fdroid/repo", "KDE Android Release",
             "The official release repository for KDE Android apps.",
-            21, false, "13784BA6C80FF4E2181E55C56F961EED5844CEA16870D3B38D58780B85E1158F", ""
+            21, false, "13784BA6C80FF4E2181E55C56F961EED5844CEA16870D3B38D58780B85E1158F", "",
+            trusted = true,
         )
         private val KDE_NIGHTLY = defaultRepository(
             "https://cdn.kde.org/android/fdroid/repo", "KDE Android Nightly",
