@@ -477,4 +477,7 @@
     <string name="duplicate_repo_address_title">Échec de l\'ajout d\'un dépôt</string>
     <string name="duplicate_repo_address_FORMAT">L\'adresse %1$s est un doublon d\'un dépôt déjà existant.</string>
     <string name="main_page">Page principale</string>
+    <string name="integrity_check_failed">Échec de la vérification d\'intégrité : le hachage ne correspond pas.</string>
+    <string name="integrity_check_hashing">Échec de la récupération du hachage du fichier téléchargé.</string>
+    <string name="invalid_metadata_error">Incohérence des métadonnées de la version téléchargée.</string>
 </resources>
