@@ -478,4 +478,7 @@
     <string name="duplicate_repo_address_title">Aggiunta di un repository non riuscita</string>
     <string name="duplicate_repo_address_FORMAT">L\'indirizzo %1$s è un duplicato di un repository già esistente.</string>
     <string name="main_page">Pagina principale</string>
+    <string name="integrity_check_failed">Controllo di integrità non riuscito con hash non corrispondente.</string>
+    <string name="integrity_check_hashing">Impossibile ottenere l\'hash del file scaricato.</string>
+    <string name="invalid_metadata_error">Metadati non corrispondenti della build scaricata.</string>
 </resources>
