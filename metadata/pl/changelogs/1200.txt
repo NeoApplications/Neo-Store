@@ -1,0 +1,8 @@
+Dodano: Preferencje dotyczące dostawcy statystyk pobierania lub wyłączenie tej funkcji
+Dodano: Powiadomienia o postępie do modułu pobierania statystyk
+Poprawiono: Bezpośrednie stosowanie zmian instalatora
+Poprawiono: Wyświetlanie tylko możliwych opcji motywu/instalatora/blokady
+Aktualizacja: Przeprojektowanie wszystkich modułów roboczych zaplecza, repozytoriów i instalatorów w celu uzyskania znacznie lepszej wydajności
+Aktualizacja: Poprawa zgłaszania błędów synchronizacji lub pobierania
+Aktualizacja: Lokalizacja sortowania kategorii na stronie Eksploruj
+Oraz wiele innych zmian w ponad 60 aktualizacjach i 19 tłumaczeniach
