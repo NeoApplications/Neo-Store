@@ -474,4 +474,7 @@
     <string name="duplicate_repo_address_title">Archief toevoegen mislukt</string>
     <string name="duplicate_repo_address_FORMAT">Het adres %1$s is een kopie van een al bestaand archief.</string>
     <string name="main_page">Startpagina</string>
+    <string name="integrity_check_failed">Integriteitscontrole mislukt vanwege niet-overeenkomende hash.</string>
+    <string name="integrity_check_hashing">Ophalen van hash van het gedownloade bestand mislukt.</string>
+    <string name="invalid_metadata_error">Niet-overeenkomende metadata van de gedownloade build.</string>
 </resources>
