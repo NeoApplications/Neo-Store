@@ -477,4 +477,6 @@
     <string name="integrity_check_failed">Integriteitscontrole mislukt vanwege niet-overeenkomende hash.</string>
     <string name="integrity_check_hashing">Ophalen van hash van het gedownloade bestand mislukt.</string>
     <string name="invalid_metadata_error">Niet-overeenkomende metadata van de gedownloade build.</string>
+    <string name="trusted_repo">Vertrouwd archief</string>
+    <string name="trusted_label">Vertrouwd</string>
 </resources>
