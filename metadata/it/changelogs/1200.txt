@@ -1,0 +1,8 @@
+Aggiunto: Preferenza per il provider delle statistiche di download o per disattivarlo
+Aggiunto: Notifica di avanzamento al worker delle statistiche di download
+Corretto: Applicazione diretta delle modifiche all'installer
+Corretto: Visualizzazione delle sole possibili opzioni di tema/installer/blocco
+Aggiornato: Riorganizzazione di tutti i worker backend, repository e installer per prestazioni decisamente migliori
+Aggiornato: Miglioramento della segnalazione di errori di sincronizzazione o download
+Aggiornato: Ordinamento localizzato delle categorie nella pagina Esplora
+e molto altro in più di 60 commit e 19 contributi di traduzione
