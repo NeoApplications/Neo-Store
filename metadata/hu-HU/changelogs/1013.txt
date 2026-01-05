@@ -1,0 +1,8 @@
+Hozzáadás: Biztonsági intézkedés a szinkron spamelésének elkerülésére
+Hozzáadás: Lehetőség a betöltött alkalmazások keresésének korlátozására
+Hozzáadás: Reprodukálható build-ek támogatása
+Hozzáadás: Jelző, ha egyéni rendezés/szűrés van alkalmazva
+Javítás: Kategóriák nélküli alkalmazások betöltése (pl. Total Commander Android)
+Javítás: A legtöbb felhasználói felület állandó újrarenderelésének csökkentése (Jitter/Lag mérséklése)
+Javítás: Hárombetűs nyelvkódok kezelésének javítása
+további több mint 30 commit és 20 fordítási hozzájárulás

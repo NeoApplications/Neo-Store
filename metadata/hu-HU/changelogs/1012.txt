@@ -1,0 +1,8 @@
+Hozzáadva: Párhuzamos letöltés és szinkronizálás
+Hozzáadva: Telepített alkalmazások és tárolók exportálása/importálása
+Hozzáadva: +50 új tároló
+Hozzáadva: Gyerek mód
+Javítva: Tor hivatkozások hívása
+Frissítve: Átalakítva az egész UI
+Frissítve: Fejleszett beállítások dialógus érték beállítása
++ Jóval több mint 440 hozzájárulás & 380 fordítás hozzájárulás
