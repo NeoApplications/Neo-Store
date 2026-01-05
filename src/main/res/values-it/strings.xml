@@ -481,4 +481,6 @@
     <string name="integrity_check_failed">Controllo di integrità non riuscito con hash non corrispondente.</string>
     <string name="integrity_check_hashing">Impossibile ottenere l\'hash del file scaricato.</string>
     <string name="invalid_metadata_error">Metadati non corrispondenti della build scaricata.</string>
+    <string name="trusted_repo">Repo attendibile</string>
+    <string name="trusted_label">Attendibile</string>
 </resources>
