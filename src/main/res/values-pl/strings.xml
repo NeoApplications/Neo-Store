@@ -483,4 +483,6 @@
     <string name="integrity_check_failed">Niepowodzenie sprawdzania integralności z powodu niezgodnej sumy kontrolnej.</string>
     <string name="integrity_check_hashing">Nie udało się uzyskać skrótu pobranego pliku.</string>
     <string name="invalid_metadata_error">Niezgodne metadane pobranej kompilacji.</string>
+    <string name="trusted_repo">Zaufane repozytorium</string>
+    <string name="trusted_label">Zaufane</string>
 </resources>
