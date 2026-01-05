@@ -1,0 +1,8 @@
+Dodano: Zaufana etykieta do elementów repozytorium
+Dodano: Przycisk udostępniania dla repozytorium
+Naprawiono: Błąd analizy w przypadku braku kategorii aplikacji
+Aktualizacja: domyślne włączenie obracania lustrzanego dla F-Droid i IzzyOnDroid
+Aktualizacja: poprawa raportowania przyczyn niepowodzeń synchronizacji
+Aktualizacja: przywrócenie opcji dolnego paska wyszukiwania
+Usunięcie repozytoriów: C10udburst, NanoDroid, Anonymous Messenger, Revolt, 2BR, J.A.K's, Umbrella
+oraz wiele innych w ponad 30 aktualizacjach i 10 tłumaczeniach
