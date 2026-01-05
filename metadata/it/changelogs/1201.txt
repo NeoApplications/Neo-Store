@@ -1,0 +1,8 @@
+Aggiunto: Etichetta "Trusted" agli elementi del repository 
+Aggiunto: Pulsante "Condividi" per il repository 
+Corretto: Errore di analisi quando un'app non ha categorie
+Aggiornato: Abilita la rotazione mirror per impostazione predefinita per F-Droid e IzzyOnDroid
+Aggiornato: Migliorata la segnalazione delle cause di errore di sincronizzazione
+Aggiornato: Ripristinata l'opzione nella barra di ricerca in basso
+Rimossi i repository: C10udburst, NanoDroid, Anonymous Messenger, Revolt, 2BR, J.A.K's, Umbrell
+ e molti altri in oltre 30 commit e 10 contributi di traduzione
