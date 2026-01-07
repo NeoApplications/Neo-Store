@@ -480,4 +480,6 @@
     <string name="integrity_check_failed">Échec de la vérification d\'intégrité : le hachage ne correspond pas.</string>
     <string name="integrity_check_hashing">Échec de la récupération du hachage du fichier téléchargé.</string>
     <string name="invalid_metadata_error">Incohérence des métadonnées de la version téléchargée.</string>
+    <string name="trusted_repo">Dépôt de confiance</string>
+    <string name="trusted_label">Fiable</string>
 </resources>
