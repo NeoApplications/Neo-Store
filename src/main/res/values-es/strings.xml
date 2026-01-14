@@ -460,4 +460,24 @@
     <string name="trending_from_fdroid">Más relevante en el cliente de F-Droid</string>
     <string name="trending_from_fdroid_classic">Más relevante en F-Droid Clásico</string>
     <string name="trending_from_flicky">Más relevante en Flicky</string>
+    <string name="trending_from_neostore">Más relevante en Neo Store</string>
+    <string name="shizuku_installer">Instalador Shizku</string>
+    <string name="download_stats_notification_title">Actualizando estadísticas de descarga</string>
+    <string name="max_parallel_downloads">Número máximo de descargas paralelas cuando el gestor de descargas de Neo Store es usado.</string>
+    <string name="batch_sync_progress_FORMAT">Sincronizando repositorios: %1$d/%2$d</string>
+    <string name="dlstats_none">Sin proveedor</string>
+    <string name="dlstats_izzyondroid">IzzyOnDroid</string>
+    <string name="duplicate_repo_address_title">Fallo al agregar un repositorio</string>
+    <string name="main_page">Página principal</string>
+    <string name="integrity_check_hashing">Fallo al obtener el hash del archivo descargado.</string>
+    <string name="trusted_repo">Repositorio de confianza</string>
+    <string name="trusted_label">Confianza</string>
+    <string name="download_stats_notification_pending">Preparándose para obtener estadísticas de descarga</string>
+    <string name="total_recent_downloads">Descargas recientes más relevantes</string>
+    <string name="total_alltime_downloads">Descargas más relevantes de todos los tiempos</string>
+    <string name="downloads_top_ranking_FORMAT">Ranking de descargas de todos los tiempos: %s</string>
+    <string name="no_validation_error">No hay error de validación.</string>
+    <string name="dlstats_provider">Descargar proveedor de estadísticas</string>
+    <string name="duplicate_repo_address_FORMAT">La dirección %1$s es un duplicado de un repositorio ya existente.</string>
+    <string name="integrity_check_failed">Comprobación de integridad fallida con hash no coincidente.</string>
 </resources>
