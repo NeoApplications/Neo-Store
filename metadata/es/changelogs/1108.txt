@@ -1,0 +1,5 @@
+Añadir: Instalador Shizuku
+Actualización: Renovar InstallQueue y BaseInstaller para la gestión reactiva de instalaciones
+Actualización: Dividir MainVM en varias máquinas virtuales relacionadas con la página
+Actualización: Reemplazar el espejo de Codeberg por el de IzzyOnDroid para las estadísticas de descarga
+además de muchas más en más de 20 confirmaciones y 10 contribuciones de traducción

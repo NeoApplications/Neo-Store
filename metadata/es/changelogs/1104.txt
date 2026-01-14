@@ -1,0 +1,7 @@
+Añadir: Compatibilidad con el Index-V2 de F-Droid y actualizaciones incrementales
+Añadir: Compatibilidad con repositorios predefinidos OEM/ROM
+Añadir: Insignias RB para elementos de lanzamiento
+Corrección: Exportación de extras
+Actualización: Mejora del rendimiento de la consulta de productos principales
+Actualización: Unificación de las notificaciones de sincronización con el gestor de notificaciones de sincronización
+y mucho más en más de 210 confirmaciones y 100 contribuciones de traducción

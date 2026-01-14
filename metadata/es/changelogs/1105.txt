@@ -1,0 +1,8 @@
+Añadir: Iconos para las nuevas categorías de f-Droid
+Añadir: Notificar sobre nuevos permisos sensibles requeridos en las actualizaciones (créditos @aba2222)
+Corrección: Publicación sugerida en index-V2 (créditos @Red54)
+Corrección: División por cero si index v2 no es compatible con SyncWorker (créditos @amartinz)
+Corrección: La sincronización del repositorio de F-Droid causa un fallo silencioso de memoria
+Corrección: Análisis de elementos localizados en SHAW en locales distintos de EN-US
+Actualización: Primeras mejoras de diseño y color para Material 3 Expressive
+y muchas más en más de 20 confirmaciones y una traducción

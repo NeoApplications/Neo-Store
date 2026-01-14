@@ -1,0 +1,7 @@
+Añadir: Preferencia para el proveedor de estadísticas de descarga o su desactivación
+Añadir: Notificación de progreso al trabajador de estadísticas de descarga
+Corrección: Aplicar cambios directamente al instalador
+Corrección: Mostrar solo las opciones posibles de tema/instalador/bloqueo
+Actualización: Renovar todos los trabajadores, repositorios e instaladores del backend para un rendimiento mucho mejor
+Actualización: Mejorar la notificación de fallos de sincronización o descarga
+Actualización: Ordenamiento localizado de categorías en la página Explorar y mucho más en más de 60 confirmaciones y 19 traducciones
