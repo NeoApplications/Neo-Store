@@ -1,0 +1,2 @@
+Corrección: No se respeta la última modificación cuando falta la etiqueta de entidad en las descargas
+Actualización: Procesar las estadísticas de descarga en cuanto se obtienen
