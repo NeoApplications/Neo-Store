@@ -444,4 +444,20 @@
     <string name="sensitive_permission_error_DESC">Error de permiso sensible</string>
     <string name="disable_permissions_check">Deshabilitar comprobación de permisos</string>
     <string name="disable_permissions_check_summary">No comprobar si el APK descargado tiene los mismos permisos que la aplicación instalada u otros nuevos.</string>
+    <string name="download_stats">Descargar estadísticas</string>
+    <string name="download_stats_iod">Descargar estadísticas (desde IzzyOnDroid)</string>
+    <string name="total">Total</string>
+    <string name="total_downloads">Descargas totales</string>
+    <string name="clients">Clientes</string>
+    <string name="monthly">Mensualmente</string>
+    <string name="top_apps_notice">Actualmente, las estadísticas de descarga son únicamente proporcionadas por IzzyOnDroid, así que las mejores apps están limitadas a este repositorio.</string>
+    <string name="top_apps">Mejores apps</string>
+    <string name="search_for_repository">Buscar un repositorio</string>
+    <string name="downloads_total_FORMAT">Descargas totales: %s</string>
+    <string name="downloads_top_client_FORMAT">Cliente más popular: %s</string>
+    <string name="trending_from_droidify">Más relevante en Droid-ify</string>
+    <string name="trending_from_unknown">Más relevante en clientes desconocidos</string>
+    <string name="trending_from_fdroid">Más relevante en el cliente de F-Droid</string>
+    <string name="trending_from_fdroid_classic">Más relevante en F-Droid Clásico</string>
+    <string name="trending_from_flicky">Más relevante en Flicky</string>
 </resources>
