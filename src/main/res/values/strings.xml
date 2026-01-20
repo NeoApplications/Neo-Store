@@ -481,4 +481,8 @@
     <string name="trusted_repo">Trusted repo</string>
     <string name="trusted_label">Trusted</string>
     <string name="translation">Translation</string>
+    <plurals name="updated_apps">
+        <item quantity="one">%d updated app</item>
+        <item quantity="other">%d updated apps</item>
+    </plurals>
 </resources>

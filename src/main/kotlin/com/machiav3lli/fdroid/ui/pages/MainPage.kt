@@ -1,45 +1,66 @@
 package com.machiav3lli.fdroid.ui.pages
 
 import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.NeoActivity
+import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.POPUP_LONG
 import com.machiav3lli.fdroid.POPUP_NONE
 import com.machiav3lli.fdroid.POPUP_SHORT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.LatestSyncs
+import com.machiav3lli.fdroid.data.entity.DialogKey
+import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.manager.work.BatchSyncWorker
+import com.machiav3lli.fdroid.ui.components.ActionButton
+import com.machiav3lli.fdroid.ui.components.ExpandingFadingCard
+import com.machiav3lli.fdroid.ui.components.FilledRoundButton
 import com.machiav3lli.fdroid.ui.components.Tooltip
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.components.TopBarAction
+import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MagnifyingGlass
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
 import com.machiav3lli.fdroid.ui.dialog.ActionsDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
+import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.ui.navigation.NeoNavigationSuiteScaffold
@@ -62,6 +83,13 @@ fun MainPage(
     val scope = rememberCoroutineScope()
 
     val successfulSyncs by viewModel.successfulSyncs.collectAsStateWithLifecycle(LatestSyncs())
+    val dataState by viewModel.dataState.collectAsStateWithLifecycle()
+    val updates by viewModel.updates.collectAsStateWithLifecycle()
+    var updaterExpanded by remember { mutableStateOf(false) }
+
+    val openDialog = remember { mutableStateOf(false) }
+    // TOD Move sync dialog here too
+    val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
 
     val showPopup = remember { mutableIntStateOf(POPUP_NONE) }
     val openSyncDialog = remember { mutableStateOf(false) }
@@ -143,6 +171,90 @@ fun MainPage(
                         )
                     }
                 }
+            },
+            floatingActionButton = {
+                if (updates.isNotEmpty()) {
+                    Row(
+                        modifier = Modifier.padding(start = 28.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        ExpandingFadingCard(
+                            expanded = updaterExpanded,
+                            collapsedView = {
+                                val text = pluralStringResource(
+                                    id = R.plurals.updated_apps,
+                                    count = updates.size,
+                                    updates.size
+                                )
+                                ExtendedFloatingActionButton(
+                                    text = { Text(text = text) },
+                                    icon = {
+                                        Icon(
+                                            imageVector = if (updaterExpanded) Phosphor.CaretDown else Phosphor.CircleWavyWarning,
+                                            contentDescription = text
+                                        )
+                                    },
+                                    elevation = FloatingActionButtonDefaults.elevation(
+                                        0.dp
+                                    ),
+                                    onClick = { updaterExpanded = !updaterExpanded }
+                                )
+                            },
+                            expandedView = {
+                                Column(
+                                    modifier = Modifier.padding(vertical = 4.dp),
+                                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                                ) {
+                                    Row(
+                                        horizontalArrangement = Arrangement.spacedBy(
+                                            8.dp
+                                        )
+                                    ) {
+                                        ActionButton(
+                                            text = stringResource(id = R.string.update_all),
+                                            icon = Phosphor.Download,
+                                            modifier = Modifier.weight(1f),
+                                            positive = true,
+                                        ) {
+                                            val action = {
+                                                NeoApp.wm.update(
+                                                    *updates
+                                                        .map {
+                                                            Pair(
+                                                                it.packageName,
+                                                                it.repositoryId
+                                                            )
+                                                        }
+                                                        .toTypedArray()
+                                                )
+                                            }
+                                            if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                                dialogKey.value =
+                                                    DialogKey.BatchDownload(
+                                                        updates.map(ProductItem::name), action
+                                                    )
+                                                openDialog.value = true
+                                            } else action()
+                                        }
+                                        FilledRoundButton(
+                                            description = stringResource(id = R.string.cancel),
+                                            icon = Phosphor.CaretDown,
+                                        ) {
+                                            updaterExpanded = !updaterExpanded
+                                        }
+                                    }
+                                    ProductsHorizontalRecycler(
+                                        productsList = updates,
+                                        repositories = dataState.reposMap,
+                                        rowsNumber = updates.size.coerceIn(1, 2),
+                                    ) { item ->
+                                        mActivity.navigateProduct(item.packageName)
+                                    }
+                                }
+                            }
+                        )
+                    }
+                }
             }
         ) { paddingValues ->
             SlidePager(
@@ -173,6 +285,35 @@ fun MainPage(
                 },
                 dismissTextId = R.string.skip,
             )
+        }
+    }
+
+    if (openDialog.value) {
+        BaseDialog(openDialogCustom = openDialog) {
+            when (dialogKey.value) {
+                is DialogKey.BatchDownload -> KeyDialogUI(
+                    key = dialogKey.value,
+                    openDialog = openDialog,
+                    primaryAction = {
+                        if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None)
+                            mActivity.launchLockPrompt {
+                                (dialogKey.value as DialogKey.BatchDownload).action()
+                                openDialog.value = false
+                            }
+                        else {
+                            (dialogKey.value as DialogKey.BatchDownload).action()
+                            openDialog.value = false
+                        }
+                    },
+                    onDismiss = {
+                        dialogKey.value = null
+                        openDialog.value = false
+                    }
+                )
+
+                else                       -> {}
+            }
+
         }
     }
 }

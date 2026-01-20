@@ -3,23 +3,18 @@ package com.machiav3lli.fdroid.ui.pages
 import android.annotation.SuppressLint
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -44,7 +39,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.NeoActivity
@@ -52,8 +46,6 @@ import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DialogKey
-import com.machiav3lli.fdroid.data.entity.ProductItem
-import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
 import com.machiav3lli.fdroid.ui.components.DownloadsCard
@@ -62,12 +54,9 @@ import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SegmentedTabButton
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
 import com.machiav3lli.fdroid.ui.components.TopBarAction
-import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDownUp
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUp
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUpDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Eraser
@@ -260,85 +249,6 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
             contentPadding = PaddingValues(vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            // TODO merge into one items-block
-            if (pageState.updatesAvailable) item(key = "updatesCard") {
-                val cardColor by animateColorAsState(
-                    targetValue = if (updatesVisible) MaterialTheme.colorScheme.surfaceContainerHighest
-                    else Color.Transparent,
-                    label = "cardColor"
-                )
-
-                Surface(
-                    modifier = Modifier.padding(
-                        horizontal = 8.dp,
-                        vertical = 4.dp
-                    ),
-                    shape = MaterialTheme.shapes.large,
-                    color = cardColor,
-                ) {
-                    Column(
-                        Modifier.padding(vertical = 6.dp),
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            ElevatedButton(
-                                colors = ButtonDefaults.elevatedButtonColors(
-                                    containerColor = MaterialTheme.colorScheme.surface,
-                                    contentColor = MaterialTheme.colorScheme.primary
-                                ),
-                                onClick = { updatesVisible = !updatesVisible }
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.updates),
-                                    textAlign = TextAlign.Center,
-                                    style = MaterialTheme.typography.titleSmall
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Icon(
-                                    imageVector = if (updatesVisible) Phosphor.CaretUp else Phosphor.CaretDown,
-                                    contentDescription = stringResource(id = R.string.updates)
-                                )
-                            }
-                            AnimatedVisibility(updatesVisible) {
-                                ActionButton(
-                                    text = stringResource(R.string.update_all),
-                                    icon = Phosphor.Download,
-                                    positive = true,
-                                ) {
-                                    val action = {
-                                        NeoApp.wm.update(
-                                            *pageState.updates
-                                                .map { Pair(it.packageName, it.repositoryId) }
-                                                .toTypedArray()
-                                        )
-                                    }
-                                    if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                                        dialogKey.value =
-                                            DialogKey.BatchDownload(
-                                                pageState.updates.map(ProductItem::name), action
-                                            )
-                                        openDialog.value = true
-                                    } else action()
-                                }
-                            }
-                        }
-                        AnimatedVisibility(updatesVisible) {
-                            ProductsHorizontalRecycler(
-                                productsList = pageState.updates,
-                                repositories = dataState.reposMap,
-                                rowsNumber = pageState.updates.size.coerceIn(1, 2),
-                            ) { item ->
-                                neoActivity.navigateProduct(item.packageName)
-                            }
-                        }
-                    }
-                }
-            }
             item(key = "installedTitle") {
                 Row(
                     modifier = Modifier
@@ -416,27 +326,7 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
                     }
                 )
 
-                is DialogKey.BatchDownload -> KeyDialogUI(
-                    key = dialogKey.value,
-                    openDialog = openDialog,
-                    primaryAction = {
-                        if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None)
-                            neoActivity.launchLockPrompt {
-                                (dialogKey.value as DialogKey.BatchDownload).action()
-                                openDialog.value = false
-                            }
-                        else {
-                            (dialogKey.value as DialogKey.BatchDownload).action()
-                            openDialog.value = false
-                        }
-                    },
-                    onDismiss = {
-                        dialogKey.value = null
-                        openDialog.value = false
-                    }
-                )
-
-                else                       -> {}
+                else                  -> {}
             }
         }
     }

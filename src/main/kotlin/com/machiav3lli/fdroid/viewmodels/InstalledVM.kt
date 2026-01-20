@@ -21,8 +21,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -34,7 +32,7 @@ import kotlinx.coroutines.launch
 )
 class InstalledVM(
     private val downloadedRepo: DownloadedRepository,
-    private val productsRepo: ProductsRepository,
+    productsRepo: ProductsRepository,
     extrasRepo: ExtrasRepository,
     installedRepo: InstalledRepository,
 ) : ViewModel() {
@@ -47,23 +45,14 @@ class InstalledVM(
             initialValue = emptyMap()
         )
 
-    val productsPair = combine(
-        sortFilter,
+    val installedProducts = combine(
+        productsRepo.getProducts(Request.Installed),
         installed,
+        sortFilter,
         extrasRepo.getAll(),
-    ) { sortFilter, installed, extras ->
-        Triple(sortFilter, installed, extras)
-    }.flatMapLatest { (_, installed, _) ->
-        combine(
-            productsRepo.getProducts(Request.Installed),
-            productsRepo.getProducts(Request.Updates),
-        ) { installedProds, updatedProds ->
-            ProductsState(
-                installedProds.map { it.toItem(installed[it.product.packageName]) },
-                updatedProds.map { it.toItem(installed[it.product.packageName]) },
-            )
-        }
-    }.distinctUntilChanged()
+    ) { prods, installed, _, _ ->
+        prods.map { it.toItem(installed[it.product.packageName]) }
+    }
 
     val sortedDownloads = downloadedRepo.getAllFlow()
         .map { it.sortedByDescending { it.changed / 10_000L } }
@@ -83,16 +72,14 @@ class InstalledVM(
 
     val installedPageState: StateFlow<InstalledPageState> = combine(
         installed,
-        productsPair,
+        installedProducts,
         activeDownloads,
         sortFilter,
     ) { installed, products, activeDownloads, sortFilter ->
         InstalledPageState(
             installedMap = installed,
-            installedProducts = products.installedProducts,
-            updates = products.updatedProducts,
+            installedProducts = products,
             activeDownloads = activeDownloads,
-            updatesAvailable = products.updatedProducts.isNotEmpty(),
             isDownloading = activeDownloads.isNotEmpty(),
             sortFilter = sortFilter
         )
@@ -117,9 +104,7 @@ class InstalledVM(
 data class InstalledPageState(
     val installedMap: Map<String, Installed> = emptyMap(),
     val installedProducts: List<ProductItem> = emptyList(),
-    val updates: List<ProductItem> = emptyList(),
     val activeDownloads: List<Downloaded> = emptyList(),
-    val updatesAvailable: Boolean = false,
     val isDownloading: Boolean = false,
     val sortFilter: String = ""
 )

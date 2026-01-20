@@ -2,10 +2,13 @@ package com.machiav3lli.fdroid.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
 import com.machiav3lli.fdroid.data.database.entity.IconDetails
 import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.Request
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
+import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,8 +29,24 @@ open class MainVM(
     private val extrasRepo: ExtrasRepository,
     private val productsRepo: ProductsRepository,
     reposRepo: RepositoriesRepository,
+    installedRepo: InstalledRepository,
 ) : ViewModel() {
     val successfulSyncs = reposRepo.getLatestUpdates()
+
+    private val installed = installedRepo.getMap()
+
+    val updates = combine(
+        productsRepo.getProducts(Request.Updates),
+        installed,
+        extrasRepo.getAll(),
+    ) { prods, installed, _ ->
+        prods.map { it.toItem(installed[it.product.packageName]) }
+    }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+            initialValue = emptyList()
+        )
 
     val dataState: StateFlow<DataState> = combine(
         reposRepo.getAll().mapLatest { it.associateBy(Repository::id) },
