@@ -1,6 +1,6 @@
 [versions]
 activity = "1.12.2"
-agp = "8.13.2"
+agp = "9.0.0"
 biometric = "1.2.0-alpha05"
 coil = "3.3.0"
 # navigation issue with 2025.10.01, 2025.11.00, 2025.11.01, 2025.12.00 wait for fix

@@ -25,9 +25,9 @@ import androidx.biometric.BiometricManager
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentManager
+import com.machiav3lli.derdiedas.config.BuildConfig
 import com.machiav3lli.fdroid.AM_PACKAGENAME
 import com.machiav3lli.fdroid.AM_PACKAGENAME_DEBUG
-import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences

@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -12,14 +12,15 @@ plugins {
     alias(libs.plugins.shizuku.refine)
 }
 
-val jvmVersion = JavaVersion.VERSION_17
-
 val detectedLocales = detectLocales()
-val langsListString = "{${detectedLocales.sorted().joinToString(",") { "\"$it\"" }}}"
 
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
     arg("room.incremental", "true")
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 android {
@@ -32,13 +33,9 @@ android {
         targetSdk = 36
         versionCode = 1201
         versionName = "1.2.1"
-        buildConfigField("String", "KEY_API_EXODUS", "\"81f30e4903bde25023857719e71c94829a41e6a5\"")
-        buildConfigField("String[]", "DETECTED_LOCALES", langsListString)
     }
 
     compileOptions {
-        sourceCompatibility = jvmVersion
-        targetCompatibility = jvmVersion
         isCoreLibraryDesugaringEnabled = true
     }
 
@@ -116,6 +113,22 @@ android {
         unitTests.isReturnDefaultValues = true
         unitTests.all {
             it.useJUnitPlatform()
+        }
+    }
+
+    val generateLocales by tasks.registering(GenerateBuildConfig::class) {
+        resDir.set(project.layout.projectDirectory.dir("src/main/res"))
+        outputDir.set(project.layout.buildDirectory.dir("generated/source/locales/kotlin/main"))
+    }
+
+    androidComponents.onVariants { variant ->
+        variant.sources.kotlin!!.addGeneratedSourceDirectory(
+            generateLocales,
+            GenerateBuildConfig::outputDir
+        )
+
+        tasks.withType<KotlinCompile> {
+            dependsOn(generateLocales)
         }
     }
 }
@@ -213,14 +226,6 @@ dependencies {
     testImplementation(libs.junit.jupiter.params)
 }
 
-tasks.withType<KotlinCompile>().configureEach {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
-        freeCompilerArgs =
-            listOf("-Xjvm-default=all-compatibility", "-XXLanguage:+ExplicitBackingFields")
-    }
-}
-
 fun detectLocales(): Set<String> {
     val langsList = mutableSetOf<String>()
     fileTree("src/main/res").visit {
@@ -232,4 +237,50 @@ fun detectLocales(): Set<String> {
         }
     }
     return langsList
+}
+
+abstract class GenerateBuildConfig : DefaultTask() {
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:IgnoreEmptyDirectories
+    abstract val resDir: DirectoryProperty
+
+    @get:OutputDirectory
+    abstract val outputDir: DirectoryProperty
+
+    init {
+        group = "build"
+        description = "Generates BuildConfig.kt from auto-fetched values"
+    }
+
+    @TaskAction
+    fun generate() {
+        val detectedLocales = mutableSetOf<String>()
+        resDir.get().asFileTree.visit {
+            if (file.isFile && file.name == "strings.xml" && file.readText().contains("<string")) {
+                val languageCode = file.parentFile?.name?.removePrefix("values-")?.let {
+                    if (it == "values") "en" else it
+                }
+                languageCode?.let { detectedLocales.add(it) }
+            }
+        }
+
+        val outputFile =
+            outputDir.file("com/machiav3lli/fdroid/config/BuildConfig.kt").get().asFile
+        outputFile.parentFile.mkdirs()
+        outputFile.writeText(
+            """
+            package com.machiav3lli.derdiedas.config
+            
+            object BuildConfig {
+                val DETECTED_LOCALES: Array<String> = arrayOf(${
+                detectedLocales.sorted().joinToString { "\"$it\"" }
+            })
+                const val KEY_API_EXODUS: String = "81f30e4903bde25023857719e71c94829a41e6a5"
+            }
+        """.trimIndent()
+        )
+
+        println("BuildConfig: Generated ${detectedLocales.size} locales to ${outputFile.absolutePath}")
+    }
 }
