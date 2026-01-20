@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,8 +28,8 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -77,9 +78,9 @@ import com.machiav3lli.fdroid.ui.components.MonthlyLineChart
 import com.machiav3lli.fdroid.ui.components.MultiLineChart
 import com.machiav3lli.fdroid.ui.components.ScreenshotItem
 import com.machiav3lli.fdroid.ui.components.ScreenshotList
+import com.machiav3lli.fdroid.ui.components.SegmentedTabButton
 import com.machiav3lli.fdroid.ui.components.SimpleLineChart
 import com.machiav3lli.fdroid.ui.components.SwitchPreference
-import com.machiav3lli.fdroid.ui.components.TabButton
 import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoChips
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoHeader
@@ -575,31 +576,43 @@ fun AppPage(
                                     preExpanded = false,
                                 ) {
                                     AppInfoChips(downloadStatsState.info.downloadInfoChips())
-                                    PrimaryTabRow(
-                                        containerColor = Color.Transparent,
-                                        selectedTabIndex = statsTab.intValue,
-                                        divider = {}
+                                    SingleChoiceSegmentedButtonRow(
+                                        modifier = Modifier
+                                            .background(
+                                                color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                                                shape = MaterialTheme.shapes.extraLarge,
+                                            )
+                                            .padding(horizontal = 4.dp),
                                     ) {
-                                        TabButton(
+                                        SegmentedTabButton(
                                             text = stringResource(id = R.string.total),
                                             icon = Phosphor.Download,
+                                            selected = {
+                                                statsTab.intValue == 0
+                                            },
                                             onClick = {
                                                 statsTab.intValue = 0
-                                            }
+                                            },
                                         )
-                                        TabButton(
+                                        SegmentedTabButton(
                                             text = stringResource(id = R.string.clients),
                                             icon = Phosphor.CirclesFour,
+                                            selected = {
+                                                statsTab.intValue == 1
+                                            },
                                             onClick = {
                                                 statsTab.intValue = 1
-                                            }
+                                            },
                                         )
-                                        TabButton(
+                                        SegmentedTabButton(
                                             text = stringResource(id = R.string.monthly),
                                             icon = Phosphor.Calendar,
+                                            selected = {
+                                                statsTab.intValue == 2
+                                            },
                                             onClick = {
                                                 statsTab.intValue = 2
-                                            }
+                                            },
                                         )
                                     }
                                     when (statsTab.intValue) {

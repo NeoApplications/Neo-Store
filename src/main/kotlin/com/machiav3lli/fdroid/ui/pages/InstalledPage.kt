@@ -2,7 +2,6 @@ package com.machiav3lli.fdroid.ui.pages
 
 import android.annotation.SuppressLint
 import androidx.activity.compose.LocalActivity
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -26,9 +25,8 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -61,8 +59,8 @@ import com.machiav3lli.fdroid.ui.components.DownloadedItem
 import com.machiav3lli.fdroid.ui.components.DownloadsCard
 import com.machiav3lli.fdroid.ui.components.ExpandingFadingCard
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
+import com.machiav3lli.fdroid.ui.components.SegmentedTabButton
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
-import com.machiav3lli.fdroid.ui.components.TabButton
 import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -101,7 +99,7 @@ fun InstalledPage(
                 Preferences.Key.SortOrderAscendingInstalled,
                 Preferences.Key.TargetSDKInstalled,
                 Preferences.Key.MinSDKInstalled,
-                     -> viewModel.setSortFilter(
+                    -> viewModel.setSortFilter(
                     listOf(
                         Preferences[Preferences.Key.ReposFilterInstalled],
                         Preferences[Preferences.Key.CategoriesFilterInstalled],
@@ -120,28 +118,39 @@ fun InstalledPage(
     }
 
     Column(
-        Modifier
+        modifier = Modifier
             .background(Color.Transparent)
             .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        PrimaryTabRow(
-            containerColor = Color.Transparent,
-            selectedTabIndex = installedTab.intValue,
-            divider = {}
+        SingleChoiceSegmentedButtonRow(
+            modifier = Modifier
+                .padding(top = 4.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    shape = MaterialTheme.shapes.extraLarge,
+                )
+                .padding(horizontal = 4.dp),
         ) {
-            TabButton(
+            SegmentedTabButton(
                 text = stringResource(id = R.string.installed),
                 icon = Phosphor.ArrowSquareOut,
+                selected = {
+                    installedTab.intValue == 0
+                },
                 onClick = {
                     installedTab.intValue = 0
-                }
+                },
             )
-            TabButton(
+            SegmentedTabButton(
                 text = stringResource(id = R.string.downloads),
                 icon = Phosphor.Download,
+                selected = {
+                    installedTab.intValue == 1
+                },
                 onClick = {
                     installedTab.intValue = 1
-                }
+                },
             )
         }
 
@@ -387,7 +396,7 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
     if (openDialog.value) {
         BaseDialog(openDialogCustom = openDialog) {
             when (dialogKey.value) {
-                is DialogKey.Download      -> KeyDialogUI(
+                is DialogKey.Download -> KeyDialogUI(
                     key = dialogKey.value,
                     openDialog = openDialog,
                     primaryAction = {
