@@ -7,11 +7,10 @@ import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAMES
 import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
 import com.machiav3lli.fdroid.ARG_REPOSITORY_IDS
+import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.manager.installer.AppInstaller
 import com.machiav3lli.fdroid.manager.work.WorkerManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -26,50 +25,56 @@ class ActionReceiver : BroadcastReceiver(), KoinComponent {
         const val COMMAND_BATCH_UPDATE = "batch_update"
     }
 
-    private val receiveJob = Job()
+    val installer: AppInstaller by inject()
+    val wm: WorkerManager by inject()
 
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent == null) return
-        val installer: AppInstaller by inject()
-        val wm: WorkerManager by inject()
+        val pending = goAsync()
+        val appScope = (context.applicationContext as NeoApp).applicationScope
 
-        runBlocking(Dispatchers.IO + receiveJob) {
-            when (intent.action) {
-                COMMAND_CANCEL_DOWNLOAD     -> {
-                    val packageName = intent.getStringExtra(ARG_PACKAGE_NAME)
-                    wm.cancelDownload(packageName)
+        appScope.launch {
+            try {
+                when (intent.action) {
+                    COMMAND_CANCEL_DOWNLOAD     -> {
+                        val packageName = intent.getStringExtra(ARG_PACKAGE_NAME)
+                        wm.cancelDownload(packageName)
+                    }
+
+                    COMMAND_BATCH_UPDATE        -> {
+                        val packageNames: Array<String> =
+                            intent.getStringArrayExtra(ARG_PACKAGE_NAMES) ?: emptyArray()
+                        val repoIds: Array<Long> =
+                            intent.getLongArrayExtra(ARG_REPOSITORY_IDS)?.toTypedArray()
+                                ?: emptyArray()
+                        wm.update(*packageNames.zip(repoIds).toTypedArray())
+                    }
+
+                    COMMAND_CANCEL_DOWNLOAD_ALL -> {
+                        wm.cancelDownloadAll()
+                    }
+
+                    COMMAND_CANCEL_SYNC         -> {
+                        val repoId = intent.getLongExtra(ARG_REPOSITORY_ID, -1)
+                        wm.cancelSyncAll()
+                    }
+
+                    COMMAND_CANCEL_SYNC_ALL     -> {
+                        wm.cancelSyncAll()
+                    }
+
+                    COMMAND_CANCEL_INSTALL      -> {
+                        intent.getStringExtra(ARG_PACKAGE_NAME)
+                            ?.let { packageName ->
+                                wm.cancelInstall(packageName)
+                                installer.cancelInstall(packageName)
+                            }
+                    }
+
+                    else                        -> {}
                 }
-
-                COMMAND_BATCH_UPDATE        -> {
-                    val packageNames: Array<String> =
-                        intent.getStringArrayExtra(ARG_PACKAGE_NAMES) ?: emptyArray()
-                    val repoIds: Array<Long> =
-                        intent.getLongArrayExtra(ARG_REPOSITORY_IDS)?.toTypedArray() ?: emptyArray()
-                    wm.update(*packageNames.zip(repoIds).toTypedArray())
-                }
-
-                COMMAND_CANCEL_DOWNLOAD_ALL -> {
-                    wm.cancelDownloadAll()
-                }
-
-                COMMAND_CANCEL_SYNC         -> {
-                    val repoId = intent.getLongExtra(ARG_REPOSITORY_ID, -1)
-                    wm.cancelSyncAll()
-                }
-
-                COMMAND_CANCEL_SYNC_ALL     -> {
-                    wm.cancelSyncAll()
-                }
-
-                COMMAND_CANCEL_INSTALL      -> {
-                    intent.getStringExtra(ARG_PACKAGE_NAME)
-                        ?.let { packageName ->
-                            wm.cancelInstall(packageName)
-                            installer.cancelInstall(packageName)
-                        }
-                }
-
-                else                        -> {}
+            } finally {
+                pending.finish()
             }
         }
     }

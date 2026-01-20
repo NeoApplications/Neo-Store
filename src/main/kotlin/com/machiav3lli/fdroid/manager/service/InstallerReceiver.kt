@@ -10,14 +10,13 @@ import android.util.Log
 import androidx.core.net.toUri
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.NeoActivity
+import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.manager.installer.AppInstaller
 import com.machiav3lli.fdroid.manager.installer.type.BaseInstaller.Companion.translatePackageInstallerError
 import com.machiav3lli.fdroid.utils.Utils
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.notifyStatus
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -39,12 +38,11 @@ class InstallerReceiver : BroadcastReceiver(), KoinComponent {
         const val NOTIFICATION_TAG_PREFIX = "install-"
     }
 
-    private val receiveJob = Job()
+    val installer: AppInstaller by inject()
 
     override fun onReceive(context: Context, intent: Intent?) {
         val status = intent?.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
         val sessionId = intent?.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, -1) ?: 0
-        val installer: AppInstaller by inject()
 
         // get package information from session
         val sessionInstaller = context.packageManager.packageInstaller
@@ -55,47 +53,58 @@ class InstallerReceiver : BroadcastReceiver(), KoinComponent {
 
         Log.i(TAG, "Status: $status, Package: $packageName")
         // only trigger a prompt if in foreground, otherwise make notification
-        runBlocking(Dispatchers.IO + receiveJob) {
-            when (status) {
-                PackageInstaller.STATUS_SUCCESS,
-                    -> packageName?.let { installer.reportSuccess(it) }
 
-                PackageInstaller.STATUS_PENDING_USER_ACTION,
-                    -> {
-                    val isNotInUserInteraction = !installer.isInUserInteraction(packageName) &&
-                            !(Android.sdk(Build.VERSION_CODES.R) && session?.isStagedSessionActive == true)
-                    if (Utils.inForeground() && isNotInUserInteraction) {
-                        installer.reportUserInteraction(packageName)
-                        // Triggers the installer prompt and "unknown apps" prompt if needed
-                        val promptIntent: Intent? = intent.getParcelableExtra(Intent.EXTRA_INTENT)
+        val pending = goAsync()
+        val appScope = (context.applicationContext as NeoApp).applicationScope
+        appScope.launch {
+            try {
+                when (status) {
+                    PackageInstaller.STATUS_SUCCESS,
+                        -> packageName?.let { installer.reportSuccess(it) }
 
-                        promptIntent?.let {
-                            it.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
-                            it.putExtra(Intent.EXTRA_INSTALLER_PACKAGE_NAME, "com.android.vending")
-                            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    PackageInstaller.STATUS_PENDING_USER_ACTION,
+                        -> {
+                        val isNotInUserInteraction = !installer.isInUserInteraction(packageName) &&
+                                !(Android.sdk(Build.VERSION_CODES.R) && session?.isStagedSessionActive == true)
+                        if (Utils.inForeground() && isNotInUserInteraction) {
+                            installer.reportUserInteraction(packageName)
+                            // Triggers the installer prompt and "unknown apps" prompt if needed
+                            val promptIntent: Intent? =
+                                intent.getParcelableExtra(Intent.EXTRA_INTENT)
 
-                            Log.i(TAG, "Initiating install dialog for Package: $packageName")
-                            context.startActivity(it)
+                            promptIntent?.let {
+                                it.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
+                                it.putExtra(
+                                    Intent.EXTRA_INSTALLER_PACKAGE_NAME,
+                                    "com.android.vending"
+                                )
+                                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+                                Log.i(TAG, "Initiating install dialog for Package: $packageName")
+                                context.startActivity(it)
+                            }
                         }
                     }
-                }
 
-                PackageInstaller.STATUS_FAILURE_ABORTED,
-                PackageInstaller.STATUS_FAILURE_CONFLICT,
-                PackageInstaller.STATUS_FAILURE_INCOMPATIBLE,
-                PackageInstaller.STATUS_FAILURE_INVALID,
-                PackageInstaller.STATUS_FAILURE_STORAGE,
-                    -> {
-                    val cancelIntent = Intent(context, ActionReceiver::class.java).apply {
-                        this.action = ActionReceiver.COMMAND_CANCEL_INSTALL
-                        putExtra(ARG_PACKAGE_NAME, packageName)
+                    PackageInstaller.STATUS_FAILURE_ABORTED,
+                    PackageInstaller.STATUS_FAILURE_CONFLICT,
+                    PackageInstaller.STATUS_FAILURE_INCOMPATIBLE,
+                    PackageInstaller.STATUS_FAILURE_INVALID,
+                    PackageInstaller.STATUS_FAILURE_STORAGE,
+                        -> {
+                        val cancelIntent = Intent(context, ActionReceiver::class.java).apply {
+                            this.action = ActionReceiver.COMMAND_CANCEL_INSTALL
+                            putExtra(ARG_PACKAGE_NAME, packageName)
+                        }
+                        context.sendBroadcast(cancelIntent)
+                        installer.reportFailure(translatePackageInstallerError(status))
                     }
-                    context.sendBroadcast(cancelIntent)
-                    installer.reportFailure(translatePackageInstallerError(status))
                 }
+                if (!(Utils.inForeground() && status == PackageInstaller.STATUS_PENDING_USER_ACTION))
+                    notifyStatus(context, intent)
+            } finally {
+                pending.finish()
             }
-            if (!(Utils.inForeground() && status == PackageInstaller.STATUS_PENDING_USER_ACTION))
-                notifyStatus(context, intent)
         }
     }
 }
