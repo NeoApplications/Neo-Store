@@ -47,6 +47,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.At
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Bug
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Copyleft
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GlobeSimple
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Translate
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.User
 import com.machiav3lli.fdroid.ui.dialog.LaunchDialog
 import com.machiav3lli.fdroid.utils.extension.android.Android
@@ -425,6 +426,15 @@ fun Product.generateLinks(context: Context): List<LinkType> {
                 Phosphor.At,
                 context.getString(R.string.author_email),
                 "mailto:$it".toUri()
+            )
+        )
+    }
+    translation.nullIfEmpty()?.let {
+        links.add(
+            LinkType(
+                Phosphor.Translate,
+                context.getString(R.string.translation),
+                it.toUri()
             )
         )
     }

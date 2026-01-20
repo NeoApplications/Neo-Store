@@ -480,4 +480,5 @@
     <string name="invalid_metadata_error">Non-matching metadata of downloaded build.</string>
     <string name="trusted_repo">Trusted repo</string>
     <string name="trusted_label">Trusted</string>
+    <string name="translation">Translation</string>
 </resources>
