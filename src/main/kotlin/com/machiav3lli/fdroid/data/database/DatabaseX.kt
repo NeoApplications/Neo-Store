@@ -121,7 +121,7 @@ import java.io.File
         DownloadStats::class,
         DownloadStatsFileMetadata::class,
     ],
-    version = 1201,
+    version = 1202,
     exportSchema = true,
     views = [
         PackageSum::class,
@@ -280,6 +280,10 @@ import java.io.File
             from = 1108,
             to = 1201,
             spec = DatabaseX.Companion.AutoMigration1108to1201::class
+        ),
+        AutoMigration(
+            from = 1201,
+            to = 1202,
         ),
     ]
 )

@@ -47,6 +47,7 @@ data class IndexV1(
         val sourceCode: String = "",
         val changelog: String = "",
         val webSite: String = "",
+        val translation: String = "",
         val issueTracker: String = "",
         val added: Long = 0,
         val lastUpdated: Long = 0,

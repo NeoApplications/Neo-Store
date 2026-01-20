@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.data.database.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Index
@@ -63,6 +64,9 @@ open class Product(
     var web: String = ""
     var video: String = ""
     var tracker: String = ""
+
+    @ColumnInfo(defaultValue = "")
+    var translation: String = ""
     var changelog: String = ""
     var whatsNew: String = ""
 
@@ -87,6 +91,7 @@ open class Product(
         web: String = "",
         video: String = "",
         tracker: String = "",
+        translation: String = "",
         changelog: String = "",
         whatsNew: String = "",
     ) : this(repositoryId, packageName) {
@@ -108,6 +113,7 @@ open class Product(
         this.web = web
         this.video = video
         this.tracker = tracker
+        this.translation = translation
         this.changelog = changelog
         this.whatsNew = whatsNew
     }
@@ -141,6 +147,7 @@ class ProductTemp(
     source: String = "",
     web: String = "",
     video: String = "",
+    translation: String = "",
     tracker: String = "",
     changelog: String = "",
     whatsNew: String = "",
@@ -164,6 +171,7 @@ class ProductTemp(
     source = source,
     web = web,
     video = video,
+    translation = translation,
     tracker = tracker,
     changelog = changelog,
     whatsNew = whatsNew
@@ -189,6 +197,7 @@ fun Product.asProductTemp(): ProductTemp = ProductTemp(
     source = source,
     web = web,
     video = video,
+    translation = translation,
     tracker = tracker,
     changelog = changelog,
     whatsNew = whatsNew

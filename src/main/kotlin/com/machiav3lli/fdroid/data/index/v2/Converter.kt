@@ -59,6 +59,7 @@ internal fun IndexV2.Package.toProduct(repositoryId: Long, packageName: String) 
     web = metadata.webSite.orEmpty(),
     video = metadata.video.findLocalized(""),
     tracker = metadata.issueTracker.orEmpty(),
+    translation = metadata.translation.orEmpty(),
     changelog = metadata.changelog.orEmpty(),
     // TODO convert usage to Map<VersionCode,Changelog>
     whatsNew = versions.entries

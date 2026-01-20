@@ -68,6 +68,7 @@ internal fun IndexV1.App.toProduct(repositoryId: Long) = IndexProduct(
     web = webSite,
     video = localized.findLocalizedString("") { _, localized -> localized.video },
     tracker = issueTracker,
+    translation = translation,
     changelog = changelog,
     whatsNew = localized.findLocalizedString("") { _, localized -> localized.whatsNew }
         .removeSurrounding("\n")

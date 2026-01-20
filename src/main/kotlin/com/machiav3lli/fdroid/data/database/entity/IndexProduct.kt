@@ -34,6 +34,9 @@ open class IndexProduct(
 
     @ColumnInfo(defaultValue = "")
     var video: String = ""
+
+    @ColumnInfo(defaultValue = "")
+    var translation: String = ""
     var tracker: String = ""
     var changelog: String = ""
     var whatsNew: String = ""
@@ -60,6 +63,7 @@ open class IndexProduct(
         web: String = "",
         video: String = "",
         tracker: String = "",
+        translation: String = "",
         changelog: String = "",
         whatsNew: String = "",
     ) : this(repositoryId, packageName) {
@@ -82,6 +86,7 @@ open class IndexProduct(
         this.web = web
         this.video = video
         this.tracker = tracker
+        this.translation = translation
         this.changelog = changelog
         this.whatsNew = whatsNew
     }
@@ -107,6 +112,7 @@ open class IndexProduct(
         web = web,
         video = video,
         tracker = tracker,
+        translation = translation,
         changelog = changelog,
         whatsNew = whatsNew,
     )
