@@ -18,9 +18,7 @@ import kotlin.time.ExperimentalTime
 val RE_jumpChars = Regex("""[\t]""")
 val RE_finishChars = Regex("""[\n]""")
 
-fun <T : CharSequence> T.nullIfEmpty(): T? {
-    return if (isNullOrEmpty()) null else this
-}
+fun <T : CharSequence> T.nullIfEmpty(): T? = takeIf { it.isNotBlank() }
 
 private val sizeFormats = listOf("%.0f B", "%.0f kB", "%.1f MB", "%.2f GB")
 

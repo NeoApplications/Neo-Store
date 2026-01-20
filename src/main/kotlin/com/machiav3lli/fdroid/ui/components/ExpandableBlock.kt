@@ -99,7 +99,8 @@ fun ExpandableItemsBlock(
                         bottom = 16.dp,
                         start = 8.dp,
                         end = 8.dp,
-                    )
+                    ),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     content()
                 }

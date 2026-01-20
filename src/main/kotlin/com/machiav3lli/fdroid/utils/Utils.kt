@@ -445,16 +445,15 @@ fun Product.generateLinks(context: Context): List<LinkType> {
             "https://spdx.org/licenses/$it.html".toUri()
         )
     })
-    tracker.nullIfEmpty()
-        ?.let {
-            links.add(
-                LinkType(
-                    Phosphor.Bug,
-                    context.getString(R.string.bug_tracker),
-                    it.toUri()
-                )
+    tracker.nullIfEmpty()?.let {
+        links.add(
+            LinkType(
+                Phosphor.Bug,
+                context.getString(R.string.bug_tracker),
+                it.toUri()
             )
-        }
+        )
+    }
     changelog.nullIfEmpty()?.let {
         links.add(
             LinkType(

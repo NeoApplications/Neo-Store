@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -184,15 +185,17 @@ fun ChipsSwitch(
 
     SingleChoiceSegmentedButtonRow(
         modifier = Modifier
+            .background(
+                color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                shape = MaterialTheme.shapes.extraLarge,
+            )
+            .padding(horizontal = 4.dp)
             .fillMaxWidth(),
-        space = 24.dp,
     ) {
         SegmentedTabButton(
             text = stringResource(id = firstTextId),
             icon = firstIcon,
             selected = { firstSelected },
-            index = 0,
-            count = 2,
             onClick = {
                 onCheckedChange(true)
                 selectFirst(true)
@@ -202,8 +205,6 @@ fun ChipsSwitch(
             text = stringResource(id = secondTextId),
             icon = secondIcon,
             selected = { !firstSelected },
-            index = 1,
-            count = 2,
             onClick = {
                 onCheckedChange(false)
                 selectFirst(false)
