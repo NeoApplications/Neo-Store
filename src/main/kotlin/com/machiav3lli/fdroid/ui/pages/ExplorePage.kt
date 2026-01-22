@@ -19,6 +19,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
@@ -34,6 +36,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -41,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.FILTER_CATEGORY_FAV
+import com.machiav3lli.fdroid.LINK_IOD_DLSTATS
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
@@ -50,19 +54,22 @@ import com.machiav3lli.fdroid.data.entity.Source
 import com.machiav3lli.fdroid.data.entity.TopDownloadType
 import com.machiav3lli.fdroid.data.entity.appCategoryIcon
 import com.machiav3lli.fdroid.ui.components.CategoriesList
+import com.machiav3lli.fdroid.ui.components.FilledRoundButton
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
+import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.components.SegmentedTabButton
 import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
-import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Asterisk
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Info
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ListBullets
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
+import com.machiav3lli.fdroid.utils.extension.android.launchView
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.extension.sortedLocalized
 import com.machiav3lli.fdroid.utils.onLaunchClick
@@ -308,12 +315,24 @@ fun ExplorePage(
                         Card(
                             modifier = Modifier.padding(8.dp)
                         ) {
-                            Text(
-                                text = stringResource(R.string.top_apps_notice),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(8.dp),
-                                textAlign = TextAlign.Center,
+                            ListItem(
+                                colors = ListItemDefaults.colors(
+                                    containerColor = Color.Transparent,
+                                ),
+                                trailingContent = {
+                                    FilledRoundButton(
+                                        icon = Phosphor.Info,
+                                        description = stringResource(R.string.download_stats),
+                                    ) {
+                                        context.launchView(LINK_IOD_DLSTATS)
+                                    }
+                                },
+                                headlineContent = {
+                                    Text(
+                                        text = stringResource(R.string.top_apps_notice),
+                                        textAlign = TextAlign.Center,
+                                    )
+                                }
                             )
                         }
                     }
