@@ -53,7 +53,7 @@ import com.machiav3lli.fdroid.ui.components.ExpandingFadingCard
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SegmentedTabButton
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
-import com.machiav3lli.fdroid.ui.components.TopBarAction
+import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDownUp
@@ -195,7 +195,7 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
                                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
-                                    TopBarAction(
+                                    RoundButton(
                                         description = stringResource(R.string.downloading),
                                         icon = Phosphor.CaretDownUp,
                                         onClick = { downloadsExpanded = !downloadsExpanded }

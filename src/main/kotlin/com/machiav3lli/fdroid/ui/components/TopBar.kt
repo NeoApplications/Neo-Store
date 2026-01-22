@@ -3,21 +3,16 @@ package com.machiav3lli.fdroid.ui.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -31,14 +26,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
@@ -116,7 +108,7 @@ fun ExpandableSearchAction(
 fun CollapsedSearchView(
     onExpanded: (Boolean) -> Unit,
 ) {
-    TopBarAction(
+    RoundButton(
         icon = Phosphor.MagnifyingGlass,
         description = stringResource(id = R.string.search),
         onClick = { onExpanded(true) }
@@ -168,7 +160,7 @@ fun RowScope.ExpandedSearchView(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
     )
-    if ((query.isNotEmpty() || hasFocus.value) && isExpanded) TopBarAction(
+    if ((query.isNotEmpty() || hasFocus.value) && isExpanded) RoundButton(
         modifier = Modifier.padding(top = 8.dp),
         icon = Phosphor.X,
         description = stringResource(id = R.string.cancel)
@@ -219,7 +211,7 @@ fun WideSearchField(
                     enter = expandHorizontally(expandFrom = Alignment.Start),
                     exit = shrinkHorizontally(shrinkTowards = Alignment.Start),
                 ) {
-                    TopBarAction(
+                    RoundButton(
                         icon = Phosphor.ArrowUUpLeft,
                         description = stringResource(id = R.string.cancel)
                     ) {
@@ -233,7 +225,7 @@ fun WideSearchField(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         )
-        if (showCloseButton) TopBarAction(
+        if (showCloseButton) RoundButton(
             modifier = Modifier.padding(top = 8.dp),
             icon = Phosphor.X,
             description = stringResource(id = R.string.cancel)
@@ -242,28 +234,5 @@ fun WideSearchField(
             onCleanQuery()
             onClose()
         }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun TopBarAction(
-    icon: ImageVector,
-    modifier: Modifier = Modifier,
-    description: String = "",
-    onLongClick: (() -> Unit) = {},
-    onClick: (() -> Unit),
-) {
-    Box(
-        modifier = modifier
-            .clip(CircleShape)
-            .combinedClickable(role = Role.Button, onClick = onClick, onLongClick = onLongClick)
-            .padding(8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = description
-        )
     }
 }

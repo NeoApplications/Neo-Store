@@ -46,9 +46,9 @@ import com.machiav3lli.fdroid.manager.work.BatchSyncWorker
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ExpandingFadingCard
 import com.machiav3lli.fdroid.ui.components.FilledRoundButton
+import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.components.Tooltip
 import com.machiav3lli.fdroid.ui.components.TopBar
-import com.machiav3lli.fdroid.ui.components.TopBarAction
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
@@ -124,14 +124,14 @@ fun MainPage(
                 TopBar(
                     title = stringResource(id = currentPage.title),
                 ) {
-                    TopBarAction(
+                    RoundButton(
                         modifier = Modifier.padding(top = 8.dp),
                         icon = Phosphor.MagnifyingGlass,
                         description = stringResource(id = R.string.search)
                     ) {
                         mActivity.showSearchPage()
                     }
-                    TopBarAction(
+                    RoundButton(
                         modifier = Modifier.padding(top = 8.dp),
                         icon = Phosphor.ArrowsClockwise,
                         description = stringResource(id = R.string.sync_repositories),
@@ -148,28 +148,28 @@ fun MainPage(
                             }
                         }
                     )
-                    TopBarAction(
+                    RoundButton(
                         modifier = Modifier.padding(top = 8.dp),
                         icon = Phosphor.GearSix,
                         description = stringResource(id = R.string.settings)
                     ) {
                         navigator(NavRoute.Prefs())
                     }
+                }
 
-                    if (showPopup.intValue != POPUP_NONE) {
-                        Tooltip(
-                            when (showPopup.intValue) {
-                                POPUP_LONG -> stringResource(
-                                    id = R.string.last_successful_sync,
-                                    context.getLocaleDateString(successfulSyncs.latest),
-                                    context.getLocaleDateString(successfulSyncs.latestAll),
-                                )
+                if (showPopup.intValue != POPUP_NONE) {
+                    Tooltip(
+                        when (showPopup.intValue) {
+                            POPUP_LONG -> stringResource(
+                                id = R.string.last_successful_sync,
+                                context.getLocaleDateString(successfulSyncs.latest),
+                                context.getLocaleDateString(successfulSyncs.latestAll),
+                            )
 
-                                else       -> stringResource(id = R.string.wait_to_sync)
-                            },
-                            showPopup
-                        )
-                    }
+                            else       -> stringResource(id = R.string.wait_to_sync)
+                        },
+                        showPopup
+                    )
                 }
             },
             floatingActionButton = {

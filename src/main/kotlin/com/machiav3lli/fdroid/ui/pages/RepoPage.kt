@@ -54,7 +54,7 @@ import com.machiav3lli.fdroid.ui.components.OutlinedActionButton
 import com.machiav3lli.fdroid.ui.components.QrCodeImage
 import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.TitleText
-import com.machiav3lli.fdroid.ui.components.TopBarAction
+import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowUUpLeft
@@ -192,13 +192,13 @@ fun RepoPage(
                 },
                 trailingContent = {
                     Row {
-                        TopBarAction(
+                        RoundButton(
                             icon = Phosphor.ShareNetwork,
                             description = stringResource(id = R.string.share),
                         ) {
                             context.shareText(repo.name, repo.intentAddress)
                         }
-                        TopBarAction(
+                        RoundButton(
                             icon = Phosphor.X,
                             description = stringResource(id = R.string.dismiss),
                         ) {

@@ -81,7 +81,7 @@ import com.machiav3lli.fdroid.ui.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.components.SegmentedTabButton
 import com.machiav3lli.fdroid.ui.components.SimpleLineChart
 import com.machiav3lli.fdroid.ui.components.SwitchPreference
-import com.machiav3lli.fdroid.ui.components.TopBarAction
+import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoChips
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoHeader
 import com.machiav3lli.fdroid.ui.components.appsheet.HtmlTextBlock
@@ -391,7 +391,7 @@ fun AppPage(
                                         }
                                     }
                                 )
-                                TopBarAction(
+                                RoundButton(
                                     icon = Phosphor.X,
                                     description = stringResource(id = R.string.cancel),
                                 ) {

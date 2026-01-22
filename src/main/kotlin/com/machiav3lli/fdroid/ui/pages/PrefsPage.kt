@@ -1,6 +1,5 @@
 package com.machiav3lli.fdroid.ui.pages
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
@@ -18,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.ui.components.TopBar
-import com.machiav3lli.fdroid.ui.components.TopBarAction
+import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.House
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
@@ -59,7 +58,7 @@ fun PrefsPage(pageIndex: Int, navigateUp: () -> Unit) {
                 TopBar(
                     title = stringResource(id = currentPage.title),
                     navigationAction = {
-                        TopBarAction(
+                        RoundButton(
                             modifier = Modifier.padding(top = 8.dp),
                             icon = Phosphor.House,
                             description = stringResource(id = R.string.main_page)

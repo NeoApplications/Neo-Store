@@ -54,7 +54,7 @@ import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SegmentedTabButton
 import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
-import com.machiav3lli.fdroid.ui.components.TopBarAction
+import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Asterisk
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
@@ -183,7 +183,7 @@ fun ExplorePage(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     AnimatedVisibility(selectedCategory.value.isNotEmpty()) {
-                        TopBarAction(
+                        RoundButton(
                             icon = Phosphor.ListBullets,
                             description = stringResource(id = R.string.categories)
                         ) {
