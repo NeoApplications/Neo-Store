@@ -6,7 +6,9 @@ import android.net.Uri
 import android.util.Log
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.YearMonth
 import kotlinx.datetime.minus
+import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import java.text.DateFormat
 import java.util.Date
@@ -30,6 +32,7 @@ fun Long.formatSize(): String {
     return sizeFormats[index].format(Locale.US, size)
 }
 
+// TODO Move all date tools to own util-class
 fun Long.formatDateTime(): String {
     val nowDate = DateFormat.getDateInstance().format(Date(System.currentTimeMillis()))
     val mDate = DateFormat.getDateInstance().format(Date(this))
@@ -94,6 +97,10 @@ fun String.isoDateToInt(): Int {
         1    -> (parts[0] + "0000").toInt()
         else -> throw IllegalArgumentException("Invalid date format")
     }
+}
+
+fun YearMonth.toInt(): Int = firstDay.let { localDate ->
+    localDate.year * 10_000 + localDate.month.number * 100 + 0
 }
 
 fun Int.intToIsoDate(): String {

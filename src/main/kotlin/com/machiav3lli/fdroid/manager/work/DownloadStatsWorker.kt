@@ -34,6 +34,7 @@ import com.machiav3lli.fdroid.manager.network.Downloader
 import com.machiav3lli.fdroid.utils.downloadStatsNotificationBuilder
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
+import com.machiav3lli.fdroid.utils.extension.text.toInt
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -109,7 +110,7 @@ class DownloadStatsWorker(
         val filesUpdated = AtomicInt(0)
         val filesFailed = mutableListOf<String>()
 
-        fileNames.map { fileName ->
+        fileNames.map { (fileName, dateInt) ->
             async {
                 downloadSemaphore.withPermit {
                     fetchMonthlyFile(
@@ -118,7 +119,7 @@ class DownloadStatsWorker(
                     ).let { result ->
                         when {
                             result.success && result.data != null -> {
-                                processMonthlyData(result)
+                                processMonthlyData(result, dateInt)
                                 Log.d(TAG, "Processed updated file: ${result.fileName}")
                                 setForeground(
                                     createForegroundInfo(
@@ -168,15 +169,15 @@ class DownloadStatsWorker(
      * Format: YYYY-MM.json
      */
     @OptIn(ExperimentalTime::class)
-    private fun generateMonthlyFileNames(): List<String> {
+    private fun generateMonthlyFileNames(): List<Pair<String, Int>> {
         val current =
             Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.yearMonth
         val start = YearMonth(2024, 12) // year and month of first report
 
-        val fileNames = mutableListOf<String>()
+        val fileNames = mutableListOf<Pair<String, Int>>()
         var ym = start
         while (ym <= current) {
-            fileNames.add("$ym.json")
+            fileNames.add(Pair("$ym.json", ym.toInt()))
             ym = ym.plusMonth()
         }
         return fileNames
@@ -187,7 +188,7 @@ class DownloadStatsWorker(
         lastModified: String?
     ): MonthlyFileResult {
         val url =
-            "${Preferences[Preferences.Key.DLStatsProvider].url}/stats/upstream/monthly-in-days/$fileName"
+            "${Preferences[Preferences.Key.DLStatsProvider].url}/stats/upstream/monthly/$fileName"
         val tempFile = Cache.getDownloadStatsFile(context, fileName)
 
         return try {
@@ -250,7 +251,7 @@ class DownloadStatsWorker(
         }
     }
 
-    private fun parseStatsFile(file: File): Map<String, Map<String, ClientCounts>>? {
+    private fun parseStatsFile(file: File): Map<String, ClientCounts>? {
         return try {
             file.inputStream().use { stream ->
                 DownloadStatsData.fromStream(stream)
@@ -261,10 +262,10 @@ class DownloadStatsWorker(
         }
     }
 
-    private suspend fun processMonthlyData(result: MonthlyFileResult) {
+    private suspend fun processMonthlyData(result: MonthlyFileResult, dateInt: Int) {
         result.data?.let { data ->
             try {
-                val downloadStats = data.toDownloadStats()
+                val downloadStats = data.toDownloadStats(dateInt)
                 privacyRepository.upsertDownloadStats(downloadStats)
                 result.lastModified?.let { lastModified ->
                     privacyRepository.upsertDownloadStatsFileMetadata(
@@ -332,7 +333,7 @@ class DownloadStatsWorker(
 
     data class MonthlyFileResult(
         val fileName: String,
-        val data: Map<String, Map<String, ClientCounts>>?,
+        val data: Map<String, ClientCounts>?,
         val lastModified: String?,
         val success: Boolean
     )

@@ -9,7 +9,6 @@ import com.machiav3lli.fdroid.ROW_ISO_DATE
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_SOURCE
 import com.machiav3lli.fdroid.TABLE_DOWNLOAD_STATS
-import com.machiav3lli.fdroid.utils.extension.text.isoDateToInt
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -68,42 +67,40 @@ class DownloadStatsData {
         }
 
         fun fromJson(json: String) =
-            jsonConfig.decodeFromString<Map<String, Map<String, ClientCounts>>>(json)
+            jsonConfig.decodeFromString<Map<String, ClientCounts>>(json)
 
         @OptIn(ExperimentalSerializationApi::class)
         fun fromStream(inst: InputStream) =
-            jsonConfig.decodeFromStream<Map<String, Map<String, ClientCounts>>>(inst)
+            jsonConfig.decodeFromStream<Map<String, ClientCounts>>(inst)
     }
 }
 
-fun Map<String, Map<String, ClientCounts>>.toDownloadStats(): Set<DownloadStats> {
+fun Map<String, ClientCounts>.toDownloadStats(isoDateInt: Int): Set<DownloadStats> {
     val result = mutableSetOf<DownloadStats>()
 
-    for ((isoDate, sourceMap) in this) {
-        for ((packageName, clientCounts) in sourceMap) {
-            // Add a row only when the count is > 0
-            fun addIfPositive(client: String, count: Long) {
-                if (count > 0) {
-                    result += DownloadStats(
-                        packageName = packageName,
-                        date = isoDate.isoDateToInt(),
-                        client = client,
-                        // TODO update in future when new stats are hosted or mirrors are supported o
-                        source = "izzyOnDroid",
-                        count = count
-                    )
-                }
+    for ((packageName, clientCounts) in this) {
+        // Add a row only when the count is > 0
+        fun addIfPositive(client: String, count: Long) {
+            if (count > 0) {
+                result += DownloadStats(
+                    packageName = packageName,
+                    date = isoDateInt,
+                    client = client,
+                    // TODO update in future when new stats are hosted or mirrors are supported o
+                    source = "izzyOnDroid",
+                    count = count
+                )
             }
-
-            // Map each client field to its corresponding name used in the DB
-            addIfPositive("F-Droid", clientCounts.fDroid)
-            addIfPositive("F-Droid Classic", clientCounts.fDroidClassic)
-            addIfPositive("Neo Store", clientCounts.neoStore)
-            addIfPositive("Droid-ify", clientCounts.droidify)
-            addIfPositive("Flicky", clientCounts.flicky)
-            addIfPositive("_total", clientCounts.total)
-            addIfPositive("_unknown", clientCounts.unknown)
         }
+
+        // Map each client field to its corresponding name used in the DB
+        addIfPositive("F-Droid", clientCounts.fDroid)
+        addIfPositive("F-Droid Classic", clientCounts.fDroidClassic)
+        addIfPositive("Neo Store", clientCounts.neoStore)
+        addIfPositive("Droid-ify", clientCounts.droidify)
+        addIfPositive("Flicky", clientCounts.flicky)
+        addIfPositive("_total", clientCounts.total)
+        addIfPositive("_unknown", clientCounts.unknown)
     }
 
     return result
@@ -150,7 +147,7 @@ data class ClientPackageSum(
 )
 data class MonthlyPackageSum(
     val packageName: String,
-    val client : String,
+    val client: String,
     // formatted from iso as YYYYMM
     val yearMonth: Int,
     val totalCount: Long
