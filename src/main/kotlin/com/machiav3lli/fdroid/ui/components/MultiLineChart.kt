@@ -24,7 +24,6 @@ import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
 import com.patrykandpatrick.vico.compose.common.component.shapeComponent
 import com.patrykandpatrick.vico.compose.common.fill
 import com.patrykandpatrick.vico.compose.common.rememberHorizontalLegend
-import com.patrykandpatrick.vico.compose.common.vicoTheme
 import com.patrykandpatrick.vico.compose.m3.common.rememberM3VicoTheme
 import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
@@ -34,8 +33,6 @@ import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
 import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.core.common.LegendItem
 import com.patrykandpatrick.vico.core.common.shape.CorneredShape
-import java.sql.Date
-import java.text.DateFormat
 import java.time.YearMonth
 
 @Composable
@@ -93,7 +90,7 @@ fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Mo
                 bottomAxis = HorizontalAxis.rememberBottom(
                     valueFormatter = CartesianValueFormatter { _, index, _ ->
                         dates.getOrNull(index.toInt())?.let {
-                            DateFormat.getDateInstance().format(Date.valueOf(it))
+                            YearMonth.parse(it.removeSuffix("-00")).toString()
                         } ?: index.toString()
                     },
                 ),
@@ -116,7 +113,7 @@ fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Mo
 }
 
 @Composable
-fun MonthlyLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modifier) {
+fun ClientsChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modifier) {
     val modelProducer = remember { CartesianChartModelProducer() }
     val legendItemLabelComponent = rememberTextComponent(MaterialTheme.colorScheme.onSurface)
     val dates = data.keys.sorted()
@@ -236,7 +233,7 @@ fun SimpleLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = M
                 bottomAxis = HorizontalAxis.rememberBottom(
                     valueFormatter = CartesianValueFormatter { _, index, _ ->
                         dates.getOrNull(index.toInt())?.let {
-                            DateFormat.getDateInstance().format(Date.valueOf(it))
+                            YearMonth.parse(it.removeSuffix("-00")).toString()
                         } ?: index.toString()
                     },
                 ),

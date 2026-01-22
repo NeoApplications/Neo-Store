@@ -485,4 +485,5 @@
         <item quantity="one">%d updated app</item>
         <item quantity="other">%d updated apps</item>
     </plurals>
+    <string name="downloads_recent_FORMAT">Recent downloads: %s</string>
 </resources>

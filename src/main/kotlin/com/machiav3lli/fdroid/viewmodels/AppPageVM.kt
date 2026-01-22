@@ -12,7 +12,6 @@ import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
-import com.machiav3lli.fdroid.data.database.entity.DownloadStats
 import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.Extras
@@ -287,28 +286,19 @@ class AppPageVM(
         .flatMapLatest { pn ->
             combine(
                 privacyRepo.getClientSumDownloadStats(pn),
+                privacyRepo.getLatestDownloadStats(pn),
                 if (Android.sdk(Build.VERSION_CODES.R))
                     privacyRepo.getSumDownloadOrder(pn)
                 else privacyRepo.getSumDownloadOrderLegacy(pn)
-            ) { stats, order ->
-                Triple(
+            ) { stats, latests, order ->
+                Quadruple(
                     stats.find { it.client == "_total" }?.totalCount ?: 0,
+                    latests.filter { it.client == "_total" }.sumOf { it.count },
                     stats.filterNot { it.client == "_total" || it.client == "_unknown" }
                         .maxByOrNull { it.totalCount }?.client ?: "",
                     order
                 )
             }
-        }.distinctUntilChanged()
-
-    private val downloadStatsDailyMap = packageName
-        .flatMapLatest { pn ->
-            privacyRepo.getLatestDownloadStats(pn)
-        }.map {
-            it.groupBy { stats -> stats.date.intToIsoDate() }
-                .mapValues { entry ->
-                    entry.value.groupBy(DownloadStats::client)
-                        .mapValues { stats -> stats.value.sumOf { stat -> stat.count } }
-                }
         }.distinctUntilChanged()
 
     private val downloadStatsMonthlyMap = packageName
@@ -323,12 +313,10 @@ class AppPageVM(
 
     val downloadStatsState: StateFlow<DownloadStatsState> = combine(
         downloadStatsInfo,
-        downloadStatsDailyMap,
         downloadStatsMonthlyMap,
-    ) { info, daily, monthly ->
+    ) { info, monthly ->
         DownloadStatsState(
             info = info,
-            dailyMap = daily,
             monthlyMap = monthly,
         )
     }.stateIn(
@@ -471,8 +459,7 @@ data class PrivacyPanelState(
 )
 
 data class DownloadStatsState(
-    val info: Triple<Long, String, Int> = Triple(0L, "", 9999),
-    val dailyMap: Map<String, Map<String, Long>> = emptyMap(),
+    val info: Quadruple<Long, Long, String, Int> = Quadruple(0L, 0L, "", 9999),
     val monthlyMap: Map<String, Map<String, Long>> = emptyMap(),
 )
 

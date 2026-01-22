@@ -14,6 +14,7 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.ui.components.InfoChip
+import com.machiav3lli.fdroid.utils.extension.Quadruple
 import com.machiav3lli.fdroid.utils.extension.text.formatSize
 import com.machiav3lli.fdroid.utils.getAndroidVersionName
 import kotlinx.collections.immutable.ImmutableList
@@ -83,9 +84,10 @@ fun EmbeddedProduct.appInfoChips(
 ).toImmutableList()
 
 @Composable
-fun Triple<Long, String, Int>.downloadInfoChips(
+fun Quadruple<Long, Long, String, Int>.downloadInfoChips(
 ) = listOfNotNull(
     stringResource(id = R.string.downloads_total_FORMAT, first),
-    stringResource(id = R.string.downloads_top_client_FORMAT, second),
-    stringResource(id = R.string.downloads_top_ranking_FORMAT, third),
+    stringResource(id = R.string.downloads_recent_FORMAT, second),
+    stringResource(id = R.string.downloads_top_client_FORMAT, third),
+    stringResource(id = R.string.downloads_top_ranking_FORMAT, fourth),
 ).toImmutableList()

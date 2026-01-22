@@ -73,15 +73,14 @@ import com.machiav3lli.fdroid.manager.network.createIconUri
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.manager.work.DownloadWorker
 import com.machiav3lli.fdroid.manager.work.ExodusWorker
+import com.machiav3lli.fdroid.ui.components.ClientsChart
 import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
-import com.machiav3lli.fdroid.ui.components.MonthlyLineChart
-import com.machiav3lli.fdroid.ui.components.MultiLineChart
+import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.components.ScreenshotItem
 import com.machiav3lli.fdroid.ui.components.ScreenshotList
 import com.machiav3lli.fdroid.ui.components.SegmentedTabButton
 import com.machiav3lli.fdroid.ui.components.SimpleLineChart
 import com.machiav3lli.fdroid.ui.components.SwitchPreference
-import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoChips
 import com.machiav3lli.fdroid.ui.components.appsheet.AppInfoHeader
 import com.machiav3lli.fdroid.ui.components.appsheet.HtmlTextBlock
@@ -97,7 +96,6 @@ import com.machiav3lli.fdroid.ui.components.common.BottomSheet
 import com.machiav3lli.fdroid.ui.components.privacy.MeterIconsBar
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Calendar
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
@@ -569,7 +567,7 @@ fun AppPage(
                                 }
                             }
                         }
-                        if (downloadStatsState.dailyMap.isNotEmpty()) {
+                        if (downloadStatsState.monthlyMap.isNotEmpty()) {
                             item {
                                 ExpandableItemsBlock(
                                     heading = stringResource(id = R.string.download_stats_iod),
@@ -604,21 +602,10 @@ fun AppPage(
                                                 statsTab.intValue = 1
                                             },
                                         )
-                                        SegmentedTabButton(
-                                            text = stringResource(id = R.string.monthly),
-                                            icon = Phosphor.Calendar,
-                                            selected = {
-                                                statsTab.intValue == 2
-                                            },
-                                            onClick = {
-                                                statsTab.intValue = 2
-                                            },
-                                        )
                                     }
                                     when (statsTab.intValue) {
-                                        0 -> SimpleLineChart(downloadStatsState.dailyMap)
-                                        1 -> MultiLineChart(downloadStatsState.dailyMap)
-                                        2 -> MonthlyLineChart(downloadStatsState.monthlyMap)
+                                        0 -> SimpleLineChart(downloadStatsState.monthlyMap)
+                                        1 -> ClientsChart(downloadStatsState.monthlyMap)
                                     }
                                 }
                             }
