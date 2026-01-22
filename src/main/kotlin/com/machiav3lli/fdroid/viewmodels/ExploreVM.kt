@@ -94,6 +94,7 @@ class ExploreVM(
 
     val topProductsState: StateFlow<TopProductsState> = combine(
         topAppType,
+        productsRepo.getDownloadStatsNotEmpty(),
         topApps.flatMapLatest { tops ->
             val packageToIndex = tops.mapIndexed { index, top ->
                 top.packageName to index
@@ -105,8 +106,9 @@ class ExploreVM(
                 }
         },
         installed,
-    ) { topAppType, topDownloaded, installed ->
+    ) { topAppType, statsNotEmpty, topDownloaded, installed ->
         TopProductsState(
+            statsNotEmpty = statsNotEmpty,
             topAppType = topAppType,
             items = topDownloaded.map { it.toItem(installed[it.product.packageName]) },
             installedMap = installed,
@@ -136,6 +138,7 @@ data class CategoryProductsState(
 )
 
 data class TopProductsState(
+    val statsNotEmpty: Boolean = false,
     val topAppType: TopDownloadType = TopDownloadType.TOTAL_RECENT,
     val items: List<ProductItem> = emptyList(),
     val installedMap: Map<String, Installed> = emptyMap(),

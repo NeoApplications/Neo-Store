@@ -100,7 +100,11 @@ interface DownloadStatsDao : BaseDao<DownloadStats> {
         LIMIT :limit
         """
     )
-    fun getFlowRecentTopApps(startDateInclusive: Int, limit: Int, client: String = "_total"): Flow<List<PackageSum>>
+    fun getFlowRecentTopApps(
+        startDateInclusive: Int,
+        limit: Int,
+        client: String = "_total"
+    ): Flow<List<PackageSum>>
 
     @Transaction
     suspend fun multipleUpserts(updates: Collection<DownloadStats>) {
@@ -108,6 +112,9 @@ interface DownloadStatsDao : BaseDao<DownloadStats> {
             upsert(metadata)
         }
     }
+
+    @Query("SELECT EXISTS(SELECT 1 FROM download_stats)")
+    fun isNotEmpty(): Flow<Boolean>
 
     @Query("DELETE FROM download_stats")
     suspend fun emptyTable()

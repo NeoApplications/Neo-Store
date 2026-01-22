@@ -169,7 +169,9 @@ fun ExplorePage(
                     exploreTab.intValue = 0
                 }
             )
-            if (Preferences[Preferences.Key.DLStatsProvider] != Preferences.DLStatsProvider.None) SegmentedTabButton(
+            if (Preferences[Preferences.Key.DLStatsProvider] != Preferences.DLStatsProvider.None
+                && topProductsState.statsNotEmpty
+            ) SegmentedTabButton(
                 text = stringResource(id = R.string.top_apps),
                 icon = Phosphor.Asterisk,
                 selected = {

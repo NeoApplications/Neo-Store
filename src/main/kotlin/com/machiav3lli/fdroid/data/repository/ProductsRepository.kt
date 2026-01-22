@@ -28,6 +28,8 @@ class ProductsRepository(
 ) {
     suspend fun upsertProduct(vararg product: Product) = productsDao.upsert(*product)
 
+    fun getDownloadStatsNotEmpty(): Flow<Boolean> = downloadStatsDao.isNotEmpty()
+
     fun getProducts(req: Request): Flow<List<EmbeddedProduct>> = productsDao.queryFlowList(req)
 
     fun getProduct(packageName: String): Flow<List<EmbeddedProduct>> =
