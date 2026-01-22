@@ -325,64 +325,136 @@ class AppPageVM(
         DownloadStatsState()
     )
 
-    private val actions: Flow<Pair<ActionState, Set<ActionState>>> = combine(
-        productRepos,
-        installedItem,
+    // Actions
+    private val canInstall: Flow<Boolean> = combine(
         suggestedProductRepo,
+        installedItem,
+        downloadingState,
+    ) { product, installed, downloadState ->
+        val compatible = product?.first?.selectedReleases?.firstOrNull()
+            ?.let { it.incompatibilities.isEmpty() } ?: false
+
+        product != null &&
+                installed == null &&
+                compatible &&
+                downloadState?.isActive != true
+    }.distinctUntilChanged()
+
+    private val canUpdate: Flow<Boolean> = combine(
+        suggestedProductRepo,
+        installedItem,
         downloadingState,
         extras,
-    ) { prods, ins, sgst, ds, extras ->
-        val product = sgst?.first
-        val compatible = product != null && product.selectedReleases.firstOrNull()
-            .let { it != null && it.incompatibilities.isEmpty() }
-        val canInstall =
-            product != null && ins == null && compatible && ds?.isActive != true
-        val canUpdate =
-            product != null && compatible && product.canUpdate(ins) &&
-                    !shouldIgnore(product.versionCode, extras) && ds?.isActive != true
-        val canUninstall = product != null && ins != null && !ins.isSystem
-        val canLaunch = product != null &&
-                ins != null && ins.launcherActivities.isNotEmpty()
-        val canShare = product != null && prods.any { it.second.webBaseUrl.isNotBlank() }
+    ) { product, installed, downloadState, extrasData ->
+        val compatible = product?.first?.selectedReleases?.firstOrNull()
+            ?.let { it.incompatibilities.isEmpty() } ?: false
 
-        val actions = mutableSetOf<ActionState>()
-        synchronized(actions) {
-            if (canUpdate) actions += ActionState.Update
-            else if (canInstall && !Preferences[Preferences.Key.KidsMode]) actions += ActionState.Install
-            if (canLaunch) actions += ActionState.Launch
-            if (ins != null) actions += ActionState.Details
-            if (canUninstall) actions += ActionState.Uninstall
-            if (canShare) actions += ActionState.Share
-        }
-        val primaryAction = when {
-            canUpdate                                            -> ActionState.Update
-            canLaunch                                            -> ActionState.Launch
-            canInstall && !Preferences[Preferences.Key.KidsMode] -> ActionState.Install
-            canShare                                             -> ActionState.Share
-            else                                                 -> ActionState.NoAction
-        }
-
-        val mA = if (ds != null && ds.isActive)
-            ds.toActionState() ?: primaryAction
-        else primaryAction
-        mA to actions.minus(mA)
+        product != null &&
+                compatible &&
+                product.first.canUpdate(installed) &&
+                !shouldIgnore(product.first.versionCode, extrasData) &&
+                downloadState?.isActive != true
     }.distinctUntilChanged()
+
+    private val canUninstall: Flow<Boolean> = combine(
+        suggestedProductRepo,
+        installedItem,
+    ) { product, installed ->
+        product != null && installed != null && !installed.isSystem
+    }.distinctUntilChanged()
+
+    private val canLaunch: Flow<Boolean> = combine(
+        suggestedProductRepo,
+        installedItem,
+    ) { product, installed ->
+        product != null &&
+                installed != null &&
+                installed.launcherActivities.isNotEmpty()
+    }.distinctUntilChanged()
+
+    private val canShare: Flow<Boolean> = productRepos
+        .map { prods -> prods.any { it.second.webBaseUrl.isNotBlank() } }
+        .distinctUntilChanged()
+
+    private val canShowDetails: Flow<Boolean> = installedItem
+        .map { it != null }
+        .distinctUntilChanged()
+
+    private val activeDownloadAction: Flow<ActionState?> = downloadingState
+        .map { it?.toActionState() }
+        .distinctUntilChanged()
+
+    private val availableActions: StateFlow<Set<ActionState>> = combine(
+        canInstall,
+        canUpdate,
+        canUninstall,
+        canLaunch,
+        canShare,
+        canShowDetails,
+    ) { install, update, uninstall, launch, share, details ->
+        buildSet {
+            if (update) add(ActionState.Update)
+            if (install && !Preferences[Preferences.Key.KidsMode]) add(ActionState.Install)
+            if (launch) add(ActionState.Launch)
+            if (details) add(ActionState.Details)
+            if (uninstall) add(ActionState.Uninstall)
+            if (share) add(ActionState.Share)
+        }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        emptySet()
+    )
+
+    private val primaryAction: StateFlow<ActionState> = combine(
+        canUpdate,
+        canLaunch,
+        canInstall,
+        canShare,
+        activeDownloadAction,
+    ) { update, launch, install, share, downloadAction ->
+        if (downloadAction != null) return@combine downloadAction
+
+        when {
+            update                                            -> ActionState.Update
+            launch                                            -> ActionState.Launch
+            install && !Preferences[Preferences.Key.KidsMode] -> ActionState.Install
+            share                                             -> ActionState.Share
+            else                                              -> ActionState.NoAction
+        }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        ActionState.NoAction
+    )
+
+    private val secondaryActions: StateFlow<Set<ActionState>> = combine(
+        availableActions,
+        primaryAction,
+    ) { available, primary ->
+        available - primary
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        emptySet()
+    )
 
     val extraAppState: StateFlow<ExtraAppState> = combine(
         repositories,
         authorProducts,
         categoryDetails,
         downloadingState,
-        actions,
+        primaryAction,
+        secondaryActions,
         extras,
-    ) { repos, authorProds, categories, downloading, acts, ext ->
+    ) { repos, authorProds, categories, downloading, pAct, sActs, ext ->
         ExtraAppState(
             repositories = repos,
             authorProducts = authorProds,
             categoryDetails = categories,
             downloadingState = downloading,
-            mainAction = acts.first,
-            subActions = acts.second,
+            mainAction = pAct,
+            subActions = sActs,
             extras = ext,
         )
     }.stateIn(
