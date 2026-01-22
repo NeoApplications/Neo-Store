@@ -108,4 +108,7 @@ interface DownloadStatsDao : BaseDao<DownloadStats> {
             upsert(metadata)
         }
     }
+
+    @Query("DELETE FROM download_stats")
+    suspend fun emptyTable()
 }

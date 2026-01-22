@@ -121,7 +121,7 @@ import java.io.File
         DownloadStats::class,
         DownloadStatsFileMetadata::class,
     ],
-    version = 1202,
+    version = 1203,
     exportSchema = true,
     views = [
         PackageSum::class,
@@ -284,6 +284,11 @@ import java.io.File
         AutoMigration(
             from = 1201,
             to = 1202,
+        ),
+        AutoMigration(
+            from = 1202,
+            to = 1203,
+            spec = DatabaseX.Companion.DownloadStatsCleanup::class
         ),
     ]
 )
@@ -515,6 +520,20 @@ abstract class DatabaseX : RoomDatabase() {
                             // performClear(false, "product", "category", "release", "downloaded")
                             getRepositoryDao().forgetLastModifications()
                             // db.execSQL("UPDATE repository SET lastModified = '', entityTag = ''")
+                        }
+                    }
+                }
+            }
+        }
+
+        class DownloadStatsCleanup : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                GlobalScope.launch(Dispatchers.IO) {
+                    get<DatabaseX>(DatabaseX::class.java).apply {
+                        withTransaction {
+                            getDownloadStatsDao().emptyTable()
+                            getDownloadStatsFileDao().emptyTable()
                         }
                     }
                 }
