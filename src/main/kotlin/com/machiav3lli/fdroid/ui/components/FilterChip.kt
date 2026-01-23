@@ -66,6 +66,7 @@ fun InfoChip(
 fun SelectChip(
     modifier: Modifier = Modifier,
     text: String,
+    icon: ImageVector? = null,
     checked: Boolean = false,
     colors: SelectableChipColors = FilterChipDefaults.filterChipColors(
         containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
@@ -86,8 +87,9 @@ fun SelectChip(
     )
     val icon by remember(checked) {
         mutableStateOf(
-            if (checked) Phosphor.CheckCircle
-            else Phosphor.Circle
+            icon
+                ?: if (checked) Phosphor.CheckCircle
+                else Phosphor.Circle
         )
     }
 

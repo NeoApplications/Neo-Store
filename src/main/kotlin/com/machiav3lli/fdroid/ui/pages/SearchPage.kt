@@ -40,8 +40,8 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.Source
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
+import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
-import com.machiav3lli.fdroid.ui.components.TabButton
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.components.WideSearchField
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -147,34 +147,34 @@ fun SearchPage(
                 contentPadding = PaddingValues(horizontal = 8.dp),
             ) {
                 item {
-                    TabButton(
+                    SelectChip(
                         text = stringResource(id = R.string.all),
                         icon = Phosphor.CirclesFour,
-                        selected = currentTab == 0,
-                        onClick = {
-                            viewModel.setSearchSource(Source.SEARCH)
-                        },
-                    )
+                        checked = currentTab == 0,
+                        alwaysShowIcon = true,
+                    ) {
+                        viewModel.setSearchSource(Source.SEARCH)
+                    }
                 }
                 item {
-                    TabButton(
+                    SelectChip(
                         text = stringResource(id = R.string.installed),
                         icon = Phosphor.ArrowSquareOut,
-                        selected = currentTab == 1,
-                        onClick = {
-                            viewModel.setSearchSource(Source.SEARCH_INSTALLED)
-                        },
-                    )
+                        checked = currentTab == 1,
+                        alwaysShowIcon = true,
+                    ) {
+                        viewModel.setSearchSource(Source.SEARCH_INSTALLED)
+                    }
                 }
                 item {
-                    TabButton(
+                    SelectChip(
                         text = stringResource(id = R.string.new_applications),
                         icon = Phosphor.CircleWavyWarning,
-                        selected = currentTab == 2,
-                        onClick = {
-                            viewModel.setSearchSource(Source.SEARCH_NEW)
-                        },
-                    )
+                        checked = currentTab == 2,
+                        alwaysShowIcon = true,
+                    ) {
+                        viewModel.setSearchSource(Source.SEARCH_NEW)
+                    }
                 }
             }
             Row(
