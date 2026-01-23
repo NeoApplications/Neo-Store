@@ -7,16 +7,21 @@ import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
 import com.machiav3lli.fdroid.data.database.entity.ProductIconDetails
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.Request
+import com.machiav3lli.fdroid.data.entity.UpdateListItem
+import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
+import com.machiav3lli.fdroid.utils.extension.sortedLocalized
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -30,6 +35,7 @@ open class MainVM(
     private val productsRepo: ProductsRepository,
     reposRepo: RepositoriesRepository,
     installedRepo: InstalledRepository,
+    downloadedRepo: DownloadedRepository,
 ) : ViewModel() {
     val successfulSyncs = reposRepo.getLatestUpdates()
 
@@ -47,6 +53,44 @@ open class MainVM(
             started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
             initialValue = emptyList()
         )
+
+    private val activeDownloads = downloadedRepo.getAllFlow()
+        .map {
+            it.filter { it.state.isActive }
+                .sortedLocalized { state.name }
+        }
+        .debounce(100L)
+
+    val combinedUpdatesList = combine(
+        updates,
+        activeDownloads,
+    ) { productItems, downloads ->
+        val downloadsByPackage = downloads.groupBy { it.packageName to it.repositoryId }
+        val processedPackages = mutableSetOf<Pair<String, Long>>()
+
+        val items = mutableListOf<UpdateListItem>()
+
+        productItems.forEach { product ->
+            val key = product.packageName to product.repositoryId
+            processedPackages.add(key)
+
+            val relatedDownload = downloadsByPackage[key]?.firstOrNull()
+            items.add(UpdateListItem.UpdateItem(product, relatedDownload))
+        }
+
+        downloads.forEach { download ->
+            val key = download.packageName to download.repositoryId
+            if (key !in processedPackages) {
+                items.add(UpdateListItem.DownloadOnlyItem(download))
+            }
+        }
+
+        items
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
+        initialValue = emptyList()
+    )
 
     val dataState: StateFlow<DataState> = combine(
         reposRepo.getAll().mapLatest { it.associateBy(Repository::id) },
