@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.MapColumn
 import androidx.room.Query
 import com.machiav3lli.fdroid.data.database.entity.LatestSyncs
 import com.machiav3lli.fdroid.data.database.entity.Repository
@@ -44,6 +45,9 @@ interface RepositoryDao : BaseDao<Repository> {
 
     @Query("SELECT * FROM repository ORDER BY id ASC")
     fun getAllFlow(): Flow<List<Repository>>
+
+    @Query("SELECT * FROM repository ORDER BY id ASC")
+    fun getAllMapFlow(): Flow<Map<@MapColumn("id") Long, Repository>>
 
     @Query("SELECT * FROM repository WHERE enabled != 0 ORDER BY id ASC")
     fun getAllEnabledFlow(): Flow<List<Repository>>

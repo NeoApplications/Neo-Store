@@ -133,7 +133,7 @@ fun InstalledPage(
 
         when (installedTab.intValue) {
             0 -> InstallsPage(viewModel, mainVM)
-            1 -> DownloadedPage(viewModel, mainVM)
+            1 -> DownloadedPage(viewModel)
         }
     }
 }
@@ -256,11 +256,9 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
 
 @SuppressLint("UnusedCrossfadeTargetStateParameter")
 @Composable
-fun DownloadedPage(viewModel: InstalledVM, mainVM: MainVM) {
+fun DownloadedPage(viewModel: InstalledVM) {
     val neoActivity = LocalActivity.current as NeoActivity
-
-    val dataState by mainVM.dataState.collectAsStateWithLifecycle()
-    val sortedDownloaded by viewModel.sortedDownloads.collectAsStateWithLifecycle(emptyList())
+    val pageState by viewModel.downloadedPageState.collectAsStateWithLifecycle()
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -280,27 +278,28 @@ fun DownloadedPage(viewModel: InstalledVM, mainVM: MainVM) {
                     text = stringResource(id = R.string.downloads),
                     modifier = Modifier.padding(start = 8.dp),
                 )
-                Crossfade(sortedDownloaded.isNotEmpty()) { isNotEmpty ->
+                Crossfade(pageState.sortedDownloaded.isNotEmpty()) { isNotEmpty ->
                     if (isNotEmpty) ActionChip(
                         text = stringResource(id = R.string.erase_all),
                         icon = Phosphor.Eraser,
                     ) {
-                        sortedDownloaded.forEach {
+                        pageState.sortedDownloaded.forEach {
                             viewModel.eraseDownloaded(it)
                         }
                     }
                 }
             }
         }
-        items(sortedDownloaded, key = { it.itemKey }) { item ->
+        items(pageState.sortedDownloaded, key = { it.itemKey }) { item ->
             val state by remember(item) {
                 derivedStateOf { item.state }
             }
+            val iconDetails = pageState.iconDetails[item.packageName]
 
             DownloadedItem(
                 download = item,
-                iconDetails = dataState.iconDetails[item.packageName],
-                repo = dataState.reposMap[dataState.iconDetails[item.packageName]?.repositoryId
+                iconDetails = iconDetails,
+                repo = pageState.reposMap[iconDetails?.repositoryId
                     ?: item.repositoryId],
                 state = state,
                 onUserClick = { neoActivity.navigateProduct(item.packageName) },

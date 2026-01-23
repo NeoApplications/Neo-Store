@@ -7,12 +7,15 @@ import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
 import com.machiav3lli.fdroid.data.database.entity.Installed
+import com.machiav3lli.fdroid.data.database.entity.ProductIconDetails
+import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.Request
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
+import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +23,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -34,6 +38,7 @@ class InstalledVM(
     productsRepo: ProductsRepository,
     extrasRepo: ExtrasRepository,
     installedRepo: InstalledRepository,
+    reposRepo: RepositoriesRepository,
 ) : ViewModel() {
     private val sortFilter = MutableStateFlow("")
 
@@ -53,14 +58,9 @@ class InstalledVM(
         prods.map { it.toItem(installed[it.product.packageName]) }
     }
 
-    val sortedDownloads = downloadedRepo.getAllFlow()
+    private val sortedDownloads = downloadedRepo.getAllFlow()
         .map { it.sortedByDescending { it.changed / 10_000L } }
         .debounce(100L)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
-            initialValue = emptyList()
-        )
 
     val installedPageState: StateFlow<InstalledPageState> = combine(
         installed,
@@ -76,6 +76,22 @@ class InstalledVM(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = InstalledPageState()
+    )
+
+    val downloadedPageState: StateFlow<DownloadedPageState> = combine(
+        sortedDownloads,
+        reposRepo.getAllMap().distinctUntilChanged(),
+        productsRepo.getIconDetailsMap().distinctUntilChanged(),
+    ) { downloads, reposMap, iconDetails ->
+        DownloadedPageState(
+            sortedDownloaded = downloads,
+            reposMap = reposMap,
+            iconDetails = iconDetails
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = DownloadedPageState()
     )
 
     fun setSortFilter(value: String) = sortFilter.update { value }
@@ -96,7 +112,8 @@ data class InstalledPageState(
     val sortFilter: String = ""
 )
 
-data class ProductsState(
-    val installedProducts: List<ProductItem>,
-    val updatedProducts: List<ProductItem>,
+data class DownloadedPageState(
+    val sortedDownloaded: List<Downloaded> = emptyList(),
+    val reposMap: Map<Long, Repository> = emptyMap(),
+    val iconDetails: Map<String, ProductIconDetails> = emptyMap(),
 )

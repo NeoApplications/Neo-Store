@@ -20,6 +20,8 @@ class RepositoriesRepository(
 
     fun getAll(): Flow<List<Repository>> = reposDao.getAllFlow()
 
+    fun getAllMap(): Flow<Map<Long, Repository>> = reposDao.getAllMapFlow()
+
     fun getAllEnabled(): Flow<List<Repository>> = reposDao.getAllEnabledFlow()
 
     fun getLatestUpdates(): Flow<LatestSyncs> = reposDao.latestUpdatesFlow()
