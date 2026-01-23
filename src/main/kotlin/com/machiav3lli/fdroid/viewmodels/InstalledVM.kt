@@ -13,7 +13,6 @@ import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
-import com.machiav3lli.fdroid.utils.extension.sortedLocalized
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -63,24 +62,14 @@ class InstalledVM(
             initialValue = emptyList()
         )
 
-    private val activeDownloads = downloadedRepo.getAllFlow()
-        .map {
-            it.filter { it.state.isActive }
-                .sortedLocalized { state.name }
-        }
-        .debounce(100L)
-
     val installedPageState: StateFlow<InstalledPageState> = combine(
         installed,
         installedProducts,
-        activeDownloads,
         sortFilter,
-    ) { installed, products, activeDownloads, sortFilter ->
+    ) { installed, products, sortFilter ->
         InstalledPageState(
             installedMap = installed,
             installedProducts = products,
-            activeDownloads = activeDownloads,
-            isDownloading = activeDownloads.isNotEmpty(),
             sortFilter = sortFilter
         )
     }.stateIn(
@@ -104,8 +93,6 @@ class InstalledVM(
 data class InstalledPageState(
     val installedMap: Map<String, Installed> = emptyMap(),
     val installedProducts: List<ProductItem> = emptyList(),
-    val activeDownloads: List<Downloaded> = emptyList(),
-    val isDownloading: Boolean = false,
     val sortFilter: String = ""
 )
 

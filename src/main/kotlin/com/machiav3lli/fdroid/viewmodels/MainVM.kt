@@ -48,11 +48,6 @@ open class MainVM(
     ) { prods, installed, _ ->
         prods.map { it.toItem(installed[it.product.packageName]) }
     }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-            initialValue = emptyList()
-        )
 
     private val activeDownloads = downloadedRepo.getAllFlow()
         .map {

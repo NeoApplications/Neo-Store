@@ -33,7 +33,6 @@ import com.machiav3lli.fdroid.ARG_STARTED
 import com.machiav3lli.fdroid.ARG_URL
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
 import com.machiav3lli.fdroid.ContextWrapperX
-import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOAD_STATS
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Cache
@@ -380,8 +379,6 @@ class DownloadWorker(
             "${state.name} (${state.version})"
         )
         val builder = langContext.downloadNotificationBuilder(title)
-            // TODO ANOTHER CHANNEL
-            .setChannelId(NOTIFICATION_CHANNEL_DOWNLOAD_STATS)
 
         when (state) {
             is DownloadState.Cancel  -> builder
@@ -570,12 +567,6 @@ class DownloadWorker(
             } ?: ValidationError.NONE
         }
     }
-
-    data class Progress(
-        val progress: Int = 0,
-        val read: Long = -1L,
-        val total: Long = -1L,
-    )
 
     // TODO fun onSuccess(data: Data) : Result {}
     // TODO fun onFailure(data: Data) : Result {}

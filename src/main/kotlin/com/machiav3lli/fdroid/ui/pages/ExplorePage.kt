@@ -81,7 +81,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ExplorePage(
     viewModel: ExploreVM = koinNeoViewModel(),
-    mainState: MainVM = koinNeoViewModel(),
+    mainVM: MainVM = koinNeoViewModel(),
 ) {
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity
@@ -91,7 +91,7 @@ fun ExplorePage(
 
     val categoryProductsState by viewModel.categoryProductsState.collectAsStateWithLifecycle()
     val topProductsState by viewModel.topProductsState.collectAsStateWithLifecycle()
-    val dataState by mainState.dataState.collectAsStateWithLifecycle()
+    val dataState by mainVM.dataState.collectAsStateWithLifecycle()
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }
@@ -257,7 +257,7 @@ fun ExplorePage(
                                     neoActivity.navigateProduct(it.packageName)
                                 },
                                 onFavouriteClick = {
-                                    mainState.setFavorite(
+                                    mainVM.setFavorite(
                                         it.packageName,
                                         !dataState.favorites.contains(it.packageName)
                                     )
@@ -347,7 +347,7 @@ fun ExplorePage(
                                 neoActivity.navigateProduct(it.packageName)
                             },
                             onFavouriteClick = {
-                                mainState.setFavorite(
+                                mainVM.setFavorite(
                                     it.packageName,
                                     !dataState.favorites.contains(it.packageName)
                                 )

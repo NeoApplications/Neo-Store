@@ -13,12 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
@@ -31,9 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,16 +42,11 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
-import com.machiav3lli.fdroid.ui.components.DownloadsCard
-import com.machiav3lli.fdroid.ui.components.ExpandingFadingCard
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SegmentedTabButton
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
-import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDownUp
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretUpDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Eraser
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
@@ -74,7 +63,6 @@ fun InstalledPage(
     viewModel: InstalledVM = koinNeoViewModel(),
     mainVM: MainVM = koinNeoViewModel(),
 ) {
-    val scope = rememberCoroutineScope()
     val installedTab = rememberSaveable { mutableIntStateOf(0) }
 
     LaunchedEffect(Unit) {
@@ -156,12 +144,9 @@ fun InstalledPage(
 fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
     val context = LocalContext.current
     val neoActivity = LocalActivity.current as NeoActivity
-    val scope = rememberCoroutineScope()
 
     val pageState by viewModel.installedPageState.collectAsStateWithLifecycle()
     val dataState by mainVM.dataState.collectAsStateWithLifecycle()
-    var updatesVisible by remember { mutableStateOf(true) }
-    var downloadsExpanded by remember { mutableStateOf(false) }
 
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
@@ -180,69 +165,6 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
 
     Scaffold(
         containerColor = Color.Transparent,
-        floatingActionButton = {
-            if (pageState.isDownloading) {
-                Row(
-                    modifier = Modifier.padding(start = 28.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    ExpandingFadingCard(
-                        expanded = downloadsExpanded,
-                        expandedView = {
-                            Column {
-                                Row(
-                                    modifier = Modifier.padding(4.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    RoundButton(
-                                        description = stringResource(R.string.downloading),
-                                        icon = Phosphor.CaretDownUp,
-                                        onClick = { downloadsExpanded = !downloadsExpanded }
-                                    )
-                                    LazyRow(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.Absolute.spacedBy(4.dp),
-                                        contentPadding = PaddingValues(
-                                            vertical = 4.dp,
-                                            horizontal = 4.dp
-                                        ),
-                                    ) {
-                                        items(
-                                            items = pageState.activeDownloads,
-                                            key = { it.itemKey }) { item ->
-                                            DownloadsCard(
-                                                download = item,
-                                                iconDetails = dataState.iconDetails[item.packageName],
-                                                repo = dataState.reposMap[item.state.repoId],
-                                                state = item.state,
-                                            ) {
-                                                neoActivity.navigateProduct(item.packageName)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        collapsedView = {
-                            ExtendedFloatingActionButton(
-                                text = { Text(text = stringResource(R.string.downloading)) },
-                                icon = {
-                                    Icon(
-                                        imageVector = Phosphor.CaretUpDown,
-                                        contentDescription = stringResource(R.string.downloading)
-                                    )
-                                },
-                                elevation = FloatingActionButtonDefaults.elevation(
-                                    0.dp
-                                ),
-                                onClick = { downloadsExpanded = !downloadsExpanded }
-                            )
-                        }
-                    )
-                }
-            }
-        }
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -378,7 +300,7 @@ fun DownloadedPage(viewModel: InstalledVM, mainVM: MainVM) {
             DownloadedItem(
                 download = item,
                 iconDetails = dataState.iconDetails[item.packageName],
-                repo = dataState.reposMap[state.repoId],
+                repo = dataState.reposMap[item.repositoryId],
                 state = state,
                 onUserClick = { neoActivity.navigateProduct(item.packageName) },
                 onEraseClick = { viewModel.eraseDownloaded(item) },

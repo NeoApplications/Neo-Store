@@ -32,7 +32,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
-import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.ProductIconDetails
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.DownloadState
@@ -42,71 +41,7 @@ import com.machiav3lli.fdroid.ui.components.appsheet.CircularDownloadProgress
 import com.machiav3lli.fdroid.ui.components.appsheet.DownloadProgress
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Eraser
-
-@Composable
-fun DownloadsListItem(
-    product: ProductItem,
-    repo: Repository? = null,
-    installed: Installed? = null,
-    state: DownloadState,
-    onUserClick: (ProductItem) -> Unit = {},
-) {
-    val imageData by remember(product, repo) {
-        mutableStateOf(
-            createIconUri(
-                product.icon,
-                repo?.address,
-                repo?.authentication
-            ).toString()
-        )
-    }
-
-    ListItem(
-        modifier = Modifier
-            .clip(MaterialTheme.shapes.large)
-            .clickable { onUserClick(product) }
-            .fillMaxWidth(),
-        colors = ListItemDefaults.colors(
-            containerColor = Color.Transparent,
-        ),
-        leadingContent = {
-            NetworkImage(
-                modifier = Modifier.size(PRODUCT_CARD_ICON),
-                data = imageData
-            )
-        },
-        headlineContent = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(
-                    text = product.name,
-                    modifier = Modifier
-                        .weight(1f),
-                    softWrap = true,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Text(
-                    text = if (installed != null && installed.version != state.version) "${product.installedVersion} → ${state.version}"
-                    else state.version,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.titleSmall,
-                )
-            }
-        },
-        supportingContent = {
-            DownloadProgress(
-                totalSize = if (state is DownloadState.Downloading) state.total
-                    ?: 1L else 1L,
-                isIndeterminate = state !is DownloadState.Downloading,
-                downloaded = if (state is DownloadState.Downloading) state.read else 0L,
-            )
-        },
-    )
-}
+import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 
 @Composable
 fun DownloadedItem(
@@ -148,7 +83,7 @@ fun DownloadedItem(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(
-                    text = state.name,
+                    text = download.label.nullIfEmpty() ?: state.name,
                     modifier = Modifier
                         .weight(1f),
                     softWrap = true,
