@@ -122,7 +122,7 @@ import java.io.File
         DownloadStats::class,
         DownloadStatsFileMetadata::class,
     ],
-    version = 1204,
+    version = 1205,
     exportSchema = true,
     views = [
         PackageSum::class,
@@ -295,6 +295,10 @@ import java.io.File
         AutoMigration(
             from = 1203,
             to = 1204,
+        ),
+        AutoMigration(
+            from = 1204,
+            to = 1205,
         ),
     ]
 )

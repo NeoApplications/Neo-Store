@@ -21,6 +21,8 @@ import com.machiav3lli.fdroid.data.entity.DownloadState
 )
 data class Downloaded(
     val packageName: String = "",
+    @ColumnInfo(defaultValue = "")
+    val label: String = "",
     val version: String = "",
     @ColumnInfo(defaultValue = "0")
     val repositoryId: Long = 0L,

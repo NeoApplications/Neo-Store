@@ -358,6 +358,7 @@ class DownloadWorker(
         downloadedRepo.update(
             Downloaded(
                 packageName = state.packageName,
+                label = state.name,
                 version = state.version,
                 repositoryId = state.repoId,
                 cacheFileName = state.cacheFileName,
