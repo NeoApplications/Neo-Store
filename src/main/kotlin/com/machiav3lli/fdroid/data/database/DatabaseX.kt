@@ -55,6 +55,7 @@ import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.MonthlyPackageSum
 import com.machiav3lli.fdroid.data.database.entity.PackageSum
 import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.ProductIconDetails
 import com.machiav3lli.fdroid.data.database.entity.ProductTemp
 import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.database.entity.Release
@@ -121,12 +122,13 @@ import java.io.File
         DownloadStats::class,
         DownloadStatsFileMetadata::class,
     ],
-    version = 1203,
+    version = 1204,
     exportSchema = true,
     views = [
         PackageSum::class,
         ClientPackageSum::class,
         MonthlyPackageSum::class,
+        ProductIconDetails::class,
     ],
     autoMigrations = [
         AutoMigration(
@@ -289,6 +291,10 @@ import java.io.File
             from = 1202,
             to = 1203,
             spec = DatabaseX.Companion.DownloadStatsCleanup::class
+        ),
+        AutoMigration(
+            from = 1203,
+            to = 1204,
         ),
     ]
 )

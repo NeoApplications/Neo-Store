@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.data.database.entity
 
 import androidx.room.ColumnInfo
+import androidx.room.DatabaseView
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Index
@@ -312,3 +313,23 @@ data class EmbeddedProduct(
             matchRank = 0
         )
 }
+
+@DatabaseView(
+    """
+        SELECT mg.$ROW_PACKAGE_NAME   AS $ROW_PACKAGE_NAME,
+               mg.$ROW_ICON           AS $ROW_ICON,
+               mg.$ROW_METADATA_ICON  AS $ROW_METADATA_ICON
+        FROM   $TABLE_PRODUCT AS mg
+        JOIN (
+            SELECT   $ROW_PACKAGE_NAME, MAX($ROW_UPDATED) AS latest
+            FROM     $TABLE_PRODUCT
+            GROUP BY $ROW_PACKAGE_NAME
+        ) AS sg
+        ON mg.$ROW_PACKAGE_NAME = sg.$ROW_PACKAGE_NAME AND mg.$ROW_UPDATED = sg.latest
+    """
+)
+data class ProductIconDetails(
+    val packageName: String,
+    val icon: String,
+    val metadataIcon: String
+)
