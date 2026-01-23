@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.ui.components
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -198,9 +200,9 @@ fun DownloadsCard(
     iconDetails: ProductIconDetails?,
     repo: Repository? = null,
     state: DownloadState,
-    onUserClick: (Downloaded) -> Unit = {},
+    onUserClick: () -> Unit = {},
 ) {
-    val imageData by remember(download, iconDetails, repo) {
+    val imageData by remember(iconDetails, repo) {
         mutableStateOf(
             createIconUri(
                 iconDetails?.icon
@@ -216,7 +218,7 @@ fun DownloadsCard(
         modifier = Modifier
             .clip(MaterialTheme.shapes.large)
             .border(2.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.large)
-            .clickable { onUserClick(download) }
+            .clickable { onUserClick() }
             .width(IntrinsicSize.Max)
             .widthIn(
                 min = PRODUCT_CARD_HEIGHT,
@@ -262,11 +264,95 @@ fun DownloadsCard(
             },
             headlineContent = {
                 Text(
-                    text = download.state.name,
+                    text = download.label.nullIfEmpty() ?: state.name,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                 )
             },
         )
     }
+}
+
+@Composable
+fun CombinedUpdateCard(
+    product: ProductItem,
+    download: Downloaded?,
+    repo: Repository? = null,
+    onUserClick: (ProductItem) -> Unit = {},
+) {
+    val imageData by remember(product, repo) {
+        mutableStateOf(
+            createIconUri(
+                product.icon,
+                repo?.address,
+                repo?.authentication
+            ).toString()
+        )
+    }
+    val iconCorner by animateDpAsState(
+        targetValue = if (download != null) 50.dp else 8.dp,
+        label = "iconCorner",
+    )
+    val iconSize by animateDpAsState(
+        targetValue = if (download != null) PRODUCT_CARD_ICON - 4.dp else PRODUCT_CARD_ICON,
+        label = "iconSize",
+    )
+
+    ListItem(
+        modifier = Modifier
+            .clip(MaterialTheme.shapes.large)
+            .border(2.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.large)
+            .clickable { onUserClick(product) }
+            .width(IntrinsicSize.Max)
+            .widthIn(
+                min = PRODUCT_CARD_HEIGHT,
+                max = PRODUCT_CARD_WIDTH,
+            ),
+        colors = ListItemDefaults.colors(
+            containerColor = Color.Transparent,
+        ),
+        leadingContent = {
+            Box(
+                modifier = Modifier.size(PRODUCT_CARD_ICON),
+                contentAlignment = Alignment.Center,
+            ) {
+                NetworkImage(
+                    modifier = Modifier.size(iconSize),
+                    data = imageData,
+                    shape = RoundedCornerShape(iconCorner),
+                )
+
+                download?.let { dl ->
+                    CircularDownloadProgress(
+                        totalSize = when (dl.state) {
+                            is DownloadState.Downloading -> dl.state.total ?: 1L
+                            is DownloadState.Cancel      -> 0L
+                            is DownloadState.Error       -> -1L
+                            else                         -> 1L
+                        },
+                        downloaded = when (dl.state) {
+                            is DownloadState.Downloading -> dl.state.read
+                            is DownloadState.Success     -> 1L
+                            else                         -> 0L
+                        },
+                        isIndeterminate = dl.state is DownloadState.Pending || dl.state is DownloadState.Connecting,
+                    )
+                }
+            }
+        },
+        overlineContent = {
+            Text(
+                text = product.version,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+            )
+        },
+        headlineContent = {
+            Text(
+                text = product.name,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+            )
+        },
+    )
 }

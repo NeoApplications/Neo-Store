@@ -34,6 +34,9 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.ProductItem
+import com.machiav3lli.fdroid.data.entity.UpdateListItem
+import com.machiav3lli.fdroid.ui.components.CombinedUpdateCard
+import com.machiav3lli.fdroid.ui.components.DownloadsCard
 import com.machiav3lli.fdroid.ui.components.PRODUCT_CARD_HEIGHT
 import com.machiav3lli.fdroid.ui.components.PRODUCT_CAROUSEL_HEIGHT
 import com.machiav3lli.fdroid.ui.components.ProductCard
@@ -59,6 +62,56 @@ fun ProductsHorizontalRecycler(
     ) {
         items(productsList, key = { it.packageName }) { item ->
             ProductCard(item, repositories[item.repositoryId], onUserClick)
+        }
+    }
+}
+
+@Composable
+fun UpdatesHorizontalRecycler(
+    modifier: Modifier = Modifier,
+    productsList: List<UpdateListItem>,
+    repositories: Map<Long, Repository>,
+    rowsNumber: Int = 2,
+    onUserClick: (UpdateListItem) -> Unit = {},
+) {
+    LazyHorizontalStaggeredGrid(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(PRODUCT_CARD_HEIGHT * rowsNumber + 16.dp),
+        rows = StaggeredGridCells.Fixed(rowsNumber),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalItemSpacing = 8.dp,
+        contentPadding = PaddingValues(horizontal = 8.dp),
+    ) {
+        items(
+            items = productsList,
+            key = { it.key }
+        ) { item ->
+            when (item) {
+                is UpdateListItem.UpdateItem -> {
+                    CombinedUpdateCard(
+                        product = item.product,
+                        download = item.download,
+                        repo = repositories[item.product.repositoryId],
+                        onUserClick = {
+                            onUserClick(item)
+                        }
+                    )
+                }
+
+                is UpdateListItem.DownloadOnlyItem -> {
+                    DownloadsCard(
+                        download = item.download,
+                        // TODO add
+                        iconDetails = null,
+                        repo = repositories[item.download.repositoryId],
+                        state = item.download.state,
+                        onUserClick = {
+                            onUserClick(item)
+                        }
+                    )
+                }
+            }
         }
     }
 }
