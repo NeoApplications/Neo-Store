@@ -1,5 +1,7 @@
 package com.machiav3lli.fdroid.data.entity
 
+import com.machiav3lli.fdroid.data.database.entity.Downloaded
+
 data class ProductItem(
     val repositoryId: Long = 0,
     val packageName: String = "com.machaiv3lli.fdroid",
@@ -15,3 +17,23 @@ data class ProductItem(
     val launchable: Boolean = false,
     val matchRank: Int = 0,
 )
+
+sealed class UpdateListItem {
+    abstract val key: String
+    abstract val packageName: String
+
+    data class UpdateItem(
+        val product: ProductItem,
+        val download: Downloaded? = null
+    ) : UpdateListItem() {
+        override val key: String = "${product.packageName}-${product.repositoryId}"
+        override val packageName: String = product.packageName
+    }
+
+    data class DownloadOnlyItem(
+        val download: Downloaded
+    ) : UpdateListItem() {
+        override val key: String = download.itemKey
+        override val packageName: String = download.packageName
+    }
+}
