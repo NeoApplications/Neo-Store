@@ -41,7 +41,7 @@ open class MainVM(
 
     private val installed = installedRepo.getMap()
 
-    val updates = combine(
+    private val updates = combine(
         productsRepo.getProducts(Request.Updates),
         installed,
         extrasRepo.getAll(),

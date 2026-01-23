@@ -23,6 +23,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,7 +41,6 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.LatestSyncs
 import com.machiav3lli.fdroid.data.entity.DialogKey
-import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.manager.work.BatchSyncWorker
 import com.machiav3lli.fdroid.ui.components.ActionButton
@@ -49,7 +49,7 @@ import com.machiav3lli.fdroid.ui.components.FilledRoundButton
 import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.components.Tooltip
 import com.machiav3lli.fdroid.ui.components.TopBar
-import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
+import com.machiav3lli.fdroid.ui.compose.UpdatesHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
@@ -66,6 +66,7 @@ import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.ui.navigation.NeoNavigationSuiteScaffold
 import com.machiav3lli.fdroid.ui.navigation.SlidePager
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
+import com.machiav3lli.fdroid.utils.extension.partitionTypes
 import com.machiav3lli.fdroid.utils.getLocaleDateString
 import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.collections.immutable.persistentListOf
@@ -84,8 +85,9 @@ fun MainPage(
 
     val successfulSyncs by viewModel.successfulSyncs.collectAsStateWithLifecycle(LatestSyncs())
     val dataState by viewModel.dataState.collectAsStateWithLifecycle()
-    val updates by viewModel.updates.collectAsStateWithLifecycle()
-    var updaterExpanded by remember { mutableStateOf(false) }
+    val updatesDownloads by viewModel.combinedUpdatesList.collectAsStateWithLifecycle()
+    val (updates, activeDownloads) = updatesDownloads.partitionTypes()
+    var updaterExpanded by rememberSaveable { mutableStateOf(false) }
 
     val openDialog = remember { mutableStateOf(false) }
     // TOD Move sync dialog here too
@@ -173,7 +175,7 @@ fun MainPage(
                 }
             },
             floatingActionButton = {
-                if (updates.isNotEmpty()) {
+                if (updatesDownloads.isNotEmpty()) {
                     Row(
                         modifier = Modifier.padding(start = 28.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -181,11 +183,15 @@ fun MainPage(
                         ExpandingFadingCard(
                             expanded = updaterExpanded,
                             collapsedView = {
-                                val text = pluralStringResource(
-                                    id = R.plurals.updated_apps,
-                                    count = updates.size,
-                                    updates.size
-                                )
+                                val text = when {
+                                    updates.isNotEmpty() -> pluralStringResource(
+                                        id = R.plurals.updated_apps,
+                                        count = updates.size,
+                                        updates.size
+                                    )
+
+                                    else                 -> stringResource(R.string.downloading)
+                                }
                                 ExtendedFloatingActionButton(
                                     text = { Text(text = text) },
                                     icon = {
@@ -206,9 +212,8 @@ fun MainPage(
                                     verticalArrangement = Arrangement.spacedBy(4.dp),
                                 ) {
                                     Row(
-                                        horizontalArrangement = Arrangement.spacedBy(
-                                            8.dp
-                                        )
+                                        modifier = Modifier.padding(horizontal = 8.dp),
+                                        horizontalArrangement = Arrangement.spacedBy(4.dp),
                                     ) {
                                         ActionButton(
                                             text = stringResource(id = R.string.update_all),
@@ -221,8 +226,8 @@ fun MainPage(
                                                     *updates
                                                         .map {
                                                             Pair(
-                                                                it.packageName,
-                                                                it.repositoryId
+                                                                it.product.packageName,
+                                                                it.product.repositoryId,
                                                             )
                                                         }
                                                         .toTypedArray()
@@ -231,7 +236,8 @@ fun MainPage(
                                             if (Preferences[Preferences.Key.DownloadShowDialog]) {
                                                 dialogKey.value =
                                                     DialogKey.BatchDownload(
-                                                        updates.map(ProductItem::name), action
+                                                        updates.map { it.product.name },
+                                                        action
                                                     )
                                                 openDialog.value = true
                                             } else action()
@@ -243,10 +249,10 @@ fun MainPage(
                                             updaterExpanded = !updaterExpanded
                                         }
                                     }
-                                    ProductsHorizontalRecycler(
-                                        productsList = updates,
+                                    UpdatesHorizontalRecycler(
+                                        productsList = updatesDownloads,
                                         repositories = dataState.reposMap,
-                                        rowsNumber = updates.size.coerceIn(1, 2),
+                                        rowsNumber = updatesDownloads.size.coerceIn(1, 2),
                                     ) { item ->
                                         mActivity.navigateProduct(item.packageName)
                                     }
