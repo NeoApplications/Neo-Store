@@ -102,9 +102,9 @@ fun UpdatesHorizontalRecycler(
                 is UpdateListItem.DownloadOnlyItem -> {
                     DownloadsCard(
                         download = item.download,
-                        // TODO add
-                        iconDetails = null,
-                        repo = repositories[item.download.repositoryId],
+                        iconDetails = item.iconDetails,
+                        repo = repositories[item.iconDetails?.repositoryId
+                            ?: item.download.repositoryId],
                         state = item.download.state,
                         onUserClick = {
                             onUserClick(item)

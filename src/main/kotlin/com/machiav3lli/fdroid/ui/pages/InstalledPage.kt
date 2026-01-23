@@ -300,7 +300,8 @@ fun DownloadedPage(viewModel: InstalledVM, mainVM: MainVM) {
             DownloadedItem(
                 download = item,
                 iconDetails = dataState.iconDetails[item.packageName],
-                repo = dataState.reposMap[item.repositoryId],
+                repo = dataState.reposMap[dataState.iconDetails[item.packageName]?.repositoryId
+                    ?: item.repositoryId],
                 state = state,
                 onUserClick = { neoActivity.navigateProduct(item.packageName) },
                 onEraseClick = { viewModel.eraseDownloaded(item) },
