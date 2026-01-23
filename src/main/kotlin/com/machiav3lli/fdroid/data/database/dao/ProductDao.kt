@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.data.database.dao
 
 import android.os.Build
 import androidx.room.Dao
+import androidx.room.MapColumn
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Transaction
@@ -42,10 +43,10 @@ import com.machiav3lli.fdroid.data.database.QueryBuilder
 import com.machiav3lli.fdroid.data.database.entity.Category
 import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.Extras
-import com.machiav3lli.fdroid.data.database.entity.IconDetails
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.Licenses
 import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.ProductIconDetails
 import com.machiav3lli.fdroid.data.database.entity.ProductTemp
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.AntiFeature
@@ -87,11 +88,8 @@ interface ProductDao : BaseDao<Product> {
     @Query("SELECT * FROM $TABLE_PRODUCT WHERE packageName = :packageName AND repositoryId = :repoId")
     fun getFlow(packageName: String, repoId: Long): Flow<EmbeddedProduct?>
 
-    @Query("SELECT packageName, icon, metadataIcon FROM $TABLE_PRODUCT GROUP BY packageName HAVING 1")
-    suspend fun getIconDetails(): List<IconDetails>
-
-    @Query("SELECT packageName, icon, metadataIcon FROM $TABLE_PRODUCT GROUP BY packageName HAVING 1")
-    fun getIconDetailsFlow(): Flow<List<IconDetails>>
+    @Query("SELECT * FROM producticondetails")
+    fun getIconDetailsMapFlow(): Flow<Map<@MapColumn(columnName = ROW_PACKAGE_NAME) String, ProductIconDetails>>
 
     @Query("DELETE FROM $TABLE_PRODUCT WHERE repositoryId = :id")
     suspend fun deleteById(id: Long)

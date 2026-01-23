@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
-import com.machiav3lli.fdroid.data.database.entity.IconDetails
+import com.machiav3lli.fdroid.data.database.entity.ProductIconDetails
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.Request
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
@@ -107,7 +107,7 @@ open class MainVM(
 data class DataState(
     val reposMap: Map<Long, Repository> = emptyMap(),
     val favorites: List<String> = emptyList(),
-    val iconDetails: Map<String, IconDetails> = emptyMap(),
+    val iconDetails: Map<String, ProductIconDetails> = emptyMap(),
 )
 
 data class SortFilterState(

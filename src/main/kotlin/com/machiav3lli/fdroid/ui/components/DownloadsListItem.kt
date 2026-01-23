@@ -30,8 +30,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
-import com.machiav3lli.fdroid.data.database.entity.IconDetails
 import com.machiav3lli.fdroid.data.database.entity.Installed
+import com.machiav3lli.fdroid.data.database.entity.ProductIconDetails
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.ProductItem
@@ -109,13 +109,13 @@ fun DownloadsListItem(
 @Composable
 fun DownloadedItem(
     download: Downloaded,
-    iconDetails: IconDetails?,
+    iconDetails: ProductIconDetails?,
     repo: Repository? = null,
     state: DownloadState,
     onEraseClick: (() -> Unit)? = null,
     onUserClick: (Downloaded) -> Unit = {},
 ) {
-    val imageData by remember(download, iconDetails, repo) {
+    val imageData by remember(iconDetails, repo) {
         mutableStateOf(
             createIconUri(
                 iconDetails?.icon
@@ -195,7 +195,7 @@ fun DownloadedItem(
 @Composable
 fun DownloadsCard(
     download: Downloaded,
-    iconDetails: IconDetails?,
+    iconDetails: ProductIconDetails?,
     repo: Repository? = null,
     state: DownloadState,
     onUserClick: (Downloaded) -> Unit = {},

@@ -6,10 +6,10 @@ import com.machiav3lli.fdroid.data.database.dao.ProductDao
 import com.machiav3lli.fdroid.data.database.dao.RepoCategoryDao
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
 import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
-import com.machiav3lli.fdroid.data.database.entity.IconDetails
 import com.machiav3lli.fdroid.data.database.entity.Licenses
 import com.machiav3lli.fdroid.data.database.entity.PackageSum
 import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.ProductIconDetails
 import com.machiav3lli.fdroid.data.entity.Order
 import com.machiav3lli.fdroid.data.entity.Request
 import com.machiav3lli.fdroid.data.entity.Section
@@ -66,10 +66,8 @@ class ProductsRepository(
     fun getAllCategoryDetails(): Flow<List<CategoryDetails>> =
         repoCategoryDao.getAllCategoryDetailsFlow()
 
-    fun getIconDetails(): Flow<List<IconDetails>> = productsDao.getIconDetailsFlow()
-
-    fun getIconDetailsMap(): Flow<Map<String, IconDetails>> = productsDao.getIconDetailsFlow()
-        .mapLatest { it.associateBy(IconDetails::packageName) }
+    fun getIconDetailsMap(): Flow<Map<String, ProductIconDetails>> =
+        productsDao.getIconDetailsMapFlow()
 
     suspend fun loadList(
         installed: Boolean,

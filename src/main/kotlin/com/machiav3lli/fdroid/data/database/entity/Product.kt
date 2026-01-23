@@ -208,12 +208,6 @@ data class Licenses(
     val licenses: List<String>,
 )
 
-data class IconDetails(
-    val packageName: String,
-    val icon: String = "",
-    val metadataIcon: String = "",
-)
-
 data class EmbeddedProduct(
     @Embedded val product: Product,
     @Relation(
