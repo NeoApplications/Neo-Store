@@ -1,11 +1,14 @@
 package com.machiav3lli.fdroid.manager.work
 
+import android.Manifest
 import android.app.DownloadManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
@@ -14,6 +17,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.ForegroundInfo
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
@@ -32,6 +36,7 @@ import com.machiav3lli.fdroid.ARG_TOTAL
 import com.machiav3lli.fdroid.ARG_URL
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
 import com.machiav3lli.fdroid.ContextWrapperX
+import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOAD_STATS
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Cache
@@ -43,8 +48,10 @@ import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.DownloadTask
 import com.machiav3lli.fdroid.data.entity.ValidationError
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
+import com.machiav3lli.fdroid.data.repository.InstallsRepository
 import com.machiav3lli.fdroid.manager.network.DownloadSizeException
 import com.machiav3lli.fdroid.manager.network.Downloader
+import com.machiav3lli.fdroid.manager.service.InstallerReceiver
 import com.machiav3lli.fdroid.utils.copyTo
 import com.machiav3lli.fdroid.utils.downloadNotificationBuilder
 import com.machiav3lli.fdroid.utils.extension.android.Android
@@ -56,6 +63,7 @@ import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.getDownloadFolder
 import com.machiav3lli.fdroid.utils.isDownloadExternal
 import com.machiav3lli.fdroid.utils.notifySensitivePermissionsChanged
+import com.machiav3lli.fdroid.utils.updateWithError
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -64,6 +72,7 @@ import org.koin.core.component.inject
 import org.koin.java.KoinJavaComponent.get
 import java.io.File
 import java.security.MessageDigest
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.roundToInt
 
 class DownloadWorker(
@@ -74,38 +83,40 @@ class DownloadWorker(
     private lateinit var task: DownloadTask
     private val langContext = ContextWrapperX.wrap(applicationContext)
     private val downloadedRepo: DownloadedRepository by inject()
+    private val installsRepo: InstallsRepository by inject()
+    private val notificationManager: NotificationManagerCompat by inject()
 
     @Deprecated("")
     override val coroutineContext: CoroutineDispatcher
         get() = Dispatchers.IO
 
     override suspend fun doWork(): Result {
-        try {
+        return try {
             task = getTask(inputData)
 
             if (Cache.getReleaseFile(applicationContext, task.release.cacheFileName).exists()) {
                 Log.i(TAG, "Running publish success from fun enqueue")
-                finalize(task)
+                handleSuccess()
                 return Result.success(getWorkData(task, null))
             }
 
-            return handleDownload(task)
+            handleDownload(task)
+        } catch (e: CancellationException) {
+            Log.e(TAG, e.message ?: "[Download Canceled] ${task.key}")
+            handleCancel()
+            Result.failure()
         } catch (e: Exception) {
-            Log.i(TAG, e.message ?: "download failed")
-            return Result.failure() // TODO (workDataOf(ARG_ERROR_MESSAGE to e.message))
+            Log.e(TAG, e.message ?: "[Download Failed] ${task.key}")
+            Result.failure() // TODO (workDataOf(ARG_ERROR_MESSAGE to e.message))
         }
     }
 
     private suspend fun handleDownload(task: DownloadTask): Result {
         val partialRelease =
             Cache.getPartialReleaseFile(applicationContext, task.release.cacheFileName)
-        val downloaded = Downloaded(
-            packageName = task.packageName,
-            version = task.release.version,
-            repositoryId = task.repoId,
-            cacheFileName = task.release.cacheFileName,
-            changed = System.currentTimeMillis(),
-            state = DownloadState.Downloading(
+
+        updateDownloadState(
+            DownloadState.Downloading(
                 packageName = task.packageName,
                 name = task.name,
                 version = task.release.version,
@@ -113,7 +124,7 @@ class DownloadWorker(
                 repoId = task.repoId,
                 read = 0L,
                 total = 100L,
-            ),
+            )
         )
 
         var lastPerMille = -1
@@ -126,16 +137,9 @@ class DownloadWorker(
                 if (perMille != lastPerMille || total == null) {
                     lastPerMille = perMille
 
-                    setForegroundAsync(
+                    setForeground(
                         createForegroundInfo(
-                            "${read.formatSize()} / ${total?.formatSize()}",
-                            percent
-                        )
-                    )
-
-                    downloadedRepo.update(
-                        downloaded.copy(
-                            state = DownloadState.Downloading(
+                            DownloadState.Downloading(
                                 packageName = task.packageName,
                                 name = task.name,
                                 version = task.release.version,
@@ -144,6 +148,18 @@ class DownloadWorker(
                                 read = read,
                                 total = total?.takeIf { it > 0 },
                             )
+                        )
+                    )
+
+                    updateDownloadState(
+                        DownloadState.Downloading(
+                            packageName = task.packageName,
+                            name = task.name,
+                            version = task.release.version,
+                            cacheFileName = task.release.cacheFileName,
+                            repoId = task.repoId,
+                            read = read,
+                            total = total?.takeIf { it > 0 },
                         )
                     )
 
@@ -173,6 +189,7 @@ class DownloadWorker(
                     TAG,
                     "[ValidationError] Download connection failed with HTTP status code: ${result.statusCode}"
                 )
+                handleError(result, ValidationError.CONNECTION)
                 return Result.failure(
                     getWorkData(
                         task,
@@ -188,11 +205,12 @@ class DownloadWorker(
                     Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
                 partialRelease.renameTo(releaseFile)
                 Log.i(TAG, "Worker success with result: $result")
-                finalize(task)
+                handleSuccess()
                 Result.success(getWorkData(task, result))
             } else {
                 partialRelease.delete()
                 Log.i(TAG, "Worker failure by validation error: $validationError")
+                handleError(result, validationError)
                 Result.failure(getWorkData(task, result, validationError))
             }
         } catch (e: DownloadSizeException) {
@@ -204,56 +222,133 @@ class DownloadWorker(
                 e
             )
             partialRelease.delete()
-            return Result.failure(
-                getWorkData(
-                    task,
-                    Downloader.Result(HttpStatusCode.BadRequest, "", ""),
-                    ValidationError.FILE_SIZE
-                )
-            )
+            val result = Downloader.Result(HttpStatusCode.BadRequest, "", "")
+            handleError(result, ValidationError.FILE_SIZE)
+            return Result.failure(getWorkData(task, result, ValidationError.FILE_SIZE))
         } catch (e: Exception) {
-            Log.e(
-                TAG,
-                "[ValidationError] Failed with unexpected error: ${e.message}", e
-            )
-            return Result.failure(
-                getWorkData(
-                    task,
-                    Downloader.Result(HttpStatusCode.InternalServerError, "", ""),
-                    ValidationError.UNKNOWN
-                )
-            )
+            if (e is CancellationException) throw e
+            Log.e(TAG, "[ValidationError] Failed with unexpected error: ${e.message}", e)
+            val result = Downloader.Result(HttpStatusCode.InternalServerError, "", "")
+            handleError(result, ValidationError.UNKNOWN)
+            return Result.failure(getWorkData(task, result, ValidationError.UNKNOWN))
         }
     }
 
-    override suspend fun getForegroundInfo(): ForegroundInfo {
-        val title = langContext.getString(
-            R.string.downloading_FORMAT,
-            "${task.name} (${task.release.version})"
+    private suspend fun handleSuccess() {
+        val state = DownloadState.Success(
+            packageName = task.packageName,
+            name = task.name,
+            version = task.release.version,
+            cacheFileName = task.release.cacheFileName,
+            repoId = task.repoId,
+            release = task.release,
         )
-        val pending = langContext.getString(R.string.pending)
-        return ForegroundInfo(
-            task.key.hashCode(),
-            langContext.downloadNotificationBuilder(title, pending).build(),
-            if (Android.sdk(Build.VERSION_CODES.Q)) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
-            else 0
+        Log.d(
+            TAG,
+            "Download successful for ${state.packageName}, preparing installation"
+        )
+
+        updateDownloadState(state)
+        finalize(task)
+
+        installsRepo.upsert(state.toInstallTask())
+        InstallWorker.enqueue(
+            packageName = task.packageName,
+            label = task.name,
+            fileName = task.release.cacheFileName,
+            enforce = true,
+        )
+
+        showPersistentNotification(state)
+    }
+
+    private suspend fun handleError(result: Downloader.Result, validationError: ValidationError) {
+        val state = DownloadState.Error(
+            packageName = task.packageName,
+            name = task.name,
+            version = task.release.version,
+            cacheFileName = task.release.cacheFileName,
+            repoId = task.repoId,
+            resultCode = result.statusCode.value,
+            validationError = validationError,
+            stopReason = WorkInfo.STOP_REASON_NOT_STOPPED
+        )
+        Log.e(
+            "DownloadState", "Download failed: ${state.packageName}",
+            Exception(state.validationError.toString())
+        )
+
+        updateDownloadState(state)
+        showPersistentNotification(state)
+    }
+
+    private suspend fun handleCancel() {
+        val state = DownloadState.Cancel(
+            packageName = task.packageName,
+            name = task.name,
+            version = task.release.version,
+            cacheFileName = task.release.cacheFileName,
+            repoId = task.repoId,
+        )
+        Log.i(
+            "DownloadState", "Download canceled: ${state.packageName}"
+        )
+
+        updateDownloadState(state)
+        Cache.eraseDownload(NeoApp.context, task.release.cacheFileName)
+        showPersistentNotification(state)
+    }
+
+    override suspend fun getForegroundInfo(): ForegroundInfo {
+        return createForegroundInfo(
+            DownloadState.Pending(
+                packageName = task.packageName,
+                name = task.name,
+                version = task.release.version,
+                cacheFileName = task.release.cacheFileName,
+                repoId = task.repoId,
+                blocked = false
+            )
         )
     }
 
     // changes based on https://developer.android.com/develop/background-work/background-tasks/persistent/how-to/long-running
-    private fun createForegroundInfo(progress: String, percent: Int = -1): ForegroundInfo {
+    private fun createForegroundInfo(state: DownloadState): ForegroundInfo {
         val title = langContext.getString(
             R.string.downloading_FORMAT,
-            "${task.name} (${task.release.version})"
+            "${state.name} (${state.version})"
         )
-        val cancel = langContext.getString(R.string.cancel)
         // TODO consider ActionReceiver-intent instead
         val cancelIntent = get<WorkManager>(WorkManager::class.java)
             .createCancelPendingIntent(id)
 
-        val notification = langContext.downloadNotificationBuilder(title, progress, percent)
-            .addAction(R.drawable.ic_cancel, cancel, cancelIntent)
-            .build()
+        val notification = when (state) {
+            is DownloadState.Pending
+                 -> {
+                val pending = langContext.getString(R.string.pending)
+                langContext.downloadNotificationBuilder(title, pending)
+                    .addAction(
+                        R.drawable.ic_cancel,
+                        langContext.getString(R.string.cancel),
+                        cancelIntent
+                    )
+            }
+
+            is DownloadState.Downloading
+                 -> {
+                val progress = "${state.read.formatSize()} / ${state.total?.formatSize()}"
+                val percent =
+                    if (state.total != null) (100f * state.read / state.total).roundToInt() else -1
+                langContext.downloadNotificationBuilder(title, progress, percent)
+                    .addAction(
+                        R.drawable.ic_cancel,
+                        langContext.getString(R.string.cancel),
+                        cancelIntent
+                    )
+            }
+
+            else -> langContext.downloadNotificationBuilder(title, "")
+        }.build()
 
         return ForegroundInfo(
             task.key.hashCode(),
@@ -261,6 +356,61 @@ class DownloadWorker(
             if (Android.sdk(Build.VERSION_CODES.Q)) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
             else 0
         )
+    }
+
+    private suspend fun updateDownloadState(state: DownloadState) {
+        downloadedRepo.update(
+            Downloaded(
+                packageName = state.packageName,
+                version = state.version,
+                repositoryId = state.repoId,
+                cacheFileName = state.cacheFileName,
+                changed = System.currentTimeMillis(),
+                state = state,
+            )
+        )
+    }
+
+    private fun showPersistentNotification(state: DownloadState) {
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) return
+
+        val title = langContext.getString(
+            R.string.downloading_FORMAT,
+            "${state.name} (${state.version})"
+        )
+        val builder = langContext.downloadNotificationBuilder(title)
+            // TODO ANOTHER CHANNEL
+            .setChannelId(NOTIFICATION_CHANNEL_DOWNLOAD_STATS)
+
+        when (state) {
+            is DownloadState.Cancel  -> builder
+                .setOngoing(false)
+                .setContentText(langContext.getString(R.string.canceled))
+                .setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
+
+            is DownloadState.Success -> builder
+                .setOngoing(false)
+                .setContentTitle(langContext.getString(R.string.downloaded_FORMAT, state.name))
+                .setTicker(langContext.getString(R.string.downloaded_FORMAT, state.name))
+                .apply {
+                    if (!Preferences[Preferences.Key.KeepInstallNotification]) {
+                        setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
+                    }
+                }
+
+            is DownloadState.Error   -> builder
+                .setOngoing(false)
+                .updateWithError(langContext, state, state.validationError)
+                .setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
+
+            else                     -> return
+        }
+
+        notificationManager.notify(task.key.hashCode(), builder.build())
     }
 
     fun setProgressData(data: Data) {
