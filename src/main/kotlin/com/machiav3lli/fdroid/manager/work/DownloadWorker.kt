@@ -26,13 +26,10 @@ import com.anggrayudi.storage.file.toDocumentFile
 import com.machiav3lli.fdroid.ARG_AUTHENTICATION
 import com.machiav3lli.fdroid.ARG_NAME
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
-import com.machiav3lli.fdroid.ARG_PROGRESS
-import com.machiav3lli.fdroid.ARG_READ
 import com.machiav3lli.fdroid.ARG_RELEASE
 import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
 import com.machiav3lli.fdroid.ARG_RESULT_CODE
 import com.machiav3lli.fdroid.ARG_STARTED
-import com.machiav3lli.fdroid.ARG_TOTAL
 import com.machiav3lli.fdroid.ARG_URL
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
 import com.machiav3lli.fdroid.ContextWrapperX
@@ -312,7 +309,6 @@ class DownloadWorker(
         )
     }
 
-    // changes based on https://developer.android.com/develop/background-work/background-tasks/persistent/how-to/long-running
     private fun createForegroundInfo(state: DownloadState): ForegroundInfo {
         val title = langContext.getString(
             R.string.downloading_FORMAT,
@@ -411,21 +407,6 @@ class DownloadWorker(
         }
 
         notificationManager.notify(task.key.hashCode(), builder.build())
-    }
-
-    fun setProgressData(data: Data) {
-        setProgressAsync(
-            Data.Builder()
-                .putAll(data)
-                .putLong(ARG_STARTED, task.started)
-                .putString(ARG_PACKAGE_NAME, task.packageName)
-                .putString(ARG_NAME, task.name)
-                .putString(ARG_RELEASE, task.release.toJSON())
-                .putString(ARG_URL, task.url)
-                .putLong(ARG_REPOSITORY_ID, task.repoId)
-                .putString(ARG_AUTHENTICATION, task.authentication)
-                .build()
-        )
     }
 
     private fun getWorkData(
@@ -601,16 +582,16 @@ class DownloadWorker(
     companion object {
         private const val TAG = "DownloadWorker"
         val SENSITIVE_PERMISSIONS = setOf(
-            android.Manifest.permission.CAMERA,
-            android.Manifest.permission.RECORD_AUDIO,
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
-            android.Manifest.permission.READ_CONTACTS,
-            android.Manifest.permission.SEND_SMS,
-            android.Manifest.permission.READ_PHONE_STATE,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.READ_CALL_LOG,
-            android.Manifest.permission.BODY_SENSORS,
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_CALL_LOG,
+            Manifest.permission.BODY_SENSORS,
         )
 
         fun enqueue(
@@ -652,12 +633,6 @@ class DownloadWorker(
             data.getString(ARG_URL) ?: "",
             data.getLong(ARG_REPOSITORY_ID, -1L),
             data.getString(ARG_AUTHENTICATION) ?: "",
-        )
-
-        fun getProgress(data: Data) = Progress(
-            data.getInt(ARG_PROGRESS, -1),
-            data.getLong(ARG_READ, 0L),
-            data.getLong(ARG_TOTAL, -1L),
         )
     }
 }

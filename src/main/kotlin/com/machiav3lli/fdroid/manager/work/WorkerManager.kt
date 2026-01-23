@@ -8,15 +8,12 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
-import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
-import com.machiav3lli.fdroid.ARG_RESULT_CODE
-import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOAD_STATS
@@ -27,9 +24,6 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_BATCH_SYNC_ONETIME
 import com.machiav3lli.fdroid.TAG_BATCH_SYNC_PERIODIC
 import com.machiav3lli.fdroid.data.content.Preferences
-import com.machiav3lli.fdroid.data.entity.DownloadState
-import com.machiav3lli.fdroid.data.entity.ValidationError
-import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.InstallsRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
@@ -45,9 +39,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -55,7 +46,6 @@ import org.koin.core.component.inject
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import java.util.concurrent.TimeUnit
-import kotlin.coroutines.cancellation.CancellationException
 
 class WorkerManager(private val appContext: Context) : KoinComponent {
 
@@ -63,7 +53,6 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
     private val actionReceiver: ActionReceiver by inject()
     private val langContext: Context = ContextWrapperX.wrap(appContext)
     private val notificationManager: NotificationManagerCompat by inject()
-    private val downloadedRepo: DownloadedRepository by inject()
     private val productRepo: ProductsRepository by inject()
     private val reposRepo: RepositoriesRepository by inject()
     private val installedRepo: InstalledRepository by inject()
@@ -71,26 +60,12 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
     private val installer: AppInstaller by inject()
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    val downloadsScope = CoroutineScope(scope.coroutineContext + SupervisorJob())
-
-    private val downloadTracker = DownloadsTracker()
-    private val downloadStateHandler by lazy {
-        DownloadStateHandler(
-            context = langContext,
-            scope = downloadsScope,
-            downloadStates = WorkStateHolder(),
-            notificationManager = notificationManager,
-            downloadedRepo = downloadedRepo,
-            installsRepo = installsRepo,
-        )
-    }
 
     init {
         appContext.registerReceiver(actionReceiver, IntentFilter())
         if (Android.sdk(Build.VERSION_CODES.O)) createNotificationChannels()
 
         workManager.pruneWork()
-        setupWorkInfoCollection()
         monitorWorkProgress()
     }
 
@@ -102,21 +77,6 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
 
     fun prune() {
         workManager.pruneWork()
-    }
-
-    private fun setupWorkInfoCollection() {
-        workManager.getWorkInfosByTagFlow(DownloadWorker::class.qualifiedName!!)
-            .retryWhen { cause, attempt ->
-                delay(attempt * 1_000L)
-                cause !is CancellationException
-            }
-            .map { downloadInfos ->
-                runCatching {
-                    onDownloadProgress(downloadInfos)
-                }.onFailure { e ->
-                    Log.e(TAG, "Error processing download progress", e)
-                }
-            }.launchIn(scope)
     }
 
     private fun monitorWorkProgress() {
@@ -145,81 +105,6 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
                 delay(TimeUnit.MINUTES.toMillis(5))
             }
         }
-    }
-
-    private fun onDownloadProgress(workInfos: List<WorkInfo>) {
-        workInfos.forEach { workInfo ->
-            val data = workInfo.outputData.takeIf { it != Data.EMPTY }
-                ?: workInfo.progress.takeIf { it != Data.EMPTY }
-                ?: return@forEach
-
-            if (downloadTracker.trackWork(workInfo, data)) runCatching {
-                val task = DownloadWorker.getTask(data)
-                val resultCode = data.getInt(ARG_RESULT_CODE, 0)
-                val validationError = ValidationError.entries[
-                    data.getInt(ARG_VALIDATION_ERROR, 0)
-                ]
-
-                when (workInfo.state) {
-                    WorkInfo.State.ENQUEUED,
-                    WorkInfo.State.BLOCKED   -> DownloadState.Pending(
-                        packageName = task.packageName,
-                        name = task.name,
-                        version = task.release.version,
-                        cacheFileName = task.release.cacheFileName,
-                        repoId = task.repoId,
-                        blocked = workInfo.state == WorkInfo.State.BLOCKED
-                    )
-
-                    WorkInfo.State.RUNNING   -> {
-                        val progress = DownloadWorker.getProgress(data)
-                        DownloadState.Downloading(
-                            packageName = task.packageName,
-                            name = task.name,
-                            version = task.release.version,
-                            cacheFileName = task.release.cacheFileName,
-                            repoId = task.repoId,
-                            read = progress.read,
-                            total = progress.total.takeIf { it > 0 },
-                        )
-                    }
-
-                    WorkInfo.State.CANCELLED -> DownloadState.Cancel(
-                        packageName = task.packageName,
-                        name = task.name,
-                        version = task.release.version,
-                        cacheFileName = task.release.cacheFileName,
-                        repoId = task.repoId,
-                    )
-
-                    WorkInfo.State.SUCCEEDED -> DownloadState.Success(
-                        packageName = task.packageName,
-                        name = task.name,
-                        version = task.release.version,
-                        cacheFileName = task.release.cacheFileName,
-                        repoId = task.repoId,
-                        release = task.release,
-                    )
-
-                    WorkInfo.State.FAILED    -> DownloadState.Error(
-                        packageName = task.packageName,
-                        name = task.name,
-                        version = task.release.version,
-                        cacheFileName = task.release.cacheFileName,
-                        repoId = task.repoId,
-                        resultCode = resultCode,
-                        validationError = validationError,
-                        stopReason = workInfo.stopReason
-                    )
-                }.let { newState ->
-                    downloadStateHandler.updateState(task.key, newState)
-                }
-            }.onFailure { e ->
-                Log.e(TAG, "Error updating download state", e)
-            }
-        }
-
-        prune()
     }
 
     fun enqueueUniqueWork(
@@ -283,7 +168,6 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
                 if (packageName != null) "download_$packageName"
                 else it
             )
-            // TODO upsert Error to DB.Downloaded
         }
     }
 
