@@ -311,6 +311,7 @@ data class EmbeddedProduct(
 @DatabaseView(
     """
         SELECT mg.$ROW_PACKAGE_NAME   AS $ROW_PACKAGE_NAME,
+               mg.$ROW_REPOSITORY_ID  AS $ROW_REPOSITORY_ID,
                mg.$ROW_ICON           AS $ROW_ICON,
                mg.$ROW_METADATA_ICON  AS $ROW_METADATA_ICON
         FROM   $TABLE_PRODUCT AS mg
@@ -324,6 +325,7 @@ data class EmbeddedProduct(
 )
 data class ProductIconDetails(
     val packageName: String,
+    val repositoryId: Long,
     val icon: String,
     val metadataIcon: String
 )

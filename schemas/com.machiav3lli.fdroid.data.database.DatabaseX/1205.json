@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1205,
-    "identityHash": "4f260b1da55fdc705f66759314e3efb8",
+    "identityHash": "2bf49a83640132a75f090cbb656bc929",
     "entities": [
       {
         "tableName": "repository",
@@ -2198,12 +2198,12 @@
       },
       {
         "viewName": "ProductIconDetails",
-        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT mg.packageName   AS packageName,\n               mg.icon           AS icon,\n               mg.metadataIcon  AS metadataIcon\n        FROM   product_v2 AS mg\n        JOIN (\n            SELECT   packageName, MAX(updated) AS latest\n            FROM     product_v2\n            GROUP BY packageName\n        ) AS sg\n        ON mg.packageName = sg.packageName AND mg.updated = sg.latest"
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT mg.packageName   AS packageName,\n               mg.repositoryId  AS repositoryId,\n               mg.icon           AS icon,\n               mg.metadataIcon  AS metadataIcon\n        FROM   product_v2 AS mg\n        JOIN (\n            SELECT   packageName, MAX(updated) AS latest\n            FROM     product_v2\n            GROUP BY packageName\n        ) AS sg\n        ON mg.packageName = sg.packageName AND mg.updated = sg.latest"
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4f260b1da55fdc705f66759314e3efb8')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2bf49a83640132a75f090cbb656bc929')"
     ]
   }
 }
