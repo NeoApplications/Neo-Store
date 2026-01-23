@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.data.entity
 
+import androidx.compose.runtime.Immutable
 import androidx.work.WorkInfo
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
@@ -28,14 +29,14 @@ class DownloadTask(
     }
 }
 
+@Immutable
 @Serializable
-sealed class DownloadState {
+sealed class DownloadState(val changed: Long) {
     abstract val packageName: String
     abstract val name: String
     abstract val version: String
     abstract val cacheFileName: String
     abstract val repoId: Long
-    abstract val changed: Long
 
     @Serializable
     class Pending(
@@ -45,9 +46,7 @@ sealed class DownloadState {
         override val cacheFileName: String,
         override val repoId: Long,
         val blocked: Boolean,
-    ) : DownloadState() {
-        override val changed: Long = System.currentTimeMillis()
-    }
+    ) : DownloadState(System.currentTimeMillis())
 
     @Serializable
     class Connecting(
@@ -56,12 +55,10 @@ sealed class DownloadState {
         override val version: String,
         override val cacheFileName: String,
         override val repoId: Long,
-    ) : DownloadState() {
-        override val changed: Long = System.currentTimeMillis()
-    }
+    ) : DownloadState(System.currentTimeMillis())
 
     @Serializable
-    class Downloading(
+    data class Downloading(
         override val packageName: String,
         override val name: String,
         override val version: String,
@@ -69,26 +66,23 @@ sealed class DownloadState {
         override val repoId: Long,
         val read: Long,
         val total: Long?,
-    ) : DownloadState() {
-        override val changed: Long = System.currentTimeMillis()
+    ) : DownloadState(System.currentTimeMillis()) {
         val progress: Int
             get() = if (total != null) (100f * read / total).roundToInt() else -1
     }
 
     @Serializable
-    class Success(
+    data class Success(
         override val packageName: String,
         override val name: String,
         override val version: String,
         override val cacheFileName: String,
         override val repoId: Long,
         val release: Release,
-    ) : DownloadState() {
-        override val changed: Long = System.currentTimeMillis()
-
+    ) : DownloadState(System.currentTimeMillis()) {
         fun toInstallTask() = InstallTask(
-            packageName = packageName,
-            repositoryId = repoId,
+            packageName = release.packageName,
+            repositoryId = release.repositoryId,
             versionCode = release.versionCode,
             versionName = release.version,
             label = name,
@@ -99,7 +93,7 @@ sealed class DownloadState {
     }
 
     @Serializable
-    class Error(
+    data class Error(
         override val packageName: String,
         override val name: String,
         override val version: String,
@@ -108,9 +102,7 @@ sealed class DownloadState {
         val resultCode: Int,
         val validationError: ValidationError,
         val stopReason: Int = WorkInfo.STOP_REASON_NOT_STOPPED,
-    ) : DownloadState() {
-        override val changed: Long = System.currentTimeMillis()
-    }
+    ) : DownloadState(System.currentTimeMillis())
 
     @Serializable
     class Cancel(
@@ -119,9 +111,7 @@ sealed class DownloadState {
         override val version: String,
         override val cacheFileName: String,
         override val repoId: Long,
-    ) : DownloadState() {
-        override val changed: Long = System.currentTimeMillis()
-    }
+    ) : DownloadState(System.currentTimeMillis())
 
     val description: Int
         get() = when (this) {
@@ -146,7 +136,9 @@ sealed class DownloadState {
     fun toJSON() = Json.encodeToString(this)
 
     companion object {
-        fun fromJson(json: String) = Json.decodeFromString<DownloadState>(json)
+        private val jsonConfig = Json { ignoreUnknownKeys = true }
+
+        fun fromJson(json: String) = jsonConfig.decodeFromString<DownloadState>(json)
     }
 }
 
