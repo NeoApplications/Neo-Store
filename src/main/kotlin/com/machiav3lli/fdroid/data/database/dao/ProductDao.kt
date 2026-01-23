@@ -315,7 +315,17 @@ interface ProductDao : BaseDao<Product> {
                 )
             }
 
-            UpdateCategory.UPDATED -> whereConditions.add("$TABLE_PRODUCT.$ROW_ADDED < $TABLE_PRODUCT.$ROW_UPDATED")
+            UpdateCategory.UPDATED -> {
+                whereConditions.add(
+                    """
+                $TABLE_PRODUCT.$ROW_ADDED < $TABLE_PRODUCT.$ROW_UPDATED
+                OR (SELECT COUNT(DISTINCT $TABLE_RELEASE.$ROW_VERSION_CODE) 
+                FROM $TABLE_RELEASE
+                WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME) != 1
+                """.trimIndent()
+                )
+            }
+
             else                   -> {}
         }
 
