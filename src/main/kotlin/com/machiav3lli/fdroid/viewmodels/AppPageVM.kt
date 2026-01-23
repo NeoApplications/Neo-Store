@@ -1,9 +1,15 @@
 package com.machiav3lli.fdroid.viewmodels
 
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.provider.Settings
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
+import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.RELEASE_STATE_INSTALLED
 import com.machiav3lli.fdroid.RELEASE_STATE_NONE
@@ -22,6 +28,7 @@ import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.data.entity.ActionState
+import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.DownloadState
 import com.machiav3lli.fdroid.data.entity.PrivacyData
 import com.machiav3lli.fdroid.data.entity.PrivacyNote
@@ -32,6 +39,8 @@ import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
+import com.machiav3lli.fdroid.manager.service.ActionReceiver
+import com.machiav3lli.fdroid.utils.Utils.startUpdate
 import com.machiav3lli.fdroid.utils.extension.Quadruple
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.combine
@@ -40,6 +49,8 @@ import com.machiav3lli.fdroid.utils.extension.text.intToIsoDate
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.findSuggestedProduct
 import com.machiav3lli.fdroid.utils.generatePermissionGroups
+import com.machiav3lli.fdroid.utils.shareIntent
+import com.machiav3lli.fdroid.utils.startLauncherActivity
 import com.machiav3lli.fdroid.utils.toPrivacyNote
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -326,6 +337,9 @@ class AppPageVM(
     )
 
     // Actions
+    val actionExecutionState: StateFlow<ActionExecutionState>
+        field = MutableStateFlow(ActionExecutionState())
+
     private val canInstall: Flow<Boolean> = combine(
         suggestedProductRepo,
         installedItem,
@@ -513,12 +527,175 @@ class AppPageVM(
         }
     }
 
+    fun processActionCommand(command: AppActionCommand, context: Context) {
+        viewModelScope.launch {
+            when (command) {
+                is AppActionCommand.Execute   -> {
+                    val confirmation = checkIfNeedsConfirmation(command.action)
+
+                    if (confirmation != null) {
+                        actionExecutionState.update {
+                            it.copy(pendingConfirmation = command.action to confirmation)
+                        }
+                    } else {
+                        executeActionInternal(command.action, context)
+                    }
+                }
+
+                is AppActionCommand.Confirmed -> {
+                    actionExecutionState.update { it.copy(pendingConfirmation = null) }
+                    executeActionInternal(command.action, context)
+                }
+
+                AppActionCommand.Cancel       -> {
+                    actionExecutionState.update {
+                        it.copy(pendingConfirmation = null, error = null)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun checkIfNeedsConfirmation(action: ActionState): DialogKey? {
+        val state = coreAppState.value
+        val extras = extraAppState.value.extras
+
+        return when (action) {
+            ActionState.Install, ActionState.Update -> {
+                if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                    DialogKey.Download(
+                        state.suggestedProductRepo?.first?.product?.label ?: packageName.value
+                    ) {
+                        startUpdate(
+                            packageName.value,
+                            state.installed,
+                            state.productRepos,
+                        )
+                    }
+                } else null
+            }
+
+            ActionState.Launch                      -> {
+                state.installed?.let { installed ->
+                    if (installed.launcherActivities.size >= 2) {
+                        DialogKey.Launch(
+                            installed.packageName,
+                            installed.launcherActivities,
+                        )
+                    } else null
+                }
+            }
+
+            ActionState.Uninstall                   -> {
+                if (NeoApp.installer.isRoot()) {
+                    DialogKey.Uninstall(
+                        state.suggestedProductRepo?.first?.product?.label ?: packageName.value
+                    ) {
+                        viewModelScope.launch {
+                            NeoApp.installer.uninstall(packageName.value)
+                        }
+                    }
+                } else null
+            }
+
+            else                                    -> null
+        }
+    }
+
+    private suspend fun executeActionInternal(action: ActionState, context: Context) {
+        actionExecutionState.update { it.copy(isExecuting = true, error = null) }
+
+        try {
+            val state = coreAppState.value
+            val neoActivity = context as? NeoActivity
+
+            when (action) {
+                ActionState.Install, ActionState.Update      -> {
+                    startUpdate(
+                        packageName.value,
+                        state.installed,
+                        state.productRepos,
+                    )
+                }
+
+                ActionState.Launch                           -> {
+                    state.installed?.let { installed ->
+                        installed.launcherActivities.firstOrNull()
+                            ?.let { context.startLauncherActivity(installed.packageName, it.first) }
+                    }
+                }
+
+                ActionState.Details                          -> {
+                    context.startActivity(
+                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                            .setData("package:${packageName.value}".toUri())
+                    )
+                }
+
+                ActionState.Uninstall                        -> {
+                    NeoApp.installer.uninstall(packageName.value)
+                }
+
+                is ActionState.CancelPending,
+                is ActionState.CancelConnecting,
+                is ActionState.CancelDownloading             -> {
+                    val cancelIntent = Intent(context, ActionReceiver::class.java).apply {
+                        this.action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD
+                        putExtra(ARG_PACKAGE_NAME, packageName.value)
+                    }
+                    neoActivity?.sendBroadcast(cancelIntent)
+                }
+
+                ActionState.Share                            -> {
+                    val prodRepo = state.productRepos.first { it.second.webBaseUrl.isNotBlank() }
+                    context.shareIntent(
+                        packageName.value,
+                        prodRepo.first.product.label,
+                        prodRepo.second.webBaseUrl,
+                    )
+                }
+
+                ActionState.Bookmark, ActionState.Bookmarked -> {
+                    setFavorite(packageName.value, action is ActionState.Bookmark)
+                }
+
+                else                                         -> {
+                    actionExecutionState.update {
+                        it.copy(error = "Unsupported action: $action")
+                    }
+                }
+            }
+
+            actionExecutionState.update { it.copy(isExecuting = false) }
+        } catch (e: Exception) {
+            actionExecutionState.update {
+                it.copy(isExecuting = false, error = e.message ?: "Unknown error")
+            }
+        }
+    }
+
+    fun clearActionError() {
+        actionExecutionState.update { it.copy(error = null) }
+    }
+
     fun setFavorite(packageName: String, setBoolean: Boolean) {
         viewModelScope.launch {
             extrasRepo.setFavorite(packageName, setBoolean)
         }
     }
 }
+
+sealed interface AppActionCommand {
+    data class Execute(val action: ActionState) : AppActionCommand
+    data class Confirmed(val action: ActionState) : AppActionCommand
+    data object Cancel : AppActionCommand
+}
+
+data class ActionExecutionState(
+    val isExecuting: Boolean = false,
+    val pendingConfirmation: Pair<ActionState, DialogKey>? = null,
+    val error: String? = null,
+)
 
 data class PrivacyPanelState(
     val trackers: List<Tracker> = emptyList(),

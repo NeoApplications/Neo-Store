@@ -6,8 +6,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.provider.Settings
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
@@ -58,9 +56,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.NeoActivity
-import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Release
@@ -70,7 +66,6 @@ import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.DonateType
 import com.machiav3lli.fdroid.manager.network.createIconUri
-import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.manager.work.DownloadWorker
 import com.machiav3lli.fdroid.manager.work.ExodusWorker
 import com.machiav3lli.fdroid.ui.components.ClientsChart
@@ -103,13 +98,12 @@ import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
 import com.machiav3lli.fdroid.ui.dialog.ActionSelectionDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
-import com.machiav3lli.fdroid.utils.Utils.startUpdate
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.generateLinks
-import com.machiav3lli.fdroid.utils.shareIntent
 import com.machiav3lli.fdroid.utils.shareReleaseIntent
 import com.machiav3lli.fdroid.utils.startLauncherActivity
+import com.machiav3lli.fdroid.viewmodels.AppActionCommand
 import com.machiav3lli.fdroid.viewmodels.AppPageVM
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
@@ -140,6 +134,7 @@ fun AppPage(
     val extraState by viewModel.extraAppState.collectAsStateWithLifecycle()
     val privacyState by viewModel.privacyPanelState.collectAsStateWithLifecycle()
     val downloadStatsState by viewModel.downloadStatsState.collectAsStateWithLifecycle()
+    val actionExecutionState by viewModel.actionExecutionState.collectAsStateWithLifecycle()
 
     LaunchedEffect(packageName) {
         viewModel.setApp(packageName)
@@ -193,138 +188,80 @@ fun AppPage(
 
     val onReleaseClick = { release: Release ->
         val installedItem = appState.installed
-        when {
+        val incompatibilityCheck = when {
             release.incompatibilities.isNotEmpty()                               -> {
-                dialogKey.value = DialogKey.ReleaseIncompatible(
+                DialogKey.ReleaseIncompatible(
                     release.incompatibilities,
-                    release.platforms, release.minSdkVersion, release.maxSdkVersion
+                    release.platforms,
+                    release.minSdkVersion,
+                    release.maxSdkVersion
                 )
-                openDialog.value = true
             }
 
             installedItem != null
                     && installedItem.versionCode > release.versionCode
                     && !Preferences[Preferences.Key.DisableDownloadVersionCheck] -> {
-                dialogKey.value = DialogKey.ReleaseIssue(R.string.incompatible_older_DESC)
-                openDialog.value = true
+                DialogKey.ReleaseIssue(R.string.incompatible_older_DESC)
             }
 
             installedItem != null
                     && release.signature !in installedItem.signatures
                     && !Preferences[Preferences.Key.DisableSignatureCheck]       -> {
-                dialogKey.value = DialogKey.ReleaseIssue(R.string.incompatible_signature_DESC)
-                openDialog.value = true
+                DialogKey.ReleaseIssue(R.string.incompatible_signature_DESC)
             }
 
-            else                                                                 -> {
-                val productRepository = appState.productRepos.asSequence()
-                    .filter { it.second.id == release.repositoryId }
-                    .firstOrNull()
-                if (productRepository != null) {
-                    val action = {
-                        DownloadWorker.enqueue(
-                            packageName,
-                            productRepository.first.product.label,
-                            productRepository.second,
-                            release
-                        )
-                    }
-                    if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                        dialogKey.value =
-                            DialogKey.Download(productRepository.first.product.label, action)
-                        openDialog.value = true
-                    } else action()
+            else                                                                 -> null
+        }
+
+        if (incompatibilityCheck != null) {
+            dialogKey.value = incompatibilityCheck
+            openDialog.value = true
+        } else {
+            val productRepository = appState.productRepos
+                .firstOrNull { it.second.id == release.repositoryId }
+
+            productRepository?.let { (product, repo) ->
+                val action = {
+                    DownloadWorker.enqueue(
+                        packageName,
+                        product.product.label,
+                        repo,
+                        release
+                    )
+                }
+
+                if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                    dialogKey.value = DialogKey.Download(product.product.label, action)
+                    openDialog.value = true
+                } else {
+                    action()
                 }
             }
         }
     }
 
-    val onActionClick: (ActionState) -> Unit = { action: ActionState ->
-        Log.d("AppPage", "onClickAction: ${action::class.java}")
-        when (action) {
-            ActionState.Install,
-            ActionState.Update,
-                 -> {
-                val actionJob: () -> Unit = {
-                    startUpdate(
-                        packageName,
-                        appState.installed,
-                        appState.productRepos,
-                    )
-                }
-                if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                    dialogKey.value =
-                        DialogKey.Download(
-                            appState.suggestedProductRepo?.first?.product?.label ?: packageName,
-                            actionJob
-                        )
-                    openDialog.value = true
-                } else actionJob()
-            }
-
-            ActionState.Launch
-                 -> appState.installed?.let { installed ->
-                if (installed.launcherActivities.size >= 2) {
-                    dialogKey.value = DialogKey.Launch(
-                        installed.packageName,
-                        installed.launcherActivities,
-                    )
-                    openDialog.value = true
-                } else {
-                    installed.launcherActivities.firstOrNull()
-                        ?.let { context.startLauncherActivity(installed.packageName, it.first) }
-                }
-            }
-
-            ActionState.Details
-                 -> context.startActivity(
-                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                    .setData("package:$packageName".toUri())
-            )
-
-            ActionState.Uninstall
-                 -> {
-                val actionJob: () -> Unit = {
-                    scope.launch {
-                        NeoApp.installer.uninstall(packageName)
-                    }
-                }
-                if (NeoApp.installer.isRoot()) {
-                    dialogKey.value = DialogKey.Uninstall(
-                        appState.suggestedProductRepo?.first?.product?.label ?: packageName,
-                        actionJob
-                    )
-                    openDialog.value = true
-                } else actionJob()
-            }
-
-            is ActionState.CancelPending,
-            is ActionState.CancelConnecting,
-            is ActionState.CancelDownloading,
-                 -> {
-                val cancelIntent = Intent(context, ActionReceiver::class.java).apply {
-                    this.action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD
-                    putExtra(ARG_PACKAGE_NAME, packageName)
-                }
-                neoActivity.sendBroadcast(cancelIntent)
-            }
-
-            ActionState.Share
-                 -> {
-                val prodRepo = appState.productRepos.first { it.second.webBaseUrl.isNotBlank() }
-                context.shareIntent(
-                    packageName,
-                    prodRepo.first.product.label,
-                    prodRepo.second.webBaseUrl,
-                )
-            }
-
-            ActionState.Bookmark,
-            ActionState.Bookmarked,
-                 -> viewModel.setFavorite(packageName, action is ActionState.Bookmark)
-
-            else -> {}
+    LaunchedEffect(actionExecutionState.pendingConfirmation) {
+        actionExecutionState.pendingConfirmation?.let { (_, key) ->
+            dialogKey.value = key
+            openDialog.value = true
         }
+    }
+
+    LaunchedEffect(actionExecutionState.error) {
+        actionExecutionState.error?.let { error ->
+            snackbarHostState.showSnackbar(
+                message = error,
+                duration = SnackbarDuration.Short
+            )
+            viewModel.clearActionError()
+        }
+    }
+
+    val onActionClick: (ActionState) -> Unit = { action ->
+        viewModel.processActionCommand(
+            AppActionCommand.Execute(action),
+            context
+        )
     }
 
     appState.suggestedProductRepo?.let { (eProduct, repo) ->
@@ -703,6 +640,7 @@ fun AppPage(
                                     key
                                 )
                                 openDialog.value = false
+                                dialogKey.value = null
                             }
                         )
 
@@ -710,14 +648,11 @@ fun AppPage(
                             key = dialogKey.value,
                             openDialog = openDialog,
                             primaryAction = {
-                                when (dialogKey.value) {
+                                when (val key = dialogKey.value) {
                                     is DialogKey.Link   -> {
                                         try {
                                             context.startActivity(
-                                                Intent(
-                                                    Intent.ACTION_VIEW,
-                                                    (dialogKey.value as DialogKey.Link).uri
-                                                )
+                                                Intent(Intent.ACTION_VIEW, key.uri)
                                             )
                                         } catch (e: ActivityNotFoundException) {
                                             e.printStackTrace()
@@ -725,26 +660,44 @@ fun AppPage(
                                     }
 
                                     is DialogKey.Action -> {
-                                        if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None)
+                                        val pendingAction =
+                                            actionExecutionState.pendingConfirmation?.first
+
+                                        if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None) {
                                             neoActivity.launchLockPrompt {
-                                                (dialogKey.value as DialogKey.Action).action()
+                                                key.action()
+                                                if (pendingAction != null) {
+                                                    viewModel.processActionCommand(
+                                                        AppActionCommand.Confirmed(pendingAction),
+                                                        context
+                                                    )
+                                                }
                                                 openDialog.value = false
+                                                dialogKey.value = null
                                             }
-                                        else {
-                                            (dialogKey.value as DialogKey.Action).action()
+                                        } else {
+                                            key.action()
+                                            if (pendingAction != null) {
+                                                viewModel.processActionCommand(
+                                                    AppActionCommand.Confirmed(pendingAction),
+                                                    context
+                                                )
+                                            }
                                             openDialog.value = false
+                                            dialogKey.value = null
                                         }
                                     }
 
                                     else                -> {
-                                        dialogKey.value = null
                                         openDialog.value = false
+                                        dialogKey.value = null
                                     }
                                 }
                             },
                             onDismiss = {
-                                dialogKey.value = null
+                                viewModel.processActionCommand(AppActionCommand.Cancel, context)
                                 openDialog.value = false
+                                dialogKey.value = null
                             }
                         )
                     }
