@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -108,10 +109,10 @@ fun ExpandingFadingCard(
     ) {
         StatefulAnimatedVisibility(
             currentState = expanded,
-            enterPositive = fadeIn() + expandIn(),
-            exitPositive = fadeOut() + shrinkOut(),
-            enterNegative = fadeIn() + expandIn(),
-            exitNegative = fadeOut() + shrinkOut(),
+            enterPositive = fadeIn(tween(100)) + expandIn(tween(200)),
+            exitPositive = fadeOut(tween(100)) + shrinkOut(tween(200)),
+            enterNegative = fadeIn(tween(100)) + expandIn(tween(200)),
+            exitNegative = fadeOut(tween(100)) + shrinkOut(tween(200)),
             collapsedView = collapsedView,
             expandedView = expandedView
         )
