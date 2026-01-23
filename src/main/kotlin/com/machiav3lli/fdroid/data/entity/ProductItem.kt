@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.data.entity
 
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
+import com.machiav3lli.fdroid.data.database.entity.ProductIconDetails
 
 data class ProductItem(
     val repositoryId: Long = 0,
@@ -31,7 +32,8 @@ sealed class UpdateListItem {
     }
 
     data class DownloadOnlyItem(
-        val download: Downloaded
+        val download: Downloaded,
+        val iconDetails: ProductIconDetails?,
     ) : UpdateListItem() {
         override val key: String = download.itemKey
         override val packageName: String = download.packageName

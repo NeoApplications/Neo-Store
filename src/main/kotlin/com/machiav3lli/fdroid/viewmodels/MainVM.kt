@@ -59,7 +59,8 @@ open class MainVM(
     val combinedUpdatesList = combine(
         updates,
         activeDownloads,
-    ) { productItems, downloads ->
+        productsRepo.getIconDetailsMap().distinctUntilChanged(),
+    ) { productItems, downloads, iconDetails ->
         val downloadsByPackage = downloads.groupBy { it.packageName to it.repositoryId }
         val processedPackages = mutableSetOf<Pair<String, Long>>()
 
@@ -76,7 +77,12 @@ open class MainVM(
         downloads.forEach { download ->
             val key = download.packageName to download.repositoryId
             if (key !in processedPackages) {
-                items.add(UpdateListItem.DownloadOnlyItem(download))
+                items.add(
+                    UpdateListItem.DownloadOnlyItem(
+                        download,
+                        iconDetails[download.packageName],
+                    )
+                )
             }
         }
 
