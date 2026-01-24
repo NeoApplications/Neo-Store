@@ -293,7 +293,7 @@
     <string name="permission_not_present">Not present on your system</string>
     <string name="vulnerabilities_installed_apps">These installed apps have known vulnerabilities!</string>
     <string name="no_vulnerabilities_installed_apps">No installed apps have known vulnerabilities.</string>
-    <string name="vulnerabilities">Vulnerabilities.</string>
+    <string name="vulnerabilities">Vulnerabilities</string>
     <string name="only_on_battery">Only when charging</string>
     <string name="edit">Edit</string>
     <string name="tools">Tools</string>
