@@ -36,14 +36,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.data.entity.ActionState
+import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.data.entity.ComponentState
 
 @Composable
 fun ActionButton(
     modifier: Modifier = Modifier,
     text: String,
-    // TODO add neutral using ENUM
-    positive: Boolean = true,
+    coloring: ColoringState = ColoringState.Positive,
     icon: ImageVector? = null,
     enabled: Boolean = true,
     onClick: () -> Unit,
@@ -51,13 +51,15 @@ fun ActionButton(
     FilledTonalButton(
         modifier = modifier,
         colors = ButtonDefaults.filledTonalButtonColors(
-            contentColor = when {
-                positive -> MaterialTheme.colorScheme.onPrimaryContainer
-                else     -> MaterialTheme.colorScheme.onTertiaryContainer
+            contentColor = when (coloring) {
+                ColoringState.Positive -> MaterialTheme.colorScheme.onPrimaryContainer
+                ColoringState.Negative -> MaterialTheme.colorScheme.onTertiaryContainer
+                ColoringState.Neutral  -> MaterialTheme.colorScheme.onSecondaryContainer
             },
-            containerColor = when {
-                positive -> MaterialTheme.colorScheme.primaryContainer
-                else     -> MaterialTheme.colorScheme.tertiaryContainer
+            containerColor = when (coloring) {
+                ColoringState.Positive -> MaterialTheme.colorScheme.primaryContainer
+                ColoringState.Negative -> MaterialTheme.colorScheme.tertiaryContainer
+                ColoringState.Neutral  -> MaterialTheme.colorScheme.secondaryContainer
             }
         ),
         enabled = enabled,
@@ -77,8 +79,7 @@ fun ActionButton(
 fun OutlinedActionButton(
     modifier: Modifier = Modifier,
     text: String,
-    // TODO add neutral using ENUM
-    positive: Boolean = true,
+    coloring: ColoringState = ColoringState.Positive,
     icon: ImageVector? = null,
     enabled: Boolean = true,
     onClick: () -> Unit,
@@ -86,16 +87,18 @@ fun OutlinedActionButton(
     OutlinedButton(
         modifier = modifier,
         colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = when {
-                positive -> MaterialTheme.colorScheme.primary
-                else     -> MaterialTheme.colorScheme.tertiary
+            contentColor = when (coloring) {
+                ColoringState.Positive -> MaterialTheme.colorScheme.primary
+                ColoringState.Negative -> MaterialTheme.colorScheme.tertiary
+                ColoringState.Neutral  -> MaterialTheme.colorScheme.secondary
             },
         ),
         border = BorderStroke(
             width = 1.dp,
-            color = when {
-                positive -> MaterialTheme.colorScheme.primary
-                else     -> MaterialTheme.colorScheme.tertiary
+            color = when (coloring) {
+                ColoringState.Positive -> MaterialTheme.colorScheme.primary
+                ColoringState.Negative -> MaterialTheme.colorScheme.tertiary
+                ColoringState.Neutral  -> MaterialTheme.colorScheme.secondary
             },
         ),
         enabled = enabled,
@@ -115,7 +118,7 @@ fun OutlinedActionButton(
 fun FlatActionButton(
     modifier: Modifier = Modifier,
     text: String,
-    positive: Boolean = true,
+    coloring: ColoringState = ColoringState.Positive,
     iconOnSide: Boolean = false,
     icon: ImageVector? = null,
     onClick: () -> Unit,
@@ -123,8 +126,11 @@ fun FlatActionButton(
     TextButton(
         modifier = modifier,
         colors = ButtonDefaults.textButtonColors(
-            contentColor = if (positive) MaterialTheme.colorScheme.primary
-            else MaterialTheme.colorScheme.tertiary
+            contentColor = when (coloring) {
+                ColoringState.Positive -> MaterialTheme.colorScheme.primary
+                ColoringState.Negative -> MaterialTheme.colorScheme.tertiary
+                ColoringState.Neutral  -> MaterialTheme.colorScheme.secondary
+            }
         ),
         onClick = onClick
     ) {

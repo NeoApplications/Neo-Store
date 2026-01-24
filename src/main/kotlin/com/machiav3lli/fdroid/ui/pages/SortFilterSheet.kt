@@ -36,6 +36,7 @@ import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.AndroidVersion
+import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.data.entity.toAntiFeature
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ChipsSwitch
@@ -162,7 +163,7 @@ fun SortFilterSheet(
                         modifier = Modifier.weight(1f),
                         text = stringResource(id = R.string.action_reset),
                         icon = Phosphor.ArrowUUpLeft,
-                        positive = false,
+                        coloring = ColoringState.Negative,
                     ) {
                         Preferences[sortKey] = sortKey.default.value
                         Preferences[sortAscendingKey] = sortAscendingKey.default.value
@@ -176,7 +177,7 @@ fun SortFilterSheet(
                         text = stringResource(id = R.string.action_apply),
                         icon = Phosphor.Check,
                         modifier = Modifier.weight(1f),
-                        positive = true,
+                        coloring = ColoringState.Positive,
                         onClick = {
                             Preferences[sortKey] = sortOption
                             Preferences[sortAscendingKey] = sortAscending

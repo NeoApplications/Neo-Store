@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.data.entity.Permission
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowCircleRight
@@ -83,7 +84,7 @@ fun PermissionItem(
                         OutlinedActionButton(
                             text = stringResource(id = R.string.ignore),
                             icon = Phosphor.X,
-                            positive = false,
+                            coloring = ColoringState.Negative,
                             onClick = {
                                 Preferences[item.ignorePref] = true
                                 onIgnore()
@@ -94,7 +95,7 @@ fun PermissionItem(
                     ActionButton(
                         text = stringResource(id = R.string.action_start),
                         icon = Phosphor.ArrowCircleRight,
-                        positive = true,
+                        coloring = ColoringState.Positive,
                         onClick = onClick,
                     )
                 }

@@ -40,6 +40,7 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.ActionState
+import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.manager.network.createIconUri
 import com.machiav3lli.fdroid.ui.components.appsheet.ReleaseBadge
@@ -320,7 +321,7 @@ fun ExpandedItemContent(
                 ActionButton(
                     text = stringResource(id = action.textId),
                     icon = action.icon,
-                    positive = true,
+                    coloring = ColoringState.Positive,
                     onClick = { onActionClicked(item) }
                 )
             }

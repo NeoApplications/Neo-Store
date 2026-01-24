@@ -37,6 +37,7 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
@@ -151,7 +152,7 @@ fun ReleaseItem(
                         ActionButton(
                             text = stringResource(id = R.string.install),
                             icon = Phosphor.Download,
-                            positive = true,
+                            coloring = ColoringState.Positive,
                             onClick = { onDownloadClick(currentRelease) }
                         )
                     }

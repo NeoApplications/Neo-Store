@@ -46,15 +46,16 @@ import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.database.entity.Repository
+import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.manager.work.SyncWorker
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.BlockText
 import com.machiav3lli.fdroid.ui.components.CheckChip
 import com.machiav3lli.fdroid.ui.components.OutlinedActionButton
 import com.machiav3lli.fdroid.ui.components.QrCodeImage
+import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.TitleText
-import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowUUpLeft
@@ -504,7 +505,7 @@ fun RepoPage(
                         ),
                         icon = if (!editMode) Phosphor.TrashSimple
                         else Phosphor.ArrowUUpLeft,
-                        positive = false,
+                        coloring = ColoringState.Negative,
                     ) {
                         if (!editMode) openDeleteDialog.value = true
                         else {
@@ -523,7 +524,7 @@ fun RepoPage(
                         icon = if (!editMode) Phosphor.GearSix
                         else Phosphor.Check,
                         modifier = Modifier.weight(1f),
-                        positive = true,
+                        coloring = ColoringState.Positive,
                         enabled = !editMode || validations.all { it.value },
                         onClick = {
                             if (!editMode) editMode = true

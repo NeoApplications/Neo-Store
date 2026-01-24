@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ExpandablePrivacyBlock
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -39,7 +40,7 @@ fun PrivacyCard(
                 modifier = Modifier.weight(1f),
                 text = actionText,
                 icon = actionIcon,
-                positive = true,
+                coloring = ColoringState.Positive,
                 onClick = onAction
             )
         }

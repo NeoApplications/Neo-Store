@@ -40,6 +40,7 @@ import com.machiav3lli.fdroid.POPUP_SHORT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.LatestSyncs
+import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.SyncRequest
 import com.machiav3lli.fdroid.manager.work.BatchSyncWorker
@@ -219,7 +220,7 @@ fun MainPage(
                                             text = stringResource(id = R.string.update_all),
                                             icon = Phosphor.Download,
                                             modifier = Modifier.weight(1f),
-                                            positive = true,
+                                            coloring = ColoringState.Positive,
                                         ) {
                                             val action = {
                                                 NeoApp.wm.update(

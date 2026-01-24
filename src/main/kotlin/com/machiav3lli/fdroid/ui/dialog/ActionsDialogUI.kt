@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.database.entity.Release
+import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.FlatActionButton
@@ -79,7 +80,7 @@ fun ActionsDialogUI(
                     ActionButton(
                         text = secondaryText,
                         icon = secondaryIcon,
-                        positive = false
+                        coloring = ColoringState.Negative,
                     ) {
                         secondaryAction()
                         onDismiss()

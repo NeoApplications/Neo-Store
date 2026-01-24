@@ -144,6 +144,12 @@ enum class Page {
     INSTALLED,
 }
 
+enum class ColoringState {
+    Positive,
+    Negative,
+    Neutral,
+}
+
 enum class LinkRef(
     val icon: ImageVector,
     @StringRes val titleId: Int,
