@@ -97,6 +97,10 @@ val BooleanPrefsMeta = mapOf(
         R.string.bottom_search_bar,
         R.string.bottom_search_bar_summary
     ),
+    Preferences.Key.DisableListDetail to Pair(
+        R.string.disable_list_detail,
+        R.string.disable_list_detail_summary
+    ),
     Preferences.Key.KidsMode to Pair(
         R.string.kids_mode,
         if (Preferences[Preferences.Key.KidsMode]) R.string.kids_mode_summary

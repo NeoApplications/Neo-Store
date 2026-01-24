@@ -46,6 +46,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.AltNewApps,
         Key.HideNewApps,
         Key.BottomSearchBar,
+        Key.DisableListDetail,
         Key.ShowScreenshots,
         Key.ShowTrackers,
         Key.AndroidInsteadOfSDK,
@@ -356,6 +357,8 @@ data object Preferences : OnSharedPreferenceChangeListener {
             Key<Boolean>("android_instead_of_sdk", Value.BooleanValue(true))
 
         data object BottomSearchBar : Key<Boolean>("bottom_search_bar", Value.BooleanValue(false))
+        data object DisableListDetail :
+            Key<Boolean>("disable_list_detail", Value.BooleanValue(false))
 
         data object UpdatedApps : Key<Int>("updated_apps", Value.IntValue(150))
         data object NewApps : Key<Int>("new_apps", Value.IntValue(30))

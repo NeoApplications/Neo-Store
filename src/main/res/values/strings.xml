@@ -486,4 +486,6 @@
         <item quantity="other">%d updated apps</item>
     </plurals>
     <string name="downloads_recent_FORMAT">Recent downloads: %s</string>
+    <string name="disable_list_detail">Disable list-detail layout</string>
+    <string name="disable_list_detail_summary">This disables the splitting of the layout into two panels when the screen is wide enough, such as on a tablet or phone in landscape mode.</string>
 </resources>

@@ -11,6 +11,7 @@ import androidx.navigation3.scene.SceneStrategy
 import androidx.navigation3.scene.SceneStrategyScope
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_MEDIUM_LOWER_BOUND
+import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.ui.navigation.BottomSheetScene.Companion.BOTTOM_SHEET_KEY
 import com.machiav3lli.fdroid.ui.navigation.ListDetailScene.Companion.DETAIL_KEY
 import com.machiav3lli.fdroid.ui.navigation.ListDetailScene.Companion.LIST_KEY
@@ -42,7 +43,9 @@ class NeoSceneStrategy<T : Any>(val windowSizeClass: WindowSizeClass) : SceneStr
         }
 
         // Detail-List
-        if (!windowSizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND)) return null
+        if (!windowSizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND)
+            || Preferences[Preferences.Key.DisableListDetail]
+        ) return null
         val detailEntry = lastEntry
             .takeIf { it.metadata.containsKey(DETAIL_KEY) }
 
