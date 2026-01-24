@@ -124,6 +124,7 @@ enum class Source {
     SEARCH,
     SEARCH_INSTALLED,
     SEARCH_NEW,
+    SEARCH_FAVORITES,
     INSTALLED,
     UPDATES,
     UPDATED,

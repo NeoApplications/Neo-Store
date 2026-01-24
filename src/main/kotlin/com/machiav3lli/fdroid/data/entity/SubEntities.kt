@@ -263,6 +263,23 @@ data class Request(
                 targetSDK = Preferences[Preferences.Key.TargetSDKSearch].ordinal,
             )
 
+        val SearchFavorites: Request
+            get() = Request(
+                id = Source.SEARCH_FAVORITES.ordinal,
+                installed = false,
+                updates = false,
+                updateCategory = UpdateCategory.ALL,
+                section = Section.FAVORITE,
+                order = Preferences[Preferences.Key.SortOrderSearch].order,
+                ascending = Preferences[Preferences.Key.SortOrderAscendingSearch],
+                category = Preferences[Preferences.Key.CategoriesFilterSearch],
+                filteredOutRepos = Preferences[Preferences.Key.ReposFilterSearch],
+                filteredAntiFeatures = Preferences[Preferences.Key.AntifeaturesFilterSearch],
+                filteredLicenses = Preferences[Preferences.Key.LicensesFilterSearch],
+                minSDK = Preferences[Preferences.Key.MinSDKSearch].ordinal,
+                targetSDK = Preferences[Preferences.Key.TargetSDKSearch].ordinal,
+            )
+
         val Installed: Request
             get() = Request(
                 id = Source.INSTALLED.ordinal,

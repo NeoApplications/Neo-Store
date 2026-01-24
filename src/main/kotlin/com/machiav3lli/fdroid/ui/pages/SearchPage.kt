@@ -48,6 +48,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
@@ -74,7 +75,7 @@ fun SearchPage(
 
     val currentTab by remember {
         derivedStateOf {
-            listOf(Source.SEARCH, Source.SEARCH_INSTALLED, Source.SEARCH_NEW)
+            listOf(Source.SEARCH, Source.SEARCH_INSTALLED, Source.SEARCH_NEW, Source.SEARCH_FAVORITES)
                 .indexOf(pageState.source)
         }
     }
@@ -174,6 +175,16 @@ fun SearchPage(
                         alwaysShowIcon = true,
                     ) {
                         viewModel.setSearchSource(Source.SEARCH_NEW)
+                    }
+                }
+                item {
+                    SelectChip(
+                        text = stringResource(id = R.string.favorite_applications),
+                        icon = Phosphor.HeartStraight,
+                        checked = currentTab == 3,
+                        alwaysShowIcon = true,
+                    ) {
+                        viewModel.setSearchSource(Source.SEARCH_FAVORITES)
                     }
                 }
             }

@@ -50,6 +50,7 @@ class SearchVM(
             when (input.source) {
                 Source.SEARCH_INSTALLED -> Request.SearchInstalled
                 Source.SEARCH_NEW       -> Request.SearchNew
+                Source.SEARCH_FAVORITES -> Request.SearchFavorites
                 else                    -> Request.Search
             }
         )
