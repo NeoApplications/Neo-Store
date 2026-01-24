@@ -479,4 +479,10 @@
     <string name="invalid_metadata_error">Niet-overeenkomende metadata van de gedownloade build.</string>
     <string name="trusted_repo">Vertrouwd archief</string>
     <string name="trusted_label">Vertrouwd</string>
+    <string name="translation">Vertalen</string>
+    <plurals name="updated_apps">
+        <item quantity="one">%d bijgewerkte app</item>
+        <item quantity="other">%d bijgewerkte apps</item>
+    </plurals>
+    <string name="downloads_recent_FORMAT">Recente downloads: %s</string>
 </resources>
