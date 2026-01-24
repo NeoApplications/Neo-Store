@@ -1,10 +1,7 @@
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
@@ -21,6 +18,10 @@ ksp {
 
 kotlin {
     jvmToolchain(17)
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xexplicit-backing-fields")
+    }
 }
 
 android {
@@ -42,14 +43,7 @@ android {
     buildFeatures {
         buildConfig = true
         compose = true
-    }
-
-    applicationVariants.all {
-        val variant = this
-        outputs.all {
-            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName =
-                "Neo_Store_${variant.versionName}_${variant.buildType.name}.apk"
-        }
+        resValues = true
     }
 
     buildTypes {
@@ -93,9 +87,6 @@ android {
                 "/okhttp3/internal/publicsuffix/*"
             )
         }
-        kotlinExtension.sourceSets.all {
-            languageSettings.enableLanguageFeature("ExplicitBackingFields")
-        }
     }
 
     lint {
@@ -129,6 +120,15 @@ android {
 
         tasks.withType<KotlinCompile> {
             dependsOn(generateLocales)
+        }
+    }
+    androidComponents.onVariants { variant ->
+        variant.outputs.forEach { output ->
+            if (output is com.android.build.api.variant.impl.VariantOutputImpl) {
+                output.outputFileName.set(
+                    "Neo_Store_${output.versionName.get()}_${variant.buildType}.apk"
+                )
+            }
         }
     }
 }
