@@ -1,6 +1,34 @@
 CHANGELOG
 =========
 
+1.2.2 (25.01.2026) +50 Commits +10 Translations
+------------------
+
+### Function
+
+- Fix: Not showing apps in latest updated when one of their repos have single release
+- Update: Improve reliability of running async functions in receivers
+- Update: Download monthly download stats instead of dailies
+- Update: Revamp download worker to handle progress and result internally
+- Update: Revamp actions handling logic of app page
+- Update: Revamp DownloadState class and make it immutable
+- Update: Replace IconDetails usage with the view ProductIconDetails
+
+### UI/UX
+
+- Add: Option to disable list-detail mode on wide screens
+- Add: Favorites filter to search page
+- Add: Translation link to app page
+- Add: Link to IoD download stats in download stats note card
+- Fix: Icons for update, running download and downloaded items
+- Fix: Fallback for miss-handled icons on repo-side
+- Fix: Animation overflow categories bounds
+- Fix: Names of some UI elements, preloaded repositories etc..
+- Update: Revamp tab buttons layout
+- Update: Move updated apps and running downloads into a floating bar
+- Update: Don't show top apps bar when there's no dl-stats
+- Update: Revamp download stats layout
+
 1.2.1 (04.01.2026) +30 Commits +10 Translations
 ------------------
 
@@ -16,7 +44,8 @@ CHANGELOG
 - Update: Improve sync failure cause reporting
 - Update: Improve repo app lists handling
 - Update: Improve logging and reporting of validation errors of downloads
-- Remove repos: C10udburst, NanoDroid, Anonymous Messenger, Revolt, 2BR, Julian Andres Klode's, Umbrella
+- Remove repos: C10udburst, NanoDroid, Anonymous Messenger, Revolt, 2BR, Julian Andres Klode's,
+  Umbrella
 
 ### UI/UX
 

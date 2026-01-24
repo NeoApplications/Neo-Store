@@ -1,0 +1,7 @@
+Add: Option to disable list-detail mode on wide screens
+Add: Favorites filter to search page
+Add: Translation link to app page
+Fix: Fallback for miss-handled icons on repo-side
+Update: Combine updated apps and running downloads in a floating bar
+Update: Revamp download stats layout
+plus many more in over 50 commits & 10 translation contributions
