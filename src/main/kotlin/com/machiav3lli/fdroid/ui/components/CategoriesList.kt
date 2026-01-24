@@ -153,7 +153,7 @@ fun CategoryItem(
                 .sharedBounds(
                     sharedContentState = rememberSharedContentState(key = "category/$label"),
                     animatedVisibilityScope = avs,
-                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(
+                    resizeMode = SharedTransitionScope.ResizeMode.scaleToBounds(
                         ContentScale.Fit,
                         Alignment.CenterStart
                     ),

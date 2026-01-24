@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -94,7 +93,7 @@ open class MainVM(
     )
 
     val dataState: StateFlow<DataState> = combine(
-        reposRepo.getAll().mapLatest { it.associateBy(Repository::id) },
+        reposRepo.getAllMap(),
         extrasRepo.getAllFavorites().distinctUntilChanged(),
         productsRepo.getIconDetailsMap().distinctUntilChanged(),
     ) { reposMap, favorites, iconDetails ->
