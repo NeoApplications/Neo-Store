@@ -293,7 +293,7 @@ data class Repository(
             mirrorRotation = true, trusted = true,
         )
         private val MICRO_G = defaultRepository(
-            "https://microg.org/fdroid/repo", "MicroG Project",
+            "https://microg.org/fdroid/repo", "microG Project",
             "Official repository of the open-source implementation of Google Play Services.",
             21, false, "9BD06727E62796C0130EB6DAB39B73157451582CBD138E86C468ACC395D14165", "",
             trusted = true,
@@ -420,7 +420,7 @@ data class Repository(
             21, false, "182CF464D219D340DA443C62155198E399FEC1BC4379309B775DD9FC97ED97E1", ""
         )
         private val PATCHED = defaultRepository(
-            "https://thecapslock.gitlab.io/fdroid-patched-apps/fdroid/repo", "Patched Apps",
+            "https://thecapslock.gitlab.io/fdroid-patched-apps/fdroid/repo", "langis F-droid repo",
             "A collection of patched applications to provide better compatibility, privacy etc..",
             21, false, "313D9E6E789FF4E8E2D687AAE31EEF576050003ED67963301821AC6D3763E3AC", ""
         )
@@ -488,7 +488,7 @@ data class Repository(
         )
         private val CRYPTOMATOR = defaultRepository(
             "https://static.cryptomator.org/android/fdroid/repo",
-            "Cryptomator",
+            "Cryptomator F-Droid repository",
             "The official repository for Cryptomator.",
             21,
             false,
@@ -515,7 +515,7 @@ data class Repository(
         )
         private val C_GEO = defaultRepository(
             "https://fdroid.cgeo.org",
-            "c:geo",
+            "c:geo mainline repo",
             "An open-source, full-featured, always ready-to-go Geocaching application. This is the stable channel.",
             21,
             false,
@@ -524,7 +524,7 @@ data class Repository(
         )
         private val C_GEO_NIGHTLY = defaultRepository(
             "https://fdroid.cgeo.org/nightly",
-            "c:geo nightly",
+            "c:geo nightly repo",
             "An open-source, full-featured, always ready-to-go Geocaching application. This is the nightly channel.",
             21,
             false,
@@ -569,7 +569,7 @@ data class Repository(
         )
         private val IODE = defaultRepository(
             "https://raw.githubusercontent.com/iodeOS/fdroid/master/fdroid/repo",
-            "iodéOS F-Droid repo",
+            "IodéOS F-Droid repo",
             "The official iodéOS F-Droid repo.",
             21,
             false,
@@ -686,8 +686,8 @@ data class Repository(
         )
         private val GADGETBRIDGE = defaultRepository(
             "https://freeyourgadget.codeberg.page/fdroid/repo",
-            "Gadgetbridge nightly apps",
-            "Gadgetbridge repository of nightly releases",
+            "Gadgetbridge nightly releases",
+            "Gadgetbridge repository for nightly releases",
             21,
             false,
             "CD381ECCC465AB324E21BCC335895615E07E70EE11E9FD1DF3C020C5194F00B2",
@@ -848,8 +848,8 @@ data class Repository(
         )
         private val NAILYK = defaultRepository(
             "https://releases.nailyk.fr/repo",
-            "nailyk's repository",
-            "This repository is managed by nailyk to keep some app up to date, provide upgrade on some unmaintained official fdroid repo.",
+            "nailyk-fr's repository",
+            "This repository is managed by nailyk-fr to keep some app up to date, provide upgrade on some unmaintained official fdroid repo.",
             21,
             false,
             "05F26958DE412482FC8681B4B34EECA37FC064DF98B8EFDC98ECEBAB8584F078",
@@ -867,7 +867,7 @@ data class Repository(
         private val MAXXIS = defaultRepository(
             "https://pili.qi0.de/fdroid/repo",
             "Maxxis F-Droid Repo",
-            "This is the F-Droid Repo for maxxis apps.",
+            "This is the F-Droid Repo for Maxxis apps.",
             21,
             false,
             "83161D8D5EC84BA32666ECE62E40D578342CAD3B03EAEECA2E75E396125FDAA0",
@@ -903,7 +903,7 @@ data class Repository(
         private val ONIONSHARE_NIGHTLY = defaultRepository(
             "https://raw.githubusercontent.com/onionshare/onionshare-android-nightly/master/fdroid/repo",
             "OnionShare Nightly F-Droid Repo",
-            "Onionshare insecure nightly builds (for testing only!) are available in this F-Droid repository.",
+            "OnionShare insecure nightly builds (for testing only!) are available in this F-Droid repository.",
             21,
             false,
             "7E04F902940A2AEDAC30E491A5CE7ADCC74A3F73B43459E4448222F3EEE629EF",
