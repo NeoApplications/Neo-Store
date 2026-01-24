@@ -16,12 +16,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
@@ -130,7 +130,10 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                 horizontalArrangement = Arrangement.spacedBy(2.dp)
                             ) {
                                 ExtendedFloatingActionButton(
-                                    shape = SegmentedButtonDefaults.itemShape(0, 2),
+                                    shape = RoundedCornerShape(
+                                        topStart = 30.dp, bottomStart = 30.dp,
+                                        topEnd = 4.dp, bottomEnd = 4.dp
+                                    ),
                                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                                     onClick = {
@@ -151,7 +154,10 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                     )
                                 }
                                 ExtendedFloatingActionButton(
-                                    shape = SegmentedButtonDefaults.itemShape(1, 2),
+                                    shape = RoundedCornerShape(
+                                        topStart = 4.dp, bottomStart = 4.dp,
+                                        topEnd = 30.dp, bottomEnd = 30.dp
+                                    ),
                                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
                                     contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                                     onClick = { scanLauncher.launch(Intent(INTENT_ACTION_BINARY_EYE)) }

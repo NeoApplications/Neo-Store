@@ -299,6 +299,7 @@ import java.io.File
         AutoMigration(
             from = 1204,
             to = 1205,
+            spec = DatabaseX.Companion.DownloadedCleanup::class
         ),
     ]
 )
@@ -544,6 +545,19 @@ abstract class DatabaseX : RoomDatabase() {
                         withTransaction {
                             getDownloadStatsDao().emptyTable()
                             getDownloadStatsFileDao().emptyTable()
+                        }
+                    }
+                }
+            }
+        }
+
+        class DownloadedCleanup : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                GlobalScope.launch(Dispatchers.IO) {
+                    get<DatabaseX>(DatabaseX::class.java).apply {
+                        withTransaction {
+                            getDownloadedDao().emptyTable()
                         }
                     }
                 }

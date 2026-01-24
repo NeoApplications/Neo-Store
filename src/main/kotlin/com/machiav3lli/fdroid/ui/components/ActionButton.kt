@@ -65,8 +65,10 @@ fun ActionButton(
         enabled = enabled,
         onClick = onClick,
     ) {
-        if (icon != null) Icon(imageVector = icon, contentDescription = text)
-        Spacer(modifier = Modifier.width(8.dp))
+        if (icon != null) {
+            Icon(imageVector = icon, contentDescription = text)
+            Spacer(modifier = Modifier.width(8.dp))
+        }
         Text(
             text = text,
             textAlign = TextAlign.Center,
@@ -104,8 +106,10 @@ fun OutlinedActionButton(
         enabled = enabled,
         onClick = onClick,
     ) {
-        if (icon != null) Icon(imageVector = icon, contentDescription = text)
-        Spacer(modifier = Modifier.width(8.dp))
+        if (icon != null) {
+            Icon(imageVector = icon, contentDescription = text)
+            Spacer(modifier = Modifier.width(8.dp))
+        }
         Text(
             text = text,
             textAlign = TextAlign.Center,

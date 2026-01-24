@@ -293,7 +293,7 @@ fun SortFilterSheet(
             }
             item {
                 ExpandableItemsBlock(
-                    heading = stringResource(id = R.string.min_sdk),
+                    heading = stringResource(id = R.string.min_android),
                     preExpanded = filterMinSDK != AndroidVersion.Unknown,
                 ) {
                     FlowRow(
@@ -314,7 +314,7 @@ fun SortFilterSheet(
             }
             item {
                 ExpandableItemsBlock(
-                    heading = stringResource(id = R.string.target_sdk),
+                    heading = stringResource(id = R.string.target_android),
                     preExpanded = filterTargetSDK != AndroidVersion.Unknown,
                 ) {
                     FlowRow(
