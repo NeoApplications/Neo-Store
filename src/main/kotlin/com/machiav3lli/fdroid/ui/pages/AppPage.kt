@@ -266,13 +266,13 @@ fun AppPage(
 
     appState.suggestedProductRepo?.let { (eProduct, repo) ->
         val product by derivedStateOf { eProduct.product }
-        val imageData by remember(product, repo) {
+        val imageDataPair by remember(product, repo) {
             mutableStateOf(
                 createIconUri(
                     product.icon,
                     repo.address,
                     repo.authentication
-                ).toString()
+                )
             )
         }
 
@@ -306,7 +306,7 @@ fun AppPage(
                     TopBarHeader(
                         appName = product.label,
                         packageName = product.packageName,
-                        icon = imageData,
+                        iconPair = imageDataPair,
                         state = extraState.downloadingState,
                         actions = {
                             Row(

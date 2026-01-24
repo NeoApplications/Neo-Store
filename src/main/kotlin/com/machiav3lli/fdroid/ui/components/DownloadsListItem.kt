@@ -52,15 +52,14 @@ fun DownloadedItem(
     onEraseClick: (() -> Unit)? = null,
     onUserClick: (Downloaded) -> Unit = {},
 ) {
-    val imageData by remember(iconDetails, repo) {
+    val imageDataPair by remember(iconDetails, repo) {
         mutableStateOf(
             createIconUri(
                 iconDetails?.icon
-                    ?: iconDetails?.metadataIcon
                     ?: "",
                 repo?.address,
                 repo?.authentication
-            ).toString()
+            )
         )
     }
 
@@ -75,7 +74,8 @@ fun DownloadedItem(
         leadingContent = {
             NetworkImage(
                 modifier = Modifier.size(PRODUCT_CARD_ICON),
-                data = imageData
+                data = imageDataPair.first,
+                fallbackData = imageDataPair.second,
             )
         },
         headlineContent = {
@@ -137,15 +137,14 @@ fun DownloadsCard(
     state: DownloadState,
     onUserClick: () -> Unit = {},
 ) {
-    val imageData by remember(iconDetails, repo) {
+    val imageDataPair by remember(iconDetails, repo) {
         mutableStateOf(
             createIconUri(
                 iconDetails?.icon
-                    ?: iconDetails?.metadataIcon
                     ?: "",
                 repo?.address,
                 repo?.authentication
-            ).toString()
+            )
         )
     }
 
@@ -171,7 +170,8 @@ fun DownloadsCard(
                 ) {
                     NetworkImage(
                         modifier = Modifier.size(PRODUCT_CARD_ICON),
-                        data = imageData,
+                        data = imageDataPair.first,
+                        fallbackData = imageDataPair.second,
                         shape = CircleShape,
                     )
                     CircularDownloadProgress(
@@ -215,13 +215,13 @@ fun CombinedUpdateCard(
     repo: Repository? = null,
     onUserClick: (ProductItem) -> Unit = {},
 ) {
-    val imageData by remember(product, repo) {
+    val imageDataPair by remember(product, repo) {
         mutableStateOf(
             createIconUri(
                 product.icon,
                 repo?.address,
                 repo?.authentication
-            ).toString()
+            )
         )
     }
     val iconCorner by animateDpAsState(
@@ -253,7 +253,8 @@ fun CombinedUpdateCard(
             ) {
                 NetworkImage(
                     modifier = Modifier.size(iconSize),
-                    data = imageData,
+                    data = imageDataPair.first,
+                    fallbackData = imageDataPair.second,
                     shape = RoundedCornerShape(iconCorner),
                 )
 

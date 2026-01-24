@@ -89,13 +89,13 @@ fun ProductItemContent(
     installed: Installed? = null,
     isExpanded: MutableState<Boolean> = mutableStateOf(false),
 ) {
-    val imageData by remember(product, repo) {
+    val imageDataPair by remember(product, repo) {
         mutableStateOf(
             createIconUri(
                 product.icon,
                 repo?.address,
                 repo?.authentication
-            ).toString()
+            )
         )
     }
 
@@ -107,7 +107,8 @@ fun ProductItemContent(
         leadingContent = {
             NetworkImage(
                 modifier = Modifier.size(PRODUCT_CARD_ICON),
-                data = imageData
+                data = imageDataPair.first,
+                fallbackData = imageDataPair.second,
             )
         },
         headlineContent = {
@@ -165,13 +166,13 @@ fun ProductCarouselItem(
     onActionClick: (ProductItem, ActionState) -> Unit = { _, _ -> },
     onUserClick: (ProductItem) -> Unit = {},
 ) {
-    val imageData by remember(product, repo) {
+    val imageDataPair by remember(product, repo) {
         mutableStateOf(
             createIconUri(
                 product.icon,
                 repo?.address,
                 repo?.authentication
-            ).toString()
+            )
         )
     }
 
@@ -200,7 +201,8 @@ fun ProductCarouselItem(
             ) {
                 NetworkImage(
                     modifier = Modifier.size(PRODUCT_CARD_ICON),
-                    data = imageData
+                    data = imageDataPair.first,
+                    fallbackData = imageDataPair.second,
                 )
             }
         },

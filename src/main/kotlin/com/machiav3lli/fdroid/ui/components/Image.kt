@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import coil3.compose.AsyncImage
+import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.machiav3lli.fdroid.R
@@ -27,10 +28,23 @@ import com.machiav3lli.fdroid.R
 fun NetworkImage(
     modifier: Modifier = Modifier,
     data: String?,
+    fallbackData: String? = null,
     contentScale: ContentScale = ContentScale.Crop,
     isScreenshot: Boolean = false,
     shape: Shape = MaterialTheme.shapes.small,
 ) {
+    val fallbackPainter = rememberAsyncImagePainter(
+        model = fallbackData,
+        fallback = painterResource(
+            id = if (isScreenshot) R.drawable.ic_screenshot_placeholder
+            else R.drawable.ic_placeholder,
+        ),
+        error = painterResource(
+            id = if (isScreenshot) R.drawable.ic_screenshot_placeholder
+            else R.drawable.ic_placeholder,
+        ),
+    )
+
     AsyncImage(
         modifier = modifier.clip(shape),
         model = ImageRequest.Builder(LocalContext.current)
@@ -39,10 +53,8 @@ fun NetworkImage(
             .build(),
         contentDescription = null,
         contentScale = contentScale,
-        error = painterResource(
-            id = if (isScreenshot) R.drawable.ic_screenshot_placeholder
-            else R.drawable.ic_placeholder
-        ),
+        fallback = fallbackPainter,
+        error = fallbackPainter,
     )
 }
 

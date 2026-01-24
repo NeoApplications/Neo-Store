@@ -35,13 +35,13 @@ fun ProductCard(
     repo: Repository? = null,
     onUserClick: (ProductItem) -> Unit = {},
 ) {
-    val imageData by remember(product, repo) {
+    val imageDataPair by remember(product, repo) {
         mutableStateOf(
             createIconUri(
                 product.icon,
                 repo?.address,
                 repo?.authentication
-            ).toString()
+            )
         )
     }
 
@@ -61,7 +61,8 @@ fun ProductCard(
         leadingContent = {
             NetworkImage(
                 modifier = Modifier.size(PRODUCT_CARD_ICON),
-                data = imageData
+                data = imageDataPair.first,
+                fallbackData = imageDataPair.second,
             )
         },
         overlineContent = {

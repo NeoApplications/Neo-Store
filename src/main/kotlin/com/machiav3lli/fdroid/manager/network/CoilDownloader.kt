@@ -129,8 +129,12 @@ fun createScreenshotUri(
     screenshot: String,
 ): Uri = (repository.address + screenshot).toUri()
 
-fun createIconUri(icon: String, address: String?, auth: String?): Uri =
+fun createIconUri(icon: String, address: String?, auth: String?): Pair<String, String> =
     (address + icon).toUri().let {
-        if (auth.isNullOrEmpty()) it
-        else it.buildUpon().appendQueryParameter(QUERY_AUTHENTICATION, auth).build()
+        val regex = Regex("""icon_[^/]+\.png$""")
+        (if (auth.isNullOrBlank()) it
+        else it.buildUpon().appendQueryParameter(QUERY_AUTHENTICATION, auth).build())
+            .let { uri ->
+                uri.toString() to uri.toString().replace(regex, "icon.png")
+            }
     }

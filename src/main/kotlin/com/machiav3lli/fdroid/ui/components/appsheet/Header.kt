@@ -110,7 +110,7 @@ fun TopBarHeader(
     appName: String,
     packageName: String,
     modifier: Modifier = Modifier,
-    icon: String? = null,
+    iconPair: Pair<String?, String?>? = null,
     state: DownloadState? = null,
     actions: @Composable () -> Unit = {},
 ) {
@@ -125,7 +125,8 @@ fun TopBarHeader(
             leadingContent = {
                 NetworkImage(
                     modifier = Modifier.size(PRODUCT_CARD_ICON),
-                    data = icon
+                    data = iconPair?.first,
+                    fallbackData = iconPair?.second,
                 )
             },
             headlineContent = {
