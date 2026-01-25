@@ -251,7 +251,7 @@
     <string name="action_install_tc">Installeer TrackerControl</string>
     <string name="error">Fout</string>
     <string name="trackers_ads">Advertentie-trackers</string>
-    <string name="vulnerabilities">Kwetsbaarheden.</string>
+    <string name="vulnerabilities">Kwetsbaarheden</string>
     <string name="keep_install_notification">Behoud installatie-notificatie</string>
     <string name="show_trackers">Laat trackers zien</string>
     <string name="disable_signature_check">Schakel controle van handtekeningen uit</string>
@@ -485,4 +485,6 @@
         <item quantity="other">%d bijgewerkte apps</item>
     </plurals>
     <string name="downloads_recent_FORMAT">Recente downloads: %s</string>
+    <string name="disable_list_detail">Detaillijstweergave uitschakelen</string>
+    <string name="disable_list_detail_summary">Dit voorkomt dat de lay-out in twee panelen wordt gesplitst wanneer het scherm breed genoeg is, zoals op een tablet of telefoon in liggende stand.</string>
 </resources>
