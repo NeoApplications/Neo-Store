@@ -483,4 +483,11 @@
     <string name="invalid_metadata_error">Metadati non corrispondenti della build scaricata.</string>
     <string name="trusted_repo">Repo attendibile</string>
     <string name="trusted_label">Attendibile</string>
+    <string name="translation">Traduzione</string>
+    <plurals name="updated_apps">
+        <item quantity="one">%d app aggiornata</item>
+        <item quantity="many">%d app aggiornate</item>
+        <item quantity="other">%d app aggiornate</item>
+    </plurals>
+    <string name="downloads_recent_FORMAT">Download recenti: %s</string>
 </resources>
