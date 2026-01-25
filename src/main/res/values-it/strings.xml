@@ -292,7 +292,7 @@
     <string name="permission_not_present">Non presente nel tuo sistema</string>
     <string name="app_installed">Installata</string>
     <string name="vulnerabilities_installed_apps">Queste app installate hanno vulnerabilità note!</string>
-    <string name="vulnerabilities">Vulnerabilità.</string>
+    <string name="vulnerabilities">Vulnerabilità</string>
     <string name="no_vulnerabilities_installed_apps">Nessuna app installata presenta vulnerabilità note.</string>
     <string name="only_on_battery">Solo durante la ricarica</string>
     <string name="edit">Modifica</string>
@@ -490,4 +490,6 @@
         <item quantity="other">%d app aggiornate</item>
     </plurals>
     <string name="downloads_recent_FORMAT">Download recenti: %s</string>
+    <string name="disable_list_detail">Disabilita il layout elenco-dettagli</string>
+    <string name="disable_list_detail_summary">Questa opzione disabilita la suddivisione del layout in due pannelli quando lo schermo è sufficientemente ampio, ad esempio su un tablet o un telefono in modalità orizzontale.</string>
 </resources>
