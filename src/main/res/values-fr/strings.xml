@@ -482,4 +482,11 @@
     <string name="invalid_metadata_error">Incohérence des métadonnées de la version téléchargée.</string>
     <string name="trusted_repo">Dépôt de confiance</string>
     <string name="trusted_label">Fiable</string>
+    <string name="translation">Traduction</string>
+    <plurals name="updated_apps">
+        <item quantity="one">%d application mise à jour</item>
+        <item quantity="many">%d applications mises à jour</item>
+        <item quantity="other">%d applications mises à jour</item>
+    </plurals>
+    <string name="downloads_recent_FORMAT">Téléchargements récents : %s</string>
 </resources>
