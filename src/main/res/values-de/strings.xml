@@ -280,7 +280,7 @@
     <string name="trackers_note_4">Wenige bis gar keine Tracker</string>
     <string name="trackers_note_3">Hat ein paar Tracker</string>
     <string name="no_vulnerabilities_installed_apps">Keine der installierten Apps haben bekannte Sicherheitsprobleme.</string>
-    <string name="vulnerabilities">Sicherheitsprobleme.</string>
+    <string name="vulnerabilities">Schwachstellen</string>
     <string name="tools">Werkzeuge</string>
     <string name="extras_import">Extras importieren (Favoriten, Updates ignorieren, etc.)</string>
     <string name="enable_download_directory">Eigenen Downloadordner benutzen</string>
@@ -476,4 +476,12 @@
     <string name="dlstats_provider">Download-Statistik-Anbieter</string>
     <string name="dlstats_none">Kein Anbieter</string>
     <string name="dlstats_izzyondroid">IzzyOnDroid</string>
+    <plurals name="updated_apps">
+        <item quantity="one">%d aktualisierte App</item>
+        <item quantity="other">%d aktualisierte Apps</item>
+    </plurals>
+    <string name="integrity_check_failed">Integritätsprüfung mit nicht übereinstimmendem Hashwert fehlgeschlagen.</string>
+    <string name="integrity_check_hashing">Das Abrufen des Hashwerts der heruntergeladenen Datei ist fehlgeschlagen.</string>
+    <string name="trusted_label">Vertrauenswürdig</string>
+    <string name="translation">Übersetzung</string>
 </resources>
