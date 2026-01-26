@@ -293,7 +293,7 @@
     <string name="permission_not_present">Nie występuje w systemie</string>
     <string name="app_installed">Zainstalowana</string>
     <string name="no_vulnerabilities_installed_apps">Żadna z zainstalowanych aplikacji nie ma znanych podatności.</string>
-    <string name="vulnerabilities">Podatności.</string>
+    <string name="vulnerabilities">Podatności</string>
     <string name="vulnerabilities_installed_apps">Te zainstalowane aplikacje mają znane podatności!</string>
     <string name="edit">Edytuj</string>
     <string name="only_on_battery">Podczas ładowania</string>
@@ -485,4 +485,14 @@
     <string name="invalid_metadata_error">Niezgodne metadane pobranej kompilacji.</string>
     <string name="trusted_repo">Zaufane repozytorium</string>
     <string name="trusted_label">Zaufane</string>
+    <string name="translation">Tłumaczenie</string>
+    <plurals name="updated_apps">
+        <item quantity="one">Zaktualizowano %d aplikację</item>
+        <item quantity="few">Zaktualizowano %d aplikacje</item>
+        <item quantity="many">Zaktualizowano %d aplikacji</item>
+        <item quantity="other">Zaktualizowano %d aplikacji</item>
+    </plurals>
+    <string name="downloads_recent_FORMAT">Ostatnio pobrano: %s</string>
+    <string name="disable_list_detail">Wyłącz układ listy szczegółów</string>
+    <string name="disable_list_detail_summary">Wyłącza to dzielenie układu na dwa panele, gdy ekran jest wystarczająco szeroki, np. na tablecie lub telefonie w trybie poziomym.</string>
 </resources>
