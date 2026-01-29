@@ -32,8 +32,8 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1205
-        versionName = "1.2.2"
+        versionCode = 1206
+        versionName = "1.2.3"
     }
 
     compileOptions {

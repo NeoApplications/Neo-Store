@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+1.2.3 (29.01.2026) 3 Commits 8 Translations
+------------------
+
+### Function
+
+- Fix: Crash on missing value for DownloadStats.changed
+
+### UI/UX
+
+- Add: VirusTotal badge to release details
+
 1.2.2 (25.01.2026) +50 Commits +10 Translations
 ------------------
 
