@@ -31,7 +31,7 @@ class DownloadTask(
 
 @Immutable
 @Serializable
-sealed class DownloadState(val changed: Long) {
+sealed class DownloadState(val changed: Long = System.currentTimeMillis()) {
     abstract val packageName: String
     abstract val name: String
     abstract val version: String
