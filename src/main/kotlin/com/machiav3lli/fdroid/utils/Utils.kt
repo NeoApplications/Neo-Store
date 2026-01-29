@@ -587,6 +587,8 @@ fun hasShizukuPermission(): Boolean =
 
 fun isShizukuRunning() = Shizuku.pingBinder()
 
+fun virustotalUrl(hash: String): Uri = "https://www.virustotal.com/gui/file/$hash".toUri()
+
 fun Context.getHasSystemInstallPermission(): Boolean =
     ActivityCompat.checkSelfPermission(this, Manifest.permission.INSTALL_PACKAGES) ==
             PackageManager.PERMISSION_GRANTED

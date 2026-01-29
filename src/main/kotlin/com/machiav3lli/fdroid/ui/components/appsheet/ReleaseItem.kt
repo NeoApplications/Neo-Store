@@ -1,8 +1,10 @@
 package com.machiav3lli.fdroid.ui.components.appsheet
 
+import android.content.Intent
 import android.os.Build
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.ColoringVariant
@@ -40,6 +43,7 @@ import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.icon.IcVirustotal
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShareNetwork
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldCheck
@@ -47,6 +51,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldSlash
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldWarning
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.text.formatSize
+import com.machiav3lli.fdroid.utils.virustotalUrl
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -63,6 +68,7 @@ fun ReleaseItem(
     onDownloadClick: (Release) -> Unit = {},
     onShareClick: (Release) -> Unit = {},
 ) {
+    val context = LocalContext.current
     val currentRelease by remember { mutableStateOf(release) }
     val isInstalled = releaseState == RELEASE_STATE_INSTALLED
     val isSuggested = releaseState == RELEASE_STATE_SUGGESTED
@@ -104,6 +110,17 @@ fun ReleaseItem(
                         text = stringResource(id = badgeText.intValue)
                     )
                 }
+                Icon(
+                    modifier = Modifier
+                        .clickable {
+                            context.startActivity(
+                                Intent(Intent.ACTION_VIEW, virustotalUrl(release.hash))
+                            )
+                        },
+                    imageVector = com.machiav3lli.fdroid.ui.compose.icons.Icon.IcVirustotal,
+                    contentDescription = stringResource(id = R.string.virustotal_badge),
+                    tint = MaterialTheme.colorScheme.secondary,
+                )
                 if (rbLog != null) Icon(
                     imageVector = when (rbLog.reproducible) {
                         true  -> Phosphor.ShieldCheck
