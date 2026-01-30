@@ -1,0 +1,3 @@
+Aggiunto: Badge VirusTotal ai dettagli della releas
+Corretto: Crash per valore mancante per DownloadStats.changed
+più 8 contributi di traduzione
