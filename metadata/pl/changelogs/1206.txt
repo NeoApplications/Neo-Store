@@ -1,0 +1,3 @@
+Dodano: Odznakę VirusTotal do szczegółów wydania
+Naprawiono: Awaria przy brakującej wartości dla DownloadStats.changed
+plus 8 tłumaczeń
