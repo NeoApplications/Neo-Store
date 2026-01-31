@@ -1,0 +1,7 @@
+Aggiunto: Opzione per disattivare la modalità elenco-dettagli sugli schermi larghi
+Aggiunto: Filtro Preferiti alla pagina di ricerca
+Aggiunto: Link di traduzione alla pagina dell'app
+Corretto: Fallback per icone gestite in modo errato sul lato repository
+Aggiornato: Combina le app aggiornate e i download in esecuzione in una barra mobile
+Aggiornato: Rinnovato il layout delle statistiche di download
+e molto altro in più di 50 commit e 10 contributi di traduzione

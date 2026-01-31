@@ -1,0 +1,7 @@
+Dodano: opcję wyłączenia trybu szczegółów listy na szerokich ekranach
+Dodano: filtr ulubionych do strony wyszukiwania
+Dodano: link do tłumaczenia na stronie aplikacji
+Naprawiono: rezerwę dla nieprawidłowo obsługiwanych ikon po stronie repozytorium
+Aktualizacja: połączenie zaktualizowanych aplikacji i uruchomionych pobrań w pływającym pasku
+Aktualizacja: zmiana układu statystyk pobierania
+Oraz wiele innych zmian w ponad 50 aktualizacjach i 10 tłumaczeniach
