@@ -1,0 +1,7 @@
+Hinzugefügt: Option zum Deaktivieren des Listen-Detail-Modus auf breiten Bildschirmen
+Hinzugefügt: Favoritenfilter zur Suchseite
+Hinzugefügt: Übersetzungslink zur App-Seite
+Behoben: Fallback für falsch behandelte Symbole auf Repo-Seite
+Update: Kombinieren Sie aktualisierte Apps und laufende Downloads in einer schwebenden Leiste.
+Update: Überarbeitung des Layouts der Download-Statistiken
+plus vieles mehr in über 50 Commits und 10 Übersetzungsbeiträgen

@@ -1,0 +1,8 @@
+Hinzugefügt: Präferenz für Download-Statistik-Anbieter oder zum Deaktivieren desselben
+Hinzugefügt: Fortschrittsbenachrichtigung für Download-Statistik-Worker
+Korrektur: Änderungen am Installationsprogramm direkt anwenden
+Korrektur: Nur mögliche Optionen für Design/Installationsprogramm/Sperrung anzeigen
+Aktualisierung: Überarbeitung aller Backend-Worker, Repositorys und Installationsprogramme für deutlich bessere Leistung
+Aktualisierung: Verbesserung der Fehlermeldung bei Synchronisierungen oder Downloads
+Aktualisierung: Lokalisierte Sortierung der Kategorien auf der Seite „Entdecken“
+sowie vieles mehr in über 60 Commits und 19 Übersetzungsbeiträgen
