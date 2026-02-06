@@ -484,4 +484,10 @@
     <string name="integrity_check_hashing">Das Abrufen des Hashwerts der heruntergeladenen Datei ist fehlgeschlagen.</string>
     <string name="trusted_label">Vertrauenswürdig</string>
     <string name="translation">Übersetzung</string>
+    <string name="invalid_metadata_error">Nicht übereinstimmende Metadaten der heruntergeladenen Build.</string>
+    <string name="trusted_repo">Vertrauenswürdiges Repository</string>
+    <string name="downloads_recent_FORMAT">Letzte Downloads: %s</string>
+    <string name="disable_list_detail">Layout „Liste-Detail“ deaktivieren</string>
+    <string name="disable_list_detail_summary">Dadurch wird die Aufteilung des Layouts in zwei Bereiche deaktiviert, wenn der Bildschirm breit genug ist, z. B. auf einem Tablet oder Smartphone im Querformat.</string>
+    <string name="virustotal_badge">Virustotal-Abzeichen</string>
 </resources>
