@@ -1,0 +1,8 @@
+Neu: Vertrauenswürdiges Label für Repository-Elemente
+Neu: Teilen-Button für Repo
+Fix: Fehler beim Parsen, wenn einer App Kategorien fehlen
+Update: Spiegelung standardmäßig für F-Droid und IzzyOnDroid aktivieren
+Update: Bessere Berichte über Synchronisierungsfehler-Ursachen
+Update: Option zur Wiederherstellung der unteren Suchleiste
+Repos entfernt: C10udburst, NanoDroid, Anonymous Messenger, Revolt, 2BR, J.A.K's, Umbrella
+sowie viele weitere in über 30 Commits und 10 Übersetzungsbeiträgen

@@ -1,0 +1,3 @@
+Hinzugegügt: VirusTotal-Badge zu den Veröffentlichungsdetails
+Behoben: Absturz bei fehlendem Wert für DownloadStats.changed
+plus 8 Übersetzungsbeiträge
