@@ -55,6 +55,7 @@ import com.machiav3lli.fdroid.ui.components.OutlinedActionButton
 import com.machiav3lli.fdroid.ui.components.QrCodeImage
 import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.components.SelectChip
+import com.machiav3lli.fdroid.ui.components.SwitchPreference
 import com.machiav3lli.fdroid.ui.components.TitleText
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
@@ -188,11 +189,26 @@ fun RepoPage(
                 headlineContent = {
                     Text(
                         text = repo.name.nullIfEmpty()
-                            ?: stringResource(id = R.string.new_repository)
+                            ?: stringResource(id = R.string.new_repository),
+                        maxLines = 2,
                     )
                 },
                 trailingContent = {
-                    Row {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        CheckChip(
+                            checked = repo.enabled,
+                            text = stringResource(
+                                id = if (repo.enabled) R.string.enabled
+                                else R.string.enable
+                            ),
+                            fullWidth = false,
+                        ) {
+                            scope.launch {
+                                SyncWorker.enableRepo(repo, !repo.enabled)
+                            }
+                        }
                         RoundButton(
                             icon = Phosphor.ShareNetwork,
                             description = stringResource(id = R.string.share),
@@ -216,6 +232,16 @@ fun RepoPage(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp)
             ) {
+                item {
+                    SwitchPreference(
+                        text = stringResource(id = R.string.mirror_rotation),
+                        withContainer = true,
+                        initSelected = { repo.mirrorRotation },
+                        onCheckedChanged = {
+                            viewModel.updateRepo(repo.copy(mirrorRotation = !repo.mirrorRotation))
+                        }
+                    )
+                }
                 if (!editMode && repo.description.isNotEmpty()) {
                     item {
                         TitleText(
@@ -291,43 +317,39 @@ fun RepoPage(
                         text = stringResource(id = R.string.address),
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    AnimatedVisibility(visible = !editMode) {
-                        BlockText(text = repo.address)
+                    OutlinedCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = MaterialTheme.shapes.medium,
+                        border = BorderStroke(1.dp, strokeColor),
+                        enabled = editMode,
+                        onClick = {
+                            dialogProps.intValue = DIALOG_ADDRESS
+                            openDialog.value = true
+                        }
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(
+                                horizontal = 12.dp,
+                                vertical = 16.dp
+                            ),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            BlockText(text = addressFieldValue)
+                        }
                     }
                     AnimatedVisibility(visible = editMode) {
-                        Column {
-                            OutlinedCard(
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = MaterialTheme.shapes.large,
-                                border = BorderStroke(1.dp, strokeColor),
-                                onClick = {
-                                    dialogProps.intValue = DIALOG_ADDRESS
-                                    openDialog.value = true
-                                }
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(
-                                        horizontal = 12.dp,
-                                        vertical = 16.dp
-                                    ),
-                                    verticalAlignment = Alignment.CenterVertically,
+                        if (repo.mirrors.isNotEmpty()) LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            items(items = repo.mirrors, key = { it }) { text ->
+                                SelectChip(
+                                    text = text,
+                                    checked = text == addressFieldValue,
+                                    alwaysShowIcon = false,
                                 ) {
-                                    Text(text = addressFieldValue)
-                                }
-                            }
-                            if (repo.mirrors.isNotEmpty()) LazyRow(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            ) {
-                                items(items = repo.mirrors, key = { it }) { text ->
-                                    SelectChip(
-                                        text = text,
-                                        checked = text == addressFieldValue,
-                                        alwaysShowIcon = false,
-                                    ) {
-                                        addressFieldValue = text
-                                        invalidateAddress(addressValidity, addressFieldValue)
-                                    }
+                                    addressFieldValue = text
+                                    invalidateAddress(addressValidity, addressFieldValue)
                                 }
                             }
                         }
@@ -345,41 +367,31 @@ fun RepoPage(
                         text = stringResource(id = R.string.fingerprint),
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    AnimatedVisibility(visible = !editMode) {
-                        BlockText(
-                            text = if (
-                                repo.updated > 0L
-                                && repo.fingerprint.isEmpty()
-                            ) stringResource(id = R.string.repository_unsigned_DESC)
-                            else repo.fingerprint
-                                .windowed(2, 2, false)
-                                .joinToString(separator = " ") { it.uppercase(Locale.US) + " " },
-                            color = if (repo.updated > 0L && repo.fingerprint.isEmpty())
-                                MaterialTheme.colorScheme.error
-                            else MaterialTheme.colorScheme.onSurface,
-                            monospace = true,
-                        )
-                    }
-                    AnimatedVisibility(visible = editMode) {
-                        OutlinedCard(
-                            modifier = Modifier.fillMaxWidth(),
-                            shape = MaterialTheme.shapes.large,
-                            border = BorderStroke(1.dp, strokeColor),
-                            onClick = {
-                                dialogProps.intValue = DIALOG_FINGERPRINT
-                                openDialog.value = true
-                            }
+                    OutlinedCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = MaterialTheme.shapes.large,
+                        border = BorderStroke(1.dp, strokeColor),
+                        enabled = editMode,
+                        onClick = {
+                            dialogProps.intValue = DIALOG_FINGERPRINT
+                            openDialog.value = true
+                        }
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Text(
-                                    text = fingerprintFieldValue
-                                        .windowed(2, 2, false)
-                                        .joinToString(separator = " ") { it.uppercase(Locale.US) + " " }
-                                )
-                            }
+                            BlockText(
+                                text = if (!editMode && repo.updated > 0L && repo.fingerprint.isEmpty())
+                                    stringResource(id = R.string.repository_unsigned_DESC)
+                                else fingerprintFieldValue
+                                    .windowed(2, 2, false)
+                                    .joinToString(separator = " ") { it.uppercase(Locale.US) + " " },
+                                color = if (repo.updated > 0L && repo.fingerprint.isEmpty())
+                                    MaterialTheme.colorScheme.error
+                                else MaterialTheme.colorScheme.onSurface,
+                                monospace = true,
+                            )
                         }
                     }
                 }
@@ -470,30 +482,6 @@ fun RepoPage(
                     .padding(horizontal = 8.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                if (!editMode) Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    CheckChip(
-                        checked = repo.enabled,
-                        text = stringResource(
-                            id = if (repo.enabled) R.string.enabled
-                            else R.string.enable
-                        ),
-                        fullWidth = false,
-                    ) {
-                        scope.launch {
-                            SyncWorker.enableRepo(repo, !repo.enabled)
-                        }
-                    }
-                    CheckChip(
-                        checked = repo.mirrorRotation,
-                        text = stringResource(id = R.string.mirror_rotation),
-                        fullWidth = false,
-                    ) {
-                        viewModel.updateRepo(repo.copy(mirrorRotation = !repo.mirrorRotation))
-                    }
-                }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
