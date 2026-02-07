@@ -187,6 +187,7 @@ fun LatestPage(
                     modifier = Modifier
                         .weight(1f)
                         .padding(start = 8.dp),
+                    maxLines = 2,
                 )
                 SortFilterChip(notModified = notModifiedSortFilter) {
                     neoActivity.navigateSortFilterSheet(NavItem.Latest)

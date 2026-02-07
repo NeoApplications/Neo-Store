@@ -60,15 +60,19 @@ fun RepositoryItem(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
+                    modifier = Modifier.weight(1f),
                     text = repository.name.trim(),
                     style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1
+                    maxLines = 2,
                 )
                 if (repository.trusted) Badge(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 ) {
-                    Text(stringResource(R.string.trusted_label))
+                    Text(
+                        text = stringResource(R.string.trusted_label),
+                        maxLines = 1,
+                    )
                 }
             }
         },

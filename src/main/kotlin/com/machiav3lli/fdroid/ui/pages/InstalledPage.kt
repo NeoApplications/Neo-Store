@@ -182,6 +182,7 @@ fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
                     Text(
                         text = stringResource(id = R.string.installed_applications),
                         modifier = Modifier.padding(start = 8.dp),
+                        maxLines = 2,
                     )
                     SortFilterChip(notModified = notModifiedSortFilter) {
                         neoActivity.navigateSortFilterSheet(NavItem.Installed)
@@ -277,6 +278,7 @@ fun DownloadedPage(viewModel: InstalledVM) {
                 Text(
                     text = stringResource(id = R.string.downloads),
                     modifier = Modifier.padding(start = 8.dp),
+                    maxLines = 2,
                 )
                 Crossfade(pageState.sortedDownloaded.isNotEmpty()) { isNotEmpty ->
                     if (isNotEmpty) ActionChip(

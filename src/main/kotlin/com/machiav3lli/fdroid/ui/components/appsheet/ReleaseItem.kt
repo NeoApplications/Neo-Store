@@ -258,6 +258,9 @@ fun ReleaseBadge(
         containerColor = containerColor,
         contentColor = contentColor,
     ) {
-        Text(text = text)
+        Text(
+            text = text,
+            maxLines = 1,
+        )
     }
 }
