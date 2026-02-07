@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -155,6 +156,16 @@ fun SwitchPreference(
             Preferences[prefKey] = !checked
             check(!checked)
         },
+        startWidget = BooleanPrefsMeta[prefKey]?.third?.let {
+            {
+                Icon(
+                    imageVector = it,
+                    contentDescription = stringResource(
+                        id = BooleanPrefsMeta[prefKey]?.first ?: -1
+                    ),
+                )
+            }
+        },
         endWidget = {
             Switch(
                 checked = checked,
@@ -200,11 +211,21 @@ fun LanguagePreference(
 
     BasePreference(
         modifier = modifier,
-        titleId = NonBooleanPrefsMeta[prefKey] ?: -1,
+        titleId = NonBooleanPrefsMeta[prefKey]?.first ?: -1,
         summary = Utils.translateLocale(context.getLocaleOfCode(Preferences[prefKey])),
         index = index,
         groupSize = groupSize,
         isEnabled = isEnabled,
+        startWidget = NonBooleanPrefsMeta[prefKey]?.second?.let {
+            {
+                Icon(
+                    imageVector = it,
+                    contentDescription = stringResource(
+                        id = NonBooleanPrefsMeta[prefKey]?.first ?: -1
+                    ),
+                )
+            }
+        },
         onClick = onClick
     )
 }
@@ -242,11 +263,21 @@ fun LaunchPreference(
 
     BasePreference(
         modifier = modifier,
-        titleId = NonBooleanPrefsMeta[prefKey] ?: -1,
+        titleId = NonBooleanPrefsMeta[prefKey]?.first ?: -1,
         summary = prefValue,
         index = index,
         groupSize = groupSize,
         isEnabled = isEnabled,
+        startWidget = NonBooleanPrefsMeta[prefKey]?.second?.let {
+            {
+                Icon(
+                    imageVector = it,
+                    contentDescription = stringResource(
+                        id = NonBooleanPrefsMeta[prefKey]?.first ?: -1
+                    ),
+                )
+            }
+        },
         onClick = onClick
     )
 }
@@ -289,11 +320,21 @@ fun EnumPreference(
 
     BasePreference(
         modifier = modifier,
-        titleId = NonBooleanPrefsMeta[prefKey] ?: -1,
+        titleId = NonBooleanPrefsMeta[prefKey]?.first ?: -1,
         summary = stringResource(id = PrefsEntries[prefKey]?.get(prefValue) ?: -1),
         index = index,
         groupSize = groupSize,
         isEnabled = isEnabled,
+        startWidget = NonBooleanPrefsMeta[prefKey]?.second?.let {
+            {
+                Icon(
+                    imageVector = it,
+                    contentDescription = stringResource(
+                        id = NonBooleanPrefsMeta[prefKey]?.first ?: -1
+                    ),
+                )
+            }
+        },
         onClick = onClick
     )
 }
@@ -329,11 +370,21 @@ fun IntPreference(
 
     BasePreference(
         modifier = modifier,
-        titleId = NonBooleanPrefsMeta[prefKey] ?: -1,
+        titleId = NonBooleanPrefsMeta[prefKey]?.first ?: -1,
         summary = prefValue.toString(),
         index = index,
         groupSize = groupSize,
         isEnabled = isEnabled,
+        startWidget = NonBooleanPrefsMeta[prefKey]?.second?.let {
+            {
+                Icon(
+                    imageVector = it,
+                    contentDescription = stringResource(
+                        id = NonBooleanPrefsMeta[prefKey]?.first ?: -1
+                    ),
+                )
+            }
+        },
         onClick = onClick
     )
 }
@@ -369,11 +420,21 @@ fun StringPreference(
 
     BasePreference(
         modifier = modifier,
-        titleId = NonBooleanPrefsMeta[prefKey] ?: -1,
+        titleId = NonBooleanPrefsMeta[prefKey]?.first ?: -1,
         summary = prefValue,
         index = index,
         groupSize = groupSize,
         isEnabled = isEnabled,
+        startWidget = NonBooleanPrefsMeta[prefKey]?.second?.let {
+            {
+                Icon(
+                    imageVector = it,
+                    contentDescription = stringResource(
+                        id = NonBooleanPrefsMeta[prefKey]?.first ?: -1
+                    ),
+                )
+            }
+        },
         onClick = onClick
     )
 }

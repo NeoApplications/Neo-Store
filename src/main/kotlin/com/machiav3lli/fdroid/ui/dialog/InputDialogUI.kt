@@ -80,7 +80,7 @@ fun IntInputPrefDialogUI(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = stringResource(NonBooleanPrefsMeta[prefKey] ?: -1),
+                text = stringResource(NonBooleanPrefsMeta[prefKey]?.first ?: -1),
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
             )
@@ -173,7 +173,7 @@ fun StringInputPrefDialogUI(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = stringResource(NonBooleanPrefsMeta[prefKey] ?: -1),
+                text = stringResource(NonBooleanPrefsMeta[prefKey]?.first ?: -1),
                 style = MaterialTheme.typography.titleLarge
             )
             TextField(

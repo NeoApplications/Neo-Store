@@ -2,137 +2,252 @@ package com.machiav3lli.fdroid.data.content
 
 import android.os.Build
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Bell
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Browser
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyQuestion
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesThreePlus
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Clock
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ClockCounterClockwise
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CloudArrowDown
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Compass
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CrosshairSimple
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.DeviceMobile
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.DotsThreeOutline
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Flask
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FolderNotch
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Hash
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Image
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Lock
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Robot
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldSlash
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Swatches
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TagSimple
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Textbox
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Translate
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TwoCircle
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.VideoConference
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Wrench
 import com.machiav3lli.fdroid.utils.extension.android.Android
 
 val BooleanPrefsMeta = mapOf(
-    Preferences.Key.ShowScreenshots to Pair(
+    Preferences.Key.ShowScreenshots to Triple(
         R.string.show_screenshots,
-        R.string.show_screenshots_description
+        R.string.show_screenshots_description,
+        Phosphor.Image
     ),
-    Preferences.Key.ShowTrackers to Pair(
+    Preferences.Key.ShowTrackers to Triple(
         R.string.show_trackers,
-        R.string.show_trackers_description
+        R.string.show_trackers_description,
+        Phosphor.CrosshairSimple
     ),
-    Preferences.Key.AltNavBarItem to Pair(
+    Preferences.Key.AltNavBarItem to Triple(
         R.string.alt_navbar_item,
-        R.string.alt_navbar_item_description
+        R.string.alt_navbar_item_description,
+        Phosphor.DotsThreeOutline
     ),
-    Preferences.Key.AltNewApps to Pair(
+    Preferences.Key.AltNewApps to Triple(
         R.string.alt_new_apps,
-        R.string.alt_new_apps_description
+        R.string.alt_new_apps_description,
+        Phosphor.CirclesThreePlus
     ),
-    Preferences.Key.HideNewApps to Pair(
+    Preferences.Key.HideNewApps to Triple(
         R.string.hide_new_apps,
-        R.string.hide_new_apps_description
+        R.string.hide_new_apps_description,
+        Phosphor.CircleWavyWarning
     ),
-    Preferences.Key.AltBlockLayout to Pair(
+    Preferences.Key.AltBlockLayout to Triple(
         R.string.alt_block_layout,
-        R.string.alt_block_layout_summary
+        R.string.alt_block_layout_summary,
+        Phosphor.Browser
     ),
-    Preferences.Key.AndroidInsteadOfSDK to Pair(
+    Preferences.Key.AndroidInsteadOfSDK to Triple(
         R.string.android_instead_of_sdk,
-        R.string.android_instead_of_sdk_summary
+        R.string.android_instead_of_sdk_summary,
+        Phosphor.Robot
     ),
-    Preferences.Key.InstallAfterSync to Pair(
+    Preferences.Key.InstallAfterSync to Triple(
         R.string.install_after_sync,
-        R.string.install_after_sync_summary
+        R.string.install_after_sync_summary,
+        Phosphor.CloudArrowDown
     ),
-    Preferences.Key.UpdateNotify to Pair(
+    Preferences.Key.UpdateNotify to Triple(
         R.string.notify_about_updates,
-        R.string.notify_about_updates_summary
+        R.string.notify_about_updates_summary,
+        Phosphor.Bell
     ),
-    Preferences.Key.KeepInstallNotification to Pair(
+    Preferences.Key.KeepInstallNotification to Triple(
         R.string.keep_install_notification,
-        R.string.keep_install_notification_summary
+        R.string.keep_install_notification_summary,
+        Phosphor.CircleWavyWarning
     ),
-    Preferences.Key.DisableDownloadVersionCheck to Pair(
+    Preferences.Key.DisableDownloadVersionCheck to Triple(
         R.string.disable_download_version_check,
-        R.string.disable_download_version_check_summary
+        R.string.disable_download_version_check_summary,
+        Phosphor.ShieldSlash
     ),
-    Preferences.Key.UpdateUnstable to Pair(
+    Preferences.Key.UpdateUnstable to Triple(
         R.string.unstable_updates,
-        R.string.unstable_updates_summary
+        R.string.unstable_updates_summary,
+        Phosphor.Flask
     ),
-    Preferences.Key.IncompatibleVersions to Pair(
+    Preferences.Key.IncompatibleVersions to Triple(
         R.string.incompatible_versions,
-        R.string.incompatible_versions_summary
+        R.string.incompatible_versions_summary,
+        Phosphor.ShieldSlash
     ),
-    Preferences.Key.DisableSignatureCheck to Pair(
+    Preferences.Key.DisableSignatureCheck to Triple(
         R.string.disable_signature_check,
-        R.string.disable_signature_check_summary
+        R.string.disable_signature_check_summary,
+        Phosphor.ShieldSlash
     ),
-    Preferences.Key.DisablePermissionsCheck to Pair(
+    Preferences.Key.DisablePermissionsCheck to Triple(
         R.string.disable_permissions_check,
-        R.string.disable_permissions_check_summary
+        R.string.disable_permissions_check_summary,
+        Phosphor.CircleWavyQuestion
     ),
-    Preferences.Key.RootSessionInstaller to Pair(
+    Preferences.Key.RootSessionInstaller to Triple(
         R.string.root_session_installer,
-        R.string.root_session_installer_description
+        R.string.root_session_installer_description,
+        Phosphor.TagSimple
     ),
-    Preferences.Key.RootAllowDowngrades to Pair(
+    Preferences.Key.RootAllowDowngrades to Triple(
         R.string.root_allow_downgrades,
-        R.string.root_allow_downgrades_description
+        R.string.root_allow_downgrades_description,
+        Phosphor.ClockCounterClockwise
     ),
-    Preferences.Key.RootAllowInstallingOldApps to Pair(
+    Preferences.Key.RootAllowInstallingOldApps to Triple(
         R.string.root_allow_installing_old_apps,
-        R.string.root_allow_installing_old_apps_description
+        R.string.root_allow_installing_old_apps_description,
+        Phosphor.Clock
     ),
-    Preferences.Key.EnableDownloadDirectory to Pair(
+    Preferences.Key.EnableDownloadDirectory to Triple(
         R.string.enable_download_directory,
-        R.string.enable_download_directory_summary
+        R.string.enable_download_directory_summary,
+        Phosphor.FolderNotch
     ),
-    Preferences.Key.DownloadManager to Pair(
+    Preferences.Key.DownloadManager to Triple(
         R.string.download_manager,
-        R.string.download_manager_summary
+        R.string.download_manager_summary,
+        Phosphor.CloudArrowDown
     ),
-    Preferences.Key.IndexV2 to Pair(
+    Preferences.Key.IndexV2 to Triple(
         R.string.index_v2,
-        R.string.index_v2_summary
+        R.string.index_v2_summary,
+        Phosphor.TwoCircle
     ),
-    Preferences.Key.DownloadShowDialog to Pair(
+    Preferences.Key.DownloadShowDialog to Triple(
         R.string.download_show_dialog,
-        R.string.download_show_dialog_summary
+        R.string.download_show_dialog_summary,
+        Phosphor.TagSimple
     ),
-    Preferences.Key.BottomSearchBar to Pair(
+    Preferences.Key.BottomSearchBar to Triple(
         R.string.bottom_search_bar,
-        R.string.bottom_search_bar_summary
+        R.string.bottom_search_bar_summary,
+        Phosphor.DeviceMobile
     ),
-    Preferences.Key.DisableListDetail to Pair(
+    Preferences.Key.DisableListDetail to Triple(
         R.string.disable_list_detail,
-        R.string.disable_list_detail_summary
+        R.string.disable_list_detail_summary,
+        Phosphor.VideoConference
     ),
-    Preferences.Key.KidsMode to Pair(
+    Preferences.Key.KidsMode to Triple(
         R.string.kids_mode,
         if (Preferences[Preferences.Key.KidsMode]) R.string.kids_mode_summary
-        else R.string.kids_mode_summary_full
+        else R.string.kids_mode_summary_full,
+        Phosphor.Lock
     ),
-    Preferences.Key.DisableCertificateValidation to Pair(
+    Preferences.Key.DisableCertificateValidation to Triple(
         R.string.disable_certificate_check,
-        R.string.disable_certificate_check_summary
+        R.string.disable_certificate_check_summary,
+        Phosphor.ShieldSlash
     ),
 )
 
 val NonBooleanPrefsMeta = mapOf(
-    Preferences.Key.Language to R.string.prefs_language_title,
-    Preferences.Key.Theme to R.string.theme,
-    Preferences.Key.DefaultTab to R.string.default_tab,
-    Preferences.Key.UpdatedApps to R.string.prefs_updated_apps,
-    Preferences.Key.NewApps to R.string.prefs_new_apps,
-    Preferences.Key.AutoSync to R.string.sync_repositories_automatically,
-    Preferences.Key.AutoSyncInterval to R.string.auto_sync_interval_hours,
-    Preferences.Key.Installer to R.string.prefs_installer,
-    Preferences.Key.ActionLockDialog to R.string.action_lock_dialog,
-    Preferences.Key.DownloadDirectory to R.string.custom_download_directory,
-    Preferences.Key.ReleasesCacheRetention to R.string.releases_cache_retention,
-    Preferences.Key.ImagesCacheRetention to R.string.images_cache_retention,
-    Preferences.Key.ProxyType to R.string.proxy_type,
-    Preferences.Key.ProxyUrl to R.string.proxy_url,
-    Preferences.Key.ProxyHost to R.string.proxy_host,
-    Preferences.Key.ProxyPort to R.string.proxy_port,
-    Preferences.Key.MaxIdleConnections to R.string.max_idle_connections_description,
-    Preferences.Key.MaxParallelDownloads to R.string.max_parallel_downloads,
-    Preferences.Key.RBProvider to R.string.rb_provider,
-    Preferences.Key.DLStatsProvider to R.string.dlstats_provider,
+    Preferences.Key.Language to Pair(
+        R.string.prefs_language_title,
+        Phosphor.Translate
+    ),
+    Preferences.Key.Theme to Pair(
+        R.string.theme,
+        Phosphor.Swatches
+    ),
+    Preferences.Key.DefaultTab to Pair(
+        R.string.default_tab,
+        Phosphor.DeviceMobile
+    ),
+    Preferences.Key.UpdatedApps to Pair(
+        R.string.prefs_updated_apps,
+        Phosphor.Hash
+    ),
+    Preferences.Key.NewApps to Pair(
+        R.string.prefs_new_apps,
+        Phosphor.Hash
+    ),
+    Preferences.Key.AutoSync to Pair(
+        R.string.sync_repositories_automatically,
+        Phosphor.ArrowsClockwise
+    ),
+    Preferences.Key.AutoSyncInterval to Pair(
+        R.string.auto_sync_interval_hours,
+        Phosphor.Clock
+    ),
+    Preferences.Key.Installer to Pair(
+        R.string.prefs_installer,
+        Phosphor.Wrench
+    ),
+    Preferences.Key.ActionLockDialog to Pair(
+        R.string.action_lock_dialog,
+        Phosphor.Lock
+    ),
+    Preferences.Key.DownloadDirectory to Pair(
+        R.string.custom_download_directory,
+        Phosphor.FolderNotch
+    ),
+    Preferences.Key.ReleasesCacheRetention to Pair(
+        R.string.releases_cache_retention,
+        Phosphor.Clock
+    ),
+    Preferences.Key.ImagesCacheRetention to Pair(
+        R.string.images_cache_retention,
+        Phosphor.Clock
+    ),
+    Preferences.Key.ProxyType to Pair(
+        R.string.proxy_type,
+        Phosphor.GearSix
+    ),
+    Preferences.Key.ProxyUrl to Pair(
+        R.string.proxy_url,
+        Phosphor.Textbox
+    ),
+    Preferences.Key.ProxyHost to Pair(
+        R.string.proxy_host,
+        Phosphor.Textbox
+    ),
+    Preferences.Key.ProxyPort to Pair(
+        R.string.proxy_port,
+        Phosphor.TagSimple
+    ),
+    Preferences.Key.MaxIdleConnections to Pair(
+        R.string.max_idle_connections_description,
+        Phosphor.Hash
+    ),
+    Preferences.Key.MaxParallelDownloads to Pair(
+        R.string.max_parallel_downloads,
+        Phosphor.Hash
+    ),
+    Preferences.Key.RBProvider to Pair(
+        R.string.rb_provider,
+        Phosphor.Compass
+    ),
+    Preferences.Key.DLStatsProvider to Pair(
+        R.string.dlstats_provider,
+        Phosphor.Compass
+    ),
 )
 
 val PrefsEntries = mapOf(
