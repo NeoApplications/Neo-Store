@@ -446,7 +446,7 @@
     <string name="total_downloads">Totale downloads</string>
     <string name="clients">Clienten</string>
     <string name="monthly">Maandelijks</string>
-    <string name="top_apps">Top apps</string>
+    <string name="top_apps">Top-apps</string>
     <string name="top_apps_notice">Momenteel worden de downloadstatistieken alleen door IzzyOnDroid verstrekt. De top-apps zijn dus beperkt tot de apps in het archief.</string>
     <string name="connection_error_FORMAT">Ongeldige serverreactie met code: %s%s</string>
     <string name="no_validation_error">Geen validatiefout</string>
@@ -487,4 +487,5 @@
     <string name="downloads_recent_FORMAT">Recente downloads: %s</string>
     <string name="disable_list_detail">Detaillijstweergave uitschakelen</string>
     <string name="disable_list_detail_summary">Dit voorkomt dat de lay-out in twee panelen wordt gesplitst wanneer het scherm breed genoeg is, zoals op een tablet of telefoon in liggende stand.</string>
+    <string name="virustotal_badge">Virustotal-badge</string>
 </resources>
