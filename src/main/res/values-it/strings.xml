@@ -431,7 +431,7 @@
     <string name="mirror_rotation">Rotazione specchio</string>
     <string name="notify_channel_debug">Debug</string>
     <string name="repo_index_timestamp">Timestamp indice</string>
-    <string name="rb_badge">Distintivo di build riproducibile</string>
+    <string name="rb_badge">Badge riproducibilità build</string>
     <string name="rb_provider">Fornitore di log di build riproducibili</string>
     <string name="rb_none">Nessun fornitore</string>
     <string name="rb_izzyondroid">IzzyOnDroid</string>
@@ -492,4 +492,5 @@
     <string name="downloads_recent_FORMAT">Download recenti: %s</string>
     <string name="disable_list_detail">Disabilita il layout elenco-dettagli</string>
     <string name="disable_list_detail_summary">Questa opzione disabilita la suddivisione del layout in due pannelli quando lo schermo è sufficientemente ampio, ad esempio su un tablet o un telefono in modalità orizzontale.</string>
+    <string name="virustotal_badge">Badge Virustotal</string>
 </resources>
