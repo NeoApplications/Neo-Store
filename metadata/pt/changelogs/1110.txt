@@ -1,0 +1,2 @@
+Correção: Não respeitava a data de última modificação quando a tag de entidade estava ausente nos downloads
+Atualização: Processa as estatísticas de download assim que são obtidas
