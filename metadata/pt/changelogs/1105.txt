@@ -1,0 +1,8 @@
+Adição: Ícones para as novas categorias do f-droid
+Adição: Notificação de novas permissões confidenciais necessárias em atualizações (créditos a @aba2222)
+Correção: Sugestão de lançamento no índice V2 (créditos a @Red54)
+Correção: Divisão por zero se o índice v2 não for compatível com o SyncWorker (créditos a @amartinz)
+Correção: Sincronização do repositório do f-droid causando falha silenciosa de memória
+Correção: Análise de itens localizados em en-SHAW em localidades que não sejam en-US
+Atualização: Primeiras reformulações de layout e cores para o Material 3 Expressive
+e muito mais em mais de 20 commits e 1 contribuição de tradução

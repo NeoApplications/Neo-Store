@@ -1,0 +1,7 @@
+Adicionado: Tratamento da abertura de uma página do aplicativo a partir das informações do aplicativo no sistema
+Corrigido: Notificação seguindo o idioma do sistema e não o do aplicativo
+Atualizado: Reformulação da lógica, notificações e tratamento do DownloadWorker
+Atualizado: Reformulação da lógica, notificações e tratamento do SyncWorker
+Atualizado: Uso do ícone de navegação padrão ou tamanho de texto padrão
+Removido: Canais de notificação de sincronização duplicados
+e muito mais em mais de 20 commits e 20 contribuições de tradução
