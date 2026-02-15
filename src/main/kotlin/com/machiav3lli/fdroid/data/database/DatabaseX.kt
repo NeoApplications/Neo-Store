@@ -68,6 +68,7 @@ import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedRep
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV1102
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV1107
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV12
+import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV1207
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV14
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV15
 import com.machiav3lli.fdroid.data.database.entity.Repository.Companion.addedReposV17
@@ -122,7 +123,7 @@ import java.io.File
         DownloadStats::class,
         DownloadStatsFileMetadata::class,
     ],
-    version = 1205,
+    version = 1207,
     exportSchema = true,
     views = [
         PackageSum::class,
@@ -300,6 +301,11 @@ import java.io.File
             from = 1204,
             to = 1205,
             spec = DatabaseX.Companion.DownloadedCleanup::class
+        ),
+        AutoMigration(
+            from = 1205,
+            to = 1207,
+            spec = DatabaseX.Companion.AutoMigration1205to1207::class
         ),
     ]
 )
@@ -518,6 +524,13 @@ abstract class DatabaseX : RoomDatabase() {
             }
         }
 
+        class AutoMigration1205to1207 : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                onPostMigrate(1205)
+            }
+        }
+
         class ProductsCleanup : AutoMigrationSpec {
             override fun onPostMigrate(db: SupportSQLiteDatabase) {
                 super.onPostMigrate(db)
@@ -606,6 +619,7 @@ abstract class DatabaseX : RoomDatabase() {
                 1101 -> addedReposV1102
                 1106 -> addedReposV1107
                 1108 -> updatedReposV1201
+                1205 -> addedReposV1207
                 else -> emptyList()
             }
             val rmRps = when (from) {

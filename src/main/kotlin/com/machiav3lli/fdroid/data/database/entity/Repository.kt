@@ -1071,6 +1071,15 @@ data class Repository(
             "569A3FA3E603D68F214A468FB8A368FFBE5F281F57C6CD4B836057318BC37798",
             ""
         )
+        private val FURY = defaultRepository(
+            "https://fury.untamedfury.space/repo",
+            "Fury’s F-Droid Repo",
+            "This is Fury Untamed's personal F-Droid repository.",
+            21,
+            false,
+            "D5ED7960171D58324AD364A0900E287A51F195926CB4FBAF5EBBE7E95A81DCEF",
+            ""
+        )
 
         val defaultRepositories = listOf(
             F_DROID, IZZY,
@@ -1101,7 +1110,7 @@ data class Repository(
             GROBOX, ZIMBELSTERN,
             LIBRECHURCH, JUWELERKASSA,
             HUIZENGEK,
-            F5A,
+            F5A, FURY
         )
 
         val addedReposV9 = listOf(
@@ -1193,6 +1202,10 @@ data class Repository(
 
         val addedReposV1107 = listOf(
             THUNDERBIRD, AXPOS
+        )
+
+        val addedReposV1207 = listOf(
+            FURY
         )
 
         val updatedReposV1201 = listOf(
