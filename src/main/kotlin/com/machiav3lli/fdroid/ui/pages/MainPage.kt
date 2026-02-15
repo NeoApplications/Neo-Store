@@ -39,7 +39,6 @@ import com.machiav3lli.fdroid.POPUP_NONE
 import com.machiav3lli.fdroid.POPUP_SHORT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
-import com.machiav3lli.fdroid.data.database.entity.LatestSyncs
 import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.SyncRequest
@@ -48,6 +47,7 @@ import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ExpandingFadingCard
 import com.machiav3lli.fdroid.ui.components.FilledRoundButton
 import com.machiav3lli.fdroid.ui.components.RoundButton
+import com.machiav3lli.fdroid.ui.components.SyncButton
 import com.machiav3lli.fdroid.ui.components.Tooltip
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.UpdatesHorizontalRecycler
@@ -84,7 +84,7 @@ fun MainPage(
     val mActivity = LocalActivity.current as NeoActivity
     val scope = rememberCoroutineScope()
 
-    val successfulSyncs by viewModel.successfulSyncs.collectAsStateWithLifecycle(LatestSyncs())
+    val syncingState by viewModel.syncingState.collectAsStateWithLifecycle()
     val dataState by viewModel.dataState.collectAsStateWithLifecycle()
     val updatesDownloads by viewModel.combinedUpdatesList.collectAsStateWithLifecycle()
     val (updates, activeDownloads) = updatesDownloads.partitionTypes()
@@ -134,10 +134,9 @@ fun MainPage(
                     ) {
                         mActivity.showSearchPage()
                     }
-                    RoundButton(
+                    SyncButton(
                         modifier = Modifier.padding(top = 8.dp),
-                        icon = Phosphor.ArrowsClockwise,
-                        description = stringResource(id = R.string.sync_repositories),
+                        isSyncing = syncingState.isSyncing,
                         onLongClick = {
                             showPopup.intValue = POPUP_LONG
                         },
@@ -165,8 +164,8 @@ fun MainPage(
                         when (showPopup.intValue) {
                             POPUP_LONG -> stringResource(
                                 id = R.string.last_successful_sync,
-                                context.getLocaleDateString(successfulSyncs.latest),
-                                context.getLocaleDateString(successfulSyncs.latestAll),
+                                context.getLocaleDateString(syncingState.latestSyncs.latest),
+                                context.getLocaleDateString(syncingState.latestSyncs.latestAll),
                             )
 
                             else       -> stringResource(id = R.string.wait_to_sync)

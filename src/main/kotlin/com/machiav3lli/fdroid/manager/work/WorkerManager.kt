@@ -39,6 +39,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -68,6 +70,12 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
         workManager.pruneWork()
         monitorWorkProgress()
     }
+
+    val isSyncing = workManager.getWorkInfosByTagFlow(TAG_BATCH_SYNC_ONETIME)
+        .mapLatest {
+            it.any { wi -> wi.state == WorkInfo.State.RUNNING }
+        }
+        .flowOn(Dispatchers.Default)
 
     fun release(): WorkerManager? {
         appContext.unregisterReceiver(actionReceiver)

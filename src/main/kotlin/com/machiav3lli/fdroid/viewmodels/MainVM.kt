@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
+import com.machiav3lli.fdroid.data.database.entity.LatestSyncs
 import com.machiav3lli.fdroid.data.database.entity.ProductIconDetails
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.Request
@@ -36,7 +37,19 @@ open class MainVM(
     installedRepo: InstalledRepository,
     downloadedRepo: DownloadedRepository,
 ) : ViewModel() {
-    val successfulSyncs = reposRepo.getLatestUpdates()
+    private val successfulSyncs = reposRepo.getLatestUpdates()
+    private val isSyncing = reposRepo.getIsSyncing()
+
+    val syncingState = combine(
+        successfulSyncs,
+        isSyncing,
+    ) { latestSyncs, isSyncing ->
+        SyncingState(latestSyncs, isSyncing)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = SyncingState(),
+    )
 
     private val installed = installedRepo.getMap()
 
@@ -147,6 +160,11 @@ open class MainVM(
         const val TAG = "MainVM"
     }
 }
+
+data class SyncingState(
+    val latestSyncs: LatestSyncs = LatestSyncs(),
+    val isSyncing: Boolean = false,
+)
 
 data class DataState(
     val reposMap: Map<Long, Repository> = emptyMap(),

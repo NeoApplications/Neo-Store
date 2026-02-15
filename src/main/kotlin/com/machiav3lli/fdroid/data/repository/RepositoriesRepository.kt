@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.data.repository
 
+import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.database.dao.AntiFeatureDao
 import com.machiav3lli.fdroid.data.database.dao.ProductDao
 import com.machiav3lli.fdroid.data.database.dao.RepositoryDao
@@ -25,6 +26,8 @@ class RepositoriesRepository(
     fun getAllEnabled(): Flow<List<Repository>> = reposDao.getAllEnabledFlow()
 
     fun getLatestUpdates(): Flow<LatestSyncs> = reposDao.latestUpdatesFlow()
+
+    fun getIsSyncing(): Flow<Boolean> = NeoApp.wm.isSyncing
 
     fun productsCount(repoId: Long): Flow<Long> = productsDao.countForRepositoryFlow(repoId)
 
