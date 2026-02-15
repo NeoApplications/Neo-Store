@@ -501,4 +501,5 @@
     <string name="downloads_recent_FORMAT">التنزيلات الأخيرة: %s‫</string>
     <string name="disable_list_detail">تعطيل تخطيط القائمة والتفاصيل</string>
     <string name="disable_list_detail_summary">يؤدي هذا إلى تعطيل تقسيم التخطيط إلى لوحتين عندما تكون الشاشة عريضة بما يكفي، كما هو الحال على جهاز لوحي أو هاتف في الوضع الأفقي.</string>
+    <string name="virustotal_badge">شارة VirusTotal</string>
 </resources>
