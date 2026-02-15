@@ -1,0 +1,7 @@
+Adicionado: Informações de estatísticas de download (chips e gráficos) do IzzyOnDroid na página do aplicativo
+Adicionado: Aplicativos mais baixados do IzzyOnDroid na página Explorar
+Adicionado: Barra de pesquisa como iniciador para a nova página de pesquisa
+Corrigido: Leitura de QR code para adicionar repositório
+Corrigido: Exibição de rótulo sugerido em versões incompatíveis
+Atualizado: Segunda leva de reformulações de layout e cores rumo ao Material 3 Expressive
+além de muito mais em mais de 50 commits e 20 contribuições de tradução
