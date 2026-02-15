@@ -8,11 +8,11 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import com.machiav3lli.derdiedas.config.BuildConfig
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.ARG_VERSION_CODE
 import com.machiav3lli.fdroid.ARG_WORK_TYPE
 import com.machiav3lli.fdroid.NeoApp
+import com.machiav3lli.fdroid.config.BuildConfig
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.ExodusData

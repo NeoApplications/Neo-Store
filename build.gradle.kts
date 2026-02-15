@@ -270,7 +270,7 @@ abstract class GenerateBuildConfig : DefaultTask() {
         outputFile.parentFile.mkdirs()
         outputFile.writeText(
             """
-            package com.machiav3lli.derdiedas.config
+            package com.machiav3lli.fdroid.config
             
             object BuildConfig {
                 val DETECTED_LOCALES: Array<String> = arrayOf(${
