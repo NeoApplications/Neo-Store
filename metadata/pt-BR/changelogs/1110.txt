@@ -1,0 +1,2 @@
+Corrigido: Não respeitar lastModified quando faltar entity-tag nos downloads
+Atualizado: Processar estatísticas de download assim que forem obtidas
