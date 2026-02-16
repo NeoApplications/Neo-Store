@@ -184,15 +184,15 @@
     <string name="only_on_wifi_and_battery">Apenas em Wi-Fi e carregando</string>
     <string name="install_after_sync">Atualização automática</string>
     <string name="install_after_sync_summary">Instale todas as novas versões após buscar nos repositórios por novos aplicativos.</string>
-    <string name="prefs_updated_apps">Número de aplicativos a serem exibidos em \"Atualizado recentemente\\</string>
+    <string name="prefs_updated_apps">Número de aplicativos a serem exibidos em \"Atualizado recentemente\"</string>
     <string name="prefs_new_apps">Número de aplicativos a serem exibidos em \"Novos aplicativos\"</string>
     <string name="new_repository">Novo repositório</string>
     <string name="default_tab">Aba padrão</string>
     <string name="pending">Pendente</string>
     <string name="installing">Instalando</string>
-    <string name="ignore_battery_optimization_message">O aplicativo se comporta melhor sem otimização de bateria e previne travamentos no Android 12+.</string>
+    <string name="ignore_battery_optimization_message">O aplicativo tem melhor desempenho quando a otimização de bateria está desativada e não trava mais no Android 12+.</string>
     <string name="ignore_battery_optimization_title">Otimização de Bateria</string>
-    <string name="ignore_battery_optimization_not_supported">A instalação do seu Android não suporta desativação da otimização da bateria.</string>
+    <string name="ignore_battery_optimization_not_supported">Sua instalação do Android não suporta desativar a otimização de bateria.</string>
     <string name="dialog_refuse">Manter</string>
     <string name="dialog_approve">Desligar</string>
     <string name="root_session_installer_description">Mais lento, mas evita problemas com aplicativos instalados no Android 13+.</string>
@@ -208,7 +208,7 @@
     <string name="releases">Lançamentos</string>
     <string name="no_updates_available">Nenhuma versão disponível</string>
     <string name="loading_list">Carregando lista…</string>
-    <string name="images_cache_retention">Retenção do cache de imagens</string>
+    <string name="images_cache_retention">Retenção do cache de imagem</string>
     <string name="releases_cache_retention">Retenção de cache do APK baixado</string>
     <string name="auto_sync_interval">Intervalo de sincronização automática (por minutos)</string>
     <string name="prefs_personal">Pessoal</string>
@@ -274,7 +274,7 @@
     <string name="action_open_website">Abrir site</string>
     <string name="trackers_none">Sem rastreadores</string>
     <string name="trackers_in">Rastreadores em %s</string>
-    <string name="trackers_note_0">Isso é um aplicativo ou um spyware?</string>
+    <string name="trackers_note_0">Isso é um aplicativo ou spyware?</string>
     <string name="trackers_note_1">Inclui muitos rastreadores de seus dados sensíveis</string>
     <string name="trackers_note_2">Por que precisa desses rastredores\?</string>
     <string name="trackers_note_3">Tem alguns rastreadores</string>
@@ -292,7 +292,7 @@
     <string name="action_install_tc">Instalar TrackerControl</string>
     <string name="app_installed">Instalado</string>
     <string name="no_trackers_data_available">Nenhum dado sobre rastreadores disponível (ainda).</string>
-    <string name="vulnerabilities">Vulnerabilidades.</string>
+    <string name="vulnerabilities">Vulnerabilidades</string>
     <string name="vulnerabilities_installed_apps">Estes aplicativos instalados têm vulnerabilidades conhecidas!</string>
     <string name="no_vulnerabilities_installed_apps">Nenhum aplicativo instalado tem vulnerabilidades conhecidas.</string>
     <string name="extras_export">Exportar extras (Favoritos, Ignorar atualizações, etc.)</string>
@@ -312,7 +312,7 @@
     <string name="downloads">Downloads</string>
     <string name="ignore_vulns">Ignorar vulnerabilidades de segurança reportadas</string>
     <string name="ignore">Ignorar</string>
-    <string name="warning_disable_battery_optimization">A partir do Android 12, o aplicativo requer otimização da bateria para realizar processos em segundo plano, como sincronização e download. Se você ignorar essa permissão, ficará por conta própria e seus relatórios de falhas serão ignorados.</string>
+    <string name="warning_disable_battery_optimization">A partir do Android 12, o aplicativo exige que a otimização de bateria esteja desativada para executar processos em segundo plano, como sincronização e downloads. Se você ignorar essa permissão, ficará por sua conta e seus relatórios de falhas não serão considerados.</string>
     <string name="privacy_panel">Painel de privacidade</string>
     <string name="show_categories_bar">Mostrar barra de categorias</string>
     <string name="show_categories_bar_description">Mostrar a barra lateral de categorias na página de exploração.</string>
@@ -350,7 +350,7 @@
     <string name="install_packages_permission_title">Permissão para instalar pacotes</string>
     <string name="no_releases">Nenhuma versão compatível para mostrar</string>
     <string name="allow_unstable_updates">Permitir a exibição de atualizações instáveis</string>
-    <string name="repos_import">Importar repositórios (sobrescrever os já existentes)</string>
+    <string name="repos_import">Importar repositórios (sobrescrever os existentes)</string>
     <string name="alt_new_apps_description">Usa o layout alternativo/antigo para \'Novos Aplicativos\', que mostra pequenos cartões de aplicativos.</string>
     <string name="dynamic_dark">Escuro com cores dinâmicas</string>
     <string name="dynamic_light">Claro com cores dinâmicas</string>
@@ -370,7 +370,7 @@
     <string name="alt_block_layout_summary">Usar um layout alternativo/antigo para blocos de página com bordas em vez de superfícies coloridas.</string>
     <string name="action_lock_dialog">Mostrar caixa de diálogo de bloqueio de ação</string>
     <string name="action_lock_biometric">Bloqueio biométrico</string>
-    <string name="kids_mode_summary_full">Habilita o modo infantil, desabilitando a instalação de novos aplicativos. Para desabilitar toque seis vezes na versão do aplicativo na outra página. Esta dica fica oculta na reinicialização do aplicativo.</string>
+    <string name="kids_mode_summary_full">Ativar o modo infantil, desativando novas instalações de aplicativos. Para desativar, toque seis vezes na versão do app na outra página. Após reiniciar o aplicativo, esta dica será ocultada.</string>
     <string name="system_installer">Instalador do sistema</string>
     <string name="root_allow_downgrades">Permitir downgrade de aplicativos</string>
     <string name="root_allow_installing_old_apps">Permitir a instalação de aplicativos mais antigos</string>
@@ -378,7 +378,7 @@
     <string name="root_allow_installing_old_apps_description">A partir do Android 14, não é mais possível instalar aplicativos direcionados a versões muito mais antigas do Android (Android 5.1 ou anterior). Essa opção permite que você substitua esse comportamento.</string>
     <string name="confirm_download_DESC_FORMAT">Tem certeza de que deseja baixar %s?</string>
     <string name="download_show_dialog">Mostrar diálogo de download</string>
-    <string name="download_show_dialog_summary">Mostra uma caixa de diálogo perguntando se você tem certeza de que deseja baixar um aplicativo (antes de iniciar o download).</string>
+    <string name="download_show_dialog_summary">Exibir um diálogo perguntando se você tem certeza de que deseja baixar um aplicativo (antes de iniciar o download).</string>
     <string name="bottom_search_bar">Barra de pesquisa embaixo</string>
     <string name="bottom_search_bar_summary">Coloque a barra de pesquisa na parte inferior da página.</string>
     <string name="select_all">Selecionar tudo</string>
@@ -410,11 +410,11 @@
     <string name="validation_error_FORMAT">Erro de validação: %s</string>
     <string name="installing_error_FORMAT">Erro ao instalar %s</string>
     <string name="installing_error_storage_DESC">Falha na instalação em problemas de armazenamento.</string>
-    <string name="installing_error_incompatible_DESC">Instalar incompatível.</string>
-    <string name="installing_error_blocked_DESC">Instalar foi bloqueado.</string>
-    <string name="installing_error_timeout_DESC">Tempo limite para instalar.</string>
+    <string name="installing_error_incompatible_DESC">Instalação incompatível.</string>
+    <string name="installing_error_blocked_DESC">Instalação bloqueada.</string>
+    <string name="installing_error_timeout_DESC">Tempo de instalação esgotado.</string>
     <string name="installing_error_conflict_DESC">Erro causado por um conflito.</string>
-    <string name="installing_error_invalid_DESC">Instalar inválido.</string>
+    <string name="installing_error_invalid_DESC">Instalação invalida.</string>
     <string name="installing_error_unknown_DESC">Erro desconhecido ao instalar.</string>
     <string name="prefs_layout">Layout</string>
     <string name="downloading_error_FORMAT">Erro ao baixar %s</string>
@@ -422,7 +422,7 @@
     <string name="prefs_connection">Conexão à Internet</string>
     <string name="prefs_service">Serviço</string>
     <string name="about_channel">Canal</string>
-    <string name="about_build_FORMAT">%s (Build %s)</string>
+    <string name="about_build_FORMAT">%s (Compilação %s)</string>
     <string name="initial_sync_repositories">Você deseja sincronizar os repositórios predefinidos (F-Droid official, IzzyOnDroid &amp; Guardian Project)?</string>
     <string name="index_v2">Habilitar Index-V2</string>
     <string name="index_v2_summary">Habilita solicitar o Index-V2 como índice primário. Ainda experimental, com vantagens e desvantagens.</string>
@@ -436,7 +436,7 @@
     <string name="rb_none">Não há provedor</string>
     <string name="rb_izzyondroid">IzzyOnDroid</string>
     <string name="rb_bg443">bg443</string>
-    <string name="rb_obfusk">Obfusk</string>
+    <string name="rb_obfusk">Ofuscar</string>
     <string name="syncing_repositories_FORMAT">Sincronizando %d repositório(s)</string>
     <string name="new_sensitive_permission_title">Nova Permissão Sensível</string>
     <string name="sensitive_permission_detected_FORMAT">O aplicativo %1$s solicita uma nova permissão sensível</string>
@@ -457,7 +457,7 @@
     <string name="search_for_repository">Pesquisar pelo repositório</string>
     <string name="downloads_total_FORMAT">Total de baixado(s): %s</string>
     <string name="downloads_top_client_FORMAT">Cliente mais popular: %s</string>
-    <string name="downloads_top_ranking_FORMAT">Classificação geral de baixados: %s: %s</string>
+    <string name="downloads_top_ranking_FORMAT">Ranking de todos os downloads: %s</string>
     <string name="total_recent_downloads">Principais baixados recentes</string>
     <string name="main_page">Página inicial</string>
     <string name="trending_from_unknown">Em alta nos clientes desconhecidos</string>
@@ -477,4 +477,20 @@
     <string name="dlstats_izzyondroid">IzzyOnDroid</string>
     <string name="duplicate_repo_address_title">Falha em adicionar um repositório</string>
     <string name="duplicate_repo_address_FORMAT">O endereço %1$s é uma duplicata de um repositório já existente.</string>
+    <string name="total_alltime_downloads">Mais baixados</string>
+    <string name="integrity_check_failed">Falha na verificação de integridade devido a hash incompatível.</string>
+    <string name="integrity_check_hashing">Falha ao obter o hash do arquivo baixado.</string>
+    <string name="invalid_metadata_error">Metadados incompatíveis da versão baixada.</string>
+    <string name="trusted_repo">Repositório confiável</string>
+    <string name="trusted_label">Confiável</string>
+    <string name="translation">Tradução</string>
+    <plurals name="updated_apps">
+        <item quantity="one">%d aplicativo atualizado</item>
+        <item quantity="many">%d aplicativos atualizados</item>
+        <item quantity="other">%d aplicativos atualizados</item>
+    </plurals>
+    <string name="downloads_recent_FORMAT">Baixados recentemente: %s</string>
+    <string name="disable_list_detail">Desativar layout de lista-detalhe</string>
+    <string name="disable_list_detail_summary">Isso desativa a divisão do layout em dois painéis quando a tela é grande o suficiente, como em um tablet ou em um celular no modo paisagem.</string>
+    <string name="virustotal_badge">Emblema do Virustotal</string>
 </resources>
