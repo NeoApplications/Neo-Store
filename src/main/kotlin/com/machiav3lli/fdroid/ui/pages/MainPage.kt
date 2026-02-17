@@ -7,13 +7,19 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipAnchorPosition
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -48,7 +54,6 @@ import com.machiav3lli.fdroid.ui.components.ExpandingFadingCard
 import com.machiav3lli.fdroid.ui.components.FilledRoundButton
 import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.components.SyncButton
-import com.machiav3lli.fdroid.ui.components.Tooltip
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.UpdatesHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -73,7 +78,7 @@ import com.machiav3lli.fdroid.viewmodels.MainVM
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+@OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainPage(
     navigator: (NavRoute) -> Unit,
@@ -95,6 +100,7 @@ fun MainPage(
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
 
     val showPopup = remember { mutableIntStateOf(POPUP_NONE) }
+    val syncTooltipState = rememberTooltipState()
     val openSyncDialog = remember { mutableStateOf(false) }
 
     val pages = persistentListOf(
@@ -134,22 +140,45 @@ fun MainPage(
                     ) {
                         mActivity.showSearchPage()
                     }
-                    SyncButton(
-                        modifier = Modifier.padding(top = 8.dp),
-                        isSyncing = syncingState.isSyncing,
-                        onLongClick = {
-                            showPopup.intValue = POPUP_LONG
-                        },
-                        onClick = {
-                            if (System.currentTimeMillis() - Preferences[Preferences.Key.LastManualSyncTime] >= 10_000L) {
-                                Preferences[Preferences.Key.LastManualSyncTime] =
-                                    System.currentTimeMillis()
-                                scope.launch { BatchSyncWorker.enqueue(SyncRequest.MANUAL) }
-                            } else {
-                                showPopup.intValue = POPUP_SHORT
+                    TooltipBox(
+                        positionProvider =
+                            TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Below),
+                        tooltip = {
+                            PlainTooltip {
+                                Text(
+                                    when (showPopup.intValue) {
+                                        POPUP_LONG -> stringResource(
+                                            id = R.string.last_successful_sync,
+                                            context.getLocaleDateString(syncingState.latestSyncs.latest),
+                                            context.getLocaleDateString(syncingState.latestSyncs.latestAll),
+                                        )
+
+                                        else       -> stringResource(id = R.string.wait_to_sync)
+                                    }
+                                )
                             }
-                        }
-                    )
+                        },
+                        state = syncTooltipState,
+                    ) {
+                        SyncButton(
+                            modifier = Modifier.padding(top = 8.dp),
+                            isSyncing = syncingState.isSyncing,
+                            onLongClick = {
+                                showPopup.intValue = POPUP_LONG
+                                scope.launch { syncTooltipState.show() }
+                            },
+                            onClick = {
+                                if (System.currentTimeMillis() - Preferences[Preferences.Key.LastManualSyncTime] >= 10_000L) {
+                                    Preferences[Preferences.Key.LastManualSyncTime] =
+                                        System.currentTimeMillis()
+                                    scope.launch { BatchSyncWorker.enqueue(SyncRequest.MANUAL) }
+                                } else {
+                                    showPopup.intValue = POPUP_SHORT
+                                    scope.launch { syncTooltipState.show() }
+                                }
+                            }
+                        )
+                    }
                     RoundButton(
                         modifier = Modifier.padding(top = 8.dp),
                         icon = Phosphor.GearSix,
@@ -157,21 +186,6 @@ fun MainPage(
                     ) {
                         navigator(NavRoute.Prefs())
                     }
-                }
-
-                if (showPopup.intValue != POPUP_NONE) {
-                    Tooltip(
-                        when (showPopup.intValue) {
-                            POPUP_LONG -> stringResource(
-                                id = R.string.last_successful_sync,
-                                context.getLocaleDateString(syncingState.latestSyncs.latest),
-                                context.getLocaleDateString(syncingState.latestSyncs.latestAll),
-                            )
-
-                            else       -> stringResource(id = R.string.wait_to_sync)
-                        },
-                        showPopup
-                    )
                 }
             },
             floatingActionButton = {
