@@ -836,17 +836,17 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object IzzyOnDroid : RBProvider("iod") {
             override val url: String
-                get() = "https://codeberg.org/IzzyOnDroid/rbtlog/raw/branch/izzy/log"
+                get() = "https://apt.izzysoft.de/fdroid/rbtlogs/izzy.json"
         }
 
         data object BG443 : RBProvider("bg443") {
             override val url: String
-                get() = "https://codeberg.org/bg443/rbtlog/raw/branch/master"
+                get() = "https://apt.izzysoft.de/fdroid/rbtlogs/bg443.json"
         }
 
         data object OBFUSK : RBProvider("obfusk") {
             override val url: String
-                get() = "https://codeberg.org/obfusk/rbtlog/raw/branch/log"
+                get() = "https://apt.izzysoft.de/fdroid/rbtlogs/obfusk.json"
         }
     }
 

@@ -43,7 +43,7 @@ class RBWorker(
     }
 
     private suspend fun fetchLogs() {
-        val url = "${Preferences[Preferences.Key.RBProvider].url}/index.json"
+        val url = Preferences[Preferences.Key.RBProvider].url
         val lastModified = Preferences[Preferences.Key.RBLogsLastModified]
 
         // Create temporary file for download
