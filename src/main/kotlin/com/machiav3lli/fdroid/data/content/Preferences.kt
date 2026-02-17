@@ -121,6 +121,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.InitialSync,
         Key.IgnoreDisableBatteryOptimization,
         Key.IgnoreShowNotifications,
+        Key.IgnoreKeepAndroidOpenNotice,
         Key.TrackersLastModified,
         Key.RBLogsLastModified,
     ).map { Pair(it.name, it) }.toMap()
@@ -579,6 +580,9 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object IgnoreShowNotifications :
             Key<Boolean>("ignore_show_notifications", Value.BooleanValue(false))
+
+        data object IgnoreKeepAndroidOpenNotice :
+            Key<Boolean>("ignore_keep_android_open_notice", Value.BooleanValue(false))
 
         data object LastManualSyncTime :
             Key<Long>("last_manual_sync_time", Value.LongValue(0L))

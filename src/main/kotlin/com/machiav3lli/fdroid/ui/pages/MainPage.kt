@@ -1,16 +1,22 @@
 package com.machiav3lli.fdroid.ui.pages
 
 import androidx.activity.compose.LocalActivity
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Scaffold
@@ -38,6 +44,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.machiav3lli.fdroid.LINK_KEEP_ANDROID_OPEN
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.POPUP_LONG
@@ -63,6 +70,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MagnifyingGlass
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
 import com.machiav3lli.fdroid.ui.dialog.ActionsDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
@@ -71,6 +79,7 @@ import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.ui.navigation.NeoNavigationSuiteScaffold
 import com.machiav3lli.fdroid.ui.navigation.SlidePager
+import com.machiav3lli.fdroid.utils.extension.android.launchView
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.extension.partitionTypes
 import com.machiav3lli.fdroid.utils.getLocaleDateString
@@ -102,6 +111,9 @@ fun MainPage(
     val showPopup = remember { mutableIntStateOf(POPUP_NONE) }
     val syncTooltipState = rememberTooltipState()
     val openSyncDialog = remember { mutableStateOf(false) }
+    val showBanner = remember(Preferences[Preferences.Key.IgnoreKeepAndroidOpenNotice]) {
+        mutableStateOf(!Preferences[Preferences.Key.IgnoreKeepAndroidOpenNotice])
+    }
 
     val pages = persistentListOf(
         NavItem.Latest,
@@ -130,61 +142,100 @@ fun MainPage(
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
             topBar = {
-                TopBar(
-                    title = stringResource(id = currentPage.title),
-                ) {
-                    RoundButton(
-                        modifier = Modifier.padding(top = 8.dp),
-                        icon = Phosphor.MagnifyingGlass,
-                        description = stringResource(id = R.string.search)
+                Column {
+                    TopBar(
+                        title = stringResource(id = currentPage.title),
                     ) {
-                        mActivity.showSearchPage()
-                    }
-                    TooltipBox(
-                        positionProvider =
-                            TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Below),
-                        tooltip = {
-                            PlainTooltip {
-                                Text(
-                                    when (showPopup.intValue) {
-                                        POPUP_LONG -> stringResource(
-                                            id = R.string.last_successful_sync,
-                                            context.getLocaleDateString(syncingState.latestSyncs.latest),
-                                            context.getLocaleDateString(syncingState.latestSyncs.latestAll),
-                                        )
-
-                                        else       -> stringResource(id = R.string.wait_to_sync)
-                                    }
-                                )
-                            }
-                        },
-                        state = syncTooltipState,
-                    ) {
-                        SyncButton(
+                        RoundButton(
                             modifier = Modifier.padding(top = 8.dp),
-                            isSyncing = syncingState.isSyncing,
-                            onLongClick = {
-                                showPopup.intValue = POPUP_LONG
-                                scope.launch { syncTooltipState.show() }
-                            },
-                            onClick = {
-                                if (System.currentTimeMillis() - Preferences[Preferences.Key.LastManualSyncTime] >= 10_000L) {
-                                    Preferences[Preferences.Key.LastManualSyncTime] =
-                                        System.currentTimeMillis()
-                                    scope.launch { BatchSyncWorker.enqueue(SyncRequest.MANUAL) }
-                                } else {
-                                    showPopup.intValue = POPUP_SHORT
-                                    scope.launch { syncTooltipState.show() }
+                            icon = Phosphor.MagnifyingGlass,
+                            description = stringResource(id = R.string.search)
+                        ) {
+                            mActivity.showSearchPage()
+                        }
+                        TooltipBox(
+                            positionProvider =
+                                TooltipDefaults.rememberTooltipPositionProvider(
+                                    TooltipAnchorPosition.Below
+                                ),
+                            tooltip = {
+                                PlainTooltip {
+                                    Text(
+                                        when (showPopup.intValue) {
+                                            POPUP_LONG -> stringResource(
+                                                id = R.string.last_successful_sync,
+                                                context.getLocaleDateString(syncingState.latestSyncs.latest),
+                                                context.getLocaleDateString(syncingState.latestSyncs.latestAll),
+                                            )
+
+                                            else       -> stringResource(id = R.string.wait_to_sync)
+                                        }
+                                    )
                                 }
-                            }
-                        )
+                            },
+                            state = syncTooltipState,
+                        ) {
+                            SyncButton(
+                                modifier = Modifier.padding(top = 8.dp),
+                                isSyncing = syncingState.isSyncing,
+                                onLongClick = {
+                                    showPopup.intValue = POPUP_LONG
+                                    scope.launch { syncTooltipState.show() }
+                                },
+                                onClick = {
+                                    if (System.currentTimeMillis() - Preferences[Preferences.Key.LastManualSyncTime] >= 10_000L) {
+                                        Preferences[Preferences.Key.LastManualSyncTime] =
+                                            System.currentTimeMillis()
+                                        scope.launch { BatchSyncWorker.enqueue(SyncRequest.MANUAL) }
+                                    } else {
+                                        showPopup.intValue = POPUP_SHORT
+                                        scope.launch { syncTooltipState.show() }
+                                    }
+                                }
+                            )
+                        }
+                        RoundButton(
+                            modifier = Modifier.padding(top = 8.dp),
+                            icon = Phosphor.GearSix,
+                            description = stringResource(id = R.string.settings)
+                        ) {
+                            navigator(NavRoute.Prefs())
+                        }
                     }
-                    RoundButton(
-                        modifier = Modifier.padding(top = 8.dp),
-                        icon = Phosphor.GearSix,
-                        description = stringResource(id = R.string.settings)
-                    ) {
-                        navigator(NavRoute.Prefs())
+                    AnimatedVisibility(showBanner.value) {
+                        Card(
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .clickable {
+                                    context.launchView(LINK_KEEP_ANDROID_OPEN)
+                                },
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
+                        ) {
+                            ListItem(
+                                colors = ListItemDefaults.colors(
+                                    containerColor = Color.Transparent,
+                                ),
+                                leadingContent = {
+                                    Icon(
+                                        imageVector = Phosphor.CircleWavyWarning,
+                                        contentDescription = stringResource(R.string.keep_android_open),
+                                    )
+                                },
+                                headlineContent = {
+                                    Text(text = stringResource(R.string.keep_android_open_notice))
+                                },
+                                trailingContent = {
+                                    RoundButton(
+                                        icon = Phosphor.X,
+                                        description = stringResource(R.string.ignore),
+                                    ) {
+                                        showBanner.value = false
+                                        Preferences[Preferences.Key.IgnoreKeepAndroidOpenNotice] =
+                                            true
+                                    }
+                                }
+                            )
+                        }
                     }
                 }
             },

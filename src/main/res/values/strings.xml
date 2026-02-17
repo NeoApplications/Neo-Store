@@ -489,4 +489,6 @@
     <string name="disable_list_detail">Disable list-detail layout</string>
     <string name="disable_list_detail_summary">This disables the splitting of the layout into two panels when the screen is wide enough, such as on a tablet or phone in landscape mode.</string>
     <string name="virustotal_badge">Virustotal badge</string>
+    <string name="keep_android_open">Keep Android Open</string>
+    <string name="keep_android_open_notice">Android\'s openness and F-Droid are threatened by Google. We need your help: https://keepandroidopen.org/</string>
 </resources>
