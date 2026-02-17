@@ -93,7 +93,12 @@ class DownloadWorker(
             if (Cache.getReleaseFile(applicationContext, task.release.cacheFileName).exists()) {
                 Log.i(TAG, "Running publish success from fun enqueue")
                 handleSuccess()
-                return Result.success(getWorkData(task, null))
+                return Result.success(
+                    getWorkData(
+                        task,
+                        Downloader.Result(HttpStatusCode.OK, "", "")
+                    )
+                )
             }
 
             handleDownload(task)
@@ -390,11 +395,7 @@ class DownloadWorker(
                 .setOngoing(false)
                 .setContentTitle(langContext.getString(R.string.downloaded_FORMAT, state.name))
                 .setTicker(langContext.getString(R.string.downloaded_FORMAT, state.name))
-                .apply {
-                    if (!Preferences[Preferences.Key.KeepInstallNotification]) {
-                        setTimeoutAfter(InstallerReceiver.INSTALLED_NOTIFICATION_TIMEOUT)
-                    }
-                }
+                .setTimeoutAfter(InstallerReceiver.DOWNLOADED_NOTIFICATION_TIMEOUT)
 
             is DownloadState.Error   -> builder
                 .setOngoing(false)

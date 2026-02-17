@@ -35,6 +35,7 @@ class InstallerReceiver : BroadcastReceiver(), KoinComponent {
         const val KEY_PACKAGE_LABEL = "packageLabel"
         const val ACTION_UNINSTALL = "uninstall"
         const val INSTALLED_NOTIFICATION_TIMEOUT: Long = 5000
+        const val DOWNLOADED_NOTIFICATION_TIMEOUT: Long = 2000
         const val NOTIFICATION_TAG_PREFIX = "install-"
     }
 
