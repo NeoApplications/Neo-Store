@@ -19,11 +19,7 @@ package com.machiav3lli.fdroid.ui.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
@@ -50,12 +46,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.ui.compose.utils.addIf
 import kotlinx.coroutines.launch
@@ -72,56 +66,52 @@ fun CategoriesList(
     val expanded by remember(selectedKey.value) { mutableStateOf(selectedKey.value.isNotEmpty()) }
     val scrollState = rememberLazyListState()
 
-    SharedTransitionLayout {
-        AnimatedContent(
-            targetState = expanded,
-            modifier = modifier.fillMaxWidth(),
-            label = "categories_list"
-        ) { isExpanded ->
-            val categories: LazyListScope.() -> Unit = {
-                itemsIndexed(items, key = { _, item -> item.first }) { index, item ->
-                    CategoryItem(
-                        icon = item.third,
-                        label = item.second,
-                        isExpanded = isExpanded,
-                        isSelected = item.first == selectedKey.value,
-                        avs = this@AnimatedContent,
-                        sts = this@SharedTransitionLayout,
-                        onClick = {
-                            selectedKey.value = item.first
-                            onClick(item.first)
-                            scrollState.layoutInfo.visibleItemsInfo.none { it.index == index }.let {
-                                scope.launch {
-                                    scrollState.animateScrollToItem((index - 1).coerceAtLeast(0))
-                                }
+    AnimatedContent(
+        targetState = expanded,
+        modifier = modifier.fillMaxWidth(),
+        label = "categories_list"
+    ) { isExpanded ->
+        val categories: LazyListScope.() -> Unit = {
+            itemsIndexed(items, key = { _, item -> item.first }) { index, item ->
+                CategoryItem(
+                    icon = item.third,
+                    label = item.second,
+                    isExpanded = isExpanded,
+                    isSelected = item.first == selectedKey.value,
+                    onClick = {
+                        selectedKey.value = item.first
+                        onClick(item.first)
+                        scrollState.layoutInfo.visibleItemsInfo.none { it.index == index }.let {
+                            scope.launch {
+                                scrollState.animateScrollToItem((index - 1).coerceAtLeast(0))
                             }
                         }
-                    )
-                }
-            }
-
-            if (isExpanded) {
-                Column {
-                    LazyRow(
-                        modifier = modifier.fillMaxWidth(),
-                        state = scrollState,
-                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        content = categories,
-                    )
-                    HorizontalDivider()
-                }
-            } else {
-                LazyColumn(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .clipToBounds(),
-                    state = scrollState,
-                    contentPadding = PaddingValues(vertical = 12.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    content = categories,
+                    }
                 )
             }
+        }
+
+        if (isExpanded) {
+            Column {
+                LazyRow(
+                    modifier = modifier.fillMaxWidth(),
+                    state = scrollState,
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    content = categories,
+                )
+                HorizontalDivider()
+            }
+        } else {
+            LazyColumn(
+                modifier = modifier
+                    .fillMaxSize()
+                    .clipToBounds(),
+                state = scrollState,
+                contentPadding = PaddingValues(vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                content = categories,
+            )
         }
     }
 }
@@ -142,64 +132,43 @@ fun CategoryItem(
         iconColor = MaterialTheme.colorScheme.onSurface,
         labelColor = MaterialTheme.colorScheme.onSurface,
     ),
-    avs: AnimatedVisibilityScope,
-    sts: SharedTransitionScope,
     onClick: () -> Unit,
 ) {
-    with(sts) {
-        FilterChip(
-            selected = isSelected,
-            modifier = modifier
-                .sharedBounds(
-                    sharedContentState = rememberSharedContentState(key = "category/$label"),
-                    animatedVisibilityScope = avs,
-                    resizeMode = SharedTransitionScope.ResizeMode.scaleToBounds(
-                        ContentScale.Fit,
-                        Alignment.CenterStart
-                    ),
-                    boundsTransform = { _, _ -> tween() }
-                )
-                .addIf(condition = !isExpanded) {
-                    fillMaxWidth()
-                },
-            shape = MaterialTheme.shapes.medium,
-            border = null,
-            colors = colors,
-            onClick = onClick,
-            leadingIcon = {
-                AnimatedVisibility(
-                    visible = isSelected || !isExpanded,
-                    enter = scaleIn(),
-                    exit = scaleOut(),
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .sharedElement(
-                                sharedContentState = rememberSharedContentState(key = "category_icon/$label"),
-                                animatedVisibilityScope = avs,
-                            )
-                            .addIf(condition = !isExpanded) {
-                                padding(12.dp)
-                            },
-                        imageVector = icon,
-                        contentDescription = label,
-                    )
-                }
+    FilterChip(
+        selected = isSelected,
+        modifier = modifier
+            .addIf(condition = !isExpanded) {
+                fillMaxWidth()
             },
-            label = {
-                Text(
+        shape = MaterialTheme.shapes.medium,
+        border = null,
+        colors = colors,
+        onClick = onClick,
+        leadingIcon = {
+            AnimatedVisibility(
+                visible = isSelected || !isExpanded,
+                enter = scaleIn(),
+                exit = scaleOut(),
+            ) {
+                Icon(
                     modifier = Modifier
-                        .sharedElement(
-                            sharedContentState = rememberSharedContentState(key = "category_label/$label"),
-                            animatedVisibilityScope = avs
-                        )
                         .addIf(condition = !isExpanded) {
-                            padding(vertical = 12.dp)
+                            padding(12.dp)
                         },
-                    text = label,
-                    maxLines = 1,
+                    imageVector = icon,
+                    contentDescription = label,
                 )
             }
-        )
-    }
+        },
+        label = {
+            Text(
+                modifier = Modifier
+                    .addIf(condition = !isExpanded) {
+                        padding(vertical = 12.dp)
+                    },
+                text = label,
+                maxLines = 1,
+            )
+        }
+    )
 }
