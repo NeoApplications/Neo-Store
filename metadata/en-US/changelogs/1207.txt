@@ -1,0 +1,7 @@
+Add: Dismissible banner about Keep Android Open
+Add: Hint on from which repo are you installing or updating with main action
+Fix: Sticking downloaded app notifications
+Update: Move reproducible log providers from Codeberg to IoD
+Update: Revamp repo page
+Remove: Categories' animation between states (Fixes crashes with some OEM ROMs)
+plus many more in over 20 commits & 10 translation contributions

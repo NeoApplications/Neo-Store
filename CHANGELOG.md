@@ -1,6 +1,27 @@
 CHANGELOG
 =========
 
+1.2.4 (18.02.2026) 22 Commits 14 Translations
+------------------
+
+### Function
+
+- Fix: Sticking downloaded app notifications
+- Update: Move reproducible log providers from Codeberg to IoD
+- Add Repo: Fury's F-Droid repository
+
+### UI/UX
+
+- Add: Dismissible banner about Keep Android Open
+- Add: Icons to all prefs
+- Add: Animated sync button
+- Add: Hint on from which repo are you installing or updating with main action
+- Fix: Multiline strings on low dpi
+- Fix: VirusTotal icon
+- Update: Revamp switch preference
+- Update: Revamp repo page
+- Remove: Categories' animation between states (Fixes crashes with some OEM ROMs)
+
 1.2.3 (29.01.2026) 3 Commits 8 Translations
 ------------------
 
