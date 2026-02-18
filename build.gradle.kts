@@ -11,8 +11,6 @@ plugins {
     alias(libs.plugins.gradle.toolchains) apply false
 }
 
-val detectedLocales = detectLocales()
-
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
     arg("room.incremental", "true")
@@ -228,19 +226,6 @@ dependencies {
     testImplementation(libs.junit.jupiter.params)
 }
 
-fun detectLocales(): Set<String> {
-    val langsList = mutableSetOf<String>()
-    fileTree("src/main/res").visit {
-        if (this.file.name == "strings.xml" && this.file.readText().contains("<string")) {
-            val languageCode = this.file.parentFile?.name?.removePrefix("values-")?.let {
-                if (it == "values") "en" else it
-            }
-            languageCode?.let { langsList.add(it) }
-        }
-    }
-    return langsList
-}
-
 abstract class GenerateBuildConfig : DefaultTask() {
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -275,9 +260,7 @@ abstract class GenerateBuildConfig : DefaultTask() {
             package com.machiav3lli.fdroid.config
             
             object BuildConfig {
-                val DETECTED_LOCALES: Array<String> = arrayOf(${
-                detectedLocales.sorted().joinToString { "\"$it\"" }
-            })
+                val DETECTED_LOCALES: Array<String> = arrayOf(${detectedLocales.sorted().joinToString { "\"$it\"" }})
                 const val KEY_API_EXODUS: String = "81f30e4903bde25023857719e71c94829a41e6a5"
             }
         """.trimIndent()
