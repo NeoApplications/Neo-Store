@@ -10,6 +10,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
@@ -35,6 +36,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.data.entity.ComponentState
@@ -216,7 +218,15 @@ fun MainActionButton(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(imageVector = it.icon, contentDescription = stringResource(id = it.textId))
-                Text(text = stringResource(id = it.textId))
+                Column {
+                    Text(text = stringResource(id = it.textId))
+                    if (it is ActionState.Download && it.repoName.isNotBlank()) {
+                        Text(
+                            text = stringResource(R.string.from_FORMAT, it.repoName),
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }
+                }
             }
         }
     }

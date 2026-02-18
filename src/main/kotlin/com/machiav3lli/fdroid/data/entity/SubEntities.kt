@@ -5,6 +5,7 @@ import android.content.pm.PermissionGroupInfo
 import android.content.pm.PermissionInfo
 import android.net.Uri
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.core.net.toUri
 import com.machiav3lli.fdroid.FILTER_CATEGORY_ALL
@@ -148,13 +149,17 @@ sealed interface ComponentState {
     val textId: Int
 }
 
+@Immutable
 sealed class ActionState(
     @StringRes override val textId: Int,
     override val icon: ImageVector = Phosphor.Download,
 ) : ComponentState {
 
-    data object Install : ActionState(R.string.install, Phosphor.Download)
-    data object Update : ActionState(R.string.update, Phosphor.Download)
+    data class Install(override val repoName: String = "") : Download(repoName, R.string.install)
+    data class Update(override val repoName: String = "") : Download(repoName, R.string.update)
+    open class Download(open val repoName: String = "", override val textId: Int) :
+        ActionState(textId, Phosphor.Download)
+
     data object Uninstall : ActionState(R.string.uninstall, Phosphor.TrashSimple)
     data object Launch : ActionState(R.string.launch, Phosphor.ArrowSquareOut)
     data object Details : ActionState(R.string.details, Phosphor.SlidersHorizontal)

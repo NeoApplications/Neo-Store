@@ -179,7 +179,7 @@ fun ProductCarouselItem(
 
     val action = when {
         product.installedVersion.isEmpty() && !Preferences[Preferences.Key.KidsMode]
-             -> ActionState.Install
+             -> ActionState.Install()
 
         product.launchable
              -> ActionState.Launch
@@ -316,7 +316,7 @@ fun ExpandedItemContent(
             if ((installed == null && !Preferences[Preferences.Key.KidsMode]) || !installed?.launcherActivities.isNullOrEmpty()) {
                 val action = when {
                     installed != null -> ActionState.Launch
-                    else              -> ActionState.Install
+                    else              -> ActionState.Install()
                 }
                 ActionButton(
                     text = stringResource(id = action.textId),

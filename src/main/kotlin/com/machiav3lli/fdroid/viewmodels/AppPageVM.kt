@@ -340,7 +340,7 @@ class AppPageVM(
     val actionExecutionState: StateFlow<ActionExecutionState>
         field = MutableStateFlow(ActionExecutionState())
 
-    private val canInstall: Flow<Boolean> = combine(
+    private val canInstallPair: Flow<Pair<Boolean, String>> = combine(
         suggestedProductRepo,
         installedItem,
         downloadingState,
@@ -348,13 +348,15 @@ class AppPageVM(
         val compatible = product?.first?.selectedReleases?.firstOrNull()
             ?.let { it.incompatibilities.isEmpty() } ?: false
 
-        product != null &&
-                installed == null &&
-                compatible &&
-                downloadState?.isActive != true
+        Pair(
+            product != null &&
+                    installed == null &&
+                    compatible &&
+                    downloadState?.isActive != true, product?.second?.name ?: ""
+        )
     }.distinctUntilChanged()
 
-    private val canUpdate: Flow<Boolean> = combine(
+    private val canUpdatePair: Flow<Pair<Boolean, String>> = combine(
         suggestedProductRepo,
         installedItem,
         downloadingState,
@@ -363,11 +365,13 @@ class AppPageVM(
         val compatible = product?.first?.selectedReleases?.firstOrNull()
             ?.let { it.incompatibilities.isEmpty() } ?: false
 
-        product != null &&
-                compatible &&
-                product.first.canUpdate(installed) &&
-                !shouldIgnore(product.first.versionCode, extrasData) &&
-                downloadState?.isActive != true
+        Pair(
+            product != null &&
+                    compatible &&
+                    product.first.canUpdate(installed) &&
+                    !shouldIgnore(product.first.versionCode, extrasData) &&
+                    downloadState?.isActive != true, product?.second?.name ?: ""
+        )
     }.distinctUntilChanged()
 
     private val canUninstall: Flow<Boolean> = combine(
@@ -399,16 +403,20 @@ class AppPageVM(
         .distinctUntilChanged()
 
     private val availableActions: StateFlow<Set<ActionState>> = combine(
-        canInstall,
-        canUpdate,
+        canInstallPair,
+        canUpdatePair,
         canUninstall,
         canLaunch,
         canShare,
         canShowDetails,
-    ) { install, update, uninstall, launch, share, details ->
+    ) { installPair, updatePair, uninstall, launch, share, details ->
         buildSet {
-            if (update) add(ActionState.Update)
-            if (install && !Preferences[Preferences.Key.KidsMode]) add(ActionState.Install)
+            if (updatePair.first) add(
+                ActionState.Update(updatePair.second)
+            )
+            if (installPair.first && !Preferences[Preferences.Key.KidsMode]) add(
+                ActionState.Install(installPair.second)
+            )
             if (launch) add(ActionState.Launch)
             if (details) add(ActionState.Details)
             if (uninstall) add(ActionState.Uninstall)
@@ -421,20 +429,28 @@ class AppPageVM(
     )
 
     private val primaryAction: StateFlow<ActionState> = combine(
-        canUpdate,
+        canUpdatePair,
         canLaunch,
-        canInstall,
+        canInstallPair,
         canShare,
         activeDownloadAction,
-    ) { update, launch, install, share, downloadAction ->
+    ) { updatePair, launch, installPair, share, downloadAction ->
         if (downloadAction != null) return@combine downloadAction
 
         when {
-            update                                            -> ActionState.Update
-            launch                                            -> ActionState.Launch
-            install && !Preferences[Preferences.Key.KidsMode] -> ActionState.Install
-            share                                             -> ActionState.Share
-            else                                              -> ActionState.NoAction
+            updatePair.first
+                 -> ActionState.Update(updatePair.second)
+
+            launch
+                 -> ActionState.Launch
+
+            installPair.first && !Preferences[Preferences.Key.KidsMode]
+                 -> ActionState.Install(installPair.second)
+
+            share
+                 -> ActionState.Share
+
+            else -> ActionState.NoAction
         }
     }.stateIn(
         viewModelScope,
@@ -561,7 +577,7 @@ class AppPageVM(
         val extras = extraAppState.value.extras
 
         return when (action) {
-            ActionState.Install, ActionState.Update -> {
+            is ActionState.Install, is ActionState.Update -> {
                 if (Preferences[Preferences.Key.DownloadShowDialog]) {
                     DialogKey.Download(
                         state.suggestedProductRepo?.first?.product?.label ?: packageName.value
@@ -575,7 +591,7 @@ class AppPageVM(
                 } else null
             }
 
-            ActionState.Launch                      -> {
+            ActionState.Launch                            -> {
                 state.installed?.let { installed ->
                     if (installed.launcherActivities.size >= 2) {
                         DialogKey.Launch(
@@ -586,7 +602,7 @@ class AppPageVM(
                 }
             }
 
-            ActionState.Uninstall                   -> {
+            ActionState.Uninstall                         -> {
                 if (NeoApp.installer.isRoot()) {
                     DialogKey.Uninstall(
                         state.suggestedProductRepo?.first?.product?.label ?: packageName.value
@@ -598,7 +614,7 @@ class AppPageVM(
                 } else null
             }
 
-            else                                    -> null
+            else                                          -> null
         }
     }
 
@@ -610,7 +626,7 @@ class AppPageVM(
             val neoActivity = context as? NeoActivity
 
             when (action) {
-                ActionState.Install, ActionState.Update      -> {
+                is ActionState.Install, is ActionState.Update -> {
                     startUpdate(
                         packageName.value,
                         state.installed,
@@ -618,27 +634,27 @@ class AppPageVM(
                     )
                 }
 
-                ActionState.Launch                           -> {
+                ActionState.Launch                            -> {
                     state.installed?.let { installed ->
                         installed.launcherActivities.firstOrNull()
                             ?.let { context.startLauncherActivity(installed.packageName, it.first) }
                     }
                 }
 
-                ActionState.Details                          -> {
+                ActionState.Details                           -> {
                     context.startActivity(
                         Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                             .setData("package:${packageName.value}".toUri())
                     )
                 }
 
-                ActionState.Uninstall                        -> {
+                ActionState.Uninstall                         -> {
                     NeoApp.installer.uninstall(packageName.value)
                 }
 
                 is ActionState.CancelPending,
                 is ActionState.CancelConnecting,
-                is ActionState.CancelDownloading             -> {
+                is ActionState.CancelDownloading              -> {
                     val cancelIntent = Intent(context, ActionReceiver::class.java).apply {
                         this.action = ActionReceiver.COMMAND_CANCEL_DOWNLOAD
                         putExtra(ARG_PACKAGE_NAME, packageName.value)
@@ -646,7 +662,7 @@ class AppPageVM(
                     neoActivity?.sendBroadcast(cancelIntent)
                 }
 
-                ActionState.Share                            -> {
+                ActionState.Share                             -> {
                     val prodRepo = state.productRepos.first { it.second.webBaseUrl.isNotBlank() }
                     context.shareIntent(
                         packageName.value,
@@ -655,11 +671,11 @@ class AppPageVM(
                     )
                 }
 
-                ActionState.Bookmark, ActionState.Bookmarked -> {
+                ActionState.Bookmark, ActionState.Bookmarked  -> {
                     setFavorite(packageName.value, action is ActionState.Bookmark)
                 }
 
-                else                                         -> {
+                else                                          -> {
                     actionExecutionState.update {
                         it.copy(error = "Unsupported action: $action")
                     }
