@@ -9,6 +9,7 @@ compose-html = "1.1.0"
 coroutines = "1.10.2"
 datetime = "0.7.1"
 desugar = "2.1.5"
+gradle-toolchains = "1.0.0"
 hiddenapi-bypass = "6.1"
 immutables = "0.4.0"
 jackson = "2.21.0"
@@ -120,6 +121,8 @@ junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-para
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+gradle-toolchains = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "gradle-toolchains" }
+koin-compiler = { id = "io.insert-koin.compiler.plugin", version.ref = "koin-plugin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }

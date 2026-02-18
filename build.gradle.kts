@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.shizuku.refine)
     alias(libs.plugins.stability.analyzer)
+    alias(libs.plugins.gradle.toolchains) apply false
 }
 
 val detectedLocales = detectLocales()
