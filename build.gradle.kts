@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
     alias(libs.plugins.shizuku.refine)
+    alias(libs.plugins.stability.analyzer)
 }
 
 val detectedLocales = detectLocales()

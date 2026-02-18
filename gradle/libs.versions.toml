@@ -35,6 +35,7 @@ shizuku-refine = "4.4.0"
 simple-storage = "2.2.0"
 vico = "2.4.1"
 work = "2.11.0"
+stability-analyzer = "0.6.7"
 zxing = "3.5.4"
 
 [libraries]
@@ -124,3 +125,4 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 shizuku-refine = { id = "dev.rikka.tools.refine", version.ref = "shizuku-refine" }
+stability-analyzer = { id = "com.github.skydoves.compose.stability.analyzer", version.ref = "stability-analyzer" }
