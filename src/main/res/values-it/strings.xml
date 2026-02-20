@@ -493,4 +493,7 @@
     <string name="disable_list_detail">Disabilita il layout elenco-dettagli</string>
     <string name="disable_list_detail_summary">Questa opzione disabilita la suddivisione del layout in due pannelli quando lo schermo è sufficientemente ampio, ad esempio su un tablet o un telefono in modalità orizzontale.</string>
     <string name="virustotal_badge">Badge Virustotal</string>
+    <string name="from_FORMAT">da %s</string>
+    <string name="keep_android_open">Difendi l\'apertura di Android</string>
+    <string name="keep_android_open_notice">Le politiche di Google minacciano l\'esistenza di F-Droid e la natura aperta di Android. Non restare a guardare, aiutaci a proteggerli: https://keepandroidopen.org/</string>
 </resources>
