@@ -488,4 +488,7 @@
     <string name="disable_list_detail">Detaillijstweergave uitschakelen</string>
     <string name="disable_list_detail_summary">Dit voorkomt dat de lay-out in twee panelen wordt gesplitst wanneer het scherm breed genoeg is, zoals op een tablet of telefoon in liggende stand.</string>
     <string name="virustotal_badge">Virustotal-badge</string>
+    <string name="keep_android_open">Houd Android open</string>
+    <string name="keep_android_open_notice">Android\'s openheid en F-Droid worden door Google bedreigd. We hebben je hulp nodig: https://keepandroidopen.org/</string>
+    <string name="from_FORMAT">van %s</string>
 </resources>

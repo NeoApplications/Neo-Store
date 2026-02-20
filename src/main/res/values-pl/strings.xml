@@ -496,4 +496,7 @@
     <string name="disable_list_detail">Wyłącz układ listy szczegółów</string>
     <string name="disable_list_detail_summary">Wyłącza to dzielenie układu na dwa panele, gdy ekran jest wystarczająco szeroki, np. na tablecie lub telefonie w trybie poziomym.</string>
     <string name="virustotal_badge">Odznaka Virustotal</string>
+    <string name="keep_android_open">Zachowuj otwartość systemu Android</string>
+    <string name="keep_android_open_notice">Otwartość systemu Android i F-Droid są zagrożone przez Google. Potrzebujemy Twojej pomocy: https://keepandroidopen.org/</string>
+    <string name="from_FORMAT">od %s</string>
 </resources>
