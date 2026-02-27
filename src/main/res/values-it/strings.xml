@@ -485,9 +485,9 @@
     <string name="trusted_label">Attendibile</string>
     <string name="translation">Traduzione</string>
     <plurals name="updated_apps">
-        <item quantity="one">%d app aggiornata</item>
-        <item quantity="many">%d app aggiornate</item>
-        <item quantity="other">%d app aggiornate</item>
+        <item quantity="one">%d app da aggiornare</item>
+        <item quantity="many">%d app da aggiornare</item>
+        <item quantity="other">%d app da aggiornare</item>
     </plurals>
     <string name="downloads_recent_FORMAT">Download recenti: %s</string>
     <string name="disable_list_detail">Disabilita il layout elenco-dettagli</string>
