@@ -288,7 +288,7 @@
     <string name="permission_not_granted">未授予</string>
     <string name="permission_not_present">不存在于您的系统中</string>
     <string name="app_installed">已安装</string>
-    <string name="vulnerabilities">漏洞。</string>
+    <string name="vulnerabilities">漏洞</string>
     <string name="vulnerabilities_installed_apps">这些已安装的应用程序存在已知漏洞！</string>
     <string name="no_vulnerabilities_installed_apps">没有已安装的应用程序存在已知漏洞。</string>
     <string name="only_on_battery">仅在充电时</string>
@@ -459,4 +459,22 @@
     <string name="trending_from_neostore">Neo Store 上的趋势</string>
     <string name="trending_from_droidify">Droid-ify 上的趋势</string>
     <string name="shizuku_installer">Shizuku 安装器</string>
+    <string name="integrity_check_hashing">获取下载文件哈希值失败。</string>
+    <string name="trusted_repo">可信仓库</string>
+    <string name="trusted_label">可信的</string>
+    <string name="translation">翻译</string>
+    <plurals name="updated_apps">
+        <item quantity="other">%d 已更新应用</item>
+    </plurals>
+    <string name="downloads_recent_FORMAT">最近下载数：%s</string>
+    <string name="disable_list_detail_summary">此选项可以当屏幕足够宽时（比如平板或手机横屏）禁用将布局分割成两个面板。</string>
+    <string name="max_parallel_downloads">使用 Neo Store 下载管理器时，最大化并行下载数。</string>
+    <string name="download_stats_notification_title">更新下载统计中</string>
+    <string name="download_stats_notification_pending">准备获取下载统计数据中</string>
+    <string name="batch_sync_progress_FORMAT">同步仓库中：%1$d/%2$d</string>
+    <string name="dlstats_izzyondroid">IzzyOnDroid</string>
+    <string name="duplicate_repo_address_title">添加仓库失败</string>
+    <string name="duplicate_repo_address_FORMAT">地址 %1$s 是已存在仓库的重复地址。</string>
+    <string name="main_page">主页</string>
+    <string name="disable_list_detail">禁用列表详细布局</string>
 </resources>

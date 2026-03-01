@@ -502,4 +502,7 @@
     <string name="disable_list_detail">تعطيل تخطيط القائمة والتفاصيل</string>
     <string name="disable_list_detail_summary">يؤدي هذا إلى تعطيل تقسيم التخطيط إلى لوحتين عندما تكون الشاشة عريضة بما يكفي، كما هو الحال على جهاز لوحي أو هاتف في الوضع الأفقي.</string>
     <string name="virustotal_badge">شارة VirusTotal</string>
+    <string name="keep_android_open">إبقاء أندرويد مفتوحًا</string>
+    <string name="keep_android_open_notice">حرية أندرويد وF-Droid مهددان من قِبل Google نحن بحاجة إلى مساعدتك: https://keepandroidopen.org/</string>
+    <string name="from_FORMAT">من %s</string>
 </resources>
