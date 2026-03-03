@@ -1,0 +1,7 @@
+Aggiunto: Banner ignorabile su Mantieni Android aperto
+Aggiunto: Suggerimento su quale repository stai installando o aggiornando con l'azione principale
+Corretto: Notifiche delle app scaricate bloccate
+Aggiornato: Spostamento dei provider di log riproducibili da Codeberg a IoD
+Aggiornato: Rinnovamento della pagina del repository
+Rimosso: Animazione delle categorie tra gli stati (corregge crash con alcune ROM OEM)
+e molti altri in oltre 20 commit e 10 contributi di traduzione

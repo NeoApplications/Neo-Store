@@ -5,4 +5,4 @@ Aggiornato: Abilita la rotazione mirror per impostazione predefinita per F-Droid
 Aggiornato: Migliorata la segnalazione delle cause di errore di sincronizzazione
 Aggiornato: Ripristinata l'opzione nella barra di ricerca in basso
 Rimossi i repository: C10udburst, NanoDroid, Anonymous Messenger, Revolt, 2BR, J.A.K's, Umbrell
- e molti altri in oltre 30 commit e 10 contributi di traduzione
+e molti altri in oltre 30 commit e 10 contributi di traduzione
