@@ -90,7 +90,7 @@
     <string name="could_not_download_FORMAT">Konnte %s nicht herunterladen</string>
     <string name="author_website">Website des Autors</string>
     <string name="delete">Löschen</string>
-    <string name="recently_updated">Kürzlich aktualisiert</string>
+    <string name="recently_updated">Zuletzt aktualisiert</string>
     <string name="license">Lizenz</string>
     <string name="could_not_sync_FORMAT">Konnte %s nicht synchronisieren</string>
     <string name="only_compatible_with_FORMAT">Nur kompatibel mit %s</string>
@@ -183,7 +183,7 @@
     <string name="only_on_wifi_and_battery">Nur mit WLAN und Stromversorgung</string>
     <string name="install_after_sync">Automatisch aktualisieren</string>
     <string name="install_after_sync_summary">Alle Anwendungen aktualisieren nachdem die Paketquellen geprüft wurden.</string>
-    <string name="prefs_updated_apps">Anzahl der unter „Kürzlich aktualisiert“ angezeigten Anwendungen</string>
+    <string name="prefs_updated_apps">Anzahl der unter „Zuletzt aktualisiert“ angezeigten Anwendungen</string>
     <string name="prefs_new_apps">Anzahl der unter „Neue Anwendungen“ angezeigten Anwendungen</string>
     <string name="new_repository">Neue Paketquelle</string>
     <string name="default_tab">Standard-Registerkarte</string>
@@ -386,7 +386,7 @@
     <string name="kids_mode_summary_full">Aktiviere den Kindermodus, um neue App-Installationen zu deaktivieren. Tippe zum Deaktivieren sechsmal auf die Version der App auf der anderen Seite. Beim Neustart der App wird dieser Hinweis ausgeblendet.</string>
     <string name="system_installer">System-Installer</string>
     <string name="hide_new_apps">Leiste für neue Anwendungen ausblenden</string>
-    <string name="hide_new_apps_description">Neue und kürzlich aktualisierte Apps in der vertikalen Neueste-Liste kombinieren.</string>
+    <string name="hide_new_apps_description">Neue und zuletzt aktualisierte Apps in der vertikalen Neueste-Liste kombinieren.</string>
     <string name="last_successful_sync">letztes Update: %s
 \nAlle Repos: %s</string>
     <string name="confirm_uninstall_DESC_FORMAT">Möchtest du %s wirklich deinstallieren?</string>
@@ -490,4 +490,7 @@
     <string name="disable_list_detail">Layout „Liste-Detail“ deaktivieren</string>
     <string name="disable_list_detail_summary">Dadurch wird die Aufteilung des Layouts in zwei Bereiche deaktiviert, wenn der Bildschirm breit genug ist, z. B. auf einem Tablet oder Smartphone im Querformat.</string>
     <string name="virustotal_badge">Virustotal-Abzeichen</string>
+    <string name="keep_android_open">Keep Android Open</string>
+    <string name="keep_android_open_notice">Die Offenheit von Android und F-Droid sind durch Google bedroht. Wir brauchen Ihre Hilfe: https://keepandroidopen.org/</string>
+    <string name="from_FORMAT">von %s</string>
 </resources>
