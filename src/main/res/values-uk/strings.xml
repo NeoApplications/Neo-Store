@@ -294,7 +294,7 @@
     <string name="app_installed">Встановлено</string>
     <string name="vulnerabilities_installed_apps">Ці встановлені додатки мають відомі вразливості!</string>
     <string name="no_vulnerabilities_installed_apps">Жоден із встановлених додатків не має відомих уразливостей.</string>
-    <string name="vulnerabilities">Вразливості.</string>
+    <string name="vulnerabilities">Вразливості</string>
     <string name="edit">Редагувати</string>
     <string name="only_on_battery">Тільки під час зарядки</string>
     <string name="allowed_anti_features">Дозволені анти-функції</string>
@@ -480,4 +480,23 @@
     <string name="duplicate_repo_address_title">Не вдалося додати репозиторій</string>
     <string name="duplicate_repo_address_FORMAT">Адреса %1$s є дублікатом вже наявного репозиторію.</string>
     <string name="main_page">Головна сторінка</string>
+    <string name="integrity_check_failed">Не вдалося перевірити цілісність через невідповідність хешу.</string>
+    <string name="integrity_check_hashing">Не вдалося отримати хеш завантаженого файлу.</string>
+    <string name="invalid_metadata_error">Невідповідність метаданих завантаженої збірки.</string>
+    <string name="trusted_repo">Надійний репозиторій</string>
+    <string name="trusted_label">Надійний</string>
+    <string name="translation">Переклад</string>
+    <plurals name="updated_apps">
+        <item quantity="one">%d оновлений застосунок</item>
+        <item quantity="few">%d оновлені застосунки</item>
+        <item quantity="many">%d оновлених застосунків</item>
+        <item quantity="other">%d оновлених застосунків</item>
+    </plurals>
+    <string name="downloads_recent_FORMAT">Останні завантаження: %s</string>
+    <string name="disable_list_detail">Вимкнути макет списку деталей</string>
+    <string name="disable_list_detail_summary">Це вимикає розділення макета на дві панелі, коли екран достатньо широкий, наприклад на планшеті або телефоні в альбомному режимі.</string>
+    <string name="virustotal_badge">Значок Virustotal</string>
+    <string name="keep_android_open">Збережіть відкритість Android</string>
+    <string name="keep_android_open_notice">Відкритість Android і F-Droid знаходяться під загрозою з боку Google. Нам потрібна ваша допомога: https://keepandroidopen.org/</string>
+    <string name="from_FORMAT">з %s</string>
 </resources>
