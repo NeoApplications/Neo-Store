@@ -1,0 +1,7 @@
+Dodano: Możliwość zamknięcia banera dotyczącego "Keep Android Open"
+Dodano: Wskazówka dotycząca repozytorium, z którego instalujesz lub aktualizujesz za pomocą głównej akcji
+Naprawiono: Utknięcie powiadomień o pobranych aplikacjach
+Aktualizacja: Przeniesienie dostawców logów z Codeberg do IoD
+Aktualizacja: Przebudowa strony repozytorium
+Usunięcie: Animacji kategorii między stanami (naprawia awarie niektórych ROM-ów OEM)
+Oraz wiele innych zmian w ponad 20 aktualizacjach i 10 tłumaczeniach
