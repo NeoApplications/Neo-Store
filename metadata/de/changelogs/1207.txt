@@ -1,0 +1,7 @@
+Hinzufügen: Ausblendbares Banner zu „Keep Android Open“
+Hinzufügen: Hinweis, aus welchem Repository Sie mit der Hauptaktion installieren oder aktualisieren
+Behebung: Angeheftete Benachrichtigungen zu heruntergeladenen Apps
+Aktualisierung: Verschieben reproduzierbarer Protokollanbieter von Codeberg zu IoD
+Aktualisierung: Überarbeitung der Repo-Seite
+Entfernen: Animation der Kategorien zwischen den Zuständen (behebt Abstürze bei einigen OEM-ROMs)
+sowie vieles mehr in über 20 Commits und 10 Übersetzungsbeiträgen
