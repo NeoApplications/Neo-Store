@@ -491,4 +491,8 @@
     <string name="downloads_recent_FORMAT">Téléchargements récents : %s</string>
     <string name="disable_list_detail">Désactiver l\'affichage en liste détaillée</string>
     <string name="disable_list_detail_summary">Cela désactive la division de l\'affichage en deux panneaux lorsque l\'écran est suffisamment large, comme sur une tablette ou un téléphone en mode paysage.</string>
+    <string name="virustotal_badge">Badge VirusTotal</string>
+    <string name="keep_android_open">Garder Android ouvert</string>
+    <string name="keep_android_open_notice">L\'ouverture d\'Android et F-Droid sont menacés par Google. Nous avons besoin de votre aide : https://keepandroidopen.org/</string>
+    <string name="from_FORMAT">depuis %s</string>
 </resources>
