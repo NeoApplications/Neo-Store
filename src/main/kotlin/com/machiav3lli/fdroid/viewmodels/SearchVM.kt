@@ -68,6 +68,7 @@ class SearchVM(
             .map { it.toItem(installedMap[it.product.packageName]) }
 
         SearchPageState(
+            isInitialized = true,
             sortFilter = input.sortFilter,
             query = input.query,
             source = input.source,
@@ -78,6 +79,19 @@ class SearchVM(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = SearchPageState()
+    )
+
+    val isLoading: StateFlow<Boolean> = combine(
+        _searchInput,
+        pageState,
+    ) { input, state ->
+        input.query != state.query ||
+        input.source != state.source ||
+        input.sortFilter != state.sortFilter
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = false
     )
 
     fun setSortFilter(value: String) = _searchInput.update { it.copy(sortFilter = value) }
@@ -98,6 +112,7 @@ class SearchVM(
 }
 
 data class SearchPageState(
+    val isInitialized: Boolean = false,
     val sortFilter: String = "",
     val query: String = "",
     val source: Source = Source.SEARCH,

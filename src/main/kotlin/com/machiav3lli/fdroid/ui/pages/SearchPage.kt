@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.ui.pages
 
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -39,6 +41,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.Source
+import com.machiav3lli.fdroid.ui.components.DelayedLinearProgressBar
 import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.SortFilterChip
@@ -71,6 +74,7 @@ fun SearchPage(
 
     val listState = rememberLazyListState()
     val pageState by viewModel.pageState.collectAsStateWithLifecycle()
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val dataState by mainVM.dataState.collectAsStateWithLifecycle()
 
     val currentTab by remember {
@@ -200,6 +204,7 @@ fun SearchPage(
                     neoActivity.navigateSortFilterSheet(NavItem.Search)
                 }
             }
+            DelayedLinearProgressBar(visible = isLoading)
         }
     }
 
@@ -274,7 +279,16 @@ fun SearchPage(
             }
         },
     ) { paddingValues ->
-        if (pageState.filteredProducts.isEmpty() && pageState.query.isNotBlank())
+        if (!pageState.isInitialized)
+            Box(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator()
+            }
+        else if (pageState.filteredProducts.isEmpty() && pageState.query.isNotBlank())
             Column(
                 modifier = Modifier
                     .padding(paddingValues)
