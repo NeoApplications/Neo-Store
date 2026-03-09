@@ -21,6 +21,7 @@ data object DelayedLinearProgressBarDefaults {
 @Composable
 fun DelayedLinearProgressBar(
     visible: Boolean,
+    modifier: Modifier = Modifier,
     delayMillis: Long = DelayedLinearProgressBarDefaults.SHORT_DELAY_MS,
 ) {
     var show by remember { mutableStateOf(false) }
@@ -33,6 +34,7 @@ fun DelayedLinearProgressBar(
         }
     }
     AnimatedVisibility(
+        modifier = modifier,
         visible = show,
         enter = expandVertically(),
         exit = shrinkVertically(),

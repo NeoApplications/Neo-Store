@@ -204,7 +204,10 @@ fun SearchPage(
                     neoActivity.navigateSortFilterSheet(NavItem.Search)
                 }
             }
-            DelayedLinearProgressBar(visible = isLoading)
+            DelayedLinearProgressBar(
+                visible = isLoading,
+                modifier = Modifier.padding(8.dp)
+            )
         }
     }
 
