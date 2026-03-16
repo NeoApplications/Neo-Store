@@ -184,7 +184,7 @@
     <string name="new_applications">Yeniler</string>
     <string name="install_after_sync">Otomatik güncelle</string>
     <string name="install_after_sync_summary">Kaynaklar eşlendikten sonra sonra tüm yeni sürümleri yükle.</string>
-    <string name="prefs_updated_apps">\"Son güncellenenler\" de gösterilecek uygulama sayısı\\</string>
+    <string name="prefs_updated_apps">\"Son güncellenenler\" de gösterilecek uygulama sayısı</string>
     <string name="prefs_new_apps">Yeni uygulamalar bölümünde gösterilecek uygulama sayısı</string>
     <string name="new_repository">Yeni kaynak</string>
     <string name="default_tab">Varsayılan sekme</string>
@@ -290,7 +290,7 @@
     <string name="permission_not_present">Sisteminizde mevcut değil</string>
     <string name="vulnerabilities_installed_apps">Bu yüklü uygulamalarda bilinen güvenlik açıkları var!</string>
     <string name="no_vulnerabilities_installed_apps">Yüklü uygulamalarda bilinen güvenlik açığı yok.</string>
-    <string name="vulnerabilities">Güvenlik açıkları.</string>
+    <string name="vulnerabilities">Güvenlik açıkları</string>
     <string name="only_on_battery">Yalnızca şarj olurken</string>
     <string name="edit">Düzenle</string>
     <string name="tools">Araçlar</string>
@@ -451,7 +451,7 @@
     <string name="downloads_top_ranking_FORMAT">Tüm zamanların indirme sıralaması: %s</string>
     <string name="total_recent_downloads">Zirvedeki son indirmeler</string>
     <string name="total_alltime_downloads">Zirvedeki tüm zamanların indirmeleri</string>
-    <string name="trending_from_unknown">Bilinmeyen istemcilere yönelik trendler</string>
+    <string name="trending_from_unknown">Bilinmeyen istemcilerde trend olanlar</string>
     <string name="trending_from_droidify">Droid-ify üzerinde yükselişte</string>
     <string name="trending_from_fdroid">F-Droid istemcisi üzerinde yükselişte</string>
     <string name="trending_from_fdroid_classic">F-Droid Klasik üzerinde yükselişte</string>
@@ -467,4 +467,26 @@
     <string name="duplicate_repo_address_title">Depo eklenirken hata oluştu</string>
     <string name="duplicate_repo_address_FORMAT">%1$s adresi zaten var olan bir depoyla aynı.</string>
     <string name="main_page">Ana sayfa</string>
+    <string name="from_FORMAT">%s tarafından</string>
+    <string name="keep_android_open_notice">Android\'in açık kaynak yapısı ve F-Droid, Google tarafından tehdit altında. Yardımınıza ihtiyacımız var: https://keepandroidopen.org/</string>
+    <string name="keep_android_open">Android Açık Kalsın</string>
+    <string name="virustotal_badge">Virustotal rozeti</string>
+    <string name="disable_list_detail_summary">Bu ayar, ekranın yeterince geniş olduğu durumlarda (örneğin, yatay modda bir tablet veya akıllı telefonda) düzenin iki panele bölünmesini engeller.</string>
+    <string name="disable_list_detail">Liste-ayrıntı düzenini devre dışı bırak</string>
+    <string name="downloads_recent_FORMAT">Son indirilenler: %s</string>
+    <plurals name="updated_apps">
+        <item quantity="one">%d güncellenmiş uygulama</item>
+        <item quantity="other">%d güncellenmiş uygulama</item>
+    </plurals>
+    <string name="translation">Çeviri</string>
+    <string name="trusted_label">Güvenilir</string>
+    <string name="trusted_repo">Güvenilir depo</string>
+    <string name="invalid_metadata_error">İndirilen derlemenin üstverileri uyuşmuyor.</string>
+    <string name="integrity_check_hashing">İndirilen dosyanın hash değeri alınamadı.</string>
+    <string name="integrity_check_failed">Hash değeri uyuşmadığı için bütünlük denetimi başarısız oldu.</string>
+    <string name="dlstats_izzyondroid">IzzyOnDroid</string>
+    <string name="download_stats_notification_message">Aylık veri alma işlemi devam ediyor: %2$d/%1$d\n%3$d güncellendi, %4$d değişmedi, %5$d başarısız oldu</string>
+    <string name="rb_obfusk">Kod karıştırma</string>
+    <string name="rb_bg443">bg443</string>
+    <string name="rb_izzyondroid">IzzyOnDroid</string>
 </resources>
