@@ -1,3 +1,11 @@
+## Visual Architecture Overview :eyes:
+
+New to the project? Check out the [`visualdoc/`](visualdoc/) folder for visual diagrams of the project's architecture — including component interactions, logic flow, and advanced logic breakdown.
+
+These diagrams help new contributors quickly understand how the codebase is structured and how different parts communicate with each other, without having to read through all the source code first.
+
+To explore the project from different perspectives, you can visualize this repository using [archtocode.com](https://archtocode.com) — just connect it to your local clone or directly from GitHub. It allows you to look at the project architecture from various angles to understand the code logic faster.
+
 ## Development Progress
 
 - [ ] New architecture
