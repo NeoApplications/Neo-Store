@@ -23,6 +23,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -177,15 +178,21 @@ fun WideSearchField(
     query: String,
     modifier: Modifier = Modifier,
     label: String = stringResource(id = R.string.search),
-    focusOnCompose: Boolean = true,
     showCloseButton: Boolean = false,
     onClose: () -> Unit = {},
     onCleanQuery: () -> Unit,
     onQueryChanged: (String) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
-    val textFieldFocusRequester = remember { FocusRequester() }
-    LaunchedEffect(textFieldFocusRequester) { if (focusOnCompose) textFieldFocusRequester.requestFocus() }
+    val focusRequester = remember { FocusRequester() }
+    var focusRequested by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        if (!focusRequested) {
+            focusRequester.requestFocus()
+            focusRequested = true
+        }
+    }
 
     var textFieldValue by remember {
         mutableStateOf(query)
@@ -203,7 +210,7 @@ fun WideSearchField(
             },
             modifier = Modifier
                 .weight(1f)
-                .focusRequester(textFieldFocusRequester),
+                .focusRequester(focusRequester),
             shape = MaterialTheme.shapes.extraLarge,
             trailingIcon = {
                 AnimatedVisibility(
