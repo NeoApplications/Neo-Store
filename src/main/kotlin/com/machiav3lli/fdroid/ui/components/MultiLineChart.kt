@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -9,40 +10,38 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
-import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
-import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
-import com.patrykandpatrick.vico.compose.cartesian.cartesianLayerPadding
+import com.patrykandpatrick.vico.compose.cartesian.axis.HorizontalAxis
+import com.patrykandpatrick.vico.compose.cartesian.axis.VerticalAxis
+import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter
+import com.patrykandpatrick.vico.compose.cartesian.data.lineSeries
+import com.patrykandpatrick.vico.compose.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLine
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
 import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
+import com.patrykandpatrick.vico.compose.common.Fill
+import com.patrykandpatrick.vico.compose.common.LegendItem
 import com.patrykandpatrick.vico.compose.common.ProvideVicoTheme
+import com.patrykandpatrick.vico.compose.common.component.ShapeComponent
 import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
-import com.patrykandpatrick.vico.compose.common.component.shapeComponent
-import com.patrykandpatrick.vico.compose.common.fill
 import com.patrykandpatrick.vico.compose.common.rememberHorizontalLegend
 import com.patrykandpatrick.vico.compose.m3.common.rememberM3VicoTheme
-import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
-import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
-import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
-import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
-import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
-import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
-import com.patrykandpatrick.vico.core.common.LegendItem
-import com.patrykandpatrick.vico.core.common.shape.CorneredShape
 import java.time.YearMonth
 
 @Composable
 fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modifier) {
     val modelProducer = remember { CartesianChartModelProducer() }
-    val legendItemLabelComponent = rememberTextComponent(MaterialTheme.colorScheme.onSurface)
+    val legendItemLabelComponent =
+        rememberTextComponent(TextStyle(MaterialTheme.colorScheme.onSurface))
     val dates = data.keys.sorted()
     val lineKeys = data.values.flatMap { it.keys }.distinct().sorted()
-    val entriesPerLine: Map<String, List<Long>> = lineKeys.mapIndexed { index, client ->
-        client to dates.mapIndexed { idx, date ->
+    val entriesPerLine: Map<String, List<Long>> = lineKeys.mapIndexed { _, client ->
+        client to dates.mapIndexed { _, date ->
             data[date]?.get(client) ?: 0
         }
     }.toMap()
@@ -60,7 +59,7 @@ fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Mo
     LaunchedEffect(Unit) {
         modelProducer.runTransaction {
             lineSeries {
-                entriesPerLine.forEach { (key, vals) ->
+                entriesPerLine.forEach { (_, vals) ->
                     series(vals)
                 }
             }
@@ -79,13 +78,12 @@ fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Mo
                     lineProvider = LineCartesianLayer.LineProvider.series(
                         colors.map { color ->
                             LineCartesianLayer.rememberLine(
-                                fill = LineCartesianLayer.LineFill.single(fill(color)),
+                                fill = LineCartesianLayer.LineFill.single(Fill(color)),
                                 areaFill = null,
                             )
                         }
                     )
                 ),
-                layerPadding = { cartesianLayerPadding() },
                 startAxis = VerticalAxis.rememberStart(),
                 bottomAxis = HorizontalAxis.rememberBottom(
                     valueFormatter = CartesianValueFormatter { _, index, _ ->
@@ -95,11 +93,11 @@ fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Mo
                     },
                 ),
                 legend = rememberHorizontalLegend(
-                    items = { extraStore ->
+                    items = { _ ->
                         entriesPerLine.keys.forEachIndexed { index, label ->
                             add(
                                 LegendItem(
-                                    shapeComponent(fill(colors[index]), CorneredShape.Pill),
+                                    ShapeComponent(Fill(colors[index]), RoundedCornerShape(50)),
                                     legendItemLabelComponent,
                                     label,
                                 )
@@ -115,11 +113,12 @@ fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Mo
 @Composable
 fun ClientsChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modifier) {
     val modelProducer = remember { CartesianChartModelProducer() }
-    val legendItemLabelComponent = rememberTextComponent(MaterialTheme.colorScheme.onSurface)
+    val legendItemLabelComponent =
+        rememberTextComponent(TextStyle(MaterialTheme.colorScheme.onSurface))
     val dates = data.keys.sorted()
     val lineKeys = data.values.flatMap { it.keys }.distinct().sorted()
-    val entriesPerLine: Map<String, List<Long>> = lineKeys.mapIndexed { index, client ->
-        client to dates.mapIndexed { idx, date ->
+    val entriesPerLine: Map<String, List<Long>> = lineKeys.mapIndexed { _, client ->
+        client to dates.mapIndexed { _, date ->
             data[date]?.get(client) ?: 0
         }
     }.toMap()
@@ -137,7 +136,7 @@ fun ClientsChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modi
     LaunchedEffect(Unit) {
         modelProducer.runTransaction {
             lineSeries {
-                entriesPerLine.forEach { (key, vals) ->
+                entriesPerLine.forEach { (_, vals) ->
                     series(vals)
                 }
             }
@@ -156,13 +155,12 @@ fun ClientsChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modi
                     lineProvider = LineCartesianLayer.LineProvider.series(
                         colors.map { color ->
                             LineCartesianLayer.rememberLine(
-                                fill = LineCartesianLayer.LineFill.single(fill(color)),
+                                fill = LineCartesianLayer.LineFill.single(Fill(color)),
                                 areaFill = null,
                             )
                         }
                     )
                 ),
-                layerPadding = { cartesianLayerPadding() },
                 startAxis = VerticalAxis.rememberStart(),
                 bottomAxis = HorizontalAxis.rememberBottom(
                     valueFormatter = CartesianValueFormatter { _, index, _ ->
@@ -172,11 +170,11 @@ fun ClientsChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modi
                     },
                 ),
                 legend = rememberHorizontalLegend(
-                    items = { extraStore ->
+                    items = { _ ->
                         entriesPerLine.keys.forEachIndexed { index, label ->
                             add(
                                 LegendItem(
-                                    shapeComponent(fill(colors[index]), CorneredShape.Pill),
+                                    ShapeComponent(Fill(colors[index]), RoundedCornerShape(50)),
                                     legendItemLabelComponent,
                                     label,
                                 )
@@ -193,11 +191,12 @@ fun ClientsChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modi
 fun SimpleLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val modelProducer = remember { CartesianChartModelProducer() }
-    val legendItemLabelComponent = rememberTextComponent(MaterialTheme.colorScheme.onSurface)
+    val legendItemLabelComponent =
+        rememberTextComponent(TextStyle(MaterialTheme.colorScheme.onSurface))
     val dates = data.keys.sorted()
     val lineKeys = data.values.flatMap { it.keys }.distinct().sorted()
-    val entriesPerLine: Map<String, List<Long>> = lineKeys.mapIndexed { index, key ->
-        key to dates.mapIndexed { idx, date ->
+    val entriesPerLine: Map<String, List<Long>> = lineKeys.mapIndexed { _, key ->
+        key to dates.mapIndexed { _, date ->
             data[date]?.get(key) ?: 0
         }
     }.toMap()
@@ -224,7 +223,7 @@ fun SimpleLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = M
                 rememberLineCartesianLayer(
                     lineProvider = LineCartesianLayer.LineProvider.series(
                         LineCartesianLayer.rememberLine(
-                            fill = LineCartesianLayer.LineFill.single(fill(lineColor)),
+                            fill = LineCartesianLayer.LineFill.single(Fill(lineColor)),
                             areaFill = null,
                         )
                     )
@@ -238,10 +237,10 @@ fun SimpleLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = M
                     },
                 ),
                 legend = rememberHorizontalLegend(
-                    items = { extraStore ->
+                    items = { _ ->
                         add(
                             LegendItem(
-                                shapeComponent(fill(lineColor), CorneredShape.Pill),
+                                ShapeComponent(Fill(lineColor), RoundedCornerShape(50)),
                                 legendItemLabelComponent,
                                 context.getString(R.string.total_downloads),
                             )
