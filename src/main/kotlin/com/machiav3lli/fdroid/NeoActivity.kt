@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation3.runtime.NavBackStack
-import androidx.navigation3.runtime.rememberNavBackStack
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.repository.DownloadedRepository
 import com.machiav3lli.fdroid.data.repository.ExtrasRepository
@@ -78,7 +77,9 @@ class NeoActivity : AppCompatActivity() {
         class AddRepo(val address: String?, val fingerprint: String?) : SpecialIntent()
     }
 
-    private lateinit var navStack: NavBackStack<NavRoute>
+    private val navStack: NavBackStack<NavRoute> by lazy {
+        NavBackStack(NavRoute.Permissions)
+    }
 
     private var currentTheme by Delegates.notNull<Int>()
     private val mainViewModel: MainVM by viewModel()
@@ -114,8 +115,6 @@ class NeoActivity : AppCompatActivity() {
                     else                             -> isDarkTheme
                 }
             ) {
-                navStack = rememberNavBackStack(NavRoute.Permissions) as NavBackStack<NavRoute>
-
                 BackHandler(navStack.size == 1) {
                     moveTaskToBack(true)
                 }
