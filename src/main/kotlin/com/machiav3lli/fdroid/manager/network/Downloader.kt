@@ -104,6 +104,7 @@ object Downloader {
 
     suspend fun download(
         url: String,
+        mirrorUrls: List<String> = listOf(url),
         target: File,
         lastModified: String,
         entityTag: String,
@@ -115,11 +116,12 @@ object Downloader {
             TAG,
             "Entering download of $url.\nPermissions left for parallel downloads: ${downloadSemaphore.availablePermits}"
         )
-        permittedDownload(url, target, lastModified, entityTag, authentication, callback)
-    } else permittedDownload(url, target, lastModified, entityTag, authentication, callback)
+        permittedDownload(url, mirrorUrls, target, lastModified, entityTag, authentication, callback)
+    } else permittedDownload(url, mirrorUrls, target, lastModified, entityTag, authentication, callback)
 
     private suspend fun permittedDownload(
         url: String,
+        mirrorUrls: List<String> = listOf(url),
         target: File,
         lastModified: String,
         entityTag: String,
@@ -251,7 +253,8 @@ object Downloader {
             if (leftRetries.decrementAndGet() > 0) {
                 retries[url] = leftRetries
                 permittedDownload(
-                    url = url,
+                    url = mirrorUrls.minus(url).randomOrNull() ?: url,
+                    mirrorUrls = mirrorUrls,
                     target = target,
                     lastModified = lastModified,
                     entityTag = entityTag,

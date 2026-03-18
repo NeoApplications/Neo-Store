@@ -31,6 +31,7 @@ import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
 import com.machiav3lli.fdroid.ARG_RESULT_CODE
 import com.machiav3lli.fdroid.ARG_STARTED
 import com.machiav3lli.fdroid.ARG_URL
+import com.machiav3lli.fdroid.ARG_URLS
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
 import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NeoApp
@@ -177,6 +178,7 @@ class DownloadWorker(
             } else {
                 Downloader.download(
                     url = task.url,
+                    mirrorUrls = task.mirrorUrls,
                     target = partialRelease,
                     lastModified = "",
                     entityTag = "",
@@ -599,6 +601,7 @@ class DownloadWorker(
                 ARG_NAME to label,
                 ARG_RELEASE to release.toJSON(),
                 ARG_URL to release.getDownloadUrl(repository),
+                ARG_URLS to release.getDownloadMirrorUrls(repository),
                 ARG_REPOSITORY_ID to repository.id,
                 ARG_AUTHENTICATION to repository.authentication,
             )
@@ -624,6 +627,7 @@ class DownloadWorker(
             data.getString(ARG_NAME) ?: "",
             Release.fromJson(data.getString(ARG_RELEASE) ?: ""),
             data.getString(ARG_URL) ?: "",
+            (data.getStringArray(ARG_URLS) ?: emptyArray()).toList(),
             data.getLong(ARG_REPOSITORY_ID, -1L),
             data.getString(ARG_AUTHENTICATION) ?: "",
         )

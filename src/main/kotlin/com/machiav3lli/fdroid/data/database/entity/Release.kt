@@ -94,6 +94,12 @@ open class Release(
         return repository.downloadAddress.toUri().buildUpon().appendPath(release).build().toString()
     }
 
+    fun getDownloadMirrorUrls(repository: Repository): Array<String> {
+        return repository.downloadMirrorAddresses
+            .map { it.toUri().buildUpon().appendPath(release).build().toString() }
+            .toTypedArray()
+    }
+
     val cacheFileName: String
         get() = "${packageName}_${hash.replace('/', '-')}.apk"
 

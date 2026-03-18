@@ -16,6 +16,7 @@ class DownloadTask(
     val name: String,
     val release: Release,
     val url: String,
+    val mirrorUrls: List<String>,
     val repoId: Long,
     val authentication: String,
 ) {

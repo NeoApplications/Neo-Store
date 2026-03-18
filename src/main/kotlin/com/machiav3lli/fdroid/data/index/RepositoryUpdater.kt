@@ -226,6 +226,14 @@ object RepositoryUpdater : KoinComponent {
                         else indexType.contentName
                     )
                     .build().toString(),
+                mirrorUrls = repository.downloadMirrorAddresses.map {
+                    it.toUri().buildUpon()
+                        .appendPath(
+                            if (indexType != IndexType.INDEX_V2) indexType.jarName
+                            else indexType.contentName
+                        )
+                        .build().toString()
+                },
                 target = file,
                 lastModified = lastModified,
                 entityTag = entityTag,
@@ -334,6 +342,9 @@ object RepositoryUpdater : KoinComponent {
         return try {
             val result = Downloader.download(
                 url = diffUrl,
+                mirrorUrls = repository.downloadMirrorAddresses.map {
+                    it + diffAddress
+                },
                 target = file,
                 lastModified = "",
                 entityTag = "",
