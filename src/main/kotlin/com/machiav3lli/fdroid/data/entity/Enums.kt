@@ -115,6 +115,7 @@ enum class TopDownloadType(val key: String, @StringRes val displayString: Int) {
     FDROID("F-Droid", R.string.trending_from_fdroid),
     FDROID_CLASSIC("F-Droid Classic", R.string.trending_from_fdroid_classic),
     FLICKY("Flicky", R.string.trending_from_flicky),
+    FLORID("Florid", R.string.trending_from_florid),
     UNKNOWN("_unknown", R.string.trending_from_unknown),
 }
 

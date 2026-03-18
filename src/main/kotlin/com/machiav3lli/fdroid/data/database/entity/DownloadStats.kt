@@ -50,6 +50,8 @@ data class ClientCounts(
     val droidify: Long = 0,
     @SerialName("Flicky")
     val flicky: Long = 0,
+    @SerialName("Florid")
+    val florid: Long = 0,
     @SerialName("_total")
     val total: Long = 0,
     @SerialName("_unknown")
@@ -99,6 +101,7 @@ fun Map<String, ClientCounts>.toDownloadStats(isoDateInt: Int): Set<DownloadStat
         addIfPositive("Neo Store", clientCounts.neoStore)
         addIfPositive("Droid-ify", clientCounts.droidify)
         addIfPositive("Flicky", clientCounts.flicky)
+        addIfPositive("Florid", clientCounts.florid)
         addIfPositive("_total", clientCounts.total)
         addIfPositive("_unknown", clientCounts.unknown)
     }

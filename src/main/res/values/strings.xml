@@ -492,4 +492,5 @@
     <string name="keep_android_open">Keep Android Open</string>
     <string name="keep_android_open_notice">Android\'s openness and F-Droid are threatened by Google. We need your help: https://keepandroidopen.org/</string>
     <string name="from_FORMAT">from %s</string>
+    <string name="trending_from_florid">Trending on Florid</string>
 </resources>

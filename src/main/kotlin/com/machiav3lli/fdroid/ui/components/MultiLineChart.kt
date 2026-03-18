@@ -51,9 +51,10 @@ fun MultiLineChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Mo
         if ("F-Droid" in entriesPerLine.keys) add(Color.Blue)
         if ("F-Droid Classic" in entriesPerLine.keys) add(Color.Red)
         if ("Flicky" in entriesPerLine.keys) add(Color.Cyan)
+        if ("Florid" in entriesPerLine.keys) add(Color.Yellow)
         if ("Neo Store" in entriesPerLine.keys) add(Color.Magenta)
         if ("_total" in entriesPerLine.keys) add(MaterialTheme.colorScheme.primary)
-        if ("_unknown" in entriesPerLine.keys) add(Color.Yellow)
+        if ("_unknown" in entriesPerLine.keys) add(MaterialTheme.colorScheme.tertiary)
     }
 
     LaunchedEffect(Unit) {
@@ -128,9 +129,10 @@ fun ClientsChart(data: Map<String, Map<String, Long>>, modifier: Modifier = Modi
         if ("F-Droid" in entriesPerLine.keys) add(Color.Blue)
         if ("F-Droid Classic" in entriesPerLine.keys) add(Color.Red)
         if ("Flicky" in entriesPerLine.keys) add(Color.Cyan)
+        if ("Florid" in entriesPerLine.keys) add(Color.Yellow)
         if ("Neo Store" in entriesPerLine.keys) add(Color.Magenta)
         if ("_total" in entriesPerLine.keys) add(MaterialTheme.colorScheme.primary)
-        if ("_unknown" in entriesPerLine.keys) add(Color.Yellow)
+        if ("_unknown" in entriesPerLine.keys) add(MaterialTheme.colorScheme.tertiary)
     }
 
     LaunchedEffect(Unit) {
