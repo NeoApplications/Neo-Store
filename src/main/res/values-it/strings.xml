@@ -496,4 +496,5 @@
     <string name="from_FORMAT">da %s</string>
     <string name="keep_android_open">Difendi l\'apertura di Android</string>
     <string name="keep_android_open_notice">Le politiche di Google minacciano l\'esistenza di F-Droid e la natura aperta di Android. Non restare a guardare, aiutaci a proteggerli: https://keepandroidopen.org/</string>
+    <string name="trending_from_florid">Tendenze su Florid</string>
 </resources>
