@@ -499,4 +499,5 @@
     <string name="keep_android_open">Zachowuj otwartość systemu Android</string>
     <string name="keep_android_open_notice">Otwartość systemu Android i F-Droid są zagrożone przez Google. Potrzebujemy Twojej pomocy: https://keepandroidopen.org/</string>
     <string name="from_FORMAT">od %s</string>
+    <string name="trending_from_florid">Najpopularniejsze na Florid</string>
 </resources>
