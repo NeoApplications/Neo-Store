@@ -222,7 +222,10 @@ fun MainPage(
                                     )
                                 },
                                 headlineContent = {
-                                    Text(text = stringResource(R.string.keep_android_open_notice))
+                                    Text(
+                                        text = stringResource(R.string.keep_android_open_notice),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                    )
                                 },
                                 trailingContent = {
                                     RoundButton(
