@@ -491,4 +491,5 @@
     <string name="keep_android_open">Houd Android open</string>
     <string name="keep_android_open_notice">Android\'s openheid en F-Droid worden door Google bedreigd. We hebben je hulp nodig: https://keepandroidopen.org/</string>
     <string name="from_FORMAT">van %s</string>
+    <string name="trending_from_florid">Trending op Florid</string>
 </resources>
