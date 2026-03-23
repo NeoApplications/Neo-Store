@@ -499,4 +499,5 @@
     <string name="keep_android_open">Збережіть відкритість Android</string>
     <string name="keep_android_open_notice">Відкритість Android і F-Droid знаходяться під загрозою з боку Google. Нам потрібна ваша допомога: https://keepandroidopen.org/</string>
     <string name="from_FORMAT">з %s</string>
+    <string name="trending_from_florid">У тренді у Флориді</string>
 </resources>
