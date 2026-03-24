@@ -586,6 +586,7 @@ class AppPageVM(
                             packageName.value,
                             state.installed,
                             state.productRepos,
+                            true,
                         )
                     }
                 } else null
@@ -631,6 +632,7 @@ class AppPageVM(
                         packageName.value,
                         state.installed,
                         state.productRepos,
+                        true,
                     )
                 }
 

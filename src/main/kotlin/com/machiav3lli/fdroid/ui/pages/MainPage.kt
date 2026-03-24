@@ -291,6 +291,7 @@ fun MainPage(
                                         ) {
                                             val action = {
                                                 NeoApp.wm.update(
+                                                    enforce = true,
                                                     *updates
                                                         .map {
                                                             Pair(

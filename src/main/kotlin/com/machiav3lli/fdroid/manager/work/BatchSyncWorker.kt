@@ -274,6 +274,7 @@ class BatchSyncWorker(
 
         if (Preferences[Preferences.Key.InstallAfterSync]) {
             NeoApp.wm.update(
+                enforce = false,
                 *updates.map { Pair(it.packageName, it.repositoryId) }.toTypedArray()
             )
         }

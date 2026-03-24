@@ -47,7 +47,7 @@ class ActionReceiver : BroadcastReceiver(), KoinComponent {
                         val repoIds: Array<Long> =
                             intent.getLongArrayExtra(ARG_REPOSITORY_IDS)?.toTypedArray()
                                 ?: emptyArray()
-                        wm.update(*packageNames.zip(repoIds).toTypedArray())
+                        wm.update(enforce = false, *packageNames.zip(repoIds).toTypedArray())
                     }
 
                     COMMAND_CANCEL_DOWNLOAD_ALL -> {

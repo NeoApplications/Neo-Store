@@ -191,7 +191,8 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
 
     fun install(vararg product: Pair<String, Long>) = batchUpdate(product.toList(), true)
 
-    fun update(vararg product: Pair<String, Long>) = batchUpdate(product.toList(), false)
+    fun update(enforce: Boolean = false, vararg product: Pair<String, Long>) =
+        batchUpdate(product.toList(), enforce)
 
     private fun batchUpdate(productItems: List<Pair<String, Long>>, enforce: Boolean = false) {
         scope.launch {
@@ -213,7 +214,8 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
                     Utils.startUpdate(
                         packageName,
                         installed,
-                        productRepository
+                        productRepository,
+                        enforce,
                     )
                 }
         }

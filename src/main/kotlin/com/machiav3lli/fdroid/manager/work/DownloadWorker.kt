@@ -24,6 +24,7 @@ import androidx.work.workDataOf
 import com.anggrayudi.storage.file.children
 import com.anggrayudi.storage.file.toDocumentFile
 import com.machiav3lli.fdroid.ARG_AUTHENTICATION
+import com.machiav3lli.fdroid.ARG_MANUALLY_ENQUEUED
 import com.machiav3lli.fdroid.ARG_NAME
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.ARG_RELEASE
@@ -91,16 +92,26 @@ class DownloadWorker(
         return try {
             task = getTask(inputData)
 
-            if (Cache.getReleaseFile(applicationContext, task.release.cacheFileName).exists()) {
-                Log.i(TAG, "Running publish success from fun enqueue")
-                handleSuccess()
-                return Result.success(
-                    getWorkData(
-                        task,
-                        Downloader.Result(HttpStatusCode.OK, "", "")
-                    )
-                )
-            }
+            Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
+                .takeIf { it.exists() }
+                ?.also { releaseFile ->
+                    val validationError = validatePackage(task, releaseFile)
+                    val result = Downloader.Result(HttpStatusCode.OK, "", "")
+                    Log.i(TAG, "Running publish success from fun enqueue")
+                    return if (validationError == ValidationError.NONE) {
+                        val releaseFile =
+                            Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
+                        releaseFile.renameTo(releaseFile)
+                        Log.i(TAG, "Worker success with result: $result")
+                        handleSuccess()
+                        Result.success(getWorkData(task, result))
+                    } else {
+                        if (validationError != ValidationError.SENSITIVE_PERMISSION) releaseFile.delete()
+                        Log.i(TAG, "Worker failure by validation error: $validationError")
+                        handleError(result, validationError)
+                        Result.failure(getWorkData(task, result, validationError))
+                    }
+                }
 
             handleDownload(task)
         } catch (e: CancellationException) {
@@ -211,7 +222,7 @@ class DownloadWorker(
                 handleSuccess()
                 Result.success(getWorkData(task, result))
             } else {
-                partialRelease.delete()
+                if (validationError != ValidationError.SENSITIVE_PERMISSION) partialRelease.delete()
                 Log.i(TAG, "Worker failure by validation error: $validationError")
                 handleError(result, validationError)
                 Result.failure(getWorkData(task, result, validationError))
@@ -550,8 +561,10 @@ class DownloadWorker(
                                         task.name,
                                         addedSensitivePermissions
                                     )
-                                    // TODO consider blocking install till confirmed by user
-                                    //  return ValidationError.SENSITIVE_PERMISSION
+                                    if (
+                                        Preferences[Preferences.Key.DisableAutoupdateOnNewCriticalPermissions]
+                                        && !task.manuallyEnqueued
+                                    ) return ValidationError.SENSITIVE_PERMISSION
                                 }
 
                                 null
@@ -594,6 +607,7 @@ class DownloadWorker(
             label: String,
             repository: Repository,
             release: Release,
+            manuallyEnqueued: Boolean = false,
         ) {
             val data = workDataOf(
                 ARG_STARTED to System.currentTimeMillis(),
@@ -604,6 +618,7 @@ class DownloadWorker(
                 ARG_URLS to release.getDownloadMirrorUrls(repository),
                 ARG_REPOSITORY_ID to repository.id,
                 ARG_AUTHENTICATION to repository.authentication,
+                ARG_MANUALLY_ENQUEUED to manuallyEnqueued,
             )
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -630,6 +645,7 @@ class DownloadWorker(
             (data.getStringArray(ARG_URLS) ?: emptyArray()).toList(),
             data.getLong(ARG_REPOSITORY_ID, -1L),
             data.getString(ARG_AUTHENTICATION) ?: "",
+            data.getBoolean(ARG_MANUALLY_ENQUEUED, false),
         )
     }
 }

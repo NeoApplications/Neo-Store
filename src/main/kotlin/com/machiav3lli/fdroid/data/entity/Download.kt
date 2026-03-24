@@ -19,6 +19,7 @@ class DownloadTask(
     val mirrorUrls: List<String>,
     val repoId: Long,
     val authentication: String,
+    val manuallyEnqueued: Boolean = false,
 ) {
     val key: String
         get() = "$packageName-$repoId-${release.version}"

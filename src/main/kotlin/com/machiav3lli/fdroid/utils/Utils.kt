@@ -104,6 +104,7 @@ object Utils {
         packageName: String,
         installed: Installed?,
         products: List<Pair<EmbeddedProduct, Repository>>,
+        manuallyEnqueued: Boolean = false,
     ) {
         val productRepository = findSuggestedProduct(products, installed) { it.first }
         val selectedRelease = getCompatibleReleases(productRepository, installed)
@@ -115,6 +116,7 @@ object Utils {
                 productRepository.first.product.label,
                 productRepository.second,
                 selectedRelease,
+                manuallyEnqueued = manuallyEnqueued,
             )
         }
     }
