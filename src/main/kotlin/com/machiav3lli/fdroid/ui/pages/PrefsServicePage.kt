@@ -51,6 +51,7 @@ fun PrefsServicePage() {
         Preferences.Key.DisableSignatureCheck,
         Preferences.Key.DisablePermissionsCheck,
         Preferences.Key.DisableAutoupdateOnNewCriticalPermissions,
+        Preferences.Key.DisableAutoupdateOnNonReproducibleBuilds,
     )
     val installPrefs = listOfNotNull(
         Preferences.Key.KeepInstallNotification,
