@@ -109,6 +109,11 @@ val BooleanPrefsMeta = mapOf(
         R.string.disable_permissions_check_summary,
         Phosphor.CircleWavyQuestion
     ),
+    Preferences.Key.DisableAutoupdateOnNewCriticalPermissions to Triple(
+        R.string.disable_autoupdate_new_critical_permissions,
+        R.string.disable_autoupdate_new_critical_permissions_summary,
+        Phosphor.CircleWavyWarning
+    ),
     Preferences.Key.RootSessionInstaller to Triple(
         R.string.root_session_installer,
         R.string.root_session_installer_description,

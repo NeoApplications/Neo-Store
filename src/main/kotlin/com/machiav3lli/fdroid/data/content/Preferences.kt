@@ -68,6 +68,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.DisableDownloadVersionCheck,
         Key.DisableSignatureCheck,
         Key.DisablePermissionsCheck,
+        Key.DisableAutoupdateOnNewCriticalPermissions,
         Key.RBProvider,
         Key.DLStatsProvider,
         // Installation
@@ -332,6 +333,10 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object DisablePermissionsCheck :
             Key<Boolean>("disable_permissions_check", Value.BooleanValue(false))
+
+        // TODO Add option to stop updates to versions with new critical permissions https://github.com/NeoApplications/Neo-Store/issues/855
+        data object DisableAutoupdateOnNewCriticalPermissions :
+            Key<Boolean>("disable_autoupdate_new_critical_permissions", Value.BooleanValue(false))
 
         data object RBProvider : Key<Preferences.RBProvider>(
             "rb_provider", Value.EnumerationValue(
