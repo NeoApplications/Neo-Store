@@ -42,9 +42,8 @@ class PackageChangedReceiver : BroadcastReceiver(), KoinComponent {
                             }
                             val launcherActivities =
                                 context.packageManager.getLaunchActivities(packageName)
-                            if (packageInfo != null) installedRepo.upsert(
-                                packageInfo.toInstalledItem(launcherActivities)
-                            )
+                            if (packageInfo != null && (packageInfo.applicationInfo?.enabled ?: true || Preferences[Preferences.Key.ShowDisabledApps]))
+                                installedRepo.upsert(packageInfo.toInstalledItem(launcherActivities))
                             else installedRepo.delete(packageName)
 
                             // Update updates notification

@@ -166,6 +166,7 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
                 }.toMap()
         val installedItems = packageManager
             .getInstalledPackages(Android.PackageManager.signaturesFlag)
+            .filter { it.applicationInfo?.enabled ?: true || Preferences[Preferences.Key.ShowDisabledApps] }
             .map { it.toInstalledItem(launcherActivitiesMap[it.packageName].orEmpty()) }
         installedRepo.emptyTable()
         installedRepo.upsert(*installedItems.toTypedArray())
