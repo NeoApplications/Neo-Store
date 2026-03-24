@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RBLogDao : BaseDao<RBLog> {
     @Query("SELECT * FROM rb_log WHERE packageName = :packageName")
-    fun get(packageName: String): List<RBLog>
+    suspend fun get(packageName: String): List<RBLog>
 
     @Query("SELECT * FROM rb_log WHERE packageName = :packageName")
     fun getFlow(packageName: String): Flow<List<RBLog>>

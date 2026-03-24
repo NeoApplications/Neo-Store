@@ -64,6 +64,8 @@ class PrivacyRepository(
     suspend fun loadDownloadStatsModifiedMap(): Map<String, String> =
         dsFileDao.getLastModifiedDates()
 
+    suspend fun loadRBLogs(packageName: String): List<RBLog> = rbDao.get(packageName)
+
     suspend fun upsertTracker(trackers: Collection<Tracker>) {
         trackerDao.multipleUpserts(trackers.toList())
     }

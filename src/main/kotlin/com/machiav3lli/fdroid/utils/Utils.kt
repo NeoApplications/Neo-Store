@@ -34,6 +34,7 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.Product
+import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.AndroidVersion
@@ -104,11 +105,14 @@ object Utils {
         packageName: String,
         installed: Installed?,
         products: List<Pair<EmbeddedProduct, Repository>>,
+        ignoreRBLogs: Boolean = true,
+        rblogs: Map<String, RBLog> = emptyMap(),
         manuallyEnqueued: Boolean = false,
     ) {
         val productRepository = findSuggestedProduct(products, installed) { it.first }
-        val selectedRelease = getCompatibleReleases(productRepository, installed)
-            .getBestRelease()
+        val selectedRelease =
+            getCompatibleReleases(productRepository, installed, ignoreRBLogs, rblogs)
+                .getBestRelease(installed?.versionCode ?: 0L)
 
         if (productRepository != null && selectedRelease != null) {
             DownloadWorker.enqueue(
@@ -123,7 +127,9 @@ object Utils {
 
     private fun getCompatibleReleases(
         productRepository: Pair<EmbeddedProduct, Repository>?,
-        installed: Installed?
+        installed: Installed?,
+        ignoreRBLogs: Boolean,
+        rblogs: Map<String, RBLog>
     ): List<Release> {
         val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
         val ignoreSigCheck = Preferences[Preferences.Key.DisableSignatureCheck]
@@ -133,17 +139,21 @@ object Utils {
                 it.repositoryId == productRepository?.second?.id
                         && (includeIncompatible || it.incompatibilities.isEmpty())
                         && (installed == null || it.signature in installed.signatures || ignoreSigCheck)
+                        && (ignoreRBLogs || rblogs[it.hash]?.reproducible == true)
             }
             .sortedByDescending { it.versionCode }
     }
 
-    private fun List<Release>.getBestRelease(): Release? {
-        if (isEmpty()) return null
-        if (size == 1) return first()
+    private fun List<Release>.getBestRelease(installedVersionCode: Long): Release? {
+        filter { it.versionCode > installedVersionCode }
+            .apply {
+                if (isEmpty()) return null
+                if (size == 1) return first()
 
-        return filter { it.platforms.contains(Android.primaryPlatform) }
-            .minByOrNull { it.platforms.size }
-            ?: maxByOrNull { it.platforms.size }
+                return filter { it.platforms.contains(Android.primaryPlatform) }
+                    .minByOrNull { it.platforms.size }
+                    ?: maxByOrNull { it.platforms.size }
+            }
     }
 
     fun Context.setLanguage(): Configuration {

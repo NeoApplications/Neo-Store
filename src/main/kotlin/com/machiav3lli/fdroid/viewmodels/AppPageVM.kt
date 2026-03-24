@@ -586,7 +586,7 @@ class AppPageVM(
                             packageName.value,
                             state.installed,
                             state.productRepos,
-                            true,
+                            manuallyEnqueued = true,
                         )
                     }
                 } else null
@@ -632,7 +632,7 @@ class AppPageVM(
                         packageName.value,
                         state.installed,
                         state.productRepos,
-                        true,
+                        manuallyEnqueued = true,
                     )
                 }
 

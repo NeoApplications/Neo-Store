@@ -26,11 +26,13 @@ import com.machiav3lli.fdroid.TAG_BATCH_SYNC_PERIODIC
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.InstallsRepository
+import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.manager.installer.AppInstaller
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
 import com.machiav3lli.fdroid.utils.Utils
+import com.machiav3lli.fdroid.utils.extension.Quadruple
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -60,7 +62,7 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
     private val installedRepo: InstalledRepository by inject()
     private val installsRepo: InstallsRepository by inject()
     private val installer: AppInstaller by inject()
-
+    private val privacyRepo: PrivacyRepository by inject()
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     init {
@@ -200,14 +202,19 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
                 async {
                     val installed = installedRepo.load(packageName)
                     val repo = reposRepo.load(repoId)
+                    val rbLogs = privacyRepo.loadRBLogs(packageName)
 
                     if ((enforce || installed != null) && repo != null) {
-                        Triple(packageName, installed, repo)
+                        Quadruple(packageName, installed, repo, rbLogs)
                     } else null
                 }
             }.awaitAll()
                 .filterNotNull()
-                .forEach { (packageName, installed, repo) ->
+                .forEach { (packageName, installed, repo, rblogs) ->
+                    val ignoreRBLogs =
+                        !Preferences[Preferences.Key.DisableAutoupdateOnNonReproducibleBuilds]
+                                || enforce
+                                || rblogs.find { it.version_code.toLong() == installed?.versionCode }?.reproducible != true
                     val productRepository = productRepo.loadProduct(packageName)
                         .filter { eProduct -> eProduct.product.repositoryId == repo.id }
                         .map { eProduct -> Pair(eProduct, repo) }
@@ -215,6 +222,8 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
                         packageName,
                         installed,
                         productRepository,
+                        ignoreRBLogs,
+                        rblogs.associateBy { it.hash },
                         enforce,
                     )
                 }
