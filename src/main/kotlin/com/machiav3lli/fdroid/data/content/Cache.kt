@@ -36,6 +36,13 @@ object Cache {
         ).apply { isDirectory || mkdirs() || return ensureCacheDir(context, name) }
     }
 
+    private fun ensureExtFilesDir(context: Context, name: String): File {
+        return File(
+            context.getExternalFilesDir(null),
+            name
+        ).apply { isDirectory || mkdirs() }
+    }
+
     private fun applyOrMode(file: File, mode: Int) {
         val oldMode = Os.stat(file.path).st_mode and 0b111111111111
         val newMode = oldMode or mode
@@ -70,7 +77,7 @@ object Cache {
     }
 
     fun getIndexV2File(context: Context, repoId: Long): File {
-        return File(ensureCacheDir(context, "index"), "index-v2-${repoId}.json")
+        return File(ensureExtFilesDir(context, "index"), "index-v2-${repoId}.json")
     }
 
     fun cleanup(context: Context) {
@@ -79,12 +86,16 @@ object Cache {
                 context,
                 context.cacheDir,
                 Pair("images", Preferences[Preferences.Key.ImagesCacheRetention] * 24),
-                Pair("index", 14 * 24),
                 Pair("temporary", 1),
                 Pair("download_stats", 1),
                 // in case the external cache was unavailable (maybe only temporarily)
                 Pair("partial", 24),
                 Pair("releases", Preferences[Preferences.Key.ReleasesCacheRetention] * 24),
+            )
+            cleanup(
+                context,
+                context.getExternalFilesDir(null),
+                Pair("index", 14 * 24),
             )
             cleanup(
                 context,
