@@ -140,7 +140,7 @@ class BatchSyncWorker(
 
                     when {
                         result.success -> {
-                            Log.d(TAG, "Successfully synced repository: ${repo.name}")
+                            Log.d(TAG, "Successfully synced repository: ${repo.name} (${repo.id})")
                             if (result.changed) reposSucceeded.incrementAndFetch()
                             setForeground(
                                 createForegroundInfo(
@@ -153,7 +153,7 @@ class BatchSyncWorker(
 
                         else           -> {
                             reposFailed.add(repo.id)
-                            Log.w(TAG, "Failed to sync repository: ${repo.name}")
+                            Log.w(TAG, "Failed to sync repository: ${repo.name} (${repo.id})")
                             langContext.reportSyncFail(
                                 repo.id,
                                 repo.name,
@@ -244,7 +244,7 @@ class BatchSyncWorker(
             progressChannel.close()
             progressJob.join()
 
-            Log.e(TAG, "Repository sync failed: ${repository.name}", throwable)
+            Log.e(TAG, "Repository sync failed: ${repository.name} (${repository.id})", throwable)
             if (throwable is RepositoryUpdater.UpdateException)
                 SyncResult(
                     success = false,

@@ -50,6 +50,8 @@ import java.util.jar.JarFile
 
 // TODO remove unneeded Coroutine context switches
 object RepositoryUpdater : KoinComponent {
+    private const val TAG = "RepositoryUpdater"
+
     enum class Stage {
         DOWNLOAD, PROCESS, MERGE, COMMIT
     }
@@ -176,18 +178,26 @@ object RepositoryUpdater : KoinComponent {
             else                 -> {
                 val hasCachedIndex = hasCachedIndex(context, repository.id)
                 Log.d(
-                    "RepositoryUpdater",
+                    TAG,
                     "downloaded repository file, repoID = ${repository.id}, indexType = $indexType, hasCachedIndex = $hasCachedIndex"
                 )
                 when (indexType) {
                     IndexType.INDEX_V2_ENTRY -> {
                         if (hasCachedIndex) {
+                            Log.d(
+                                TAG,
+                                "repoID=${repository.id}: Downloading diff as cached index exists"
+                            )
                             downloadIndexV2Diff(
                                 context, repository, unstable,
                                 file, result.lastModified.nullIfEmpty(),
                                 result.entityTag.nullIfEmpty(), callback
                             )
                         } else {
+                            Log.d(
+                                TAG,
+                                "repoID=${repository.id}: Downloading full index as cached index does not exist"
+                            )
                             update(
                                 context = context,
                                 repository = repository,
@@ -301,7 +311,7 @@ object RepositoryUpdater : KoinComponent {
             )
             val hasCachedIndex = hasCachedIndex(context, repository.id)
             Log.d(
-                "RepositoryUpdater",
+                TAG,
                 "downloaded diff file, repoID = ${repository.id}, result.statusCode = ${result.statusCode}, hasCachedIndex = $hasCachedIndex"
             )
             when {
@@ -352,7 +362,7 @@ object RepositoryUpdater : KoinComponent {
                 rated = true,
             ) { read, total, _ -> callback(Stage.DOWNLOAD, read, total) }
             Log.d(
-                "RepositoryUpdater",
+                TAG,
                 "downloading diff file from entry, repoID = ${repository.id}, timestamp = ${repository.timestamp}, entry.timestamp = $entryTimestamp, downloadUrl = $diffUrl"
             )
             Pair(result, file)
@@ -379,7 +389,7 @@ object RepositoryUpdater : KoinComponent {
     ): Boolean {
         var rollback = true
         Log.d(
-            "RepositoryUpdater",
+            TAG,
             "processing file, repoID = ${repository.id}, indexType = $indexType, lastModified = $lastModified, entryLastModified = $entryLastModified"
         )
         return updaterMutex.withLock {
@@ -403,7 +413,7 @@ object RepositoryUpdater : KoinComponent {
                                     ).let {
                                         notifyDebugStatus(
                                             context,
-                                            "RepositoryUpdater",
+                                            TAG,
                                             "merged diff file, repoID = ${repository.id}, succcess = $it, indexFile = $indexFile."
                                         )
                                     }
@@ -425,7 +435,7 @@ object RepositoryUpdater : KoinComponent {
                 db.getCategoryTempDao().emptyTable()
 
                 Log.d(
-                    "RepositoryUpdater",
+                    TAG,
                     "parsing index file, repoID = ${repository.id}, indexType = $indexType, total = $total, lastModified = $lastModified, entryLastModified = $entryLastModified"
                 )
                 val (changedRepository, certificateFromIndex) = when (indexType) {
@@ -520,6 +530,10 @@ object RepositoryUpdater : KoinComponent {
                          -> when (e.cause) {
                         is IndexV2Parser.BaseParsingException
                              -> {
+                            Log.w(
+                                TAG,
+                                "Base parsing exception, thus deleting index file for repo id ${repository.id}; message = ${e.message}"
+                            )
                             Cache.getIndexV2File(context, repository.id).delete()
                             SyncWorker.enqueueManual(Pair(repository.id, repository.name))
                             false
@@ -759,6 +773,10 @@ object RepositoryUpdater : KoinComponent {
             val unmergedProducts = mutableListOf<IndexProduct>()
             val unmergedReleases = mutableListOf<Pair<String, List<Release>>>()
             IndexContentMerger(mergerFile).use { indexMerger ->
+                Log.d(
+                    TAG,
+                    "Processing index-v2 file for repo id ${repository.id}; file = $indexFile"
+                )
                 ProgressInputStream(indexFile.inputStream()) {
                     callback(Stage.PROCESS, it, total)
                 }.use { progressInputStream ->
@@ -871,7 +889,7 @@ object RepositoryUpdater : KoinComponent {
                 }
             }
         } catch (e: Exception) {
-            Log.e("RepositoryUpdater", "Error processing index-v2", e)
+            Log.e(TAG, "Error processing index-v2", e)
             throw UpdateException(
                 ErrorType.PARSING,
                 "Error processing index-v2: ${e.message}\n${e.cause?.message}",
@@ -879,12 +897,22 @@ object RepositoryUpdater : KoinComponent {
             )
         } finally {
             Cache.getIndexV2File(context, repository.id).let {
-                if (it != indexFile) indexFile.copyTo(
-                    it,
-                    true,
-                    BUFFER_SIZE,
-                )
+                if (it != indexFile) {
+                    Log.d(
+                        TAG,
+                        "Copying index-v2 file for repo id ${repository.id}; from = $indexFile, to = $it"
+                    )
+                    indexFile.copyTo(
+                        it,
+                        true,
+                        BUFFER_SIZE,
+                    )
+                }
             }
+            Log.w(
+                TAG,
+                "Finished processing index-v2 file for repo id ${repository.id}; deleting merger file $mergerFile"
+            )
             mergerFile.delete()
         }
         return Pair(changedRepository, null)

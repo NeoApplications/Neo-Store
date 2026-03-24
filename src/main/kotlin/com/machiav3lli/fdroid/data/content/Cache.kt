@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.ParcelFileDescriptor
 import android.provider.OpenableColumns
 import android.system.Os
+import android.util.Log
 import androidx.core.content.FileProvider
 import androidx.documentfile.provider.DocumentFile
 import com.anggrayudi.storage.file.getAbsolutePath
@@ -19,6 +20,8 @@ import java.util.UUID
 import kotlin.concurrent.thread
 
 object Cache {
+    private const val TAG = "Cache"
+
     private fun ensureCacheDir(context: Context, name: String): File {
         return File(
             context.cacheDir,
@@ -98,8 +101,10 @@ object Cache {
         files.filter { it.name !in knownNames }.forEach {
             if (it.isDirectory) {
                 cleanupDir(it, 0)
+                Log.w(TAG, "Deleting directory ${it.path}")
                 it.delete()
             } else {
+                Log.w(TAG, "Deleting file ${it.path}")
                 it.delete()
             }
         }
@@ -110,6 +115,7 @@ object Cache {
                     if (file.isDirectory) {
                         cleanupDir(file, hours)
                     } else {
+                        Log.w(TAG, "Deleting file ${file.path}")
                         file.delete()
                     }
                 }
@@ -142,9 +148,11 @@ object Cache {
                 if (file.isDirectory) {
                     cleanupDir(file, hours)
                     if (file.isDirectory) {
+                        Log.w(TAG, "Deleting directory ${file.path}")
                         file.delete()
                     }
                 } else {
+                    Log.w(TAG, "Deleting file ${file.path}")
                     file.delete()
                 }
             }

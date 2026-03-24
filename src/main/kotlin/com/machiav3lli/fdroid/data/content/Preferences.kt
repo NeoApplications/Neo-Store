@@ -335,11 +335,9 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object DisablePermissionsCheck :
             Key<Boolean>("disable_permissions_check", Value.BooleanValue(false))
 
-        // TODO Add option to ignore updates of non-reproducible builds https://github.com/NeoApplications/Neo-Store/issues/809
         data object DisableAutoupdateOnNonReproducibleBuilds :
             Key<Boolean>("disable_autoupdate_non_reproducible_builds", Value.BooleanValue(false))
 
-        // TODO Add option to stop updates to versions with new critical permissions https://github.com/NeoApplications/Neo-Store/issues/855
         data object DisableAutoupdateOnNewCriticalPermissions :
             Key<Boolean>("disable_autoupdate_new_critical_permissions", Value.BooleanValue(false))
 
