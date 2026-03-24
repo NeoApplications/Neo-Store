@@ -497,4 +497,6 @@
     <string name="disable_autoupdate_new_critical_permissions_summary">Don\'t auto-update an app if it has new critical permissions.</string>
     <string name="disable_autoupdate_non_reproducible_builds">Disable auto-update on non-reproducible updates</string>
     <string name="disable_autoupdate_non_reproducible_builds_summary">Don\'t auto-update an app which is already on a reproducible build to a non-reproducible build.</string>
+    <string name="show_disabled_apps">Show disabled apps</string>
+    <string name="show_disabled_apps_summary">Include disabled apps in the list of installed apps and updates.</string>
 </resources>

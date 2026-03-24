@@ -22,6 +22,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Hash
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Image
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Lock
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ProhibitInset
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Robot
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldCheck
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldSlash
@@ -149,6 +150,11 @@ val BooleanPrefsMeta = mapOf(
         R.string.index_v2,
         R.string.index_v2_summary,
         Phosphor.TwoCircle
+    ),
+    Preferences.Key.ShowDisabledApps to Triple(
+        R.string.show_disabled_apps,
+        R.string.show_disabled_apps_summary,
+        Phosphor.ProhibitInset
     ),
     Preferences.Key.DownloadShowDialog to Triple(
         R.string.download_show_dialog,

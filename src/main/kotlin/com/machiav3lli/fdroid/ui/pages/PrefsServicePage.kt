@@ -39,6 +39,7 @@ fun PrefsServicePage() {
         Preferences.Key.AutoSyncInterval,
         Preferences.Key.InstallAfterSync,
         Preferences.Key.IndexV2,
+        Preferences.Key.ShowDisabledApps,
         Preferences.Key.DLStatsProvider,
         Preferences.Key.RBProvider,
     )

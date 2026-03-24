@@ -60,6 +60,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.AutoSyncInterval,
         Key.InstallAfterSync,
         Key.IndexV2,
+        Key.ShowDisabledApps,
         // Updates
         Key.DownloadManager,
         Key.UpdateNotify,
@@ -295,6 +296,9 @@ data object Preferences : OnSharedPreferenceChangeListener {
             Key<Boolean>("download_directory_enable", Value.BooleanValue(false))
 
         data object IndexV2 : Key<Boolean>("index_v2", Value.BooleanValue(true))
+
+        data object ShowDisabledApps :
+            Key<Boolean>("show_disabled_apps", Value.BooleanValue(false))
 
         data object DownloadManager :
             Key<Boolean>("system_download_manager", Value.BooleanValue(false))
