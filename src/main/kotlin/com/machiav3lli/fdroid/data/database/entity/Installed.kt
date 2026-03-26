@@ -21,5 +21,7 @@ data class Installed(
     @ColumnInfo(defaultValue = "[]")
     val signatures: List<String> = emptyList(),
     val isSystem: Boolean = false,
+    @ColumnInfo(defaultValue = "1")
+    val isEnabled: Boolean = true,
     val launcherActivities: List<Pair<String, String>> = emptyList()
 )

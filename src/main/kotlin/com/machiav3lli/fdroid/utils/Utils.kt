@@ -76,6 +76,7 @@ object Utils {
             versionCodeCompat,
             signerSHA256Signatures,
             applicationInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM) == ApplicationInfo.FLAG_SYSTEM,
+            applicationInfo?.enabled ?: true,
             launcherActivities
         )
     }

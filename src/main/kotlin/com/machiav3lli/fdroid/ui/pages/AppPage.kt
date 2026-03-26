@@ -339,6 +339,7 @@ fun AppPage(
                         eProduct.appInfoChips(
                             appState.canUpdate,
                             privacyState.isInstalled,
+                            appState.isEnabled,
                             appState.installedVersion,
                             displayRelease,
                             extraState.categoryDetails

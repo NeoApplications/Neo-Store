@@ -176,6 +176,7 @@ class AppPageVM(
             productRepos = prodRepos,
             installed = installed,
             isInstalled = installed != null,
+            isEnabled = installed?.isEnabled ?: true,
             canUpdate = suggested?.first?.canUpdate(installed) ?: false,
             installedVersion = installed?.version ?: "",
         )
@@ -736,6 +737,7 @@ data class CoreAppState(
     val productRepos: List<Pair<EmbeddedProduct, Repository>> = emptyList(),
     val installed: Installed? = null,
     val isInstalled: Boolean = false,
+    val isEnabled: Boolean = true,
     val canUpdate: Boolean = false,
     val installedVersion: String = "",
 )

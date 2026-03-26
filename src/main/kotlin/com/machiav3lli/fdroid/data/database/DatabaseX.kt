@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.data.database
 
+import android.content.Context
 import android.util.Log
 import androidx.room.AutoMigration
 import androidx.room.Database
@@ -96,6 +97,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import org.koin.java.KoinJavaComponent.get
 import java.io.File
@@ -123,7 +125,7 @@ import java.io.File
         DownloadStats::class,
         DownloadStatsFileMetadata::class,
     ],
-    version = 1207,
+    version = 1208,
     exportSchema = true,
     views = [
         PackageSum::class,
@@ -306,6 +308,10 @@ import java.io.File
             from = 1205,
             to = 1207,
             spec = DatabaseX.Companion.AutoMigration1205to1207::class
+        ),
+        AutoMigration(
+            from = 1207,
+            to = 1208,
         ),
     ]
 )
@@ -682,17 +688,17 @@ abstract class DatabaseX : RoomDatabase() {
     }
 }
 
+private fun createDatabase(context: Context): DatabaseX = Room.databaseBuilder(
+    context,
+    DatabaseX::class.java,
+    "main_database.db"
+)
+    .addCallback(dbCreateCallback)
+    .fallbackToDestructiveMigration(true)
+    .build()
+
 val databaseModule = module {
-    single {
-        Room.databaseBuilder(
-            get(),
-            DatabaseX::class.java,
-            "main_database.db"
-        )
-            .addCallback(dbCreateCallback)
-            .fallbackToDestructiveMigration(true)
-            .build()
-    }
+    singleOf(::createDatabase)
     single { get<DatabaseX>().getRepositoryDao() }
     single { get<DatabaseX>().getProductDao() }
     single { get<DatabaseX>().getReleaseDao() }

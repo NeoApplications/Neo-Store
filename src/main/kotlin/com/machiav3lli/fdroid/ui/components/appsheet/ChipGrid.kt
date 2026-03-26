@@ -44,6 +44,7 @@ fun AppInfoChips(
 fun EmbeddedProduct.appInfoChips(
     canUpdate: Boolean,
     isInstalled: Boolean,
+    isEnabled: Boolean,
     installedVersion: String,
     latestRelease: Release?,
     categories: List<String>,
@@ -53,6 +54,8 @@ fun EmbeddedProduct.appInfoChips(
         isInstalled              -> "v${installedVersion.trimStart('v')}"
         else                     -> "v${version.trimStart('v')}"
     },
+    if (!isEnabled) stringResource(id = R.string.disabled)
+    else null,
     displayRelease?.size?.formatSize().orEmpty(),
     DateFormat.getDateInstance().format(Date(product.updated)),
     *categories.toTypedArray(),
