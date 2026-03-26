@@ -500,4 +500,10 @@
     <string name="keep_android_open_notice">Otwartość systemu Android i F-Droid są zagrożone przez Google. Potrzebujemy Twojej pomocy: https://keepandroidopen.org/</string>
     <string name="from_FORMAT">od %s</string>
     <string name="trending_from_florid">Najpopularniejsze na Florid</string>
+    <string name="disable_autoupdate_new_critical_permissions">Wyłącz automatyczną aktualizację w przypadku nowych uprawnień o znaczeniu krytycznym</string>
+    <string name="disable_autoupdate_new_critical_permissions_summary">Nie aktualizuj aplikacji automatycznie, jeśli wymaga ona nowych uprawnień o znaczeniu krytycznym.</string>
+    <string name="disable_autoupdate_non_reproducible_builds">Wyłącz automatyczną aktualizację w przypadku aktualizacji, których nie da się odtworzyć</string>
+    <string name="disable_autoupdate_non_reproducible_builds_summary">Wyłącz automatyczną aktualizację aplikacji, która znajduje się już w kompilacji umożliwiającej odtworzenie błędu, do kompilacji uniemożliwiającej odtworzenie błędu.</string>
+    <string name="show_disabled_apps">Pokaż wyłączone aplikacje</string>
+    <string name="show_disabled_apps_summary">Dodaj wyłączone aplikacje do listy zainstalowanych aplikacji i aktualizacji.</string>
 </resources>
