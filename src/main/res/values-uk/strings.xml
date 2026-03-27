@@ -500,4 +500,10 @@
     <string name="keep_android_open_notice">Відкритість Android і F-Droid знаходяться під загрозою з боку Google. Нам потрібна ваша допомога: https://keepandroidopen.org/</string>
     <string name="from_FORMAT">з %s</string>
     <string name="trending_from_florid">У тренді у Флориді</string>
+    <string name="disable_autoupdate_new_critical_permissions">Вимкнути автооновлення при появі нових критичних дозволів</string>
+    <string name="disable_autoupdate_new_critical_permissions_summary">Не оновлювати застосунок автоматично, якщо він потребує нових критичних дозволів.</string>
+    <string name="disable_autoupdate_non_reproducible_builds">Вимкнути автооновлення для невідтворюваних оновлень</string>
+    <string name="disable_autoupdate_non_reproducible_builds_summary">Автоматично не оновлювати застосунок із відтворюваною збіркою до невідтворюваної.</string>
+    <string name="show_disabled_apps">Показати вимкнуті застосунки</string>
+    <string name="show_disabled_apps_summary">Включати вимкнені застосунки до списку встановлених застосунків та оновлень.</string>
 </resources>
