@@ -3,7 +3,7 @@ activity = "1.13.0"
 agp = "9.1.0"
 biometric = "1.2.0-alpha05"
 coil = "3.4.0"
-compose-bom = "2026.03.00"
+compose-bom = "2026.03.01"
 compose-accompanist = "0.37.3"
 compose-html = "1.1.0"
 coroutines = "1.10.2"
@@ -12,12 +12,12 @@ desugar = "2.1.5"
 gradle-toolchains = "1.0.0"
 hiddenapi-bypass = "6.1"
 immutables = "0.4.0"
-jackson = "2.21.1"
+jackson = "2.21.2"
 junit-jupiter = "6.0.3"
 koin = "4.1.1"
 koin-ksp = "2.3.1" # replace with koin-plugin when repalcement stable (koin 4.2.X)
 koin-plugin = "0.4.1"
-kotlin = "2.3.10"
+kotlin = "2.3.20"
 ksp = "2.3.6"
 ktor = "3.4.1"
 leakcanary = "2.14"
@@ -35,9 +35,9 @@ shizuku = "13.1.5"
 shizuku-hidden = "4.4.0"
 shizuku-refine = "4.4.0"
 simple-storage = "2.2.0"
-stability-analyzer = "0.7.0"
+stability-analyzer = "0.7.1"
 vico = "3.0.3"
-work = "2.11.1"
+work = "2.11.2"
 zxing = "3.5.4"
 
 [libraries]
@@ -123,7 +123,7 @@ junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-para
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 gradle-toolchains = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "gradle-toolchains" }
-koin-compiler = { id = "io.insert-koin.compiler.plugin", version.ref = "koin-plugin" }
+koin = { id = "io.insert-koin.compiler.plugin", version.ref = "koin-plugin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
