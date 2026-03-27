@@ -1,0 +1,8 @@
+Add: Pref to disable auto-updates of an app to a still not-reproducible build
+Add: Pref to disable auto-updates of versions with new critical permissions
+Add: Progress indicators for search page (credits @SocratesDz)
+Add: Sticky headers on main pages
+Fix: Index cache being removed by the system
+Fix: Keeping search bar out of focus when returning to the page
+Update: Rotate mirror on failing to download/sync from a repo
+plus many more in over 20 commits & 20 translation contributions

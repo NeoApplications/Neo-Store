@@ -1,6 +1,27 @@
 CHANGELOG
 =========
 
+1.2.5 (27.03.2026) +20 Commits +20 Translations
+------------------
+
+### Function
+
+- Add: Florid to dlstats clients
+- Add: Pref to disable auto-updates of an app to a still not-reproducible build
+- Add: Pref to disable auto-updates of versions with new critical permissions
+- Add: Option to show disabled system apps (disabled by default)
+- Fix: Irregular crash on missing NavBackStack on activity restart
+- Fix: Index cache being removed by the system
+- Update: Rotate mirror on failing to download/sync from a repo
+- Update: Reduce download auto-retries to 3
+
+### UI/UX
+
+- Add: Progress indicators for search page (credits @SocratesDz)
+- Add: Info chip for disabled apps
+- Add: Sticky headers on main pages
+- Fix: Keeping search bar out of focus when returning to the page
+
 1.2.4 (18.02.2026) 22 Commits 14 Translations
 ------------------
 

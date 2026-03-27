@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
+    //alias(libs.plugins.koin)
     alias(libs.plugins.shizuku.refine)
     alias(libs.plugins.stability.analyzer)
     alias(libs.plugins.gradle.toolchains) apply false
@@ -32,8 +33,8 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1207
-        versionName = "1.2.4"
+        versionCode = 1208
+        versionName = "1.2.5"
     }
 
     compileOptions {
