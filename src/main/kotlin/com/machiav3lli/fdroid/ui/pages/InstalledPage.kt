@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid.ui.pages
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
@@ -13,10 +14,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +40,7 @@ import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.database.entity.Downloaded
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.ui.components.ActionChip
 import com.machiav3lli.fdroid.ui.components.DownloadedItem
@@ -54,6 +56,9 @@ import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.onLaunchClick
+import com.machiav3lli.fdroid.viewmodels.DataState
+import com.machiav3lli.fdroid.viewmodels.DownloadedPageState
+import com.machiav3lli.fdroid.viewmodels.InstalledPageState
 import com.machiav3lli.fdroid.viewmodels.InstalledVM
 import com.machiav3lli.fdroid.viewmodels.MainVM
 
@@ -63,7 +68,27 @@ fun InstalledPage(
     viewModel: InstalledVM = koinNeoViewModel(),
     mainVM: MainVM = koinNeoViewModel(),
 ) {
+    val context = LocalContext.current
+    val neoActivity = LocalActivity.current as NeoActivity
     val installedTab = rememberSaveable { mutableIntStateOf(0) }
+    val installedPageState by viewModel.installedPageState.collectAsStateWithLifecycle()
+    val downloadedPageState by viewModel.downloadedPageState.collectAsStateWithLifecycle()
+    val dataState by mainVM.dataState.collectAsStateWithLifecycle()
+
+    val openDialog = remember { mutableStateOf(false) }
+    val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
+    val notModifiedSortFilter by remember(installedPageState.sortFilter) {
+        derivedStateOf {
+            Preferences[Preferences.Key.SortOrderInstalled] == Preferences.Key.SortOrderInstalled.default.value &&
+                    Preferences[Preferences.Key.SortOrderAscendingInstalled] == Preferences.Key.SortOrderAscendingInstalled.default.value &&
+                    Preferences[Preferences.Key.ReposFilterInstalled] == Preferences.Key.ReposFilterInstalled.default.value &&
+                    Preferences[Preferences.Key.CategoriesFilterInstalled] == Preferences.Key.CategoriesFilterInstalled.default.value &&
+                    Preferences[Preferences.Key.LicensesFilterInstalled] == Preferences.Key.LicensesFilterInstalled.default.value &&
+                    Preferences[Preferences.Key.AntifeaturesFilterInstalled] == Preferences.Key.AntifeaturesFilterInstalled.default.value &&
+                    Preferences[Preferences.Key.TargetSDKInstalled] == Preferences.Key.TargetSDKInstalled.default.value &&
+                    Preferences[Preferences.Key.MinSDKInstalled] == Preferences.Key.MinSDKInstalled.default.value
+        }
+    }
 
     LaunchedEffect(Unit) {
         Preferences.addPreferencesChangeListener {
@@ -131,182 +156,176 @@ fun InstalledPage(
             )
         }
 
-        when (installedTab.intValue) {
-            0 -> InstallsPage(viewModel, mainVM)
-            1 -> DownloadedPage(viewModel)
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            val n = installedTab.intValue
+            if (n == 0) InstalledLazyItems(
+                context,
+                neoActivity,
+                installedPageState,
+                dataState,
+                notModifiedSortFilter,
+                mainVM::setFavorite,
+                openDialog = { name, action ->
+                    dialogKey.value = DialogKey.Download(name, action)
+                    openDialog.value = true
+                }
+            )
+            else if (n == 1) DownloadedLazyItems(
+                neoActivity,
+                downloadedPageState,
+                viewModel::eraseDownloaded
+            )
+        }
+
+        if (openDialog.value) {
+            BaseDialog(openDialogCustom = openDialog) {
+                when (dialogKey.value) {
+                    is DialogKey.Download -> KeyDialogUI(
+                        key = dialogKey.value,
+                        openDialog = openDialog,
+                        primaryAction = {
+                            if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None)
+                                neoActivity.launchLockPrompt {
+                                    (dialogKey.value as DialogKey.Download).action()
+                                    openDialog.value = false
+                                }
+                            else {
+                                (dialogKey.value as DialogKey.Download).action()
+                                openDialog.value = false
+                            }
+                        },
+                        onDismiss = {
+                            dialogKey.value = null
+                            openDialog.value = false
+                        }
+                    )
+
+                    else                  -> {}
+                }
+            }
         }
     }
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun InstallsPage(viewModel: InstalledVM, mainVM: MainVM) {
-    val context = LocalContext.current
-    val neoActivity = LocalActivity.current as NeoActivity
-
-    val pageState by viewModel.installedPageState.collectAsStateWithLifecycle()
-    val dataState by mainVM.dataState.collectAsStateWithLifecycle()
-
-    val openDialog = remember { mutableStateOf(false) }
-    val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
-    val notModifiedSortFilter by remember(pageState.sortFilter) {
-        derivedStateOf {
-            Preferences[Preferences.Key.SortOrderInstalled] == Preferences.Key.SortOrderInstalled.default.value &&
-                    Preferences[Preferences.Key.SortOrderAscendingInstalled] == Preferences.Key.SortOrderAscendingInstalled.default.value &&
-                    Preferences[Preferences.Key.ReposFilterInstalled] == Preferences.Key.ReposFilterInstalled.default.value &&
-                    Preferences[Preferences.Key.CategoriesFilterInstalled] == Preferences.Key.CategoriesFilterInstalled.default.value &&
-                    Preferences[Preferences.Key.LicensesFilterInstalled] == Preferences.Key.LicensesFilterInstalled.default.value &&
-                    Preferences[Preferences.Key.AntifeaturesFilterInstalled] == Preferences.Key.AntifeaturesFilterInstalled.default.value &&
-                    Preferences[Preferences.Key.TargetSDKInstalled] == Preferences.Key.TargetSDKInstalled.default.value &&
-                    Preferences[Preferences.Key.MinSDKInstalled] == Preferences.Key.MinSDKInstalled.default.value
-        }
-    }
-
-    Scaffold(
-        containerColor = Color.Transparent,
-    ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+fun LazyListScope.InstalledLazyItems(
+    context: Context,
+    neoActivity: NeoActivity,
+    pageState: InstalledPageState,
+    dataState: DataState,
+    notModifiedSortFilter: Boolean,
+    setFavorite: (String, Boolean) -> Unit,
+    openDialog: (String, () -> Unit) -> Unit,
+) {
+    stickyHeader(key = "installedTitle") {
+        Row(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                .fillMaxWidth()
+                .heightIn(min = 56.dp)
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            item(key = "installedTitle") {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.installed_applications),
-                        modifier = Modifier.padding(start = 8.dp),
-                        maxLines = 2,
-                    )
-                    SortFilterChip(notModified = notModifiedSortFilter) {
-                        neoActivity.navigateSortFilterSheet(NavItem.Installed)
-                    }
-                }
-            }
-            items(pageState.installedProducts, key = { it.packageName }) { item ->
-                ProductsListItem(
-                    item = item,
-                    repo = dataState.reposMap[item.repositoryId],
-                    isFavorite = dataState.favorites.contains(item.packageName),
-                    onUserClick = {
-                        neoActivity.navigateProduct(it.packageName)
-                    },
-                    onFavouriteClick = { pi ->
-                        mainVM.setFavorite(
-                            pi.packageName,
-                            !dataState.favorites.contains(pi.packageName)
-                        )
-                    },
-                    installed = pageState.installedMap[item.packageName],
-                    onActionClick = {
-                        val installed = pageState.installedMap[it.packageName]
-                        val action = {
-                            NeoApp.wm.install(
-                                Pair(it.packageName, it.repositoryId)
-                            )
-                        }
-                        if (installed != null && installed.launcherActivities.isNotEmpty())
-                            context.onLaunchClick(
-                                installed,
-                                neoActivity.supportFragmentManager
-                            )
-                        else if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                            dialogKey.value = DialogKey.Download(it.name, action)
-                            openDialog.value = true
-                        } else action()
-                    }
-                )
+            Text(
+                text = stringResource(id = R.string.installed_applications),
+                modifier = Modifier.padding(start = 8.dp),
+                maxLines = 2,
+            )
+            SortFilterChip(notModified = notModifiedSortFilter) {
+                neoActivity.navigateSortFilterSheet(NavItem.Installed)
             }
         }
     }
-
-    if (openDialog.value) {
-        BaseDialog(openDialogCustom = openDialog) {
-            when (dialogKey.value) {
-                is DialogKey.Download -> KeyDialogUI(
-                    key = dialogKey.value,
-                    openDialog = openDialog,
-                    primaryAction = {
-                        if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None)
-                            neoActivity.launchLockPrompt {
-                                (dialogKey.value as DialogKey.Download).action()
-                                openDialog.value = false
-                            }
-                        else {
-                            (dialogKey.value as DialogKey.Download).action()
-                            openDialog.value = false
-                        }
-                    },
-                    onDismiss = {
-                        dialogKey.value = null
-                        openDialog.value = false
-                    }
+    items(pageState.installedProducts, key = { it.packageName }) { item ->
+        ProductsListItem(
+            item = item,
+            repo = dataState.reposMap[item.repositoryId],
+            isFavorite = dataState.favorites.contains(item.packageName),
+            onUserClick = {
+                neoActivity.navigateProduct(it.packageName)
+            },
+            onFavouriteClick = { pi ->
+                setFavorite(
+                    pi.packageName,
+                    !dataState.favorites.contains(pi.packageName)
                 )
-
-                else                  -> {}
+            },
+            installed = pageState.installedMap[item.packageName],
+            onActionClick = {
+                val installed = pageState.installedMap[it.packageName]
+                val action = {
+                    NeoApp.wm.install(
+                        Pair(it.packageName, it.repositoryId)
+                    )
+                }
+                if (installed != null && installed.launcherActivities.isNotEmpty())
+                    context.onLaunchClick(
+                        installed,
+                        neoActivity.supportFragmentManager
+                    )
+                else if (Preferences[Preferences.Key.DownloadShowDialog]) openDialog(
+                    it.name,
+                    action
+                )
+                else action()
             }
-        }
+        )
     }
 }
 
 @SuppressLint("UnusedCrossfadeTargetStateParameter")
-@Composable
-fun DownloadedPage(viewModel: InstalledVM) {
-    val neoActivity = LocalActivity.current as NeoActivity
-    val pageState by viewModel.downloadedPageState.collectAsStateWithLifecycle()
-
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(2.dp),
-        contentPadding = PaddingValues(vertical = 8.dp),
-    ) {
-        item(key = "downloadedTitle") {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 56.dp)
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Text(
-                    text = stringResource(id = R.string.downloads),
-                    modifier = Modifier.padding(start = 8.dp),
-                    maxLines = 2,
-                )
-                Crossfade(pageState.sortedDownloaded.isNotEmpty()) { isNotEmpty ->
-                    if (isNotEmpty) ActionChip(
-                        text = stringResource(id = R.string.erase_all),
-                        icon = Phosphor.Eraser,
-                    ) {
-                        pageState.sortedDownloaded.forEach {
-                            viewModel.eraseDownloaded(it)
-                        }
+fun LazyListScope.DownloadedLazyItems(
+    neoActivity: NeoActivity,
+    pageState: DownloadedPageState,
+    eraseDownloaded: (Downloaded) -> Unit
+) {
+    stickyHeader(key = "downloadedTitle") {
+        Row(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                .fillMaxWidth()
+                .heightIn(min = 56.dp)
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = stringResource(id = R.string.downloads),
+                modifier = Modifier.padding(start = 8.dp),
+                maxLines = 2,
+            )
+            Crossfade(pageState.sortedDownloaded.isNotEmpty()) { isNotEmpty ->
+                if (isNotEmpty) ActionChip(
+                    text = stringResource(id = R.string.erase_all),
+                    icon = Phosphor.Eraser,
+                ) {
+                    pageState.sortedDownloaded.forEach {
+                        eraseDownloaded(it)
                     }
                 }
             }
         }
-        items(pageState.sortedDownloaded, key = { it.itemKey }) { item ->
-            val state by remember(item) {
-                derivedStateOf { item.state }
-            }
-            val iconDetails = pageState.iconDetails[item.packageName]
-
-            DownloadedItem(
-                download = item,
-                iconDetails = iconDetails,
-                repo = pageState.reposMap[iconDetails?.repositoryId
-                    ?: item.repositoryId],
-                state = state,
-                onUserClick = { neoActivity.navigateProduct(item.packageName) },
-                onEraseClick = { viewModel.eraseDownloaded(item) },
-            )
+    }
+    items(pageState.sortedDownloaded, key = { it.itemKey }) { item ->
+        val state by remember(item) {
+            derivedStateOf { item.state }
         }
+        val iconDetails = pageState.iconDetails[item.packageName]
+
+        DownloadedItem(
+            download = item,
+            iconDetails = iconDetails,
+            repo = pageState.reposMap[iconDetails?.repositoryId
+                ?: item.repositoryId],
+            state = state,
+            onUserClick = { neoActivity.navigateProduct(item.packageName) },
+            onEraseClick = { eraseDownloaded(item) },
+        )
     }
 }
