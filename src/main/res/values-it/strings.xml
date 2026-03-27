@@ -497,4 +497,10 @@
     <string name="keep_android_open">Difendi l\'apertura di Android</string>
     <string name="keep_android_open_notice">Le politiche di Google minacciano l\'esistenza di F-Droid e la natura aperta di Android. Non restare a guardare, aiutaci a proteggerli: https://keepandroidopen.org/</string>
     <string name="trending_from_florid">Tendenze su Florid</string>
+    <string name="disable_autoupdate_new_critical_permissions">Disabilita aggiornamento automatico per le nuove autorizzazioni critiche</string>
+    <string name="disable_autoupdate_new_critical_permissions_summary">Non aggiornare automaticamente un\'app se ha nuove autorizzazioni critiche.</string>
+    <string name="disable_autoupdate_non_reproducible_builds">Disabilita aggiornamento automatico per aggiornamenti non riproducibili</string>
+    <string name="disable_autoupdate_non_reproducible_builds_summary">Non aggiornare automaticamente un\'app che si trova già su una build riproducibile a una build non riproducibile.</string>
+    <string name="show_disabled_apps">Mostra app disabilitate</string>
+    <string name="show_disabled_apps_summary">Includi app disabilitate nell\'elenco delle app installate e degli aggiornamenti.</string>
 </resources>
