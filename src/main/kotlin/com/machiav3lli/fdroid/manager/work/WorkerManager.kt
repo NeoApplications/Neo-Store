@@ -269,9 +269,9 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
 }
 
 val workmanagerModule = module {
-    single { WorkerManager(get()) }
+    singleOf(::WorkerManager)
     single { WorkManager.getInstance(get()) }
-    single { ActionReceiver() }
-    single { NotificationManagerCompat.from(get()) }
+    singleOf(::ActionReceiver)
+    singleOf(NotificationManagerCompat::from)
     singleOf(::UpdatesNotificationManager)
 }

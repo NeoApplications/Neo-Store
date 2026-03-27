@@ -55,6 +55,7 @@ import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import okhttp3.ConnectionPool
 import okhttp3.ConnectionSpec
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import org.koin.mp.KoinPlatform.getKoin
 import java.io.File
@@ -424,7 +425,7 @@ private fun initDownloadClient(): HttpClient = HttpClient(OkHttp) {
 }
 
 val downloadClientModule = module {
-    single { initDownloadClient() }
+    singleOf(::initDownloadClient)
 }
 
 class DownloadSizeException(message: String, cause: Throwable? = null) : Exception(message, cause)

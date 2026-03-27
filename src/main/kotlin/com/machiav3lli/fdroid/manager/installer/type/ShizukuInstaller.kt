@@ -33,6 +33,8 @@ import java.io.OutputStream
 
 class ShizukuInstaller(context: Context) : BaseInstaller(context) {
 
+    // TODO Investigate https://github.com/NeoApplications/Neo-Store/issues/788
+    // TODO Investigate https://t.me/neo_android_store/21807/31112
     companion object {
         const val TAG = "ShizukuInstaller"
 

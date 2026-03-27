@@ -110,5 +110,5 @@ class AppInstaller(private val context: Context) : KoinComponent, InstallationEv
 
 val installerModule = module {
     singleOf(::AppInstaller)
-    single { InstallQueue() }
+    singleOf(::InstallQueue)
 }
