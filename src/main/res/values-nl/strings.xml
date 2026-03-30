@@ -495,4 +495,7 @@
     <string name="disable_autoupdate_new_critical_permissions">Automatisch bijwerken uitschakelen bij nieuwe kritieke rechten</string>
     <string name="disable_autoupdate_new_critical_permissions_summary">App niet automatisch bijwerken als het nieuwe kritieke rechten vereist.</string>
     <string name="disable_autoupdate_non_reproducible_builds">Automatisch bijwerken uitschakelen bij niet-reproduceerbare updates</string>
+    <string name="disable_autoupdate_non_reproducible_builds_summary">App die al een reproduceerbare versie heeft niet automatisch bijwerken naar een niet-reproduceerbare versie.</string>
+    <string name="show_disabled_apps">Uitgeschakelde apps laten zien</string>
+    <string name="show_disabled_apps_summary">Neem uitgeschakelde apps op in de lijst met geïnstalleerde apps en updates.</string>
 </resources>
