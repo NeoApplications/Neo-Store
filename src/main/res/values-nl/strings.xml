@@ -173,7 +173,7 @@
     <string name="installed_applications">Geïnstalleerd</string>
     <string name="sort_filter">Sorteer en filter</string>
     <string name="new_applications">Nieuwe apps</string>
-    <string name="install_after_sync">Automatisch-bijwerken</string>
+    <string name="install_after_sync">Automatisch bijwerken</string>
     <string name="install_after_sync_summary">Installeer alle nieuwe versies na het laden van archieven.</string>
     <string name="prefs_updated_apps">Aantal apps in \"recentelijk bijgewerkt\"</string>
     <string name="prefs_new_apps">Aantal apps in \"Nieuwe apps\"</string>
@@ -492,4 +492,7 @@
     <string name="keep_android_open_notice">Android\'s openheid en F-Droid worden door Google bedreigd. We hebben je hulp nodig: https://keepandroidopen.org/</string>
     <string name="from_FORMAT">van %s</string>
     <string name="trending_from_florid">Trending op Florid</string>
+    <string name="disable_autoupdate_new_critical_permissions">Automatisch bijwerken uitschakelen bij nieuwe kritieke rechten</string>
+    <string name="disable_autoupdate_new_critical_permissions_summary">App niet automatisch bijwerken als het nieuwe kritieke rechten vereist.</string>
+    <string name="disable_autoupdate_non_reproducible_builds">Automatisch bijwerken uitschakelen bij niet-reproduceerbare updates</string>
 </resources>
