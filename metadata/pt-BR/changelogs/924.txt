@@ -1,0 +1,6 @@
+Adicionado: Avisos em apps com vulnerabilidades conhecidas
+Corrigido: Melhoria no desempenho afetado pela busca
+Corrigido: Instalador travando
+Atualizado: Reformulação da sincronização automática
+Atualizado: Reformulação das páginas de repositório
++ mais de 60 contribuições de tradução incluídas
