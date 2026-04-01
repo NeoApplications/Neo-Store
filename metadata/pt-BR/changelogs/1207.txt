@@ -1,0 +1,7 @@
+Adicionado: Banner dispensável sobre Keep Android Open
+Adicionado: Indicação do repositório ao instalar ou atualizar
+Corrigido: Notificações de apps baixados travando
+Atualizado: Logs reproduzíveis movidos do Codeberg para IoD
+Atualizado: Reformulação da página de repositórios
+Removido: Animação de categorias entre estados
+E muito mais em mais de 20 commits e 10 contribuições de tradução para melhorar a experiência geral

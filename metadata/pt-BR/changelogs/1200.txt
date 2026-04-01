@@ -1,0 +1,7 @@
+Adicionado: Preferência para provedor de estatísticas de download ou desativação
+Adicionado: Notificação de progresso no worker de estatísticas
+Corrigido: Aplicação direta de mudanças do instalador
+Corrigido: Exibição apenas de opções válidas de tema, instalador e bloqueio
+Atualizado: Reformulação completa de workers, repositórios e instaladores para melhor desempenho
+Atualizado: Melhor reporte de falhas em sincronizações e downloads
+Atualizado: Ordenação localizada de categorias na aba Explorar

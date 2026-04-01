@@ -1,0 +1,4 @@
+Adicionado: Escanear QR Code de repositório usando BinaryEye (se instalado)
+Corrigido: Travamento na aba Instalados após abrir pela notificação de atualização
+Corrigido: Melhor tratamento de intents no sistema
+Inclui também pequenos ajustes internos que melhoram a estabilidade geral, reduzem falhas inesperadas durante o uso contínuo e refinam a interação entre componentes do aplicativo em segundo plano garantindo melhor fluidez e confiabilidade geral

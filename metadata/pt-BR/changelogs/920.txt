@@ -1,0 +1,5 @@
+Adicionado: Ícone do app baseado no tema do sistema
+Adicionado: Preferência de tipo de instalador (incluindo modo Legacy para MIUI problemática)
+Corrigido: Navegação após abrir pela notificação de atualização
+Corrigido: Barra de download não refletindo o progresso real
+Mais algumas melhorias no changelog completo

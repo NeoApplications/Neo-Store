@@ -1,0 +1,4 @@
+Adicionado: Selo do VirusTotal nos detalhes da versão
+Corrigido: Crash por valor ausente em DownloadStats.changed
+Inclui também melhorias internas menores que aumentam a estabilidade geral do sistema, refinam o comportamento de execução em segundo plano e evitam inconsistências ocasionais durante o processamento de dados
+Além disso, foram realizadas 8 contribuições de tradução para melhorar a experiência em diferentes idiomas e regiões

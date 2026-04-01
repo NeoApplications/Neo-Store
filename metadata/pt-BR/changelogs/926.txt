@@ -1,0 +1,7 @@
+Corrigido: Não detecção da permissão root
+Corrigido: Travamentos relacionados ao Sync e DownloadService
+Atualizado: Reformulação da página de apps instalados
+Adicionado: Opção para desativar coleta/exibição de rastreadores
+Adicionado: FluffyChat nightly, Anonymous Messenger e BeoCode aos repositórios padrão
+Corrigido: Lista de apps instalados não atualizando ao instalar/desinstalar
++ mais de 80 contribuições de tradução e outras melhorias

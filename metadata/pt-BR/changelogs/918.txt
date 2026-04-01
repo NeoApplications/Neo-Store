@@ -1,0 +1,7 @@
+Adicionado: Suporte a URIs fdroidrepo
+Adicionado: Suporte a intents market://search
+Adicionado: Opção de compartilhamento para apps do IzzyOnDroid
+Adicionado: GitJournal e Revolt aos repositórios predefinidos
+Atualizado: Reformulação dos itens de versão
+Removido: Repositório predefinido Alefvanoon
+Para mais detalhes, consulte o changelog completo com todas as alterações disponíveis nesta versão atual
