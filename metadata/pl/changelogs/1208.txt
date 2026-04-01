@@ -1,0 +1,8 @@
+Dodano: opcję wyłączającą automatyczne aktualizacje aplikacji do wersji, której błąd nie został jeszcze odtworzony 
+Dodano: opcję wyłączającą automatyczne aktualizacje wersji wymagających nowych uprawnień krytycznych 
+Dodano: wskaźniki postępu na stronie wyszukiwania (dzięki @SocratesDz) 
+Dodano: przyklejone nagłówki na stronach głównych 
+Poprawka: usuwanie pamięci podręcznej indeksu przez system 
+Poprawka: Utrzymywanie paska wyszukiwania poza fokusem po powrocie na stronę
+Aktualizacja: Zmiana serwera lustrzanego w przypadku niepowodzenia pobierania/synchronizacji z repozytorium
+oraz wiele innych zmian w ponad 20 poprawkach i 20 tłumaczeniach
