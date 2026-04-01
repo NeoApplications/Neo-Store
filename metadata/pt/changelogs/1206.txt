@@ -1,0 +1,3 @@
+Adicionado: Selo do VirusTotal nos detalhes da versão
+Corrigido: Crash por valor ausente em DownloadStats.changed
+Mais 8 contribuições de tradução incluídas
