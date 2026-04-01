@@ -1,0 +1,8 @@
+Adicionado: Selo de confiável em itens de repositório
+Adicionado: Botão de compartilhamento para repositórios
+Corrigido: Falha ao processar apps sem categorias
+Atualizado: Rotação de espelhos ativada por padrão no F-Droid e IzzyOnDroid
+Atualizado: Melhor detalhamento das falhas de sincronização
+Atualizado: Retorno da barra de busca inferior
+Removidos: C10udburst, NanoDroid, Anonymous Messenger, Revolt, 2BR, J.A.K's e Umbrella
+E muito mais em mais de 30 commits e 10 contribuições de tradução
