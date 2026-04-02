@@ -1,0 +1,8 @@
+Adicionado: Opção para desativar atualizações automáticas para builds não reprodutíveis
+Adicionado: Opção para desativar atualizações automáticas com novas permissões críticas
+Adicionado: Indicadores de progresso na busca
+Adicionado: Cabeçalhos fixos nas páginas principais
+Corrigido: Cache do índice removido pelo sistema
+Corrigido: Barra de busca mantendo foco ao voltar
+Atualizado: Rotação de espelhos ao falhar download ou sincronização
+E mais melhorias gerais incluídas
