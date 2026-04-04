@@ -1,0 +1,7 @@
+Adicionado: Permissão de notificações (para Android 13)
+Adicionado: Barra lateral de categorias no explorador
+Corrigido: Instaladores Legacy e Root
+Corrigido: Melhoria no desempenho da busca
+Atualizado: Layout horizontal dos apps
+Atualizado: Solicitação de permissão root ao definir instalador root
++ mais de 60 contribuições de tradução incluídas

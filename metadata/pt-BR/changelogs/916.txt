@@ -1,0 +1,7 @@
+Adicionado: Função de ordenar e filtrar
+Adicionado: Atalho direto para favoritos
+Adicionado: AlvoSDK exibido nos chips de informação
+Atualizado: Substituição de ícones Material por Phosphor
+Atualizado: Reformulação do layout da barra inferior, AppSheet e EditRepoSheet
+Corrigido: Exibição de ação secundária de atualização durante downloads
+Para mais detalhes, consulte o changelog completo com todas as mudanças

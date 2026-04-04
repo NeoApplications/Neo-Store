@@ -1,0 +1,8 @@
+Aggiunto: Preferenza per disabilitare gli aggiornamenti automatici di un'app a una build ancora non riproducibile
+Aggiunto: Preferenza per disabilitare gli aggiornamenti automatici delle versioni con nuove autorizzazioni critiche
+Aggiunto: Indicatori di avanzamento per la pagina di ricerca (grazie a @SocratesDz)
+Aggiunto: Intestazioni fisse nelle pagine principali
+Corretto: La cache dell'indice veniva rimossa dal sistema
+Corretto: La barra di ricerca rimaneva fuori focus al ritorno alla pagina
+Aggiornato: Rotazione del mirror in caso di errore di download/sincronizzazione da un repository
+e molti altri in oltre 20 commit e 20 contributi di traduzione

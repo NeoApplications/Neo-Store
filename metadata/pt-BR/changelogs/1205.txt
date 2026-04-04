@@ -1,0 +1,7 @@
+Adicionado: Opção para desativar modo lista-detalhe em telas largas
+Adicionado: Filtro de favoritos na busca
+Adicionado: Link de tradução na página do app
+Corrigido: Fallback para ícones mal processados no repositório
+Atualizado: Combina apps atualizados e downloads em andamento em barra flutuante
+Atualizado: Reformulação do layout das estatísticas de download
+E muito mais em mais de 50 commits e 10 contribuições
