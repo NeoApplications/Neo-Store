@@ -2,6 +2,6 @@ Adicionado: Outros apps do desenvolvedor
 Adicionado: Barra superior com rolagem
 Corrigido: Problemas de cores no tema dinâmico
 Atualizado: Novo visualizador de capturas com zoom e correções
-Atualizado: Diversos layouts reformulados
-Atualizado: Reformulação do sistema de temas com melhorias visuais
-Para mais detalhes, consulte o changelog completo com todas as alterações feitas nesta versão atual
+Atualizado: Diversos layouts
+Atualizado: Reformulação do sistema de temas
+Para mais detalhes, consulte o changelog completo
