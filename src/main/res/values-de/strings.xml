@@ -493,4 +493,11 @@
     <string name="keep_android_open">Keep Android Open</string>
     <string name="keep_android_open_notice">Die Offenheit von Android und F-Droid sind durch Google bedroht. Wir brauchen Ihre Hilfe: https://keepandroidopen.org/</string>
     <string name="from_FORMAT">von %s</string>
+    <string name="trending_from_florid">Trendet bei Florid</string>
+    <string name="disable_autoupdate_new_critical_permissions">Automatische Aktualisierung bei neuen kritischen Berechtigungen deaktivieren</string>
+    <string name="disable_autoupdate_new_critical_permissions_summary">Aktualisiert eine App nicht automatisch, wenn sie über neue kritische Berechtigungen verfügt.</string>
+    <string name="disable_autoupdate_non_reproducible_builds">Automatische Aktualisierung bei nicht reproduzierbaren Aktualisierungen deaktivieren</string>
+    <string name="disable_autoupdate_non_reproducible_builds_summary">Aktualisiert keine App automatisch, die sich bereits auf einem reproduzierbaren Build auf einem nicht reproduzierbaren Build befindet.</string>
+    <string name="show_disabled_apps">Deaktivierte Apps anzeigen</string>
+    <string name="show_disabled_apps_summary">Deaktivierte Apps in die Liste der installierten Apps und Updates aufnehmen.</string>
 </resources>
