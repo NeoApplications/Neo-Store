@@ -8,7 +8,7 @@
     <string name="already_exists">Já existe</string>
     <string name="always">Sempre</string>
     <string name="amoled">Preto</string>
-    <string name="anti_features">Anti-funcionalidades</string>
+    <string name="anti_features">Anti-funções</string>
     <string name="application">Aplicativo</string>
     <string name="application_not_found">Não foi possível encontrar esse aplicativo</string>
     <string name="author_email">E-mail do autor</string>
@@ -493,4 +493,14 @@
     <string name="disable_list_detail">Desativar layout de lista-detalhe</string>
     <string name="disable_list_detail_summary">Isso desativa a divisão do layout em dois painéis quando a tela é grande o suficiente, como em um tablet ou em um celular no modo paisagem.</string>
     <string name="virustotal_badge">Emblema do Virustotal</string>
+    <string name="keep_android_open">Manter o Android Aberto</string>
+    <string name="keep_android_open_notice">O Android aberto e o F-Droid estão sob ameaça do Google. Precisamos da sua ajuda:\nhttps://keepandroidopen.org/</string>
+    <string name="from_FORMAT">de %s</string>
+    <string name="trending_from_florid">Em alta no Florid</string>
+    <string name="disable_autoupdate_new_critical_permissions">Desativar atualização automática ao detectar novas permissões críticas</string>
+    <string name="disable_autoupdate_new_critical_permissions_summary">Não atualizar automaticamente um app se ele tiver novas permissões críticas.</string>
+    <string name="disable_autoupdate_non_reproducible_builds">Desativar atualização automática para atualizações não reprodutíveis</string>
+    <string name="disable_autoupdate_non_reproducible_builds_summary">Não atualizar automaticamente um app que já está em uma versão reprodutível para uma versão não reprodutível</string>
+    <string name="show_disabled_apps">Mostrar apps desativados</string>
+    <string name="show_disabled_apps_summary">Incluir apps desativados na lista de apps instalados e atualizações</string>
 </resources>
