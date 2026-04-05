@@ -477,4 +477,22 @@
     <string name="duplicate_repo_address_FORMAT">地址 %1$s 是已存在仓库的重复地址。</string>
     <string name="main_page">主页</string>
     <string name="disable_list_detail">禁用列表详细布局</string>
+    <string name="dlstats_provider">下载统计数据提供方</string>
+    <string name="dlstats_none">无提供方</string>
+    <string name="integrity_check_failed">未通过完整性检查，因哈希值不匹配。</string>
+    <string name="invalid_metadata_error">已下载版本的元数据不匹配。</string>
+    <string name="virustotal_badge">Virustotal 徽章</string>
+    <string name="keep_android_open">保持安卓开放</string>
+    <string name="keep_android_open_notice">安卓系统开放性和 F-Droid 受到 Google 威胁。我们需要您的帮助：https://keepandroidopen.org/</string>
+    <string name="from_FORMAT">来自 %s</string>
+    <string name="trending_from_florid">Florid 热门</string>
+    <string name="disable_autoupdate_new_critical_permissions">有新的重要权限时禁用自动更新</string>
+    <string name="disable_autoupdate_new_critical_permissions_summary">如果应用有新的重要权限不自动更新。</string>
+    <string name="disable_autoupdate_non_reproducible_builds">有不可重复更新时禁用自动更新</string>
+    <string name="disable_autoupdate_non_reproducible_builds_summary">不自动将已经是可重复构建的应用更新到不可重复构建。</string>
+    <string name="show_disabled_apps">显示禁用的应用</string>
+    <string name="show_disabled_apps_summary">在已安装应用和更新列表中包含禁用的应用。</string>
+    <string name="rb_bg443">bg443</string>
+    <string name="rb_obfusk">Obfusk</string>
+    <string name="download_stats_notification_message">正在获取月度数据： %1$d/%2$d\n更新了 %3$d 个，%4$d 个未更改，%5$d 个失败</string>
 </resources>
