@@ -323,4 +323,15 @@
     <string name="permissions_note_4">권한을 거의 요구하지 않음</string>
     <string name="permission_granted">허가됨</string>
     <string name="permission_not_present">이 시스템에 존재하지 않음</string>
+    <string name="auto_sync_interval_hours">자동 동기화 간격 (시간 단위)</string>
+    <string name="finished">완료됨</string>
+    <string name="canceled">취소됨</string>
+    <string name="error">에러</string>
+    <string name="clear_text">텍스트 지우기</string>
+    <string name="list_apps">저장소 앱 보기</string>
+    <string name="previous">이전</string>
+    <string name="next">다음</string>
+    <string name="alt_navbar_item">다른 내비게이션 바 항목 사용</string>
+    <string name="alt_navbar_item_description">선택되지 않은 항목의 라벨을 표시하는 이전 스타일의 내비게이션 바 레이아웃을 사용합니다.</string>
+    <string name="repos_export">저장소 내보내기</string>
 </resources>
