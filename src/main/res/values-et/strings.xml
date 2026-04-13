@@ -153,13 +153,13 @@
     <string name="list_animation_description">Animeeri esilehel loend</string>
     <string name="compiled_for_debugging">Kompileeritud silumiseks</string>
     <string name="show_screenshots_description">Kuva ekraanitõmmised rakenduse lehel.</string>
-    <string name="no_matching_applications_found">Sellised rakendusi ei leitud.</string>
+    <string name="no_matching_applications_found">Sellised rakendusi ei leidunud</string>
     <string name="installing">Paigaldamine</string>
     <string name="updates">Värskendused</string>
     <string name="username_missing">Kasutajanimi puudu</string>
     <string name="proxy_port">Port</string>
     <string name="favorite_add">Lisa lemmikutesse</string>
-    <string name="syncing">Sünkroonimine</string>
+    <string name="syncing">Sünkroonin</string>
     <string name="other">Teised</string>
     <string name="themes">Teemad</string>
     <string name="prefs_personal">Isiklik</string>
@@ -256,7 +256,7 @@
     <string name="install_after_sync">Automaatne värskendamine</string>
     <string name="syncing_FORMAT">Sünkroonimine %s…</string>
     <string name="search">Otsing</string>
-    <string name="ok">OK</string>
+    <string name="ok">Sobib</string>
     <string name="system_installer">Süsteemi paigaldus</string>
     <string name="saving_details">Detailide salvestamine…</string>
     <string name="password_missing">Salasõna puudu</string>
@@ -393,4 +393,9 @@
     <string name="trackers_in">%s jälitajad</string>
     <string name="erase_all">Kustuta kõik</string>
     <string name="all">Kõik</string>
+    <string name="clients">Kliendid</string>
+    <string name="monthly">Iga kuu</string>
+    <string name="top_apps">Populaarseimad rakendused</string>
+    <string name="anti_features">Omadused, mis ei sobi</string>
+    <string name="parsing_index_error_DESC">Indeksifaili töötlemine ei õnnestunud.</string>
 </resources>
