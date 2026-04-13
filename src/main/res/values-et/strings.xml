@@ -398,4 +398,16 @@
     <string name="top_apps">Populaarseimad rakendused</string>
     <string name="anti_features">Omadused, mis ei sobi</string>
     <string name="parsing_index_error_DESC">Indeksifaili töötlemine ei õnnestunud.</string>
+    <string name="file_size_error_DESC">Faili suurus ületab eeldatud suuruse.</string>
+    <string name="validation_error_FORMAT">Valideerimisviga: %s</string>
+    <string name="installing_error_FORMAT">Viga %s rakenduse paigaldamisel</string>
+    <string name="installing_error_incompatible_DESC">Paigaldus pole ühilduv.</string>
+    <string name="installing_error_blocked_DESC">Paigaldamine on blokeeritud.</string>
+    <string name="installing_error_timeout_DESC">Aegumine paigaldamisel.</string>
+    <string name="installing_error_invalid_DESC">Vigane paigaldus.</string>
+    <string name="installing_error_unknown_DESC">Tundmatu viga paigaldamisel.</string>
+    <string name="prefs_layout">Paigutus</string>
+    <string name="prefs_connection">Internetiühendus</string>
+    <string name="prefs_service">Teenus</string>
+    <string name="about_channel">Kanal</string>
 </resources>
