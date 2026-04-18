@@ -211,7 +211,7 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                 }
                             )
                         }
-                        item {
+                        stickyHeader {
                             PreferenceGroupHeading(heading = stringResource(id = R.string.enabled))
                         }
                         items(items = pageState.enabledRepos, key = { it.id }) {
@@ -233,7 +233,7 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                 }
                             )
                         }
-                        item {
+                        stickyHeader {
                             PreferenceGroupHeading(heading = stringResource(id = R.string.disabled))
                         }
                         items(items = pageState.disabledRepo, key = { it.id }) {
