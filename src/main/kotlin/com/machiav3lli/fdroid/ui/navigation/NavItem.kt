@@ -91,7 +91,7 @@ sealed class NavItem(
 @Serializable
 sealed class NavRoute : NavKey {
     @Serializable
-    data object Permissions : NavRoute()
+    data object Onboarding : NavRoute()
 
     @Serializable
     data class Main(val page: Int = Preferences[Preferences.Key.DefaultTab].index) :

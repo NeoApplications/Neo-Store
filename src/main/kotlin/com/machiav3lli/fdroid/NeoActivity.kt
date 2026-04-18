@@ -78,7 +78,7 @@ class NeoActivity : AppCompatActivity() {
     }
 
     private val navStack: NavBackStack<NavRoute> by lazy {
-        NavBackStack(NavRoute.Permissions)
+        NavBackStack(NavRoute.Onboarding)
     }
 
     private var currentTheme by Delegates.notNull<Int>()
