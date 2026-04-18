@@ -7,6 +7,7 @@ import android.net.Uri
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -211,8 +212,13 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                 }
                             )
                         }
-                        stickyHeader {
-                            PreferenceGroupHeading(heading = stringResource(id = R.string.enabled))
+                        stickyHeader(key = "enabledTitle") {
+                            PreferenceGroupHeading(
+                                heading = stringResource(id = R.string.enabled),
+                                modifier = Modifier
+                                    .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                                    .fillMaxWidth()
+                            )
                         }
                         items(items = pageState.enabledRepos, key = { it.id }) {
                             RepositoryItem(
@@ -233,8 +239,13 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                                 }
                             )
                         }
-                        stickyHeader {
-                            PreferenceGroupHeading(heading = stringResource(id = R.string.disabled))
+                        stickyHeader(key = "disabledTitle") {
+                            PreferenceGroupHeading(
+                                heading = stringResource(id = R.string.disabled),
+                                modifier = Modifier
+                                    .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                                    .fillMaxWidth()
+                            )
                         }
                         items(items = pageState.disabledRepo, key = { it.id }) {
                             RepositoryItem(

@@ -27,7 +27,6 @@ import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -64,7 +63,6 @@ import com.machiav3lli.fdroid.ui.components.SyncButton
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.compose.UpdatesHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
-import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CaretDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
@@ -72,7 +70,6 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MagnifyingGlass
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import com.machiav3lli.fdroid.ui.compose.utils.blockBorderBottom
-import com.machiav3lli.fdroid.ui.dialog.ActionsDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.ui.navigation.NavItem
@@ -105,12 +102,10 @@ fun MainPage(
     var updaterExpanded by rememberSaveable { mutableStateOf(false) }
 
     val openDialog = remember { mutableStateOf(false) }
-    // TOD Move sync dialog here too
     val dialogKey: MutableState<DialogKey?> = remember { mutableStateOf(null) }
 
     val showPopup = remember { mutableIntStateOf(POPUP_NONE) }
     val syncTooltipState = rememberTooltipState()
-    val openSyncDialog = remember { mutableStateOf(false) }
     val showBanner = remember(Preferences[Preferences.Key.IgnoreKeepAndroidOpenNotice]) {
         mutableStateOf(!Preferences[Preferences.Key.IgnoreKeepAndroidOpenNotice])
     }
@@ -123,11 +118,6 @@ fun MainPage(
     val pagerState = rememberPagerState(initialPage = pageIndex, pageCount = { pages.size })
     val currentPageIndex = remember { derivedStateOf { pagerState.currentPage } }
     val currentPage by remember { derivedStateOf { pages[currentPageIndex.value] } }
-
-    LaunchedEffect(true) {
-        if (!Preferences[Preferences.Key.InitialSync])
-            openSyncDialog.value = true
-    }
 
     NeoNavigationSuiteScaffold(
         pages = pages,
@@ -340,25 +330,6 @@ fun MainPage(
                 pagerState = pagerState,
                 pageItems = pages,
                 preComposePages = 0
-            )
-        }
-    }
-
-    if (openSyncDialog.value) {
-        BaseDialog(openDialogCustom = openSyncDialog) {
-            ActionsDialogUI(
-                titleText = stringResource(id = R.string.confirmation),
-                messageText = stringResource(id = R.string.initial_sync_repositories),
-                primaryText = stringResource(id = R.string.sync_repositories),
-                primaryIcon = Phosphor.ArrowsClockwise,
-                primaryAction = {
-                    scope.launch { BatchSyncWorker.enqueue(SyncRequest.MANUAL) }
-                },
-                onDismiss = {
-                    Preferences[Preferences.Key.InitialSync] = true
-                    openSyncDialog.value = false
-                },
-                dismissTextId = R.string.skip,
             )
         }
     }

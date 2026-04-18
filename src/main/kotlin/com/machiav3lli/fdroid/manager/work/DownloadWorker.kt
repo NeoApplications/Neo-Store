@@ -63,8 +63,8 @@ import com.machiav3lli.fdroid.utils.isDownloadExternal
 import com.machiav3lli.fdroid.utils.notifySensitivePermissionsChanged
 import com.machiav3lli.fdroid.utils.updateWithError
 import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.java.KoinJavaComponent.get
@@ -84,12 +84,8 @@ class DownloadWorker(
     private val installsRepo: InstallsRepository by inject()
     private val notificationManager: NotificationManagerCompat by inject()
 
-    @Deprecated("")
-    override val coroutineContext: CoroutineDispatcher
-        get() = Dispatchers.IO
-
-    override suspend fun doWork(): Result {
-        return try {
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+        return@withContext try {
             task = getTask(inputData)
 
             Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
@@ -98,7 +94,7 @@ class DownloadWorker(
                     val validationError = validatePackage(task, releaseFile)
                     val result = Downloader.Result(HttpStatusCode.OK, "", "")
                     Log.i(TAG, "Running publish success from fun enqueue")
-                    return if (validationError == ValidationError.NONE) {
+                    return@withContext if (validationError == ValidationError.NONE) {
                         val releaseFile =
                             Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
                         releaseFile.renameTo(releaseFile)

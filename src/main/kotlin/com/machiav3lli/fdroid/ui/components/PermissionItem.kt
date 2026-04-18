@@ -59,20 +59,26 @@ fun PermissionItem(
             }
         },
         supportingContent = {
-            Column(modifier = Modifier.padding(8.dp)) {
-                Text(
-                    text = stringResource(id = item.descriptionId),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
-                )
-                if (item.warningTextId != -1) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Column(
+                    modifier = Modifier.padding(start = 12.dp),
+                ) {
                     Text(
-                        text = stringResource(id = item.warningTextId),
+                        text = stringResource(id = item.descriptionId),
                         style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
                     )
+                    if (item.warningTextId != -1) {
+                        Text(
+                            text = stringResource(id = item.warningTextId),
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+                        )
+                    }
                 }
                 Row(
                     modifier = Modifier
