@@ -586,6 +586,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object KidsMode : Key<Boolean>("kids_mode", Value.BooleanValue(false))
 
         data object InitialSync : Key<Boolean>("initial_sync", Value.BooleanValue(false))
+        data object OnboardedPage : Key<Int>("onboarded_page", Value.IntValue(0))
 
         data object IgnoreDisableBatteryOptimization :
             Key<Boolean>("ignore_disable_battery_optimization", Value.BooleanValue(false))

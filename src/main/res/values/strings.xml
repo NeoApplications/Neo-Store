@@ -501,4 +501,5 @@
     <string name="show_disabled_apps_summary">Include disabled apps in the list of installed apps and updates.</string>
     <string name="action_start_sync">Sync and start!</string>
     <string name="action_start_sans_sync">Don\'t sync for now!</string>
+    <string name="setup_FORMAT">Setup: %s</string>
 </resources>

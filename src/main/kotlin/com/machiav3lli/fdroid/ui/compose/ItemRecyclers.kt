@@ -168,9 +168,10 @@ fun ProductsCarousel(
 
 @Composable
 fun CarouselIndicators(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     size: Int = 1,
     dimension: Dp = 8.dp,
+    enableScrolling: Boolean = true,
     state: PagerState,
 ) {
     val scope = rememberCoroutineScope()
@@ -201,7 +202,9 @@ fun CarouselIndicators(
                     .size(height = dimension, width = width)
                     .clip(CircleShape)
                     .background(color = color)
-                    .clickable { scope.launch { state.animateScrollToPage(i) } }
+                    .clickable(enabled = enableScrolling) {
+                        scope.launch { state.animateScrollToPage(i) }
+                    }
             )
         }
     }
