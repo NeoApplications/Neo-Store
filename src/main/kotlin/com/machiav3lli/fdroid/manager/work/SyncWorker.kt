@@ -27,19 +27,25 @@ object SyncWorker {
         }
     }
 
-    suspend fun enableRepo(repository: Repository, enabled: Boolean): Boolean {
+    suspend fun enableRepo(
+        repository: Repository,
+        enabled: Boolean,
+        sync: Boolean = true,
+    ): Boolean {
         val reposRepo = get<RepositoriesRepository>(RepositoriesRepository::class.java)
         reposRepo.upsert(repository.enable(enabled))
         val isEnabled = !repository.enabled && repository.lastModified.isEmpty()
         val cooldownedSync = System.currentTimeMillis() -
                 NeoApp.latestSyncs.getOrDefault(repository.id, 0L) >=
                 10_000L
-        if (enabled && isEnabled && cooldownedSync) {
-            NeoApp.latestSyncs[repository.id] = System.currentTimeMillis()
-            BatchSyncWorker.enqueue(SyncRequest.MANUAL, setOf(repository.id))
-        } else {
-            NeoApp.wm.cancelSyncAll()
-            NeoApp.db.cleanUp(Pair(repository.id, false))
+        if (sync) {
+            if (enabled && isEnabled && cooldownedSync) {
+                NeoApp.latestSyncs[repository.id] = System.currentTimeMillis()
+                BatchSyncWorker.enqueue(SyncRequest.MANUAL, setOf(repository.id))
+            } else {
+                NeoApp.wm.cancelSyncAll()
+                NeoApp.db.cleanUp(Pair(repository.id, false))
+            }
         }
         return true
     }
