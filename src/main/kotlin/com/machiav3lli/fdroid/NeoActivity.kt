@@ -287,6 +287,9 @@ class NeoActivity : AppCompatActivity() {
     }
 
     internal fun navigateProduct(packageName: String) {
+        if (!navStack.any { it is NavRoute.Main }) {
+            navStack.navigateUnique(NavRoute.Main(Preferences.DefaultTab.Installed.index))
+        }
         navStack.navigate(NavRoute.App(packageName))
     }
 
