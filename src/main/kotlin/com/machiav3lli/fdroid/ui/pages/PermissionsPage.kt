@@ -9,23 +9,29 @@ import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
 import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.net.toUri
@@ -37,23 +43,23 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.machiav3lli.fdroid.NeoActivity
+import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.data.entity.Permission
+import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.PermissionItem
-import com.machiav3lli.fdroid.ui.navigation.NavRoute
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowCircleRight
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.isRunningOnTV
 import com.machiav3lli.fdroid.utils.showBatteryOptimizationDialog
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun PermissionsPage(navigator: (NavRoute) -> Unit) {
+fun PermissionsPage(onComplete: () -> Unit) {
     val context = LocalContext.current
     val activity = LocalActivity.current as NeoActivity
-    val mScope = CoroutineScope(Dispatchers.Main)
     val powerManager = activity.getSystemService(Context.POWER_SERVICE) as PowerManager
 
     val permissionStatePostNotifications = if (Android.sdk(Build.VERSION_CODES.TIRAMISU)) {
@@ -63,6 +69,7 @@ fun PermissionsPage(navigator: (NavRoute) -> Unit) {
     val permissionsList = remember {
         mutableStateListOf<Pair<Permission, () -> Unit>>()
     }
+    var permissionsHandled by remember { mutableStateOf(false) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(key1 = lifecycleOwner, key2 = ignored, effect = {
@@ -73,7 +80,8 @@ fun PermissionsPage(navigator: (NavRoute) -> Unit) {
                     powerManager,
                     permissionStatePostNotifications,
                 ) {
-                    mScope.launch { navigator(NavRoute.Main()) }
+                    permissionsHandled = true
+                    onComplete()
                 }
             }
         }
@@ -82,17 +90,27 @@ fun PermissionsPage(navigator: (NavRoute) -> Unit) {
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     })
 
-    Scaffold(
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-        contentColor = MaterialTheme.colorScheme.onBackground,
-    ) { paddingValues ->
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceBetween,
+    ) {
         LazyColumn(
             modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(8.dp)
         ) {
+            stickyHeader(key = "permissionsTitle") {
+                Text(
+                    text = stringResource(id = R.string.permissions),
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                )
+            }
             items(permissionsList, key = { it.first.nameId }) { pair ->
                 PermissionItem(
                     modifier = Modifier.animateItem(),
@@ -104,10 +122,32 @@ fun PermissionsPage(navigator: (NavRoute) -> Unit) {
                         powerManager,
                         permissionStatePostNotifications,
                     ) {
-                        mScope.launch { navigator(NavRoute.Main()) }
+                        permissionsHandled = true
+                        onComplete()
                     }
                 }
             }
+            if (permissionsList.isEmpty() && !permissionsHandled) {
+                item {
+                    Text(
+                        text = stringResource(id = R.string.no_permissions_identified),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+        }
+
+        if (permissionsList.isEmpty() || permissionsHandled) {
+            ActionButton(
+                onClick = onComplete,
+                text = stringResource(id = R.string.next),
+                icon = Phosphor.ArrowCircleRight,
+                coloring = ColoringState.Positive,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
+            )
         }
     }
 }

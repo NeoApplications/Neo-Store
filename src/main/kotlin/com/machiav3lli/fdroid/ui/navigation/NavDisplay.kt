@@ -50,7 +50,7 @@ fun AppNavDisplay(
             // TODO add conditional to avoid PermissionsPage when not needed
             fadeInEntry<NavRoute.Permissions> {
                 PermissionsPage {
-                    backStack.navigateUnique(it)
+                    backStack.navigateUnique(NavRoute.Main())
                     backStack.remove(NavRoute.Permissions)
                 }
             }
