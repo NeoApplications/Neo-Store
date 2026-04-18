@@ -20,6 +20,7 @@ import com.machiav3lli.fdroid.ui.pages.OnboardingPage
 import com.machiav3lli.fdroid.ui.pages.PrefsPage
 import com.machiav3lli.fdroid.ui.pages.SearchPage
 import com.machiav3lli.fdroid.ui.pages.SortFilterSheet
+import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -27,13 +28,16 @@ fun AppNavDisplay(
     backStack: NavBackStack<NavRoute>,
     modifier: Modifier = Modifier,
 ) {
+    // TODO replace with native scene strategies:
+    //  https://github.com/android/nav3-recipes/blob/main/app/src/main/java/com/example/nav3recipes/material/listdetail
+    //  https://github.com/android/nav3-recipes/blob/main/app/src/main/java/com/example/nav3recipes/bottomsheet
     val listDetailStrategy = rememberNeoSceneStrategy<NavRoute>()
 
     NavDisplay(
         modifier = modifier,
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
-        sceneStrategy = listDetailStrategy,
+        sceneStrategies = persistentListOf(listDetailStrategy),
         transitionSpec = {
             slideInHorizontally(tween(600)) { it } togetherWith
                     slideOutHorizontally(tween(600)) { -it }
