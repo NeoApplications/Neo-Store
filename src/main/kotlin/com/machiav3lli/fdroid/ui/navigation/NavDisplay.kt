@@ -16,7 +16,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.machiav3lli.fdroid.ui.pages.AppPage
 import com.machiav3lli.fdroid.ui.pages.MainPage
-import com.machiav3lli.fdroid.ui.pages.PermissionsPage
+import com.machiav3lli.fdroid.ui.pages.OnboardingPermsPage
 import com.machiav3lli.fdroid.ui.pages.PrefsPage
 import com.machiav3lli.fdroid.ui.pages.SearchPage
 import com.machiav3lli.fdroid.ui.pages.SortFilterSheet
@@ -49,7 +49,7 @@ fun AppNavDisplay(
         entryProvider = entryProvider {
             // TODO add conditional to avoid PermissionsPage when not needed
             fadeInEntry<NavRoute.Permissions> {
-                PermissionsPage {
+                OnboardingPermsPage {
                     backStack.navigateUnique(NavRoute.Main())
                     backStack.remove(NavRoute.Permissions)
                 }

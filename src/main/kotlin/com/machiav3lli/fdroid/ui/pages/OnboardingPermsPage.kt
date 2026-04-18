@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
 import androidx.activity.compose.LocalActivity
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -57,7 +56,7 @@ import com.machiav3lli.fdroid.utils.showBatteryOptimizationDialog
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun PermissionsPage(onComplete: () -> Unit) {
+fun OnboardingPermsPage(onComplete: () -> Unit) {
     val context = LocalContext.current
     val activity = LocalActivity.current as NeoActivity
     val powerManager = activity.getSystemService(Context.POWER_SERVICE) as PowerManager
@@ -101,16 +100,6 @@ fun PermissionsPage(onComplete: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(8.dp)
         ) {
-            stickyHeader(key = "permissionsTitle") {
-                Text(
-                    text = stringResource(id = R.string.permissions),
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.surfaceContainerLowest)
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-            }
             items(permissionsList, key = { it.first.nameId }) { pair ->
                 PermissionItem(
                     modifier = Modifier.animateItem(),

@@ -14,7 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.machiav3lli.fdroid.ui.pages.MainPage
-import com.machiav3lli.fdroid.ui.pages.PermissionsPage
+import com.machiav3lli.fdroid.ui.pages.OnboardingPermsPage
 import com.machiav3lli.fdroid.ui.pages.PrefsPage
 
 @Composable
@@ -27,7 +27,7 @@ fun AppNavHost(
     startDestination = NavRoute.Permissions,
 ) {
     fadeComposable<NavRoute.Permissions> {
-        PermissionsPage { navController.navigate(NavRoute.Main()) }
+        OnboardingPermsPage { navController.navigate(NavRoute.Main()) }
     }
     slideInComposable<NavRoute.Main> {
         val args = it.toRoute<NavRoute.Main>()
