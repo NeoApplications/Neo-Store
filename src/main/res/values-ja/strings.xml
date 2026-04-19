@@ -345,4 +345,10 @@
     <string name="dynamic_light">ライトダイナミックカラー</string>
     <string name="dynamic_dark">ダークダイナミックカラー</string>
     <string name="dynamic_black">ブラックダイナミックカラー</string>
+    <string name="all">すべて</string>
+    <string name="trusted_label">信頼できる</string>
+    <string name="trusted_repo">信頼できるリポジトリ</string>
+    <string name="translation">翻訳</string>
+    <string name="last_successful_sync">最新アップデート: %s\nすべてのリポジトリ: %s</string>
+    <string name="confirm_uninstall_DESC_FORMAT">%s をアンインストールしてもよろしいですか？</string>
 </resources>
