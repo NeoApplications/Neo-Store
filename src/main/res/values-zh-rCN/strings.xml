@@ -495,4 +495,7 @@
     <string name="rb_bg443">bg443</string>
     <string name="rb_obfusk">Obfusk</string>
     <string name="download_stats_notification_message">正在获取月度数据： %1$d/%2$d\n更新了 %3$d 个，%4$d 个未更改，%5$d 个失败</string>
+    <string name="action_start_sync">同步并开始！</string>
+    <string name="action_start_sans_sync">现在不同步！</string>
+    <string name="setup_FORMAT">设置：%s</string>
 </resources>
