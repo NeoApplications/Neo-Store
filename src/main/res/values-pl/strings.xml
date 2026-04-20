@@ -506,4 +506,7 @@
     <string name="disable_autoupdate_non_reproducible_builds_summary">Wyłącz automatyczną aktualizację aplikacji, która znajduje się już w kompilacji umożliwiającej odtworzenie błędu, do kompilacji uniemożliwiającej odtworzenie błędu.</string>
     <string name="show_disabled_apps">Pokaż wyłączone aplikacje</string>
     <string name="show_disabled_apps_summary">Dodaj wyłączone aplikacje do listy zainstalowanych aplikacji i aktualizacji.</string>
+    <string name="action_start_sync">Synchronizuj i uruchom!</string>
+    <string name="action_start_sans_sync">Na razie nie synchronizuj!</string>
+    <string name="setup_FORMAT">Konfiguracja: %s</string>
 </resources>
