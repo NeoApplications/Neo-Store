@@ -496,4 +496,7 @@
     <string name="disable_autoupdate_non_reproducible_builds_summary">Zaten tekrarlanabilir bir derleme sürümünde bulunan bir uygulamayı tekrarlanamaz bir derleme sürümüne otomatik olarak güncelleme.</string>
     <string name="show_disabled_apps">Devre dışı olan uygulamaları göster</string>
     <string name="show_disabled_apps_summary">Yüklü uygulamalar ve güncellemeler listesine devre dışı bırakılmış uygulamaları da dahil et.</string>
+    <string name="action_start_sync">Eşitle ve başlat!</string>
+    <string name="action_start_sans_sync">Şu anlık eşitleme!</string>
+    <string name="setup_FORMAT">Kurulum: %s</string>
 </resources>
