@@ -503,4 +503,7 @@
     <string name="disable_autoupdate_non_reproducible_builds_summary">Non aggiornare automaticamente un\'app che si trova già su una build riproducibile a una build non riproducibile.</string>
     <string name="show_disabled_apps">Mostra app disabilitate</string>
     <string name="show_disabled_apps_summary">Includi app disabilitate nell\'elenco delle app installate e degli aggiornamenti.</string>
+    <string name="action_start_sync">Sincronizza e avvia!</string>
+    <string name="action_start_sans_sync">Non sincronizzare per ora!</string>
+    <string name="setup_FORMAT">Configurazione: %s</string>
 </resources>
