@@ -419,7 +419,7 @@
     <string name="installing_error_incompatible_DESC">Installatie incompatibel.</string>
     <string name="installing_error_timeout_DESC">Onderbreking bij installatie.</string>
     <string name="syncing_batch_FORMAT">Archieven synchroniseren (%d/%d)</string>
-    <string name="initial_sync_repositories">Wilt je de vooraf ingestelde archieven synchroniseren (De officiële F-Droid, IzzyOnDroid &amp; Guardian Project)?</string>
+    <string name="initial_sync_repositories">Wil je de vooraf ingestelde archieven synchroniseren (De officiële F-Droid, IzzyOnDroid &amp; Guardian Project)?</string>
     <string name="index_v2">Index-V2 inschakelen</string>
     <string name="index_v2_summary">Schakelt verzoek om Index-V2 als de primaire index te gebruiken. Nog experimenteel, met voor- en nadelen.</string>
     <string name="action_start">Laten we beginnen!</string>
@@ -440,8 +440,8 @@
     <string name="sensitive_permission_error_DESC">Gevoelige rechten-fout</string>
     <string name="disable_permissions_check">Schakel rechtencontrole uit</string>
     <string name="disable_permissions_check_summary">Controleer niet of de gedownloade APK dezelfde of nieuwe rechten heeft als de geïnstalleerde app.</string>
-    <string name="download_stats">Statistieken downloaden</string>
-    <string name="download_stats_iod">Statistieken downloaden (van IzzyOnDroid)</string>
+    <string name="download_stats">Downloadstatistieken</string>
+    <string name="download_stats_iod">Downloadstatistieken (van IzzyOnDroid)</string>
     <string name="total">Totaal</string>
     <string name="total_downloads">Totale downloads</string>
     <string name="clients">Clienten</string>
