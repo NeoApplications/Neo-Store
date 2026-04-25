@@ -614,5 +614,18 @@ fun Context.isBiometricLockEnabled(): Boolean =
     isBiometricLockAvailable() &&
             Preferences[Preferences.Key.ActionLockDialog] == Preferences.ActionLock.Biometric
 
+fun Context.isDefaultAppHandler(): Boolean {
+    val intentIzzy =
+        Intent(Intent.ACTION_VIEW, "https://apt.izzysoft.de/packages/test.package".toUri())
+    val intentFdroid =
+        Intent(Intent.ACTION_VIEW, "https://f-droid.org/packages/test.package".toUri())
+    val resolveInfoIzzy =
+        this.packageManager.resolveActivity(intentIzzy, PackageManager.MATCH_DEFAULT_ONLY)
+    val resolveInfoFdroid =
+        this.packageManager.resolveActivity(intentFdroid, PackageManager.MATCH_DEFAULT_ONLY)
+    return resolveInfoIzzy?.activityInfo?.packageName == this.packageName
+            && resolveInfoFdroid?.activityInfo?.packageName == this.packageName
+}
+
 fun getAndroidVersionName(versionCode: Int): String =
     AndroidVersion.entries.getOrNull(versionCode)?.valueString ?: "Unknown sdk: $versionCode"

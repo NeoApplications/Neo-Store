@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.ui.pages
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +28,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -37,6 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.BuildConfig
 import com.machiav3lli.fdroid.NeoApp
@@ -50,8 +55,11 @@ import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.ui.components.LinkChip
 import com.machiav3lli.fdroid.ui.components.prefs.BasePreference
 import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroup
+import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.utils.currentTimestamp
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
+import com.machiav3lli.fdroid.utils.isDefaultAppHandler
 import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -178,6 +186,10 @@ fun PrefsOtherPage(
             }
         }
 
+    val isDefaultApp by remember(context) {
+        mutableStateOf(context.isDefaultAppHandler())
+    }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -264,6 +276,37 @@ fun PrefsOtherPage(
                         )
                     }
                 }
+            }
+        }
+        if (!isDefaultApp) {
+            item {
+                ListItem(
+                    modifier = Modifier
+                        .clip(MaterialTheme.shapes.large)
+                        .clickable {
+                            val intent =
+                                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                    data = "package:${context.packageName}".toUri()
+                                }
+                            context.startActivity(intent)
+                        },
+                    colors = ListItemDefaults.colors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                    ),
+                    leadingContent = {
+                        Icon(
+                            imageVector = Phosphor.CircleWavyWarning,
+                            tint = MaterialTheme.colorScheme.onErrorContainer,
+                            contentDescription = null,
+                        )
+                    },
+                    headlineContent = {
+                        Text(
+                            text = stringResource(id = R.string.warning_not_default_app_handler),
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                        )
+                    }
+                )
             }
         }
         item {

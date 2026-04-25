@@ -502,4 +502,5 @@
     <string name="action_start_sync">Sync and start!</string>
     <string name="action_start_sans_sync">Don\'t sync for now!</string>
     <string name="setup_FORMAT">Setup: %s</string>
+    <string name="warning_not_default_app_handler">Neo Store is not set as the default app to open app links from apt.izzysoft.de and f-droid.org. Tap to set as default.</string>
 </resources>
