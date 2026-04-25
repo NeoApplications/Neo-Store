@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+1.2.6 (26.04.2026) +10 Commits +30 Translations
+------------------
+
+### UI/UX
+
+- Add: Onboarding pages (permissions, personalization, repos) on first launch
+- Add: Warning card when not set default to handle IoD/F-Droid links
+
 1.2.5 (27.03.2026) +20 Commits +20 Translations
 ------------------
 

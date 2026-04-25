@@ -1,0 +1,3 @@
+Add: Onboarding pages (permissions, personalization, repos) on first launch
+Add: Warning card when not set default to handle IoD/F-Droid links
+and more in over 10 commits & 20 translation contributions

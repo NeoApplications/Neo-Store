@@ -33,8 +33,8 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1208
-        versionName = "1.2.5"
+        versionCode = 1209
+        versionName = "1.2.6"
     }
 
     compileOptions {
