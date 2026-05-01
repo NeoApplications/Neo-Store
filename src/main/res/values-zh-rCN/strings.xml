@@ -498,4 +498,5 @@
     <string name="action_start_sync">同步并开始！</string>
     <string name="action_start_sans_sync">现在不同步！</string>
     <string name="setup_FORMAT">设置：%s</string>
+    <string name="warning_not_default_app_handler">未将 Neo Store 设为打开来自 apt.izzysoft.de 和 f-droid.org 应用链接的默认应用。轻触将其设为默认。</string>
 </resources>
