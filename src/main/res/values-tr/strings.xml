@@ -499,4 +499,5 @@
     <string name="action_start_sync">Eşitle ve başlat!</string>
     <string name="action_start_sans_sync">Şu anlık eşitleme!</string>
     <string name="setup_FORMAT">Kurulum: %s</string>
+    <string name="warning_not_default_app_handler">Neo Store, apt.izzysoft.de ve f-droid.org adreslerinden gelen uygulama bağlantılarını açmak için varsayılan uygulama olarak ayarlanmamış. Varsayılan olarak ayarlamak için dokunun.</string>
 </resources>
