@@ -1,5 +1,5 @@
-Adicionado: Tratamento da abertura de uma página do aplicativo a partir das informações do aplicativo no sistema
-Corrigido: Notificação seguindo o idioma do sistema e não o do aplicativo
+Adicionado: Tratamento da abertura de uma página da app a partir das informações da app no sistema
+Corrigido: Notificação seguindo o idioma do sistema e não o da app
 Atualizado: Reformulação da lógica, notificações e tratamento do DownloadWorker
 Atualizado: Reformulação da lógica, notificações e tratamento do SyncWorker
 Atualizado: Uso do ícone de navegação padrão ou tamanho de texto padrão

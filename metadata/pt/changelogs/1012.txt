@@ -1,4 +1,4 @@
-Adicionar: download e sincronização paralelos
+Adicionar: descarga e sincronização paralelos
 Adicionar: Exportação/importação de aplicações e repositórios instalados
 Adicionar: +50 novos repositórios
 Adicionar: modo infantil

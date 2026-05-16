@@ -1,5 +1,5 @@
-Adicionado: Download de estatísticas, chips e gráficos do IzzyOnDroid na página do aplicativo
-Adicionado: Aplicativos mais baixados do IzzyOnDroid na página Explorar
+Adicionado: Descarga de estatísticas, chips e gráficos do IzzyOnDroid na página da app
+Adicionado: Apps mais descarregados do IzzyOnDroid na página Explorar
 Adicionado: Barra de pesquisa como iniciador para a nova página de pesquisa
 Corrigido: Leitura de código QR para adicionar repositório
 Corrigido: Exibição de rótulo sugerido em versões inadequadas
