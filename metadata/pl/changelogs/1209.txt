@@ -1,0 +1,3 @@
+Dodano: Strony wprowadzające (uprawnienia, personalizacja, repozytoria) wyświetlane przy pierwszym uruchomieniu)
+Dodano: Komunikat ostrzegawczy w przypadku braku domyślnych ustawień dotyczących obsługi linków do IoD/F-Droid
+oraz wiele innych zmian w ponad 10 aktualizacjach i 20 tłumaczeniach
