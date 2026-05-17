@@ -1,0 +1,3 @@
+Aggiunto: Pagine di onboarding (autorizzazioni, personalizzazione, repository) al primo avvio
+Aggiunto: Scheda di avviso quando non è impostata come predefinita per la gestione dei link IoD/F-Droid
+e molto altro in più di 10 commit e 20 contributi di traduzione
