@@ -1,0 +1,5 @@
+Ajout : index pour les entités « Salle »
+Ajout : « Aucune source » et « Demande »
+Correction : fuite de mémoire
+Mise à jour : refonte de la section « Demande »
+Suppression : tout le contenu de la page d'exploration

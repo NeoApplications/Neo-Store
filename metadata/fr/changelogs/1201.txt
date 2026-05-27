@@ -1,0 +1,6 @@
+Ajout : étiquette « Trusted » aux éléments du référentiel
+Ajout : bouton « Partager » pour le référentiel
+Correction : erreur d'analyse lorsqu'une application ne comporte aucune catégorie
+Mise à jour : activation par défaut de la rotation des miroirs pour F-Droid et IzzyOnDroid
+Mise à jour : amélioration du rapport sur les causes d'échec de synchronisation
+Mise à jour : restauration de l'option de barre de recherche en bas

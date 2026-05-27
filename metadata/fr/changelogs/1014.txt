@@ -1,0 +1,5 @@
+Ajout : barre de recherche sur la page des dépôts
+Ajout : option permettant d'afficher le nom de la version d'Android à la place du SDK (activée par défaut)
+Ajout : boîte de dialogue s'affichant lorsque l'on clique sur des liens dans les descriptions d'applications ou les journaux de modifications
+Correction : plantage lors de l'appui sur la notification d'installation du programme d'installation de session
+Mise à jour : ajout de boutons d'activation et de fermeture à RepoSheet

@@ -1,0 +1,4 @@
+Ajout : boîte de dialogue de confirmation également pour le programme de désinstallation de la racine
+Ajout : appui long sur le bouton de synchronisation pour afficher les informations relatives à la dernière synchronisation réussie
+Correction : filtres de tri sur toutes les pages
+Suppression : tous les dépôts d'archives

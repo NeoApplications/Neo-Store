@@ -1,0 +1,5 @@
+Ajout : suppression du fichier téléchargé lors de l'effacement de l'entrée de téléchargement
+Ajout : filtres « Target » et « MinSDK »
+Correction : chargement différé des applications installées
+Correction : les nouvelles applications installées ne s'ajoutaient pas à l'écran d'accueil (merci à @Dhina17)
+Mise à jour : éviter la demande d'autorisations d'installation lorsque INSTALL_PACKAGES est accordé (merci à @tharowt)

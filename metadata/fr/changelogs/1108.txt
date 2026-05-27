@@ -1,0 +1,5 @@
+Ajout : Shizuku Installer
+Mise à jour : refonte d'InstallQueue et de BaseInstaller pour une gestion réactive des installations
+Mise à jour : division de MainVM en plusieurs machines virtuelles liées à des pages
+Mise à jour : remplacement du miroir Codeberg par celui d'izzyondroid pour les statistiques de téléchargement
+et bien d'autres encore dans plus de 20 commits et 10 contributions à la traduction

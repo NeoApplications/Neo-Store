@@ -1,0 +1,8 @@
+Ajout : icônes pour les nouvelles catégories de F-Droid
+Ajout : notification des nouvelles autorisations sensibles requises lors des mises à jour (merci à @aba2222)
+Correction : suggestion de version dans index-V2 (merci à @Red54)
+Correction : division par zéro si l'index v2 n'est pas pris en charge dans SyncWorker (merci à @amartinz)
+Correction : la synchronisation du dépôt F-Droid provoquait un plantage silencieux de la mémoire
+Correction : analyse des éléments localisés en-SHAW sur des locales autres que en-US
+Mise à jour : première refonte de la mise en page et des couleurs vers Material 3 Expressive
+et bien d'autres encore dans plus de 20 commits et 1 contribution de traduction

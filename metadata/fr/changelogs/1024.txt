@@ -1,0 +1,5 @@
+Ajout : prise en charge des captures d'écran pour les liens vidéo, la télévision et les appareils portables
+Ajout : boîte de dialogue informant de la synchronisation initiale lors du premier lancement
+Correction : l'installation n'apparaissait pas pour les paquets provenant de sources sans partage
+Correction : analyse et affichage des liens Litecoin et Liberapay
+Mise à jour : amélioration de la fiabilité du programme d'installation

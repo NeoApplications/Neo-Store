@@ -1,0 +1,5 @@
+Ajout : gestion de l'ouverture d'une page d'application à partir des informations système de l'application
+Correction : la notification suit désormais la langue du système et non celle de l'application
+Mise à jour : refonte de la logique, des notifications et de la gestion de DownloadWorker
+Mise à jour : refonte de la logique, des notifications et de la gestion de SyncWorker
+Mise à jour : utilisation de l'icône de navigation par défaut ou de la taille de texte par défaut

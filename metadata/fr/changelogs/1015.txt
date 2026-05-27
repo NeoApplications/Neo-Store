@@ -1,0 +1,7 @@
+Ajout : onglets de filtres de recherche spéciaux
+Ajout : indicateur signalant qu'une application est installée dans la liste des éléments
+Correction : plantage lors de l'utili
+sation d'une même clé pour les éléments à chargement différé
+Correction : ouverture d'une page de préférences différente lorsque la page par défaut est modifiée
+Mise à jour : conversion de la fonction de recherche en une page
+Mise à jour : refonte du carrousel des applications et limitation de la longueur du nom de version

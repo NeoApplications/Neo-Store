@@ -1,0 +1,2 @@
+Correction : non-respect de la date « lastModified » en cas d'absence de balise d'entité dans les téléchargements
+Mise à jour : traiter les statistiques de téléchargement dès leur récupération

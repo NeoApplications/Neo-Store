@@ -1,0 +1,8 @@
+Ajout : possibilité de choisir un fournisseur de statistiques de téléchargement ou de le désactiver
+Ajout : notification de progression pour le worker « download-stats »
+Correction : application directe des modifications apportées au programme d'installation
+Correction : affichage des seules options disponibles pour les thèmes, les programmes d'installation et le verrouillage
+Mise à jour : refonte de tous les workers backend, dépôts et programmes d'installation pour des performances nettement améliorées
+Mise à jour : amélioration du signalement des échecs de synchronisation ou de téléchargement
+Mise à jour : tri localisé des catégories dans la page Explorer
+et bien d'autres encore dans plus de 60 commits et 19 contributions de traduction

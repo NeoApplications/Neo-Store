@@ -1,0 +1,7 @@
+Ajout : prise en charge de l'Index-V2 de F-Droid et des mises à jour incrémentielles
+Ajout : prise en charge des dépôts prédéfinis par les fabricants (OEM) ou les ROM
+Ajout : badges RB pour les éléments de version
+Correction : exportation des extras
+Mise à jour : amélioration des performances de la requête sur les produits principaux
+Mise à jour : unification des notifications de synchronisation à l'aide du gestionnaire de notifications de synchronisation
+et bien d'autres encore, avec plus de 210 commits et 100 contributions à la traduction

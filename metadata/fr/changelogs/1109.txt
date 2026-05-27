@@ -1,0 +1,6 @@
+Ajout : option permettant de limiter le nombre de téléchargements simultanés
+Correction : nécessité occasionnelle de vider le cache après une mise à jour automatique
+Correction : échec de la mise à jour des applications par le programme d'installation Shizuku
+Mise à jour : exécution périodique de DownloadStatsWorker au lieu d'une exécution à chaque synchronisation
+Mise à jour : amélioration des appels au modèle de vue du référentiel
+ainsi que de nombreuses autres modifications dans plus de 20 commits et 10 contributions à la traduction

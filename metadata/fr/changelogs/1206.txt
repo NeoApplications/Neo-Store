@@ -1,0 +1,3 @@
+Ajout : badge VirusTotal dans les détails de la version
+Correction : plantage en cas de valeur manquante pour DownloadStats.changed
+plus 8 contributions à la traduction

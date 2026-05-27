@@ -1,0 +1,5 @@
+Ajout : option permettant de désactiver les mises à jour automatiques d'une application vers une version dont le problème n'est pas encore reproductible
+Ajout : option permettant de désactiver les mises à jour automatiques des versions comportant de nouvelles autorisations critiques
+Ajout : indicateurs de progression pour la page de recherche (merci à @SocratesDz)
+Ajout : en-têtes fixes sur les pages principales
+Correction : le cache d'indexation était supprimé par le système

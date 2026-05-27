@@ -1,0 +1,6 @@
+Ajout : Mesure de protection pour éviter le spam lors de la synchronisation
+Ajout : Option permettant de limiter les applications chargées pour la recherche
+Ajout : Indicateur signalant l'application d'un tri ou d'un filtre personnalisé
+Correction : Recomposition constante de la majeure partie de l'interface utilisateur 
+Correction : gestion des paramètres régionaux avec un code de langue à trois lettres
++ et bien plus encore dans plus de 30 commits et 20 contributions de traduction

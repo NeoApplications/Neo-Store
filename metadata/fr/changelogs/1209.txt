@@ -1,0 +1,3 @@
+Ajout : pages d'accueil (autorisations, personnalisation, référentiels) lors du premier lancement
+Ajout : carte d'avertissement lorsque la gestion des liens IoD/F-Droid n'est pas configurée par défaut
+et bien plus encore dans plus de 10 commits et 20 contributions de traduction

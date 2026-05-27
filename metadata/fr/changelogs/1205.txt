@@ -1,0 +1,6 @@
+Ajout : option permettant de désactiver le mode « liste-détails » sur les écrans larges
+Ajout : filtre « Favoris » sur la page de recherche
+Ajout : lien de traduction vers la page de l'application
+Correction : solution de secours pour les icônes mal gérées côté dépôt
+Mise à jour : regroupement des applications mises à jour et des téléchargements en cours dans une barre flottante
+Mise à jour : refonte de la présentation des statistiques de téléchargement
