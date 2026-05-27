@@ -44,9 +44,9 @@
     <string name="open_DESC_FORMAT">Ouvrir %s \?</string>
     <string name="ok">OK</string>
     <plurals name="new_updates_DESC_FORMAT">
-        <item quantity="one">%d appli a une nouvelle version.</item>
-        <item quantity="many">%d applis ont une nouvelle version.</item>
-        <item quantity="other">%d applis ont une nouvelle version.</item>
+        <item quantity="one">%d application a une nouvelle version.</item>
+        <item quantity="many">%d applications ont une nouvelle version.</item>
+        <item quantity="other">%d applications ont une nouvelle version.</item>
     </plurals>
     <string name="no_applications_available">Aucune appli disponible</string>
     <string name="links">Liens</string>
@@ -85,11 +85,11 @@
     <string name="unknown_FORMAT">Inconnu : %s</string>
     <string name="unknown_error_DESC">Erreur inconnue.</string>
     <string name="add_repository">Ajouter un dépôt</string>
-    <string name="all_applications_up_to_date">Toutes les applis sont à jour</string>
+    <string name="all_applications_up_to_date">Toutes les applications sont à jour</string>
     <string name="repository">Dépôt</string>
     <string name="promotes_non_free_network_services">Promeut des services réseau non libres</string>
     <string name="promotes_non_free_software">Promeut des logiciels non libres</string>
-    <string name="all_applications">Toutes les applis</string>
+    <string name="all_applications">Toutes les applications</string>
     <string name="tap_to_install_DESC">Appuyez pour installer.</string>
     <string name="provided_by_FORMAT">Fourni par %s</string>
     <string name="project_website">Site web du projet</string>
@@ -116,11 +116,9 @@
     <string name="incompatible_features_DESC">Fonctionnalités manquantes.</string>
     <string name="incompatible_older_DESC">Cette version est plus ancienne que celle qui est installée sur votre appareil. Désinstallez-la d\'abord.</string>
     <string name="notify_about_updates_summary">Afficher une notification quand de nouvelles versions sont disponibles.</string>
-    <string name="repository_not_used_DESC">Ce dépôt n’a pas encore été utilisé.
-\nConnectez-vous-y pour voir les applis qu’il contient.</string>
+    <string name="repository_not_used_DESC">Ce dépôt n’a pas encore été utilisé. \nConnectez-vous-y pour voir les applications qu’il contient.</string>
     <string name="no_applications_installed">Aucune appli installée</string>
-    <string name="repository_unsigned_DESC">Impossible de vérifier la liste d’applis non signées.
-\nSoyez prudents lorsque vous téléchargez des applis depuis des dépôts non signés.</string>
+    <string name="repository_unsigned_DESC">Impossible de vérifier la liste des applications non signées.\nSoyez prudent lorsque vous téléchargez des applications depuis des dépôts non signés.</string>
     <string name="has_non_free_dependencies">A des dépendances non libres</string>
     <string name="incompatible_api_max_DESC_FORMAT">La version maximale de l\'API est %d.</string>
     <string name="incompatible_api_min_DESC_FORMAT">La version minimale de l\'API est %d.</string>
@@ -135,10 +133,10 @@
     <string name="invalid_signature_error_DESC">Signature invalide.</string>
     <string name="invalid_username_format">Format du nom d\'utilisateur invalide</string>
     <string name="no_description_available_DESC">Aucune description.</string>
-    <string name="no_matching_applications_found">Impossible de trouver de telles applis</string>
+    <string name="no_matching_applications_found">Aucune application de ce type n\'a été trouvée</string>
     <string name="no_proxy">Aucun proxy</string>
-    <string name="notify_about_updates">Notifier les nouvelles versions des applis</string>
-    <string name="number_of_applications">Nombre d\'applis</string>
+    <string name="notify_about_updates">Notifier les nouvelles versions des applications</string>
+    <string name="number_of_applications">Nombre d\'applications</string>
     <string name="only_compatible_with_FORMAT">Compatible seulement avec %s</string>
     <string name="only_on_wifi">Seulement avec Wi-Fi</string>
     <string name="other">Autre</string>
@@ -179,13 +177,13 @@
     <string name="installed_applications">Installées</string>
     <string name="sort_filter">Trier et filtrer</string>
     <string name="latest">Nouveautés</string>
-    <string name="new_applications">Nouvelles applis</string>
+    <string name="new_applications">Nouvelles applications</string>
     <string name="update_all">Tout installer</string>
     <string name="only_on_wifi_and_battery">Uniquement en Wi-Fi et branché</string>
     <string name="install_after_sync">Mises à jour automatiques</string>
-    <string name="install_after_sync_summary">Installer toutes les nouvelles versions après avoir examiné les dépôts pour de nouvelles applis.</string>
+    <string name="install_after_sync_summary">Installer toutes les nouvelles versions après avoir examiné les dépôts pour de nouvelles applications.</string>
     <string name="prefs_new_apps">Nombre d\'applications à afficher dans \"Nouvelles applications\"</string>
-    <string name="prefs_updated_apps">Nombre d’applis à afficher dans \"Mises à jour récentes\"</string>
+    <string name="prefs_updated_apps">Nombre d’applications à afficher dans \"Mises à jour récentes\"</string>
     <string name="new_repository">Nouveau dépôt</string>
     <string name="default_tab">Onglet par défaut</string>
     <string name="pending">En attente</string>
@@ -227,7 +225,7 @@
     <string name="action_reset">Réinitialiser</string>
     <string name="date_added">Date d\'ajout</string>
     <string name="date_updated">Date de mise à jour</string>
-    <string name="other_apps_by">Autres applis de %s</string>
+    <string name="other_apps_by">Autres applications de %s</string>
     <string name="target_sdk">targetSDK</string>
     <string name="scan_qr_code">Scanner un code QR</string>
     <string name="root_installer">Installateur root</string>
@@ -449,7 +447,7 @@
     <string name="total_downloads">Nombre total de téléchargements</string>
     <string name="clients">Clients</string>
     <string name="monthly">Mensuel</string>
-    <string name="top_apps">Top applis</string>
+    <string name="top_apps">Top applications</string>
     <string name="top_apps_notice">Les statistiques de téléchargement proviennent actuellement d\'IzzyOnDroid uniquement. Le classement des applications est donc limité à celles de ce dépôt.</string>
     <string name="connection_error_FORMAT">Réponse du serveur invalide avec le code : %s %s</string>
     <string name="no_validation_error">Aucune erreur de validation.</string>
@@ -496,4 +494,14 @@
     <string name="keep_android_open_notice">L\'ouverture d\'Android et F-Droid sont menacés par Google. Nous avons besoin de votre aide : https://keepandroidopen.org/</string>
     <string name="from_FORMAT">depuis %s</string>
     <string name="trending_from_florid">Tendances sur Florid</string>
+    <string name="disable_autoupdate_new_critical_permissions">Désactiver la mise à jour automatique des nouvelles autorisations critiques</string>
+    <string name="disable_autoupdate_new_critical_permissions_summary">Ne mettez pas automatiquement à jour une application si celle-ci nécessite de nouvelles autorisations critiques.</string>
+    <string name="disable_autoupdate_non_reproducible_builds">Désactiver la mise à jour automatique pour les mises à jour non reproductibles</string>
+    <string name="disable_autoupdate_non_reproducible_builds_summary">Ne mettez pas à jour automatiquement une application qui se trouve déjà dans une version reproductible vers une version non reproductible.</string>
+    <string name="show_disabled_apps">Afficher les applications désactivées</string>
+    <string name="show_disabled_apps_summary">Ajouter les applications désactivées à la liste des applications installées et des mises à jour.</string>
+    <string name="action_start_sync">Synchronisez et c\'est parti !</string>
+    <string name="action_start_sans_sync">Ne synchronisez pas pour l\'instant !</string>
+    <string name="setup_FORMAT">Configuration : %s</string>
+    <string name="warning_not_default_app_handler">Neo Store n\'est pas défini comme application par défaut pour ouvrir les liens vers les applications provenant de apt.izzysoft.de et f-droid.org. Appuyez ici pour le définir comme application par défaut.</string>
 </resources>
