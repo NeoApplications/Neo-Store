@@ -500,4 +500,8 @@
     <string name="disable_autoupdate_non_reproducible_builds_summary">Aktualisiert keine App automatisch, die sich bereits auf einem reproduzierbaren Build auf einem nicht reproduzierbaren Build befindet.</string>
     <string name="show_disabled_apps">Deaktivierte Apps anzeigen</string>
     <string name="show_disabled_apps_summary">Deaktivierte Apps in die Liste der installierten Apps und Updates aufnehmen.</string>
+    <string name="action_start_sync">Synchronisieren und starten!</string>
+    <string name="action_start_sans_sync">Erst einmal nicht synchronisieren!</string>
+    <string name="setup_FORMAT">Einrichten: %s</string>
+    <string name="warning_not_default_app_handler">Neo Store ist nicht als Standard-App zum Öffnen von apt.izzysoft.de- und f-droid.org-Links eingerichtet. Tippe, um als Standard zu setzen.</string>
 </resources>
