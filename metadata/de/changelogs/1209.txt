@@ -1,0 +1,3 @@
+Hinzugefügt: Onboarding-Seiten beim ersten Start (Berechtigungen, Personalisierung, Repos) 
+Hinzugefügt: Warnmeldung, wenn die Standardeinstellung für die Verarbeitung von IoD-/F-Droid-Links nicht aktiviert ist
+und vieles mehr aus über 10 Commits und 20 Übersetzungsbeiträgen
