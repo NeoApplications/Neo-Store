@@ -373,7 +373,7 @@
     <string name="prefs_search_apps">Nombre maximal d\'applications à afficher dans les résultats de recherche.</string>
     <string name="enable">Activer</string>
     <string name="android_instead_of_sdk">Montrer la version d\'Android au lieu de celle du SDK</string>
-    <string name="confirm_download_DESC_FORMAT">Êtes-vous sûr de vouloir télécharger %s?</string>
+    <string name="confirm_download_DESC_FORMAT">Êtes-vous sûr de vouloir télécharger %s ?</string>
     <string name="download_show_dialog">Afficher le dialogue de téléchargement</string>
     <string name="download_show_dialog_summary">Affiche une boîte de dialogue demandant si vous êtes sûr de vouloir télécharger une application (nécessaire pour démarrer le téléchargement).</string>
     <string name="bottom_search_bar">Barre de recherche en bas</string>
