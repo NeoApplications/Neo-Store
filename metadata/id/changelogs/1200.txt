@@ -1,0 +1,8 @@
+ditambah: Preferensi penyedia statistik unduhan/nonaktif  
+Tambah: Progress notifikasi download-stats pekerja
+Perbaiki: Oleskan perubahan installer langsung
+Perbaiki: Tampilkan hanya pilihan tema/installer/penguncian mungkin
+Pembaruan: Perbaiki semua pekerja backend, repositori, installer
+Update: Perbaiki pelaporan sinkronisasi/download
+Update: Jenis kategori lokal di Jelajahi 
+ditambah banyak lagi di lebih dari 60 commit & 19 kontribusi terjemahan

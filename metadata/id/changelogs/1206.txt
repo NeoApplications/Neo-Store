@@ -1,0 +1,3 @@
+add: Lencana virusTotal untuk rilis rincian
+Perbaiki: Kecelakaan pada nilai yang hilang untuk DownloadStats.changed
+ditambah 8 kontribusi terjemahan

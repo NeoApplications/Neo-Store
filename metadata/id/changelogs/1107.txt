@@ -1,0 +1,6 @@
+Tambahkan: Unduh chip info statistik dan bagan dari IzzyOnDroid di halaman aplikasi
+Tambahkan: Aplikasi yang diunduh teratas dari halaman IzzyOnDroid di Explore
+Tambahkan: Cari bilah sebagai peluncur untuk halaman pencarian baru
+Memperbaiki: Qr-code scanning untuk menambahkan repositori
+Perbaiki: Menampilkan label yang disarankan pada rilis yang tidak pas
+Update: batch kedua tata letak dan perombakan pewarnaan terhadap Material 3 Ekspresif

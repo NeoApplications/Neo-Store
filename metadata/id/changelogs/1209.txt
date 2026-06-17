@@ -1,0 +1,3 @@
+menambahkan: Halaman onboarding (izin, personalisasi, repos) pada peluncuran pertama
+Tambahkan: Kartu peringatan ketika tidak mengatur default untuk menangani tautan IoD / F-Droid
+dan lebih banyak lagi di lebih dari 10 komitmen & 20 kontribusi terjemahan

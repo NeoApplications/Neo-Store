@@ -1,0 +1,5 @@
+Tambahkan: Penginstal Shizuku
+Update: reubah InstallQueue dan BaseInstaller untuk penanganan re-aktif instalasi
+Pembaruan: Istirahhkan MainVM menjadi beberapa VM terkait halaman
+Pembaruan: Ganti cermin codeberg dengan satu izzyondroid untuk statistik download
+ditambah banyak lagi di lebih dari 20 commit & 10 kontribusi terjemahan

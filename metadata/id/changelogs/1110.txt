@@ -1,0 +1,2 @@
+memperbaiki: Tidak menghormati terakhirModified ketika hilang entitas-tag dalam download
+Update: Proses statistik download segera setelah diambil

@@ -1,0 +1,8 @@
+Tambahkan: Ikon untuk kategori baru f-droid
+Tambahkan: Pemberitahuan izin sensitif baru yang diperlukan pada pembaruan (kredit @aba2222)
+Perbaiki: Disarankan rilis di indeks-V2 (kredit @Red54)
+Perbaiki: Divisi dengan nol jika indeks v2 tidak didukung di SyncWorker (kredit @amartinz)
+Perbaiki: F-droid repo sinkronisasi menyebabkan kecelakaan memori diam
+
+Perbaiki: Parsing en-SHAW item lokal di tempat-tempat non-en-AS
+Update: Tata letak pertama dan perombakan pewarnaan terhadap Material 3 Ekspresif

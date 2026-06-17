@@ -1,0 +1,9 @@
+ditambah: Hapus file unduhan saat hapus entri
+Tambah: Filter Target- & MinSDK
+Perbaiki: Beban malas aplikasi terinstal 
+Perbaiki: Aplikasi baru tidak ke layar beranda
+Update: UI layar lebar ramah & navigasi adaptif 
+Pembaruan: Tingkatkan tautan berbagi-droid (kredit @leoheitmannruiz) 
+Update: Hindari minta izin INSTALL_PACKAGES
+Repos: Tambah Fcitx5, Repos IronFox (kredit @Integral-Tech, @celenityy) 
+ditambah banyak lagi di lebih dari 140 komit & 100 kontribusi terjemahan

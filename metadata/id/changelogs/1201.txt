@@ -1,0 +1,8 @@
+add: Trusted-label ke repositori
+Tambahkan: Bagikan tombol untuk repo
+Perbaiki: Gagal mengurai ketika sebuah aplikasi kehilangan kategori
+Pembaruan: Aktifkan rotasi cermin secara default untuk F-Droid dan IzzyOnDroid
+Update: Tingkatkan kegagalan sinkronisasi menyebabkan pelaporan
+Pembaruan: Kembalikan opsi bilah pencarian bawah
+Hapus repos: C10udburst, NanoDroid, Anonymous Messenger, Pemberontakan, 2BR, J.A.K's, Payung
+ditambah banyak lagi di lebih dari 30 commit & 10 terjemahan kontribusi

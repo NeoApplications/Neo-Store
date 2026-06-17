@@ -1,0 +1,8 @@
+ditambahkan: Pref nonaktifkan auto-update build tak-reproduksibel
+Tambahkan: Pref nonaktifkan auto-update versi izin kritis baru
+Tambahkan: Progress indikator halaman pencarian (kredit @SocratesDz)
+Tambahkan: Header lengket halaman utama
+Perbaiki: Cache indeks dihapus sistem
+Memperbaiki: Bar pencarian tetap out fokus saat kembali
+Pembaruan: Ganti cermin gagal unduh/sink repo 
+ditambah banyak lagi di lebih dari 20 komit & 20 kontribusi terjemahan

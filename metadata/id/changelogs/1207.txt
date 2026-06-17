@@ -1,0 +1,7 @@
+add: Dismissible banner tentang Menjaga Android terbuka
+Tambahkan: Petunjuk tentang repo mana yang Anda instal atau update dengan tindakan utama
+Perbaiki: Menempelkan pemberitahuan aplikasi yang diunduh
+Pembaruan: Pindahkan penyedia log yang dapat direproduksi dari Codeberg ke IoD
+Pembaruan: Revamp repo halaman
+Hapus: Animasi kategori antara negara (Foto crash dengan beberapa OEM ROM)
+ditambah banyak lagi di lebih dari 20 commit & 10 kontribusi terjemahan

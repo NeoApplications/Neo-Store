@@ -1,0 +1,7 @@
+Add: Opsi untuk menonaktifkan mode detail daftar pada layar lebar
+Tambahkan: Filter favorit ke halaman pencarian
+Add: Tautan terjemahan ke halaman aplikasi
+Perbaiki: Fallback untuk ikon yang dibongku-nyonya dengan tangan di sisi repo
+Pembaruan: Gabungkan aplikasi yang diperbarui dan menjalankan unduhan di bar mengambang
+Pembaruan: Tata letak statistik unduhan Revamp
+ditambah banyak lagi di lebih dari 50 komit & 10 kontribusi terjemahan

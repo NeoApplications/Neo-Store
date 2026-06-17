@@ -1,0 +1,6 @@
+add: Preferensi untuk batas nomor unduhan paralel
+Perbaiki: Secara acak perlu membersihkan cache setelah memperbarui diri
+Perbaiki: Penginstal Shizuku gagal memperbarui aplikasi
+Update: Make DownloadStatsWorker run periodic bukan pada setiap sinkronisasi
+Pembaruan: Tingkatkan panggilan model repositori-view
+ditambah banyak lagi di lebih dari 20 commit & 10 kontribusi terjemahan
