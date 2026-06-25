@@ -1,6 +1,7 @@
 Ajout : bannière pouvant être masquée concernant « Keep Android Open »
 Ajout : indication du dépôt à partir duquel l'installation ou la mise à jour est effectuée lors de l'action principale
-Correction : notifications des applications téléchargées qui restaient affichées
+Correction : notifications d'applications téléchargées qui restaient affichées
 Mise à jour : transfert des fournisseurs de journaux reproductibles de Codeberg vers IoD
 Mise à jour : refonte de la page du dépôt
-Suppression : animation des catégories entre les différents états (corrige les plantages avec
+Suppression : animation des catégories entre les différents états (corrige les plantages avec certaines ROM OEM)
+et bien d'autres encore dans plus de 20 commits et 10 contributions de traduction

@@ -3,3 +3,6 @@ Ajout : option permettant de désactiver les mises à jour automatiques des ver
 Ajout : indicateurs de progression pour la page de recherche (merci à @SocratesDz)
 Ajout : en-têtes fixes sur les pages principales
 Correction : le cache d'indexation était supprimé par le système
+Correction : la barre de recherche reste défocusée lors du retour à la page
+Mise à jour : rotation du miroir en cas d'échec du téléchargement/de la synchronisation depuis un dépôt
+et bien d'autres encore dans plus de 20 commits et 20 contributions de traduction

@@ -3,5 +3,5 @@ Ajout : applications les plus téléchargées d'IzzyOnDroid sur la page « Expl
 Ajout : barre de recherche servant de lanceur pour la nouvelle page de recherche
 Correction : lecture de codes QR pour ajouter un dépôt
 Correction : affichage d'une étiquette suggérée sur les versions non adaptées
-Mise à jour : deuxième série de refontes de la mise en page et des couleurs vers Material 3 Expressive
+Mise à jour : deuxième série de refontes de la mise en page et des couleurs dans l'esprit de Material 3 Expressive
 et bien d'autres encore dans plus de 50 commits et 20 contributions de traduction

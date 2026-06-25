@@ -1,6 +1,8 @@
-Ajout : Mesure de protection pour éviter le spam lors de la synchronisation
-Ajout : Option permettant de limiter les applications chargées pour la recherche
-Ajout : Indicateur signalant l'application d'un tri ou d'un filtre personnalisé
-Correction : Recomposition constante de la majeure partie de l'interface utilisateur 
-Correction : gestion des paramètres régionaux avec un code de langue à trois lettres
-+ et bien plus encore dans plus de 30 commits et 20 contributions de traduction
+Ajout : protection contre le spam lors de la synchronisation
+Ajout : option permettant de limiter les applications chargées pour la recherche
+Ajout : prise en charge des builds reproductibles
+Ajout : indicateur signalant l'application d'un tri ou d'un filtre personnalisé
+Correction : chargement des applications sans catégorie (par exemple, Total Commander Android)
+Correction : recomposition constante de la majeure partie de l'interface utilisateur (réduction des saccades et des ralentissements)
+Correction : gestion des paramètres régionaux dont le code de langue comporte trois lettres
++ et bien d'autres améliorations dans plus de 30 commits et 20 contributions de traduction

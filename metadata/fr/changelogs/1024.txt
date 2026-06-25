@@ -1,5 +1,7 @@
-Ajout : prise en charge des captures d'écran pour les liens vidéo, la télévision et les appareils portables
+Ajout : prise en charge des captures d'écran de liens vidéo, de télévision et de Wear
 Ajout : boîte de dialogue informant de la synchronisation initiale lors du premier lancement
 Correction : l'installation n'apparaissait pas pour les paquets provenant de sources sans partage
 Correction : analyse et affichage des liens Litecoin et Liberapay
 Mise à jour : amélioration de la fiabilité du programme d'installation
+Suppression : analyse des liens de dons Flattr
+et bien d'autres encore dans plus de 20 commits et 80 contributions de traduction

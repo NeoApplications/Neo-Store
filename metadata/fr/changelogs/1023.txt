@@ -2,4 +2,8 @@ Ajout : suppression du fichier téléchargé lors de l'effacement de l'entrée 
 Ajout : filtres « Target » et « MinSDK »
 Correction : chargement différé des applications installées
 Correction : les nouvelles applications installées ne s'ajoutaient pas à l'écran d'accueil (merci à @Dhina17)
-Mise à jour : éviter la demande d'autorisations d'installation lorsque INSTALL_PACKAGES est accordé (merci à @tharowt)
+Mise à jour : adaptation de l'interface utilisateur aux écrans larges et navigation adaptative
+Mise à jour : amélioration du lien de partage F-Droid (merci à @leoheitmannruiz)
+Mise à jour : évite la demande d'autorisations d'installation lorsque INSTALL_PACKAGES est accordé (merci à @tharowt)
+Dépôts : ajout des dépôts Fcitx5 et IronFox (merci à @Integral-Tech et @celenityy)
+et bien d'autres encore dans plus de 140 commits et 100 contributions de traduction
