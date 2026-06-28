@@ -503,4 +503,8 @@
     <string name="disable_autoupdate_non_reproducible_builds_summary">Não atualizar automaticamente um app que já está em uma versão reprodutível para uma versão não reprodutível</string>
     <string name="show_disabled_apps">Mostrar apps desativados</string>
     <string name="show_disabled_apps_summary">Incluir apps desativados na lista de apps instalados e atualizações</string>
+    <string name="action_start_sync">Sincronizar e iniciar!</string>
+    <string name="action_start_sans_sync">Não sincronizar por enquanto!</string>
+    <string name="setup_FORMAT">Configuração: %s</string>
+    <string name="warning_not_default_app_handler">Neo Store não está definido como aplicativo padrão para abrir links de aplicativos de apt.izzysoft.de e f-droid.org. Toque para definir como padrão.</string>
 </resources>
