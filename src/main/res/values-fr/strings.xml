@@ -6,7 +6,7 @@
     <string name="anti_features">Anti-fonctionnalités</string>
     <string name="compiled_for_debugging">Compilé pour le débogage</string>
     <string name="amoled">Noir</string>
-    <string name="application_not_found">Impossible de trouver cette appli</string>
+    <string name="application_not_found">Impossible de trouver cette application</string>
     <string name="author_email">Courriel de l\'auteur</string>
     <string name="author_website">Site web de l\'auteur</string>
     <string name="available">Disponible</string>
@@ -48,7 +48,7 @@
         <item quantity="many">%d applications ont une nouvelle version.</item>
         <item quantity="other">%d applications ont une nouvelle version.</item>
     </plurals>
-    <string name="no_applications_available">Aucune appli disponible</string>
+    <string name="no_applications_available">Aucune application disponible</string>
     <string name="links">Liens</string>
     <string name="name">Nom</string>
     <string name="network_error_DESC">Erreur de réseau.</string>
@@ -72,7 +72,7 @@
     <string name="repositories">Dépôts</string>
     <string name="unknown">Inconnu</string>
     <string name="always">Toujours</string>
-    <string name="application">Appli</string>
+    <string name="application">Application</string>
     <string name="version">Version</string>
     <string name="version_FORMAT">Version %s</string>
     <string name="versions">Versions</string>
@@ -117,7 +117,7 @@
     <string name="incompatible_older_DESC">Cette version est plus ancienne que celle qui est installée sur votre appareil. Désinstallez-la d\'abord.</string>
     <string name="notify_about_updates_summary">Afficher une notification quand de nouvelles versions sont disponibles.</string>
     <string name="repository_not_used_DESC">Ce dépôt n’a pas encore été utilisé. \nConnectez-vous-y pour voir les applications qu’il contient.</string>
-    <string name="no_applications_installed">Aucune appli installée</string>
+    <string name="no_applications_installed">Aucune application installée</string>
     <string name="repository_unsigned_DESC">Impossible de vérifier la liste des applications non signées.\nSoyez prudent lorsque vous téléchargez des applications depuis des dépôts non signés.</string>
     <string name="has_non_free_dependencies">A des dépendances non libres</string>
     <string name="incompatible_api_max_DESC_FORMAT">La version maximale de l\'API est %d.</string>
@@ -235,7 +235,7 @@
     <string name="permission_physical_data">Autorisations pour les données physiques</string>
     <string name="permission_identification_data">Autorisations pour les données d\'identification</string>
     <string name="trackers">Traqueurs</string>
-    <string name="trackers_analytics_description">Les traqueurs utilisés pour collecter des statistiques sur votre utilisation des applications, i.e. les pressions et clics.</string>
+    <string name="trackers_analytics_description">Des traceurs utilisés pour collecter des statistiques sur votre utilisation des applications, par exemple le nombre de tapotements et de clics.</string>
     <string name="app_installed">Installée</string>
     <string name="permission_contacts">Contacts</string>
     <string name="permission_calendar">Calendrier</string>
@@ -260,7 +260,7 @@
     <string name="trackers_location">Traqueurs de position</string>
     <string name="trackers_location_description">Les traqueurs se concentrant sur le suivi de votre position physique.</string>
     <string name="trackers_bug">Traqueurs de rapport de bogue</string>
-    <string name="trackers_bug_description">Les traqueurs signalant les problèmes techniques que l\'application peut rencontrer.</string>
+    <string name="trackers_bug_description">Systèmes de suivi utilisés pour signaler les problèmes techniques que l\'application pourrait rencontrer.</string>
     <string name="source_proprietary">Propriétaire</string>
     <string name="source_proprietary_description">Le code source de l\'application n\'est pas public.</string>
     <string name="source_open">Logiciel libre</string>
@@ -293,7 +293,7 @@
     <string name="no_vulnerabilities_installed_apps">Aucune application installée ne présente de vulnérabilité connue.</string>
     <string name="vulnerabilities">Vulnérabilités</string>
     <string name="post_notifications_permission_title">Permission d\'afficher des notifications</string>
-    <string name="post_notifications_permission_message">A partir d\'Android 13, les applications requièrent cette permission pour pouvoir afficher des notifications.</string>
+    <string name="post_notifications_permission_message">À partir d\'Android 13, les applications requièrent cette permission pour pouvoir afficher des notifications.</string>
     <string name="enable_download_directory_summary">Autorise la conservation des APKs téléchargées dans un dossier choisi.</string>
     <string name="custom_download_directory">Dossier de téléchargement personnalisé</string>
     <string name="tools">Outils</string>
@@ -308,7 +308,7 @@
     <string name="allowed_anti_features">Antifonctions autorisées</string>
     <string name="ignore_vulns">Ignorer les failles de sécurité signalées</string>
     <string name="downloads">Téléchargements</string>
-    <string name="show_trackers_description">Récupérer et afficher les traqueurs des applications depuis Exodus Privacy.</string>
+    <string name="show_trackers_description">Récupérez et affichez les traceurs des applications grâce à Exodus Privacy.</string>
     <string name="privacy_panel">Panneau de confidentialité</string>
     <string name="show_categories_bar">Afficher la barre des catégories</string>
     <string name="show_categories_bar_description">Afficher la barre latérale des catégories dans la page Explorer.</string>
@@ -319,16 +319,16 @@
     <string name="list_apps">Afficher les applications du dépôt</string>
     <string name="previous">Précédent</string>
     <string name="next">Suivant</string>
-    <string name="disable_signature_check_summary">Ne pas vérifier si l\'APK téléchargé a la même signature que l\'appli installée.</string>
+    <string name="disable_signature_check_summary">Ne vérifiez pas si l\'APK téléchargé porte la même signature que l\'application installée.</string>
     <string name="ignore">Ignorer</string>
-    <string name="warning_show_notification">À partir d\'Android 13, l\'appli nécessite cette permission pour vous notifier des différentes tâches. Si vous ignorez cette permission, vous ne recevrez aucune notification.</string>
+    <string name="warning_show_notification">À partir d\'Android 13, l\'application a besoin de cette autorisation pour vous envoyer des notifications concernant les différents processus. Si vous refusez cette autorisation, vous ne recevrez aucune notification.</string>
     <string name="disable_signature_check">Désactiver la vérification de signature</string>
     <string name="keep_install_notification">Conserver la notification d\'installation</string>
-    <string name="keep_install_notification_summary">Conserver la notification de succès d\'installation d\'une appli.</string>
+    <string name="keep_install_notification_summary">Conservez la notification indiquant que l\'installation de l\'application s\'est déroulée avec succès.</string>
     <string name="allowed_licenses">Licenses autorisées</string>
     <string name="cancel_all">Tout annuler</string>
     <string name="disable_download_version_check">Désactiver la vérification de version de téléchargement</string>
-    <string name="disable_download_version_check_summary">Permet de télécharger d\'anciennes versions d\'applications installées. Peut être utilisé en combinaison avec le patch \"letmedowngrade\" de Magisk.</string>
+    <string name="disable_download_version_check_summary">Permet de télécharger d\'anciennes versions des applications installées. Peut être utilisé en combinaison avec le patch « letmedowngrade » de Magisk.</string>
     <string name="warning_disable_battery_optimization">À partir d’Android 12, l’application nécessite que l’optimisation de la batterie soit désactivée pour exécuter des tâches en arrière-plan, comme la synchronisation ou le téléchargement. Si vous ignorez cette demande, vous serez seul(e) face aux problèmes, et vos rapports d\'erreur ne seront pas pris en compte.</string>
     <string name="repos_export">Exporter les dépôts</string>
     <plurals name="privacy_points_FORMAT">
@@ -336,7 +336,7 @@
         <item quantity="many">(-%d points de confidentialité)</item>
         <item quantity="other">(-%d points de confidentialité)</item>
     </plurals>
-    <string name="alt_new_apps_description">Utiliser la disposition alternative des nouvelles applications, qui affiche de petites cartes d\'application.</string>
+    <string name="alt_new_apps_description">Utilisez l\'ancienne disposition des applications, qui affiche de petites fiches d\'applications.</string>
     <string name="alt_navbar_item">Utiliser la barre de navigation alternative</string>
     <string name="installed_import">Importer et installer une liste d\'applications (les récupère dans les dépôts activés s\'ils existent)</string>
     <string name="auto_sync_interval_hours">Intervalle de synchronisation automatique (en heures)</string>
@@ -348,26 +348,26 @@
     <string name="no_releases">Aucune version compatible à afficher</string>
     <string name="allow_unstable_updates">Autoriser l\'affichage des mises à jour instables</string>
     <string name="repos_import">Importer des dépôts (écrase les existants)</string>
-    <string name="alt_new_apps">Utiliser une disposition alternative des nouvelles applications</string>
+    <string name="alt_new_apps">Utiliser une nouvelle disposition des applications alternatives</string>
     <string name="enabled">Activé</string>
     <string name="disabled">Désactivé</string>
     <string name="proxy_url">URL</string>
     <string name="black_medium_contrast">Noir (contraste moyen)</string>
-    <string name="root_allow_downgrades_description">Permettre la rétrogradation de version des applications à l\'aide de l\'installateur racine (s\'applique seulement aux versions d\'applications débogables). Optimalement utilisé en combinaison avec \"Disable download version check\".</string>
+    <string name="root_allow_downgrades_description">Autoriser la rétrogradation des applications à l\'aide du programme d\'installation root (ne s\'applique qu\'aux versions d\'applications pouvant faire l\'objet d\'un débogage). À utiliser de préférence en combinaison avec l\'option « Désactiver la vérification de la version téléchargée ».</string>
     <string name="am_installer">Installateur du Gestionnaire d\'applications</string>
     <string name="light_medium_contrast">Clair (contraste moyen)</string>
     <string name="light_high_contrast">Clair (contraste élevé)</string>
     <string name="dark_medium_contrast">Sombre (contraste moyen)</string>
     <string name="dark_high_contrast">Sombre (contraste élevé)</string>
     <string name="black_high_contrast">Noir (contraste élevé)</string>
-    <string name="root_allow_downgrades">Permettre la rétrogradation de version des applications</string>
-    <string name="root_allow_installing_old_apps">Permettre l\'installation d\'applications plus anciennes</string>
+    <string name="root_allow_downgrades">Autoriser la réversion des applications</string>
+    <string name="root_allow_installing_old_apps">Autoriser l\'installation d\'applications plus anciennes</string>
     <string name="root_allow_installing_old_apps_description">À partir d\'Android 14, il n\'est plus possible d\'installer des applications ciblant des versions d\'Android beaucoup plus anciennes (Android 5.1 ou précédentes). Cette option vous permet d\'annuler ce comportement.</string>
     <string name="repo_qr_code">Code QR du dépôt</string>
     <string name="download_manager">Gestionnaire de téléchargement du système</string>
-    <string name="download_manager_summary">Utilisez le gestionnaire de téléchargement du système pour télécharger les applications de manière plus fiable. Cette option ne supporte pas TOR ou les proxy personnalisés, elle utilise les paramètres du système.</string>
+    <string name="download_manager_summary">Utilisez le gestionnaire de téléchargement du système pour télécharger les applications de manière plus fiable. Cette option ne prend pas en charge TOR ni le proxy personnalisé ; elle utilise les paramètres système.</string>
     <string name="install_packages_permission_title">Permission d\'installer des paquets</string>
-    <string name="install_packages_permission_message">Démarrer les applications Android 8, nécessite cette autorisation pour pouvoir installer des paquets.</string>
+    <string name="install_packages_permission_message">À partir d\'Android 8, les applications ont besoin de cette autorisation pour pouvoir installer des paquets.</string>
     <string name="system_installer">Installateur système</string>
     <string name="kids_mode_summary">Active le mode Enfants, désactive l\'installation de nouvelles applications.</string>
     <string name="prefs_search_apps">Nombre maximal d\'applications à afficher dans les résultats de recherche.</string>
@@ -392,7 +392,7 @@
     <string name="alt_block_layout_summary">Utiliser une mise en page alternative/ancienne pour les blocs de pages avec des bordures au lieu de surfaces colorées.</string>
     <string name="alt_block_layout">Utiliser une mise en page alternative pour les blocs de pages</string>
     <string name="action_lock_dialog">Afficher la boîte de dialogue de verrouillage d\'action</string>
-    <string name="kids_mode_summary_full">Activer le mode enfants, désactiver l\'installation de nouvelles applications. Pour désactiver, appuyez 6 fois sur la version de l\'application sur l\'autre page. Au redémarrage de l\'application, cet indice est caché.</string>
+    <string name="kids_mode_summary_full">Activez le mode Enfants pour empêcher l\'installation de nouvelles applications. Pour désactiver cette fonction, appuyez six fois sur le numéro de version de l\'application sur la page suivante. Une fois l\'application redémarrée, cette astuce disparaîtra.</string>
     <string name="dismiss">Ignorer</string>
     <string name="min_android">Android minimum</string>
     <string name="target_android">Android cible</string>
@@ -447,7 +447,7 @@
     <string name="total_downloads">Nombre total de téléchargements</string>
     <string name="clients">Clients</string>
     <string name="monthly">Mensuel</string>
-    <string name="top_apps">Top applications</string>
+    <string name="top_apps">Les meilleures applications</string>
     <string name="top_apps_notice">Les statistiques de téléchargement proviennent actuellement d\'IzzyOnDroid uniquement. Le classement des applications est donc limité à celles de ce dépôt.</string>
     <string name="connection_error_FORMAT">Réponse du serveur invalide avec le code : %s %s</string>
     <string name="no_validation_error">Aucune erreur de validation.</string>
