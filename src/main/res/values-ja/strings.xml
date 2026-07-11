@@ -189,12 +189,12 @@
     <string name="pending">保留中</string>
     <string name="installing">インストール中</string>
     <string name="ignore_battery_optimization_title">バッテリーの最適化</string>
-    <string name="ignore_battery_optimization_message">バッテリーの最適化をオフにすることで、アプリはより良く動作し、Android 12 以降でのクラッシュを防止できます。</string>
+    <string name="ignore_battery_optimization_message">バッテリーの最適化を無効化することで、アプリはより良く動作し、Android 12 以降でのクラッシュを防止できます。</string>
     <string name="root_session_installer_description">セッションインストーラーは、従来のインストーラーよりもパフォーマンスが少し劣りますが、Android 13 以降でインストールされているアプリの問題を回避します。</string>
     <string name="root_session_installer">root セッションのインストーラーを使用する</string>
     <string name="dialog_refuse">オフにしない</string>
     <string name="dialog_approve">オフにする</string>
-    <string name="ignore_battery_optimization_not_supported">お使いの Android では、バッテリー最適化をオフにできません。</string>
+    <string name="ignore_battery_optimization_not_supported">お使いの Android では、バッテリー最適化を無効化できません。</string>
     <string name="not_safe_for_work">閲覧注意(不快なコンテンツ)を含む</string>
     <string name="app_installed">インストール済み</string>
     <string name="images_cache_retention">画像キャッシュの保持</string>
@@ -202,7 +202,7 @@
     <string name="show_screenshots">スクリーンショットを表示</string>
     <string name="favorite_add">お気に入りに追加</string>
     <string name="releases">リリース</string>
-    <string name="show_screenshots_description">アプリページでスクリーンショットします。</string>
+    <string name="show_screenshots_description">アプリページ内にスクリーンショットを表示します。</string>
     <string name="favorite_applications">お気に入り</string>
     <string name="releases_cache_retention">ダウンロードしたAPKのキャッシュの保持</string>
     <string name="dynamic">システムのダイナミックカラー</string>
@@ -241,7 +241,7 @@
     <string name="trackers_location">位置情報トラッカー</string>
     <string name="trackers_profiling_description">収集したデータを元に、あなたのプロファイルを作成しようとするトラッカー。</string>
     <string name="edit">編集</string>
-    <string name="trackers_note_0">このアプリは、\"アプリ\"ですか？もしくは\"スパイウェア\"ですか？</string>
+    <string name="trackers_note_0">これはアプリかスパイウェアのどちらですか？</string>
     <string name="source_open">自由ソフトウェア</string>
     <string name="other_apps_by">%s による他のアプリ</string>
     <string name="no_vulnerabilities_installed_apps">脆弱性が発見されたアプリはインストールされていません。</string>
@@ -282,7 +282,7 @@
     <string name="trackers_ads">広告トラッカー</string>
     <string name="action_open_code">ソースコードを見る</string>
     <string name="source_proprietary_description">アプリのソースコードが公開されていません。</string>
-    <string name="vulnerabilities">脆弱性。</string>
+    <string name="vulnerabilities">脆弱性</string>
     <string name="action_open_website">ウェブサイトを開く</string>
     <string name="trackers">トラッカー</string>
     <string name="action_change_permissions">権限を変更</string>
@@ -309,10 +309,10 @@
     <string name="ignore">無視</string>
     <string name="allowed_anti_features">許可された\"好ましくない機能\"</string>
     <string name="keep_install_notification_summary">アプリのインストールの成功の通知を通知履歴にキープします。</string>
-    <string name="post_notifications_permission_message">Android 13 から、アプリの通知にはこの権限が必要です。</string>
+    <string name="post_notifications_permission_message">Android 13 以降、アプリは通知を行うためにこの権限が必要になります。</string>
     <string name="file_share_text">Neo Store からのファイル</string>
     <string name="custom_download_directory">カスタムダウンロードフォルダー</string>
-    <string name="warning_disable_battery_optimization">Android 12 から、同期やアプリのダウンロードのようなバックグラウンドでの動作に、バッテリー最適化が要求されます。この権限を無効にすると、クラッシュリポートが無視されます（自己責任です）。</string>
+    <string name="warning_disable_battery_optimization">Android 12 以降、同期やアプリのダウンロードのようなバックグラウンドプロセスが動作するために、バッテリー最適化の無効にすることが要求されます。この権限を無効にすることは自己責任であり、クラッシュリポートが無視されます。</string>
     <string name="keep_install_notification">インストール通知をキープ</string>
     <string name="show_trackers">トラッカーを表示</string>
     <string name="disable_signature_check">署名チェックを無効化</string>
