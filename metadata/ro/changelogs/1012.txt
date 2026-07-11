@@ -1,0 +1,8 @@
+Adăugare: Descărcare și sincronizare în paralel
+Adăugare: Export/import de aplicații instalate și depozite
+Adăugare: +50 de depozite noi
+Adăugare: Mod pentru copii
+Remediere: Accesarea adreselor Tor
+Actualizare: Reorganizarea întregii interfețe de utilizator
+Actualizare: Îmbunătățirea setării valorilor în fereastra de preferințe
++ multe altele în peste 440 de commit-uri și 380 de contribuții la traduceri

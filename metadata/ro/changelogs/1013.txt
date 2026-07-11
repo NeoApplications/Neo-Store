@@ -1,0 +1,8 @@
+Adăugare: Măsură de protecție pentru a evita sincronizarea nedorită
+Adăugare: Opțiune pentru limitarea aplicațiilor încărcate în căutare
+Adăugare: Suport pentru compilări reproductibile
+Adăugare: Indicator dacă o sortare sau un filtru personalizat este aplicat
+Remediere: Încărcarea aplicațiilor fără categorii (e.g Total Commander Android)
+Remediere: Recompunerea constantă a majorității elementelor interfeței utilizatorului (reducerea tremurului/întârzierii)
+Remediere: Gestionarea setărilor regionale cu cod de limbă format din trei litere
++ și multe altele în peste 30 de commit-uri și 20 de contribuții la traducere
