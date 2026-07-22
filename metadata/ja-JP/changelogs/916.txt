@@ -1,0 +1,7 @@
+追加：並べ替え／フィルター機能
+追加：明示的なお気に入りショートカット
+追加：情報チップにTargetSDK
+更新：Material iconsをPhosphorに置き換え
+更新：BottomNavBar、AppSheet、EditRepoSheetのレイアウト
+修正：ダウンロード中に更新のセカンダリアクションが表示される問題
+詳細については完全な変更履歴を確認してください…

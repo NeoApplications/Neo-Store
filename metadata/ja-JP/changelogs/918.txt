@@ -1,0 +1,7 @@
+追加：fdroidrepo(s) uriに対応
+追加：market://search? intentsに対応
+追加：IzzyOnDroidアプリの共有オプション
+追加：GitJournalとRevoltをプリセットリポジトリに追加
+更新：ReleaseItemsを刷新
+削除：Alefvanoonプリセットリポジトリ
+詳細については完全な変更履歴を確認してください…

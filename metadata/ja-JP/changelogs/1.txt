@@ -1,0 +1,2 @@
+* プライマリカラーを Google Green に変更
+* kitsunyan のクレジット表記を追加

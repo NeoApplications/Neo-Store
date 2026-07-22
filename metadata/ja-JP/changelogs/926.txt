@@ -1,0 +1,7 @@
+修正：root権限を検出しない問題
+修正：SyncServiceとDownloadServiceに関連するクラッシュ
+更新：InstalledPageを刷新
+追加：トラッカーの取得／表示を無効にするオプション
+追加：FluffyChat nightly、Anonymous Messenger、BeoCodeをデフォルトリポジトリに追加
+修正：アプリのインストール／アンインストール時にインストール済みアプリ一覧が更新されない問題
++ 80件以上の翻訳およびその他の貢献

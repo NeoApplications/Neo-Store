@@ -1,0 +1,5 @@
+修正：MainとPrefsのメモリリーク
+追加：まったく新しいプライバシーの可視化 (Neo Meter Icons)
+追加：まったく新しいPrivacy Panel
+修正：同じRepoSheetを繰り返し開く問題
++ 15件以上の翻訳への貢献

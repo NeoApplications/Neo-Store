@@ -1,0 +1,3 @@
+追加：リリースの詳細にVirusTotalバッジ
+修正：DownloadStats.changedの値がない場合にクラッシュする問題
+さらに、8件の翻訳への貢献

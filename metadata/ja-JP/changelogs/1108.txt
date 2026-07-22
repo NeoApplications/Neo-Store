@@ -1,0 +1,5 @@
+追加：Shizukuインストーラー
+更新：インストールをリアクティブに処理できるよう、InstallQueueとBaseInstallerを刷新
+更新：MainVMをページごとの複数のVMに分割
+更新：ダウンロード統計用のCodebergミラーをIzzyOnDroidのミラーに置き換え
+さらに、20件以上のコミットと10件の翻訳への貢献による多数の変更
