@@ -191,14 +191,14 @@
     <string name="installing">Installerer</string>
     <string name="ignore_battery_optimization_title">Batterioptimalisering</string>
     <string name="dialog_approve">Skru av</string>
-    <string name="ignore_battery_optimization_not_supported">Android-installasjonen din støtter ikke å slå av batterioptimalisering.</string>
+    <string name="ignore_battery_optimization_not_supported">Android-installasjonen din støtter ikke å deaktivere batterioptimalisering.</string>
     <string name="dialog_refuse">Behold</string>
-    <string name="ignore_battery_optimization_message">Programmet fungerer bedre uten batterioptimalisering, og forhindrer krasj på Android 12+.</string>
+    <string name="ignore_battery_optimization_message">Programmet fungerer bedre uten batterioptimalisering aktivert, og forhindrer krasj på Android 12+.</string>
     <string name="root_session_installer">Installer med rot-tilgang</string>
     <string name="root_session_installer_description">Dårligere ytelse, men unngår problemer med programmer på Android 13+.</string>
     <string name="no_action_possible">Ingen mulige handlinger</string>
     <string name="show_screenshots">Vis skjermavbildninger</string>
-    <string name="show_screenshots_description">Vis skjermavbildninger på programsiden.</string>
+    <string name="show_screenshots_description">Vis kopi av skjermbildene på programsiden.</string>
     <string name="not_safe_for_work">Sensurerbart innhold</string>
     <string name="no_permissions_identified">Fant ingen forespurte tilganger</string>
     <string name="favorite_add">Legg til i favoritter</string>
