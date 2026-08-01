@@ -271,8 +271,7 @@ data class EmbeddedProduct(
             }.toImmutableList()
 
         val predicate: (Release) -> Boolean = {
-            unstable || (!it.releaseChannels.contains("Beta") && product.suggestedVersionCode <= 0) ||
-                    it.versionCode <= product.suggestedVersionCode
+            unstable || it.isStable
         }
         val firstCompatibleReleaseIndex =
             releasePairs.indexOfFirst { it.second.isEmpty() && predicate(it.first) }

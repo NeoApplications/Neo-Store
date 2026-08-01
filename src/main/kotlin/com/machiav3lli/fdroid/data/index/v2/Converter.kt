@@ -102,6 +102,7 @@ internal fun IndexV2.Version.toRelease(
     incompatibilities = emptyList(),
     isCompatible = true,
     releaseChannels = releaseChannels,
+    isStable = releaseChannels.isEmpty(),
 )
 
 internal fun <T> Localized<T>?.findLocalized(fallback: T): T =

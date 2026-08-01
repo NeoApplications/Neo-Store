@@ -135,6 +135,7 @@ class IndexV0Parser(private val repositoryId: Long, private val callback: Callba
         var obbMainHash = ""
         var obbPatch = ""
         var obbPatchHash = ""
+        var isStable = false
         val permissions = linkedSetOf<String>()
         val features = linkedSetOf<String>()
         val platforms = linkedSetOf<String>()
@@ -170,6 +171,7 @@ class IndexV0Parser(private val repositoryId: Long, private val callback: Callba
                 platforms = platforms.toList(),
                 incompatibilities = emptyList(),
                 isCompatible = true,
+                isStable = isStable,
             )
         }
     }
@@ -338,8 +340,11 @@ class IndexV0Parser(private val repositoryId: Long, private val callback: Callba
                        -> releaseBuilder.version = readText()
 
                 "versioncode"
-                       -> releaseBuilder.versionCode =
-                    readText().toLongOrNull() ?: 0L
+                       -> {
+                    releaseBuilder.versionCode = readText().toLongOrNull() ?: 0L
+                    releaseBuilder.isStable = productBuilder.suggestedVersionCode
+                        .let { it <= 0 || releaseBuilder.versionCode <= it }
+                }
 
                 "added"
                        -> releaseBuilder.added = readText().parseDate()

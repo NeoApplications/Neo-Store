@@ -44,7 +44,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.BuildConfig
-import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.content.SAFFile
@@ -57,6 +56,7 @@ import com.machiav3lli.fdroid.ui.components.prefs.BasePreference
 import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroup
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
+import com.machiav3lli.fdroid.utils.Utils.startUpdate
 import com.machiav3lli.fdroid.utils.currentTimestamp
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
 import com.machiav3lli.fdroid.utils.isDefaultAppHandler
@@ -169,17 +169,19 @@ fun PrefsOtherPage(
                     Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
 
+                val repos = pageState.repos.associateBy { it.id }
                 SAFFile(context, resultUri).read()
                     ?.split(">")
                     ?.filterNot { pageState.installedMap.keys.contains(it) }
                     ?.forEach { packageName ->
                         scope.launch(Dispatchers.IO) {
-                            productRepo.loadProduct(packageName)
-                                .maxByOrNull { it.product.suggestedVersionCode }?.toItem()?.let {
-                                    NeoApp.wm.install(
-                                        Pair(it.packageName, it.repositoryId)
-                                    )
-                                }
+                            startUpdate(
+                                packageName,
+                                null,
+                                productRepo.loadProduct(packageName).mapNotNull { ep ->
+                                    repos[ep.product.repositoryId]?.let { Pair(ep, it) }
+                                },
+                            )
                         }
                     }
                 // TODO add notification about success or failure

@@ -77,9 +77,9 @@ internal fun IndexV1.App.toProduct(repositoryId: Long) = IndexProduct(
 
 internal fun IndexV1.Package.toRelease(
     repositoryId: Long,
-    packageName: String
+    product: IndexV1.App
 ) = Release(
-    packageName = packageName,
+    packageName = product.packageName,
     repositoryId = repositoryId,
     selected = false,
     version = versionName,
@@ -112,6 +112,8 @@ internal fun IndexV1.Package.toRelease(
     platforms = nativecode,
     incompatibilities = emptyList(),
     isCompatible = true,
+    isStable = product.suggestedVersionCode.toLongOrDefault(0L)
+        .let { it <= 0 || versionCode <= it },
 )
 
 internal fun Map<String, IndexV1.Localized>.findLocalizedString(

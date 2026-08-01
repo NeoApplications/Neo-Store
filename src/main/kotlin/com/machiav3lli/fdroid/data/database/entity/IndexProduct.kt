@@ -142,8 +142,7 @@ open class IndexProduct(
             }.toMutableList()
 
         val predicate: (Release) -> Boolean = {
-            unstable || (!it.releaseChannels.contains("Beta") && suggestedVersionCode <= 0) ||
-                    it.versionCode <= suggestedVersionCode
+            unstable || it.isStable
         }
         val firstCompatibleReleaseIndex =
             releasePairs.indexOfFirst { it.second.isEmpty() && predicate(it.first) }
