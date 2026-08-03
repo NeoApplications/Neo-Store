@@ -125,7 +125,7 @@ import java.io.File
         DownloadStats::class,
         DownloadStatsFileMetadata::class,
     ],
-    version = 1208,
+    version = 1209,
     exportSchema = true,
     views = [
         PackageSum::class,
@@ -312,6 +312,11 @@ import java.io.File
         AutoMigration(
             from = 1207,
             to = 1208,
+        ),
+        AutoMigration(
+            from = 1208,
+            to = 1209,
+            spec = DatabaseX.Companion.ProductsCleanupKeepDownloaded::class
         ),
     ]
 )
@@ -534,6 +539,22 @@ abstract class DatabaseX : RoomDatabase() {
             override fun onPostMigrate(db: SupportSQLiteDatabase) {
                 super.onPostMigrate(db)
                 onPostMigrate(1205)
+            }
+        }
+
+        class ProductsCleanupKeepDownloaded : AutoMigrationSpec {
+            override fun onPostMigrate(db: SupportSQLiteDatabase) {
+                super.onPostMigrate(db)
+                GlobalScope.launch(Dispatchers.IO) {
+                    get<DatabaseX>(DatabaseX::class.java).apply {
+                        withTransaction {
+                            getProductDao().emptyTable()
+                            getCategoryDao().emptyTable()
+                            getReleaseDao().emptyTable()
+                            getRepositoryDao().forgetLastModifications()
+                        }
+                    }
+                }
             }
         }
 

@@ -29,13 +29,13 @@ class IndexV1Parser(private val repositoryId: Long, private val callback: Callba
 
             indexV1.apps.forEach { product ->
                 callback.onProduct(product.toProduct(repositoryId))
-            }
 
-            indexV1.packages.forEach { (packageName, releases) ->
-                callback.onReleases(
-                    packageName,
-                    releases.map { it.toRelease(repositoryId, packageName) },
-                )
+                indexV1.packages[product.packageName]?.let { releases ->
+                    callback.onReleases(
+                        product.packageName,
+                        releases.map { it.toRelease(repositoryId, product) },
+                    )
+                }
             }
         } catch (e: Exception) {
             throw ParsingException("Error parsing index", e)

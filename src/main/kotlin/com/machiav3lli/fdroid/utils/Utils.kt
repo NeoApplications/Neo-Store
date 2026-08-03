@@ -146,7 +146,7 @@ object Utils {
     }
 
     private fun List<Release>.getBestRelease(installedVersionCode: Long): Release? {
-        filter { it.versionCode > installedVersionCode }
+        filter { it.versionCode > installedVersionCode && (Preferences[Preferences.Key.UpdateUnstable] || it.isStable) }
             .apply {
                 if (isEmpty()) return null
                 if (size == 1) return first()
