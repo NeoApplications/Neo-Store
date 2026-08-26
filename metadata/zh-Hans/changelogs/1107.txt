@@ -1,0 +1,7 @@
+新增：App 页面展示来自 IzzyOnDroid 的下载统计 info chip 与图表
+新增：探索页面展示来自 IzzyOnDroid 的热门下载 App 列表
+新增：Search bar 作为新搜索页面的入口
+修复：扫描二维码添加 repo 功能
+修复：不合适版本误显示 suggested 标签的问题
+更新：针对 Material 3 Expressive 进行第二轮布局与配色重构
+此外还包含 50 多次 commit 与 20 多次翻译贡献
