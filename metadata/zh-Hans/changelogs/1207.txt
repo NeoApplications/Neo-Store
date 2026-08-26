@@ -1,0 +1,7 @@
+新增：允许关闭 Keep Android Open 横幅
+新增：主操作按钮提示当前安装/更新所使用的目标 Repo
+修复：已下载 App 通知常驻无法清除的问题
+更新：将 reproducible log provider 从 Codeberg 迁移至 IoD
+更新：重构 Repo 页面
+移除：分类状态切换动画（修复部分 OEM ROM 的崩溃问题）
+此外还包含 20 多次 commit 与 10 多次翻译贡献

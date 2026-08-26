@@ -1,0 +1,5 @@
+新增：Room entity 索引
+新增：None Source 与 Request
+修复：一处内存泄漏
+更新：重构 Request
+移除：探索页面的 All 分类

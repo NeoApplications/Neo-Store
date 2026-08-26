@@ -1,0 +1,8 @@
+新增：可禁用自动更新至尚未提供 reproducible build 版本的设置项
+新增：可禁用自动更新至包含新增关键敏感权限版本的设置项
+新增：搜索页面的加载进度指示器（感谢 @SocratesDz）
+新增：主页面 sticky header
+修复：Index cache 被系统清除的问题
+修复：返回页面时 Search bar 保持 out of focus 状态
+更新：从 Repo 下载/同步失败时自动轮换镜像源
+此外还包含 20 多次 commit 与 20 多次翻译贡献

@@ -1,0 +1,7 @@
+新增：支持 F-Droid 的 Index-V2 及增量更新
+新增：支持 OEM/ROM 预置 repo
+新增：Release 项增加 RB 徽章
+修复：导出 extras 异常
+更新：提升主产品 query 性能
+更新：使用 sync notification manager 统一管理同步通知
+此外还包含 210 多次 commit 与 100 多次翻译贡献

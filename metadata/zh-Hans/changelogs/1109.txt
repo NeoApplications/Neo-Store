@@ -1,0 +1,6 @@
+新增：并行下载数量限制设置项
+修复：自身更新后偶尔需要清理缓存的问题
+修复：Shizuku installer 更新 App 失败的问题
+更新：DownloadStatsWorker 改为定时周期运行，不再在每次同步时触发
+更新：优化 repository-viewmodel 调用
+此外还包含 20 多次 commit 与 10 多次翻译贡献
