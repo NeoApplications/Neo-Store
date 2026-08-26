@@ -464,7 +464,7 @@
     <string name="trusted_label">可信的</string>
     <string name="translation">翻译</string>
     <plurals name="updated_apps">
-        <item quantity="other">%d 已更新应用</item>
+        <item quantity="other">%d 个应用可更新</item>
     </plurals>
     <string name="downloads_recent_FORMAT">最近下载数：%s</string>
     <string name="disable_list_detail_summary">此选项可以当屏幕足够宽时（比如平板或手机横屏）禁用将布局分割成两个面板。</string>
