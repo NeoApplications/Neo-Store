@@ -510,4 +510,6 @@
     <string name="action_start_sans_sync">Поки що не синхронізуватися!</string>
     <string name="setup_FORMAT">Налаштування: %s</string>
     <string name="warning_not_default_app_handler">Neo Store не встановлено як типовий застосунок для відкриття посилань із apt.izzysoft.de та f-droid.org. Натисніть, щоб встановити як типовий.</string>
+    <string name="min_FIELD_FORMAT">Мін: %s</string>
+    <string name="max_FIELD_FORMAT">Макс:%s</string>
 </resources>
