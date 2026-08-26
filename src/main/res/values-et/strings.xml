@@ -500,4 +500,6 @@
     <string name="disable_autoupdate_new_critical_permissions_summary">Ära uuenda rakendust, kui ta eeldab uusi ja kriitilisi õigusi.</string>
     <string name="disable_autoupdate_non_reproducible_builds">Jäta uuendus vahele, kui pole kasutusel korratavat kompileerimist</string>
     <string name="disable_autoupdate_non_reproducible_builds_summary">Kui senise rakenduse versiooni puhul on kasutusel korratava kompileerimine ja uue puhul pole, siis ära uuenda.</string>
+    <string name="min_FIELD_FORMAT">Min: %s</string>
+    <string name="max_FIELD_FORMAT">Maks: %s</string>
 </resources>
