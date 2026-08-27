@@ -507,4 +507,6 @@
     <string name="action_start_sans_sync">Non sincronizzare per ora!</string>
     <string name="setup_FORMAT">Configurazione: %s</string>
     <string name="warning_not_default_app_handler">Neo Store non è impostato come app predefinita per aprire i link delle app provenienti da apt.izzysoft.de e f-droid.org. Tocca per impostarlo come predefinito.</string>
+    <string name="min_FIELD_FORMAT">Min: %s</string>
+    <string name="max_FIELD_FORMAT">Max: %s</string>
 </resources>
