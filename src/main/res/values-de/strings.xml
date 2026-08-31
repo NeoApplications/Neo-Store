@@ -504,4 +504,6 @@
     <string name="action_start_sans_sync">Erst einmal nicht synchronisieren!</string>
     <string name="setup_FORMAT">Einrichten: %s</string>
     <string name="warning_not_default_app_handler">Neo Store ist nicht als Standard-App zum Öffnen von apt.izzysoft.de- und f-droid.org-Links eingerichtet. Tippe, um als Standard zu setzen.</string>
+    <string name="min_FIELD_FORMAT">Min: %s</string>
+    <string name="max_FIELD_FORMAT">Max: %s</string>
 </resources>
