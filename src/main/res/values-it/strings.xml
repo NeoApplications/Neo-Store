@@ -510,5 +510,4 @@
     <string name="min_FIELD_FORMAT">Min: %s</string>
     <string name="max_FIELD_FORMAT">Max: %s</string>
     <string name="night_mode">Modalità notturna</string>
-    <string name="dynamic_colors"></string>
 </resources>
