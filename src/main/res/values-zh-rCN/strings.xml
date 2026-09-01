@@ -501,4 +501,25 @@
     <string name="warning_not_default_app_handler">未将 Neo Store 设为打开来自 apt.izzysoft.de 和 f-droid.org 应用链接的默认应用。轻触将其设为默认。</string>
     <string name="min_FIELD_FORMAT">最小：%s</string>
     <string name="max_FIELD_FORMAT">最大：%s</string>
+    <string name="night_mode">夜间模式</string>
+    <string name="dynamic_colors">动态颜色</string>
+    <string name="dynamic_theme">动态</string>
+    <string name="black_theme">黑色主题</string>
+    <string name="seed_color">种子颜色</string>
+    <string name="contrast_level">对比度</string>
+    <string name="palette_style">调色盘</string>
+    <string name="contrast_default">默认</string>
+    <string name="contrast_medium">中</string>
+    <string name="contrast_high">高</string>
+    <string name="palette_neutral">中性</string>
+    <string name="palette_tonal">色调</string>
+    <string name="color_green">绿</string>
+    <string name="color_blue">蓝</string>
+    <string name="color_purple">紫</string>
+    <string name="color_teal">深蓝绿</string>
+    <string name="color_orange">橙</string>
+    <string name="color_pink">粉红</string>
+    <string name="color_red">红</string>
+    <string name="packages_blocklist">应用黑名单</string>
+    <string name="apps_num_FORMAT">%d 个应用</string>
 </resources>
