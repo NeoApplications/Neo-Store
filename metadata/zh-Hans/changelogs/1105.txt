@@ -1,0 +1,8 @@
+新增：F-Droid 新分类图标
+新增：更新涉及新增敏感权限时的通知提示（感谢 @aba2222）
+修复：Index-V2 中的 suggested release 匹配（感谢 @Red54）
+修复：SyncWorker 在不支持 Index-V2 时发生的除以零异常（感谢 @amartinz）
+修复：F-Droid repo 同步导致静默内存崩溃的问题
+修复：非 en-US Locale 下解析 en-SHAW 本地化条目异常的问题
+更新：针对 Material 3 Expressive 进行首轮布局与配色重构
+此外还包含 20 多次 commit 与 1 次翻译贡献

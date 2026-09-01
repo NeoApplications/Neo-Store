@@ -1,0 +1,8 @@
+新增：下载统计提供方设置及禁用选项
+新增：download-stats worker 的进度通知
+修复：直接生效 installer 更改
+修复：仅展示可用的主题/installer/锁定选项
+更新：重构所有后台 Worker、Repo 及 Installer 以大幅提升性能
+更新：优化同步或下载失败的原因反馈
+更新：探索页面的分类支持本地化排序
+此外还包含 60 多次 commit 与 19 次翻译贡献

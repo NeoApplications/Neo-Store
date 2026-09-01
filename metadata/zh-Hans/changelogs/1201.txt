@@ -1,0 +1,8 @@
+新增：Repo 列表项增加 Trusted 标签
+新增：Repo 分享按钮
+修复：App 缺少 categories 字段时解析失败的问题
+更新：默认对 F-Droid 和 IzzyOnDroid 开启镜像轮换
+更新：改进同步失败原因反馈
+更新：恢复底部搜索栏设置项
+移除 Repo：C10udburst, NanoDroid, Anonymous Messenger, Revolt, 2BR, J.A.K's, Umbrella
+此外还包含 30 多次 commit 与 10 多次翻译贡献

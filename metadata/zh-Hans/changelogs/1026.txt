@@ -1,0 +1,7 @@
+新增：支持从系统应用信息界面打开 App 页面
+修复：Notification 语言跟随系统而非 App 设定的问题
+更新：重构 DownloadWorker 逻辑、通知与处理
+更新：重构 SyncWorker 逻辑、通知与处理
+更新：使用默认导航图标与文字大小
+移除：重复的 sync 通知 channel
+此外还包含 20 多次 commit 与 20 多次翻译贡献

@@ -1,0 +1,5 @@
+新增：Shizuku Installer
+更新：重构 InstallQueue 与 BaseInstaller 以更响应式地处理安装
+更新：将 MainVM 拆分为多个页面相关的 ViewModel
+更新：下载统计改用 IzzyOnDroid 镜像替代 Codeberg 镜像
+此外还包含 20 多次 commit 与 10 多次翻译贡献

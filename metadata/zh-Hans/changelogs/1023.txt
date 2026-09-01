@@ -1,0 +1,9 @@
+新增：删除下载记录时同步删除已下载文件
+新增：TargetSDK 与 MinSDK 筛选器
+修复：已安装应用的 lazy load 逻辑
+修复：新安装应用未添加至桌面（感谢 @Dhina17）
+更新：宽屏 UI 适配与自适应导航栏
+更新：改进 F-Droid 分享链接（感谢 @leoheitmannruiz）
+更新：已授予 INSTALL_PACKAGES 权限时避免重复请求安装权限（感谢 @tharowt）
+Repo：新增 Fcitx5、IronFox repo（感谢 @Integral-Tech、@celenityy）
+此外还包含 140 多次 commit 与 100 多次翻译贡献
