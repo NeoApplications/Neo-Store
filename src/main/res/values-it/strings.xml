@@ -510,4 +510,25 @@
     <string name="min_FIELD_FORMAT">Min: %s</string>
     <string name="max_FIELD_FORMAT">Max: %s</string>
     <string name="night_mode">Modalità notturna</string>
+    <string name="dynamic_colors">Colori dinamici</string>
+    <string name="dynamic_theme">Dinamico</string>
+    <string name="black_theme">Tema nero</string>
+    <string name="seed_color">Colore di base</string>
+    <string name="contrast_level">Contrasto</string>
+    <string name="palette_style">Tavolozza colori</string>
+    <string name="contrast_default">Predefinito</string>
+    <string name="contrast_medium">Medio</string>
+    <string name="contrast_high">Elevato</string>
+    <string name="palette_neutral">Neutra</string>
+    <string name="palette_tonal">Tonale</string>
+    <string name="palette_expressive">Espressiva</string>
+    <string name="color_green">Verde</string>
+    <string name="color_blue">Blu</string>
+    <string name="color_purple">Viola</string>
+    <string name="color_teal">Verde acqua</string>
+    <string name="color_orange">Arancione</string>
+    <string name="color_pink">Rosa</string>
+    <string name="color_red">Rosso</string>
+    <string name="packages_blocklist">Elenco app bloccate</string>
+    <string name="apps_num_FORMAT">%d app</string>
 </resources>
