@@ -506,4 +506,26 @@
     <string name="warning_not_default_app_handler">Neo Store ist nicht als Standard-App zum Öffnen von apt.izzysoft.de- und f-droid.org-Links eingerichtet. Tippe, um als Standard zu setzen.</string>
     <string name="min_FIELD_FORMAT">Min: %s</string>
     <string name="max_FIELD_FORMAT">Max: %s</string>
+    <string name="night_mode">Nacht Modus</string>
+    <string name="dynamic_colors">Dynamische Farben</string>
+    <string name="dynamic_theme">Dynamisch</string>
+    <string name="black_theme">Schwarzes Thema</string>
+    <string name="seed_color">Startfarbe</string>
+    <string name="contrast_level">Kontrast</string>
+    <string name="palette_style">Farbpalette</string>
+    <string name="contrast_default">Standard</string>
+    <string name="contrast_medium">Mittel</string>
+    <string name="contrast_high">Hoch</string>
+    <string name="palette_neutral">Neutral</string>
+    <string name="palette_tonal">Tonal</string>
+    <string name="palette_expressive">Ausdrucksvoll</string>
+    <string name="color_green">Grün</string>
+    <string name="color_blue">Blau</string>
+    <string name="color_purple">Magenta</string>
+    <string name="color_teal">Blaugrün</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_pink">Pink</string>
+    <string name="color_red">Rot</string>
+    <string name="packages_blocklist">App-Blockliste</string>
+    <string name="apps_num_FORMAT">%d Apps</string>
 </resources>
