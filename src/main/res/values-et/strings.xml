@@ -502,4 +502,26 @@
     <string name="disable_autoupdate_non_reproducible_builds_summary">Kui senise rakenduse versiooni puhul on kasutusel korratava kompileerimine ja uue puhul pole, siis ära uuenda.</string>
     <string name="min_FIELD_FORMAT">Min: %s</string>
     <string name="max_FIELD_FORMAT">Maks: %s</string>
+    <string name="night_mode">Öörežiim</string>
+    <string name="dynamic_colors">Dünaamilised värvid</string>
+    <string name="dynamic_theme">Dünaamiline</string>
+    <string name="black_theme">Must kujundus</string>
+    <string name="seed_color">Lähtevärv</string>
+    <string name="contrast_level">Kontrast</string>
+    <string name="palette_style">Värvipalett</string>
+    <string name="contrast_default">Vaikimisi</string>
+    <string name="contrast_medium">Keskmine</string>
+    <string name="contrast_high">Kõrge</string>
+    <string name="palette_neutral">Neutraalne</string>
+    <string name="palette_tonal">Tonaalne</string>
+    <string name="palette_expressive">Väljendusrikas</string>
+    <string name="color_green">Roheline</string>
+    <string name="color_blue">Sinine</string>
+    <string name="color_purple">Purpurpunane</string>
+    <string name="color_teal">Sinakasroheline</string>
+    <string name="color_orange">Oranž</string>
+    <string name="color_pink">Roosa</string>
+    <string name="color_red">Punane</string>
+    <string name="packages_blocklist">Rakenduste keeluloend</string>
+    <string name="apps_num_FORMAT">%d rakendust</string>
 </resources>
