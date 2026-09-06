@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +22,9 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.carousel.CarouselState
+import androidx.compose.material3.carousel.HorizontalCenteredHeroCarousel
+import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -54,7 +58,7 @@ fun ProductsHorizontalRecycler(
     LazyHorizontalStaggeredGrid(
         modifier = modifier
             .fillMaxWidth()
-            .height(PRODUCT_CARD_HEIGHT * rowsNumber + 16.dp),
+            .height(PRODUCT_CARD_HEIGHT * rowsNumber + 24.dp),
         rows = StaggeredGridCells.Fixed(rowsNumber),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalItemSpacing = 8.dp,
@@ -77,7 +81,7 @@ fun UpdatesHorizontalRecycler(
     LazyHorizontalStaggeredGrid(
         modifier = modifier
             .fillMaxWidth()
-            .height(PRODUCT_CARD_HEIGHT * rowsNumber + 16.dp),
+            .height(PRODUCT_CARD_HEIGHT * rowsNumber + 24.dp),
         rows = StaggeredGridCells.Fixed(rowsNumber),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalItemSpacing = 8.dp,
@@ -131,11 +135,7 @@ fun ProductsCarousel(
         derivedStateOf { productsList.size }
     }
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .height(PRODUCT_CAROUSEL_HEIGHT)
-    ) {
+    Column {
         HorizontalPager(
             modifier = modifier
                 .fillMaxSize()
@@ -147,18 +147,64 @@ fun ProductsCarousel(
         ) {
             productsList.getOrNull(it)?.let { item ->
                 ProductCarouselItem(
-                    item,
-                    repositories[item.repositoryId],
-                    favorites.contains(item.packageName),
-                    onFavouriteClick,
-                    onActionClick,
-                    onUserClick,
+                    product = item,
+                    repo = repositories[item.repositoryId],
+                    favourite = favorites.contains(item.packageName),
+                    onFavourite = onFavouriteClick,
+                    onActionClick = onActionClick,
+                    onUserClick = onUserClick,
                 )
             }
         }
         CarouselIndicators(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
+                .fillMaxWidth(),
+            size = size,
+            state = state,
+        )
+    }
+}
+
+@Composable
+fun ProductsCarouselNeo(
+    modifier: Modifier = Modifier,
+    productsList: List<ProductItem>,
+    repositories: Map<Long, Repository>,
+    favorites: List<String>,
+    onFavouriteClick: (ProductItem) -> Unit,
+    onActionClick: (ProductItem, ActionState) -> Unit = { _, _ -> },
+    onUserClick: (ProductItem) -> Unit = {},
+) {
+    val state = rememberCarouselState { productsList.size }
+    val size by remember(productsList) {
+        derivedStateOf { productsList.size }
+    }
+
+    Column {
+        HorizontalCenteredHeroCarousel(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(PRODUCT_CAROUSEL_HEIGHT),
+            state = state,
+            itemSpacing = 8.dp,
+            minSmallItemWidth = 8.dp,
+            maxSmallItemWidth = 12.dp,
+            contentPadding = PaddingValues(horizontal = 12.dp),
+        ) { index ->
+            val item = productsList.getOrNull(index)
+            if (item != null)
+                ProductCarouselItem(
+                    product = item,
+                    modifier = Modifier.maskClip(MaterialTheme.shapes.large),
+                    repo = repositories[item.repositoryId],
+                    favourite = favorites.contains(item.packageName),
+                    onFavourite = onFavouriteClick,
+                    onActionClick = onActionClick,
+                    onUserClick = onUserClick,
+                )
+        }
+        CarouselIndicators(
+            modifier = Modifier
                 .fillMaxWidth(),
             size = size,
             state = state,
@@ -204,6 +250,50 @@ fun CarouselIndicators(
                     .background(color = color)
                     .clickable(enabled = enableScrolling) {
                         scope.launch { state.animateScrollToPage(i) }
+                    }
+            )
+        }
+    }
+}
+
+@Composable
+fun CarouselIndicators(
+    modifier: Modifier = Modifier,
+    size: Int = 1,
+    dimension: Dp = 8.dp,
+    enableScrolling: Boolean = true,
+    state: CarouselState,
+) {
+    val scope = rememberCoroutineScope()
+    val currentItem by remember { derivedStateOf { state.currentItem } }
+
+    LazyRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(dimension / 4, Alignment.CenterHorizontally),
+    ) {
+        items(size) { i ->
+            val isSelected by remember {
+                derivedStateOf {
+                    currentItem == i
+                }
+            }
+            val color by animateColorAsState(
+                targetValue = if (isSelected) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.primaryContainer,
+                label = "indicatorColor"
+            )
+            val width by animateDpAsState(
+                targetValue = if (isSelected) dimension.times(2) else dimension,
+                label = "indicatorWidth"
+            )
+
+            Box(
+                modifier = Modifier
+                    .size(height = dimension, width = width)
+                    .clip(CircleShape)
+                    .background(color = color)
+                    .clickable(enabled = enableScrolling) {
+                        scope.launch { state.animateScrollToItem(i) }
                     }
             )
         }

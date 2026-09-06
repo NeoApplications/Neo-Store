@@ -54,7 +54,7 @@ fun PrefsPersonalPage() {
     val layoutPrefs = listOf(
         Preferences.Key.AltBlockLayout,
         Preferences.Key.AltNavBarItem,
-        Preferences.Key.AltNewApps,
+        //Preferences.Key.AltNewApps,
         Preferences.Key.HideNewApps,
         Preferences.Key.BottomSearchBar,
         Preferences.Key.DisableListDetail,

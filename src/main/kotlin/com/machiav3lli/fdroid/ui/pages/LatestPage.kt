@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -128,61 +129,58 @@ fun LatestPage(
             }
         }
         if (!Preferences[Preferences.Key.HideNewApps]) item(key = "newAppsCard") {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                if (Preferences[Preferences.Key.AltNewApps]) {
-                    ProductsHorizontalRecycler(
-                        modifier = Modifier.weight(1f),
-                        productsList = pageState.newProducts,
-                        repositories = dataState.reposMap,
-                    ) { item ->
-                        neoActivity.navigateProduct(item.packageName)
-                    }
-                } else {
-                    ProductsCarousel(
-                        modifier = Modifier.weight(1f),
-                        productsList = pageState.newProducts,
-                        repositories = dataState.reposMap,
-                        favorites = dataState.favorites,
-                        onFavouriteClick = {
-                            mainVM.setFavorite(
-                                it.packageName,
-                                !dataState.favorites.contains(it.packageName)
+            // if (Preferences[Preferences.Key.AltNewApps]) {
+            if (true) {
+                ProductsHorizontalRecycler(
+                    productsList = pageState.newProducts,
+                    repositories = dataState.reposMap,
+                ) { item ->
+                    neoActivity.navigateProduct(item.packageName)
+                }
+            } else {
+                // TODO fix LayoutNode crash
+                ProductsCarousel(
+                    modifier = Modifier.fillMaxWidth(),
+                    productsList = pageState.newProducts,
+                    repositories = dataState.reposMap,
+                    favorites = dataState.favorites,
+                    onFavouriteClick = {
+                        mainVM.setFavorite(
+                            it.packageName,
+                            !dataState.favorites.contains(it.packageName)
+                        )
+                    },
+                    onActionClick = { item, action ->
+                        val installed = pageState.installedMap[item.packageName]
+                        val installFun = {
+                            NeoApp.wm.install(
+                                Pair(item.packageName, item.repositoryId)
                             )
-                        },
-                        onActionClick = { item, action ->
-                            val installed = pageState.installedMap[item.packageName]
-                            val installFun = {
-                                NeoApp.wm.install(
-                                    Pair(item.packageName, item.repositoryId)
+                        }
+
+                        when (action) {
+                            is ActionState.Install -> {
+                                if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                                    dialogKey.value =
+                                        DialogKey.Download(item.name, installFun)
+                                    openDialog.value = true
+                                } else installFun()
+                            }
+
+                            is ActionState.Launch  -> installed?.let {
+                                context.onLaunchClick(
+                                    it,
+                                    neoActivity.supportFragmentManager
                                 )
                             }
 
-                            when (action) {
-                                is ActionState.Install -> {
-                                    if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                                        dialogKey.value =
-                                            DialogKey.Download(item.name, installFun)
-                                        openDialog.value = true
-                                    } else installFun()
-                                }
-
-                                is ActionState.Launch  -> installed?.let {
-                                    context.onLaunchClick(
-                                        it,
-                                        neoActivity.supportFragmentManager
-                                    )
-                                }
-
-                                else                   -> {}
-                            }
-                        },
-                        onUserClick = { item ->
-                            neoActivity.navigateProduct(item.packageName)
-                        },
-                    )
-                }
+                            else                   -> {}
+                        }
+                    },
+                    onUserClick = { item ->
+                        neoActivity.navigateProduct(item.packageName)
+                    },
+                )
             }
         }
         stickyHeader(key = "updatedAppsTitle") {
