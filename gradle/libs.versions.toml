@@ -2,10 +2,11 @@
 activity = "1.13.0"
 agp = "9.3.2"
 biometric = "1.2.0-alpha05"
-coil = "3.6.0"
+coil = "3.6.1"
 compose-bom = "2026.08.00"
-compose-libs = "1.12.0"
+compose-libs = "1.13.0-alpha02"
 compose-material = "1.5.0-alpha27"
+compose-material-adaptive = "1.3.0"
 compose-accompanist = "0.37.3"
 compose-html = "1.1.1"
 coroutines = "1.11.0"
@@ -99,17 +100,17 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
-compose-runtime = { module = "androidx.compose.runtime:runtime" }
-compose-ui = { group = "androidx.compose.ui", name = "ui" }
-compose-foundation = { module = "androidx.compose.foundation:foundation" }
+compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose-libs" }
+compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose-libs" }
+compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose-libs" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material" }
-compose-material3-navigationsuite = { module = "androidx.compose.material3:material3-adaptive-navigation-suite" }
-compose-adaptive = { module = "androidx.compose.material3.adaptive:adaptive" }
-compose-adaptive-layout = { module = "androidx.compose.material3.adaptive:adaptive-layout" }
-compose-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation" }
-compose-animation = { module = "androidx.compose.animation:animation" }
-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-material3-navigationsuite = { module = "androidx.compose.material3:material3-adaptive-navigation-suite", version.ref = "compose-material" }
+compose-adaptive = { module = "androidx.compose.material3.adaptive:adaptive", version.ref = "compose-material-adaptive" }
+compose-adaptive-layout = { module = "androidx.compose.material3.adaptive:adaptive-layout", version.ref = "compose-material-adaptive" }
+compose-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation", version.ref = "compose-material-adaptive" }
+compose-animation = { module = "androidx.compose.animation:animation", version.ref = "compose-libs" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose-libs" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose-libs" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 compose-navigation3 = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }
 compose-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
