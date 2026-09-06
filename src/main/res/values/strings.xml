@@ -528,4 +528,5 @@
     <string name="packages_blocklist">Apps block list</string>
     <string name="apps_num_FORMAT">%d apps</string>
     <string name="sync_errors">Sync errors</string>
+    <string name="clear_search_history">Clear search history</string>
 </resources>

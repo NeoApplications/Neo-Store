@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,9 +16,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenuPopup
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorPosition
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,12 +31,14 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
@@ -45,6 +51,7 @@ import com.machiav3lli.fdroid.ui.components.ProductsListItem
 import com.machiav3lli.fdroid.ui.components.RoundButton
 import com.machiav3lli.fdroid.ui.components.SelectChip
 import com.machiav3lli.fdroid.ui.components.SortFilterButton
+import com.machiav3lli.fdroid.ui.components.SuggestionsPopup
 import com.machiav3lli.fdroid.ui.components.TopBar
 import com.machiav3lli.fdroid.ui.components.WideSearchField
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
@@ -77,6 +84,16 @@ fun SearchPage(
     val pageState by viewModel.pageState.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val dataState by mainVM.dataState.collectAsStateWithLifecycle()
+
+    val searchHistory by viewModel.searchHistory.collectAsStateWithLifecycle()
+    val suggestions = if (pageState.query.isBlank()) {
+        searchHistory.take(5)
+    } else {
+        searchHistory.filter {
+            it.contains(pageState.query, true)
+        }
+    }
+    var showSuggestions by remember { mutableStateOf(true) }
 
     val currentTab by remember {
         derivedStateOf {
@@ -155,11 +172,17 @@ fun SearchPage(
                     query = pageState.query,
                     modifier = Modifier.weight(1f),
                     onQueryChanged = { newQuery ->
-                        if (newQuery != pageState.query)
+                        if (newQuery != pageState.query) {
                             viewModel.setSearchQuery(newQuery)
+                            showSuggestions = true
+                        }
                     },
                     onCleanQuery = {
                         viewModel.setSearchQuery("")
+                    },
+                    onDone = {
+                        viewModel.submitSearchQuery(pageState.query)
+                        showSuggestions = false
                     },
                 )
                 SortFilterButton(isModified = modifiedSortFilter) {
@@ -217,61 +240,82 @@ fun SearchPage(
                     }
                 }
             }
-            DelayedLinearProgressBar(
-                visible = isLoading,
-                modifier = Modifier.padding(8.dp)
-            )
+            DropdownMenuPopup(
+                expanded = showSuggestions && suggestions.isNotEmpty(),
+                onDismissRequest = {
+                    showSuggestions = false
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                properties = PopupProperties(focusable = false),
+                popupPositionProvider = MenuDefaults.rememberDropdownMenuPopupPositionProvider(
+                    if (!Preferences[Preferences.Key.BottomSearchBar])
+                        MenuAnchorPosition.Above else MenuAnchorPosition.Below
+                )
+            ) {
+                SuggestionsPopup(
+                    suggestions = suggestions,
+                    onSuggestion = { suggestion ->
+                        viewModel.setSearchQuery(suggestion)
+                        viewModel.submitSearchQuery(suggestion)
+                        showSuggestions = false
+                    },
+                    onClearHistory = {
+                        viewModel.clearHistory()
+                        showSuggestions = false
+                    }
+                )
+            }
         }
     }
 
-    val productsList: @Composable ((paddingValues: PaddingValues) -> Unit) =
-        { paddingValues: PaddingValues ->
-            LazyColumn(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                state = listState,
-            ) {
-                items(
-                    items = pageState.filteredProducts,
-                    key = { it.packageName },
-                ) { item ->
-                    ProductsListItem(
-                        item = item,
-                        repo = dataState.reposMap[item.repositoryId],
-                        isFavorite = dataState.favorites.contains(item.packageName),
-                        onUserClick = {
-                            neoActivity.navigateProduct(it.packageName)
-                        },
-                        onFavouriteClick = {
-                            mainVM.setFavorite(
-                                it.packageName,
-                                !dataState.favorites.contains(it.packageName)
+    val productsList: @Composable (() -> Unit) = {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            state = listState,
+        ) {
+            items(
+                items = pageState.filteredProducts,
+                key = { it.packageName },
+            ) { item ->
+                ProductsListItem(
+                    item = item,
+                    repo = dataState.reposMap[item.repositoryId],
+                    isFavorite = dataState.favorites.contains(item.packageName),
+                    onUserClick = {
+                        neoActivity.navigateProduct(it.packageName)
+                    },
+                    onFavouriteClick = {
+                        mainVM.setFavorite(
+                            it.packageName,
+                            !dataState.favorites.contains(it.packageName)
+                        )
+                    },
+                    installed = pageState.installedMap[item.packageName],
+                    onActionClick = {
+                        val installed = pageState.installedMap[it.packageName]
+                        val action = {
+                            NeoApp.wm.install(
+                                Pair(it.packageName, it.repositoryId)
                             )
-                        },
-                        installed = pageState.installedMap[item.packageName],
-                        onActionClick = {
-                            val installed = pageState.installedMap[it.packageName]
-                            val action = {
-                                NeoApp.wm.install(
-                                    Pair(it.packageName, it.repositoryId)
-                                )
-                            }
-                            if (installed != null && installed.launcherActivities.isNotEmpty())
-                                context.onLaunchClick(
-                                    installed,
-                                    neoActivity.supportFragmentManager
-                                )
-                            else if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                                dialogKey.value = DialogKey.Download(it.name, action)
-                                openDialog.value = true
-                            } else action()
                         }
-                    )
-                }
+                        if (installed != null && installed.launcherActivities.isNotEmpty())
+                            context.onLaunchClick(
+                                installed,
+                                neoActivity.supportFragmentManager
+                            )
+                        else if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                            dialogKey.value = DialogKey.Download(it.name, action)
+                            openDialog.value = true
+                        } else action()
+                    }
+                )
             }
         }
+    }
 
     Scaffold(
         containerColor = Color.Transparent,
@@ -295,29 +339,35 @@ fun SearchPage(
             }
         },
     ) { paddingValues ->
-        if (!pageState.isInitialized)
-            Box(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
-        else if (pageState.filteredProducts.isEmpty() && pageState.query.isNotBlank())
-            Column(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = stringResource(id = R.string.application_not_found)
-                )
-            }
-        else
-            productsList(paddingValues)
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize(),
+        ) {
+            DelayedLinearProgressBar(
+                visible = isLoading,
+                modifier = Modifier.padding(8.dp)
+            )
+            if (!pageState.isInitialized)
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                }
+            else if (pageState.filteredProducts.isEmpty() && pageState.query.isNotBlank())
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.application_not_found)
+                    )
+                }
+            else productsList()
+        }
     }
 
     if (openDialog.value) {

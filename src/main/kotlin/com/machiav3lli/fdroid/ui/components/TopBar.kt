@@ -3,7 +3,9 @@ package com.machiav3lli.fdroid.ui.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,8 +18,11 @@ import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -188,6 +193,7 @@ fun WideSearchField(
     onClose: () -> Unit = {},
     onCleanQuery: () -> Unit,
     onQueryChanged: (String) -> Unit,
+    onDone: () -> Unit = {},
 ) {
     val textFieldState = rememberTextFieldState(initialText = query)
     val focusRequester = remember { FocusRequester() }
@@ -238,6 +244,10 @@ fun WideSearchField(
                 imeAction = ImeAction.Done,
                 showKeyboardOnFocus = inFocusOnLaunch,
             ),
+            onKeyboardAction = { performDefaultAction ->
+                onDone()
+                performDefaultAction()
+            },
         )
         if (showCloseButton) RoundButton(
             modifier = Modifier.padding(top = 8.dp),
@@ -247,6 +257,52 @@ fun WideSearchField(
             textFieldState.clearText()
             onCleanQuery()
             onClose()
+        }
+    }
+}
+
+@Composable
+fun SuggestionsPopup(
+    suggestions: List<String>,
+    onSuggestion: (String) -> Unit,
+    onClearHistory: (() -> Unit)? = null,
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        shadowElevation = 4.dp,
+        color = MaterialTheme.colorScheme.surface,
+    ) {
+        Column(modifier = Modifier.padding(vertical = 4.dp)) {
+            suggestions.forEach { suggestion ->
+                ListItem(
+                    verticalAlignment = Alignment.CenterVertically,
+                    onClick = {
+                        onSuggestion(suggestion)
+                    },
+                    content = {
+                        Text(text = suggestion)
+                    },
+                )
+            }
+            if (onClearHistory != null) {
+                HorizontalDivider(thickness = 0.5.dp)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            onClearHistory()
+                        }
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(R.string.clear_search_history),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+            }
         }
     }
 }
