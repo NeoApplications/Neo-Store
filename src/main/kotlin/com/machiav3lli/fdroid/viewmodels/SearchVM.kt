@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.STATEFLOW_SUBSCRIBE_BUFFER
+import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.data.entity.Request
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @OptIn(
     ExperimentalCoroutinesApi::class,
@@ -94,11 +96,40 @@ class SearchVM(
         initialValue = false
     )
 
+    val searchHistory: StateFlow<Set<String>>
+        field = MutableStateFlow(loadHistory())
+
     fun setSortFilter(value: String) = _searchInput.update { it.copy(sortFilter = value) }
 
     fun setSearchQuery(value: String) = _searchInput.update { it.copy(query = value) }
 
     fun setSearchSource(newSource: Source) = _searchInput.update { it.copy(source = newSource) }
+
+    fun submitSearchQuery(query: String) {
+        if (query.isBlank()) return
+        viewModelScope.launch {
+            val current = searchHistory.value.toMutableList()
+            current.remove(query)
+            current.add(0, query)
+            val trimmed = current.take(MAX_HISTORY_SIZE).toSet()
+            searchHistory.update { trimmed }
+            saveHistory(trimmed)
+        }
+    }
+
+    fun clearHistory() {
+        viewModelScope.launch {
+            searchHistory.update { emptySet() }
+            saveHistory(emptySet())
+        }
+    }
+
+    private fun loadHistory(): Set<String> =
+        Preferences[Preferences.Key.SearchHistory]
+
+    private fun saveHistory(history: Set<String>) {
+        Preferences[Preferences.Key.SearchHistory] = history
+    }
 
     private data class SearchInput(
         val sortFilter: String = "",
@@ -108,6 +139,7 @@ class SearchVM(
 
     companion object {
         private const val TAG = "SearchVM"
+        private const val MAX_HISTORY_SIZE = 50
     }
 }
 

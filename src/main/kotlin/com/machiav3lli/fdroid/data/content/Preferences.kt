@@ -134,6 +134,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.MaxTargetSDKLatest,
         Key.MaxTargetSDKInstalled,
         Key.MaxTargetSDKSearch,
+        Key.SearchHistory,
         // invisible values
         Key.InitialSync,
         Key.IgnoreDisableBatteryOptimization,
@@ -686,6 +687,9 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object DownloadStatsLastModified :
             Key<String>("last_modified_downloadstats", Value.StringValue(""))
+
+        data object SearchHistory :
+            Key<Set<String>>("search_history", Value.StringSetValue(emptySet()))
     }
 
     sealed class AutoSync(override val valueString: String) : Enumeration<AutoSync> {
