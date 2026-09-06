@@ -24,6 +24,7 @@ import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -304,6 +305,7 @@ data class EmbeddedProduct(
             compatible = compatible,
             canUpdate = canUpdate(installed),
             launchable = !installed?.launcherActivities.isNullOrEmpty(),
+            categories = product.categories.toPersistentSet(),
             matchRank = 0
         )
 }

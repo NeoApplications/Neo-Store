@@ -2,6 +2,8 @@ package com.machiav3lli.fdroid.data.entity
 
 import com.machiav3lli.fdroid.data.database.entity.Downloaded
 import com.machiav3lli.fdroid.data.database.entity.ProductIconDetails
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.persistentSetOf
 
 data class ProductItem(
     val repositoryId: Long = 0,
@@ -16,6 +18,7 @@ data class ProductItem(
     val compatible: Boolean = false,
     val canUpdate: Boolean = false,
     val launchable: Boolean = false,
+    val categories: ImmutableSet<String> = persistentSetOf(),
     val matchRank: Int = 0,
 )
 

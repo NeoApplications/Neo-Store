@@ -2,9 +2,7 @@ package com.machiav3lli.fdroid.ui.components
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,7 +23,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -150,64 +147,64 @@ fun DownloadsCard(
         )
     }
 
-    Column(
+    ListItem(
         modifier = Modifier
-            .clip(MaterialTheme.shapes.large)
             .border(2.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.large)
-            .clickable { onUserClick() }
             .width(IntrinsicSize.Max)
             .widthIn(
                 min = PRODUCT_CARD_HEIGHT,
                 max = PRODUCT_CARD_WIDTH,
             ),
-    ) {
-        ListItem(
-            colors = ListItemDefaults.colors(
-                containerColor = Color.Transparent,
-            ),
-            leadingContent = {
-                Box(
-                    modifier = Modifier.size(PRODUCT_CARD_ICON + 4.dp),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    NetworkImage(
-                        modifier = Modifier.size(PRODUCT_CARD_ICON),
-                        data = imageDataPair.first,
-                        fallbackData = imageDataPair.second,
-                        shape = CircleShape,
-                    )
-                    CircularDownloadProgress(
-                        totalSize = when (state) {
-                            is DownloadState.Downloading -> state.total ?: 1L
-                            is DownloadState.Cancel      -> 0L
-                            is DownloadState.Error       -> -1L
-                            else                         -> 1L
-                        },
-                        downloaded = when (state) {
-                            is DownloadState.Downloading -> state.read
-                            is DownloadState.Success     -> 1L
-                            else                         -> 0L
-                        },
-                        isIndeterminate = state is DownloadState.Pending || state is DownloadState.Connecting,
-                    )
-                }
-            },
-            overlineContent = {
-                Text(
-                    text = download.version,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
+        onClick = { onUserClick() },
+        shapes = ListItemDefaults.shapes(
+            shape = MaterialTheme.shapes.large
+        ),
+        colors = ListItemDefaults.colors(
+            containerColor = Color.Transparent,
+        ),
+        verticalAlignment = Alignment.CenterVertically,
+        leadingContent = {
+            Box(
+                modifier = Modifier.size(PRODUCT_CARD_ICON + 4.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                NetworkImage(
+                    modifier = Modifier.size(PRODUCT_CARD_ICON),
+                    data = imageDataPair.first,
+                    fallbackData = imageDataPair.second,
+                    shape = CircleShape,
                 )
-            },
-            content = {
-                Text(
-                    text = download.label.nullIfEmpty() ?: state.name,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
+                CircularDownloadProgress(
+                    totalSize = when (state) {
+                        is DownloadState.Downloading -> state.total ?: 1L
+                        is DownloadState.Cancel      -> 0L
+                        is DownloadState.Error       -> -1L
+                        else                         -> 1L
+                    },
+                    downloaded = when (state) {
+                        is DownloadState.Downloading -> state.read
+                        is DownloadState.Success     -> 1L
+                        else                         -> 0L
+                    },
+                    isIndeterminate = state is DownloadState.Pending || state is DownloadState.Connecting,
                 )
-            },
-        )
-    }
+            }
+        },
+        content = {
+            Text(
+                text = download.label.nullIfEmpty() ?: state.name,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+            )
+        },
+        supportingContent = {
+            Text(
+                text = download.version,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+            )
+        },
+    )
 }
 
 @Composable
@@ -250,6 +247,7 @@ fun CombinedUpdateCard(
         colors = ListItemDefaults.colors(
             containerColor = Color.Transparent,
         ),
+        verticalAlignment = Alignment.CenterVertically,
         leadingContent = {
             Box(
                 modifier = Modifier.size(PRODUCT_CARD_ICON),
@@ -280,16 +278,16 @@ fun CombinedUpdateCard(
                 }
             }
         },
-        overlineContent = {
+        content = {
             Text(
-                text = product.version,
+                text = product.name,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
         },
-        content = {
+        supportingContent = {
             Text(
-                text = product.name,
+                text = product.version,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )

@@ -1,6 +1,6 @@
 package com.machiav3lli.fdroid.ui.components
 
-import androidx.compose.foundation.border
+import android.icu.text.ListFormatter
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -13,8 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,9 +23,9 @@ import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.manager.network.createIconUri
 
 val PRODUCT_CARD_ICON = 48.dp
-val PRODUCT_CARD_HEIGHT = 64.dp
+val PRODUCT_CARD_HEIGHT = 84.dp
 val PRODUCT_CAROUSEL_HEIGHT = 164.dp
-val PRODUCT_CARD_WIDTH = 220.dp
+val PRODUCT_CARD_WIDTH = 260.dp
 
 @Composable
 fun ProductCard(
@@ -45,7 +45,6 @@ fun ProductCard(
 
     ListItem(
         modifier = Modifier
-            .border(2.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.large)
             .width(IntrinsicSize.Max)
             .widthIn(
                 min = PRODUCT_CARD_HEIGHT,
@@ -54,10 +53,12 @@ fun ProductCard(
         onClick = { onUserClick(product) },
         shapes = ListItemDefaults.shapes(
             shape = MaterialTheme.shapes.large,
+            pressedShape = MaterialTheme.shapes.extraExtraLarge,
         ),
         colors = ListItemDefaults.colors(
-            containerColor = Color.Transparent,
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
         ),
+        verticalAlignment = Alignment.CenterVertically,
         leadingContent = {
             NetworkImage(
                 modifier = Modifier.size(PRODUCT_CARD_ICON),
@@ -67,7 +68,7 @@ fun ProductCard(
         },
         overlineContent = {
             Text(
-                text = product.version,
+                text = ListFormatter.getInstance().format(product.categories),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
@@ -75,6 +76,13 @@ fun ProductCard(
         content = {
             Text(
                 text = product.name,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+            )
+        },
+        supportingContent = {
+            Text(
+                text = product.version,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
