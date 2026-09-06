@@ -31,7 +31,7 @@ android {
 
     defaultConfig {
         applicationId = "com.machiav3lli.fdroid"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1209
         versionName = "1.2.6"
