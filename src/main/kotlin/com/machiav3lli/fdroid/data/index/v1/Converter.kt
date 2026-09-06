@@ -161,7 +161,7 @@ private fun <T> Map<String, T>?.getBestLocale(localeList: LocaleListCompat): Pai
         ?: run {
             // split away stuff like script and try language and region only
             val langCountryTag = "${sysLocaleMatch.language}-${sysLocaleMatch.country}"
-            (getOrStartsWith(langCountryTag) ?: run {
+            (entries.find { it.key == langCountryTag } ?: run {
                 // split away region tag and try language only
                 val langTag = sysLocaleMatch.language
                 // try language, then English and then just take the first of the list

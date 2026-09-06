@@ -120,7 +120,7 @@ private fun <T> Localized<T>?.getBestLocale(localeList: LocaleListCompat): T? {
         ?: run {
             // split away stuff like script and try language and region only
             val langCountryTag = "${defLocale.language}-${defLocale.country}"
-            (getOrStartsWith(langCountryTag) ?: run {
+            (get(langCountryTag) ?: run {
                 // split away region tag and try language only
                 val langTag = defLocale.language
                 // try language, then English and then just take the first of the list
