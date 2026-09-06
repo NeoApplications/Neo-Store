@@ -534,4 +534,5 @@
     <string name="color_red">Czerwony</string>
     <string name="packages_blocklist">Lista zablokowanych aplikacji</string>
     <string name="apps_num_FORMAT">%d aplikacji</string>
+    <string name="sync_errors">Błędy synchronizacji</string>
 </resources>
