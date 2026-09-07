@@ -523,4 +523,5 @@
     <string name="packages_blocklist">应用黑名单</string>
     <string name="apps_num_FORMAT">%d 个应用</string>
     <string name="palette_expressive">Expressive</string>
+    <string name="sync_errors">同步错误</string>
 </resources>
