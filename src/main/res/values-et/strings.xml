@@ -524,4 +524,5 @@
     <string name="color_red">Punane</string>
     <string name="packages_blocklist">Rakenduste keeluloend</string>
     <string name="apps_num_FORMAT">%d rakendust</string>
+    <string name="sync_errors">Sünkroonimisvead</string>
 </resources>
