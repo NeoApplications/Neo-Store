@@ -70,7 +70,7 @@ fun MeterIconsBar(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (showTrackers) {
+            if (false) {
                 Icon(
                     imageVector = Phosphor.CrosshairSimple,
                     contentDescription = stringResource(id = R.string.trackers)

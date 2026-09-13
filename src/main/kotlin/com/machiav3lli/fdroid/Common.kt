@@ -189,6 +189,8 @@ const val LINK_KEEP_ANDROID_OPEN = "https://keepandroidopen.org"
 const val PERMISSION_GROUP_INTERNET = "android.permission-group.INTERNET"
 const val PERMISSION_READ_CELL_BROADCASTS = "android.permission.READ_CELL_BROADCASTS"
 const val EXODUS_TRACKER_WEBSITE = "https://reports.exodus-privacy.eu.org/de/trackers/"
+const val EXODUS_PACKAGE_WEBSITE_PREFIX = "https://reports.exodus-privacy.eu.org/en/reports/"
+const val EXODUS_PACKAGE_WEBSITE_SUFFIX = "/latest/"
 const val ANTIFEATURES_WEBSITE = "https://f-droid.org/de/docs/Anti-Features/#"
 
 const val AM_PACKAGENAME = "io.github.muntashirakon.AppManager"

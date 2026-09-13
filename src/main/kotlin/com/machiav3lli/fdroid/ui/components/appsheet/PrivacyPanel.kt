@@ -27,20 +27,25 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.ANTIFEATURES_WEBSITE
+import com.machiav3lli.fdroid.EXODUS_PACKAGE_WEBSITE_PREFIX
+import com.machiav3lli.fdroid.EXODUS_PACKAGE_WEBSITE_SUFFIX
 import com.machiav3lli.fdroid.EXODUS_TRACKER_WEBSITE
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TC_INTENT_EXTRA_SEARCH
 import com.machiav3lli.fdroid.TC_PACKAGENAME
 import com.machiav3lli.fdroid.TC_PACKAGENAME_FDROID
-import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.AntiFeature
+import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.data.entity.PermissionGroup
 import com.machiav3lli.fdroid.data.entity.SourceInfo
 import com.machiav3lli.fdroid.data.entity.TrackersGroup.Companion.getTrackersGroup
 import com.machiav3lli.fdroid.data.entity.toAntiFeature
+import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
 import com.machiav3lli.fdroid.ui.components.privacy.PrivacyCard
+import com.machiav3lli.fdroid.ui.compose.icons.Icon
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.ui.compose.icons.icon.Exodus
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.utils.extension.grantedPermissions
@@ -232,7 +237,7 @@ fun PrivacyPanel(
                 }
             }
         }
-        if (Preferences[Preferences.Key.ShowTrackers]) {
+        if (false) {
             item {
                 val tcIntent = context.packageManager
                     .getLaunchIntentForPackage(TC_PACKAGENAME)
@@ -327,6 +332,57 @@ fun PrivacyPanel(
                         }
                     }
                 }
+            }
+        }
+        item {
+            val tcIntent = context.packageManager
+                .getLaunchIntentForPackage(TC_PACKAGENAME)
+                ?: context.packageManager
+                    .getLaunchIntentForPackage(TC_PACKAGENAME_FDROID)
+
+            PrivacyCard(
+                heading = stringResource(id = R.string.trackers_control),
+                preExpanded = true,
+            ) {
+                if (panelState.isInstalled) {
+                    ActionButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(
+                            id = if (tcIntent == null) R.string.action_install_tc
+                            else R.string.action_open_tc
+                        ),
+                        icon = if (tcIntent == null) Phosphor.Download
+                        else Phosphor.ArrowSquareOut,
+                        coloring = ColoringState.Positive,
+                        onClick = {
+                            if (tcIntent == null) {
+                                context.startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        "market://search?q=$TC_PACKAGENAME".toUri()
+                                    )
+                                )
+                            } else context.startActivity(
+                                tcIntent.putExtra(
+                                    TC_INTENT_EXTRA_SEARCH,
+                                    packageName
+                                )
+                            )
+                        }
+                    )
+                }
+                ActionButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.exodus),
+                    icon = Icon.Exodus,
+                    coloring = ColoringState.Positive,
+                    onClick = {
+                        onUriClick(
+                            "$EXODUS_PACKAGE_WEBSITE_PREFIX$packageName$EXODUS_PACKAGE_WEBSITE_SUFFIX".toUri(),
+                            true
+                        )
+                    }
+                )
             }
         }
         item {

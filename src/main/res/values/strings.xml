@@ -529,4 +529,6 @@
     <string name="apps_num_FORMAT">%d apps</string>
     <string name="sync_errors">Sync errors</string>
     <string name="clear_search_history">Clear search history</string>
+    <string name="exodus">Open in Exodus</string>
+    <string name="trackers_control">Trackers control</string>
 </resources>

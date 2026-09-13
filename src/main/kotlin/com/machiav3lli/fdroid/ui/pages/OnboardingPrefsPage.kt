@@ -55,7 +55,7 @@ fun OnboardingPrefsPage(
     val layoutPrefs = listOf(
         Preferences.Key.BottomSearchBar,
         Preferences.Key.ShowScreenshots,
-        Preferences.Key.ShowTrackers,
+        //Preferences.Key.ShowTrackers,
     )
     val cachePrefs = listOf(
         Preferences.Key.EnableDownloadDirectory,
