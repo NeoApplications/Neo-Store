@@ -67,7 +67,7 @@ fun SlidePager(
     HorizontalPager(
         modifier = modifier,
         state = pagerState,
-        beyondViewportPageCount = preComposePages
+        beyondViewportPageCount = preComposePages,
     ) { page ->
         pageItems[page].content()
     }

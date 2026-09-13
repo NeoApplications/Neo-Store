@@ -102,10 +102,8 @@ import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.generateLinks
 import com.machiav3lli.fdroid.utils.shareReleaseIntent
 import com.machiav3lli.fdroid.utils.startLauncherActivity
-import com.machiav3lli.fdroid.viewmodels.AppActionCommand
 import com.machiav3lli.fdroid.viewmodels.AppPageVM
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 @OptIn(
@@ -133,7 +131,6 @@ fun AppPage(
     val extraState by viewModel.extraAppState.collectAsStateWithLifecycle()
     val privacyState by viewModel.privacyPanelState.collectAsStateWithLifecycle()
     val downloadStatsState by viewModel.downloadStatsState.collectAsStateWithLifecycle()
-    val actionExecutionState by viewModel.actionExecutionState.collectAsStateWithLifecycle()
 
     LaunchedEffect(packageName) {
         viewModel.setApp(packageName)
@@ -239,28 +236,26 @@ fun AppPage(
         }
     }
 
-    LaunchedEffect(actionExecutionState.pendingConfirmation) {
-        actionExecutionState.pendingConfirmation?.let { (_, key) ->
-            dialogKey.value = key
-            openDialog.value = true
-        }
-    }
+    val pendingAction = remember { mutableStateOf<ActionState?>(null) }
 
-    LaunchedEffect(actionExecutionState.error) {
-        actionExecutionState.error?.let { error ->
+    LaunchedEffect(Unit) {
+        viewModel.actionErrors.collect { error ->
             snackbarHostState.showSnackbar(
                 message = error,
                 duration = SnackbarDuration.Short
             )
-            viewModel.clearActionError()
         }
     }
 
     val onActionClick: (ActionState) -> Unit = { action ->
-        viewModel.processActionCommand(
-            AppActionCommand.Execute(action),
-            context
-        )
+        val confirmation = viewModel.getActionConfirmation(action)
+        if (confirmation != null) {
+            pendingAction.value = action
+            dialogKey.value = confirmation
+            openDialog.value = true
+        } else {
+            viewModel.executeAction(action, context)
+        }
     }
 
     appState.suggestedProductRepo?.let { (eProduct, repo) ->
@@ -627,7 +622,6 @@ fun AppPage(
                             titleId = R.string.launch,
                             options = (dialogKey.value as DialogKey.Launch)
                                 .launcherActivities.toMap(),
-                            openDialogCustom = openDialog,
                             onAction = { key ->
                                 context.startLauncherActivity(
                                     (dialogKey.value as DialogKey.Launch).packageName,
@@ -635,10 +629,14 @@ fun AppPage(
                                 )
                                 openDialog.value = false
                                 dialogKey.value = null
+                            },
+                            onDismiss = {
+                                openDialog.value = false
+                                dialogKey.value = null
                             }
                         )
 
-                        else                -> KeyDialogUI(
+                        is DialogKey        -> KeyDialogUI(
                             key = dialogKey.value,
                             openDialog = openDialog,
                             primaryAction = {
@@ -654,46 +652,37 @@ fun AppPage(
                                     }
 
                                     is DialogKey.Action -> {
-                                        val pendingAction =
-                                            actionExecutionState.pendingConfirmation?.first
+                                        val action = pendingAction.value
 
-                                        if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None) {
-                                            neoActivity.launchLockPrompt {
-                                                key.action()
-                                                if (pendingAction != null) {
-                                                    viewModel.processActionCommand(
-                                                        AppActionCommand.Confirmed(pendingAction),
-                                                        context
-                                                    )
+                                        if (action != null) {
+                                            if (Preferences[Preferences.Key.ActionLockDialog] != Preferences.ActionLock.None) {
+                                                neoActivity.launchLockPrompt {
+                                                    viewModel.executeAction(action, context)
                                                 }
-                                                openDialog.value = false
-                                                dialogKey.value = null
+                                            } else {
+                                                viewModel.executeAction(action, context)
                                             }
-                                        } else {
-                                            key.action()
-                                            if (pendingAction != null) {
-                                                viewModel.processActionCommand(
-                                                    AppActionCommand.Confirmed(pendingAction),
-                                                    context
-                                                )
-                                            }
-                                            openDialog.value = false
-                                            dialogKey.value = null
                                         }
+                                        openDialog.value = false
+                                        dialogKey.value = null
+                                        pendingAction.value = null
                                     }
 
                                     else                -> {
                                         openDialog.value = false
                                         dialogKey.value = null
+                                        pendingAction.value = null
                                     }
                                 }
                             },
                             onDismiss = {
-                                viewModel.processActionCommand(AppActionCommand.Cancel, context)
-                                openDialog.value = false
+                                pendingAction.value = null
                                 dialogKey.value = null
+                                openDialog.value = false
                             }
                         )
+
+                        else                -> {}
                     }
                 }
             }

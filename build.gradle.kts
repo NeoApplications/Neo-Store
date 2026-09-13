@@ -186,6 +186,7 @@ dependencies {
     implementation(libs.serialization.json)
     implementation(libs.markdown)
     implementation(libs.compose.html)
+    implementation(libs.material.kolor)
     implementation(libs.vico.compose)
     implementation(libs.vico.compose.m3)
 

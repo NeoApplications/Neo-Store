@@ -180,8 +180,8 @@ fun EnumSelectionPrefDialogUI(
 fun <T> ActionSelectionDialogUI(
     titleId: Int,
     options: Map<T, String>,
-    openDialogCustom: MutableState<Boolean>,
     onAction: (T) -> Unit,
+    onDismiss: () -> Unit,
 ) {
     Card(
         shape = MaterialTheme.shapes.extraLarge,
@@ -200,8 +200,7 @@ fun <T> ActionSelectionDialogUI(
             LazyColumn(
                 modifier = Modifier
                     .padding(vertical = 8.dp, horizontal = 4.dp)
-                    .weight(1f, false)
-                    .blockShadow(),
+                    .weight(1f, false),
             ) {
                 items(
                     items = options.entries.toList(),
@@ -223,10 +222,9 @@ fun <T> ActionSelectionDialogUI(
             ) {
                 FlatActionButton(
                     modifier = Modifier.weight(1f),
-                    text = stringResource(id = R.string.cancel)
-                ) {
-                    openDialogCustom.value = false
-                }
+                    text = stringResource(id = R.string.cancel),
+                    onClick = onDismiss,
+                )
             }
         }
     }

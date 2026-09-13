@@ -7,7 +7,6 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.FilledTonalIconButton
@@ -22,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.R
@@ -36,12 +34,10 @@ fun RoundButton(
     modifier: Modifier = Modifier,
     size: Dp = 24.dp,
     description: String = "",
-    onLongClick: (() -> Unit) = {},
     onClick: (() -> Unit),
 ) {
     IconButton(
-        modifier = modifier
-            .combinedClickable(role = Role.Button, onClick = onClick, onLongClick = onLongClick),
+        modifier = modifier,
         shapes = IconButtonDefaults.shapes(
             shape = CircleShape,
         ),
@@ -90,7 +86,6 @@ fun SyncButton(
     modifier: Modifier = Modifier,
     isSyncing: Boolean = false,
     onClick: () -> Unit = {},
-    onLongClick: () -> Unit = {},
 ) {
     val angle by animateFloatAsState(
         if (isSyncing) {
@@ -116,7 +111,6 @@ fun SyncButton(
             .graphicsLayer { rotationZ = angle },
         icon = Phosphor.ArrowsClockwise,
         description = stringResource(id = R.string.sync_repositories),
-        onLongClick = onLongClick,
         onClick = onClick
     )
 }

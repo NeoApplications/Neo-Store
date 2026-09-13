@@ -88,8 +88,8 @@ class SearchVM(
         pageState,
     ) { input, state ->
         input.query != state.query ||
-        input.source != state.source ||
-        input.sortFilter != state.sortFilter
+                input.source != state.source ||
+                input.sortFilter != state.sortFilter
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
