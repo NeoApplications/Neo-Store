@@ -262,7 +262,6 @@ abstract class GenerateBuildConfig : DefaultTask() {
             
             object BuildConfig {
                 val DETECTED_LOCALES: Array<String> = arrayOf(${detectedLocales.sorted().joinToString { "\"$it\"" }})
-                const val KEY_API_EXODUS: String = "81f30e4903bde25023857719e71c94829a41e6a5"
             }
         """.trimIndent()
         )

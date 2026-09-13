@@ -12,7 +12,6 @@ import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.ARG_VERSION_CODE
 import com.machiav3lli.fdroid.ARG_WORK_TYPE
 import com.machiav3lli.fdroid.NeoApp
-import com.machiav3lli.fdroid.config.BuildConfig
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.ExodusData
@@ -162,7 +161,7 @@ class ExodusWorker(
     companion object {
         private const val TAG = "ExodusWorker"
         private const val EXODUS_API_BASE = "https://reports.exodus-privacy.eu.org/api"
-        private const val EXODUS_AUTHENTICATION = "Token ${BuildConfig.KEY_API_EXODUS}"
+        private const val EXODUS_AUTHENTICATION = "Token INVALID"
 
         fun fetchTrackers() {
             val data = workDataOf(

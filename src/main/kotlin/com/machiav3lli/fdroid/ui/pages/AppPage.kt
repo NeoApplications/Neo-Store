@@ -67,7 +67,6 @@ import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.DonateType
 import com.machiav3lli.fdroid.manager.network.createIconUri
 import com.machiav3lli.fdroid.manager.work.DownloadWorker
-import com.machiav3lli.fdroid.manager.work.ExodusWorker
 import com.machiav3lli.fdroid.ui.components.ClientsChart
 import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
 import com.machiav3lli.fdroid.ui.components.RoundButton
@@ -286,12 +285,6 @@ fun AppPage(
 
         val displayRelease by remember {
             derivedStateOf { eProduct.displayRelease }
-        }
-
-        LaunchedEffect(product) {
-            async {
-                ExodusWorker.fetchExodusInfo(product.packageName, eProduct.versionCode)
-            }
         }
 
         Scaffold(

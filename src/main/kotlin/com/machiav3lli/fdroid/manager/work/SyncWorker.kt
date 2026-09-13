@@ -1,7 +1,6 @@
 package com.machiav3lli.fdroid.manager.work
 
 import com.machiav3lli.fdroid.DOWNLOAD_STATS_SYNC
-import com.machiav3lli.fdroid.EXODUS_TRACKERS_SYNC
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.RB_LOGS_SYNC
 import com.machiav3lli.fdroid.data.database.entity.Repository
@@ -14,7 +13,6 @@ object SyncWorker {
         repos.forEach { (repoId, _) ->
 
             when (repoId) {
-                EXODUS_TRACKERS_SYNC -> ExodusWorker.fetchTrackers()
                 RB_LOGS_SYNC         -> RBWorker.fetchRBLogs()
                 DOWNLOAD_STATS_SYNC  -> DownloadStatsWorker.enqueuePeriodic()
                 else                 -> {
