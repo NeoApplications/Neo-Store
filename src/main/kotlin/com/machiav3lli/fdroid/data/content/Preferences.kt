@@ -15,6 +15,7 @@ import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.entity.AndroidVersion
 import com.machiav3lli.fdroid.data.entity.InstallerType
 import com.machiav3lli.fdroid.data.entity.Order
+import com.machiav3lli.fdroid.data.entity.PermissionWeights
 import com.machiav3lli.fdroid.utils.amInstalled
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.getHasSystemInstallPermission
@@ -45,6 +46,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.ActionLockDialog,
         Key.UpdatedApps,
         Key.NewApps,
+        Key.PermissionWeightsKey,
         // Layout
         Key.AltBlockLayout,
         Key.AltNavBarItem,
@@ -301,6 +303,25 @@ data object Preferences : OnSharedPreferenceChangeListener {
             }
 
             override fun set(preferences: SharedPreferences, key: String, value: NeoTheme) {
+                preferences.edit().putString(key, Json.encodeToString(value)).apply()
+            }
+        }
+
+        class PermissionWeightsValue(override val value: PermissionWeights) : Value<PermissionWeights>() {
+            override fun get(
+                preferences: SharedPreferences,
+                key: String,
+                defaultValue: Value<PermissionWeights>,
+            ): PermissionWeights {
+                val json = preferences.getString(key, null) ?: return defaultValue.value
+                return try {
+                    Json.decodeFromString<PermissionWeights>(json)
+                } catch (_: Exception) {
+                    defaultValue.value
+                }
+            }
+
+            override fun set(preferences: SharedPreferences, key: String, value: PermissionWeights) {
                 preferences.edit().putString(key, Json.encodeToString(value)).apply()
             }
         }
@@ -684,6 +705,9 @@ data object Preferences : OnSharedPreferenceChangeListener {
 
         data object TrackersLastModified :
             Key<String>("last_modified_trackers", Value.StringValue(""))
+
+        data object PermissionWeightsKey :
+            Key<PermissionWeights>("permission_weights", Value.PermissionWeightsValue(PermissionWeights.DEFAULT))
 
         data object DownloadStatsLastModified :
             Key<String>("last_modified_downloadstats", Value.StringValue(""))
