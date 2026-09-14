@@ -549,4 +549,6 @@
     <string name="permissions_identification_3">Doesn\'t require many permissions to identification data</string>
     <string name="permissions_identification_4">Minimal amount of permissions to identification data</string>
     <string name="permissions_identification_5">Requires no permissions to identification data</string>
+    <string name="weights_default">Default weights</string>
+    <string name="weights_customized">Custom weights</string>
 </resources>

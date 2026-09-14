@@ -1,7 +1,7 @@
 package com.machiav3lli.fdroid.data.content
 
-import android.os.Build
 import com.machiav3lli.fdroid.R
+import com.machiav3lli.fdroid.data.entity.PermissionGroup
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Bell
@@ -33,7 +33,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Translate
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TwoCircle
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.VideoConference
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Wrench
-import com.machiav3lli.fdroid.utils.extension.android.Android
+import kotlinx.collections.immutable.persistentListOf
 
 val BooleanPrefsMeta = mapOf(
     Preferences.Key.ShowScreenshots to Triple(
@@ -269,6 +269,10 @@ val NonBooleanPrefsMeta = mapOf(
         R.string.packages_blocklist,
         Phosphor.ProhibitInset
     ),
+    Preferences.Key.PermissionWeightsKey to Pair(
+        R.string.prefs_permission_weights,
+        Phosphor.ShieldCheck
+    ),
 )
 
 val PrefsEntries = mapOf(
@@ -361,4 +365,17 @@ val PrefsDependencies = mapOf(
         Preferences.Key.KidsMode,
         listOf(false)
     ),
+)
+
+val weightEntries = persistentListOf(
+    PermissionGroup.Location,
+    PermissionGroup.Camera,
+    PermissionGroup.Microphone,
+    PermissionGroup.NearbyDevices,
+    PermissionGroup.Contacts,
+    PermissionGroup.Calendar,
+    PermissionGroup.Phone,
+    PermissionGroup.SMS,
+    PermissionGroup.Storage,
+    PermissionGroup.Internet,
 )

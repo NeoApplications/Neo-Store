@@ -2,6 +2,7 @@ package com.machiav3lli.fdroid.ui.components.prefs
 
 import androidx.compose.runtime.Composable
 import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.entity.PermissionWeights
 
 @Composable
 fun PrefsBuilder(
@@ -25,6 +26,12 @@ fun PrefsBuilder(
 
         prefKey is Preferences.Key.AppTheme                 -> ThemePreference(
             prefKey = prefKey as Preferences.Key<Preferences.NeoTheme>,
+            index = index,
+            groupSize = size,
+        ) { onDialogPref(prefKey) }
+
+        prefKey is Preferences.Key.PermissionWeightsKey     -> PermissionWeightsPreference(
+            prefKey = prefKey as Preferences.Key<PermissionWeights>,
             index = index,
             groupSize = size,
         ) { onDialogPref(prefKey) }

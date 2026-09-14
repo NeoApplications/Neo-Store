@@ -23,12 +23,14 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
+import com.machiav3lli.fdroid.data.entity.PermissionWeights
 import com.machiav3lli.fdroid.ui.components.prefs.PreferenceGroup
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.ThemePrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.EnumSelectionPrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.IntInputPrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.LanguagePrefDialogUI
+import com.machiav3lli.fdroid.ui.dialog.PermissionWeightsPrefDialogUI
 import com.machiav3lli.fdroid.ui.dialog.StringInputPrefDialogUI
 import com.machiav3lli.fdroid.utils.DOWNLOAD_DIRECTORY_INTENT
 
@@ -50,6 +52,7 @@ fun PrefsPersonalPage() {
         Preferences.Key.ActionLockDialog,
         Preferences.Key.UpdatedApps,
         Preferences.Key.NewApps,
+        Preferences.Key.PermissionWeightsKey,
     )
     val layoutPrefs = listOf(
         Preferences.Key.AltBlockLayout,
@@ -131,6 +134,10 @@ fun PrefsPersonalPage() {
                 )
 
                 is Preferences.NeoTheme -> ThemePrefDialogUI(
+                    openDialogCustom = openDialog
+                )
+
+                is PermissionWeights        -> PermissionWeightsPrefDialogUI(
                     openDialogCustom = openDialog
                 )
 

@@ -24,11 +24,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.BooleanPrefsMeta
 import com.machiav3lli.fdroid.data.content.NonBooleanPrefsMeta
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.content.PrefsDependencies
 import com.machiav3lli.fdroid.data.content.PrefsEntries
+import com.machiav3lli.fdroid.data.entity.PermissionWeights
 import com.machiav3lli.fdroid.ui.compose.utils.addIf
 import com.machiav3lli.fdroid.utils.Utils
 import com.machiav3lli.fdroid.utils.Utils.getLocaleOfCode
@@ -254,6 +256,59 @@ fun ThemePreference(
         modifier = modifier,
         titleId = NonBooleanPrefsMeta[prefKey]?.first ?: -1,
         summary = context.themeSummary(Preferences[prefKey]),
+        index = index,
+        groupSize = groupSize,
+        isEnabled = isEnabled,
+        startWidget = NonBooleanPrefsMeta[prefKey]?.second?.let {
+            {
+                Icon(
+                    imageVector = it,
+                    contentDescription = stringResource(
+                        id = NonBooleanPrefsMeta[prefKey]?.first ?: -1
+                    ),
+                )
+            }
+        },
+        onClick = onClick
+    )
+}
+
+@Composable
+fun PermissionWeightsPreference(
+    modifier: Modifier = Modifier,
+    prefKey: Preferences.Key<PermissionWeights>,
+    index: Int = 1,
+    groupSize: Int = 1,
+    onClick: (() -> Unit) = {},
+) {
+    val context = LocalContext.current
+    val dependency = PrefsDependencies[prefKey]
+    var isEnabled by remember {
+        mutableStateOf(
+            dependency?.let { Preferences[dependency.first] in dependency.second }
+                ?: true)
+    }
+
+    SideEffect {
+        CoroutineScope(Dispatchers.Default).launch {
+            Preferences.addPreferencesChangeListener {
+                when (it) {
+                    dependency?.first -> isEnabled = Preferences[it] in dependency.second
+                    else              -> {}
+                }
+            }
+        }
+    }
+
+    BasePreference(
+        modifier = modifier,
+        titleId = NonBooleanPrefsMeta[prefKey]?.first ?: -1,
+        summary = stringResource(
+            when (Preferences[prefKey]) {
+                PermissionWeights.DEFAULT -> R.string.weights_default
+                else                      -> R.string.weights_customized
+            }
+        ),
         index = index,
         groupSize = groupSize,
         isEnabled = isEnabled,
