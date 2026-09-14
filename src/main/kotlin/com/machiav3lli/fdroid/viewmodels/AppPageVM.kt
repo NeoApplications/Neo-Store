@@ -286,7 +286,7 @@ class AppPageVM(
             requestedPermissions = permissions,
             exodusInfo = exodus,
             privacyData = privacy,
-            privacyNote = privacy.toPrivacyNote(),
+            privacyNote = privacy.toPrivacyNote(Preferences[Preferences.Key.PermissionWeightsKey]),
             rbLogs = logs,
         )
     }.stateIn(

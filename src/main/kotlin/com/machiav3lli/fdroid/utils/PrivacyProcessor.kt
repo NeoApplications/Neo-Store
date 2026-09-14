@@ -10,13 +10,17 @@ import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.entity.PermissionGroup
+import com.machiav3lli.fdroid.data.entity.PermissionWeights
 import com.machiav3lli.fdroid.data.entity.PrivacyData
 import com.machiav3lli.fdroid.data.entity.PrivacyNote
 import com.machiav3lli.fdroid.data.entity.SourceType
 
-fun PrivacyData.toPrivacyNote(): PrivacyNote {
-    val permissionsNote = 100 - permissions.privacyPoints.coerceAtMost(100)
-    val trackersNote = 100 - trackers.privacyPoints.coerceAtMost(100)
+fun PrivacyData.toPrivacyNote(weights: PermissionWeights = PermissionWeights.DEFAULT): PrivacyNote {
+    val physicalPoints = physicalDataPermissions.weightedPrivacyPoints(weights)
+    val identificationPoints = identificationDataPermissions.weightedPrivacyPoints(weights)
+    val physicalNote = 100 - physicalPoints.coerceAtMost(100)
+    val identificationNote = 100 - identificationPoints.coerceAtMost(100)
+
     val sourceType = SourceType(
         open = !antiFeatures.map(AntiFeatureDetails::name)
             .contains(AntiFeature.NO_SOURCE_SINCE.key),
@@ -30,9 +34,10 @@ fun PrivacyData.toPrivacyNote(): PrivacyNote {
         }
     )
     return PrivacyNote(
-        permissionsNote,
-        trackersNote,
-        sourceType
+        permissionsNotePhysical = physicalNote,
+        permissionsNoteIdentification = identificationNote,
+        sourceType = sourceType,
+        antiFeatures = antiFeatures
     )
 }
 
@@ -52,6 +57,21 @@ private val Int.trackerNoteMultiplicator: Int
 
         else -> 1
     }
+
+fun Map<PermissionGroup, List<PermissionInfo>>.weightedPrivacyPoints(weights: PermissionWeights): Int {
+    return entries.sumOf { (group, permissions) ->
+        val base = permissions.sumOf {
+            when (it.name) {
+                in HIGH_RISK_PERMISSIONS   -> 15
+                in MEDIUM_RISK_PERMISSIONS -> 7
+                in LOW_RISK_PERMISSIONS    -> 3
+                else                       -> 2
+            }
+        }
+        val weight = PermissionWeights.getWeightForGroup(weights, group)
+        (base * weight).toInt()
+    }
+}
 
 val Map<PermissionGroup, List<PermissionInfo>>.privacyPoints
     get() = values.flatten().sumOf {

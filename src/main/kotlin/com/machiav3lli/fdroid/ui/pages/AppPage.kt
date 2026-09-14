@@ -87,7 +87,7 @@ import com.machiav3lli.fdroid.ui.components.appsheet.WarningCard
 import com.machiav3lli.fdroid.ui.components.appsheet.appInfoChips
 import com.machiav3lli.fdroid.ui.components.appsheet.downloadInfoChips
 import com.machiav3lli.fdroid.ui.components.common.BottomSheet
-import com.machiav3lli.fdroid.ui.components.privacy.MeterIconsBar
+import com.machiav3lli.fdroid.ui.components.privacy.PrivacyIndicatorsBar
 import com.machiav3lli.fdroid.ui.compose.ProductsHorizontalRecycler
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
@@ -333,20 +333,25 @@ fun AppPage(
                             extraState.categoryDetails
                         )
                     )
-                    MeterIconsBar(
+                    PrivacyIndicatorsBar(
                         modifier = Modifier.fillMaxWidth(),
-                        selectedTrackers = if (privacyState.exodusInfo != null) privacyState.privacyNote.trackersRank
-                        else null,
-                        selectedPermissions = privacyState.privacyNote.permissionsRank,
+                        physicalRank = privacyState.privacyNote.permissionsRankPhysical,
+                        identificationRank = privacyState.privacyNote.permissionsRankIdentification,
+                        sourceRank = privacyState.privacyNote.sourceRank,
+                        antiFeaturesRank = privacyState.privacyNote.antiFeaturesRank,
+                        physicalCount = privacyState.privacyData.physicalDataPermissions.values.flatten().size,
+                        identificationCount = privacyState.privacyData.identificationDataPermissions.values.flatten().size,
+                        antiFeaturesCount = privacyState.privacyData.antiFeatures.size,
                         currentPage = currentPage,
-                    ) {
-                        scope.launch {
-                            pagerState.animateScrollToPage(
-                                if (currentPage == 0) 1
-                                else 0
-                            )
-                        }
-                    }
+                        onNavigateClick = {
+                            scope.launch {
+                                pagerState.animateScrollToPage(
+                                    if (currentPage == 0) 1
+                                    else 0
+                                )
+                            }
+                        },
+                    )
                 }
             },
             snackbarHost = { SnackbarHost(snackbarHostState) },

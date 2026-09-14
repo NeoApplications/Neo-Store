@@ -57,14 +57,43 @@ enum class PrivacyIndicator {
 
 // TODO rename or merge into PrivacyData
 class PrivacyNote(
-    val permissionsNote: Int = 100,
-    val trackersNote: Int = 100,
+//    val permissionsNote: Int = 100,
+    val permissionsNotePhysical: Int = 100,
+    val permissionsNoteIdentification: Int = 100,
+//    val trackersNote: Int = 100,
     val sourceType: SourceType = SourceType(),
+    val antiFeatures: List<AntiFeatureDetails> = emptyList(),
 ) {
-    val trackersRank
-        get() = truncate((trackersNote - 1) / 20f).toInt()
-    val permissionsRank
-        get() = truncate((permissionsNote - 1) / 20f).toInt()
+//    val trackersRank
+//        get() = truncate((trackersNote - 1) / 20f).toInt()
+//    val permissionsRank
+//        get() = truncate((permissionsNote - 1) / 20f).toInt()
+    val permissionsRankPhysical
+        get() = truncate((permissionsNotePhysical - 1) / 20f).toInt()
+    val permissionsRankIdentification
+        get() = truncate((permissionsNoteIdentification - 1) / 20f).toInt()
+
+    val sourceRank: Int
+        get() = when {
+            sourceType.isFree             -> 5
+            sourceType.isOpenSource       -> 4
+            sourceType.isSourceAvailable  -> 2
+            !sourceType.isSourceAvailable -> 1
+            else                          -> 3
+        }
+
+    val antiFeaturesRank: Int
+        get() {
+            val hasKnownVuln = antiFeatures.any { it.name == AntiFeature.KNOWN_VULN.key }
+            val count = antiFeatures.size
+            return when {
+                count == 0                  -> 5
+                count == 1 && !hasKnownVuln -> 4
+                count < 4 && !hasKnownVuln  -> 3
+                count < 6 || hasKnownVuln   -> 2
+                else                        -> 1
+            }
+        }
 }
 
 class SourceType(
