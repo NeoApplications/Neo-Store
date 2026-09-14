@@ -529,4 +529,7 @@
     <string name="packages_blocklist">Liste des applications bloquées</string>
     <string name="apps_num_FORMAT">%d applications</string>
     <string name="sync_errors">Erreurs de synchronisation</string>
+    <string name="clear_search_history">Effacer l\'historique de recherche</string>
+    <string name="exodus">Ouvrir dans l\'Exode</string>
+    <string name="trackers_control">Contrôle des trackers</string>
 </resources>
