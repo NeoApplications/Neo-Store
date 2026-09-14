@@ -525,4 +525,7 @@
     <string name="packages_blocklist">Rakenduste keeluloend</string>
     <string name="apps_num_FORMAT">%d rakendust</string>
     <string name="sync_errors">Sünkroonimisvead</string>
+    <string name="clear_search_history">Kustuta otsinguajalugu</string>
+    <string name="exodus">Ava Exoduse teenuses</string>
+    <string name="trackers_control">Jälitajate teave</string>
 </resources>
