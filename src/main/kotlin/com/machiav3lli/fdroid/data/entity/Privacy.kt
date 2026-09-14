@@ -9,7 +9,6 @@ import com.machiav3lli.fdroid.PERMISSION_GROUP_INTERNET
 import com.machiav3lli.fdroid.PHYSICAL_DATA_PERMISSIONS
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
-import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.ui.compose.icons.Icon
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.icon.Opensource
@@ -36,7 +35,6 @@ import kotlin.math.truncate
 
 class PrivacyData(
     val permissions: Map<PermissionGroup, List<PermissionInfo>> = emptyMap(),
-    val trackers: List<Tracker> = emptyList(),
     val antiFeatures: List<AntiFeatureDetails> = emptyList(),
 ) {
     val physicalDataPermissions: Map<PermissionGroup, List<PermissionInfo>>
@@ -284,5 +282,4 @@ open class SourceInfo(
         R.string.source_dependencies_description,
         Phosphor.GitPullRequest
     )
-
 }

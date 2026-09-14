@@ -2,17 +2,13 @@ package com.machiav3lli.fdroid.data.repository
 
 import com.machiav3lli.fdroid.data.database.dao.DownloadStatsDao
 import com.machiav3lli.fdroid.data.database.dao.DownloadStatsFileDao
-import com.machiav3lli.fdroid.data.database.dao.ExodusInfoDao
 import com.machiav3lli.fdroid.data.database.dao.RBLogDao
-import com.machiav3lli.fdroid.data.database.dao.TrackerDao
 import com.machiav3lli.fdroid.data.database.entity.ClientPackageSum
 import com.machiav3lli.fdroid.data.database.entity.DownloadStats
 import com.machiav3lli.fdroid.data.database.entity.DownloadStatsFileMetadata
-import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.MonthlyPackageSum
 import com.machiav3lli.fdroid.data.database.entity.PackageSum
 import com.machiav3lli.fdroid.data.database.entity.RBLog
-import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.utils.extension.text.getIsoDateOfMonthsAgo
 import com.machiav3lli.fdroid.utils.extension.text.isoDateToInt
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,16 +18,10 @@ import org.koin.dsl.module
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PrivacyRepository(
-    private val trackerDao: TrackerDao,
     private val rbDao: RBLogDao,
-    private val exodusDao: ExodusInfoDao,
     private val downloadStatsDao: DownloadStatsDao,
     private val dsFileDao: DownloadStatsFileDao,
 ) {
-    fun getAllTrackers() = trackerDao.getAllFlow()
-
-    fun getExodusInfos(packageName: String): Flow<List<ExodusInfo>> = exodusDao.getFlow(packageName)
-
     fun getRBLogs(packageName: String): Flow<List<RBLog>> = rbDao.getFlow(packageName)
 
     fun getRBLogsMap(packageName: String): Flow<Map<String, RBLog>> = rbDao.getFlow(packageName)
@@ -66,16 +56,8 @@ class PrivacyRepository(
 
     suspend fun loadRBLogs(packageName: String): List<RBLog> = rbDao.get(packageName)
 
-    suspend fun upsertTracker(trackers: Collection<Tracker>) {
-        trackerDao.multipleUpserts(trackers.toList())
-    }
-
     suspend fun upsertRBLogs(logs: Collection<RBLog>) {
         rbDao.multipleUpserts(logs.toList())
-    }
-
-    suspend fun upsertExodusInfo(infos: ExodusInfo) {
-        exodusDao.upsert(infos)
     }
 
     suspend fun upsertDownloadStats(downloadStats: Collection<DownloadStats>) {

@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,7 +28,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.machiav3lli.fdroid.ANTIFEATURES_WEBSITE
 import com.machiav3lli.fdroid.EXODUS_PACKAGE_WEBSITE_PREFIX
 import com.machiav3lli.fdroid.EXODUS_PACKAGE_WEBSITE_SUFFIX
-import com.machiav3lli.fdroid.EXODUS_TRACKER_WEBSITE
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TC_INTENT_EXTRA_SEARCH
 import com.machiav3lli.fdroid.TC_PACKAGENAME
@@ -38,7 +36,6 @@ import com.machiav3lli.fdroid.data.entity.AntiFeature
 import com.machiav3lli.fdroid.data.entity.ColoringState
 import com.machiav3lli.fdroid.data.entity.PermissionGroup
 import com.machiav3lli.fdroid.data.entity.SourceInfo
-import com.machiav3lli.fdroid.data.entity.TrackersGroup.Companion.getTrackersGroup
 import com.machiav3lli.fdroid.data.entity.toAntiFeature
 import com.machiav3lli.fdroid.ui.components.ActionButton
 import com.machiav3lli.fdroid.ui.components.ExpandableItemsBlock
@@ -232,103 +229,6 @@ fun PrivacyPanel(
                                 )
                             }
                             Spacer(modifier = Modifier.height(8.dp))
-                        }
-                    }
-                }
-            }
-        }
-        if (false) {
-            item {
-                val tcIntent = context.packageManager
-                    .getLaunchIntentForPackage(TC_PACKAGENAME)
-                    ?: context.packageManager
-                        .getLaunchIntentForPackage(TC_PACKAGENAME_FDROID)
-                val privacyPoints = panelState.trackers.privacyPoints
-                PrivacyCard(
-                    heading = stringResource(
-                        id = R.string.trackers_in,
-                        panelState.exodusInfo?.version_name.orEmpty()
-                    ) + if (panelState.trackers.isNotEmpty()) " ${
-                        pluralStringResource(
-                            id = R.plurals.privacy_points_FORMAT,
-                            privacyPoints,
-                            privacyPoints
-                        )
-                    }" else "",
-                    preExpanded = true,
-                    actionText = if (panelState.isInstalled) stringResource(
-                        id = if (tcIntent == null) R.string.action_install_tc
-                        else R.string.action_open_tc
-                    ) else "",
-                    actionIcon = if (tcIntent == null) Phosphor.Download
-                    else Phosphor.ArrowSquareOut,
-                    onAction = {
-                        if (tcIntent == null) {
-                            context.startActivity(
-                                Intent(
-                                    Intent.ACTION_VIEW,
-                                    "market://search?q=$TC_PACKAGENAME".toUri()
-                                )
-                            )
-                        } else context.startActivity(
-                            tcIntent.putExtra(
-                                TC_INTENT_EXTRA_SEARCH,
-                                packageName
-                            )
-                        )
-                    }
-                ) {
-                    if (panelState.trackers.isNotEmpty()) {
-                        panelState.trackers
-                            .map { it.categories }
-                            .flatten()
-                            .distinct()
-                            .associateWith { group -> panelState.trackers.filter { group in it.categories } }
-                            .forEach { (group, groupTrackers) ->
-                                val groupItem = group.getTrackersGroup()
-                                ExpandableItemsBlock(
-                                    heading = stringResource(groupItem.labelId),
-                                    icon = groupItem.icon,
-                                ) {
-                                    Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-                                        Text(
-                                            text = stringResource(groupItem.descriptionId)
-                                        )
-                                        groupTrackers.forEach {
-                                            Text(
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .combinedClickable(
-                                                        onClick = {
-                                                            onUriClick(
-                                                                "$EXODUS_TRACKER_WEBSITE${it.key}".toUri(),
-                                                                true
-                                                            )
-                                                        },
-                                                        onLongClick = {
-                                                            copyLinkToClipboard(it.code_signature)
-                                                        }
-                                                    ),
-                                                text = "\u2023 ${it.name}"
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                    } else {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp),
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Text(
-                                text = stringResource(
-                                    id =
-                                        if (panelState.exodusInfo != null) R.string.trackers_none
-                                        else R.string.no_trackers_data_available
-                                )
-                            )
                         }
                     }
                 }

@@ -19,14 +19,12 @@ import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.AntiFeatureDetails
 import com.machiav3lli.fdroid.data.database.entity.CategoryDetails
 import com.machiav3lli.fdroid.data.database.entity.EmbeddedProduct
-import com.machiav3lli.fdroid.data.database.entity.ExodusInfo
 import com.machiav3lli.fdroid.data.database.entity.Extras
 import com.machiav3lli.fdroid.data.database.entity.Installed
 import com.machiav3lli.fdroid.data.database.entity.MonthlyPackageSum
 import com.machiav3lli.fdroid.data.database.entity.RBLog
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.database.entity.Repository
-import com.machiav3lli.fdroid.data.database.entity.Tracker
 import com.machiav3lli.fdroid.data.entity.ActionState
 import com.machiav3lli.fdroid.data.entity.DialogKey
 import com.machiav3lli.fdroid.data.entity.DownloadState
@@ -245,25 +243,13 @@ class AppPageVM(
         )
     }.distinctUntilChanged()
 
-    private val exodusInfo = packageName
-        .flatMapLatest { pn ->
-            privacyRepo.getExodusInfos(pn)
-        }
-        .mapLatest { it.maxByOrNull(ExodusInfo::version_code) }
-
-    private val trackers = combine(exodusInfo, privacyRepo.getAllTrackers()) { info, trackers ->
-        trackers.filter { it.key in info?.trackers.orEmpty() }
-    }
-
     private val privacyData = combine(
         suggestedProductRepo,
-        trackers,
         reposRepo.getRepoAntiFeaturesMap().distinctUntilChanged(),
-    ) { suggestedProduct, trs, afsMap ->
+    ) { suggestedProduct, afsMap ->
         PrivacyData(
             permissions = suggestedProduct?.first?.displayRelease
                 ?.generatePermissionGroups(NeoApp.context) ?: emptyMap(),
-            trackers = trs,
             antiFeatures = suggestedProduct?.let {
                 it.first.product.antiFeatures.map { af ->
                     afsMap[af] ?: AntiFeatureDetails(af, "")
@@ -273,18 +259,14 @@ class AppPageVM(
     }.distinctUntilChanged()
 
     val privacyPanelState: StateFlow<PrivacyPanelState> = combine(
-        trackers,
         installedItem,
         requestedPermissions,
-        exodusInfo,
         privacyData,
         rbLogs,
-    ) { trackers, installed, permissions, exodus, privacy, logs ->
+    ) { installed, permissions, privacy, logs ->
         PrivacyPanelState(
-            trackers = trackers,
             isInstalled = installed != null,
             requestedPermissions = permissions,
-            exodusInfo = exodus,
             privacyData = privacy,
             privacyNote = privacy.toPrivacyNote(Preferences[Preferences.Key.PermissionWeightsKey]),
             rbLogs = logs,
@@ -599,7 +581,12 @@ class AppPageVM(
                     ActionState.Launch                            -> {
                         state.installed?.let { installed ->
                             installed.launcherActivities.firstOrNull()
-                                ?.let { context.startLauncherActivity(installed.packageName, it.first) }
+                                ?.let {
+                                    context.startLauncherActivity(
+                                        installed.packageName,
+                                        it.first
+                                    )
+                                }
                         }
                     }
 
@@ -625,7 +612,8 @@ class AppPageVM(
                     }
 
                     ActionState.Share                             -> {
-                        val prodRepo = state.productRepos.first { it.second.webBaseUrl.isNotBlank() }
+                        val prodRepo =
+                            state.productRepos.first { it.second.webBaseUrl.isNotBlank() }
                         context.shareIntent(
                             packageName.value,
                             prodRepo.first.product.label,
@@ -655,14 +643,11 @@ class AppPageVM(
 }
 
 
-
-
-
 data class PrivacyPanelState(
-    val trackers: List<Tracker> = emptyList(),
+    //val trackers: List<Tracker> = emptyList(),
     val isInstalled: Boolean = false,
     val requestedPermissions: Map<String, Boolean> = emptyMap(),
-    val exodusInfo: ExodusInfo? = null,
+    //val exodusInfo: ExodusInfo? = null,
     val privacyData: PrivacyData = PrivacyData(),
     val privacyNote: PrivacyNote = PrivacyNote(),
     val rbLogs: Map<String, RBLog> = emptyMap(),

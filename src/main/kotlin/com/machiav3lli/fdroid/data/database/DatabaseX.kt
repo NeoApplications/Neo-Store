@@ -28,7 +28,6 @@ import com.machiav3lli.fdroid.data.database.dao.CategoryTempDao
 import com.machiav3lli.fdroid.data.database.dao.DownloadStatsDao
 import com.machiav3lli.fdroid.data.database.dao.DownloadStatsFileDao
 import com.machiav3lli.fdroid.data.database.dao.DownloadedDao
-import com.machiav3lli.fdroid.data.database.dao.ExodusInfoDao
 import com.machiav3lli.fdroid.data.database.dao.ExtrasDao
 import com.machiav3lli.fdroid.data.database.dao.InstallTaskDao
 import com.machiav3lli.fdroid.data.database.dao.InstalledDao
@@ -40,7 +39,6 @@ import com.machiav3lli.fdroid.data.database.dao.ReleaseTempDao
 import com.machiav3lli.fdroid.data.database.dao.RepoCategoryDao
 import com.machiav3lli.fdroid.data.database.dao.RepoCategoryTempDao
 import com.machiav3lli.fdroid.data.database.dao.RepositoryDao
-import com.machiav3lli.fdroid.data.database.dao.TrackerDao
 import com.machiav3lli.fdroid.data.database.entity.AntiFeature
 import com.machiav3lli.fdroid.data.database.entity.AntiFeatureTemp
 import com.machiav3lli.fdroid.data.database.entity.Category
@@ -345,8 +343,6 @@ abstract class DatabaseX : RoomDatabase() {
     abstract fun getAntiFeatureDao(): AntiFeatureDao
     abstract fun getInstalledDao(): InstalledDao
     abstract fun getExtrasDao(): ExtrasDao
-    abstract fun getExodusInfoDao(): ExodusInfoDao
-    abstract fun getTrackerDao(): TrackerDao
     abstract fun getDownloadedDao(): DownloadedDao
     abstract fun getRBLogDao(): RBLogDao
     abstract fun getDownloadStatsDao(): DownloadStatsDao
@@ -741,8 +737,6 @@ val databaseModule = module {
     single { get<DatabaseX>().getAntiFeatureTempDao() }
     single { get<DatabaseX>().getInstalledDao() }
     single { get<DatabaseX>().getExtrasDao() }
-    single { get<DatabaseX>().getExodusInfoDao() }
-    single { get<DatabaseX>().getTrackerDao() }
     single { get<DatabaseX>().getDownloadedDao() }
     single { get<DatabaseX>().getInstallTaskDao() }
     single { get<DatabaseX>().getRBLogDao() }

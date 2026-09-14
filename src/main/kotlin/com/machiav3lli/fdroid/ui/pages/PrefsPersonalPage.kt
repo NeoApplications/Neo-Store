@@ -62,7 +62,6 @@ fun PrefsPersonalPage() {
         Preferences.Key.BottomSearchBar,
         Preferences.Key.DisableListDetail,
         Preferences.Key.ShowScreenshots,
-        //Preferences.Key.ShowTrackers,
         Preferences.Key.AndroidInsteadOfSDK,
     )
     val cachePrefs = listOf(

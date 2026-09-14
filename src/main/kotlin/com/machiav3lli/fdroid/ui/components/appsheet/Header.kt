@@ -38,6 +38,7 @@ import com.machiav3lli.fdroid.ui.components.MainActionButton
 import com.machiav3lli.fdroid.ui.components.NetworkImage
 import com.machiav3lli.fdroid.ui.components.PRODUCT_CARD_ICON
 import com.machiav3lli.fdroid.ui.components.SecondaryActionButton
+import com.machiav3lli.fdroid.ui.compose.icons.Icon
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.icon.Opensource
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
@@ -180,7 +181,7 @@ fun SourceCodeButton(
     CardButton(
         icon = when {
             sourceType.isFree            -> Phosphor.Copyleft
-            sourceType.isOpenSource      -> com.machiav3lli.fdroid.ui.compose.icons.Icon.Opensource
+            sourceType.isOpenSource      -> Icon.Opensource
             sourceType.isSourceAvailable -> Phosphor.Copyright
             else                         -> Phosphor.GlobeSimple
         },
