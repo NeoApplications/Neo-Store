@@ -48,6 +48,13 @@ class PrivacyData(
 
 }
 
+enum class PrivacyIndicator {
+    Physical,
+    Identification,
+    SourceCode,
+    AntiFeatures,
+}
+
 // TODO rename or merge into PrivacyData
 class PrivacyNote(
     val permissionsNote: Int = 100,

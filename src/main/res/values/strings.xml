@@ -531,4 +531,22 @@
     <string name="clear_search_history">Clear search history</string>
     <string name="exodus">Open in Exodus</string>
     <string name="trackers_control">Trackers control</string>
+    <string name="prefs_permission_weights">Permission Weights</string>
+    <string name="source_unclear">Source availability unclear</string>
+    <string name="anti_features_indicator_5">No Anti-Features detected</string>
+    <string name="anti_features_indicator_4">1 Anti-Feature detected</string>
+    <string name="anti_features_indicator_3">2+ Anti-Features detected</string>
+    <string name="anti_features_indicator_2">4+ Anti-Features or vulnerabilities</string>
+    <string name="anti_features_indicator_1">Multiple severe anti-features</string>
+    <string name="permissions_unknown">Required permissions unknown</string>
+    <string name="permissions_physical_1">Requests many dangerous permissions to physical data</string>
+    <string name="permissions_physical_2">Requires a good amount of permissions to physical data</string>
+    <string name="permissions_physical_3">Doesn\'t require many permissions to physical data</string>
+    <string name="permissions_physical_4">Minimal amount of permissions to physical data</string>
+    <string name="permissions_physical_5">Requires no permissions to physical data</string>
+    <string name="permissions_identification_1">Requests many dangerous permissions to identification data</string>
+    <string name="permissions_identification_2">Requires a good amount of permissions to identification data</string>
+    <string name="permissions_identification_3">Doesn\'t require many permissions to identification data</string>
+    <string name="permissions_identification_4">Minimal amount of permissions to identification data</string>
+    <string name="permissions_identification_5">Requires no permissions to identification data</string>
 </resources>
