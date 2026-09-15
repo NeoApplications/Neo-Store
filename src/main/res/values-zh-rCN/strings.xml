@@ -524,4 +524,7 @@
     <string name="apps_num_FORMAT">%d 个应用</string>
     <string name="palette_expressive">Expressive</string>
     <string name="sync_errors">同步错误</string>
+    <string name="clear_search_history">清除搜索历史</string>
+    <string name="exodus">在 Exodus 中打开</string>
+    <string name="trackers_control">跟踪器控制</string>
 </resources>
