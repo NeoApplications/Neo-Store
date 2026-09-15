@@ -532,4 +532,24 @@
     <string name="clear_search_history">Effacer l\'historique de recherche</string>
     <string name="exodus">Ouvrir dans l\'Exode</string>
     <string name="trackers_control">Contrôle des trackers</string>
+    <string name="prefs_permission_weights">Pondérations des autorisations</string>
+    <string name="source_unclear">Disponibilité de la source incertaine</string>
+    <string name="anti_features_indicator_5">Aucune « anti-fonctionnalité » détectée</string>
+    <string name="anti_features_indicator_4">1 « anti-fonctionnalité » détectée</string>
+    <string name="anti_features_indicator_3">2 « anti-fonctionnalités » détectées ou plus</string>
+    <string name="anti_features_indicator_2">4+ « anti-fonctionnalités » ou vulnérabilités</string>
+    <string name="anti_features_indicator_1">Plusieurs « anti-caractéristiques » graves</string>
+    <string name="permissions_unknown">Autorisations requises inconnues</string>
+    <string name="permissions_physical_1">Demande de nombreuses autorisations dangereuses concernant des données physiques</string>
+    <string name="permissions_physical_2">Nécessite un nombre important d\'autorisations d\'accès aux données physiques</string>
+    <string name="permissions_physical_3">Ne nécessite pas beaucoup d\'autorisations pour accéder aux données physiques</string>
+    <string name="permissions_physical_4">Accès minimal aux données physiques</string>
+    <string name="permissions_physical_5">Ne nécessite aucune autorisation d\'accès aux données physiques</string>
+    <string name="permissions_identification_1">Demande de nombreuses autorisations à risque concernant les données d\'identification</string>
+    <string name="permissions_identification_2">Nécessite un nombre important d\'autorisations concernant les données d\'identification</string>
+    <string name="permissions_identification_3">Ne nécessite pas beaucoup d\'autorisations pour accéder aux données d\'identification</string>
+    <string name="permissions_identification_4">Accès limité aux données d\'identification</string>
+    <string name="permissions_identification_5">Ne nécessite aucune autorisation d\'accès aux données d\'identification</string>
+    <string name="weights_default">Poids par défaut</string>
+    <string name="weights_customized">Poids personnalisés</string>
 </resources>
