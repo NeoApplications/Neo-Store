@@ -44,8 +44,11 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Images
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldCheck
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.UserFocus
-import com.machiav3lli.fdroid.ui.compose.theme.LightGreen
-import com.machiav3lli.fdroid.ui.compose.theme.Orange
+import com.machiav3lli.fdroid.ui.compose.theme.LightRedOrange
+import com.machiav3lli.fdroid.ui.compose.theme.LightYellowGreen
+import com.machiav3lli.fdroid.ui.compose.theme.PaleYellow
+import com.machiav3lli.fdroid.ui.compose.theme.StrongRed
+import com.machiav3lli.fdroid.ui.compose.theme.TealGreen
 import com.materialkolor.ktx.isLight
 import kotlinx.coroutines.launch
 
@@ -156,7 +159,7 @@ fun PrivacyIndicatorsBar(
 @Composable
 private fun PrivacyIndicatorIcon(
     icon: ImageVector,
-    rank: Int?,
+    @IntRange(1, 5) rank: Int,
     badge: Int? = null,
     tooltipText: String,
     onClick: () -> Unit,
@@ -165,11 +168,11 @@ private fun PrivacyIndicatorIcon(
     val state = rememberTooltipState()
     val tint by animateColorAsState(
         when (rank) {
-            5    -> Color.Green
-            4    -> LightGreen
-            3    -> Color.Yellow
-            2    -> Orange
-            1    -> Color.Red
+            5    -> TealGreen
+            4    -> LightYellowGreen
+            3    -> PaleYellow
+            2    -> LightRedOrange
+            1    -> StrongRed
             else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
         },
         label = "tintColor",
@@ -208,7 +211,7 @@ private fun PrivacyIndicatorIcon(
             },
         ) {
             Surface(
-                color = tint.copy(0.3f),
+                color = tint.copy(0.5f),
                 contentColor = onTintIcon,
                 shape = MaterialTheme.shapes.small,
                 onClick = {

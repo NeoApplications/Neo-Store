@@ -34,8 +34,11 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowCircleRight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyQuestion
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CrosshairSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
-import com.machiav3lli.fdroid.ui.compose.theme.LightGreen
-import com.machiav3lli.fdroid.ui.compose.theme.Orange
+import com.machiav3lli.fdroid.ui.compose.theme.LightRedOrange
+import com.machiav3lli.fdroid.ui.compose.theme.LightYellowGreen
+import com.machiav3lli.fdroid.ui.compose.theme.PaleYellow
+import com.machiav3lli.fdroid.ui.compose.theme.StrongRed
+import com.machiav3lli.fdroid.ui.compose.theme.TealGreen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -108,7 +111,8 @@ fun MeterIcon(
     selected: Int? = 0,
     tooltips: ImmutableList<Int> = persistentListOf(0, 0, 0, 0, 0),
 ) {
-    val colors = persistentListOf(Color.Red, Orange, Color.Yellow, LightGreen, Color.Green)
+    val colors =
+        persistentListOf(StrongRed, LightRedOrange, PaleYellow, LightYellowGreen, TealGreen)
     val openPopup = remember { mutableIntStateOf(POPUP_NONE) }
 
     Row(

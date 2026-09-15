@@ -3,8 +3,11 @@ package com.machiav3lli.fdroid.ui.compose.theme
 import androidx.compose.ui.graphics.Color
 import com.machiav3lli.fdroid.R
 
-val Orange = Color(0xFFFF9138)
-val LightGreen = Color(0xFFAEC300)
+val TealGreen = Color(0xFF1B9E77)
+val LightYellowGreen = Color(0xFF91CF60)
+val PaleYellow = Color(0xFFFFFFBF)
+val LightRedOrange = Color(0xFFFC8D59)
+val StrongRed = Color(0xFFD73027)
 
 val presetColors = mapOf(
     0xFF33DD55 to R.string.color_green,

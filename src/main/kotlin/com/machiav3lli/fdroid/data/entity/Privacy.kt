@@ -67,9 +67,9 @@ class PrivacyNote(
 //    val permissionsRank
 //        get() = truncate((permissionsNote - 1) / 20f).toInt()
     val permissionsRankPhysical
-        get() = truncate((permissionsNotePhysical - 1) / 20f).toInt()
+        get() = truncate((permissionsNotePhysical - 1) / 20f).toInt().coerceIn(1..5)
     val permissionsRankIdentification
-        get() = truncate((permissionsNoteIdentification - 1) / 20f).toInt()
+        get() = truncate((permissionsNoteIdentification - 1) / 20f).toInt().coerceIn(1..5)
 
     val sourceRank: Int
         get() = when {
