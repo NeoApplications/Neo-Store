@@ -532,4 +532,7 @@
     <string name="packages_blocklist">Elenco app bloccate</string>
     <string name="apps_num_FORMAT">%d app</string>
     <string name="sync_errors">Errori di sincronizzazione</string>
+    <string name="clear_search_history">Pulisci cronologia delle ricerche</string>
+    <string name="exodus">Apri in Exodus</string>
+    <string name="trackers_control">Controllo dei tracciatori</string>
 </resources>
