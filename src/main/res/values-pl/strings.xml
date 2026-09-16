@@ -538,4 +538,24 @@
     <string name="clear_search_history">Wyczyść historię wyszukiwania</string>
     <string name="exodus">Otwórz w Exodus</string>
     <string name="trackers_control">Sterowanie modułami śledzącymi</string>
+    <string name="prefs_permission_weights">Wagi uprawnień</string>
+    <string name="source_unclear">Niejasna dostępność źródła</string>
+    <string name="anti_features_indicator_5">Nie wykryto żadnych niepożądanych funkcji</string>
+    <string name="anti_features_indicator_4">Wykryto 1 niepożądaną funkcję</string>
+    <string name="anti_features_indicator_3">Wykryto minimalnie 2 niepożądane funkcje</string>
+    <string name="anti_features_indicator_2">Minimalnie 4 niepożądane funkcji lub luki w zabezpieczeniach</string>
+    <string name="anti_features_indicator_1">Wiele poważnych niepożądanych funkcji</string>
+    <string name="permissions_unknown">Brak informacji o wymaganych uprawnieniach</string>
+    <string name="permissions_physical_1">Wymaga wielu niebezpiecznych uprawnień dotyczących danych fizycznych</string>
+    <string name="permissions_physical_2">Wymaga dużej liczby uprawnień do danych fizycznych</string>
+    <string name="permissions_physical_3">Nie wymaga wielu uprawnień dostępu do danych fizycznych</string>
+    <string name="permissions_physical_4">Minimalny zakres uprawnień do danych fizycznych</string>
+    <string name="permissions_physical_5">Nie wymaga uprawnień dostępu do danych fizycznych</string>
+    <string name="permissions_identification_1">Wymaga wielu niebezpiecznych uprawnień dotyczących danych identyfikacyjnych</string>
+    <string name="permissions_identification_2">Wymaga dużej liczby uprawnień dotyczących danych identyfikacyjnych</string>
+    <string name="permissions_identification_3">Nie wymaga wielu uprawnień dotyczących danych identyfikacyjnych</string>
+    <string name="permissions_identification_4">Minimalny zakres uprawnień dotyczących danych identyfikacyjnych</string>
+    <string name="permissions_identification_5">Nie wymaga uprawnień do danych identyfikacyjnych</string>
+    <string name="weights_default">Wagi domyślne</string>
+    <string name="weights_customized">Wagi niestandardowe</string>
 </resources>
