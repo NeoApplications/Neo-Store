@@ -432,8 +432,8 @@
     <string name="notify_channel_debug">Debug</string>
     <string name="repo_index_timestamp">Timestamp indice</string>
     <string name="rb_badge">Badge riproducibilità build</string>
-    <string name="rb_provider">Fornitore di log di build riproducibili</string>
-    <string name="rb_none">Nessun fornitore</string>
+    <string name="rb_provider">Provider di log di build riproducibili</string>
+    <string name="rb_none">Nessun provider</string>
     <string name="rb_izzyondroid">IzzyOnDroid</string>
     <string name="rb_bg443">bg443</string>
     <string name="rb_obfusk">Obfusk</string>
@@ -472,7 +472,7 @@
     <string name="download_stats_notification_pending">Preparazione al recupero delle statistiche di download</string>
     <string name="download_stats_notification_message">Recupero dati mensili in corso: %1$d/%2$d\n%3$d aggiornato, %4$d invariato, %5$d non riuscito</string>
     <string name="batch_sync_progress_FORMAT">Sincronizzazione repository: %1$d/%2$d</string>
-    <string name="dlstats_provider">Scarica provider di statistiche</string>
+    <string name="dlstats_provider">Provider statistiche download</string>
     <string name="dlstats_none">Nessun provider</string>
     <string name="dlstats_izzyondroid">IzzyOnDroid</string>
     <string name="duplicate_repo_address_title">Aggiunta di un repository non riuscita</string>
@@ -535,4 +535,24 @@
     <string name="clear_search_history">Pulisci cronologia delle ricerche</string>
     <string name="exodus">Apri in Exodus</string>
     <string name="trackers_control">Controllo dei tracciatori</string>
+    <string name="prefs_permission_weights">Pesi delle autorizzazioni</string>
+    <string name="source_unclear">Disponibilità del codice sorgente non chiara</string>
+    <string name="anti_features_indicator_5">Nessuna anti-caratteristica rilevata</string>
+    <string name="anti_features_indicator_4">1 anti-caratteristica rilevata</string>
+    <string name="anti_features_indicator_3">2+ anti-caratteristiche rilevate</string>
+    <string name="anti_features_indicator_2">4+ anti-caratteristiche o vulnerabilità</string>
+    <string name="anti_features_indicator_1">Multiple anti-caratteristiche gravi</string>
+    <string name="permissions_unknown">Autorizzazioni richieste sconosciute</string>
+    <string name="permissions_physical_1">Richiede molte autorizzazioni pericolose per i dati fisici</string>
+    <string name="permissions_physical_2">Richiede un buon numero di autorizzazioni per i dati fisici</string>
+    <string name="permissions_physical_3">Non richiede molte autorizzazioni per i dati fisici</string>
+    <string name="permissions_physical_4">Quantità minima di autorizzazioni per i dati fisici</string>
+    <string name="permissions_physical_5">Non richiede alcuna autorizzazione per i dati fisici</string>
+    <string name="permissions_identification_1">Richiede molte autorizzazioni pericolose per i dati identificativi</string>
+    <string name="permissions_identification_2">Richiede un buon numero di autorizzazioni per i dati identificativi</string>
+    <string name="permissions_identification_3">Non richiede molte autorizzazioni per i dati identificativi</string>
+    <string name="permissions_identification_4">Quantità minima di autorizzazioni per i dati identificativi</string>
+    <string name="permissions_identification_5">Non richiede alcuna autorizzazione per i dati identificativi</string>
+    <string name="weights_default">Pesi predefiniti</string>
+    <string name="weights_customized">Pesi personalizzati</string>
 </resources>
