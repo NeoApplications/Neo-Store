@@ -527,4 +527,24 @@
     <string name="clear_search_history">清除搜索历史</string>
     <string name="exodus">在 Exodus 中打开</string>
     <string name="trackers_control">跟踪器控制</string>
+    <string name="prefs_permission_weights">权限权重</string>
+    <string name="source_unclear">不确定源码是否可用</string>
+    <string name="anti_features_indicator_5">未检测到负面特性</string>
+    <string name="anti_features_indicator_4">检测到1个负面特性</string>
+    <string name="anti_features_indicator_3">检测到多于2个负面特性</string>
+    <string name="anti_features_indicator_2">多于4个负面特性或漏洞</string>
+    <string name="permissions_physical_5">不要求身体数据权限</string>
+    <string name="permissions_identification_1">要求很多危险的身份识别数据权限</string>
+    <string name="permissions_identification_2">要求大量身份识别数据权限</string>
+    <string name="permissions_identification_3">不要求很多身份识别数据权限</string>
+    <string name="permissions_identification_4">极少量的身份识别数据权限</string>
+    <string name="permissions_identification_5">不要求任何身份识别数据权限</string>
+    <string name="weights_default">默认权重</string>
+    <string name="weights_customized">自定义权重</string>
+    <string name="anti_features_indicator_1">多个严重的负面特性</string>
+    <string name="permissions_unknown">要求未知权限</string>
+    <string name="permissions_physical_1">要求很多危险的身体数据权限</string>
+    <string name="permissions_physical_2">要求大量身体数据权限</string>
+    <string name="permissions_physical_3">不要求很多身体数据权限</string>
+    <string name="permissions_physical_4">极少量的身体数据权限</string>
 </resources>
