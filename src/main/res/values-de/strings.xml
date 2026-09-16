@@ -532,4 +532,24 @@
     <string name="clear_search_history">Suchverlauf löschen</string>
     <string name="exodus">In Exodus öffnen</string>
     <string name="trackers_control">Tracker Kontrolle</string>
+    <string name="prefs_permission_weights">Berechtigungen zulassen</string>
+    <string name="source_unclear">Herkunftsquelle unklar</string>
+    <string name="anti_features_indicator_5">Keine Anti-Features entdeckt</string>
+    <string name="anti_features_indicator_4">1 Anti-Feature entdeckt</string>
+    <string name="anti_features_indicator_3">2+ Anti-Features entdeckt</string>
+    <string name="anti_features_indicator_2">4+ Anti-Features oder Schwachstellen</string>
+    <string name="anti_features_indicator_1">Mehrere schwere Anti-Features</string>
+    <string name="permissions_unknown">Benötigte Zugriffsrechte unbekannt</string>
+    <string name="permissions_physical_1">Erbittet einige gefährliche Zugriffsrechte auf physische Daten</string>
+    <string name="permissions_physical_2">Erbittet zahlreiche Zugriffsrechte auf physische Daten</string>
+    <string name="permissions_physical_3">Benötigt keine umfangreichen Zugriffsrechte auf physische Daten</string>
+    <string name="permissions_physical_4">Minimaler Zugriff auf physische Daten</string>
+    <string name="permissions_physical_5">Keinerlei Zugriff auf physische Daten</string>
+    <string name="permissions_identification_1">Erbittet einige gefährliche Zugriffsrechte auf Identifikationsdaten</string>
+    <string name="permissions_identification_2">Erbittet zahlreiche Zugriffsrechte auf Identifikationsdaten</string>
+    <string name="permissions_identification_3">Benötigt keine umfangreichen Zugriffsrechte auf Identifikationsdaten</string>
+    <string name="permissions_identification_4">Minimale Zugriffsrechte auf Identifikationsdaten</string>
+    <string name="permissions_identification_5">Keinerlei Zugriff auf Identifikationsdaten</string>
+    <string name="weights_default">Standard Gewichtung</string>
+    <string name="weights_customized">Benutzerdefinierte Gewichtung</string>
 </resources>
