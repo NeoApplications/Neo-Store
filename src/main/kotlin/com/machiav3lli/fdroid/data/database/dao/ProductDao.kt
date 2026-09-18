@@ -26,7 +26,6 @@ import com.machiav3lli.fdroid.ROW_MINSDK_VERSION
 import com.machiav3lli.fdroid.ROW_NAME
 import com.machiav3lli.fdroid.ROW_PACKAGE_NAME
 import com.machiav3lli.fdroid.ROW_REPOSITORY_ID
-import com.machiav3lli.fdroid.ROW_SELECTED
 import com.machiav3lli.fdroid.ROW_SIGNATURE
 import com.machiav3lli.fdroid.ROW_SIGNATURES
 import com.machiav3lli.fdroid.ROW_TARGETSDK_VERSION

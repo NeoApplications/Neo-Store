@@ -230,7 +230,8 @@ data class EmbeddedProduct(
         get() = displayRelease?.version.orEmpty()
 
     val versionCode: Long
-        get() = selectedReleases.firstOrNull()?.versionCode ?: 0L
+        get() = selectedReleases.firstOrNull { it.incompatibilities.isEmpty() }?.versionCode
+            ?: 0L
 
     val productSignatures: List<String>
         get() = selectedReleases
@@ -239,12 +240,12 @@ data class EmbeddedProduct(
             .distinct()
 
     val compatible: Boolean
-        get() = selectedReleases.firstOrNull()?.incompatibilities?.isEmpty() == true
+        get() = selectedReleases.any { it.incompatibilities.isEmpty() }
 
     fun canUpdate(installed: Installed?): Boolean = installed != null &&
             compatible &&
-            (selectedReleases.filter { it.signature in installed.signatures }
-                .any { it.versionCode > installed.versionCode } ||
+            (selectedReleases.filter { it.versionCode > installed.versionCode }
+                .any { it.signature in installed.signatures } ||
                     (versionCode > installed.versionCode && Preferences[Preferences.Key.DisableSignatureCheck]))
 
     fun refreshReleases(
@@ -283,7 +284,8 @@ data class EmbeddedProduct(
         return releaseIncompsPairs.map { (release, incompatibilities) ->
             release
                 .copy(
-                    incompatibilities = incompatibilities, selected = firstSelected
+                    incompatibilities = incompatibilities,
+                    selected = firstSelected
                         ?.let { it.first.versionCode == release.versionCode && it.second == incompatibilities } == true)
         }
     }

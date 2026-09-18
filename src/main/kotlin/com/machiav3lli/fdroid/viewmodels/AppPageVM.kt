@@ -50,6 +50,9 @@ import com.machiav3lli.fdroid.utils.generatePermissionGroups
 import com.machiav3lli.fdroid.utils.shareIntent
 import com.machiav3lli.fdroid.utils.startLauncherActivity
 import com.machiav3lli.fdroid.utils.toPrivacyNote
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.persistentSetOf
+import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -345,13 +348,10 @@ class AppPageVM(
         installedItem,
         downloadingState,
     ) { product, installed, downloadState ->
-        val compatible = product?.first?.selectedReleases?.firstOrNull()
-            ?.let { it.incompatibilities.isEmpty() } ?: false
-
         Pair(
             product != null &&
                     installed == null &&
-                    compatible &&
+                    product.first.compatible &&
                     downloadState?.isActive != true, product?.second?.name ?: ""
         )
     }.distinctUntilChanged()
@@ -362,15 +362,12 @@ class AppPageVM(
         downloadingState,
         extras,
     ) { product, installed, downloadState, extrasData ->
-        val compatible = product?.first?.selectedReleases?.firstOrNull()
-            ?.let { it.incompatibilities.isEmpty() } ?: false
-
         Pair(
             product != null &&
-                    compatible &&
                     product.first.canUpdate(installed) &&
                     !shouldIgnore(product.first.versionCode, extrasData) &&
-                    downloadState?.isActive != true, product?.second?.name ?: ""
+                    downloadState?.isActive != true,
+            product?.second?.name ?: ""
         )
     }.distinctUntilChanged()
 
@@ -458,15 +455,15 @@ class AppPageVM(
         ActionState.NoAction
     )
 
-    private val secondaryActions: StateFlow<Set<ActionState>> = combine(
+    private val secondaryActions: StateFlow<ImmutableSet<ActionState>> = combine(
         availableActions,
         primaryAction,
     ) { available, primary ->
-        available - primary
+        (available - primary).toPersistentSet()
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(STATEFLOW_SUBSCRIBE_BUFFER),
-        emptySet()
+        persistentSetOf()
     )
 
     val extraAppState: StateFlow<ExtraAppState> = combine(
@@ -690,6 +687,6 @@ data class ExtraAppState(
     val categoryDetails: List<String> = emptyList(),
     val downloadingState: DownloadState? = null,
     val mainAction: ActionState = ActionState.Bookmark,
-    val subActions: Set<ActionState> = emptySet(),
+    val subActions: ImmutableSet<ActionState> = persistentSetOf(),
     val extras: Extras? = null,
 )
