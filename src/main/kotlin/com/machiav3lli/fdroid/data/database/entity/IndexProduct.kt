@@ -122,7 +122,7 @@ open class IndexProduct(
         features: Set<String>,
         unstable: Boolean,
     ) {
-        val releasePairs = releases.distinctBy { it.identifier }
+        val releaseIncompsPairs = releases.distinctBy { it.identifier }
             .sortedByDescending { it.versionCode }
             .map { release ->
                 val incompatibilities = mutableListOf<Release.Incompatibility>()
@@ -140,23 +140,20 @@ open class IndexProduct(
                 incompatibilities += (release.features - features).sorted()
                     .map { Release.Incompatibility.Feature(it) }
                 Pair(release, incompatibilities as List<Release.Incompatibility>)
-            }.toMutableList()
+            }.toImmutableList()
 
-        val predicate: (Release) -> Boolean = {
-            unstable || (!it.releaseChannels.contains("Beta") && suggestedVersionCode <= 0) ||
-                    it.versionCode <= suggestedVersionCode
+        val selectablePredicate: (Release) -> Boolean = {
+            unstable || (!it.releaseChannels.contains("Beta") &&
+                    (suggestedVersionCode <= 0 || it.versionCode <= suggestedVersionCode))
         }
-        val firstCompatibleReleaseIndex =
-            releasePairs.indexOfFirst { it.second.isEmpty() && predicate(it.first) }
-        val firstReleaseIndex =
-            if (firstCompatibleReleaseIndex >= 0) firstCompatibleReleaseIndex else
-                releasePairs.indexOfFirst { predicate(it.first) }
-        val firstSelected = if (firstReleaseIndex >= 0) releasePairs[firstReleaseIndex] else null
+        val firstSelected =
+            releaseIncompsPairs.firstOrNull { it.second.isEmpty() && selectablePredicate(it.first) }
+                ?: releaseIncompsPairs.firstOrNull { selectablePredicate(it.first) }
 
         if (releases.any { it.hasVulnerability }
             && !antiFeatures.contains(AntiFeature.KNOWN_VULN.key))
             antiFeatures += AntiFeature.KNOWN_VULN.key
-        releases = releasePairs.map { (release, incompatibilities) ->
+        releases = releaseIncompsPairs.map { (release, incompatibilities) ->
             release.copy(
                 incompatibilities = incompatibilities,
                 selected = firstSelected

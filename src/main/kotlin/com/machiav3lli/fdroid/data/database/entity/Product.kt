@@ -251,7 +251,7 @@ data class EmbeddedProduct(
         features: Set<String>,
         unstable: Boolean,
     ): List<Release> {
-        val releasePairs = releases.distinctBy { it.identifier }
+        val releaseIncompsPairs = releases.distinctBy { it.identifier }
             .sortedByDescending { it.versionCode }
             .map { release ->
                 val incompatibilities = mutableListOf<Release.Incompatibility>()
@@ -271,19 +271,16 @@ data class EmbeddedProduct(
                 Pair(release, incompatibilities as List<Release.Incompatibility>)
             }.toImmutableList()
 
-        val predicate: (Release) -> Boolean = {
-            unstable || (!it.releaseChannels.contains("Beta") && product.suggestedVersionCode <= 0) ||
-                    it.versionCode <= product.suggestedVersionCode
+        val selectablePredicate: (Release) -> Boolean = {
+            unstable || (!it.releaseChannels.contains("Beta") &&
+                    (product.suggestedVersionCode <= 0 || it.versionCode <= product.suggestedVersionCode))
         }
-        val firstCompatibleReleaseIndex =
-            releasePairs.indexOfFirst { it.second.isEmpty() && predicate(it.first) }
-        val firstReleaseIndex =
-            if (firstCompatibleReleaseIndex >= 0) firstCompatibleReleaseIndex else
-                releasePairs.indexOfFirst { predicate(it.first) }
-        val firstSelected = if (firstReleaseIndex >= 0) releasePairs[firstReleaseIndex] else null
+        val firstSelected =
+            releaseIncompsPairs.firstOrNull { it.second.isEmpty() && selectablePredicate(it.first) }
+                ?: releaseIncompsPairs.firstOrNull { selectablePredicate(it.first) }
 
         // TODO update releases
-        return releasePairs.map { (release, incompatibilities) ->
+        return releaseIncompsPairs.map { (release, incompatibilities) ->
             release
                 .copy(
                     incompatibilities = incompatibilities, selected = firstSelected

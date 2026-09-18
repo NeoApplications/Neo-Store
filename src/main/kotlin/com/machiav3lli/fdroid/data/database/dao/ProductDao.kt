@@ -358,26 +358,19 @@ interface ProductDao : BaseDao<Product> {
                 """
             COALESCE($TABLE_EXTRAS.$ROW_IGNORE_UPDATES, 0) = 0
             AND EXISTS (
-                    SELECT 1 FROM $TABLE_RELEASE 
-                    WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
-                    AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = $TABLE_PRODUCT.$ROW_REPOSITORY_ID
-                    AND $TABLE_RELEASE.$ROW_SELECTED = 1
-                    AND $TABLE_RELEASE.$ROW_VERSION_CODE > COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff)
-                    AND $TABLE_RELEASE.$ROW_VERSION_CODE != COALESCE($TABLE_EXTRAS.$ROW_IGNORED_VERSION, -1)
-                    AND $TABLE_RELEASE.$ROW_IS_COMPATIBLE = 1
-                )
-            AND ($TABLE_INSTALLED.$ROW_SIGNATURES = ''
-                OR EXISTS (
-                    SELECT 1 FROM $TABLE_RELEASE 
-                    WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
-                    AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = $TABLE_PRODUCT.$ROW_REPOSITORY_ID
-                    AND $TABLE_RELEASE.$ROW_SELECTED = 1
-                    ${
-                    if (Preferences[Preferences.Key.DisableSignatureCheck]) "" else """
-                    AND $TABLE_INSTALLED.$ROW_SIGNATURES LIKE ('%' || $TABLE_RELEASE.$ROW_SIGNATURE || '%')
-                    AND $TABLE_RELEASE.$ROW_SIGNATURE != ''
-                    """
-                }))
+                SELECT 1 FROM $TABLE_RELEASE 
+                WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
+                AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = $TABLE_PRODUCT.$ROW_REPOSITORY_ID
+                AND $TABLE_RELEASE.$ROW_VERSION_CODE > COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff)
+                AND $TABLE_RELEASE.$ROW_VERSION_CODE != COALESCE($TABLE_EXTRAS.$ROW_IGNORED_VERSION, -1)
+                AND $TABLE_RELEASE.$ROW_IS_COMPATIBLE = 1
+                ${
+                if (Preferences[Preferences.Key.DisableSignatureCheck]) "" else """
+                AND ($TABLE_INSTALLED.$ROW_SIGNATURES = ''
+                    OR ($TABLE_INSTALLED.$ROW_SIGNATURES LIKE ('%' || $TABLE_RELEASE.$ROW_SIGNATURE || '%')
+                        AND $TABLE_RELEASE.$ROW_SIGNATURE != ''))
+                """
+            })
             """.trimIndent()
             )
         }
