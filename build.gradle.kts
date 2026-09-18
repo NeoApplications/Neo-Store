@@ -28,6 +28,7 @@ kotlin {
 android {
     namespace = "com.machiav3lli.fdroid"
     compileSdk = 37
+    compileSdkMinor = 1
 
     defaultConfig {
         applicationId = "com.machiav3lli.fdroid"
