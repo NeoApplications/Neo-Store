@@ -136,7 +136,25 @@ class AppPageVM(
         rbLogs,
     ) { suggestedProductRepo, repos, installed, logs ->
         val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
+        val disableSignatureCheck = Preferences[Preferences.Key.DisableSignatureCheck]
         val reposMap = repos.associateBy(Repository::id)
+        val suggestedMap: Map<Long, String?> = suggestedProductRepo?.first?.releases
+            ?.groupBy { it.repositoryId }
+            ?.mapNotNull { it ->
+                it.key to it.value.sortedByDescending { it.versionCode }.let {
+                    it.firstOrNull { release ->
+                        release.selected
+                                && release.incompatibilities.isEmpty()
+                                && release.versionCode >= (installed?.versionCode ?: 0)
+                                && (disableSignatureCheck || installed?.signatures?.contains(release.signature) ?: true)
+                    } ?: it.firstOrNull { release ->
+                        release.incompatibilities.isEmpty()
+                                && release.versionCode >= (installed?.versionCode ?: 0)
+                                && (disableSignatureCheck || installed?.signatures?.contains(release.signature) ?: true)
+                    }
+                }?.identifier
+            }?.toMap()
+            ?: emptyMap()
 
         suggestedProductRepo?.first?.releases.orEmpty()
             .filter { includeIncompatible || it.incompatibilities.isEmpty() }
@@ -149,10 +167,7 @@ class AppPageVM(
                         installed?.versionCode == release.versionCode && release.signature in installed.signatures
                              -> RELEASE_STATE_INSTALLED
 
-                        release.incompatibilities.isEmpty()
-                                && release.selected
-                                && release.versionCode >= (installed?.versionCode ?: 0)
-                                && (installed?.signatures?.contains(release.signature) ?: true || Preferences[Preferences.Key.DisableSignatureCheck])
+                        suggestedMap[release.repositoryId] == release.identifier
                              -> RELEASE_STATE_SUGGESTED
 
                         else -> RELEASE_STATE_NONE
