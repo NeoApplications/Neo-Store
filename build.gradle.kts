@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
-    //alias(libs.plugins.koin)
+    alias(libs.plugins.koin)
     alias(libs.plugins.shizuku.refine)
     alias(libs.plugins.stability.analyzer)
     alias(libs.plugins.gradle.toolchains) apply false
@@ -174,7 +174,6 @@ dependencies {
     implementation(libs.koin.compose)
     implementation(libs.koin.startup)
     implementation(libs.koin.annotations)
-    ksp(libs.koin.compiler)
 
     // JSON, Markdown, LibSu
     implementation(libs.libsu.core)
