@@ -216,6 +216,36 @@ interface ProductDao : BaseDao<Product> {
         $TABLE_INSTALLED.$ROW_SIGNATURES AS installed_signature
         """
 
+        val hasValidUpdate = { columnAlias: String ->
+            """
+            EXISTS (
+                SELECT 1 FROM $TABLE_RELEASE rel 
+                WHERE rel.$ROW_PACKAGE_NAME = $columnAlias.$ROW_PACKAGE_NAME 
+                AND rel.$ROW_REPOSITORY_ID = $columnAlias.$ROW_REPOSITORY_ID
+                AND rel.$ROW_VERSION_CODE > COALESCE(
+                    (SELECT i.$ROW_VERSION_CODE FROM $TABLE_INSTALLED i WHERE i.$ROW_PACKAGE_NAME = $columnAlias.$ROW_PACKAGE_NAME),
+                    0xffffffff
+                )
+                AND rel.$ROW_VERSION_CODE != COALESCE(
+                    (SELECT e.$ROW_IGNORED_VERSION FROM $TABLE_EXTRAS e WHERE e.$ROW_PACKAGE_NAME = $columnAlias.$ROW_PACKAGE_NAME),
+                    -1
+                )
+                AND rel.$ROW_IS_COMPATIBLE = 1
+                ${
+                if (Preferences[Preferences.Key.DisableSignatureCheck]) "" else """
+                AND (
+                    COALESCE((SELECT i.$ROW_SIGNATURES FROM $TABLE_INSTALLED i WHERE i.$ROW_PACKAGE_NAME = $columnAlias.$ROW_PACKAGE_NAME), '') = ''
+                    OR (
+                        (SELECT i.$ROW_SIGNATURES FROM $TABLE_INSTALLED i WHERE i.$ROW_PACKAGE_NAME = $columnAlias.$ROW_PACKAGE_NAME) LIKE ('%' || rel.$ROW_SIGNATURE || '%')
+                        AND rel.$ROW_SIGNATURE != ''
+                    )
+                )
+                """
+            }
+            )
+            """.trimIndent()
+        }
+
         // From & Joining
         builder += """
         FROM $TABLE_PRODUCT
@@ -226,7 +256,12 @@ interface ProductDao : BaseDao<Product> {
             if (Android.sdk(Build.VERSION_CODES.R)) """
                    ROW_NUMBER() OVER (
                        PARTITION BY p2.$ROW_PACKAGE_NAME 
-                       ORDER BY COALESCE(
+                       ORDER BY ${
+                if (updates) """
+                       CASE WHEN ${hasValidUpdate("p2")} THEN 1 ELSE 0 END DESC,
+                       """ else ""
+            }
+                       COALESCE(
                            (SELECT MAX(rel.$ROW_VERSION_CODE) 
                             FROM $TABLE_RELEASE rel 
                             WHERE rel.$ROW_PACKAGE_NAME = p2.$ROW_PACKAGE_NAME 
@@ -247,7 +282,13 @@ interface ProductDao : BaseDao<Product> {
                     )
                 })" else ""
             }
-                    AND COALESCE(
+                    AND (${
+                if (updates) """
+                        ${hasValidUpdate("p3")} > ${hasValidUpdate("p2")}
+                        OR (${hasValidUpdate("p3")} = ${hasValidUpdate("p2")} AND
+                        """ else ""
+            }
+                    COALESCE(
                         (SELECT MAX(rel.$ROW_VERSION_CODE) 
                          FROM $TABLE_RELEASE rel 
                          WHERE rel.$ROW_PACKAGE_NAME = p3.$ROW_PACKAGE_NAME 
@@ -259,6 +300,8 @@ interface ProductDao : BaseDao<Product> {
                          WHERE rel.$ROW_PACKAGE_NAME = p2.$ROW_PACKAGE_NAME 
                          AND rel.$ROW_REPOSITORY_ID = p2.$ROW_REPOSITORY_ID), 
                         0
+                    )
+                    ${if (updates) ")" else ""}
                     )
                    ) + 1 as rn
                    """
@@ -364,12 +407,12 @@ interface ProductDao : BaseDao<Product> {
                 AND $TABLE_RELEASE.$ROW_VERSION_CODE != COALESCE($TABLE_EXTRAS.$ROW_IGNORED_VERSION, -1)
                 AND $TABLE_RELEASE.$ROW_IS_COMPATIBLE = 1
                 ${
-                if (Preferences[Preferences.Key.DisableSignatureCheck]) "" else """
+                    if (Preferences[Preferences.Key.DisableSignatureCheck]) "" else """
                 AND ($TABLE_INSTALLED.$ROW_SIGNATURES = ''
                     OR ($TABLE_INSTALLED.$ROW_SIGNATURES LIKE ('%' || $TABLE_RELEASE.$ROW_SIGNATURE || '%')
                         AND $TABLE_RELEASE.$ROW_SIGNATURE != ''))
                 """
-            })
+                })
             """.trimIndent()
             )
         }
@@ -451,7 +494,7 @@ interface ProductDao : BaseDao<Product> {
                 GROUP BY $TABLE_PRODUCT.$ROW_PACKAGE_NAME
                 ORDER BY $TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ASC
             """.trimIndent(),
-                arrayOf(repoId,repoId)
+                arrayOf(repoId, repoId)
                 //arrayOf(repoId)
             )
         )
