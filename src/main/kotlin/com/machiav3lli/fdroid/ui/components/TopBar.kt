@@ -17,6 +17,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ListItem
@@ -210,6 +211,12 @@ fun WideSearchField(
         if (inFocusOnLaunch && !focusRequested) {
             focusRequester.requestFocus()
             focusRequested = true
+        }
+    }
+
+    LaunchedEffect(query) {
+        if (textFieldState.text.toString() != query) {
+            textFieldState.setTextAndPlaceCursorAtEnd(query)
         }
     }
 

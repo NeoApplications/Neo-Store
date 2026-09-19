@@ -44,7 +44,7 @@ class SearchVM(
         )
 
     private val productsSource = combine(
-        _searchInput.debounce { 400 },
+        _searchInput.debounce { 300 },
         installed,
         extrasRepo.getAll().distinctUntilChanged(),
     ) { input, _, _ ->
@@ -61,7 +61,7 @@ class SearchVM(
         .distinctUntilChanged()
 
     val pageState: StateFlow<SearchPageState> = combine(
-        _searchInput.debounce { 400 },
+        _searchInput.debounce { 300 },
         installed,
         productsSource,
     ) { input, installedMap, products ->
