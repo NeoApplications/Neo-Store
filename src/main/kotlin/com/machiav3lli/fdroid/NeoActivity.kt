@@ -41,6 +41,7 @@ import com.machiav3lli.fdroid.ui.navigation.navigateUnique
 import com.machiav3lli.fdroid.utils.InstallUtils
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.extension.text.pathCropped
+import com.machiav3lli.fdroid.utils.hasPendingPermissions
 import com.machiav3lli.fdroid.utils.isBiometricLockEnabled
 import com.machiav3lli.fdroid.utils.isDarkTheme
 import com.machiav3lli.fdroid.viewmodels.AppPageVM
@@ -52,6 +53,8 @@ import com.machiav3lli.fdroid.viewmodels.PrefsVM
 import com.machiav3lli.fdroid.viewmodels.RepoPageVM
 import com.machiav3lli.fdroid.viewmodels.SearchVM
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -59,6 +62,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import kotlin.properties.Delegates
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 class NeoActivity : AppCompatActivity() {
@@ -77,9 +81,7 @@ class NeoActivity : AppCompatActivity() {
         class AddRepo(val address: String?, val fingerprint: String?) : SpecialIntent()
     }
 
-    private val navStack: NavBackStack<NavRoute> by lazy {
-        NavBackStack(NavRoute.Onboarding)
-    }
+    private lateinit var navStack: NavBackStack<NavRoute>
 
     private var currentTheme by Delegates.notNull<Int>()
     private val mainViewModel: MainVM by viewModel()
@@ -94,6 +96,8 @@ class NeoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            var startRoute by remember { mutableStateOf<NavRoute?>(null) }
+
             DisposableEffect(Preferences[Preferences.Key.AppTheme]) {
                 enableEdgeToEdge(
                     statusBarStyle = SystemBarStyle.auto(
@@ -106,6 +110,17 @@ class NeoActivity : AppCompatActivity() {
                     ) { isDarkTheme },
                 )
                 onDispose {}
+            }
+
+            LaunchedEffect(Unit) {
+                val route = async(Dispatchers.IO) {
+                    if (Preferences[Preferences.Key.OnboardedPage] > 2 && !hasPendingPermissions())
+                        NavRoute.Main()
+                    else NavRoute.Onboarding
+                }
+                delay(300.milliseconds)
+                navStack = NavBackStack(route.await())
+                startRoute = route.await()
             }
 
             AppTheme(

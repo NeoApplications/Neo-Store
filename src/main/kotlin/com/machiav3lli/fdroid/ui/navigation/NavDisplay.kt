@@ -51,10 +51,9 @@ fun AppNavDisplay(
                     slideOutHorizontally(tween(600)) { it }
         },
         entryProvider = entryProvider {
-            // TODO add conditional to avoid PermissionsPage when not needed
             fadeInEntry<NavRoute.Onboarding> {
                 OnboardingPage {
-                    backStack.navigateUnique(NavRoute.Main())
+                    if (backStack.none { it is NavRoute.Main }) backStack.add(NavRoute.Main())
                     backStack.remove(NavRoute.Onboarding)
                 }
             }
