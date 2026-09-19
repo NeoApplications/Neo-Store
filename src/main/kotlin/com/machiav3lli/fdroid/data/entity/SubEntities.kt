@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.data.entity
 
+import Sword
 import android.content.Context
 import android.content.pm.PermissionGroupInfo
 import android.content.pm.PermissionInfo
@@ -17,20 +18,27 @@ import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.icon.IcDonateLiberapay
 import com.machiav3lli.fdroid.ui.compose.icons.icon.IcDonateLitecoin
 import com.machiav3lli.fdroid.ui.compose.icons.icon.IcDonateOpencollective
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.AddressBook
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ApplePodcastsLogo
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowSquareOut
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Asterisk
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Barbell
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.BatteryCharging
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Bell
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.BookBookmark
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Books
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Brain
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Broadcast
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Browser
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Calendar
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Camera
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Cardholder
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ChartLine
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Chat
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Chats
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CheckCircle
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CheckSquare
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Checkerboard
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ChefHat
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesFour
@@ -38,14 +46,20 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesThreePlus
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Clock
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CloudArrowDown
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CloudSun
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Club
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Code
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Command
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Compass
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CrosshairSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CurrencyBTC
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CurrencyDollarSimple
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.DiceThree
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Download
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Envelope
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Flask
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.FolderNotch
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GameController
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GearSix
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Ghost
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Globe
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.GlobeSimple
@@ -58,8 +72,10 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Images
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Key
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Keyboard
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Leaf
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Lightbulb
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MapPin
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.MathOperations
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Megaphone
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Metronome
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Microphone
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Newspaper
@@ -71,6 +87,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.PenNib
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Phone
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Pizza
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.PlayCircle
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.PuzzlePiece
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Robot
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.RssSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Scales
@@ -78,11 +95,15 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ScribbleLoop
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShareNetwork
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldCheck
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldStar
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShieldWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ShoppingCart
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SlidersHorizontal
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.SoccerBall
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Storefront
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Strategy
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Swatches
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TelevisionSimple
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Textbox
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TrainSimple
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Translate
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.TrashSimple
@@ -530,14 +551,28 @@ class PermissionsType(
 val String.appCategoryIcon: ImageVector
     get() = when (this.lowercase()) {
         FILTER_CATEGORY_ALL.lowercase() -> Phosphor.CirclesFour
+        "action game"                   -> Phosphor.Sword
+        "alarm clock"                   -> Phosphor.Clock
+        "ambient sound"                 -> Phosphor.Broadcast
         "app store & updater"           -> Phosphor.Storefront
+        "app manager"                   -> Phosphor.GearSix
         "audio"                         -> Phosphor.Microphone
         "audiovideo"                    -> Phosphor.PlayCircle
+        "audiobook"                     -> Phosphor.BookBookmark
         "automation"                    -> Phosphor.Robot
         "ai chat"                       -> Phosphor.Robot
+        "battery"                       -> Phosphor.BatteryCharging
+        "board game"                    -> Phosphor.Checkerboard
         "bookmark"                      -> Phosphor.BookBookmark
         "browser"                       -> Phosphor.Browser
+        "camera"                        -> Phosphor.Camera
+        "card game"                     -> Phosphor.Club
+        "cast"                          -> Phosphor.Broadcast
+        "casual game"                   -> Phosphor.GameController
+        "clock"                         -> Phosphor.Clock
+        "code & forge"                  -> Phosphor.Code
         "connectivity"                  -> Phosphor.WifiHigh
+        "contact"                       -> Phosphor.AddressBook
         "communication"                 -> Phosphor.Chat
         "calculator"                    -> Phosphor.MathOperations
         "calendar"                      -> Phosphor.Calendar
@@ -545,78 +580,119 @@ val String.appCategoryIcon: ImageVector
         "cloud storage & file sync"     -> Phosphor.CloudArrowDown // fix
         "default"                       -> Phosphor.Asterisk
         "development"                   -> Phosphor.Code
+        "dice"                          -> Phosphor.DiceThree
+        "diet"                          -> Phosphor.Leaf
         "dns & hosts"                   -> Phosphor.ShieldCheck
         "draw"                          -> Phosphor.ScribbleLoop
+        "download"                      -> Phosphor.Download
         "education"                     -> Phosphor.Brain
+        "educational game"              -> Phosphor.Brain
         "ebook reader"                  -> Phosphor.BookBookmark
         "email"                         -> Phosphor.Envelope
+        "emergency action"              -> Phosphor.ShieldWarning
+        "emulator"                      -> Phosphor.GameController
         "fdroid"                        -> Phosphor.Asterisk
         "fedilab"                       -> Phosphor.Graph
         "feed"                          -> Phosphor.RssSimple
         "file encryption & vault"       -> Phosphor.Key
+        "file manager"                  -> Phosphor.FolderNotch
         "file transfer"                 -> Phosphor.ShareNetwork
         "finance manager"               -> Phosphor.CurrencyDollarSimple
+        "firewall"                      -> Phosphor.ShieldCheck
+        "flashlight"                    -> Phosphor.Lightbulb
         "food"                          -> Phosphor.Pizza
         "forum"                         -> Phosphor.Chats
         "game"                          -> Phosphor.GameController
+        "game helper"                   -> Phosphor.Wrench
         "gallery"                       -> Phosphor.Images
         "games"                         -> Phosphor.GameController
         "graphics"                      -> Phosphor.PaintBrush
         "guardian project"              -> Phosphor.ShieldStar
         "habit tracker"                 -> Phosphor.CheckCircle
+        "health manager"                -> Phosphor.HeartStraight
         "icon pack"                     -> Phosphor.CirclesThreePlus
         "internet"                      -> Phosphor.Globe
+        "inventory"                     -> Phosphor.Storefront
         "kde"                           -> Phosphor.Code
         "keyboard & ime"                -> Phosphor.Keyboard
         "kidsgame"                      -> Phosphor.GameController
         "launcher"                      -> Phosphor.House
         "local media player"            -> Phosphor.PlayCircle
         "location tracker & sharer"     -> Phosphor.MapPin
+        "lyrics"                        -> Phosphor.NotePencil
+        "market & price"                -> Phosphor.CurrencyDollarSimple
         "math"                          -> Phosphor.MathOperations
+        "medication"                    -> Phosphor.Flask
+        "meditation"                    -> Phosphor.Leaf
+        "mental health"                 -> Phosphor.Brain
         "messaging"                     -> Phosphor.Chat
         "money"                         -> Phosphor.CurrencyDollarSimple
         "multimedia"                    -> Phosphor.PlayCircle
         "music practice tool"           -> Phosphor.Metronome
         "navigation"                    -> Phosphor.Compass
         "network"                       -> Phosphor.GlobeSimple
+        "network analyzer"              -> Phosphor.ChartLine
         "news"                          -> Phosphor.Newspaper
         "note"                          -> Phosphor.NotePencil
+        "notification"                  -> Phosphor.Bell
+        "ocr"                           -> Phosphor.Textbox
         "office"                        -> Phosphor.Books
         "offline"                       -> Phosphor.Leaf
         "online media player"           -> Phosphor.PlayCircle
         "osmand"                        -> Phosphor.Compass
+        "party game"                    -> Phosphor.GameController
         "pass wallet"                   -> Phosphor.Cardholder
         "password & 2fa"                -> Phosphor.Password
+        "platformer game"               -> Phosphor.GameController
         "phone & sms"                   -> Phosphor.Phone
         "podcast"                       -> Phosphor.ApplePodcastsLogo
         "productivity"                  -> Phosphor.Compass
         "public transport"              -> Phosphor.TrainSimple
+        "push"                          -> Phosphor.Bell
+        "puzzle game"                   -> Phosphor.PuzzlePiece
         "qt"                            -> Phosphor.Books
+        "radio"                         -> Phosphor.Broadcast
         "reading"                       -> Phosphor.BookBookmark
         "recipe manager"                -> Phosphor.ChefHat
         "recorder"                      -> Phosphor.Microphone
         "religion"                      -> Phosphor.Command
+        "remote access"                 -> Phosphor.Globe
+        "remote controller"             -> Phosphor.Broadcast
+        "role-playing game"             -> Phosphor.Sword
+        "schedule"                      -> Phosphor.Calendar
         "science"                       -> Phosphor.Brain
         "science & education"           -> Phosphor.Brain
         "security"                      -> Phosphor.ShieldStar
+        "shooter game"                  -> Phosphor.CrosshairSimple
         "shopping list"                 -> Phosphor.ShoppingCart
         "social network"                -> Phosphor.Graph
+        "speech recognizer"             -> Phosphor.Microphone
+        "sport game"                    -> Phosphor.SoccerBall
         "sports & health"               -> Phosphor.Barbell
+        "stopwatch"                     -> Phosphor.Clock
+        "strategy game"                 -> Phosphor.Strategy
         "system"                        -> Phosphor.Nut
         "task"                          -> Phosphor.CheckSquare
         "text editor"                   -> Phosphor.NotePencil
+        "text encryption"               -> Phosphor.Textbox
+        "text to speech"                -> Phosphor.Megaphone
         "theming"                       -> Phosphor.Swatches
         "time"                          -> Phosphor.Clock
+        "time tracker"                  -> Phosphor.Clock
+        "timer"                         -> Phosphor.Clock
         "translation & dictionary"      -> Phosphor.Translate
         "tv"                            -> Phosphor.TelevisionSimple
         "unit convertor"                -> Phosphor.Scales
         "utility"                       -> Phosphor.Wrench
         "video"                         -> Phosphor.PlayCircle
+        "visual novel"                  -> Phosphor.PlayCircle
         "voice & video chat"            -> Phosphor.VideoConference
+        "volume"                        -> Phosphor.Microphone
         "vpn & proxy"                   -> Phosphor.Ghost
         "wallet"                        -> Phosphor.Wallet
         "wallpaper"                     -> Phosphor.Image
         "weather"                       -> Phosphor.CloudSun
+        "word game"                     -> Phosphor.Checkerboard
         "workout"                       -> Phosphor.Barbell
         "writing"                       -> Phosphor.PenNib
         "xposed"                        -> Phosphor.ShieldStar
