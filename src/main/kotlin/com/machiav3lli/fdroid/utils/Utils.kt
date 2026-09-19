@@ -17,6 +17,7 @@ import android.content.pm.Signature
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
+import android.os.PowerManager
 import android.provider.Settings
 import android.text.format.DateUtils
 import android.widget.Toast
@@ -578,6 +579,27 @@ fun isDifferenceMoreThanOneYear(time1: Long, time2: Long): Boolean {
 
 val Context.isRunningOnTV: Boolean
     get() = packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+
+fun Context.hasPendingPermissions(): Boolean =
+    needsBatteryOptimizationWhitelist() ||
+            needsNotificationPermission() ||
+            needsInstallPackagesPermission()
+
+fun Context.needsBatteryOptimizationWhitelist(): Boolean =
+    !isRunningOnTV &&
+            !Preferences[Preferences.Key.IgnoreDisableBatteryOptimization] &&
+            !(getSystemService(Context.POWER_SERVICE) as PowerManager)
+                .isIgnoringBatteryOptimizations(packageName)
+
+fun Context.needsNotificationPermission(): Boolean =
+    Android.sdk(Build.VERSION_CODES.TIRAMISU) &&
+            !Preferences[Preferences.Key.IgnoreShowNotifications] &&
+            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+
+fun Context.needsInstallPackagesPermission(): Boolean =
+    Android.sdk(Build.VERSION_CODES.O) &&
+            !packageManager.canRequestPackageInstalls() &&
+            checkSelfPermission(Manifest.permission.INSTALL_PACKAGES) == PackageManager.PERMISSION_DENIED
 
 val currentTimestamp: String
     get() {

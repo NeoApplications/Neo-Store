@@ -3,14 +3,10 @@ package com.machiav3lli.fdroid.ui.pages
 import android.Manifest
 import android.app.Activity
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
-import android.os.PowerManager
 import android.provider.Settings
 import android.widget.Toast
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -40,9 +36,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.entity.ColoringState
@@ -55,14 +49,14 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowCircleRight
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.KeyDialogUI
 import com.machiav3lli.fdroid.utils.extension.android.Android
-import com.machiav3lli.fdroid.utils.isRunningOnTV
+import com.machiav3lli.fdroid.utils.needsBatteryOptimizationWhitelist
+import com.machiav3lli.fdroid.utils.needsInstallPackagesPermission
+import com.machiav3lli.fdroid.utils.needsNotificationPermission
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun OnboardingPermsPage(onComplete: () -> Unit) {
     val context = LocalContext.current
-    val activity = LocalActivity.current as NeoActivity
-    val powerManager = activity.getSystemService(Context.POWER_SERVICE) as PowerManager
     val openDialog = remember { mutableStateOf(false) }
     val dialogKey: MutableState<DialogKey> = remember {
         mutableStateOf(DialogKey.None)
@@ -78,28 +72,26 @@ fun OnboardingPermsPage(onComplete: () -> Unit) {
 
     fun SnapshotStateMap<Permission, () -> Unit>.refresh() {
         apply {
-            if (!powerManager.isIgnoringBatteryOptimizations(context.packageName)
-                && !Preferences[Preferences.Key.IgnoreDisableBatteryOptimization]
-                && !context.isRunningOnTV
-            ) this.putIfAbsent(Permission.BatteryOptimization) {
-                dialogKey.value = DialogKey.PermissionBatteryOptimization
-                openDialog.value = true
+            if (context.needsBatteryOptimizationWhitelist()) {
+                this.putIfAbsent(Permission.BatteryOptimization) {
+                    dialogKey.value = DialogKey.PermissionBatteryOptimization
+                    openDialog.value = true
+                }
             } else remove(Permission.BatteryOptimization)
-            if (permissionStatePostNotifications?.status?.isGranted == false
-                && !Preferences[Preferences.Key.IgnoreShowNotifications]
-            ) putIfAbsent(Permission.PostNotifications) {
-                permissionStatePostNotifications.launchPermissionRequest()
+            if (context.needsNotificationPermission()) {
+                putIfAbsent(Permission.PostNotifications) {
+                    permissionStatePostNotifications?.launchPermissionRequest()
+                }
             } else remove(Permission.PostNotifications)
-            if (Android.sdk(Build.VERSION_CODES.O) && !context.packageManager.canRequestPackageInstalls()
-                && context.checkSelfPermission(Manifest.permission.INSTALL_PACKAGES) == PackageManager.PERMISSION_DENIED
-            ) putIfAbsent(Permission.InstallPackages) {
-                val intent = Intent(
-                    Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                    "package:${context.packageName}".toUri()
-                )
-                startActivityForResult(context as Activity, intent, 71662, null)
-            }
-            else remove(Permission.InstallPackages)
+            if (context.needsInstallPackagesPermission()) {
+                putIfAbsent(Permission.InstallPackages) {
+                    val intent = Intent(
+                        Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                        "package:${context.packageName}".toUri()
+                    )
+                    startActivityForResult(context as Activity, intent, 71662, null)
+                }
+            } else remove(Permission.InstallPackages)
         }
 
         if (permissionsList.isEmpty()) onComplete()
