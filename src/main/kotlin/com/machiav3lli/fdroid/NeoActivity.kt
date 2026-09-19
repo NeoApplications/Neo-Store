@@ -14,11 +14,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -32,6 +37,7 @@ import com.machiav3lli.fdroid.data.repository.InstallsRepository
 import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
+import com.machiav3lli.fdroid.ui.pages.SplashPage
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.AppNavDisplay
 import com.machiav3lli.fdroid.ui.navigation.NavItem
@@ -126,24 +132,39 @@ class NeoActivity : AppCompatActivity() {
             AppTheme(
                 darkTheme = isDarkTheme,
             ) {
-                BackHandler(navStack.size == 1) {
-                    moveTaskToBack(true)
-                }
-
-                Scaffold(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                    contentColor = MaterialTheme.colorScheme.onBackground,
-                ) {
-                    LaunchedEffect(key1 = navStack) {
-                        if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
-                            handleIntent(intent)
+                val route = startRoute
+                when (route) {
+                    null -> {
+                        Scaffold(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                            contentColor = MaterialTheme.colorScheme.onBackground,
+                        ) { paddingValues ->
+                            SplashPage(
+                                modifier = Modifier.padding(paddingValues),
+                            )
                         }
                     }
+                    else -> {
+                        BackHandler(navStack.size == 1) {
+                            moveTaskToBack(true)
+                        }
 
-                    AppNavDisplay(
-                        backStack = navStack,
-                        modifier = Modifier.imePadding(),
-                    )
+                        Scaffold(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                            contentColor = MaterialTheme.colorScheme.onBackground,
+                        ) {
+                            LaunchedEffect(key1 = navStack) {
+                                if (savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
+                                    handleIntent(intent)
+                                }
+                            }
+
+                            AppNavDisplay(
+                                backStack = navStack,
+                                modifier = Modifier.imePadding(),
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -162,7 +183,7 @@ class NeoActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        handleIntent(intent)
+        if (::navStack.isInitialized) handleIntent(intent)
     }
 
     private val Intent.packageNameFromURI: String?
