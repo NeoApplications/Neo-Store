@@ -72,7 +72,7 @@ You can join either our [Telegram](https://t.me/neo_android_store) or [Matrix](h
 
 Contribute your translations to Neo Store on [Hosted Weblate](https://hosted.weblate.org/engage/neo-store/). <br> Adding new languages is always accepted and supported.
 
-[![Translation stats](https://hosted.weblate.org/widgets/neo-store/-/multi-auto.svg)](https://hosted.weblate.org/engage/neo-store/?utm_source=widget)
+[![Translation stats](https://hosted.weblate.org/widget/neo-store/matrix-auto.svg)](https://hosted.weblate.org/engage/neo-store/)
 
 ## Special Thanks :heart:
 
