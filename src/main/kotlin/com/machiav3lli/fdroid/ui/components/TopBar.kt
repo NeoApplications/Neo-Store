@@ -3,6 +3,7 @@ package com.machiav3lli.fdroid.ui.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -279,6 +280,7 @@ fun SuggestionsPopup(
         shape = MaterialTheme.shapes.large,
         shadowElevation = 4.dp,
         color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(color = MaterialTheme.colorScheme.outline, width = 0.5.dp)
     ) {
         Column(modifier = Modifier.padding(vertical = 4.dp)) {
             suggestions.forEach { suggestion ->
