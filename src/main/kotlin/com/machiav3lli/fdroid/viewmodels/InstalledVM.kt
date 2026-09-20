@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -49,14 +50,15 @@ class InstalledVM(
             initialValue = emptyMap()
         )
 
-    val installedProducts = combine(
-        productsRepo.getProducts(Request.Installed),
+    private val installedProducts = combine(
         installed,
         sortFilter,
         extrasRepo.getAll(),
-    ) { prods, installed, _, _ ->
-        prods.map { it.toItem(installed[it.product.packageName]) }
+    ) { _, _, _ ->
+        productsRepo.getProducts(Request.Installed)
     }
+        .flatMapLatest { it }
+        .distinctUntilChanged()
 
     private val sortedDownloads = downloadedRepo.getAllFlow()
         .map { it.sortedByDescending { it.changed / 10_000L } }
@@ -69,7 +71,9 @@ class InstalledVM(
     ) { installed, products, sortFilter ->
         InstalledPageState(
             installedMap = installed,
-            installedProducts = products,
+            installedProducts = products.map {
+                it.toItem(installed[it.product.packageName])
+            },
             sortFilter = sortFilter
         )
     }.stateIn(
