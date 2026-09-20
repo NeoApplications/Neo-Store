@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LatestVM(
@@ -70,7 +71,7 @@ class LatestVM(
         initialValue = LatestPageState()
     )
 
-    fun setSortFilter(value: String) = sortFilter.tryEmit(value)
+    fun setSortFilter(value: String) = sortFilter.update { value }
 
     companion object {
         private const val TAG = "LatestVM"

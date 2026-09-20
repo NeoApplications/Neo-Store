@@ -339,7 +339,7 @@ fun PackageManager.getLaunchActivities(packageName: String): List<Pair<String, S
             }
             label?.let { labelName ->
                 Pair(
-                    activityInfo.name,
+                    activityInfo.targetActivity,
                     labelName
                 )
             }
@@ -358,11 +358,11 @@ fun Context.onLaunchClick(installed: Installed, fragmentManager: FragmentManager
 
 fun Context.startLauncherActivity(packageName: String, name: String) {
     try {
-        startActivity(
-            Intent(Intent.ACTION_MAIN)
-                .addCategory(Intent.CATEGORY_LAUNCHER)
-                .setComponent(ComponentName(packageName, name))
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(Intent(Intent.ACTION_MAIN)
+            .addCategory(Intent.CATEGORY_LAUNCHER)
+            .setPackage(packageName)
+            .setClassName(packageName, name)
+            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         )
     } catch (e: Exception) {
         e.printStackTrace()
