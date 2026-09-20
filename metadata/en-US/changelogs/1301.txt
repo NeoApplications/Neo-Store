@@ -1,0 +1,11 @@
+Add: New comprehensive theme preference
+Add: Search history suggestions
+Add: App blocklist to prefs
+Fix: Support for non-Shizuku apps that are using its backend
+Fix: Filters not applying in certain combinations
+Update: Revamp privacy indicators design
+Update: Revamp design to Expressive
+Remove: Exodus report service (API access revoked)
+Remove: Index-v0 support
+Remove: Support for Android 7 & 7.1 (SDK 24 & 25)
+and more in over 80 commits & 70 translation contributions

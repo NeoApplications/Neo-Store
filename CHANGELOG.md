@@ -1,6 +1,53 @@
 CHANGELOG
 =========
 
+1.3.0 (20.09.2026) +80 Commits +70 Translations
+------------------
+
+### Function
+
+- Add: App blocklist to prefs
+- Add: Support for fdroid.link repo-adding
+- Add: Complement permission groups with missing ones
+- Fix: Support for non-Shizuku apps that are using its backend
+- Fix: Not showing uninstall dialog again after dismiss
+- Fix: Showing vulnerability warning only when relevant
+- Fix: Parsing non-standard English (e.g. en-SHAW) localized items
+- Fix: Detecting correct updated release for multi-repo apps
+- Fix: Improve detection of suggested releases
+- Fix: Not detecting updates that aren't latest versions
+- Fix: Applying sort-filter in installed page
+- Update: New IodéOS repository address
+- Update: Revamp handling permissions in on-boarding dialogs
+- Update: Disable default F-droid mirror-rotation (pretty unreliable)
+- Remove: Exodus report service (API access revoked)
+- Remove: Index-v0 support
+- Remove: Support for Android 7 & 7.1 (SDK 24 & 25)
+- compileSDK 37.1
+
+### UI/UX
+
+- Add: Splash screen on long waits
+- Add: Min/max filtering for minSDK & targetSDK
+- Add: New comprehensive theme preference
+- Add: Android 17 to sdk-filters
+- Add: Has-vulnerability badge to release items
+- Add: Last sync error messages to sync button tooltip
+- Add: Search history suggestions
+- Add: Animated button shapes (Material Design Expressive)
+- Add: Icons for new categories
+- Fix: Filters not applying in certain combinations
+- Fix: Cleaning up search query on pressing back
+- Fix: Clean navigation stack on search/open intents
+- Fix: Search bar not showing query on search intents
+- Update: Revamp privacy indicators design
+- Update: Replace trackers block with control actions (including Exodus report shortcut)
+- Update: App expandable description UI of AppPage
+- Update: Don't auto-focus on repos search bar
+- Update: Replace NS' Github links with Codeberg
+- Update: Revamp button and card layouts
+- Update: Disable new apps carousel (crashes on Compose Material 1.5)
+
 1.2.6 (26.04.2026) +10 Commits +30 Translations
 ------------------
 
