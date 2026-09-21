@@ -1,0 +1,11 @@
+Paljude võimalustega F-Droidi klient:
+
+* Kasutajaliides mille keskmes on erinevate kasutajate võimaluste pakkumine
+* Ei mingeid kaarte ega sobimatuid animatsioone
+* Tarkvarahoidla kiire sünkroniseerimine
+* Kasutab standardseid Androidi komponente ja minimaalsete sõltuvustega
+
+Varasema Foxy-Droid'i otsene edasiarendus
+
+Copyleft-põhimõttel avaldatud vaba tarkvara, litsentseeritud GPLv3+ alusel. \
+Kasuta, uuri, muuda ja jaga - kõigiga.
