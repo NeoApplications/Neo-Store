@@ -1,0 +1,11 @@
+Dodano: Nowe, kompleksowe ustawienia motywu
+Dodano: Sugestie na podstawie historii wyszukiwania
+Dodano: Listę zablokowanych aplikacji w ustawieniach
+Poprawiono: Obsługę aplikacji innych niż Shizuku, które korzystają z jego zaplecza
+Poprawiono: Filtry nie działały w niektórych kombinacjach
+Zaktualizowano: Przerobiono wygląd wskaźników prywatności
+Zaktualizowano: Przerobiono wygląd na styl „Expressive”
+Usunięto: Usługę raportowania Exodus (cofnięto dostęp do API)
+Usunięto: Obsługę Index-v0
+Usunięto: Obsługę systemów Android 7 i 7.1 (SDK 24 i 25)
+oraz wiele innych zmian w ponad 80 poprawkach i 70 aktualizacjach tłumaczeń
