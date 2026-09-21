@@ -1,0 +1,11 @@
+Aggiunto: Nuova gestione completa delle preferenze per il tema
+Aggiunto: Suggerimenti basati sulla cronologia delle ricerche
+Aggiunto: Lista di blocco delle app nelle preferenze
+Corretto Supporto per app non-Shizuku che ne utilizzano il backend
+Corretto: Filtri non applicati in alcune combinazioni
+Aggiornato: Rinnovamento del design degli indicatori di privacy
+Aggiornato: Passaggio al design "Expressive"
+Rimosso: Servizio di reportistica Exodus (accesso API revocato)
+Rimosso: Supporto per Index-v0
+Rimosso: Supporto per Android 7 e 7.1 (SDK 24 e 25)
+e altro ancora in oltre 80 commit e 70 contributi di traduzione
