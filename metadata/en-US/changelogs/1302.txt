@@ -1,0 +1,2 @@
+Fix: Crashing on missing release field
+Fix: Showing unstable updates even when setting is disabled

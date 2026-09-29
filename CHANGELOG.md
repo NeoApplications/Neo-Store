@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+1.3.1 (30.09.2026) 5 Commits
+------------------
+
+### Function
+
+- Fix: Crashing on missing release field
+- Fix: Showing unstable updates even when setting is disabled
+
 1.3.0 (20.09.2026) +80 Commits +70 Translations
 ------------------
 
