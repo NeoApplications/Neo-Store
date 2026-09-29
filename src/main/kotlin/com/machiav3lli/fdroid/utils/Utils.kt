@@ -134,11 +134,13 @@ object Utils {
         rblogs: Map<String, RBLog>
     ): List<Release> {
         val includeIncompatible = Preferences[Preferences.Key.IncompatibleVersions]
+        val includeUnstable = Preferences[Preferences.Key.UpdateUnstable]
         val ignoreSigCheck = Preferences[Preferences.Key.DisableSignatureCheck]
 
         return productRepository?.first?.releases.orEmpty()
             .filter {
                 it.repositoryId == productRepository?.second?.id
+                        && (includeUnstable || !it.releaseChannels.contains("Beta"))
                         && (includeIncompatible || it.incompatibilities.isEmpty())
                         && (installed == null || it.signature in installed.signatures || ignoreSigCheck)
                         && (ignoreRBLogs || rblogs[it.hash]?.reproducible == true)

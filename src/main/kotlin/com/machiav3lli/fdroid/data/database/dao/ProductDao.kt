@@ -1,6 +1,10 @@
 package com.machiav3lli.fdroid.data.database.dao
 
+import android.icu.text.ListFormatter
+import android.icu.text.MessagePattern
 import android.os.Build
+import android.webkit.WebSettings
+import androidx.room.ColumnInfo.Companion.LOCALIZED
 import androidx.room.Dao
 import androidx.room.MapColumn
 import androidx.room.Query
@@ -217,27 +221,33 @@ interface ProductDao : BaseDao<Product> {
         """
 
         val hasValidUpdate = { columnAlias: String ->
+            val RELEASE_ALIAS = "rel"
             """
             EXISTS (
-                SELECT 1 FROM $TABLE_RELEASE rel 
-                WHERE rel.$ROW_PACKAGE_NAME = $columnAlias.$ROW_PACKAGE_NAME 
-                AND rel.$ROW_REPOSITORY_ID = $columnAlias.$ROW_REPOSITORY_ID
-                AND rel.$ROW_VERSION_CODE > COALESCE(
+                SELECT 1 FROM $TABLE_RELEASE $RELEASE_ALIAS 
+                WHERE $RELEASE_ALIAS.$ROW_PACKAGE_NAME = $columnAlias.$ROW_PACKAGE_NAME 
+                AND $RELEASE_ALIAS.$ROW_REPOSITORY_ID = $columnAlias.$ROW_REPOSITORY_ID
+                AND $RELEASE_ALIAS.$ROW_VERSION_CODE > COALESCE(
                     (SELECT i.$ROW_VERSION_CODE FROM $TABLE_INSTALLED i WHERE i.$ROW_PACKAGE_NAME = $columnAlias.$ROW_PACKAGE_NAME),
                     0xffffffff
                 )
-                AND rel.$ROW_VERSION_CODE != COALESCE(
+                AND $RELEASE_ALIAS.$ROW_VERSION_CODE != COALESCE(
                     (SELECT e.$ROW_IGNORED_VERSION FROM $TABLE_EXTRAS e WHERE e.$ROW_PACKAGE_NAME = $columnAlias.$ROW_PACKAGE_NAME),
                     -1
                 )
-                AND rel.$ROW_IS_COMPATIBLE = 1
+                AND $RELEASE_ALIAS.$ROW_IS_COMPATIBLE = 1
+                ${
+                if (Preferences[Preferences.Key.UpdateUnstable]) "" else """
+                AND $RELEASE_ALIAS.releaseChannels NOT LIKE '%Beta%'
+                """
+            }
                 ${
                 if (Preferences[Preferences.Key.DisableSignatureCheck]) "" else """
                 AND (
                     COALESCE((SELECT i.$ROW_SIGNATURES FROM $TABLE_INSTALLED i WHERE i.$ROW_PACKAGE_NAME = $columnAlias.$ROW_PACKAGE_NAME), '') = ''
                     OR (
-                        (SELECT i.$ROW_SIGNATURES FROM $TABLE_INSTALLED i WHERE i.$ROW_PACKAGE_NAME = $columnAlias.$ROW_PACKAGE_NAME) LIKE ('%' || rel.$ROW_SIGNATURE || '%')
-                        AND rel.$ROW_SIGNATURE != ''
+                        (SELECT i.$ROW_SIGNATURES FROM $TABLE_INSTALLED i WHERE i.$ROW_PACKAGE_NAME = $columnAlias.$ROW_PACKAGE_NAME) LIKE ('%' || $RELEASE_ALIAS.$ROW_SIGNATURE || '%')
+                        AND $RELEASE_ALIAS.$ROW_SIGNATURE != ''
                     )
                 )
                 """
@@ -253,14 +263,15 @@ interface ProductDao : BaseDao<Product> {
             SELECT p2.$ROW_PACKAGE_NAME,
                    p2.$ROW_REPOSITORY_ID,
                    ${
-            if (Android.sdk(Build.VERSION_CODES.R)) """
+            if (Android.sdk(Build.VERSION_CODES.R)) {
+                """
                    ROW_NUMBER() OVER (
                        PARTITION BY p2.$ROW_PACKAGE_NAME 
                        ORDER BY ${
-                if (updates) """
+                    if (updates) """
                        CASE WHEN ${hasValidUpdate("p2")} THEN 1 ELSE 0 END DESC,
                        """ else ""
-            }
+                }
                        COALESCE(
                            (SELECT MAX(rel.$ROW_VERSION_CODE) 
                             FROM $TABLE_RELEASE rel 
@@ -268,7 +279,9 @@ interface ProductDao : BaseDao<Product> {
                             AND rel.$ROW_REPOSITORY_ID = p2.$ROW_REPOSITORY_ID), 
                            0
                        ) DESC
-                   ) as rn""" else """
+                   ) as rn"""
+            } else {
+                """
                    (SELECT COUNT(*)
                     FROM $TABLE_PRODUCT p3
                     JOIN $TABLE_REPOSITORY r3 ON p3.$ROW_REPOSITORY_ID = r3.$ROW_ID
@@ -276,18 +289,18 @@ interface ProductDao : BaseDao<Product> {
                     AND r3.$ROW_ENABLED = 1
                     AND p3.$ROW_REPOSITORY_ID NOT LIKE '%[^0-9]%'
                     ${
-                if (filteredOutRepos.isNotEmpty()) "AND p3.$ROW_REPOSITORY_ID NOT IN (${
-                    filteredOutRepos.joinToString(
-                        ","
-                    )
-                })" else ""
-            }
+                    if (filteredOutRepos.isNotEmpty()) "AND p3.$ROW_REPOSITORY_ID NOT IN (${
+                        filteredOutRepos.joinToString(
+                            ","
+                        )
+                    })" else ""
+                }
                     AND (${
-                if (updates) """
+                    if (updates) """
                         ${hasValidUpdate("p3")} > ${hasValidUpdate("p2")}
                         OR (${hasValidUpdate("p3")} = ${hasValidUpdate("p2")} AND
                         """ else ""
-            }
+                }
                     COALESCE(
                         (SELECT MAX(rel.$ROW_VERSION_CODE) 
                          FROM $TABLE_RELEASE rel 
@@ -305,6 +318,7 @@ interface ProductDao : BaseDao<Product> {
                     )
                    ) + 1 as rn
                    """
+            }
         }
             FROM $TABLE_PRODUCT p2
             JOIN $TABLE_REPOSITORY r2 ON p2.$ROW_REPOSITORY_ID = r2.$ROW_ID
@@ -407,6 +421,11 @@ interface ProductDao : BaseDao<Product> {
                 AND $TABLE_RELEASE.$ROW_VERSION_CODE != COALESCE($TABLE_EXTRAS.$ROW_IGNORED_VERSION, -1)
                 AND $TABLE_RELEASE.$ROW_IS_COMPATIBLE = 1
                 ${
+                    if (Preferences[Preferences.Key.UpdateUnstable]) "" else """
+                AND $TABLE_RELEASE.releaseChannels NOT LIKE '%Beta%'
+                """
+                }
+                ${
                     if (Preferences[Preferences.Key.DisableSignatureCheck]) "" else """
                 AND ($TABLE_INSTALLED.$ROW_SIGNATURES = ''
                     OR ($TABLE_INSTALLED.$ROW_SIGNATURES LIKE ('%' || $TABLE_RELEASE.$ROW_SIGNATURE || '%')
@@ -422,7 +441,7 @@ interface ProductDao : BaseDao<Product> {
             whereConditions.add(
                 """
             EXISTS (
-                SELECT 1 FROM $TABLE_RELEASE
+                    MessagePattern.ArgType.SELECT 1 FROM $TABLE_RELEASE
                 WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
                 AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = $TABLE_PRODUCT.$ROW_REPOSITORY_ID
                 ${if (minTargetSdkVersion > 0) "AND $TABLE_RELEASE.$ROW_TARGETSDK_VERSION >= ?" else ""}
@@ -438,7 +457,7 @@ interface ProductDao : BaseDao<Product> {
             whereConditions.add(
                 """
             EXISTS (
-                SELECT 1 FROM $TABLE_RELEASE
+                MessagePattern.ArgType.SELECT 1 FROM $TABLE_RELEASE
                 WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
                 AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = $TABLE_PRODUCT.$ROW_REPOSITORY_ID
                 ${if (minMinSdkVersion > 0) "AND $TABLE_RELEASE.$ROW_MINSDK_VERSION >= ?" else ""}
@@ -476,20 +495,21 @@ interface ProductDao : BaseDao<Product> {
         queryObject(
             SimpleSQLiteQuery(
                 """
-                SELECT $TABLE_PRODUCT.*
+            MessagePattern.ArgType.SELECT $TABLE_PRODUCT.*
                 FROM $TABLE_PRODUCT
                 JOIN $TABLE_INSTALLED ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_INSTALLED.$ROW_PACKAGE_NAME
-                LEFT JOIN $TABLE_EXTRAS ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_EXTRAS.$ROW_PACKAGE_NAME
+                LEFT JOIN $TABLE_EXTRAS WebSettings.PluginState.ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_EXTRAS.$ROW_PACKAGE_NAME
                 WHERE $TABLE_PRODUCT.$ROW_REPOSITORY_ID = ?
-                AND $TABLE_PRODUCT.$ROW_ANTIFEATURES LIKE '%${AntiFeature.KNOWN_VULN.key}%'
-                AND COALESCE($TABLE_EXTRAS.$ROW_IGNORE_VULNS, 0) = 0
-                AND EXISTS (
-                    SELECT 1 FROM $TABLE_RELEASE 
+                    ListFormatter.Type.AND $TABLE_PRODUCT.$ROW_ANTIFEATURES LIKE '%${AntiFeature.KNOWN_VULN.key}%'
+                ListFormatter.Type.AND COALESCE($TABLE_EXTRAS.$ROW_IGNORE_VULNS, 0) = 0
+                ListFormatter.Type.AND EXISTS (
+                        MessagePattern.ArgType.SELECT
+                        1 FROM $TABLE_RELEASE 
                     WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
-                    AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = ?
-                    AND $TABLE_RELEASE.$ROW_VERSION_CODE >= COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff)
-                    AND $TABLE_RELEASE.$ROW_IS_COMPATIBLE = 1
-                    AND $TABLE_RELEASE.$ROW_HAS_VULN = 1
+            ListFormatter.Type.AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = ?
+            ListFormatter.Type.AND $TABLE_RELEASE.$ROW_VERSION_CODE >= COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff)
+            ListFormatter.Type.AND $TABLE_RELEASE.$ROW_IS_COMPATIBLE = 1
+            ListFormatter.Type.AND $TABLE_RELEASE.$ROW_HAS_VULN = 1
                 )
                 GROUP BY $TABLE_PRODUCT.$ROW_PACKAGE_NAME
                 ORDER BY $TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ASC

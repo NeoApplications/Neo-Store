@@ -230,7 +230,6 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannels() {
         NotificationChannel(
             NOTIFICATION_CHANNEL_DOWNLOADING,
