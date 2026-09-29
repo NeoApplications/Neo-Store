@@ -1,5 +1,6 @@
 package com.machiav3lli.fdroid.viewmodels
 
+import android.text.format.DateUtils
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.machiav3lli.fdroid.data.database.entity.Installed
@@ -17,6 +18,11 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import java.text.DateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.Date
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LatestVM(
@@ -55,12 +61,14 @@ class LatestVM(
         updatedProducts,
         newProducts,
     ) { sortFilter, installed, updated, new ->
+        val updatedItems = updated.map {
+            it.toItem(installed[it.product.packageName])
+        }
         LatestPageState(
             sortFilter = sortFilter,
             installedMap = installed,
-            updatedProducts = updated.map {
-                it.toItem(installed[it.product.packageName])
-            },
+            updatedProducts = updatedItems,
+            groupedUpdatedProducts = groupProductsByDate(updatedItems),
             newProducts = new.map {
                 it.toItem(installed[it.product.packageName])
             },
@@ -75,12 +83,52 @@ class LatestVM(
 
     companion object {
         private const val TAG = "LatestVM"
+
+        fun groupProductsByDate(products: List<ProductItem>): List<DateGroup> {
+            if (products.isEmpty()) return emptyList()
+            val zone = ZoneId.systemDefault()
+            val today = LocalDate.now(zone)
+            return products.groupBy { item ->
+                val timestamp = item.releaseDate
+                if (timestamp > 0L) {
+                    Instant.ofEpochMilli(timestamp).atZone(zone).toLocalDate()
+                } else {
+                    null
+                }
+            }.map { (localDate, items) ->
+                val label = if (localDate != null) {
+                    val firstTimestamp = items.firstOrNull()?.releaseDate ?: 0L
+                    when (localDate) {
+                        today -> DateUtils.getRelativeTimeSpanString(
+                            firstTimestamp,
+                            System.currentTimeMillis(),
+                            DateUtils.DAY_IN_MILLIS
+                        ).toString()
+                        today.minusDays(1) -> DateUtils.getRelativeTimeSpanString(
+                            firstTimestamp,
+                            System.currentTimeMillis(),
+                            DateUtils.DAY_IN_MILLIS
+                        ).toString()
+                        else -> DateFormat.getDateInstance(DateFormat.MEDIUM).format(Date(firstTimestamp))
+                    }
+                } else {
+                    ""
+                }
+                DateGroup(dateLabel = label, items = items)
+            }
+        }
     }
 }
+
+data class DateGroup(
+    val dateLabel: String,
+    val items: List<ProductItem>,
+)
 
 data class LatestPageState(
     val sortFilter: String = "",
     val installedMap: Map<String, Installed> = emptyMap(),
     val updatedProducts: List<ProductItem> = emptyList(),
+    val groupedUpdatedProducts: List<DateGroup> = emptyList(),
     val newProducts: List<ProductItem> = emptyList(),
 )

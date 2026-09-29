@@ -43,6 +43,7 @@ import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.manager.network.createIconUri
 import com.machiav3lli.fdroid.ui.components.appsheet.ReleaseBadge
 import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
+import com.machiav3lli.fdroid.utils.extension.text.formatDate
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraight
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.HeartStraightFill
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
@@ -123,26 +124,42 @@ fun ProductItemContent(
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                 )
-                when {
-                    product.canUpdate                     -> ReleaseBadge(
-                        modifier = Modifier.widthIn(max = 200.dp),
-                        text = "${product.installedVersion} → ${product.version}",
-                        coloringVariant = ColoringVariant.POSITIVE,
-                    )
+                Column(
+                    horizontalAlignment = Alignment.End,
+                ) {
+                    when {
+                        product.canUpdate                     -> ReleaseBadge(
+                            modifier = Modifier.widthIn(max = 200.dp),
+                            text = "${product.installedVersion} → ${product.version}",
+                            coloringVariant = ColoringVariant.POSITIVE,
+                        )
 
-                    product.installedVersion.isNotEmpty() -> ReleaseBadge(
-                        modifier = Modifier.widthIn(max = 200.dp),
-                        text = product.installedVersion,
-                    )
+                        product.installedVersion.isNotEmpty() -> ReleaseBadge(
+                            modifier = Modifier.widthIn(max = 200.dp),
+                            text = product.installedVersion,
+                        )
 
-                    else                                  -> Text(
-                        modifier = Modifier.widthIn(max = 200.dp),
-                        text = installed?.version ?: product.version,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.End,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.labelMedium,
-                    )
+                        else                                  -> Text(
+                            modifier = Modifier.widthIn(max = 200.dp),
+                            text = installed?.version ?: product.version,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.End,
+                            maxLines = 1,
+                            style = MaterialTheme.typography.labelMedium,
+                        )
+                    }
+                    val dateText = remember(product.releaseDate) {
+                        if (product.releaseDate > 0L) product.releaseDate.formatDate() else ""
+                    }
+                    if (dateText.isNotEmpty()) {
+                        Text(
+                            text = dateText,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.End,
+                            maxLines = 1,
+                        )
+                    }
                 }
             }
         },
@@ -217,28 +234,45 @@ fun ProductCarouselItem(
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                 )
-                if (product.canUpdate) ReleaseBadge(
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .widthIn(max = 200.dp),
-                    text = "${product.installedVersion} → ${product.version}",
-                    coloringVariant = ColoringVariant.POSITIVE,
-                )
-                else if (product.installedVersion.isNotEmpty()) ReleaseBadge(
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .widthIn(max = 200.dp),
-                    text = product.installedVersion,
-                ) else Text(
-                    text = product.installedVersion.nullIfEmpty() ?: product.version,
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .widthIn(max = 200.dp),
-                    textAlign = TextAlign.End,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.labelMedium,
-                )
+                Column(
+                    horizontalAlignment = Alignment.End,
+                ) {
+                    if (product.canUpdate) ReleaseBadge(
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .widthIn(max = 200.dp),
+                        text = "${product.installedVersion} → ${product.version}",
+                        coloringVariant = ColoringVariant.POSITIVE,
+                    )
+                    else if (product.installedVersion.isNotEmpty()) ReleaseBadge(
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .widthIn(max = 200.dp),
+                        text = product.installedVersion,
+                    ) else Text(
+                        text = product.installedVersion.nullIfEmpty() ?: product.version,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .widthIn(max = 200.dp),
+                        textAlign = TextAlign.End,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+
+                    val dateText = remember(product.releaseDate) {
+                        if (product.releaseDate > 0L) product.releaseDate.formatDate() else ""
+                    }
+                    if (dateText.isNotEmpty()) {
+                        Text(
+                            text = dateText,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.End,
+                            maxLines = 1,
+                        )
+                    }
+                }
             }
         },
         supportingContent = {

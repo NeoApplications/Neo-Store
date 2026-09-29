@@ -32,12 +32,16 @@ fun Long.formatSize(): String {
     return sizeFormats[index].format(Locale.US, size)
 }
 
-// TODO Move all date tools to own util-class
 fun Long.formatDateTime(): String {
     val nowDate = DateFormat.getDateInstance().format(Date(System.currentTimeMillis()))
     val mDate = DateFormat.getDateInstance().format(Date(this))
     return if (nowDate == mDate) DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(this))
     else mDate
+}
+
+fun Long.formatDate(): String {
+    if (this <= 0L) return ""
+    return DateFormat.getDateInstance(DateFormat.MEDIUM).format(Date(this))
 }
 
 fun Uri.toAddressFingerprint() = try {

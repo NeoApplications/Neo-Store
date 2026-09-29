@@ -305,7 +305,9 @@ data class EmbeddedProduct(
             canUpdate = canUpdate(installed),
             launchable = !installed?.launcherActivities.isNullOrEmpty(),
             categories = product.categories.toPersistentSet(),
-            matchRank = 0
+            matchRank = 0,
+            added = product.added.takeIf { it > 0L } ?: (displayRelease?.added ?: 0L),
+            updated = maxOf(product.updated, displayRelease?.added ?: 0L),
         )
 }
 

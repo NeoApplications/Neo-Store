@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.manager.network.createIconUri
+import com.machiav3lli.fdroid.utils.extension.text.formatDate
 
 val PRODUCT_CARD_ICON = 48.dp
 val PRODUCT_CARD_HEIGHT = 84.dp
@@ -81,8 +82,15 @@ fun ProductCard(
             )
         },
         supportingContent = {
+            val dateText = remember(product.releaseDate) {
+                if (product.releaseDate > 0L) product.releaseDate.formatDate() else ""
+            }
             Text(
-                text = product.version,
+                text = when {
+                    product.version.isNotEmpty() && dateText.isNotEmpty() -> "${product.version} • $dateText"
+                    product.version.isNotEmpty() -> product.version
+                    else -> dateText
+                },
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )

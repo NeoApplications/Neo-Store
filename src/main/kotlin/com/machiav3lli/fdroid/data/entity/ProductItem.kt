@@ -20,7 +20,12 @@ data class ProductItem(
     val launchable: Boolean = false,
     val categories: ImmutableSet<String> = persistentSetOf(),
     val matchRank: Int = 0,
-)
+    val added: Long = 0L,
+    val updated: Long = 0L,
+) {
+    val releaseDate: Long
+        get() = if (updated > 0L) updated else added
+}
 
 sealed class UpdateListItem {
     abstract val key: String

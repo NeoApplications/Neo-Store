@@ -202,42 +202,57 @@ fun LatestPage(
                 }
             }
         }
-        items(
-            items = pageState.updatedProducts,
-            key = { it.packageName },
-        ) { item ->
-            ProductsListItem(
-                item = item,
-                repo = dataState.reposMap[item.repositoryId],
-                isFavorite = dataState.favorites.contains(item.packageName),
-                onUserClick = {
-                    neoActivity.navigateProduct(it.packageName)
-                },
-                onFavouriteClick = {
-                    mainVM.setFavorite(
-                        it.packageName,
-                        !dataState.favorites.contains(it.packageName)
+        pageState.groupedUpdatedProducts.forEach { group ->
+            if (group.dateLabel.isNotEmpty()) {
+                stickyHeader(key = "date_header_${group.dateLabel}") {
+                    Text(
+                        text = group.dateLabel,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                            .padding(horizontal = 16.dp, vertical = 6.dp)
                     )
-                },
-                installed = pageState.installedMap[item.packageName],
-                onActionClick = {
-                    val installed = pageState.installedMap[it.packageName]
-                    val action = {
-                        NeoApp.wm.install(
-                            Pair(it.packageName, it.repositoryId)
-                        )
-                    }
-                    if (installed != null && installed.launcherActivities.isNotEmpty())
-                        context.onLaunchClick(
-                            installed,
-                            neoActivity.supportFragmentManager
-                        )
-                    else if (Preferences[Preferences.Key.DownloadShowDialog]) {
-                        dialogKey.value = DialogKey.Download(it.name, action)
-                        openDialog.value = true
-                    } else action()
                 }
-            )
+            }
+            items(
+                items = group.items,
+                key = { it.packageName },
+            ) { item ->
+                ProductsListItem(
+                    item = item,
+                    repo = dataState.reposMap[item.repositoryId],
+                    isFavorite = dataState.favorites.contains(item.packageName),
+                    onUserClick = {
+                        neoActivity.navigateProduct(it.packageName)
+                    },
+                    onFavouriteClick = {
+                        mainVM.setFavorite(
+                            it.packageName,
+                            !dataState.favorites.contains(it.packageName)
+                        )
+                    },
+                    installed = pageState.installedMap[item.packageName],
+                    onActionClick = {
+                        val installed = pageState.installedMap[it.packageName]
+                        val action = {
+                            NeoApp.wm.install(
+                                Pair(it.packageName, it.repositoryId)
+                            )
+                        }
+                        if (installed != null && installed.launcherActivities.isNotEmpty())
+                            context.onLaunchClick(
+                                installed,
+                                neoActivity.supportFragmentManager
+                            )
+                        else if (Preferences[Preferences.Key.DownloadShowDialog]) {
+                            dialogKey.value = DialogKey.Download(it.name, action)
+                            openDialog.value = true
+                        } else action()
+                    }
+                )
+            }
         }
     }
 
