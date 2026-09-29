@@ -66,7 +66,7 @@ open class Release(
     @ColumnInfo(defaultValue = "[]")
     val releaseChannels: List<String> = emptyList(),
     @ColumnInfo(defaultValue = "0")
-    val hasVulnerability: Boolean,
+    val hasVulnerability: Boolean = false,
 ) {
     @Serializable
     sealed class Incompatibility {
