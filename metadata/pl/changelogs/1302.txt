@@ -1,0 +1,2 @@
+Poprawka: Awaria spowodowana brakiem pola wydania
+Poprawka: Wyświetlanie niestabilnych aktualizacji nawet przy wyłączonym ustawieniu
