@@ -524,4 +524,6 @@
     <string name="color_pink">Roze</string>
     <string name="color_red">Rood</string>
     <string name="apps_num_FORMAT">%d apps</string>
+    <string name="group_by_release_date">Groeperen op releasedatum</string>
+    <string name="group_by_release_date_summary">Groepeer applicaties op hun releasedatum op de pagina met recente apps.</string>
 </resources>

@@ -558,4 +558,6 @@
     <string name="permissions_identification_5">Не потребує дозволів на доступ до ідентифікаційних даних</string>
     <string name="weights_default">Типова значущість</string>
     <string name="weights_customized">Власна значущість</string>
+    <string name="group_by_release_date">Групувати за датою випуску</string>
+    <string name="group_by_release_date_summary">Групувати застосунки за датою випуску на сторінці новинок.</string>
 </resources>

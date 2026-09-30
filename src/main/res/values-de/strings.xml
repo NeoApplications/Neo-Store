@@ -552,4 +552,6 @@
     <string name="permissions_identification_5">Keinerlei Zugriff auf Identifikationsdaten</string>
     <string name="weights_default">Standard Gewichtung</string>
     <string name="weights_customized">Benutzerdefinierte Gewichtung</string>
+    <string name="group_by_release_date">Nach Veröffentlichungsdatum gruppieren</string>
+    <string name="group_by_release_date_summary">Anwendungen auf der Neuigkeiten-Seite nach ihrem Veröffentlichungsdatum gruppieren.</string>
 </resources>

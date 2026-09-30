@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="settings">Iɣewwaren</string>
+    <string name="group_by_release_date">Sdukel s wazemz n tuffɣa</string>
+    <string name="group_by_release_date_summary">Sdukel isnasen s wazemz n tuffɣa nsen deg usebter n yimaynuten.</string>
 </resources>

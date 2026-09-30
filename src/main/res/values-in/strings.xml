@@ -524,4 +524,6 @@
     <string name="packages_blocklist">Daftar blokir aplikasi</string>
     <string name="apps_num_FORMAT">%d aplikasi</string>
     <string name="sync_errors">Kesalahan sinkronisasi</string>
+    <string name="group_by_release_date">Kelompokkan berdasarkan tanggal rilis</string>
+    <string name="group_by_release_date_summary">Kelompokkan aplikasi berdasarkan tanggal rilis di halaman terbaru.</string>
 </resources>

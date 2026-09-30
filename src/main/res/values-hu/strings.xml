@@ -381,4 +381,6 @@
     <string name="action_lock_device">Eszközzár</string>
     <string name="kids_mode">Gyerek mód</string>
     <string name="kids_mode_summary">Engedélyezze a gyerek módot, letiltja az új alkalmazások telepítését.</string>
+    <string name="group_by_release_date">Csoportosítás kiadási dátum szerint</string>
+    <string name="group_by_release_date_summary">Alkalmazások csoportosítása a legfrissebbek oldalon a kiadási dátumuk szerint.</string>
 </resources>

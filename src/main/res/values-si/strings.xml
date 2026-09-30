@@ -14,4 +14,6 @@
     <string name="changes">වෙනස්කම්</string>
     <string name="delete">මකා දමන්න</string>
     <string name="description">විස්තරය</string>
+    <string name="group_by_release_date">නිකුත් කළ දිනය අනුව සමූහ කරන්න</string>
+    <string name="group_by_release_date_summary">නවතම පිටුවේ යෙදුම් ඒවායේ නිකුත් කළ දිනය අනුව සමූහ කරන්න.</string>
 </resources>

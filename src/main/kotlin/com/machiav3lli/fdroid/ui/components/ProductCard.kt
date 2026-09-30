@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.machiav3lli.fdroid.data.content.Preferences
 import com.machiav3lli.fdroid.data.database.entity.Repository
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.manager.network.createIconUri
@@ -82,8 +83,9 @@ fun ProductCard(
             )
         },
         supportingContent = {
-            val dateText = remember(product.releaseDate) {
-                if (product.releaseDate > 0L) product.releaseDate.formatDate() else ""
+            val showReleaseDate = Preferences[Preferences.Key.GroupByReleaseDate]
+            val dateText = remember(product.releaseDate, showReleaseDate) {
+                if (showReleaseDate && product.releaseDate > 0L) product.releaseDate.formatDate() else ""
             }
             Text(
                 text = when {

@@ -399,4 +399,6 @@
     <string name="state_modified">Modificado</string>
     <string name="all">Todo</string>
     <string name="monthly">Mensualmente</string>
+    <string name="group_by_release_date">Agrupar por data de lanzamento</string>
+    <string name="group_by_release_date_summary">Agrupa as aplicacións pola súa data de lanzamento na páxina de novidades.</string>
 </resources>

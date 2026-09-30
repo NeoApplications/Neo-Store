@@ -528,4 +528,6 @@
     <string name="clear_search_history">Kustuta otsinguajalugu</string>
     <string name="exodus">Ava Exoduse teenuses</string>
     <string name="trackers_control">Jälitajate teave</string>
+    <string name="group_by_release_date">Rühmita väljalaskekuupäeva järgi</string>
+    <string name="group_by_release_date_summary">Rühmita rakendused viimaste lehel nende väljalaskekuupäeva järgi.</string>
 </resources>

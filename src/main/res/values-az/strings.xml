@@ -19,4 +19,6 @@
     <string name="changelog">Dəyişikliklər</string>
     <string name="checking_repository">Anbarlar yoxlanılır…</string>
     <string name="cant_edit_sync_DESC">Sinxronlaşdırılan anbarlara düzəliş etmək mümkün deyil…</string>
+    <string name="group_by_release_date">Buraxılış tarixinə görə qruplaşdır</string>
+    <string name="group_by_release_date_summary">Tətbiqləri ən son səhifədə buraxılış tarixinə görə qruplaşdırın.</string>
 </resources>

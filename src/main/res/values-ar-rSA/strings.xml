@@ -188,4 +188,6 @@
     <string name="install_after_sync_summary">تثبيت تحديثات التطبيقات آلياً بعد مزامنة المستودعات</string>
     <string name="new_repository">مستودع جديد</string>
     <string name="default_tab">التبويب الافتراضي</string>
+    <string name="group_by_release_date">التجميع حسب تاريخ الإصدار</string>
+    <string name="group_by_release_date_summary">تجميع التطبيقات حسب تاريخ إصدارها في صفحة الأحدث.</string>
 </resources>

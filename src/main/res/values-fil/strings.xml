@@ -317,4 +317,6 @@
     <string name="keep_install_notification">Panatilihin ang notipikasyon ng pag-install</string>
     <string name="keep_install_notification_summary">Panatilihin ang notipikasyon ng matagumpay na pag-install ng app.</string>
     <string name="allowed_licenses">Mga pinapayagang lisensya</string>
+    <string name="group_by_release_date">Igrupo ayon sa petsa ng release</string>
+    <string name="group_by_release_date_summary">Igrupo ang mga app ayon sa petsa ng release ng mga ito sa pinakabagong page.</string>
 </resources>

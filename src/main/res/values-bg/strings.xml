@@ -404,4 +404,6 @@
     <string name="all">Всички</string>
     <string name="state_modified">Променен</string>
     <string name="wait_to_sync">Изчакайте няколко секунди, преди да опитвате нова синхронизация.</string>
+    <string name="group_by_release_date">Групиране по дата на издаване</string>
+    <string name="group_by_release_date_summary">Групиране на приложенията по дата на издаване в страницата за новости.</string>
 </resources>

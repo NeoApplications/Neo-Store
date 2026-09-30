@@ -11,4 +11,6 @@
     <string name="confirmation">Stadfesting</string>
     <string name="contains_non_free_media">Inneheld ufri media</string>
     <string name="application_not_found">Fann ikkje den appen</string>
+    <string name="group_by_release_date">Grupper etter utgjevingsdato</string>
+    <string name="group_by_release_date_summary">Grupper appar etter utgjevingsdatoen på sida for siste.</string>
 </resources>

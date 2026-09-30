@@ -551,4 +551,6 @@
     <string name="permissions_identification_5">Requires no permissions to identification data</string>
     <string name="weights_default">Default weights</string>
     <string name="weights_customized">Custom weights</string>
+    <string name="group_by_release_date">Group by release date</string>
+    <string name="group_by_release_date_summary">Group applications by their release date in the latest page.</string>
 </resources>

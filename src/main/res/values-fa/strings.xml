@@ -421,4 +421,6 @@
     <string name="index_v2">فعال کردن Index-V2</string>
     <string name="index_v2_summary">درخواست Index-V2 را به عنوان شاخص اصلی فعال می‌ کند هنوز در مرحله آزمایشی است و مزایا و معایبی دارد.</string>
     <string name="action_start">بریم</string>
+    <string name="group_by_release_date">دسته‌بندی بر اساس تاریخ انتشار</string>
+    <string name="group_by_release_date_summary">دسته‌بندی برنامه‌ها بر اساس تاریخ انتشار در صفحه تازه‌ها.</string>
 </resources>

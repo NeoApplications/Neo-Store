@@ -59,6 +59,7 @@ fun PrefsPersonalPage() {
         Preferences.Key.AltNavBarItem,
         //Preferences.Key.AltNewApps,
         Preferences.Key.HideNewApps,
+        Preferences.Key.GroupByReleaseDate,
         Preferences.Key.BottomSearchBar,
         Preferences.Key.DisableListDetail,
         Preferences.Key.ShowScreenshots,

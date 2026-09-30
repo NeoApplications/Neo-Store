@@ -486,4 +486,6 @@
     <string name="color_red">Rød</string>
     <string name="color_pink">Lyserød</string>
     <string name="apps_num_FORMAT">%d apps</string>
+    <string name="group_by_release_date">Gruppér efter udgivelsesdato</string>
+    <string name="group_by_release_date_summary">Gruppér applikationer efter deres udgivelsesdato på siden med seneste.</string>
 </resources>

@@ -24,4 +24,6 @@
     <string name="other">ଅନ୍ୟ</string>
     <string name="size">ଆକାର</string>
     <string name="skip">ବାଦ୍ ଦିଅ</string>
+    <string name="group_by_release_date">ରିଲିଜ୍ ତାରିଖ ଅନୁସାରେ ଗୋଷ୍ଠୀଭୁକ୍ତ କରନ୍ତୁ</string>
+    <string name="group_by_release_date_summary">ସର୍ବଶେଷ ପୃଷ୍ଠାରେ ଆପ୍ସଗୁଡ଼ିକୁ ସେମାନଙ୍କର ରିଲିଜ୍ ତାରିଖ ଅନୁସାରେ ଗୋଷ୍ଠୀଭୁକ୍ତ କରନ୍ତୁ।</string>
 </resources>

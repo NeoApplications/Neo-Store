@@ -268,4 +268,6 @@
     <string name="legacy_installer">Historiallinen asentaja (yhteensopiva MIUI:n kanssa)</string>
     <string name="permission_storage">Tallennustila ja media</string>
     <string name="disable_download_version_check_summary">Salli sovelluksen vanhemman version asentaminen. Voidaan käyttää yhdessä Magiskin \"letmedowngrade\" patchin kanssa.</string>
+    <string name="group_by_release_date">Ryhmittele julkaisupäivämäärän mukaan</string>
+    <string name="group_by_release_date_summary">Ryhmittele sovellukset julkaisupäivämäärän mukaan uutuudet-sivulla.</string>
 </resources>

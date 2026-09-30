@@ -90,4 +90,6 @@
     <string name="network_error_DESC">Error de rete.</string>
     <string name="never">Nunquam</string>
     <string name="new_updates_available">Nove versiones disponibile</string>
+    <string name="group_by_release_date">Gruppar per data de publication</string>
+    <string name="group_by_release_date_summary">Gruppar applicationes per lor data de publication in le pagina de novitates.</string>
 </resources>

@@ -426,4 +426,6 @@
     <string name="initial_sync_repositories">Chcete synchronizovat výchozí repozitáře (oficiální F-Droid, IzzyOnDroid a Guardian Project)?</string>
     <string name="index_v2">Povolit Index-V2</string>
     <string name="index_v2_summary">Povolí žádost o Index-V2 jako primární index. Stále v experimentální fázi, může mít výhody i nevýhody.</string>
+    <string name="group_by_release_date">Seskupit podle data vydání</string>
+    <string name="group_by_release_date_summary">Seskupit aplikace podle data vydání na stránce novinek.</string>
 </resources>

@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>    <string name="group_by_release_date">Групирај по датум на издавање</string>
+    <string name="group_by_release_date_summary">Групирајте ги апликациите според датумот на издавање на страницата за најнови.</string>
+</resources>

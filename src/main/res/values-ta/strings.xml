@@ -489,4 +489,6 @@
     <string name="keep_android_open">ஆண்ட்ராய்டை ஓப்பன் செய்து வைக்கவும்</string>
     <string name="keep_android_open_notice">ஆண்ட்ராய்டின் திறந்த தன்மை மற்றும் F-Droid ஆகியவை Google ஆல் அச்சுறுத்தப்படுகின்றன. எங்களுக்கு உங்கள் உதவி தேவை: https://keepandroidopen.org/</string>
     <string name="from_FORMAT">%s இலிருந்து</string>
+    <string name="group_by_release_date">வெளியீட்டு தேதியின்படி குழுவாக்கு</string>
+    <string name="group_by_release_date_summary">சமீபத்திய பக்கத்தில் பயன்பாடுகளை அவற்றின் வெளியீட்டு தேதியின்படி குழுவாக்கவும்.</string>
 </resources>

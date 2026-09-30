@@ -1,3 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="group_by_release_date">จัดกลุ่มตามวันที่ปล่อย</string>
+    <string name="group_by_release_date_summary">จัดกลุ่มแอปพลิเคชันตามวันที่ปล่อยในหน้าล่าสุด</string>
 </resources>

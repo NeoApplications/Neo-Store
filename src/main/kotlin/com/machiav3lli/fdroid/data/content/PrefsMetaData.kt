@@ -6,6 +6,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.Phosphor
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.ArrowsClockwise
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Bell
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Browser
+import com.machiav3lli.fdroid.ui.compose.icons.phosphor.Calendar
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyQuestion
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CircleWavyWarning
 import com.machiav3lli.fdroid.ui.compose.icons.phosphor.CirclesThreePlus
@@ -60,6 +61,11 @@ val BooleanPrefsMeta = mapOf(
         R.string.hide_new_apps,
         R.string.hide_new_apps_description,
         Phosphor.CircleWavyWarning
+    ),
+    Preferences.Key.GroupByReleaseDate to Triple(
+        R.string.group_by_release_date,
+        R.string.group_by_release_date_summary,
+        Phosphor.Calendar
     ),
     Preferences.Key.AltBlockLayout to Triple(
         R.string.alt_block_layout,

@@ -505,4 +505,6 @@
     <string name="keep_android_open">إبقاء أندرويد مفتوحًا</string>
     <string name="keep_android_open_notice">حرية أندرويد وF-Droid مهددان من قِبل Google نحن بحاجة إلى مساعدتك: https://keepandroidopen.org/</string>
     <string name="from_FORMAT">من %s</string>
+    <string name="group_by_release_date">التجميع حسب تاريخ الإصدار</string>
+    <string name="group_by_release_date_summary">تجميع التطبيقات حسب تاريخ إصدارها في صفحة الأحدث.</string>
 </resources>

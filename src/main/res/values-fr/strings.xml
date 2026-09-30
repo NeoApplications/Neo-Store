@@ -552,4 +552,6 @@
     <string name="permissions_identification_5">Ne nécessite aucune autorisation d\'accès aux données d\'identification</string>
     <string name="weights_default">Poids par défaut</string>
     <string name="weights_customized">Poids personnalisés</string>
+    <string name="group_by_release_date">Regrouper par date de release</string>
+    <string name="group_by_release_date_summary">Regrouper les applications par date de sortie dans la page des nouveautés.</string>
 </resources>

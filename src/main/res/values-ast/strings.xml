@@ -401,4 +401,6 @@
     <string name="download_show_dialog">Amosar el diálogu de desarga</string>
     <string name="download_show_dialog_summary">Amuesa un diálogu de confirmación pa baxar aplicaciones (enantes d\'aniciar la descarga).</string>
     <string name="bottom_search_bar">Barra de busca abaxo</string>
+    <string name="group_by_release_date">Agrupar per fecha de llanzamientu</string>
+    <string name="group_by_release_date_summary">Agrupar les aplicaciones pela so fecha de llanzamientu na páxina de recién.</string>
 </resources>

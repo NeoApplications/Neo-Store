@@ -215,4 +215,6 @@
     <string name="no_releases">Không có bản phát hành tương thích nào để hiển thị</string>
     <string name="download_show_dialog_summary">Hiển thị hộp thoại hỏi bạn có chắc chắn muốn tải xuống ứng dụng hay không (trước khi bắt đầu tải xuống).</string>
     <string name="alt_new_apps_description">Sử dụng giao diện ứng dụng mới/cũ thay thế, hiển thị các thẻ ứng dụng nhỏ.</string>
+    <string name="group_by_release_date">Nhóm theo ngày phát hành</string>
+    <string name="group_by_release_date_summary">Nhóm các ứng dụng theo ngày phát hành trong trang mới nhất.</string>
 </resources>

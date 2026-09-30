@@ -558,4 +558,6 @@
     <string name="permissions_identification_5">Nie wymaga uprawnień do danych identyfikacyjnych</string>
     <string name="weights_default">Wagi domyślne</string>
     <string name="weights_customized">Wagi niestandardowe</string>
+    <string name="group_by_release_date">Grupuj według daty wydania</string>
+    <string name="group_by_release_date_summary">Grupuj aplikacje według daty wydania na stronie z nowościami.</string>
 </resources>

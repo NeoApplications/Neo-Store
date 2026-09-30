@@ -507,4 +507,6 @@
     <string name="action_start_sans_sync">Não sincronizar por enquanto!</string>
     <string name="setup_FORMAT">Configuração: %s</string>
     <string name="warning_not_default_app_handler">Neo Store não está definido como aplicativo padrão para abrir links de aplicativos de apt.izzysoft.de e f-droid.org. Toque para definir como padrão.</string>
+    <string name="group_by_release_date">Agrupar por data de lançamento</string>
+    <string name="group_by_release_date_summary">Agrupar aplicativos por data de lançamento na página de novidades.</string>
 </resources>

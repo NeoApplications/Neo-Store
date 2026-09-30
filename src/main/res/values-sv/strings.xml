@@ -360,4 +360,6 @@
     <string name="black_medium_contrast">Svart (mediumkontrast)</string>
     <string name="black_high_contrast">Svart (Hög kontrast)</string>
     <string name="root_allow_downgrades">Tillåt nedgradering av appar</string>
+    <string name="group_by_release_date">Gruppera efter utgivningsdatum</string>
+    <string name="group_by_release_date_summary">Gruppera appar efter deras utgivningsdatum på sidan med senaste.</string>
 </resources>

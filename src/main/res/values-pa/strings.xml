@@ -422,4 +422,6 @@
     <string name="about_channel">ਚੈਨਲ</string>
     <string name="about_build_FORMAT">%s (ਬਿਲਡ %s)</string>
     <string name="initial_sync_repositories">ਕੀ ਤੁਸੀਂ ਪ੍ਰੀਸੈਟ ਰਿਪੋਜ਼ਟਰੀਆਂ (ਅਧਿਕਾਰਤ F-Droid, IzzyOnDroid ਅਤੇ ਗਾਰਡੀਅਨ ਪ੍ਰੋਜੈਕਟ) ਨੂੰ ਸਿੰਕ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
+    <string name="group_by_release_date">ਰੀਲਿਜ਼ ਮਿਤੀ ਮੁਤਾਬਕ ਸਮੂਹਿਕ ਕਰੋ</string>
+    <string name="group_by_release_date_summary">ਸੱਜਰੇ ਸਫ਼ੇ ਉੱਤੇ ਐਪਸ ਨੂੰ ਉਨ੍ਹਾਂ ਦੀ ਰੀਲਿਜ਼ ਮਿਤੀ ਮੁਤਾਬਕ ਸਮੂਹਿਕ ਕਰੋ।</string>
 </resources>

@@ -233,4 +233,6 @@
     </plurals>
     <string name="pending">בהמתנה</string>
     <string name="main_page">העמוד הראשי</string>
+    <string name="group_by_release_date">קיבוץ לפי תאריך שחרור</string>
+    <string name="group_by_release_date_summary">קיבוץ יישומים לפי תאריך השחרור שלהם בדף העדכניים ביותר.</string>
 </resources>

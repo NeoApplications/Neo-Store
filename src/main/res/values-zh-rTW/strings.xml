@@ -414,4 +414,6 @@
     <plurals name="privacy_points_FORMAT">
         <item quantity="other">(-%d私隱點數)</item>
     </plurals>
+    <string name="group_by_release_date">按發布日期分組</string>
+    <string name="group_by_release_date_summary">在最新頁面中按發布日期對應用程式進行分組。</string>
 </resources>

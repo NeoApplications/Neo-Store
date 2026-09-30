@@ -206,4 +206,6 @@
     <string name="favorite_add">Afegeix als favorits</string>
     <string name="open">Obre</string>
     <string name="loading_list">S\'està carregant la llista…</string>
+    <string name="group_by_release_date">Agrupa per data de llançament</string>
+    <string name="group_by_release_date_summary">Agrupa les aplicacions per data de llançament a la pàgina de novetats.</string>
 </resources>

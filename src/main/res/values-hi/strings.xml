@@ -402,4 +402,6 @@
     <string name="prefs_search_apps_description">खोज परिणामों में शामिल किए जाने वाले एप्लीकेशनस की अधिकतम संख्या (सभी एप्लीकेशनस को शामिल करने के लिए 0 पर सेट करें)।</string>
     <string name="state_modified">संशोधित</string>
     <string name="erase_all">सभी मिटा दें</string>
+    <string name="group_by_release_date">रिलीज़ की तारीख के अनुसार समूहीकृत करें</string>
+    <string name="group_by_release_date_summary">नवीनतम पृष्ठ में ऐप्लिकेशन को उनकी रिलीज़ की तारीख के अनुसार समूहीकृत करें।</string>
 </resources>

@@ -148,8 +148,9 @@ fun ProductItemContent(
                             style = MaterialTheme.typography.labelMedium,
                         )
                     }
-                    val dateText = remember(product.releaseDate) {
-                        if (product.releaseDate > 0L) product.releaseDate.formatDate() else ""
+                    val showReleaseDate = Preferences[Preferences.Key.GroupByReleaseDate]
+                    val dateText = remember(product.releaseDate, showReleaseDate) {
+                        if (showReleaseDate && product.releaseDate > 0L) product.releaseDate.formatDate() else ""
                     }
                     if (dateText.isNotEmpty()) {
                         Text(
@@ -260,8 +261,9 @@ fun ProductCarouselItem(
                         style = MaterialTheme.typography.labelMedium,
                     )
 
-                    val dateText = remember(product.releaseDate) {
-                        if (product.releaseDate > 0L) product.releaseDate.formatDate() else ""
+                    val showReleaseDate = Preferences[Preferences.Key.GroupByReleaseDate]
+                    val dateText = remember(product.releaseDate, showReleaseDate) {
+                        if (showReleaseDate && product.releaseDate > 0L) product.releaseDate.formatDate() else ""
                     }
                     if (dateText.isNotEmpty()) {
                         Text(

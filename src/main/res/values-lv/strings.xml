@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="sync_errors">Vienādošanas kļūdas</string>
+    <string name="group_by_release_date">Grupēt pēc izlaišanas datuma</string>
+    <string name="group_by_release_date_summary">Grupēt lietotnes pēc to izlaišanas datuma jaunumu lapā.</string>
 </resources>

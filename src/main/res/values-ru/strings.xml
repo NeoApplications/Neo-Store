@@ -470,4 +470,6 @@
     <string name="connection_error_FORMAT">Неверный ответ от сервера с кодом: %s %s</string>
     <string name="no_validation_error">Нет ошибки валидации.</string>
     <string name="search_for_repository">Поиск по репозиторию</string>
+    <string name="group_by_release_date">Группировать по дате выпуска</string>
+    <string name="group_by_release_date_summary">Группировать приложения по дате выпуска на вкладке новинок.</string>
 </resources>

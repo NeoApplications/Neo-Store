@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>    <string name="group_by_release_date">Шығарылым күні бойынша топтастыру</string>
+    <string name="group_by_release_date_summary">Қолданбаларды соңғы бетте шығарылым күні бойынша топтастырыңыз.</string>
+</resources>

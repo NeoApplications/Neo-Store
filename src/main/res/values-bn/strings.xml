@@ -267,4 +267,6 @@
     <string name="source_dependencies">নির্ভরতা</string>
     <string name="action_open_website">মুক্ত ওয়েবসাইট</string>
     <string name="trackers_in">ট্র্যাকার আছে %s</string>
+    <string name="group_by_release_date">প্রকাশের তারিখ অনুযায়ী গোষ্ঠীভুক্ত করুন</string>
+    <string name="group_by_release_date_summary">সাম্প্রতিক পৃষ্ঠায় প্রকাশের তারিখ অনুযায়ী অ্যাপগুলিকে গোষ্ঠীভুক্ত করুন।</string>
 </resources>

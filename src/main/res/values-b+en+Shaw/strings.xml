@@ -304,4 +304,6 @@
     <string name="enable_download_directory">𐑿𐑟 𐑒𐑳𐑕𐑑𐑩𐑥 𐑛𐑬𐑯𐑤𐑴𐑛 𐑓𐑴𐑤𐑛𐑼</string>
     <string name="post_notifications_permission_title">𐑐𐑼𐑥𐑦𐑖𐑩𐑯 𐑑 𐑐𐑴𐑕𐑑 𐑯𐑴𐑑𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯𐑟</string>
     <string name="post_notifications_permission_message">𐑕𐑑𐑸𐑑𐑦𐑙 ·𐑨𐑯𐑛𐑮𐑶𐑛 13, 𐑨𐑐𐑕 𐑮𐑦𐑒𐑢𐑲𐑼 𐑞𐑦𐑕 𐑐𐑼𐑥𐑦𐑖𐑩𐑯 𐑑 𐑚𐑰 𐑱𐑚𐑩𐑤 𐑑 𐑐𐑴𐑕𐑑 𐑯𐑴𐑑𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯𐑟.</string>
+    <string name="group_by_release_date">Group by release date</string>
+    <string name="group_by_release_date_summary">Group applications by their release date in the latest page.</string>
 </resources>

@@ -492,4 +492,6 @@
     <string name="disable_list_detail">Desativar layout de lista-pormenor</string>
     <string name="disable_list_detail_summary">Isto desativa a divisão do layout em dois painéis quando o ecrã é grande o suficiente, como num tablet ou num telemóvel no modo paisagem.</string>
     <string name="virustotal_badge">Emblema do Virustotal</string>
+    <string name="group_by_release_date">Agrupar por data de lançamento</string>
+    <string name="group_by_release_date_summary">Agrupar aplicações por data de lançamento na página de novidades.</string>
 </resources>

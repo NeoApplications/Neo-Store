@@ -547,4 +547,6 @@
     <string name="permissions_physical_2">要求大量身体数据权限</string>
     <string name="permissions_physical_3">不要求很多身体数据权限</string>
     <string name="permissions_physical_4">极少量的身体数据权限</string>
+    <string name="group_by_release_date">按发布日期分组</string>
+    <string name="group_by_release_date_summary">在最新页面中按发布日期对应用进行分组。</string>
 </resources>

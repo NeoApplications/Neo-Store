@@ -327,4 +327,6 @@
     <string name="repos_export">Eksporter pakkebrønner</string>
     <string name="installed_export">Eksporter liste over installerte programmer</string>
     <string name="dynamic_black">Svart med dynamiske farger</string>
+    <string name="group_by_release_date">Grupper etter utgivelsesdato</string>
+    <string name="group_by_release_date_summary">Grupper applikasjoner etter utgivelsesdatoen på siden for siste.</string>
 </resources>

@@ -555,4 +555,6 @@
     <string name="permissions_identification_5">Non richiede alcuna autorizzazione per i dati identificativi</string>
     <string name="weights_default">Pesi predefiniti</string>
     <string name="weights_customized">Pesi personalizzati</string>
+    <string name="group_by_release_date">Raggruppa per data di rilascio</string>
+    <string name="group_by_release_date_summary">Raggruppa le applicazioni per data di rilascio nella pagina delle novità.</string>
 </resources>

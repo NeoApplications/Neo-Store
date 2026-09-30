@@ -500,4 +500,6 @@
     <string name="action_start_sans_sync">今は同期しない！</string>
     <string name="setup_FORMAT">セットアップ：%s</string>
     <string name="warning_not_default_app_handler">Neo Storeは、apt.izzysoft.deおよびf-droid.orgのアプリリンクを開くデフォルトアプリに設定されていません。タップしてデフォルトに設定します。</string>
+    <string name="group_by_release_date">リリース日別にグループ化</string>
+    <string name="group_by_release_date_summary">最新ページでアプリケーションをリリース日ごとにグループ化します。</string>
 </resources>

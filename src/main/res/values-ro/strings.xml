@@ -393,4 +393,6 @@
     <string name="wait_to_sync">Așteaptă câteva secunde înainte de a încerca din nou sincronizarea.</string>
     <string name="prefs_search_apps_description">Numărul maxim de aplicații de inclus în rezultatele căutării (setat la 0 pentru a include toate aplicațiile).</string>
     <string name="state_modified">Modificat</string>
+    <string name="group_by_release_date">Grupează după data lansării</string>
+    <string name="group_by_release_date_summary">Grupează aplicațiile după data lansării în pagina cu noutăți.</string>
 </resources>

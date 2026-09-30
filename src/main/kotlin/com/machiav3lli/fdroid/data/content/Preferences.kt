@@ -52,6 +52,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         Key.AltNavBarItem,
         Key.AltNewApps,
         Key.HideNewApps,
+        Key.GroupByReleaseDate,
         Key.BottomSearchBar,
         Key.DisableListDetail,
         Key.ShowScreenshots,
@@ -420,6 +421,8 @@ data object Preferences : OnSharedPreferenceChangeListener {
         data object AltNavBarItem : Key<Boolean>("alt_navbar_item", Value.BooleanValue(false))
         data object AltNewApps : Key<Boolean>("alt_new_apps_layout", Value.BooleanValue(false))
         data object HideNewApps : Key<Boolean>("hide_new_apps", Value.BooleanValue(false))
+        data object GroupByReleaseDate :
+            Key<Boolean>("group_by_release_date", Value.BooleanValue(true))
         data object AltBlockLayout : Key<Boolean>("alt_block_layout", Value.BooleanValue(false))
         data object AndroidInsteadOfSDK :
             Key<Boolean>("android_instead_of_sdk", Value.BooleanValue(true))

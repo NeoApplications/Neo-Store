@@ -223,4 +223,6 @@
         <item quantity="many">%d праграм маюць новую версію.</item>
         <item quantity="other">%d праграм маюць новую версію.</item>
     </plurals>
+    <string name="group_by_release_date">Групаваць па даце выпуску</string>
+    <string name="group_by_release_date_summary">Групаваць праграмы па даце іх выпуску на старонцы навінак.</string>
 </resources>

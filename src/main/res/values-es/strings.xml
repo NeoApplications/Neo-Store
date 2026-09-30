@@ -480,4 +480,6 @@
     <string name="dlstats_provider">Descargar proveedor de estadísticas</string>
     <string name="duplicate_repo_address_FORMAT">La dirección %1$s es un duplicado de un repositorio ya existente.</string>
     <string name="integrity_check_failed">Comprobación de integridad fallida con hash no coincidente.</string>
+    <string name="group_by_release_date">Agrupar por fecha de lanzamiento</string>
+    <string name="group_by_release_date_summary">Agrupar las aplicaciones por su fecha de lanzamiento en la página de novedades.</string>
 </resources>

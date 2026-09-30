@@ -493,4 +493,6 @@
     <string name="disable_autoupdate_non_reproducible_builds_summary">이미 재현 가능한 빌드로 설치된 앱을 재현 불가능한 빌드로 자동 업데이트하지 않습니다.</string>
     <string name="show_disabled_apps">비활성화된 앱 표시</string>
     <string name="show_disabled_apps_summary">시스템에서 비활성화된 앱도 설치된 앱 목록 및 업데이트에 포함합니다.</string>
+    <string name="group_by_release_date">출시일별로 그룹화</string>
+    <string name="group_by_release_date_summary">최신 페이지에서 애플리케이션을 출시일별로 그룹화합니다.</string>
 </resources>
