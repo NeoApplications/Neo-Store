@@ -21,8 +21,7 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import com.anggrayudi.storage.file.children
-import com.anggrayudi.storage.file.toDocumentFile
+import com.anggrayudi.storage.toStorageFile
 import com.machiav3lli.fdroid.ARG_AUTHENTICATION
 import com.machiav3lli.fdroid.ARG_MANUALLY_ENQUEUED
 import com.machiav3lli.fdroid.ARG_NAME
@@ -447,9 +446,9 @@ class DownloadWorker(
         if (isDownloadExternal) {
             context.getDownloadFolder()?.let { downloadFolder ->
                 val cacheFile = Cache.getReleaseFile(applicationContext, task.release.cacheFileName)
-                    .toDocumentFile(applicationContext)
-                if (downloadFolder.children.none { it.name == task.release.cacheFileName }) {
-                    cacheFile?.copyTo(context, downloadFolder)
+                    .toStorageFile(applicationContext)
+                if (downloadFolder.list().none { it.name == task.release.cacheFileName }) {
+                    cacheFile.copyTo(downloadFolder)
                 }
             }
         }

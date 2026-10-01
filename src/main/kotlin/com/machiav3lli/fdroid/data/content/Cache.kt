@@ -10,8 +10,7 @@ import android.provider.OpenableColumns
 import android.system.Os
 import android.util.Log
 import androidx.core.content.FileProvider
-import androidx.documentfile.provider.DocumentFile
-import com.anggrayudi.storage.file.getAbsolutePath
+import com.anggrayudi.storage.StorageFile
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.utils.getDownloadFolder
 import com.machiav3lli.fdroid.utils.isDownloadExternal
@@ -131,7 +130,7 @@ object Cache {
                     }
                 }
                 if (name == "releases" && isDownloadExternal)
-                    cleanupDir(context, context.getDownloadFolder(), hours, "apk")
+                    cleanupDir(context.getDownloadFolder(), hours, "apk")
             }
         }
     }
@@ -171,13 +170,12 @@ object Cache {
     }
 
     private fun cleanupDir(
-        context: Context,
-        dir: DocumentFile?,
+        dir: StorageFile?,
         hours: Int,
         fileExtension: String? = null
     ) {
         val olderThan = System.currentTimeMillis() / 1000L - hours * 60 * 60
-        dir?.listFiles()?.forEach { file ->
+        dir?.list()?.forEach { file ->
             if (fileExtension != null && file.name?.endsWith(
                     ".$fileExtension",
                     ignoreCase = true
@@ -188,7 +186,7 @@ object Cache {
 
             val older = hours <= 0 || run {
                 try {
-                    val stat = Os.lstat(file.getAbsolutePath(context))
+                    val stat = Os.lstat(file.absolutePath)
                     stat.st_atime < olderThan
                 } catch (e: Exception) {
                     false
@@ -196,7 +194,7 @@ object Cache {
             }
             if (older) {
                 if (file.isDirectory) {
-                    cleanupDir(context, file, hours)
+                    cleanupDir(file, hours)
                     if (file.isDirectory) {
                         file.delete()
                     }

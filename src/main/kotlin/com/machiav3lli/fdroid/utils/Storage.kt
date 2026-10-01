@@ -4,59 +4,31 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.net.toUri
-import androidx.documentfile.provider.DocumentFile
-import com.anggrayudi.storage.callback.SingleFileConflictCallback
-import com.anggrayudi.storage.file.DocumentFileCompat
-import com.anggrayudi.storage.file.copyFileTo
-import com.anggrayudi.storage.result.SingleFileResult
+import com.anggrayudi.storage.StorageFile
+import com.anggrayudi.storage.copyTo
+import com.anggrayudi.storage.transfer.TransferResult
 import com.machiav3lli.fdroid.data.content.Preferences
 
 private const val TAG = "util.Storage"
 
-fun Context.getDownloadFolder(): DocumentFile? = DocumentFileCompat
-    .fromUri(this, Preferences[Preferences.Key.DownloadDirectory].toUri())
+fun Context.getDownloadFolder(): StorageFile? = StorageFile
+    .from(this, Preferences[Preferences.Key.DownloadDirectory].toUri())
 
-suspend fun DocumentFile.copyTo(
-    context: Context,
-    downloadFolder: DocumentFile
+suspend fun StorageFile.copyTo(
+    downloadFolder: StorageFile
 ) {
-    copyFileTo(
-        context = context,
+    copyTo(
         targetFolder = downloadFolder,
-        onConflict = object : SingleFileConflictCallback<DocumentFile>() {
-            override fun onFileConflict(
-                destinationFile: DocumentFile,
-                action: FileConflictAction
-            ) {
-                Log.d(TAG, "onFileConflict: $action")
-                super.onFileConflict(destinationFile, action)
-            }
-        }
-    ).collect { result ->
+    ).let { result ->
         when (result) {
-            is SingleFileResult.Validating
-                -> Log.d(TAG, "Validating...")
+            is TransferResult.Success
+                -> Log.d(TAG, "Completed result: ${result.result.name}")
 
-            is SingleFileResult.Preparing
-                -> Log.d(TAG, "Preparing...")
+            is TransferResult.Failure
+                -> Log.e(TAG, result.errorCode.name, result.cause) // TODO add notification
 
-            is SingleFileResult.CountingFiles
-                -> Log.d(TAG, "Counting files...")
-
-            is SingleFileResult.DeletingConflictedFile
-                -> Log.d(TAG, "Deleting conflicted files...")
-
-            is SingleFileResult.Starting
-                -> Log.d(TAG, "Starting...")
-
-            is SingleFileResult.InProgress
-                -> Log.d(TAG, "Progress: ${result.progress.toInt()}%")
-
-            is SingleFileResult.Completed
-                -> Log.d(TAG, "Completed result: ${result.result}")
-
-            is SingleFileResult.Error
-                -> Log.e(TAG, result.errorCode.name) // TODO add notification
+            is TransferResult.Skipped
+                -> Log.d(TAG, "Skipped as ${result.existingTarget} exists...")
         }
     }
 }
