@@ -1,0 +1,11 @@
+Hinzugefügt: Neue umfangreiche Theme Einstellungen
+Hinzugefügt: Vorschläge aus dem Suchverlauf
+Hinzugefügt: App Blockliste in den Einstellungen
+Behoben: Unterstützung von Nicht-Shizuku Apps, die das Backend benutzen
+Behoben: Filter werden in bestimmten Kombinationen nicht angewendet
+Update: Umgestaltung des Privacy Indicator Designs
+Update: Umgestaltung zu einem aussagekräftigen Design
+Entfernt: Exodus Report Service (Widerruf des API Zugriff)
+Entfernt: Index-v0 Unterstützung
+Entfernt: Unterstützung für Android 7 & 7.1 (SDK 24 & 25)
+und mehr in über 80 Änderungen & 70 Übersetzungsbeiträgen

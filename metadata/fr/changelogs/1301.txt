@@ -1,0 +1,8 @@
+Ajout : nouvelle préférence thématique complète
+Ajout : suggestions issues de l'historique de recherche
+Ajout : liste noire d'applications dans les préférences
+Correction : filtres ne s'appliquant pas dans certaines combinaisons
+Suppression : service de rapports Exodus (accès à l'API révoqué)
+Suppression : prise en charge d'Index-v0
+Suppression : prise en charge d'Android 7 et 7.1 (SDK 24 et 25)
+et bien plus encore dans plus de 80 commits et 70 contributions de traduction

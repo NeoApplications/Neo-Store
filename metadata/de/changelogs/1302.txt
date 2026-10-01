@@ -1,0 +1,2 @@
+Behoben: Absturz bei fehlender Versionsnummer
+Behoben: Anzeige unstabiler Updates, obwohl dies in den Einstellungen deaktiviert ist
