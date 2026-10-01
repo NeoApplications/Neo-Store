@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+1.3.2 (02.10.2026) 5 Commits
+------------------
+
+### Function
+
+- Fix: Deleting externally downloaded Apks on erase
+- Fix: Delayed update of App info chips
+- Fix: Clean up Product query
+
 1.3.1 (30.09.2026) 5 Commits
 ------------------
 

@@ -1,0 +1,3 @@
+Fix: Deleting externally downloaded Apks on erase
+Fix: Delayed update of App info chips
+Fix: Clean up Product query

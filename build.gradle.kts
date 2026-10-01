@@ -34,8 +34,8 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1302
-        versionName = "1.3.1"
+        versionCode = 1303
+        versionName = "1.3.2"
     }
 
     compileOptions {
@@ -262,7 +262,9 @@ abstract class GenerateBuildConfig : DefaultTask() {
             package com.machiav3lli.fdroid.config
             
             object BuildConfig {
-                val DETECTED_LOCALES: Array<String> = arrayOf(${detectedLocales.sorted().joinToString { "\"$it\"" }})
+                val DETECTED_LOCALES: Array<String> = arrayOf(${
+                detectedLocales.sorted().joinToString { "\"$it\"" }
+            })
             }
         """.trimIndent()
         )
