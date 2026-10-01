@@ -165,14 +165,16 @@ fun AppPage(
         }
     }
 
+    val snackBarMessage = stringResource(R.string.link_copied_to_clipboard)
+    val snackBarAction = stringResource(R.string.open)
     val copyLinkToClipboard = { link: String ->
         val clipboardManager =
             context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboardManager.setPrimaryClip(ClipData.newPlainText(null, link))
         coroutineScope.launch {
             snackbarHostState.showSnackbar(
-                message = context.getString(R.string.link_copied_to_clipboard),
-                actionLabel = context.getString(R.string.open),
+                message = snackBarMessage,
+                actionLabel = snackBarAction,
                 duration = SnackbarDuration.Short,
             ).apply {
                 if (this == SnackbarResult.ActionPerformed) {
@@ -259,7 +261,8 @@ fun AppPage(
     }
 
     appState.suggestedProductRepo?.let { (eProduct, repo) ->
-        val product by derivedStateOf { eProduct.product }
+        val product = eProduct.product
+        val displayRelease = eProduct.displayRelease
         val imageDataPair by remember(product, repo) {
             mutableStateOf(
                 createIconUri(
@@ -276,10 +279,6 @@ fun AppPage(
                     ScreenshotItem(it, repo)
                 }
             }
-        }
-
-        val displayRelease by remember {
-            derivedStateOf { eProduct.displayRelease }
         }
 
         Scaffold(
@@ -326,11 +325,11 @@ fun AppPage(
                     AppInfoChips(
                         eProduct.appInfoChips(
                             appState.canUpdate,
-                            privacyState.isInstalled,
+                            appState.isInstalled,
                             appState.isEnabled,
                             appState.installedVersion,
                             displayRelease,
-                            extraState.categoryDetails
+                            appState.categoryDetails,
                         )
                     )
                     PrivacyIndicatorsBar(

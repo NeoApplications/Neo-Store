@@ -182,16 +182,28 @@ class AppPageVM(
             .toList()
     }
 
+    private val categoryDetails = combine(
+        suggestedProductRepo,
+        productsRepo.getAllCategoryDetails(),
+    ) { prod, cats ->
+        val catsMap = cats.associateBy(CategoryDetails::name)
+        prod?.first?.product?.let { product ->
+            product.categories.map { catsMap[it]?.label ?: it }
+        }.orEmpty()
+    }.distinctUntilChanged()
+
     val coreAppState: StateFlow<CoreAppState> = combine(
         suggestedProductRepo,
+        categoryDetails,
         installedItem,
         releaseItems,
         productRepos,
-    ) { suggested, installed, releases, prodRepos ->
+    ) { suggested, categories, installed, releases, prodRepos ->
         CoreAppState(
             suggestedProductRepo = suggested,
             releaseItems = releases,
             productRepos = prodRepos,
+            categoryDetails = categories,
             installed = installed,
             isInstalled = installed != null,
             isEnabled = installed?.isEnabled ?: true,
@@ -205,16 +217,6 @@ class AppPageVM(
     )
 
     // Extra state
-    private val categoryDetails = combine(
-        suggestedProductRepo,
-        productsRepo.getAllCategoryDetails(),
-    ) { prod, cats ->
-        val catsMap = cats.associateBy(CategoryDetails::name)
-        prod?.let {
-            it.first.product.categories.map { catsMap[it]?.label ?: it }
-        }.orEmpty()
-    }.distinctUntilChanged()
-
     private val downloadingState = downloadedRepo.getLatestFlow(packageName)
         .mapLatest { it?.state }
         .stateIn(
@@ -469,16 +471,14 @@ class AppPageVM(
     val extraAppState: StateFlow<ExtraAppState> = combine(
         repositories,
         authorProducts,
-        categoryDetails,
         downloadingState,
         primaryAction,
         secondaryActions,
         extras,
-    ) { repos, authorProds, categories, downloading, pAct, sActs, ext ->
+    ) { repos, authorProds, downloading, pAct, sActs, ext ->
         ExtraAppState(
             repositories = repos,
             authorProducts = authorProds,
-            categoryDetails = categories,
             downloadingState = downloading,
             mainAction = pAct,
             subActions = sActs,
@@ -674,6 +674,7 @@ data class CoreAppState(
     val suggestedProductRepo: Pair<EmbeddedProduct, Repository>? = null,
     val releaseItems: List<Quadruple<Release, Repository, Int, RBLog?>> = emptyList(),
     val productRepos: List<Pair<EmbeddedProduct, Repository>> = emptyList(),
+    val categoryDetails: List<String> = emptyList(),
     val installed: Installed? = null,
     val isInstalled: Boolean = false,
     val isEnabled: Boolean = true,
@@ -684,7 +685,6 @@ data class CoreAppState(
 data class ExtraAppState(
     val repositories: List<Repository> = emptyList(),
     val authorProducts: List<ProductItem> = emptyList(),
-    val categoryDetails: List<String> = emptyList(),
     val downloadingState: DownloadState? = null,
     val mainAction: ActionState = ActionState.Bookmark,
     val subActions: ImmutableSet<ActionState> = persistentSetOf(),
