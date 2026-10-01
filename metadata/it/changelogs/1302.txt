@@ -1,0 +1,2 @@
+Corretto: Arresto anomalo dovuto alla mancanza del campo di rilascio
+Corretto: Visualizzazione degli aggiornamenti instabili anche quando l'impostazione è disabilitata
