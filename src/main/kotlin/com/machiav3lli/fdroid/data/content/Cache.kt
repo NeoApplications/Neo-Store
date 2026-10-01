@@ -208,7 +208,9 @@ object Cache {
     fun eraseDownload(context: Context, fileName: String) =
         getPartialReleaseFile(context, fileName).let {
             if (it.exists()) it else getReleaseFile(context, fileName)
-        }.delete()
+        }.delete() && (!isDownloadExternal || context.getDownloadFolder()?.let { downloadFolder ->
+            downloadFolder.list().find { it.name == fileName }?.delete()
+        } ?: true)
 
     class Provider : FileProvider(R.xml.cache_provider) {
         companion object {
