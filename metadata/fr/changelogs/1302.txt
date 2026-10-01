@@ -1,0 +1,2 @@
+Correction : Plantage en cas de champ de version manquant
+Correction : Affichage des mises à jour instables même lorsque le paramètre est désactivé
