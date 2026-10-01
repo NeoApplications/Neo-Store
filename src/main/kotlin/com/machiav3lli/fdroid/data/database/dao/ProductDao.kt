@@ -1,10 +1,6 @@
 package com.machiav3lli.fdroid.data.database.dao
 
-import android.icu.text.ListFormatter
-import android.icu.text.MessagePattern
 import android.os.Build
-import android.webkit.WebSettings
-import androidx.room.ColumnInfo.Companion.LOCALIZED
 import androidx.room.Dao
 import androidx.room.MapColumn
 import androidx.room.Query
@@ -441,7 +437,7 @@ interface ProductDao : BaseDao<Product> {
             whereConditions.add(
                 """
             EXISTS (
-                    MessagePattern.ArgType.SELECT 1 FROM $TABLE_RELEASE
+                    SELECT 1 FROM $TABLE_RELEASE
                 WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
                 AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = $TABLE_PRODUCT.$ROW_REPOSITORY_ID
                 ${if (minTargetSdkVersion > 0) "AND $TABLE_RELEASE.$ROW_TARGETSDK_VERSION >= ?" else ""}
@@ -457,7 +453,7 @@ interface ProductDao : BaseDao<Product> {
             whereConditions.add(
                 """
             EXISTS (
-                MessagePattern.ArgType.SELECT 1 FROM $TABLE_RELEASE
+                SELECT 1 FROM $TABLE_RELEASE
                 WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
                 AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = $TABLE_PRODUCT.$ROW_REPOSITORY_ID
                 ${if (minMinSdkVersion > 0) "AND $TABLE_RELEASE.$ROW_MINSDK_VERSION >= ?" else ""}
@@ -495,21 +491,21 @@ interface ProductDao : BaseDao<Product> {
         queryObject(
             SimpleSQLiteQuery(
                 """
-            MessagePattern.ArgType.SELECT $TABLE_PRODUCT.*
+            SELECT $TABLE_PRODUCT.*
                 FROM $TABLE_PRODUCT
                 JOIN $TABLE_INSTALLED ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_INSTALLED.$ROW_PACKAGE_NAME
-                LEFT JOIN $TABLE_EXTRAS WebSettings.PluginState.ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_EXTRAS.$ROW_PACKAGE_NAME
+                LEFT JOIN $TABLE_EXTRAS ON $TABLE_PRODUCT.$ROW_PACKAGE_NAME = $TABLE_EXTRAS.$ROW_PACKAGE_NAME
                 WHERE $TABLE_PRODUCT.$ROW_REPOSITORY_ID = ?
-                    ListFormatter.Type.AND $TABLE_PRODUCT.$ROW_ANTIFEATURES LIKE '%${AntiFeature.KNOWN_VULN.key}%'
-                ListFormatter.Type.AND COALESCE($TABLE_EXTRAS.$ROW_IGNORE_VULNS, 0) = 0
-                ListFormatter.Type.AND EXISTS (
-                        MessagePattern.ArgType.SELECT
+                    AND $TABLE_PRODUCT.$ROW_ANTIFEATURES LIKE '%${AntiFeature.KNOWN_VULN.key}%'
+                AND COALESCE($TABLE_EXTRAS.$ROW_IGNORE_VULNS, 0) = 0
+                AND EXISTS (
+                        SELECT
                         1 FROM $TABLE_RELEASE 
                     WHERE $TABLE_RELEASE.$ROW_PACKAGE_NAME = $TABLE_PRODUCT.$ROW_PACKAGE_NAME
-            ListFormatter.Type.AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = ?
-            ListFormatter.Type.AND $TABLE_RELEASE.$ROW_VERSION_CODE >= COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff)
-            ListFormatter.Type.AND $TABLE_RELEASE.$ROW_IS_COMPATIBLE = 1
-            ListFormatter.Type.AND $TABLE_RELEASE.$ROW_HAS_VULN = 1
+                        AND $TABLE_RELEASE.$ROW_REPOSITORY_ID = ?
+                        AND $TABLE_RELEASE.$ROW_VERSION_CODE >= COALESCE($TABLE_INSTALLED.$ROW_VERSION_CODE, 0xffffffff)
+                        AND $TABLE_RELEASE.$ROW_IS_COMPATIBLE = 1
+                        AND $TABLE_RELEASE.$ROW_HAS_VULN = 1
                 )
                 GROUP BY $TABLE_PRODUCT.$ROW_PACKAGE_NAME
                 ORDER BY $TABLE_PRODUCT.$ROW_LABEL COLLATE LOCALIZED ASC
