@@ -524,4 +524,27 @@
     <string name="packages_blocklist">Daftar blokir aplikasi</string>
     <string name="apps_num_FORMAT">%d aplikasi</string>
     <string name="sync_errors">Kesalahan sinkronisasi</string>
+    <string name="clear_search_history">Hapus riwayat pencarian</string>
+    <string name="exodus">Buka di Exodus</string>
+    <string name="trackers_control">Kontrol pelacak</string>
+    <string name="prefs_permission_weights">Bobot Izin</string>
+    <string name="source_unclear">Ketersediaan sumber tidak jelas</string>
+    <string name="anti_features_indicator_5">Tidak ada Anti-Feature yang terdeteksi</string>
+    <string name="anti_features_indicator_4">1 Anti-Feature terdeteksi</string>
+    <string name="anti_features_indicator_3">2+ Anti-Feature terdeteksi</string>
+    <string name="anti_features_indicator_2">4+ Anti-Feature atau kerentanan</string>
+    <string name="anti_features_indicator_1">Beberapa Anti-Feature serius</string>
+    <string name="permissions_unknown">Izin yang diperlukan tidak diketahui</string>
+    <string name="permissions_physical_1">Meminta banyak izin berbahaya terhadap data fisik</string>
+    <string name="permissions_physical_2">Memerlukan cukup banyak izin terhadap data fisik</string>
+    <string name="permissions_physical_3">Tidak memerlukan banyak izin terhadap data fisik</string>
+    <string name="permissions_physical_4">Memerlukan jumlah izin minimum terhadap data fisik</string>
+    <string name="permissions_physical_5">Tidak memerlukan izin terhadap data fisik</string>
+    <string name="permissions_identification_1">Meminta banyak izin berbahaya terhadap data identifikasi</string>
+    <string name="permissions_identification_2">Memerlukan cukup banyak izin terhadap data identifikasi</string>
+    <string name="permissions_identification_3">Tidak memerlukan banyak izin terhadap data identifikasi</string>
+    <string name="permissions_identification_4">Memerlukan jumlah izin minimum terhadap data identifikasi</string>
+    <string name="permissions_identification_5">Tidak memerlukan izin terhadap data identifikasi</string>
+    <string name="weights_default">Bobot default</string>
+    <string name="weights_customized">Bobot kustom</string>
 </resources>
