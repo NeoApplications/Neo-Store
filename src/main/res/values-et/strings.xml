@@ -528,4 +528,24 @@
     <string name="clear_search_history">Kustuta otsinguajalugu</string>
     <string name="exodus">Ava Exoduse teenuses</string>
     <string name="trackers_control">Jälitajate teave</string>
+    <string name="prefs_permission_weights">Õiguste osakaalud</string>
+    <string name="source_unclear">Lähtekoodi saadavus pole üheselt selge</string>
+    <string name="anti_features_indicator_5">Ei õnnestunud tuvastada ühtegi omadust, mis ei sobi</string>
+    <string name="anti_features_indicator_4">Tuvastasin ühe omaduse, mis ei sobi</string>
+    <string name="anti_features_indicator_3">Tuvastasin kaks-kolm omadust, mis ei sobi</string>
+    <string name="anti_features_indicator_2">Tuvastasin üle nelja omaduse, mis ei sobi</string>
+    <string name="anti_features_indicator_1">Mitu olulist omadust, mis ei sobi</string>
+    <string name="permissions_unknown">Vajalikud õigused pole teada</string>
+    <string name="permissions_physical_1">Küsib ligipääsuks füüsilistele andmetele mitmeid ohtlikke lubasid</string>
+    <string name="permissions_physical_2">Küsib ligipääsuks füüsilistele andmetele paraja koguse lube</string>
+    <string name="permissions_physical_3">Ei vaja ligipääsuks füüsilistele andmetele paljusid lube</string>
+    <string name="permissions_physical_4">Ligipääsuks füüsilistele andmetele on vaja minimaalselt lube</string>
+    <string name="permissions_physical_5">Ei vaja ühtegi luba ligipääsuks füüsilistele andmetele</string>
+    <string name="permissions_identification_1">Küsib ligipääsuks tuvastusandmetele mitmeid ohtlikke lubasid</string>
+    <string name="permissions_identification_2">Küsib ligipääsuks tuvastusandmetele paraja koguse lube</string>
+    <string name="permissions_identification_3">Ei vaja ligipääsuks tuvastusandmetele paljusid lube</string>
+    <string name="permissions_identification_4">Ligipääsuks tuvastusandmetele on vaja minimaalselt lube</string>
+    <string name="permissions_identification_5">Ei vaja ühtegi luba ligipääsuks tuvastusandmetele</string>
+    <string name="weights_default">Vaikimisi osakaalud</string>
+    <string name="weights_customized">Sinu kohendatud osakaalud</string>
 </resources>
