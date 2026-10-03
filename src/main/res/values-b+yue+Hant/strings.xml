@@ -113,7 +113,7 @@
     <string name="proxy_port">連接埠</string>
     <string name="proxy_type">類型</string>
     <string name="recently_updated">最近出咗更新</string>
-    <string name="repositories">所有存庫</string>
+    <string name="repositories">存庫</string>
     <string name="repository">存庫</string>
     <string name="repository_not_used_DESC">呢個存庫仲未用過。\n連接去睇過入面有咩 app。</string>
     <string name="repository_unsigned_DESC">驗證唔到未有簽署嘅 app 清單。\n由未經簽署嘅存庫入面下載 app 請小心。</string>
@@ -171,7 +171,7 @@
     <string name="prefs_language_title">個 app 用咩文</string>
     <string name="prefs_personalization">個人化</string>
     <string name="show_less">收起佢</string>
-    <string name="latest">最新</string>
+    <string name="latest">新一期</string>
     <string name="explore">貨比貨</string>
     <string name="update_all">全部安裝</string>
     <string name="installed_applications">安裝咗</string>
@@ -204,7 +204,7 @@
     <string name="group_telegram">我哋嘅 TG 谷</string>
     <string name="group_matrix">我哋嘅 Matrix 谷</string>
     <string name="min_sdk">最低 SDK</string>
-    <string name="categories">類別</string>
+    <string name="categories">分類</string>
     <string name="sort_ascending">順序</string>
     <string name="sort_descending">倒序</string>
     <string name="action_apply">套用</string>
@@ -260,7 +260,7 @@
     <string name="sync_errors">同步錯誤</string>
     <string name="edit">有嘢改</string>
     <string name="tools">架生</string>
-    <string name="install_after_sync_summary">睇過晒啲存庫有冇新 app，就安裝晒所有新嘅版本。</string>
+    <string name="install_after_sync_summary">睇過啲存庫有冇新嘅 app，然後就安裝晒所有新嘅版本。</string>
     <string name="source_proprietary">專屬</string>
     <string name="source_proprietary_description">個 app 嘅原始碼非公開取覽。</string>
     <string name="permission_granted">已授權</string>
@@ -406,4 +406,13 @@
     <string name="downloads_top_client_FORMAT">最受歡迎用戶端：%s</string>
     <string name="downloads_recent_FORMAT">最近下載：%s</string>
     <string name="last_successful_sync">最近更新：%s\n全部存庫：%s</string>
+    <string name="show_screenshots_description">喺 app 頁面展覽截圖。</string>
+    <string name="show_screenshots">擺放截圖</string>
+    <string name="favorite_remove">飛起賣飛佛</string>
+    <string name="favorite_add">收編賣飛佛</string>
+    <string name="favorite_applications">賣飛佛</string>
+    <string name="source_copyright_description">個 app 依賴受著作權保護嘅內容，又或者連線到專屬嘅網絡。</string>
+    <string name="source_dependencies_description">個 app 有啲依賴項目未必尊重私隱。</string>
+    <string name="allowed_anti_features">批准無心裝載</string>
+    <string name="allowed_licenses">批准版權協議</string>
 </resources>
