@@ -128,71 +128,84 @@ class BatchSyncWorker(
 
         totalRepos = repositories.size
         val reposFailed = mutableListOf<Long>()
+        val reposErrors = mutableMapOf<Long, String>()
 
         Log.d(TAG, "Starting sync for $totalRepos repositories")
         setForeground(createForegroundInfo(totalRepos, 0))
 
         repositories.map { repo ->
             async {
-                syncSemaphore.withPermit {
-                    val result = syncRepository(repo)
+                try {
+                    syncSemaphore.withPermit {
+                        val result = syncRepository(repo)
 
-                    when {
-                        result.success -> {
-                            Log.d(TAG, "Successfully synced repository: ${repo.name} (${repo.id})")
-                            if (result.changed) reposSucceeded.incrementAndFetch()
-                            if (repo.lastError.isNotEmpty() || repo.lastErrorType != RepositoryUpdater.ErrorType.NONE.ordinal) {
-                                reposRepo.load(repo.id)?.let { fresh ->
-                                    reposRepo.upsert(
-                                        fresh.copy(
-                                            lastError = "",
-                                            lastErrorType = RepositoryUpdater.ErrorType.NONE.ordinal,
+                        when {
+                            result.success -> {
+                                Log.d(TAG, "Successfully synced repository: ${repo.name} (${repo.id})")
+                                if (result.changed) reposSucceeded.incrementAndFetch()
+                                if (repo.lastError.isNotEmpty() || repo.lastErrorType != RepositoryUpdater.ErrorType.NONE.ordinal) {
+                                    reposRepo.load(repo.id)?.let { fresh ->
+                                        reposRepo.upsert(
+                                            fresh.copy(
+                                                lastError = "",
+                                                lastErrorType = RepositoryUpdater.ErrorType.NONE.ordinal,
+                                            )
                                         )
-                                    )
+                                    }
                                 }
+                                setForeground(
+                                    createForegroundInfo(
+                                        totalRepos,
+                                        reposCompleted.incrementAndFetch(),
+                                        activeSyncs.values.toList(),
+                                    )
+                                )
                             }
-                            setForeground(
-                                createForegroundInfo(
-                                    totalRepos,
-                                    reposCompleted.incrementAndFetch(),
-                                    activeSyncs.values.toList(),
-                                )
-                            )
-                        }
 
-                        else           -> {
-                            reposFailed.add(repo.id)
-                            Log.w(TAG, "Failed to sync repository: ${repo.name} (${repo.id})")
-                            langContext.reportSyncFail(
-                                repo.id,
-                                repo.name,
-                                result.error ?: "",
-                                result.errorType,
-                            )
-                            reposRepo.upsert(
-                                repo.copy(
-                                    lastError = result.error ?: "",
-                                    lastErrorType = result.errorType.ordinal,
+                            else           -> {
+                                reposFailed.add(repo.id)
+                                reposErrors[repo.id] = result.error ?: "Unknown error"
+                                Log.w(TAG, "Failed to sync repository: ${repo.name} (${repo.id})")
+                                langContext.reportSyncFail(
+                                    repo.id,
+                                    repo.name,
+                                    result.error ?: "",
+                                    result.errorType,
                                 )
-                            )
-                            setForeground(
-                                createForegroundInfo(
-                                    totalRepos,
-                                    reposCompleted.incrementAndFetch(),
-                                    activeSyncs.values.toList(),
+                                reposRepo.upsert(
+                                    repo.copy(
+                                        lastError = result.error ?: "",
+                                        lastErrorType = result.errorType.ordinal,
+                                    )
                                 )
-                            )
+                                setForeground(
+                                    createForegroundInfo(
+                                        totalRepos,
+                                        reposCompleted.incrementAndFetch(),
+                                        activeSyncs.values.toList(),
+                                    )
+                                )
+                            }
                         }
+                        removeSyncProgress(repo.id)
+
+                        if (result.success) handleRepositoryCompletion(repo.id)
                     }
+                } catch (e: Throwable) {
+                    Log.e(TAG, "Unexpected error syncing repository: ${repo.name} (${repo.id})", e)
+                    reposFailed.add(repo.id)
+                    reposErrors[repo.id] = (e.message ?: "Unknown error")
                     removeSyncProgress(repo.id)
-
-                    if (result.success) handleRepositoryCompletion(repo.id)
                 }
             }
         }.awaitAll()
 
         if (reposFailed.isNotEmpty()) {
             Log.w(TAG, "Failed repositories: ${reposFailed.joinToString()}")
+        }
+
+        for ((repoId, error) in reposErrors) {
+            Log.e(TAG, "Sync crash for repository $repoId: $error")
         }
 
         Triple(totalRepos, reposSucceeded.load(), reposFailed.size)
