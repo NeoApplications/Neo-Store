@@ -395,7 +395,7 @@
     <string name="permissions_physical_3">須要實體數據嘅權限為數不多</string>
     <string name="permissions_physical_4">實體數據嘅權限甚少</string>
     <string name="permissions_physical_5">無須實體數據嘅權限</string>
-    <string name="permissions_identification_1">請求好多識別數據嘅危險嘅權限</string>
+    <string name="permissions_identification_1">請求好多識別數據嘅危險權限</string>
     <string name="permissions_identification_2">須要識別數據嘅權限數目相當</string>
     <string name="permissions_identification_3">須要識別數據嘅權限為數不多</string>
     <string name="permissions_identification_4">識別數據嘅權限甚少</string>
