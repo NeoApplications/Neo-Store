@@ -162,12 +162,13 @@ object Utils {
 
     fun Context.setLanguage(): Configuration {
         var setLocalCode = Preferences[Preferences.Key.Language]
+        LocaleChooser.setLanguage(setLocalCode)
         if (setLocalCode == PREFS_LANGUAGE_DEFAULT) {
-            setLocalCode = Locale.getDefault().toString()
+            setLocalCode = Locale.getDefault().toLanguageTag()
         }
         val config = resources.configuration
         val sysLocale = config.locales[0]
-        if (setLocalCode != sysLocale.toString() || setLocalCode != "${sysLocale.language}-r${sysLocale.country}") {
+        if (setLocalCode != sysLocale.toLanguageTag() && setLocalCode != "${sysLocale.language}-r${sysLocale.country}") {
             val newLocale = getLocaleOfCode(setLocalCode)
             Locale.setDefault(newLocale)
             config.setLocale(newLocale)
@@ -183,6 +184,7 @@ object Utils {
         }
 
     fun translateLocale(locale: Locale): String {
+        if (locale.script.isNotEmpty()) return locale.getDisplayName(locale)
         val country = locale.getDisplayCountry(locale)
         val language = locale.getDisplayLanguage(locale)
         return (language.replaceFirstChar { it.uppercase(Locale.getDefault()) }
@@ -206,7 +208,7 @@ object Utils {
             localeCode.substringAfter("_")
         )
 
-        else -> Locale(localeCode)
+        else -> Locale.forLanguageTag(localeCode)
     }
 
     fun Context.themeSummary(theme: Preferences.NeoTheme): String {

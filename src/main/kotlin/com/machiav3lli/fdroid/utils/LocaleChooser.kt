@@ -1,0 +1,16 @@
+package com.machiav3lli.fdroid.utils
+
+import androidx.core.os.LocaleListCompat
+import com.machiav3lli.fdroid.PREFS_LANGUAGE_DEFAULT
+import java.util.Locale
+
+object LocaleChooser {
+    val defaultLocale: Locale = Locale.getDefault()
+    val defaultLocaleList: LocaleListCompat = LocaleListCompat.getDefault()
+
+    fun setLanguage(locale: String) {
+        if (locale == PREFS_LANGUAGE_DEFAULT && Locale.getDefault() != defaultLocale) {
+            Locale.setDefault(defaultLocale)
+        }
+    }
+}
