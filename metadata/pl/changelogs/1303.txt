@@ -1,0 +1,3 @@
+Poprawka: Usuwanie plików APK pobranych z zewnętrznych źródeł podczas kasowania danych
+Poprawka: Opóźnienie w aktualizacji kart informacyjnych aplikacji
+Poprawka: Uporządkowanie zapytania o produkt
