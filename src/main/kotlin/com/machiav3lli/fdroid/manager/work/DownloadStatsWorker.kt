@@ -18,7 +18,6 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.machiav3lli.fdroid.ARG_EXCEPTION
 import com.machiav3lli.fdroid.ARG_FORCE_WORK
-import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NOTIFICATION_ID_DOWNLOAD_STATS
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
@@ -64,7 +63,7 @@ class DownloadStatsWorker(
 ) : CoroutineWorker(context, params), KoinComponent {
     private val privacyRepository: PrivacyRepository by inject()
     private val downloadSemaphore = Semaphore(3)
-    private val langContext = ContextWrapperX.wrap(applicationContext)
+    private val langContext: Context get() = NeoApp.langContext
 
     override suspend fun doWork(): Result {
         return runCatching {

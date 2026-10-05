@@ -17,7 +17,6 @@ import com.machiav3lli.fdroid.ARG_FILE_NAME
 import com.machiav3lli.fdroid.ARG_NAME
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAME
 import com.machiav3lli.fdroid.ARG_REPOSITORY_ID
-import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.data.database.entity.InstallTask
 import com.machiav3lli.fdroid.data.entity.InstallState
@@ -46,7 +45,7 @@ class InstallWorker(
     private val installState = MutableStateFlow<InstallState>(InstallState.Preparing)
     private val installer: AppInstaller by inject()
     private val installsRepository: InstallsRepository by inject()
-    private val langContext = ContextWrapperX.wrap(applicationContext)
+    private val langContext: Context get() = NeoApp.langContext
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         val label = inputData.getString(ARG_NAME) ?: ""

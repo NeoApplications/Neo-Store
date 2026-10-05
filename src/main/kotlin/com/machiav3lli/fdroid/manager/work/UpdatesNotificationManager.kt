@@ -14,10 +14,10 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.machiav3lli.fdroid.ARG_PACKAGE_NAMES
 import com.machiav3lli.fdroid.ARG_REPOSITORY_IDS
-import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_ID_UPDATES
 import com.machiav3lli.fdroid.NeoActivity
+import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.manager.service.ActionReceiver
@@ -31,7 +31,7 @@ class UpdatesNotificationManager(
 ) {
     private val mutex = Mutex()
     private val possibleUpdates = ConcurrentSet<ProductItem>()
-    private val langContext = ContextWrapperX.wrap(context)
+    private val langContext: Context get() = NeoApp.langContext
 
     suspend fun addUpdates(vararg products: ProductItem) = mutex.withLock {
         possibleUpdates.addAll(products)

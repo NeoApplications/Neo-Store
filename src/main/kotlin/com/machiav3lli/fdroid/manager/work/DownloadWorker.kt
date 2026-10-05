@@ -33,7 +33,6 @@ import com.machiav3lli.fdroid.ARG_STARTED
 import com.machiav3lli.fdroid.ARG_URL
 import com.machiav3lli.fdroid.ARG_URLS
 import com.machiav3lli.fdroid.ARG_VALIDATION_ERROR
-import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.data.content.Cache
@@ -78,7 +77,7 @@ class DownloadWorker(
 ) : CoroutineWorker(context, params), KoinComponent {
     private val packageManager: PackageManager by lazy { context.packageManager }
     private lateinit var task: DownloadTask
-    private val langContext = ContextWrapperX.wrap(applicationContext)
+    private val langContext: Context get() = NeoApp.langContext
     private val downloadedRepo: DownloadedRepository by inject()
     private val installsRepo: InstallsRepository by inject()
     private val notificationManager: NotificationManagerCompat by inject()

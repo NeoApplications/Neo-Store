@@ -24,7 +24,6 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.machiav3lli.fdroid.ARG_REPOSITORY_IDS
 import com.machiav3lli.fdroid.ARG_SYNC_REQUEST
-import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NeoActivity
 import com.machiav3lli.fdroid.NeoApp
@@ -65,7 +64,7 @@ class BatchSyncWorker(
     private val context: Context,
     workerParams: WorkerParameters,
 ) : CoroutineWorker(context, workerParams), KoinComponent {
-    private val langContext = ContextWrapperX.wrap(applicationContext)
+    private val langContext: Context get() = NeoApp.langContext
     private val reposRepo: RepositoriesRepository by inject()
     private val installedRepo: InstalledRepository by inject()
     private val updatesManager: UpdatesNotificationManager by inject()
