@@ -14,12 +14,12 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
-import com.machiav3lli.fdroid.ContextWrapperX
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOADING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_DOWNLOAD_STATS
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_SYNCING
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_UPDATES
 import com.machiav3lli.fdroid.NOTIFICATION_CHANNEL_VULNS
+import com.machiav3lli.fdroid.NeoApp
 import com.machiav3lli.fdroid.R
 import com.machiav3lli.fdroid.TAG_BATCH_SYNC_ONETIME
 import com.machiav3lli.fdroid.TAG_BATCH_SYNC_PERIODIC
@@ -55,7 +55,7 @@ class WorkerManager(private val appContext: Context) : KoinComponent {
 
     private val workManager: WorkManager by inject()
     private val actionReceiver: ActionReceiver by inject()
-    private val langContext: Context = ContextWrapperX.wrap(appContext)
+    private val langContext: Context get() = NeoApp.langContext
     private val notificationManager: NotificationManagerCompat by inject()
     private val productRepo: ProductsRepository by inject()
     private val reposRepo: RepositoriesRepository by inject()

@@ -82,6 +82,10 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
 
         val context: Context get() = neo_store.applicationContext
 
+        private var _langContext: Context? = null
+        val langContext: Context get() = _langContext ?: ContextWrapperX.wrap(context).also { _langContext = it }
+        fun refreshLanguage() { _langContext = null }
+
         val wm: WorkerManager get() = neo_store.wm
         val db: DatabaseX get() = neo_store.db
         val installer: AppInstaller by inject(AppInstaller::class.java)
