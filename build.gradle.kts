@@ -248,7 +248,7 @@ abstract class GenerateBuildConfig : DefaultTask() {
         resDir.get().asFileTree.visit {
             if (file.isFile && file.name == "strings.xml" && file.readText().contains("<string")) {
                 val languageCode = file.parentFile?.name?.removePrefix("values-")?.let {
-                    if (it == "values") "en" else it
+                    if (it == "values") "en" else it.removePrefix("b+").replace("+", "-").replace("-r", "-")
                 }
                 languageCode?.let { detectedLocales.add(it) }
             }
