@@ -1,6 +1,7 @@
 package com.machiav3lli.fdroid
 
 import android.app.Application
+import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.ContextWrapper
@@ -8,6 +9,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.ConfigurationCompat
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
@@ -32,6 +34,7 @@ import com.machiav3lli.fdroid.manager.service.PackageChangedReceiver
 import com.machiav3lli.fdroid.manager.work.BatchSyncWorker
 import com.machiav3lli.fdroid.manager.work.WorkerManager
 import com.machiav3lli.fdroid.manager.work.workmanagerModule
+import com.machiav3lli.fdroid.utils.LocaleChooser
 import com.machiav3lli.fdroid.utils.Utils.setLanguage
 import com.machiav3lli.fdroid.utils.Utils.toInstalledItem
 import com.machiav3lli.fdroid.utils.extension.android.Android
@@ -53,6 +56,7 @@ import org.koin.java.KoinJavaComponent.inject
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 import java.lang.ref.WeakReference
 import java.net.Proxy
+import java.util.Locale
 
 class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
 
@@ -106,6 +110,7 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
 
         Preferences.init(this)
         ioScope.launch {
+            listenLocalesChanged()
             RepositoryUpdater.init()
             listenApplications()
             listenPreferences()
@@ -136,6 +141,27 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
     override fun onTerminate() {
         super.onTerminate()
         applicationScope.cancel()
+    }
+
+    private suspend fun listenLocalesChanged() {
+        registerReceiver(
+            object : BroadcastReceiver() {
+                override fun onReceive(context: Context, intent: Intent) {
+                    if (intent.action == Intent.ACTION_LOCALE_CHANGED) {
+                        val locales = ConfigurationCompat.getLocales(context.resources.configuration)
+                        LocaleChooser.apply {
+                            defaultLocale = locales.get(0) ?: Locale.getDefault()
+                            defaultLocaleList = locales
+                        }
+                        refreshLanguage()
+                        if (Preferences[Preferences.Key.Language] == PREFS_LANGUAGE_DEFAULT) {
+                            mActivity.recreate()
+                        }
+                    }
+                }
+            },
+            IntentFilter(Intent.ACTION_LOCALE_CHANGED)
+        )
     }
 
     private suspend fun listenApplications() {
