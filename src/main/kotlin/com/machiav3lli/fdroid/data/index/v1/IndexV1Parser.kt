@@ -1,13 +1,15 @@
 package com.machiav3lli.fdroid.data.index.v1
 
+import android.util.SparseArray
 import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
+import com.machiav3lli.fdroid.utils.LocaleChooser.LocaleConfig
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import java.io.InputStream
 
-class IndexV1Parser(private val repositoryId: Long, private val callback: Callback) {
+class IndexV1Parser(private val repositoryId: Long, private val callback: Callback, private val localesCallback: LocalesCallback) {
     private val json = Json {
         ignoreUnknownKeys = true
     }
@@ -28,7 +30,12 @@ class IndexV1Parser(private val repositoryId: Long, private val callback: Callba
             }
 
             indexV1.apps.forEach { product ->
-                callback.onProduct(product.toProduct(repositoryId))
+                localesCallback.setLocalized(product.localized.keys)
+                try {
+                    callback.onProduct(product.toProduct(repositoryId, localesCallback))
+                } finally {
+                    localesCallback.resetLocalized()
+                }
             }
 
             indexV1.packages.forEach { (packageName, releases) ->
@@ -53,6 +60,45 @@ class IndexV1Parser(private val repositoryId: Long, private val callback: Callba
 
         fun onProduct(product: IndexProduct)
         fun onReleases(packageName: String, releases: List<Release>)
+    }
+
+    interface LocalesCallback {
+        fun setLocalized(keys: Iterable<String>)
+        fun <T> findLocalized(callback: (String) -> T?): T?
+        fun resetLocalized()
+    }
+
+    open internal class PrefLocalized(private val locales: LocaleConfig) : LocalesCallback {
+        val matched_locales = SparseArray<MutableList<String>>()
+
+        override fun setLocalized(keys: Iterable<String>) {
+            for (locale in keys) {
+                val weight = locales.getWeight(locale)
+                if (weight == -1) continue
+                val list = matched_locales.get(weight)
+                if (list == null) {
+                    matched_locales.put(weight, mutableListOf(locale))
+                } else {
+                    list.add(locale)
+                }
+            }
+        }
+
+        override fun <T> findLocalized(callback: (String) -> T?): T? {
+            for (i in 0..<matched_locales.size()) {
+                for (locale in matched_locales.valueAt(i)) {
+                    val value = callback(locale)
+                    if (value != null) return value
+                }
+            }
+            return null
+        }
+
+        override fun resetLocalized() {
+            for (i in 0..<matched_locales.size()) {
+                matched_locales.valueAt(i).clear()
+            }
+        }
     }
 
     class ParsingException(message: String, cause: Throwable? = null) : Exception(message, cause)

@@ -1,8 +1,5 @@
 package com.machiav3lli.fdroid.data.index.v1
 
-import android.content.res.Resources
-import androidx.core.os.ConfigurationCompat.getLocales
-import androidx.core.os.LocaleListCompat
 import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.entity.AntiFeature
@@ -13,23 +10,22 @@ import com.machiav3lli.fdroid.utils.extension.Quintuple
 import com.machiav3lli.fdroid.utils.extension.android.Android
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import okhttp3.internal.toLongOrDefault
-import java.util.Locale
 
-internal fun IndexV1.App.toProduct(repositoryId: Long) = IndexProduct(
+internal fun IndexV1.App.toProduct(repositoryId: Long, locales: IndexV1Parser.LocalesCallback) = IndexProduct(
     repositoryId = repositoryId,
     packageName = packageName,
     label = name.nullIfEmpty()
-        ?: localized.findLocalizedString(name) { _, localized -> localized.name },
-    summary = localized.findLocalizedString(summary) { _, localized -> localized.summary },
-    description = localized.findLocalizedString(description) { _, localized -> localized.description }
+        ?: localized.findLocalizedString(locales, name) { _, localized -> localized.name },
+    summary = localized.findLocalizedString(locales, summary) { _, localized -> localized.summary },
+    description = localized.findLocalizedString(locales, description) { _, localized -> localized.description }
         .removeSurrounding("\n")
         .replace("\n", "<br/>"),
     added = added,
     updated = lastUpdated,
-    icon = localized.findLocalizedString("/icons/$icon") { key, localized ->
+    icon = localized.findLocalizedString(locales, "/icons/$icon") { key, localized ->
         localized.localeIcon(key).nullIfEmpty()?.let { "/$packageName/$it" } ?: ""
     },
-    metadataIcon = localized.findLocalizedString("") { key, localized -> localized.localeIcon(key) },
+    metadataIcon = localized.findLocalizedString(locales, "") { key, localized -> localized.localeIcon(key) },
     releases = emptyList(),
     categories = categories,
     antiFeatures = antiFeatures,
@@ -43,7 +39,7 @@ internal fun IndexV1.App.toProduct(repositoryId: Long) = IndexProduct(
     )
         .sortedWith(IndexContentMerger.DonateComparator),
     screenshots = localized
-        .find { key, localized ->
+        .find(locales) { key, localized ->
             Quintuple(
                 localized.phoneScreenshots,
                 localized.sevenInchScreenshots,
@@ -67,11 +63,11 @@ internal fun IndexV1.App.toProduct(repositoryId: Long) = IndexProduct(
     author = Author(authorName, authorEmail, authorWebSite),
     source = sourceCode,
     web = webSite,
-    video = localized.findLocalizedString("") { _, localized -> localized.video },
+    video = localized.findLocalizedString(locales, "") { _, localized -> localized.video },
     tracker = issueTracker,
     translation = translation,
     changelog = changelog,
-    whatsNew = localized.findLocalizedString("") { _, localized -> localized.whatsNew }
+    whatsNew = localized.findLocalizedString(locales, "") { _, localized -> localized.whatsNew }
         .removeSurrounding("\n")
         .replace("\n", "<br/>"),
 )
@@ -117,93 +113,18 @@ internal fun IndexV1.Package.toRelease(
 )
 
 internal fun Map<String, IndexV1.Localized>.findLocalizedString(
+    locales: IndexV1Parser.LocalesCallback,
     fallback: String,
     callback: (String, IndexV1.Localized) -> String,
 ): String {
     // @BLumia: it's possible a key of a certain Localized object is empty, so we still need a fallback
-    return (findLocalized { key, localized -> callback(key, localized).trim().nullIfEmpty() }
-        ?: findString(fallback, callback)).trim()
+    return locales.findLocalized { key -> callback(key, this[key]!!).trim().nullIfEmpty() }
+        ?: fallback.trim()
 }
 
-private fun <T> Map<String, IndexV1.Localized>.findLocalized(callback: (String, IndexV1.Localized) -> T?): T? {
-    return getBestLocale(getLocales(Resources.getSystem().configuration))?.let {
-        callback(
-            it.first,
-            it.second
-        )
-    }
-}
-
-/**
- * Gets the best localization for the given [localeList]
- * from collections.
- */
-private fun <T> Map<String, T>?.getBestLocale(localeList: LocaleListCompat): Pair<String, T>? {
-    if (isNullOrEmpty()) return null
-    val defLocale = Locale.getDefault()
-    val defTag = defLocale.toLanguageTag()
-    val sysLocaleMatch = localeList.getFirstMatch(keys.toTypedArray()) ?: return null
-    val sysTag = sysLocaleMatch.toLanguageTag()
-    // try the user-set default language
-    return entries.find { it.key == defTag }?.toPair()
-        ?: run {
-            // split away stuff like script and try language and region only
-            val langCountryTag = "${defLocale.language}-${defLocale.country}"
-            (getOrStartsWith(langCountryTag) ?: run {
-                // split away region tag and try language only
-                val langTag = defLocale.language
-                // try language, then English and then just take the first of the list
-                getOrStartsWith(langTag)
-            })?.toPair()
-        }
-        // now try first matched system tag (usually has region tag, e.g. de-DE)
-        ?: entries.find { it.key == sysTag }?.toPair()
-        ?: run {
-            // split away stuff like script and try language and region only
-            val langCountryTag = "${sysLocaleMatch.language}-${sysLocaleMatch.country}"
-            (entries.find { it.key == langCountryTag } ?: run {
-                // split away region tag and try language only
-                val langTag = sysLocaleMatch.language
-                // try language, then English and then just take the first of the list
-                getOrStartsWith(langTag)
-                    ?: entries.find { it.key == "en-US" }
-                    ?: entries.find { it.key == "en" }
-                    ?: entries.first()
-            }).toPair()
-        }
-}
-
-/**
- * Returns the value from the map with the given key or if that key is not contained in the map,
- * tries the first map key that starts with the given key.
- * If nothing matches, null is returned.
- *
- * This is useful when looking for a language tag like `fr_CH` and falling back to `fr`
- * in a map that has `fr_FR` as a key.
- */
-private fun <T> Map<String, T>.getOrStartsWith(s: String): Map.Entry<String, T>? =
-    entries.find { it.key == s } ?: run {
-        entries.forEach { entry ->
-            if (entry.key.startsWith(s)) return entry
-        }
-        return null
-    }
-
-private fun Map<String, IndexV1.Localized>.findString(
-    fallback: String,
-    callback: (String, IndexV1.Localized) -> String,
-): String {
-    return (find { key, localized -> callback(key, localized).nullIfEmpty() } ?: fallback).trim()
-}
-
-private fun <T> Map<String, IndexV1.Localized>.find(callback: (String, IndexV1.Localized) -> T?): T? {
-    return getAndCall("en-US", callback)
-        ?: getAndCall("en", callback)
-}
-
-private fun <T> Map<String, IndexV1.Localized>.getAndCall(
-    key: String,
+private fun <T> Map<String, IndexV1.Localized>.find(
+    locales: IndexV1Parser.LocalesCallback,
     callback: (String, IndexV1.Localized) -> T?,
 ): T? {
-    return this[key]?.let { callback(key, it) }
+    return locales.findLocalized { callback(it, this[it]!!) }
 }
