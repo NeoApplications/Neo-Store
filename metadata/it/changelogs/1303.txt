@@ -1,0 +1,3 @@
+Corretto: Eliminazione degli APK scaricati esternamente durante la cancellazione
+Corretto: Aggiornamento ritardato delle informazioni sulle app
+Corretto: Pulizia della query del prodotto
