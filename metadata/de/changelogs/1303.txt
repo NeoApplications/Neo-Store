@@ -1,0 +1,3 @@
+Behoben: Entfernung extern heruntergeladener Apks während des Löschvorgangs
+Behoben: Verspätetes Update der App Info-Chips
+Behoben: Aufräumen der Produktanfragen
