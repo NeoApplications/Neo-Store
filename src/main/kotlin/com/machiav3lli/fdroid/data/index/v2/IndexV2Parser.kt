@@ -6,23 +6,25 @@ import android.util.Log
 import com.machiav3lli.fdroid.data.content.Cache
 import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
+import com.machiav3lli.fdroid.utils.LocaleChooser.LocaleConfig
 import com.machiav3lli.fdroid.utils.getLocaleDateString
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import java.io.InputStream
 
-class IndexV2Parser(private val repositoryId: Long, private val callback: Callback) {
+class IndexV2Parser(private val repositoryId: Long, private val callback: Callback, private val localesCallback: LocalesCallback) {
     @OptIn(ExperimentalSerializationApi::class)
     fun parse(inputStream: InputStream) {
         try {
             val indexV2 = json.decodeFromStream<IndexV2>(inputStream)
+            val locales = localesCallback.getLocaleConfig()
 
             with(indexV2.repo) {
                 callback.onRepository(
                     mirrors = listOf(address).plus(mirrors.map { it.url }).distinct(),
-                    name = name.findLocalized(""),
-                    description = description.findLocalized(""),
+                    name = name.findLocalized(locales, ""),
+                    description = description.findLocalized(locales, ""),
                     version = version,
                     timestamp = timestamp,
                     categories = categories,
@@ -32,7 +34,7 @@ class IndexV2Parser(private val repositoryId: Long, private val callback: Callba
             }
 
             indexV2.packages.forEach { (packageName, pkg) ->
-                callback.onProduct(pkg.toProduct(repositoryId, packageName))
+                callback.onProduct(pkg.toProduct(repositoryId, packageName, locales))
                 callback.onReleases(
                     packageName,
                     pkg.versions.map { it.value.toRelease(repositoryId, packageName) },
@@ -57,6 +59,10 @@ class IndexV2Parser(private val repositoryId: Long, private val callback: Callba
 
         fun onProduct(product: IndexProduct)
         fun onReleases(packageName: String, releases: List<Release>)
+    }
+
+    interface LocalesCallback {
+        fun getLocaleConfig(): LocaleConfig
     }
 
     class ParsingException(message: String, cause: Throwable? = null) : Exception(message, cause)

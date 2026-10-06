@@ -25,6 +25,7 @@ import com.machiav3lli.fdroid.data.index.v2.findLocalized
 import com.machiav3lli.fdroid.manager.network.Downloader
 import com.machiav3lli.fdroid.manager.network.HttpResponseException
 import com.machiav3lli.fdroid.manager.work.SyncWorker
+import com.machiav3lli.fdroid.utils.LocaleChooser
 import com.machiav3lli.fdroid.utils.ProgressInputStream
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.extension.text.unhex
@@ -567,6 +568,7 @@ object RepositoryUpdater : KoinComponent {
         val features = context.packageManager.systemAvailableFeatures
             .asSequence().map { it.name }.toSet() + setOf("android.hardware.touchscreen")
 
+        val locales = LocaleChooser.createLocaleConfig()
         val mergerFile = Cache.getTemporaryFile(context)
         try {
             val unmergedProducts = mutableListOf<IndexProduct>()
@@ -625,7 +627,8 @@ object RepositoryUpdater : KoinComponent {
                                     unmergedReleases.clear()
                                 }
                             }
-                        }
+                        },
+                        IndexV1Parser.PrefLocalized(locales)
                     ).parse(progressInputStream)
 
                     if (Thread.interrupted()) throw InterruptedException()
@@ -687,6 +690,7 @@ object RepositoryUpdater : KoinComponent {
         val features = context.packageManager.systemAvailableFeatures
             .asSequence().map { it.name }.toSet() + setOf("android.hardware.touchscreen")
 
+        val locales = LocaleChooser.createLocaleConfig()
         val mergerFile = Cache.getTemporaryFile(context)
         try {
             val unmergedProducts = mutableListOf<IndexProduct>()
@@ -716,17 +720,17 @@ object RepositoryUpdater : KoinComponent {
                                     RepoCategoryTemp(
                                         repository.id,
                                         it.key,
-                                        it.value.name.findLocalized(""),
-                                        it.value.icon.findLocalized(IndexV2.File("")).name,
+                                        it.value.name.findLocalized(locales, ""),
+                                        it.value.icon.findLocalized(locales, IndexV2.File("")).name,
                                     )
                                 })
                                 repoAntifeatures.addAll(antiFeatures.map {
                                     AntiFeatureTemp(
                                         repository.id,
                                         it.key,
-                                        it.value.name.findLocalized(""),
-                                        it.value.description.findLocalized(""),
-                                        it.value.icon.findLocalized(IndexV2.File("")).name,
+                                        it.value.name.findLocalized(locales, ""),
+                                        it.value.description.findLocalized(locales, ""),
+                                        it.value.icon.findLocalized(locales, IndexV2.File("")).name,
                                     )
                                 })
                                 changedRepository = repository.update(
@@ -765,6 +769,9 @@ object RepositoryUpdater : KoinComponent {
                                     unmergedReleases.clear()
                                 }
                             }
+                        },
+                        object : IndexV2Parser.LocalesCallback {
+                            override fun getLocaleConfig() = locales
                         }
                     ).parse(progressInputStream)
 
