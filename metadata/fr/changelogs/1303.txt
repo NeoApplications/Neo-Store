@@ -1,0 +1,3 @@
+Correction : Suppression des APK téléchargés en externe lors de l'effacement
+Correction : Mise à jour retardée des puces d'informations de l'application
+Correction : Nettoyage de la requête produit
