@@ -155,7 +155,7 @@ class NeoApp : Application(), SingletonImageLoader.Factory, KoinStartup {
                         }
                         refreshLanguage()
                         if (Preferences[Preferences.Key.Language] == PREFS_LANGUAGE_DEFAULT) {
-                            mActivity.recreate()
+                            mainActivity?.recreate()
                         }
                     }
                 }
