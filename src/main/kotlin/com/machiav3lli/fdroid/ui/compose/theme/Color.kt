@@ -10,13 +10,13 @@ val LightRedOrange = Color(0xFFFC8D59)
 val StrongRed = Color(0xFFD73027)
 
 val presetColors = mapOf(
-    0xFF33DD55 to R.string.color_green,
-    0xFF3344AA to R.string.color_blue,
-    0xFF6644FF to R.string.color_purple,
-    0xFF00BBBB to R.string.color_teal,
-    0xFFFF8811 to R.string.color_orange,
-    0xFFFFBBCC to R.string.color_pink,
-    0xFFCC0044 to R.string.color_red,
+    0xFF336644 to R.string.color_green,
+    0xFF2266BB to R.string.color_blue,
+    0xFFBBAADD to R.string.color_purple,
+    0xFF4499AA to R.string.color_teal,
+    0xFFEE9955 to R.string.color_orange,
+    0xFFCCAABB to R.string.color_pink,
+    0xFFCC3344 to R.string.color_red,
 )
 
 // Light Themes

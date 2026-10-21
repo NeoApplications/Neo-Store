@@ -307,7 +307,8 @@ data object Preferences : OnSharedPreferenceChangeListener {
             }
         }
 
-        class PermissionWeightsValue(override val value: PermissionWeights) : Value<PermissionWeights>() {
+        class PermissionWeightsValue(override val value: PermissionWeights) :
+            Value<PermissionWeights>() {
             override fun get(
                 preferences: SharedPreferences,
                 key: String,
@@ -321,7 +322,11 @@ data object Preferences : OnSharedPreferenceChangeListener {
                 }
             }
 
-            override fun set(preferences: SharedPreferences, key: String, value: PermissionWeights) {
+            override fun set(
+                preferences: SharedPreferences,
+                key: String,
+                value: PermissionWeights
+            ) {
                 preferences.edit().putString(key, Json.encodeToString(value)).apply()
             }
         }
@@ -707,7 +712,10 @@ data object Preferences : OnSharedPreferenceChangeListener {
             Key<String>("last_modified_trackers", Value.StringValue(""))
 
         data object PermissionWeightsKey :
-            Key<PermissionWeights>("permission_weights", Value.PermissionWeightsValue(PermissionWeights.DEFAULT))
+            Key<PermissionWeights>(
+                "permission_weights",
+                Value.PermissionWeightsValue(PermissionWeights.DEFAULT)
+            )
 
         data object DownloadStatsLastModified :
             Key<String>("last_modified_downloadstats", Value.StringValue(""))
@@ -730,7 +738,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
         fun connectionType() = when (this) {
             Wifi,
             WifiBattery,
-                 -> NetworkType.UNMETERED
+                -> NetworkType.UNMETERED
 
             else -> NetworkType.CONNECTED
         }
@@ -822,7 +830,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
             override val dynamicColor: Boolean
                 get() = true
             override val seedColor: Long
-                get() = 0xFF7EDB80
+                get() = 0xFF336644
             override val paletteStyle: Int
                 get() = PaletteStyle.TonalSpot.ordinal
             override val blackOnDark: Boolean
@@ -840,7 +848,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
             override val dynamicColor: Boolean
                 get() = false
             override val seedColor: Long
-                get() = 0xFF7EDB80
+                get() = 0xFF336644
             override val paletteStyle: Int
                 get() = PaletteStyle.TonalSpot.ordinal
             override val blackOnDark: Boolean
@@ -858,7 +866,7 @@ data object Preferences : OnSharedPreferenceChangeListener {
             override val dynamicColor: Boolean
                 get() = false
             override val seedColor: Long
-                get() = 0xFF005317
+                get() = 0xFF336644
             override val paletteStyle: Int
                 get() = PaletteStyle.TonalSpot.ordinal
             override val blackOnDark: Boolean
