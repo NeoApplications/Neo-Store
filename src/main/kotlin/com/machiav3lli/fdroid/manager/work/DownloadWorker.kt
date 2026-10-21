@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.os.Build
+import android.os.SystemClock
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
@@ -136,14 +137,18 @@ class DownloadWorker(
         )
 
         var lastPerMille = -1
+        var lastProgressUpdate = 0L
 
         val callback: suspend (read: Long, total: Long?, downloadID: Long) -> Unit =
             { read, total, downloadID ->
                 val perMille = if (total != null) (1000f * read / total).roundToInt() else -1
-                val percent = if (total != null) (100f * read / total).roundToInt() else -1
+                val now = SystemClock.elapsedRealtime()
 
-                if (perMille != lastPerMille || total == null) {
+                if ((perMille != lastPerMille || total == null) &&
+                    now - lastProgressUpdate >= PROGRESS_UPDATE_INTERVAL_MS
+                ) {
                     lastPerMille = perMille
+                    lastProgressUpdate = now
 
                     setForeground(
                         createForegroundInfo(
@@ -170,11 +175,11 @@ class DownloadWorker(
                             total = total?.takeIf { it > 0 },
                         )
                     )
+                }
 
-                    if (isStopped && downloadID != -1L) {
-                        ContextCompat.getSystemService(context, DownloadManager::class.java)
-                            ?.remove(downloadID)
-                    }
+                if (isStopped && downloadID != -1L) {
+                    ContextCompat.getSystemService(context, DownloadManager::class.java)
+                        ?.remove(downloadID)
                 }
             }
 
@@ -584,6 +589,7 @@ class DownloadWorker(
 
     companion object {
         private const val TAG = "DownloadWorker"
+        private const val PROGRESS_UPDATE_INTERVAL_MS = 1000L
         val SENSITIVE_PERMISSIONS = setOf(
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO,
