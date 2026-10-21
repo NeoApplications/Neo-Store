@@ -7,7 +7,6 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.EntryProviderScope
@@ -22,7 +21,7 @@ import com.machiav3lli.fdroid.ui.pages.SearchPage
 import com.machiav3lli.fdroid.ui.pages.SortFilterSheet
 import kotlinx.collections.immutable.persistentListOf
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavDisplay(
     backStack: NavBackStack<NavRoute>,

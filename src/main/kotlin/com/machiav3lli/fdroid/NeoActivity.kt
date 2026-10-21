@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -70,7 +69,6 @@ import org.koin.dsl.module
 import kotlin.properties.Delegates
 import kotlin.time.Duration.Companion.milliseconds
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 class NeoActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "NeoActivity"

@@ -97,10 +97,8 @@ fun ReleaseItem(
             ReleaseTitleWithBadge(
                 version = currentRelease.version
             ) {
-                if (currentRelease.platforms.size == 1) {
-                    ReleaseBadge(
-                        text = currentRelease.platforms.first()
-                    )
+                currentRelease.platforms.firstOrNull()?.let { platform ->
+                    ReleaseBadge(text = platform)
                 }
                 if (isSuggested or isInstalled) {
                     val badgeText = remember { mutableIntStateOf(R.string.suggested) }

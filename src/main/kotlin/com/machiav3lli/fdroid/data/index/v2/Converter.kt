@@ -1,8 +1,5 @@
 package com.machiav3lli.fdroid.data.index.v2
 
-import android.content.res.Resources
-import androidx.core.os.ConfigurationCompat.getLocales
-import androidx.core.os.LocaleListCompat
 import com.machiav3lli.fdroid.data.database.entity.IndexProduct
 import com.machiav3lli.fdroid.data.database.entity.Release
 import com.machiav3lli.fdroid.data.entity.AntiFeature
@@ -12,9 +9,12 @@ import com.machiav3lli.fdroid.data.index.IndexContentMerger
 import com.machiav3lli.fdroid.data.index.v2.IndexV2.File
 import com.machiav3lli.fdroid.utils.LocaleChooser.LocaleConfig
 import com.machiav3lli.fdroid.utils.extension.android.Android
-import java.util.Locale
 
-internal fun IndexV2.Package.toProduct(repositoryId: Long, packageName: String, locales: LocaleConfig) = IndexProduct(
+internal fun IndexV2.Package.toProduct(
+    repositoryId: Long,
+    packageName: String,
+    locales: LocaleConfig
+) = IndexProduct(
     repositoryId = repositoryId,
     packageName = packageName,
     label = metadata.name.findLocalized(locales, packageName),
@@ -87,7 +87,7 @@ internal fun IndexV2.Version.toRelease(
     release = file.name.removePrefix("/"),
     hash = file.sha256.orEmpty(),
     hashType = "SHA-256",
-    signature = manifest.signer?.sha256?.first().orEmpty(),
+    signature = manifest.signer?.sha256?.firstOrNull().orEmpty(),
     obbMain = "",
     obbMainHash = "",
     obbMainHashType = "",
