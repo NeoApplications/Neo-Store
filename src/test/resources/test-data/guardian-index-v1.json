@@ -1,0 +1,234 @@
+{
+  "repo": {
+    "address": "https://guardianproject.info/fdroid/repo",
+    "timestamp": 1789368858322,
+    "version": 30000,
+    "maxage": 14,
+    "name": "Guardian Project",
+    "icon": "guardianproject.png",
+    "description": "The official repository of The Guardian Project apps for use with the F-Droid\nclient. Applications in this repository are official binaries built by the\noriginal application developers and signed by the same key as the APKs that\nare released in the Google Play Store.\n",
+    "mirrors": [
+      "https://s3.amazonaws.com/guardianproject/fdroid/repo"
+    ]
+  },
+  "apps": [
+    {
+      "allowedAPKSigningKeys": [
+        "f006a20481c71a690de02e385ab0c9fa4ac1245240f68102682703ba0656867a"
+      ],
+      "authorEmail": "support@guardianproject.info",
+      "authorName": "Guardian Project",
+      "authorWebSite": "https://guardianproject.info",
+      "categories": [
+        "Guardian Project",
+        "Internet",
+        "Security"
+      ],
+      "suggestedVersionCode": "17",
+      "donate": "https://www.torproject.org/donate/donate.html",
+      "liberapay": "GuardianProject",
+      "license": "MPL-2.0",
+      "name": "Orfox",
+      "openCollective": "GuardianProject",
+      "sourceCode": "https://github.com/guardianproject/orfox",
+      "translation": "https://www.transifex.com/otf/torproject/",
+      "webSite": "https://dev.guardianproject.info/projects/orfox-private-browser/",
+      "added": 1474675200000,
+      "icon": "info.guardianproject.orfox.17.png",
+      "packageName": "info.guardianproject.orfox",
+      "lastUpdated": 1596672000000,
+      "antiFeatures": [
+        "KnownVuln"
+      ]
+    },
+    {
+      "allowedAPKSigningKeys": [
+        "f006a20481c71a690de02e385ab0c9fa4ac1245240f68102682703ba0656867a"
+      ],
+      "antiFeatures": [
+        "NonFreeComp"
+      ],
+      "authorEmail": "support@guardianproject.info",
+      "authorName": "Guardian Project",
+      "authorWebSite": "https://proofmode.org/",
+      "categories": [
+        "Multimedia",
+        "Guardian Project"
+      ],
+      "suggestedVersionCode": "260302",
+      "issueTracker": "https://github.com/guardianproject/proofmode-android/issues",
+      "liberapay": "GuardianProject",
+      "license": "GPL-3.0-or-later",
+      "name": "ProofMode: Verified Visuals",
+      "sourceCode": "https://github.com/guardianproject/proofmode-android",
+      "added": 1596672000000,
+      "packageName": "org.witness.proofmode",
+      "lastUpdated": 1750320726000
+    },
+    {
+      "allowedAPKSigningKeys": [
+        "927f7e38b6acbecd84e02dace33efa9a7a2f0979750f28f585688ee38b3a4e28"
+      ],
+      "authorEmail": "support@guardianproject.info",
+      "authorName": "Guardian Project",
+      "authorWebSite": "https://guardianproject.info",
+      "categories": [
+        "Guardian Project",
+        "Security"
+      ],
+      "suggestedVersionCode": "168",
+      "donate": "https://github.com/sponsors/eighthave",
+      "issueTracker": "https://dev.guardianproject.info/projects/panic/issues",
+      "liberapay": "GuardianProject",
+      "license": "GPL-3.0-or-later",
+      "openCollective": "GuardianProject",
+      "sourceCode": "https://github.com/guardianproject/ripple",
+      "translation": "https://hosted.weblate.org/projects/guardianproject/ripple/",
+      "webSite": "https://guardianproject.info/tag/panic",
+      "added": 1480636800000,
+      "packageName": "info.guardianproject.ripple",
+      "lastUpdated": 1734416802000,
+      "name": "Ripple: respond when panicking"
+    }
+  ],
+  "packages": {
+    "info.guardianproject.orfox": [
+      {
+        "added": 1596672000000,
+        "apkName": "Orfox-Final-RIP-v17.apk",
+        "hash": "c43a52e31e0ecc00d12998a1676a4d3a30fdf1774aa81611b2f3ff5f75300f42",
+        "hashType": "sha256",
+        "minSdkVersion": 15,
+        "packageName": "info.guardianproject.orfox",
+        "sig": "d70ac6a02b53ebdd1354ea7af7b9ceee",
+        "signer": "f006a20481c71a690de02e385ab0c9fa4ac1245240f68102682703ba0656867a",
+        "size": 1602513,
+        "targetSdkVersion": 28,
+        "versionCode": 17,
+        "versionName": "Orfox-Final-RIP",
+        "antiFeatures": [
+          "KnownVuln"
+        ]
+      }
+    ],
+    "info.guardianproject.ripple": [
+      {
+        "added": 1734416802000,
+        "apkName": "info.guardianproject.ripple_168.apk",
+        "hash": "a933eba918cacf6e37a4f2d45188ab6d1abb64530031bd3d29f375e90c232b3c",
+        "hashType": "sha256",
+        "minSdkVersion": 14,
+        "packageName": "info.guardianproject.ripple",
+        "sig": "d47234c2500f43d3b273a1ee047497ed",
+        "signer": "927f7e38b6acbecd84e02dace33efa9a7a2f0979750f28f585688ee38b3a4e28",
+        "size": 2251257,
+        "targetSdkVersion": 34,
+        "versionCode": 168,
+        "versionName": "0.3.1"
+      }
+    ],
+    "org.witness.proofmode": [
+      {
+        "added": 1750320726000,
+        "apkName": "ProofMode-2.6.0-RC-2-artwork-universal-release.apk",
+        "hash": "6a767470946cc11159e010341c1f3bc88e8e7b8790ed3a267732501b4e12cec3",
+        "hashType": "sha256",
+        "minSdkVersion": 24,
+        "nativecode": [
+          "arm64-v8a",
+          "armeabi",
+          "armeabi-v7a",
+          "mips",
+          "mips64",
+          "x86",
+          "x86_64"
+        ],
+        "packageName": "org.witness.proofmode",
+        "sig": "d70ac6a02b53ebdd1354ea7af7b9ceee",
+        "signer": "f006a20481c71a690de02e385ab0c9fa4ac1245240f68102682703ba0656867a",
+        "size": 49981927,
+        "targetSdkVersion": 34,
+        "uses-permission": [
+          [
+            "android.permission.READ_MEDIA_IMAGES",
+            null
+          ],
+          [
+            "android.permission.READ_MEDIA_VIDEO",
+            null
+          ],
+          [
+            "android.permission.READ_MEDIA_AUDIO",
+            null
+          ],
+          [
+            "android.permission.READ_EXTERNAL_STORAGE",
+            32
+          ],
+          [
+            "android.permission.WRITE_EXTERNAL_STORAGE",
+            null
+          ],
+          [
+            "android.permission.ACCESS_MEDIA_LOCATION",
+            null
+          ],
+          [
+            "android.permission.POST_NOTIFICATIONS",
+            null
+          ],
+          [
+            "android.permission.CAMERA",
+            null
+          ],
+          [
+            "android.permission.RECORD_AUDIO",
+            null
+          ],
+          [
+            "android.permission.ACCESS_COARSE_LOCATION",
+            null
+          ],
+          [
+            "android.permission.ACCESS_FINE_LOCATION",
+            null
+          ],
+          [
+            "android.permission.ACCESS_NETWORK_STATE",
+            null
+          ],
+          [
+            "android.permission.INTERNET",
+            null
+          ],
+          [
+            "android.permission.READ_PHONE_STATE",
+            null
+          ],
+          [
+            "android.permission.FOREGROUND_SERVICE",
+            null
+          ],
+          [
+            "android.permission.GET_ACCOUNTS",
+            null
+          ],
+          [
+            "android.permission.RECEIVE_BOOT_COMPLETED",
+            null
+          ],
+          [
+            "android.permission.WAKE_LOCK",
+            null
+          ],
+          [
+            "org.witness.proofmode.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION",
+            null
+          ]
+        ],
+        "versionCode": 260302,
+        "versionName": "2.6.0-RC-2"
+      }
+    ]
+  }
+}

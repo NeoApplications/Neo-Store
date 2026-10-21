@@ -1,0 +1,57 @@
+{
+  "repo": {
+    "address": "https://guardianproject.info/fdroid/archive",
+    "timestamp": 1789368859322,
+    "version": 30000,
+    "maxage": 14,
+    "name": "Guardian Project Archive",
+    "icon": "guardianproject.png",
+    "description": "Archive mirror of the Guardian Project repository used to exercise cross-repository ranking.",
+    "mirrors": []
+  },
+  "apps": [
+    {
+      "allowedAPKSigningKeys": [
+        "927f7e38b6acbecd84e02dace33efa9a7a2f0979750f28f585688ee38b3a4e28"
+      ],
+      "authorEmail": "support@guardianproject.info",
+      "authorName": "Guardian Project",
+      "authorWebSite": "https://guardianproject.info",
+      "categories": [
+        "Guardian Project",
+        "Security"
+      ],
+      "suggestedVersionCode": "999",
+      "donate": "https://github.com/sponsors/eighthave",
+      "issueTracker": "https://dev.guardianproject.info/projects/panic/issues",
+      "liberapay": "GuardianProject",
+      "license": "GPL-3.0-or-later",
+      "openCollective": "GuardianProject",
+      "sourceCode": "https://github.com/guardianproject/ripple",
+      "translation": "https://hosted.weblate.org/projects/guardianproject/ripple/",
+      "webSite": "https://guardianproject.info/tag/panic",
+      "added": 1480636800000,
+      "packageName": "info.guardianproject.ripple",
+      "lastUpdated": 1734416802000,
+      "name": "Ripple: respond when panicking"
+    }
+  ],
+  "packages": {
+    "info.guardianproject.ripple": [
+      {
+        "added": 1734416802000,
+        "apkName": "info.guardianproject.ripple_999.apk",
+        "hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "hashType": "sha256",
+        "minSdkVersion": 14,
+        "packageName": "info.guardianproject.ripple",
+        "sig": "9999999999999999999999999999999999999999999999999999999999999999",
+        "signer": "9999999999999999999999999999999999999999999999999999999999999999",
+        "size": 2251257,
+        "targetSdkVersion": 34,
+        "versionCode": 999,
+        "versionName": "9.9.9"
+      }
+    ]
+  }
+}

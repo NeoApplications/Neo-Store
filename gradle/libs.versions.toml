@@ -1,6 +1,7 @@
 [versions]
 activity = "1.13.0"
 agp = "9.4.1"
+arch-core = "2.2.0"
 biometric = "1.2.0-alpha05"
 coil = "3.6.3"
 compose-bom = "2026.09.00"
@@ -38,10 +39,12 @@ shizuku = "13.1.5"
 shizuku-hidden = "4.4.0"
 shizuku-refine = "4.4.0"
 simple-storage = "3.1.0"
+sqlite = "2.7.1"
 stability-analyzer = "0.15.0"
 vico = "3.3.1"
 work = "2.12.0"
 zxing = "3.5.4"
+core-ktx = "1.7.0"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -118,10 +121,14 @@ vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", ve
 material-kolor = { module = "com.materialkolor:material-kolor", version.ref = "material-kolor" }
 
 # Test
+arch-core = { module = "androidx.arch.core:core-testing", version.ref = "arch-core" }
+androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
 junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit-jupiter" }
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junit-jupiter" }
+androidx-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "core-ktx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

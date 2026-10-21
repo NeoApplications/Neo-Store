@@ -1,0 +1,362 @@
+{
+  "repo": {
+    "address": "https://guardianproject.info/fdroid/repo",
+    "timestamp": 1789368858322,
+    "name": {
+      "en-US": "Guardian Project"
+    },
+    "description": {
+      "en-US": "The official repository of The Guardian Project apps for use with the F-Droid\nclient. Applications in this repository are official binaries built by the\noriginal application developers and signed by the same key as the APKs that\nare released in the Google Play Store.\n"
+    },
+    "icon": {
+      "en-US": {
+        "name": "/icons/guardianproject.png",
+        "sha256": "8ce480562d75897b85e717977b783ecaa8aadc685a7e4994b1755fa76884b01f",
+        "size": 36214
+      }
+    },
+    "mirrors": [
+      {
+        "isPrimary": true,
+        "url": "https://guardianproject.info/fdroid/repo",
+        "countryCode": "US"
+      }
+    ],
+    "categories": {
+      "Guardian Project": {
+        "icon": {
+          "en-US": {
+            "name": "/icons/category_guardian_project.png",
+            "sha256": "2775039eee690602ada37b16b433be79d457df0023ac9d7a439f2e22a9eecaac",
+            "size": 38736
+          }
+        },
+        "name": {
+          "en-US": "Guardian Project"
+        }
+      },
+      "Browser": {
+        "name": {
+          "en-US": "Browser"
+        }
+      },
+      "Connectivity": {
+        "name": {
+          "en-US": "Connectivity"
+        }
+      },
+      "Development": {
+        "name": {
+          "en-US": "Development"
+        }
+      },
+      "Internet": {
+        "name": {
+          "en-US": "Internet"
+        }
+      },
+      "Multimedia": {
+        "name": {
+          "en-US": "Multimedia"
+        }
+      },
+      "Navigation": {
+        "name": {
+          "en-US": "Navigation"
+        }
+      },
+      "Phone & SMS": {
+        "name": {
+          "en-US": "Phone & SMS"
+        }
+      },
+      "Security": {
+        "name": {
+          "en-US": "Security"
+        }
+      }
+    },
+    "antiFeatures": {
+      "NonFreeComp": {
+        "description": {
+          "en-US": "This app includes non-free components or software libraries."
+        },
+        "icon": {
+          "en-US": {
+            "name": "/icons/NonFreeComp.png",
+            "sha256": "fdeb1b35495caee5e4c2a289679c978201ad46ab7627a30e501a8b5d4f295fbb",
+            "size": 897
+          }
+        },
+        "name": {
+          "en-US": "Non-Free Components"
+        }
+      }
+    }
+  },
+  "packages": {
+    "info.guardianproject.orfox": {
+      "metadata": {
+        "added": 1474675200000,
+        "categories": [
+          "Guardian Project",
+          "Internet",
+          "Security"
+        ],
+        "lastUpdated": 1596672000000,
+        "license": "MPL-2.0",
+        "sourceCode": "https://github.com/guardianproject/orfox",
+        "webSite": "https://dev.guardianproject.info/projects/orfox-private-browser/",
+        "authorEmail": "support@guardianproject.info",
+        "authorName": "Guardian Project",
+        "authorWebSite": "https://guardianproject.info",
+        "liberapay": "GuardianProject",
+        "openCollective": "GuardianProject",
+        "name": {
+          "en-US": "Orfox"
+        },
+        "summary": {
+          "en-US": "A privacy-focused web browser for use with Orbot, based on Tor Browser"
+        },
+        "description": {
+          "en-US": "Orfox is built from the same source code as Tor Browser (which is built upon Firefox), but with a few minor modifications to the privacy enhancing features to make them compatible with Firefox for Android and the Android operating system.\n\nOrfox REQUIRES Orbot app for Android to connect to the Tor network.\n\nIn as many ways as possible, we adhere to the design goals of Tor Browser (https://www.torproject.org/projects/torbrowser/design/), by supporting as much of their actual code as possible, and extending their work into the additional Android components of Firefox for Android.\n\n** Also, includes NoScript and HTTPSEverywhere add-ons built in!\n\nThe Tor software protects you by bouncing your communications around a distributed network of relays run by volunteers all around the world: it prevents somebody watching your Internet connection from learning what sites you visit, it prevents the sites you visit from learning your physical location, and it lets you access sites which are blocked.\n\nLearn more at:\nhttps://guardianproject.info/apps/orfox\n"
+        },
+        "donate": [
+          "https://www.torproject.org/donate/donate.html"
+        ],
+        "icon": {
+          "en-US": {
+            "name": "/info.guardianproject.orfox/en-US/icon_zb_lC6W3_cKrOkRYuADAE82PcJ_JkdQVQvTXma0aHYI=.png",
+            "sha256": "cdbfe50ba5b7fdc2ab3a4458b800c013cd8f709fc991d41542f4d799ad1a1d82",
+            "size": 32519
+          }
+        },
+        "preferredSigner": "f006a20481c71a690de02e385ab0c9fa4ac1245240f68102682703ba0656867a"
+      },
+      "versions": {
+        "c43a52e31e0ecc00d12998a1676a4d3a30fdf1774aa81611b2f3ff5f75300f42": {
+          "added": 1596672000000,
+          "file": {
+            "name": "/Orfox-Final-RIP-v17.apk",
+            "sha256": "c43a52e31e0ecc00d12998a1676a4d3a30fdf1774aa81611b2f3ff5f75300f42",
+            "size": 1602513,
+            "ipfsCIDv1": "bafybeicv5ew7qbbrayfywyvuplv6ld55fldomlbpt2vbms5trutpp37knm"
+          },
+          "manifest": {
+            "versionName": "Orfox-Final-RIP",
+            "versionCode": 17,
+            "usesSdk": {
+              "minSdkVersion": 15,
+              "targetSdkVersion": 28
+            },
+            "signer": {
+              "sha256": [
+                "f006a20481c71a690de02e385ab0c9fa4ac1245240f68102682703ba0656867a"
+              ]
+            }
+          },
+          "antiFeatures": {
+            "KnownVuln": {
+              "en-US": "Known vulnerability"
+            }
+          }
+        }
+      }
+    },
+    "info.guardianproject.ripple": {
+      "metadata": {
+        "added": 1480636800000,
+        "categories": [
+          "Guardian Project",
+          "Security"
+        ],
+        "issueTracker": "https://dev.guardianproject.info/projects/panic/issues",
+        "lastUpdated": 1734416802000,
+        "license": "GPL-3.0-or-later",
+        "sourceCode": "https://github.com/guardianproject/ripple",
+        "webSite": "https://guardianproject.info/tag/panic",
+        "authorEmail": "support@guardianproject.info",
+        "authorName": "Guardian Project",
+        "authorWebSite": "https://guardianproject.info",
+        "liberapay": "GuardianProject",
+        "openCollective": "GuardianProject",
+        "name": {
+          "en-US": "Ripple: respond when panicking"
+        },
+        "summary": {
+          "en-US": "Trigger apps to protect your privacy when in anxious or panic situations"
+        },
+        "description": {
+          "en-US": "Ripple is a \"panic button\" that can send it's trigger message to any app that is a \"panic responder\".  Such apps can do things like lock, disguise themselves, delete private data, send an emergency message, and more.  It is meant for situations where there is time to react, but where users need to be sure it is not mistakenly set off.\n\nThis is a BETA version of this app!  We are working now to add support to as many other apps as possible.  ChatSecure, Orweb, Umbrella, and Zom already have support, these apps are coming soon: Courier, PanicButton, OpenKeychain, Orfox, SMSSecure, StoryMaker.\n"
+        },
+        "donate": [
+          "https://github.com/sponsors/eighthave"
+        ],
+        "icon": {
+          "en-US": {
+            "name": "/info.guardianproject.ripple/en-US/icon_5rahRVWTJvv7v4UOm0Gde0t88Xh_N4m3wdI-6RTyZ3o=.png",
+            "sha256": "e6b6a145559326fbfbbf850e9b419d7b4b7cf1787f3789b7c1d23ee914f2677a",
+            "size": 64481
+          }
+        },
+        "preferredSigner": "927f7e38b6acbecd84e02dace33efa9a7a2f0979750f28f585688ee38b3a4e28"
+      },
+      "versions": {
+        "a933eba918cacf6e37a4f2d45188ab6d1abb64530031bd3d29f375e90c232b3c": {
+          "added": 1734416802000,
+          "file": {
+            "name": "/info.guardianproject.ripple_168.apk",
+            "sha256": "a933eba918cacf6e37a4f2d45188ab6d1abb64530031bd3d29f375e90c232b3c",
+            "size": 2251257,
+            "ipfsCIDv1": "bafybeicb7tzldl3n4c4bpxxdlbdstjylbenvl6rfth46xi6k3umpua7ptu"
+          },
+          "manifest": {
+            "versionName": "0.3.1",
+            "versionCode": 168,
+            "usesSdk": {
+              "minSdkVersion": 14,
+              "targetSdkVersion": 34
+            },
+            "signer": {
+              "sha256": [
+                "927f7e38b6acbecd84e02dace33efa9a7a2f0979750f28f585688ee38b3a4e28"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "org.witness.proofmode": {
+      "metadata": {
+        "added": 1596672000000,
+        "categories": [
+          "Multimedia",
+          "Guardian Project"
+        ],
+        "issueTracker": "https://github.com/guardianproject/proofmode-android/issues",
+        "lastUpdated": 1750320726000,
+        "license": "GPL-3.0-or-later",
+        "sourceCode": "https://github.com/guardianproject/proofmode-android",
+        "authorEmail": "support@guardianproject.info",
+        "authorName": "Guardian Project",
+        "authorWebSite": "https://proofmode.org/",
+        "liberapay": "GuardianProject",
+        "name": {
+          "en-US": "ProofMode: Verified Visuals"
+        },
+        "summary": {
+          "en-US": "Turn your photos and videos into secure, signed visual evidence"
+        },
+        "description": {
+          "en-US": "ProofMode is light, minimal \"reboot\" of our full encrypted, verified secure camera app, CameraV (https://guardianproject.info/apps/camerav). Our hope was to create a lightweight, almost invisible utility, that you can run all of the time on your phone, that automatically extra digital proof data to all photos and videos you take. This data can then be easily shared through a \"Share Proof\" share action, to anyone you choose.\n\nProofMode is an open-source project. Learn more at https://proofmode.org\n"
+        },
+        "icon": {
+          "en-US": {
+            "name": "/org.witness.proofmode/en-US/icon_6RTVSw3nNVHiIFpKNQnU5AsvXJldXRF9AdLP7FWWCO4=.png",
+            "sha256": "e914d54b0de73551e2205a4a3509d4e40b2f5c995d5d117d01d2cfec559608ee",
+            "size": 52721
+          }
+        },
+        "preferredSigner": "f006a20481c71a690de02e385ab0c9fa4ac1245240f68102682703ba0656867a"
+      },
+      "versions": {
+        "6a767470946cc11159e010341c1f3bc88e8e7b8790ed3a267732501b4e12cec3": {
+          "added": 1750320726000,
+          "file": {
+            "name": "/ProofMode-2.6.0-RC-2-artwork-universal-release.apk",
+            "sha256": "6a767470946cc11159e010341c1f3bc88e8e7b8790ed3a267732501b4e12cec3",
+            "size": 49981927,
+            "ipfsCIDv1": "bafybeidclgi6mxjwrc2y2jewlwyqdgypgzzcc4wg3sobgy2fuojwqxm3wq"
+          },
+          "manifest": {
+            "nativecode": [
+              "arm64-v8a",
+              "armeabi",
+              "armeabi-v7a",
+              "mips",
+              "mips64",
+              "x86",
+              "x86_64"
+            ],
+            "versionName": "2.6.0-RC-2",
+            "versionCode": 260302,
+            "usesSdk": {
+              "minSdkVersion": 24,
+              "targetSdkVersion": 34
+            },
+            "signer": {
+              "sha256": [
+                "f006a20481c71a690de02e385ab0c9fa4ac1245240f68102682703ba0656867a"
+              ]
+            },
+            "usesPermission": [
+              {
+                "name": "android.permission.READ_MEDIA_IMAGES"
+              },
+              {
+                "name": "android.permission.READ_MEDIA_VIDEO"
+              },
+              {
+                "name": "android.permission.READ_MEDIA_AUDIO"
+              },
+              {
+                "name": "android.permission.READ_EXTERNAL_STORAGE",
+                "maxSdkVersion": 32
+              },
+              {
+                "name": "android.permission.WRITE_EXTERNAL_STORAGE"
+              },
+              {
+                "name": "android.permission.ACCESS_MEDIA_LOCATION"
+              },
+              {
+                "name": "android.permission.POST_NOTIFICATIONS"
+              },
+              {
+                "name": "android.permission.CAMERA"
+              },
+              {
+                "name": "android.permission.RECORD_AUDIO"
+              },
+              {
+                "name": "android.permission.ACCESS_COARSE_LOCATION"
+              },
+              {
+                "name": "android.permission.ACCESS_FINE_LOCATION"
+              },
+              {
+                "name": "android.permission.ACCESS_NETWORK_STATE"
+              },
+              {
+                "name": "android.permission.INTERNET"
+              },
+              {
+                "name": "android.permission.READ_PHONE_STATE"
+              },
+              {
+                "name": "android.permission.FOREGROUND_SERVICE"
+              },
+              {
+                "name": "android.permission.GET_ACCOUNTS"
+              },
+              {
+                "name": "android.permission.RECEIVE_BOOT_COMPLETED"
+              },
+              {
+                "name": "android.permission.WAKE_LOCK"
+              },
+              {
+                "name": "org.witness.proofmode.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+              }
+            ]
+          },
+          "antiFeatures": {
+            "NonFreeComp": {
+              "en-US": "ProofMode uses a number of proprietary Google Play Services libraries, such as Play Integrity (SafetyNet), FusionLocationProvider and others, to provide extra assurances about the provenance of media files generated on an Android device.\n"
+            }
+          }
+        }
+      }
+    }
+  }
+}

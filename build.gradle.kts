@@ -222,10 +222,14 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
 
     // Test
+    testImplementation(libs.androidx.sqlite.bundled)
+    testImplementation(libs.arch.core)
+    testImplementation(libs.androidx.core.ktx)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.engine)
     testImplementation(libs.junit.jupiter.params)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 abstract class GenerateBuildConfig : DefaultTask() {
