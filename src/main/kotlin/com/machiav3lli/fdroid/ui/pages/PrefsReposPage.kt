@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -68,6 +69,7 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
     val paneNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
     val pageState by viewModel.reposState.collectAsStateWithLifecycle()
     val sheetData: MutableState<SheetNavigationData?> = remember { mutableStateOf(null) }
+    val queryState = rememberTextFieldState(pageState.query)
 
     val scanLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -204,15 +206,13 @@ fun PrefsReposPage(viewModel: PrefsVM = koinNeoViewModel()) {
                     ) {
                         item {
                             WideSearchField(
-                                query = pageState.query,
+                                queryState = queryState,
                                 modifier = Modifier.fillMaxWidth(),
                                 label = stringResource(R.string.search_for_repository),
                                 onCleanQuery = { viewModel.setSearchQuery("") },
                                 inFocusOnLaunch = false,
                                 onQueryChanged = { newQuery ->
-                                    if (newQuery != pageState.query) viewModel.setSearchQuery(
-                                        newQuery
-                                    )
+                                    viewModel.setSearchQuery(newQuery)
                                 }
                             )
                         }

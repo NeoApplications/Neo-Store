@@ -104,7 +104,7 @@ sealed class NavRoute : NavKey {
     data class SortFilter(val page: String) : NavRoute()
 
     @Serializable
-    data object Search : NavRoute()
+    data class Search(val query: String) : NavRoute()
 
     @Serializable
     data class Prefs(val page: Int = 0) : NavRoute()

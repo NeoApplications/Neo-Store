@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,6 +48,7 @@ fun OnboardingReposPage(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val pageState by viewModel.reposState.collectAsStateWithLifecycle()
+    val queryState = rememberTextFieldState(pageState.query)
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -61,13 +63,13 @@ fun OnboardingReposPage(
         ) {
             item {
                 WideSearchField(
-                    query = pageState.query,
+                    queryState = queryState,
                     modifier = Modifier.fillMaxWidth(),
                     label = stringResource(R.string.search_for_repository),
                     inFocusOnLaunch = false,
                     onCleanQuery = { viewModel.setSearchQuery("") },
                     onQueryChanged = { newQuery ->
-                        if (newQuery != pageState.query) viewModel.setSearchQuery(newQuery)
+                        viewModel.setSearchQuery(newQuery)
                     }
                 )
             }

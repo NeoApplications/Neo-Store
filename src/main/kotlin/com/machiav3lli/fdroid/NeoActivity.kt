@@ -37,13 +37,13 @@ import com.machiav3lli.fdroid.data.repository.InstallsRepository
 import com.machiav3lli.fdroid.data.repository.PrivacyRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
-import com.machiav3lli.fdroid.ui.pages.SplashPage
 import com.machiav3lli.fdroid.ui.compose.theme.AppTheme
 import com.machiav3lli.fdroid.ui.navigation.AppNavDisplay
 import com.machiav3lli.fdroid.ui.navigation.NavItem
 import com.machiav3lli.fdroid.ui.navigation.NavRoute
 import com.machiav3lli.fdroid.ui.navigation.navigate
 import com.machiav3lli.fdroid.ui.navigation.navigateUnique
+import com.machiav3lli.fdroid.ui.pages.SplashPage
 import com.machiav3lli.fdroid.utils.InstallUtils
 import com.machiav3lli.fdroid.utils.extension.text.nullIfEmpty
 import com.machiav3lli.fdroid.utils.extension.text.pathCropped
@@ -91,7 +91,6 @@ class NeoActivity : AppCompatActivity() {
 
     private var currentTheme by Delegates.notNull<Int>()
     private val mainViewModel: MainVM by viewModel()
-    private val searchViewModel: SearchVM by viewModel()
     private val prefsViewModel: PrefsVM by viewModel()
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -144,6 +143,7 @@ class NeoActivity : AppCompatActivity() {
                             )
                         }
                     }
+
                     else -> {
                         BackHandler(navStack.size == 1) {
                             moveTaskToBack(true)
@@ -297,7 +297,7 @@ class NeoActivity : AppCompatActivity() {
                     runBlocking(Dispatchers.IO) {
                         if (!packageName.isNullOrEmpty() && mainViewModel.productExist(packageName))
                             navigateProduct(packageName)
-                        else showSearchPage(packageName)
+                        else showSearchPage(packageName ?: "")
                     }
                 }
             }
@@ -343,9 +343,8 @@ class NeoActivity : AppCompatActivity() {
         navStack.navigateUnique(NavRoute.SortFilter(page.destination))
     }
 
-    fun showSearchPage(query: String? = null) {
-        navStack.navigateUnique(NavRoute.Search)
-        searchViewModel.setSearchQuery(query ?: "")
+    fun showSearchPage(query: String = "") {
+        navStack.navigateUnique(NavRoute.Search(query))
     }
 
     fun launchLockPrompt(action: () -> Unit) {

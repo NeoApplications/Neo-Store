@@ -87,8 +87,8 @@ fun AppNavDisplay(
             }
             slideInEntry<NavRoute.Search>(
                 metadata = ListDetailScene.listPane()
-            ) {
-                SearchPage {
+            ) { key ->
+                SearchPage(key.query) {
                     backStack.removeLastOrNull()
                 }
             }

@@ -16,9 +16,9 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ListItem
@@ -97,12 +97,13 @@ fun ExpandableSearchAction(
     onQueryChanged: (String) -> Unit,
 ) {
     val (isExpanded, onExpanded) = remember { expanded }
+    val queryState = rememberTextFieldState(query)
 
     HorizontalExpandingVisibility(
         expanded = isExpanded,
         expandedView = {
             WideSearchField(
-                query = query,
+                queryState = queryState,
                 modifier = modifier,
                 onCleanQuery = onClose,
                 //onExpanded = onExpanded,
@@ -187,22 +188,21 @@ fun RowScope.ExpandedSearchView(
 
 @Composable
 fun WideSearchField(
-    query: String,
+    queryState: TextFieldState,
     modifier: Modifier = Modifier,
     label: String = stringResource(id = R.string.search),
     showCloseButton: Boolean = false,
     inFocusOnLaunch: Boolean = true,
     onClose: () -> Unit = {},
-    onCleanQuery: () -> Unit,
-    onQueryChanged: (String) -> Unit,
+    onCleanQuery: () -> Unit = {},
+    onQueryChanged: (String) -> Unit = {},
     onDone: () -> Unit = {},
 ) {
-    val textFieldState = rememberTextFieldState(initialText = query)
     val focusRequester = remember { FocusRequester() }
     var focusRequested by rememberSaveable { mutableStateOf(false) }
 
-    LaunchedEffect(textFieldState) {
-        snapshotFlow { textFieldState.text.toString() }
+    LaunchedEffect(queryState) {
+        snapshotFlow { queryState.text.toString() }
             .collectLatest { text ->
                 onQueryChanged(text)
             }
@@ -215,25 +215,19 @@ fun WideSearchField(
         }
     }
 
-    LaunchedEffect(query) {
-        if (textFieldState.text.toString() != query) {
-            textFieldState.setTextAndPlaceCursorAtEnd(query)
-        }
-    }
-
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         OutlinedTextField(
-            state = textFieldState,
+            state = queryState,
             modifier = Modifier
                 .weight(1f)
                 .focusRequester(focusRequester),
             shape = MaterialTheme.shapes.extraLarge,
             trailingIcon = {
                 AnimatedVisibility(
-                    visible = textFieldState.text.isNotEmpty(),
+                    visible = queryState.text.isNotEmpty(),
                     enter = expandHorizontally(expandFrom = Alignment.Start),
                     exit = shrinkHorizontally(shrinkTowards = Alignment.Start),
                 ) {
@@ -241,7 +235,7 @@ fun WideSearchField(
                         icon = Phosphor.ArrowUUpLeft,
                         description = stringResource(id = R.string.cancel)
                     ) {
-                        textFieldState.clearText()
+                        queryState.clearText()
                         onCleanQuery()
                     }
                 }
@@ -262,7 +256,7 @@ fun WideSearchField(
             icon = Phosphor.X,
             description = stringResource(id = R.string.cancel)
         ) {
-            textFieldState.clearText()
+            queryState.clearText()
             onCleanQuery()
             onClose()
         }

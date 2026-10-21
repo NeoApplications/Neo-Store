@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuPopup
@@ -31,6 +33,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -71,6 +74,7 @@ import com.machiav3lli.fdroid.viewmodels.SearchVM
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchPage(
+    query: String = "",
     viewModel: SearchVM = koinNeoViewModel(),
     mainVM: MainVM = koinNeoViewModel(),
     onDismiss: () -> Unit,
@@ -86,6 +90,8 @@ fun SearchPage(
     val dataState by mainVM.dataState.collectAsStateWithLifecycle()
 
     val searchHistory by viewModel.searchHistory.collectAsStateWithLifecycle()
+    val queryState = rememberTextFieldState(pageState.query)
+    var lastProcessedQuery by rememberSaveable { mutableStateOf("") }
     val suggestions = if (pageState.query.isBlank()) {
         searchHistory.take(5)
     } else {
@@ -126,6 +132,15 @@ fun SearchPage(
         // TODO find another solution as this blocks the predictive back gesture
         viewModel.setSearchQuery("")
         onDismiss()
+    }
+
+    LaunchedEffect(query) {
+        if (query != lastProcessedQuery) {
+            viewModel.setSearchQuery(query)
+            queryState.setTextAndPlaceCursorAtEnd(query)
+            showSuggestions = true
+            lastProcessedQuery = query
+        }
     }
 
     LaunchedEffect(Unit) {
@@ -169,19 +184,17 @@ fun SearchPage(
                 withTopBarInsets = !Preferences[Preferences.Key.BottomSearchBar],
             ) {
                 WideSearchField(
-                    query = pageState.query,
+                    queryState = queryState,
                     modifier = Modifier.weight(1f),
                     onQueryChanged = { newQuery ->
-                        if (newQuery != pageState.query) {
-                            viewModel.setSearchQuery(newQuery)
-                            showSuggestions = true
-                        }
+                        viewModel.setSearchQuery(newQuery)
+                        showSuggestions = true
                     },
                     onCleanQuery = {
                         viewModel.setSearchQuery("")
                     },
                     onDone = {
-                        viewModel.submitSearchQuery(pageState.query)
+                        viewModel.submitSearchQuery(queryState.text.toString())
                         showSuggestions = false
                     },
                 )

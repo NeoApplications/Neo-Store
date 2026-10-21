@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -241,8 +243,15 @@ fun <T> MultiSelectionDialogUI(
 ) {
     val context = LocalContext.current
     var selected by remember { mutableStateOf(selectedItems) }
-    val query = retain { mutableStateOf("") }
     val entryPairs = entryMap.toList()
+    val queryState = rememberTextFieldState("")
+    val filteredEntryPairs by remember {
+        derivedStateOf {
+            entryPairs.filter {
+                it.second.contains(queryState.text, true)
+            }
+        }
+    }
 
     Card(
         shape = MaterialTheme.shapes.extraLarge,
@@ -260,13 +269,7 @@ fun <T> MultiSelectionDialogUI(
             Text(text = titleText, style = MaterialTheme.typography.titleLarge)
             if (withSearchBar) {
                 WideSearchField(
-                    query = query.value,
-                    onQueryChanged = {
-                        query.value = it
-                    },
-                    onCleanQuery = {
-                        query.value = ""
-                    }
+                    queryState = queryState,
                 )
             }
             LazyColumn(
@@ -275,9 +278,7 @@ fun <T> MultiSelectionDialogUI(
                     .weight(1f, false)
                     .blockShadow()
             ) {
-                items(items = entryPairs.filter {
-                    it.second.contains(query.value, true)
-                }) { (key, label) ->
+                items(items = filteredEntryPairs) { (key, label) ->
                     val isSelected = retain(selected, key) {
                         mutableStateOf(selected.contains(key))
                     }
