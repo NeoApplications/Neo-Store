@@ -63,6 +63,8 @@ data class Repository(
     val lastError: String = "",
     @ColumnInfo(defaultValue = "0")
     val lastErrorType: Int = 0,
+    @ColumnInfo(defaultValue = "[]")
+    val disabledMirrors: List<String> = emptyList(),
 ) {
     val intentAddress: String
         get() = "${address.trimEnd('/')}?fingerprint=$fingerprint"
@@ -130,11 +132,17 @@ data class Repository(
 
     val downloadAddress: String
         get() = if (!mirrorRotation || mirrors.isEmpty()) address
-        else mirrors.filter { address.contains(".onion/") || !it.contains(".onion/") }.random()
+        else mirrors.filter {
+            it !in disabledMirrors &&
+                    (address.contains(".onion/") || !it.contains(".onion/"))
+        }.random()
 
     val downloadMirrorAddresses: Array<String>
         get() = if (!mirrorRotation || mirrors.isEmpty()) arrayOf(address)
-        else mirrors.filter { address.contains(".onion/") || !it.contains(".onion/") }
+        else mirrors.filter {
+            it !in disabledMirrors &&
+                    (address.contains(".onion/") || !it.contains(".onion/"))
+        }
             .toTypedArray()
 
     fun toJSON() = Json.encodeToString(this)
@@ -240,11 +248,13 @@ data class Repository(
             address: String, name: String, description: String, version: Int,
             enabled: Boolean, fingerprint: String, authentication: String, webBaseUrl: String = "",
             mirrorRotation: Boolean = false, trusted: Boolean = false,
+            disabledMirrors: List<String> = emptyList(),
         ): Repository = Repository(
             0, address, emptyList(), name, description, version, enabled,
             fingerprint, "", "", "", "",
             0L, 0L, authentication, webBaseUrl,
             mirrorRotation = mirrorRotation, trusted = trusted,
+            disabledMirrors = disabledMirrors,
         )
 
         private val F_DROID = defaultRepository(
