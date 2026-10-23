@@ -1,0 +1,6 @@
+Add: Disabled mirrors preference for repositories
+Fix: Throttle notification updates during download for better performance (credits @gilcu3)
+Fix: Search "stuttering" issue on some systems
+Update: Re-enable main F-Droid mirror rotation per default with selected disabled mirrors
+Update: Revamped handling of app languages (credits @ray2c)
+and more in over 20 commits & 30 translation contributions

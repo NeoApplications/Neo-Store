@@ -1,6 +1,20 @@
 CHANGELOG
 =========
 
+1.3.3 (23.10.2026) +20 Commits +30 Translations
+------------------
+
+### Function
+
+- Fix: Throttle notification updates during download for better performance (credits @gilcu3)
+- Update: Re-enable main F-Droid mirror rotation per default with selected disabled mirrors
+- Update: Revamped handling of app languages (credits @ray2c)
+
+### UI/UX
+
+- Add: Disabled mirrors preference for repositories
+- Fix: Search "stuttering" issue on some systems
+
 1.3.2 (02.10.2026) 5 Commits
 ------------------
 

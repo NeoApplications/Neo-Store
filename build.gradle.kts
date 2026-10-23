@@ -34,8 +34,8 @@ android {
         applicationId = "com.machiav3lli.fdroid"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1303
-        versionName = "1.3.2"
+        versionCode = 1304
+        versionName = "1.3.3"
     }
 
     compileOptions {
@@ -136,7 +136,6 @@ android {
 }
 
 dependencies {
-
     // Core
     implementation(libs.kotlin.stdlib)
     implementation(libs.ksp)
