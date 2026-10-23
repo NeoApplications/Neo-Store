@@ -266,7 +266,16 @@ data class Repository(
             true,
             "43238D512C1E5EB2D6569F4A3AFBF5523418B82E0A3ED1552770ABB9A9C9CCAB", "",
             "https://f-droid.org/packages/",
-            mirrorRotation = false, trusted = true,
+            mirrorRotation = true, trusted = true,
+            disabledMirrors = listOf(
+                "https://fdroid.tetaneutral.net/fdroid/repo",
+                "https://mirror.level66.services/fdroid/repo",
+                "https://mirrors.dotsrc.org/fdroid/repo",
+                "https://opencolo.mm.fcix.net/fdroid/repo",
+                "https://mirrors.hostico.ro/fdroid/repo",
+                "https://ftp.lug.ro/fdroid/repo",
+                "https://mirrors.chroot.ro/fdroid/repo",
+            ),
         )
         private val F_DROID_ARCHIVE =
             defaultRepository(
