@@ -25,11 +25,13 @@ object Converters {
 
     @TypeConverter
     @JvmStatic
-    fun toStringList(byteArray: ByteArray): List<String> {
-        val string = String(byteArray)
-        return if (string == "") emptyList()
-        else string.removeSurrounding("[", "]").split(", ").filter(String::isNotEmpty)
-    }
+    fun toStringList(byteArray: ByteArray): List<String> =
+        when (val string = String(byteArray)) {
+            "", "[]" -> emptyList()
+            else     -> string.removeSurrounding("[", "]")
+                .split(", ")
+                .filter(String::isNotEmpty)
+        }
 
     @JvmName("stringListToByteArray")
     @TypeConverter
@@ -38,15 +40,18 @@ object Converters {
 
     @TypeConverter
     @JvmStatic
-    fun toPairStringList(byteArray: ByteArray): List<Pair<String, String>> {
-        val string = String(byteArray)
-        return if (string == "") emptyList()
-        else string.removeSurrounding("[", "]").split(",").filter(String::isNotEmpty).mapNotNull {
-            val pairs = it.split("|")
-            if (pairs.size == 2) Pair(pairs[0], pairs[1])
-            else null
+    fun toPairStringList(byteArray: ByteArray): List<Pair<String, String>> =
+        when (val string = String(byteArray)) {
+            "", "[]" -> emptyList()
+            else     -> string.removeSurrounding("[", "]")
+                .split(",")
+                .filter(String::isNotEmpty)
+                .mapNotNull {
+                    val pairs = it.split("|")
+                    if (pairs.size == 2) Pair(pairs[0], pairs[1])
+                    else null
+                }
         }
-    }
 
     @JvmName("pairStringListToByteArray")
     @TypeConverter
@@ -73,8 +78,10 @@ object Converters {
     @TypeConverter
     @JvmStatic
     fun toReleases(byteArray: ByteArray): List<Release> =
-        if (String(byteArray) == "") emptyList()
-        else String(byteArray).split("|").map { Release.fromJson(it) }
+        when (val string = String(byteArray)) {
+            "", "[]" -> emptyList()
+            else     -> string.split("|").map { Release.fromJson(it) }
+        }
 
     @JvmName("releasesToByteArray")
     @TypeConverter
@@ -86,8 +93,10 @@ object Converters {
     @TypeConverter
     @JvmStatic
     fun toIncompatibilities(byteArray: ByteArray): List<Release.Incompatibility> =
-        if (String(byteArray) == "") emptyList()
-        else String(byteArray).split("|").map { Release.Incompatibility.fromJson(it) }
+        when (val string = String(byteArray)) {
+            "", "[]" -> emptyList()
+            else     -> string.split("|").map { Release.Incompatibility.fromJson(it) }
+        }
 
     @JvmName("incompatibilitiesToByteArray")
     @TypeConverter
@@ -100,8 +109,10 @@ object Converters {
     @TypeConverter
     @JvmStatic
     fun toDonates(byteArray: ByteArray): List<Donate> =
-        if (String(byteArray) == "") emptyList()
-        else String(byteArray).split("|").map { Donate.fromJson(it) }
+        when (val string = String(byteArray)) {
+            "", "[]" -> emptyList()
+            else     -> string.split("|").map { Donate.fromJson(it) }
+        }
 
     @JvmName("donatesToByteArray")
     @TypeConverter
