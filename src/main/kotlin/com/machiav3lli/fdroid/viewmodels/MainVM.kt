@@ -15,7 +15,6 @@ import com.machiav3lli.fdroid.data.repository.InstalledRepository
 import com.machiav3lli.fdroid.data.repository.ProductsRepository
 import com.machiav3lli.fdroid.data.repository.RepositoriesRepository
 import com.machiav3lli.fdroid.utils.extension.sortedLocalized
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -25,11 +24,9 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
-@OptIn(
-    ExperimentalCoroutinesApi::class,
-    FlowPreview::class,
-)
+@OptIn(FlowPreview::class)
 open class MainVM(
     private val extrasRepo: ExtrasRepository,
     private val productsRepo: ProductsRepository,
@@ -68,7 +65,7 @@ open class MainVM(
             it.filter { it.state.isActive }
                 .sortedLocalized { state.name }
         }
-        .debounce(100L)
+        .debounce(100L.milliseconds)
 
     val combinedUpdatesList = combine(
         updates,

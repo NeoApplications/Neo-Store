@@ -23,7 +23,6 @@ import com.machiav3lli.fdroid.data.entity.ProductItem
 import com.machiav3lli.fdroid.ui.components.ProductItemContent
 import com.machiav3lli.fdroid.ui.compose.utils.blockShadow
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
 fun <T> ListDialogUI(
@@ -76,7 +75,6 @@ fun <T> ListDialogUI(
     }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun ProductsListDialogUI(
     title: String,

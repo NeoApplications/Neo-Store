@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(
     ExperimentalCoroutinesApi::class,
@@ -62,7 +63,7 @@ class InstalledVM(
 
     private val sortedDownloads = downloadedRepo.getAllFlow()
         .map { it.sortedByDescending { it.changed / 10_000L } }
-        .debounce(100L)
+        .debounce(100L.milliseconds)
 
     val installedPageState: StateFlow<InstalledPageState> = combine(
         installed,
