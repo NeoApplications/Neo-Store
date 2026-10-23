@@ -42,7 +42,9 @@ import com.machiav3lli.fdroid.utils.Utils
 import com.machiav3lli.fdroid.utils.Utils.getLocaleOfCode
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toPersistentMap
 
 @Composable
 fun LanguagePrefDialogUI(
@@ -308,5 +310,25 @@ fun <T> MultiSelectionDialogUI(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun MultiSelectionListDialogUI(
+    title: String,
+    selectedItems: ImmutableSet<String>,
+    allItems: ImmutableSet<String>,
+    openDialogCustom: MutableState<Boolean>,
+    withSearchBar: Boolean = false,
+    onSelectionChanged: (newList: Set<String>) -> Unit,
+) {
+    MultiSelectionDialogUI(
+        titleText = title,
+        entryMap = allItems.sorted().associateWith { it }.toPersistentMap(),
+        selectedItems = selectedItems.toPersistentList(),
+        withSearchBar = withSearchBar,
+        openDialogCustom = openDialogCustom,
+    ) {
+        onSelectionChanged(it.toSet())
     }
 }
