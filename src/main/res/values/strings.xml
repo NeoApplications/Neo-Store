@@ -551,4 +551,10 @@
     <string name="permissions_identification_5">Requires no permissions to identification data</string>
     <string name="weights_default">Default weights</string>
     <string name="weights_customized">Custom weights</string>
+    <string name="disabled_mirrors">Disabled mirrors</string>
+    <plurals name="disabled_mirrors_FORMAT">
+        <item quantity="zero">No disabled mirrors.</item>
+        <item quantity="one">%d disabled mirror.</item>
+        <item quantity="other">%d disabled mirrors.</item>
+    </plurals>
 </resources>

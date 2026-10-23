@@ -40,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -68,6 +69,7 @@ import com.machiav3lli.fdroid.ui.compose.icons.phosphor.X
 import com.machiav3lli.fdroid.ui.dialog.ActionsDialogUI
 import com.machiav3lli.fdroid.ui.dialog.BaseDialog
 import com.machiav3lli.fdroid.ui.dialog.DIALOG_NONE
+import com.machiav3lli.fdroid.ui.dialog.MultiSelectionListDialogUI
 import com.machiav3lli.fdroid.ui.dialog.ProductsListDialogUI
 import com.machiav3lli.fdroid.ui.dialog.StringInputDialogUI
 import com.machiav3lli.fdroid.utils.extension.koinNeoViewModel
@@ -76,6 +78,8 @@ import com.machiav3lli.fdroid.utils.extension.text.pathCropped
 import com.machiav3lli.fdroid.utils.getLocaleDateString
 import com.machiav3lli.fdroid.utils.shareText
 import com.machiav3lli.fdroid.viewmodels.RepoPageVM
+import kotlinx.collections.immutable.persistentSetOf
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.launch
 import java.net.URI
 import java.net.URL
@@ -86,6 +90,7 @@ const val DIALOG_FINGERPRINT = 2
 const val DIALOG_USERNAME = 3
 const val DIALOG_PASSWORD = 4
 const val DIALOG_PRODUCTS = 5
+const val DIALOG_MIRRORS = 6
 
 @Composable
 fun RepoPage(
@@ -115,6 +120,9 @@ fun RepoPage(
     }
     var passwordFieldValue by remember(state.repo) {
         mutableStateOf(state.repo?.authenticationPair?.second.orEmpty())
+    }
+    var disabledMirrorsFieldValue by remember(state.repo) {
+        mutableStateOf(state.repo?.disabledMirrors ?: emptyList())
     }
 
     val addressValidity = remember { mutableStateOf(false) }
@@ -242,6 +250,35 @@ fun RepoPage(
                             viewModel.updateRepo(repo.copy(mirrorRotation = !repo.mirrorRotation))
                         }
                     )
+                }
+                if (repo.mirrorRotation) {
+                    item {
+                        OutlinedCard(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = MaterialTheme.shapes.medium,
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface),
+                            onClick = {
+                                dialogProps.intValue = DIALOG_MIRRORS
+                                openDialog.value = true
+                            }
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(
+                                    horizontal = 12.dp,
+                                    vertical = 16.dp
+                                ),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                BlockText(
+                                    text = pluralStringResource(
+                                        R.plurals.disabled_mirrors_FORMAT,
+                                        disabledMirrorsFieldValue.size,
+                                        disabledMirrorsFieldValue.size,
+                                    )
+                                )
+                            }
+                        }
+                    }
                 }
                 if (!editMode && repo.description.isNotEmpty()) {
                     item {
@@ -619,6 +656,21 @@ fun RepoPage(
                     repo = state.repo ?: Repository(),
                     apps = state.products,
                 )
+
+                DIALOG_MIRRORS -> {
+                    MultiSelectionListDialogUI(
+                        title = stringResource(id = R.string.disabled_mirrors),
+                        openDialogCustom = openDialog,
+                        allItems = state.repo?.mirrors?.toImmutableSet() ?: persistentSetOf(),
+                        selectedItems = disabledMirrorsFieldValue.toImmutableSet(),
+                        onSelectionChanged = { selectedMirrors ->
+                            disabledMirrorsFieldValue = selectedMirrors.toList()
+                            viewModel.updateRepo(
+                                state.repo?.copy(disabledMirrors = disabledMirrorsFieldValue)
+                            )
+                        }
+                    )
+                }
             }
         }
     }
