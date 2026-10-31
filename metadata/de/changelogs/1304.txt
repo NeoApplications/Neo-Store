@@ -1,0 +1,6 @@
+Hinzugefügt: Präferenz für deaktivierte Spiegelserver der Repositorys
+Behoben: Update-Benachrichtigung während des Downloads für eine bessere Leistung gedrosselt (credits @gilcu3)
+Behoben: Problem der "stotterigen" Suche auf einigen Systemen
+Update: Reaktivierung der Rotation der F-Droid Haupt-Spiegelserver als Standard, wobei ausgewählte Spiegelserver deaktiviert bleiben
+Update: Überarbeitete Handhabung der App-Sprachen (credits @ray2c)
+und mehr in über 20 Änderungen & 30 Übersetzungsbeiträgen

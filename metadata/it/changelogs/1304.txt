@@ -1,0 +1,6 @@
+Aggiunto: Possibilità di disabilitare i mirror per i repository
+Corretto: Limitazione della frequenza degli aggiornamenti delle notifiche durante il download per migliorare le prestazioni
+Corretto: Risolto il problema di "scatti" (stuttering) durante la ricerca su alcuni sistemi
+Aggiornato: Ripristinata la rotazione predefinita dei mirror principali di F-Droid
+Aggiornato: Gestione rinnovata delle lingue delle applicazioni
+e molto altro in più di 20 commit e 30 contributi di traduzione

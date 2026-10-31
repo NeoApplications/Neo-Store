@@ -1,0 +1,2 @@
+Perbaikan: Aplikasi mengalami crash saat kolom rilis tidak ditemukan
+Perbaikan: Pembaruan tidak stabil tetap ditampilkan meskipun pengaturan tersebut telah dinonaktifkan

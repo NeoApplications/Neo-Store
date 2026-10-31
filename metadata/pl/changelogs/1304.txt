@@ -1,0 +1,6 @@
+Dodano: Opcja wyłączenia serwerów lustrzanych dla repozytoriów
+Poprawka: Ograniczenie częstotliwości powiadomień podczas pobierania w celu poprawy wydajności (podziękowania dla @gilcu3)
+Poprawka: Problem z „zacinaniem się” wyszukiwania na niektórych systemach
+Aktualizacja: Ponowne domyślne włączenie rotacji głównych serwerów lustrzanych F-Droid z wybranymi wyłączonymi serwerami lustrzanymi
+Aktualizacja: Przeprojektowano obsługę języków aplikacji (podziękowania dla @ray2c)
+oraz wiele innych zmian w ponad 20 poprawkach i 30 tłumaczeniach)

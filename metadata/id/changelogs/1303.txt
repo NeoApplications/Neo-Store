@@ -1,0 +1,3 @@
+Perbaikan: Menghapus APK yang diunduh dari luar saat melakukan penghapusan data (erase)
+Perbaikan: Pembaruan informasi aplikasi (app info chips) yang sempat tertunda
+Perbaikan: Pembersihan kueri produk

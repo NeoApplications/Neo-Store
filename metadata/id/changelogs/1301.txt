@@ -1,0 +1,11 @@
+Tambah: Preferensi tema komprehensif baru
+Tambah: Saran riwayat pencarian
+Tambah: Daftar blokir aplikasi (app blocklist) ke dalam preferensi
+Perbaikan: Dukungan untuk aplikasi non-Shizuku yang menggunakan backend Shizuku
+Perbaikan: Filter yang tidak diterapkan dalam kombinasi tertentu
+Pembaruan: Perombakan desain indikator privasi
+Pembaruan: Perombakan desain ke gaya "Expressive"
+Hapus: Layanan laporan Exodus (akses API telah dicabut)
+Hapus: Dukungan untuk Index-v0
+Hapus: Dukungan untuk Android 7 & 7.1 (SDK 24 & 25)
+dan banyak lagi dalam lebih dari 80 commit & 70 kontribusi penerjemahan

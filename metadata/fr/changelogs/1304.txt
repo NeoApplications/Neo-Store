@@ -1,0 +1,6 @@
+Ajout : Préférence pour désactiver les miroirs des dépôts
+Correction : Limitation des mises à jour des notifications pendant le téléchargement pour une meilleure performance (crédits @gilcu3)
+Correction : Problème de « saccades » lors de la recherche sur certains systèmes
+Mise à jour : Réactivation par défaut de la rotation du miroir principal de F-Droid avec les miroirs désactivés sélectionnés
+Mise à jour : Refonte de la gestion des langues des applications (crédits @ray2c)
+et plus encore dans plus de 20 commits et 30 contributions de traduction
