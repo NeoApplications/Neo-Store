@@ -558,4 +558,11 @@
     <string name="permissions_identification_5">Nie wymaga uprawnień do danych identyfikacyjnych</string>
     <string name="weights_default">Wagi domyślne</string>
     <string name="weights_customized">Wagi niestandardowe</string>
+    <string name="disabled_mirrors">Wyłącz lustra</string>
+    <plurals name="disabled_mirrors_FORMAT">
+        <item quantity="one">%d lustro wyłączone.</item>
+        <item quantity="few">%d lustra wyłączone.</item>
+        <item quantity="many">%d luster wyłączonych.</item>
+        <item quantity="other">%d luster wyłączonych.</item>
+    </plurals>
 </resources>

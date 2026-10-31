@@ -547,4 +547,8 @@
     <string name="permissions_physical_2">要求大量身体数据权限</string>
     <string name="permissions_physical_3">不要求很多身体数据权限</string>
     <string name="permissions_physical_4">极少量的身体数据权限</string>
+    <string name="disabled_mirrors">禁用镜像</string>
+    <plurals name="disabled_mirrors_FORMAT">
+        <item quantity="other">%d 个已禁用的镜像。</item>
+    </plurals>
 </resources>

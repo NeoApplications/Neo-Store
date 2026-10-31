@@ -552,4 +552,10 @@
     <string name="permissions_identification_5">Ne nécessite aucune autorisation d\'accès aux données d\'identification</string>
     <string name="weights_default">Poids par défaut</string>
     <string name="weights_customized">Poids personnalisés</string>
+    <string name="disabled_mirrors">Miroirs désactivés</string>
+    <plurals name="disabled_mirrors_FORMAT">
+        <item quantity="one">%d miroir désactivé.</item>
+        <item quantity="many">%d miroirs désactivés.</item>
+        <item quantity="other">%d miroirs désactivés.</item>
+    </plurals>
 </resources>

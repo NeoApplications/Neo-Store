@@ -287,7 +287,7 @@
     <string name="permission_granted">已允許</string>
     <string name="permission_not_granted">未允許</string>
     <string name="vulnerabilities_installed_apps">這些已安裝的應用程序存在已知漏洞！</string>
-    <string name="vulnerabilities">漏洞。</string>
+    <string name="vulnerabilities">漏洞</string>
     <string name="app_installed">已安裝</string>
     <string name="no_vulnerabilities_installed_apps">沒有已安裝的應用程序存在已知漏洞。</string>
     <string name="tools">工具</string>
@@ -323,7 +323,7 @@
     <string name="downloads">下載</string>
     <string name="clear_text">明文</string>
     <string name="previous">上一頁</string>
-    <string name="next">下一页</string>
+    <string name="next">下一頁</string>
     <string name="error">錯誤</string>
     <string name="canceled">已取消</string>
     <string name="finished">已完成</string>
@@ -413,5 +413,11 @@
     <string name="installing_error_storage_DESC">由於儲存問題安裝錯誤。</string>
     <plurals name="privacy_points_FORMAT">
         <item quantity="other">(-%d私隱點數)</item>
+    </plurals>
+    <string name="keep_android_open">保持 Android 開放</string>
+    <string name="keep_android_open_notice">Android 之開放以及 F-Droid 正被 Google 顛覆，亟需眾人合力平反。請出手襄助：https://keepandroidopen.org/</string>
+    <string name="disabled_mirrors">已停用鏡像</string>
+    <plurals name="disabled_mirrors_FORMAT">
+        <item quantity="other">%d 個鏡像已停用。</item>
     </plurals>
 </resources>

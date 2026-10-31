@@ -555,4 +555,10 @@
     <string name="permissions_identification_5">Non richiede alcuna autorizzazione per i dati identificativi</string>
     <string name="weights_default">Pesi predefiniti</string>
     <string name="weights_customized">Pesi personalizzati</string>
+    <string name="disabled_mirrors">Mirror disabilitati</string>
+    <plurals name="disabled_mirrors_FORMAT">
+        <item quantity="one">%d mirror disabilitato.</item>
+        <item quantity="many">%d mirror disabilitati.</item>
+        <item quantity="other">%d mirror disabilitati.</item>
+    </plurals>
 </resources>

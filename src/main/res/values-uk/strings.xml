@@ -558,4 +558,11 @@
     <string name="permissions_identification_5">Не потребує дозволів на доступ до ідентифікаційних даних</string>
     <string name="weights_default">Типова значущість</string>
     <string name="weights_customized">Власна значущість</string>
+    <string name="disabled_mirrors">Вимкнені дзеркала</string>
+    <plurals name="disabled_mirrors_FORMAT">
+        <item quantity="one">%d вимкнене дзеркало.</item>
+        <item quantity="few">%d вимкнені дзеркала.</item>
+        <item quantity="many">%d вимкнених дзеркал.</item>
+        <item quantity="other">%d вимкнених дзеркал.</item>
+    </plurals>
 </resources>

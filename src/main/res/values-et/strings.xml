@@ -548,4 +548,9 @@
     <string name="permissions_identification_5">Ei vaja ühtegi luba ligipääsuks tuvastusandmetele</string>
     <string name="weights_default">Vaikimisi osakaalud</string>
     <string name="weights_customized">Sinu kohendatud osakaalud</string>
+    <string name="disabled_mirrors">Kasutuselt eemaldatud peegelserverid</string>
+    <plurals name="disabled_mirrors_FORMAT">
+        <item quantity="one">%d kasutuselt eemaldatud peegelserver.</item>
+        <item quantity="other">%d kasutuselt eemaldatud peegelserverit.</item>
+    </plurals>
 </resources>

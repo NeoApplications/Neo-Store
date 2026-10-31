@@ -545,4 +545,8 @@
     <string name="disable_list_detail">停用清單詳細並排版面</string>
     <string name="disable_list_detail_summary">畫面夠闊時，例如平板電腦或手機橫放，版面可分開左右兩邊，呢個選項則停用。</string>
     <string name="seed_color">殖根色水</string>
+    <string name="disabled_mirrors">停用鏡像</string>
+    <plurals name="disabled_mirrors_FORMAT">
+        <item quantity="other">%d 個鏡像已停用。</item>
+    </plurals>
 </resources>
